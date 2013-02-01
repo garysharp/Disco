@@ -1,0 +1,9 @@
+﻿@{
+    ViewBag.Title = "Devices";
+}
+<h3>
+    Search for a Device</h3>
+@Html.Partial(MVC.Shared.Views._SearchDialog, "devices")
+<div class="actionBar">
+    @Html.ActionLinkButton("Add Offline Device", MVC.Device.AddOffline())
+</div>

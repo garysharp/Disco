@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = null;
+}
+<h1>@CommonHelpers.Breadcrumbs("Initial Configuration > Starting Disco")</h1>
+<div id="dialog" title="Please Wait" style="padding-top: 30px;">
+    <h2><span class="ajaxLoading" style="margin-right: 15px;"></span>Starting Disco</h2>
+    <div style="padding-left: 31px;">Please wait while the Disco environment is initialized</div>
+</div>
+<script>
+    (function () {
+
+        $(function () {
+
+            $('#dialog').dialog({
+                autoOpen: true,
+                draggable: false,
+                modal: true,
+                resizable: false,
+                width: 400,
+                height: 150,
+                closeOnEscape: false
+            }).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();
+
+            var refresh = function () {
+                window.location.href = '/';
+            }
+            window.setTimeout(refresh, 2000);
+
+            $('#layout_Page').css('minHeight', '420px');
+
+        });
+
+    })();
+</script>

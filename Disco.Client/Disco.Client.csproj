@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D6B85A86-0FAA-4B04-BC9E-D01A08C03387}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Disco.Client</RootNamespace>
+    <AssemblyName>Disco.Client</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Disco.Client.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Disco.Models\ClientServices\Enrol.cs">
+      <Link>Models\ClientServices\Enrol.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\EnrolResponse.cs">
+      <Link>Models\ClientServices\EnrolResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\MacEnrol.cs">
+      <Link>Models\ClientServices\MacEnrol.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\MacEnrolResponse.cs">
+      <Link>Models\ClientServices\MacEnrolResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\MacSecureEnrolResponse.cs">
+      <Link>Models\ClientServices\MacSecureEnrolResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\ServiceBase.cs">
+      <Link>Models\ClientServices\ServiceBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\WhoAmI.cs">
+      <Link>Models\ClientServices\WhoAmI.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\WhoAmIResponse.cs">
+      <Link>Models\ClientServices\WhoAmIResponse.cs</Link>
+    </Compile>
+    <Compile Include="ErrorReporting.cs" />
+    <Compile Include="Extensions\ClientServiceException.cs" />
+    <Compile Include="Extensions\ClientServicesExtensions.cs" />
+    <Compile Include="Extensions\EnrolExtensions.cs" />
+    <Compile Include="Extensions\WhoAmIExtensions.cs" />
+    <Compile Include="Interop\Certificates.cs" />
+    <Compile Include="Interop\LocalAuthentication.cs" />
+    <Compile Include="Interop\Network.cs" />
+    <Compile Include="Presentation.cs" />
+    <Compile Include="Interop\SystemAudit.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Package Creation\PreparationClient.zip" />
+    <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Start.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PsExec.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icon.ico" />
+    <None Include="Package Creation\7z.dll" />
+    <None Include="Package Creation\7z.exe" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2001/1/1" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="True" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>DEL "$(ProjectDir)Package Creation\PreparationClient.zip"
+"$(ProjectDir)Package Creation\7z.exe" a -tzip "$(ProjectDir)Package Creation\PreparationClient.zip" "$(TargetDir)*.*" -x!*.tmp -x!*.vshost.* -x!Newtonsoft.Json.xml -x!*.pdb
+COPY "$(ProjectDir)Package Creation\PreparationClient.zip" "$(ProjectDir)..\Disco.Web\ClientBin"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,87 @@
+﻿@model Disco.Web.Areas.Config.Models.Config.IndexModel
+@{
+    ViewBag.Title = "Configuration";
+}
+<table id="pageMenu">
+    <tr>
+        <td>
+            <div class="pageMenuArea">
+                <h2>Hosting</h2>
+                @Html.ActionLinkClass("System", MVC.Config.SystemConfig.Index(), "config")
+                <div class="pageMenuBlurb">
+                    Update system configuration, such as the Data Storage Location and Proxy settings.
+                </div>
+                @Html.ActionLinkClass("Organisation Details", MVC.Config.Organisation.Index(), "config")
+                <div class="pageMenuBlurb">
+                    Update the Organisation Name, Logo and Addresses associated with this organisation.
+                </div>
+                @Html.ActionLinkClass("Logging", MVC.Config.Logging.Index(), "config")
+                <div class="pageMenuBlurb">
+                    Export Log files from various Disco Modules and view Live Logging.
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="pageMenuArea">
+                <h2>Devices</h2>
+                @Html.ActionLinkClass("Models", MVC.Config.DeviceModel.Index(), "config")
+                <div class="pageMenuBlurb">
+                    Configure Components, Product Images and default settings for Device Models.
+                </div>
+                @Html.ActionLinkClass("Batches", MVC.Config.DeviceBatch.Index(), "config")
+                <div class="pageMenuBlurb">
+                    Create and Configure Device Batches.
+                </div>
+                @Html.ActionLinkClass("Profiles", MVC.Config.DeviceProfile.Index(), "config")
+                <div class="pageMenuBlurb">
+                    Configure Device Profiles including computer name generation, distribution and Active
+                    Directory OU layout.
+                </div>
+                @Html.ActionLinkClass("Enrolment", MVC.Config.Enrolment.Index(), "config")
+                <div class="pageMenuBlurb">
+                    Configure Enrolment settings including secure credentials.
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="pageMenuArea">
+                <h2>Features</h2>
+                @Html.ActionLinkClass("Document Templates", MVC.Config.DocumentTemplate.Index(), "config")
+                <div class="pageMenuBlurb">
+                    Create, Update and Bulk Generate documents based on PDF Templates for Jobs, Devices
+                    and Users.
+                </div>
+                @Html.ActionLinkClass("Plugins", MVC.Config.Plugins.Index(), "config")
+                <div class="pageMenuBlurb">
+                    Manage extensions to the Disco platform.
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+@{
+    if (Model.UpdateAvailable)
+    {
+    <div id="updateAvailableContainer">
+        <div>An updated version of Disco is available</div>
+        <a href="@Model.UpdateResponse.UrlLink" target="_blank">Download Disco v@(Model.UpdateResponse.Version)</a>
+    </div>
+    <script>
+        (function () {
+            $(function () {
+                var layout_PageHeading = $('#layout_PageHeading').height(80);
+                var updateAvailableContainer = $('#updateAvailableContainer');
+                updateAvailableContainer.appendTo(layout_PageHeading);
+                @{
+        if (Model.UpdateResponse.VersionReleasedTimestamp < DateTime.Now.AddDays(-7))
+        {
+                    <text>
+                updateAvailableContainer.effect("shake", { times: 3 }, 100);
+                </text>
+        }
+                }
+            });
+        })();
+    </script>
+    }
+}

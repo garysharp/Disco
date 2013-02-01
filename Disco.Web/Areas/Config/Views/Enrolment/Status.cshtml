@@ -1,0 +1,370 @@
+﻿@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Enrolment", MVC.Config.Enrolment.Index(), "Status");
+    Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
+    Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
+    Html.BundleDeferred("~/ClientScripts/Modules/jQuery-Isotope");
+}
+<div id="enrolStatus">
+    <div id="noSessions" data-bind="visible: noSessions">
+        <h2>
+            No enrolment sessions today</h2>
+    </div>
+    <div id="sessions" data-bind="visible: !noSessions(), foreach: {data: sessions, afterRender: sessionRendered, afterAdd: sessionAdded}"
+        style="display: none">
+        <div class="session" data-bind="style: {backgroundImage: deviceModelImageUrl}, click: select">
+            <h3>
+                <span data-bind="text: title"></span><span class="details" data-bind="text: '(' + deviceModelDescription() + ')'">
+                </span>
+            </h3>
+            <p class="sessionStart" data-bind="text: startTime">
+            </p>
+            <p class="sessionStatus" data-bind="text: progressStatus">
+            </p>
+            <div data-bind="visible: !sessionEnded(), progressValue: progressValue" class="sessionProgress">
+            </div>
+        </div>
+    </div>
+    <div id="dialogSession" data-bind="with: currentSession">
+        <div class="sessionHeader clearfix" data-bind="style: {backgroundImage: deviceModelImageUrl}">
+            <h2>
+                <a href="" target="_blank" data-bind="text: title, attr: {href: deviceUrl}"></a>
+            </h2>
+            <h3 data-bind="text: deviceModelDescription">
+            </h3>
+            <table data-bind="if: sessionDeviceInfo">
+                <tr>
+                    <th style="width: 128px">
+                        Computer Name:
+                    </th>
+                    <td data-bind="text: sessionDeviceInfo().Arguments[3]">
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 128px">
+                        UUID:
+                    </th>
+                    <td data-bind="text: sessionDeviceInfo().Arguments[2]">
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 128px">
+                        LAN Mac Address:
+                    </th>
+                    <td data-bind="text: sessionDeviceInfo().Arguments[4]">
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 128px">
+                        WLAN Mac Address:
+                    </th>
+                    <td data-bind="text: sessionDeviceInfo().Arguments[5]">
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 128px">
+                        Manufacturer/Model:
+                    </th>
+                    <td data-bind="text: sessionDeviceInfo().Arguments[6] + ' ' + sessionDeviceInfo().Arguments[7]">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="sessionProgress clearfix">
+            <p class="sessionStart" data-bind="text: startTime">
+            </p>
+            <p class="sessionStatus" data-bind="text: progressStatus">
+            </p>
+            <div data-bind="visible: !sessionEnded(), progressValue: progressValue">
+            </div>
+        </div>
+        <div class="sessionInfoContainer clearfix">
+            <div class="sessionInfoMessages">
+                <table class="logEventsViewport">
+                    <thead>
+                        <tr>
+                            <th class="icon">
+                                &nbsp;
+                            </th>
+                            <th class="message">
+                                Message
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="logEventsViewportContainer">
+                    <div class="logEventsViewportNoLogs" data-bind="visible: messages().length == 0"
+                        style="display: none">
+                        No logs
+                    </div>
+                    <table class="logEventsViewport" data-bind="visible: messages().length > 0" style="display: none">
+                        <tbody data-bind="foreach: messages">
+                            <tr>
+                                <td class="icon" data-bind="attr: {title: FormattedTimestamp}, css: {information: EventTypeSeverity == 0, warning: EventTypeSeverity == 1, error: EventTypeSeverity == 2}">
+                                    &nbsp;
+                                </td>
+                                <td class="message" data-bind="text: FormattedMessage, attr: {title: EventTypeName}">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="sessionInfoConsole" data-bind="foreach: console">
+                <span data-bind="text: Arguments[1]"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    ko.bindingHandlers.progressValue = {
+        update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+            var v = ko.utils.unwrapObservable(valueAccessor());
+            var vInt = parseInt(v);
+            if (vInt >= 0) {
+                $element = $(element);
+                if (!$element.is('.ui-progressbar'))
+                    $element.progressbar();
+                $(element).progressbar('option', 'value', vInt);
+            }
+        }
+    };
+</script>
+<script type="text/javascript">
+    $(function () {
+        var vm;
+        var host = $('#enrolStatus');
+        var hostSessions = $('#sessions');
+        var hostDialogSessions = $('#dialogSession');
+        //var hostDialogSessionsProgress = $('#dialogSession').find('.sessionProgress');
+        var deviceModels = {};
+        var liveConnection;
+        var deviceBaseUrl = '@(Url.Action(MVC.Device.Show()))/'
+        var deviceModelImageUrl = '@(Url.Action(MVC.API.DeviceModel.Image()))/'
+        var iconWarningUrl = 'url(@(Links.ClientSource.Style.Images.Status.warning32_png))';
+        var iconErrorUrl = 'url(@(Links.ClientSource.Style.Images.Status.fail32_png))';
+
+        function pageViewModel() {
+            var self = this;
+
+            self.noSessions = ko.observable(true);
+            self.sessions = ko.observableArray();
+            self.sessionIndex = {};
+
+            self.isotopeInited = false;
+
+            self.currentSession = ko.observable();
+
+            self.sessionRendered = function (e, d) {
+                if (!d.sessionEnded()) {
+                    d.progressbar = $(e).find('.sessionProgress').progressbar();
+                }
+            };
+            self.sessionAdded = function (e, d) {
+                if (self.isotopeInited) {
+                    hostSessions.isotope('reloadItems').isotope({ sortBy: 'original-order' });
+                }
+            };
+        }
+        function sessionViewModel(id) {
+            var self = this;
+
+            self.title = ko.observable(id);
+            self.messages = ko.observableArray();
+            self.console = ko.observableArray();
+            self.serialNumber = ko.observable();
+            self.sessionDeviceInfo = ko.observable();
+            self.progressStatus = ko.observable();
+            self.progressValue = ko.observable();
+            self.startTime = ko.observable();
+            self.sessionEnded = ko.observable(false);
+            self.progressbar = null;
+            self.hasError = ko.observable(false);
+            self.hasWarning = ko.observable(false);
+            self.deviceModelId = ko.observable();
+            self.deviceModelDescription = ko.computed(function () {
+                var deviceModelId = self.deviceModelId();
+                var sessionDeviceInfo = self.sessionDeviceInfo();
+                if (deviceModelId) {
+                    var dm = deviceModels[deviceModelId];
+                    if (dm) {
+                        if (dm.Description)
+                            return dm.Description;
+                        else
+                            return dm.Manufacturer + ' ' + dm.Model;
+                    }
+                }
+                if (sessionDeviceInfo) {
+                    return sessionDeviceInfo.Arguments[6] + ' ' + sessionDeviceInfo.Arguments[7];
+                }
+            });
+            self.deviceUrl = ko.computed(function () {
+                var serialNumber = self.serialNumber();
+                if (serialNumber)
+                    return deviceBaseUrl + serialNumber;
+                else
+                    return null;
+            });
+            self.deviceModelImageUrl = ko.computed(function () {
+                var deviceModelImage;
+                if (self.deviceModelId())
+                    deviceModelImage = 'url(' + deviceModelImageUrl + self.deviceModelId() + ')';
+                else
+                    deviceModelImage = 'url(' + deviceModelImageUrl + ')';
+                if (self.hasError())
+                    return iconErrorUrl + ', ' + deviceModelImage;
+                else
+                    if (self.hasWarning())
+                        return iconWarningUrl + ', ' + deviceModelImage;
+                    else
+                        return 'none, ' + deviceModelImage;
+            });
+            self.select = function (e, d) {
+                vm.currentSession(self);
+                hostDialogSessions.dialog('open');
+                hostDialogSessions.dialog('option', 'title', 'Device Enrolment: ' + self.title());
+            }
+        }
+
+        function parseLog(log) {
+            if (log.ModuleId === 50 && log.Arguments && log.Arguments.length > 0) {
+                // find session
+                var sessionId = log.Arguments[0];
+                var session = vm.sessionIndex[sessionId];
+                if (!session && log.EventTypeId === 10) { // Starting Session (Ignore 'partial' sessions)
+                    session = new sessionViewModel(sessionId);
+                    vm.sessionIndex[sessionId] = session;
+                    vm.sessions.unshift(session);
+                    vm.noSessions(false);
+                }
+                if (session) {
+                    switch (log.EventTypeId) {
+                        case 10: // SessionStarting
+                            session.title(log.Arguments[1]);
+                            session.startTime(log.FormattedTimestamp.substring(log.FormattedTimestamp.indexOf(' ') + 1));
+                            session.messages.unshift(log);
+                            break;
+                        case 11: // SessionProgress
+                            //session.progressbar.progressbar('option', 'value', log.Arguments[1]);
+                            session.progressValue(log.Arguments[1]);
+                            session.progressStatus(log.Arguments[2]);
+                            break;
+                        case 12: // SessionDevice
+                            session.title(log.Arguments[1]);
+                            session.serialNumber(log.Arguments[1]);
+                            if (log.Arguments.length >= 3 && log.Arguments[2])
+                                session.deviceModelId(log.Arguments[2]);
+                            break;
+                            break;
+                        case 13: // SessionDeviceInfo
+                            session.title(log.Arguments[1]);
+                            session.serialNumber(log.Arguments[1]);
+                            session.sessionDeviceInfo(log);
+                            if (log.Arguments.length >= 10 && log.Arguments[9])
+                                session.deviceModelId(log.Arguments[9]);
+                            break;
+                        case 20: // SessionFinished
+                            session.sessionEnded(true);
+                            if (session.hasError())
+                                session.progressStatus('Enrolment Finished with an Error');
+                            else
+                                if (session.hasWarning())
+                                    session.progressStatus('Enrolment Finished with a Warning');
+                                else
+                                    session.progressStatus('Enrolment Finished Successfully');
+                            session.messages.unshift(log);
+                            break;
+                        case 21: // SessionDiagnosticInformation
+                            session.console.push(log);
+                            break;
+                        case 22: // SessionWarning
+                            session.hasWarning(true);
+                            session.messages.unshift(log);
+                            break;
+                        case 23: // SessionError
+                        case 24: // SessionErrorWithInner
+                        case 25: // SessionClientError
+                            session.hasError(true);
+                            session.messages.unshift(log);
+                            break;
+                        default:
+                            session.messages.unshift(log);
+                    }
+                }
+            }
+        }
+        function init() {
+            hostDialogSessions.dialog({
+                modal: true,
+                height: 664,
+                width: 900,
+                resizable: false,
+                autoOpen: false,
+                buttons: { 'Close': function () { $(this).dialog('close'); } }
+            });
+            //hostDialogSessionsProgress.progressbar();
+
+            // Create View Model
+            vm = new pageViewModel();
+            $.ajax({
+                url: '@(Url.Action(MVC.API.DeviceModel.Index()))',
+                dataType: 'json',
+                type: 'POST',
+                success: init_loadedDeviceModels,
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Unable to retrieve device models: ' + errorThrown);
+                }
+            });
+        }
+        function init_loadedDeviceModels(models) {
+            for (var i = 0; i < models.length; i++) {
+                var m = models[i];
+                deviceModels[m.Id] = m;
+            }
+
+            // Load Logs
+            var d = new Date();
+            var loadData = {
+                Format: "json",
+                Start: d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(),
+                End: null,
+                ModuleId: 50,
+                Take: 2000
+            };
+            $.ajax({
+                url: '@(Url.Action(MVC.API.Logging.RetrieveEvents()))',
+                dataType: 'json',
+                type: 'POST',
+                traditional: true,
+                data: loadData,
+                success: init_loadedLogs,
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Unable to retrieve logs: ' + errorThrown);
+                }
+            });
+        }
+        function init_loadedLogs(logs) {
+            logs.reverse();
+            for (var i = 0; i < logs.length; i++) {
+                parseLog(logs[i]);
+            }
+            // Bind
+            ko.applyBindings(vm);
+
+            // Isotope
+            hostSessions.isotope({
+                itemSelector: '.session',
+                layoutMode: 'fitRows'
+            });
+            vm.isotopeInited = true;
+
+            // Init Persistent Connection
+            liveConnection = $.connection('@(Url.Content("~/API/Logging/Notifications"))');
+            liveConnection.received(parseLog);
+            liveConnection.error(function (e) { alert('Live-Log Error: ' + e) });
+            liveConnection.start(function () {
+                liveConnection.send('/addToGroups:@(Disco.BI.DeviceBI.EnrolmentLog.Current.LiveLogGroupName)');
+            });
+        }
+        init();
+    });
+</script>

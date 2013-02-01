@@ -1,0 +1,200 @@
+﻿@model Disco.Web.Models.InitialConfig.CompleteModel
+@{
+    ViewBag.Title = null;
+}
+<h1>@CommonHelpers.Breadcrumbs(Html.ToBreadcrumb("Initial Configuration", MVC.InitialConfig.Index(), "Complete"))</h1>
+<div id="initialConfig_Complete">
+    <div class="form" style="width: 650px">
+        <h2>Verification Results</h2>
+        <table>
+            <tr>
+                <td>
+                    <h3><span class="icon @(Model.RegistryDatabaseResult == null ? "success" : "error")"></span>Database</h3>
+                    <div class="testResult">
+                        @{
+                            if (Model.RegistryDatabaseResult == null)
+                            {
+                            <text>The database connection string was correctly configured and saved.</text>
+                            }
+                            else
+                            {
+                            <text>There was an error saving the database connection string configuration.</text>
+                            <br />
+                            <div class="exception">
+                                @{var ex = Model.RegistryDatabaseResult;
+                                  do
+                                  {
+                                    <div>
+                                        <h4>[@ex.GetType().Name]</h4>
+                                        <div class="code">
+                                            @ex.Message
+                                        </div>
+                                    </div>  
+                                      if (ex.InnerException == null) { break; }
+                                      else { ex = ex.InnerException; }
+                                  } while (true);
+                                }
+                            </div>
+                            }
+                        }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h3><span class="icon @(Model.DiscoDnsTestResult.Item2 == null ? "success" : "warning")"></span>Disco DNS Entry</h3>
+                    <div class="testResult">
+                        @{
+                            if (Model.DiscoDnsTestResult.Item1 != null)
+                            {
+                            
+                            <div>The following 'disco' DNS entry was found:</div>
+                            <div class="code">
+                                <strong>@Model.DiscoDnsTestResult.Item1.HostName</strong>
+                                @{
+                                if (Model.DiscoDnsTestResult.Item1.Aliases.Length > 0)
+                                {
+                                    <div>
+                                        Aliases:
+                <ul>
+                    @foreach (var a in Model.DiscoDnsTestResult.Item1.Aliases)
+                    {
+                        <li>@a</li>
+                    }
+                </ul>
+                                    </div>
+                                }
+                                if (Model.DiscoDnsTestResult.Item1.AddressList.Length > 0)
+                                {
+                                    <div>
+                                        IP Addresses:
+                <ul>
+                    @foreach (var a in Model.DiscoDnsTestResult.Item1.AddressList)
+                    {
+                        <li>@a.ToString()</li>
+                    }
+                </ul>
+                                    </div>
+                                }
+                                }
+                            </div>
+                            }
+                            else
+                            {
+                            <text>There was an error determining a DNS entry for Disco.</text>
+                            <br />
+                            <div class="exception">
+                                @{var ex = Model.DiscoDnsTestResult.Item2;
+                                  do
+                                  {
+                                    <div>
+                                        <h4>[@ex.GetType().Name]</h4>
+                                        <div class="code">
+                                            @ex.Message
+                                        </div>
+                                    </div>  
+                                      if (ex.InnerException == null) { break; }
+                                      else { ex = ex.InnerException; }
+                                  } while (true);
+                                }
+                            </div>
+                            }
+                        }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h3><span class="icon @(Model.DiscoIctComAuWebResult == null ? "success" : "warning")"></span>Connectivity to <a href="http://discoict.com.au" target="_blank">http://discoict.com.au</a></h3>
+                    <div class="testResult">
+                        @{
+                            if (Model.DiscoIctComAuWebResult == null)
+                            {
+                            <text>A connection was successfully established to <a href="http://discoict.com.au" target="_blank">http://discoict.com.au</a>.</text>
+                            }
+                            else
+                            {
+                            <text>There was an error establishing a connection to <a href="http://discoict.com.au" target="_blank">http://discoict.com.au</a>. This may be caused by missing proxy settings - after starting Disco check these settings in the 'System' configuration area.</text>
+                            <br />
+                            <div class="exception">
+                                @{var ex = Model.DiscoIctComAuWebResult;
+                                  do
+                                  {
+                                    <div>
+                                        <h4>[@ex.GetType().Name]</h4>
+                                        <div class="code">
+                                            @ex.Message
+                                        </div>
+                                    </div>  
+                                      if (ex.InnerException == null) { break; }
+                                      else { ex = ex.InnerException; }
+                                  } while (true);
+                                }
+                            </div>
+                            }
+                        }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h3><span class="icon information"></span>Unblock ICMP (Ping) for the Disco server</h3>
+                    <div class="testResult">
+                        The Disco Client Bootstrapper requires the Disco server to respond to ICMP Echo requests (Ping) to function correctly. Please insure any firewall rules are updated accordingly.
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h3><span class="icon information"></span>Configure a regularly scheduled Backup</h3>
+                    <div class="testResult">
+                        Please ensure both the SQL Database and File Store are backed up regularly.
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="actionBar">
+        @{
+            if (Model.LaunchAllowed)
+            {
+            <a href="@(Url.Action(MVC.InitialConfig.RestartWebApp()))" class="button">Start Disco</a>
+            }
+            else
+            {
+            <a id="tryAgain" href="@(Url.Action(MVC.InitialConfig.Complete()))" class="button">Try Again</a>
+            }
+        }
+    </div>
+</div>
+<div id="dialogWait" title="Please Wait">
+    <h2><span class="ajaxLoading"></span>Re-running Verification Tests</h2>
+    <div>Please wait while the verification tests are performed.</div>
+</div>
+<script>
+    (function () {
+        $(function () {
+            $('#initialConfig_Complete').find('div.exception').each(function () {
+                var $this = $(this);
+                $('<a>').text('[Show Error Details]').attr('href', '#').insertBefore($this).click(function () {
+                    $(this).hide();
+                    $this.slideDown();
+                    return false;
+                });
+                $this.hide();
+            });
+            $('#tryAgain').click(function () {
+                $('#dialogWait').dialog('open');
+            });
+            $('#dialogWait').dialog({
+                autoOpen: false,
+                draggable: false,
+                modal: true,
+                resizable: false,
+                width: 400,
+                height: 150,
+                closeOnEscape: false
+            }).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();
+        });
+    })();
+</script>

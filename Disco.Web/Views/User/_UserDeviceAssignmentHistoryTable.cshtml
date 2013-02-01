@@ -1,0 +1,80 @@
+﻿@model Disco.Models.Repository.User
+@{
+    var userId = Model.Id;
+}
+@if (Model.DeviceUserAssignments.Count > 0)
+{ 
+    <table class="genericData smallTable" id="User_AssignedDevice_History_@(userId)">
+        <tr>
+            <th>
+                Device Serial #
+            </th>
+            <th>
+                Device Asset #
+            </th>
+            <th>
+                Device Model
+            </th>
+            <th>
+                Assigned
+            </th>
+            <th>
+                Unassigned
+            </th>
+        </tr>
+        @foreach (var dua in Model.DeviceUserAssignments.OrderByDescending(m => m.AssignedDate))
+        {
+            <tr class="assignmentActive@((!dua.UnassignedDate.HasValue).ToString())">
+                <td>
+                    @Html.ActionLink(dua.Device.SerialNumber, MVC.Device.Show(dua.DeviceSerialNumber))
+                </td>
+                <td>
+                    @dua.Device.AssetNumber
+                </td>
+                <td>
+                    @dua.Device.DeviceModel.ToString()
+                </td>
+                <td>
+                    @CommonHelpers.FriendlyDate(dua.AssignedDate)
+                </td>
+                <td>
+                    @CommonHelpers.FriendlyDate(dua.UnassignedDate, "Current")
+                </td>
+            </tr>
+        }
+        @if (Model.DeviceUserAssignments.Count(m => !m.UnassignedDate.HasValue) == 0)
+        {
+            <tr class="noActiveAssignments">
+                <td colspan="5">
+                    <span class="smallMessage">No Active Assignments</span>
+                </td>
+            </tr>
+        }
+    </table>
+    <a href="#" id="User_AssignedDevice_History_Trigger_@(userId)" class="smallLink">Show
+        All Assignment History (<span id="User_AssignedDevice_History_RecordCount_@(userId)"></span>)</a>
+    <script type="text/javascript">
+        $(function () {
+            var $table = $('#User_AssignedDevice_History_@(userId)');
+            var $inactiveRecords = $table.find('tr.assignmentActiveFalse').hide();
+            if ($inactiveRecords.length != 0) {
+                var recordCountText = $inactiveRecords.length + ' record';
+                if ($inactiveRecords.length != 1)
+                    recordCountText += 's';
+                $('#User_AssignedDevice_History_RecordCount_@(userId)').text(recordCountText);
+                $('#User_AssignedDevice_History_Trigger_@(userId)').click(function () {
+                    $(this).hide();
+                    $table.find('tr.noActiveAssignments').hide();
+                    $inactiveRecords.show();
+                    return false;
+                });
+            } else {
+                $('#User_AssignedDevice_History_Trigger_@(userId)').hide();
+            }
+        });
+    </script>
+}
+else
+{ 
+    <span class="smallMessage">No Assignment History Available</span>
+}

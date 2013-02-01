@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Batches", MVC.Config.DeviceBatch.Index(null), "Timeline");
+    Html.BundleDeferred("~/Style/Timeline");
+    Html.BundleDeferred("~/ClientScripts/Modules/Timeline");
+}
+<div id="deviceBatchesTimeline" style="height: 550px;">
+</div>
+<script type="text/javascript">
+    (function () {
+        var dataUrl = '@(Url.Action(MVC.API.DeviceBatch.Timeline()))';
+        var tl;
+
+        $(function () {
+
+            var eventSource = new Timeline.DefaultEventSource();
+
+            var currentDate = new Date();
+            currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDay(), 10, 0, 0);
+            var tomorrowDate = new Date();
+            tomorrowDate.setDate(currentDate.getDate() + 1);
+            var sixMonthsDate = new Date();
+            sixMonthsDate.setDate(currentDate.getDate());
+            sixMonthsDate.setMonth(currentDate.getMonth() + 6);
+            
+            var hotZoneStart1 = new Date(currentDate.getFullYear(), 0, 1, 10, 0, 0);
+            var hotZoneEnd1 = new Date(currentDate.getFullYear(), 11, 31, 10, 0, 0);
+            var hotZoneStart2 = new Date(currentDate.getFullYear() + 1, 0, 1, 10, 0, 0);
+            var hotZoneEnd2 = new Date(currentDate.getFullYear() + 1, 11, 31, 10, 0, 0);
+            //hotZoneEnd.setDate(hotZoneEnd.getDate() - 1);
+
+            //hotZoneStart = hotZoneStart.toLocaleDateString();
+            //hotZoneEnd = hotZoneEnd.toLocaleDateString();
+
+
+            var bandInfos = [
+                Timeline.createHotZoneBandInfo({
+                    zones: [
+                    {
+                        start: hotZoneStart1,
+                        end: hotZoneEnd1,
+                        magnify: 4,
+                        unit: Timeline.DateTime.MONTH
+                    },
+                    {
+                        start: hotZoneStart2,
+                        end: hotZoneEnd2,
+                        magnify: 4,
+                        unit: Timeline.DateTime.MONTH
+                    }
+                    ],
+                    eventSource: eventSource,
+                    width: "85%",
+                    intervalUnit: Timeline.DateTime.YEAR,
+                    intervalPixels: 150,
+                    timeZone: 10,
+                    date: sixMonthsDate
+                }),
+                Timeline.createBandInfo({
+                    eventSource: eventSource,
+                    width: "15%",
+                    intervalUnit: Timeline.DateTime.YEAR,
+                    intervalPixels: 150,
+                    overview: true,
+                    timeZone: 10,
+                    date: sixMonthsDate
+                })
+            ];
+            bandInfos[1].syncWith = 0;
+            bandInfos[1].highlight = true;
+
+            for (var i = 0; i < bandInfos.length; i++) {
+                bandInfos[i].decorators = [
+                    new Timeline.SpanHighlightDecorator({
+                        startDate: currentDate,
+                        endDate: tomorrowDate,
+                        color: "#CC2222",
+                        opacity: 50
+                    }),
+                    new Timeline.SpanHighlightDecorator({
+                        startDate: hotZoneStart1,
+                        endDate: hotZoneEnd1,
+                        color: "#CEA5A5",
+                        opacity: 50
+                    }),
+                    new Timeline.SpanHighlightDecorator({
+                        startDate: hotZoneStart2,
+                        endDate: hotZoneEnd2,
+                        color: "#CCB7B7",
+                        opacity: 50
+                    })
+                ];
+            }
+
+            tl = Timeline.create($('#deviceBatchesTimeline')[0], bandInfos);
+
+            var tlResizeLayoutHandle = null;
+            $(window).resize(function () {
+                if (tlResizeLayoutHandle)
+                    window.clearTimeout(tlResizeLayoutHandle);
+                tlResizeLayoutHandle = window.setTimeout(function () {
+                    tlResizeLayoutHandle = null;
+                    tl.layout();
+                }, 500);
+            });
+
+            // Load Events
+            $.ajax({
+                url: dataUrl,
+                dataType: 'json',
+                type: 'POST',
+                success: function (data) {
+                    eventSource.loadJSON(data, dataUrl);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Unable to load Timeline Data: ' + errorThrown);
+                }
+            });
+        });
+
+    })();
+
+</script>

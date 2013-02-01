@@ -1,0 +1,108 @@
+﻿@model Disco.Web.Models.Job.LogWarrantyModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Log Warranty");
+}
+@using (Html.BeginForm(MVC.Job.LogWarranty(), FormMethod.Post))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.JobId)
+    @Html.HiddenFor(m => m.OrganisationAddressId)
+    @Html.HiddenFor(m => m.WarrantyProviderId)
+    @Html.HiddenFor(m => m.FaultDescription)
+    @Html.HiddenFor(m => m.WarrantyProviderPropertiesJson)
+    <input type="hidden" name="WarrantyAction" value="Submit" />
+    <div id="warrantyJobForm" class="form" style="width: 650px">
+        <table>
+            <tr>
+                <th>
+                    Internal Job Id:
+                </th>
+                <td>
+                    @Model.JobId
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Device Serial Number:
+                </th>
+                <td>
+                    @Model.Job.Device.SerialNumber
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Device Model:
+                </th>
+                <td>
+                    @Model.Job.Device.DeviceModel.Manufacturer @Model.Job.Device.DeviceModel.Model
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Technician:
+                </th>
+                <td>
+                    @Model.TechUser.DisplayName
+                    <div class="smallMessage">
+                        Email Address: @Model.TechUser.EmailAddress<br />
+                        Phone Number: @Model.TechUser.PhoneNumber
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 150px">
+                    Repair Address:
+                </th>
+                <td>
+                    <div id="organisationAddressDetails">
+                        @Model.OrganisationAddress.Name
+                        <div class="smallMessage">
+                            <span>@Model.OrganisationAddress.Address</span><br />
+                            <span>@Model.OrganisationAddress.Suburb, @Model.OrganisationAddress.Postcode</span><br />
+                            <span>@Model.OrganisationAddress.State, @Model.OrganisationAddress.Country</span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Warranty Provider:
+                </th>
+                <td>
+                    @Model.WarrantyProvider.Name (@Model.WarrantyProvider.Id) @Model.WarrantyProvider.PluginManifest.Version.ToString(3)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Fault Description:
+                </th>
+                <td>
+                    @Model.FaultDescription.ToMultilineString()
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Disclosed Information
+                </th>
+                <td>
+                    <div id="warrantyDisclosedInformation">
+                        <table>
+                            @foreach (var dp in Model.DiscloseProperties)
+                            {
+                                <tr>
+                                    <th>@dp.Key:
+                                    </th>
+                                    <td>@dp.Value
+                                    </td>
+                                </tr>   
+                            }
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="actionBar">
+        <input type="submit" class="button" value="Submit Warranty Claim" />
+    </div>
+}

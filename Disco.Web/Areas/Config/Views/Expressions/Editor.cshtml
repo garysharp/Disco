@@ -1,0 +1,52 @@
+﻿@model Disco.Web.Areas.Config.Models.Expressions.EditorModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Expressions");
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-ExpressionEditor");
+}
+<div id="expressionEditor">
+    <div id="expressionEditorContainer">
+    </div>
+    <div id="expressionEditorExceptionContainer">
+        <h3>
+            Parse Error:</h3>
+        <div id="expressionEditorException">
+        </div>
+    </div>
+    <button id="expressionEditorValidateButton">
+        Validate</button>
+    @if (false)
+    { <script src="/ClientSource/Scripts/Core/jquery-1.7.1.js" type="text/javascript"></script>}
+    <script type="text/javascript">
+        $(function () {
+            var initExpression = '@(Model.Expression)';
+            var hostSrcUrl = '@(Links.ClientSource.Style.ExpressionEditor_htm)';
+            var host = $('<iframe>').attr('src', hostSrcUrl).css({ width: '100%', height: 100, border: 'none' });
+            $('#expressionEditorContainer').append(host);
+
+            var $expressionEditorExceptionContainer = $('#expressionEditorExceptionContainer');
+            var $expressionEditorException = $('#expressionEditorException');
+
+            var editor = new DiscoExpressionEditor(host, '@(Url.Action(MVC.API.Expressions.ValidateExpression()))', initExpression);
+
+            editor.expressionExceptionChanged = function (e) {
+                if (e && !e.ExpressionValid) {
+                    $expressionEditorException.text(e.Message);
+                    $expressionEditorExceptionContainer.slideDown();
+                } else {
+                    $expressionEditorExceptionContainer.slideUp();
+                }
+            };
+            editor.expressionValidated = function (result, e) {
+                if (result)
+                    alert('Validation Passed');
+            };
+
+            $('#expressionEditorValidateButton').click(function () {
+                editor.validateExpression();
+            });
+
+
+            editor.hostInit();
+        });
+    </script>
+</div>

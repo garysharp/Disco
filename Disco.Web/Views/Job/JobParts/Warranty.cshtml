@@ -1,0 +1,127 @@
+﻿@model Disco.Web.Models.Job.ShowModel
+<div id="jobDetailTab-Warranty" class="jobPart">
+    <table id="jobNonWarrantyFinance">
+        <tr>
+            <th style="width: 200px;">
+                Warranty Provider
+            </th>
+            <td>
+                @Html.EditorFor(m => m.Job.JobMetaWarranty.ExternalName)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Job_JobMetaWarranty_ExternalName'),
+                            'Unknown',
+                            '@Url.Action(MVC.API.Job.UpdateWarrantyExternalName(Model.Job.Id, null))',
+                            'ExternalName'
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px;">
+                Warranty Logged
+            </th>
+            <td>
+                @Html.EditorFor(m => m.Job.JobMetaWarranty.ExternalLoggedDate)
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        var dateField = $('#Job_JobMetaWarranty_ExternalLoggedDate');
+                        document.DiscoFunctions.DateChangeHelper(
+                        dateField,
+                        'Unknown',
+                        '@(Url.Action(MVC.API.Job.UpdateWarrantyExternalLoggedDate(Model.Job.Id, null)))',
+                        'ExternalLoggedDate',
+                        null
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px;">
+                Warranty Reference
+            </th>
+            <td>
+                @Html.EditorFor(m => m.Job.JobMetaWarranty.ExternalReference)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Job_JobMetaWarranty_ExternalReference'),
+                            'Unknown',
+                            '@Url.Action(MVC.API.Job.UpdateWarrantyExternalReference(Model.Job.Id, null))',
+                            'ExternalReference'
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px;">
+                Warranty Completed
+            </th>
+            <td>
+                @Html.EditorFor(m => m.Job.JobMetaWarranty.ExternalCompletedDate)
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        var dateField = $('#Job_JobMetaWarranty_ExternalCompletedDate');
+                        document.DiscoFunctions.DateChangeHelper(
+                        dateField,
+                        'Unknown',
+                        '@(Url.Action(MVC.API.Job.UpdateWarrantyExternalCompletedDate(Model.Job.Id, null)))',
+                        'ExternalCompletedDate',
+                        null
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr id="jobWarrantyProviderDetailContainer" style="display: none">
+            <th style="width: 200px;">
+                Provider Details
+            </th>
+            <td>
+                <div id="jobWarrantyProviderDetailLoading">
+                    <span class="ajaxHelperIcon ajaxLoading" title="Loading..."></span> Loading...
+                </div>
+                <div id="jobWarrantyProviderDetailHost" class="clearfix" style="display: none">
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<script type="text/javascript">
+    $('#jobDetailTabItems').append('<li><a href="#jobDetailTab-Warranty">Warranty</a></li>');
+    $(function () {
+        var warrantyProviderDetailLoaded = false;
+
+        $('#jobDetailTabs').bind('tabsshow', function (e, ui) {
+            if ($(ui.panel).is('#jobDetailTab-Warranty')) {
+                if (!warrantyProviderDetailLoaded) {
+                    var warrantyExternalName = $('#Job_JobMetaWarranty_ExternalName').val();
+                    if (warrantyExternalName) {
+                        $('#jobWarrantyProviderDetailContainer').show();
+                        $('#jobWarrantyProviderDetailLoading span').show();
+                        $('#jobWarrantyProviderDetailHost').load(
+                            '@(Url.Action(MVC.Job.WarrantyProviderJobDetails()))',
+                            { id: '@(Model.Job.Id)' },
+                            function () {
+                                $('#jobWarrantyProviderDetailLoading').hide();
+                                $(this).slideDown();
+                            }
+                        );
+
+                        warrantyProviderDetailLoaded = true;
+                    }
+                }
+            }
+        });
+    });
+</script>

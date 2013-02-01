@@ -1,0 +1,35 @@
+﻿@model string
+@using (Html.BeginForm(MVC.Search.Query(), FormMethod.Get))
+{
+    @Html.ValidationSummary(true)
+    <div id="searchDialog" class="form" style="width: 450px">
+        <table>
+            <tr>
+                <th>
+                    Query:
+                </th>
+                <td>
+                    @Html.TextBox("term")
+                    @if (Model != null)
+                    {
+                        @Html.Hidden("limit", Model)
+                        if (Model == "jobs")
+                        { 
+                        <br />
+                        <input type="checkbox" name="searchDetails" id="searchDetails" value="true" /><label
+                            for="searchDetails">Search Details</label>
+                        }
+                    }
+                </td>
+            </tr>
+        </table>
+        <p class="actions">
+            <input type="submit" class="button" value="Search" />
+        </p>
+        <script type="text/javascript">
+            $(function () {
+                $('#searchDialog').find('#term').watermark('Search').focus();
+            });
+        </script>
+    </div>
+}

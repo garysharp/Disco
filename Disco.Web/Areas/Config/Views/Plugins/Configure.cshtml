@@ -1,0 +1,14 @@
+﻿@model Disco.Web.Areas.Config.Models.Plugins.PluginConfigurationViewModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Plugins", MVC.Config.Plugins.Index(), Model.Manifest.Name);
+}
+@using (Html.BeginForm())
+{ 
+    @Html.ValidationSummary(false)
+    <div class="clearfix">
+        @Html.PartialCompiled(Model.PluginViewType, Model.PluginViewModel)
+    </div>
+    <div class="actionBar">
+        <input type="submit" class="button" value="Save Configuration" />
+    </div>
+}

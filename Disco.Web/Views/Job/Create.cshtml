@@ -1,0 +1,301 @@
+﻿@model Disco.Web.Models.Job.CreateModel
+@{
+    Layout = "~/Views/Shared/_DialogLayout.cshtml";
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), "Create");
+}
+<div id="createJob_Container">
+    @using (Html.BeginForm(MVC.Job.Create(), FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.DeviceSerialNumber)
+        @Html.HiddenFor(m => m.UserId)
+        @Html.HiddenFor(m => m.QuickLogDestinationUrl)
+    
+        @Html.Partial(MVC.Job.Views._CreateSubject, Model)
+        @Html.ValidationSummary(true)
+        
+        <div class="createJob_Component">
+            <div id="createJob_Type">
+                <h3>Type</h3>
+                @Html.ValidationMessageFor(m => m.Type)
+                @CommonHelpers.RadioButtonList("Type", Model.JobTypes.ToSelectListItems(Model.Type), 3)
+                @Html.ValidationMessageFor(m => m.SubTypes)
+            </div>
+            <div id="createJob_SubTypes">
+                @foreach (var jt in Model.JobTypes)
+                {
+                    <div id="createJob_SubType_@(jt.Id)" class="createJob_SubType">
+                        <div class="createJob_SubTypes">
+                            @CommonHelpers.CheckBoxList("SubTypes", Model.JobSubTypes.Where(jst => jst.JobTypeId == jt.Id).ToList().ToSelectListItems(Model.SubTypes), 3)
+                        </div>
+                    </div>   
+                }
+            </div>
+        </div>
+        <div id="createJob_DeviceHeldContainer" class="createJob_Component">
+            @Html.ValidationMessageFor(m => m.DeviceHeld)
+            @Html.HiddenFor(m => m.DeviceHeld)
+            <table>
+                <tr>
+                    <td>
+                        <h3>Device Held</h3>
+                    </td>
+                    <td>
+                        <input id="createJob_DeviceHeld" name="_DeviceHeld" type="radio" value="true" /><label for="createJob_DeviceHeld">Held</label>
+                    </td>
+                    <td>
+                        <input id="createJob_DeviceNotHeld" name="_DeviceHeld" type="radio" value="false" /><label for="createJob_DeviceNotHeld">Not Held</label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="createJob_CommentsContainer" class="createJob_Component">
+            <table>
+                <tr>
+                    <td>
+                        <h3>Comments</h3>
+                    </td>
+                    <td>
+                        @Html.EditorFor(m => m.Comments)
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="createJob_QuickLogContainer" class="createJob_Component">
+            <div id="createJob_QuickLogAutoCloseContainer">
+                <h3>Quick Log</h3>
+                <input id="createJob_QuickLog" name="QuickLog" type="checkbox" value="true" /><label for="createJob_QuickLog">Automatically close this job</label>
+            </div>
+            <div id="createJob_QuickLogTaskTimeContainer">
+                <h3>Task Time</h3>
+                @Html.ValidationMessageFor(m => m.QuickLogTaskTimeMinutes)
+                <input type="radio" id="createJob_TaskTime10" name="QuickLogTaskTimeMinutes" value="10" /><label for="createJob_TaskTime10"> 10 Minutes</label>
+                <input type="radio" id="createJob_TaskTime30" name="QuickLogTaskTimeMinutes" value="30" /><label for="createJob_TaskTime30"> 30 Minutes</label>
+                <input type="radio" id="createJob_TaskTime60" name="QuickLogTaskTimeMinutes" value="60" /><label for="createJob_TaskTime60"> 1 Hour</label>
+                <input type="radio" id="createJob_TaskTime120" name="QuickLogTaskTimeMinutes" value="120" /><label for="createJob_TaskTime120"> 2 Hours</label>
+                <input type="radio" id="createJob_TaskTimeOther" name="QuickLogTaskTimeMinutes" value="" /><label for="createJob_TaskTimeOther"> Other</label>
+                <span id="createJob_TaskTimeOtherMinutesContainer">
+                    <input type="number" id="createJob_TaskTimeOtherMinutes" name="QuickLogTaskTimeMinutesOther" value="" disabled="disabled" />
+                    Minutes
+                </span>
+            </div>
+        </div>
+    }
+    <script type="text/javascript">
+        $(function () {
+            var discoDialogMethods;
+            var init = true;
+            //#region Parent Dialog
+            if (window.parent && window.parent.document) {
+                $('#QuickLogDestinationUrl').val(window.parent.window.location.href);
+
+                var parentDialog = $('#createJobDialog', window.parent.document);
+                if (parentDialog.length > 0) {
+                    discoDialogMethods = parentDialog[0].discoDialogMethods;
+                    var buttons = {
+                        "Create Job": function () {
+                            createJobForm.submit()
+                        },
+                        Cancel: function () {
+                            discoDialogMethods.close();
+                        }
+                    }
+
+                    discoDialogMethods.setButtons(buttons);
+                }
+            }
+            //#endregion
+
+
+            var createJobForm = $('form');
+            var validator = createJobForm.data('validator');
+            var unobtrusiveValidation = createJobForm.data('unobtrusiveValidation');
+
+            // Validate all Fields
+            validator.settings.ignore = '';
+
+            //#region Job Type/SubTypes
+            var $jobTypeContainer = $('#createJob_Type');
+            var $typeValidationMessage = $('[data-valmsg-for="Type"]', $jobTypeContainer)
+            var $subTypesValidationMessage = $('[data-valmsg-for="SubTypes"]', $jobTypeContainer)
+            var $jobTypes = $jobTypeContainer.find('input[type="radio"]').change(jobTypeChange);
+            $('#createJob_SubTypes').find('input[type="checkbox"]').change(jobSubTypeHighlight).each(jobSubTypeHighlight);
+            jobTypeChange();
+            function jobSubTypeHighlight() {
+                var $this = $(this);
+                if ($this.is(':checked'))
+                    $this.closest('li').addClass('highlight');
+                else
+                    $this.closest('li').removeClass('highlight');
+            }
+            function jobTypeChange() {
+                var $checkedItem = $jobTypes.filter(':checked');
+
+                $jobTypes.closest('li').removeClass('highlight');
+
+                $checkedItem.closest('li').addClass('highlight');
+
+                if (init) {
+                    var jobType = $checkedItem.val();
+                    $('#createJob_SubType_' + jobType).show();
+                } else {
+                    $('#createJob_SubTypes').find('.createJob_SubType:visible').slideUp();
+                    var jobType = $checkedItem.val();
+                    $('#createJob_SubType_' + jobType).slideDown();
+                }
+            }
+
+
+            var additionalValidation = function (form) {
+                var isValid = true;
+
+                // Validate Type
+                var typeValue = $jobTypes.filter(':checked').val();
+                if (typeValue) {
+                    $typeValidationMessage.removeClass('field-validation-error').addClass('field-validation-valid');
+                    // Validate SubTypes
+                    if ($('#createJob_SubType_' + typeValue).find('input:checked').length > 0) {
+                        $subTypesValidationMessage.removeClass('field-validation-error').addClass('field-validation-valid');
+                    } else {
+                        $subTypesValidationMessage.text('At least one Job Sub Type is required').removeClass('field-validation-valid').addClass('field-validation-error');
+                        isValid = false;
+                    }
+                } else {
+                    $typeValidationMessage.text('A Job Type is required').removeClass('field-validation-valid').addClass('field-validation-error');
+                    isValid = false;
+                }
+
+                // Validate QuickLog Task Time
+                if ($quickLog.is(':checked')) {
+                    var selectedTime = $quickLogTaskTimes.filter(':checked');
+                    if (selectedTime.length > 0) {
+                        if (selectedTime.val() === '') {
+                            // Handle 'Other'
+                            var otherTime = parseInt($quickLogTaskTimeOtherMinutes.val());
+                            if (!otherTime || otherTime <= 0) {
+                                $quickLogTaskTimeValidationMessage.text('A Task Time is required').removeClass('field-validation-valid').addClass('field-validation-error');
+                                isValid = false;
+                            }
+                        } else {
+                            $quickLogTaskTimeValidationMessage.removeClass('field-validation-valid').addClass('field-validation-error');
+                        }
+                    } else {
+                        $quickLogTaskTimeValidationMessage.text('A Task Time is required').removeClass('field-validation-valid').addClass('field-validation-error');
+                        isValid = false;
+                    }
+                } else {
+                    $quickLogTaskTimeValidationMessage.removeClass('field-validation-valid').addClass('field-validation-error');
+                }
+
+                return isValid;
+            }
+
+            validator.settings.submitHandler = function (form) {
+                if (additionalValidation()) {
+                    discoDialogMethods.setButtons({});
+                    form.submit();
+                }
+            }
+            //#endregion
+
+            //#region DeviceHeld
+            var $deviceHeld = $('#DeviceHeld');
+
+            if ($('#DeviceSerialNumber').val()) {
+                switch ($deviceHeld.val()) {
+                    case 'True':
+                        $('#createJob_DeviceHeld').attr('checked', 'checked');
+                        $('#createJob_DeviceNotHeld').attr('checked', null);
+                        break;
+                    case 'False':
+                        $('#createJob_DeviceHeld').attr('checked', null);
+                        $('#createJob_DeviceNotHeld').attr('checked', 'checked');
+                        break;
+                    default:
+                        $('#createJob_DeviceHeld').attr('checked', null);
+                        $('#createJob_DeviceNotHeld').attr('checked', null);
+                        break;
+                }
+                $('#createJob_DeviceHeldContainer').find('input[type="radio"]').change(function () {
+                    // Update Hidden Field with Boolean Value
+                    // Set DeviceHeld
+                    var deviceHeldValue = '';
+                    if ($('#createJob_DeviceHeld').is(':checked'))
+                        deviceHeldValue = 'True';
+                    if ($('#createJob_DeviceNotHeld').is(':checked'))
+                        deviceHeldValue = 'False';
+                    $deviceHeld.val(deviceHeldValue).change();
+                });
+            } else {
+                // No Device Associated
+                $deviceHeld.val('False');
+                $('#createJob_DeviceHeldContainer').hide();
+            }
+            //#endregion
+
+            //#region QuickLog
+            var $quickLog = $('#createJob_QuickLog');
+            var $quickLogContainer = $('#createJob_QuickLogContainer');
+            var $quickLogTaskTimeContainer = $('#createJob_QuickLogTaskTimeContainer');
+            var $quickLogTaskTimes = $quickLogTaskTimeContainer.find('input[type="radio"]');
+            var $quickLogTaskTimeOtherMinutes = $('#createJob_TaskTimeOtherMinutes');
+            var $quickLogTaskTimeValidationMessage = $quickLogTaskTimeContainer.find('[data-valmsg-for="QuickLogTaskTimeMinutes"]');
+
+            $deviceHeld.change(validateQuickLog);
+            $jobTypes.change(validateQuickLog);
+            validateQuickLog();
+
+            function validateQuickLog() {
+                var quickLogAllowed = false;
+
+                if ($deviceHeld.val() === 'True') {
+                    quickLogAllowed = false;
+                } else {
+                    var selectedType = $jobTypes.filter(':checked').val();
+                    switch (selectedType) {
+                        case 'HMisc':
+                        case 'SApp':
+                        case 'SImg':
+                        case 'SOS':
+                        case 'UMgmt':
+                            quickLogAllowed = true;
+                            break;
+                        default:
+                            quickLogAllowed = false;
+                            break;
+                    }
+                }
+
+                if (quickLogAllowed) {
+                    $quickLogContainer.slideDown();
+                } else {
+                    if (init)
+                        $quickLogContainer.hide();
+                    else
+                        $quickLogContainer.slideUp();
+                    $quickLog.attr('checked', null).change();
+                }
+            }
+
+            $quickLog.change(function () {
+                if ($(this).is(':checked')) {
+                    $quickLogTaskTimeContainer.slideDown();
+                } else {
+                    $quickLogTaskTimeContainer.slideUp();
+                }
+            });
+
+            $quickLogTaskTimes.change(function () {
+                if ($quickLogTaskTimes.filter(':checked').val() === "") {
+                    $('#createJob_TaskTimeOtherMinutesContainer').show();
+                    $quickLogTaskTimeOtherMinutes.attr('disabled', null).focus().select();
+                } else {
+                    $('#createJob_TaskTimeOtherMinutesContainer').hide();
+                    $quickLogTaskTimeOtherMinutes.attr('disabled', 'disabled');
+                }
+            });
+            //#endregion
+
+            init = false;
+        });
+    </script>
+</div>

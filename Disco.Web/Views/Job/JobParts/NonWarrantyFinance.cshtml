@@ -1,0 +1,184 @@
+﻿@model Disco.Web.Models.Job.ShowModel
+<table id="jobNonWarrantyFinance">
+    <tr>
+        <th style="width: 200px;">
+            Accounting Charge Required
+        </th>
+        <td>
+            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.AccountingChargeRequiredDate)
+            <span id="Job_JobMetaNonWarranty_AccountingChargeRequiredUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.AccountingChargeRequiredUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.AccountingChargeRequiredUser.ToString()))</span>
+            @AjaxHelpers.AjaxLoader()
+            <script type="text/javascript">
+                $(function () {
+                    document.DiscoFunctions.DateChangeUserHelper(
+                        $('#Job_JobMetaNonWarranty_AccountingChargeRequiredDate'),
+                        $('#Job_JobMetaNonWarranty_AccountingChargeRequiredUser'),
+                        'Not Required',
+                        '@(Url.Action(MVC.API.Job.UpdateNonWarrantyAccountingChargeRequired(Model.Job.Id, null)))',
+                        'AccountingChargeRequiredDate',
+                        @(Model.Job.OpenedDate.ToJavascriptDate())
+                        );
+                });
+            </script>
+        </td>
+    </tr>
+    <tr>
+        <th style="width: 200px;">
+            Accounting Charge Added
+        </th>
+        <td>
+            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.AccountingChargeAddedDate)
+            <span id="Job_JobMetaNonWarranty_AccountingChargeAddedUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.AccountingChargeAddedUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.AccountingChargeAddedUser.ToString()))</span>
+            @AjaxHelpers.AjaxLoader()
+            <script type="text/javascript">
+                $(function () {
+                    document.DiscoFunctions.DateChangeUserHelper(
+                        $('#Job_JobMetaNonWarranty_AccountingChargeAddedDate'),
+                        $('#Job_JobMetaNonWarranty_AccountingChargeAddedUser'),
+                        'Not Added',
+                        '@(Url.Action(MVC.API.Job.UpdateNonWarrantyAccountingChargeAdded(Model.Job.Id, null)))',
+                        'AccountingChargeAddedDate',
+                        @(Model.Job.OpenedDate.ToJavascriptDate())
+                        );
+                });
+            </script>
+        </td>
+    </tr>
+    <tr>
+        <th style="width: 200px;">
+            Accounting Charge Paid
+        </th>
+        <td>
+            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.AccountingChargePaidDate)
+            <span id="Job_JobMetaNonWarranty_AccountingChargePaidUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.AccountingChargePaidUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.AccountingChargePaidUser.ToString()))</span>
+            @AjaxHelpers.AjaxLoader()
+            <script type="text/javascript">
+                $(function () {
+                    document.DiscoFunctions.DateChangeUserHelper(
+                        $('#Job_JobMetaNonWarranty_AccountingChargePaidDate'),
+                        $('#Job_JobMetaNonWarranty_AccountingChargePaidUser'),
+                        'Not Paid',
+                        '@(Url.Action(MVC.API.Job.UpdateNonWarrantyAccountingChargePaid(Model.Job.Id, null)))',
+                        'AccountingChargePaidDate',
+                        @(Model.Job.OpenedDate.ToJavascriptDate())
+                        );
+                });
+            </script>
+        </td>
+    </tr>
+    <tr>
+        <th style="width: 200px;">
+            Purchase Order Raised
+        </th>
+        <td>
+            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.PurchaseOrderRaisedDate)
+            <span id="Job_JobMetaNonWarranty_PurchaseOrderRaisedUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.PurchaseOrderRaisedUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.PurchaseOrderRaisedUser.ToString()))</span>
+            @AjaxHelpers.AjaxLoader()
+            <script type="text/javascript">
+                $(function () {
+                    document.DiscoFunctions.DateChangeUserHelper(
+                        $('#Job_JobMetaNonWarranty_PurchaseOrderRaisedDate'),
+                        $('#Job_JobMetaNonWarranty_PurchaseOrderRaisedUser'),
+                        'Not Raised',
+                        '@(Url.Action(MVC.API.Job.UpdateNonWarrantyPurchaseOrderRaised(Model.Job.Id, null)))',
+                        'PurchaseOrderRaisedDate',
+                        @(Model.Job.OpenedDate.ToJavascriptDate())
+                        );
+                });
+            </script>
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Purchase Order Reference
+        </th>
+        <td>
+            @Html.TextBoxFor(m => m.Job.JobMetaNonWarranty.PurchaseOrderReference)
+            @AjaxHelpers.AjaxSave()
+            @AjaxHelpers.AjaxLoader()
+            <script type="text/javascript">
+                $(function () {
+                    var $purchaseOrderReference = $('#Job_JobMetaNonWarranty_PurchaseOrderReference');
+                    var $ajaxSave = $purchaseOrderReference.next('.ajaxSave');
+                    $purchaseOrderReference
+                    .watermark('No Reference')
+                    .focus(function () { $purchaseOrderReference.select() })
+                    .keydown(function (e) {
+                        $ajaxSave.show();
+                        if (e.which == 13) {
+                            $(this).blur();
+                        }
+                    }).blur(function () {
+                        $ajaxSave.hide();
+                    })
+                    .change(function () {
+                        $ajaxSave.hide();
+                        $ajaxLoading = $ajaxSave.next('.ajaxLoading').show();
+                        var data = { PurchaseOrderReference: $purchaseOrderReference.val() };
+                        $.ajax({
+                            url: '@Url.Action(MVC.API.Job.UpdateNonWarrantyPurchaseOrderReference(Model.Job.Id, null))',
+                            dataType: 'json',
+                            data: data,
+                            success: function (d) {
+                                if (d == 'OK') {
+                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                } else {
+                                    $ajaxLoading.hide();
+                                    alert('Unable to update purchase order reference: ' + d);
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert('Unable to update purchase order reference: ' + textStatus);
+                                $ajaxLoading.hide();
+                            }
+                        });
+                    });
+                });
+            </script>
+        </td>
+    </tr>
+    <tr>
+        <th style="width: 200px;">
+            Purchase Order Sent
+        </th>
+        <td>
+            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.PurchaseOrderSentDate)
+            <span id="Job_JobMetaNonWarranty_PurchaseOrderSentUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.PurchaseOrderSentUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.PurchaseOrderSentUser.ToString()))</span>
+            @AjaxHelpers.AjaxLoader()
+            <script type="text/javascript">
+                $(function () {
+                    document.DiscoFunctions.DateChangeUserHelper(
+                        $('#Job_JobMetaNonWarranty_PurchaseOrderSentDate'),
+                        $('#Job_JobMetaNonWarranty_PurchaseOrderSentUser'),
+                        'Not Sent',
+                        '@(Url.Action(MVC.API.Job.UpdateNonWarrantyPurchaseOrderSent(Model.Job.Id, null)))',
+                        'PurchaseOrderSentDate',
+                        @(Model.Job.OpenedDate.ToJavascriptDate())
+                        );
+                });
+            </script>
+        </td>
+    </tr>
+    <tr>
+        <th style="width: 200px;">
+            Invoice Received
+        </th>
+        <td>
+            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.InvoiceReceivedDate)
+            <span id="Job_JobMetaNonWarranty_InvoiceReceivedUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.InvoiceReceivedUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.InvoiceReceivedUser.ToString()))</span>
+            @AjaxHelpers.AjaxLoader()
+            <script type="text/javascript">
+                $(function () {
+                    document.DiscoFunctions.DateChangeUserHelper(
+                        $('#Job_JobMetaNonWarranty_InvoiceReceivedDate'),
+                        $('#Job_JobMetaNonWarranty_InvoiceReceivedUser'),
+                        'Not Received',
+                        '@(Url.Action(MVC.API.Job.UpdateNonWarrantyInvoiceReceived(Model.Job.Id, null)))',
+                        'InvoiceReceivedDate',
+                        @(Model.Job.OpenedDate.ToJavascriptDate())
+                        );
+                });
+            </script>
+        </td>
+    </tr>
+</table>

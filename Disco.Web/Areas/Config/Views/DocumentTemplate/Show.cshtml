@@ -1,0 +1,362 @@
+﻿@model Disco.Web.Areas.Config.Models.DocumentTemplate.ShowModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(null), Model.DocumentTemplate.Description);
+}
+<div class="form" style="width: 650px">
+    <table>
+        <tr>
+            <th>
+                Id:
+            </th>
+            <td>@Html.DisplayFor(model => model.DocumentTemplate.Id)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Stored Instances:
+            </th>
+            <td>@Html.DisplayFor(model => model.StoredInstanceCount)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Description:
+            </th>
+            <td>@Html.TextBoxFor(model => model.DocumentTemplate.Description)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        var $Description = $('#DocumentTemplate_Description');
+                        var $DescriptionAjaxSave = $Description.next('.ajaxSave');
+                        $Description
+                                .watermark('Description')
+                                .focus(function () { $Description.select() })
+                                .keydown(function (e) {
+                                    $DescriptionAjaxSave.show();
+                                    if (e.which == 13) {
+                                        $(this).blur();
+                                    }
+                                }).blur(function () {
+                                    $DescriptionAjaxSave.hide();
+                                })
+                                .change(function () {
+                                    $DescriptionAjaxSave.hide();
+                                    var $ajaxLoading = $DescriptionAjaxSave.next('.ajaxLoading').show();
+                                    var data = { Description: $Description.val() };
+                                    $.ajax({
+                                        url: '@Url.Action(MVC.API.DocumentTemplate.UpdateDescription(Model.DocumentTemplate.Id))',
+                                        dataType: 'json',
+                                        data: data,
+                                        success: function (d) {
+                                            if (d == 'OK') {
+                                                $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                            } else {
+                                                $ajaxLoading.hide();
+                                                alert('Unable to update description: ' + d);
+                                            }
+                                        },
+                                        error: function (jqXHR, textStatus, errorThrown) {
+                                            alert('Unable to update description: ' + textStatus);
+                                            $ajaxLoading.hide();
+                                        }
+                                    });
+                                });
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Always Flatten Form:
+            </th>
+            <td>
+                <input id="DocumentTemplate_FlattenForm" type="checkbox" @(Model.DocumentTemplate.FlattenForm ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        $('#DocumentTemplate_FlattenForm').click(function () {
+                            var $this = $(this);
+                            var $ajaxLoading = $this.next('.ajaxLoading').show();
+                            var data = { FlattenForm: $this.is(':checked') };
+                            $.getJSON('@(Url.Action(MVC.API.DocumentTemplate.UpdateFlattenForm(Model.DocumentTemplate.Id)))', data, function (response, result) {
+                                if (result != 'success' || response != 'OK') {
+                                    alert('Unable to change Flatten Form:\n' + response);
+                                    $ajaxLoading.hide();
+                                } else {
+                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                }
+                            });
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Scope:
+            </th>
+            <td>
+                @Html.DropDownListFor(model => model.DocumentTemplate.Scope, Model.Scopes.ToSelectListItems(null))
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        var $scope = $('#DocumentTemplate_Scope');
+                        $scope.change(function () {
+                            var $ajaxLoading = $scope.next('.ajaxLoading').show();
+                            var data = { Scope: $scope.val() };
+                            $.ajax({
+                                url: '@Url.Action(MVC.API.DocumentTemplate.UpdateScope(Model.DocumentTemplate.Id))',
+                                dataType: 'json',
+                                data: data,
+                                success: function (d) {
+                                    if (d == 'OK') {
+                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        scopeChange();
+                                    } else {
+                                        $ajaxLoading.hide();
+                                        alert('Unable to update scope: ' + d);
+                                    }
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    alert('Unable to update scope: ' + textStatus);
+                                    $ajaxLoading.hide();
+                                }
+                            });
+                        });
+
+                        var $trJobTypes = $('#trJobTypes');
+                        var $trJobTypeActions = $('#trJobTypeActions');
+                        var $jobTypes = $trJobTypes.find('input[type="checkbox"]');
+                        $jobTypes.change(jobTypesChange);
+
+                        function scopeChange() {
+                            if ($scope.val() == 'Job') {
+                                $trJobTypes.show();
+                                $trJobTypeActions.show();
+                                jobTypesChange();
+                            } else {
+                                $trJobTypes.hide();
+                                $trJobTypeActions.hide();
+                                $jobTypes.filter(':checked').each(function () {
+                                    $(this).attr('checked', false);
+                                });
+                                $('.jobSubTypes').hide().find('input[type="checkbox"]:checked').each(function () {
+                                    $(this).attr('checked', false);
+                                });
+                            }
+                        }
+
+                        function jobTypesChange() {
+                            $('.jobSubTypes').hide();
+                            $jobTypes.filter(':checked').each(function () {
+                                $('#trJobSubType' + $(this).val()).show();
+                            });
+                        }
+
+                        $('#TypeAction_Save').click(function () {
+                            var data = { SubTypes: [] };
+                            var $ajaxLoading = $('#TypeAction_Save').next('.ajaxLoading').show();
+
+                            $jobTypes.filter(':checked').each(function () {
+                                var $this = $(this);
+                                $('#trJobSubType' + $this.val()).find('input[type="checkbox"]:checked').each(function () {
+                                    data.SubTypes.push($(this).val());
+                                });
+                            });
+
+                            $.ajax({
+                                url: '@Url.Action(MVC.API.DocumentTemplate.UpdateSubTypes(Model.DocumentTemplate.Id))',
+                                dataType: 'json',
+                                type: 'POST',
+                                traditional: true,
+                                data: data,
+                                success: function (d) {
+                                    if (d == 'OK') {
+                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        scopeChange();
+                                    } else {
+                                        $ajaxLoading.hide();
+                                        alert('Unable to update job types: ' + d);
+                                    }
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    alert('Unable to update job types: ' + textStatus);
+                                    $ajaxLoading.hide();
+                                }
+                            });
+                            return false;
+                        });
+
+                        scopeChange();
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr id="trJobTypes">
+            <th class="name">
+                Types:
+            </th>
+            <td class="value">
+                @CommonHelpers.CheckBoxList("Types", Model.JobTypes.ToSelectListItems(Model.Types), 2)
+            </td>
+        </tr>
+        @foreach (var jt in Model.JobTypes)
+        {
+            <tr id="trJobSubType@(jt.Id)" class="jobSubTypes">
+                <th class="name">
+                    @jt.Description<br />
+                    Sub Types<br />
+                    @CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id))
+                </th>
+                <td class="value">
+                    @CommonHelpers.CheckBoxList("SubTypes", Model.JobSubTypes.Where(jst => jst.JobTypeId == jt.Id).ToList().ToSelectListItems(Model.SubTypes), 2)
+                </td>
+            </tr>   
+        }
+        <tr id="trJobTypeActions">
+            <th class="name">
+            </th>
+            <td class="value">
+                <a id="TypeAction_Save" href="#" class="button">Save Job Types</a>@AjaxHelpers.AjaxLoader()
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Template PDF
+            </th>
+            <td>
+                @Html.ActionLink("Download Template", MVC.API.DocumentTemplate.Template(Model.DocumentTemplate.Id))
+                <br />
+                @using (Html.BeginForm(MVC.API.DocumentTemplate.Template(Model.DocumentTemplate.Id, true, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <input type="file" name="Template" id="Template" style="width: 250px;" />
+                    <input class="button" type="submit" value="Upload" />
+                }
+                <script type="text/javascript">
+                    $(function () {
+                        var $template = $('#Template');
+                        $template.closest('form').submit(function () {
+                            if ($template.val() == '') {
+                                alert('A template file is required to upload.');
+                                return false;
+                            }
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Filter Expression:
+            </th>
+            <td>@Html.TextBoxFor(model => model.DocumentTemplate.FilterExpression)
+                @AjaxHelpers.AjaxRemove()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        var $FilterExpression = $('#DocumentTemplate_FilterExpression');
+                        var $ajaxLoading = $FilterExpression.nextAll('.ajaxLoading').first();
+                        var $ajaxRemove = $FilterExpression.nextAll('.ajaxRemove').first();
+                        $FilterExpression
+                                .watermark('Filter Expression')
+                                .focus(function () { $FilterExpression.select() })
+                                .keydown(function (e) {
+                                    if (e.which == 13) {
+                                        $(this).blur();
+                                    }
+                                }).change(function () {
+                                    updateFilterExpression($FilterExpression.val());
+                                });
+                        if ($FilterExpression.val() != '')
+                            $ajaxRemove.show();
+                        $ajaxRemove.click(function () {
+                            updateFilterExpression('');
+                            $FilterExpression.val('');
+                        });
+                        var updateFilterExpression = function (filterExpression) {
+                            $ajaxLoading.show();
+                            $ajaxRemove.hide();
+                            var data = { FilterExpression: filterExpression };
+                            $.ajax({
+                                url: '@Url.Action(MVC.API.DocumentTemplate.UpdateFilterExpression(Model.DocumentTemplate.Id))',
+                                dataType: 'json',
+                                data: data,
+                                success: function (d) {
+                                    if (d == 'OK') {
+                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        if (data.FilterExpression != '')
+                                            $ajaxRemove.fadeIn('fast');
+                                    } else {
+                                        $ajaxLoading.hide();
+                                        alert('Unable to update filter expression: ' + d);
+                                    }
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    alert('Unable to update filter expression: ' + textStatus);
+                                    $ajaxLoading.hide();
+                                }
+                            });
+                        };
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Bulk Generate
+            </th>
+            <td>
+                @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
+                {
+                    <textarea name="DataIds"></textarea>
+                    <input class="button" type="submit" value="Generate" />
+                }
+            </td>
+        </tr>
+    </table>
+</div>
+<h2>
+    Template Expressions</h2>
+@Html.Partial(MVC.Config.DocumentTemplate.Views._ExpressionsTable, Model.TemplateExpressions)
+<div id="dialogConfirmDelete" title="Delete this Document Template?">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 100px 0;">
+        </span>This item will be permanently deleted and cannot be recovered.<br />
+        <em>This <strong>will not delete attachments</strong> which have already been imported,
+            but any generated documents will no longer be automatically imported.</em><br />
+        Are you sure?</p>
+</div>
+<script type="text/javascript">
+    $(function () {
+        var button = $('#buttonDelete');
+        var buttonDialog = $("#dialogConfirmDelete");
+        var buttonLink = button.attr('href');
+        button.attr('href', '#');
+        button.click(function () {
+            buttonDialog.dialog('open');
+            return false;
+        });
+        buttonDialog.dialog({
+            resizable: false,
+            modal: true,
+            autoOpen: false,
+            buttons: {
+                "Delete": function () {
+                    $this = $(this);
+                    $this.dialog('disable');
+                    $this.dialog("option", "buttons", null);
+                    window.location.href = buttonLink;
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+    });
+</script>
+<div class="actionBar">
+    @Html.ActionLinkButton("Expression Browser", MVC.Config.DocumentTemplate.ExpressionBrowser())
+    @Html.ActionLinkButton("Delete", MVC.API.DocumentTemplate.Delete(Model.DocumentTemplate.Id, true), "buttonDelete")
+</div>

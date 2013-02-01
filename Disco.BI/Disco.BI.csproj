@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{095E6F94-3C34-47AE-BB83-46203535E0F6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Disco</RootNamespace>
+    <AssemblyName>Disco.BI</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BitMiracle.LibTiff.NET">
+      <HintPath>..\..\Resources\Libraries\LibTiff.NET\BitMiracle.LibTiff.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip.Reduced">
+      <HintPath>..\..\Resources\Libraries\DotNetZip\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\..\Resources\Libraries\iTextSharp\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Quartz, Version=2.0.0.100, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Resources\Libraries\Quartz\Quartz.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR, Version=0.5.1.10822, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SignalR.Server.0.5.3\lib\net40\SignalR.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR.Hosting.AspNet, Version=0.5.1.10822, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SignalR.Hosting.AspNet.0.5.3\lib\net45\SignalR.Hosting.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR.Hosting.Common">
+      <HintPath>..\packages\SignalR.Hosting.Common.0.5.3\lib\net40\SignalR.Hosting.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Core">
+      <HintPath>..\..\Resources\Libraries\Spring.NET\Spring.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tamir.SharpSSH">
+      <HintPath>..\..\Resources\Libraries\SharpSSH\Tamir.SharpSSH.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing">
+      <HintPath>..\..\Resources\Libraries\ZXing\zxing.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BI\DataStore.cs" />
+    <Compile Include="BI\AttachmentBI\Utilities.cs" />
+    <Compile Include="BI\DeviceBI\BatchUtilities.cs" />
+    <Compile Include="BI\DeviceBI\Searching.cs" />
+    <Compile Include="BI\DisposableImageCollection.cs" />
+    <Compile Include="BI\DocumentTemplateBI\DocumentTemplateQRCodeLocationCache.cs" />
+    <Compile Include="BI\Expressions\EvaluateExpressionParseException.cs" />
+    <Compile Include="BI\Expressions\ExpressionCachePreloadTask.cs" />
+    <Compile Include="BI\Expressions\Extensions\DataExt.cs" />
+    <Compile Include="BI\Expressions\Extensions\DeviceExt.cs" />
+    <Compile Include="BI\Expressions\Extensions\ImageExt.cs" />
+    <Compile Include="BI\Expressions\Extensions\ImageResultImplementations\BaseImageExpressionResult.cs" />
+    <Compile Include="BI\Expressions\Extensions\ImageResultImplementations\FileMontageImageExpressionResult.cs" />
+    <Compile Include="BI\Expressions\Extensions\ImageResultImplementations\FileImageExpressionResult.cs" />
+    <Compile Include="BI\Expressions\Extensions\ImageResultImplementations\BitmapImageExpressionResult.cs" />
+    <Compile Include="BI\Expressions\Extensions\UserExt.cs" />
+    <Compile Include="BI\Extensions\AttachmentActionExtensions.cs" />
+    <Compile Include="BI\Extensions\AttachmentExtensions.cs" />
+    <Compile Include="BI\Extensions\ClientServicesExtensions.cs" />
+    <Compile Include="BI\Extensions\DeviceActionExtensions.cs" />
+    <Compile Include="BI\Extensions\DeviceBatchExtensions.cs" />
+    <Compile Include="BI\Extensions\DeviceCertificateExtensions.cs" />
+    <Compile Include="BI\Extensions\DeviceModelExtensions.cs" />
+    <Compile Include="BI\Extensions\DeviceProfileExtensions.cs" />
+    <Compile Include="BI\Extensions\JobActionExtensions.cs" />
+    <Compile Include="BI\Extensions\JobExtensions.cs" />
+    <Compile Include="BI\Extensions\JobFlagExtensions.cs" />
+    <Compile Include="BI\Extensions\JobTableExtensions.cs" />
+    <Compile Include="BI\Extensions\UserExtensions.cs" />
+    <Compile Include="BI\Extensions\WirelessCertificateExtensions.cs" />
+    <Compile Include="BI\Extensions\DeviceExtensions.cs" />
+    <Compile Include="BI\DeviceBI\EnrolSafeException.cs" />
+    <Compile Include="BI\DeviceBI\Enrol.cs" />
+    <Compile Include="BI\DeviceBI\EnrolmentLog.cs" />
+    <Compile Include="BI\Extensions\DocumentTemplateExtensions.cs" />
+    <Compile Include="BI\DocumentTemplateBI\Utilities.cs" />
+    <Compile Include="BI\DocumentTemplateBI\DocumentUniqueIdentifier.cs" />
+    <Compile Include="BI\Expressions\EvaluateExpressionPart.cs" />
+    <Compile Include="BI\Expressions\Expression.cs" />
+    <Compile Include="BI\Expressions\ExpressionTypeDescriptor.cs" />
+    <Compile Include="BI\Expressions\ExpressionTypeMemberDescriptor.cs" />
+    <Compile Include="BI\Expressions\IExpressionPart.cs" />
+    <Compile Include="BI\Expressions\TextExpressionPart.cs" />
+    <Compile Include="BI\DocumentTemplateBI\Importer\DocumentDropBoxMonitor.cs" />
+    <Compile Include="BI\DocumentTemplateBI\Importer\DocumentImporterJob.cs" />
+    <Compile Include="BI\DocumentTemplateBI\Importer\DocumentImporterCleanCacheJob.cs" />
+    <Compile Include="BI\DocumentTemplateBI\Importer\DocumentImporterLog.cs" />
+    <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectory.cs" />
+    <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryCachedGroups.cs" />
+    <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryHelpers.cs" />
+    <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryMachineAccountExtensions.cs" />
+    <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryOrganisationalUnit.cs" />
+    <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryUpdateLastNetworkLogonDateJob.cs" />
+    <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryUserAccountExtensions.cs" />
+    <Compile Include="BI\Expressions\ExpressionCache.cs" />
+    <Compile Include="BI\Interop\Community\UpdateCheck.cs" />
+    <Compile Include="BI\Interop\Community\UpdateCheckTask.cs" />
+    <Compile Include="BI\Interop\MimeTypes.cs" />
+    <Compile Include="BI\Interop\Pdf\PdfGenerator.cs" />
+    <Compile Include="BI\Interop\Pdf\PdfImporter.cs" />
+    <Compile Include="BI\Interop\PluginServices\IDiscoScheduledTask.cs" />
+    <Compile Include="BI\Interop\PluginServices\Utilities.cs" />
+    <Compile Include="BI\Interop\SignalRHandlers\UserHeldDevices.cs" />
+    <Compile Include="BI\JobBI\Searching.cs" />
+    <Compile Include="BI\JobBI\Statistics\DailyOpenedClosed.cs" />
+    <Compile Include="BI\JobBI\Utilities.cs" />
+    <Compile Include="BI\UserBI\Searching.cs" />
+    <Compile Include="BI\UserBI\UserCache.cs" />
+    <Compile Include="BI\UserBI\Utilities.cs" />
+    <Compile Include="BI\Extensions\UtilityExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Disco.Data\Disco.Data.csproj">
+      <Project>{85A6BD19-2C64-4746-8F2C-A68A86E8C2D7}</Project>
+      <Name>Disco.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Disco.Models\Disco.Models.csproj">
+      <Project>{FBC05512-FCCA-4B16-9E76-8C413C5DE6C9}</Project>
+      <Name>Disco.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Disco.Services\Disco.Services.csproj">
+      <Project>{B80A737F-BD6A-4986-9182-DD7B932BD950}</Project>
+      <Name>Disco.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MimeType-img16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MimeType-pdf16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EmptyLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MimeType-doc48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MimeType-pdf48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MimeType-unknown48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BI\CertificateBI\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2001/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,37 @@
+﻿@model Disco.Web.Models.Search.QueryModel
+@{
+    ViewBag.Title = "Search Results";
+}
+<h2>
+    Query: '<span style="font-weight: bold;">@(Model.FriendlyTerm != null ? Model.FriendlyTerm : Model.Term)</span>'</h2>
+@if (Model.Success)
+{
+    if (Model.Jobs != null)
+    { 
+    <h2>
+        Jobs</h2>
+    <div>
+        @Html.Partial(MVC.Shared.Views._JobTable, @Model.Jobs)
+    </div>
+    }
+    if (Model.Devices != null)
+    { 
+    <h2>
+        Devices</h2>
+    <div>
+        @Html.Partial(MVC.Device.Views._DeviceTable, @Model.Devices)
+    </div>
+    }
+    if (Model.Users != null)
+    { 
+    <h2>
+        Users</h2>
+    <div>
+        @Html.Partial(MVC.User.Views._UserTable, @Model.Users)
+    </div>
+    }
+}
+else
+{
+    <h2>@Model.ErrorMessage</h2>
+}

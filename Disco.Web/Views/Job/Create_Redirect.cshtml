@@ -1,0 +1,21 @@
+﻿@model Disco.Web.Models.Job.CreateRedirectModel
+@{
+    Layout = null;
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), "Create - Redirecting...");
+}
+<a id="redirectLink" href="@Model.RedirectLink">Redirecting...</a>
+<script>
+    var redirectLink = document.getElementById('redirectLink').getAttribute('href');
+
+    //#region Parent Dialog
+    if (window.parent) {
+        window.parent.window.location.href = redirectLink;
+
+        var parentDialog = window.parent.document.getElementById('createJobDialog');
+        if (parentDialog) {
+            var discoDialogMethods = parentDialog.discoDialogMethods;
+            discoDialogMethods.close();
+        }
+    }
+    //#endregion
+</script>

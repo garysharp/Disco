@@ -1,0 +1,46 @@
+﻿@model Disco.Web.Areas.Config.Models.DeviceModel.IndexModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Models");
+}
+<table class="tableData">
+    <tr>
+        <th>
+            Name/Description
+        </th>
+        <th>
+            Manufacturer
+        </th>
+        <th>
+            Model
+        </th>
+        <th>
+            Type
+        </th>
+        <th>
+            Device Count
+        </th>
+    </tr>
+    @foreach (var item in Model.DeviceModels)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.ToString(), MVC.Config.DeviceModel.Index(item.Id))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Manufacturer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModelType)
+            </td>
+            <td>
+                @item.DeviceCount.ToString("n0")
+            </td>
+        </tr>
+    }
+</table>
+<div class="actionBar">
+    @Html.ActionLinkButton("Generic Components", MVC.Config.DeviceModel.GenericComponents())
+</div>

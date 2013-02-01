@@ -1,0 +1,205 @@
+﻿@model Disco.Web.Areas.Config.Models.DeviceModel.ShowModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Models", MVC.Config.DeviceModel.Index(null), Model.DeviceModel.ToString());
+}
+<div class="form" style="width: 530px">
+    <table>
+        <tr>
+            <th style="width: 150px">
+                Id:
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.DeviceModel.Id)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Description:
+            </th>
+            <td>@Html.EditorFor(model => model.DeviceModel.Description)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Manufacturer:
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.DeviceModel.Manufacturer)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Model:
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.DeviceModel.Model)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Default Purchase Date:
+            </th>
+            <td>
+                @Html.EditorFor(model => model.DeviceModel.DefaultPurchaseDate)
+                @AjaxHelpers.AjaxLoader()
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Default Warranty Provider:
+            </th>
+            <td>
+                @Html.DropDownListFor(model => model.DeviceModel.DefaultWarrantyProvider, Model.WarrantyProviders.ToSelectListItems(Model.DeviceModel.DefaultWarrantyProvider, true, "None"))
+                @AjaxHelpers.AjaxLoader()
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Type:
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.DeviceModel.ModelType)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Image:
+            </th>
+            <td>
+                <img alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(Model.DeviceModel.Id, Model.DeviceModel.ImageHash()))" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <label for="DeviceModel_Image">
+                    Update Image:
+                </label>
+            </th>
+            <td>
+                @using (Html.BeginForm(MVC.API.DeviceModel.Image(Model.DeviceModel.Id, true, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <input type="file" name="Image" id="Image" style="width: 250px;" />
+                    <input class="button" type="submit" value="Update" />
+                }
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(function () {
+            var $Description = $('#DeviceModel_Description');
+            var $DescriptionAjaxSave = $Description.next('.ajaxSave');
+            $Description
+                    .watermark('Model Description')
+                    .focus(function () { $Description.select() })
+                    .keydown(function (e) {
+                        $DescriptionAjaxSave.show();
+                        if (e.which == 13) {
+                            $(this).blur();
+                        }
+                    }).blur(function () {
+                        $DescriptionAjaxSave.hide();
+                    })
+                    .change(function () {
+                        $DescriptionAjaxSave.hide();
+                        var $ajaxLoading = $DescriptionAjaxSave.next('.ajaxLoading').show();
+                        var data = { Description: $Description.val() };
+                        $.ajax({
+                            url: '@Url.Action(MVC.API.DeviceModel.UpdateDescription(Model.DeviceModel.Id))',
+                            dataType: 'json',
+                            data: data,
+                            success: function (d) {
+                                if (d == 'OK') {
+                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                } else {
+                                    $ajaxLoading.hide();
+                                    alert('Unable to update description: ' + d);
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert('Unable to update description: ' + textStatus);
+                                $ajaxLoading.hide();
+                            }
+                        });
+                    });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            var $dataField = $('#DeviceModel_DefaultPurchaseDate');
+            var $ajaxLoading = $dataField.next('.ajaxLoading');
+            var dateFieldValue = $dataField.val();
+            var dateFieldChangeToken = null;
+            $dataField
+                .watermark('None')
+                .datepicker({
+                    changeYear: true,
+                    changeMonth: true,
+                    dateFormat: 'yy/mm/dd'
+                })
+                .change(function () {
+                    var dateText = $dataField.val();
+                    if (dateFieldValue.toLowerCase() != dateText.toLowerCase()) {
+                        dateFieldValue = dateText;
+                        if (dateFieldChangeToken)
+                            window.clearTimeout(dateFieldChangeToken);
+                        dateFieldChangeToken = window.setTimeout(function () {
+                            $ajaxLoading.show();
+                            var data = {};
+                            data['DefaultPurchaseDate'] = dateFieldValue;
+                            $.getJSON('@(Url.Action(MVC.API.DeviceModel.UpdateDefaultPurchaseDate(Model.DeviceModel.Id)))', data, function (response, result) {
+                                if (result != 'success' || response != 'OK') {
+                                    alert('Unable to change Date:\n' + response);
+                                    $ajaxLoading.hide();
+                                } else {
+                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                }
+                            })
+                            dateFieldChangeToken = null;
+                        }, 500);
+                    }
+                }).focus(function () {
+                    $(this).select();
+                });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            var $DefaultWarrantyProvider = $('#DeviceModel_DefaultWarrantyProvider');
+            var $ajaxLoading = $DefaultWarrantyProvider.next('.ajaxLoading');
+            $DefaultWarrantyProvider
+                    .change(function () {
+                        $ajaxLoading.show();
+                        var data = { DefaultWarrantyProvider: $DefaultWarrantyProvider.val() };
+                        $.ajax({
+                            url: '@Url.Action(MVC.API.DeviceModel.UpdateDefaultWarrantyProvider(Model.DeviceModel.Id))',
+                            dataType: 'json',
+                            data: data,
+                            success: function (d) {
+                                if (d == 'OK') {
+                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                } else {
+                                    $ajaxLoading.hide();
+                                    alert('Unable to default warranty provider: ' + d);
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert('Unable to default warranty provider: ' + textStatus);
+                                $ajaxLoading.hide();
+                            }
+                        });
+                    });
+        });
+    </script>
+</div>
+<h2>
+    Components</h2>
+@Html.Partial(MVC.Config.DeviceModel.Views._DeviceComponentsTable, Model.DeviceComponentsModel)
+<div class="actionBar">
+     @if (Model.CanDelete)
+    { 
+        @Html.ActionLinkButton("Delete", MVC.API.DeviceModel.Delete(Model.DeviceModel.Id, true), "buttonDelete")
+    }
+    @Html.ActionLinkButton("View Devices", MVC.Search.Query(Model.DeviceModel.Id.ToString(), "DeviceModel"))
+</div>

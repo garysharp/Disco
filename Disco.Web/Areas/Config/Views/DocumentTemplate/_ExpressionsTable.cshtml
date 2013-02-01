@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Disco.BI.Expressions.Expression>
+<div class="expressionsTable">
+    @if (Model.Count() > 0)
+    { 
+        <table class="expressionsTable">
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Expression
+                </th>
+                <th>
+                    Errors Allowed
+                </th>
+            </tr>
+            @foreach (var expression in Model.Where(m => m.IsDynamic))
+            {
+                var expressionParts = expression.Where(e => e.IsDynamic).ToArray();
+                <tr>
+                    <td rowspan="@(expressionParts.Length)">
+                        @expression.Name
+                    </td>
+                    @if (expressionParts[0].ParseError)
+                    {
+                        <td class="parseError">
+                            @expressionParts[0].Source
+                            <div class="code">
+                                <strong>Expression Compilation Error:</strong><br />
+                                @expressionParts[0].ParseErrorMessage
+                            </div>
+                        </td>
+                    }
+                    else
+                    { 
+                        <td>
+                            @expressionParts[0].Source
+                        </td>
+                    }
+                    <td>
+                        @(expressionParts[0].ErrorsAllowed ? "Yes" : "No")
+                    </td>
+                </tr>
+                    for (int expressionIndex = 1; expressionIndex < expressionParts.Length; expressionIndex++)
+                    {
+                <tr>
+                    @if (expressionParts[expressionIndex].ParseError)
+                    {
+                        <td class="parseError">
+                            @expressionParts[expressionIndex].Source
+                            <div class="code">
+                                <strong>Expression Compilation Error:</strong><br />
+                                @expressionParts[expressionIndex].ParseErrorMessage
+                            </div>
+                        </td>
+                    }
+                    else
+                    { 
+                        <td>
+                            @expressionParts[expressionIndex].Source
+                        </td>
+                    }
+                    <td>
+                        @(expressionParts[expressionIndex].ErrorsAllowed ? "Yes" : "No")
+                    </td>
+                </tr>
+                    }
+            }
+        </table>
+    }
+    else
+    { 
+        <span class="smallMessage">No Expressions Found</span>
+    }
+</div>

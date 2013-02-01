@@ -1,0 +1,58 @@
+﻿@model Disco.Web.Models.Job.CreateModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), "Create");
+}
+@using (Html.BeginForm(MVC.Job.Create(), FormMethod.Post))
+{
+    @Html.ValidationSummary(false)
+    @Html.HiddenFor(m => m.DeviceSerialNumber)
+    @Html.HiddenFor(m => m.UserId)
+    <div id="createDialog" class="form" style="width: 650px">
+        <table>
+            <tr>
+                <td colspan="2">
+                    @Html.Partial(MVC.Job.Views._CreateSubject, Model)
+                </td>
+            </tr>
+            <tr id="trJobType">
+                <th class="name">
+                    Type:
+                </th>
+                <td class="value">
+                    @CommonHelpers.RadioButtonList("Type", Model.JobTypes.ToSelectListItems(Model.Type), 2)
+                </td>
+            </tr>
+            @foreach (var jt in Model.JobTypes)
+            {
+                <tr id="trJobSubType@(jt.Id)" class="jobSubTypes">
+                    <th class="name">
+                        @jt.Description<br />
+                        Sub Types
+                    </th>
+                    <td class="value">
+                        @CommonHelpers.CheckBoxList("SubTypes", Model.JobSubTypes.Where(jst => jst.JobTypeId == jt.Id).ToList().ToSelectListItems(Model.SubTypes), 2)
+                    </td>
+                </tr>   
+            }
+        </table>
+        <p class="actions">
+            <input type="submit" class="button" value="Create" />
+        </p>
+        <script type="text/javascript">
+            $(function () {
+
+                $trJobType = $('#trJobType');
+                $jobTypes = $trJobType.find('input[type="radio"]');
+                $jobTypes.change(jobTypeChange);
+                jobTypeChange();
+
+                function jobTypeChange() {
+                    $('.jobSubTypes').hide();
+                    var jobType = $jobTypes.filter(':checked').val();
+                    $('#trJobSubType' + jobType).show();
+                }
+
+            });
+        </script>
+    </div>
+}

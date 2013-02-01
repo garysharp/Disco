@@ -1,0 +1,467 @@
+﻿@model Disco.Web.Models.Device.ShowModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), string.Format("{0} ({1})", Model.Device.ComputerName, Model.Device.SerialNumber));
+    Html.BundleDeferred("~/ClientScripts/Modules/Silverlight");
+}
+<table class="deviceShow">
+    <tr>
+        <td class="details">
+            <table>
+                <tr>
+                    <th class="name">
+                        Computer Name:
+                    </th>
+                    <td class="value">
+                        @if (string.IsNullOrWhiteSpace(Model.Device.ComputerName))
+                        {
+                            <span class="smallMessage">&lt;Unknown/Not Allocated&gt;</span>
+                        }
+                        else
+                        { 
+                            @Model.Device.ComputerName
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th class="name">
+                        Asset Number:
+                    </th>
+                    <td class="value">
+                        @Html.TextBoxFor(m => m.Device.AssetNumber)
+                        @AjaxHelpers.AjaxSave()
+                        @AjaxHelpers.AjaxLoader()
+                        <script type="text/javascript">
+                            $(function () {
+                                var $ajaxSave = $('#Device_AssetNumber').next('.ajaxSave');
+                                $('#Device_AssetNumber').watermark('Asset Number').keydown(function (e) {
+                                    $ajaxSave.show();
+                                    if (e.which == 13) {
+                                        $(this).blur();
+                                    }
+                                }).change(function () {
+                                    var $this = $(this);
+                                    $ajaxSave.hide();
+                                    var $ajaxLoading = $ajaxSave.next('.ajaxLoading').show();
+                                    var data = { AssetNumber: $this.val() };
+                                    $.getJSON('@(Url.Action(@MVC.API.Device.UpdateAssetNumber(Model.Device.SerialNumber)))', data, function (response, result) {
+                                        if (result != 'success' || response != 'OK') {
+                                            alert('Unable to change Asset Number:\n' + response);
+                                            $ajaxLoading.hide();
+                                        } else {
+                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        }
+                                    });
+                                }).blur(function () {
+                                    $ajaxSave.hide();
+                                }).focus(function () {
+                                    $(this).select();
+                                });
+                            });
+                        </script>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="name">
+                        Location:
+                    </th>
+                    <td class="value">
+                        @Html.TextBoxFor(m => m.Device.Location)
+                        @AjaxHelpers.AjaxSave()
+                        @AjaxHelpers.AjaxLoader()
+                        <script type="text/javascript">
+                            $(function () {
+                                var $ajaxSave = $('#Device_Location').next('.ajaxSave');
+                                $('#Device_Location').watermark('Location').keydown(function (e) {
+                                    $ajaxSave.show();
+                                    if (e.which == 13) {
+                                        $(this).blur();
+                                    }
+                                }).change(function () {
+                                    var $this = $(this);
+                                    $ajaxSave.hide();
+                                    var $ajaxLoading = $ajaxSave.next('.ajaxLoading').show();
+                                    var data = { Location: $this.val() };
+                                    $.getJSON('@(Url.Action(@MVC.API.Device.UpdateLocation(Model.Device.SerialNumber)))', data, function (response, result) {
+                                        if (result != 'success' || response != 'OK') {
+                                            alert('Unable to change Location:\n' + response);
+                                            $ajaxLoading.hide();
+                                        } else {
+                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        }
+                                    });
+                                }).blur(function () {
+                                    $ajaxSave.hide();
+                                }).focus(function () {
+                                    $(this).select();
+                                });
+                            });
+                        </script>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="name">
+                        Batch:
+                    </th>
+                    <td class="value">
+                        @Html.DropDownListFor(m => m.Device.DeviceBatchId, Model.DeviceBatches)
+                        @AjaxHelpers.AjaxLoader() <span id="deviceBatchEdit" class="icon16" title="Edit">
+                        </span>
+                        <script type="text/javascript">
+                            $(function () {
+                                var $DeviceBatchId = $('#Device_DeviceBatchId');
+                                var $DeviceBatchDetails = $('#deviceBatchDetails');
+                                var $DeviceBatchEdit = $('#deviceBatchEdit');
+                                var jsonDate = function (json, unknownValue) {
+                                    if (json && json.indexOf('') == 0) {
+                                        return $.datepicker.formatDate('yy-mm-dd', new Date(parseInt(json.substr(6, json.length - 8))));
+                                    } else
+                                        return unknownValue;
+                                }
+                                var updateDetails = function (deviceBatchId) {
+                                    $.getJSON('@(Url.Action(MVC.API.DeviceBatch.Index()))/' + deviceBatchId, function (response, result) {
+                                        if (result == 'success') {
+                                            if (response.Supplier)
+                                                $DeviceBatchDetails.find('.supplier').text(response.Supplier);
+                                            else
+                                                $DeviceBatchDetails.find('.supplier').text('Unknown');
+
+                                            $DeviceBatchDetails.find('.purchaseDate').text(jsonDate(response.PurchaseDate, 'Unknown'));
+                                            $DeviceBatchDetails.find('.warrantyValidUntil').text(jsonDate(response.WarrantyValidUntil, 'Unknown'));
+
+                                            if (response.InsuranceSupplier)
+                                                $DeviceBatchDetails.find('.insuranceSupplier').text(response.InsuranceSupplier);
+                                            else
+                                                $DeviceBatchDetails.find('.insuranceSupplier').text('Unknown');
+
+                                            $DeviceBatchDetails.find('.insuredUntil').text(jsonDate(response.InsuredUntil, 'Unknown'));
+
+                                            $DeviceBatchDetails.slideDown('fast');
+                                            $DeviceBatchEdit.fadeIn();
+                                        } else {
+                                            alert('Unable to load Device Batch details:\n' + response);
+                                        }
+                                    });
+                                };
+                                $DeviceBatchEdit.click(function () {
+                                    window.location.href = '@(Url.Action(MVC.Config.DeviceBatch.Index(null)))/' + $DeviceBatchId.val();
+                                });
+                                $DeviceBatchId.change(function () {
+                                    var $this = $(this);
+                                    var $ajaxLoading = $this.next('.ajaxLoading').show();
+                                    $DeviceBatchDetails.hide();
+                                    $DeviceBatchEdit.hide();
+                                    var data = { DeviceBatchId: $this.val() };
+                                    $.getJSON('@(Url.Action(MVC.API.Device.UpdateDeviceBatchId(Model.Device.SerialNumber)))', data, function (response, result) {
+                                        if (result != 'success' || response != 'OK') {
+                                            alert('Unable to change Device Batch:\n' + response);
+                                            $ajaxLoading.hide();
+                                        } else {
+                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                            if ($DeviceBatchId.val())
+                                                updateDetails($DeviceBatchId.val());
+                                        }
+                                    });
+                                });
+                                $DeviceBatchEdit.hide();
+                                if ($DeviceBatchId.val())
+                                    updateDetails($DeviceBatchId.val());
+                            });
+                        </script>
+                        <div id="deviceBatchDetails">
+                            <table class="sub">
+                                <tr>
+                                    <th style="width: 50px">
+                                        <strong>Purchased:</strong>
+                                    </th>
+                                    <td>
+                                        Supplier: <span class="supplier"></span>
+                                        <br />
+                                        On: <span class="purchaseDate"></span>
+                                    </td>
+                                    <th style="width: 50px">
+                                        <strong>Warranty:</strong>
+                                    </th>
+                                    <td>
+                                        Valid Until: <span class="warrantyValidUntil"></span>
+                                    </td>
+                                    <th style="width: 50px">
+                                        <strong>Insurance:</strong>
+                                    </th>
+                                    <td>
+                                        Supplier: <span class="insuranceSupplier"></span>
+                                        <br />
+                                        Until: <span class="insuredUntil"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="name">
+                        Profile:
+                    </th>
+                    <td class="value">
+                        @if (Model.Device.DecommissionedDate.HasValue)
+                        {
+                            @Model.Device.DeviceProfile.ToString()
+                        }
+                        else
+                        { 
+                            @Html.DropDownListFor(m => m.Device.DeviceProfileId, Model.DeviceProfiles.ToSelectListItems(Model.Device.DeviceProfile))
+                            @AjaxHelpers.AjaxLoader()
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#Device_DeviceProfileId').change(function () {
+                                        var $this = $(this);
+                                        var $ajaxLoading = $this.next('.ajaxLoading').show();
+                                        var data = { DeviceProfileId: $this.val() };
+                                        $.getJSON('@(Url.Action(MVC.API.Device.UpdateDeviceProfileId(Model.Device.SerialNumber)))', data, function (response, result) {
+                                            if (result != 'success' || response != 'OK') {
+                                                alert('Unable to change Device Profile:\n' + response);
+                                                $ajaxLoading.hide();
+                                            } else {
+                                                $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th class="name">
+                        Created:
+                    </th>
+                    <td class="value">
+                        @CommonHelpers.FriendlyDate(Model.Device.CreatedDate)
+                    </td>
+                </tr>
+                <tr>
+                    <th class="name">
+                        Enrolment:
+                    </th>
+                    <td class="value">
+                        First:
+                        @CommonHelpers.FriendlyDate(Model.Device.EnrolledDate)
+                        @if (Model.Device.AllowUnauthenticatedEnrol)
+                        {
+                            <a class="unlocked16" href="@Url.Action(MVC.API.Device.UpdateAllowUnauthenticatedEnrol(Model.Device.SerialNumber, "false", true))" title="Unauthenticated Enrolment is Allowed">
+                                &nbsp;</a>
+                        }
+                        else
+                        { 
+                            <a class="locked16" href="@Url.Action(MVC.API.Device.UpdateAllowUnauthenticatedEnrol(Model.Device.SerialNumber, "true", true))" title="Unauthenticated Enrolment is Blocked">
+                                &nbsp;</a>
+                        }
+                        <br />
+                        Last:
+                        @CommonHelpers.FriendlyDate(Model.Device.LastEnrolDate)
+                    </td>
+                </tr>
+                <tr>
+                    <th class="name">
+                        Decommissioned:
+                    </th>
+                    <td class="value">
+                        @CommonHelpers.FriendlyDate(Model.Device.DecommissionedDate)
+                    </td>
+                </tr>
+                <tr>
+                    <th class="name">
+                        Last Network Logon:
+                    </th>
+                    <td class="value">
+                        <span id="lastNetworkLogonDate" class="nowrap">@CommonHelpers.FriendlyDate(Model.Device.LastNetworkLogonDate)</span>
+                        @if (!string.IsNullOrEmpty(Model.Device.ComputerName))
+                        {
+                            <script type="text/javascript">
+                                $(function () {
+                                    var span = $('#lastNetworkLogonDate');
+                                    $('<span>').addClass('ajaxHelperIcon ajaxLoading ajaxShowInitially').attr('title', 'Loading...').appendTo(span);
+
+                                    $.getJSON('@(Url.Action(MVC.API.Device.LastNetworkLogonDate(Model.Device.SerialNumber)))', function (response, result) {
+                                        if (result != 'success') {
+                                            alert('Unable to retrieve latest network logon date:\n' + response);
+                                            $('<span>').addClass('smallMessage').text('[may not be current]').appendTo(span);
+                                        } else {
+                                            span.find('.ajaxLoading').hide();
+                                            span.attr('title', response.Formatted).text(response.Friendly);
+                                        }
+                                    });
+                                });
+                            </script>
+                        }
+                    </td>
+                </tr>
+                @if (!Model.Device.DecommissionedDate.HasValue)
+                {
+                    <tr>
+                        <th class="name">
+                            Assigned User:
+                        </th>
+                        <td class="value">
+                            @Html.TextBoxFor(m => m.Device.AssignedUser, new { userId = Model.Device.AssignedUserId })
+                            @AjaxHelpers.AjaxRemove()
+                            @AjaxHelpers.AjaxLoader()
+                            <br />
+                            <a href="#" id="Device_AssignedUser_History_Trigger" class="smallLink">Show Assignment
+                                History (<span id="Device_AssignedUser_History_RecordCount"></span>)</a> <span id="Device_AssignedUser_History_None"
+                                    class="smallMessage" style="display: none">No Assignment History Available</span>
+                            <div id="dialogRemoveAssignedUser" title="Remove this Device Assignment?">
+                                <p>
+                                    <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+                                    Are you sure?</p>
+                            </div>
+                            <script type="text/javascript">
+                            $(function () {
+                                // Common Objects
+                                var $assignedUser = $('#Device_AssignedUser');
+                                var $ajaxLoading = $assignedUser.nextAll('.ajaxLoading').first();
+                                var $ajaxRemove = $assignedUser.nextAll('.ajaxRemove').first();
+
+                                // Assign User
+                                $assignedUser
+                                    .watermark('No Assigned User')
+                                    .focus(function () { $assignedUser.select() })
+                                    .autocomplete({
+                                        source: '@(Url.Action(MVC.API.User.UpstreamUsers()))',
+                                        minLength: 2,
+                                        focus: function (e, ui) {
+                                            $assignedUser.val(ui.item.DisplayName + ' (' + ui.item.Id + ')');
+                                            return false;
+                                        },
+                                        select: function (e, ui) {
+                                            updateAssignedUser(ui.item.Id);
+                                            $assignedUser.val(ui.item.DisplayName + ' (' + ui.item.Id + ')');
+                                            return false;
+                                        }
+                                    })
+                                    .data('autocomplete')._renderItem = function (ul, item) {
+                                        return $("<li></li>")
+                                            .data("item.autocomplete", item)
+                                            .append("<a><strong>" + item.DisplayName + "</strong><br>" + item.Id + " (" + item.Type + ")</a>")
+                                            .appendTo(ul);
+                                    };
+
+                                    var $dialogRemoveAssignedUser = $('#dialogRemoveAssignedUser');
+                                $dialogRemoveAssignedUser.dialog({
+                                    resizable: false,
+                                    height: 140,
+                                    modal: true,
+                                    autoOpen: false,
+                                    buttons: {
+                                        "Remove": function () {
+                                            updateAssignedUser('');
+                                            $assignedUser.val('');
+                                            $dialogRemoveAssignedUser.dialog("close");
+                                        },
+                                        "Cancel": function () {
+                                            $dialogRemoveAssignedUser.dialog("close");
+                                        }
+                                    }
+                                });
+
+                                // Un-Assign User
+                                if ($assignedUser.val() != '')
+                                    $ajaxRemove.show();
+                                $ajaxRemove.click(function () {
+                                    $dialogRemoveAssignedUser.dialog('open');
+                                    return false;
+                                });
+
+                                // History
+                                var deviceUserAssignmentCount = @(Model.Device.DeviceUserAssignments.Count);
+                                if (deviceUserAssignmentCount > 0) {
+                                    $('#Device_AssignedUser_History_Trigger').click(function () {
+                                        $(this).hide();
+                                        $('#Device_AssignedUser_History_Host').show();
+                                        $('#Device_AssignedUser_History').slideDown('slow');
+                                        return false;
+                                    });
+                                    var recordCountText = deviceUserAssignmentCount + ' record';
+                                    if (deviceUserAssignmentCount != 1)
+                                        recordCountText += 's';
+                                    $('#Device_AssignedUser_History_RecordCount').text(recordCountText)
+                                }
+                                else {
+                                    $('#Device_AssignedUser_History_Trigger').hide();
+                                    $('#Device_AssignedUser_History_None').show();
+                                };
+
+                                function updateAssignedUser(userId) {
+                                    $ajaxLoading.show();
+                                    $ajaxRemove.hide();
+                                    var data = { AssignedUserId: userId };
+                                    $.getJSON('@(Url.Action(MVC.API.Device.UpdateAssignedUserId(Model.Device.SerialNumber)))', data, function (response, result) {
+                                        if (result != 'success' || response != 'OK') {
+                                            alert('Unable to change Assigned User:\n' + response);
+                                            $ajaxLoading.hide();
+                                        } else {
+                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                            if (userId != '')
+                                                $ajaxRemove.fadeIn('fast');
+                                        }
+                                    });
+                                }
+                            });
+                            </script>
+                        </td>
+                    </tr>
+                }
+                <tr id="Device_AssignedUser_History_Host" style="@(Model.Device.DecommissionedDate.HasValue ? "" : "display: none")">
+                    <td colspan="2">
+                        <div id="Device_AssignedUser_History" style="@(Model.Device.DecommissionedDate.HasValue ? "" : "display: none")">
+                            <h2>
+                                Assigned User History</h2>
+                            @Html.Partial(MVC.Device.Views._DeviceUserAssignmentHistoryTable, Model.Device)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="name">
+                        Generate Documents:
+                    </th>
+                    <td class="value" colspan="3">
+                        @Html.DropDownList("DocumentTemplates", Model.DocumentTemplatesSelectListItems)
+                        <script type="text/javascript">
+                            $(function () {
+                                var generatePdfUrl = '@Url.Action(MVC.API.Device.GeneratePdf(Model.Device.SerialNumber, null))?DocumentTemplateId=';
+                                var $documentTemplates = $('#DocumentTemplates');
+                                $documentTemplates.change(function () {
+                                    var v = $documentTemplates.val();
+                                    if (v) {
+                                        window.location.href = generatePdfUrl + v;
+                                        $documentTemplates.val('');
+                                    }
+                                });
+                            });
+                        </script>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="model">
+            <table>
+                <tr>
+                    <td class="subtleHighlight">
+                        <img alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(Model.Device.DeviceModelId, Model.Device.DeviceModel.ImageHash()))" />
+                        <h2>
+                            <a href="@(Url.Action(MVC.Config.DeviceModel.Index(Model.Device.DeviceModelId)))">@Model.Device.DeviceModel.ToString()</a></h2>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<h2>
+    Certificates</h2>
+@Html.Partial(MVC.Device.Views._CertificateTable, Model.Certificates)
+<h2>
+    Attachments</h2>
+@Html.Partial(MVC.Device.Views.DeviceParts.Resources, Model)
+<h2>
+    Jobs</h2>
+@Html.Partial(MVC.Shared.Views._JobTable, Model.Jobs)
+@Html.Partial(MVC.Device.Views._DeviceActions, Model.Device)

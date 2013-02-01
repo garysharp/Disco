@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Disco.Models.BI.Search.DeviceSearchResultItem>
+<div class="genericData deviceTable">
+    @if (Model != null && Model.Count() > 0)
+    { 
+        <table class="genericData deviceTable">
+            <thead>
+                <tr>
+                    <th>
+                        Serial#
+                    </th>
+                    <th>
+                        Asset#
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Model
+                    </th>
+                    <th>
+                        Profile
+                    </th>
+                    <th>
+                        Assigned User
+                    </th>
+                    <th>
+                        Jobs
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="@(item.DecommissionedDate.HasValue ? "decommissioned" : string.Empty)">
+                        <td>
+                            @Html.ActionLink(item.SerialNumber, MVC.Device.Show(item.SerialNumber))
+                        </td>
+                        <td>
+                            @item.AssetNumber
+                            @if (item.DecommissionedDate.HasValue)
+                            { <span class="smallMessage">(Decommissioned
+                            @CommonHelpers.FriendlyDate(item.DecommissionedDate.Value))</span> }
+                        </td>
+                        <td>
+                            @if (string.IsNullOrWhiteSpace(item.ComputerName))
+                            {
+                                <span class="smallMessage">Unknown</span>
+                            }
+                            else
+                            { 
+                                @item.ComputerName
+                            }
+                        </td>
+                        <td>
+                            @if (item.DeviceModelDescription != null)
+                            {
+                                <span>@item.DeviceModelDescription</span>
+                            }
+                            else
+                            { 
+                                <span class="smallMessage">Unknown</span>                    
+                            }
+                        </td>
+                        <td>
+                            @item.DeviceProfileDescription
+                        </td>
+                        <td>
+                            @if (string.IsNullOrEmpty(item.AssignedUserId))
+                            {
+                                <span class="smallMessage">N/A</span>                 
+                            }
+                            else
+                            { 
+                                <span>@item.AssignedUserDescription</span>
+                            }
+                        </td>
+                        <td>
+                            @item.JobCount
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    { 
+        <span class="smallMessage">No Devices Found</span>
+    }
+</div>

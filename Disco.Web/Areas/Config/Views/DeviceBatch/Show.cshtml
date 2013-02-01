@@ -1,0 +1,504 @@
+﻿@model Disco.Web.Areas.Config.Models.DeviceBatch.ShowModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Batches", MVC.Config.DeviceBatch.Index(null), Model.DeviceBatch.ToString());
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
+    Html.BundleDeferred("~/ClientScripts/Modules/tinymce");
+}
+<div class="form deviceBatches" style="width: 730px">
+    <table>
+        <tr>
+            <th style="width: 150px">
+                Id:
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.DeviceBatch.Id)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Name:
+            </th>
+            <td>@Html.EditorFor(model => model.DeviceBatch.Name)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#DeviceBatch_Name'),
+                            'Invalid Name',
+                            '@(Url.Action(MVC.API.DeviceBatch.UpdateName(Model.DeviceBatch.Id)))',
+                            'BatchName'
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Device Count:
+            </th>
+            <td>
+                @if (Model.DeviceBatch.UnitQuantity.HasValue)
+                { 
+                    <span>@Model.DeviceCount of @(Model.DeviceBatch.UnitQuantity.Value)</span>
+                }
+                else
+                { 
+                    @Model.DeviceCount
+                }
+                managed by Disco
+                @if (Model.DeviceDecommissionedCount > 0)
+                { 
+                    <span class="smallMessage">(@(Model.DeviceDecommissionedCount)
+                        Decommissioned)</span>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Purchase:
+            </th>
+            <td class="details">
+                <table class="sub">
+                    <tr>
+                        <th class="name" style="width: 100px">
+                            Purchase Date:
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.DeviceBatch.PurchaseDate)
+                            @AjaxHelpers.AjaxLoader()
+                            <script>
+                                $(function () {
+                                    var dateField = $('#DeviceBatch_PurchaseDate');
+                                    document.DiscoFunctions.DateChangeHelper(
+                                        dateField,
+                                        'Invalid Date',
+                                        '@(Url.Action(MVC.API.DeviceBatch.UpdatePurchaseDate(Model.DeviceBatch.Id)))',
+                                        'PurchaseDate',
+                                        null,
+                                        true
+                                    );
+                                });
+                            </script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Supplier:
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.DeviceBatch.Supplier)
+                            @AjaxHelpers.AjaxSave()
+                            @AjaxHelpers.AjaxLoader()
+                            <script type="text/javascript">
+                                $(function () {
+                                    document.DiscoFunctions.PropertyChangeHelper(
+                                        $('#DeviceBatch_Supplier'),
+                                        'Batch Supplier',
+                                        '@(Url.Action(MVC.API.DeviceBatch.UpdateSupplier(Model.DeviceBatch.Id)))',
+                                        'Supplier'
+                                    );
+                                });
+                            </script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Unit Cost:
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.DeviceBatch.UnitCost)
+                            @AjaxHelpers.AjaxSave()
+                            @AjaxHelpers.AjaxLoader()
+                            <script type="text/javascript">
+                                $(function () {
+                                    document.DiscoFunctions.PropertyChangeHelper(
+                                        $('#DeviceBatch_UnitCost'),
+                                        'Unit Cost',
+                                        '@(Url.Action(MVC.API.DeviceBatch.UpdateUnitCost(Model.DeviceBatch.Id)))',
+                                        'UnitCost'
+                                    );
+                                });
+                            </script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Quantity:
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.DeviceBatch.UnitQuantity)
+                            @AjaxHelpers.AjaxSave()
+                            @AjaxHelpers.AjaxLoader()
+                            <script type="text/javascript">
+                                $(function () {
+                                    document.DiscoFunctions.PropertyChangeHelper(
+                                        $('#DeviceBatch_UnitQuantity'),
+                                        'Quantity',
+                                        '@(Url.Action(MVC.API.DeviceBatch.UpdateUnitQuantity(Model.DeviceBatch.Id)))',
+                                        'UnitQuantity'
+                                    );
+                                });
+                            </script>
+                        </td>
+                    </tr>
+                </table>
+                <div id="DeviceBatch_PurchaseDetails_Container">
+                    <div>
+                        Details @AjaxHelpers.AjaxLoader("ajaxPurchaseDetails")
+                    </div>
+                    @Html.EditorFor(model => model.DeviceBatch.PurchaseDetails)
+                    <script type="text/javascript">
+                        $(function () {
+                            var model = {
+                                $field: $('#DeviceBatch_PurchaseDetails'),
+                                fieldName: 'PurchaseDetails',
+                                $ajax_loading: null,
+                                $ajax_ok: null,
+                                updated: function () {
+                                    if (!model.$ajax_loading)
+                                        model.$ajax_loading = $('#ajax' + model.fieldName + '_loading');
+                                    if (!model.$ajax_ok)
+                                        model.$ajax_ok = $('#ajax' + model.fieldName + '_ok');
+                                    model.$ajax_loading.show();
+                                    var data = {};
+                                    data[model.fieldName] = model.$field.tinymce().getContent();
+                                    $.ajax({
+                                        url: '@(Url.Action(MVC.API.DeviceBatch.UpdatePurchaseDetails(Model.DeviceBatch.Id)))',
+                                        dataType: 'json',
+                                        data: data,
+                                        traditional: true,
+                                        type: 'POST',
+                                        success: function (d) {
+                                            if (d == 'OK') {
+                                                model.$ajax_loading.hide();
+                                                model.$ajax_ok.show().delay('fast').fadeOut('slow');
+                                            } else {
+                                                model.$ajax_loading.hide();
+                                                alert('Unable to update purchase details: ' + d);
+                                            }
+                                        },
+                                        error: function (jqXHR, textStatus, errorThrown) {
+                                            alert('Unable to update purchase details: ' + errorThrown);
+                                            model.$ajax_loading.hide();
+                                        }
+                                    })
+                                }
+                            };
+
+                            model.$field.tinymce({
+                                theme: 'simple',
+                                setup: function (ed) {
+                                    ed.onInit.add(function (ed) {
+                                        $(ed.getWin()).blur(model.updated);
+                                    });
+                                }
+                            });
+                        });
+                    </script>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Default Device Model:
+            </th>
+            <td>
+                @Html.DropDownListFor(model => model.DeviceBatch.DefaultDeviceModelId, Model.DeviceModels)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#DeviceBatch_DefaultDeviceModelId'),
+                            null,
+                            '@(Url.Action(MVC.API.DeviceBatch.UpdateDefaultDeviceModelId(Model.DeviceBatch.Id)))',
+                            'DefaultDeviceModelId'
+                        );
+                    });
+                </script>
+                <br />
+                <span class="smallMessage">Devices added offline will default to this Device Model.
+                    Once a device enrols the Device Model will be accurately represented.</span>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Warranty:
+            </th>
+            <td class="details">
+                <table class="sub">
+                    <tr>
+                        <th class="name" style="width: 100px">
+                            Valid Until:
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.DeviceBatch.WarrantyValidUntil)
+                            @AjaxHelpers.AjaxLoader()
+                            <script>
+                                $(function () {
+                                    var dateField = $('#DeviceBatch_WarrantyValidUntil');
+                                    document.DiscoFunctions.DateChangeHelper(
+                                        dateField,
+                                        'Warranty Valid Until',
+                                        '@(Url.Action(MVC.API.DeviceBatch.UpdateWarrantyValidUntil(Model.DeviceBatch.Id)))',
+                                        'WarrantyValidUntil',
+                                        null,
+                                        true
+                                    );
+                                });
+                            </script>
+                        </td>
+                    </tr>
+                </table>
+                <div id="DeviceBatch_WarrantyDetails_Container">
+                    <div>
+                        Details @AjaxHelpers.AjaxLoader("ajaxWarrantyDetails")
+                    </div>
+                    @Html.EditorFor(model => model.DeviceBatch.WarrantyDetails)
+                    <script type="text/javascript">
+                        $(function () {
+                            var model = {
+                                $field: $('#DeviceBatch_WarrantyDetails'),
+                                fieldName: 'WarrantyDetails',
+                                $ajax_loading: null,
+                                $ajax_ok: null,
+                                updated: function () {
+                                    if (!model.$ajax_loading)
+                                        model.$ajax_loading = $('#ajax' + model.fieldName + '_loading');
+                                    if (!model.$ajax_ok)
+                                        model.$ajax_ok = $('#ajax' + model.fieldName + '_ok');
+                                    model.$ajax_loading.show();
+                                    var data = {};
+                                    data[model.fieldName] = model.$field.tinymce().getContent();
+                                    $.ajax({
+                                        url: '@(Url.Action(MVC.API.DeviceBatch.UpdateWarrantyDetails(Model.DeviceBatch.Id)))',
+                                        dataType: 'json',
+                                        data: data,
+                                        traditional: true,
+                                        type: 'POST',
+                                        success: function (d) {
+                                            if (d == 'OK') {
+                                                model.$ajax_loading.hide();
+                                                model.$ajax_ok.show().delay('fast').fadeOut('slow');
+                                            } else {
+                                                model.$ajax_loading.hide();
+                                                alert('Unable to update warranty details: ' + d);
+                                            }
+                                        },
+                                        error: function (jqXHR, textStatus, errorThrown) {
+                                            alert('Unable to update warranty details: ' + errorThrown);
+                                            model.$ajax_loading.hide();
+                                        }
+                                    })
+                                }
+                            };
+
+                            model.$field.tinymce({
+                                theme: 'simple',
+                                setup: function (ed) {
+                                    ed.onInit.add(function (ed) {
+                                        $(ed.getWin()).blur(model.updated);
+                                    });
+                                }
+                            });
+                        });
+                    </script>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Insurance:
+            </th>
+            <td class="details">
+                <table class="sub">
+                    <tr>
+                        <th class="name" style="width: 100px">
+                            Supplier:
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.DeviceBatch.InsuranceSupplier)
+                            @AjaxHelpers.AjaxSave()
+                            @AjaxHelpers.AjaxLoader()
+                            <script type="text/javascript">
+                                $(function () {
+                                    document.DiscoFunctions.PropertyChangeHelper(
+                                        $('#DeviceBatch_InsuranceSupplier'),
+                                        'Insurance Supplier',
+                                        '@(Url.Action(MVC.API.DeviceBatch.UpdateInsuranceSupplier(Model.DeviceBatch.Id)))',
+                                        'InsuranceSupplier'
+                                    );
+                                });
+                            </script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="name">
+                            Insured Date:
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.DeviceBatch.InsuredDate)
+                            @AjaxHelpers.AjaxLoader()
+                            <script>
+                                $(function () {
+                                    var dateField = $('#DeviceBatch_InsuredDate');
+                                    document.DiscoFunctions.DateChangeHelper(
+                                        dateField,
+                                        'Insured Date',
+                                        '@(Url.Action(MVC.API.DeviceBatch.UpdateInsuredDate(Model.DeviceBatch.Id)))',
+                                        'InsuredDate',
+                                        null,
+                                        true
+                                    );
+                                });
+                            </script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="name">
+                            Insured Until:
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.DeviceBatch.InsuredUntil)
+                            @AjaxHelpers.AjaxLoader()
+                            <script>
+                                $(function () {
+                                    var dateField = $('#DeviceBatch_InsuredUntil');
+                                    document.DiscoFunctions.DateChangeHelper(
+                                        dateField,
+                                        'Insured Until',
+                                        '@(Url.Action(MVC.API.DeviceBatch.UpdateInsuredUntil(Model.DeviceBatch.Id)))',
+                                        'InsuredUntil',
+                                        null,
+                                        true
+                                    );
+                                });
+                            </script>
+                        </td>
+                    </tr>
+                </table>
+                <div id="DeviceBatch_InsuranceDetails_Container">
+                    <div>
+                        Details @AjaxHelpers.AjaxLoader("ajaxInsuranceDetails")
+                    </div>
+                    @Html.EditorFor(model => model.DeviceBatch.InsuranceDetails)
+                    <script type="text/javascript">
+                        $(function () {
+                            var model = {
+                                $DeviceBatch_Comments: $('#DeviceBatch_InsuranceDetails'),
+                                $ajax_loading: null,
+                                $ajax_ok: null,
+                                updated: function () {
+                                    if (!model.$ajax_loading)
+                                        model.$ajax_loading = $('#ajaxInsuranceDetails_loading');
+                                    if (!model.$ajax_ok)
+                                        model.$ajax_ok = $('#ajaxInsuranceDetails_ok');
+                                    model.$ajax_loading.show();
+                                    var data = { InsuranceDetails: model.$DeviceBatch_Comments.tinymce().getContent() };
+                                    $.ajax({
+                                        url: '@(Url.Action(MVC.API.DeviceBatch.UpdateInsuranceDetails(Model.DeviceBatch.Id)))',
+                                        dataType: 'json',
+                                        data: data,
+                                        traditional: true,
+                                        type: 'POST',
+                                        success: function (d) {
+                                            if (d == 'OK') {
+                                                model.$ajax_loading.hide();
+                                                model.$ajax_ok.show().delay('fast').fadeOut('slow');
+                                            } else {
+                                                model.$ajax_loading.hide();
+                                                alert('Unable to update insurance details: ' + d);
+                                            }
+                                        },
+                                        error: function (jqXHR, textStatus, errorThrown) {
+                                            alert('Unable to update insurance details: ' + errorThrown);
+                                            model.$ajax_loading.hide();
+                                        }
+                                    })
+                                }
+                            };
+
+                            model.$DeviceBatch_Comments.tinymce({
+                                theme: 'simple',
+                                setup: function (ed) {
+                                    //ed.onChange.add(model.updatedThrottle);
+                                    ed.onInit.add(function (ed) {
+                                        $(ed.getWin()).blur(model.updated);
+                                    });
+                                }
+                            });
+                        });
+                    </script>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Comments:<br />
+                @AjaxHelpers.AjaxLoader("ajaxComments")
+            </th>
+            <td>
+                @Html.EditorFor(model => model.DeviceBatch.Comments)
+                <script type="text/javascript">
+                    $(function () {
+                        var model = {
+                            $DeviceBatch_Comments: $('#DeviceBatch_Comments'),
+                            $ajax_loading: null,
+                            $ajax_ok: null,
+                            updated: function () {
+                                if (!model.$ajax_loading)
+                                    model.$ajax_loading = $('#ajaxComments_loading');
+                                if (!model.$ajax_ok)
+                                    model.$ajax_ok = $('#ajaxComments_ok');
+                                model.$ajax_loading.show();
+                                var data = { Comments: model.$DeviceBatch_Comments.tinymce().getContent() };
+                                $.ajax({
+                                    url: '@(Url.Action(MVC.API.DeviceBatch.UpdateComments(Model.DeviceBatch.Id)))',
+                                    dataType: 'json',
+                                    data: data,
+                                    traditional: true,
+                                    type: 'POST',
+                                    success: function (d) {
+                                        if (d == 'OK') {
+                                            model.$ajax_loading.hide();
+                                            model.$ajax_ok.show().delay('fast').fadeOut('slow');
+                                        } else {
+                                            model.$ajax_loading.hide();
+                                            alert('Unable to update comments: ' + d);
+                                        }
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        alert('Unable to update comments: ' + errorThrown);
+                                        model.$ajax_loading.hide();
+                                    }
+                                })
+                            }
+                        };
+
+                        model.$DeviceBatch_Comments.tinymce({
+                            theme: 'simple',
+                            setup: function (ed) {
+                                //ed.onChange.add(model.updatedThrottle);
+                                ed.onInit.add(function (ed) {
+                                    $(ed.getWin()).blur(model.updated);
+                                });
+                            }
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="actionBar">
+    @if (Model.CanDelete)
+    { 
+        @Html.ActionLinkButton("Delete", MVC.API.DeviceBatch.Delete(Model.DeviceBatch.Id, true), "buttonDelete")
+    }
+    @if (Model.DeviceCount > 0)
+    { 
+        @Html.ActionLinkButton("View Devices", MVC.Search.Query(Model.DeviceBatch.Id.ToString(), "DeviceBatch"))
+    }
+</div>

@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Disco.Web.Areas.Config.Models.DeviceProfile._IndexModelDeviceProfile>
+<table class="tableData deviceProfileTable">
+    <tr>
+        <th class="name">
+            Name
+        </th>
+        <th class="description">
+            Description
+        </th>
+        <th class="type">
+            Type
+        </th>
+        <th class="deviceCount">
+            Device Count
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.Name, MVC.Config.DeviceProfile.Index(item.Id))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DistributionType)
+            </td>
+            <td>
+                @item.DeviceCount.ToString("n0")
+                @if (item.DeviceDecommissionedCount > 0)
+                { 
+                    <span class="smallMessage" title="@(item.DeviceDecommissionedCount) Decommissioned">
+                        (@(item.DeviceDecommissionedCount))</span>
+                }
+            </td>
+        </tr>
+    }
+</table>

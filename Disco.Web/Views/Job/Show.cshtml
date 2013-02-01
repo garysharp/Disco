@@ -1,0 +1,56 @@
+﻿@model Disco.Web.Models.Job.ShowModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id.ToString()));
+    Html.BundleDeferred("~/ClientScripts/Modules/Silverlight");
+    Html.BundleDeferred("~/ClientScripts/Modules/jQueryUI-TimePicker");
+}
+<div id="Job_Show">
+    <div id="Job_Show_Status">
+        @{ var jobStatusInfo = Model.Job.Status();}
+        <span class="icon JobStatus@(jobStatusInfo.Item1)"></span>@jobStatusInfo.Item2
+        <script type="text/javascript">
+            $(function () {
+                $('#Job_Show_Status').appendTo('#layout_PageHeading')
+            });
+        </script>
+    </div>
+    @Html.Partial(MVC.Job.Views.JobParts._Subject, Model)
+    <script type="text/javascript">
+        $(function () {
+            var $tabs = $('#jobDetailTabs');
+            $tabs.tabs({
+                activate: function (event, ui) {
+                    window.setTimeout(function () {
+                        var $window = $(window);
+                        var tabHeight = $tabs.height();
+                        var tabOffset = $tabs.offset();
+                        var windowScrollTop = $window.scrollTop();
+                        var windowHeight = $window.height();
+
+                        var tabTopNotShown = windowScrollTop - tabOffset.top;
+                        if (tabTopNotShown > 0) {
+                            $('html').animate({ scrollTop: tabOffset.top }, 125);
+                        } else {
+                            var tabBottomNotShown = ((windowScrollTop + windowHeight) - (tabHeight + tabOffset.top)) * -1;
+                            if (tabBottomNotShown > 0) {
+                                if (tabHeight > windowHeight)
+                                    $('html').animate({ scrollTop: tabOffset.top }, 125);
+                                else
+                                    $('html').animate({ scrollTop: windowScrollTop + tabBottomNotShown }, 125);
+                            }
+                        }
+                    }, 1);
+                }
+            });
+        });
+    </script>
+    <div id="jobDetailTabs">
+        <ul id="jobDetailTabItems">
+            <li><a href="#jobDetailTab-Resources">Log and Attachments</a></li>
+        </ul>
+        <div id="jobDetailTab-Resources" class="jobPart">
+            @Html.Partial(MVC.Job.Views.JobParts.Resources, Model)
+        </div>
+        @Html.Partial(MVC.Job.Views.JobParts.JobMetaAdditions, Model)
+    </div>
+</div>

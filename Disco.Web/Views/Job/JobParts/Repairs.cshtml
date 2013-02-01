@@ -1,0 +1,85 @@
+﻿@model Disco.Web.Models.Job.ShowModel
+<table id="jobNonWarrantyRepairs">
+    <tr>
+        <th style="width: 200px;">
+            Repairer Name
+        </th>
+        <td>
+            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerName)
+            @AjaxHelpers.AjaxSave()
+            @AjaxHelpers.AjaxLoader()
+            <script type="text/javascript">
+                $(function () {
+                    document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Job_JobMetaNonWarranty_RepairerName'),
+                            'Unknown',
+                            '@Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerName(Model.Job.Id, null))',
+                            'RepairerName'
+                        );
+                });
+            </script>
+        </td>
+    </tr>
+    <tr>
+        <th style="width: 200px;">
+            Repair Logged
+        </th>
+        <td>
+            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerLoggedDate)
+            @AjaxHelpers.AjaxLoader()
+            <script type="text/javascript">
+                $(function () {
+                    var dateField = $('#Job_JobMetaNonWarranty_RepairerLoggedDate');
+                    document.DiscoFunctions.DateChangeHelper(
+                        dateField,
+                        'Unknown',
+                        '@(Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerLoggedDate(Model.Job.Id, null)))',
+                        'RepairerLoggedDate',
+                        null
+                        );
+                });
+            </script>
+        </td>
+    </tr>
+    <tr>
+        <th style="width: 200px;">
+            Repair Reference
+        </th>
+        <td>
+            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerReference)
+            @AjaxHelpers.AjaxSave()
+            @AjaxHelpers.AjaxLoader()
+            <script type="text/javascript">
+                $(function () {
+                    document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Job_JobMetaNonWarranty_RepairerReference'),
+                            'Unknown',
+                            '@Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerReference(Model.Job.Id, null))',
+                            'RepairerReference'
+                        );
+                });
+            </script>
+        </td>
+    </tr>
+    <tr>
+        <th style="width: 200px;">
+            Repair Completed
+        </th>
+        <td>
+            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerCompletedDate)
+            @AjaxHelpers.AjaxLoader()
+            <script type="text/javascript">
+                $(function () {
+                    var dateField = $('#Job_JobMetaNonWarranty_RepairerCompletedDate');
+                    document.DiscoFunctions.DateChangeHelper(
+                        dateField,
+                        'Unknown',
+                        '@(Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerCompletedDate(Model.Job.Id, null)))',
+                        'RepairerCompletedDate',
+                        null
+                        );
+                });
+            </script>
+        </td>
+    </tr>
+</table>

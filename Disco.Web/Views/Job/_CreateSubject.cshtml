@@ -1,0 +1,41 @@
+﻿@model Disco.Web.Models.Job.CreateModel
+<table>
+    <tr>
+        <td>
+            <h2>Device</h2>
+        </td>
+        @if (Model.Device != null)
+        {
+            <td style="width: 64px">
+                <img class="modelImage" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(Model.Device.DeviceModelId, Model.Device.DeviceModel.ImageHash()))" />
+            </td>
+        }
+        <td style="width: 50%">
+            @if (Model.Device == null)
+            { 
+                <span class="smallMessage">No Device referenced to this Job</span>
+            }
+            else
+            { 
+                <span><strong>Serial Number:</strong> @Model.Device.SerialNumber</span><br />
+                <span><strong>Name:</strong> @Model.Device.ComputerName</span><br />
+                <span><strong>Model:</strong> @Model.Device.DeviceModel.ToString()</span><br />
+            }
+        </td>
+        <td>
+            <h2>User</h2>
+        </td>
+        <td style="width: 50%">
+            @if (Model.User == null)
+            { 
+                <span class="smallMessage">No User referenced to this Job</span>
+            }
+            else
+            {
+                <span><strong>Id:</strong> @Model.User.Id</span><br />
+                <span><strong>Name:</strong> @Model.User.DisplayName</span><br />
+                <span><strong>Type:</strong> @Model.User.Type</span>
+            }
+        </td>
+    </tr>
+</table>

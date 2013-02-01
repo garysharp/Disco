@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = Html.ToBreadcrumb("Public Reports", null);
+}
+<table id="pageMenu">
+    <tr>
+        <td style="width: 50%">
+            <div class="pageMenuArea">
+                <h2>
+                    Technician Held Devices</h2>
+                @Html.ActionLinkClass("Report", MVC.Public.UserHeldDevices.Index(), "report")
+                <div class="pageMenuBlurb">
+                    Display users involved in current jobs where the user's device is held by the technicians.
+                    Also displays users which should report to the technicians to collect their device
+                    which is ready to be returned to them.
+                </div>
+                @Html.ActionLinkClass("Noticeboard", MVC.Public.UserHeldDevices.Noticeboard(), "noticeboard")
+                <div class="pageMenuBlurb">
+                    Display a full-screen active noticeboard screen which lists users involved in current
+                    jobs where the user's device is held by the technicians. Also displays users which
+                    should report to the technicians to collect their device which is ready to be returned
+                    to them.
+                </div>
+            </div>
+        </td>
+        <td style="width: 50%">
+            &nbsp;
+        </td>
+    </tr>
+</table>

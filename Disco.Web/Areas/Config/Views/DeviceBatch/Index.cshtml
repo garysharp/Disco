@@ -1,0 +1,69 @@
+﻿@model Disco.Web.Areas.Config.Models.DeviceBatch.IndexModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Batches");
+}
+<table class="tableData">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Default Model
+        </th>
+        <th>
+            Purchase Date
+        </th>
+        <th>
+            Warranty Expires
+        </th>
+        <th>
+            Insurance Expires
+        </th>
+        <th>
+            Device Count
+        </th>
+    </tr>
+    @foreach (var item in Model.DeviceBatches)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.Name, MVC.Config.DeviceBatch.Index(item.Id))
+            </td>
+            <td>
+                @item.DefaultDeviceModel
+            </td>
+            <td>
+                @CommonHelpers.FriendlyDate(item.PurchaseDate)
+            </td>
+            <td>
+                @CommonHelpers.FriendlyDate(item.WarrantyExpires, "Unknown")
+            </td>
+            <td>
+                @CommonHelpers.FriendlyDate(item.InsuredUntil, item.InsuranceSupplier == null ? "N/A" : "Unknown")
+                @(item.InsuranceSupplier == null ? string.Empty : string.Format("[{0}]", item.InsuranceSupplier))
+            </td>
+            <td>
+                @if (item.PurchaseUnitQuantity.HasValue)
+                { 
+                    <span>@item.DeviceCount.ToString("n0")/@(item.PurchaseUnitQuantity.Value.ToString("n0"))</span>
+                }
+                else
+                { 
+                    @item.DeviceCount.ToString("n0")
+                }
+                @if (item.DeviceDecommissionedCount > 0)
+                { 
+                    <span class="smallMessage" title="@(item.DeviceDecommissionedCount) Decommissioned">
+                        (@(item.DeviceDecommissionedCount))</span>
+                }
+            </td>
+        </tr>
+    }
+</table>
+<div class="actionBar">
+    @if (Model.DeviceBatches.Count > 0)
+    { 
+        @Html.ActionLinkButton("Timeline", MVC.Config.DeviceBatch.Timeline())
+    }
+    @Html.ActionLinkButton("Create Device Batch", MVC.Config.DeviceBatch.Create())
+</div>

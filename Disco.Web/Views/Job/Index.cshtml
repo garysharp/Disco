@@ -1,0 +1,131 @@
+﻿@model Disco.Web.Models.Job.IndexModel
+@{
+    ViewBag.Title = "Jobs";
+    Html.BundleDeferred("~/ClientScripts/Modules/Highcharts");
+}
+<div class="clearfix columnHost">
+    <div class="column50">
+        <h2>Search Jobs</h2>
+        @Html.Partial(MVC.Shared.Views._SearchDialog, "jobs")
+    </div>
+    <div class="column50">
+        <h2>Daily Opened &amp; Closed Jobs</h2>
+        <div id="chartHostJobDailyOpenedClosed" style="height: 175px;">
+        </div>
+        <script type="text/javascript">
+            (function () {
+
+                var chartData;
+
+                function buildChart() {
+                    $(function () {
+
+                        var data = chartData;
+
+                        var dataTotalOpenJobs = [];
+                        var dataOpenedJobs = [];
+                        var dataClosedJobs = [];
+                        for (var i = 0; i < data.length; i++) {
+                            var dataItem = data[i];
+                            var dataItemDate = new Date(parseInt(dataItem.Timestamp.substr(6, dataItem.Timestamp.length - 8))).getTime(); // $.datepicker.parseDate('yy-mm-dd', dataItem.Timestamp.substr(0, 10)).getTime();
+                            dataTotalOpenJobs.push([dataItemDate, dataItem.TotalJobs]);
+                            dataOpenedJobs.push([dataItemDate, dataItem.OpenedJobs]);
+                            dataClosedJobs.push([dataItemDate, dataItem.ClosedJobs]);
+                        }
+                        Highcharts.setOptions({
+                            global: {
+                                useUTC: false
+                            }
+                        });
+                        new Highcharts.Chart({
+                            chart: {
+                                renderTo: 'chartHostJobDailyOpenedClosed',
+                                height: 175,
+                                animation: false
+                            },
+                            colors: ['#BBBBBB', '#005fab', '#DB761D'],
+                            title: {
+                                text: null
+                            },
+                            plotOptions: {
+                                series: {
+                                    marker: {
+                                        radius: 3
+                                    },
+                                    animation: false
+                                }
+                            },
+                            legend: {
+                                align: 'left',
+                                verticalAlign: 'top',
+                                y: 0,
+                                floating: true,
+                                borderWidth: 0
+                            },
+                            xAxis: {
+                                type: 'datetime',
+                                tickInterval: 7 * 24 * 3600 * 1000, // week
+                                tickWidth: 1,
+                                gridLineWidth: 1,
+                                dateTimeLabelFormats: {
+                                    week: '%e %b'
+                                }
+                            },
+                            yAxis: [{
+                                title: {
+                                    text: null
+                                },
+                                labels: {
+                                    enabled: false
+                                },
+                                min: 0
+                            }, {
+                                title: {
+                                    text: null
+                                },
+                                labels: {
+                                    enabled: false
+                                },
+                                min: 0
+                            }],
+                            series: [{
+                                name: 'Total Open Jobs',
+                                data: dataTotalOpenJobs,
+                                yAxis: 1
+                            }, {
+                                name: 'Closed Jobs',
+                                data: dataClosedJobs
+                            }, {
+                                name: 'Opened Jobs',
+                                data: dataOpenedJobs
+                            }],
+                            credits: {
+                                enabled: false
+                            }
+                        });
+                    });
+                }
+
+
+                $.getJSON('@(Url.Action(MVC.API.Job.StatisticsDailyOpenedClosed()))', function (data) {
+                    chartData = data;
+                    buildChart();
+                });
+            }());
+
+        </script>
+    </div>
+</div>
+<h2>Open Jobs Awaiting Technician Action (@Model.OpenJobs.Items.Count)</h2>
+@Html.Partial(MVC.Shared.Views._JobTable, Model.OpenJobs, new ViewDataDictionary())
+<h2>Long Running Jobs (@Model.LongRunningJobs.Items.Count)</h2>
+@Html.Partial(MVC.Shared.Views._JobTable, Model.LongRunningJobs, new ViewDataDictionary())
+@*<h2>
+    Jobs with Devices Ready for Return (@Model.ReadyForReturnJobs.Items.Count)</h2>
+@Html.Partial(MVC.Shared.Views._JobTable, Model.ReadyForReturnJobs, new ViewDataDictionary())
+<h2>
+    Jobs Waiting for User Action (@Model.WaitingForUserActionJobs.Items.Count)</h2>
+@Html.Partial(MVC.Shared.Views._JobTable, Model.WaitingForUserActionJobs, new ViewDataDictionary())
+<h2>
+    Recently Closed Jobs (@Model.RecentlyClosedJobs.Items.Count)</h2>
+@Html.Partial(MVC.Shared.Views._JobTable, Model.RecentlyClosedJobs, new ViewDataDictionary())*@

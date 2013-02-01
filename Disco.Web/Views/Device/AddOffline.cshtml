@@ -1,0 +1,114 @@
+﻿@model Disco.Web.Models.Device.AddOfflineModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Add Offline");
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <div class="form" style="width: 450px">
+        <table>
+            <tr>
+                <th>
+                    Serial Number:
+                </th>
+                <td>
+                    @Html.TextBoxFor(model => model.Device.SerialNumber)<br />
+                    @Html.ValidationMessageFor(model => model.Device.SerialNumber)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Asset Number:
+                </th>
+                <td>@Html.TextBoxFor(model => model.Device.AssetNumber)<br />
+                @Html.ValidationMessageFor(model => model.Device.AssetNumber)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Location:
+                </th>
+                <td>@Html.TextBoxFor(model => model.Device.Location)<br />
+                @Html.ValidationMessageFor(model => model.Device.Location)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Device Batch:
+                </th>
+                <td>
+                    @Html.DropDownListFor(model => model.Device.DeviceBatchId, Model.DeviceBatches) <br />
+                    @Html.ValidationMessageFor(model => model.Device.DeviceBatchId)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Device Profile:
+                </th>
+                <td>
+                    @Html.DropDownListFor(model => model.Device.DeviceProfileId, Model.DeviceProfiles.ToSelectListItems(Model.DefaultDeviceProfileId))<br />
+                    @Html.ValidationMessageFor(model => model.Device.DeviceProfileId)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Assigned User:
+                </th>
+                <td>
+                    @Html.TextBoxFor(model => model.Device.AssignedUserId)<br />
+                    @Html.ValidationMessageFor(model => model.Device.AssignedUserId)
+                </td>
+            </tr>
+        </table>
+        <p class="actions">
+            <input type="submit" class="button" value="Add" />
+        </p>
+        <script type="text/javascript">
+            $(function () {
+                $SerialNumber = $('#Device_SerialNumber');
+                $AssetNumber = $('#Device_AssetNumber');
+                $Location = $('#Device_Location');
+                $AssignedUserId = $('#Device_AssignedUserId');
+
+                $SerialNumber.focus().keydown(function (e) {
+                    if (e.which == 13) {
+                        $AssignedUserId.focus();
+                        return false;
+                    }
+                });
+                $AssetNumber.keydown(function (e) {
+                    if (e.which == 13) {
+                        $Location.focus();
+                        return false;
+                    }
+                });
+                $Location.keydown(function (e) {
+                    if (e.which == 13) {
+                        $AssignedUserId.focus();
+                        return false;
+                    }
+                });
+                $AssignedUserId
+                    .watermark('Search Users')
+                    .focus(function () { $AssignedUserId.select() })
+                    .autocomplete({
+                        source: '@(Url.Action(MVC.API.User.UpstreamUsers()))',
+                        minLength: 2,
+                        focus: function (e, ui) {
+                            $AssignedUserId.val(ui.item.DisplayName + ' (' + ui.item.Id + ')');
+                            return false;
+                        },
+                        select: function (e, ui) {
+                            $AssignedUserId.val(ui.item.Id).blur();
+                            return false;
+                        }
+                    }).data('autocomplete')._renderItem = function (ul, item) {
+                        return $("<li></li>")
+                        .data("item.autocomplete", item)
+                        .append("<a><strong>" + item.DisplayName + "</strong><br>" + item.Id + " (" + item.Type + ")</a>")
+                        .appendTo(ul);
+                    };
+            });
+        </script>
+    </div>
+}

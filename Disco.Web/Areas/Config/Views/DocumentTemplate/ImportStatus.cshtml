@@ -1,0 +1,322 @@
+﻿@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(), "Import Status");
+    Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
+    Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
+}
+<h2>
+    Documents Imported Today
+</h2>
+<div id="importStatus">
+    <div id="noSessions" data-bind="visible: noSessions">
+        <h3>
+            No imported documents today</h3>
+    </div>
+    <div id="sessions" data-bind="visible: !noSessions(), foreach: {data: sessions, afterRender: sessionRendered}"
+        style="display: none">
+        <div class="session">
+            <div class="clearfix">
+                <div class="sessionLeftPane">
+                    <h3>
+                        <span data-bind="text: title"></span>
+                    </h3>
+                </div>
+                <div class="sessionRightPane">
+                    <p class="sessionStart" data-bind="text: startTime">
+                    </p>
+                    <p class="sessionStatus" data-bind="text: progressStatus">
+                    </p>
+                    <div data-bind="visible: !sessionEnded(), progressValue: progressValue" class="sessionProgress">
+                    </div>
+                </div>
+            </div>
+            <div class="sessionPages clearfix" data-bind="foreach: {data: sessionPages}">
+                <div class="sessionPage" data-bind="style: {backgroundImage: thumbnailUrl}">
+                    <div class="sessionPageDetails">
+                        <h3 data-bind="text: title">
+                        </h3>
+                        <div data-bind="visible: undetected">
+                            Disco QR-Code not found<br />
+                            <a target="_blank" data-bind="attr: {href: manuallyAssignUrl}, visible: $parent.sessionEnded">Manually Assign Page</a>
+                        </div>
+                        <div data-bind="visible: detected">
+                            Document: <a target="_blank" data-bind="text: documentTemplate, attr: {href: documentTemplateUrl}">
+                            </a>
+                            <br />
+                            Target: <a target="_blank" data-bind="text: assignedData, attr: {href: assignedDataUrl}">
+                            </a>
+                        </div>
+                        <div data-bind="visible: !(detected() || undetected())">
+                            <p class="sessionStatus" data-bind="text: progressStatus">
+                            </p>
+                            <div data-bind="progressValue: progressValue" class="sessionProgress">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sessionInfoMessages">
+                <table class="logEventsViewport">
+                    <thead>
+                        <tr>
+                            <th class="icon">
+                                &nbsp;
+                            </th>
+                            <th class="message">
+                                Message
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="logEventsViewportContainer">
+                    <div class="logEventsViewportNoLogs" data-bind="visible: messages().length == 0"
+                        style="display: none">
+                        No logs
+                    </div>
+                    <table class="logEventsViewport" data-bind="visible: messages().length > 0" style="display: none">
+                        <tbody data-bind="foreach: messages">
+                            <tr>
+                                <td class="icon" data-bind="attr: {title: FormattedTimestamp}, css: {information: EventTypeSeverity == 0, warning: EventTypeSeverity == 1, error: EventTypeSeverity == 2}">
+                                    &nbsp;
+                                </td>
+                                <td class="message" data-bind="text: FormattedMessage, attr: {title: EventTypeName}">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    ko.bindingHandlers.progressValue = {
+        update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+            var v = ko.utils.unwrapObservable(valueAccessor());
+            var vInt = parseInt(v);
+            if (vInt >= 0) {
+                $element = $(element);
+                if (!$element.is('.ui-progressbar'))
+                    $element.progressbar();
+                $(element).progressbar('option', 'value', vInt);
+            }
+        }
+    };
+</script>
+<script type="text/javascript">
+    $(function () {
+        var vm;
+        var host = $('#importStatus');
+        var hostSessions = $('#sessions');
+        var liveConnection;
+        var urlDeviceShow = '@(Url.Action(MVC.Device.Show()))/'
+        var urlJobShow = '@(Url.Action(MVC.Job.Show()))/'
+        var urlUserShow = '@(Url.Action(MVC.User.Show()))/'
+        var urlPageThumbnail = '@(Url.Action(MVC.API.DocumentTemplate.ImporterThumbnail()))/'
+        var urlDocumentTemplate = '@(Url.Action(MVC.Config.DocumentTemplate.Index()))/';
+        var urlManuallyAssign = '@(Url.Action(MVC.Config.DocumentTemplate.UndetectedPages()))';
+        var iconErrorUrl = 'url(@(Links.ClientSource.Style.Images.Status.fail32_png))';
+        var isLive = false;
+
+        function pageViewModel() {
+            var self = this;
+
+            self.noSessions = ko.observable(true);
+            self.sessions = ko.observableArray();
+            self.sessionIndex = {};
+
+            self.sessionRendered = function (e, d) {
+                if (!d.sessionEnded()) {
+                    d.progressbar = $(e).find('.sessionProgress').progressbar();
+                }
+            };
+        }
+        function sessionViewModel(id) {
+            var self = this;
+
+            self.title = ko.observable(id);
+            self.messages = ko.observableArray();
+            self.progressStatus = ko.observable();
+            self.progressValue = ko.observable();
+            self.startTime = ko.observable();
+            self.sessionEnded = ko.observable(false);
+
+            self.sessionPages = ko.observableArray();
+            self.sessionPagesIndex = {};
+            self.addSessionPage = function (sessionPage) {
+                //if (isLive) {
+                self.sessionPages.push(sessionPage);
+                self.sessionPagesIndex[sessionPage.pageNumber] = sessionPage;
+                //}
+            }
+        }
+        function sessionPageViewModel(sessionId, pageNumber) {
+            var self = this;
+
+            self.sessionId = sessionId;
+            self.pageNumber = pageNumber;
+            self.title = 'Page ' + pageNumber;
+            self.progressStatus = ko.observable();
+            self.progressValue = ko.observable();
+            self.undetected = ko.observable(false);
+            self.detected = ko.observable(false);
+            self.documentTemplateId = ko.observable();
+            self.documentTemplate = ko.observable();
+            self.assignedDataType = ko.observable();
+            self.assignedDataId = ko.observable();
+            self.assignedData = ko.observable();
+            self.thumbnailEnabled = ko.observable(0);
+            self.updateThumbnail = function () {
+                self.thumbnailEnabled(self.thumbnailEnabled() + 1);
+            }
+            self.documentTemplateUrl = ko.computed(function () {
+                return urlDocumentTemplate + self.documentTemplateId();
+            });
+            self.manuallyAssignUrl = ko.computed(function () {
+                return urlManuallyAssign + '#' + self.sessionId + '_' + self.pageNumber;
+            });
+            self.assignedDataUrl = ko.computed(function () {
+                var t = self.assignedDataType();
+                var dId = self.assignedDataId();
+                switch (t) {
+                    case 'Device':
+                        return urlDeviceShow + dId;
+                    case 'Job':
+                        return urlJobShow + dId;
+                    case 'User':
+                        return urlUserShow + dId;
+                }
+                return null;
+            });
+            self.thumbnailUrl = ko.computed(function () {
+                var enabled = self.thumbnailEnabled();
+                if (enabled > 0) {
+                    return 'url(' + urlPageThumbnail + '?SessionId=' + self.sessionId + '&PageNumber=' + self.pageNumber + '&NoCache=' + enabled + ')';
+                }
+                return null;
+            });
+        }
+
+        function parseLog(log) {
+            if (log.ModuleId === 40 && log.Arguments && log.Arguments.length > 0) {
+                // find session
+                var sessionId = log.Arguments[0];
+                var session = vm.sessionIndex[sessionId];
+                if (!session && log.EventTypeId === 10) { // Starting Session (Ignore 'partial' sessions)
+                    session = new sessionViewModel(log.Arguments[1]);
+                    vm.sessionIndex[sessionId] = session;
+                    vm.sessions.unshift(session);
+                    vm.noSessions(false);
+                }
+                if (session) {
+                    switch (log.EventTypeId) {
+                        case 10: // SessionStarting
+                            session.startTime(log.FormattedTimestamp.substring(log.FormattedTimestamp.indexOf(' ') + 1));
+                            break;
+                        case 11: // SessionProgress
+                            session.progressValue(log.Arguments[1]);
+                            session.progressStatus(log.Arguments[2]);
+                            break;
+                        case 12: // SessionFinished
+                            session.sessionEnded(true);
+                            session.progressStatus('Import Finished');
+                            break;
+                        case 15: // SessionWarning
+                            session.messages.unshift(log);
+                            break;
+                        case 16: // SessionError
+                            session.messages.unshift(log);
+                            break;
+                        case 100: // ImportPageStarting
+                            session.addSessionPage(new sessionPageViewModel(sessionId, log.Arguments[1]));
+                            break;
+                        case 104: // ImportPageImageUpdate
+                            var p = session.sessionPagesIndex[log.Arguments[1]];
+                            if (p) {
+                                p.updateThumbnail();
+                            }
+                            break;
+                        case 105: // ImportPageProgress
+                            var p = session.sessionPagesIndex[log.Arguments[1]];
+                            if (p) {
+                                p.progressValue(log.Arguments[2]);
+                                p.progressStatus(log.Arguments[3]);
+                            }
+                            break;
+                        case 110: // ImportPageDetected
+                            var p = session.sessionPagesIndex[log.Arguments[1]];
+                            if (p) {
+                                p.documentTemplateId(log.Arguments[2]);
+                                p.documentTemplate(log.Arguments[3]);
+                                p.assignedDataType(log.Arguments[4]);
+                                p.assignedDataId(log.Arguments[5]);
+                                p.assignedData(log.Arguments[6]);
+                                p.detected(true);
+                                if (!isLive) {
+                                    p.updateThumbnail();
+                                }
+                            }
+                            session.messages.unshift(log);
+                            break;
+                        case 115: // ImportPageUndetected
+                            var p = session.sessionPagesIndex[log.Arguments[1]];
+                            if (p) {
+                                p.undetected(true);
+                                if (!isLive) {
+                                    p.updateThumbnail();
+                                }
+                            }
+                            session.messages.unshift(log);
+                            break;
+                        case 150: // Ignore: ImportPageUndetectedStored
+                            break;
+                        default:
+                            session.messages.unshift(log);
+                    }
+                }
+            }
+        }
+        function init() {
+            // Create View Model
+            vm = new pageViewModel();
+
+            // Load Logs
+            var d = new Date();
+            var loadData = {
+                Format: "json",
+                Start: d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(),
+                End: null,
+                ModuleId: 40,
+                Take: 2000
+            };
+            $.ajax({
+                url: '@(Url.Action(MVC.API.Logging.RetrieveEvents()))',
+                dataType: 'json',
+                type: 'POST',
+                traditional: true,
+                data: loadData,
+                success: init_loadedLogs,
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Unable to retrieve logs: ' + errorThrown);
+                }
+            });
+        }
+        function init_loadedLogs(logs) {
+            logs.reverse();
+            for (var i = 0; i < logs.length; i++) {
+                parseLog(logs[i]);
+            }
+            // Bind
+            ko.applyBindings(vm);
+
+            // Init Persistent Connection
+            liveConnection = $.connection('@(Url.Content("~/API/Logging/Notifications"))');
+            liveConnection.received(parseLog);
+            liveConnection.error(function (e) { alert('Live-Log Error: ' + e) });
+            isLive = true;
+            liveConnection.start(function () {
+                liveConnection.send('/addToGroups:@(Disco.BI.DocumentTemplateBI.Importer.DocumentImporterLog.Current.LiveLogGroupName)');
+            });
+        }
+        init();
+    });
+</script>

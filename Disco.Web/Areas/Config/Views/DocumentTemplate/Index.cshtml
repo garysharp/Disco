@@ -1,0 +1,37 @@
+﻿@model Disco.Web.Areas.Config.Models.DocumentTemplate.IndexModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates");
+}
+<table class="tableData">
+    <tr>
+        <th>
+            Id
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Scope
+        </th>
+    </tr>
+    @foreach (var item in Model.DocumentTemplates)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.Id.ToString(), MVC.Config.DocumentTemplate.Index(item.Id))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Scope)
+            </td>
+        </tr>
+    }
+</table>
+<div class="actionBar">
+    @Html.ActionLinkButton("Undetected Pages", MVC.Config.DocumentTemplate.UndetectedPages())
+    @Html.ActionLinkButton("Import Status", MVC.Config.DocumentTemplate.ImportStatus())
+    @Html.ActionLinkButton("Expression Browser", MVC.Config.DocumentTemplate.ExpressionBrowser())
+    @Html.ActionLinkButton("Create Document Template", MVC.Config.DocumentTemplate.Create())
+</div>

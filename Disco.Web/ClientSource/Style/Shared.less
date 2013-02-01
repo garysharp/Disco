@@ -1,0 +1,121 @@
+@import "Declarations";
+
+// Data Table Mixin
+.tableData
+{
+    border: solid 1px @TableDataBorderColour;
+    border-collapse: collapse;
+
+    &>tbody > tr > td
+    {
+        border: solid 1px @TableDataBorderColour;
+        background-color: #fff;
+    }
+	
+	&>tbody > tr:nth-child(odd) > td
+    {
+        background-color: @TableDataRowBackgroundColor;
+    }
+
+    &>thead > tr > th, &>tbody > tr > th
+    {
+        background-color: @TableDataBorderColour;
+        border: solid 1px @TableDataBorderColour;
+    }
+
+	&>tbody > tr:hover > td
+    {
+        background-color: @TableDataBorderColour;
+    }
+}
+
+.tableDataDark
+{
+    border: solid 1px @TableDataDarkBorderColour;
+    border-collapse: collapse;
+
+    td
+    {
+        border: solid 1px @TableDataDarkBorderColour;
+        background-color: #fff;
+    }
+
+    th
+    {
+        background-color: @TableDataDarkBorderColour;
+        border: solid 1px @TableDataDarkBorderColour;
+    }
+}
+
+.tableDataContainer
+{
+    background-color: #fff;
+}
+
+.tableDataVertical
+{
+    border: solid 1px @TableDataBorderColour;
+    border-collapse: collapse;
+
+    &>tbody > tr:nth-child(odd)
+    {
+        background-color: @TableDataBorderColour;
+        margin: 0;
+        padding: 0;
+    }
+
+    &>tbody > tr > th.name
+    {
+        width: 170px;
+        text-align: right;
+    }
+
+    table.sub
+    {
+        &>tbody
+        {
+            &>tr:not(:first-child)
+            {
+                &>th, &>td
+                {
+                    border-top: 1px dashed #aaa;
+                }
+            }
+
+            &>tr
+            {
+                &>th
+                {
+                    font-weight: normal;
+                    text-align: right;
+                }
+
+                    &>th.name
+                    {
+                        text-align: right;
+                    }
+            }
+        }
+    }
+}
+
+.icon16
+{
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    margin-left: 2px;
+    cursor: pointer;
+}
+
+.subtleUntilHover
+{
+    -moz-opacity: 0.3;
+    opacity: 0.3;
+
+    &:hover
+    {
+        -moz-opacity: 1;
+        opacity: 1;
+    }
+}

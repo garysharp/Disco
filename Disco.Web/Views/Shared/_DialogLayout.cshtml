@@ -1,0 +1,22 @@
+﻿@{
+    Html.BundleDeferred("~/Style/Dialog");
+    Html.BundleDeferred("~/Style/Site");
+    Html.BundleDeferred("~/ClientScripts/Core");
+}
+<!doctype html>
+<html>
+<head>
+    <title>Disco - @CommonHelpers.BreadcrumbsTitle(ViewBag.Title)</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta name="application-name" content="Disco" />
+    <meta name="msapplication-starturl" content="/" />
+    <meta name="msapplication-tooltip" content="Open Disco" />
+    @Html.BundleRenderDeferred()
+    @RenderSection("head", false)
+</head>
+<body class="layoutDialog">
+    <section id="layout_Page">
+        @RenderBody()
+    </section>
+</body>
+</html>

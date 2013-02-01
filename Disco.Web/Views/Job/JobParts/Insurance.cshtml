@@ -1,0 +1,380 @@
+﻿@model Disco.Web.Models.Job.ShowModel
+<table id="jobNonWarrantyInsurance">
+    @if (Model.Job.JobMetaNonWarranty.IsInsuranceClaim)
+    { 
+        <tr>
+            <th style="width: 230px;">
+                Date of Loss or Damage
+            </th>
+            <td>
+                @Html.EditorFor(m => m.Job.JobMetaInsurance.LossOrDamageDate)
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        var dateField = $('#Job_JobMetaInsurance_LossOrDamageDate');
+                        document.DiscoFunctions.DateChangeHelper(
+                        dateField,
+                        'Unknown',
+                        '@(Url.Action(MVC.API.Job.UpdateInsuranceLossOrDamageDate(Model.Job.Id, null)))',
+                        'LossOrDamageDate',
+                        null
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Event Location
+            </th>
+            <td>
+                @Html.EditorFor(m => m.Job.JobMetaInsurance.EventLocation)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Job_JobMetaInsurance_EventLocation'),
+                            'Unknown',
+                            '@Url.Action(MVC.API.Job.UpdateInsuranceEventLocation(Model.Job.Id, null))',
+                            'EventLocation'
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Description
+            </th>
+            <td>
+                @Html.EditorFor(m => m.Job.JobMetaInsurance.Description)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Job_JobMetaInsurance_Description'),
+                            'None',
+                            '@Url.Action(MVC.API.Job.UpdateInsuranceDescription(Model.Job.Id, null))',
+                            'Description'
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px;">
+                &nbsp;
+            </th>
+            <td>
+                @Html.EditorFor(m => m.Job.JobMetaInsurance.ThirdPartyCaused)@Html.LabelFor(m => m.Job.JobMetaInsurance.ThirdPartyCaused)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <div id="Job_JobMetaInsurance_ThirdPartyCaused_Details" style="padding-left: 25px;">
+                    <div>
+                        <h5>
+                            Third Party Name</h5>
+                        @Html.EditorFor(m => m.Job.JobMetaInsurance.ThirdPartyCausedName)
+                        @AjaxHelpers.AjaxSave()
+                        @AjaxHelpers.AjaxLoader()
+                    </div>
+                    <div>
+                        <h5>
+                            Why Third Parties Fault</h5>
+                        @Html.EditorFor(m => m.Job.JobMetaInsurance.ThirdPartyCausedWhy)
+                        @AjaxHelpers.AjaxSave()
+                        @AjaxHelpers.AjaxLoader()
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var thirdPartyField = $('#Job_JobMetaInsurance_ThirdPartyCaused');
+                        var thirdPartyDetails = $('#Job_JobMetaInsurance_ThirdPartyCaused_Details');
+                        var thirdPartyDetails_Changed = function (e, dontAnimate) {
+                            if (thirdPartyField.is(':checked')) {
+                                if (dontAnimate) {
+                                    thirdPartyDetails.show();
+                                } else {
+                                    thirdPartyDetails.slideDown();
+                                }
+                            } else {
+                                if (dontAnimate) {
+                                    thirdPartyDetails.hide();
+                                } else {
+                                    thirdPartyDetails.slideUp();
+                                }
+                            }
+                        };
+                        thirdPartyDetails_Changed(null, true);
+                        thirdPartyField.change(thirdPartyDetails_Changed);
+
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            thirdPartyField,
+                            null,
+                            '@Url.Action(MVC.API.Job.UpdateInsuranceThirdPartyCaused(Model.Job.Id, null))',
+                            'ThirdPartyCaused'
+                        );
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Job_JobMetaInsurance_ThirdPartyCausedName'),
+                            'None',
+                            '@Url.Action(MVC.API.Job.UpdateInsuranceThirdPartyCausedName(Model.Job.Id, null))',
+                            'ThirdPartyCausedName'
+                        );
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Job_JobMetaInsurance_ThirdPartyCausedWhy'),
+                            'Unknown',
+                            '@Url.Action(MVC.API.Job.UpdateInsuranceThirdPartyCausedWhy(Model.Job.Id, null))',
+                            'ThirdPartyCausedWhy'
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Witnessed by (Name/Address)
+            </th>
+            <td>
+                @Html.EditorFor(m => m.Job.JobMetaInsurance.WitnessesNamesAddresses)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Job_JobMetaInsurance_WitnessesNamesAddresses'),
+                            'None',
+                            '@Url.Action(MVC.API.Job.UpdateInsuranceWitnessesNamesAddresses(Model.Job.Id, null))',
+                            'WitnessesNamesAddresses'
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Burglary/Theft - Method of Entry
+            </th>
+            <td>
+                @Html.EditorFor(m => m.Job.JobMetaInsurance.BurglaryTheftMethodOfEntry)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Job_JobMetaInsurance_BurglaryTheftMethodOfEntry'),
+                            'None',
+                            '@Url.Action(MVC.API.Job.UpdateInsuranceBurglaryTheftMethodOfEntry(Model.Job.Id, null))',
+                            'BurglaryTheftMethodOfEntry'
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px;">
+                Property Last Seen
+            </th>
+            <td>
+                @Html.EditorFor(m => m.Job.JobMetaInsurance.PropertyLastSeenDate)
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        var dateField = $('#Job_JobMetaInsurance_PropertyLastSeenDate');
+                        document.DiscoFunctions.DateChangeHelper(
+                        dateField,
+                        'Unknown/NA',
+                        '@(Url.Action(MVC.API.Job.UpdateInsurancePropertyLastSeenDate(Model.Job.Id, null)))',
+                        'PropertyLastSeenDate',
+                        null
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px;">
+                &nbsp;
+            </th>
+            <td>
+                @Html.EditorFor(m => m.Job.JobMetaInsurance.PoliceNotified)@Html.LabelFor(m => m.Job.JobMetaInsurance.PoliceNotified)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <div id="Job_JobMetaInsurance_PoliceNotified_Details" style="padding-left: 25px;">
+                    <div>
+                        <h5>
+                            Station</h5>
+                        @Html.EditorFor(m => m.Job.JobMetaInsurance.PoliceNotifiedStation)
+                        @AjaxHelpers.AjaxSave()
+                        @AjaxHelpers.AjaxLoader()
+                    </div>
+                    <div>
+                        <h5>
+                            Date</h5>
+                        @Html.EditorFor(m => m.Job.JobMetaInsurance.PoliceNotifiedDate)
+                        @AjaxHelpers.AjaxLoader()
+                    </div>
+                    <div>
+                        <h5>
+                            Crime Report #</h5>
+                        @Html.EditorFor(m => m.Job.JobMetaInsurance.PoliceNotifiedCrimeReportNo)
+                        @AjaxHelpers.AjaxSave()
+                        @AjaxHelpers.AjaxLoader()
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var policeNotifiedField = $('#Job_JobMetaInsurance_PoliceNotified');
+                        var policeNotifiedDetails = $('#Job_JobMetaInsurance_PoliceNotified_Details');
+                        var policeNotifiedDetails_Changed = function (e, dontAnimate) {
+                            if (policeNotifiedField.is(':checked')) {
+                                if (dontAnimate) {
+                                    policeNotifiedDetails.show();
+                                } else {
+                                    policeNotifiedDetails.slideDown();
+                                }
+                            } else {
+                                if (dontAnimate) {
+                                    policeNotifiedDetails.hide();
+                                } else {
+                                    policeNotifiedDetails.slideUp();
+                                }
+                            }
+                        };
+                        policeNotifiedDetails_Changed(null, true);
+                        policeNotifiedField.change(policeNotifiedDetails_Changed);
+
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            policeNotifiedField,
+                            null,
+                            '@Url.Action(MVC.API.Job.UpdateInsurancePoliceNotified(Model.Job.Id, null))',
+                            'PoliceNotified'
+                        );
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Job_JobMetaInsurance_PoliceNotifiedStation'),
+                            'Unknown',
+                            '@Url.Action(MVC.API.Job.UpdateInsurancePoliceNotifiedStation(Model.Job.Id, null))',
+                            'PoliceNotifiedStation'
+                        );
+                        var dateField = $('#Job_JobMetaInsurance_PoliceNotifiedDate');
+                        document.DiscoFunctions.DateChangeHelper(
+                        dateField,
+                        'Unknown',
+                        '@(Url.Action(MVC.API.Job.UpdateInsurancePoliceNotifiedDate(Model.Job.Id, null)))',
+                        'PoliceNotifiedDate',
+                        null,
+                        true
+                        );
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Job_JobMetaInsurance_PoliceNotifiedCrimeReportNo'),
+                            'Unknown',
+                            '@Url.Action(MVC.API.Job.UpdateInsurancePoliceNotifiedCrimeReportNo(Model.Job.Id, null))',
+                            'PoliceNotifiedCrimeReportNo'
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Action to Recover/Reduce Loss
+            </th>
+            <td>
+                @Html.EditorFor(m => m.Job.JobMetaInsurance.RecoverReduceAction)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Job_JobMetaInsurance_RecoverReduceAction'),
+                            'None',
+                            '@Url.Action(MVC.API.Job.UpdateInsuranceRecoverReduceAction(Model.Job.Id, null))',
+                            'RecoverReduceAction'
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Other Interested Parties
+            </th>
+            <td>
+                @Html.EditorFor(m => m.Job.JobMetaInsurance.OtherInterestedParties)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Job_JobMetaInsurance_OtherInterestedParties'),
+                            'None',
+                            '@Url.Action(MVC.API.Job.UpdateInsuranceOtherInterestedParties(Model.Job.Id, null))',
+                            'OtherInterestedParties'
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px;">
+                Date of Purchase
+            </th>
+            <td>
+                @Html.EditorFor(m => m.Job.JobMetaInsurance.DateOfPurchase)
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        var dateField = $('#Job_JobMetaInsurance_DateOfPurchase');
+                        document.DiscoFunctions.DateChangeHelper(
+                        dateField,
+                        'Unknown',
+                        '@(Url.Action(MVC.API.Job.UpdateInsuranceDateOfPurchase(Model.Job.Id, null)))',
+                        'DateOfPurchase',
+                        null,
+                        true
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Claim Form Sent Date
+            </th>
+            <td>
+                @Html.EditorFor(m => m.Job.JobMetaInsurance.ClaimFormSentDate)
+                <span id="Job_JobMetaInsurance_ClaimFormSentUserId">@(string.IsNullOrEmpty(Model.Job.JobMetaInsurance.ClaimFormSentUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaInsurance.ClaimFormSentUser.ToString()))</span>
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.DateChangeUserHelper(
+                        $('#Job_JobMetaInsurance_ClaimFormSentDate'),
+                        $('#Job_JobMetaInsurance_ClaimFormSentUserId'),
+                        'Unknown',
+                        '@(Url.Action(MVC.API.Job.UpdateInsuranceClaimFormSentDate(Model.Job.Id, null)))',
+                        'ClaimFormSentDate',
+                        @(Model.Job.OpenedDate.ToJavascriptDate())
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+    }
+    <tr>
+        <th>
+            Insurance Claim
+        </th>
+        <td>
+            <div style="padding: 8px; text-align: center">
+                @if (Model.Job.JobMetaNonWarranty.IsInsuranceClaim)
+                {
+                    @Html.ActionLinkButton("Remove Insurance Claim", MVC.API.Job.UpdateNonWarrantyIsInsuranceClaim(Model.Job.Id, false, true))
+                }
+                else
+                {
+                    @Html.ActionLinkButton("Add Insurance Claim", MVC.API.Job.UpdateNonWarrantyIsInsuranceClaim(Model.Job.Id, true, true))
+                }
+            </div>
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,339 @@
+﻿@{
+    ViewBag.Title = "Credits";
+    Html.BundleDeferred("~/Style/Credits");
+}
+<h2>
+    Organisations</h2>
+<div id="organisationCredits">
+    <span class="message">The development team would like to thank the following organisations
+        for their generous contributions:</span>
+    <ul>
+        <li><a href="http://www.geelonghigh.vic.edu.au/" target="_blank">Geelong High School</a></li>
+        <li><a href="http://www.bellarinesc.vic.edu.au/" target="_blank">Bellarine Secondary
+            College</a></li>
+    </ul>
+</div>
+<hr />
+<table id="pageMenu">
+    <tr>
+        <td>
+            <h2>
+                Platform</h2>
+            <div class="pageMenuArea MicrosoftNET">
+                <a href="http://www.microsoft.com/net/" target="_blank">Microsoft .NET Framework</a>
+                <div class="pageMenuBlurb">
+                    The Microsoft .NET Framework is the hosting virtual machine most of Disco runs on.
+                    Most of Disco's components are written in <a href="http://msdn.microsoft.com/en-us/vstudio/hh388566.aspx"
+                        target="_blank">C#</a>.
+                </div>
+            </div>
+            <div class="pageMenuArea MicrosoftASPNET">
+                <a href="http://www.asp.net/" target="_blank">Microsoft ASP.NET Framework</a>
+                <div class="pageMenuBlurb">
+                    The Microsoft ASP.NET Framework powers all Web features of this web application.
+                    <a href="http://www.nuget.org/packages/Microsoft.Web.Optimization" target="_blank">Microsoft
+                        Web Optimization - Bundling</a> is used to provide JavaScript, CSS and LESS
+                    minification and bundling.
+                </div>
+                <a href="http://www.asp.net/" target="_blank">Microsoft ASP.NET MVC Framework</a>
+                <div class="pageMenuBlurb">
+                    The Microsoft ASP.NET MVC Framework providers the Model-View-Controller pattern
+                    for ASP.NET which is implemented by this web application. Most of this web application's
+                    views are written in <a href="http://www.asp.net/web-pages/tutorials/basics/2-introduction-to-asp-net-web-programming-using-the-razor-syntax"
+                        target="_blank">C# Razor Syntax</a>. Web application start-up time is increase
+                    by pre-compiling all Razor views with <a href="http://razorgenerator.codeplex.com/"
+                        target="_blank">Razor Generator</a>.
+                </div>
+                <a href="http://www.asp.net/entity-framework" target="_blank">Microsoft .NET Entity
+                    Framework</a>
+                <div class="pageMenuBlurb">
+                    The Microsoft .NET Entity Framework is the Object-Relational Mapping (ORM) toolset
+                    used by this web application.
+                </div>
+            </div>
+            <div class="pageMenuArea MicrosoftSQLServer">
+                <a href="http://www.microsoft.com/sqlserver/" target="_blank">Microsoft SQL Server</a>
+                <div class="pageMenuBlurb">
+                    Microsoft SQL Server is used for storage and querying of relational data.
+                </div>
+                <a href="http://msdn.microsoft.com/en-us/data/ff687142" target="_blank">Microsoft SQL
+                    Server Compact</a>
+                <div class="pageMenuBlurb">
+                    Microsoft SQL Server Compact provides file-based relational data storage. It is
+                    used by this web application to store all logs and is available for plug-ins to
+                    use for additional storage.
+                </div>
+            </div>
+            <div class="pageMenuArea MicrosoftSilverlight">
+                <a href="http://www.silverlight.net/" target="_blank">Microsoft Silverlight</a>
+                <div class="pageMenuBlurb">
+                    Microsoft Silverlight is an application framework for writing and running rich Internet
+                    applications. The run-time environment for Silverlight is available as a plug-in
+                    for web browsers running under Microsoft Windows and Mac OS X. Silverlight supports
+                    multimedia, graphics and animation, and give developers support for CLI languages
+                    and development tools.
+                </div>
+            </div>
+            <div class="pageMenuArea SignalR">
+                <a href="http://signalr.net/" target="_blank">SignalR</a><span class="licence"><a
+                    href="http://www.opensource.org/licenses/mit-license.php" target="_blank">MIT</a></span>
+                <div class="pageMenuBlurb">
+                    SignalR is used extensively by this web application to provide real-time feedback
+                    to the client browser. This includes real-time log viewing, enrolment status, document
+                    import status and noticeboards.
+                </div>
+            </div>
+            <div class="pageMenuArea nuget">
+                <a href="http://nuget.org/" target="_blank">nuget</a><span class="licence"><a href="http://www.apache.org/licenses/LICENSE-2.0.html"
+                    target="_blank">Apache License, Version 2.0</a></span>
+                <div class="pageMenuBlurb">
+                    NuGet is a Visual Studio extension that makes it easy to install and update third-party
+                    libraries and tools in Visual Studio.
+                </div>
+            </div>
+            <div class="pageMenuArea T4MVC">
+                <a href="http://t4mvc.codeplex.com/" target="_blank">T4MVC</a><span class="licence"><a
+                    href="http://www.apache.org/licenses/LICENSE-2.0.html" target="_blank">Apache License,
+                    Version 2.0</a></span>
+                <div class="pageMenuBlurb">
+                    T4MVC is a T4 template for ASP.NET MVC apps that creates strongly typed helpers
+                    that eliminate the use of literal strings when referring the controllers, actions
+                    and views.
+                </div>
+            </div>
+        </td>
+        <td>
+            <h2>
+                SDK/Helpers</h2>
+            <div class="pageMenuArea dotless">
+                <a href="http://www.dotlesscss.org/" target="_blank">.less</a><span class="licence"><a
+                    href="http://www.apache.org/licenses/LICENSE-2.0.html" target="_blank">Apache License,
+                    Version 2.0</a></span>
+                <div class="pageMenuBlurb">
+                    .less is a Microsoft .NET Framework port of the popular <a href="http://lesscss.org/"
+                        target="_blank">LESS JavaScript library</a>. LESS syntax adds features to the
+                    Cascading StyleSheet specification for developers to take advantage of. It is compiled
+                    to CSS for the client browser to consume.
+                </div>
+            </div>
+            <div class="pageMenuArea SpringNET">
+                <a href="http://www.springframework.net/" target="_blank">Spring.net</a><span class="licence"><a
+                    href="http://www.apache.org/licenses/LICENSE-2.0.html" target="_blank">Apache License,
+                    Version 2.0</a></span>
+                <div class="pageMenuBlurb">
+                    Spring.NET is an open source application framework that makes building enterprise
+                    .NET applications easier. In particular, this application makes use of <a href="http://www.springframework.net/doc-latest/reference/html/expressions.html"
+                        target="_blank">Spring Expression Evaluation</a>.
+                </div>
+            </div>
+            <div class="pageMenuArea Quartz">
+                <a href="http://quartznet.sourceforge.net/" target="_blank">Quartz.NET</a><span
+                    class="licence"><a href="http://www.apache.org/licenses/LICENSE-2.0.html" target="_blank">Apache
+                        License, Version 2.0</a></span>
+                <div class="pageMenuBlurb">
+                    Quartz.NET is a full-featured, open source job scheduling system that can be used
+                    from smallest apps to large scale enterprise systems. Quartz.NET is a pure .NET
+                    library written in C# and is a port of very popular open source Java job scheduling
+                    framework, <a href="http://www.quartz-scheduler.org/" target="_blank">Quartz</a>.
+                </div>
+            </div>
+            <div class="pageMenuArea iTextSharp">
+                <a href="http://sourceforge.net/projects/itextsharp/" target="_blank">iTextSharp</a><span
+                    class="licence"><a href="http://opensource.org/licenses/AGPL-3.0" target="_blank">AGPL</a></span>
+                <div class="pageMenuBlurb">
+                    iText# (iTextSharp) is a port of the iText open source java library for PDF generation
+                    written entirely in C# for the .NET platform.
+                </div>
+            </div>
+            <div class="pageMenuArea CrystalIcons">
+                <a href="http://everaldo.com/crystal/" target="_blank">Crystal Project Icons</a><span
+                    class="licence"><a href="http://opensource.org/licenses/LGPL-2.1" target="_blank">LGPLv2.1</a></span>
+                <div class="pageMenuBlurb">
+                    The Crystal Project produces a set of icons targeted towards Linux based operating
+                    system distributions.
+                </div>
+            </div>
+            <div class="pageMenuArea JsonNET">
+                <a href="http://json.codeplex.com/" target="_blank">Json.NET</a><span class="licence"><a
+                    href="http://www.opensource.org/licenses/mit-license.php" target="_blank">MIT</a></span>
+                <div class="pageMenuBlurb">
+                    While in most places the (Microsoft .NET Framework) built-in JSON Serializer is
+                    used, however on occasion (and where other frameworks require) Json.NET is used.
+                </div>
+            </div>
+            <div class="pageMenuArea LibTiff">
+                <a href="http://bitmiracle.com/libtiff/" target="_blank">LibTiff.Net</a><span class="licence"><a
+                    href="http://bitmiracle.com/libtiff/help/license-and-copyright.aspx" target="_blank">Copyright</a>
+                    | <a href="http://opensource.org/licenses/BSD-3-Clause" target="_blank">New BSD</a></span>
+                <div class="pageMenuBlurb">
+                    LibTiff.Net provides support for the Tag Image File Format (TIFF), a widely used
+                    format for storing image data.
+                </div>
+            </div>
+            <div class="pageMenuArea DotNetZip">
+                <a href="http://dotnetzip.codeplex.com/" target="_blank">DotNetZip</a><span class="licence"><a
+                    href="http://opensource.org/licenses/MS-PL" target="_blank">Ms-PL</a></span>
+                <div class="pageMenuBlurb">
+                    DotNetZip is an easy-to-use, FAST, FREE class library and toolset for manipulating
+                    zip files or folders.
+                </div>
+            </div>
+            <div class="pageMenuArea SharpSSH">
+                <a href="http://www.tamirgal.com/blog/page/SharpSSH.aspx" target="_blank">SharpSSH</a><span
+                    class="licence"><a href="http://www.jcraft.com/jsch/LICENSE.txt" target="_blank">BSD-Style</a></span>
+                <div class="pageMenuBlurb">
+                    SharpSSH is a pure .NET implementation of the SSH2 client protocol suite. It provides
+                    an API for communication with SSH servers and can be integrated into any .NET application.
+                    The library is a C# port of the <a href="http://www.jcraft.com/jsch/" target="_blank">
+                        JSch</a> project from JCraft Inc.
+                </div>
+            </div>
+            <div class="pageMenuArea ZXing">
+                <a href="http://code.google.com/p/zxing/" target="_blank">ZXing</a><span class="licence"><a
+                    href="http://www.apache.org/licenses/LICENSE-2.0.html" target="_blank">Apache License,
+                    Version 2.0</a></span>
+                <div class="pageMenuBlurb">
+                    ZXing (pronounced "zebra crossing") is an open-source, multi-format 1D/2D barcode
+                    image processing library implemented in Java, with ports to other languages.
+                </div>
+            </div>
+            <div class="pageMenuArea HtmlAgilityPack">
+                <a href="http://htmlagilitypack.codeplex.com/" target="_blank">Html Agility Pack</a><span
+                    class="licence"><a href="http://opensource.org/licenses/MS-PL" target="_blank">Ms-PL</a></span>
+                <div class="pageMenuBlurb">
+                    This is an agile HTML parser that builds a read/write DOM and supports plain XPATH
+                    or XSLT. It is a .NET code library that allows you to parse "out of the web" HTML
+                    files. The parser is very tolerant with "real world" malformed HTML.
+                </div>
+            </div>
+        </td>
+        <td>
+            <h2>
+                Web Client</h2>
+            <div class="pageMenuArea jQuery">
+                <a href="http://jquery.com/" target="_blank">jQuery</a><span class="licence"><a href="http://www.opensource.org/licenses/mit-license.php"
+                    target="_blank">MIT</a>/<a href="http://www.opensource.org/licenses/GPL-2.0" target="_blank">GPLv2</a></span>
+                <div class="pageMenuBlurb">
+                    jQuery is used extensively by this web application to improve browser compatibility
+                    and speed up development by providing query mechanisms for the browsers document
+                    object model (DOM).
+                </div>
+                <div class="pageMenuAreaSub">
+                    <h3>
+                        Plugins:</h3>
+                    <div>
+                        <a href="http://github.com/jquery/jquery-color#readme" target="_blank">Color</a>
+                        - The main purpose of this plugin to animate color properties on elements using
+                        jQuery's .animate() <span class="licence"><a href="http://www.opensource.org/licenses/mit-license.php"
+                            target="_blank">MIT</a>/<a href="http://www.opensource.org/licenses/GPL-3.0" target="_blank">GPL</a></span>
+                    </div>
+@*                    <div>
+                        <a href="http://plugins.jquery.com/project/equal-height" target="_blank">Equal Height</a>
+                        - This plug-in makes HTML-elements equal height by adjusting their min-height CSS
+                        properties. <span class="licence"><a href="http://creativecommons.org/licenses/by/3.0/"
+                            target="_blank">Creative Commons 3.0 Attribution</a></span>
+                    </div>*@
+                    <div>
+                        <a href="http://www.timdown.co.uk/jshashtable/" target="_blank">jshashtable</a>
+                        - jshashtable is a JavaScript implementation of a hash table. It associates objects
+                        ("keys") with other objects ("values"). <span class="licence"><a href="http://www.apache.org/licenses/LICENSE-2.0.html"
+                            target="_blank">Apache License, Version 2.0</a></span>
+                    </div>
+                    <div>
+                        <a href="http://code.google.com/p/jquery-numberformatter/" target="_blank">Number Formatter</a>
+                        - This plugin is a number formatting and parsing plugin for jQuery. <span class="licence">
+                            <a href="http://www.opensource.org/licenses/mit-license.php" target="_blank">MIT</a></span>
+                    </div>
+                    <div>
+                        <a href="http://code.google.com/p/jquery-watermark/" target="_blank">Watermark</a>
+                        - This simple-to-use jQuery plugin adds watermark capability to HTML input and textarea
+                        elements. <span class="licence"><a href="http://www.opensource.org/licenses/mit-license.php"
+                            target="_blank">MIT</a>/<a href="http://www.opensource.org/licenses/GPL-2.0" target="_blank">GPL2</a></span>
+                    </div>
+                    <div>
+                        <a href="http://bassistance.de/jquery-plugins/jquery-plugin-validation/" target="_blank">
+                            Validation</a> - This jQuery plugin makes simple client-side form validation
+                        trivial, while offering lots of option for customization. <span class="licence"><a
+                            href="http://www.opensource.org/licenses/mit-license.php" target="_blank">MIT</a>/<a
+                                href="http://www.opensource.org/licenses/GPL-3.0" target="_blank">GPL</a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="pageMenuArea jQueryUI">
+                <a href="http://jqueryui.com/" target="_blank">jQuery UI</a><span class="licence"><a
+                    href="http://www.opensource.org/licenses/mit-license.php" target="_blank">MIT</a>/<a
+                        href="http://www.opensource.org/licenses/GPL-2.0" target="_blank">GPL2</a></span>
+                <div class="pageMenuBlurb">
+                    jQuery UI is used extensively by this web application to provide in-browser user
+                    interface widgets such as dialogs, date pickers and auto-complete drop-down menus.
+                </div>
+                <div class="pageMenuAreaSub">
+                    <h3>
+                        Plugins:</h3>
+                    <div>
+                        <a href="http://code.google.com/p/dynatree/" target="_blank">Dynatree</a> - Dynatree
+                        is a jQuery plugin that allows the creation of dynamic html tree view controls using
+                        JavaScript. <span class="licence"><a href="http://www.opensource.org/licenses/mit-license.php"
+                            target="_blank">MIT</a></span>
+                    </div>
+                    <div>
+                        <a href="http://isotope.metafizzy.co/" target="_blank">Isotope</a> - Isotope is
+                        a jQuery plugin which provides dynamic layout and transition functionality. <span
+                            class="licence"><a href="http://isotope.metafizzy.co/docs/license.html" target="_blank">
+                                non-commercial</a></span>
+                    </div>
+                    <div>
+                        <a href="http://code.google.com/p/jquery-timepicker/" target="_blank">TimePicker</a>
+                        - jQuery plugin that replaces a single text input with a set of pulldown menus to
+                        select hour, minute, and am/pm. <span class="licence"><a href="http://www.opensource.org/licenses/mit-license.php"
+                            target="_blank">MIT</a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="pageMenuArea Modernizr">
+                <a href="http://modernizr.com/" target="_blank">Modernizr</a><span class="licence"><a
+                    href="http://www.opensource.org/licenses/mit-license.php" target="_blank">MIT</a>/<a
+                        href="http://modernizr.com/license/" target="_blank">BSD-Style</a></span>
+                <div class="pageMenuBlurb">
+                    Modernizr is an open-source JavaScript library that helps you build the next generation
+                    of HTML5 and CSS3-powered websites.
+                </div>
+            </div>
+            <div class="pageMenuArea knockoutjs">
+                <a href="http://knockoutjs.com/" target="_blank">Knockout.js</a><span class="licence"><a
+                    href="http://www.opensource.org/licenses/mit-license.php" target="_blank">MIT</a></span>
+                <div class="pageMenuBlurb">
+                    Knockout.js is used by this web application to provider Model-View-Controller (MVC)
+                    patterns to the client browser. It enables advanced dynamic layouts such as the
+                    real-time enrolment or document import status.
+                </div>
+            </div>
+            <div class="pageMenuArea HighchartsJS">
+                <a href="http://www.highcharts.com/" target="_blank">Highcharts JS</a><span class="licence"><a
+                    href="http://creativecommons.org/licenses/by-nc/3.0/" target="_blank">CC 3.0 Attrib-NonCommercial</a></span>
+                <div class="pageMenuBlurb">
+                    Highcharts JS is used by this web application to display in-browser dynamic charts.
+                </div>
+            </div>
+            <div class="pageMenuArea TinyMCE">
+                <a href="http://www.tinymce.com/" target="_blank">TinyMCE</a><span class="licence"><a
+                    href="http://opensource.org/licenses/LGPL-2.1" target="_blank">LGPLv2.1</a></span>
+                <div class="pageMenuBlurb">
+                    TinyMCE is a platform independent web based JavaScript HTML WYSIWYG editor control.
+                    TinyMCE has the ability to convert HTML TEXTAREA fields or other HTML elements to
+                    editor instances.
+                </div>
+            </div>
+            <div class="pageMenuArea Shadowboxjs">
+                <a href="http://www.shadowbox-js.com/" target="_blank">Shadowbox.js</a><span class="licence"><a
+                    href="http://www.shadowbox-js.com/LICENSE" target="_blank">Non-Commercial License
+                    v1.0</a></span>
+                <div class="pageMenuBlurb">
+                    Shadowbox is a web-based media viewer application that supports all of the web's
+                    most popular media publishing formats. Shadowbox can showcase a wide assortment
+                    of media in all major browsers without navigating users away from the linking page.
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>

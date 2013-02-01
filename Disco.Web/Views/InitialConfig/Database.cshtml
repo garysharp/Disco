@@ -1,0 +1,119 @@
+﻿@model Disco.Web.Models.InitialConfig.DatabaseModel
+@{
+    ViewBag.Title = null;
+}
+<h1>@CommonHelpers.Breadcrumbs(Html.ToBreadcrumb("Initial Configuration", MVC.InitialConfig.Index(), "Database"))</h1>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    
+    <div class="form" style="width: 650px">
+        <h2>SQL Server Connection</h2>
+        <table>
+            <tr>
+                <th style="width: 150px;">Server:
+                </th>
+                <td>
+                    @Html.EditorFor(m => m.Server) @Html.ValidationMessageFor(m => m.Server)
+                    <div class="smallMessage">
+                        If the default instance of SQL Server is not being used, include the instance name.<br />
+                        For example: <span class="code">"SERVER_NAME\INSTANCE_NAME"</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>Database Name:
+                </th>
+                <td>
+                    @Html.EditorFor(m => m.DatabaseName)  @Html.ValidationMessageFor(m => m.DatabaseName)
+                    <div class="smallMessage">
+                        An attempt will be made to create a database with this name if it does not exist.
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>Authentication Method:
+                </th>
+                <td>
+                    @Html.DropDownListFor(m => m.AuthMethod, Model.AuthMethods) @Html.ValidationMessageFor(m => m.AuthMethod)
+                    <div class="smallMessage">
+                        Integrated Authentication is recommended.<br />
+                        To use Integrated Authentication ensure the <span class="code">DiscoServiceAccount</span> domain user has the <span class="code">db_owner</span> role over the database, or <span class="code">sysadmin</span> role if creating a new database.
+                    </div>
+                    <div id="auth_Sql" style="margin-top: 15px; display: none;">
+                        <h4>SQL Authentication Credentials</h4>
+                        <div class="smallMessage">
+                            The following credentials will be stored in clear-text.
+                        </div>
+                        <table class="sub">
+                            <tr>
+                                <th>Username:</th>
+                                <td>@Html.EditorFor(m => m.Auth_SQL_Username)  @Html.ValidationMessageFor(m => m.Auth_SQL_Username)</td>
+                            </tr>
+                            <tr>
+                                <th>Password:</th>
+                                <td>@Html.EditorFor(m => m.Auth_SQL_Password)  @Html.ValidationMessageFor(m => m.Auth_SQL_Password)</td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="actionBar">
+        <input id="submitForm" type="submit" class="button" value="Continue" />
+    </div>
+}
+<div id="dialogWait" title="Please Wait">
+    <h2><span class="ajaxLoading"></span>Building and Validating Database</h2>
+    <div>Please wait while the Disco database is created and/or validated</div>
+</div>
+<script>
+    (function () {
+
+        $(function () {
+            var initialized = false;
+
+            $('#AuthMethod').change(function () {
+                $this = $(this);
+                if ($this.val() === 'SQL') {
+                    // Enable Validation
+                    $('#Auth_SQL_Username').attr('data-val', true).attr('data-val-required', 'The Username is required');
+                    $('#Auth_SQL_Password').attr('data-val', true).attr('data-val-required', 'The Password is required');
+
+                    $('#auth_Sql').slideDown();
+                } else {
+                    $('#Auth_SQL_Username').attr('data-val', false);
+                    $('#Auth_SQL_Password').attr('data-val', false);
+
+                    $('#auth_Sql').slideUp();
+                }
+
+                // Rebuild Validation
+                if (initialized) {
+                    $.validator.unobtrusive.reparse('#auth_Sql');
+                }
+            }).change();
+
+            $('#dialogWait').dialog({
+                autoOpen: false,
+                draggable: false,
+                modal: true,
+                resizable: false,
+                width: 400,
+                height: 150,
+                closeOnEscape: false
+            }).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();
+
+            $('#submitForm').closest('form').submit(function () {
+                if ($(this).valid()) {
+                    $('#dialogWait').dialog('open');
+                }
+                return true;
+            });
+
+            initialized = true;
+        });
+
+    })();
+</script>

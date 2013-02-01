@@ -1,0 +1,136 @@
+﻿@model Disco.Web.Models.Job.LogWarrantyModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Log Warranty");
+}
+@using (Html.BeginForm(MVC.Job.LogWarranty(), FormMethod.Post))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.JobId)
+    @Html.ValidationMessageFor(m => m.JobId)
+    <input type="hidden" name="WarrantyAction" value="Disclose" />
+    <div id="warrantyJobForm" class="form" style="width: 650px">
+        <table>
+            <tr>
+                <th>
+                    Internal Job Id:
+                </th>
+                <td>
+                    @Model.JobId
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Device Serial Number:
+                </th>
+                <td>
+                    @Model.Job.Device.SerialNumber
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Device Model:
+                </th>
+                <td>
+                    @Model.Job.Device.DeviceModel.Manufacturer @Model.Job.Device.DeviceModel.Model
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Technician:
+                </th>
+                <td>
+                    @Model.TechUser.DisplayName
+                    <div class="smallMessage">
+                        Email Address: @Model.TechUser.EmailAddress<br />
+                        Phone Number: @Model.TechUser.PhoneNumber
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 150px">
+                    Repair Address:
+                </th>
+                <td>
+                    @Html.DropDownListFor(model => model.OrganisationAddressId, Model.OrganisationAddresses.ToSelectListItems(Model.OrganisationAddressId, true))<br />
+                    @Html.ValidationMessageFor(m => m.OrganisationAddressId)
+                    <div id="organisationAddressDetailsLoading" style="display: none">
+                        <img src="@(Links.ClientSource.Style.Images.Status.loading_gif)" alt="Loading" />
+                        <span class="smallMessage">Loading Details...</span>
+                    </div>
+                    <div id="organisationAddressDetails">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Warranty Provider:
+                </th>
+                <td>
+                    @Html.DropDownListFor(model => model.WarrantyProviderId, Model.WarrantyProviders.ToSelectListItems(Model.WarrantyProviderId, true))<br />
+                    @Html.ValidationMessageFor(m => m.WarrantyProviderId)
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="warrantyJobFaultDescription" class="form" style="width: 650px; margin-top: 15px;">
+        <h2>
+            Fault Description</h2>
+        <table>
+            <tr>
+                <td>
+                    @Html.EditorFor(model => model.FaultDescription)<br />
+                    @Html.ValidationMessageFor(m => m.FaultDescription)
+                </td>
+            </tr>
+        </table>
+    </div>
+    if (Model.WarrantyProvider != null && Model.WarrantyProviderSubmitJobViewType != null)
+    { 
+    <div id="warrantyJobProviderProperties">
+        @Html.PartialCompiled(Model.WarrantyProviderSubmitJobViewType, Model.WarrantyProviderSubmitJobModel)
+    </div>
+    }
+    <div class="actionBar">
+        <input type="submit" class="button" value="Preview Warranty Claim" />
+    </div>
+}
+<script type="text/javascript">
+    $(function () {
+
+        var $organisationAddressDetails = $('#organisationAddressDetails');
+        var $organisationAddressDetailsLoading = $('#organisationAddressDetailsLoading');
+        var $OrganisationAddressId = $('#OrganisationAddressId');
+
+        var $ProviderId = $('#WarrantyProviderId');
+
+        var updateOrganisationAddressDetails = function () {
+            $organisationAddressDetails.slideUp();
+            var orgAddressId = $OrganisationAddressId.val();
+            if (orgAddressId) {
+                $organisationAddressDetailsLoading.slideDown();
+                $.getJSON('@(Url.Action(MVC.API.Job.OrganisationAddress()))', { id: orgAddressId }, function (data) {
+                    $organisationAddressDetails.empty().append(
+                    $('<span>').text(data.Address),
+                    '<br />',
+                    $('<span>').text(data.Suburb + ', ' + data.Postcode),
+                    '<br />',
+                    $('<span>').text(data.State + ', ' + data.Country)
+                );
+                    $organisationAddressDetailsLoading.slideUp();
+                    $organisationAddressDetails.slideDown();
+                });
+            }
+        }
+        var updateProviderDetails = function () {
+            var providerId = $ProviderId.val();
+            var orgAddressId = $OrganisationAddressId.val();
+
+            if (providerId) {
+                window.location.href = '@(Url.Action(MVC.Job.LogWarranty(Model.JobId, null, null)))?WarrantyProviderId=' + providerId + '&OrganisationAddressId=' + orgAddressId;
+            }
+        }
+        $OrganisationAddressId.change(updateOrganisationAddressDetails).change(updateProviderDetails);
+        $ProviderId.change(updateProviderDetails);
+        updateOrganisationAddressDetails();
+    });
+</script>

@@ -1,0 +1,130 @@
+﻿@model Disco.Web.Areas.Config.Models.Enrolment.IndexModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Enrolment");
+}
+<div class="form" style="width: 530px;">
+    <h2>Apple Mac Secure Enrol</h2>
+    <table>
+        <tr>
+            <th>Username:
+            </th>
+            <td>@Html.TextBoxFor(model => model.MacSshUsername)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        var $DOM = $('#MacSshUsername');
+                        var $DOMAjaxSave = $DOM.next('.ajaxSave');
+                        $DOM
+                    .watermark('Username')
+                    .focus(function () { $DOM.select() })
+                    .keydown(function (e) {
+                        $DOMAjaxSave.show();
+                        if (e.which == 13) {
+                            $(this).blur();
+                        }
+                    }).blur(function () {
+                        $DOMAjaxSave.hide();
+                    })
+                    .change(function () {
+                        $DOMAjaxSave.hide();
+                        var $ajaxLoading = $DOMAjaxSave.next('.ajaxLoading').show();
+                        var data = { MacSshUsername: $DOM.val() };
+                        $.ajax({
+                            url: '@Url.Action(MVC.API.Bootstrapper.MacSshUsername())',
+                            dataType: 'json',
+                            data: data,
+                            success: function (d) {
+                                if (d == 'OK') {
+                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                } else {
+                                    $ajaxLoading.hide();
+                                    alert('Unable to update Username: ' + d);
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert('Unable to update Username: ' + textStatus);
+                                $ajaxLoading.hide();
+                            }
+                        });
+                    });
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>Password:
+            </th>
+            <td>
+                <input id="MacSshPassword" type="password" />
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        var $DOM = $('#MacSshPassword');
+                        var $DOMAjaxSave = $DOM.next('.ajaxSave');
+                        $DOM
+                    .watermark('Password')
+                    .focus(function () { $DOM.select() })
+                    .keydown(function (e) {
+                        $DOMAjaxSave.show();
+                        if (e.which == 13) {
+                            $(this).blur();
+                        }
+                    }).blur(function () {
+                        $DOMAjaxSave.hide();
+                    })
+                    .change(function () {
+                        $DOMAjaxSave.hide();
+                        var $ajaxLoading = $DOMAjaxSave.next('.ajaxLoading').show();
+                        var data = { MacSshPassword: $DOM.val() };
+                        $.ajax({
+                            url: '@Url.Action(MVC.API.Bootstrapper.MacSshPassword())',
+                            dataType: 'json',
+                            data: data,
+                            success: function (d) {
+                                if (d == 'OK') {
+                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                } else {
+                                    $ajaxLoading.hide();
+                                    alert('Unable to update Password: ' + d);
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert('Unable to update Password: ' + textStatus);
+                                $ajaxLoading.hide();
+                            }
+                        });
+                    });
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <span class="smallText"><strong>Instructions:</strong> The above credentials must be
+                    able to connect to the requesting Apple Mac client via <a target="_blank" href="http://en.wikipedia.org/wiki/Secure_Shell">SSH</a>. Enter/Script the following command:</span>
+                <div class="code">
+                    curl&nbsp;<a target="_blank" href="http://disco:9292/Services/Client/Unauthenticated/MacSecureEnrol">http://disco:9292/Services/Client/Unauthenticated/MacSecureEnrol</a>
+                </div>
+                <span class="smallText">This url will return a <a target="_blank" href="http://json.org/">JSON</a> response containing basic information about the enrolment.</span><br />
+                <span class="smallMessage">This command makes use of <a target="_blank" href="http://curl.haxx.se/">cURL</a> (bundled with OSX). Other methods can also trigger a Mac Secure Enrol,
+                    such as an anchor (<span class="code">&lt;a&gt;</span>) or <span class="code">&lt;script&gt;</span>
+                    tag embedded on the organisation's intranet.</span>
+            </td>
+        </tr>
+    </table>
+</div>
+<h2>Live Enrolment Logging</h2>
+@Html.Partial(MVC.Config.Shared.Views.LogEvents, new Disco.Web.Areas.Config.Models.Shared.LogEventsModel()
+{
+    IsLive = true,
+    TakeFilter = 100,
+    StartFilter = DateTime.Today.AddDays(-1),
+    ModuleFilter = Disco.BI.DeviceBI.EnrolmentLog.Current,
+    ViewPortHeight = 250
+})
+<div class="actionBar">
+    @Html.ActionLinkButton("Download Bootstrapper", MVC.Services.Client.Bootstrapper())
+    @Html.ActionLinkButton("Enrolment Status", MVC.Config.Enrolment.Status())
+</div>

@@ -1,0 +1,53 @@
+﻿@model Disco.Web.Models.Job.WarrantyProviderJobDetailsModel
+@{ Layout = null;
+
+   if (Model.JobDetailsException != null)
+   {
+    <h3>
+        Error:</h3>
+    <div>
+        <strong>@Model.JobDetailsException.Message</strong>
+    </div>
+    <a href="#" id="warrantyJobDetailsErrorShow" class="smallMessage">(show more)</a>
+    <div id="warrantyJobDetailsErrorMore" style="display: none">
+        <br />
+        <strong>Error Type: </strong>@Model.JobDetailsException.GetType().Name
+        <br />
+        <strong>Stack Trace:</strong>
+        <div class="code">
+            @Model.JobDetailsException.StackTrace.ToMultilineString()
+        </div>
+        @if (Model.JobDetailsException.InnerException != null)
+        { 
+            <hr />
+            <div>
+                <strong>Inner Exception:</strong> @Model.JobDetailsException.InnerException.Message<br />
+                <strong>Error Type:</strong> @Model.JobDetailsException.GetType().Name<br />
+                <strong>Stack Trace:</strong>
+                <div class="code">
+                    @Model.JobDetailsException.InnerException.StackTrace
+                </div>
+            </div>
+        }
+        <script type="text/javascript">
+            $(function () {
+                $('#warrantyJobDetailsErrorShow').click(function () {
+                    $(this).hide();
+                    $('#warrantyJobDetailsErrorMore').slideDown();
+                });
+            });
+        </script>
+    </div>
+   }
+   else
+   {
+       if (Model.JobDetailsSupported)
+       {
+    @Html.PartialCompiled(Model.ViewType, Model.ViewModel)
+       }
+       else
+       { 
+    <span class="smallMessage">@Model.JobDetailsNotSupportedMessage</span>
+       }
+   }
+}

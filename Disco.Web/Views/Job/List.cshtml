@@ -1,0 +1,5 @@
+﻿@model Disco.Web.Models.Job.ListModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), Model.PageTitle);
+}
+@Html.Partial(MVC.Shared.Views._JobTable, Model.JobTable, new ViewDataDictionary())

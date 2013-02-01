@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B80A737F-BD6A-4986-9182-DD7B932BD950}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Disco.Services</RootNamespace>
+    <AssemblyName>Disco.Services</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Quartz, Version=2.0.1.100, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Resources\Libraries\Quartz\Quartz.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorGenerator.Mvc, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RazorGenerator.Mvc.1.5.0.0\lib\net40\RazorGenerator.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR, Version=0.5.1.10822, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SignalR.Server.0.5.3\lib\net40\SignalR.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR.Hosting.AspNet, Version=0.5.1.10822, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SignalR.Hosting.AspNet.0.5.3\lib\net45\SignalR.Hosting.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR.Hosting.Common">
+      <HintPath>..\packages\SignalR.Hosting.Common.0.5.3\lib\net40\SignalR.Hosting.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WebActivator, Version=1.5.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\RazorGeneratorMvcStart.cs" />
+    <Compile Include="Logging\LogBase.cs" />
+    <Compile Include="Logging\LogContext.cs" />
+    <Compile Include="Logging\LogReInitalizeJob.cs" />
+    <Compile Include="Logging\Models\LogEvent.cs" />
+    <Compile Include="Logging\Models\LogEventType.cs" />
+    <Compile Include="Logging\Models\LogLiveEvent.cs" />
+    <Compile Include="Logging\Models\LogModule.cs" />
+    <Compile Include="Logging\ReadLogContext.cs" />
+    <Compile Include="Logging\SystemLog.cs" />
+    <Compile Include="Logging\Targets\LogLiveContext.cs" />
+    <Compile Include="Logging\Targets\LogPersistContext.cs" />
+    <Compile Include="Logging\Utilities.cs" />
+    <None Include="_Plugins\Categories\CertificateProvider\CertificateProviderPlugin.cs" />
+    <None Include="_Plugins\Categories\CertificateProvider\CertificateProviderLog.cs" />
+    <None Include="_Plugins\Categories\InteroperabilityProvider\InteroperabilityProviderPlugin.cs" />
+    <None Include="_Plugins\Categories\WarrantyProvider\WarrantyProviderPlugin.cs" />
+    <None Include="_Plugins\Categories\WarrantyProvider\WarrantyProviderSubmitJobException.cs" />
+    <None Include="_Plugins\PluginCategoryAttribute.cs" />
+    <None Include="_Plugins\PluginDefinition.cs" />
+    <None Include="_Plugins\Plugins.cs" />
+    <None Include="_Plugins\Plugin.cs" />
+    <None Include="_Plugins\IPluginConfiguration.cs" />
+    <None Include="_Plugins\IPluginWebController.cs" />
+    <None Include="_Plugins\InvalidCategoryTypeException.cs" />
+    <None Include="_Plugins\PluginExtensions.cs" />
+    <None Include="_Plugins\PluginsLog.cs" />
+    <None Include="_Plugins\PluginWebControllerException.cs" />
+    <None Include="_Plugins\PluginWebControllerExtensions.cs" />
+    <None Include="_Plugins\UnknownPluginException.cs" />
+    <Compile Include="Plugins\PluginAttribute.cs" />
+    <Compile Include="Plugins\PluginExtensions.cs" />
+    <Compile Include="Plugins\PluginFeatureAttribute.cs" />
+    <Compile Include="Plugins\Features\CertificateProvider\CertificateProviderFeature.cs" />
+    <Compile Include="Plugins\Features\CertificateProvider\CertificateProviderLog.cs" />
+    <Compile Include="Plugins\Features\InteroperabilityProvider\InteroperabilityProviderFeature.cs" />
+    <Compile Include="Plugins\Features\Other\OtherFeature.cs" />
+    <Compile Include="Plugins\Features\WarrantyProvider\WarrantyProviderFeature.cs" />
+    <Compile Include="Plugins\Features\WarrantyProvider\WarrantyProviderSubmitJobException.cs" />
+    <Compile Include="Plugins\InvalidFeatureCategoryTypeException.cs" />
+    <Compile Include="Plugins\Plugin.cs" />
+    <Compile Include="Plugins\PluginConfigurationHandler.cs" />
+    <Compile Include="Plugins\PluginFeature.cs" />
+    <Compile Include="Plugins\PluginFeatureCategoryAttribute.cs" />
+    <Compile Include="Plugins\PluginFeatureManifest.cs" />
+    <Compile Include="Plugins\PluginManifest.cs" />
+    <Compile Include="Plugins\Plugins.cs" />
+    <Compile Include="Plugins\PluginsLog.cs" />
+    <Compile Include="Plugins\PluginWebHandler.cs" />
+    <Compile Include="Plugins\PluginWebHandlerController.cs" />
+    <Compile Include="Plugins\UnknownPluginException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tasks\ScheduledTask.cs" />
+    <Compile Include="Tasks\ScheduledTaskCleanup.cs" />
+    <Compile Include="Tasks\ScheduledTasks.cs" />
+    <Compile Include="Tasks\ScheduledTasksLog.cs" />
+    <Compile Include="Tasks\ScheduledTaskStatus.cs" />
+    <Compile Include="Tasks\ScheduledTasksLiveStatusService.cs" />
+    <Compile Include="Tasks\ScheduledTaskStatusLive.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Disco.Data\Disco.Data.csproj">
+      <Project>{85A6BD19-2C64-4746-8F2C-A68A86E8C2D7}</Project>
+      <Name>Disco.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Disco.Models\Disco.Models.csproj">
+      <Project>{FBC05512-FCCA-4B16-9E76-8C413C5DE6C9}</Project>
+      <Name>Disco.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2001/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>
+    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
+    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

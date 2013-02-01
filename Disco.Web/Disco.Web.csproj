@@ -1,0 +1,1820 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{241F4F43-6ACB-482D-8CBF-8F4E4B4DB0FE}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Disco.Web</RootNamespace>
+    <AssemblyName>Disco.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotNet.Highcharts">
+      <HintPath>..\packages\DotNet.Highcharts.1.2\lib\DotNet.Highcharts.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Quartz">
+      <HintPath>..\..\Resources\Libraries\Quartz\Quartz.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorGenerator.Mvc, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RazorGenerator.Mvc.1.5.0.0\lib\net40\RazorGenerator.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR">
+      <HintPath>..\packages\SignalR.Server.0.5.3\lib\net40\SignalR.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR.Hosting.AspNet">
+      <HintPath>..\packages\SignalR.Hosting.AspNet.0.5.3\lib\net45\SignalR.Hosting.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR.Hosting.Common">
+      <HintPath>..\packages\SignalR.Hosting.Common.0.5.3\lib\net40\SignalR.Hosting.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SqlServerCe.Entity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.SqlServerCompact.4.3.6\lib\net40\System.Data.SqlServerCe.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20715.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="T4MVCExtensions">
+      <HintPath>..\packages\T4MVCExtensions.3.2.0\lib\net40\T4MVCExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivator, Version=1.5.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Code\AjaxHelpers.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AjaxHelpers.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="App_Code\CommonHelpers.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CommonHelpers.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Config\Models\Config\IndexModel.cs" />
+    <Compile Include="Controllers\InitialConfigController.cs" />
+    <Compile Include="Controllers\PluginWebHandlerController.cs" />
+    <Compile Include="Extensions\HtmlExtensions.cs" />
+    <Compile Include="App_Start\AppConfig.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RazorGeneratorMvcStart.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\API\APIAreaRegistration.cs" />
+    <Compile Include="Areas\API\Controllers\BootstrapperController.cs" />
+    <Compile Include="Areas\API\Controllers\DeviceBatchController.cs" />
+    <Compile Include="Areas\API\Controllers\DeviceController.cs" />
+    <Compile Include="Areas\API\Controllers\DeviceModelController.cs" />
+    <Compile Include="Areas\API\Controllers\DeviceProfileController.cs" />
+    <Compile Include="Areas\API\Controllers\DocumentTemplateController.cs" />
+    <Compile Include="Areas\API\Controllers\ExpressionsController.cs" />
+    <Compile Include="Areas\API\Controllers\JobController.cs" />
+    <Compile Include="Areas\API\Controllers\LoggingController.cs" />
+    <Compile Include="Areas\API\Controllers\SystemController.cs" />
+    <Compile Include="Areas\API\Controllers\UserController.cs" />
+    <Compile Include="Areas\API\Controllers\WirelessCertificateController.cs" />
+    <Compile Include="Areas\API\Models\Attachment\AttachmentModel.cs" />
+    <Compile Include="Areas\API\Models\Attachment\AttachmentsModel.cs" />
+    <Compile Include="Areas\API\Models\Attachment\_AttachmentModel.cs" />
+    <Compile Include="Areas\API\Models\DeviceBatch\DeviceBatchTimelineEvent.cs" />
+    <Compile Include="Areas\API\Models\DeviceBatch\DeviceBatchTimelineEventSource.cs" />
+    <Compile Include="Areas\API\Models\DeviceModel\ComponentModel.cs" />
+    <Compile Include="Areas\API\Models\DeviceModel\_ComponentModel.cs" />
+    <Compile Include="Areas\API\Models\DeviceModel\_DeviceModel.cs" />
+    <Compile Include="Areas\API\Models\DocumentTemplate\ImporterUndetectedDataIdLookupModel.cs" />
+    <Compile Include="Areas\API\Models\DocumentTemplate\ImporterUndetectedFilesModel.cs" />
+    <Compile Include="Areas\API\Models\Expressions\ValidateExpressionModel.cs" />
+    <Compile Include="Areas\API\Models\Job\CommentPostModel.cs" />
+    <Compile Include="Areas\API\Models\Job\CommentsModel.cs" />
+    <Compile Include="Areas\API\Models\Job\ComponentModel.cs" />
+    <Compile Include="Areas\API\Models\Job\_CommentModel.cs" />
+    <Compile Include="Areas\API\Models\Job\_ComponentModel.cs" />
+    <Compile Include="Areas\API\Models\Job\_DateChangeModel.cs" />
+    <Compile Include="Areas\API\Models\Logs\LogEventTypeModel.cs" />
+    <Compile Include="Areas\API\Models\Logs\LogModuleModel.cs" />
+    <Compile Include="Areas\API\Models\System\UpdateLastNetworkLogonDatesModel.cs" />
+    <Compile Include="Areas\Config\ConfigAreaRegistration.cs" />
+    <Compile Include="Areas\Config\Controllers\ConfigController.cs" />
+    <Compile Include="Areas\Config\Controllers\DeviceBatchController.cs" />
+    <Compile Include="Areas\Config\Controllers\DeviceModelController.cs" />
+    <Compile Include="Areas\Config\Controllers\DeviceProfileController.cs" />
+    <Compile Include="Areas\Config\Controllers\DocumentTemplateController.cs" />
+    <Compile Include="Areas\Config\Controllers\EnrolmentController.cs" />
+    <Compile Include="Areas\Config\Controllers\ExpressionsController.cs" />
+    <Compile Include="Areas\Config\Controllers\LoggingController.cs" />
+    <Compile Include="Areas\Config\Controllers\OrganisationController.cs" />
+    <Compile Include="Areas\Config\Controllers\PluginsController.cs" />
+    <Compile Include="Areas\Config\Controllers\SystemConfigController.cs" />
+    <Compile Include="Areas\Config\Models\DeviceBatch\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceBatch\ShowModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceBatch\_IndexModelDeviceBatch.cs" />
+    <Compile Include="Areas\Config\Models\DeviceModel\DeviceComponentsModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceModel\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceModel\ShowModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceModel\_IndexModelDeviceModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceProfile\DefaultsModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceProfile\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceProfile\ShowModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceProfile\_IndexModelDeviceProfile.cs" />
+    <Compile Include="Areas\Config\Models\DocumentTemplate\CreateModel.cs" />
+    <Compile Include="Areas\Config\Models\DocumentTemplate\ExpressionBrowserModel.cs" />
+    <Compile Include="Areas\Config\Models\DocumentTemplate\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\DocumentTemplate\ShowModel.cs" />
+    <Compile Include="Areas\Config\Models\DocumentTemplate\UndetectedPagesModel.cs" />
+    <Compile Include="Areas\Config\Models\Enrolment\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\Expressions\EditorModel.cs" />
+    <Compile Include="Areas\Config\Models\Logging\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\Logging\TaskStatusModel.cs" />
+    <Compile Include="Areas\Config\Models\Organisation\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\Plugins\IndexViewModel.cs" />
+    <Compile Include="Areas\Config\Models\Plugins\ProviderConfigurationViewModel.cs" />
+    <Compile Include="Areas\Config\Models\Shared\LogEventsModel.cs" />
+    <Compile Include="Areas\Config\Models\SystemConfig\IndexModel.cs" />
+    <Compile Include="Areas\Config\Views\Config\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceBatch\Create.generated.cs">
+      <DependentUpon>Create.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceBatch\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceBatch\Show.generated.cs">
+      <DependentUpon>Show.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceBatch\Timeline.generated.cs">
+      <DependentUpon>Timeline.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceModel\GenericComponents.generated.cs">
+      <DependentUpon>GenericComponents.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceModel\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceModel\Show.generated.cs">
+      <DependentUpon>Show.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceModel\_DeviceComponentsTable.generated.cs">
+      <DependentUpon>_DeviceComponentsTable.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceProfile\Create.generated.cs">
+      <DependentUpon>Create.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceProfile\Defaults.generated.cs">
+      <DependentUpon>Defaults.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceProfile\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceProfile\Show.generated.cs">
+      <DependentUpon>Show.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceProfile\_Table.generated.cs">
+      <DependentUpon>_Table.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceProfile\_TableRender.generated.cs">
+      <DependentUpon>_TableRender.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DocumentTemplate\Create.generated.cs">
+      <DependentUpon>Create.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DocumentTemplate\ExpressionBrowser2.generated.cs">
+      <DependentUpon>ExpressionBrowser.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DocumentTemplate\ImportStatus.generated.cs">
+      <DependentUpon>ImportStatus.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DocumentTemplate\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DocumentTemplate\Show.generated.cs">
+      <DependentUpon>Show.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DocumentTemplate\UndetectedPages.generated.cs">
+      <DependentUpon>UndetectedPages.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DocumentTemplate\_ExpressionsTable.generated.cs">
+      <DependentUpon>_ExpressionsTable.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\Enrolment\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\Enrolment\Status.generated.cs">
+      <DependentUpon>Status.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\Expressions\Editor.generated.cs">
+      <DependentUpon>Editor.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\Logging\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\Logging\TaskStatus.generated.cs">
+      <DependentUpon>TaskStatus.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\Organisation\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\Plugins\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\Plugins\ProviderConfiguration.generated.cs">
+      <DependentUpon>Configure.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\Shared\LogEvents.generated.cs">
+      <DependentUpon>LogEvents.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\SystemConfig\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\_ViewStart.generated.cs">
+      <DependentUpon>_ViewStart.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Public\Controllers\PublicController.cs" />
+    <Compile Include="Areas\Public\Controllers\UserHeldDevicesController.cs" />
+    <Compile Include="Areas\Public\Models\UserHeldDevices\HeldJobDeviceModel.cs" />
+    <Compile Include="Areas\Public\Models\UserHeldDevices\UserHeldDeviceModel.cs" />
+    <Compile Include="Areas\Public\PublicAreaRegistration.cs" />
+    <Compile Include="Areas\Public\Views\Public\Credits.generated.cs">
+      <DependentUpon>Credits.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Public\Views\Public\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Public\Views\Public\Licence.generated.cs">
+      <DependentUpon>Licence.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Public\Views\Shared\_Layout.generated.cs">
+      <DependentUpon>_Layout.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Public\Views\UserHeldDevices\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Public\Views\UserHeldDevices\Noticeboard.generated.cs">
+      <DependentUpon>Noticeboard.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Public\Views\_ViewStart.generated.cs">
+      <DependentUpon>_ViewStart.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Services\Controllers\ClientController.cs" />
+    <Compile Include="Areas\Services\ServicesAreaRegistration.cs" />
+    <Compile Include="ClientSource\Style\Images\AttachmentTypes\MimeTypeIcons.cs" />
+    <Compile Include="Controllers\DeviceController.cs" />
+    <Compile Include="Controllers\JobController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Device\AddOfflineModel.cs" />
+    <Compile Include="Models\Device\ShowModel.cs" />
+    <Compile Include="Models\InitialConfig\CompleteModel.cs" />
+    <Compile Include="Models\InitialConfig\DatabaseModel.cs" />
+    <Compile Include="Models\InitialConfig\FileStoreModel.cs" />
+    <Compile Include="Models\InitialConfig\WelcomeModel.cs" />
+    <Compile Include="Models\Job\IndexModel.cs" />
+    <Compile Include="Models\Job\ListModel.cs" />
+    <Compile Include="Models\Job\LogWarrantyModel.cs" />
+    <Compile Include="Models\Job\CreateModel.cs" />
+    <Compile Include="Models\Job\CreateRedirectModel.cs" />
+    <Compile Include="Models\Job\ShowModel.cs" />
+    <Compile Include="Models\Job\WarrantyProviderJobDetailsModel.cs" />
+    <Compile Include="Models\Search\QueryModel.cs" />
+    <Compile Include="Models\User\ShowModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="T4MVC.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Device\AddOffline.generated.cs">
+      <DependentUpon>AddOffline.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Device\DeviceParts\Resources.generated.cs">
+      <DependentUpon>Resources.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Device\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Device\Show.generated.cs">
+      <DependentUpon>Show.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Device\_CertificateTable.generated.cs">
+      <DependentUpon>_CertificateTable.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Device\_DeviceActions.generated.cs">
+      <DependentUpon>_DeviceActions.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Device\_DeviceTable.generated.cs">
+      <DependentUpon>_DeviceTable.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Device\_DeviceUserAssignmentHistoryTable.generated.cs">
+      <DependentUpon>_DeviceUserAssignmentHistoryTable.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Device\_ViewStart.generated.cs">
+      <DependentUpon>_ViewStart.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\InitialConfig\Complete.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Complete.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InitialConfig\Database.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Database.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InitialConfig\FileStore.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileStore.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InitialConfig\RestartWebApp.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RestartWebApp.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InitialConfig\Welcome.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Welcome.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InitialConfig\_Layout.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_Layout.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InitialConfig\_ViewStart.generated.cs">
+      <DependentUpon>_ViewStart.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\JobParts\_Subject.generated.cs">
+      <DependentUpon>_Subject.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\Create_Redirect.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Create_Redirect.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Job\_CreateSubject.generated.cs">
+      <DependentUpon>_CreateSubject.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\Index.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Index.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Job\JobParts\Components.generated.cs">
+      <DependentUpon>Components.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\JobParts\Flags.generated.cs">
+      <DependentUpon>Flags.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\JobParts\Insurance.generated.cs">
+      <DependentUpon>Insurance.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\JobParts\JobMetaAdditions1.generated.cs">
+      <DependentUpon>JobMetaAdditions.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\JobParts\NonWarranty.generated.cs">
+      <DependentUpon>NonWarranty.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\JobParts\NonWarrantyFinance.generated.cs">
+      <DependentUpon>NonWarrantyFinance.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\JobParts\Repairs.generated.cs">
+      <DependentUpon>Repairs.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\JobParts\Resources.generated.cs">
+      <DependentUpon>Resources.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\JobParts\Warranty.generated.cs">
+      <DependentUpon>Warranty.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\List.generated.cs">
+      <DependentUpon>List.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\LogWarranty.generated.cs">
+      <DependentUpon>LogWarranty.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\LogWarrantyDisclose.generated.cs">
+      <DependentUpon>LogWarrantyDisclose.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\LogWarrantyError.generated.cs">
+      <DependentUpon>LogWarrantyError.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\Create.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Create.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Job\Show.generated.cs">
+      <DependentUpon>Show.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\WarrantyProviderJobDetails.generated.cs">
+      <DependentUpon>WarrantyProviderJobDetails.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\_ViewStart.generated.cs">
+      <DependentUpon>_ViewStart.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Search\Query.generated.cs">
+      <DependentUpon>Query.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Shared\_DialogLayout.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DialogLayout.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\_EmptyLayout.generated.cs">
+      <DependentUpon>_EmptyLayout.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Shared\Error.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Error.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\_JobTable.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_JobTable.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\_JobTableRender.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_JobTableRender.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\_Layout.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_Layout.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\_SearchDialog.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_SearchDialog.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\User\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\User\Show.generated.cs">
+      <DependentUpon>Show.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\User\UserParts\Resources.generated.cs">
+      <DependentUpon>Resources.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\User\_UserDeviceAssignmentHistoryTable.generated.cs">
+      <DependentUpon>_UserDeviceAssignmentHistoryTable.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\User\_UserTable.generated.cs">
+      <DependentUpon>_UserTable.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\User\_ViewStart.generated.cs">
+      <DependentUpon>_ViewStart.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\_ViewStart.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ViewStart.cshtml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ClientBin\Disco.ClientBootstrapper.exe" />
+    <Content Include="ClientBin\Disco.Silverlight.AttachmentUpload.xap" />
+    <None Include="ClientSource\Scripts\Core.min.js.map">
+      <DependentUpon>Core.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Scripts\Core\disco.dataTables.extensions.js" />
+    <None Include="ClientSource\Scripts\Core\disco.unobtrusiveValidation.extensions.js" />
+    <None Include="ClientSource\Scripts\Core\jquery.dataTables.js" />
+    <None Include="ClientSource\Scripts\Core\jquery.watermark.js" />
+    <None Include="ClientSource\Scripts\Core.js">
+      <DependentUpon>Core.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Core.min.js">
+      <DependentUpon>Core.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.js">
+      <DependentUpon>Disco-AjaxHelperIcons.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.min.js">
+      <DependentUpon>Disco-AjaxHelperIcons.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons\disco.ajaxhelpericons.js" />
+    <None Include="ClientSource\Scripts\Modules\Disco-CreateJob.min.js.map">
+      <DependentUpon>Disco-CreateJob.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.min.js.map">
+      <DependentUpon>Disco-DataTableHelpers.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers\disco.datatablehelpers.js" />
+    <None Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.min.js.map">
+      <DependentUpon>Disco-ExpressionEditor.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor\disco.expressioneditor.js" />
+    <None Include="ClientSource\Scripts\Modules\Disco-CreateJob\disco.createjob.js" />
+    <None Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions.min.js.map">
+      <DependentUpon>Disco-jQueryExtensions.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions\disco.jQueryExtensions.js" />
+    <None Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers.min.js.map">
+      <DependentUpon>Disco-PropertyChangeHelpers.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers\disco.propertychangehelpers.js" />
+    <None Include="ClientSource\Scripts\Modules\Highcharts.min.js.map">
+      <DependentUpon>Highcharts.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Scripts\Modules\Highcharts\highcharts.src.js" />
+    <None Include="ClientSource\Scripts\Modules\Highcharts\modules\canvas-tools.js" />
+    <None Include="ClientSource\Scripts\Modules\Highcharts\modules\canvas-tools.src.js" />
+    <None Include="ClientSource\Scripts\Modules\Highcharts\modules\exporting.js" />
+    <None Include="ClientSource\Scripts\Modules\Highcharts\modules\exporting.src.js" />
+    <None Include="ClientSource\Scripts\Modules\Highcharts\themes\dark-blue.js" />
+    <None Include="ClientSource\Scripts\Modules\Highcharts\themes\dark-green.js" />
+    <None Include="ClientSource\Scripts\Modules\Highcharts\themes\gray.js" />
+    <None Include="ClientSource\Scripts\Modules\Highcharts\themes\grid.js" />
+    <None Include="ClientSource\Scripts\Modules\Highcharts\themes\skies.js" />
+    <None Include="ClientSource\Scripts\Modules\jQuery-Isotope.min.js.map">
+      <DependentUpon>jQuery-Isotope.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Scripts\Modules\jQuery-Isotope\jquery.isotope.js" />
+    <None Include="ClientSource\Scripts\Modules\Disco-CreateJob.js">
+      <DependentUpon>Disco-CreateJob.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\Disco-CreateJob.min.js">
+      <DependentUpon>Disco-CreateJob.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.js">
+      <DependentUpon>Disco-DataTableHelpers.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.min.js">
+      <DependentUpon>Disco-DataTableHelpers.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.js">
+      <DependentUpon>Disco-ExpressionEditor.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.min.js">
+      <DependentUpon>Disco-ExpressionEditor.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions.js">
+      <DependentUpon>Disco-jQueryExtensions.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions.min.js">
+      <DependentUpon>Disco-jQueryExtensions.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers.js">
+      <DependentUpon>Disco-PropertyChangeHelpers.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers.min.js">
+      <DependentUpon>Disco-PropertyChangeHelpers.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Highcharts.js">
+      <DependentUpon>Highcharts.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\Highcharts.min.js">
+      <DependentUpon>Highcharts.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\jQuery-Isotope.js">
+      <DependentUpon>jQuery-Isotope.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\jQuery-Isotope.min.js">
+      <DependentUpon>jQuery-Isotope.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.js">
+      <DependentUpon>jQuery-NumberFormatter.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.min.js">
+      <DependentUpon>jQuery-NumberFormatter.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter\jquery.numberformatter.js" />
+    <None Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter\jshashtable-2.1.js" />
+    <None Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.min.js.map">
+      <DependentUpon>jQuery-NumberFormatter.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Scripts\Modules\jQuery-SignalR.min.js.map">
+      <DependentUpon>jQuery-SignalR.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.min.js.map">
+      <DependentUpon>jQueryUI-DynaTree.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree\jquery.dynatree.js" />
+    <None Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker.min.js.map">
+      <DependentUpon>jQueryUI-TimePicker.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker\jquery-ui-timepicker-addon.js" />
+    <None Include="ClientSource\Scripts\Modules\Knockout.min.js.map">
+      <DependentUpon>Knockout.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Scripts\Modules\Shadowbox.min.js.map">
+      <DependentUpon>Shadowbox.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Scripts\Modules\Shadowbox\shadowbox.js" />
+    <None Include="ClientSource\Scripts\Modules\Silverlight.min.js.map">
+      <DependentUpon>Silverlight.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Scripts\Modules\Silverlight\Silverlight.js" />
+    <None Include="ClientSource\Scripts\Modules\jQuery-SignalR.js">
+      <DependentUpon>jQuery-SignalR.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\jQuery-SignalR.min.js">
+      <DependentUpon>jQuery-SignalR.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.js">
+      <DependentUpon>jQueryUI-DynaTree.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.min.js">
+      <DependentUpon>jQueryUI-DynaTree.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker.js">
+      <DependentUpon>jQueryUI-TimePicker.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker.min.js">
+      <DependentUpon>jQueryUI-TimePicker.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Knockout.js">
+      <DependentUpon>Knockout.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\Knockout.min.js">
+      <DependentUpon>Knockout.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Shadowbox.js">
+      <DependentUpon>Shadowbox.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\Shadowbox.min.js">
+      <DependentUpon>Shadowbox.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Silverlight.js">
+      <DependentUpon>Silverlight.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\Silverlight.min.js">
+      <DependentUpon>Silverlight.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Timeline\disco.simileajaxextensions.js" />
+    <None Include="ClientSource\Scripts\Modules\Timeline\disco.timelineextensions.js" />
+    <None Include="ClientSource\Scripts\Modules\Timeline\labellers.js" />
+    <None Include="ClientSource\Scripts\Modules\Timeline\simile-ajax-bundle-DiscoMod.js" />
+    <None Include="ClientSource\Scripts\Modules\Timeline\timeline-bundle.js" />
+    <None Include="ClientSource\Scripts\Modules\timeline.js">
+      <DependentUpon>Timeline.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\Timeline.min.js">
+      <DependentUpon>Timeline.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Timeline\timeline.js" />
+    <None Include="ClientSource\Scripts\Modules\tinymce.min.js.map">
+      <DependentUpon>tinymce.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Scripts\Modules\Timeline.min.js.map">
+      <DependentUpon>Timeline.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Scripts\Modules\tinymce\disco.tinymceextensions.js" />
+    <None Include="ClientSource\Scripts\Modules\tinymce.js">
+      <DependentUpon>tinymce.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\tinymce.min.js">
+      <DependentUpon>tinymce.js.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\BundleSite.css">
+      <DependentUpon>BundleSite.css.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Style\BundleSite.min.css">
+      <DependentUpon>BundleSite.css.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\Config.css">
+      <DependentUpon>Config.less</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Style\Config.min.css">
+      <DependentUpon>Config.less</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\Credits.css">
+      <DependentUpon>Credits.less</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Style\Credits.min.css">
+      <DependentUpon>Credits.less</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\Credits\CrystalIcons.png" />
+    <None Include="ClientSource\Style\Credits\dotless.png" />
+    <None Include="ClientSource\Style\Credits\HighchartsJS.png" />
+    <None Include="ClientSource\Style\Credits\iTextSharp.png" />
+    <None Include="ClientSource\Style\Credits\jQuery.png" />
+    <None Include="ClientSource\Style\Credits\jQueryUI.png" />
+    <None Include="ClientSource\Style\Credits\JsonNET.png" />
+    <None Include="ClientSource\Style\Credits\knockoutjs.png" />
+    <None Include="ClientSource\Style\Credits\LibTiff.png" />
+    <None Include="ClientSource\Style\Credits\MicrosoftASPNET.png" />
+    <None Include="ClientSource\Style\Credits\MicrosoftNET.png" />
+    <None Include="ClientSource\Style\Credits\MicrosoftSilverlight.png" />
+    <None Include="ClientSource\Style\Credits\MicrosoftSQLServer.png" />
+    <None Include="ClientSource\Style\Credits\Modernizr.png" />
+    <None Include="ClientSource\Style\Credits\nuget.png" />
+    <None Include="ClientSource\Style\Credits\Quartz.png" />
+    <None Include="ClientSource\Style\Credits\Shadowboxjs.png" />
+    <None Include="ClientSource\Style\Credits\SignalR.png" />
+    <None Include="ClientSource\Style\Credits\SpringNET.png" />
+    <None Include="ClientSource\Style\Credits\TinyMCE.png" />
+    <None Include="ClientSource\Style\Credits\ZXing.png" />
+    <None Include="ClientSource\Style\Declarations.css">
+      <DependentUpon>Declarations.less</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Style\Declarations.min.css">
+      <DependentUpon>Declarations.less</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\Device.css">
+      <DependentUpon>Device.less</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Style\Device.min.css">
+      <DependentUpon>Device.less</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\Dialog.css">
+      <DependentUpon>Dialog.less</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Style\Dialog.min.css">
+      <DependentUpon>Dialog.less</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\ExpressionEditor.css" />
+    <Content Include="ClientSource\Style\ExpressionEditor.htm" />
+    <Content Include="ClientSource\Style\ExpressionEditor.min.css">
+      <DependentUpon>ExpressionEditor.css</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\Images\Actions\attach.png" />
+    <None Include="ClientSource\Style\Images\Actions\dataTableFirst.png" />
+    <None Include="ClientSource\Style\Images\Actions\dataTableFirstDisabled.png" />
+    <None Include="ClientSource\Style\Images\Actions\dataTableLast.png" />
+    <None Include="ClientSource\Style\Images\Actions\dataTableLastDisabled.png" />
+    <None Include="ClientSource\Style\Images\Actions\dataTableNext.png" />
+    <None Include="ClientSource\Style\Images\Actions\dataTableNextDisabled.png" />
+    <None Include="ClientSource\Style\Images\Actions\dataTablePrev.png" />
+    <None Include="ClientSource\Style\Images\Actions\dataTablePrevDisabled.png" />
+    <None Include="ClientSource\Style\Images\Actions\dataTableSort.png" />
+    <None Include="ClientSource\Style\Images\Actions\editForm.png" />
+    <None Include="ClientSource\Style\Images\Actions\expressionBrowser.png" />
+    <None Include="ClientSource\Style\Images\Actions\expressionBrowser256.png" />
+    <None Include="ClientSource\Style\Images\Actions\list.png" />
+    <None Include="ClientSource\Style\Images\Actions\listAlert.png" />
+    <None Include="ClientSource\Style\Images\Actions\locked.png" />
+    <None Include="ClientSource\Style\Images\Actions\pageMenuConfigIcon.png" />
+    <None Include="ClientSource\Style\Images\Actions\pageMenuConfigIconHover.png" />
+    <None Include="ClientSource\Style\Images\Actions\pageMenuIcon.png" />
+    <None Include="ClientSource\Style\Images\Actions\pageMenuIconHover.png" />
+    <None Include="ClientSource\Style\Images\Actions\pageMenuNoticeboardIcon.png" />
+    <None Include="ClientSource\Style\Images\Actions\pageMenuNoticeboardIconHover.png" />
+    <None Include="ClientSource\Style\Images\Actions\pageMenuReportIcon.png" />
+    <None Include="ClientSource\Style\Images\Actions\pageMenuReportIconHover.png" />
+    <None Include="ClientSource\Style\Images\Actions\photo.png" />
+    <None Include="ClientSource\Style\Images\Actions\post.png" />
+    <None Include="ClientSource\Style\Images\Actions\remove.png" />
+    <None Include="ClientSource\Style\Images\Actions\removeSubtle.png" />
+    <None Include="ClientSource\Style\Images\Actions\unlocked.png" />
+    <Content Include="ClientSource\Style\Images\AttachmentTypes\document.png" />
+    <Content Include="ClientSource\Style\Images\AttachmentTypes\expressionBrowserIcons.png" />
+    <Content Include="ClientSource\Style\Images\AttachmentTypes\image.png" />
+    <Content Include="ClientSource\Style\Images\AttachmentTypes\pdf.png" />
+    <Content Include="ClientSource\Style\Images\AttachmentTypes\unknown.png" />
+    <None Include="ClientSource\Style\Images\BackgroundDocument.png" />
+    <None Include="ClientSource\Style\Images\BackgroundInitialConfig.jpg" />
+    <None Include="ClientSource\Style\Images\BackgroundPage.png" />
+    <Content Include="ClientSource\Style\Images\DeviceTypes\AppliancePC.png" />
+    <Content Include="ClientSource\Style\Images\DeviceTypes\Desktop.png" />
+    <Content Include="ClientSource\Style\Images\DeviceTypes\EnterpriseServer.png" />
+    <Content Include="ClientSource\Style\Images\DeviceTypes\Maximum.png" />
+    <Content Include="ClientSource\Style\Images\DeviceTypes\Mobile.png" />
+    <Content Include="ClientSource\Style\Images\DeviceTypes\PerformanceServer.png" />
+    <Content Include="ClientSource\Style\Images\DeviceTypes\SmallOfficeAndHomeOfficeServer.png" />
+    <Content Include="ClientSource\Style\Images\DeviceTypes\Unknown.png" />
+    <Content Include="ClientSource\Style\Images\DeviceTypes\Workstation.png" />
+    <Content Include="ClientSource\Style\Images\Heading.png" />
+    <None Include="ClientSource\Style\Images\Icon32.png" />
+    <None Include="ClientSource\Style\Images\Status\error.png" />
+    <None Include="ClientSource\Style\Images\Status\fail32.png" />
+    <None Include="ClientSource\Style\Images\Status\fileBroken256.png" />
+    <None Include="ClientSource\Style\Images\Status\information.png" />
+    <None Include="ClientSource\Style\Images\Status\jobStatus-Closed.png" />
+    <None Include="ClientSource\Style\Images\Status\jobStatus-Insurance.png" />
+    <None Include="ClientSource\Style\Images\Status\jobStatus-Open.png" />
+    <None Include="ClientSource\Style\Images\Status\jobStatus-Repairs.png" />
+    <None Include="ClientSource\Style\Images\Status\jobStatus-User.png" />
+    <None Include="ClientSource\Style\Images\Status\loading.gif" />
+    <None Include="ClientSource\Style\Images\Status\ok.png" />
+    <None Include="ClientSource\Style\Images\Status\pbar-ani.gif" />
+    <None Include="ClientSource\Style\Images\Status\save.png" />
+    <None Include="ClientSource\Style\Images\Status\success.png" />
+    <None Include="ClientSource\Style\Images\Status\updateAvailable.png" />
+    <None Include="ClientSource\Style\Images\Status\warning.png" />
+    <None Include="ClientSource\Style\Images\Status\warning32.png" />
+    <None Include="ClientSource\Style\Images\SubMenuBackground.png" />
+    <None Include="ClientSource\Style\Images\SubSubMenuIcon.png" />
+    <None Include="ClientSource\Style\InitialConfig.css">
+      <DependentUpon>InitialConfig.less</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Style\InitialConfig.min.css">
+      <DependentUpon>InitialConfig.less</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\IsotopeStyles.css" />
+    <Content Include="ClientSource\Style\IsotopeStyles.min.css">
+      <DependentUpon>IsotopeStyles.css</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\Job.css">
+      <DependentUpon>Job.less</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Style\Job.min.css">
+      <DependentUpon>Job.less</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\jQueryUIExtensions.css">
+      <DependentUpon>jQueryUIExtensions.less</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Style\jQueryUIExtensions.min.css">
+      <DependentUpon>jQueryUIExtensions.less</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\jQueryUI\dynatree\icons.gif" />
+    <None Include="ClientSource\Style\jQueryUI\dynatree\loading.gif" />
+    <None Include="ClientSource\Style\jQueryUI\dynatree\ui.dynatree.css" />
+    <Content Include="ClientSource\Style\jQueryUI\dynatree\ui.dynatree.min.css">
+      <DependentUpon>ui.dynatree.css</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\Public\UserHeldDevices.css">
+      <DependentUpon>UserHeldDevices.less</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Style\jQueryUI\jquery-ui.min.css">
+      <DependentUpon>jquery-ui.css</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\Public\UserHeldDevices.min.css">
+      <DependentUpon>UserHeldDevices.less</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\Public\UserHeldDevicesNoticeboard.css">
+      <DependentUpon>UserHeldDevicesNoticeboard.less</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Style\Public\UserHeldDevicesNoticeboard.min.css">
+      <DependentUpon>UserHeldDevicesNoticeboard.less</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\Public\UserHeldDevicesXml_Sharepoint.xslt">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="ClientSource\Style\Shadowbox.css.bundle" />
+    <None Include="ClientSource\Style\Shadowbox\close.png" />
+    <None Include="ClientSource\Style\Shadowbox\loading.gif" />
+    <None Include="ClientSource\Style\Shadowbox\next.png" />
+    <None Include="ClientSource\Style\Shadowbox\pause.png" />
+    <None Include="ClientSource\Style\Shadowbox\play.png" />
+    <None Include="ClientSource\Style\Shadowbox\previous.png" />
+    <None Include="ClientSource\Style\Shadowbox\shadowbox.css" />
+    <None Include="ClientSource\Style\Shadowbox.css">
+      <DependentUpon>Shadowbox.css.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Style\Shadowbox.min.css">
+      <DependentUpon>Shadowbox.css.bundle</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\Shadowbox\shadowbox.min.css">
+      <DependentUpon>shadowbox.css</DependentUpon>
+    </None>
+    <None Include="ClientSource\Style\Shared.css">
+      <DependentUpon>Shared.less</DependentUpon>
+    </None>
+    <None Include="ClientSource\Style\Shared.min.css">
+      <DependentUpon>Shared.less</DependentUpon>
+    </None>
+    <None Include="ClientSource\Style\Site.css">
+      <DependentUpon>Site.less</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Style\Site.min.css">
+      <DependentUpon>Site.less</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\Timeline\disco.timelineextensions.css">
+      <DependentUpon>disco.timelineextensions.less</DependentUpon>
+    </None>
+    <None Include="ClientSource\Style\Timeline\disco.timelineextensions.min.css">
+      <DependentUpon>disco.timelineextensions.less</DependentUpon>
+    </None>
+    <None Include="ClientSource\Style\Timeline\graphics.css" />
+    <None Include="ClientSource\Style\Timeline\graphics.min.css">
+      <DependentUpon>graphics.css</DependentUpon>
+    </None>
+    <None Include="ClientSource\Style\Timeline\images\blue-circle.png" />
+    <None Include="ClientSource\Style\Timeline\images\bubble-arrow-point-down.png" />
+    <None Include="ClientSource\Style\Timeline\images\bubble-arrow-point-left.png" />
+    <None Include="ClientSource\Style\Timeline\images\bubble-arrow-point-right.png" />
+    <None Include="ClientSource\Style\Timeline\images\bubble-arrow-point-up.png" />
+    <None Include="ClientSource\Style\Timeline\images\bubble-bottom-arrow.png" />
+    <None Include="ClientSource\Style\Timeline\images\bubble-bottom-left.png" />
+    <None Include="ClientSource\Style\Timeline\images\bubble-bottom-right.png" />
+    <None Include="ClientSource\Style\Timeline\images\bubble-bottom.png" />
+    <None Include="ClientSource\Style\Timeline\images\bubble-left-arrow.png" />
+    <None Include="ClientSource\Style\Timeline\images\bubble-left.png" />
+    <None Include="ClientSource\Style\Timeline\images\bubble-right-arrow.png" />
+    <None Include="ClientSource\Style\Timeline\images\bubble-right.png" />
+    <None Include="ClientSource\Style\Timeline\images\bubble-top-arrow.png" />
+    <None Include="ClientSource\Style\Timeline\images\bubble-top-left.png" />
+    <None Include="ClientSource\Style\Timeline\images\bubble-top-right.png" />
+    <None Include="ClientSource\Style\Timeline\images\bubble-top.png" />
+    <None Include="ClientSource\Style\Timeline\images\close-button.png" />
+    <None Include="ClientSource\Style\Timeline\images\copy.png" />
+    <None Include="ClientSource\Style\Timeline\images\copyright-vertical.png" />
+    <None Include="ClientSource\Style\Timeline\images\copyright.png" />
+    <None Include="ClientSource\Style\Timeline\images\dark-blue-circle.png" />
+    <None Include="ClientSource\Style\Timeline\images\dark-green-circle.png" />
+    <None Include="ClientSource\Style\Timeline\images\dark-red-circle.png" />
+    <None Include="ClientSource\Style\Timeline\images\dull-blue-circle.png" />
+    <None Include="ClientSource\Style\Timeline\images\dull-green-circle.png" />
+    <None Include="ClientSource\Style\Timeline\images\dull-red-circle.png" />
+    <None Include="ClientSource\Style\Timeline\images\gray-circle.png" />
+    <None Include="ClientSource\Style\Timeline\images\green-circle.png" />
+    <None Include="ClientSource\Style\Timeline\images\message-bottom-left.png" />
+    <None Include="ClientSource\Style\Timeline\images\message-bottom-right.png" />
+    <None Include="ClientSource\Style\Timeline\images\message-left.png" />
+    <None Include="ClientSource\Style\Timeline\images\message-right.png" />
+    <None Include="ClientSource\Style\Timeline\images\message-top-left.png" />
+    <None Include="ClientSource\Style\Timeline\images\message-top-right.png" />
+    <None Include="ClientSource\Style\Timeline\images\progress-running.gif" />
+    <None Include="ClientSource\Style\Timeline\images\red-circle.png" />
+    <None Include="ClientSource\Style\Timeline\images\top-bubble.png" />
+    <None Include="ClientSource\Style\Timeline\timeline-bundle.css" />
+    <None Include="ClientSource\Style\Timeline\timeline-bundle.min.css">
+      <DependentUpon>timeline-bundle.css</DependentUpon>
+    </None>
+    <None Include="ClientSource\Style\User.css">
+      <DependentUpon>User.less</DependentUpon>
+    </None>
+    <None Include="ClientSource\Style\Timeline.css">
+      <DependentUpon>Timeline.css.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Style\Timeline.min.css">
+      <DependentUpon>Timeline.css.bundle</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\User.min.css">
+      <DependentUpon>User.less</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_flat_10_000000_40x100.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_222222_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_228ef1_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_ef8c08_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_ffd27a_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_ffffff_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\jquery-ui.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <None Include="ClientSource\Scripts\Modules\tinymce\jquery.tinymce.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\langs\en.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\license.txt" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\about.htm" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\anchor.htm" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\charmap.htm" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\color_picker.htm" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\editor_template.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\editor_template_src.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\image.htm" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\img\colorpicker.jpg" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\img\flash.gif" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\img\icons.gif" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\img\iframe.gif" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\img\pagebreak.gif" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\img\quicktime.gif" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\img\realmedia.gif" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\img\shockwave.gif" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\img\trans.gif" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\img\video.gif" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\img\windowsmedia.gif" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\js\about.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\js\anchor.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\js\charmap.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\js\color_picker.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\js\image.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\js\link.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\js\source_editor.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\langs\en.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\langs\en_dlg.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\link.htm" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\shortcuts.htm" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\default\content.css" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\default\dialog.css" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\default\img\buttons.png" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\default\img\items.gif" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\default\img\menu_arrow.gif" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\default\img\menu_check.gif" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\default\img\progress.gif" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\default\img\tabs.gif" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\default\ui.css" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\highcontrast\content.css" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\highcontrast\dialog.css" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\highcontrast\ui.css" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\o2k7\content.css" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\o2k7\dialog.css" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\o2k7\img\button_bg.png" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\o2k7\img\button_bg_black.png" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\o2k7\img\button_bg_silver.png" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\o2k7\ui.css" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\o2k7\ui_black.css" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\skins\o2k7\ui_silver.css" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\advanced\source_editor.htm" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\simple\editor_template.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\simple\editor_template_src.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\simple\img\icons.gif" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\simple\langs\en.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\simple\skins\default\content.css" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\simple\skins\default\ui.css" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\simple\skins\o2k7\content.css" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\simple\skins\o2k7\img\button_bg.png" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\themes\simple\skins\o2k7\ui.css" />
+    <None Include="ClientSource\Scripts\Modules\tinymce\tiny_mce.js" />
+    <None Include="ClientSource\Scripts\Modules\tinymce\tiny_mce_jquery.js" />
+    <None Include="ClientSource\Scripts\Modules\tinymce\tiny_mce_popup.js" />
+    <None Include="ClientSource\Scripts\Modules\tinymce\tiny_mce_src.js" />
+    <None Include="ClientSource\Scripts\Modules\tinymce\utils\editable_selects.js" />
+    <None Include="ClientSource\Scripts\Modules\tinymce\utils\form_utils.js" />
+    <None Include="ClientSource\Scripts\Modules\tinymce\utils\mctabs.js" />
+    <None Include="ClientSource\Scripts\Modules\tinymce\utils\validate.js" />
+    <None Include="ClientSource\Style\InitialConfig.less" />
+    <Content Include="ClientBin\DataStoreTemplate.zip" />
+    <None Include="ClientSource\Style\Dialog.less" />
+    <None Include="ClientSource\Scripts\Core.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Disco-CreateJob.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\tinymce.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Timeline.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Silverlight.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Shadowbox.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Knockout.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\jQuery-SignalR.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\jQuery-Isotope.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Highcharts.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.min.js.map">
+      <DependentUpon>Disco-AjaxHelperIcons.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Style\BundleSite.css.bundle" />
+    <None Include="ClientSource\Style\Timeline.css.bundle" />
+    <None Include="Properties\PublishProfiles\Debug Installer.pubxml" />
+    <None Include="Properties\PublishProfiles\Installer.pubxml" />
+    <None Include="T4MVC.tt.hooks.t4" />
+    <None Include="T4MVC.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>T4MVC.cs</LastGenOutput>
+    </None>
+    <None Include="App_Code\AjaxHelpers.cshtml">
+      <CustomToolNamespace>Disco.Web</CustomToolNamespace>
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>AjaxHelpers.generated.cs</LastGenOutput>
+    </None>
+    <None Include="App_Code\CommonHelpers.cshtml">
+      <CustomToolNamespace>Disco.Web</CustomToolNamespace>
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>CommonHelpers.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Properties\PublishProfiles\HADES3.pubxml" />
+    <None Include="Views\Device\AddOffline.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>AddOffline.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Device\DeviceParts\Resources.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Resources.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Device\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Device\Show.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Show.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Device\_CertificateTable.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_CertificateTable.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Device\_DeviceActions.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_DeviceActions.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Device\_DeviceTable.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_DeviceTable.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Device\_DeviceUserAssignmentHistoryTable.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_DeviceUserAssignmentHistoryTable.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Device\_ViewStart.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\InitialConfig\_Layout.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_Layout.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\InitialConfig\_ViewStart.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\InitialConfig\Complete.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Complete.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\InitialConfig\Database.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Database.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\InitialConfig\FileStore.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>FileStore.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\InitialConfig\RestartWebApp.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>RestartWebApp.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\InitialConfig\Welcome.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Welcome.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\Create_Redirect.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Create_Redirect.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\JobParts\_Subject.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_Subject.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\_CreateSubject.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_CreateSubject.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\JobParts\Components.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Components.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\JobParts\Flags.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Flags.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\JobParts\Insurance.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Insurance.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\JobParts\JobMetaAdditions.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>JobMetaAdditions1.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\JobParts\NonWarranty.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>NonWarranty.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\JobParts\NonWarrantyFinance.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>NonWarrantyFinance.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\JobParts\Repairs.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Repairs.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\JobParts\Resources.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Resources.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\JobParts\Warranty.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Warranty.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\List.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>List.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\LogWarranty.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>LogWarranty.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\LogWarrantyDisclose.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>LogWarrantyDisclose.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\LogWarrantyError.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>LogWarrantyError.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\Create.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Create.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\Show.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Show.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\WarrantyProviderJobDetails.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>WarrantyProviderJobDetails.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\_ViewStart.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Search\Query.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Query.generated.cs</LastGenOutput>
+    </None>
+    <Content Include="ClientBin\PreparationClient.zip" />
+    <None Include="ClientSource\Style\Config.less" />
+    <None Include="ClientSource\Style\Credits.less" />
+    <None Include="ClientSource\Style\Declarations.less" />
+    <None Include="ClientSource\Style\Device.less" />
+    <None Include="ClientSource\Style\Job.less" />
+    <None Include="ClientSource\Style\jQueryUIExtensions.less" />
+    <None Include="ClientSource\Style\Shared.less" />
+    <None Include="ClientSource\Style\Site.less" />
+    <None Include="ClientSource\Style\User.less" />
+    <None Include="ClientSource\Style\Timeline\disco.timelineextensions.less" />
+    <None Include="ClientSource\Style\Public\UserHeldDevices.less" />
+    <None Include="ClientSource\Style\Public\UserHeldDevicesNoticeboard.less" />
+    <None Include="Areas\Config\Views\Config\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DeviceBatch\Create.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Create.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DeviceBatch\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DeviceBatch\Show.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Show.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DeviceBatch\Timeline.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Timeline.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DeviceModel\GenericComponents.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>GenericComponents.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DeviceModel\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DeviceModel\Show.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Show.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_DeviceComponentsTable.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DeviceProfile\Create.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Create.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DeviceProfile\Defaults.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Defaults.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DeviceProfile\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DeviceProfile\Show.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Show.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DeviceProfile\_Table.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_Table.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DeviceProfile\_TableRender.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_TableRender.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DocumentTemplate\Create.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Create.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DocumentTemplate\ExpressionBrowser.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>ExpressionBrowser2.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>ImportStatus.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DocumentTemplate\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DocumentTemplate\Show.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Show.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>UndetectedPages.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DocumentTemplate\_ExpressionsTable.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_ExpressionsTable.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\Enrolment\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\Enrolment\Status.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Status.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\Expressions\Editor.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Editor.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\Logging\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\Logging\TaskStatus.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>TaskStatus.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\Organisation\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\Plugins\Configure.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>ProviderConfiguration.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\Plugins\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\Shared\LogEvents.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>LogEvents.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\SystemConfig\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\Web.config" />
+    <None Include="Areas\Config\Views\_ViewStart.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Public\Views\Public\Credits.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Credits.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Public\Views\Public\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Public\Views\Public\Licence.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Licence.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Public\Views\Shared\_Layout.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_Layout.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Public\Views\UserHeldDevices\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Public\Views\UserHeldDevices\Noticeboard.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Noticeboard.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Public\Views\Web.config" />
+    <None Include="Areas\Public\Views\_ViewStart.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Shared\_EmptyLayout.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_EmptyLayout.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Shared\_DialogLayout.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_DialogLayout.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Shared\_JobTable.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_JobTable.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Shared\_JobTableRender.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_JobTableRender.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Shared\_SearchDialog.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_SearchDialog.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\User\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\User\Show.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Show.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\User\UserParts\Resources.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Resources.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\User\_UserDeviceAssignmentHistoryTable.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_UserDeviceAssignmentHistoryTable.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\User\_UserTable.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_UserTable.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\User\_ViewStart.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
+    </None>
+    <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
+    <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
+    <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
+    <None Include="_bin_deployableAssemblies\x86\sqlceer40EN.dll" />
+    <None Include="_bin_deployableAssemblies\x86\sqlcecompact40.dll" />
+    <None Include="_bin_deployableAssemblies\x86\sqlceca40.dll" />
+    <None Include="_bin_deployableAssemblies\x86\Microsoft.VC90.CRT\README_ENU.txt" />
+    <None Include="_bin_deployableAssemblies\x86\Microsoft.VC90.CRT\msvcr90.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlcese40.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlceqp40.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlceme40.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlceer40EN.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlcecompact40.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlceca40.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\README_ENU.txt" />
+    <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\msvcr90.dll" />
+    <None Include="ClientSource\Scripts\Modules\jQuery-SignalR\jquery.signalR-0.5.3.js" />
+    <None Include="ClientSource\Scripts\Core\jquery.validate.unobtrusive.js" />
+    <None Include="ClientSource\Scripts\Core\modernizr-2.6.2.js" />
+    <None Include="T4MVC.tt.settings.xml" />
+    <None Include="ClientSource\Scripts\Modules\Knockout\knockout-2.2.0.js" />
+    <None Include="ClientSource\Scripts\Core\jquery-1.8.3.js" />
+    <None Include="ClientSource\Scripts\Core\jquery-ui-1.9.2.js" />
+    <None Include="ClientSource\Scripts\Core\jquery.validate.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <None Include="Views\_ViewStart.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Shared\Error.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Error.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Shared\_Layout.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_Layout.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Web.config" />
+    <None Include="packages.config" />
+    <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest" />
+    <None Include="_bin_deployableAssemblies\x86\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Areas\API\Models\WirelessCertificate\" />
+    <Folder Include="Areas\Services\Models\" />
+    <Folder Include="Views\Home\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Disco.BI\Disco.BI.csproj">
+      <Project>{095e6f94-3c34-47ae-bb83-46203535e0f6}</Project>
+      <Name>Disco.BI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Disco.Data\Disco.Data.csproj">
+      <Project>{85a6bd19-2c64-4746-8f2c-a68a86e8c2d7}</Project>
+      <Name>Disco.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Disco.Models\Disco.Models.csproj">
+      <Project>{fbc05512-fcca-4b16-9e76-8c413c5de6c9}</Project>
+      <Name>Disco.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Disco.Services\Disco.Services.csproj">
+      <Project>{b80a737f-bd6a-4986-9182-dd7b932bd950}</Project>
+      <Name>Disco.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Disco.Web.Extensions\Disco.Web.Extensions.csproj">
+      <Project>{c433efba-8608-4451-874b-af32c8536792}</Project>
+      <Name>Disco.Web.Extensions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>58382</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:57252/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <UserProperties BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2001/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

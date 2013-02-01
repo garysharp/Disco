@@ -1,0 +1,143 @@
+﻿@model Disco.Web.Areas.Config.Models.Shared.LogEventsModel
+@{
+    Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
+    Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
+    var uniqueId = Guid.NewGuid().ToString("N");
+}
+<div id="LogEvents_@(uniqueId)" class="logEventsViewport">
+    <table class="logEventsViewport">
+        <thead>
+            <tr>
+                <th class="icon">
+                    &nbsp;
+                </th>
+                <th class="timestamp">
+                    Date/Time
+                </th>
+                <th class="eventType">
+                    Event Type
+                </th>
+                <th class="message">
+                    Message
+                </th>
+            </tr>
+        </thead>
+    </table>
+    <div class="logEventsViewportContainer" style="@(Model.ViewPortWidth.HasValue ? string.Format("width:{0}px;", Model.ViewPortWidth.Value) : null)@(Model.ViewPortHeight.HasValue ? string.Format("height:{0}px;", Model.ViewPortHeight.Value - 18) : null)">
+        <div class="logEventsViewportNoLogs" data-bind="visible: EventLogs().length == 0"
+            style="display: none">
+            No logs
+        </div>
+        <table class="logEventsViewport" data-bind="visible: EventLogs().length > 0" style="display: none">
+            <tbody data-bind="foreach: EventLogs">
+                <tr>
+                    <td class="icon" data-bind="css: {information: EventTypeSeverity == 0, warning: EventTypeSeverity == 1, error: EventTypeSeverity == 2}">
+                        &nbsp;
+                    </td>
+                    <td class="timestamp" data-bind="text: FormattedTimestamp">
+                    </td>
+                    <td class="eventType" data-bind="text: EventTypeName, attr: {title: ModuleDescription}">
+                    </td>
+                    <td class="message" data-bind="text: FormattedMessage, attr: {title: $parent.LogArguments($data)}">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    @{
+        var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+        var eventTypesFilterJson = (Model.EventTypesFilter != null) ? serializer.Serialize(Model.EventTypesFilter.Select(et => et.Id).ToArray()) : "null";
+        }
+    <script type="text/javascript">
+        $(function () {
+            var logEventsHost = $('LogEvents_@(uniqueId)');
+            var logModuleId = '@(Model.ModuleFilter != null ? Model.ModuleFilter.ModuleId.ToString() : null)';
+            var logModuleLiveGroupName = '@(Model.ModuleFilter != null ? Model.ModuleFilter.LiveLogGroupName : Disco.Services.Logging.LogContext.LiveLogAllEventsGroupName)';
+            var logEventTypeFiltered = @(eventTypesFilterJson);
+            var logStartFiler = @(AjaxHelpers.JsonDate(Model.StartFilter));
+            var logEndFiler = @(AjaxHelpers.JsonDate(Model.EndFilter));
+            var logTakeFiler = '@(Model.TakeFilter)';
+            var liveConnection = null;
+            var liveEventReceivedFunction = '@(Model.JavascriptLiveEventFunctionName)';
+            var useLive = ('True'==='@(Model.IsLive)');
+
+            // View Model
+            var logsViewModel;
+            function LogsViewModel(initialLogs){
+                var self = this;
+
+                self.EventLogs = ko.observableArray(initialLogs);
+                self.LogArguments = function(log){
+                    if (log.Arguments)
+                        return log.Arguments.join('\n');
+                    else
+                        return null;
+                };
+            }
+            function formatDate(d){
+                if (d){
+                return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':'+d.getMinutes()+':'+d.getSeconds();
+                }else{
+                return null;
+                }
+            }
+            function loadInitialData(){
+                // Load Data
+                var loadData = {
+                  Format: "json",
+                  Start: formatDate(logStartFiler),
+                  End: logEndFiler,
+                  ModuleId: logModuleId,
+                  Take: logTakeFiler
+                };
+                if (logEventTypeFiltered)
+                    loadData["EventTypeIds"] = logEventTypeFiltered;
+                $.ajax({
+                    url: '@(Url.Action(MVC.API.Logging.RetrieveEvents()))',
+                    dataType: 'json',
+                    type: 'POST',
+                    data: loadData,
+                    success: function (d) {
+                        initLogs(d);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert('Unable to retrieve logs: ' + textStatus);
+                    }
+                });
+            }
+
+            function initLogs(loadedLogs){
+                logsViewModel = new LogsViewModel(loadedLogs);
+                ko.applyBindings(logsViewModel, logEventsHost.get(0));
+
+                if (useLive){
+                    if (liveEventReceivedFunction){
+                        if (!document.DiscoFunctions) document.DiscoFunctions = {};
+                        if (!document.DiscoFunctions.LogEventsFunctions) document.DiscoFunctions.LogEventsFunctions = {};
+                        if (document.DiscoFunctions.LogEventsFunctions[liveEventReceivedFunction]){
+                            liveEventReceivedFunction = document.DiscoFunctions.LogEventsFunctions[liveEventReceivedFunction];
+                        }else{
+                            liveEventReceivedFunction = null;
+                        }
+                    }
+
+                    liveConnection = $.connection('@(Url.Content("~/API/Logging/Notifications"))');
+                    liveConnection.received(logReceived);
+                    liveConnection.error(function(e){alert('Live-Log Error: '+e)});
+                    liveConnection.start(function(){
+                        if (logModuleLiveGroupName){
+                            liveConnection.send('/addToGroups:' + logModuleLiveGroupName);
+                        }
+                    });
+                }
+            }
+
+            function logReceived(log){
+                if (log.UseDisplay) logsViewModel.EventLogs.unshift(log);
+                if (liveEventReceivedFunction) liveEventReceivedFunction(log);
+            }
+
+            loadInitialData();
+        });
+    </script>
+</div>

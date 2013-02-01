@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bundle minify="true" runOnBuild="true">
+  <file>/ClientSource/Style/Timeline/graphics.css</file>
+  <file>/ClientSource/Style/Timeline/timeline-bundle.css</file>
+  <file>/ClientSource/Style/Timeline/disco.timelineextensions.css</file>
+</bundle>

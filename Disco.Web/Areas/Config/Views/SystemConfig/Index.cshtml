@@ -1,0 +1,178 @@
+﻿@model Disco.Web.Areas.Config.Models.SystemConfig.IndexModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "System");
+}
+@using (Html.BeginForm())
+{ 
+    <div class="form" style="width: 450px">
+        <table>
+            <tr>
+                <th style="width: 135px">Disco Version:
+                </th>
+                <td>
+                    <div>
+                        <code>@Model.DiscoVersion.ToString(4)</code>
+                    </div>
+                    <div class="smallMessage" title="@Model.DiscoVersionBuilt.ToFullDateTime()">
+                        Built @Model.DiscoVersionBuilt.ToFuzzy("Unknown")
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">Database Connection:
+                </th>
+                <td>
+                    <table class="sub">
+                        <tr>
+                            <th>Server:</th>
+                            <td><span class="code">@Model.DatabaseServer</span></td>
+                        </tr>
+                        <tr>
+                            <th>Database:</th>
+                            <td><span class="code">@Model.DatabaseName</span></td>
+                        </tr>
+                        <tr>
+                            <th>Authentication:</th>
+                            <td>@Model.DatabaseAuthentication</td>
+                        </tr>
+                        @{if (Model.DatabaseSqlAuthUsername != null)
+                          {
+                            <tr>
+                                <th>SQL&nbsp;User:</th>
+                                <td><span class="code">@Model.DatabaseSqlAuthUsername</span></td>
+                            </tr>      
+                          }
+                        }
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">Data Store Location:
+                </th>
+                <td>
+                    <span class="code">@Model.DataStoreLocation</span>
+                    @*                    @Html.EditorFor(m => m.DataStoreLocation)<br />
+                    @Html.ValidationMessageFor(m => m.DataStoreLocation)*@
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="form" style="width: 450px; margin-top: 15px;">
+        <h2>Updates</h2>
+        <table>
+            @{
+                          if (Model.UpdateLatestResponse == null)
+                          {
+                <tr>
+                    <th style="width: 135px">Last Check:
+                    </th>
+                    <td>
+                        <div class="error"><span class="icon error" style="margin-right: 6px;"></span>Never</div>
+                    </td>
+                </tr>
+                          }
+                          else
+                          {
+                <tr>
+                    <th style="width: 135px">Last Run:
+                    </th>
+                    <td>
+                        <span>@CommonHelpers.FriendlyDate(Model.UpdateLatestResponse.ResponseTimestamp)</span>
+                    </td>
+                </tr>
+                              if (Model.UpdateLatestResponse.IsUpdatable(typeof(DiscoApplication).Assembly.GetName().Version))
+                              {
+                <tr>
+                    <th style="width: 135px">Update Available:
+                    </th>
+                    <td>
+                        <div>
+                            <span class="icon warning" style="margin-right: 6px;"></span>Version @(Model.UpdateLatestResponse.Version) is available
+                        </div>
+                        <div class="smallMessage">
+                            [Released @(CommonHelpers.FriendlyDate(Model.UpdateLatestResponse.VersionReleasedTimestamp))]
+                        </div>
+                        <div class="smallMessage">@(new HtmlString(Model.UpdateLatestResponse.Blurb))</div>
+                        <a href="@(Model.UpdateLatestResponse.UrlLink)" target="_blank">Download Now</a>
+                    </td>
+                </tr>
+                              }
+                              else
+                              {
+                <tr>
+                    <th style="width: 135px">Status:
+                    </th>
+                    <td>
+                        <span class="icon success" style="margin-right: 6px;"></span><span>The latest version is installed</span>
+                    </td>
+                </tr>
+                              }
+                          }
+            }
+            <tr>
+                <th style="width: 135px">Check for Update:@{
+                          if (Model.UpdateBetaDeployment)
+                          {
+                    <div class="alert"><span class="icon warning" style="margin-right: 6px;"></span>Beta Deployment</div>
+                          }
+                }
+                </th>
+                <td>
+                    @{
+                          if (Model.UpdateRunningStatus == null)
+                          {
+                        <div>@Html.ActionLink("Check Now", MVC.API.System.UpdateCheck())</div>
+                          }
+                          else
+                          {
+                        <div>Running now - @Html.ActionLink("Check Status", MVC.Config.Logging.TaskStatus(Model.UpdateRunningStatus.SessionId))</div>
+                          }
+                    }
+                    <div class="smallMessage">
+                        Next Scheduled: @CommonHelpers.FriendlyDate(Model.UpdateNextScheduled, "Unknown")
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="form" style="width: 450px; margin-top: 15px;">
+        <h2>Proxy Settings</h2>
+        <table>
+            <tr>
+                <th style="width: 135px">Address:
+                </th>
+                <td>
+                    @Html.EditorFor(m => m.ProxyAddress)<br />
+                    @Html.ValidationMessageFor(m => m.ProxyAddress)
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">Port:
+                </th>
+                <td>
+                    @Html.EditorFor(m => m.ProxyPort)<br />
+                    @Html.ValidationMessageFor(m => m.ProxyPort)
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">Username:
+                </th>
+                <td>
+                    @Html.EditorFor(m => m.ProxyUsername)<br />
+                    @Html.ValidationMessageFor(m => m.ProxyUsername)
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">Password:
+                </th>
+                <td>
+                    @Html.EditorFor(m => m.ProxyPassword)<br />
+                    @Html.ValidationMessageFor(m => m.ProxyPassword)
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="actionBar">
+        <input type="submit" class="button" value="Save Configuration" />
+    </div>
+}

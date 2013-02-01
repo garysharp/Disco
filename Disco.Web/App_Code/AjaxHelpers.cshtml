@@ -1,0 +1,32 @@
+﻿@* Generator: WebPagesHelper *@
+@using Disco.BI.Extensions;
+@using Disco.Web;
+@using Disco.Web.Extensions;
+@helper AjaxLoader(string id = null)
+    {
+        Html.GetPageHelper().BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
+    <span @(id!=null ? new HtmlString(string.Format("id=\"{0}_loading\"", id)) : new HtmlString(string.Empty)) class="ajaxHelperIcon ajaxLoading" title="Loading..."></span><span @(id != null ? new HtmlString(string.Format("id=\"{0}_ok\"", id)) : new HtmlString(string.Empty)) class="ajaxHelperIcon ajaxOk"
+        title="Ok"></span>
+}
+@helper AjaxSave()
+    {
+        Html.GetPageHelper().BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
+    <span class="ajaxHelperIcon ajaxSave" title="Save Changes"></span>
+}
+@helper AjaxRemove()
+    {
+        Html.GetPageHelper().BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
+    <span class="ajaxHelperIcon ajaxRemove" title="Remove"></span>
+}
+@helper JsonDate(DateTime? date)
+    {
+        if (date.HasValue)
+        {
+            var d = date.Value;
+    @(new HtmlString(string.Format("new Date({0}, {1}, {2}, {3}, {4}, {5})", d.Year, d.Month - 1, d.Day, d.Hour, d.Minute, d.Second)))
+        }
+        else
+        { 
+    @(new HtmlString("null"))
+        }
+}

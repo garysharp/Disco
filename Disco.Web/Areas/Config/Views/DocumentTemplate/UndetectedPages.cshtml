@@ -1,0 +1,239 @@
+﻿@model Disco.Web.Areas.Config.Models.DocumentTemplate.UndetectedPagesModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(), "Undetected Pages");
+    Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
+    Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
+}
+<div id="undetectedPagesContainer">
+    <div id="noUndetectedPages" data-bind="visible: noUndetectedPages">
+        <h3>
+            No Undetected Pages</h3>
+    </div>
+    <ul id="undetectedPages" class="clearfix" data-bind="visible: !noUndetectedPages(), foreach: {data: undetectedPages}">
+        <li class="undetectedPage" data-bind="style: {backgroundImage: thumbnailUrl}, click: select">
+            <div class="pageDetails" data-bind="text: timestampFuzzy, attr: {title: timestamp}">
+            </div>
+        </li>
+    </ul>
+</div>
+<div id="undetectedPageDialog" data-bind="with: selectedUndetectedPage">
+    <div class="pagePreview" data-bind="style: {backgroundImage: previewUrl}">
+    </div>
+    <div class="actions">
+        <a href="#" class="button" target="_blank" data-bind="attr: {href: sourceUrl}">Download</a>
+        <a href="#" class="button" id="dialogDeleteButton" data-bind="click: deletePage">Delete</a>
+    </div>
+    <div class="actions">
+        Type: @Html.DropDownList("dialogDocumentTemplateId", Model.DocumentTemplatesSelectListItems, new Dictionary<string, object> { { "data-bind", "value: dialogTemplateId" } })
+        Data:
+        <input id="dialogDataId" type="text" data-bind="value: dialogDataId, autocomplete: {source: dialogDataIdService, minLength: 3, position: {my: 'left bottom', at: 'left top'}}" />
+        <a href="#" class="button" id="dialogAssignButton" data-bind="click: assignPage">Assign</a>
+    </div>
+</div>
+<div id="dialogRemove" title="Delete this Page?">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+        Are you sure?</p>
+</div>
+<script type="text/javascript">
+    ko.bindingHandlers.autocomplete = {
+        update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+            var autocompleteOptions = ko.utils.unwrapObservable(valueAccessor());
+            if (autocompleteOptions.source)
+                autocompleteOptions.source = ko.utils.unwrapObservable(autocompleteOptions.source);
+            $element = $(element);
+            if (!$element.is('.ui-autocomplete-input')) {
+                autocompleteOptions.select = function (e, ui) {
+                    allBindingsAccessor().value(ui.item.value);
+                    return false;
+                }
+                $element.autocomplete(autocompleteOptions);
+            } else {
+                // Update Source Option Only
+                if (autocompleteOptions.source)
+                    $element.autocomplete('option', 'source', autocompleteOptions.source);
+            }
+        }
+    };
+</script>
+<script type="text/javascript">
+    $(function () {
+
+        var vm;
+        var urlUndetectedPageThumbnail = '@(new HtmlString(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFile(null, false, true))))';
+        var urlUndetectedPagePreview = '@(new HtmlString(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFile(null, false, false))))';
+        var urlUndetectedPageSource = '@(new HtmlString(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFile(null, true, false))))';
+        var urlDataIdLookupService = '@(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedDataIdLookup()))/';
+        var urlImporterUndetectedAssign = '@(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedAssign()))/';
+        var urlImporterUndetectedDelete = '@(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedDelete()))/';
+        var $undetectedPageDialog = $('#undetectedPageDialog').dialog({
+            modal: true,
+            height: 820,
+            width: 800,
+            resizable: false,
+            autoOpen: false
+        });
+
+        $dialogRemove = $('#dialogRemove').dialog({
+            resizable: false,
+            height: 140,
+            modal: true,
+            autoOpen: false
+        });
+
+        function pageViewModel() {
+            var self = this;
+
+            self.selectedUndetectedPage = ko.observable(null);
+            self.undetectedPages = ko.observableArray();
+            self.noUndetectedPages = ko.computed(function () { return self.undetectedPages().length == 0 });
+            self.selectNextPage = function () {
+                var oldSelected = self.selectedUndetectedPage();
+                var oldSelectedIndex = vm.undetectedPages.indexOf(oldSelected);
+
+                if (vm.undetectedPages().length > 1) {
+                    if (oldSelectedIndex > vm.undetectedPages().length - 1)
+                        vm.selectedUndetectedPage(vm.undetectedPages()[oldSelectedIndex + 1]);
+                    else
+                        vm.selectedUndetectedPage(vm.undetectedPages()[oldSelectedIndex - 1]);
+                } else {
+                    $undetectedPageDialog.dialog('close');
+                    vm.selectedUndetectedPage(null);
+                }
+            }
+        }
+
+        function undetectedPageViewModel(id, timestamp, timestampFuzzy) {
+            var self = this;
+
+            self.id = id;
+            self.timestamp = timestamp;
+            self.timestampFuzzy = timestampFuzzy;
+            self.thumbnailUrl = "url(" + urlUndetectedPageThumbnail + "&id=" + id + ")";
+            self.previewUrl = "url(" + urlUndetectedPagePreview + "&id=" + id + ")";
+            self.sourceUrl = urlUndetectedPageSource + "&id=" + id;
+            self.select = function (e, d) {
+                vm.selectedUndetectedPage(self);
+                $undetectedPageDialog.dialog('open');
+            }
+
+            // Dialog Properties
+            self.dialogTemplateId = ko.observable(null);
+            self.dialogDataId = ko.observable(null);
+            self.dialogDataIdService = ko.computed(function () {
+                return urlDataIdLookupService + self.dialogTemplateId();
+            });
+            self.deletePage = function () {
+                $undetectedPageDialog.dialog('option', 'disabled', true);
+
+                $dialogRemove.dialog('option', 'buttons', {
+                    "Remove": function () {
+                        $dialogRemove.dialog("close");
+                        var data = { id: self.id };
+                        $.ajax({
+                            url: urlImporterUndetectedDelete,
+                            dataType: 'json',
+                            data: data,
+                            type: 'POST',
+                            success: function (d) {
+                                if (d == 'OK') {
+                                    vm.selectNextPage();
+                                    vm.undetectedPages.remove(self);
+                                } else {
+                                    alert('Unable to delete page: ' + d);
+                                }
+                                $undetectedPageDialog.dialog('option', 'disabled', false);
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert('Unable to delete page: ' + errorThrown);
+                                $undetectedPageDialog.dialog('option', 'disabled', false);
+                            }
+                        });
+                    },
+                    "Cancel": function () {
+                        $dialogRemove.dialog("close");
+                        $undetectedPageDialog.dialog('option', 'disabled', false);
+                    }
+                });
+
+                $dialogRemove.dialog('open');
+
+                return false;
+            }
+            self.assignPage = function () {
+                var dtId = self.dialogTemplateId();
+                var dId = self.dialogDataId();
+                if (!dtId || !dId) {
+                    alert('Please specify a valid Document Type and Data Id');
+                } else {
+                    $undetectedPageDialog.dialog('option', 'disabled', true);
+
+                    var data = { id: self.id, DocumentTemplateId: dtId, DataId: dId };
+
+                    $.ajax({
+                        url: urlImporterUndetectedAssign,
+                        dataType: 'json',
+                        data: data,
+                        type: 'POST',
+                        success: function (d) {
+                            if (d == 'OK') {
+                                vm.selectNextPage();
+                                vm.undetectedPages.remove(self);
+                            } else {
+                                alert('Unable to assign page: ' + d);
+                            }
+                            $undetectedPageDialog.dialog('option', 'disabled', false);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert('Unable to assign page: ' + errorThrown);
+                            $undetectedPageDialog.dialog('option', 'disabled', false);
+                        }
+                    });
+
+                }
+                return false;
+            };
+        }
+
+        function init() {
+            vm = new pageViewModel();
+
+            $.ajax({
+                url: '@(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFiles()))',
+                dataType: 'json',
+                type: 'POST',
+                success: init_loadedContent,
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Unable to load content: ' + errorThrown);
+                }
+            });
+        }
+        function init_loadedContent(content) {
+            if (content.length > 0) {
+                for (var i = 0; i < content.length; i++) {
+                    var c = content[i];
+                    var up = new undetectedPageViewModel(c.Id, c.Timestamp, c.TimestampFuzzy);
+                    vm.undetectedPages.push(up);
+                }
+            }
+
+            ko.applyBindings(vm);
+            init_loadedOpen();
+        }
+        function init_loadedOpen() {
+            var fileId = window.location.hash;
+            if (fileId) {
+                fileId = fileId.substr(1);
+                for (var i = 0; i < vm.undetectedPages().length; i++) {
+                    var up = vm.undetectedPages()[i];
+                    if (up.id == fileId) {
+                        up.select();
+                        return;
+                    }
+                }
+            }
+        }
+        init();
+
+    });
+</script>

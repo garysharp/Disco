@@ -1,0 +1,60 @@
+﻿@model Disco.Web.Areas.Config.Models.DeviceProfile.DefaultsModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Profiles", MVC.Config.DeviceProfile.Index(null), "Defaults");
+}
+<div class="form" style="width: 600px">
+    <table>
+        <tr>
+            <th class="name" style="width: 230px">
+                Default Profile:
+            </th>
+            <td class="value">
+                @Html.DropDownListFor(m => m.Default, Model.DeviceProfiles.ToSelectListItems(Model.Default))
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        $('#Default').change(function () {
+                            $this = $(this);
+                            $ajaxLoading = $this.next('.ajaxLoading').show();
+                            var data = { id: $this.val() };
+                            $.getJSON('@(Url.Action(MVC.API.DeviceProfile.Default()))', data, function (response, result) {
+                                if (result != 'success' || response != 'OK') {
+                                    alert('Unable to change Default Device Profile:\n' + response);
+                                    $ajaxLoading.hide();
+                                } else {
+                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                }
+                            });
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th class="name">
+                Default Add Device Offline Profile:
+            </th>
+            <td class="value">
+                @Html.DropDownListFor(m => m.DefaultAddDeviceOffline, Model.DeviceProfilesAndNone.ToSelectListItems(Model.DefaultAddDeviceOffline))
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        $('#DefaultAddDeviceOffline').change(function () {
+                            $this = $(this);
+                            $ajaxLoading = $this.next('.ajaxLoading').show();
+                            var data = { id: $this.val() };
+                            $.getJSON('@(Url.Action(MVC.API.DeviceProfile.DefaultAddDeviceOffline()))', data, function (response, result) {
+                                if (result != 'success' || response != 'OK') {
+                                    alert('Unable to change Default Add Device Offline Device Profile:\n' + response);
+                                    $ajaxLoading.hide();
+                                } else {
+                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                }
+                            });
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+</div>

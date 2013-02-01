@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Disco.Models.BI.Search.UserSearchResultItem>
+<div class="genericData userTable">
+    @if (Model != null && Model.Count() > 0)
+    { 
+        <table class="genericData userTable">
+            <thead>
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Surname
+                    </th>
+                    <th>
+                        Given Name
+                    </th>
+                    <th>
+                        Display Name
+                    </th>
+                    <th>
+                        Assigned Devices
+                    </th>
+                    <th>
+                        Jobs
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(item.Id, MVC.User.Show(item.Id))
+                        </td>
+                        <td>
+                            @item.Surname
+                        </td>
+                        <td>
+                            @item.GivenName
+                        </td>
+                        <td>
+                            @item.DisplayName
+                        </td>
+                        <td>
+                            @item.AssignedDevicesCount
+                        </td>
+                        <td>
+                            @item.JobCount
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    { 
+        <span class="smallMessage">No Users Found</span>
+    }
+</div>

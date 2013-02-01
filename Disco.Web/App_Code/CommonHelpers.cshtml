@@ -1,0 +1,132 @@
+﻿@* Generator: WebPagesHelper *@
+@using Disco.BI.Extensions;
+@using Disco.Models.Repository;
+@using Disco.Web;
+@using System.Web.Mvc
+@using System.Web.Mvc.Html;
+@using Disco.Web.Extensions;
+@helper FriendlyDate(DateTime d)
+{
+    <span title="@d.ToFullDateTime()" data-discodatetime="@d.ToSortableDateTime()" class="date nowrap">@d.ToFuzzy()</span>
+}
+@helper FriendlyDate(DateTime? d, string NullValue = "N/A")
+{
+    <span title="@d.ToFullDateTime(NullValue)" data-discodatetime="@d.ToSortableDateTime()" class="date nowrap">@d.ToFuzzy(NullValue)</span>
+}
+@helper RadioButtonList(string id, List<System.Web.Mvc.SelectListItem> items, int columns = 1)
+{
+    @ItemList("radio", id, items, columns)
+}
+@helper CheckBoxList(string id, List<System.Web.Mvc.SelectListItem> items, int columns = 1, bool alignEven = true, int? forceUniqueIds = null)
+{
+    @ItemList("checkbox", id, items, columns, alignEven, forceUniqueIds)
+}
+@helper ItemList(string inputType, string id, List<System.Web.Mvc.SelectListItem> items, int columns = 1, bool alignEven = true, int? forceUniqueIds = null)
+{
+    int itemsPerColumn = items.Count / columns;
+    int columnWidth = (100 / columns);
+    var itemNextId = 0;
+    <table class="none">
+        <tr>
+            @for (int i = 0; i < columns; i++)
+            {
+                <td@(alignEven ? new HtmlString(string.Format(" style=\"width: {0}%\"", columnWidth)) : new HtmlString(string.Empty))>
+                    <ul class="none">
+                        @{
+                int itemsForThisColumn = itemsPerColumn + (items.Count % columns > i ? 1 : 0);
+                for (int i2 = 0; i2 < itemsForThisColumn && itemNextId < items.Count; i2++)
+                {
+                    var item = items[itemNextId];
+                    itemNextId++;
+                    var itemId = forceUniqueIds.HasValue ? string.Format("{0}_{1}_{2}", id, item.Value, forceUniqueIds++) : string.Format("{0}_{1}", id, item.Value);
+                            <li>
+                                <input id="@itemId" name="@id" value="@item.Value" type="@inputType" @(item.Selected ? "checked=\"checked\" " : " ")/><label for="@itemId">@item.Text</label></li>
+                }
+                        }
+                    </ul>
+                </td>
+            }
+        </tr>
+    </table>
+}
+@helper FriendlyDateAndUser(DateTime? d, User u, string DateNullValue = "N/A")
+{
+    @FriendlyDate(d, DateNullValue);
+    @FriendlyUser(u, null, "by");
+}
+@helper FriendlyDateAndUser(DateTime d, User u)
+{
+    @FriendlyDate(d);
+    @FriendlyUser(u, null, "by");
+}
+@helper FriendlyDateAndTitleUser(DateTime? d, User u, string DateNullValue = "N/A")
+{
+    <span title="@d.ToFullDateTime(DateNullValue) by @u" data-discodatetime="@d.ToSortableDateTime()" class="date nowrap">@d.ToFuzzy(DateNullValue)</span>
+}
+@helper FriendlyDateAndTitleUser(DateTime d, User u)
+{
+    <span title="@d.ToFullDateTime() by @u" data-discodatetime="@d.ToSortableDateTime()" class="date nowrap">@d.ToFuzzy()</span>
+}
+@helper FriendlyUser(User u, string nullValue = null, string prepend = null)
+{
+    if (u != null)
+    { 
+    @prepend <span title="@u">@u.Id</span>
+    }
+    else
+    { 
+    <span>@nullValue</span>
+    }
+}
+@helper Breadcrumbs(List<Tuple<string, ActionResult>> BreadCrumbs)
+{
+    for (int index = 0; index < BreadCrumbs.Count; index++)
+    {
+        var breadCrumb = BreadCrumbs[index];
+        if (index != 0)
+        {
+    <span>&gt;</span>
+        }
+        if (breadCrumb.Item2 == null)
+        {
+    @breadCrumb.Item1
+        }
+        else
+        { 
+    @Html.GetPageHelper().ActionLink(breadCrumb.Item1, breadCrumb.Item2)
+        }
+    }
+}
+@helper Breadcrumbs(string Title)
+{
+    @Title
+}
+@helper BreadcrumbsTitle(List<Tuple<string, ActionResult>> BreadCrumbs)
+{
+    for (int index = 0; index < BreadCrumbs.Count; index++)
+    {
+        var breadCrumb = BreadCrumbs[index];
+        if (index != 0)
+        {
+    @(new HtmlString(" > "))
+        }
+    @breadCrumb.Item1
+    }
+}
+@helper BreadcrumbsTitle(string Title)
+{
+    @Title
+}
+@helper CheckboxBulkSelect(string BulkSelectContainerId, string ParentJQuerySelector = null)
+{Html.GetPageHelper().BundleDeferred("~/ClientScripts/Modules/Disco-jQueryExtensions");
+    <span id="@BulkSelectContainerId" class="checkboxBulkSelectContainer">
+        @if (string.IsNullOrWhiteSpace(ParentJQuerySelector))
+        {
+            <script type="text/javascript">$(function () { $('#@(BulkSelectContainerId)').checkboxBulkSelect(); });</script>
+        }
+        else
+        {
+            <script type="text/javascript">$(function () { $('#@(BulkSelectContainerId)').checkboxBulkSelect({ parentSelector: '@(ParentJQuerySelector)' }); });</script>
+        }
+    </span>
+}

@@ -1,0 +1,28 @@
+html, body
+{
+    margin: 0;
+    padding: 0;
+    font-family: Consolas, Monospace;
+    font-size: 12px;
+}
+p, div
+{
+    margin: 0;
+    padding: 0;
+}
+
+p
+{
+    padding: 2px 5px;
+}
+p.lineError 
+{
+    background-color: #FFD8D8;
+    border-bottom: 1px dashed #FF9696
+}
+span.error 
+{
+    color: #F00;
+    min-width: 5px;
+    border-bottom: 1px solid #F00;
+}

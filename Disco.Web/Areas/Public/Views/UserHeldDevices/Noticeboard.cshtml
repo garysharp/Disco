@@ -1,0 +1,494 @@
+﻿@{
+    Layout = null;
+    Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
+    Html.BundleDeferred("~/ClientScripts/Core");
+    Html.BundleDeferred("~/Style/Public/UserHeldDevicesNoticeboard");
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Disco - Technician Held Devices</title>
+    @Html.BundleRenderDeferred()
+</head>
+<body>
+    <div id="page">
+        <header id="mainHeader">
+    Technician Held Devices
+    </header>
+        <section id="mainSection">
+            <div id="inProcess" class="list">
+                <h3>
+                    In Process <span id="inProcessCount"></span>
+                </h3>
+                <div class="content">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <div id="readyForReturn" class="list">
+                <h3>
+                    Ready for Return <span id="readyForReturnCount"></span>
+                </h3>
+                <div class="content">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <div id="waitingForUserAction" class="list">
+                <h3>
+                    Waiting for User Action <span id="waitingForUserActionCount"></span>
+                </h3>
+                <div class="content">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <footer>
+        </footer>
+    </div>
+    <script type="text/javascript">
+        // Resizing
+        $(function () {
+            var $inProcess = $('#inProcess');
+            var $inProcessContent = $inProcess.find('.content');
+            var $inProcessHeader = $inProcess.find('.h3');
+            var $readyForReturn = $('#readyForReturn');
+            var $readyForReturnContent = $readyForReturn.find('.content');
+            var $readyForReturnHeader = $readyForReturn.find('.h3');
+            var $waitingForUserAction = $('#waitingForUserAction');
+            var $waitingForUserActionContent = $waitingForUserAction.find('.content');
+            var $waitingForUserActionHeader = $waitingForUserAction.find('.h3');
+            var $mainSection = $('#mainSection');
+            var $mainHeader = $('#mainHeader');
+            var $mainFooter = $('#mainFooter');
+
+            var onResize = function () {
+                var width = $mainSection.width();
+                var height = $(window).height() - $mainHeader.outerHeight() - $mainFooter.outerHeight() - 25;
+
+                $inProcess.height(height);
+                $inProcess.width((width * .28) - 11);
+                $inProcessContent.height(height - $inProcessHeader.outerHeight() - 56);
+
+                $readyForReturn.height(height);
+                $readyForReturn.width((width * .36) - 11);
+                $readyForReturnContent.height(height - $readyForReturnHeader.outerHeight() - 56);
+
+                $waitingForUserAction.height(height);
+                $waitingForUserAction.width((width * .36) - 11);
+                $waitingForUserActionContent.height(height - $waitingForUserActionHeader.outerHeight() - 56);
+            };
+
+            $(window).resize(onResize);
+            onResize();
+        });
+    </script>
+    <script type="text/javascript">
+        // Hide Mouse Mouse
+        $(function () {
+            var mouseVisible = true;
+            var mouseHideToken;
+            var documentBody = $('body');
+
+            var hideMouse = function () {
+                if (mouseVisible) {
+                    documentBody.css('cursor', 'none');
+                    mouseVisible = false;
+                }
+            };
+            var showMouse = function () {
+                if (!mouseVisible) {
+                    documentBody.css('cursor', 'auto');
+                    mouseVisible = true;
+                }
+            };
+
+            $(document).mousemove(function () {
+                showMouse();
+                if (mouseHideToken)
+                    window.clearTimeout(mouseHideToken);
+                mouseHideToken = window.setTimeout(hideMouse, 2000);
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            var models = {};
+            var modelsInProcessSorted = [];
+            var modelsInProcessCount = 0;
+            var modelsReadyForReturnSorted = [];
+            var modelsReadyForReturnCount = 0;
+            var modelsWaitingForUserActionSorted = [];
+            var modelsWaitingForUserActionCount = 0;
+            var $inProcess = $('#inProcess');
+            var $inProcessContent = $inProcess.find('.content ul');
+            var $readyForReturn = $('#readyForReturn');
+            var $readyForReturnContent = $readyForReturn.find('.content ul');
+            var $waitingForUserAction = $('#waitingForUserAction');
+            var $waitingForUserActionContent = $waitingForUserAction.find('.content ul');
+            var modelsInProcessIndexOffset = 0;
+            var scrollInProcessToken = null;
+            var modelsReadyForReturnIndexOffset = 0;
+            var scrollReadyForReturnToken = null;
+            var modelsWaitingForUserActionIndexOffset = 0;
+            var scrollWaitingForUserActionToken = null;
+            var scrollSpeed = 3000;
+            var persistantConnection = null;
+            var filterDeviceAddressInclude;
+            var filterDeviceAddressExclude;
+            var filterDeviceProfileInclude;
+            var filterDeviceProfileExclude;
+            
+            var getParameterByName = function (name) {
+                name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+                var regexS = "[\\?&]" + name + "=([^&#]*)";
+                var regex = new RegExp(regexS);
+                var results = regex.exec(window.location.search);
+                if (results == null)
+                    return "";
+                else
+                    return decodeURIComponent(results[1].replace(/\+/g, " "));
+            }
+
+            var buildFilters = function () {
+                var deviceAddressInclude = getParameterByName('deviceAddressInclude');
+                if (deviceAddressInclude) {
+                    filterDeviceAddressInclude = {};
+                    var split = deviceAddressInclude.split(",");
+                    for (var i = 0; i < split.length; i++) {
+                        filterDeviceAddressInclude[split[i].toLowerCase()] = true;
+                    }
+                } else {
+                    var deviceAddressExclude = getParameterByName('deviceAddressExclude');
+                    if (deviceAddressExclude) {
+                        filterDeviceAddressExclude = {};
+                        var split = deviceAddressExclude.split(",");
+                        for (var i = 0; i < split.length; i++) {
+                            filterDeviceAddressExclude[split[i].toLowerCase()] = true;
+                        }
+                    } else {
+                        var deviceProfileInclude = getParameterByName('deviceProfileInclude');
+                        if (deviceProfileInclude) {
+                            filterDeviceProfileInclude = {};
+                            var deviceProfileIncludeSplit = deviceProfileInclude.split(",");
+                            for (var i = 0; i < deviceProfileIncludeSplit.length; i++) {
+                                filterDeviceProfileInclude[parseInt(deviceProfileIncludeSplit[i])] = true;
+                            }
+                        } else {
+                            var deviceProfileExclude = getParameterByName('deviceProfileExclude');
+                            if (deviceProfileExclude) {
+                                filterDeviceProfileExclude = {};
+                                var deviceProfileExcludeSplit = deviceProfileExclude.split(",");
+                                for (var i = 0; i < deviceProfileExcludeSplit.length; i++) {
+                                    filterDeviceProfileExclude[parseInt(deviceProfileExcludeSplit[i])] = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            var calculateFilter = function (model) {
+                if (model) {
+                    if (filterDeviceAddressInclude) {
+                        return (filterDeviceAddressInclude[model.DeviceAddress.toLowerCase()] == true)
+                    }
+                    if (filterDeviceAddressExclude) {
+                        return (!filterDeviceAddressExclude[model.DeviceAddress.toLowerCase()])
+                    }
+                    if (filterDeviceProfileInclude) {
+                        return (filterDeviceProfileInclude[model.DeviceProfileId] == true)
+                    }
+                    if (filterDeviceProfileExclude) {
+                        return (!filterDeviceProfileExclude[model.DeviceProfileId])
+                    }
+                    return true;
+                }
+                return false;
+            }
+
+            var sortModels = function () {
+                modelsInProcessSorted = [];
+                modelsReadyForReturnSorted = [];
+                modelsWaitingForUserActionSorted = [];
+                var modelSortFunc = function (a, b) {
+                    if (a.UserId.toUpperCase() == b.UserId.toUpperCase()) {
+                        return 0;
+                    } else {
+                        if (a.UserId.toUpperCase() < b.UserId.toUpperCase()) {
+                            return -1
+                        } else {
+                            return 1
+                        }
+                    }
+                };
+                for (var key in models) {
+                    var model = models[key];
+                    if (model) {
+                        if (model.WaitingForUserAction) {
+                            modelsWaitingForUserActionSorted.push(model);
+                        } else {
+                            if (model.ReadyForReturn) {
+                                modelsReadyForReturnSorted.push(model);
+                            } else {
+                                modelsInProcessSorted.push(model);
+                            }
+                        }
+                    }
+                }
+                modelsReadyForReturnSorted = modelsReadyForReturnSorted.sort(modelSortFunc);
+                modelsInProcessSorted = modelsInProcessSorted.sort(modelSortFunc);
+                modelsWaitingForUserActionSorted = modelsWaitingForUserActionSorted.sort(modelSortFunc);
+
+                if (modelsInProcessSorted.length != modelsInProcessCount) {
+                    modelsInProcessCount = modelsInProcessSorted.length;
+                    $('#inProcessCount').text('(' + modelsInProcessCount + ')');
+                }
+                if (modelsReadyForReturnSorted.length != modelsReadyForReturnCount) {
+                    modelsReadyForReturnCount = modelsReadyForReturnSorted.length;
+                    $('#readyForReturnCount').text('(' + modelsReadyForReturnCount + ')');
+                }
+                if (modelsWaitingForUserActionSorted.length != modelsWaitingForUserActionCount) {
+                    modelsWaitingForUserActionCount = modelsWaitingForUserActionSorted.length;
+                    $('#waitingForUserActionCount').text('(' + modelsWaitingForUserActionCount + ')');
+                }
+
+            };
+
+            var scrollReadyForReturn = function () {
+                $readyForReturnContent.find('li').last().detach().prependTo($readyForReturnContent).hide().slideDown('slow');
+                modelsReadyForReturnIndexOffset++;
+                if (modelsReadyForReturnIndexOffset >= modelsReadyForReturnSorted.length) {
+                    modelsReadyForReturnIndexOffset = 0;
+                }
+                scrollReadyForReturnToken = window.setTimeout(scrollReadyForReturn, scrollSpeed);
+            };
+            var updateScrollReadyForReturn = function () {
+                var containerHeight = $readyForReturn.find('.content').height();
+                var contentHeight = $readyForReturnContent.height();
+                if (containerHeight >= contentHeight && scrollReadyForReturnToken) {
+                    window.clearTimeout(scrollReadyForReturnToken);
+                    return;
+                }
+                if (containerHeight < contentHeight && scrollReadyForReturnToken == null) {
+                    scrollReadyForReturnToken = window.setTimeout(scrollReadyForReturn, scrollSpeed);
+                }
+            };
+            var scrollInProcess = function () {
+                $inProcessContent.find('li').last().detach().prependTo($inProcessContent).hide().slideDown('slow');
+                modelsInProcessIndexOffset++;
+                if (modelsInProcessIndexOffset >= modelsInProcessSorted.length) {
+                    modelsInProcessIndexOffset = 0;
+                }
+                scrollInProcessToken = window.setTimeout(scrollInProcess, scrollSpeed);
+            };
+            var updateScrollInProcess = function () {
+                var containerHeight = $inProcess.find('.content').height();
+                var contentHeight = $inProcessContent.height();
+                if (containerHeight >= contentHeight && scrollInProcessToken) {
+                    window.clearTimeout(scrollInProcessToken);
+                    return;
+                }
+                if (containerHeight < contentHeight && scrollInProcessToken == null) {
+                    scrollInProcessToken = window.setTimeout(scrollInProcess, scrollSpeed);
+                }
+            };
+            var scrollWaitingForUserAction = function () {
+                $waitingForUserActionContent.find('li').last().detach().prependTo($waitingForUserActionContent).hide().slideDown('slow');
+                modelsInProcessIndexOffset++;
+                if (modelsWaitingForUserActionIndexOffset >= modelsWaitingForUserActionSorted.length) {
+                    modelsWaitingForUserActionIndexOffset = 0;
+                }
+                scrollWaitingForUserActionToken = window.setTimeout(scrollWaitingForUserAction, scrollSpeed);
+            };
+            var updateScrollWaitingForUserAction = function () {
+                var containerHeight = $waitingForUserAction.find('.content').height();
+                var contentHeight = $waitingForUserActionContent.height();
+                if (containerHeight >= contentHeight && scrollWaitingForUserActionToken) {
+                    window.clearTimeout(scrollWaitingForUserActionToken);
+                    return;
+                }
+                if (containerHeight < contentHeight && scrollWaitingForUserActionToken == null) {
+                    scrollWaitingForUserActionToken = window.setTimeout(scrollWaitingForUserAction, scrollSpeed);
+                }
+            };
+
+            var modelInsertIndex = function (model) {
+                sortModels();
+                var findIndex = function (model, array, offset) {
+                    for (var i = 0; i < array.length; i++) {
+                        if (model.UserId == array[i].UserId) {
+                            var index = i + offset;
+                            if (index > (array.length - 1)) {
+                                index = index - (array.length - 1);
+                            }
+                            return index;
+                        }
+                    };
+                };
+                if (model.WaitingForUserAction) {
+                    return findIndex(model, modelsWaitingForUserActionSorted, modelsWaitingForUserActionIndexOffset);
+                } else {
+                    if (model.ReadyForReturn) {
+                        return findIndex(model, modelsReadyForReturnSorted, modelsReadyForReturnIndexOffset);
+                    } else {
+                        return findIndex(model, modelsInProcessSorted, modelsInProcessIndexOffset);
+                    }
+                }
+            }
+            var modelInsert = function (model) {
+                var index = modelInsertIndex(model);
+                var insertTo = function (model, host) {
+                    var hostLi = host.children('li');
+                    if (hostLi.length == 0 || hostLi.length < index) {
+                        host.append(model.htmlLi);
+                    } else {
+                        if (index == 0) {
+                            host.prepend(model.htmlLi);
+                        } else {
+                            $(hostLi.get(index - 1)).after(model.htmlLi);
+                        }
+                    }
+                }
+                if (model.WaitingForUserAction) {
+                    insertTo(model, $waitingForUserActionContent);
+                    window.setTimeout(updateScrollWaitingForUserAction, 100);
+                } else {
+                    if (model.ReadyForReturn) {
+                        insertTo(model, $readyForReturnContent);
+                        window.setTimeout(updateScrollReadyForReturn, 100);
+                    } else {
+                        insertTo(model, $inProcessContent);
+                        window.setTimeout(updateScrollInProcess, 100);
+                    }
+                }
+            }
+
+            var removeModel = function (model) {
+                if (model) {
+                    if (model.updateAtToken) {
+                        window.clearTimeout(model.updateAtToken);
+                    };
+                    model.htmlLi.slideUp('fast', function () {
+                        model.htmlLi.remove();
+                    });
+                }
+            };
+
+            var scheduleModelUpdate = function (model) {
+                if (model.updateAtToken) {
+                    window.clearTimeout(model.updateAtToken);
+                };
+                if (model.UpdateAt) {
+                    if (typeof model.UpdateAt == 'string' && model.UpdateAt.indexOf('\/Date(') == 0) {
+                        model.UpdateAt = new Date(parseInt(model.UpdateAt.substr(6)));
+                    }
+                    var nowMilliseconds = new Date().getTime();
+                    var updateAtMilliseconds = (model.UpdateAt - nowMilliseconds);
+                    if (updateAtMilliseconds > 0) {
+                        model.updateAtToken = window.setTimeout(function () { updatedModel(model.UserId); }, updateAtMilliseconds);
+                    } else {
+                        model.UpdateAt = null;
+                    }
+                }
+            };
+
+            var processModel = function (id, model, init) {
+                if (!calculateFilter(model)) {
+                    removeModel(models[id]);
+                    delete models[id];
+                    sortModels();
+                } else {
+                    var existing = models[id];
+                    models[id] = model;
+
+                    // Add
+                    model.htmlContent = $('<div>').text(model.UserId + ' - ' + model.UserDisplayName);
+                    if (!model.ReadyForReturn && model.EstimatedReturnTime) {
+                        model.htmlContent.append($('<span class="small">').text(' (Expected: ' + model.EstimatedReturnTime + ')'));
+                    }
+                    if (model.WaitingForUserAction) {
+                        model.htmlContent.append($('<span class="small">').text(' (Since ' + model.WaitingForUserActionSince + ')'));
+                    } else {
+                        if (model.ReadyForReturn && model.ReadyForReturnSince) {
+                            model.htmlContent.append($('<span class="small">').text(' (Ready ' + model.ReadyForReturnSince + ')'));
+                        }
+                    }
+
+                    if (existing) {
+                        if (existing.ReadyForReturn != model.ReadyForReturn || existing.WaitingForUserAction != model.WaitingForUserAction) {
+                            removeModel(existing);
+                            model.htmlLi = $('<li>').html(model.htmlContent).data('ModelId', id).hide();
+                            modelInsert(model);
+                            if (init) {
+                                model.htmlLi.fadeIn();
+                            } else {
+                                model.htmlLi.slideDown();
+                            }
+                        } else {
+                            if (existing.updateAtToken) {
+                                window.clearTimeout(existing.updateAtToken);
+                            };
+                            model.htmlLi = existing.htmlLi;
+                            model.htmlLi.slideUp('fast', function () {
+                                model.htmlLi.html(model.htmlContent).slideDown();
+                            });
+                        }
+                    } else {
+                        model.htmlLi = $('<li>').html(model.htmlContent).data('ModelId', id).hide();
+                        modelInsert(model);
+                        if (init) {
+                            model.htmlLi.fadeIn();
+                        } else {
+                            model.htmlLi.slideDown('slow');
+                        }
+                    }
+                    if (model.htmlLi && model.IsAlert) {
+                        model.htmlLi.addClass('alert');
+                    }
+                    scheduleModelUpdate(model);
+                }
+            };
+
+            var updatedModel = function (id) {
+                var UserId = id.toString();
+                $.getJSON('@(Url.Action(MVC.Public.UserHeldDevices.UserHeldDevice()))', { id: UserId }, function (data) {
+                    processModel(UserId, data, false);
+                });
+            };
+
+            var connectionError = function () {
+                if (persistantConnection) {
+                    persistantConnection.stop();
+                    persistantConnection = null;
+                    window.setTimeout(function () {
+                        window.location.href = '@(Url.Action(MVC.Public.UserHeldDevices.Noticeboard()))';
+                    }, 10000);
+                }
+            }
+
+            var init = function () {
+                buildFilters();
+                persistantConnection = $.connection('@(Url.Content("~/Public/UserHeldDevices/Notifications"))');
+                persistantConnection.received(updatedModel);
+                persistantConnection.error(connectionError);
+                persistantConnection.start(function () {
+                    $.getJSON('@(Url.Action(MVC.Public.UserHeldDevices.UserHeldDevices()))', null, function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            processModel(data[i].UserId, data[i], true);
+                        }
+                    });
+                });
+            };
+            init();
+
+        });
+    </script>
+    <div id="mainFooter">
+        <img style="width: 32px; height: 32px; margin-top: -5px; margin-bottom: -15px;" src="@Links.ClientSource.Style.Images.Icon32_png" alt="Disco Logo" />
+        powered by Disco
+    </div>
+</body>
+</html>

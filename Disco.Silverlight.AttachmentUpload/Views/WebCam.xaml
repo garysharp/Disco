@@ -1,0 +1,37 @@
+﻿<navigation:Page x:Class="Disco.Silverlight.AttachmentUpload.WebCam" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+    mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
+    Title="WebCam Capture"
+    Style="{StaticResource PageStyle}">
+    <Grid x:Name="LayoutRoot">
+        <Grid x:Name="WebCamAccessHost" Visibility="Collapsed">
+            <Button x:Name="ButtonStartWebCam" Content="START WEBCAM" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="14, 8" />
+        </Grid>
+        <Grid x:Name="WebCamShow" Visibility="Collapsed">
+            <Rectangle x:Name="WebCamHost" />
+            <Button x:Name="ButtonCapture" Content="CAPTURE IMAGE" HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="14, 8" />
+        </Grid>
+        <Border x:Name="WebCamCaptured" Visibility="Collapsed" Width="600" Height="450" Background="#BBffe3cb" BorderBrush="#FFDB761D" BorderThickness="4" CornerRadius="4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Rectangle x:Name="WebCamCapturedImage" Grid.ColumnSpan="4" Margin="14" />
+                <Button x:Name="ButtonCancel" Grid.Row="1" Grid.Column="0" Content="CANCEL" HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="14, 8" Margin="6" />
+                <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="10 0">Comments:</TextBlock>
+                <TextBox Grid.Row="1" Grid.Column="2" x:Name="TextBoxComments" Height="24" />
+                <Button x:Name="ButtonPost" Grid.Row="1" Grid.Column="3" Content="UPLOAD IMAGE" HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="14, 8" Margin="6" />
+            </Grid>
+        </Border>
+    </Grid>
+</navigation:Page>

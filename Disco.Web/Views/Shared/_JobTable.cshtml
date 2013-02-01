@@ -1,0 +1,27 @@
+﻿@model Disco.Models.BI.Job.JobTableModel
+@if (DiscoApplication.MultiSiteMode)
+{
+    if (Model == null || Model.Items == null || Model.Items.Count == 0)
+    { 
+    <span class="smallMessage">No Jobs Found</span>
+    }
+    else
+    {
+        var modelItems = Model.Items;
+        var modelItemsGrouped = modelItems.OrderBy(i => i.DeviceAddress).GroupBy(i => i.DeviceAddress);
+        foreach (var modelItemsGroup in modelItemsGrouped)
+        {
+            Model.Items = modelItemsGroup.ToList();
+            if (modelItemsGroup.Key != null)
+            { 
+    <h3>
+        @modelItemsGroup.Key</h3>
+            }
+    @Html.Partial(MVC.Shared.Views._JobTableRender, Model, new ViewDataDictionary())
+        }
+    }
+}
+else
+{ 
+    @Html.Partial(MVC.Shared.Views._JobTableRender, Model, new ViewDataDictionary())
+}

@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{15BD9561-A3C7-4608-9F7E-F1A1CFB60055}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Disco.ClientBootstrapper</RootNamespace>
+    <AssemblyName>Disco.ClientBootstrapper</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\BZip2\BitWriter.cs">
+      <Link>DotNetZip\BZip2\BitWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\BZip2\BZip2Compressor.cs">
+      <Link>DotNetZip\BZip2\BZip2Compressor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\BZip2\BZip2InputStream.cs">
+      <Link>DotNetZip\BZip2\BZip2InputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\BZip2\BZip2OutputStream.cs">
+      <Link>DotNetZip\BZip2\BZip2OutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\BZip2\ParallelBZip2OutputStream.cs">
+      <Link>DotNetZip\BZip2\ParallelBZip2OutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\BZip2\Rand.cs">
+      <Link>DotNetZip\BZip2\Rand.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\CommonSrc\CRC32.cs">
+      <Link>DotNetZip\CRC32.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ComHelper.cs">
+      <Link>DotNetZip\Zip\ComHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\EncryptionAlgorithm.cs">
+      <Link>DotNetZip\Zip\EncryptionAlgorithm.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\Events.cs">
+      <Link>DotNetZip\Zip\Events.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\Exceptions.cs">
+      <Link>DotNetZip\Zip\Exceptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ExtractExistingFileAction.cs">
+      <Link>DotNetZip\Zip\ExtractExistingFileAction.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\FileSelector.cs">
+      <Link>DotNetZip\Zip\FileSelector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\OffsetStream.cs">
+      <Link>DotNetZip\Zip\OffsetStream.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\Shared.cs">
+      <Link>DotNetZip\Zip\Shared.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\WinZipAes.cs">
+      <Link>DotNetZip\Zip\WinZipAes.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipConstants.cs">
+      <Link>DotNetZip\Zip\ZipConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipCrypto.cs">
+      <Link>DotNetZip\Zip\ZipCrypto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipDirEntry.cs">
+      <Link>DotNetZip\Zip\ZipDirEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipEntry.cs">
+      <Link>DotNetZip\Zip\ZipEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipEntry.Extract.cs">
+      <Link>DotNetZip\Zip\ZipEntry.Extract.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipEntry.Read.cs">
+      <Link>DotNetZip\Zip\ZipEntry.Read.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipEntry.Write.cs">
+      <Link>DotNetZip\Zip\ZipEntry.Write.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipEntrySource.cs">
+      <Link>DotNetZip\Zip\ZipEntrySource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipErrorAction.cs">
+      <Link>DotNetZip\Zip\ZipErrorAction.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.AddUpdate.cs">
+      <Link>DotNetZip\Zip\ZipFile.AddUpdate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Check.cs">
+      <Link>DotNetZip\Zip\ZipFile.Check.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.cs">
+      <Link>DotNetZip\Zip\ZipFile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Events.cs">
+      <Link>DotNetZip\Zip\ZipFile.Events.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Extract.cs">
+      <Link>DotNetZip\Zip\ZipFile.Extract.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Read.cs">
+      <Link>DotNetZip\Zip\ZipFile.Read.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Save.cs">
+      <Link>DotNetZip\Zip\ZipFile.Save.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.SaveSelfExtractor.cs">
+      <Link>DotNetZip\Zip\ZipFile.SaveSelfExtractor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Selector.cs">
+      <Link>DotNetZip\Zip\ZipFile.Selector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.x-IEnumerable.cs">
+      <Link>DotNetZip\Zip\ZipFile.x-IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipInputStream.cs">
+      <Link>DotNetZip\Zip\ZipInputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipOutputStream.cs">
+      <Link>DotNetZip\Zip\ZipOutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipSegmentedStream.cs">
+      <Link>DotNetZip\Zip\ZipSegmentedStream.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\Deflate.cs">
+      <Link>DotNetZip\Zlib\Deflate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\DeflateStream.cs">
+      <Link>DotNetZip\Zlib\DeflateStream.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\GZipStream.cs">
+      <Link>DotNetZip\Zlib\GZipStream.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\Inflate.cs">
+      <Link>DotNetZip\Zlib\Inflate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\InfTree.cs">
+      <Link>DotNetZip\Zlib\InfTree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\ParallelDeflateOutputStream.cs">
+      <Link>DotNetZip\Zlib\ParallelDeflateOutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\Tree.cs">
+      <Link>DotNetZip\Zlib\Tree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\Zlib.cs">
+      <Link>DotNetZip\Zlib\Zlib.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\ZlibBaseStream.cs">
+      <Link>DotNetZip\Zlib\ZlibBaseStream.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\ZlibCodec.cs">
+      <Link>DotNetZip\Zlib\ZlibCodec.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\ZlibConstants.cs">
+      <Link>DotNetZip\Zlib\ZlibConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\ZlibStream.cs">
+      <Link>DotNetZip\Zlib\ZlibStream.cs</Link>
+    </Compile>
+    <Compile Include="BootstrapperLoop.cs" />
+    <Compile Include="InstallLoop.cs" />
+    <Compile Include="Interop\CertificateInterop.cs" />
+    <Compile Include="FormStatus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStatus.Designer.cs">
+      <DependentUpon>FormStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interop\NetworkAdapter.cs" />
+    <Compile Include="Interop\NetworkInterop.cs" />
+    <Compile Include="Interop\RegistryInterop.cs" />
+    <Compile Include="Interop\ShutdownInterop.cs" />
+    <Compile Include="Interop\InstallInterop.cs" />
+    <Compile Include="Interop\WIMInterop.cs" />
+    <Compile Include="IStatus.cs" />
+    <Compile Include="NullStatus.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormStatus.resx">
+      <DependentUpon>FormStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BootstrapperWorkstationInstall.vbs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icon.ico" />
+    <Content Include="InstallBootstrapper.vbs" />
+    <None Include="Resources\Background-BW.png" />
+    <Content Include="UninstallBootstrapper.vbs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_UpdateFileVersion="False" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2001/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>COPY "$(TargetPath)" "$(ProjectDir)..\Disco.Web\ClientBin"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

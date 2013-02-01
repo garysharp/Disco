@@ -1,0 +1,76 @@
+﻿@model Disco.Web.Areas.Config.Models.Plugins.IndexViewModel
+@using Disco.Services.Plugins;
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Plugins");
+}
+@{
+    if (Model.PluginManifests.Count == 0)
+    { 
+    <div class="form" style="width: 450px">
+        <span class="smallMessage">No Plugins Installed</span>
+    </div>  
+    }
+    else
+    {
+        var pluginGroups = Model.PluginManifestsByType;
+
+
+        int itemsPerColumn = pluginGroups.Count / 3;
+        var itemNextId = 0;
+    
+    <table id="pageMenu">
+        <tr>
+            @for (int i = 0; i < 3; i++)
+            {
+                <td>
+                    @{
+                int itemsForThisColumn = itemsPerColumn + (pluginGroups.Count % 3 > i ? 1 : 0);
+                for (int i2 = 0; i2 < itemsForThisColumn && itemNextId < pluginGroups.Count; i2++)
+                {
+                    var pluginGroup = pluginGroups[itemNextId];
+                    itemNextId++;
+                        <div class="pageMenuArea">
+                            <h2>@Plugins.PluginFeatureCategoryDisplayName(pluginGroup.Item1)</h2>
+                            @foreach (var pluginDefinition in pluginGroup.Item2)
+                            {
+                                @Html.ActionLink(pluginDefinition.Name, MVC.Config.Plugins.Configure(pluginDefinition.Id))
+                                <div class="pageMenuBlurb">
+                                    @pluginDefinition.Id | v@(pluginDefinition.Version.ToString(3))
+                                </div>
+                            }
+                        </div>
+                }
+                    }
+                </td>
+            }
+        </tr>
+    </table>
+        
+@*
+            foreach (var pluginGroup in pluginGroups)
+            {
+    <div class="form" style="width: 450px">
+        <h2>@DiscoPlugins.PluginCategoryDisplayName(pluginGroup.Key)</h2>
+        <table>
+            @foreach (var pluginDefinition in pluginGroup)
+            {
+                <tr>
+                    <td>
+                        @if (pluginDefinition.HasConfiguration)
+                        { 
+                            @Html.ActionLink(pluginDefinition.Name, MVC.Config.Plugins.Configure(pluginDefinition.Id))<br />
+                            <span class="smallMessage">@pluginDefinition.Id | v@(pluginDefinition.Version.ToString(3))</span>                            
+                        }
+                        else
+                        { 
+                            @pluginDefinition.Name <br />
+                            <span class="smallMessage">@pluginDefinition.Id | v@(pluginDefinition.Version.ToString(2))
+                                | Not Configurable</span>
+                        }
+                    </td>
+                </tr>   
+            }
+        </table>
+    </div>       *@
+    }
+}

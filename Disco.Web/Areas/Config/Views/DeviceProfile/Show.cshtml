@@ -1,0 +1,536 @@
+﻿@model Disco.Web.Areas.Config.Models.DeviceProfile.ShowModel
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Profiles", MVC.Config.DeviceProfile.Index(null), Model.DeviceProfile.ToString());
+    Html.BundleDeferred("~/Style/jQueryUI/dynatree");
+    Html.BundleDeferred("~/ClientScripts/Modules/jQueryUI-DynaTree");
+}
+<div id="configurationDeviceProfileShow" class="form" style="width: 600px">
+    <table>
+        <tr>
+            <th>
+                Id:
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.DeviceProfile.Id)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Name:
+            </th>
+            <td>@Html.TextBoxFor(model => model.DeviceProfile.Name)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        var $Name = $('#DeviceProfile_Name');
+                        var $NameAjaxSave = $Name.next('.ajaxSave');
+                        $Name
+                            .watermark('Profile Short Name')
+                            .focus(function () { $Name.select() })
+                            .keydown(function (e) {
+                                $NameAjaxSave.show();
+                                if (e.which == 13) {
+                                    $(this).blur();
+                                }
+                            }).blur(function () {
+                                $NameAjaxSave.hide();
+                            })
+                            .change(function () {
+                                $NameAjaxSave.hide();
+                                var $ajaxLoading = $NameAjaxSave.next('.ajaxLoading').show();
+                                var data = { ProfileName: $Name.val() };
+                                $.ajax({
+                                    url: '@Url.Action(MVC.API.DeviceProfile.UpdateName(Model.DeviceProfile.Id))',
+                                    dataType: 'json',
+                                    data: data,
+                                    success: function (d) {
+                                        if (d == 'OK') {
+                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        } else {
+                                            $ajaxLoading.hide();
+                                            alert('Unable to update name: ' + d);
+                                        }
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        alert('Unable to update name: ' + textStatus);
+                                        $ajaxLoading.hide();
+                                    }
+                                });
+                            });
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Short Name:
+            </th>
+            <td>@Html.TextBoxFor(model => model.DeviceProfile.ShortName)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        var $ShortName = $('#DeviceProfile_ShortName');
+                        var $ShortNameAjaxSave = $ShortName.next('.ajaxSave');
+                        $ShortName
+                            .watermark('Profile Short Name')
+                            .focus(function () { $ShortName.select() })
+                            .keydown(function (e) {
+                                $ShortNameAjaxSave.show();
+                                if (e.which == 13) {
+                                    $(this).blur();
+                                }
+                            }).blur(function () {
+                                $ShortNameAjaxSave.hide();
+                            })
+                            .change(function () {
+                                $ShortNameAjaxSave.hide();
+                                var $ajaxLoading = $ShortNameAjaxSave.next('.ajaxLoading').show();
+                                var data = { ShortName: $ShortName.val() };
+                                $.ajax({
+                                    url: '@Url.Action(MVC.API.DeviceProfile.UpdateShortName(Model.DeviceProfile.Id))',
+                                    dataType: 'json',
+                                    data: data,
+                                    success: function (d) {
+                                        if (d == 'OK') {
+                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        } else {
+                                            $ajaxLoading.hide();
+                                            alert('Unable to update short name: ' + d);
+                                        }
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        alert('Unable to update short name: ' + textStatus);
+                                        $ajaxLoading.hide();
+                                    }
+                                });
+                            });
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Description:
+            </th>
+            <td>@Html.TextBoxFor(model => model.DeviceProfile.Description)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        var $Description = $('#DeviceProfile_Description');
+                        var $DescriptionAjaxSave = $Description.next('.ajaxSave');
+                        $Description
+                            .watermark('Profile Description')
+                            .focus(function () { $Description.select() })
+                            .keydown(function (e) {
+                                $DescriptionAjaxSave.show();
+                                if (e.which == 13) {
+                                    $(this).blur();
+                                }
+                            }).blur(function () {
+                                $DescriptionAjaxSave.hide();
+                            })
+                            .change(function () {
+                                $DescriptionAjaxSave.hide();
+                                var $ajaxLoading = $DescriptionAjaxSave.next('.ajaxLoading').show();
+                                var data = { Description: $Description.val() };
+                                $.ajax({
+                                    url: '@Url.Action(MVC.API.DeviceProfile.UpdateDescription(Model.DeviceProfile.Id))',
+                                    dataType: 'json',
+                                    data: data,
+                                    success: function (d) {
+                                        if (d == 'OK') {
+                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        } else {
+                                            $ajaxLoading.hide();
+                                            alert('Unable to update description: ' + d);
+                                        }
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        alert('Unable to update description: ' + textStatus);
+                                        $ajaxLoading.hide();
+                                    }
+                                });
+                            });
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Distribution Type:
+            </th>
+            <td>
+                @Html.DropDownList("DeviceProfile_DistributionType", Model.DeviceProfileDistributionTypes)
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        $('#DeviceProfile_DistributionType').change(function () {
+                            var $this = $(this);
+                            var $ajaxLoading = $this.next('.ajaxLoading').show();
+                            var data = { DistributionType: $this.val() };
+                            $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateDistributionType(Model.DeviceProfile.Id))', data, function (response, result) {
+                                if (result != 'success' || response != 'OK') {
+                                    alert('Unable to change Distribution Type:\n' + response);
+                                    $ajaxLoading.hide();
+                                } else {
+                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                }
+                            });
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Address:
+            </th>
+            <td>
+                @Html.DropDownListFor(m => m.DeviceProfile.DefaultOrganisationAddress, Model.OrganisationAddresses.ToSelectListItems(Model.DeviceProfile.DefaultOrganisationAddress, true, "None"))
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        $('#DeviceProfile_DefaultOrganisationAddress').change(function () {
+                            var $this = $(this);
+                            var $ajaxLoading = $this.next('.ajaxLoading').show();
+                            var data = { DefaultOrganisationAddress: $this.val() };
+                            $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateDefaultOrganisationAddress(Model.DeviceProfile.Id))', data, function (response, result) {
+                                if (result != 'success' || response != 'OK') {
+                                    alert('Unable to change Address:\n' + response);
+                                    $ajaxLoading.hide();
+                                } else {
+                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                }
+                            });
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Allocate Certificates:
+            </th>
+            <td>
+                @Html.DropDownListFor(model => model.DeviceProfile.CertificateProviderId, Model.CertificateProviders.ToSelectListItems(null, true, "Not Allocated"))
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        var $field = $('#DeviceProfile_CertificateProviderId');
+                        var $ajaxLoading = $field.next('.ajaxLoading');
+                        $field
+                        .change(function () {
+                            $ajaxLoading.show();
+                            var data = { CertificateProviderId: $field.val() };
+                            $.ajax({
+                                url: '@Url.Action(MVC.API.DeviceProfile.UpdateCertificateProviderId(Model.DeviceProfile.Id))',
+                                dataType: 'json',
+                                data: data,
+                                success: function (d) {
+                                    if (d == 'OK') {
+                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                    } else {
+                                        $ajaxLoading.hide();
+                                        alert('Unable to update Certificate Provider Id: ' + d);
+                                    }
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    alert('Unable to update Certificate Provider Id: ' + textStatus);
+                                    $ajaxLoading.hide();
+                                }
+                            });
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Computer Name Template Expression:
+            </th>
+            <td>@Html.TextBoxFor(model => model.DeviceProfile.ComputerNameTemplate)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <a id="expressionBrowserAnchor" href="@(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser()))">
+                    &nbsp;</a>
+                <script type="text/javascript">
+                    $(function () {
+                        var $ComputerNameTemplate = $('#DeviceProfile_ComputerNameTemplate');
+                        var $ajaxSave = $ComputerNameTemplate.next('.ajaxSave');
+                        $ComputerNameTemplate
+                            .focus(function () { $ComputerNameTemplate.select() })
+                            .keydown(function (e) {
+                                $ajaxSave.show();
+                                if (e.which == 13) {
+                                    $(this).blur();
+                                }
+                            }).blur(function () {
+                                $ajaxSave.hide();
+                            })
+                            .change(function () {
+                                $ajaxSave.hide();
+                                var $ajaxLoading = $ajaxSave.next('.ajaxLoading').show();
+                                var data = { ComputerNameTemplate: $ComputerNameTemplate.val() };
+                                $.ajax({
+                                    url: '@(Url.Action(MVC.API.DeviceProfile.UpdateComputerNameTemplate(Model.DeviceProfile.Id)))',
+                                    dataType: 'json',
+                                    data: data,
+                                    success: function (d) {
+                                        if (d == 'OK') {
+                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        } else {
+                                            $ajaxLoading.hide();
+                                            alert('Unable to update computer name template: ' + d);
+                                        }
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        alert('Unable to update computer name template: ' + textStatus);
+                                        $ajaxLoading.hide();
+                                    }
+                                });
+                            });
+                    });
+                </script>
+                <div style="margin-top: 8px;">
+                    <label for="DeviceProfile_ProvisionADAccount">
+                        Provision Active Directory Account:
+                    </label>
+                    <input id="DeviceProfile_ProvisionADAccount" type="checkbox" @(Model.DeviceProfile.ProvisionADAccount ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#DeviceProfile_ProvisionADAccount').click(function () {
+                                var $this = $(this);
+                                var $ajaxLoading = $this.next('.ajaxLoading').show();
+                                var data = { ProvisionADAccount: $this.is(':checked') };
+                                $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateProvisionADAccount(Model.DeviceProfile.Id))', data, function (response, result) {
+                                    if (result != 'success' || response != 'OK') {
+                                        alert('Unable to change Provision AD Account:\n' + response);
+                                        $ajaxLoading.hide();
+                                    } else {
+                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+                </div>
+                <div style="margin-top: 8px;">
+                    <label for="DeviceProfile_EnforceComputerNameConvention">
+                        Enforce Naming Convention:
+                    </label>
+                    <input id="DeviceProfile_EnforceComputerNameConvention" type="checkbox" @(Model.DeviceProfile.EnforceComputerNameConvention ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#DeviceProfile_EnforceComputerNameConvention').click(function () {
+                                var $this = $(this);
+                                var $ajaxLoading = $this.next('.ajaxLoading').show();
+                                var data = { EnforceComputerNameConvention: $this.is(':checked') };
+                                $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateEnforceComputerNameConvention(Model.DeviceProfile.Id))', data, function (response, result) {
+                                    if (result != 'success' || response != 'OK') {
+                                        alert('Unable to change Enforce Computer Name Convention:\n' + response);
+                                        $ajaxLoading.hide();
+                                    } else {
+                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Default Organisational Unit:
+            </th>
+            <td>
+                @Html.HiddenFor(model => model.DeviceProfile.OrganisationalUnit)
+                <div id="displayOrganisationalUnit">
+                </div>
+                <a id="changeOrganisationalUnit" href="#">Change</a>@AjaxHelpers.AjaxLoader()
+                <div id="dialogOrganisationalUnit" title="Default Organisational Unit">
+                    <div id="treeOrganisationalUnit">
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var ouValue = $('#DeviceProfile_OrganisationalUnit');
+                        var ouDisplay = $('#displayOrganisationalUnit');
+                        var ouTree = $('#treeOrganisationalUnit');
+                        var ouChangeLink = $('#changeOrganisationalUnit');
+                        var ouTreeLoaded = false;
+                        var ouFriendlyName = function (ou) {
+                            return ou.replace(/ou=/gi, '').split(',').reverse().join(' > ');
+                        };
+                        var updateDisplayOrganisationalUnit = function () {
+                            var value = ouValue.val();
+                            if (value) {
+                                ouDisplay.text(ouFriendlyName(value));
+                            } else {
+                                ouDisplay.text('{Default Computers Container}');
+                            }
+                        };
+                        var ouSet = function (ou) {
+                            $ajaxLoading = ouChangeLink.next('.ajaxLoading').show();
+                            var data = { OrganisationalUnit: ou };
+                            $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateOrganisationalUnit(Model.DeviceProfile.Id, null))', data, function (response, result) {
+                                if (result != 'success' || response != 'OK') {
+                                    alert('Unable to change Organisational Unit:\n' + response);
+                                    $ajaxLoading.hide();
+                                } else {
+                                    ouValue.val(ou);
+                                    updateDisplayOrganisationalUnit();
+                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                }
+                            });
+                        }
+                        var ouUpdateTree = function () {
+                            var dynaTree = ouTree.dynatree("getTree");
+                            var value = ouValue.val();
+                            if (value) {
+                                dynaTree.activateKey(value);
+                            } else {
+                                var activeNode = dynaTree.getActiveNode();
+                                if (activeNode)
+                                    activeNode.deactivate();
+                            }
+                        }
+
+                        var ouDialog = $('#dialogOrganisationalUnit').dialog({
+                            autoOpen: false,
+                            buttons: {
+                                'Use Default Container': function () {
+                                    ouSet('');
+                                    $(this).dialog("close");
+                                },
+                                'Save': function () {
+                                    var node = ouTree.dynatree("getTree").getActiveNode();
+                                    if (node) {
+                                        ouSet(node.data.key);
+                                        $(this).dialog("close");
+                                    } else {
+                                        alert('Select an Organisational Unit to Save')
+                                    }
+                                }
+                            },
+                            draggable: false,
+                            modal: true,
+                            resizable: false,
+                            width: 400,
+                            height: 400
+                        });
+
+                        var ouChange = function () {
+                            if (!ouTreeLoaded) {
+                                $.getJSON('@(Url.Action(MVC.API.DeviceProfile.OrganisationalUnits()))', null, function (data) {
+                                    var dynatreeDataTransformer = function (element) {
+                                        var child = {
+                                            title: element.Name,
+                                            key: element.Path,
+                                            isFolder: true
+                                        }
+                                        if (element.Children) {
+                                            child.children = [];
+                                            for (var i = 0; i < element.Children.length; i++) {
+                                                child.children.push(dynatreeDataTransformer(element.Children[i]));
+                                            }
+                                        }
+                                        return child;
+                                    };
+                                    var dynatreeData = [];
+                                    for (var i = 0; i < data.length; i++) {
+                                        dynatreeData.push(dynatreeDataTransformer(data[i]));
+                                    }
+
+                                    ouTree.dynatree({
+                                        children: dynatreeData,
+                                        onActivate: function (node) {
+                                            //alert('node selected: ' + node.data.key);
+                                        }
+                                    });
+                                    ouTreeLoaded = true;
+                                    ouUpdateTree();
+                                });
+                            } else {
+                                ouUpdateTree();
+                            }
+                            ouDialog.dialog('open');
+                        };
+
+                        ouChangeLink.click(ouChange);
+                        updateDisplayOrganisationalUnit();
+                    });
+                </script>
+                <div style="margin-top: 8px;">
+                    <label for="DeviceProfile_EnforceOrganisationalUnit">
+                        Enforce:
+                    </label>
+                    <input id="DeviceProfile_EnforceOrganisationalUnit" type="checkbox" @(Model.DeviceProfile.EnforceOrganisationalUnit ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#DeviceProfile_EnforceOrganisationalUnit').click(function () {
+                                var $this = $(this);
+                                var $ajaxLoading = $this.next('.ajaxLoading').show();
+                                var data = { EnforceOrganisationalUnit: $this.is(':checked') };
+                                $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateEnforceOrganisationalUnit(Model.DeviceProfile.Id))', data, function (response, result) {
+                                    if (result != 'success' || response != 'OK') {
+                                        alert('Unable to change Enforce Organisation Unit:\n' + response);
+                                        $ajaxLoading.hide();
+                                    } else {
+                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="dialogConfirmDelete" title="Delete this Device Profile?">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+        This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+<script type="text/javascript">
+    $(function () {
+
+        var button = $('#buttonDelete');
+        var buttonLink = button.attr('href');
+        button.attr('href', '#');
+        button.click(function () {
+            $("#dialogConfirmDelete").dialog('open');
+        });
+
+        $("#dialogConfirmDelete").dialog({
+            resizable: false,
+            height: 140,
+            modal: true,
+            autoOpen: false,
+            buttons: {
+                "Delete": function () {
+                    $(this).dialog('disable');
+                    window.location.href = buttonLink;
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+    });
+</script>
+<div class="actionBar">
+    @if (Model.CanDelete)
+    { 
+        @Html.ActionLinkButton("Delete", MVC.API.DeviceProfile.Delete(Model.DeviceProfile.Id, true), "buttonDelete")
+    }
+    @Html.ActionLinkButton("View Devices", MVC.Search.Query(Model.DeviceProfile.Id.ToString(), "DeviceProfile"))
+</div>

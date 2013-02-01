@@ -1,0 +1,46 @@
+// Default Colours
+@BackgroundColour: #D1D1D1;
+
+@HyperLinkColour: #335A87;
+@HyperLinkHoverColour:  #4f81bd;
+
+@ButtonColour: #DB761D;
+@ButtonBorderColour: #875A33;
+@ButtonHoverColour: #9e9e9e;
+@ButtonBorderHoverColour: #696969;
+@ButtonAlertColour: #e90000;
+@ButtonBorderAlertColour: #990000;
+
+@MenuHoverColour: #FFD5BA;
+@ActionBarBorder: #E5BD99;
+@ActionBarBackgound: #F2F2F2;
+
+@FormBorderColour: #005fab;
+@TableDataBorderColour: #e8eef4;
+@TableDataDarkBorderColour: #8db2d8;
+@TableDataRowBackgroundColor: hsl(hue(@TableDataBorderColour), saturation(@TableDataBorderColour), 99%);
+
+@SubtleColour: #ededed;
+@SubtleBorderColour: #ccc;
+
+@FontFamilyBody: "Segoe UI", Arial, Verdana, Tahoma, sans-serif;
+@FontFamilyHeading: "Segoe UI", Arial, Verdana, Tahoma, sans-serif;
+@FontWeightHeading: lighter;
+@FontStretchHeading: condensed;
+
+// Border Radius Mixins
+.border-radius(@radius: 5px) {
+  -moz-border-radius: @radius;
+  -webkit-border-radius: @radius;
+  border-radius: @radius;
+}
+.border-radius2(@radius1: 5px, @radius2: 5px) {
+  -moz-border-radius: @radius1 @radius2;
+  -webkit-border-radius: @radius1 @radius2;
+  border-radius: @radius1 @radius2;
+}
+.border-radius4(@topLeftRadius: 5px, @topRightRadius: 5px, @bottomLeftRadius: 5px, @bottomRightRadius: 5px) {
+  -moz-border-radius: @topLeftRadius @topRightRadius @bottomLeftRadius @bottomRightRadius;
+  -webkit-border-radius: @topLeftRadius @topRightRadius @bottomLeftRadius @bottomRightRadius;
+  border-radius: @topLeftRadius @topRightRadius @bottomLeftRadius @bottomRightRadius;
+}

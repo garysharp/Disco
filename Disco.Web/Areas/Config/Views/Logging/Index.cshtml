@@ -1,0 +1,164 @@
+﻿@model Disco.Web.Areas.Config.Models.Logging.IndexModel
+@using Disco.Services.Logging
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Logging");
+    Html.BundleDeferred("~/ClientScripts/Modules/jQueryUI-TimePicker");
+}
+@using (Html.BeginForm(MVC.API.Logging.RetrieveEvents()))
+{ 
+    <div class="form" style="width: 520px;">
+        <h2>
+            Export Logs</h2>
+        <table>
+            <tr>
+                <th style="width: 105px;">
+                    Start Filter
+                </th>
+                <td>
+                    <input id="filterStart" type="text" name="Start" />
+                    <span class="smallMessage">* Optional</span>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    End Filter
+                </th>
+                <td>
+                    <input id="filterEnd" type="text" name="End" />
+                    <span class="smallMessage">* Optional</span>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Limit Filter
+                </th>
+                <td>
+                    <select name="Take">
+                        <option selected="selected" value="">- All Events -</option>
+                        <option value="1000">1,000 Events</option>
+                        <option value="500">500 Events</option>
+                        <option value="100">100 Events</option>
+                        <option value="50">50 Events</option>
+                        <option value="10">10 Events</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Module Filter
+                </th>
+                <td>
+                    <select id="moduleId" name="ModuleId">
+                        <option value="" selected="selected">- All Modules -</option>
+                        @foreach (var lm in Model.LogModules.Keys.OrderBy(lm => lm.ModuleDescription))
+                        {
+                            <option value="@lm.ModuleId">@lm.ModuleDescription</option>    
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr id="trLogModuleEventTypes" style="display: none">
+                <th>
+                    Event Type Filter <span style="display: block;" class="checkboxBulkSelectContainer">
+                        Select: <a id="eventTypesSelectAll" href="#">ALL</a> | <a id="eventTypesSelectNone"
+                            href="#">NONE</a></span>
+                </th>
+                <td>
+                    @{int uniqueIdSeed = 0;
+                    }
+                    @foreach (var lm in Model.LogModules)
+                    {
+                        <div data-logmoduleid="@lm.Key.ModuleId" class="logModuleEventTypes">
+                            @CommonHelpers.CheckBoxList("EventTypeIds", lm.Value.ToSelectListItems(), 2, false, uniqueIdSeed)
+                        </div>
+                        uniqueIdSeed += lm.Value.Count;
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th>
+                </th>
+                <td>
+                    @Html.Hidden("Format", "CSV")
+                    <input type="submit" class="button" value="Download CSV" />
+                </td>
+            </tr>
+        </table>
+        <script type="text/javascript">
+            $(function () {
+                var filterStart = $('#filterStart').watermark('Start').datetimepicker({
+                    ampm: true,
+                    stepMinute: 1,
+                    changeYear: true,
+                    changeMonth: true,
+                    dateFormat: 'yy/mm/dd'
+                });
+                var filterEnd = $('#filterEnd').watermark('End').datetimepicker({
+                    ampm: true,
+                    stepMinute: 1,
+                    changeYear: true,
+                    changeMonth: true,
+                    dateFormat: 'yy/mm/dd'
+                });
+                var moduleId = $('#moduleId');
+                var trLogModuleEventTypes = $('#trLogModuleEventTypes');
+                var logModuleEventTypes = trLogModuleEventTypes.find('.logModuleEventTypes').hide();
+                var logModuleEventTypeCheckboxes = logModuleEventTypes.find('input[type="checkbox"]');
+
+                moduleId.change(function () {
+                    // Unselect All
+                    logModuleEventTypes.slideUp();
+                    logModuleEventTypeCheckboxes.filter(':checked').attr('checked', false);
+                    var selectedModule = moduleId.val();
+                    if (selectedModule) {
+                        trLogModuleEventTypes.show();
+                        var selectedModuleEventTypes = logModuleEventTypes.filter('[data-logmoduleid="' + selectedModule + '"]');
+                        if (selectedModuleEventTypes.length > 0) {
+                            var selectedModuleEventTypeCheckboxes = selectedModuleEventTypes.find('input[type="checkbox"]');
+                            selectedModuleEventTypeCheckboxes.attr('checked', true);
+                            trLogModuleEventTypes.show();
+                            selectedModuleEventTypes.slideDown();
+                        } else {
+                            trLogModuleEventTypes.hide();
+                        }
+                    } else {
+                        trLogModuleEventTypes.hide();
+                    }
+                });
+
+                $('#eventTypesSelectAll').click(function () {
+                    var selectedModule = moduleId.val();
+                    if (selectedModule) {
+                        var selectedModuleEventTypes = logModuleEventTypes.filter('[data-logmoduleid="' + selectedModule + '"]');
+                        if (selectedModuleEventTypes.length > 0) {
+                            var selectedModuleEventTypeCheckboxes = selectedModuleEventTypes.find('input[type="checkbox"]');
+                            selectedModuleEventTypeCheckboxes.attr('checked', true);
+                        }
+                    }
+                    return false;
+                });
+                $('#eventTypesSelectNone').click(function () {
+                    var selectedModule = moduleId.val();
+                    if (selectedModule) {
+                        var selectedModuleEventTypes = logModuleEventTypes.filter('[data-logmoduleid="' + selectedModule + '"]');
+                        if (selectedModuleEventTypes.length > 0) {
+                            var selectedModuleEventTypeCheckboxes = selectedModuleEventTypes.find('input[type="checkbox"]');
+                            selectedModuleEventTypeCheckboxes.attr('checked', false);
+                        }
+                    }
+                    return false;
+                });
+
+            });
+        </script>
+    </div>
+}
+<h2>
+    Live Logging</h2>
+@Html.Partial(MVC.Config.Shared.Views.LogEvents, new Disco.Web.Areas.Config.Models.Shared.LogEventsModel()
+{
+    IsLive = true,
+    TakeFilter = 100,
+    StartFilter = DateTime.Today.AddDays(-1),
+    ViewPortHeight = 450
+})

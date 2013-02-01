@@ -1,0 +1,16 @@
+﻿@model Disco.Web.Models.Job.ShowModel
+<div id="jobDetailTab-Components" class="jobPart">
+    @Html.Partial(MVC.Job.Views.JobParts.Components)
+</div>
+<div id="jobDetailTab-NonWarrantyFinance" class="jobPart">
+    @Html.Partial(MVC.Job.Views.JobParts.NonWarrantyFinance)
+</div>
+<div id="jobDetailTab-NonWarrantyRepairs" class="jobPart">
+    @Html.Partial(MVC.Job.Views.JobParts.Repairs)
+</div>
+<div id="jobDetailTab-NonWarrantyInsurance" class="jobPart">
+    @Html.Partial(MVC.Job.Views.JobParts.Insurance)
+</div>
+<script type="text/javascript">
+    $('#jobDetailTabItems').append('<li><a href="#jobDetailTab-Components">Components</a></li><li><a href="#jobDetailTab-NonWarrantyFinance">Finance</a></li><li><a href="#jobDetailTab-NonWarrantyRepairs">Repairs</a></li><li><a href="#jobDetailTab-NonWarrantyInsurance">Insurance</a></li>');
+</script>

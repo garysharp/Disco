@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{85A6BD19-2C64-4746-8F2C-A68A86E8C2D7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Disco.Data</RootNamespace>
+    <AssemblyName>Disco.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\ConfigurationBase.cs" />
+    <Compile Include="Configuration\ConfigurationContext.cs" />
+    <Compile Include="Configuration\Modules\BootstrapperConfiguration.cs" />
+    <Compile Include="Configuration\Modules\DeviceProfileConfiguration.cs" />
+    <Compile Include="Configuration\Modules\DeviceProfilesConfiguration.cs" />
+    <Compile Include="Configuration\Modules\OrganisationAddressesConfiguration.cs" />
+    <Compile Include="Configuration\Modules\WirelessConfiguration.cs" />
+    <Compile Include="Migrations\201204250418485_DBv0.cs" />
+    <Compile Include="Migrations\201204250418485_DBv0.Designer.cs">
+      <DependentUpon>201204250418485_DBv0.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201205100307196_DBv1.cs" />
+    <Compile Include="Migrations\201205100307196_DBv1.Designer.cs">
+      <DependentUpon>201205100307196_DBv1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201205290205162_DBv2.cs" />
+    <Compile Include="Migrations\201205290205162_DBv2.Designer.cs">
+      <DependentUpon>201205290205162_DBv2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201206140712161_DBv3.cs" />
+    <Compile Include="Migrations\201206140712161_DBv3.Designer.cs">
+      <DependentUpon>201206140712161_DBv3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201206280337277_DBv4.cs" />
+    <Compile Include="Migrations\201206280337277_DBv4.Designer.cs">
+      <DependentUpon>201206280337277_DBv4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201211090325116_DBv5.cs" />
+    <Compile Include="Migrations\201211090325116_DBv5.Designer.cs">
+      <DependentUpon>201211090325116_DBv5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201301150107063_DBv6.cs" />
+    <Compile Include="Migrations\201301150107063_DBv6.Designer.cs">
+      <DependentUpon>201301150107063_DBv6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\DiscoDataMigrator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\DiscoDatabaseConnectionFactory.cs" />
+    <Compile Include="Repository\DiscoDataContext.cs" />
+    <Compile Include="Repository\DiscoDataContextInitializer.cs" />
+    <Compile Include="Repository\DiscoDataSeeder.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Disco.Models\Disco.Models.csproj">
+      <Project>{FBC05512-FCCA-4B16-9E76-8C413C5DE6C9}</Project>
+      <Name>Disco.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201211090325116_DBv5.resx">
+      <DependentUpon>201211090325116_DBv5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201301150107063_DBv6.resx">
+      <DependentUpon>201301150107063_DBv6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Resources\EmptyLogo.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2001/1/1" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
