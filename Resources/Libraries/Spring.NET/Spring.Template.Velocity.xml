@@ -1,0 +1,698 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Spring.Template.Velocity</name>
+    </assembly>
+    <members>
+        <member name="T:Spring.Template.Velocity.Config.TemplateNamespaceParser">
+            <summary>
+            Implementation of the custom configuration parser for template configurations
+            based on 
+            <see cref="T:Spring.Objects.Factory.Xml.ObjectsNamespaceParser"/>
+            </summary>
+            <author>Erez Mazor</author>
+            <see cref="T:Spring.Objects.Factory.Xml.ObjectsNamespaceParser"/>
+        </member>
+        <member name="M:Spring.Template.Velocity.Config.TemplateNamespaceParser.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Template.Velocity.Config.TemplateNamespaceParser"/> class.
+            </summary>
+        </member>
+        <member name="M:Spring.Template.Velocity.Config.TemplateNamespaceParser.ParseElement(System.Xml.XmlElement,Spring.Objects.Factory.Xml.ParserContext)">
+            <see cref="T:Spring.Objects.Factory.Xml.INamespaceParser"/>
+        </member>
+        <member name="M:Spring.Template.Velocity.Config.TemplateNamespaceParser.ParseTemplateDefinition(System.Xml.XmlElement,Spring.Objects.Factory.Xml.ParserContext)">
+            <summary>
+            Parse a template definition from the templating namespace
+            </summary>
+            <param name="element">the root element defining the templating object</param>
+            <param name="parserContext">the parser context</param>
+            <returns></returns>
+        </member>
+        <member name="M:Spring.Template.Velocity.Config.TemplateNamespaceParser.ParseNVelocityEngine(System.Xml.XmlElement,Spring.Objects.Factory.Xml.ParserContext)">
+            <summary>
+            Parses the object definition for the engine object, configures a single NVelocity template engine based 
+            on the element definitions.
+            </summary>
+            <param name="element">the root element defining the velocity engine</param>
+            <param name="parserContext">the parser context</param>
+        </member>
+        <member name="M:Spring.Template.Velocity.Config.TemplateNamespaceParser.ParseChildDefinitions(System.Xml.XmlNodeList,Spring.Objects.Factory.Xml.ParserContext,Spring.Objects.MutablePropertyValues)">
+            <summary>
+            Parses child element definitions for the NVelocity engine. Typically resource loaders and locally defined properties are parsed here
+            </summary>
+            <param name="childElements">the XmlNodeList representing the child configuration of the root NVelocity engine element</param>
+            <param name="parserContext">the parser context</param>
+            <param name="objectDefinitionProperties">the MutablePropertyValues used to configure this object</param>
+        </member>
+        <member name="M:Spring.Template.Velocity.Config.TemplateNamespaceParser.ParseResourceLoader(System.Xml.XmlElement,Spring.Objects.MutablePropertyValues,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Configures the NVelocity resource loader definitions from the xml definition
+            </summary>
+            <param name="element">the root resource loader element</param>
+            <param name="objectDefinitionProperties">the MutablePropertyValues used to configure this object</param>
+            <param name="properties">the properties used to initialize the velocity engine</param>
+        </member>
+        <member name="M:Spring.Template.Velocity.Config.TemplateNamespaceParser.AppendResourceLoaderGlobalProperties(System.Collections.Generic.IDictionary{System.String,System.Object},System.String,System.String,System.String)">
+            <summary>
+            Set the caching and modification interval checking properties of a resource loader of a given type
+            </summary>
+            <param name="properties">the properties used to initialize the velocity engine</param>
+            <param name="type">type of the resource loader</param>
+            <param name="caching">caching flag</param>
+            <param name="modificationInterval">modification interval value</param>
+        </member>
+        <member name="M:Spring.Template.Velocity.Config.TemplateNamespaceParser.AppendResourceLoaderGlobalProperty(System.Collections.Generic.IDictionary{System.String,System.Object},System.String,System.String,System.Object)">
+            <summary>
+            Set global velocity resource loader properties (caching, modification interval etc.)
+            </summary>
+            <param name="properties">the properties used to initialize the velocity engine</param>
+            <param name="type">the type of resource loader</param>
+            <param name="property">the suffix property</param>
+            <param name="value">the value of the property</param>
+        </member>
+        <member name="M:Spring.Template.Velocity.Config.TemplateNamespaceParser.AppendFileLoaderProperties(System.Xml.XmlNodeList,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Creates a nvelocity file based resource loader by setting the required properties
+            </summary>
+            <param name="elements">a list of nv:file elements defining the paths to template files</param>
+            <param name="properties">the properties used to initialize the velocity engine</param>
+        </member>
+        <member name="M:Spring.Template.Velocity.Config.TemplateNamespaceParser.AppendAssemblyLoaderProperties(System.Xml.XmlNodeList,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Creates a nvelocity assembly based resource loader by setting the required properties
+            </summary>
+            <param name="elements">a list of nv:assembly elements defining the assemblies</param>
+            <param name="properties">the properties used to initialize the velocity engine</param>
+        </member>
+        <member name="M:Spring.Template.Velocity.Config.TemplateNamespaceParser.AppendResourceLoaderPaths(System.Xml.XmlNodeList,Spring.Objects.MutablePropertyValues)">
+            <summary>
+            Creates a spring resource loader by setting the ResourceLoaderPaths of the
+            engine factory (the resource loader itself will be created internally either as 
+            spring or as file resource loader based on the value of prefer-file-system-access
+            attribute).
+            </summary>
+            <param name="elements">list of resource loader path elements</param>
+            <param name="objectDefinitionProperties">the MutablePropertyValues to set the property for the engine factory</param>
+        </member>
+        <member name="M:Spring.Template.Velocity.Config.TemplateNamespaceParser.AppendCustomLoaderProperties(System.Xml.XmlElement,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Create a custom resource loader from an nv:custom element 
+            generates the 4 required nvelocity props for a resource loader (name, description, class and path).
+            </summary>
+            <param name="element">the nv:custom xml definition element</param>
+            <param name="properties">the properties used to initialize the velocity engine</param>
+        </member>
+        <member name="M:Spring.Template.Velocity.Config.TemplateNamespaceParser.ParseNVelocityProperties(System.Xml.XmlElement,Spring.Objects.Factory.Xml.ParserContext,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Parses the nvelocity properties map using <code>ObjectNamespaceParserHelper</code> 
+            and appends it to the properties dictionary
+            </summary>
+            <param name="element">root element of the map element</param>
+            <param name="parserContext">the parser context</param>
+            <param name="properties">the properties used to initialize the velocity engine</param>
+        </member>
+        <member name="M:Spring.Template.Velocity.Config.TemplateNamespaceParser.GetTypeName(System.Xml.XmlElement)">
+            <summary>
+            Gets the name of the object type for the specified element.
+            </summary>
+            <param name="element">The element.</param>
+            <returns>The name of the object type.</returns>
+        </member>
+        <member name="M:Spring.Template.Velocity.Config.TemplateNamespaceParser.getResourceLoaderProperty(System.String,System.String)">
+            <summary>
+            constructs an nvelocity style resource loader property in the format:
+            prefix.resource.loader.suffix
+            </summary>
+            <param name="type">the prefix</param>
+            <param name="suffix">the suffix</param>
+            <returns>a concatenated string like: prefix.resource.loader.suffix</returns>
+        </member>
+        <member name="M:Spring.Template.Velocity.Config.TemplateNamespaceParser.SelectNodes(System.Xml.XmlElement,System.String)">
+             <summary>
+             This method is overriden from ObjectsNamespaceParser since when invoked on
+             sub-elements from the objets namespace (e.g., objects:objectMap for nvelocity
+             property map) the <code>element.SelectNodes</code> fails because it is in
+             the nvelocity custom namespace and not the object's namespace (http://www.springframwork.net)
+             to amend this the object's namespace is added to the provided XmlNamespaceManager
+             </summary>
+            <param name="element"> The element to be searched in. </param>
+             <param name="childElementName"> The name of the child nodes to look for.
+             </param>
+             <returns> The child <see cref="T:System.Xml.XmlNode"/>s of the supplied
+             <paramref name="element"/> with the supplied <paramref name="childElementName"/>.
+             </returns>
+             <see cref="T:Spring.Objects.Factory.Xml.ObjectsNamespaceParser"/>
+        </member>
+        <member name="T:Spring.Template.Velocity.Config.TemplateDefinitionConstants">
+            <summary>
+            Template definition constants
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.NVelocityElement">
+            <summary>
+            Engine element definition
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.Spring">
+            <summary>
+            Spring resource loader element definition
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.Custom">
+            <summary>
+            Custom resource loader element definition
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.AttributeUri">
+            <summary>
+            uri attribute of the spring element
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.AttributePreferFileSystemAccess">
+            <summary>
+            prefer-file-system-access attribute of the engine factory
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.AttributeConfigFile">
+            <summary>
+            config-file attribute of the engine factory
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.AttributeOverrideLogging">
+            <summary>
+            override-logging attribute of the engine factory
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.AttributeTemplateCaching">
+            <summary>
+            template-caching attribute of the nvelocity engine
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.AttributeDefaultCacheSize">
+            <summary>
+            default-cache-size attribute of the nvelocity engine resource manager
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.AttributeModificationCheckInterval">
+            <summary>
+            modification-check-interval attribute of the nvelocity engine resource loader
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.ElementResourceLoader">
+            <summary>
+            resource loader element
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.ElementNVelocityProperties">
+            <summary>
+            nvelocity propeties element (map)
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.PropertyPreferFileSystemAccess">
+            <summary>
+            PreferFileSystemAccess property of the engine factory
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.PropertyOverrideLogging">
+            <summary>
+            OverrideLogging property of the engine factory
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.PropertyConfigFile">
+            <summary>
+            ConfigLocation property of the engine factory
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.PropertyResourceLoaderPaths">
+            <summary>
+            ResourceLoaderPaths property of the engine factory
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.PropertyVelocityProperties">
+            <summary>
+            VelocityProperties property of the engine factory
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.PropertyResourceLoaderCaching">
+            <summary>
+            resource.loader.cache property of the resource loader configuration 
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.PropertyResourceLoaderModificationCheckInterval">
+            <summary>
+            resource.loader.modificationCheckInterval property of the resource loader configuration 
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.FileResourceLoaderClass">
+            <summary>
+            the type used for file resource loader
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.AssemblyResourceLoaderClass">
+            <summary>
+            the type used for assembly resource loader
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.Config.TemplateDefinitionConstants.SpringResourceLoaderClass">
+            <summary>
+            the type used for spring resource loader
+            </summary>
+        </member>
+        <member name="T:Spring.Template.Velocity.CommonsLoggingLogSystem">
+            <summary>
+            NVelocity LogSystem implementation for Commons Logging. 
+            </summary>
+            <author>Erez Mazor</author>
+        </member>
+        <member name="F:Spring.Template.Velocity.CommonsLoggingLogSystem.log">
+            <summary>
+            Shared logger instance.
+            </summary>
+        </member>
+        <member name="M:Spring.Template.Velocity.CommonsLoggingLogSystem.Init(NVelocity.Runtime.IRuntimeServices)">
+            <summary>
+            Initializes the specified runtime services.  No-op in current implementatin
+            </summary>
+            <param name="runtimeServices">the runtime services.</param>
+        </member>
+        <member name="M:Spring.Template.Velocity.CommonsLoggingLogSystem.LogVelocityMessage(NVelocity.Runtime.Log.LogLevel,System.String)">
+            <summary>
+            Log a NVelocity message using the commons logging system
+            </summary>
+            <param name="level">LogLevel to match</param>
+            <param name="message">message to log</param>
+        </member>
+        <member name="T:Spring.Template.Velocity.SpringResourceLoader">
+             <summary>
+             NVelocity's abstract ResourceLoader extension which serves
+              as an adapter that loads templates  via a Spring IResourceLoader. 
+             
+             <br/>
+             Used by VelocityEngineFactory for any resource loader path that 
+             cannot be resolved to a File or an Assembly or for 
+             implementations which rely on spring's IResourceLoader 
+             mechanism.
+             
+             <br/>
+             <b>Important</b>: this loader does not allow for modification detection.
+            <br/>
+             Expects "spring.resource.loader" (IResourceLoader implementations) 
+             and "spring.resource.loader.path" application attributes in the 
+             NVelocity runtime.
+             </summary>
+             <see cref="P:Spring.Template.Velocity.VelocityEngineFactory.ResourceLoaderPath"/>
+             <see cref="T:Spring.Core.IO.IResourceLoader"/>
+             <see cref="T:NVelocity.Runtime.Resource.Loader.FileResourceLoader"/>
+             <see cref="T:NVelocity.Runtime.Resource.Loader.ResourceLoader"/>
+             <see cref="T:NVelocity.Runtime.Resource.Loader.AssemblyResourceLoader"/>
+             <author>Erez Mazor (.NET) </author>
+        </member>
+        <member name="F:Spring.Template.Velocity.SpringResourceLoader.NAME">
+            <summary>
+             Prefix used for the NVelocity Configuration
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.SpringResourceLoader.SPRING_RESOURCE_LOADER_CLASS">
+            <summary>
+            The IResourceLoader implementation type
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.SpringResourceLoader.SPRING_RESOURCE_LOADER_CACHE">
+            <summary>
+            A flag indicating weather a template cache is used 
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.SpringResourceLoader.SPRING_RESOURCE_LOADER">
+            <summary>
+             Fully qualified name of the IResourceLoader implementation class
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.SpringResourceLoader.SPRING_RESOURCE_LOADER_PATH">
+            <summary>
+            A comma delimited list of paths used by the spring IResourceLoader implementation
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.SpringResourceLoader.log">
+            <summary>
+            Shared logger instance.
+            </summary>
+        </member>
+        <member name="M:Spring.Template.Velocity.SpringResourceLoader.Init(Commons.Collections.ExtendedProperties)">
+            <summary>
+            Initialize the template loader with a resources class.
+            </summary>
+            <param name="configuration">The ExtendedProperties representing the Velocity configuration.</param>
+        </member>
+        <member name="M:Spring.Template.Velocity.SpringResourceLoader.GetResourceStream(System.String)">
+            <summary>
+            Get the <code>System.IO.Stream</code> that the Runtime will parse to create a template.
+            </summary>
+            <param name="source">the source template name</param>
+            <returns>a System.IO.Stream representation of the resource</returns>
+        </member>
+        <member name="M:Spring.Template.Velocity.SpringResourceLoader.IsSourceModified(NVelocity.Runtime.Resource.Resource)">
+            <summary>
+             Given a template, check to see if the source of InputStream has been modified.
+            </summary>
+            <param name="resource">The resource.</param>
+            <returns>
+            	<c>true</c> if the source of the InputStream has been modified; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Spring.Template.Velocity.SpringResourceLoader.GetLastModified(NVelocity.Runtime.Resource.Resource)">
+            <summary>
+            Get the last modified time of the InputStream source
+            that was used to create the template. We need the template
+            here because we have to extract the name of the template
+            in order to locate the InputStream source.
+            </summary>
+            <param name="resource">The resource.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Spring.Template.Velocity.VelocityConstants">
+            <summary>
+            Common Velocity constants.
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.VelocityConstants.File">
+            <summary>
+            File.
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.VelocityConstants.Type">
+            <summary>
+            Type.
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.VelocityConstants.Assembly">
+            <summary>
+            Assembly.
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.VelocityConstants.Class">
+            <summary>
+            Class.
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.VelocityConstants.Name">
+            <summary>
+            Name.
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.VelocityConstants.Description">
+            <summary>
+            Description.
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.VelocityConstants.Path">
+            <summary>
+            Path.
+            </summary>
+        </member>
+        <member name="F:Spring.Template.Velocity.VelocityConstants.Separator">
+            <summary>
+            Separator.
+            </summary>
+        </member>
+        <member name="T:Spring.Template.Velocity.VelocityEngineFactory">
+             <summary>
+             Factory that configures a VelocityEngine. Can be used standalone,
+             but typically you will use VelocityEngineFactoryObject 
+             for preparing a VelocityEngine as bean reference.
+            
+             <br/>
+             The optional "ConfigLocation" property sets the location of the Velocity
+             properties file, within the current application. Velocity properties can be
+             overridden via "VelocityProperties", or even completely specified locally,
+             avoiding the need for an external properties file.
+            
+             <br/>
+             The "ResourceLoaderPath" property can be used to specify the Velocity
+             resource loader path via Spring's IResource abstraction, possibly relative
+             to the Spring application context.
+            
+             <br/>
+             If "OverrideLogging" is true (the default), the VelocityEngine will be
+             configured to log via Commons Logging, that is, using the Spring-provided
+             CommonsLoggingLogSystem as log system.
+            
+             <br/>
+             The simplest way to use this class is to specify a ResourceLoaderPath 
+             property. the VelocityEngine typically then does not need any further 
+             configuration.
+            
+             </summary>
+             <see cref="T:Spring.Template.Velocity.CommonsLoggingLogSystem"/>
+             <see cref="T:Spring.Template.Velocity.VelocityEngineFactoryObject"/>
+             <see cref="T:Spring.Template.Velocity.CommonsLoggingLogSystem"/>
+             <author>Erez Mazor</author>
+        </member>
+        <member name="F:Spring.Template.Velocity.VelocityEngineFactory.log">
+            <summary>
+            Shared logger instance.
+            </summary>
+        </member>
+        <member name="M:Spring.Template.Velocity.VelocityEngineFactory.CreateVelocityEngine">
+            <summary>
+             Create and initialize the VelocityEngine instance and return it
+            </summary>
+            <returns>VelocityEngine</returns>
+            <exception cref="T:NVelocity.Exception.VelocityException"/>
+            <see cref="M:Spring.Template.Velocity.VelocityEngineFactory.FillProperties(Commons.Collections.ExtendedProperties,Spring.Core.IO.IInputStreamSource,System.Boolean)"/>
+            <see cref="M:Spring.Template.Velocity.VelocityEngineFactory.InitVelocityResourceLoader(NVelocity.App.VelocityEngine,Commons.Collections.ExtendedProperties,System.Collections.IList)"/>
+            <see cref="M:Spring.Template.Velocity.VelocityEngineFactory.PostProcessVelocityEngine(NVelocity.App.VelocityEngine)"/>
+            <see cref="M:NVelocity.App.VelocityEngine.Init"/>
+        </member>
+        <member name="M:Spring.Template.Velocity.VelocityEngineFactory.LoadDefaultProperties(Commons.Collections.ExtendedProperties)">
+            <summary>
+            This is to overcome an issue with the current NVelocity library, it seems the 
+            default runetime properties/directives (nvelocity.properties and directive.properties
+            files) are not being properly located in  the library at load time. A jira should 
+            be filed but for now we attempt to do this on our own. Particularly our 
+            concern here is with several required properties which I don't want 
+            to require users to re-defined. e.g.,:
+            <br/>
+            
+            Pre-requisites:<br/>
+            resource.manager.class=NVelocity.Runtime.Resource.ResourceManagerImpl <br/>
+            directive.manager=NVelocity.Runtime.Directive.DirectiveManager <br/>
+            runtime.introspector.uberspect=NVelocity.Util.Introspection.UberspectImpl <br/>
+            </summary>
+        </member>
+        <member name="M:Spring.Template.Velocity.VelocityEngineFactory.NewVelocityEngine">
+            <summary>
+             Return a new VelocityEngine. Subclasses can override this for
+            custom initialization, or for using a mock object for testing. <br/>
+            Called by CreateVelocityEngine()
+            </summary>
+            <returns>VelocityEngine instance (non-configured)</returns>
+            <see cref="M:Spring.Template.Velocity.VelocityEngineFactory.CreateVelocityEngine"/>
+        </member>
+        <member name="M:Spring.Template.Velocity.VelocityEngineFactory.InitVelocityResourceLoader(NVelocity.App.VelocityEngine,Commons.Collections.ExtendedProperties,System.Collections.IList)">
+            <summary>
+            Initialize a Velocity resource loader for the given VelocityEngine:
+            either a standard Velocity FileResourceLoader or a SpringResourceLoader.
+            <br/>Called by <code>CreateVelocityEngine()</code>.
+            </summary>
+            <param name="velocityEngine">velocityEngine the VelocityEngine to configure</param>
+            <param name="extendedProperties"></param>
+            <param name="paths">paths the path list to load Velocity resources from</param>
+            <see cref="T:NVelocity.Runtime.Resource.Loader.FileResourceLoader"/>
+            <see cref="T:Spring.Template.Velocity.SpringResourceLoader"/>
+            <see cref="M:Spring.Template.Velocity.VelocityEngineFactory.InitSpringResourceLoader(NVelocity.App.VelocityEngine,Commons.Collections.ExtendedProperties,System.String)"/>
+            <see cref="M:Spring.Template.Velocity.VelocityEngineFactory.CreateVelocityEngine"/>
+        </member>
+        <member name="M:Spring.Template.Velocity.VelocityEngineFactory.InitSpringResourceLoader(NVelocity.App.VelocityEngine,Commons.Collections.ExtendedProperties,System.String)">
+            <summary>
+             Initialize a SpringResourceLoader for the given VelocityEngine.
+            <br/>Called by <code>InitVelocityResourceLoader</code>.
+            
+            <b>Important</b>: the NVeloctity ResourceLoaderFactory.getLoader 
+            method replaces ';' with ',' when attempting to construct our resource
+            loader. The name on the SPRING_RESOURCE_LOADER_CLASS property
+            has to be in the form of "ClassFullName; AssemblyName" in replacement
+            of the tranditional "ClassFullName, AssemblyName" to work.
+            </summary>
+            <param name="velocityEngine">velocityEngine the VelocityEngine to configure</param>
+            <param name="extendedProperties"></param>
+            <param name="resourceLoaderPathString">resourceLoaderPath the path to load Velocity resources from</param>
+            <see cref="T:Spring.Template.Velocity.SpringResourceLoader"/>
+            <see cref="M:Spring.Template.Velocity.VelocityEngineFactory.InitVelocityResourceLoader(NVelocity.App.VelocityEngine,Commons.Collections.ExtendedProperties,System.Collections.IList)"/>
+        </member>
+        <member name="M:Spring.Template.Velocity.VelocityEngineFactory.PostProcessVelocityEngine(NVelocity.App.VelocityEngine)">
+            <summary>
+            To be implemented by subclasses that want to to perform custom
+            post-processing of the VelocityEngine after this FactoryObject
+            performed its default configuration (but before VelocityEngine.init)
+            <br/>
+            Called by CreateVelocityEngine
+            </summary>
+            <param name="velocityEngine">velocityEngine the current VelocityEngine</param>
+            <exception cref="T:System.IO.IOException"/>
+            <see cref="M:Spring.Template.Velocity.VelocityEngineFactory.CreateVelocityEngine"/>
+            <see cref="M:NVelocity.App.VelocityEngine.Init"/>
+        </member>
+        <member name="M:Spring.Template.Velocity.VelocityEngineFactory.FillProperties(Commons.Collections.ExtendedProperties,Spring.Core.IO.IInputStreamSource,System.Boolean)">
+            <summary>
+            Populates the velocity properties from the given resource
+            </summary>
+            <param name="extendedProperties">ExtendedProperties instance to populate</param>
+            <param name="resource">The resource from which to load the properties</param>
+            <param name="append">A flag indicated weather the properties loaded from the resource should be appended or replaced in the extendedProperties</param>
+        </member>
+        <member name="P:Spring.Template.Velocity.VelocityEngineFactory.ConfigLocation">
+            <summary>
+             Set the location of the Velocity config file. Alternatively, you can specify all properties locally. 
+            </summary> 
+            <see cref="P:Spring.Template.Velocity.VelocityEngineFactory.VelocityProperties"/>
+            <see cref="P:Spring.Template.Velocity.VelocityEngineFactory.ResourceLoaderPath"/>
+        </member>
+        <member name="P:Spring.Template.Velocity.VelocityEngineFactory.VelocityProperties">
+            <summary>
+            Set local NVelocity properties.
+            </summary>
+            <see cref="P:Spring.Template.Velocity.VelocityEngineFactory.VelocityProperties"/>
+        </member>
+        <member name="P:Spring.Template.Velocity.VelocityEngineFactory.ResourceLoaderPath">
+            <summary>
+            Single ResourceLoaderPath
+            </summary>
+            <see cref="P:Spring.Template.Velocity.VelocityEngineFactory.ResourceLoaderPaths"/>
+        </member>
+        <member name="P:Spring.Template.Velocity.VelocityEngineFactory.ResourceLoaderPaths">
+            <summary>
+            Set the Velocity resource loader path via a Spring resource location.
+            Accepts multiple locations in Velocity's comma-separated path style.
+            <br/>
+            When populated via a String, standard URLs like "file:" and "assembly:"
+            pseudo URLs are supported, as understood by IResourceLoader. Allows for
+            relative paths when running in an ApplicationContext.
+            <br/>
+            Will define a path for the default Velocity resource loader with the name
+            "file". If the specified resource cannot be resolved to a File,
+            a generic SpringResourceLoader will be used under the name "spring", without
+            modification detection.
+            <br/> 
+            Take notice that resource caching will be enabled in any case. With the file 
+            resource loader, the last-modified timestamp will be checked on access to
+            detect changes. With SpringResourceLoader, the resource will be throughout
+            the life time of the application context (for example for class path resources).
+            <br/>
+            To specify a modification check interval for files, use Velocity's
+            standard "file.resource.loader.modificationCheckInterval" property. By default,
+            the file timestamp is checked on every access (which is surprisingly fast).
+            Of course, this just applies when loading resources from the file system.
+            <br/>
+            To enforce the use of SpringResourceLoader, i.e. to not resolve a path
+            as file system resource in any case, turn off the "preferFileSystemAccess"
+            flag. See the latter's documentation for details. 
+            </summary>
+             <see cref="P:Spring.Template.Velocity.VelocityEngineFactory.ResourceLoader"/>
+             <see cref="P:Spring.Template.Velocity.VelocityEngineFactory.VelocityProperties"/>
+             <see cref="P:Spring.Template.Velocity.VelocityEngineFactory.PreferFileSystemAccess"/>
+             <see cref="T:Spring.Template.Velocity.SpringResourceLoader"/>
+             <see cref="T:NVelocity.Runtime.Resource.Loader.FileResourceLoader"/>
+        </member>
+        <member name="P:Spring.Template.Velocity.VelocityEngineFactory.ResourceLoader">
+            <summary>
+            Set the Spring ResourceLoader to use for loading Velocity template files. 
+            The default is DefaultResourceLoader. Will get overridden by the
+            ApplicationContext if running in a context.
+            
+            </summary>
+            <see cref="T:Spring.Core.IO.ConfigurableResourceLoader"/>
+            <see cref="T:Spring.Context.Support.ContextRegistry"/>
+            
+        </member>
+        <member name="P:Spring.Template.Velocity.VelocityEngineFactory.PreferFileSystemAccess">
+            <summary>
+            Set whether to prefer file system access for template loading.
+            File system access enables hot detection of template changes.
+            <br/>
+            If this is enabled, VelocityEngineFactory will try to resolve the
+            specified "resourceLoaderPath" as file system resource.
+            <br/>
+            Default is "true". Turn this off to always load via SpringResourceLoader
+            (i.e. as stream, without hot detection of template changes), which might
+            be necessary if some of your templates reside in a directory while
+            others reside in assembly files.
+            </summary>
+            <see cref="P:Spring.Template.Velocity.VelocityEngineFactory.ResourceLoaderPath"/>
+        </member>
+        <member name="P:Spring.Template.Velocity.VelocityEngineFactory.OverrideLogging">
+            <summary>
+            Set whether Velocity should log via Commons Logging, i.e. whether Velocity's 
+            log system should be set to CommonsLoggingLogSystem. Default value is true
+            </summary>
+            <see cref="T:Spring.Template.Velocity.CommonsLoggingLogSystem"/>
+        </member>
+        <member name="T:Spring.Template.Velocity.VelocityEngineFactoryObject">
+             <summary>
+             FactoryObject implementation that configures a VelocityEngine and provides it 
+             as an object reference. This object is intended for any kind of usage of Velocity in
+             application code, e.g. for generating email content. 
+            
+             See the base class VelocityEngineFactory for configuration details.
+             </summary>
+             <see cref="T:Spring.Template.Velocity.VelocityEngineFactory"/>
+             <author>Erez Mazor</author>
+        </member>
+        <member name="M:Spring.Template.Velocity.VelocityEngineFactoryObject.GetObject">
+            <summary>
+            Get the velocity engine underlying object
+            </summary>
+            <returns>An instance of a configured VelocityEngine</returns>
+            <see cref="T:Spring.Objects.Factory.IFactoryObject"/>
+        </member>
+        <member name="M:Spring.Template.Velocity.VelocityEngineFactoryObject.AfterPropertiesSet">
+            <summary>
+            Facilitate the creation of the velocity engine object 
+            </summary>
+        </member>
+        <member name="P:Spring.Template.Velocity.VelocityEngineFactoryObject.ObjectType">
+            <summary>
+            Get the type of the velocity engine
+            </summary>
+        </member>
+        <member name="P:Spring.Template.Velocity.VelocityEngineFactoryObject.IsSingleton">
+            <summary>
+            Singleton
+            </summary>
+        </member>
+        <member name="T:Spring.Template.Velocity.VelocityEngineUtils">
+            <summary>
+            Generalized Utility class for merging velocity templates into a text writer or return the result as a string
+            </summary>
+            <author>Erez Mazor</author>
+        </member>
+        <member name="F:Spring.Template.Velocity.VelocityEngineUtils.log">
+            <summary>
+            Shared logger instance.
+            </summary>
+        </member>
+        <member name="M:Spring.Template.Velocity.VelocityEngineUtils.MergeTemplate(NVelocity.App.VelocityEngine,System.String,System.String,System.Collections.Hashtable,System.IO.TextWriter)">
+            <summary>
+            Merge the specified Velocity template with the given model and write
+            the result to the given Writer.
+            </summary>
+            <param name="velocityEngine">VelocityEngine to work with</param>
+            <param name="templateLocation">the location of template, relative to Velocity's resource loader path</param>
+            <param name="encoding">encoding the encoding of the template file</param>
+            <param name="model">the Hashtable that contains model names as keys and model objects</param>
+            <param name="writer">writer the TextWriter to write the result to</param>
+            <exception cref="T:NVelocity.Exception.VelocityException">thrown if any exception is thrown by the velocity engine</exception>		
+        </member>
+        <member name="M:Spring.Template.Velocity.VelocityEngineUtils.MergeTemplateIntoString(NVelocity.App.VelocityEngine,System.String,System.String,System.Collections.Hashtable)">
+            <summary>
+            Merge the specified Velocity template with the given model into a string.
+            </summary>
+            <param name="velocityEngine">VelocityEngine to work with</param>
+            <param name="templateLocation">the location of template, relative to Velocity's resource loader path</param>
+            <param name="encoding">the encoding string to use for the merge</param>
+            <param name="model">the Hashtable that contains model names as keys and model objects</param>       
+            <returns>the result as string</returns>
+            <exception cref="T:NVelocity.Exception.VelocityException">thrown if any exception is thrown by the velocity engine</exception>		
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,260 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Spring.Web.Mvc</name>
+    </assembly>
+    <members>
+        <member name="T:Spring.Context.Support.MvcApplicationContext">
+            <summary>
+            Application Context for ASP.NET MVC Applications
+            </summary>
+        </member>
+        <member name="M:Spring.Context.Support.MvcApplicationContext.#ctor(System.String,System.Boolean,System.String[])">
+            <summary>
+            Create a new MvcApplicationContext, loading the definitions
+            from the given XML resource.
+            </summary>
+            <param name="name">The application context name.</param>
+            <param name="caseSensitive">Flag specifying whether to make this context case sensitive or not.</param>
+            <param name="configurationLocations">Names of configuration resources.</param>
+        </member>
+        <member name="M:Spring.Context.Support.MvcApplicationContext.#ctor(System.String,System.Boolean,Spring.Context.IApplicationContext,System.String[])">
+            <summary>
+            Create a new MvcApplicationContext with the given parent,
+            loading the definitions from the given XML resources.
+            </summary>
+            <param name="name">The application context name.</param>
+            <param name="caseSensitive">Flag specifying whether to make this context case sensitive or not.</param>
+            <param name="parentContext">The parent context.</param>
+            <param name="configurationLocations">Names of configuration resources.</param>
+        </member>
+        <member name="M:Spring.Context.Support.MvcApplicationContext.#ctor(Spring.Context.Support.MvcApplicationContextArgs)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Context.Support.MvcApplicationContext"/> class.
+            </summary>
+            <param name="args">The args.</param>
+        </member>
+        <member name="M:Spring.Context.Support.MvcApplicationContext.#ctor(System.String,System.Boolean,System.String[],Spring.Core.IO.IResource[])">
+            <summary>
+            Create a new MvcApplicationContext, loading the definitions
+            from the given XML resource.
+            </summary>
+            <param name="name">The application context name.</param>
+            <param name="caseSensitive">Flag specifying whether to make this context case sensitive or not.</param>
+            <param name="configurationLocations">Names of configuration resources.</param>
+            <param name="configurationResources">Configuration resources.</param>
+        </member>
+        <member name="M:Spring.Context.Support.MvcApplicationContext.#ctor(System.String[])">
+            <summary>
+            Create a new MvcApplicationContext, loading the definitions
+            from the given XML resource.
+            </summary>
+            <param name="configurationLocations">Names of configuration resources.</param>
+        </member>
+        <member name="P:Spring.Context.Support.MvcApplicationContext.ConfigurationLocations">
+            <summary>
+            An array of resource locations, referring to the XML object
+            definition files that this context is to be built with.
+            </summary>
+            <value></value>
+            <remarks>
+            	<p>
+            Examples of the format of the various strings that would be
+            returned by accessing this property can be found in the overview
+            documentation of with the <see cref="T:Spring.Context.Support.XmlApplicationContext"/>
+            class.
+            </p>
+            </remarks>
+            <returns>
+            An array of resource locations, or <see langword="null"/> if none.
+            </returns>
+        </member>
+        <member name="P:Spring.Context.Support.MvcApplicationContext.ConfigurationResources">
+            <summary>
+            An array of resources that this context is to be built with.
+            </summary>
+            <value></value>
+            <remarks>
+            	<p>
+            Examples of the format of the various strings that would be
+            returned by accessing this property can be found in the overview
+            documentation of with the <see cref="T:Spring.Context.Support.XmlApplicationContext"/>
+            class.
+            </p>
+            </remarks>
+            <returns>
+            An array of <see cref="T:Spring.Core.IO.IResource"/>s, or <see langword="null"/> if none.
+            </returns>
+        </member>
+        <member name="T:Spring.Context.Support.MvcApplicationContextArgs">
+            <summary>
+            Encapsulates arguments to the <see cref="T:Spring.Context.Support.MvcApplicationContext"/> class.
+            </summary>
+        </member>
+        <member name="M:Spring.Context.Support.MvcApplicationContextArgs.#ctor">
+            <summary>
+            Initializes a new instance of the MvcApplicationContextArgs class.
+            </summary>
+        </member>
+        <member name="M:Spring.Context.Support.MvcApplicationContextArgs.#ctor(System.String,Spring.Context.IApplicationContext,System.String[],Spring.Core.IO.IResource[])">
+            <summary>
+            Initializes a new instance of the MvcApplicationContextArgs class.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="parentContext">The parent context.</param>
+            <param name="configurationLocations">The configuration locations.</param>
+            <param name="configurationResources">The configuration resources.</param>
+        </member>
+        <member name="M:Spring.Context.Support.MvcApplicationContextArgs.#ctor(System.String,Spring.Context.IApplicationContext,System.String[],Spring.Core.IO.IResource[],System.Boolean)">
+            <summary>
+            Initializes a new instance of the MvcApplicationContextArgs class.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="parentContext">The parent context.</param>
+            <param name="configurationLocations">The configuration locations.</param>
+            <param name="configurationResources">The configuration resources.</param>
+            <param name="caseSensitive">if set to <c>true</c> [case sensitive].</param>
+        </member>
+        <member name="T:Spring.Context.Support.MvcContextHandler">
+            <summary>
+            Context Handler for ASP.NET MVC Applications
+            </summary>
+        </member>
+        <member name="P:Spring.Context.Support.MvcContextHandler.DefaultApplicationContextType">
+            <summary>
+            The <see cref="T:System.Type"/> of <see cref="T:Spring.Context.IApplicationContext"/>
+            created if no <c>type</c> attribute is specified on a <c>context</c> element.
+            </summary>
+            <value></value>        
+        </member>
+        <member name="P:Spring.Context.Support.MvcContextHandler.DefaultCaseSensitivity">
+            <summary>
+            Get the context's case-sensitivity to use if none is specified
+            </summary>
+            <value></value>
+            <remarks>
+            	<p>
+            Derived handlers may override this property to change their default case-sensitivity.
+            </p>
+            	<p>
+            Defaults to 'true'.
+            </p>
+            </remarks>
+        </member>
+        <member name="T:Spring.Web.Mvc.SpringActionInvoker">
+            <summary>
+            ActionInvoker implementation that enables the <see cref="T:Spring.Context.IApplicationContext"/>to satisfy dependencies on ActionFilter attributes.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Mvc.SpringActionInvoker.#ctor(Spring.Context.IApplicationContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Web.Mvc.SpringActionInvoker"/> class.
+            </summary>
+            <param name="context">The IApplicationContext.</param>
+        </member>
+        <member name="M:Spring.Web.Mvc.SpringActionInvoker.GetFilters(System.Web.Mvc.ControllerContext,System.Web.Mvc.ActionDescriptor)">
+            <summary>
+            Retrieves information about the action filters.
+            </summary>
+            <param name="controllerContext">The controller context.</param>
+            <param name="actionDescriptor">The action descriptor.</param>
+            <returns>Information about the action filters.</returns>
+        </member>
+        <member name="T:Spring.Web.Mvc.SpringControllerFactory">
+            <summary>
+            Controller Factory for ASP.NET MVC
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Mvc.SpringControllerFactory.CreateController(System.Web.Routing.RequestContext,System.String)">
+            <summary>
+            Creates the specified controller by using the specified request context.
+            </summary>
+            <param name="requestContext">The context of the HTTP request, which includes the HTTP context and route data.</param>
+            <param name="controllerName">The name of the controller.</param>
+            <returns>A reference to the controller.</returns>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="requestContext"/> parameter is null.</exception>
+            <exception cref="T:System.ArgumentException">The <paramref name="controllerName"/> parameter is null or empty.</exception>
+        </member>
+        <member name="M:Spring.Web.Mvc.SpringControllerFactory.GetControllerInstance(System.Web.Routing.RequestContext,System.Type)">
+            <summary>
+            Retrieves the controller instance for the specified request context and controller type.
+            </summary>
+            <param name="requestContext">The context of the HTTP request, which includes the HTTP context and route data.</param>
+            <param name="controllerType">The type of the controller.</param>
+            <returns>The controller instance.</returns>
+            <exception cref="T:System.Web.HttpException">
+            	<paramref name="controllerType"/> is null.</exception>
+            <exception cref="T:System.ArgumentException">
+            	<paramref name="controllerType"/> cannot be assigned.</exception>
+            <exception cref="T:System.InvalidOperationException">An instance of <paramref name="controllerType"/> cannot be created.</exception>
+        </member>
+        <member name="M:Spring.Web.Mvc.SpringControllerFactory.AddActionInvokerTo(System.Web.Mvc.IController)">
+            <summary>
+            Adds the action invoker to the controller instance.
+            </summary>
+            <param name="controller">The controller.</param>
+        </member>
+        <member name="P:Spring.Web.Mvc.SpringControllerFactory.ApplicationContext">
+            <summary>
+            Gets the application context.
+            </summary>
+            <value>The application context.</value>
+        </member>
+        <member name="P:Spring.Web.Mvc.SpringControllerFactory.ApplicationContextName">
+            <summary>
+            Gets or sets the name of the application context.
+            </summary>
+            <remarks>
+            Defaults to using the root (default) Application Context.
+            </remarks>
+            <value>The name of the application context.</value>
+        </member>
+        <member name="T:Spring.Web.Mvc.SpringMvcApplication">
+            <summary>
+            Spring.NET-specific HttpApplication for ASP.NET MVC integration.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Mvc.SpringMvcApplication.Application_Start(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Start event of the Application control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Spring.Web.Mvc.SpringMvcApplication.ConfigureApplicationContext">
+            <summary>
+            Configures the <see cref="T:Spring.Context.IApplicationContext"/> instance.
+            </summary>
+            <remarks>
+            You must override this method in a derived class to control the manner in which the
+            <see cref="T:Spring.Context.IApplicationContext"/> is configured.
+            </remarks>        
+        </member>
+        <member name="M:Spring.Web.Mvc.SpringMvcApplication.Init">
+            <summary>
+            Executes custom initialization code after all event handler modules have been added.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Mvc.SpringMvcApplication.RegisterAreas">
+            <summary>
+            Registers the areas.
+            </summary>
+            <remarks>
+            Override this method in a derived class to modify the registered areas as neeeded.
+            </remarks>
+        </member>
+        <member name="M:Spring.Web.Mvc.SpringMvcApplication.RegisterRoutes(System.Web.Routing.RouteCollection)">
+            <summary>
+            Registers the routes.
+            </summary>
+            <remarks>
+            Override this method in a derived class to modify the registered routes as neeeded.
+            </remarks>
+        </member>
+        <member name="M:Spring.Web.Mvc.SpringMvcApplication.RegisterSpringControllerFactory">
+            <summary>
+            Registers the controller factory with the Mvc Framework.
+            </summary>
+        </member>
+    </members>
+</doc>
