@@ -91,154 +91,154 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\BZip2\BitWriter.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\BZip2\BitWriter.cs">
       <Link>DotNetZip\BZip2\BitWriter.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\BZip2\BZip2Compressor.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\BZip2\BZip2Compressor.cs">
       <Link>DotNetZip\BZip2\BZip2Compressor.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\BZip2\BZip2InputStream.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\BZip2\BZip2InputStream.cs">
       <Link>DotNetZip\BZip2\BZip2InputStream.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\BZip2\BZip2OutputStream.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\BZip2\BZip2OutputStream.cs">
       <Link>DotNetZip\BZip2\BZip2OutputStream.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\BZip2\ParallelBZip2OutputStream.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\BZip2\ParallelBZip2OutputStream.cs">
       <Link>DotNetZip\BZip2\ParallelBZip2OutputStream.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\BZip2\Rand.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\BZip2\Rand.cs">
       <Link>DotNetZip\BZip2\Rand.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\CommonSrc\CRC32.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\CommonSrc\CRC32.cs">
       <Link>DotNetZip\CRC32.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ComHelper.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ComHelper.cs">
       <Link>DotNetZip\Zip\ComHelper.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\EncryptionAlgorithm.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\EncryptionAlgorithm.cs">
       <Link>DotNetZip\Zip\EncryptionAlgorithm.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\Events.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\Events.cs">
       <Link>DotNetZip\Zip\Events.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\Exceptions.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\Exceptions.cs">
       <Link>DotNetZip\Zip\Exceptions.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ExtractExistingFileAction.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ExtractExistingFileAction.cs">
       <Link>DotNetZip\Zip\ExtractExistingFileAction.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\FileSelector.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\FileSelector.cs">
       <Link>DotNetZip\Zip\FileSelector.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\OffsetStream.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\OffsetStream.cs">
       <Link>DotNetZip\Zip\OffsetStream.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\Shared.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\Shared.cs">
       <Link>DotNetZip\Zip\Shared.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\WinZipAes.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\WinZipAes.cs">
       <Link>DotNetZip\Zip\WinZipAes.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipConstants.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipConstants.cs">
       <Link>DotNetZip\Zip\ZipConstants.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipCrypto.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipCrypto.cs">
       <Link>DotNetZip\Zip\ZipCrypto.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipDirEntry.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipDirEntry.cs">
       <Link>DotNetZip\Zip\ZipDirEntry.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipEntry.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipEntry.cs">
       <Link>DotNetZip\Zip\ZipEntry.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipEntry.Extract.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipEntry.Extract.cs">
       <Link>DotNetZip\Zip\ZipEntry.Extract.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipEntry.Read.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipEntry.Read.cs">
       <Link>DotNetZip\Zip\ZipEntry.Read.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipEntry.Write.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipEntry.Write.cs">
       <Link>DotNetZip\Zip\ZipEntry.Write.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipEntrySource.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipEntrySource.cs">
       <Link>DotNetZip\Zip\ZipEntrySource.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipErrorAction.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipErrorAction.cs">
       <Link>DotNetZip\Zip\ZipErrorAction.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.AddUpdate.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.AddUpdate.cs">
       <Link>DotNetZip\Zip\ZipFile.AddUpdate.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Check.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Check.cs">
       <Link>DotNetZip\Zip\ZipFile.Check.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.cs">
       <Link>DotNetZip\Zip\ZipFile.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Events.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Events.cs">
       <Link>DotNetZip\Zip\ZipFile.Events.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Extract.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Extract.cs">
       <Link>DotNetZip\Zip\ZipFile.Extract.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Read.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Read.cs">
       <Link>DotNetZip\Zip\ZipFile.Read.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Save.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Save.cs">
       <Link>DotNetZip\Zip\ZipFile.Save.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.SaveSelfExtractor.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.SaveSelfExtractor.cs">
       <Link>DotNetZip\Zip\ZipFile.SaveSelfExtractor.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Selector.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.Selector.cs">
       <Link>DotNetZip\Zip\ZipFile.Selector.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.x-IEnumerable.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipFile.x-IEnumerable.cs">
       <Link>DotNetZip\Zip\ZipFile.x-IEnumerable.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipInputStream.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipInputStream.cs">
       <Link>DotNetZip\Zip\ZipInputStream.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipOutputStream.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipOutputStream.cs">
       <Link>DotNetZip\Zip\ZipOutputStream.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zip\ZipSegmentedStream.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zip\ZipSegmentedStream.cs">
       <Link>DotNetZip\Zip\ZipSegmentedStream.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\Deflate.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zlib\Deflate.cs">
       <Link>DotNetZip\Zlib\Deflate.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\DeflateStream.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zlib\DeflateStream.cs">
       <Link>DotNetZip\Zlib\DeflateStream.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\GZipStream.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zlib\GZipStream.cs">
       <Link>DotNetZip\Zlib\GZipStream.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\Inflate.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zlib\Inflate.cs">
       <Link>DotNetZip\Zlib\Inflate.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\InfTree.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zlib\InfTree.cs">
       <Link>DotNetZip\Zlib\InfTree.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\ParallelDeflateOutputStream.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zlib\ParallelDeflateOutputStream.cs">
       <Link>DotNetZip\Zlib\ParallelDeflateOutputStream.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\Tree.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zlib\Tree.cs">
       <Link>DotNetZip\Zlib\Tree.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\Zlib.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zlib\Zlib.cs">
       <Link>DotNetZip\Zlib\Zlib.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\ZlibBaseStream.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zlib\ZlibBaseStream.cs">
       <Link>DotNetZip\Zlib\ZlibBaseStream.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\ZlibCodec.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zlib\ZlibCodec.cs">
       <Link>DotNetZip\Zlib\ZlibCodec.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\ZlibConstants.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zlib\ZlibConstants.cs">
       <Link>DotNetZip\Zlib\ZlibConstants.cs</Link>
     </Compile>
-    <Compile Include="..\..\Resources\Libraries\DotNetZip\Source\Zlib\ZlibStream.cs">
+    <Compile Include="..\Resources\Libraries\DotNetZip\Source\Zlib\ZlibStream.cs">
       <Link>DotNetZip\Zlib\ZlibStream.cs</Link>
     </Compile>
     <Compile Include="BootstrapperLoop.cs" />
@@ -319,7 +319,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_UpdateFileVersion="False" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2001/1/1" />
+      <UserProperties BuildVersion_StartDate="2001/1/1" BuildVersion_DetectChanges="False" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_UpdateFileVersion="False" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

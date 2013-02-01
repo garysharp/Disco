@@ -45,9 +45,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Quartz, Version=2.0.1.100, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Resources\Libraries\Quartz\Quartz.dll</HintPath>
+    <Reference Include="Quartz">
+      <HintPath>..\Resources\Libraries\Quartz\Quartz.dll</HintPath>
     </Reference>
     <Reference Include="RazorGenerator.Mvc, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -166,7 +165,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2001/1/1" />
+      <UserProperties BuildVersion_StartDate="2001/1/1" BuildVersion_BuildAction="ReBuild" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

@@ -35,16 +35,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BitMiracle.LibTiff.NET">
-      <HintPath>..\..\Resources\Libraries\LibTiff.NET\BitMiracle.LibTiff.NET.dll</HintPath>
+      <HintPath>..\Resources\Libraries\LibTiff.NET\BitMiracle.LibTiff.NET.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Ionic.Zip.Reduced">
-      <HintPath>..\..\Resources\Libraries\DotNetZip\Ionic.Zip.Reduced.dll</HintPath>
-    </Reference>
     <Reference Include="itextsharp">
-      <HintPath>..\..\Resources\Libraries\iTextSharp\itextsharp.dll</HintPath>
+      <HintPath>..\Resources\Libraries\iTextSharp\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -54,9 +51,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Quartz, Version=2.0.0.100, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Resources\Libraries\Quartz\Quartz.dll</HintPath>
+    <Reference Include="Quartz">
+      <HintPath>..\Resources\Libraries\Quartz\Quartz.dll</HintPath>
     </Reference>
     <Reference Include="SignalR, Version=0.5.1.10822, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -70,7 +66,7 @@
       <HintPath>..\packages\SignalR.Hosting.Common.0.5.3\lib\net40\SignalR.Hosting.Common.dll</HintPath>
     </Reference>
     <Reference Include="Spring.Core">
-      <HintPath>..\..\Resources\Libraries\Spring.NET\Spring.Core.dll</HintPath>
+      <HintPath>..\Resources\Libraries\Spring.NET\Spring.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -88,10 +84,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Tamir.SharpSSH">
-      <HintPath>..\..\Resources\Libraries\SharpSSH\Tamir.SharpSSH.dll</HintPath>
+      <HintPath>..\Resources\Libraries\SharpSSH\Tamir.SharpSSH.dll</HintPath>
     </Reference>
     <Reference Include="zxing">
-      <HintPath>..\..\Resources\Libraries\ZXing\zxing.dll</HintPath>
+      <HintPath>..\Resources\Libraries\ZXing\zxing.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -220,7 +216,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2001/1/1" />
+      <UserProperties BuildVersion_StartDate="2001/1/1" BuildVersion_BuildAction="ReBuild" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
