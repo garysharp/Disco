@@ -91,6 +91,17 @@ namespace Disco.BI.Extensions
             if (!dm.CanDelete(dbContext))
                 throw new InvalidOperationException("The state of this Device Model doesn't allow it to be deleted");
 
+            // Delete Image
+            var deviceModelImagePath = dm.ImageFilePath();
+            if (File.Exists(deviceModelImagePath))
+                File.Delete(deviceModelImagePath);
+
+            // Delete any Device Model Components
+            foreach (var deviceModelComponent in dbContext.DeviceComponents.Where(dc => dc.DeviceModelId == dm.Id).ToList())
+            {
+                dbContext.DeviceComponents.Remove(deviceModelComponent);
+            }
+
             // Delete Model
             dbContext.DeviceModels.Remove(dm);
         }
