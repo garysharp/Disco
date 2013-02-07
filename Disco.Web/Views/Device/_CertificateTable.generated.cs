@@ -101,7 +101,7 @@ WriteLiteral("                        ");
 
             
             #line 24 "..\..\Views\Device\_CertificateTable.cshtml"
-                   Write(Html.ActionLink(item.Name, MVC.API.WirelessCertificate.Download(item.Id)));
+                   Write(Html.ActionLink(item.Name, MVC.API.DeviceCertificate.Download(item.Id)));
 
             
             #line default
