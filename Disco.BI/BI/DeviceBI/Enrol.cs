@@ -241,23 +241,14 @@ namespace Disco.BI.DeviceBI
                     EnrolmentLog.LogSessionProgress(sessionId, 50, "New Device, Building Disco Instance");
                     EnrolmentLog.LogSessionTaskAddedDevice(sessionId, Request.DeviceSerialNumber);
                     DeviceProfile deviceProfile = dbContext.DeviceProfiles.Find(dbContext.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId);
-                    DeviceModel deviceModel = dbContext.DeviceModels.Where(dm => dm.Manufacturer == Request.DeviceManufacturer.Trim() && dm.Model == Request.DeviceModel.Trim()).FirstOrDefault();
-                    if (deviceModel == null)
-                    {
-                        deviceModel = new DeviceModel
-                        {
-                            Manufacturer = Request.DeviceManufacturer.Trim(),
-                            Model = Request.DeviceModel.Trim(),
-                            ModelType = Request.DeviceModelType.Trim(),
-                            Description = string.Format("{0} {1}", Request.DeviceManufacturer.Trim(), Request.DeviceModel)
-                        };
-                        dbContext.DeviceModels.Add(deviceModel);
-                        EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim());
-                    }
+
+                    var deviceModelResult = dbContext.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModel.Trim());
+                    DeviceModel deviceModel = deviceModelResult.Item1;
+                    if (deviceModelResult.Item2)
+                        EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
                     else
-                    {
                         EnrolmentLog.LogSessionDevice(sessionId, Request.DeviceSerialNumber, deviceModel.Id);
-                    }
+
                     RepoDevice = new Device
                     {
                         SerialNumber = Request.DeviceSerialNumber,
@@ -277,23 +268,13 @@ namespace Disco.BI.DeviceBI
                     EnrolmentLog.LogSessionTaskUpdatingDevice(sessionId, Request.DeviceSerialNumber);
                     if (!RepoDevice.DeviceModelId.HasValue || RepoDevice.DeviceModelId.Value == 1)
                     {
-                        DeviceModel deviceModel = dbContext.DeviceModels.Where(dm => dm.Manufacturer == Request.DeviceManufacturer.Trim() && dm.Model == Request.DeviceModel.Trim()).FirstOrDefault();
-                        if (deviceModel == null)
-                        {
-                            deviceModel = new DeviceModel
-                            {
-                                Manufacturer = Request.DeviceManufacturer.Trim(),
-                                Model = Request.DeviceModel.Trim(),
-                                ModelType = Request.DeviceModelType.Trim(),
-                                Description = string.Format("{0} {1}", Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim())
-                            };
-                            dbContext.DeviceModels.Add(deviceModel);
-                            EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim());
-                        }
+                        var deviceModelResult = dbContext.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModel.Trim());
+                        DeviceModel deviceModel = deviceModelResult.Item1;
+                        if (deviceModelResult.Item2)
+                            EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
                         else
-                        {
                             EnrolmentLog.LogSessionDevice(sessionId, Request.DeviceSerialNumber, deviceModel.Id);
-                        }
+
                         RepoDevice.DeviceModel = deviceModel;
                     }
                     else
@@ -396,23 +377,15 @@ namespace Disco.BI.DeviceBI
                     EnrolmentLog.LogSessionProgress(sessionId, 30, "New Device, Creating Disco Instance");
                     EnrolmentLog.LogSessionTaskAddedDevice(sessionId, Request.DeviceSerialNumber);
                     DeviceProfile deviceProfile = dbContext.DeviceProfiles.Find(dbContext.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId);
-                    DeviceModel deviceModel = dbContext.DeviceModels.Where(dm => dm.Manufacturer == Request.DeviceManufacturer.Trim() && dm.Model == Request.DeviceModel.Trim()).FirstOrDefault();
-                    if (deviceModel == null)
-                    {
-                        deviceModel = new DeviceModel
-                        {
-                            Manufacturer = Request.DeviceManufacturer.Trim(),
-                            Model = Request.DeviceModel.Trim(),
-                            ModelType = Request.DeviceModelType.Trim(),
-                            Description = string.Format("{0} {1}", Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim())
-                        };
-                        dbContext.DeviceModels.Add(deviceModel);
-                        EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim());
-                    }
+
+
+                    var deviceModelResult = dbContext.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModel.Trim());
+                    DeviceModel deviceModel = deviceModelResult.Item1;
+                    if (deviceModelResult.Item2)
+                        EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
                     else
-                    {
                         EnrolmentLog.LogSessionDevice(sessionId, Request.DeviceSerialNumber, deviceModel.Id);
-                    }
+
                     RepoDevice = new Device
                     {
                         SerialNumber = Request.DeviceSerialNumber,
@@ -432,28 +405,14 @@ namespace Disco.BI.DeviceBI
                     EnrolmentLog.LogSessionProgress(sessionId, 30, "Existing Device, Updating Disco Instance");
                     EnrolmentLog.LogSessionTaskUpdatingDevice(sessionId, Request.DeviceSerialNumber);
 
-                    DeviceModel deviceModel = dbContext.DeviceModels.Where(dm => dm.Manufacturer == Request.DeviceManufacturer.Trim() && dm.Model == Request.DeviceModel.Trim()).FirstOrDefault();
-                    if (deviceModel == null)
-                    {
-                        deviceModel = new DeviceModel
-                        {
-                            Manufacturer = Request.DeviceManufacturer.Trim(),
-                            Model = Request.DeviceModel.Trim(),
-                            ModelType = Request.DeviceModelType.Trim(),
-                            Description = string.Format("{0} {1}", Request.DeviceManufacturer.Trim(), Request.DeviceModel)
-                        };
-                        dbContext.DeviceModels.Add(deviceModel);
-                        RepoDevice.DeviceModel = deviceModel;
-                        EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim());
-                    }
+                    var deviceModelResult = dbContext.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModel.Trim());
+                    DeviceModel deviceModel = deviceModelResult.Item1;
+                    if (deviceModelResult.Item2)
+                        EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
                     else
-                    {
-                        if (!RepoDevice.DeviceModelId.HasValue || RepoDevice.DeviceModelId.Value != deviceModel.Id)
-                        {
-                            RepoDevice.DeviceModel = deviceModel;
-                        }
-                        EnrolmentLog.LogSessionDevice(sessionId, Request.DeviceSerialNumber, RepoDevice.DeviceModelId);
-                    }
+                        EnrolmentLog.LogSessionDevice(sessionId, Request.DeviceSerialNumber, deviceModel.Id);
+
+                    RepoDevice.DeviceModel = deviceModel;
 
                     if (!RepoDevice.EnrolledDate.HasValue)
                         RepoDevice.EnrolledDate = DateTime.Now;

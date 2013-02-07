@@ -52,6 +52,9 @@ namespace Disco.Data.Repository
             UpdateDeviceModelConfiguration(context);
             // Removed: 2013-01-14 G#
             //UpdateDeviceModelImageStorage(context);
+
+            // Added: 2013-02-07 G#
+            UpdateDeviceModelDuplicates(context);
         }
         public static void SeedDeviceProfiles(this DiscoDataContext context)
         {
@@ -240,31 +243,61 @@ namespace Disco.Data.Repository
         }
 
         // Removed: 2013-01-14 G#
-//        private static void UpdateDeviceModelImageStorage(this DiscoDataContext dbContext)
-//        {
-//#pragma warning disable 0618
-//            var updateModels = dbContext.DeviceModels.Where(dm => dm.Image != null);
-//            if (updateModels.Count() > 0)
-//            {
-//                var dataStoreLocation = dbContext.ConfigurationItems.Where(ci => ci.Scope == "System" && ci.Key == "DataStoreLocation").Select(ci => ci.Value).FirstOrDefault();
-//                if (!string.IsNullOrEmpty(dataStoreLocation) && System.IO.Directory.Exists(dataStoreLocation))
-//                {
-//                    var deviceModelImagesLocation = System.IO.Path.Combine(dataStoreLocation, "DeviceModelImages");
-//                    if (!System.IO.Directory.Exists(deviceModelImagesLocation))
-//                        System.IO.Directory.CreateDirectory(deviceModelImagesLocation);
-//                    foreach (var model in updateModels)
-//                    {
-//                        var modelpath = System.IO.Path.Combine(deviceModelImagesLocation, string.Format("{0}.png", model.Id));
+        //        private static void UpdateDeviceModelImageStorage(this DiscoDataContext dbContext)
+        //        {
+        //#pragma warning disable 0618
+        //            var updateModels = dbContext.DeviceModels.Where(dm => dm.Image != null);
+        //            if (updateModels.Count() > 0)
+        //            {
+        //                var dataStoreLocation = dbContext.ConfigurationItems.Where(ci => ci.Scope == "System" && ci.Key == "DataStoreLocation").Select(ci => ci.Value).FirstOrDefault();
+        //                if (!string.IsNullOrEmpty(dataStoreLocation) && System.IO.Directory.Exists(dataStoreLocation))
+        //                {
+        //                    var deviceModelImagesLocation = System.IO.Path.Combine(dataStoreLocation, "DeviceModelImages");
+        //                    if (!System.IO.Directory.Exists(deviceModelImagesLocation))
+        //                        System.IO.Directory.CreateDirectory(deviceModelImagesLocation);
+        //                    foreach (var model in updateModels)
+        //                    {
+        //                        var modelpath = System.IO.Path.Combine(deviceModelImagesLocation, string.Format("{0}.png", model.Id));
 
-//                        if (model.Image != null && model.Image.Length > 0)
-//                        {
-//                            System.IO.File.WriteAllBytes(modelpath, model.Image);
-//                        }
-//                        model.Image = null;
-//                    }
-//                }
-//            }
-//#pragma warning restore 0618
-//        }
+        //                        if (model.Image != null && model.Image.Length > 0)
+        //                        {
+        //                            System.IO.File.WriteAllBytes(modelpath, model.Image);
+        //                        }
+        //                        model.Image = null;
+        //                    }
+        //                }
+        //            }
+        //#pragma warning restore 0618
+        //        }
+
+        // Added: 2013-02-07 G#
+        // Fix previous problem with duplicate device models being created if new devices enrol at the same time
+        // http://www.discoict.com.au/forum/support/2013/2/duplicate-device-models.aspx
+        // Thanks to Michael Vorster for reporting this problem.
+        private static void UpdateDeviceModelDuplicates(this DiscoDataContext dbContext)
+        {
+            var deviceModels = dbContext.DeviceModels.ToList();
+            var duplicateModels = deviceModels.GroupBy(g => string.Format("{0}|{1}", g.Manufacturer, g.Model)).Where(g => g.Count() > 1);
+            foreach (var duplicateModel in duplicateModels)
+            {
+                var primaryModel = duplicateModel.OrderBy(dm => dm.Id).First();
+
+                foreach (var redundantModel in duplicateModel.Where(m => m != primaryModel))
+                {
+                    foreach (var affectedDevice in dbContext.Devices.Where(d => d.DeviceModelId == redundantModel.Id))
+                    {
+                        affectedDevice.DeviceModelId = primaryModel.Id;
+                    }
+                    if (!redundantModel.Description.EndsWith("** REDUNDANT **"))
+                    {
+                        if (redundantModel.Description.Length > 484)
+                            redundantModel.Description = string.Format("{0} ** REDUNDANT **", redundantModel.Description.Substring(0, 484));
+                        else
+                            redundantModel.Description = string.Format("{0} ** REDUNDANT **", redundantModel.Description);
+                    }
+                }
+            }
+        }
+        // End Added: 2013-02-07 G#
     }
 }
