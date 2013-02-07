@@ -10,8 +10,9 @@ namespace Disco.Services.Plugins
     public abstract class PluginFeature : IDisposable
     {
         public PluginFeatureManifest Manifest {get; internal set;}
-        
-        public abstract bool Initalize(DiscoDataContext dbContext);
+
+        // Allow Custom Initialization (Optional)
+        public virtual void Initialize(DiscoDataContext dbContext) { return; }
 
         public virtual void Dispose()
         {

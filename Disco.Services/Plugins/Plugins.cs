@@ -16,8 +16,31 @@ namespace Disco.Services.Plugins
         private static Dictionary<string, PluginManifest> _PluginManifests;
         internal static Dictionary<Type, string> FeatureCategoryDisplayNames;
 
-        private static object _PluginLock = new object();
+        internal static object _PluginLock = new object();
         public static string PluginPath { get; private set; }
+
+        public static bool PluginsLoaded
+        {
+            get
+            {
+                return (_PluginManifests != null);
+            }
+        }
+
+        internal static void AddPlugin(PluginManifest Manifest)
+        {
+            lock (_PluginLock)
+            {
+                if (_PluginManifests.ContainsKey(Manifest.Id))
+                    throw new InvalidOperationException(string.Format("The '{0} [{1}]' Plugin is already installed, please uninstall any existing versions before trying again", Manifest.Name, Manifest.Id));
+
+                // Add Plugin Manifest to Environment
+                _PluginManifests[Manifest.Id] = Manifest;
+
+                // Reinitialize Plugin Host Environment
+                Plugins.ReinitializePluginHostEnvironment();
+            }
+        }
 
         public static PluginManifest GetPlugin(string PluginId, Type ContainsCategoryType)
         {
@@ -157,58 +180,100 @@ namespace Disco.Services.Plugins
                                             if (loadedPlugins.ContainsKey(pluginManifest.Id))
                                                 throw new InvalidOperationException(string.Format("The plugin [{0}] is already initialized", pluginManifest.Id));
 
-                                            pluginManifest.InitializePlugin(dbContext);
+                                            // Check for Update
+                                            string updatePackagePath = Path.Combine(pluginDirectoryRoot.FullName, string.Format("{0}.discoPlugin", pluginManifest.Id));
+                                            if (File.Exists(updatePackagePath))
+                                            {
+                                                // Update Plugin
+                                                pluginManifest = UpdatePlugin(dbContext, pluginManifest, updatePackagePath);
+                                            }
 
-                                            loadedPlugins[pluginManifest.Id] = pluginManifest;
+                                            if (pluginManifest != null)
+                                            {
+                                                pluginManifest.InitializePlugin(dbContext);
+                                                loadedPlugins[pluginManifest.Id] = pluginManifest;
+                                            }
                                         }
                                     }
                                     catch (Exception ex) { PluginsLog.LogInitializeException(pluginManifestFilename, ex); }
+                                }
+                                else
+                                {
+                                    string pluginManifestUninstallFilename = Path.Combine(pluginDirectory.FullName, "manifest.uninstall.json");
+                                    if (File.Exists(pluginManifestUninstallFilename))
+                                    {
+                                        PluginManifest uninstallManifest = PluginManifest.FromPluginManifestFile(pluginManifestUninstallFilename);
+
+                                        // Remove All Files
+                                        DateTime removeRetryTime = DateTime.Now.AddSeconds(60);
+                                        while (true)
+                                        {
+                                            UnauthorizedAccessException lastAccessException;
+                                            try
+                                            {
+                                                pluginDirectory.Delete(true);
+                                                break;
+                                            }
+                                            catch (UnauthorizedAccessException ex) { lastAccessException = ex; }
+                                            if (removeRetryTime < DateTime.Now)
+                                                throw lastAccessException;
+                                            System.Threading.Thread.Sleep(2000);
+                                        }
+
+                                        // Check for Data Removal
+                                        bool DataUninstalled = false;
+                                        string pluginStorageLocation = Path.Combine(dbContext.DiscoConfiguration.PluginStorageLocation, uninstallManifest.Id);
+
+                                        string pluginManifestUninstallDataFilename = Path.Combine(pluginStorageLocation, "manifest.uninstall.json");
+                                        if (File.Exists(pluginManifestUninstallDataFilename))
+                                        {
+                                            DataUninstalled = true;
+                                            Directory.Delete(pluginStorageLocation, true);
+                                        }
+
+                                        PluginsLog.LogUninstalled(uninstallManifest, DataUninstalled);
+                                    }
                                 }
                             }
                         }
 
                         _PluginManifests = loadedPlugins;
 
-                        ReinitializePluginEnvironment();
-
-                        // Install Plugins - TEMPORARY? Workaround until UI in place? Or Useful for 'built-in' plugins?
-                        if (pluginDirectoryRoot.Exists)
-                        {
-                            foreach (FileInfo pluginPackageFile in pluginDirectoryRoot.EnumerateFiles("*.discoPlugin", SearchOption.TopDirectoryOnly))
-                            {
-                                // Install Plugin
-                                InstallPlugin(dbContext, pluginPackageFile.FullName);
-                                // Delete Package File
-                                pluginPackageFile.Delete();
-                            }
-                        }
+                        ReinitializePluginHostEnvironment();
                     }
                 }
             }
         }
 
-        private static void ReinitializePluginEnvironment()
+        private static void ReinitializePluginHostEnvironment()
         {
             FeatureCategoryDisplayNames = InitializeFeatureCategoryDetails(_PluginManifests.Values);
             _PluginAssemblyManifests = _PluginManifests.Values.ToDictionary(p => p.PluginAssembly, p => p);
         }
 
-        public static void InstallPlugin(DiscoDataContext dbContext, String PackageFilePath)
+        public static PluginManifest UpdatePlugin(DiscoDataContext dbContext, PluginManifest ExistingManifest, String UpdatePluginPackageFilePath)
         {
-            using (var packageStream = File.OpenRead(PackageFilePath))
+            PluginManifest updatedManifest;
+
+            using (var packageStream = File.OpenRead(UpdatePluginPackageFilePath))
             {
-                InstallPlugin(dbContext, packageStream);
+                updatedManifest = UpdatePlugin(dbContext, ExistingManifest, packageStream);
             }
+
+            // Remove Update after processing
+            File.Delete(UpdatePluginPackageFilePath);
+
+            return updatedManifest;
         }
 
-        public static void InstallPlugin(DiscoDataContext dbContext, Stream PluginPackage)
+        public static PluginManifest UpdatePlugin(DiscoDataContext dbContext, PluginManifest ExistingManifest, Stream UpdatePluginPackage)
         {
-            if (_PluginManifests == null)
-                throw new InvalidOperationException("Plugins have not been initialized");
-
             using (MemoryStream packageStream = new MemoryStream())
             {
-                PluginPackage.CopyTo(packageStream);
+                if (UpdatePluginPackage.Position != 0)
+                    UpdatePluginPackage.Position = 0;
+
+                UpdatePluginPackage.CopyTo(packageStream);
                 packageStream.Position = 0;
 
                 using (ZipArchive packageArchive = new ZipArchive(packageStream, ZipArchiveMode.Read, false))
@@ -225,54 +290,53 @@ namespace Disco.Services.Plugins
                         packageManifest = PluginManifest.FromPluginManifestFile(packageManifestStream);
                     }
 
-                    lock (_PluginLock)
+                    if (ExistingManifest.Version == packageManifest.Version)
                     {
-                        if (_PluginManifests == null)
-                            throw new InvalidOperationException("Plugins have not been initialized");
-
-                        // Ensure not already installed
-                        if (_PluginManifests.ContainsKey(packageManifest.Id))
-                            throw new InvalidOperationException(string.Format("The '{0} [{1}]' Plugin is already installed, please uninstall any existing versions before trying again", packageManifest.Name, packageManifest.Id));
-
-                        string packagePath = Path.Combine(dbContext.DiscoConfiguration.PluginsLocation, packageManifest.Id);
-
-                        // Force Delete of Existing Folder
-                        if (Directory.Exists(packagePath))
-                            Directory.Delete(packagePath, true);
-
-                        Directory.CreateDirectory(packagePath);
-
-                        // Extract Package Contents
-                        foreach (var packageEntry in packageArchive.Entries)
-                        {
-                            // Determine Extraction Path
-                            var packageEntryTarget = Path.Combine(packagePath, packageEntry.FullName);
-
-                            // Create Sub Directories
-                            Directory.CreateDirectory(Path.GetDirectoryName(packageEntryTarget));
-
-                            using (var packageEntryStream = packageEntry.Open())
-                            {
-                                using (var packageTargetStream = File.Open(packageEntryTarget, FileMode.Create, FileAccess.Write, FileShare.None))
-                                {
-                                    packageEntryStream.CopyTo(packageTargetStream);
-                                }
-                            }
-                        }
-
-                        // Reload Manifest
-                        packageManifest = PluginManifest.FromPluginManifestFile(Path.Combine(packagePath, "manifest.json"));
-
-                        // Initialize Plugin
-                        packageManifest.InitializePlugin(dbContext);
-
-                        // Add Plugin Manifest to Environment
-                        _PluginManifests[packageManifest.Id] = packageManifest;
-
-                        // Reinitialize Plugin Environment
-                        ReinitializePluginEnvironment();
+                        // Skip Update if already installed
+                        PluginsLog.LogInitializeWarning(string.Format("This plugin [{0}] version [{1}] is already installed, skipping Update", ExistingManifest.Id, ExistingManifest.Version));
+                        return ExistingManifest;
+                    }
+                    if (ExistingManifest.Version > packageManifest.Version)
+                    {
+                        throw new InvalidDataException("A newer version of this plugin is already installed");
                     }
 
+                    string packagePath = Path.Combine(dbContext.DiscoConfiguration.PluginsLocation, packageManifest.Id);
+
+                    // Force Delete of Existing Folder
+                    if (Directory.Exists(packagePath))
+                        Directory.Delete(packagePath, true);
+
+                    Directory.CreateDirectory(packagePath);
+
+                    // Extract Package Contents
+                    foreach (var packageEntry in packageArchive.Entries)
+                    {
+                        // Determine Extraction Path
+                        var packageEntryTarget = Path.Combine(packagePath, packageEntry.FullName);
+
+                        // Create Sub Directories
+                        Directory.CreateDirectory(Path.GetDirectoryName(packageEntryTarget));
+
+                        using (var packageEntryStream = packageEntry.Open())
+                        {
+                            using (var packageTargetStream = File.Open(packageEntryTarget, FileMode.Create, FileAccess.Write, FileShare.None))
+                            {
+                                packageEntryStream.CopyTo(packageTargetStream);
+                            }
+                        }
+                    }
+
+                    // Reload Manifest
+                    packageManifest = PluginManifest.FromPluginManifestFile(Path.Combine(packagePath, "manifest.json"));
+
+                    // Trigger AfterPluginUpdate
+                    packageManifest.AfterPluginUpdate(dbContext, ExistingManifest);
+
+                    PluginsLog.LogAfterUpdate(ExistingManifest, packageManifest);
+
+                    // Return Updated Manifest
+                    return packageManifest;
                 }
             }
         }

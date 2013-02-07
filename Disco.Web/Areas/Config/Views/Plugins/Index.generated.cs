@@ -69,13 +69,9 @@ WriteLiteral("    <div");
 
 WriteLiteral(" class=\"form\"");
 
-WriteLiteral(" style=\"width: 450px\"");
+WriteLiteral(" style=\"width: 450px; padding: 100px 0;\"");
 
-WriteLiteral(">\r\n        <span");
-
-WriteLiteral(" class=\"smallMessage\"");
-
-WriteLiteral(">No Plugins Installed</span>\r\n    </div>  \r\n");
+WriteLiteral(">\r\n        <h2>No Plugins are Installed</h2>\r\n    </div>  \r\n");
 
             
             #line 12 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
@@ -228,22 +224,287 @@ WriteLiteral("\r\n                </td>\r\n");
             #line hidden
 WriteLiteral("        </tr>\r\n    </table>\r\n");
 
+WriteLiteral("    <div");
+
+WriteLiteral(" id=\"dialogUninstallPlugins\"");
+
+WriteLiteral(" title=\"Uninstall Plugin\"");
+
+WriteLiteral(">\r\n        <div>\r\n");
+
+WriteLiteral("            ");
+
             
-            #line 48 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
-        
+            #line 50 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+       Write(Html.DropDownList("uninstallPlugin", Model.PluginManifests.ToSelectListItems(null, true, "Select a Plugin to Uninstall")));
 
             
             #line default
             #line hidden
+WriteLiteral("\r\n        </div>\r\n        <div>\r\n            <input");
+
+WriteLiteral(" id=\"uninstallPluginData\"");
+
+WriteLiteral(" type=\"checkbox\"");
+
+WriteLiteral(" /><label");
+
+WriteLiteral(" for=\"uninstallPluginData\"");
+
+WriteLiteral("> Uninstall Plugin Data</label>\r\n            <div");
+
+WriteLiteral(" id=\"uninstallPluginDataAlert\"");
+
+WriteLiteral(" style=\"display: none; padding: 0.7em 0.7em; margin-top: 8px;\"");
+
+WriteLiteral(" class=\"ui-state-error ui-corner-all\"");
+
+WriteLiteral(">\r\n                <span");
+
+WriteLiteral(" style=\"margin-right: 0.3em; float: left;\"");
+
+WriteLiteral(" class=\"ui-icon ui-icon-alert\"");
+
+WriteLiteral("></span>NOTE: Data will be permanently deleted\r\n            </div>\r\n        </div" +
+">\r\n    </div>\r\n");
+
+WriteLiteral("    <div");
+
+WriteLiteral(" id=\"dialogUninstallPluginConfirm\"");
+
+WriteLiteral(" title=\"Confirm Plugin Uninstall\"");
+
+WriteLiteral(">\r\n        <div");
+
+WriteLiteral(" style=\"padding: 0.7em 0.7em; margin-top: 8px;\"");
+
+WriteLiteral(" class=\"ui-state-highlight ui-corner-all\"");
+
+WriteLiteral(">\r\n            <span");
+
+WriteLiteral(" style=\"margin-right: 0.3em; float: left;\"");
+
+WriteLiteral(" class=\"ui-icon ui-icon-help\"");
+
+WriteLiteral("></span>Are you sure you want to uninstall this plugin?\r\n            <h4");
+
+WriteLiteral(" id=\"uninstallPluginConfirm\"");
+
+WriteLiteral("></h4>\r\n        </div>\r\n        <div");
+
+WriteLiteral(" id=\"uninstallPluginDataConfirm\"");
+
+WriteLiteral(" style=\"display: none; padding: 0.7em 0.7em; margin-top: 8px;\"");
+
+WriteLiteral(" class=\"ui-state-error ui-corner-all\"");
+
+WriteLiteral(">\r\n            <span");
+
+WriteLiteral(" style=\"margin-right: 0.3em; float: left;\"");
+
+WriteLiteral(" class=\"ui-icon ui-icon-alert\"");
+
+WriteLiteral("></span>NOTE: Data will be permanently deleted\r\n        </div>\r\n    </div>\r\n");
+
+WriteLiteral("    <script>\r\n        $(function () {\r\n            // Uninstall\r\n            var " +
+"uninstallUrl = \'");
+
             
-            #line 74 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
-                   
+            #line 71 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+                            Write(Url.Action(MVC.API.Plugin.Uninstall()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("/\';\r\n            var uninstallPlugin, uninstallPluginData, $dialogConfirm, uninst" +
+"allPluginConfirm, uninstallPluginDataConfirm;\r\n\r\n            var pluginId, plugi" +
+"nName, pluginUninstallData;\r\n\r\n            var $dialog = $(\'#dialogUninstallPlug" +
+"ins\').dialog({\r\n                resizable: false,\r\n                modal: true,\r" +
+"\n                width: 350,\r\n                autoOpen: false,\r\n                " +
+"buttons: {\r\n                    \"Uninstall\": function () {\r\n                    " +
+"    pluginId = uninstallPlugin.val();\r\n                        pluginName = unin" +
+"stallPlugin.find(\'option:selected\').text();\r\n                        pluginUnins" +
+"tallData = uninstallPluginData.is(\':checked\');\r\n\r\n                        if (!p" +
+"luginId) {\r\n                            alert(\'Select a plugin to uninstall\');\r\n" +
+"                        } else {\r\n                            uninstallPluginCon" +
+"firm.text(pluginName + \' [\' + pluginId + \']\');\r\n                            if (" +
+"pluginUninstallData)\r\n                                uninstallPluginDataConfirm" +
+".show();\r\n                            else\r\n                                unin" +
+"stallPluginDataConfirm.hide();\r\n\r\n                            $dialogConfirm.dia" +
+"log(\'open\');\r\n                            $(this).dialog(\"close\");\r\n            " +
+"            }\r\n                    },\r\n                    Cancel: function () {" +
+"\r\n                        uninstallPluginData.removeAttr(\'checked\');\r\n          " +
+"              $(\'#uninstallPluginDataAlert\').hide();\r\n                        $(" +
+"this).dialog(\"close\");\r\n                    }\r\n                }\r\n            })" +
+";\r\n\r\n            $dialogConfirm = $(\'#dialogUninstallPluginConfirm\').dialog({\r\n " +
+"               resizable: false,\r\n                modal: true,\r\n                " +
+"width: 350,\r\n                autoOpen: false,\r\n                buttons: {\r\n     " +
+"               \"Confirm Uninstall\": function () {\r\n                        var u" +
+"rl = uninstallUrl + pluginId;\r\n                        if (pluginUninstallData)\r" +
+"\n                            url += \'?UninstallData=true\'\r\n                     " +
+"   else\r\n                            url += \'?UninstallData=false\'\r\n\r\n          " +
+"              window.location.href = url;\r\n                        $(this).dialo" +
+"g(\"disable\");\r\n                    },\r\n                    Cancel: function () {" +
+"\r\n                        uninstallPluginData.removeAttr(\'checked\');\r\n          " +
+"              $(\'#uninstallPluginDataAlert\').hide();\r\n                        $(" +
+"this).dialog(\"close\");\r\n                    }\r\n                }\r\n            })" +
+";\r\n\r\n            uninstallPlugin = $(\'#uninstallPlugin\');\r\n            uninstall" +
+"PluginData = $(\'#uninstallPluginData\');\r\n            uninstallPluginConfirm = $(" +
+"\'#uninstallPluginConfirm\');\r\n            uninstallPluginDataConfirm = $(\'#uninst" +
+"allPluginDataConfirm\');\r\n\r\n            $(\'#buttonUninstall\').click(function () {" +
+"\r\n                $dialog.dialog(\'open\');\r\n                return false;\r\n      " +
+"      });\r\n\r\n            $(\'#uninstallPluginData\').change(function () {\r\n       " +
+"         if ($(this).is(\':checked\')) {\r\n                    $(\'#uninstallPluginD" +
+"ataAlert\').slideDown();\r\n                } else {\r\n                    $(\'#unins" +
+"tallPluginDataAlert\').slideUp();\r\n                }\r\n            });\r\n        })" +
+";\r\n    </script>\r\n");
+
+            
+            #line 151 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
     }
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
+WriteLiteral("\r\n<div");
+
+WriteLiteral(" id=\"dialogInstallPlugin\"");
+
+WriteLiteral(" title=\"Install Plugin\"");
+
+WriteLiteral(">\r\n    <div");
+
+WriteLiteral(" style=\"padding-bottom: 10px;\"");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 155 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+        
+            
+            #line default
+            #line hidden
+            
+            #line 155 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+         using (Html.BeginForm(MVC.API.Plugin.Install(), FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <label");
+
+WriteLiteral(" for=\"pluginFile\"");
+
+WriteLiteral(">Plugin Package: </label>\r\n");
+
+WriteLiteral("            <input");
+
+WriteLiteral(" id=\"pluginFile\"");
+
+WriteLiteral(" name=\"Plugin\"");
+
+WriteLiteral(" type=\"file\"");
+
+WriteLiteral(" />\r\n");
+
+            
+            #line 159 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    </div>\r\n    <div");
+
+WriteLiteral(" style=\"padding: 0.7em 0.7em; margin-top: 8px;\"");
+
+WriteLiteral(" class=\"ui-state-error ui-corner-all\"");
+
+WriteLiteral(">\r\n        <span");
+
+WriteLiteral(" style=\"margin-right: 0.3em; margin-bottom: 2em; float: left;\"");
+
+WriteLiteral(" class=\"ui-icon ui-icon-alert\"");
+
+WriteLiteral(@"></span>Warning: All plugins run with the same level of network privileges as the Disco Web App.<br />
+        <strong>Only install plugins from a trusted source.</strong>
+    </div>
+</div>
+<script>
+    $(function () {
+        // Install
+        var $dialogInstall = $('#dialogInstallPlugin').dialog({
+            resizable: false,
+            modal: true,
+            width: 350,
+            autoOpen: false,
+            buttons: {
+                ""Upload & Install"": function () {
+                    var pluginFile = $('#pluginFile');
+                    if (pluginFile.val()) {
+                        pluginFile.closest('form').submit();
+                        $(this).dialog('disable');
+                    } else {
+                        alert('Choose a Plugin Package to Install');
+                    }
+                },
+                Cancel: function () {
+                    $(this).dialog(""close"");
+                }
+            }
+        });
+        $('#buttonInstall').click(function () {
+            $dialogInstall.dialog('open');
+            return false;
+        });
+    });
+</script>
+<div");
+
+WriteLiteral(" class=\"actionBar\"");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 196 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+    
+            
+            #line default
+            #line hidden
+            
+            #line 196 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+     if (Model.PluginManifests.Count > 0)
+    { 
+        
+            
+            #line default
+            #line hidden
+            
+            #line 198 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+   Write(Html.ActionLinkButton("Uninstall Plugins", MVC.Config.Plugins.Index(), "buttonUninstall"));
+
+            
+            #line default
+            #line hidden
+            
+            #line 198 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+                                                                                                  
+    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    ");
+
+            
+            #line 200 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+Write(Html.ActionLinkButton("Install Plugins", MVC.Config.Plugins.Index(), "buttonInstall"));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n</div>\r\n");
 
         }
     }

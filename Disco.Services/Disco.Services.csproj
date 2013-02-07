@@ -89,7 +89,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\RazorGeneratorMvcStart.cs" />
     <Compile Include="Logging\LogBase.cs" />
     <Compile Include="Logging\LogContext.cs" />
     <Compile Include="Logging\LogReInitalizeJob.cs" />
@@ -119,6 +118,7 @@
     <None Include="_Plugins\PluginWebControllerException.cs" />
     <None Include="_Plugins\PluginWebControllerExtensions.cs" />
     <None Include="_Plugins\UnknownPluginException.cs" />
+    <Compile Include="Plugins\InstallPluginTask.cs" />
     <Compile Include="Plugins\PluginAttribute.cs" />
     <Compile Include="Plugins\PluginExtensions.cs" />
     <Compile Include="Plugins\PluginFeatureAttribute.cs" />
@@ -139,6 +139,7 @@
     <Compile Include="Plugins\PluginsLog.cs" />
     <Compile Include="Plugins\PluginWebHandler.cs" />
     <Compile Include="Plugins\PluginWebHandlerController.cs" />
+    <Compile Include="Plugins\UninstallPluginTask.cs" />
     <Compile Include="Plugins\UnknownPluginException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tasks\ScheduledTask.cs" />

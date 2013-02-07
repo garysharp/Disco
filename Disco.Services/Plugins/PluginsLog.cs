@@ -31,7 +31,14 @@ namespace Disco.Services.Plugins
             PluginReferenceAssemblyLoaded = 50,
             PluginConfigurationLoaded = 100,
             PluginConfigurationSaved = 104,
-            PluginWebControllerAccessed = 200
+            PluginWebControllerAccessed = 200,
+
+            Installing = 500,
+            Installed = 550,
+            BeforeUpdate = 600,
+            AfterUpdate = 700,
+            Uninstalling = 800,
+            Uninstalled = 850
         }
 
         public static PluginsLog Current
@@ -85,6 +92,31 @@ namespace Disco.Services.Plugins
         public static void LogPluginWebControllerAccessed(string PluginId, string PluginAction, string UserId)
         {
             Current.Log((int)EventTypeIds.PluginWebControllerAccessed, PluginId, PluginAction, UserId);
+        }
+
+        public static void LogInstalling(PluginManifest Manifest)
+        {
+            Current.Log((int)EventTypeIds.Installing, Manifest.Id, Manifest.Version.ToString(4), Manifest.Name);
+        }
+        public static void LogInstalled(PluginManifest Manifest)
+        {
+            Current.Log((int)EventTypeIds.Installing, Manifest.Id, Manifest.Version.ToString(4), Manifest.Name, Manifest.PluginLocation);
+        }
+        public static void LogBeforeUpdate(PluginManifest ExistingManifest, PluginManifest UpdateManifest)
+        {
+            Current.Log((int)EventTypeIds.BeforeUpdate, ExistingManifest.Id, ExistingManifest.Name, ExistingManifest.PluginLocation, ExistingManifest.Version.ToString(4), UpdateManifest.Version.ToString(4));
+        }
+        public static void LogAfterUpdate(PluginManifest ExistingManifest, PluginManifest UpdateManifest)
+        {
+            Current.Log((int)EventTypeIds.AfterUpdate, UpdateManifest.Id, UpdateManifest.Name, UpdateManifest.PluginLocation, ExistingManifest.Version.ToString(4), UpdateManifest.Version.ToString(4));
+        }
+        public static void LogUninstalling(PluginManifest Manifest, bool UninstallData)
+        {
+            Current.Log((int)EventTypeIds.Uninstalling, Manifest.Id, Manifest.Name, Manifest.PluginLocation, Manifest.Version.ToString(4), UninstallData);
+        }
+        public static void LogUninstalled(PluginManifest Manifest, bool UninstalledData)
+        {
+            Current.Log((int)EventTypeIds.Uninstalled, Manifest.Id, Manifest.Name, Manifest.PluginLocation, Manifest.Version.ToString(4), UninstalledData);
         }
 
         public static void LogInitializeException(string PluginFilename, Exception ex)
@@ -266,6 +298,72 @@ namespace Disco.Services.Plugins
 					Format = "Plugin Web Controller Accessed: Plugin [{0}], Action [{1}], By [{2}]", 
 					Severity = (int)LogEventType.Severities.Information, 
 					UseLive = true, 
+					UsePersist = true, 
+					UseDisplay = true
+				}, 
+				new LogEventType
+				{
+					Id = (int)EventTypeIds.Installing, 
+					ModuleId = _ModuleId, 
+					Name = "Installing Plugin", 
+					Format = "Installing Plugin: {2} [{0} v{1}]", 
+					Severity = (int)LogEventType.Severities.Information, 
+					UseLive = true, 
+					UsePersist = true, 
+					UseDisplay = true
+				}, 
+				new LogEventType
+				{
+					Id = (int)EventTypeIds.Installed, 
+					ModuleId = _ModuleId, 
+					Name = "Plugin Installed", 
+					Format = "Plugin Installed: {2} [{0} v{1}], Location: {3}", 
+					Severity = (int)LogEventType.Severities.Information, 
+					UseLive = true, 
+					UsePersist = true, 
+					UseDisplay = true
+				}, 
+				new LogEventType
+				{
+					Id = (int)EventTypeIds.BeforeUpdate, 
+					ModuleId = _ModuleId, 
+					Name = "Updating Plugin", 
+					Format = "Updating Plugin: {1} [{0}], v{3} -> v{4}, Location: {2}", 
+					Severity = (int)LogEventType.Severities.Information, 
+					UseLive = true, 
+					UsePersist = true, 
+					UseDisplay = true
+				}, 
+				new LogEventType
+				{
+					Id = (int)EventTypeIds.AfterUpdate, 
+					ModuleId = _ModuleId, 
+					Name = "Plugin Updated", 
+					Format = "Plugin Updated: {1} [{0}], v{3} -> v{4}, Location: {2}", 
+					Severity = (int)LogEventType.Severities.Information, 
+					UseLive = false, 
+					UsePersist = true, 
+					UseDisplay = true
+				}, 
+				new LogEventType
+				{
+					Id = (int)EventTypeIds.Uninstalling, 
+					ModuleId = _ModuleId, 
+					Name = "Uninstalling Plugin", 
+					Format = "Uninstalling Plugin: {1} [{0} v{3}], Location: {2}, UninstallData: {4}", 
+					Severity = (int)LogEventType.Severities.Information, 
+					UseLive = true, 
+					UsePersist = true, 
+					UseDisplay = true
+				}, 
+				new LogEventType
+				{
+					Id = (int)EventTypeIds.Uninstalled, 
+					ModuleId = _ModuleId, 
+					Name = "Plugin Uninstalled", 
+					Format = "Plugin Uninstalled: {1} [{0} v{3}], Location: {2}, UninstallData: {4}", 
+					Severity = (int)LogEventType.Severities.Information, 
+					UseLive = false, 
 					UsePersist = true, 
 					UseDisplay = true
 				}

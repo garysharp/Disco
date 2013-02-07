@@ -50,6 +50,7 @@ namespace T4MVC
         public readonly string Name = "API";
         public Disco.Web.Areas.API.Controllers.BootstrapperController Bootstrapper = new Disco.Web.Areas.API.Controllers.T4MVC_BootstrapperController();
         public Disco.Web.Areas.API.Controllers.DeviceBatchController DeviceBatch = new Disco.Web.Areas.API.Controllers.T4MVC_DeviceBatchController();
+        public Disco.Web.Areas.API.Controllers.DeviceCertificateController DeviceCertificate = new Disco.Web.Areas.API.Controllers.T4MVC_DeviceCertificateController();
         public Disco.Web.Areas.API.Controllers.DeviceController Device = new Disco.Web.Areas.API.Controllers.T4MVC_DeviceController();
         public Disco.Web.Areas.API.Controllers.DeviceModelController DeviceModel = new Disco.Web.Areas.API.Controllers.T4MVC_DeviceModelController();
         public Disco.Web.Areas.API.Controllers.DeviceProfileController DeviceProfile = new Disco.Web.Areas.API.Controllers.T4MVC_DeviceProfileController();
@@ -57,9 +58,9 @@ namespace T4MVC
         public Disco.Web.Areas.API.Controllers.ExpressionsController Expressions = new Disco.Web.Areas.API.Controllers.T4MVC_ExpressionsController();
         public Disco.Web.Areas.API.Controllers.JobController Job = new Disco.Web.Areas.API.Controllers.T4MVC_JobController();
         public Disco.Web.Areas.API.Controllers.LoggingController Logging = new Disco.Web.Areas.API.Controllers.T4MVC_LoggingController();
+        public Disco.Web.Areas.API.Controllers.PluginController Plugin = new Disco.Web.Areas.API.Controllers.T4MVC_PluginController();
         public Disco.Web.Areas.API.Controllers.SystemController System = new Disco.Web.Areas.API.Controllers.T4MVC_SystemController();
         public Disco.Web.Areas.API.Controllers.UserController User = new Disco.Web.Areas.API.Controllers.T4MVC_UserController();
-        public Disco.Web.Areas.API.Controllers.WirelessCertificateController WirelessCertificate = new Disco.Web.Areas.API.Controllers.T4MVC_WirelessCertificateController();
     }
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
     public class ConfigClass
@@ -2820,6 +2821,99 @@ namespace Disco.Web.Areas.API.Controllers
         public override System.Web.Mvc.ActionResult Timeline()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Timeline);
+            return callInfo;
+        }
+
+    }
+}
+
+namespace Disco.Web.Areas.API.Controllers
+{
+    public partial class DeviceCertificateController
+    {
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public DeviceCertificateController() { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected DeviceCertificateController(Dummy d) { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoute(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public System.Web.Mvc.ActionResult Download()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Download);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public DeviceCertificateController Actions { get { return MVC.API.DeviceCertificate; } }
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Area = "API";
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Name = "DeviceCertificate";
+        [GeneratedCode("T4MVC", "2.0")]
+        public const string NameConst = "DeviceCertificate";
+
+        static readonly ActionNamesClass s_actions = new ActionNamesClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionNamesClass ActionNames { get { return s_actions; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNamesClass
+        {
+            public readonly string Download = "Download";
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNameConstants
+        {
+            public const string Download = "Download";
+        }
+
+
+        static readonly ActionParamsClass_Download s_params_Download = new ActionParamsClass_Download();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Download DownloadParams { get { return s_params_Download; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Download
+        {
+            public readonly string id = "id";
+        }
+        static readonly ViewsClass s_views = new ViewsClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ViewsClass Views { get { return s_views; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ViewsClass
+        {
+            static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
+            public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
+            public class _ViewNamesClass
+            {
+            }
+        }
+    }
+
+    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+    public class T4MVC_DeviceCertificateController : Disco.Web.Areas.API.Controllers.DeviceCertificateController
+    {
+        public T4MVC_DeviceCertificateController() : base(Dummy.Instance) { }
+
+        public override System.Web.Mvc.ActionResult Download(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Download);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             return callInfo;
         }
 
@@ -6643,6 +6737,124 @@ namespace Disco.Web.Areas.API.Controllers
 
 namespace Disco.Web.Areas.API.Controllers
 {
+    public partial class PluginController
+    {
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public PluginController() { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected PluginController(Dummy d) { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoute(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public System.Web.Mvc.ActionResult Uninstall()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Uninstall);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public System.Web.Mvc.ActionResult Install()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Install);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public PluginController Actions { get { return MVC.API.Plugin; } }
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Area = "API";
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Name = "Plugin";
+        [GeneratedCode("T4MVC", "2.0")]
+        public const string NameConst = "Plugin";
+
+        static readonly ActionNamesClass s_actions = new ActionNamesClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionNamesClass ActionNames { get { return s_actions; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNamesClass
+        {
+            public readonly string Uninstall = "Uninstall";
+            public readonly string Install = "Install";
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNameConstants
+        {
+            public const string Uninstall = "Uninstall";
+            public const string Install = "Install";
+        }
+
+
+        static readonly ActionParamsClass_Uninstall s_params_Uninstall = new ActionParamsClass_Uninstall();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Uninstall UninstallParams { get { return s_params_Uninstall; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Uninstall
+        {
+            public readonly string id = "id";
+            public readonly string UninstallData = "UninstallData";
+        }
+        static readonly ActionParamsClass_Install s_params_Install = new ActionParamsClass_Install();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Install InstallParams { get { return s_params_Install; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Install
+        {
+            public readonly string Plugin = "Plugin";
+        }
+        static readonly ViewsClass s_views = new ViewsClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ViewsClass Views { get { return s_views; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ViewsClass
+        {
+            static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
+            public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
+            public class _ViewNamesClass
+            {
+            }
+        }
+    }
+
+    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+    public class T4MVC_PluginController : Disco.Web.Areas.API.Controllers.PluginController
+    {
+        public T4MVC_PluginController() : base(Dummy.Instance) { }
+
+        public override System.Web.Mvc.ActionResult Uninstall(string id, bool UninstallData)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Uninstall);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "UninstallData", UninstallData);
+            return callInfo;
+        }
+
+        public override System.Web.Mvc.ActionResult Install(System.Web.HttpPostedFileBase Plugin)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Install);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Plugin", Plugin);
+            return callInfo;
+        }
+
+    }
+}
+
+namespace Disco.Web.Areas.API.Controllers
+{
     public partial class SystemController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -7120,124 +7332,6 @@ namespace Disco.Web.Areas.API.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdf);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DocumentTemplateId", DocumentTemplateId);
-            return callInfo;
-        }
-
-    }
-}
-
-namespace Disco.Web.Areas.API.Controllers
-{
-    public partial class WirelessCertificateController
-    {
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public WirelessCertificateController() { }
-
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        protected WirelessCertificateController(Dummy d) { }
-
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        protected RedirectToRouteResult RedirectToAction(ActionResult result)
-        {
-            var callInfo = result.GetT4MVCResult();
-            return RedirectToRoute(callInfo.RouteValueDictionary);
-        }
-
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
-        {
-            var callInfo = result.GetT4MVCResult();
-            return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
-        }
-
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public System.Web.Mvc.ActionResult Download()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Download);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public System.Web.Mvc.ActionResult FillBuffer()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.FillBuffer);
-        }
-
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public WirelessCertificateController Actions { get { return MVC.API.WirelessCertificate; } }
-        [GeneratedCode("T4MVC", "2.0")]
-        public readonly string Area = "API";
-        [GeneratedCode("T4MVC", "2.0")]
-        public readonly string Name = "WirelessCertificate";
-        [GeneratedCode("T4MVC", "2.0")]
-        public const string NameConst = "WirelessCertificate";
-
-        static readonly ActionNamesClass s_actions = new ActionNamesClass();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionNamesClass ActionNames { get { return s_actions; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionNamesClass
-        {
-            public readonly string Download = "Download";
-            public readonly string FillBuffer = "FillBuffer";
-        }
-
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionNameConstants
-        {
-            public const string Download = "Download";
-            public const string FillBuffer = "FillBuffer";
-        }
-
-
-        static readonly ActionParamsClass_Download s_params_Download = new ActionParamsClass_Download();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Download DownloadParams { get { return s_params_Download; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Download
-        {
-            public readonly string id = "id";
-        }
-        static readonly ActionParamsClass_FillBuffer s_params_FillBuffer = new ActionParamsClass_FillBuffer();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_FillBuffer FillBufferParams { get { return s_params_FillBuffer; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_FillBuffer
-        {
-            public readonly string Value = "Value";
-            public readonly string redirect = "redirect";
-        }
-        static readonly ViewsClass s_views = new ViewsClass();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ViewsClass Views { get { return s_views; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ViewsClass
-        {
-            static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
-            public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
-            public class _ViewNamesClass
-            {
-            }
-        }
-    }
-
-    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public class T4MVC_WirelessCertificateController : Disco.Web.Areas.API.Controllers.WirelessCertificateController
-    {
-        public T4MVC_WirelessCertificateController() : base(Dummy.Instance) { }
-
-        public override System.Web.Mvc.ActionResult Download(int id)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Download);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            return callInfo;
-        }
-
-        public override System.Web.Mvc.ActionResult FillBuffer(int Value, bool? redirect)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.FillBuffer);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Value", Value);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             return callInfo;
         }
 

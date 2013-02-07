@@ -91,7 +91,7 @@
   <ItemGroup>
     <Compile Include="BIModelExtensions\OrganisationAddressExtensions.cs" />
     <Compile Include="BIModelExtensions\UtilityExtensions.cs" />
-    <Compile Include="BIModelExtensions\DiscoPluginDefinitionExtensions.cs" />
+    <Compile Include="BIModelExtensions\PluginExtensions.cs" />
     <Compile Include="DataModelExtension\DeviceBatchExtensions.cs" />
     <Compile Include="DataModelExtension\DeviceModelExtensions.cs" />
     <Compile Include="DataModelExtension\DeviceProfileExtensions.cs" />
@@ -136,7 +136,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2001/1/1" />
+      <UserProperties BuildVersion_StartDate="2001/1/1" BuildVersion_UseGlobalSettings="True" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="ReBuild" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

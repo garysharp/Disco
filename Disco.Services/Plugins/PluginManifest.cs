@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Disco.Data.Repository;
+using Disco.Services.Tasks;
 using Newtonsoft.Json;
 
 namespace Disco.Services.Plugins
@@ -47,6 +48,9 @@ namespace Disco.Services.Plugins
         public string PluginLocation { get; private set; }
         [JsonIgnore]
         public string StorageLocation { get; private set; }
+
+        [JsonIgnore]
+        private bool environmentInitalized { get; set; }
 
         private static Dictionary<string, Tuple<string, DateTime>> WebResourceHashes = new Dictionary<string, Tuple<string, DateTime>>();
 
@@ -186,41 +190,102 @@ namespace Disco.Services.Plugins
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
-        public bool InitializePlugin(DiscoDataContext dbContext)
+        private bool InitializePluginEnvironment(DiscoDataContext dbContext)
         {
-            var assemblyFullPath = Path.Combine(this.PluginLocation, this.AssemblyPath);
+            if (!environmentInitalized)
+            {
 
-            if (!File.Exists(assemblyFullPath))
-                throw new FileNotFoundException(string.Format("Plugin Assembly [{0}] not found at: {1}", this.Id, assemblyFullPath), assemblyFullPath);
+                var assemblyFullPath = Path.Combine(this.PluginLocation, this.AssemblyPath);
 
-            if (this.PluginAssembly == null)
-                this.PluginAssembly = Assembly.LoadFile(assemblyFullPath);
+                if (!File.Exists(assemblyFullPath))
+                    throw new FileNotFoundException(string.Format("Plugin Assembly [{0}] not found at: {1}", this.Id, assemblyFullPath), assemblyFullPath);
 
-            if (this.PluginAssembly == null)
-                throw new InvalidOperationException(string.Format("Unable to load Plugin Assembly [{0}] at: {1}", this.Id, assemblyFullPath));
+                if (this.PluginAssembly == null)
+                    this.PluginAssembly = Assembly.LoadFile(assemblyFullPath);
 
-            PluginsLog.LogInitializingPluginAssembly(this.PluginAssembly);
+                if (this.PluginAssembly == null)
+                    throw new InvalidOperationException(string.Format("Unable to load Plugin Assembly [{0}] at: {1}", this.Id, assemblyFullPath));
 
-            // Check Manifest/Assembly Versions Match
-            if (this.Version != this.PluginAssembly.GetName().Version)
-                throw new InvalidOperationException(string.Format("The plugin [{0}] manifest version [{1}] doesn't match the plugin assembly [{2} : {3}]", this.Id, this.Version, assemblyFullPath, this.PluginAssembly.GetName().Version));
+                PluginsLog.LogInitializingPluginAssembly(this.PluginAssembly);
 
-            if (this.Type == null)
-                this.Type = this.PluginAssembly.GetType(this.TypeName, true, true);
+                // Check Manifest/Assembly Versions Match
+                if (this.Version != this.PluginAssembly.GetName().Version)
+                    throw new InvalidOperationException(string.Format("The plugin [{0}] manifest version [{1}] doesn't match the plugin assembly [{2} : {3}]", this.Id, this.Version, assemblyFullPath, this.PluginAssembly.GetName().Version));
 
-            if (this.ConfigurationHandlerType == null)
-                this.ConfigurationHandlerType = this.PluginAssembly.GetType(this.ConfigurationHandlerTypeName, true, true);
+                if (this.Type == null)
+                    this.Type = this.PluginAssembly.GetType(this.TypeName, true, true);
 
-            if (!string.IsNullOrEmpty(this.WebHandlerTypeName) && this.WebHandlerType == null)
-                this.WebHandlerType = this.PluginAssembly.GetType(this.WebHandlerTypeName, true, true);
+                if (this.ConfigurationHandlerType == null)
+                    this.ConfigurationHandlerType = this.PluginAssembly.GetType(this.ConfigurationHandlerTypeName, true, true);
 
-            // Update non-static values
-            this.StorageLocation = Path.Combine(dbContext.DiscoConfiguration.PluginStorageLocation, this.Id);
+                if (!string.IsNullOrEmpty(this.WebHandlerTypeName) && this.WebHandlerType == null)
+                    this.WebHandlerType = this.PluginAssembly.GetType(this.WebHandlerTypeName, true, true);
+
+                // Update non-static values
+                this.StorageLocation = Path.Combine(dbContext.DiscoConfiguration.PluginStorageLocation, this.Id);
+
+                environmentInitalized = true;
+            }
+
+            return true;
+        }
+        internal bool BeforePluginUpdate(DiscoDataContext dbContext, PluginManifest UpdateManifest, ScheduledTaskStatus Status)
+        {
+            // Initialize Plugin
+            InitializePluginEnvironment(dbContext);
+
+            using (var pluginInstance = this.CreateInstance())
+            {
+                pluginInstance.BeforeUpdate(dbContext, UpdateManifest, Status);
+            }
+
+            return true;
+        }
+        internal bool AfterPluginUpdate(DiscoDataContext dbContext, PluginManifest PreviousManifest)
+        {
+            // Initialize Plugin
+            InitializePluginEnvironment(dbContext);
+
+            using (var pluginInstance = this.CreateInstance())
+            {
+                pluginInstance.AfterUpdate(dbContext, PreviousManifest);
+            }
+
+            return true;
+        }
+        internal bool UninstallPlugin(DiscoDataContext dbContext, bool UninstallData, ScheduledTaskStatus Status)
+        {
+            // Initialize Plugin
+            InitializePluginEnvironment(dbContext);
+
+            using (var pluginInstance = this.CreateInstance())
+            {
+                pluginInstance.Uninstall(dbContext, UninstallData, Status);
+            }
+
+            return true;
+        }
+        internal bool InstallPlugin(DiscoDataContext dbContext, ScheduledTaskStatus Status)
+        {
+            // Initialize Plugin
+            InitializePluginEnvironment(dbContext);
+
+            using (var pluginInstance = this.CreateInstance())
+            {
+                pluginInstance.Install(dbContext, Status);
+            }
+
+            return true;
+        }
+        internal bool InitializePlugin(DiscoDataContext dbContext)
+        {
+            // Initialize Plugin
+            InitializePluginEnvironment(dbContext);
 
             // Initialize Plugin
             using (var pluginInstance = this.CreateInstance())
             {
-                pluginInstance.Initalize(dbContext);
+                pluginInstance.Initialize(dbContext);
             }
             PluginsLog.LogInitializedPlugin(this);
 

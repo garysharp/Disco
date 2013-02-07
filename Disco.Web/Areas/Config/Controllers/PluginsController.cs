@@ -65,35 +65,5 @@ namespace Disco.Web.Areas.Config.Controllers
         }
         #endregion
 
-        //public virtual ActionResult PluginAction(string PluginId, string PluginAction)
-        //{
-        //    if (string.IsNullOrEmpty(PluginId))
-        //        return HttpNotFound("PluginId is Required");
-        //    if (string.IsNullOrEmpty(PluginAction))
-        //        return HttpNotFound("PluginAction is Required");
-
-        //    PluginManifest def = Plugins.GetPlugin(PluginId);
-
-        //    using (Plugin instance = def.CreateInstance())
-        //    {
-        //        IPluginWebController instanceController = instance as IPluginWebController;
-
-        //        if (instanceController == null)
-        //            return HttpNotFound("Plugin is not a Web Controller");
-
-        //        PluginsLog.LogPluginWebControllerAccessed(instance.Id, PluginAction, DiscoApplication.CurrentUser.Id);
-
-        //        try
-        //        {
-        //            return instanceController.ExecuteAction(PluginAction, this);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            PluginsLog.LogPluginException("Disco Plugin Web Controller Action", new PluginWebControllerException(instance.Id, PluginAction, ex));
-        //            return null;
-        //        }
-        //    }
-        //}
-
     }
 }

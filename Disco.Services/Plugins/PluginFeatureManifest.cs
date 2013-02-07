@@ -37,7 +37,7 @@ namespace Disco.Services.Plugins
 
             using (var instance = this.CreateInstance())
             {
-                instance.Initalize(dbContext);
+                instance.Initialize(dbContext);
             }
 
             PluginsLog.LogInitializedPluginFeature(this.PluginManifest, this);

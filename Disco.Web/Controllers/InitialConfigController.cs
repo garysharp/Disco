@@ -9,6 +9,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.IO.Compression;
 using System.Management;
+using System.Web;
 
 namespace Disco.Web.Controllers
 {
@@ -295,7 +296,8 @@ namespace Disco.Web.Controllers
 
                 _restartTimer = new Timer((state) =>
                 {
-                    AppDomain.Unload(AppDomain.CurrentDomain);
+                    HttpRuntime.UnloadAppDomain();
+                    //AppDomain.Unload(AppDomain.CurrentDomain);
                 }, null, DelayMilliseconds, Timeout.Infinite);
             }
         }

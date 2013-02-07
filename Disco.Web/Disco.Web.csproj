@@ -162,6 +162,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CommonHelpers.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="Areas\API\Controllers\PluginController.cs" />
     <Compile Include="Areas\Config\Models\Config\IndexModel.cs" />
     <Compile Include="Controllers\InitialConfigController.cs" />
     <Compile Include="Controllers\PluginWebHandlerController.cs" />
@@ -184,7 +185,7 @@
     <Compile Include="Areas\API\Controllers\LoggingController.cs" />
     <Compile Include="Areas\API\Controllers\SystemController.cs" />
     <Compile Include="Areas\API\Controllers\UserController.cs" />
-    <Compile Include="Areas\API\Controllers\WirelessCertificateController.cs" />
+    <Compile Include="Areas\API\Controllers\DeviceCertificateController.cs" />
     <Compile Include="Areas\API\Models\Attachment\AttachmentModel.cs" />
     <Compile Include="Areas\API\Models\Attachment\AttachmentsModel.cs" />
     <Compile Include="Areas\API\Models\Attachment\_AttachmentModel.cs" />
@@ -1149,7 +1150,7 @@
     <None Include="ClientSource\Style\Timeline\graphics.min.css">
       <DependentUpon>graphics.css</DependentUpon>
     </None>
-    <None Include="ClientSource\Style\Timeline\images\blue-circle.png" />
+    <Content Include="ClientSource\Style\Timeline\images\blue-circle.png" />
     <None Include="ClientSource\Style\Timeline\images\bubble-arrow-point-down.png" />
     <None Include="ClientSource\Style\Timeline\images\bubble-arrow-point-left.png" />
     <None Include="ClientSource\Style\Timeline\images\bubble-arrow-point-right.png" />
@@ -1170,14 +1171,14 @@
     <None Include="ClientSource\Style\Timeline\images\copy.png" />
     <None Include="ClientSource\Style\Timeline\images\copyright-vertical.png" />
     <None Include="ClientSource\Style\Timeline\images\copyright.png" />
-    <None Include="ClientSource\Style\Timeline\images\dark-blue-circle.png" />
-    <None Include="ClientSource\Style\Timeline\images\dark-green-circle.png" />
-    <None Include="ClientSource\Style\Timeline\images\dark-red-circle.png" />
-    <None Include="ClientSource\Style\Timeline\images\dull-blue-circle.png" />
-    <None Include="ClientSource\Style\Timeline\images\dull-green-circle.png" />
-    <None Include="ClientSource\Style\Timeline\images\dull-red-circle.png" />
-    <None Include="ClientSource\Style\Timeline\images\gray-circle.png" />
-    <None Include="ClientSource\Style\Timeline\images\green-circle.png" />
+    <Content Include="ClientSource\Style\Timeline\images\dark-blue-circle.png" />
+    <Content Include="ClientSource\Style\Timeline\images\dark-green-circle.png" />
+    <Content Include="ClientSource\Style\Timeline\images\dark-red-circle.png" />
+    <Content Include="ClientSource\Style\Timeline\images\dull-blue-circle.png" />
+    <Content Include="ClientSource\Style\Timeline\images\dull-green-circle.png" />
+    <Content Include="ClientSource\Style\Timeline\images\dull-red-circle.png" />
+    <Content Include="ClientSource\Style\Timeline\images\gray-circle.png" />
+    <Content Include="ClientSource\Style\Timeline\images\green-circle.png" />
     <None Include="ClientSource\Style\Timeline\images\message-bottom-left.png" />
     <None Include="ClientSource\Style\Timeline\images\message-bottom-right.png" />
     <None Include="ClientSource\Style\Timeline\images\message-left.png" />
@@ -1185,7 +1186,7 @@
     <None Include="ClientSource\Style\Timeline\images\message-top-left.png" />
     <None Include="ClientSource\Style\Timeline\images\message-top-right.png" />
     <None Include="ClientSource\Style\Timeline\images\progress-running.gif" />
-    <None Include="ClientSource\Style\Timeline\images\red-circle.png" />
+    <Content Include="ClientSource\Style\Timeline\images\red-circle.png" />
     <None Include="ClientSource\Style\Timeline\images\top-bubble.png" />
     <None Include="ClientSource\Style\Timeline\timeline-bundle.css" />
     <None Include="ClientSource\Style\Timeline\timeline-bundle.min.css">
@@ -1811,7 +1812,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_StartDate="2001/1/1" BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_DetectChanges="False" />
+      <UserProperties BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2001/1/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

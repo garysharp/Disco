@@ -258,6 +258,13 @@ namespace Disco.Data.Configuration
                 return System.IO.Path.Combine(this.DataStoreLocation, @"PluginStorage\");
             }
         }
+        public string PluginPackagesLocation
+        {
+            get
+            {
+                return System.IO.Path.Combine(this.DataStoreLocation, @"PluginPackages\");
+            }
+        }
         #region Organisation Logo
         private string OrganisationLogoPath
         {

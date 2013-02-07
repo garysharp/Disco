@@ -96,6 +96,7 @@
     <Compile Include="BI\DataStore.cs" />
     <Compile Include="BI\AttachmentBI\Utilities.cs" />
     <Compile Include="BI\DeviceBI\BatchUtilities.cs" />
+    <Compile Include="BI\DeviceBI\DeviceModelBI.cs" />
     <Compile Include="BI\DeviceBI\Searching.cs" />
     <Compile Include="BI\DisposableImageCollection.cs" />
     <Compile Include="BI\DocumentTemplateBI\DocumentTemplateQRCodeLocationCache.cs" />
@@ -218,7 +219,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2001/1/1" />
+      <UserProperties BuildVersion_StartDate="2001/1/1" BuildVersion_BuildAction="ReBuild" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

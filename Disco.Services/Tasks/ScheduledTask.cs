@@ -9,13 +9,13 @@ namespace Disco.Services.Tasks
 {
     public abstract class ScheduledTask : IJob
     {
-        public abstract void InitalizeScheduledTask(DiscoDataContext dbContext);
+        public virtual void InitalizeScheduledTask(DiscoDataContext dbContext) { return; }
 
         internal protected ScheduledTaskStatus Status { get; private set; }
         internal protected IJobExecutionContext ExecutionContext { get; private set; }
 
-        public abstract bool CancelInitiallySupported { get; }
-        public abstract bool SingleInstanceTask { get; }
+        public virtual bool CancelInitiallySupported { get { return true; } }
+        public virtual bool SingleInstanceTask { get { return true; } }
         public virtual bool IsSilent { get { return false; } }
         public virtual bool LogExceptionsOnly { get { return false; } }
         public abstract string TaskName { get; }
