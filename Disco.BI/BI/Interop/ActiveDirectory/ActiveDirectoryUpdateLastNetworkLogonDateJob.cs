@@ -40,7 +40,7 @@ namespace Disco.BI.Interop.ActiveDirectory
                 UpdateLastNetworkLogonDates(dbContext, this.Status);
                 this.Status.UpdateStatus(95, "Updating Database", "Writing last network logon dates to the Database");
                 changeCount = dbContext.SaveChanges();
-                this.Status.UpdateStatus(100, "Finished", string.Format("{0} Device last network logon dates updated", changeCount));
+                this.Status.Finished(string.Format("{0} Device last network logon dates updated", changeCount), "/Config/SystemConfig");
             }
 
             SystemLog.LogInformation(new string[]
@@ -50,44 +50,16 @@ namespace Disco.BI.Interop.ActiveDirectory
                 });
         }
 
-        //public void InitalizeScheduledTask(DiscoDataContext dbContext, IScheduler Scheduler)
-        //{
-        //    // UpdateLastNetworkLogonDates @ 11:30pm
-        //    IJobDetail jobDetail = new JobDetailImpl("UpdateLastNetworkLogonDates", typeof(ActiveDirectoryUpdateLastNetworkLogonDateJob));
-        //    ITrigger trigger = TriggerBuilder.Create().
-        //        WithIdentity("UpdateLastNetworkLogonDatesTrigger").
-        //        StartNow().
-        //        WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(23, 30)).
-        //        Build();
-        //    Scheduler.ScheduleJob(jobDetail, trigger);
-        //}
+        public static ScheduledTaskStatus ScheduleImmediately()
+        {
+            var existingTask = ScheduledTasks.GetTaskStatuses(typeof(ActiveDirectoryUpdateLastNetworkLogonDateJob)).Where(s => s.IsRunning).FirstOrDefault();
+            if (existingTask != null)
+                return existingTask;
 
-        //void IJob.Execute(IJobExecutionContext context)
-        //{
-        //    DiscoDataContext dbContext = new DiscoDataContext();
-        //    try
-        //    {
-        //        ActiveDirectoryUpdateLastNetworkLogonDateJob.UpdateLastNetworkLogonDates(dbContext);
-        //        int changeCount = dbContext.SaveChanges();
-        //        SystemLog.LogInformation(new string[]
-        //        {
-        //            "Updated LastNetworkLogon Device Property for Device/s", 
-        //            changeCount.ToString()
-        //        });
-        //    }
-        //    catch (System.Exception ex)
-        //    {
-        //        SystemLog.LogException("ActiveDirectoryUpdateLastNetworkLogonDateJob", ex);
-        //    }
-        //    finally
-        //    {
-        //        bool flag = dbContext != null;
-        //        if (flag)
-        //        {
-        //            ((System.IDisposable)dbContext).Dispose();
-        //        }
-        //    }
-        //}
+            var instance = new ActiveDirectoryUpdateLastNetworkLogonDateJob();
+            return instance.ScheduleTask();
+        }
+
         public static bool UpdateLastNetworkLogonDate(Device Device)
         {
             System.DateTime? computerLastLogonDate = Device.LastNetworkLogonDate;
@@ -178,7 +150,7 @@ namespace Disco.BI.Interop.ActiveDirectory
             UpdateLastNetworkLogonDate = false;
             return UpdateLastNetworkLogonDate;
         }
-        public static void UpdateLastNetworkLogonDates(DiscoDataContext context, ScheduledTaskStatus status = null)
+        private static void UpdateLastNetworkLogonDates(DiscoDataContext context, ScheduledTaskStatus status)
         {
             System.Collections.Generic.Dictionary<string, System.DateTime> computerLastLogonDates = new System.Collections.Generic.Dictionary<string, System.DateTime>();
 
@@ -202,10 +174,7 @@ namespace Disco.BI.Interop.ActiveDirectory
                         using (DirectoryEntry dRootEntry = ActiveDirectoryHelpers.DefaultDCLdapRoot(dcName))
                         {
                             double progressDCStart = 5 + (progressDCCount * progressDCProgress);
-                            if (status != null)
-                            {
-                                status.UpdateStatus(progressDCStart, string.Format("Querying Domain Controller: {0}", dcName), "Searching...");
-                            }
+                            status.UpdateStatus(progressDCStart, string.Format("Querying Domain Controller: {0}", dcName), "Searching...");
 
                             using (DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, "(objectClass=computer)", new string[] { "sAMAccountName", "lastLogon" }, SearchScope.Subtree))
                             {
@@ -222,9 +191,8 @@ namespace Disco.BI.Interop.ActiveDirectory
                                         {
                                             string computerName = ((string)dProp[0]).TrimEnd(new char[] { '$' }).ToUpper();
 
-                                            if (status != null)
-                                                if (progressItemCount % 150 == 0) // Only Update Status every 150 devices
-                                                    status.UpdateStatus(progressDCStart + (progressItemProgress * progressItemCount), string.Format("Analysing Device: {0}", computerName));
+                                            if (progressItemCount % 150 == 0) // Only Update Status every 150 devices
+                                                status.UpdateStatus(progressDCStart + (progressItemProgress * progressItemCount), string.Format("Analysing Device: {0}", computerName));
 
                                             dProp = dResult.Properties["lastLogon"];
                                             if (dProp != null && dProp.Count > 0)

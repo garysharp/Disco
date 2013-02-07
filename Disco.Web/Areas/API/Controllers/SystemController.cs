@@ -19,19 +19,9 @@ namespace Disco.Web.Areas.API.Controllers
 
         public virtual ActionResult UpdateLastNetworkLogonDates()
         {
-            //ActiveDirectoryUpdateLastNetworkLogonDateJob updateJob = new ActiveDirectoryUpdateLastNetworkLogonDateJob();
+            var taskStatus = ActiveDirectoryUpdateLastNetworkLogonDateJob.ScheduleImmediately();
 
-            ActiveDirectoryUpdateLastNetworkLogonDateJob.UpdateLastNetworkLogonDates(dbContext);
-
-            var resultCount = dbContext.SaveChanges();
-
-            var model = new Models.System.UpdateLastNetworkLogonDatesModel()
-            {
-                Result = "OK",
-                UpdateCount = resultCount
-            };
-
-            return Json(model, JsonRequestBehavior.AllowGet);
+            return RedirectToAction(MVC.Config.Logging.TaskStatus(taskStatus.SessionId));
         }
 
         public virtual ActionResult UpdateAttachmentThumbnails()

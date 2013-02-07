@@ -603,7 +603,18 @@ WriteLiteral("    <div");
 
 WriteLiteral(" class=\"actionBar\"");
 
-WriteLiteral(">\r\n        <input");
+WriteLiteral(">\r\n");
+
+WriteLiteral("        ");
+
+            
+            #line 176 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+   Write(Html.ActionLinkButton("Update Device Last Network Logons", MVC.API.System.UpdateLastNetworkLogonDates()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n        <input");
 
 WriteLiteral(" type=\"submit\"");
 
@@ -614,7 +625,7 @@ WriteLiteral(" value=\"Save Configuration\"");
 WriteLiteral(" />\r\n    </div>\r\n");
 
             
-            #line 178 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 179 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
 }
 
             
