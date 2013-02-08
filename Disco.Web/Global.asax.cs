@@ -158,10 +158,17 @@ namespace Disco.Web
             }
             if (!string.IsNullOrWhiteSpace(Address))
             {
-                WebProxy p = new WebProxy(new Uri(string.Format("http://{0}:{1}", Address, Port)));
+                WebProxy p = new WebProxy(Address, Port);
+                p.BypassProxyOnLocal = true;
                 if (!string.IsNullOrWhiteSpace(Username))
                 {
                     p.Credentials = new NetworkCredential(Username, Password);
+                }
+                else
+                {
+                    // Added 2013-02-08 G#
+                    // Improve support for Integrated Windows Authentication
+                    p.UseDefaultCredentials = true;
                 }
                 WebRequest.DefaultWebProxy = p;
             }

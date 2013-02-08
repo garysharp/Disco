@@ -31,7 +31,7 @@ namespace Disco.BI.Interop.Community
                 }
             }
             catch (Exception)
-            {} // Ignore Errors
+            { } // Ignore Errors
 
             return "http://discoict.com.au/base/DiscoUpdate/V1";
         }
@@ -56,6 +56,15 @@ namespace Disco.BI.Interop.Community
             var DiscoBIVersion = CurrentDiscoVersion();
 
             HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(UpdateUrl(db));
+
+            // Added: 2013-02-08 G#
+            // Fix for Proxy Servers which dont support KeepAlive
+            webRequest.KeepAlive = false;
+            // End Added: 2013-02-08 G#
+
+            if (!UseProxy)
+                webRequest.Proxy = new WebProxy();
+            
             webRequest.ContentType = "application/json";
             webRequest.Method = WebRequestMethods.Http.Post;
             webRequest.UserAgent = string.Format("Disco/{0} (Update)", DiscoBIVersion);
@@ -151,6 +160,10 @@ namespace Disco.BI.Interop.Community
                 var DiscoBIVersion = CurrentDiscoVersion();
 
                 HttpWebRequest wReq = (HttpWebRequest)HttpWebRequest.Create("http://broadband.doe.wan/ipsearch/showresult.php");
+                // Added: 2013-02-08 G#
+                // Fix for Proxy Servers which dont support KeepAlive
+                webRequest.KeepAlive = false;
+                // End Added: 2013-02-08 G#
                 if (!useProxy)
                     wReq.Proxy = new WebProxy(); // Empty Proxy Config
                 wReq.Method = WebRequestMethods.Http.Post;

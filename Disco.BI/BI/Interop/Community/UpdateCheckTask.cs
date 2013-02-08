@@ -75,8 +75,9 @@ namespace Disco.BI.Interop.Community
                 {
                     UpdateCheck.Check(db, true, this.Status);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    ScheduledTasksLog.LogScheduledTaskException(this.Status.TaskName, this.Status.SessionId, this.Status.TaskType, ex);
                     // Could be proxy error - try again without proxy:
                     UpdateCheck.Check(db, false, this.Status);
                 }

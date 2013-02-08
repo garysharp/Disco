@@ -57,6 +57,10 @@ namespace Disco.Web.Models.InitialConfig
             try
             {
                 HttpWebRequest wReq = (HttpWebRequest)HttpWebRequest.Create("http://broadband.doe.wan/ipsearch/showresult.php");
+                // Added: 2013-02-08 G#
+                // Fix for Proxy Servers which dont support KeepAlive
+                wReq.KeepAlive = false;
+                // End Added: 2013-02-08 G#
                 if (!useProxy)
                     wReq.Proxy = new WebProxy(); // Empty Proxy Config
                 wReq.Method = WebRequestMethods.Http.Post;

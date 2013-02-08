@@ -57,6 +57,10 @@ namespace Disco.Web.Models.InitialConfig
                 try
                 {
                     HttpWebRequest wReq = (HttpWebRequest)HttpWebRequest.Create("http://discoict.com.au/");
+                    // Added: 2013-02-08 G#
+                    // Fix for Proxy Servers which dont support KeepAlive
+                    wReq.KeepAlive = false;
+                    // End Added: 2013-02-08 G#
                     wReq.Method = WebRequestMethods.Http.Get;
                     wReq.UserAgent = string.Format("Disco/{0} (Initial Config; Org: {1})", DiscoApplication.Version, DiscoApplication.OrganisationName);
                     using (HttpWebResponse wRes = (HttpWebResponse)wReq.GetResponse())
