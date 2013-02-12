@@ -16,24 +16,9 @@ namespace Disco.BI.Interop.Community
 {
     public static class UpdateCheck
     {
-        private static string UpdateUrl(DiscoDataContext db)
+        private static string UpdateUrl()
         {
-            // Special case for DiscoCommunity Hosting Network
-            try
-            {
-                var ip = (from addr in Dns.GetHostEntry(Dns.GetHostName()).AddressList
-                          where addr.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork
-                          && addr.ToString().StartsWith("10.131.200.")
-                          select addr).FirstOrDefault();
-                if (ip != null)
-                {
-                    return "http://hades3:9393/base/DiscoUpdate/V1";
-                }
-            }
-            catch (Exception)
-            { } // Ignore Errors
-
-            return "http://discoict.com.au/base/DiscoUpdate/V1";
+            return string.Concat(CommunityHelpers.CommunityUrl(), "DiscoUpdate/V1");
         }
 
         public static string CurrentDiscoVersion()
@@ -55,7 +40,7 @@ namespace Disco.BI.Interop.Community
 
             var DiscoBIVersion = CurrentDiscoVersion();
 
-            HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(UpdateUrl(db));
+            HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(UpdateUrl());
 
             // Added: 2013-02-08 G#
             // Fix for Proxy Servers which dont support KeepAlive
@@ -123,6 +108,8 @@ namespace Disco.BI.Interop.Community
             m.Stat_ActiveDeviceModelCounts = db.DeviceModels.Select(dm => new Disco.Models.BI.Interop.Community.UpdateRequestV1.Stat { Key = dm.Manufacturer + ";" + dm.Model, Count = dm.Devices.Count(d => d.DecommissionedDate == null && (d.LastNetworkLogonDate == null || d.LastNetworkLogonDate > activeThreshold)) }).ToList();
             m.Stat_UserCounts = db.Users.GroupBy(u => u.Type).Select(g => new Disco.Models.BI.Interop.Community.UpdateRequestV1.Stat { Key = g.Key, Count = g.Count() }).ToList();
 
+            m.InstalledPlugins = Disco.Services.Plugins.Plugins.GetPlugins().Select(manifest => new Disco.Models.BI.Interop.Community.UpdateRequestV1.PluginRef { Id = manifest.Id, Version = manifest.VersionFormatted }).ToList();
+
             return m;
         }
 
@@ -162,7 +149,7 @@ namespace Disco.BI.Interop.Community
                 HttpWebRequest wReq = (HttpWebRequest)HttpWebRequest.Create("http://broadband.doe.wan/ipsearch/showresult.php");
                 // Added: 2013-02-08 G#
                 // Fix for Proxy Servers which dont support KeepAlive
-                webRequest.KeepAlive = false;
+                wReq.KeepAlive = false;
                 // End Added: 2013-02-08 G#
                 if (!useProxy)
                     wReq.Proxy = new WebProxy(); // Empty Proxy Config

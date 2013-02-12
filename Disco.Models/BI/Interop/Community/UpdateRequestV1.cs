@@ -22,11 +22,18 @@ namespace Disco.Models.BI.Interop.Community
         public List<Stat> Stat_ActiveDeviceModelCounts { get; set; }
         public List<Stat> Stat_UserCounts { get; set; }
 
+        public List<PluginRef> InstalledPlugins { get; set; }
+
         public class Stat
         {
             public string Key { get; set; }
             public int Count { get; set; }
         }
 
+        public class PluginRef
+        {
+            public string Id { get; set; }
+            public string Version { get; set; }
+        }
     }
 }
