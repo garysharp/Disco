@@ -48,6 +48,12 @@
     <Compile Include="BI\Config\OrganisationAddress.cs" />
     <Compile Include="BI\DocumentTemplate\DocumentState.cs" />
     <Compile Include="BI\Expressions\IImageExpressionResult.cs" />
+    <Compile Include="BI\Interop\Community\PluginLibraryCompatibilityItem.cs" />
+    <Compile Include="BI\Interop\Community\PluginLibraryCompatibilityResponse.cs" />
+    <Compile Include="BI\Interop\Community\PluginLibraryCompatibilityRequest.cs" />
+    <Compile Include="BI\Interop\Community\PluginLibraryItem.cs" />
+    <Compile Include="BI\Interop\Community\PluginLibraryUpdateRequest.cs" />
+    <Compile Include="BI\Interop\Community\PluginLibraryUpdateResponse.cs" />
     <Compile Include="BI\Interop\Community\UpdateRequestBase.cs" />
     <Compile Include="BI\Interop\Community\UpdateRequestV1.cs" />
     <Compile Include="BI\Interop\Community\UpdateResponse.cs" />

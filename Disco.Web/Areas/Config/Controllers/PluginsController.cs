@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Disco.Services.Plugins;
+using Disco.Services.Tasks;
 using Disco.Web.Areas.Config.Models.Plugins;
 
 namespace Disco.Web.Areas.Config.Controllers
@@ -64,6 +65,28 @@ namespace Disco.Web.Areas.Config.Controllers
             }
         }
         #endregion
+
+        public virtual ActionResult Install()
+        {
+            // Check for recent catalogue
+
+            var catalogue = Plugins.LoadCatalogue(dbContext);
+
+            if (catalogue == null || catalogue.ResponseTimestamp < DateTime.Now.AddMinutes(-15))
+            {
+                // Need to Update Catalogue
+                return RedirectToAction(MVC.API.Plugin.UpdateLibraryCatalogue());
+            }
+            else
+            {
+                var model = new Models.Plugins.InstallModel()
+                {
+                    Catalogue = catalogue
+                };
+
+                return View(model);
+            }
+        }
 
     }
 }

@@ -29,24 +29,14 @@ namespace Disco.Web.Areas.Config.Controllers
 
         public virtual ActionResult TaskStatus(string id)
         {
-
             if (string.IsNullOrEmpty(id))
-            {
-                string sessionId;
-                do
-                {
-                    System.Threading.Thread.Sleep(100);
-                    sessionId = Disco.Services.Tasks.ScheduledTasks.GetTaskStatuses(typeof(Disco.BI.Interop.ActiveDirectory.ActiveDirectoryUpdateLastNetworkLogonDateJob)).Select(t => t.SessionId).FirstOrDefault();
-                } while (sessionId == null);
+                throw new ArgumentNullException("id", "A Task Status Id is required");
 
-                return View(new Models.Logging.TaskStatusModel() { SessionId = sessionId });
-            }
-            else
-            {
-                var taskStatus = Disco.Services.Tasks.ScheduledTasks.GetTaskStatus(id);
-                return View(new Models.Logging.TaskStatusModel() { SessionId = taskStatus.SessionId });
-            }
-            
+            var taskStatus = Disco.Services.Tasks.ScheduledTasks.GetTaskStatus(id);
+            if (taskStatus == null)
+                return RedirectToAction(MVC.Config.Logging.Index());
+
+            return View(new Models.Logging.TaskStatusModel() { SessionId = taskStatus.SessionId });
         }
 
     }

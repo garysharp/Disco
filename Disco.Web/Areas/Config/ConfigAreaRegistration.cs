@@ -107,6 +107,11 @@ namespace Disco.Web.Areas.Config
                 new { controller = "Plugins", action = "Index"}
             );
             context.MapRoute(
+                "Config_Plugins_Install",
+                "Config/Plugins/Install",
+                new { controller = "Plugins", action = "Install" }
+            );
+            context.MapRoute(
                 "Config_Plugins_Configure",
                 "Config/Plugins/{PluginId}",
                 new { controller = "Plugins", action = "Configure" }

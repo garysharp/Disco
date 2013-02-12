@@ -164,6 +164,12 @@
     </Compile>
     <Compile Include="Areas\API\Controllers\PluginController.cs" />
     <Compile Include="Areas\Config\Models\Config\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\Plugins\InstallModel.cs" />
+    <Compile Include="Areas\Config\Views\Plugins\Install.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Install.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\InitialConfigController.cs" />
     <Compile Include="Controllers\PluginWebHandlerController.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
@@ -240,7 +246,7 @@
     <Compile Include="Areas\Config\Models\Logging\TaskStatusModel.cs" />
     <Compile Include="Areas\Config\Models\Organisation\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\Plugins\IndexViewModel.cs" />
-    <Compile Include="Areas\Config\Models\Plugins\ProviderConfigurationViewModel.cs" />
+    <Compile Include="Areas\Config\Models\Plugins\PluginConfigurationViewModel.cs" />
     <Compile Include="Areas\Config\Models\Shared\LogEventsModel.cs" />
     <Compile Include="Areas\Config\Models\SystemConfig\IndexModel.cs" />
     <Compile Include="Areas\Config\Views\Config\Index.generated.cs">
@@ -743,6 +749,10 @@
   <ItemGroup>
     <Content Include="ClientBin\Disco.ClientBootstrapper.exe" />
     <Content Include="ClientBin\Disco.Silverlight.AttachmentUpload.xap" />
+    <None Include="Areas\Config\Views\Plugins\Install.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Install.generated.cs</LastGenOutput>
+    </None>
     <None Include="ClientSource\Scripts\Core.min.js.map">
       <DependentUpon>Core.js.bundle</DependentUpon>
     </None>
@@ -1812,7 +1822,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2001/1/1" />
+      <UserProperties BuildVersion_StartDate="2001/1/1" BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_DetectChanges="False" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

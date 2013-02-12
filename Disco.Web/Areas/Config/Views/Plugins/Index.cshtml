@@ -3,72 +3,75 @@
 @{
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Plugins");
 }
-@{
-    if (Model.PluginManifests.Count == 0)
-    { 
-    <div class="form" style="width: 450px; padding: 100px 0;">
-        <h2>No Plugins are Installed</h2>
-    </div>  
-    }
-    else
-    {
-        var pluginGroups = Model.PluginManifestsByType;
+<div id="plugins">
+    @{
+        if (Model.PluginManifests.Count == 0)
+        { 
+        <div class="form" style="width: 450px; padding: 100px 0;">
+            <h2>No Plugins are Installed</h2>
+        </div>  
+        }
+        else
+        {
+            var pluginGroups = Model.PluginManifestsByType;
 
 
-        int itemsPerColumn = pluginGroups.Count / 3;
-        var itemNextId = 0;
+            int itemsPerColumn = pluginGroups.Count / 3;
+            var itemNextId = 0;
     
-    <table id="pageMenu">
-        <tr>
-            @for (int i = 0; i < 3; i++)
-            {
-                <td>
-                    @{
-                int itemsForThisColumn = itemsPerColumn + (pluginGroups.Count % 3 > i ? 1 : 0);
-                for (int i2 = 0; i2 < itemsForThisColumn && itemNextId < pluginGroups.Count; i2++)
+        <table id="pageMenu">
+            <tr>
+                @for (int i = 0; i < 3; i++)
                 {
-                    var pluginGroup = pluginGroups[itemNextId];
-                    itemNextId++;
-                        <div class="pageMenuArea">
-                            <h2>@Plugins.PluginFeatureCategoryDisplayName(pluginGroup.Item1)</h2>
-                            @foreach (var pluginDefinition in pluginGroup.Item2)
-                            {
-                                @Html.ActionLink(pluginDefinition.Name, MVC.Config.Plugins.Configure(pluginDefinition.Id))
-                                <div class="pageMenuBlurb">
-                                    @pluginDefinition.Id | v@(pluginDefinition.Version.ToString(3))
-                                </div>
-                            }
-                        </div>
-                }
+                    <td>
+                        @{
+                    int itemsForThisColumn = itemsPerColumn + (pluginGroups.Count % 3 > i ? 1 : 0);
+                    for (int i2 = 0; i2 < itemsForThisColumn && itemNextId < pluginGroups.Count; i2++)
+                    {
+                        var pluginGroup = pluginGroups[itemNextId];
+                        itemNextId++;
+                            <div class="pageMenuArea">
+                                <h2>@Plugins.PluginFeatureCategoryDisplayName(pluginGroup.Item1)</h2>
+                                @foreach (var pluginDefinition in pluginGroup.Item2)
+                                {
+                                    <a href="@Url.Action(MVC.Config.Plugins.Configure(pluginDefinition.Id))">
+                                        <h3>@pluginDefinition.Name</h3>
+                                    </a>
+                                    <div class="pageMenuBlurb">
+                                        <span class="pluginId">@pluginDefinition.Id</span> | <span class="pluginVersion">v@(pluginDefinition.VersionFormatted)</span> | @pluginDefinition.Author | <a href="@pluginDefinition.Url" target="_blank">More Information</a>
+                                    </div>
+                                }
+                            </div>
                     }
-                </td>
-            }
-        </tr>
-    </table>
-    <div id="dialogUninstallPlugins" title="Uninstall Plugin">
-        <div>
-            @Html.DropDownList("uninstallPlugin", Model.PluginManifests.ToSelectListItems(null, true, "Select a Plugin to Uninstall"))
+                        }
+                    </td>
+                }
+            </tr>
+        </table>
+        <div id="dialogUninstallPlugins" title="Uninstall Plugin">
+            <div>
+                @Html.DropDownList("uninstallPlugin", Model.PluginManifests.ToSelectListItems(null, true, "Select a Plugin to Uninstall"))
+            </div>
+            <div>
+                <input id="uninstallPluginData" type="checkbox" /><label for="uninstallPluginData"> Uninstall Plugin Data</label>
+                <div id="uninstallPluginDataAlert" style="display: none; padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-error ui-corner-all">
+                    <span style="margin-right: 0.3em; float: left;" class="ui-icon ui-icon-alert"></span>NOTE: Data will be permanently deleted
+                </div>
+            </div>
         </div>
-        <div>
-            <input id="uninstallPluginData" type="checkbox" /><label for="uninstallPluginData"> Uninstall Plugin Data</label>
-            <div id="uninstallPluginDataAlert" style="display: none; padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-error ui-corner-all">
+        <div id="dialogUninstallPluginConfirm" title="Confirm Plugin Uninstall">
+            <div style="padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-highlight ui-corner-all">
+                <span style="margin-right: 0.3em; float: left;" class="ui-icon ui-icon-help"></span>Are you sure you want to uninstall this plugin?
+            <h4 id="uninstallPluginConfirm"></h4>
+            </div>
+            <div id="uninstallPluginDataConfirm" style="display: none; padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-error ui-corner-all">
                 <span style="margin-right: 0.3em; float: left;" class="ui-icon ui-icon-alert"></span>NOTE: Data will be permanently deleted
             </div>
         </div>
-    </div>
-    <div id="dialogUninstallPluginConfirm" title="Confirm Plugin Uninstall">
-        <div style="padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-highlight ui-corner-all">
-            <span style="margin-right: 0.3em; float: left;" class="ui-icon ui-icon-help"></span>Are you sure you want to uninstall this plugin?
-            <h4 id="uninstallPluginConfirm"></h4>
-        </div>
-        <div id="uninstallPluginDataConfirm" style="display: none; padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-error ui-corner-all">
-            <span style="margin-right: 0.3em; float: left;" class="ui-icon ui-icon-alert"></span>NOTE: Data will be permanently deleted
-        </div>
-    </div>
-    <script>
-        $(function () {
-            // Uninstall
-            var uninstallUrl = '@(Url.Action(MVC.API.Plugin.Uninstall()))/';
+        <script>
+            $(function () {
+                // Uninstall
+                var uninstallUrl = '@(Url.Action(MVC.API.Plugin.Uninstall()))/';
             var uninstallPlugin, uninstallPluginData, $dialogConfirm, uninstallPluginConfirm, uninstallPluginDataConfirm;
 
             var pluginId, pluginName, pluginUninstallData;
@@ -147,55 +150,14 @@
                 }
             });
         });
-    </script>
-    }
-}
-<div id="dialogInstallPlugin" title="Install Plugin">
-    <div style="padding-bottom: 10px;">
-        @using (Html.BeginForm(MVC.API.Plugin.Install(), FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
-            <label for="pluginFile">Plugin Package: </label>
-            <input id="pluginFile" name="Plugin" type="file" />
+        </script>
         }
-    </div>
-    <div style="padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-error ui-corner-all">
-        <span style="margin-right: 0.3em; margin-bottom: 2em; float: left;" class="ui-icon ui-icon-alert"></span>Warning: All plugins run with the same level of network privileges as the Disco Web App.<br />
-        <strong>Only install plugins from a trusted source.</strong>
-    </div>
+    }
 </div>
-<script>
-    $(function () {
-        // Install
-        var $dialogInstall = $('#dialogInstallPlugin').dialog({
-            resizable: false,
-            modal: true,
-            width: 350,
-            autoOpen: false,
-            buttons: {
-                "Upload & Install": function () {
-                    var pluginFile = $('#pluginFile');
-                    if (pluginFile.val()) {
-                        pluginFile.closest('form').submit();
-                        $(this).dialog('disable');
-                    } else {
-                        alert('Choose a Plugin Package to Install');
-                    }
-                },
-                Cancel: function () {
-                    $(this).dialog("close");
-                }
-            }
-        });
-        $('#buttonInstall').click(function () {
-            $dialogInstall.dialog('open');
-            return false;
-        });
-    });
-</script>
 <div class="actionBar">
     @if (Model.PluginManifests.Count > 0)
     { 
         @Html.ActionLinkButton("Uninstall Plugins", MVC.Config.Plugins.Index(), "buttonUninstall")
     }
-    @Html.ActionLinkButton("Install Plugins", MVC.Config.Plugins.Index(), "buttonInstall")
+    @Html.ActionLinkButton("Install Plugins", MVC.Config.Plugins.Install())
 </div>

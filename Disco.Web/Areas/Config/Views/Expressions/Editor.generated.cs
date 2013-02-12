@@ -71,35 +71,7 @@ WriteLiteral(" id=\"expressionEditorValidateButton\"");
 
 WriteLiteral(">\r\n        Validate</button>\r\n");
 
-            
-            #line 17 "..\..\Areas\Config\Views\Expressions\Editor.cshtml"
-    
-            
-            #line default
-            #line hidden
-            
-            #line 17 "..\..\Areas\Config\Views\Expressions\Editor.cshtml"
-     if (false)
-    {
-            
-            #line default
-            #line hidden
-WriteLiteral(" <script");
-
-WriteLiteral(" src=\"/ClientSource/Scripts/Core/jquery-1.7.1.js\"");
-
-WriteLiteral(" type=\"text/javascript\"");
-
-WriteLiteral("></script>");
-
-            
-            #line 18 "..\..\Areas\Config\Views\Expressions\Editor.cshtml"
-                                                                                               }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("    <script");
+WriteLiteral("\r\n    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 

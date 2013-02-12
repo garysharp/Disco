@@ -1,0 +1,144 @@
+﻿@model Disco.Web.Areas.Config.Models.Plugins.InstallModel
+@using Disco.Services.Plugins;
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Plugins", MVC.Config.Plugins.Index(), "Install Plugin");
+}
+<div id="pluginCatalog">
+    <h4 id="pluginCatalogHeading">The plugin catalogue [<a href="http://discoict.com.au/">http://discoict.com.au</a>] was last updated @CommonHelpers.FriendlyDate(Model.Catalogue.ResponseTimestamp)
+    </h4>
+    @if (Model.Catalogue.Plugins.Count == 0)
+    { 
+        <div class="form" style="width: 450px; padding: 100px 0;">
+            <h2>No Plugins are Available</h2>
+        </div>  
+    }
+    else
+    {
+        var plugins = Model.Catalogue.Plugins;
+        int itemsPerColumn = plugins.Count / 3;
+        var itemNextId = 0;
+        <table id="pageMenu">
+            <tr>
+                @for (int i = 0; i < 3; i++)
+                {
+                    <td>
+                        @{
+                    int itemsForThisColumn = itemsPerColumn + (plugins.Count % 3 > i ? 1 : 0);
+                    for (int i2 = 0; i2 < itemsForThisColumn && itemNextId < plugins.Count; i2++)
+                    {
+                        var plugin = plugins[itemNextId];
+                        itemNextId++;
+                            <div class="pageMenuArea pluginItem@(Plugins.PluginInstalled(plugin.Id) ? " pluginInstalled" : string.Empty)">
+                                <a class="pluginInstallLink" href="@(Url.Action(MVC.API.Plugin.Install(plugin.Id)))">
+                                    <h2 class="pluginName">@plugin.Name</h2>
+                                </a>
+                                <div class="pluginItemBlurb">@(new HtmlString(plugin.Blurb))</div>
+                                <div class="pageMenuBlurb">
+                                    <span class="pluginId">@plugin.Id</span> | <span class="pluginVersion">v@(plugin.LatestVersion)</span> | @plugin.Author | <a href="@plugin.Url" target="_blank">More Information</a>
+                                </div>
+                            </div>
+                    }
+                        }
+                    </td>
+                }
+            </tr>
+        </table>
+    }
+</div>
+<div id="dialogInstallPlugin" title="Install this Plugin?">
+    <h2 id="dialogInstallPluginName"></h2>
+    <h4 id="dialogInstallPluginDetails"></h4>
+
+    <div style="padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-highlight ui-corner-all">
+        <span style="margin-right: 0.3em; margin-bottom: 2em; float: left;" class="ui-icon ui-icon-alert"></span>Warning: All plugins run with the same level of network privileges as the Disco Web App.<br />
+        <strong>Only Install plugins from a trusted source.</strong>
+    </div>
+</div>
+<div id="dialogUploadPlugin" title="Install Plugin Package">
+    <div style="padding-bottom: 10px;">
+        @using (Html.BeginForm(MVC.API.Plugin.InstallLocal(), FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <label for="pluginFile">Plugin Package: </label>
+            <input id="pluginFile" name="Plugin" type="file" />
+        }
+    </div>
+    <div style="padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-error ui-corner-all">
+        <span style="margin-right: 0.3em; margin-bottom: 2em; float: left;" class="ui-icon ui-icon-alert"></span>Warning: All plugins run with the same level of network privileges as the Disco Web App.<br />
+        <strong>Only install plugins from a trusted source.</strong>
+    </div>
+</div>
+<script>
+    $(function () {
+        var $selectedPlugin;
+        var $selectedPluginUrl;
+
+        // Install
+        var $dialogInstall = $('#dialogInstallPlugin').dialog({
+            resizable: false,
+            modal: true,
+            width: 350,
+            autoOpen: false,
+            buttons: {
+                "Install": function () {
+                    if ($selectedPlugin == null || !$selectedPluginUrl) {
+                        $(this).dialog("close");
+                        return;
+                    }
+                    $(this).dialog("disable");
+
+                    window.location.href = $selectedPluginUrl;
+                },
+                Cancel: function () {
+                    $selectedPlugin = null;
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $('#pageMenu').find('a.pluginInstallLink').click(function () {
+            $this = $(this);
+
+            $selectedPlugin = $this.closest('.pluginItem');
+            $selectedPluginUrl = $this.attr('href');
+
+            if ($selectedPlugin.is('.pluginInstalled')) {
+                alert('This plugin is already installed.');
+            } else {
+                $('#dialogInstallPluginName').text($selectedPlugin.find('.pluginName').text());
+                $('#dialogInstallPluginDetails').text($selectedPlugin.find('.pluginId').text() + ' | ' + $selectedPlugin.find('.pluginVersion').text());
+
+                $dialogInstall.dialog('open');
+            }
+            return false;
+        });
+
+        // Upload
+        var $dialogUpload = $('#dialogUploadPlugin').dialog({
+            resizable: false,
+            modal: true,
+            width: 350,
+            autoOpen: false,
+            buttons: {
+                "Upload & Install": function () {
+                    var pluginFile = $('#pluginFile');
+                    if (pluginFile.val()) {
+                        pluginFile.closest('form').submit();
+                        $(this).dialog('disable');
+                    } else {
+                        alert('Choose a Plugin Package to Upload');
+                    }
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $('#buttonUpload').click(function () {
+            $dialogUpload.dialog('open');
+            return false;
+        });
+    });
+</script>
+<div class="actionBar">
+    @Html.ActionLinkButton("Update Catalogue", MVC.API.Plugin.UpdateLibraryCatalogue())
+    @Html.ActionLinkButton("Install Plugin Package", MVC.API.Plugin.InstallLocal(), "buttonUpload")
+</div>

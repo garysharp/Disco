@@ -101,23 +101,6 @@
     <Compile Include="Logging\Targets\LogLiveContext.cs" />
     <Compile Include="Logging\Targets\LogPersistContext.cs" />
     <Compile Include="Logging\Utilities.cs" />
-    <None Include="_Plugins\Categories\CertificateProvider\CertificateProviderPlugin.cs" />
-    <None Include="_Plugins\Categories\CertificateProvider\CertificateProviderLog.cs" />
-    <None Include="_Plugins\Categories\InteroperabilityProvider\InteroperabilityProviderPlugin.cs" />
-    <None Include="_Plugins\Categories\WarrantyProvider\WarrantyProviderPlugin.cs" />
-    <None Include="_Plugins\Categories\WarrantyProvider\WarrantyProviderSubmitJobException.cs" />
-    <None Include="_Plugins\PluginCategoryAttribute.cs" />
-    <None Include="_Plugins\PluginDefinition.cs" />
-    <None Include="_Plugins\Plugins.cs" />
-    <None Include="_Plugins\Plugin.cs" />
-    <None Include="_Plugins\IPluginConfiguration.cs" />
-    <None Include="_Plugins\IPluginWebController.cs" />
-    <None Include="_Plugins\InvalidCategoryTypeException.cs" />
-    <None Include="_Plugins\PluginExtensions.cs" />
-    <None Include="_Plugins\PluginsLog.cs" />
-    <None Include="_Plugins\PluginWebControllerException.cs" />
-    <None Include="_Plugins\PluginWebControllerExtensions.cs" />
-    <None Include="_Plugins\UnknownPluginException.cs" />
     <Compile Include="Plugins\InstallPluginTask.cs" />
     <Compile Include="Plugins\PluginAttribute.cs" />
     <Compile Include="Plugins\PluginExtensions.cs" />
@@ -168,7 +151,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2001/1/1" />
+      <UserProperties BuildVersion_StartDate="2001/1/1" BuildVersion_BuildAction="ReBuild" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

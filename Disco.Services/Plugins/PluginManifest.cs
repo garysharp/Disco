@@ -11,15 +11,26 @@ using System.Web.Mvc;
 using Disco.Data.Repository;
 using Disco.Services.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Disco.Services.Plugins
 {
     public class PluginManifest
     {
+        [JsonProperty]
         public string Id { get; set; }
+        [JsonProperty]
         public string Name { get; set; }
+        [JsonProperty]
         public string Author { get; set; }
+        [JsonProperty]
+        public string Url { get; set; }
+        [JsonProperty]
         public Version Version { get; set; }
+        [JsonProperty]
+        public Version HostVersionMin { get; set; }
+        [JsonProperty]
+        public Version HostVersionMax { get; set; }
         [JsonProperty]
         internal string AssemblyPath { get; set; }
         [JsonProperty]
@@ -48,6 +59,16 @@ namespace Disco.Services.Plugins
         public string PluginLocation { get; private set; }
         [JsonIgnore]
         public string StorageLocation { get; private set; }
+
+        [JsonIgnore]
+        public string VersionFormatted
+        {
+            get
+            {
+                var v = Version;
+                return string.Format("{0}.{1}.{2:0000}.{3:0000}", v.Major, v.Minor, v.Build, v.Revision);
+            }
+        }
 
         [JsonIgnore]
         private bool environmentInitalized { get; set; }
@@ -83,7 +104,7 @@ namespace Disco.Services.Plugins
                 return manifest;
             }
         }
-        
+
         /// <summary>
         /// Deserializes a Json Manifest
         /// </summary>
@@ -98,7 +119,7 @@ namespace Disco.Services.Plugins
                 manifestString = manifestStreamReader.ReadToEnd();
             }
 
-            var manifest = JsonConvert.DeserializeObject<PluginManifest>(manifestString);
+            var manifest = JsonConvert.DeserializeObject<PluginManifest>(manifestString, new VersionConverter());
 
             manifest.PluginLocation = PluginLocation;
 
@@ -129,6 +150,10 @@ namespace Disco.Services.Plugins
             var pluginId = pluginAttributes.Id;
             var pluginName = pluginAttributes.Name;
             var pluginAuthor = pluginAttributes.Author;
+            var pluginUrl = pluginAttributes.Url;
+
+            var pluginHostVersionMin = pluginAttributes.HostVersionMin == null ? null : Version.Parse(pluginAttributes.HostVersionMin);
+            var pluginHostVersionMax = pluginAttributes.HostVersionMax == null ? null : Version.Parse(pluginAttributes.HostVersionMax);
 
             var pluginVersion = assemblyName.Version;
             var pluginAssemblyPath = Path.GetFileName(assembly.Location);
@@ -167,6 +192,9 @@ namespace Disco.Services.Plugins
                 Name = pluginName,
                 Author = pluginAuthor,
                 Version = pluginVersion,
+                Url = pluginUrl,
+                HostVersionMin = pluginHostVersionMin,
+                HostVersionMax = pluginHostVersionMax,
                 AssemblyPath = pluginAssemblyPath,
                 TypeName = pluginTypeName,
                 AssemblyReferences = pluginAssemblyReferences,
@@ -188,7 +216,7 @@ namespace Disco.Services.Plugins
 
         public string ToManifestFile()
         {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
+            return JsonConvert.SerializeObject(this, Formatting.Indented, new VersionConverter());
         }
         private bool InitializePluginEnvironment(DiscoDataContext dbContext)
         {
@@ -362,7 +390,7 @@ namespace Disco.Services.Plugins
                 var fileDateCheck = System.IO.File.GetLastWriteTime(resourcePath);
                 if (fileDateCheck == resourceHash.Item2)
 #endif
-                    return new Tuple<string, string>(resourcePath, resourceHash.Item1);
+                return new Tuple<string, string>(resourcePath, resourceHash.Item1);
             }
 
             if (!File.Exists(resourcePath))

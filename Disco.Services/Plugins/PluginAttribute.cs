@@ -12,5 +12,8 @@ namespace Disco.Services.Plugins
         public string Id { get; set; }
         public string Name { get; set; }
         public string Author { get; set; }
+        public string Url { get; set; }
+        public string HostVersionMin { get; set; }
+        public string HostVersionMax { get; set; }
     }
 }

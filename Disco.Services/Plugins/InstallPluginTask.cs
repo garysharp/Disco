@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Disco.Data.Repository;
@@ -17,11 +18,37 @@ namespace Disco.Services.Plugins
 
         protected override void ExecuteTask()
         {
+            string packageUrlPath = (string)this.ExecutionContext.JobDetail.JobDataMap["PackageUrl"];
             string packageFilePath = (string)this.ExecutionContext.JobDetail.JobDataMap["PackageFilePath"];
             bool DeletePackageAfterInstall = (bool)this.ExecutionContext.JobDetail.JobDataMap["DeletePackageAfterInstall"];
 
             if (!Plugins.PluginsLoaded)
                 throw new InvalidOperationException("Plugins have not been initialized");
+
+            if (!string.IsNullOrEmpty(packageUrlPath))
+            {
+                this.Status.UpdateStatus(0, "Downloading Plugin Package", "Connecting...");
+
+                if (File.Exists(packageFilePath))
+                    File.Delete(packageFilePath);
+
+                if (!Directory.Exists(Path.GetDirectoryName(packageFilePath)))
+                    Directory.CreateDirectory(Path.GetDirectoryName(packageFilePath));
+
+                // Need to Download the Package
+                WebClient downloader = new WebClient();
+                DateTime progressExpires = DateTime.Now;
+                downloader.DownloadProgressChanged += (sender, e) =>
+                {
+                    Console.WriteLine(e.ProgressPercentage);
+                    if (progressExpires <= DateTime.Now)
+                    {
+                        this.Status.UpdateStatus(e.ProgressPercentage, string.Format("{0} of {1} KB downloaded", e.BytesReceived / 1024, e.TotalBytesToReceive / 1024));
+                        progressExpires = DateTime.Now.AddMilliseconds(250);
+                    }
+                };
+                downloader.DownloadFileTaskAsync(new Uri(packageUrlPath), packageFilePath).Wait();
+            }
 
             this.Status.UpdateStatus(10, "Opening Plugin Package", Path.GetFileName(packageFilePath));
 
@@ -44,7 +71,7 @@ namespace Disco.Services.Plugins
                     this.Status.UpdateStatus(20, string.Format("{0} [{1} v{2}] by {3}", packageManifest.Name, packageManifest.Id, packageManifest.Version.ToString(4), packageManifest.Author), "Initializing Install Environment");
 
                     PluginsLog.LogInstalling(packageManifest);
-
+                    
                     lock (Plugins._PluginLock)
                     {
                         if (!Plugins.PluginsLoaded)
@@ -57,6 +84,12 @@ namespace Disco.Services.Plugins
                         using (DiscoDataContext dbContext = new DiscoDataContext())
                         {
                             string packagePath = Path.Combine(dbContext.DiscoConfiguration.PluginsLocation, packageManifest.Id);
+
+                            // Check for Compatibility
+                            var compatibilityData = Plugins.LoadCompatibilityData(dbContext);
+                            var pluginCompatibility = compatibilityData.Plugins.FirstOrDefault(i => i.Id.Equals(packageManifest.Id, StringComparison.InvariantCultureIgnoreCase) && packageManifest.Version == Version.Parse(i.Version));
+                            if (pluginCompatibility != null && !pluginCompatibility.Compatible)
+                                throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] is not compatible: {2}", packageManifest.Id, packageManifest.VersionFormatted, pluginCompatibility.Reason));
 
                             // Force Delete of Existing Folder
                             if (Directory.Exists(packagePath))
@@ -117,12 +150,16 @@ namespace Disco.Services.Plugins
                 File.Delete(packageFilePath);
         }
 
-        public static ScheduledTaskStatus InstallPlugin(string PackageFilePath, bool DeletePackageAfterInstall)
+        public static ScheduledTaskStatus InstallLocalPlugin(string PackageFilePath, bool DeletePackageAfterInstall)
+        {
+            return InstallPlugin(null, PackageFilePath, DeletePackageAfterInstall);
+        }
+        public static ScheduledTaskStatus InstallPlugin(string PackageUrl, string PackageFilePath, bool DeletePackageAfterInstall)
         {
             if (ScheduledTasks.GetTaskStatuses(typeof(InstallPluginTask)).Where(s => s.IsRunning).Count() > 0)
                 throw new InvalidOperationException("A plugin is already being Installed");
 
-            JobDataMap taskData = new JobDataMap() { { "PackageFilePath", PackageFilePath }, { "DeletePackageAfterInstall", DeletePackageAfterInstall } };
+            JobDataMap taskData = new JobDataMap() { { "PackageUrl", PackageUrl }, { "PackageFilePath", PackageFilePath }, { "DeletePackageAfterInstall", DeletePackageAfterInstall } };
 
             var instance = new InstallPluginTask();
 

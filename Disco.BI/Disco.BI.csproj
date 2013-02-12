@@ -149,6 +149,8 @@
     <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryUpdateLastNetworkLogonDateJob.cs" />
     <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryUserAccountExtensions.cs" />
     <Compile Include="BI\Expressions\ExpressionCache.cs" />
+    <Compile Include="BI\Interop\Community\CommunityHelpers.cs" />
+    <Compile Include="BI\Interop\Community\PluginLibraryUpdateTask.cs" />
     <Compile Include="BI\Interop\Community\UpdateCheck.cs" />
     <Compile Include="BI\Interop\Community\UpdateCheckTask.cs" />
     <Compile Include="BI\Interop\MimeTypes.cs" />
