@@ -12,14 +12,27 @@ using System.Xml.Serialization;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Quartz;
 
-namespace Disco.BI.Interop.Community
+namespace Disco.Services.Plugins.CommunityInterop
 {
     public class PluginLibraryUpdateTask : ScheduledTask
     {
         public override string TaskName { get { return "Disco Community - Update Plugin Library"; } }
 
+        public static string CurrentDiscoVersion()
+        {
+            var AssemblyVersion = typeof(PluginLibraryUpdateTask).Assembly.GetName().Version;
+            return string.Format("{0}.{1}.{2:0000}.{3:0000}", AssemblyVersion.Major, AssemblyVersion.Minor, AssemblyVersion.Build, AssemblyVersion.Revision);
+        }
+
         protected override void ExecuteTask()
+        {
+            ExecuteTaskInternal(this.Status);
+            Status.SetFinishedMessage("The Plugin Library Catalogue was updated.");
+        }
+
+        internal static void ExecuteTaskInternal(ScheduledTaskStatus Status)
         {
             PluginLibraryUpdateRequest updateRequestBody;
             PluginLibraryUpdateResponse updateResult;
@@ -28,13 +41,13 @@ namespace Disco.BI.Interop.Community
             PluginLibraryCompatibilityResponse compatResult;
             string compatibilityFile;
 
-            var DiscoBIVersion = UpdateCheck.CurrentDiscoVersion();
+            var DiscoBIVersion = CurrentDiscoVersion();
             HttpWebRequest webRequest;
 
             #region Update
-            
+
             Status.UpdateStatus(1, "Updating Plugin Library Catalogue", "Building Request");
-            
+
             using (DiscoDataContext dbContext = new DiscoDataContext())
             {
                 catalogueFile = Plugins.CatalogueFile(dbContext);
@@ -156,20 +169,15 @@ namespace Disco.BI.Interop.Community
                 }
             }
             #endregion
-
-
-
-
-            Status.SetFinishedMessage("The Plugin Library Catalogue was updated.");
         }
 
         private static string PluginLibraryUpdateUrl()
         {
-            return string.Concat(CommunityHelpers.CommunityUrl(), "DiscoPluginLibrary/V1");
+            return string.Concat(Disco.Data.Configuration.CommunityHelpers.CommunityUrl(), "DiscoPluginLibrary/V1");
         }
         private static string PluginLibraryCompatibilityUrl()
         {
-            return string.Concat(CommunityHelpers.CommunityUrl(), "DiscoPluginLibrary/CompatibilityV1");
+            return string.Concat(Disco.Data.Configuration.CommunityHelpers.CommunityUrl(), "DiscoPluginLibrary/CompatibilityV1");
         }
 
         public static ScheduledTaskStatus ScheduleNow()
@@ -190,6 +198,20 @@ namespace Disco.BI.Interop.Community
             {
                 return ScheduledTasks.GetTaskStatuses(typeof(PluginLibraryUpdateTask)).Where(ts => ts.IsRunning).FirstOrDefault();
             }
+        }
+
+        public override void InitalizeScheduledTask(DiscoDataContext dbContext)
+        {
+            // Random time between midday and midnight.
+            var rnd = new Random();
+
+            var rndHour = rnd.Next(12, 23);
+            var rndMinute = rnd.Next(0, 59);
+
+            TriggerBuilder triggerBuilder = TriggerBuilder.Create().
+                WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(rndHour, rndMinute));
+
+            this.ScheduleTask(triggerBuilder);
         }
     }
 }

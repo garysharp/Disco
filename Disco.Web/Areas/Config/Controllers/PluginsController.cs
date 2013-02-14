@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Disco.Models.BI.Interop.Community;
 using Disco.Services.Plugins;
 using Disco.Services.Tasks;
 using Disco.Web.Areas.Config.Models.Plugins;
@@ -16,7 +17,8 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             Models.Plugins.IndexViewModel vm = new Models.Plugins.IndexViewModel()
                 {
-                    PluginManifests = Plugins.GetPlugins()
+                    PluginManifests = Plugins.GetPlugins(),
+                    Catalogue = Plugins.LoadCatalogue(dbContext)
                 };
             return View(vm);
         }
@@ -72,9 +74,9 @@ namespace Disco.Web.Areas.Config.Controllers
 
             var catalogue = Plugins.LoadCatalogue(dbContext);
 
-            if (catalogue == null || catalogue.ResponseTimestamp < DateTime.Now.AddMinutes(-15))
+            if (catalogue == null || catalogue.ResponseTimestamp < DateTime.Now.AddHours(-1))
             {
-                // Need to Update Catalogue
+                // Need to Update Catalogue (over 1 hour old)
                 return RedirectToAction(MVC.API.Plugin.UpdateLibraryCatalogue());
             }
             else

@@ -18,13 +18,17 @@ namespace Disco.BI.Interop.Community
     {
         private static string UpdateUrl()
         {
-            return string.Concat(CommunityHelpers.CommunityUrl(), "DiscoUpdate/V1");
+            return string.Concat(Disco.Data.Configuration.CommunityHelpers.CommunityUrl(), "DiscoUpdate/V1");
         }
 
-        public static string CurrentDiscoVersion()
+        public static Version CurrentDiscoVersion()
         {
-            var AssemblyVersion = typeof(UpdateCheck).Assembly.GetName().Version;
-            return string.Format("{0}.{1}.{2:0000}.{3:0000}", AssemblyVersion.Major, AssemblyVersion.Minor, AssemblyVersion.Build, AssemblyVersion.Revision);
+            return typeof(UpdateCheck).Assembly.GetName().Version;
+        }
+        public static string CurrentDiscoVersionFormatted()
+        {
+            var v = CurrentDiscoVersion();
+            return string.Format("{0}.{1}.{2:0000}.{3:0000}", v.Major, v.Minor, v.Build, v.Revision);
         }
 
         public static UpdateResponse Check(DiscoDataContext db, bool UseProxy, ScheduledTaskStatus status = null)
@@ -38,7 +42,7 @@ namespace Disco.BI.Interop.Community
             if (status != null)
                 status.UpdateStatus(40, "Sending Request");
 
-            var DiscoBIVersion = CurrentDiscoVersion();
+            var DiscoBIVersion = CurrentDiscoVersionFormatted();
 
             HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(UpdateUrl());
 
@@ -49,7 +53,7 @@ namespace Disco.BI.Interop.Community
 
             if (!UseProxy)
                 webRequest.Proxy = new WebProxy();
-            
+
             webRequest.ContentType = "application/json";
             webRequest.Method = WebRequestMethods.Http.Post;
             webRequest.UserAgent = string.Format("Disco/{0} (Update)", DiscoBIVersion);
@@ -78,7 +82,7 @@ namespace Disco.BI.Interop.Community
                     db.SaveChanges();
 
                     status.SetFinishedMessage(string.Format("The update server reported Version {0} is the latest.", result.Version));
-                    
+
                     return result;
                 }
                 else
@@ -96,7 +100,7 @@ namespace Disco.BI.Interop.Community
 
             m.DeploymentId = db.DiscoConfiguration.DeploymentId;
 
-            m.CurrentDiscoVersion = CurrentDiscoVersion();
+            m.CurrentDiscoVersion = CurrentDiscoVersionFormatted();
 
             m.OrganisationName = db.DiscoConfiguration.OrganisationName;
             m.BroadbandDoeWanId = GetBroadbandDoeWanId();
@@ -144,7 +148,7 @@ namespace Disco.BI.Interop.Community
         {
             try
             {
-                var DiscoBIVersion = CurrentDiscoVersion();
+                var DiscoBIVersion = CurrentDiscoVersionFormatted();
 
                 HttpWebRequest wReq = (HttpWebRequest)HttpWebRequest.Create("http://broadband.doe.wan/ipsearch/showresult.php");
                 // Added: 2013-02-08 G#

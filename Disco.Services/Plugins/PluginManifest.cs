@@ -348,6 +348,14 @@ namespace Disco.Services.Plugins
             return handler;
         }
         [JsonIgnore]
+        public string ConfigurationUrl
+        {
+            get
+            {
+                return string.Format("/Config/Plugins/{0}", HttpUtility.UrlEncode(this.Id));
+            }
+        }
+        [JsonIgnore]
         public bool HasWebHandler
         {
             get
@@ -370,6 +378,14 @@ namespace Disco.Services.Plugins
             handler.HostController = HostController;
 
             return handler;
+        }
+        [JsonIgnore]
+        public string WebHandlerUrl
+        {
+            get
+            {
+                return string.Format("/Plugin/{0}", HttpUtility.UrlEncode(this.Id));
+            }
         }
 
         public Tuple<string, string> WebResourcePath(string Resource)

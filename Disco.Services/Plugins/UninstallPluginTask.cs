@@ -45,13 +45,17 @@ namespace Disco.Services.Plugins
             }
 
             this.Status.Finished("Restarting Disco, please wait...", "/Config/Plugins");
-            RestartApp(1500);
+            Plugins.RestartApp(1500);
         }
 
         public static ScheduledTaskStatus UninstallPlugin(PluginManifest Manifest, bool UninstallData)
         {
             if (ScheduledTasks.GetTaskStatuses(typeof(InstallPluginTask)).Where(s => s.IsRunning).Count() > 0)
                 throw new InvalidOperationException("A plugin is already being Uninstalled");
+            if (ScheduledTasks.GetTaskStatuses(typeof(UpdatePluginTask)).Where(s => s.IsRunning).Count() > 0)
+                throw new InvalidOperationException("A plugin is being Updated");
+            if (ScheduledTasks.GetTaskStatuses(typeof(InstallPluginTask)).Where(s => s.IsRunning).Count() > 0)
+                throw new InvalidOperationException("A plugin is being Installed");
 
             JobDataMap taskData = new JobDataMap() { { "PluginManifest", Manifest }, { "UninstallData", UninstallData } };
 
@@ -59,26 +63,5 @@ namespace Disco.Services.Plugins
 
             return instance.ScheduleTask(taskData);
         }
-
-        #region Restart App
-        private static object _restartTimerLock = new object();
-        private static Timer _restartTimer;
-        private void RestartApp(int DelayMilliseconds)
-        {
-            lock (_restartTimerLock)
-            {
-                if (_restartTimer != null)
-                {
-                    _restartTimer.Dispose();
-                }
-
-                _restartTimer = new Timer((state) =>
-                {
-                    HttpRuntime.UnloadAppDomain();
-                    //AppDomain.Unload(AppDomain.CurrentDomain);
-                }, null, DelayMilliseconds, Timeout.Infinite);
-            }
-        }
-        #endregion
     }
 }

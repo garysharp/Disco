@@ -68,7 +68,7 @@ WriteLiteral(">\r\n        <h2");
 
 WriteLiteral(" data-bind=\"text: TaskName\"");
 
-WriteLiteral(">\r\n            &nbsp;</h2>\r\n        <table>\r\n            <tr");
+WriteLiteral(">&nbsp;</h2>\r\n        <table>\r\n            <tr");
 
 WriteLiteral(" data-bind=\"visible: IsRunning\"");
 
@@ -78,8 +78,7 @@ WriteLiteral(" class=\"process\"");
 
 WriteLiteral(" data-bind=\"text: CurrentProcess\"");
 
-WriteLiteral(">\r\n                    &nbsp;\r\n                </th>\r\n            </tr>\r\n        " +
-"    <tr");
+WriteLiteral(">&nbsp;\r\n                </th>\r\n            </tr>\r\n            <tr");
 
 WriteLiteral(" data-bind=\"visible: IsRunning\"");
 
@@ -89,8 +88,7 @@ WriteLiteral(" class=\"description\"");
 
 WriteLiteral(" data-bind=\"text: CurrentDescription\"");
 
-WriteLiteral(">\r\n                    &nbsp;\r\n                </td>\r\n            </tr>\r\n        " +
-"    <tr");
+WriteLiteral(">&nbsp;\r\n                </td>\r\n            </tr>\r\n            <tr");
 
 WriteLiteral(" data-bind=\"visible: IsRunning\"");
 
@@ -111,7 +109,7 @@ WriteLiteral(">\r\n                <td");
 
 WriteLiteral(" class=\"finishedTimestamp\"");
 
-WriteLiteral(">\r\n                    <h3>\r\n                        Finished: <span");
+WriteLiteral(">\r\n                    <h3>Finished: <span");
 
 WriteLiteral(" data-bind=\"text: FinishedTimestampFormatted\"");
 
@@ -138,7 +136,7 @@ WriteLiteral(">\r\n                <td");
 
 WriteLiteral(" class=\"exception\"");
 
-WriteLiteral(">\r\n                    Last Error:\r\n                    <div");
+WriteLiteral(">Last Error:\r\n                    <div");
 
 WriteLiteral(" class=\"code\"");
 
@@ -153,7 +151,7 @@ WriteLiteral(">\r\n                <td");
 
 WriteLiteral(" class=\"nextScheduledTimestamp\"");
 
-WriteLiteral(">\r\n                    Next Scheduled: <span");
+WriteLiteral(">Next Scheduled: <span");
 
 WriteLiteral(" data-bind=\"text: NextScheduledTimestampFormatted\"");
 
@@ -189,7 +187,7 @@ WriteLiteral(" type=\"text/javascript\"");
 WriteLiteral(">\r\n    $(function () {\r\n        var sessionId = \'");
 
             
-            #line 99 "..\..\Areas\Config\Views\Logging\TaskStatus.cshtml"
+            #line 93 "..\..\Areas\Config\Views\Logging\TaskStatus.cshtml"
                      Write(Model.SessionId);
 
             
@@ -198,7 +196,7 @@ WriteLiteral(">\r\n    $(function () {\r\n        var sessionId = \'");
 WriteLiteral("\';\r\n        var sessionStatusUrl = \'");
 
             
-            #line 100 "..\..\Areas\Config\Views\Logging\TaskStatus.cshtml"
+            #line 94 "..\..\Areas\Config\Views\Logging\TaskStatus.cshtml"
                             Write(Url.Action(MVC.API.Logging.ScheduledTaskStatus(Model.SessionId)));
 
             
@@ -251,42 +249,44 @@ WriteLiteral("\';\r\n\r\n        var view = $(\'#scheduledTaskStatus\');\r\n    
 "     return self.Initialize(taskStatus);\r\n\r\n                if (taskStatus.Statu" +
 "sVersion < self.StatusVersion)\r\n                    return; // Have Newer Status" +
 " Update\r\n                self.StatusVersion = taskStatus.StatusVersion;\r\n\r\n     " +
-"           for (var changedPropertyIndex = 0; changedPropertyIndex < taskStatus." +
-"ChangedProperties.length; changedPropertyIndex++) {\r\n                    switch " +
-"(taskStatus.ChangedProperties[changedPropertyIndex]) {\r\n                        " +
-"case \'Progress\':\r\n                            self.Progress(taskStatus.Progress)" +
-";\r\n                            break;\r\n                        case \'CurrentProc" +
-"ess\':\r\n                            self.CurrentProcess(taskStatus.CurrentProcess" +
-");\r\n                            break;\r\n                        case \'CurrentDes" +
-"cription\':\r\n                            self.CurrentDescription(taskStatus.Curre" +
-"ntDescription);\r\n                            break;\r\n                        cas" +
-"e \'IsRunning\':\r\n                            self.IsRunning(taskStatus.IsRunning)" +
-";\r\n                            break;\r\n                        case \'TaskExcepti" +
-"on\':\r\n                            self.TaskExceptionMessage(taskStatus.TaskExcep" +
-"tionMessage);\r\n                            break;\r\n                        case " +
-"\'NextScheduledTimestamp\':\r\n                            self.NextScheduledTimesta" +
-"mp(taskStatus.NextScheduledTimestamp);\r\n                            break;\r\n    " +
-"                    case \'FinishedUrl\':\r\n                            self.Finish" +
-"edUrl(taskStatus.FinishedUrl);\r\n                            break;\r\n            " +
-"            case \'FinishedMessage\':\r\n                            self.FinishedMe" +
-"ssage(taskStatus.FinishedMessage);\r\n                            break;\r\n        " +
-"                case \'FinishedTimestamp\':\r\n                            self.Fini" +
-"shedTimestamp(taskStatus.FinishedTimestamp);\r\n                            window" +
-".setTimeout(self.Finished, 1);\r\n                            break;\r\n            " +
-"            default:\r\n                            // Ignore\r\n                   " +
-" }\r\n                }\r\n            }\r\n        }\r\n\r\n        vm = new statusViewMo" +
-"del(sessionId);\r\n        ko.applyBindings(vm, view[0]);\r\n\r\n        // Start Live" +
-" Connection\r\n        updateWithLive();\r\n\r\n        function updateWithAjax(onSucc" +
-"ess) {\r\n            $.ajax({\r\n                url: sessionStatusUrl,\r\n          " +
-"      dataType: \'json\',\r\n                type: \'POST\',\r\n                traditio" +
-"nal: true,\r\n                success: update_Received,\r\n                error: fu" +
-"nction (jqXHR, textStatus, errorThrown) {\r\n                    alert(\'Unable to " +
-"load Session: \' + errorThrown);\r\n                }\r\n            });\r\n        }\r\n" +
-"        function updateWithLive() {\r\n            liveConnection = $.connection(\'" +
-"");
+"           if (taskStatus.ChangedProperties) {\r\n                    for (var cha" +
+"ngedPropertyIndex = 0; changedPropertyIndex < taskStatus.ChangedProperties.lengt" +
+"h; changedPropertyIndex++) {\r\n                        switch (taskStatus.Changed" +
+"Properties[changedPropertyIndex]) {\r\n                            case \'Progress\'" +
+":\r\n                                self.Progress(taskStatus.Progress);\r\n        " +
+"                        break;\r\n                            case \'CurrentProcess" +
+"\':\r\n                                self.CurrentProcess(taskStatus.CurrentProces" +
+"s);\r\n                                break;\r\n                            case \'C" +
+"urrentDescription\':\r\n                                self.CurrentDescription(tas" +
+"kStatus.CurrentDescription);\r\n                                break;\r\n          " +
+"                  case \'IsRunning\':\r\n                                self.IsRunn" +
+"ing(taskStatus.IsRunning);\r\n                                break;\r\n            " +
+"                case \'TaskException\':\r\n                                self.Task" +
+"ExceptionMessage(taskStatus.TaskExceptionMessage);\r\n                            " +
+"    break;\r\n                            case \'NextScheduledTimestamp\':\r\n        " +
+"                        self.NextScheduledTimestamp(taskStatus.NextScheduledTime" +
+"stamp);\r\n                                break;\r\n                            cas" +
+"e \'FinishedUrl\':\r\n                                self.FinishedUrl(taskStatus.Fi" +
+"nishedUrl);\r\n                                break;\r\n                           " +
+" case \'FinishedMessage\':\r\n                                self.FinishedMessage(t" +
+"askStatus.FinishedMessage);\r\n                                break;\r\n           " +
+"                 case \'FinishedTimestamp\':\r\n                                self" +
+".FinishedTimestamp(taskStatus.FinishedTimestamp);\r\n                             " +
+"   window.setTimeout(self.Finished, 1);\r\n                                break;\r" +
+"\n                            default:\r\n                                // Ignore" +
+"\r\n                        }\r\n                    }\r\n                }\r\n         " +
+"   }\r\n        }\r\n\r\n        vm = new statusViewModel(sessionId);\r\n        ko.appl" +
+"yBindings(vm, view[0]);\r\n\r\n        // Start Live Connection\r\n        updateWithL" +
+"ive();\r\n\r\n        function updateWithAjax(onSuccess) {\r\n            $.ajax({\r\n  " +
+"              url: sessionStatusUrl,\r\n                dataType: \'json\',\r\n       " +
+"         type: \'POST\',\r\n                traditional: true,\r\n                succ" +
+"ess: update_Received,\r\n                error: function (jqXHR, textStatus, error" +
+"Thrown) {\r\n                    alert(\'Unable to load Session: \' + errorThrown);\r" +
+"\n                }\r\n            });\r\n        }\r\n        function updateWithLive(" +
+") {\r\n            liveConnection = $.connection(\'");
 
             
-            #line 247 "..\..\Areas\Config\Views\Logging\TaskStatus.cshtml"
+            #line 243 "..\..\Areas\Config\Views\Logging\TaskStatus.cshtml"
                                        Write(Url.Content("~/API/Logging/TaskStatusNotifications"));
 
             

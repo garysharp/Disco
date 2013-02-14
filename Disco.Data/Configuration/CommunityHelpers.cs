@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Disco.BI.Interop.Community
+namespace Disco.Data.Configuration
 {
     public static class CommunityHelpers
     {

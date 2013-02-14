@@ -147,39 +147,26 @@ WriteLiteral("                    <td>\r\n");
                     {
                         var plugin = plugins[itemNextId];
                         itemNextId++;
+                        var installedPlugin = Plugins.PluginInstalled(plugin.Id) ? Plugins.GetPlugin(plugin.Id) : null;
 
             
             #line default
             #line hidden
 WriteLiteral("                            <div");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1328), Tuple.Create("\"", 1432)
-, Tuple.Create(Tuple.Create("", 1336), Tuple.Create("pageMenuArea", 1336), true)
-, Tuple.Create(Tuple.Create(" ", 1348), Tuple.Create("pluginItem", 1349), true)
-            
-            #line 31 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
-, Tuple.Create(Tuple.Create("", 1359), Tuple.Create<System.Object, System.Int32>(Plugins.PluginInstalled(plugin.Id) ? " pluginInstalled" : string.Empty
-            
-            #line default
-            #line hidden
-, 1359), false)
-);
-
-WriteLiteral(">\r\n                                <a");
-
-WriteLiteral(" class=\"pluginInstallLink\"");
-
-WriteAttribute("href", Tuple.Create(" href=\"", 1496), Tuple.Create("\"", 1551)
+WriteAttribute("class", Tuple.Create(" class=\"", 1449), Tuple.Create("\"", 1542)
+, Tuple.Create(Tuple.Create("", 1457), Tuple.Create("pageMenuArea", 1457), true)
+, Tuple.Create(Tuple.Create(" ", 1469), Tuple.Create("pluginItem", 1470), true)
             
             #line 32 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
-, Tuple.Create(Tuple.Create("", 1503), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Plugin.Install(plugin.Id))
+, Tuple.Create(Tuple.Create("", 1480), Tuple.Create<System.Object, System.Int32>(installedPlugin != null ? " pluginInstalled" : string.Empty
             
             #line default
             #line hidden
-, 1503), false)
+, 1480), false)
 );
 
-WriteLiteral(">\r\n                                    <h2");
+WriteLiteral(">\r\n                                <h2");
 
 WriteLiteral(" class=\"pluginName\"");
 
@@ -187,20 +174,97 @@ WriteLiteral(">");
 
             
             #line 33 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
-                                                      Write(plugin.Name);
+                                                  Write(plugin.Name);
 
             
             #line default
             #line hidden
-WriteLiteral("</h2>\r\n                                </a>\r\n                                <div" +
-"");
+WriteLiteral("\r\n");
+
+            
+            #line 34 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+                                    
+            
+            #line default
+            #line hidden
+            
+            #line 34 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+                                     if (installedPlugin == null){
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                    <a");
+
+WriteLiteral(" class=\"pluginInstallLink button\"");
+
+WriteAttribute("href", Tuple.Create(" href=\"", 1754), Tuple.Create("\"", 1809)
+            
+            #line 35 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+, Tuple.Create(Tuple.Create("", 1761), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Plugin.Install(plugin.Id))
+            
+            #line default
+            #line hidden
+, 1761), false)
+);
+
+WriteLiteral(">Install</a>\r\n");
+
+            
+            #line 36 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+                                    }else{
+                                    if (Version.Parse(plugin.LatestVersion) > installedPlugin.Version){
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                        <a");
+
+WriteLiteral(" class=\"pluginUpdateLink button\"");
+
+WriteAttribute("href", Tuple.Create(" href=\"", 2047), Tuple.Create("\"", 2101)
+            
+            #line 38 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+  , Tuple.Create(Tuple.Create("", 2054), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Plugin.Update(plugin.Id))
+            
+            #line default
+            #line hidden
+, 2054), false)
+);
+
+WriteLiteral(">Update</a>    \r\n");
+
+            
+            #line 39 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+                                    }else{
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                        <a");
+
+WriteLiteral(" class=\"pluginInstalledLink button disabled\"");
+
+WriteLiteral(" href=\"#\"");
+
+WriteLiteral(">Installed</a>    \r\n");
+
+            
+            #line 41 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+                                    }
+                                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                </h2>\r\n                                <div");
 
 WriteLiteral(" class=\"pluginItemBlurb\"");
 
 WriteLiteral(">");
 
             
-            #line 35 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 44 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
                                                          Write(new HtmlString(plugin.Blurb));
 
             
@@ -217,7 +281,7 @@ WriteLiteral(" class=\"pluginId\"");
 WriteLiteral(">");
 
             
-            #line 37 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 46 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
                                                       Write(plugin.Id);
 
             
@@ -230,7 +294,7 @@ WriteLiteral(" class=\"pluginVersion\"");
 WriteLiteral(">v");
 
             
-            #line 37 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 46 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
                                                                                                         Write(plugin.LatestVersion);
 
             
@@ -239,7 +303,7 @@ WriteLiteral(">v");
 WriteLiteral("</span> | ");
 
             
-            #line 37 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 46 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
                                                                                                                                         Write(plugin.Author);
 
             
@@ -247,14 +311,14 @@ WriteLiteral("</span> | ");
             #line hidden
 WriteLiteral(" | <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 1992), Tuple.Create("\"", 2010)
+WriteAttribute("href", Tuple.Create(" href=\"", 2716), Tuple.Create("\"", 2734)
             
-            #line 37 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
-                                                                                       , Tuple.Create(Tuple.Create("", 1999), Tuple.Create<System.Object, System.Int32>(plugin.Url
+            #line 46 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+                                                                                       , Tuple.Create(Tuple.Create("", 2723), Tuple.Create<System.Object, System.Int32>(plugin.Url
             
             #line default
             #line hidden
-, 1999), false)
+, 2723), false)
 );
 
 WriteLiteral(" target=\"_blank\"");
@@ -263,7 +327,7 @@ WriteLiteral(">More Information</a>\r\n                                </div>\r\
 "          </div>\r\n");
 
             
-            #line 40 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 49 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
                     }
                         
             
@@ -272,7 +336,7 @@ WriteLiteral(">More Information</a>\r\n                                </div>\r\
 WriteLiteral("\r\n                    </td>\r\n");
 
             
-            #line 43 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 52 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
                 }
 
             
@@ -281,7 +345,7 @@ WriteLiteral("\r\n                    </td>\r\n");
 WriteLiteral("            </tr>\r\n        </table>\r\n");
 
             
-            #line 46 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 55 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
     }
 
             
@@ -328,13 +392,13 @@ WriteLiteral(" style=\"padding-bottom: 10px;\"");
 WriteLiteral(">\r\n");
 
             
-            #line 59 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 68 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 59 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 68 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
          using (Html.BeginForm(MVC.API.Plugin.InstallLocal(), FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
 
@@ -358,7 +422,7 @@ WriteLiteral(" type=\"file\"");
 WriteLiteral(" />\r\n");
 
             
-            #line 63 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 72 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
         }
 
             
@@ -391,25 +455,32 @@ WriteLiteral("></span>Warning: All plugins run with the same level of network pr
 "           $(this).dialog(\"close\");\r\n                }\r\n            }\r\n        }" +
 ");\r\n        $(\'#pageMenu\').find(\'a.pluginInstallLink\').click(function () {\r\n    " +
 "        $this = $(this);\r\n\r\n            $selectedPlugin = $this.closest(\'.plugin" +
-"Item\');\r\n            $selectedPluginUrl = $this.attr(\'href\');\r\n\r\n            if " +
-"($selectedPlugin.is(\'.pluginInstalled\')) {\r\n                alert(\'This plugin i" +
-"s already installed.\');\r\n            } else {\r\n                $(\'#dialogInstall" +
-"PluginName\').text($selectedPlugin.find(\'.pluginName\').text());\r\n                " +
+"Item\');\r\n            $selectedPluginUrl = $this.attr(\'href\');\r\n\r\n            $(\'" +
+"#dialogInstallPluginName\').text($selectedPlugin.find(\'.pluginName\').text());\r\n  " +
+"          $(\'#dialogInstallPluginDetails\').text($selectedPlugin.find(\'.pluginId\'" +
+").text() + \' | \' + $selectedPlugin.find(\'.pluginVersion\').text());\r\n\r\n          " +
+"  $dialogInstall.dialog(\'option\', \'title\', \'Install this Plugin?\');\r\n           " +
+" $dialogInstall.dialog(\'open\');\r\n\r\n            return false;\r\n        });\r\n     " +
+"   $(\'#pageMenu\').find(\'a.pluginUpdateLink\').click(function () {\r\n            $t" +
+"his = $(this);\r\n\r\n            $selectedPlugin = $this.closest(\'.pluginItem\');\r\n " +
+"           $selectedPluginUrl = $this.attr(\'href\');\r\n\r\n            $(\'#dialogIns" +
+"tallPluginName\').text($selectedPlugin.find(\'.pluginName\').text());\r\n            " +
 "$(\'#dialogInstallPluginDetails\').text($selectedPlugin.find(\'.pluginId\').text() +" +
-" \' | \' + $selectedPlugin.find(\'.pluginVersion\').text());\r\n\r\n                $dia" +
-"logInstall.dialog(\'open\');\r\n            }\r\n            return false;\r\n        })" +
-";\r\n\r\n        // Upload\r\n        var $dialogUpload = $(\'#dialogUploadPlugin\').dia" +
-"log({\r\n            resizable: false,\r\n            modal: true,\r\n            widt" +
-"h: 350,\r\n            autoOpen: false,\r\n            buttons: {\r\n                \"" +
-"Upload & Install\": function () {\r\n                    var pluginFile = $(\'#plugi" +
-"nFile\');\r\n                    if (pluginFile.val()) {\r\n                        p" +
-"luginFile.closest(\'form\').submit();\r\n                        $(this).dialog(\'dis" +
-"able\');\r\n                    } else {\r\n                        alert(\'Choose a P" +
-"lugin Package to Upload\');\r\n                    }\r\n                },\r\n         " +
-"       Cancel: function () {\r\n                    $(this).dialog(\"close\");\r\n    " +
-"            }\r\n            }\r\n        });\r\n        $(\'#buttonUpload\').click(func" +
-"tion () {\r\n            $dialogUpload.dialog(\'open\');\r\n            return false;\r" +
-"\n        });\r\n    });\r\n</script>\r\n<div");
+" \' | \' + $selectedPlugin.find(\'.pluginVersion\').text());\r\n\r\n            $dialogI" +
+"nstall.dialog(\'option\', \'title\', \'Update this Plugin?\');\r\n            $dialogIns" +
+"tall.dialog(\'open\');\r\n\r\n            return false;\r\n        });\r\n\r\n        // Upl" +
+"oad\r\n        var $dialogUpload = $(\'#dialogUploadPlugin\').dialog({\r\n            " +
+"resizable: false,\r\n            modal: true,\r\n            width: 350,\r\n          " +
+"  autoOpen: false,\r\n            buttons: {\r\n                \"Upload & Install\": " +
+"function () {\r\n                    var pluginFile = $(\'#pluginFile\');\r\n         " +
+"           if (pluginFile.val()) {\r\n                        pluginFile.closest(\'" +
+"form\').submit();\r\n                        $(this).dialog(\'disable\');\r\n          " +
+"          } else {\r\n                        alert(\'Choose a Plugin Package to Up" +
+"load\');\r\n                    }\r\n                },\r\n                Cancel: func" +
+"tion () {\r\n                    $(this).dialog(\"close\");\r\n                }\r\n    " +
+"        }\r\n        });\r\n        $(\'#buttonUpload\').click(function () {\r\n        " +
+"    $dialogUpload.dialog(\'open\');\r\n            return false;\r\n        });\r\n    }" +
+");\r\n</script>\r\n<div");
 
 WriteLiteral(" class=\"actionBar\"");
 
@@ -418,7 +489,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 142 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 163 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
 Write(Html.ActionLinkButton("Update Catalogue", MVC.API.Plugin.UpdateLibraryCatalogue()));
 
             
@@ -429,7 +500,7 @@ WriteLiteral("\r\n");
 WriteLiteral("    ");
 
             
-            #line 143 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 164 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
 Write(Html.ActionLinkButton("Install Plugin Package", MVC.API.Plugin.InstallLocal(), "buttonUpload"));
 
             

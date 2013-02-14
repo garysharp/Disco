@@ -37,6 +37,7 @@ public static class MVC
     public static Disco.Web.Controllers.JobController Job = new Disco.Web.Controllers.T4MVC_JobController();
     public static Disco.Web.Controllers.PluginWebHandlerController PluginWebHandler = new Disco.Web.Controllers.T4MVC_PluginWebHandlerController();
     public static Disco.Web.Controllers.SearchController Search = new Disco.Web.Controllers.T4MVC_SearchController();
+    public static Disco.Web.Controllers.UpdateController Update = new Disco.Web.Controllers.T4MVC_UpdateController();
     public static Disco.Web.Controllers.UserController User = new Disco.Web.Controllers.T4MVC_UserController();
     public static T4MVC.HomeController Home = new T4MVC.HomeController();
     public static T4MVC.SharedController Shared = new T4MVC.SharedController();
@@ -1992,6 +1993,84 @@ namespace Disco.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "term", term);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "limit", limit);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "searchDetails", searchDetails);
+            return callInfo;
+        }
+
+    }
+}
+
+namespace Disco.Web.Controllers
+{
+    public partial class UpdateController
+    {
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public UpdateController() { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected UpdateController(Dummy d) { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoute(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public UpdateController Actions { get { return MVC.Update; } }
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Area = "";
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Name = "Update";
+        [GeneratedCode("T4MVC", "2.0")]
+        public const string NameConst = "Update";
+
+        static readonly ActionNamesClass s_actions = new ActionNamesClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionNamesClass ActionNames { get { return s_actions; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNamesClass
+        {
+            public readonly string Index = "Index";
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNameConstants
+        {
+            public const string Index = "Index";
+        }
+
+
+        static readonly ViewsClass s_views = new ViewsClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ViewsClass Views { get { return s_views; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ViewsClass
+        {
+            static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
+            public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
+            public class _ViewNamesClass
+            {
+            }
+        }
+    }
+
+    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+    public class T4MVC_UpdateController : Disco.Web.Controllers.UpdateController
+    {
+        public T4MVC_UpdateController() : base(Dummy.Instance) { }
+
+        public override System.Web.Mvc.ActionResult Index()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
             return callInfo;
         }
 
@@ -6761,21 +6840,33 @@ namespace Disco.Web.Areas.API.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public System.Web.Mvc.ActionResult Update()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public System.Web.Mvc.ActionResult UpdateLocal()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLocal);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public System.Web.Mvc.ActionResult Uninstall()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Uninstall);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public System.Web.Mvc.ActionResult InstallLocal()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InstallLocal);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public System.Web.Mvc.ActionResult Install()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Install);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public System.Web.Mvc.ActionResult InstallLocal()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InstallLocal);
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -6794,21 +6885,44 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionNamesClass
         {
             public readonly string UpdateLibraryCatalogue = "UpdateLibraryCatalogue";
+            public readonly string UpdateAll = "UpdateAll";
+            public readonly string Update = "Update";
+            public readonly string UpdateLocal = "UpdateLocal";
             public readonly string Uninstall = "Uninstall";
-            public readonly string InstallLocal = "InstallLocal";
             public readonly string Install = "Install";
+            public readonly string InstallLocal = "InstallLocal";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
             public const string UpdateLibraryCatalogue = "UpdateLibraryCatalogue";
+            public const string UpdateAll = "UpdateAll";
+            public const string Update = "Update";
+            public const string UpdateLocal = "UpdateLocal";
             public const string Uninstall = "Uninstall";
-            public const string InstallLocal = "InstallLocal";
             public const string Install = "Install";
+            public const string InstallLocal = "InstallLocal";
         }
 
 
+        static readonly ActionParamsClass_Update s_params_Update = new ActionParamsClass_Update();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Update UpdateParams { get { return s_params_Update; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Update
+        {
+            public readonly string PluginId = "PluginId";
+        }
+        static readonly ActionParamsClass_UpdateLocal s_params_UpdateLocal = new ActionParamsClass_UpdateLocal();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateLocal UpdateLocalParams { get { return s_params_UpdateLocal; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateLocal
+        {
+            public readonly string PluginId = "PluginId";
+            public readonly string Plugin = "Plugin";
+        }
         static readonly ActionParamsClass_Uninstall s_params_Uninstall = new ActionParamsClass_Uninstall();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Uninstall UninstallParams { get { return s_params_Uninstall; } }
@@ -6818,14 +6932,6 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string id = "id";
             public readonly string UninstallData = "UninstallData";
         }
-        static readonly ActionParamsClass_InstallLocal s_params_InstallLocal = new ActionParamsClass_InstallLocal();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_InstallLocal InstallLocalParams { get { return s_params_InstallLocal; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_InstallLocal
-        {
-            public readonly string Plugin = "Plugin";
-        }
         static readonly ActionParamsClass_Install s_params_Install = new ActionParamsClass_Install();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Install InstallParams { get { return s_params_Install; } }
@@ -6833,6 +6939,14 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_Install
         {
             public readonly string PluginId = "PluginId";
+        }
+        static readonly ActionParamsClass_InstallLocal s_params_InstallLocal = new ActionParamsClass_InstallLocal();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_InstallLocal InstallLocalParams { get { return s_params_InstallLocal; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_InstallLocal
+        {
+            public readonly string Plugin = "Plugin";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -6859,6 +6973,27 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        public override System.Web.Mvc.ActionResult UpdateAll()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAll);
+            return callInfo;
+        }
+
+        public override System.Web.Mvc.ActionResult Update(string PluginId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "PluginId", PluginId);
+            return callInfo;
+        }
+
+        public override System.Web.Mvc.ActionResult UpdateLocal(string PluginId, System.Web.HttpPostedFileBase Plugin)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLocal);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "PluginId", PluginId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Plugin", Plugin);
+            return callInfo;
+        }
+
         public override System.Web.Mvc.ActionResult Uninstall(string id, bool UninstallData)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Uninstall);
@@ -6867,17 +7002,17 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
-        public override System.Web.Mvc.ActionResult InstallLocal(System.Web.HttpPostedFileBase Plugin)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InstallLocal);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Plugin", Plugin);
-            return callInfo;
-        }
-
         public override System.Web.Mvc.ActionResult Install(string PluginId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Install);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "PluginId", PluginId);
+            return callInfo;
+        }
+
+        public override System.Web.Mvc.ActionResult InstallLocal(System.Web.HttpPostedFileBase Plugin)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InstallLocal);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Plugin", Plugin);
             return callInfo;
         }
 

@@ -6,17 +6,14 @@
 }
 <div style="min-height: 300px;">
     <div id="scheduledTaskStatus" class="form" style="width: 520px;" data-bind="visible: Initialized">
-        <h2 data-bind="text: TaskName">
-            &nbsp;</h2>
+        <h2 data-bind="text: TaskName">&nbsp;</h2>
         <table>
             <tr data-bind="visible: IsRunning">
-                <th class="process" data-bind="text: CurrentProcess">
-                    &nbsp;
+                <th class="process" data-bind="text: CurrentProcess">&nbsp;
                 </th>
             </tr>
             <tr data-bind="visible: IsRunning">
-                <td class="description" data-bind="text: CurrentDescription">
-                    &nbsp;
+                <td class="description" data-bind="text: CurrentDescription">&nbsp;
                 </td>
             </tr>
             <tr data-bind="visible: IsRunning">
@@ -27,8 +24,7 @@
             </tr>
             <tr data-bind="visible: FinishedTimestamp">
                 <td class="finishedTimestamp">
-                    <h3>
-                        Finished: <span data-bind="text: FinishedTimestampFormatted"></span>
+                    <h3>Finished: <span data-bind="text: FinishedTimestampFormatted"></span>
                     </h3>
                 </td>
             </tr>
@@ -38,15 +34,13 @@
                 </td>
             </tr>
             <tr data-bind="visible: TaskExceptionMessage">
-                <td class="exception">
-                    Last Error:
+                <td class="exception">Last Error:
                     <div class="code" data-bind="text: TaskExceptionMessage">
                     </div>
                 </td>
             </tr>
             <tr data-bind="visible: NextScheduledTimestamp">
-                <td class="nextScheduledTimestamp">
-                    Next Scheduled: <span data-bind="text: NextScheduledTimestampFormatted"></span>
+                <td class="nextScheduledTimestamp">Next Scheduled: <span data-bind="text: NextScheduledTimestampFormatted"></span>
                 </td>
             </tr>
         </table>
@@ -188,38 +182,40 @@
                     return; // Have Newer Status Update
                 self.StatusVersion = taskStatus.StatusVersion;
 
-                for (var changedPropertyIndex = 0; changedPropertyIndex < taskStatus.ChangedProperties.length; changedPropertyIndex++) {
-                    switch (taskStatus.ChangedProperties[changedPropertyIndex]) {
-                        case 'Progress':
-                            self.Progress(taskStatus.Progress);
-                            break;
-                        case 'CurrentProcess':
-                            self.CurrentProcess(taskStatus.CurrentProcess);
-                            break;
-                        case 'CurrentDescription':
-                            self.CurrentDescription(taskStatus.CurrentDescription);
-                            break;
-                        case 'IsRunning':
-                            self.IsRunning(taskStatus.IsRunning);
-                            break;
-                        case 'TaskException':
-                            self.TaskExceptionMessage(taskStatus.TaskExceptionMessage);
-                            break;
-                        case 'NextScheduledTimestamp':
-                            self.NextScheduledTimestamp(taskStatus.NextScheduledTimestamp);
-                            break;
-                        case 'FinishedUrl':
-                            self.FinishedUrl(taskStatus.FinishedUrl);
-                            break;
-                        case 'FinishedMessage':
-                            self.FinishedMessage(taskStatus.FinishedMessage);
-                            break;
-                        case 'FinishedTimestamp':
-                            self.FinishedTimestamp(taskStatus.FinishedTimestamp);
-                            window.setTimeout(self.Finished, 1);
-                            break;
-                        default:
-                            // Ignore
+                if (taskStatus.ChangedProperties) {
+                    for (var changedPropertyIndex = 0; changedPropertyIndex < taskStatus.ChangedProperties.length; changedPropertyIndex++) {
+                        switch (taskStatus.ChangedProperties[changedPropertyIndex]) {
+                            case 'Progress':
+                                self.Progress(taskStatus.Progress);
+                                break;
+                            case 'CurrentProcess':
+                                self.CurrentProcess(taskStatus.CurrentProcess);
+                                break;
+                            case 'CurrentDescription':
+                                self.CurrentDescription(taskStatus.CurrentDescription);
+                                break;
+                            case 'IsRunning':
+                                self.IsRunning(taskStatus.IsRunning);
+                                break;
+                            case 'TaskException':
+                                self.TaskExceptionMessage(taskStatus.TaskExceptionMessage);
+                                break;
+                            case 'NextScheduledTimestamp':
+                                self.NextScheduledTimestamp(taskStatus.NextScheduledTimestamp);
+                                break;
+                            case 'FinishedUrl':
+                                self.FinishedUrl(taskStatus.FinishedUrl);
+                                break;
+                            case 'FinishedMessage':
+                                self.FinishedMessage(taskStatus.FinishedMessage);
+                                break;
+                            case 'FinishedTimestamp':
+                                self.FinishedTimestamp(taskStatus.FinishedTimestamp);
+                                window.setTimeout(self.Finished, 1);
+                                break;
+                            default:
+                                // Ignore
+                        }
                     }
                 }
             }

@@ -124,6 +124,7 @@ namespace Disco.Web.Extensions.MvcExtensions.Bundles
             cache.SetOmitVaryStar(true);
             cache.SetExpires(DateTime.Now.AddYears(1));
             cache.SetValidUntilExpires(true);
+            cache.SetMaxAge(TimeSpan.FromDays(365));
             cache.SetLastModified(DateTime.Now);
             cache.VaryByHeaders["User-Agent"] = true;
 

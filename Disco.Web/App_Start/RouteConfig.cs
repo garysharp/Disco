@@ -68,5 +68,16 @@ namespace Disco.Web
                 namespaces: new string[] { "Disco.Web.Controllers" } // Controllers Namespace Only
             );
         }
+
+        public static void RegisterUpdateRoutes(RouteCollection routes)
+        {
+            // Update Route
+            routes.MapRoute(
+                name: "Update", // Route name
+                url: "{controller}/{action}/{id}", // URL with parameters
+                defaults: new { controller = "Update", action = "Index", id = UrlParameter.Optional }, // Parameter defaults
+                namespaces: new string[] { "Disco.Web.Controllers" } // Controllers Namespace Only
+            );
+        }
     }
 }

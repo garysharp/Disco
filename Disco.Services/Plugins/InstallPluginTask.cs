@@ -158,6 +158,10 @@ namespace Disco.Services.Plugins
         {
             if (ScheduledTasks.GetTaskStatuses(typeof(InstallPluginTask)).Where(s => s.IsRunning).Count() > 0)
                 throw new InvalidOperationException("A plugin is already being Installed");
+            if (ScheduledTasks.GetTaskStatuses(typeof(UpdatePluginTask)).Where(s => s.IsRunning).Count() > 0)
+                throw new InvalidOperationException("A plugin is being Updated");
+            if (ScheduledTasks.GetTaskStatuses(typeof(UninstallPluginTask)).Where(s => s.IsRunning).Count() > 0)
+                throw new InvalidOperationException("A plugin is being Uninstalled");
 
             JobDataMap taskData = new JobDataMap() { { "PackageUrl", PackageUrl }, { "PackageFilePath", PackageFilePath }, { "DeletePackageAfterInstall", DeletePackageAfterInstall } };
 

@@ -28,7 +28,7 @@ namespace Disco.Web.Extensions.MvcExtensions.Bundles
             context.Response.Clear();
 
             if (!string.IsNullOrEmpty(context.Request.Headers["If-Modified-Since"]))
-                context.Response.StatusCode = 0x130;
+                context.Response.StatusCode = 304;
             else
                 this.RequestBundle.ProcessRequest(context);
         }

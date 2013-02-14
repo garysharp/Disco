@@ -101,6 +101,9 @@
     <Compile Include="Logging\Targets\LogLiveContext.cs" />
     <Compile Include="Logging\Targets\LogPersistContext.cs" />
     <Compile Include="Logging\Utilities.cs" />
+    <Compile Include="Plugins\CommunityInterop\PluginLibraryUpdateTask.cs" />
+    <Compile Include="Plugins\UpdatePluginsAfterDiscoUpdateTask.cs" />
+    <Compile Include="Plugins\UpdatePluginTask.cs" />
     <Compile Include="Plugins\InstallPluginTask.cs" />
     <Compile Include="Plugins\PluginAttribute.cs" />
     <Compile Include="Plugins\PluginExtensions.cs" />
@@ -126,7 +129,6 @@
     <Compile Include="Plugins\UnknownPluginException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tasks\ScheduledTask.cs" />
-    <Compile Include="Tasks\ScheduledTaskCleanup.cs" />
     <Compile Include="Tasks\ScheduledTasks.cs" />
     <Compile Include="Tasks\ScheduledTasksLog.cs" />
     <Compile Include="Tasks\ScheduledTaskStatus.cs" />

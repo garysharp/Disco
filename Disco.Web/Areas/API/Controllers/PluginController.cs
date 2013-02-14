@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Disco.BI.Interop.Community;
 using Disco.Services.Plugins;
+using Disco.Services.Plugins.CommunityInterop;
 
 namespace Disco.Web.Areas.API.Controllers
 {
@@ -16,6 +16,46 @@ namespace Disco.Web.Areas.API.Controllers
             var status = PluginLibraryUpdateTask.ScheduleNow();
 
             status.SetFinishedUrl(Url.Action(MVC.Config.Plugins.Install()));
+
+            return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
+        }
+
+        public virtual ActionResult UpdateAll()
+        {
+            var status = UpdatePluginTask.UpdateAllPlugins();
+
+            return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
+        }
+
+        public virtual ActionResult Update(string PluginId)
+        {
+            if (string.IsNullOrEmpty(PluginId))
+                throw new ArgumentNullException("PluginId");
+
+            var status = UpdatePluginTask.UpdatePlugin(PluginId);
+
+            return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
+        }
+
+        public virtual ActionResult UpdateLocal(string PluginId, HttpPostedFileBase Plugin)
+        {
+            if (string.IsNullOrEmpty(PluginId))
+                throw new ArgumentNullException("PluginId");
+
+            if (Plugin == null || Plugin.ContentLength <= 0 || string.IsNullOrWhiteSpace(Plugin.FileName))
+                throw new ArgumentException("A discoPlugin file must be uploaded", "Plugin");
+
+            var tempPluginLocation = Path.Combine(dbContext.DiscoConfiguration.PluginPackagesLocation, Path.GetFileName(Plugin.FileName));
+
+            if (!Directory.Exists(dbContext.DiscoConfiguration.PluginPackagesLocation))
+                Directory.CreateDirectory(dbContext.DiscoConfiguration.PluginPackagesLocation);
+
+            if (System.IO.File.Exists(tempPluginLocation))
+                System.IO.File.Delete(tempPluginLocation);
+
+            Plugin.SaveAs(tempPluginLocation);
+
+            var status = UpdatePluginTask.UpdateLocalPlugin(PluginId, tempPluginLocation);
 
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }

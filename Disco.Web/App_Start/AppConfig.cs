@@ -49,18 +49,13 @@ namespace Disco.Web
                 Disco.Services.Plugins.Plugins.InitalizePlugins(dbContext);
 
                 // Initialize Scheduled Tasks
-                Disco.Services.Tasks.ScheduledTasks.InitalizeScheduledTasks(dbContext, DiscoApplication.SchedulerFactory);
+                Disco.Services.Tasks.ScheduledTasks.InitalizeScheduledTasks(dbContext, DiscoApplication.SchedulerFactory, true);
 
-                // Schedule Immediate Check for Update (if a new version was installed, never updated, last updated over 2 days ago)
-                var currentVersion = Disco.BI.Interop.Community.UpdateCheck.CurrentDiscoVersion();
-                if (dbContext.DiscoConfiguration.InstalledDatabaseVersion == null ||
-                    dbContext.DiscoConfiguration.InstalledDatabaseVersion != currentVersion ||
-                    dbContext.DiscoConfiguration.UpdateLastCheck == null ||
+                // Schedule Immediate Check for Update (if never updated, or last updated over 2 days ago)
+                if (dbContext.DiscoConfiguration.UpdateLastCheck == null ||
                     dbContext.DiscoConfiguration.UpdateLastCheck.ResponseTimestamp < DateTime.Now.AddDays(-2))
                 {
                     Disco.BI.Interop.Community.UpdateCheckTask.ScheduleNow();
-                    dbContext.DiscoConfiguration.InstalledDatabaseVersion = currentVersion;
-                    dbContext.SaveChanges();
                 }
 
                 // Setup Attachment Monitor
@@ -68,6 +63,28 @@ namespace Disco.Web
             }
             DiscoApplication.DocumentDropBoxMonitor.StartWatching();
             DiscoApplication.DocumentDropBoxMonitor.ScheduleCurrentFiles(10);
+        }
+
+        public static void InitializeUpdateEnvironment()
+        {
+            using (var dbContext = new DiscoDataContext())
+            {
+                // Initialize Logging
+                Disco.Services.Logging.LogContext.Initalize(dbContext, DiscoApplication.SchedulerFactory);
+
+                // Load Organisation Name
+                DiscoApplication.OrganisationName = dbContext.DiscoConfiguration.OrganisationName;
+                DiscoApplication.MultiSiteMode = dbContext.DiscoConfiguration.MultiSiteMode;
+
+                // Setup Global Proxy
+                DiscoApplication.SetGlobalProxy(dbContext.DiscoConfiguration.ProxyAddress,
+                    dbContext.DiscoConfiguration.ProxyPort,
+                    dbContext.DiscoConfiguration.ProxyUsername,
+                    dbContext.DiscoConfiguration.ProxyPassword);
+
+                // Initialize Scheduled Tasks
+                Disco.Services.Tasks.ScheduledTasks.InitalizeScheduledTasks(dbContext, DiscoApplication.SchedulerFactory, true);
+            }
         }
 
         public static void DisposeEnvironment()

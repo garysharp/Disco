@@ -24,54 +24,84 @@ namespace Disco.Web
             base.BeginRequest += new EventHandler(DiscoApplication_BeginRequest);
             base.Error += new EventHandler(DiscoApplication_Error);
         }
-        
+
         protected void Application_Start()
         {
             var timer = new Stopwatch();
             long timer_last;
             timer.Start();
 
-            
+
             Debug.WriteLine("Application Startup Profiling Started");
             timer_last = timer.ElapsedMilliseconds;
 
             if (AppConfig.InitializeDatabase())
             {
+                // Database Initialized
+
                 Debug.WriteLine("Initialized Database: +{0}ms", timer.ElapsedMilliseconds - timer_last);
                 timer_last = timer.ElapsedMilliseconds;
 
-                AreaRegistration.RegisterAllAreas();
+                // Check for Post-Update
+                Version previousVersion;
+                Version currentVersion = Disco.BI.Interop.Community.UpdateCheck.CurrentDiscoVersion();
+                using (DiscoDataContext dbContext = new DiscoDataContext())
+                {
+                    previousVersion = dbContext.DiscoConfiguration.InstalledDatabaseVersion;
+                }
+                if (currentVersion == previousVersion)
+                {
+                    // Normal Startup
 
-                Debug.WriteLine("Registered Areas: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                timer_last = timer.ElapsedMilliseconds;
-                
-                WebApiConfig.Register(GlobalConfiguration.Configuration);
+                    AreaRegistration.RegisterAllAreas();
 
-                Debug.WriteLine("Registered API: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                timer_last = timer.ElapsedMilliseconds;
-                
-                FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+                    Debug.WriteLine("Registered Areas: +{0}ms", timer.ElapsedMilliseconds - timer_last);
+                    timer_last = timer.ElapsedMilliseconds;
 
-                Debug.WriteLine("Registered Global Filters: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                timer_last = timer.ElapsedMilliseconds;
-                
-                RouteConfig.RegisterRoutes(RouteTable.Routes);
+                    WebApiConfig.Register(GlobalConfiguration.Configuration);
 
-                Debug.WriteLine("Registered Routes: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                timer_last = timer.ElapsedMilliseconds;
+                    Debug.WriteLine("Registered API: +{0}ms", timer.ElapsedMilliseconds - timer_last);
+                    timer_last = timer.ElapsedMilliseconds;
 
-                BundleConfig.RegisterBundles();
+                    FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 
-                Debug.WriteLine("Registered Bundles: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                timer_last = timer.ElapsedMilliseconds;
+                    Debug.WriteLine("Registered Global Filters: +{0}ms", timer.ElapsedMilliseconds - timer_last);
+                    timer_last = timer.ElapsedMilliseconds;
 
-                AppConfig.InitalizeEnvironment();
+                    RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-                Debug.WriteLine("Initialized Environment: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                timer_last = timer.ElapsedMilliseconds;
+                    Debug.WriteLine("Registered Routes: +{0}ms", timer.ElapsedMilliseconds - timer_last);
+                    timer_last = timer.ElapsedMilliseconds;
+
+                    BundleConfig.RegisterBundles();
+
+                    Debug.WriteLine("Registered Bundles: +{0}ms", timer.ElapsedMilliseconds - timer_last);
+                    timer_last = timer.ElapsedMilliseconds;
+
+                    AppConfig.InitalizeEnvironment();
+
+                    Debug.WriteLine("Initialized Environment: +{0}ms", timer.ElapsedMilliseconds - timer_last);
+                    timer_last = timer.ElapsedMilliseconds;
+                }
+                else
+                {
+                    // Post-Update Startup
+                    AreaRegistration.RegisterAllAreas();
+                    FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+                    RouteConfig.RegisterUpdateRoutes(RouteTable.Routes);
+                    BundleConfig.RegisterBundles();
+                    AppConfig.InitializeUpdateEnvironment();
+
+                    using (DiscoDataContext dbContext = new DiscoDataContext())
+                    {
+                        dbContext.DiscoConfiguration.InstalledDatabaseVersion = currentVersion;
+                        dbContext.SaveChanges();
+                    }
+                }
             }
             else
             {
+                // Database Not Initialized
                 // Install
                 InitialConfig = true;
                 RouteConfig.RegisterInstallRoutes(RouteTable.Routes);

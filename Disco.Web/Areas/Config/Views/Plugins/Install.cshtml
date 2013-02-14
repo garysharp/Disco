@@ -28,10 +28,19 @@
                     {
                         var plugin = plugins[itemNextId];
                         itemNextId++;
-                            <div class="pageMenuArea pluginItem@(Plugins.PluginInstalled(plugin.Id) ? " pluginInstalled" : string.Empty)">
-                                <a class="pluginInstallLink" href="@(Url.Action(MVC.API.Plugin.Install(plugin.Id)))">
-                                    <h2 class="pluginName">@plugin.Name</h2>
-                                </a>
+                        var installedPlugin = Plugins.PluginInstalled(plugin.Id) ? Plugins.GetPlugin(plugin.Id) : null;
+                            <div class="pageMenuArea pluginItem@(installedPlugin != null ? " pluginInstalled" : string.Empty)">
+                                <h2 class="pluginName">@plugin.Name
+                                    @if (installedPlugin == null){
+                                    <a class="pluginInstallLink button" href="@(Url.Action(MVC.API.Plugin.Install(plugin.Id)))">Install</a>
+                                    }else{
+                                    if (Version.Parse(plugin.LatestVersion) > installedPlugin.Version){
+                                        <a class="pluginUpdateLink button" href="@(Url.Action(MVC.API.Plugin.Update(plugin.Id)))">Update</a>    
+                                    }else{
+                                        <a class="pluginInstalledLink button disabled" href="#">Installed</a>    
+                                    }
+                                    }
+                                </h2>
                                 <div class="pluginItemBlurb">@(new HtmlString(plugin.Blurb))</div>
                                 <div class="pageMenuBlurb">
                                     <span class="pluginId">@plugin.Id</span> | <span class="pluginVersion">v@(plugin.LatestVersion)</span> | @plugin.Author | <a href="@plugin.Url" target="_blank">More Information</a>
@@ -100,14 +109,26 @@
             $selectedPlugin = $this.closest('.pluginItem');
             $selectedPluginUrl = $this.attr('href');
 
-            if ($selectedPlugin.is('.pluginInstalled')) {
-                alert('This plugin is already installed.');
-            } else {
-                $('#dialogInstallPluginName').text($selectedPlugin.find('.pluginName').text());
-                $('#dialogInstallPluginDetails').text($selectedPlugin.find('.pluginId').text() + ' | ' + $selectedPlugin.find('.pluginVersion').text());
+            $('#dialogInstallPluginName').text($selectedPlugin.find('.pluginName').text());
+            $('#dialogInstallPluginDetails').text($selectedPlugin.find('.pluginId').text() + ' | ' + $selectedPlugin.find('.pluginVersion').text());
 
-                $dialogInstall.dialog('open');
-            }
+            $dialogInstall.dialog('option', 'title', 'Install this Plugin?');
+            $dialogInstall.dialog('open');
+
+            return false;
+        });
+        $('#pageMenu').find('a.pluginUpdateLink').click(function () {
+            $this = $(this);
+
+            $selectedPlugin = $this.closest('.pluginItem');
+            $selectedPluginUrl = $this.attr('href');
+
+            $('#dialogInstallPluginName').text($selectedPlugin.find('.pluginName').text());
+            $('#dialogInstallPluginDetails').text($selectedPlugin.find('.pluginId').text() + ' | ' + $selectedPlugin.find('.pluginVersion').text());
+
+            $dialogInstall.dialog('option', 'title', 'Update this Plugin?');
+            $dialogInstall.dialog('open');
+
             return false;
         });
 

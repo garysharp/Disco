@@ -460,15 +460,19 @@ namespace Disco.Data.Configuration
                 return this.GetConfigurationValue<bool>(this.Scope, "UpdateBetaDeployment", false);
             }
         }
-        public string InstalledDatabaseVersion
+        public Version InstalledDatabaseVersion
         {
             get
             {
-                return this.GetConfigurationValue<string>(this.Scope, "InstalledDatabaseVersion", null);
+                var versionString = this.GetConfigurationValue<string>(this.Scope, "InstalledDatabaseVersion", null);
+                if (string.IsNullOrEmpty(versionString))
+                    return null;
+                else
+                    return Version.Parse(versionString);
             }
             set
             {
-                this.SetConfigurationValue<string>(this.Scope, "InstalledDatabaseVersion", value);
+                this.SetConfigurationValue<string>(this.Scope, "InstalledDatabaseVersion", value.ToString(4));
             }
         }
         #endregion

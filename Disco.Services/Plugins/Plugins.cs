@@ -10,6 +10,7 @@ using System.IO.Compression;
 using Disco.Models.BI.Interop.Community;
 using System.Web;
 using Newtonsoft.Json;
+using System.Threading;
 
 namespace Disco.Services.Plugins
 {
@@ -476,6 +477,27 @@ namespace Disco.Services.Plugins
             }
             return categoryDisplayNames;
         }
+
+        #region Restart App
+        private static object _restartTimerLock = new object();
+        private static Timer _restartTimer;
+        internal static void RestartApp(int DelayMilliseconds)
+        {
+            lock (_restartTimerLock)
+            {
+                if (_restartTimer != null)
+                {
+                    _restartTimer.Dispose();
+                }
+
+                _restartTimer = new Timer((state) =>
+                {
+                    HttpRuntime.UnloadAppDomain();
+                    //AppDomain.Unload(AppDomain.CurrentDomain);
+                }, null, DelayMilliseconds, Timeout.Infinite);
+            }
+        }
+        #endregion
 
         #region Plugin Referenced Assemblies Resolving
 

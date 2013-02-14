@@ -72,85 +72,102 @@
             $(function () {
                 // Uninstall
                 var uninstallUrl = '@(Url.Action(MVC.API.Plugin.Uninstall()))/';
-            var uninstallPlugin, uninstallPluginData, $dialogConfirm, uninstallPluginConfirm, uninstallPluginDataConfirm;
+                var uninstallPlugin, uninstallPluginData, $dialogConfirm, uninstallPluginConfirm, uninstallPluginDataConfirm;
 
-            var pluginId, pluginName, pluginUninstallData;
+                var pluginId, pluginName, pluginUninstallData;
 
-            var $dialog = $('#dialogUninstallPlugins').dialog({
-                resizable: false,
-                modal: true,
-                width: 350,
-                autoOpen: false,
-                buttons: {
-                    "Uninstall": function () {
-                        pluginId = uninstallPlugin.val();
-                        pluginName = uninstallPlugin.find('option:selected').text();
-                        pluginUninstallData = uninstallPluginData.is(':checked');
+                var $dialog = $('#dialogUninstallPlugins').dialog({
+                    resizable: false,
+                    modal: true,
+                    width: 350,
+                    autoOpen: false,
+                    buttons: {
+                        "Uninstall": function () {
+                            pluginId = uninstallPlugin.val();
+                            pluginName = uninstallPlugin.find('option:selected').text();
+                            pluginUninstallData = uninstallPluginData.is(':checked');
 
-                        if (!pluginId) {
-                            alert('Select a plugin to uninstall');
-                        } else {
-                            uninstallPluginConfirm.text(pluginName + ' [' + pluginId + ']');
-                            if (pluginUninstallData)
-                                uninstallPluginDataConfirm.show();
-                            else
-                                uninstallPluginDataConfirm.hide();
+                            if (!pluginId) {
+                                alert('Select a plugin to uninstall');
+                            } else {
+                                uninstallPluginConfirm.text(pluginName + ' [' + pluginId + ']');
+                                if (pluginUninstallData)
+                                    uninstallPluginDataConfirm.show();
+                                else
+                                    uninstallPluginDataConfirm.hide();
 
-                            $dialogConfirm.dialog('open');
+                                $dialogConfirm.dialog('open');
+                                $(this).dialog("close");
+                            }
+                        },
+                        Cancel: function () {
+                            uninstallPluginData.removeAttr('checked');
+                            $('#uninstallPluginDataAlert').hide();
                             $(this).dialog("close");
                         }
-                    },
-                    Cancel: function () {
-                        uninstallPluginData.removeAttr('checked');
-                        $('#uninstallPluginDataAlert').hide();
-                        $(this).dialog("close");
                     }
-                }
-            });
+                });
 
-            $dialogConfirm = $('#dialogUninstallPluginConfirm').dialog({
-                resizable: false,
-                modal: true,
-                width: 350,
-                autoOpen: false,
-                buttons: {
-                    "Confirm Uninstall": function () {
-                        var url = uninstallUrl + pluginId;
-                        if (pluginUninstallData)
-                            url += '?UninstallData=true'
-                        else
-                            url += '?UninstallData=false'
+                $dialogConfirm = $('#dialogUninstallPluginConfirm').dialog({
+                    resizable: false,
+                    modal: true,
+                    width: 350,
+                    autoOpen: false,
+                    buttons: {
+                        "Confirm Uninstall": function () {
+                            var url = uninstallUrl + pluginId;
+                            if (pluginUninstallData)
+                                url += '?UninstallData=true'
+                            else
+                                url += '?UninstallData=false'
 
-                        window.location.href = url;
-                        $(this).dialog("disable");
-                    },
-                    Cancel: function () {
-                        uninstallPluginData.removeAttr('checked');
-                        $('#uninstallPluginDataAlert').hide();
-                        $(this).dialog("close");
+                            window.location.href = url;
+                            $(this).dialog("disable");
+                        },
+                        Cancel: function () {
+                            uninstallPluginData.removeAttr('checked');
+                            $('#uninstallPluginDataAlert').hide();
+                            $(this).dialog("close");
+                        }
                     }
-                }
-            });
+                });
 
-            uninstallPlugin = $('#uninstallPlugin');
-            uninstallPluginData = $('#uninstallPluginData');
-            uninstallPluginConfirm = $('#uninstallPluginConfirm');
-            uninstallPluginDataConfirm = $('#uninstallPluginDataConfirm');
+                uninstallPlugin = $('#uninstallPlugin');
+                uninstallPluginData = $('#uninstallPluginData');
+                uninstallPluginConfirm = $('#uninstallPluginConfirm');
+                uninstallPluginDataConfirm = $('#uninstallPluginDataConfirm');
 
-            $('#buttonUninstall').click(function () {
-                $dialog.dialog('open');
-                return false;
-            });
+                $('#buttonUninstall').click(function () {
+                    $dialog.dialog('open');
+                    return false;
+                });
 
-            $('#uninstallPluginData').change(function () {
-                if ($(this).is(':checked')) {
-                    $('#uninstallPluginDataAlert').slideDown();
-                } else {
-                    $('#uninstallPluginDataAlert').slideUp();
-                }
+                $('#uninstallPluginData').change(function () {
+                    if ($(this).is(':checked')) {
+                        $('#uninstallPluginDataAlert').slideDown();
+                    } else {
+                        $('#uninstallPluginDataAlert').slideUp();
+                    }
+                });
             });
-        });
         </script>
+        
+                if (Model.PluginUpdates.Count > 0)
+                {
+        <div id="updateAvailableContainer">
+            <div>@(Model.PluginUpdates.Count) plugin update@(Model.PluginUpdates.Count == 1 ? " is" : "s are") available</div>
+            @Html.ActionLinkButton("Update Now", MVC.API.Plugin.UpdateAll())
+        </div>
+        <script>
+            (function () {
+                $(function () {
+                    var layout_PageHeading = $('#layout_PageHeading').height(80);
+                    var updateAvailableContainer = $('#updateAvailableContainer');
+                    updateAvailableContainer.appendTo(layout_PageHeading);
+                });
+            })();
+        </script>    
+                }
         }
     }
 </div>

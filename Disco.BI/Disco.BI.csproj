@@ -149,8 +149,6 @@
     <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryUpdateLastNetworkLogonDateJob.cs" />
     <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryUserAccountExtensions.cs" />
     <Compile Include="BI\Expressions\ExpressionCache.cs" />
-    <Compile Include="BI\Interop\Community\CommunityHelpers.cs" />
-    <Compile Include="BI\Interop\Community\PluginLibraryUpdateTask.cs" />
     <Compile Include="BI\Interop\Community\UpdateCheck.cs" />
     <Compile Include="BI\Interop\Community\UpdateCheckTask.cs" />
     <Compile Include="BI\Interop\MimeTypes.cs" />
@@ -221,7 +219,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2001/1/1" BuildVersion_BuildAction="ReBuild" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="True" />
+      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2001/1/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

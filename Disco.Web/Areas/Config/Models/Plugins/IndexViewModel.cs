@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Disco.Models.BI.Interop.Community;
 using Disco.Services.Plugins;
 using Disco.Services.Plugins.Features.Other;
 
@@ -10,6 +11,28 @@ namespace Disco.Web.Areas.Config.Models.Plugins
     public class IndexViewModel
     {
         public List<PluginManifest> PluginManifests { get; set; }
+        public PluginLibraryUpdateResponse Catalogue { get; set; }
+
+        private Dictionary<PluginManifest, PluginLibraryItem> _PluginUpdates;
+        public Dictionary<PluginManifest, PluginLibraryItem> PluginUpdates
+        {
+            get
+            {
+                if (_PluginUpdates == null)
+                {
+                    if (Catalogue == null || Catalogue.Plugins == null || Catalogue.Plugins.Count == 0 ||
+                        PluginManifests == null || PluginManifests.Count == 0)
+                    {
+                        _PluginUpdates = new Dictionary<PluginManifest, PluginLibraryItem>(); // No Updates
+                    }
+                    else
+                    {
+                        _PluginUpdates = PluginManifests.Join((IEnumerable<PluginLibraryItem>)Catalogue.Plugins, manifest => manifest.Id, update => update.Id, (manifest, update) => new Tuple<PluginManifest, PluginLibraryItem>(manifest, update)).Where(i => Version.Parse(i.Item2.LatestVersion) > i.Item1.Version).ToDictionary(i => i.Item1, i => i.Item2);
+                    }
+                }
+                return _PluginUpdates;
+            }
+        }
 
         public List<Tuple<Type, List<PluginManifest>>> PluginManifestsByType
         {

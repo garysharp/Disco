@@ -906,6 +906,7 @@ a:active {
   color: #335a87;
 }
 a.button {
+  display: inline-block;
   padding: 4px 10px;
   margin: 2px;
   border: 1px solid #875a33;
@@ -914,11 +915,11 @@ a.button {
   font-weight: bold;
   text-transform: uppercase;
   cursor: pointer;
-  line-height: 2.2em;
   white-space: nowrap;
   text-decoration: none;
 }
-a.button[disabled] {
+a.button[disabled],
+a.button.disabled {
   background: #9e9e9e;
   border: 1px solid #696969;
   cursor: default;
@@ -1357,7 +1358,8 @@ input[type="submit"] {
   padding: 5px;
 }
 input[type="submit"].button {
-  padding: 4px 10px;
+  font-size: 12px;
+  padding: 6px 10px 4px 10px;
   margin: 2px;
   border: 1px solid #875a33;
   background: #db761d;
@@ -1365,7 +1367,6 @@ input[type="submit"].button {
   font-weight: bold;
   text-transform: uppercase;
   cursor: pointer;
-  line-height: 1.2em;
 }
 input[type="submit"].button:hover {
   border: 1px solid #696969;

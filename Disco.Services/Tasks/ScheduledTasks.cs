@@ -16,7 +16,7 @@ namespace Disco.Services.Tasks
         private static object _RunningTasksLock = new object();
         private static List<ScheduledTaskStatus> _RunningTasks = new List<ScheduledTaskStatus>();
 
-        public static void InitalizeScheduledTasks(DiscoDataContext dbContext, ISchedulerFactory SchedulerFactory)
+        public static void InitalizeScheduledTasks(DiscoDataContext dbContext, ISchedulerFactory SchedulerFactory, bool InitiallySchedule)
         {
             ScheduledTasksLog.LogInitializingScheduledTasks();
 
@@ -28,24 +28,27 @@ namespace Disco.Services.Tasks
                 // Scheduled Cleanup
                 ScheduledTaskCleanup.Schedule(_TaskScheduler);
 
-                // Discover DiscoScheduledTask
-                var appDomain = AppDomain.CurrentDomain;
-
-                var scheduledTaskTypes = (from a in appDomain.GetAssemblies()
-                                          where !a.GlobalAssemblyCache && !a.IsDynamic
-                                          from type in a.GetTypes()
-                                          where typeof(ScheduledTask).IsAssignableFrom(type) && !type.IsAbstract
-                                          select type);
-                foreach (Type scheduledTaskType in scheduledTaskTypes)
+                if (InitiallySchedule)
                 {
-                    ScheduledTask instance = (ScheduledTask)Activator.CreateInstance(scheduledTaskType);
-                    try
+                    // Discover DiscoScheduledTask
+                    var appDomain = AppDomain.CurrentDomain;
+
+                    var scheduledTaskTypes = (from a in appDomain.GetAssemblies()
+                                              where !a.GlobalAssemblyCache && !a.IsDynamic
+                                              from type in a.GetTypes()
+                                              where typeof(ScheduledTask).IsAssignableFrom(type) && !type.IsAbstract
+                                              select type);
+                    foreach (Type scheduledTaskType in scheduledTaskTypes)
                     {
-                        instance.InitalizeScheduledTask(dbContext);
-                    }
-                    catch (Exception ex)
-                    {
-                        ScheduledTasksLog.LogInitializeException(ex, scheduledTaskType);
+                        ScheduledTask instance = (ScheduledTask)Activator.CreateInstance(scheduledTaskType);
+                        try
+                        {
+                            instance.InitalizeScheduledTask(dbContext);
+                        }
+                        catch (Exception ex)
+                        {
+                            ScheduledTasksLog.LogInitializeException(ex, scheduledTaskType);
+                        }
                     }
                 }
             }

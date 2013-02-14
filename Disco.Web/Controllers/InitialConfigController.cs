@@ -20,7 +20,7 @@ namespace Disco.Web.Controllers
         #region Determine Server Is Core SKU
         // Added 2012-11-01 G#
         // http://www.discoict.com.au/forum/support/2012/10/install-on-server-core.aspx
-        private static Lazy<bool> ServerIsCoreSKU = new Lazy<bool>(() =>
+        internal static Lazy<bool> ServerIsCoreSKU = new Lazy<bool>(() =>
         {
             try
             {

@@ -365,51 +365,110 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
             
             #line default
             #line hidden
-WriteLiteral("/\';\r\n            var uninstallPlugin, uninstallPluginData, $dialogConfirm, uninst" +
-"allPluginConfirm, uninstallPluginDataConfirm;\r\n\r\n            var pluginId, plugi" +
-"nName, pluginUninstallData;\r\n\r\n            var $dialog = $(\'#dialogUninstallPlug" +
-"ins\').dialog({\r\n                resizable: false,\r\n                modal: true,\r" +
-"\n                width: 350,\r\n                autoOpen: false,\r\n                " +
-"buttons: {\r\n                    \"Uninstall\": function () {\r\n                    " +
-"    pluginId = uninstallPlugin.val();\r\n                        pluginName = unin" +
-"stallPlugin.find(\'option:selected\').text();\r\n                        pluginUnins" +
-"tallData = uninstallPluginData.is(\':checked\');\r\n\r\n                        if (!p" +
-"luginId) {\r\n                            alert(\'Select a plugin to uninstall\');\r\n" +
-"                        } else {\r\n                            uninstallPluginCon" +
-"firm.text(pluginName + \' [\' + pluginId + \']\');\r\n                            if (" +
-"pluginUninstallData)\r\n                                uninstallPluginDataConfirm" +
-".show();\r\n                            else\r\n                                unin" +
-"stallPluginDataConfirm.hide();\r\n\r\n                            $dialogConfirm.dia" +
-"log(\'open\');\r\n                            $(this).dialog(\"close\");\r\n            " +
-"            }\r\n                    },\r\n                    Cancel: function () {" +
-"\r\n                        uninstallPluginData.removeAttr(\'checked\');\r\n          " +
-"              $(\'#uninstallPluginDataAlert\').hide();\r\n                        $(" +
-"this).dialog(\"close\");\r\n                    }\r\n                }\r\n            })" +
-";\r\n\r\n            $dialogConfirm = $(\'#dialogUninstallPluginConfirm\').dialog({\r\n " +
-"               resizable: false,\r\n                modal: true,\r\n                " +
-"width: 350,\r\n                autoOpen: false,\r\n                buttons: {\r\n     " +
-"               \"Confirm Uninstall\": function () {\r\n                        var u" +
-"rl = uninstallUrl + pluginId;\r\n                        if (pluginUninstallData)\r" +
-"\n                            url += \'?UninstallData=true\'\r\n                     " +
-"   else\r\n                            url += \'?UninstallData=false\'\r\n\r\n          " +
-"              window.location.href = url;\r\n                        $(this).dialo" +
-"g(\"disable\");\r\n                    },\r\n                    Cancel: function () {" +
-"\r\n                        uninstallPluginData.removeAttr(\'checked\');\r\n          " +
-"              $(\'#uninstallPluginDataAlert\').hide();\r\n                        $(" +
-"this).dialog(\"close\");\r\n                    }\r\n                }\r\n            })" +
-";\r\n\r\n            uninstallPlugin = $(\'#uninstallPlugin\');\r\n            uninstall" +
-"PluginData = $(\'#uninstallPluginData\');\r\n            uninstallPluginConfirm = $(" +
-"\'#uninstallPluginConfirm\');\r\n            uninstallPluginDataConfirm = $(\'#uninst" +
-"allPluginDataConfirm\');\r\n\r\n            $(\'#buttonUninstall\').click(function () {" +
-"\r\n                $dialog.dialog(\'open\');\r\n                return false;\r\n      " +
-"      });\r\n\r\n            $(\'#uninstallPluginData\').change(function () {\r\n       " +
-"         if ($(this).is(\':checked\')) {\r\n                    $(\'#uninstallPluginD" +
-"ataAlert\').slideDown();\r\n                } else {\r\n                    $(\'#unins" +
-"tallPluginDataAlert\').slideUp();\r\n                }\r\n            });\r\n        })" +
-";\r\n        </script>\r\n");
+WriteLiteral("/\';\r\n                var uninstallPlugin, uninstallPluginData, $dialogConfirm, un" +
+"installPluginConfirm, uninstallPluginDataConfirm;\r\n\r\n                var pluginI" +
+"d, pluginName, pluginUninstallData;\r\n\r\n                var $dialog = $(\'#dialogU" +
+"ninstallPlugins\').dialog({\r\n                    resizable: false,\r\n             " +
+"       modal: true,\r\n                    width: 350,\r\n                    autoOp" +
+"en: false,\r\n                    buttons: {\r\n                        \"Uninstall\":" +
+" function () {\r\n                            pluginId = uninstallPlugin.val();\r\n " +
+"                           pluginName = uninstallPlugin.find(\'option:selected\')." +
+"text();\r\n                            pluginUninstallData = uninstallPluginData.i" +
+"s(\':checked\');\r\n\r\n                            if (!pluginId) {\r\n                " +
+"                alert(\'Select a plugin to uninstall\');\r\n                        " +
+"    } else {\r\n                                uninstallPluginConfirm.text(plugin" +
+"Name + \' [\' + pluginId + \']\');\r\n                                if (pluginUninst" +
+"allData)\r\n                                    uninstallPluginDataConfirm.show();" +
+"\r\n                                else\r\n                                    unin" +
+"stallPluginDataConfirm.hide();\r\n\r\n                                $dialogConfirm" +
+".dialog(\'open\');\r\n                                $(this).dialog(\"close\");\r\n    " +
+"                        }\r\n                        },\r\n                        C" +
+"ancel: function () {\r\n                            uninstallPluginData.removeAttr" +
+"(\'checked\');\r\n                            $(\'#uninstallPluginDataAlert\').hide();" +
+"\r\n                            $(this).dialog(\"close\");\r\n                        " +
+"}\r\n                    }\r\n                });\r\n\r\n                $dialogConfirm " +
+"= $(\'#dialogUninstallPluginConfirm\').dialog({\r\n                    resizable: fa" +
+"lse,\r\n                    modal: true,\r\n                    width: 350,\r\n       " +
+"             autoOpen: false,\r\n                    buttons: {\r\n                 " +
+"       \"Confirm Uninstall\": function () {\r\n                            var url =" +
+" uninstallUrl + pluginId;\r\n                            if (pluginUninstallData)\r" +
+"\n                                url += \'?UninstallData=true\'\r\n                 " +
+"           else\r\n                                url += \'?UninstallData=false\'\r\n" +
+"\r\n                            window.location.href = url;\r\n                     " +
+"       $(this).dialog(\"disable\");\r\n                        },\r\n                 " +
+"       Cancel: function () {\r\n                            uninstallPluginData.re" +
+"moveAttr(\'checked\');\r\n                            $(\'#uninstallPluginDataAlert\')" +
+".hide();\r\n                            $(this).dialog(\"close\");\r\n                " +
+"        }\r\n                    }\r\n                });\r\n\r\n                uninsta" +
+"llPlugin = $(\'#uninstallPlugin\');\r\n                uninstallPluginData = $(\'#uni" +
+"nstallPluginData\');\r\n                uninstallPluginConfirm = $(\'#uninstallPlugi" +
+"nConfirm\');\r\n                uninstallPluginDataConfirm = $(\'#uninstallPluginDat" +
+"aConfirm\');\r\n\r\n                $(\'#buttonUninstall\').click(function () {\r\n      " +
+"              $dialog.dialog(\'open\');\r\n                    return false;\r\n      " +
+"          });\r\n\r\n                $(\'#uninstallPluginData\').change(function () {\r" +
+"\n                    if ($(this).is(\':checked\')) {\r\n                        $(\'#" +
+"uninstallPluginDataAlert\').slideDown();\r\n                    } else {\r\n         " +
+"               $(\'#uninstallPluginDataAlert\').slideUp();\r\n                    }\r" +
+"\n                });\r\n            });\r\n        </script>\r\n");
 
             
             #line 154 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+        
+                if (Model.PluginUpdates.Count > 0)
+                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <div");
+
+WriteLiteral(" id=\"updateAvailableContainer\"");
+
+WriteLiteral(">\r\n            <div>");
+
+            
+            #line 158 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+             Write(Model.PluginUpdates.Count);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" plugin update");
+
+            
+            #line 158 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+                                                       Write(Model.PluginUpdates.Count == 1 ? " is" : "s are");
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" available</div>\r\n");
+
+WriteLiteral("            ");
+
+            
+            #line 159 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+       Write(Html.ActionLinkButton("Update Now", MVC.API.Plugin.UpdateAll()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n        </div>\r\n");
+
+WriteLiteral(@"        <script>
+            (function () {
+                $(function () {
+                    var layout_PageHeading = $('#layout_PageHeading').height(80);
+                    var updateAvailableContainer = $('#updateAvailableContainer');
+                    updateAvailableContainer.appendTo(layout_PageHeading);
+                });
+            })();
+        </script>    
+");
+
+            
+            #line 170 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+                }
         }
     
             
@@ -422,13 +481,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 158 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 175 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 158 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 175 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
      if (Model.PluginManifests.Count > 0)
     { 
         
@@ -436,14 +495,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 160 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 177 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
    Write(Html.ActionLinkButton("Uninstall Plugins", MVC.Config.Plugins.Index(), "buttonUninstall"));
 
             
             #line default
             #line hidden
             
-            #line 160 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 177 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                                                                                                   
     }
 
@@ -453,7 +512,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 162 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 179 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
 Write(Html.ActionLinkButton("Install Plugins", MVC.Config.Plugins.Install()));
 
             

@@ -55,7 +55,7 @@ namespace Disco.BI.Interop.Community
 
         public override void InitalizeScheduledTask(Data.Repository.DiscoDataContext dbContext)
         {
-            // ActiveDirectoryUpdateLastNetworkLogonDateJob @ 11:30pm
+            // Random time between midday and midnight.
             var rnd = new Random();
 
             var rndHour = rnd.Next(12, 23);
