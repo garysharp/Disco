@@ -3,7 +3,7 @@ using System.Web.Mvc;
 using System.Web.WebPages;
 using RazorGenerator.Mvc;
 
-[assembly: WebActivator.PostApplicationStartMethod(typeof(Disco.Web.App_Start.RazorGeneratorMvcStart), "Start")]
+[assembly: WebActivatorEx.PostApplicationStartMethod(typeof(Disco.Web.App_Start.RazorGeneratorMvcStart), "Start")]
 
 namespace Disco.Web.App_Start {
     public static class RazorGeneratorMvcStart {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
-[assembly: WebActivator.PreApplicationStartMethod(typeof(Disco.Web.Extensions.MvcExtensions.Bundles.BundleModule), "PreApplicationStart")]
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Disco.Web.Extensions.MvcExtensions.Bundles.BundleModule), "PreApplicationStart")]
 
 namespace Disco.Web.Extensions.MvcExtensions.Bundles
 {

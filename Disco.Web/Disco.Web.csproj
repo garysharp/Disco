@@ -55,9 +55,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\Libraries\Quartz\Quartz.dll</HintPath>
     </Reference>
-    <Reference Include="RazorGenerator.Mvc, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="RazorGenerator.Mvc, Version=1.5.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RazorGenerator.Mvc.1.5.0.0\lib\net40\RazorGenerator.Mvc.dll</HintPath>
+      <HintPath>..\packages\RazorGenerator.Mvc.1.5.4.0\lib\net40\RazorGenerator.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="SignalR">
       <HintPath>..\packages\SignalR.Server.0.5.3\lib\net40\SignalR.dll</HintPath>
@@ -143,12 +143,12 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="T4MVCExtensions">
-      <HintPath>..\packages\T4MVCExtensions.3.2.0\lib\net40\T4MVCExtensions.dll</HintPath>
-    </Reference>
-    <Reference Include="WebActivator, Version=1.5.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="T4MVCExtensions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
+      <HintPath>..\packages\T4MVCExtensions.3.5.0\lib\net40\T4MVCExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivatorEx">
+      <HintPath>..\packages\WebActivatorEx.2.0.1\lib\net40\WebActivatorEx.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -479,6 +479,7 @@
     <Compile Include="Models\Job\ShowModel.cs" />
     <Compile Include="Models\Job\WarrantyProviderJobDetailsModel.cs" />
     <Compile Include="Models\Search\QueryModel.cs" />
+    <Compile Include="Models\Update\IndexModel.cs" />
     <Compile Include="Models\User\ShowModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="T4MVC.cs">
@@ -711,6 +712,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>_SearchDialog.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Update\Index.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Index.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="Views\User\Index.generated.cs">
       <DependentUpon>Index.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -754,6 +760,7 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Install.generated.cs</LastGenOutput>
     </None>
+    <Content Include="bin\Disco1.1-1.2PluginMigration.zip" />
     <None Include="ClientSource\Scripts\Core.min.js.map">
       <DependentUpon>Core.js.bundle</DependentUpon>
     </None>
@@ -1104,9 +1111,24 @@
     <Content Include="ClientSource\Style\jQueryUI\dynatree\ui.dynatree.min.css">
       <DependentUpon>ui.dynatree.css</DependentUpon>
     </Content>
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_flat_10_000000_40x100.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_222222_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_228ef1_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_ef8c08_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_ffd27a_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_ffffff_256x240.png" />
     <None Include="ClientSource\Style\Public\UserHeldDevices.css">
       <DependentUpon>UserHeldDevices.less</DependentUpon>
     </None>
+    <None Include="ClientSource\Style\jQueryUI\images\animated-overlay.gif" />
     <Content Include="ClientSource\Style\jQueryUI\jquery-ui.min.css">
       <DependentUpon>jquery-ui.css</DependentUpon>
     </Content>
@@ -1215,23 +1237,52 @@
     <Content Include="ClientSource\Style\User.min.css">
       <DependentUpon>User.less</DependentUpon>
     </Content>
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_flat_10_000000_40x100.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_100_f6f6f6_1x400.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_100_fdf5ce_1x400.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_222222_256x240.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_228ef1_256x240.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_ef8c08_256x240.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_ffd27a_256x240.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_ffffff_256x240.png" />
     <None Include="ClientSource\Style\jQueryUI\jquery-ui.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <None Include="ClientSource\Style\InitialConfig.less" />
+    <None Include="ClientSource\Style\Dialog.less" />
+    <None Include="ClientSource\Scripts\Core.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Disco-CreateJob.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\tinymce.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Timeline.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Silverlight.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Shadowbox.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Knockout.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\jQuery-SignalR.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\jQuery-Isotope.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Highcharts.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.js.bundle" />
+    <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.min.js.map">
+      <DependentUpon>Disco-AjaxHelperIcons.js.bundle</DependentUpon>
+    </None>
+    <None Include="ClientSource\Style\BundleSite.css.bundle" />
+    <None Include="ClientSource\Style\Timeline.css.bundle" />
+    <None Include="Properties\PublishProfiles\Debug Installer.pubxml" />
+    <None Include="Properties\PublishProfiles\Installer.pubxml" />
+    <None Include="App_Code\AjaxHelpers.cshtml">
+      <CustomToolNamespace>Disco.Web</CustomToolNamespace>
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>AjaxHelpers.generated.cs</LastGenOutput>
+    </None>
+    <None Include="App_Code\CommonHelpers.cshtml">
+      <CustomToolNamespace>Disco.Web</CustomToolNamespace>
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>CommonHelpers.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Properties\PublishProfiles\HADES3.pubxml" />
+    <None Include="ClientSource\Scripts\Core\jquery-1.9.1.js" />
+    <None Include="ClientSource\Scripts\Core\jquery-ui-1.10.0.js" />
+    <None Include="ClientSource\Scripts\Core\jquery.validate.js" />
+    <None Include="ClientSource\Scripts\Core\jquery.validate.unobtrusive.js" />
+    <None Include="ClientSource\Scripts\Modules\Knockout\knockout-2.2.1.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce\jquery.tinymce.js" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\langs\en.js" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\license.txt" />
@@ -1296,56 +1347,17 @@
     <Content Include="ClientSource\Scripts\Modules\tinymce\themes\simple\skins\o2k7\ui.css" />
     <None Include="ClientSource\Scripts\Modules\tinymce\tiny_mce.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce\tiny_mce_jquery.js" />
-    <None Include="ClientSource\Scripts\Modules\tinymce\tiny_mce_popup.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\tiny_mce_popup.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce\tiny_mce_src.js" />
-    <None Include="ClientSource\Scripts\Modules\tinymce\utils\editable_selects.js" />
-    <None Include="ClientSource\Scripts\Modules\tinymce\utils\form_utils.js" />
-    <None Include="ClientSource\Scripts\Modules\tinymce\utils\mctabs.js" />
-    <None Include="ClientSource\Scripts\Modules\tinymce\utils\validate.js" />
-    <None Include="ClientSource\Style\InitialConfig.less" />
-    <Content Include="ClientBin\DataStoreTemplate.zip" />
-    <None Include="ClientSource\Style\Dialog.less" />
-    <None Include="ClientSource\Scripts\Core.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Disco-CreateJob.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\tinymce.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Timeline.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Silverlight.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Shadowbox.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Knockout.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\jQuery-SignalR.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\jQuery-Isotope.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Highcharts.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.min.js.map">
-      <DependentUpon>Disco-AjaxHelperIcons.js.bundle</DependentUpon>
-    </None>
-    <None Include="ClientSource\Style\BundleSite.css.bundle" />
-    <None Include="ClientSource\Style\Timeline.css.bundle" />
-    <None Include="Properties\PublishProfiles\Debug Installer.pubxml" />
-    <None Include="Properties\PublishProfiles\Installer.pubxml" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\utils\editable_selects.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\utils\form_utils.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\utils\mctabs.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\utils\validate.js" />
     <None Include="T4MVC.tt.hooks.t4" />
-    <None Include="T4MVC.tt">
+    <Content Include="T4MVC.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4MVC.cs</LastGenOutput>
-    </None>
-    <None Include="App_Code\AjaxHelpers.cshtml">
-      <CustomToolNamespace>Disco.Web</CustomToolNamespace>
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>AjaxHelpers.generated.cs</LastGenOutput>
-    </None>
-    <None Include="App_Code\CommonHelpers.cshtml">
-      <CustomToolNamespace>Disco.Web</CustomToolNamespace>
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>CommonHelpers.generated.cs</LastGenOutput>
-    </None>
-    <None Include="Properties\PublishProfiles\HADES3.pubxml" />
+    </Content>
     <None Include="Views\Device\AddOffline.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>AddOffline.generated.cs</LastGenOutput>
@@ -1693,6 +1705,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_SearchDialog.generated.cs</LastGenOutput>
     </None>
+    <None Include="Views\Update\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
     <None Include="Views\User\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
@@ -1734,13 +1750,8 @@
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\README_ENU.txt" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\msvcr90.dll" />
     <None Include="ClientSource\Scripts\Modules\jQuery-SignalR\jquery.signalR-0.5.3.js" />
-    <None Include="ClientSource\Scripts\Core\jquery.validate.unobtrusive.js" />
     <None Include="ClientSource\Scripts\Core\modernizr-2.6.2.js" />
     <None Include="T4MVC.tt.settings.xml" />
-    <None Include="ClientSource\Scripts\Modules\Knockout\knockout-2.2.0.js" />
-    <None Include="ClientSource\Scripts\Core\jquery-1.8.3.js" />
-    <None Include="ClientSource\Scripts\Core\jquery-ui-1.9.2.js" />
-    <None Include="ClientSource\Scripts\Core\jquery.validate.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1770,6 +1781,7 @@
   <ItemGroup>
     <Folder Include="Areas\API\Models\WirelessCertificate\" />
     <Folder Include="Areas\Services\Models\" />
+    <Folder Include="scripts\tinymce\" />
     <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
@@ -1823,7 +1835,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2001/1/1" />
+      <UserProperties BuildVersion_StartDate="2001/1/1" BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_DetectChanges="False" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
