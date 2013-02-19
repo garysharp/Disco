@@ -104,13 +104,13 @@
                     </th>
                     <td class="value">
                         @Html.DropDownListFor(m => m.Device.DeviceBatchId, Model.DeviceBatches)
-                        @AjaxHelpers.AjaxLoader() <span id="deviceBatchEdit" class="icon16" title="Edit">
-                        </span>
+                        @AjaxHelpers.AjaxLoader() <span id="deviceBatchDetails" class="icon16" title="Batch Details"></span>
                         <script type="text/javascript">
                             $(function () {
                                 var $DeviceBatchId = $('#Device_DeviceBatchId');
                                 var $DeviceBatchDetails = $('#deviceBatchDetails');
-                                var $DeviceBatchEdit = $('#deviceBatchEdit');
+                                var $DeviceBatchSummary = $('#deviceBatchSummary');
+                                var initUpdate = false;
                                 var jsonDate = function (json, unknownValue) {
                                     if (json && json.indexOf('') == 0) {
                                         return $.datepicker.formatDate('yy-mm-dd', new Date(parseInt(json.substr(6, json.length - 8))));
@@ -121,35 +121,41 @@
                                     $.getJSON('@(Url.Action(MVC.API.DeviceBatch.Index()))/' + deviceBatchId, function (response, result) {
                                         if (result == 'success') {
                                             if (response.Supplier)
-                                                $DeviceBatchDetails.find('.supplier').text(response.Supplier);
+                                                $DeviceBatchSummary.find('.supplier').text(response.Supplier);
                                             else
-                                                $DeviceBatchDetails.find('.supplier').text('Unknown');
+                                                $DeviceBatchSummary.find('.supplier').text('Unknown');
 
-                                            $DeviceBatchDetails.find('.purchaseDate').text(jsonDate(response.PurchaseDate, 'Unknown'));
-                                            $DeviceBatchDetails.find('.warrantyValidUntil').text(jsonDate(response.WarrantyValidUntil, 'Unknown'));
+                                            $DeviceBatchSummary.find('.purchaseDate').text(jsonDate(response.PurchaseDate, 'Unknown'));
+                                            $DeviceBatchSummary.find('.warrantyValidUntil').text(jsonDate(response.WarrantyValidUntil, 'Unknown'));
 
                                             if (response.InsuranceSupplier)
-                                                $DeviceBatchDetails.find('.insuranceSupplier').text(response.InsuranceSupplier);
+                                                $DeviceBatchSummary.find('.insuranceSupplier').text(response.InsuranceSupplier);
                                             else
-                                                $DeviceBatchDetails.find('.insuranceSupplier').text('Unknown');
+                                                $DeviceBatchSummary.find('.insuranceSupplier').text('Unknown');
 
-                                            $DeviceBatchDetails.find('.insuredUntil').text(jsonDate(response.InsuredUntil, 'Unknown'));
+                                            $DeviceBatchSummary.find('.insuredUntil').text(jsonDate(response.InsuredUntil, 'Unknown'));
 
-                                            $DeviceBatchDetails.slideDown('fast');
-                                            $DeviceBatchEdit.fadeIn();
+                                            if (initUpdate){
+                                                $DeviceBatchSummary.show();
+                                                $DeviceBatchDetails.show();
+                                                initUpdate = false;
+                                            }else{
+                                                $DeviceBatchSummary.slideDown('fast');
+                                                $DeviceBatchDetails.fadeIn();
+                                            }
                                         } else {
                                             alert('Unable to load Device Batch details:\n' + response);
                                         }
                                     });
                                 };
-                                $DeviceBatchEdit.click(function () {
+                                $DeviceBatchDetails.click(function () {
                                     window.location.href = '@(Url.Action(MVC.Config.DeviceBatch.Index(null)))/' + $DeviceBatchId.val();
                                 });
                                 $DeviceBatchId.change(function () {
                                     var $this = $(this);
                                     var $ajaxLoading = $this.next('.ajaxLoading').show();
+                                    $DeviceBatchSummary.hide();
                                     $DeviceBatchDetails.hide();
-                                    $DeviceBatchEdit.hide();
                                     var data = { DeviceBatchId: $this.val() };
                                     $.getJSON('@(Url.Action(MVC.API.Device.UpdateDeviceBatchId(Model.Device.SerialNumber)))', data, function (response, result) {
                                         if (result != 'success' || response != 'OK') {
@@ -162,12 +168,14 @@
                                         }
                                     });
                                 });
-                                $DeviceBatchEdit.hide();
-                                if ($DeviceBatchId.val())
+                                $DeviceBatchSummary.hide();
+                                if ($DeviceBatchId.val()){
+                                    initUpdate = true;
                                     updateDetails($DeviceBatchId.val());
+                                }
                             });
                         </script>
-                        <div id="deviceBatchDetails">
+                        <div id="deviceBatchSummary">
                             <table class="sub">
                                 <tr>
                                     <th style="width: 50px">
@@ -209,7 +217,7 @@
                         else
                         { 
                             @Html.DropDownListFor(m => m.Device.DeviceProfileId, Model.DeviceProfiles.ToSelectListItems(Model.Device.DeviceProfile))
-                            @AjaxHelpers.AjaxLoader()
+                            @AjaxHelpers.AjaxLoader()<span id="deviceProfileDetails" class="icon16" title="Profile Details"></span>
                             <script type="text/javascript">
                                 $(function () {
                                     $('#Device_DeviceProfileId').change(function () {
@@ -224,6 +232,9 @@
                                                 $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
                                             }
                                         });
+                                    });
+                                    $('#deviceProfileDetails').click(function(){
+                                        window.location.href = '@(Url.Action(MVC.Config.DeviceProfile.Index(null)))/' + $('#Device_DeviceProfileId').val();
                                     });
                                 });
                             </script>
@@ -338,7 +349,7 @@
                                             return false;
                                         }
                                     })
-                                    .data('autocomplete')._renderItem = function (ul, item) {
+                                    .data('ui-autocomplete')._renderItem = function (ul, item) {
                                         return $("<li></li>")
                                             .data("item.autocomplete", item)
                                             .append("<a><strong>" + item.DisplayName + "</strong><br>" + item.Id + " (" + item.Type + ")</a>")

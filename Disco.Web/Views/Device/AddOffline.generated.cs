@@ -280,7 +280,7 @@ WriteLiteral(@"',
                             $AssignedUserId.val(ui.item.Id).blur();
                             return false;
                         }
-                    }).data('autocomplete')._renderItem = function (ul, item) {
+                    }).data('ui-autocomplete')._renderItem = function (ul, item) {
                         return $(""<li></li>"")
                         .data(""item.autocomplete"", item)
                         .append(""<a><strong>"" + item.DisplayName + ""</strong><br>"" + item.Id + "" ("" + item.Type + "")</a>"")

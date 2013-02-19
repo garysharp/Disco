@@ -538,59 +538,59 @@ WriteLiteral(">\r\n        $(function () {\r\n            var discoDialogMethods
 "          //#endregion\r\n\r\n            //#region DeviceHeld\r\n            var $dev" +
 "iceHeld = $(\'#DeviceHeld\');\r\n\r\n            if ($(\'#DeviceSerialNumber\').val()) {" +
 "\r\n                switch ($deviceHeld.val()) {\r\n                    case \'True\':" +
-"\r\n                        $(\'#createJob_DeviceHeld\').attr(\'checked\', \'checked\');" +
-"\r\n                        $(\'#createJob_DeviceNotHeld\').attr(\'checked\', null);\r\n" +
-"                        break;\r\n                    case \'False\':\r\n             " +
-"           $(\'#createJob_DeviceHeld\').attr(\'checked\', null);\r\n                  " +
-"      $(\'#createJob_DeviceNotHeld\').attr(\'checked\', \'checked\');\r\n               " +
-"         break;\r\n                    default:\r\n                        $(\'#creat" +
-"eJob_DeviceHeld\').attr(\'checked\', null);\r\n                        $(\'#createJob_" +
-"DeviceNotHeld\').attr(\'checked\', null);\r\n                        break;\r\n        " +
-"        }\r\n                $(\'#createJob_DeviceHeldContainer\').find(\'input[type=" +
-"\"radio\"]\').change(function () {\r\n                    // Update Hidden Field with" +
-" Boolean Value\r\n                    // Set DeviceHeld\r\n                    var d" +
-"eviceHeldValue = \'\';\r\n                    if ($(\'#createJob_DeviceHeld\').is(\':ch" +
-"ecked\'))\r\n                        deviceHeldValue = \'True\';\r\n                   " +
-" if ($(\'#createJob_DeviceNotHeld\').is(\':checked\'))\r\n                        devi" +
-"ceHeldValue = \'False\';\r\n                    $deviceHeld.val(deviceHeldValue).cha" +
-"nge();\r\n                });\r\n            } else {\r\n                // No Device " +
-"Associated\r\n                $deviceHeld.val(\'False\');\r\n                $(\'#creat" +
-"eJob_DeviceHeldContainer\').hide();\r\n            }\r\n            //#endregion\r\n\r\n " +
-"           //#region QuickLog\r\n            var $quickLog = $(\'#createJob_QuickLo" +
-"g\');\r\n            var $quickLogContainer = $(\'#createJob_QuickLogContainer\');\r\n " +
-"           var $quickLogTaskTimeContainer = $(\'#createJob_QuickLogTaskTimeContai" +
-"ner\');\r\n            var $quickLogTaskTimes = $quickLogTaskTimeContainer.find(\'in" +
-"put[type=\"radio\"]\');\r\n            var $quickLogTaskTimeOtherMinutes = $(\'#create" +
-"Job_TaskTimeOtherMinutes\');\r\n            var $quickLogTaskTimeValidationMessage " +
-"= $quickLogTaskTimeContainer.find(\'[data-valmsg-for=\"QuickLogTaskTimeMinutes\"]\')" +
-";\r\n\r\n            $deviceHeld.change(validateQuickLog);\r\n            $jobTypes.ch" +
-"ange(validateQuickLog);\r\n            validateQuickLog();\r\n\r\n            function" +
-" validateQuickLog() {\r\n                var quickLogAllowed = false;\r\n\r\n         " +
-"       if ($deviceHeld.val() === \'True\') {\r\n                    quickLogAllowed " +
-"= false;\r\n                } else {\r\n                    var selectedType = $jobT" +
-"ypes.filter(\':checked\').val();\r\n                    switch (selectedType) {\r\n   " +
-"                     case \'HMisc\':\r\n                        case \'SApp\':\r\n      " +
-"                  case \'SImg\':\r\n                        case \'SOS\':\r\n           " +
-"             case \'UMgmt\':\r\n                            quickLogAllowed = true;\r" +
-"\n                            break;\r\n                        default:\r\n         " +
-"                   quickLogAllowed = false;\r\n                            break;\r" +
-"\n                    }\r\n                }\r\n\r\n                if (quickLogAllowed" +
-") {\r\n                    $quickLogContainer.slideDown();\r\n                } else" +
-" {\r\n                    if (init)\r\n                        $quickLogContainer.hi" +
-"de();\r\n                    else\r\n                        $quickLogContainer.slid" +
-"eUp();\r\n                    $quickLog.attr(\'checked\', null).change();\r\n         " +
-"       }\r\n            }\r\n\r\n            $quickLog.change(function () {\r\n         " +
-"       if ($(this).is(\':checked\')) {\r\n                    $quickLogTaskTimeConta" +
-"iner.slideDown();\r\n                } else {\r\n                    $quickLogTaskTi" +
-"meContainer.slideUp();\r\n                }\r\n            });\r\n\r\n            $quick" +
-"LogTaskTimes.change(function () {\r\n                if ($quickLogTaskTimes.filter" +
-"(\':checked\').val() === \"\") {\r\n                    $(\'#createJob_TaskTimeOtherMin" +
-"utesContainer\').show();\r\n                    $quickLogTaskTimeOtherMinutes.attr(" +
-"\'disabled\', null).focus().select();\r\n                } else {\r\n                 " +
-"   $(\'#createJob_TaskTimeOtherMinutesContainer\').hide();\r\n                    $q" +
-"uickLogTaskTimeOtherMinutes.attr(\'disabled\', \'disabled\');\r\n                }\r\n  " +
-"          });\r\n            //#endregion\r\n\r\n            init = false;\r\n        })" +
-";\r\n    </script>\r\n</div>\r\n");
+"\r\n                        $(\'#createJob_DeviceHeld\').prop(\'checked\', true);\r\n   " +
+"                     $(\'#createJob_DeviceNotHeld\').prop(\'checked\', false);\r\n    " +
+"                    break;\r\n                    case \'False\':\r\n                 " +
+"       $(\'#createJob_DeviceHeld\').prop(\'checked\', false);\r\n                     " +
+"   $(\'#createJob_DeviceNotHeld\').prop(\'checked\', true);\r\n                       " +
+" break;\r\n                    default:\r\n                        $(\'#createJob_Dev" +
+"iceHeld\').prop(\'checked\', false);\r\n                        $(\'#createJob_DeviceN" +
+"otHeld\').prop(\'checked\', false);\r\n                        break;\r\n              " +
+"  }\r\n                $(\'#createJob_DeviceHeldContainer\').find(\'input[type=\"radio" +
+"\"]\').change(function () {\r\n                    // Update Hidden Field with Boole" +
+"an Value\r\n                    // Set DeviceHeld\r\n                    var deviceH" +
+"eldValue = \'\';\r\n                    if ($(\'#createJob_DeviceHeld\').is(\':checked\'" +
+"))\r\n                        deviceHeldValue = \'True\';\r\n                    if ($" +
+"(\'#createJob_DeviceNotHeld\').is(\':checked\'))\r\n                        deviceHeld" +
+"Value = \'False\';\r\n                    $deviceHeld.val(deviceHeldValue).change();" +
+"\r\n                });\r\n            } else {\r\n                // No Device Associ" +
+"ated\r\n                $deviceHeld.val(\'False\');\r\n                $(\'#createJob_D" +
+"eviceHeldContainer\').hide();\r\n            }\r\n            //#endregion\r\n\r\n       " +
+"     //#region QuickLog\r\n            var $quickLog = $(\'#createJob_QuickLog\');\r\n" +
+"            var $quickLogContainer = $(\'#createJob_QuickLogContainer\');\r\n       " +
+"     var $quickLogTaskTimeContainer = $(\'#createJob_QuickLogTaskTimeContainer\');" +
+"\r\n            var $quickLogTaskTimes = $quickLogTaskTimeContainer.find(\'input[ty" +
+"pe=\"radio\"]\');\r\n            var $quickLogTaskTimeOtherMinutes = $(\'#createJob_Ta" +
+"skTimeOtherMinutes\');\r\n            var $quickLogTaskTimeValidationMessage = $qui" +
+"ckLogTaskTimeContainer.find(\'[data-valmsg-for=\"QuickLogTaskTimeMinutes\"]\');\r\n\r\n " +
+"           $deviceHeld.change(validateQuickLog);\r\n            $jobTypes.change(v" +
+"alidateQuickLog);\r\n            validateQuickLog();\r\n\r\n            function valid" +
+"ateQuickLog() {\r\n                var quickLogAllowed = false;\r\n\r\n               " +
+" if ($deviceHeld.val() === \'True\') {\r\n                    quickLogAllowed = fals" +
+"e;\r\n                } else {\r\n                    var selectedType = $jobTypes.f" +
+"ilter(\':checked\').val();\r\n                    switch (selectedType) {\r\n         " +
+"               case \'HMisc\':\r\n                        case \'SApp\':\r\n            " +
+"            case \'SImg\':\r\n                        case \'SOS\':\r\n                 " +
+"       case \'UMgmt\':\r\n                            quickLogAllowed = true;\r\n     " +
+"                       break;\r\n                        default:\r\n               " +
+"             quickLogAllowed = false;\r\n                            break;\r\n     " +
+"               }\r\n                }\r\n\r\n                if (quickLogAllowed) {\r\n " +
+"                   $quickLogContainer.slideDown();\r\n                } else {\r\n  " +
+"                  if (init)\r\n                        $quickLogContainer.hide();\r" +
+"\n                    else\r\n                        $quickLogContainer.slideUp();" +
+"\r\n                    $quickLog.prop(\'checked\', false).change();\r\n              " +
+"  }\r\n            }\r\n\r\n            $quickLog.change(function () {\r\n              " +
+"  if ($(this).is(\':checked\')) {\r\n                    $quickLogTaskTimeContainer." +
+"slideDown();\r\n                } else {\r\n                    $quickLogTaskTimeCon" +
+"tainer.slideUp();\r\n                }\r\n            });\r\n\r\n            $quickLogTa" +
+"skTimes.change(function () {\r\n                if ($quickLogTaskTimes.filter(\':ch" +
+"ecked\').val() === \"\") {\r\n                    $(\'#createJob_TaskTimeOtherMinutesC" +
+"ontainer\').show();\r\n                    $quickLogTaskTimeOtherMinutes.attr(\'disa" +
+"bled\', null).focus().select();\r\n                } else {\r\n                    $(" +
+"\'#createJob_TaskTimeOtherMinutesContainer\').hide();\r\n                    $quickL" +
+"ogTaskTimeOtherMinutes.attr(\'disabled\', \'disabled\');\r\n                }\r\n       " +
+"     });\r\n            //#endregion\r\n\r\n            init = false;\r\n        });\r\n  " +
+"  </script>\r\n</div>\r\n");
 
         }
     }

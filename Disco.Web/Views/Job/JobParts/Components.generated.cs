@@ -164,28 +164,29 @@ WriteLiteral("></span>\r\n        Are you sure?</p>\r\n</div>\r\n<script");
 WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(">\r\n    $(function () {\r\n        var $jobComponents = $(\'#jobComponents\');\r\n\r\n    " +
-"    $jobComponents.find(\'input\').live(\'change\', updateComponent).focus(function " +
-"() { $(this).select() }).filter(\'.cost\');\r\n        $jobComponents.find(\'span.rem" +
-"ove\').live(\'click\', removeComponent);\r\n\r\n        $(\'#jobComponentsAdd\').click(fu" +
-"nction () {\r\n            var jc = $(\'<tr><td><input type=\"text\" class=\"descripti" +
-"on\" /></td><td><input type=\"text\" class=\"cost\" /></td><td><span class=\"remove\"><" +
-"/span></td></tr>\');\r\n            jc.find(\'input\').focus(function () { $(this).se" +
-"lect() })\r\n            jc.insertBefore($jobComponents.find(\'tr\').last());\r\n     " +
-"       jc.find(\'input.description\').focus();\r\n            return false;\r\n       " +
-" });\r\n\r\n        $(\'#dialogRemoveComponent\').dialog({\r\n            resizable: fal" +
-"se,\r\n            height: 140,\r\n            modal: true,\r\n            autoOpen: f" +
-"alse\r\n        });\r\n\r\n        function removeComponent() {\r\n            var compo" +
-"nentRow = $(this).closest(\'tr\');\r\n            var id = componentRow.attr(\'data-j" +
-"obcomponentid\');\r\n            if (id) {\r\n                var data = { id: id };\r" +
-"\n\r\n                var $dialogRemoveComponent = $(\'#dialogRemoveComponent\');\r\n  " +
-"              $dialogRemoveComponent.dialog(\"enable\");\r\n                $dialogR" +
-"emoveComponent.dialog(\'option\', \'buttons\', {\r\n                    \"Remove\": func" +
-"tion () {\r\n                        $dialogRemoveComponent.dialog(\"disable\");\r\n  " +
-"                      $dialogRemoveComponent.dialog(\"option\", \"buttons\", null);\r" +
-"\n                        $.ajax({\r\n                            url: \'");
+"    $jobComponents.on(\'change\', \'input\', updateComponent);\r\n        $jobComponen" +
+"ts.on(\'focus\', \'input\', function () { $(this).select() });\r\n\r\n\r\n        $jobComp" +
+"onents.on(\'click\', \'span.remove\', removeComponent);\r\n\r\n        $(\'#jobComponents" +
+"Add\').click(function () {\r\n            var jc = $(\'<tr><td><input type=\"text\" cl" +
+"ass=\"description\" /></td><td><input type=\"text\" class=\"cost\" /></td><td><span cl" +
+"ass=\"remove\"></span></td></tr>\');\r\n            jc.find(\'input\').focus(function (" +
+") { $(this).select() })\r\n            jc.insertBefore($jobComponents.find(\'tr\').l" +
+"ast());\r\n            jc.find(\'input.description\').focus();\r\n            return f" +
+"alse;\r\n        });\r\n\r\n        $(\'#dialogRemoveComponent\').dialog({\r\n            " +
+"resizable: false,\r\n            height: 140,\r\n            modal: true,\r\n         " +
+"   autoOpen: false\r\n        });\r\n\r\n        function removeComponent() {\r\n       " +
+"     var componentRow = $(this).closest(\'tr\');\r\n            var id = componentRo" +
+"w.attr(\'data-jobcomponentid\');\r\n            if (id) {\r\n                var data " +
+"= { id: id };\r\n\r\n                var $dialogRemoveComponent = $(\'#dialogRemoveCo" +
+"mponent\');\r\n                $dialogRemoveComponent.dialog(\"enable\");\r\n          " +
+"      $dialogRemoveComponent.dialog(\'option\', \'buttons\', {\r\n                    " +
+"\"Remove\": function () {\r\n                        $dialogRemoveComponent.dialog(\"" +
+"disable\");\r\n                        $dialogRemoveComponent.dialog(\"option\", \"but" +
+"tons\", null);\r\n                        $.ajax({\r\n                            url" +
+": \'");
 
             
-            #line 80 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 83 "..\..\Views\Job\JobParts\Components.cshtml"
                              Write(Url.Action(MVC.API.Job.ComponentRemove()));
 
             
@@ -223,7 +224,7 @@ WriteLiteral("\',\r\n                            dataType: \'json\',\r\n        
 "        $.ajax({\r\n                    url: \'");
 
             
-            #line 137 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 140 "..\..\Views\Job\JobParts\Components.cshtml"
                      Write(Url.Action(MVC.API.Job.ComponentUpdate()));
 
             
@@ -256,7 +257,7 @@ WriteLiteral(@"',
                     url: '");
 
             
-            #line 161 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 164 "..\..\Views\Job\JobParts\Components.cshtml"
                      Write(Url.Action(MVC.API.Job.ComponentAdd(Model.Job.Id, null, null)));
 
             

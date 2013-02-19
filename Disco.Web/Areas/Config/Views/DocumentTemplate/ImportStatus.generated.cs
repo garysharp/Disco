@@ -464,7 +464,7 @@ WriteLiteral(@"',
             #line hidden
 WriteLiteral(@"');
             liveConnection.received(parseLog);
-            liveConnection.error(function (e) { alert('Live-Log Error: ' + e) });
+            liveConnection.error(function (e) { if (e.status != 200) alert('Live-Log Error: ' + e.statusText + ': ' + e.responseText); });
             isLive = true;
             liveConnection.start(function () {
                 liveConnection.send('/addToGroups:");

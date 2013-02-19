@@ -305,10 +305,10 @@ WriteLiteral("\',\r\n                    dataType: \'json\',\r\n                
 "d(\'input\').attr(\'disabled\', false).removeClass(\'updating\');\r\n                   " +
 "     if (d.Result == \'OK\') {\r\n                            $dialogUpdateJobTypes " +
 "= $(\'#dialogUpdateJobTypes\');\r\n                            $dialogUpdateJobTypes" +
-".find(\'input:checked\').each(function () { $(this).attr(\'checked\', false) });\r\n  " +
+".find(\'input:checked\').each(function () { $(this).prop(\'checked\', false) });\r\n  " +
 "                          for (var i = 0; i < d.Component.JobSubTypes.length; i+" +
 "+) {\r\n                                var sjt = d.Component.JobSubTypes[i];\r\n   " +
-"                             $dialogUpdateJobTypes.find(\'#SubTypes_\' + sjt).attr" +
+"                             $dialogUpdateJobTypes.find(\'#SubTypes_\' + sjt).prop" +
 "(\'checked\', true);\r\n                            }\r\n                            $" +
 "(\'#CheckboxBulkSelect_dialogUpdateJobTypes\').checkboxBulkSelect(\'update\');\r\n    " +
 "                        var buttons = $dialogUpdateJobTypes.dialog(\"option\", \"bu" +
@@ -364,11 +364,11 @@ WriteLiteral("\',\r\n                                    dataType: \'json\',\r\n
 "\r\n                },\r\n                Cancel: function () {\r\n                   " +
 " $(this).dialog(\"close\");\r\n                }\r\n            }\r\n        });\r\n\r\n    " +
 "    $(\'#CheckboxBulkSelect_dialogUpdateJobTypes\').checkboxBulkSelect({ parentSel" +
-"ector: \'div\' });\r\n\r\n        $deviceComponents.find(\'input\').live(\'change\', updat" +
-"eComponent).focus(function () { $(this).select() });\r\n        $deviceComponents." +
-"find(\'span.remove\').live(\'click\', removeComponent);\r\n        $deviceComponents.f" +
-"ind(\'span.edit\').live(\'click\', editComponentJobTypes);\r\n\r\n    });\r\n</script>\r\n<d" +
-"iv");
+"ector: \'div\' });\r\n\r\n        $deviceComponents.on(\'change\', \'input\', updateCompon" +
+"ent);\r\n        $deviceComponents.on(\'focus\', \'input\', function () { $(this).sele" +
+"ct(); });\r\n\r\n        $deviceComponents.on(\'click\', \'span.remove\', removeComponen" +
+"t);\r\n        $deviceComponents.on(\'click\', \'span.edit\', editComponentJobTypes);\r" +
+"\n    });\r\n</script>\r\n<div");
 
 WriteLiteral(" id=\"dialogUpdateJobTypes\"");
 
@@ -379,7 +379,7 @@ WriteLiteral(">\r\n    <div>\r\n        <h2>\r\n            Hardware Non-Warrant
 WriteLiteral("        ");
 
             
-            #line 260 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 261 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
    Write(CommonHelpers.CheckBoxList("SubTypes", Model.JobSubTypes.ToSelectListItems(), 2));
 
             

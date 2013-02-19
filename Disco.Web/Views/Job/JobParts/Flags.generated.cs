@@ -311,7 +311,7 @@ WriteLiteral(@"', { Flag: '-' + flagValue }, function (response, result) {
                     }
                 },
                 close: function () {
-                    $flagCheckbox.attr('checked', false);
+                    $flagCheckbox.prop('checked', false);
                 }
             });
 

@@ -108,14 +108,14 @@
                 moduleId.change(function () {
                     // Unselect All
                     logModuleEventTypes.slideUp();
-                    logModuleEventTypeCheckboxes.filter(':checked').attr('checked', false);
+                    logModuleEventTypeCheckboxes.filter(':checked').prop('checked', false);
                     var selectedModule = moduleId.val();
                     if (selectedModule) {
                         trLogModuleEventTypes.show();
                         var selectedModuleEventTypes = logModuleEventTypes.filter('[data-logmoduleid="' + selectedModule + '"]');
                         if (selectedModuleEventTypes.length > 0) {
                             var selectedModuleEventTypeCheckboxes = selectedModuleEventTypes.find('input[type="checkbox"]');
-                            selectedModuleEventTypeCheckboxes.attr('checked', true);
+                            selectedModuleEventTypeCheckboxes.prop('checked', true);
                             trLogModuleEventTypes.show();
                             selectedModuleEventTypes.slideDown();
                         } else {
@@ -132,7 +132,7 @@
                         var selectedModuleEventTypes = logModuleEventTypes.filter('[data-logmoduleid="' + selectedModule + '"]');
                         if (selectedModuleEventTypes.length > 0) {
                             var selectedModuleEventTypeCheckboxes = selectedModuleEventTypes.find('input[type="checkbox"]');
-                            selectedModuleEventTypeCheckboxes.attr('checked', true);
+                            selectedModuleEventTypeCheckboxes.prop('checked', true);
                         }
                     }
                     return false;
@@ -143,7 +143,7 @@
                         var selectedModuleEventTypes = logModuleEventTypes.filter('[data-logmoduleid="' + selectedModule + '"]');
                         if (selectedModuleEventTypes.length > 0) {
                             var selectedModuleEventTypeCheckboxes = selectedModuleEventTypes.find('input[type="checkbox"]');
-                            selectedModuleEventTypeCheckboxes.attr('checked', false);
+                            selectedModuleEventTypeCheckboxes.prop('checked', false);
                         }
                     }
                     return false;

@@ -326,14 +326,14 @@ WriteLiteral(">\r\n            $(function () {\r\n                var filterStar
 "leEventTypeCheckboxes = logModuleEventTypes.find(\'input[type=\"checkbox\"]\');\r\n\r\n " +
 "               moduleId.change(function () {\r\n                    // Unselect Al" +
 "l\r\n                    logModuleEventTypes.slideUp();\r\n                    logMo" +
-"duleEventTypeCheckboxes.filter(\':checked\').attr(\'checked\', false);\r\n            " +
+"duleEventTypeCheckboxes.filter(\':checked\').prop(\'checked\', false);\r\n            " +
 "        var selectedModule = moduleId.val();\r\n                    if (selectedMo" +
 "dule) {\r\n                        trLogModuleEventTypes.show();\r\n                " +
 "        var selectedModuleEventTypes = logModuleEventTypes.filter(\'[data-logmodu" +
 "leid=\"\' + selectedModule + \'\"]\');\r\n                        if (selectedModuleEve" +
 "ntTypes.length > 0) {\r\n                            var selectedModuleEventTypeCh" +
 "eckboxes = selectedModuleEventTypes.find(\'input[type=\"checkbox\"]\');\r\n           " +
-"                 selectedModuleEventTypeCheckboxes.attr(\'checked\', true);\r\n     " +
+"                 selectedModuleEventTypeCheckboxes.prop(\'checked\', true);\r\n     " +
 "                       trLogModuleEventTypes.show();\r\n                          " +
 "  selectedModuleEventTypes.slideDown();\r\n                        } else {\r\n     " +
 "                       trLogModuleEventTypes.hide();\r\n                        }\r" +
@@ -345,7 +345,7 @@ WriteLiteral(">\r\n            $(function () {\r\n                var filterStar
 "+ selectedModule + \'\"]\');\r\n                        if (selectedModuleEventTypes." +
 "length > 0) {\r\n                            var selectedModuleEventTypeCheckboxes" +
 " = selectedModuleEventTypes.find(\'input[type=\"checkbox\"]\');\r\n                   " +
-"         selectedModuleEventTypeCheckboxes.attr(\'checked\', true);\r\n             " +
+"         selectedModuleEventTypeCheckboxes.prop(\'checked\', true);\r\n             " +
 "           }\r\n                    }\r\n                    return false;\r\n        " +
 "        });\r\n                $(\'#eventTypesSelectNone\').click(function () {\r\n   " +
 "                 var selectedModule = moduleId.val();\r\n                    if (s" +
@@ -354,7 +354,7 @@ WriteLiteral(">\r\n            $(function () {\r\n                var filterStar
 "             if (selectedModuleEventTypes.length > 0) {\r\n                       " +
 "     var selectedModuleEventTypeCheckboxes = selectedModuleEventTypes.find(\'inpu" +
 "t[type=\"checkbox\"]\');\r\n                            selectedModuleEventTypeCheckb" +
-"oxes.attr(\'checked\', false);\r\n                        }\r\n                    }\r\n" +
+"oxes.prop(\'checked\', false);\r\n                        }\r\n                    }\r\n" +
 "                    return false;\r\n                });\r\n\r\n            });\r\n     " +
 "   </script>\r\n    </div>\r\n");
 

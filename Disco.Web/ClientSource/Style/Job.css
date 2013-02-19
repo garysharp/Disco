@@ -146,11 +146,6 @@
 #Job_Show #Job_Show_Subjects #Job_Show_Job #Job_Show_GenerateDocument_Container #Job_Show_GenerateDocument {
   padding: 0;
 }
-#Job_Show #Job_Show_Subjects #Job_Show_Job #Job_Show_GenerateDocument_Container #Job_Show_GenerateDocument_Status {
-  padding: 0;
-  display: none;
-  white-space: nowrap;
-}
 #Job_Show #Job_Show_Subjects #Job_Show_Device > div {
   padding-left: 102px;
   min-height: 100px;

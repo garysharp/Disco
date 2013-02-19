@@ -19,25 +19,27 @@
         $('#buttonCreateJob').click(function () {
             var $this = $(this);
             var href = $this.attr('href');
-            var iframe = $('<iframe>').attr({ 'src': href }).width('100%').height('100%').css('border', 'none');
-            createJobDialog = $('<div>').attr('id', 'createJobDialog').width('100%').height('100%')
-                .appendTo(document)
-                .append(iframe)
-                .dialog({
-                    resizable: false,
-                    draggable: false,
-                    modal: true,
-                    autoOpen: true,
-                    title: 'Create Job',
-                    width: 850,
-                    height: $(window).height() - 50,
-                    close: function () {
-                        createJobDialog.find('iframe').attr('src', 'about:blank');
-                        createJobDialog.dialog('destroy').remove();
-                        createJobDialog = null;
-                    },
-                    buttons: {}
-                });
+            
+            createJobDialog = $('<div>').attr('id', 'createJobDialog').width('100%').height('100%').appendTo(document.body);
+
+            createJobDialog.dialog({
+                resizable: false,
+                draggable: false,
+                modal: true,
+                autoOpen: true,
+                title: 'Create Job',
+                width: 850,
+                height: $(window).height() - 50,
+                close: function () {
+                    createJobDialog.find('iframe').attr('src', 'about:blank');
+                    createJobDialog.dialog('destroy').remove();
+                    createJobDialog = null;
+                },
+                buttons: {}
+            });
+
+            var iframe = $('<iframe>').attr({ 'src': href }).width('100%').height('100%').css('border', 'none').appendTo(createJobDialog);
+
             createJobDialog[0].discoDialogMethods = dialogMethods;
 
             return false;

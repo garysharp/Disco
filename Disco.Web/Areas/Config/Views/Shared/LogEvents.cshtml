@@ -8,17 +8,13 @@
     <table class="logEventsViewport">
         <thead>
             <tr>
-                <th class="icon">
-                    &nbsp;
+                <th class="icon">&nbsp;
                 </th>
-                <th class="timestamp">
-                    Date/Time
+                <th class="timestamp">Date/Time
                 </th>
-                <th class="eventType">
-                    Event Type
+                <th class="eventType">Event Type
                 </th>
-                <th class="message">
-                    Message
+                <th class="message">Message
                 </th>
             </tr>
         </thead>
@@ -31,15 +27,11 @@
         <table class="logEventsViewport" data-bind="visible: EventLogs().length > 0" style="display: none">
             <tbody data-bind="foreach: EventLogs">
                 <tr>
-                    <td class="icon" data-bind="css: {information: EventTypeSeverity == 0, warning: EventTypeSeverity == 1, error: EventTypeSeverity == 2}">
-                        &nbsp;
+                    <td class="icon" data-bind="css: {information: EventTypeSeverity == 0, warning: EventTypeSeverity == 1, error: EventTypeSeverity == 2}">&nbsp;
                     </td>
-                    <td class="timestamp" data-bind="text: FormattedTimestamp">
-                    </td>
-                    <td class="eventType" data-bind="text: EventTypeName, attr: {title: ModuleDescription}">
-                    </td>
-                    <td class="message" data-bind="text: FormattedMessage, attr: {title: $parent.LogArguments($data)}">
-                    </td>
+                    <td class="timestamp" data-bind="text: FormattedTimestamp"></td>
+                    <td class="eventType" data-bind="text: EventTypeName, attr: {title: ModuleDescription}"></td>
+                    <td class="message" data-bind="text: FormattedMessage, attr: {title: $parent.LogArguments($data)}"></td>
                 </tr>
             </tbody>
         </table>
@@ -47,7 +39,7 @@
     @{
         var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
         var eventTypesFilterJson = (Model.EventTypesFilter != null) ? serializer.Serialize(Model.EventTypesFilter.Select(et => et.Id).ToArray()) : "null";
-        }
+    }
     <script type="text/javascript">
         $(function () {
             var logEventsHost = $('LogEvents_@(uniqueId)');
@@ -76,19 +68,19 @@
             }
             function formatDate(d){
                 if (d){
-                return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':'+d.getMinutes()+':'+d.getSeconds();
+                    return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':'+d.getMinutes()+':'+d.getSeconds();
                 }else{
-                return null;
+                    return null;
                 }
             }
             function loadInitialData(){
                 // Load Data
                 var loadData = {
-                  Format: "json",
-                  Start: formatDate(logStartFiler),
-                  End: logEndFiler,
-                  ModuleId: logModuleId,
-                  Take: logTakeFiler
+                    Format: "json",
+                    Start: formatDate(logStartFiler),
+                    End: logEndFiler,
+                    ModuleId: logModuleId,
+                    Take: logTakeFiler
                 };
                 if (logEventTypeFiltered)
                     loadData["EventTypeIds"] = logEventTypeFiltered;
@@ -123,7 +115,7 @@
 
                     liveConnection = $.connection('@(Url.Content("~/API/Logging/Notifications"))');
                     liveConnection.received(logReceived);
-                    liveConnection.error(function(e){alert('Live-Log Error: '+e)});
+                    liveConnection.error(function(e){if (e.status != 200) alert('Live-Log Error: '+e.statusText +': '+e.responseText);});
                     liveConnection.start(function(){
                         if (logModuleLiveGroupName){
                             liveConnection.send('/addToGroups:' + logModuleLiveGroupName);

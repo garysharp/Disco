@@ -292,10 +292,10 @@ WriteLiteral("\',\r\n                                dataType: \'json\',\r\n    
 "\n                            } else {\r\n                                $trJobTyp" +
 "es.hide();\r\n                                $trJobTypeActions.hide();\r\n         " +
 "                       $jobTypes.filter(\':checked\').each(function () {\r\n        " +
-"                            $(this).attr(\'checked\', false);\r\n                   " +
+"                            $(this).prop(\'checked\', false);\r\n                   " +
 "             });\r\n                                $(\'.jobSubTypes\').hide().find(" +
 "\'input[type=\"checkbox\"]:checked\').each(function () {\r\n                          " +
-"          $(this).attr(\'checked\', false);\r\n                                });\r\n" +
+"          $(this).prop(\'checked\', false);\r\n                                });\r\n" +
 "                            }\r\n                        }\r\n\r\n                    " +
 "    function jobTypesChange() {\r\n                            $(\'.jobSubTypes\').h" +
 "ide();\r\n                            $jobTypes.filter(\':checked\').each(function (" +

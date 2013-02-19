@@ -161,10 +161,10 @@
                         componentRow.find('input').attr('disabled', false).removeClass('updating');
                         if (d.Result == 'OK') {
                             $dialogUpdateJobTypes = $('#dialogUpdateJobTypes');
-                            $dialogUpdateJobTypes.find('input:checked').each(function () { $(this).attr('checked', false) });
+                            $dialogUpdateJobTypes.find('input:checked').each(function () { $(this).prop('checked', false) });
                             for (var i = 0; i < d.Component.JobSubTypes.length; i++) {
                                 var sjt = d.Component.JobSubTypes[i];
-                                $dialogUpdateJobTypes.find('#SubTypes_' + sjt).attr('checked', true);
+                                $dialogUpdateJobTypes.find('#SubTypes_' + sjt).prop('checked', true);
                             }
                             $('#CheckboxBulkSelect_dialogUpdateJobTypes').checkboxBulkSelect('update');
                             var buttons = $dialogUpdateJobTypes.dialog("option", "buttons");
@@ -247,10 +247,11 @@
 
         $('#CheckboxBulkSelect_dialogUpdateJobTypes').checkboxBulkSelect({ parentSelector: 'div' });
 
-        $deviceComponents.find('input').live('change', updateComponent).focus(function () { $(this).select() });
-        $deviceComponents.find('span.remove').live('click', removeComponent);
-        $deviceComponents.find('span.edit').live('click', editComponentJobTypes);
+        $deviceComponents.on('change', 'input', updateComponent);
+        $deviceComponents.on('focus', 'input', function () { $(this).select(); });
 
+        $deviceComponents.on('click', 'span.remove', removeComponent);
+        $deviceComponents.on('click', 'span.edit', editComponentJobTypes);
     });
 </script>
 <div id="dialogUpdateJobTypes" title="Update Job Types">

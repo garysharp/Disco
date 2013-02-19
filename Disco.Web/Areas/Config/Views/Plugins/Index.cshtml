@@ -101,7 +101,7 @@
                             }
                         },
                         Cancel: function () {
-                            uninstallPluginData.removeAttr('checked');
+                            uninstallPluginData.prop('checked', false);
                             $('#uninstallPluginDataAlert').hide();
                             $(this).dialog("close");
                         }
@@ -125,7 +125,7 @@
                             $(this).dialog("disable");
                         },
                         Cancel: function () {
-                            uninstallPluginData.removeAttr('checked');
+                            uninstallPluginData.prop('checked', false);
                             $('#uninstallPluginDataAlert').hide();
                             $(this).dialog("close");
                         }

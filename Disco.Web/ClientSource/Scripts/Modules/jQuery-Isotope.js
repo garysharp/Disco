@@ -1,6 +1,6 @@
 ﻿///#source 1 1 /ClientSource/Scripts/Modules/jQuery-Isotope/jquery.isotope.js
 /**
- * Isotope v1.5.19
+ * Isotope v1.5.25
  * An exquisite jQuery plugin for magical layouts
  * http://isotope.metafizzy.co
  *
@@ -261,8 +261,8 @@
         transitionEndEvent = {
             WebkitTransitionProperty: 'webkitTransitionEnd',  // webkit
             MozTransitionProperty: 'transitionend',
-            OTransitionProperty: 'oTransitionEnd',
-            transitionProperty: 'transitionEnd'
+            OTransitionProperty: 'oTransitionEnd otransitionend',
+            transitionProperty: 'transitionend'
         }[transitionProp];
 
         transitionDurProp = getStyleProperty('transitionDuration');
@@ -281,6 +281,7 @@
      */
 
     var $event = $.event,
+        dispatchMethod = $.event.handle ? 'handle' : 'dispatch',
         resizeTimeout;
 
     $event.special.smartresize = {
@@ -300,7 +301,7 @@
 
             if (resizeTimeout) { clearTimeout(resizeTimeout); }
             resizeTimeout = setTimeout(function () {
-                jQuery.event.handle.apply(context, args);
+                $event[dispatchMethod].apply(context, args);
             }, execAsap === "execAsap" ? 0 : 100);
         }
     };
@@ -347,7 +348,7 @@
         sortBy: 'original-order',
         sortAscending: true,
         resizesContainer: true,
-        transformsEnabled: !$.browser.opera, // disable transforms in Opera
+        transformsEnabled: true,
         itemPositionDataEnabled: false
     };
 
@@ -427,6 +428,11 @@
                 $atoms = selector ? $elems.filter(selector).add($elems.find(selector)) : $elems,
                 // base style for atoms
                 atomStyle = { position: 'absolute' };
+
+            // filter out text nodes
+            $atoms = $atoms.filter(function (i, atom) {
+                return atom.nodeType === 1;
+            });
 
             if (this.usingTransforms) {
                 atomStyle.left = 0;
@@ -805,11 +811,12 @@
 
         // removes elements from Isotope widget
         remove: function ($content, callback) {
-            // remove elements from Isotope instance in callback
-            var instance = this;
+            // remove elements immediately from Isotope instance
+            this.$allAtoms = this.$allAtoms.not($content);
+            this.$filteredAtoms = this.$filteredAtoms.not($content);
             // remove() as a callback, for after transition / animation
+            var instance = this;
             var removeContent = function () {
-                instance.$allAtoms = instance.$allAtoms.not($content);
                 $content.remove();
                 if (callback) {
                     callback.call(instance.element);
@@ -819,7 +826,6 @@
             if ($content.filter(':not(.' + this.options.hiddenClass + ')').length) {
                 // if any non-hidden content needs to be removed
                 this.styleQueue.push({ $el: $content, style: this.options.hiddenStyle });
-                this.$filteredAtoms = this.$filteredAtoms.not($content);
                 this._sort();
                 this.reLayout(removeContent);
             } else {

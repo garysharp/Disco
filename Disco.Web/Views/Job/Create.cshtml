@@ -203,16 +203,16 @@
             if ($('#DeviceSerialNumber').val()) {
                 switch ($deviceHeld.val()) {
                     case 'True':
-                        $('#createJob_DeviceHeld').attr('checked', 'checked');
-                        $('#createJob_DeviceNotHeld').attr('checked', null);
+                        $('#createJob_DeviceHeld').prop('checked', true);
+                        $('#createJob_DeviceNotHeld').prop('checked', false);
                         break;
                     case 'False':
-                        $('#createJob_DeviceHeld').attr('checked', null);
-                        $('#createJob_DeviceNotHeld').attr('checked', 'checked');
+                        $('#createJob_DeviceHeld').prop('checked', false);
+                        $('#createJob_DeviceNotHeld').prop('checked', true);
                         break;
                     default:
-                        $('#createJob_DeviceHeld').attr('checked', null);
-                        $('#createJob_DeviceNotHeld').attr('checked', null);
+                        $('#createJob_DeviceHeld').prop('checked', false);
+                        $('#createJob_DeviceNotHeld').prop('checked', false);
                         break;
                 }
                 $('#createJob_DeviceHeldContainer').find('input[type="radio"]').change(function () {
@@ -272,7 +272,7 @@
                         $quickLogContainer.hide();
                     else
                         $quickLogContainer.slideUp();
-                    $quickLog.attr('checked', null).change();
+                    $quickLog.prop('checked', false).change();
                 }
             }
 

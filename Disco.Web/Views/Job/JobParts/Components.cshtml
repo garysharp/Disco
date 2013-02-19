@@ -46,8 +46,11 @@
     $(function () {
         var $jobComponents = $('#jobComponents');
 
-        $jobComponents.find('input').live('change', updateComponent).focus(function () { $(this).select() }).filter('.cost');
-        $jobComponents.find('span.remove').live('click', removeComponent);
+        $jobComponents.on('change', 'input', updateComponent);
+        $jobComponents.on('focus', 'input', function () { $(this).select() });
+
+
+        $jobComponents.on('click', 'span.remove', removeComponent);
 
         $('#jobComponentsAdd').click(function () {
             var jc = $('<tr><td><input type="text" class="description" /></td><td><input type="text" class="cost" /></td><td><span class="remove"></span></td></tr>');

@@ -520,9 +520,11 @@ WriteLiteral(@"',
             
             #line default
             #line hidden
-WriteLiteral("\');\r\n            liveConnection.received(parseLog);\r\n            liveConnection.e" +
-"rror(function (e) { alert(\'Live-Log Error: \' + e) });\r\n            liveConnectio" +
-"n.start(function () {\r\n                liveConnection.send(\'/addToGroups:");
+WriteLiteral(@"');
+            liveConnection.received(parseLog);
+            liveConnection.error(function (e) { if (e.status != 200) alert('Live-Log Error: ' + e.statusText + ': ' + e.responseText); });
+            liveConnection.start(function () {
+                liveConnection.send('/addToGroups:");
 
             
             #line 365 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"

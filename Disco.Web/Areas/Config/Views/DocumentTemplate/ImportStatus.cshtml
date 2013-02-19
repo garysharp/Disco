@@ -311,7 +311,7 @@
             // Init Persistent Connection
             liveConnection = $.connection('@(Url.Content("~/API/Logging/Notifications"))');
             liveConnection.received(parseLog);
-            liveConnection.error(function (e) { alert('Live-Log Error: ' + e) });
+            liveConnection.error(function (e) { if (e.status != 200) alert('Live-Log Error: ' + e.statusText + ': ' + e.responseText); });
             isLive = true;
             liveConnection.start(function () {
                 liveConnection.send('/addToGroups:@(Disco.BI.DocumentTemplateBI.Importer.DocumentImporterLog.Current.LiveLogGroupName)');

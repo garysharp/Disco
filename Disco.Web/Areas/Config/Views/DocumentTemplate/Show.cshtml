@@ -139,10 +139,10 @@
                                 $trJobTypes.hide();
                                 $trJobTypeActions.hide();
                                 $jobTypes.filter(':checked').each(function () {
-                                    $(this).attr('checked', false);
+                                    $(this).prop('checked', false);
                                 });
                                 $('.jobSubTypes').hide().find('input[type="checkbox"]:checked').each(function () {
-                                    $(this).attr('checked', false);
+                                    $(this).prop('checked', false);
                                 });
                             }
                         }

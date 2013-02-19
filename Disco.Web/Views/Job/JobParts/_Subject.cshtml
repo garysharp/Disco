@@ -146,39 +146,15 @@
                     </script>
                 </div>
                 <div id="Job_Show_GenerateDocument_Container" class="status">
-                    @Html.DropDownList("Job_Show_GenerateDocument", Model.DocumentTemplatesSelectListItems) <span id="Job_Show_GenerateDocument_Status">@AjaxHelpers.AjaxLoader()&nbsp;Generating...</span>
+                    @Html.DropDownList("Job_Show_GenerateDocument", Model.DocumentTemplatesSelectListItems)
                     <script type="text/javascript">
                         $(function () {
                             var generatePdfUrl = '@Url.Action(MVC.API.Job.GeneratePdf(Model.Job.Id.ToString(), null))?DocumentTemplateId=';
                             var $documentTemplates = $('#Job_Show_GenerateDocument');
-                            var $Job_Show_GenerateDocument_Status = $('#Job_Show_GenerateDocument_Status');
-                            $Job_Show_GenerateDocument_Status.find('.ajaxLoading').css('display', 'inline-block');
                             $documentTemplates.change(function () {
                                 var v = $documentTemplates.val();
                                 if (v) {
-                                    if ($.browser.msie || $.browser.mozilla){
-                                        // Popup & Status for MSIE & Firefox
-                                        var w = window.open(generatePdfUrl + v, null, 'height=100,width=150,menubar=no,resizable=yes,scrollbars=no,status=no,toolbar=no');
-                                    
-                                        var statusShown = false;
-                                        var c = function(timeout){window.setTimeout(function(){
-                                            if (w.closed === undefined || w.closed === true){
-                                                if (statusShown)
-                                                    $Job_Show_GenerateDocument_Status.fadeOut(750);
-                                            }else{
-                                                if (!statusShown)
-                                                {
-                                                    $Job_Show_GenerateDocument_Status.show()
-                                                    statusShown = true;
-                                                }
-                                                c(500);
-                                            }
-                                        }, timeout)}
-                                        c(200);
-                                    }else{
-                                        // Redirect other Browsers with different download mechanisms
-                                        window.location.href = generatePdfUrl + v;
-                                    }
+                                    window.location.href = generatePdfUrl + v;
                                     $documentTemplates.val('').blur();
                                 }
                             });
