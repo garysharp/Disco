@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using SignalR;
 
 namespace Disco.Web
 {
@@ -71,6 +72,19 @@ namespace Disco.Web
 
         public static void RegisterUpdateRoutes(RouteCollection routes)
         {
+            // Task Status SignalR Route
+            routes.MapConnection<Disco.Services.Tasks.ScheduledTasksLiveStatusService>(
+                "API_Logging_TaskStatusNotifications",
+                "API/Logging/TaskStatusNotifications/{*operation}");
+
+            // Task Status Ajax Route
+            routes.MapRoute(
+                name: "API_Logging_ScheduledTaskStatus", // Route name
+                url: "API/Logging/ScheduledTaskStatus/{id}", // URL with parameters
+                defaults: new { area = "API", controller = "Logging", action = "ScheduledTaskStatus", id = UrlParameter.Optional }, // Parameter defaults
+                namespaces: new string[] { "Disco.Web.Areas.API.Controllers" } // Controllers Namespace Only
+            );
+
             // Update Route
             routes.MapRoute(
                 name: "Update", // Route name

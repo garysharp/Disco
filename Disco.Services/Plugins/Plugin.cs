@@ -17,7 +17,6 @@ namespace Disco.Services.Plugins
         public virtual void Install(DiscoDataContext dbContext, ScheduledTaskStatus Status) { return; }
         public virtual void Initialize(DiscoDataContext dbContext) { return; }
         public virtual void Uninstall(DiscoDataContext dbContext, bool UninstallData, ScheduledTaskStatus Status) { return; }
-        public virtual void BeforeUpdate(DiscoDataContext dbContext, PluginManifest UpdateManifest, ScheduledTaskStatus Status) { return; }
         public virtual void AfterUpdate(DiscoDataContext dbContext, PluginManifest PreviousManifest) { return; }
         #endregion
 

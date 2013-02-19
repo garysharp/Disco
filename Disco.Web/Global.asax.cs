@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -43,13 +44,18 @@ namespace Disco.Web
                 timer_last = timer.ElapsedMilliseconds;
 
                 // Check for Post-Update
-                Version previousVersion;
-                Version currentVersion = Disco.BI.Interop.Community.UpdateCheck.CurrentDiscoVersion();
-                using (DiscoDataContext dbContext = new DiscoDataContext())
+                bool ignoreVersionUpdate = false;
+                bool.TryParse(ConfigurationManager.AppSettings["DiscoIgnoreVersionUpdate"], out ignoreVersionUpdate);
+                Version previousVersion = null;
+
+                if (!ignoreVersionUpdate)
                 {
-                    previousVersion = dbContext.DiscoConfiguration.InstalledDatabaseVersion;
+                    using (DiscoDataContext dbContext = new DiscoDataContext())
+                    {
+                        previousVersion = dbContext.DiscoConfiguration.InstalledDatabaseVersion;
+                    }
                 }
-                if (currentVersion == previousVersion)
+                if (ignoreVersionUpdate || Disco.BI.Interop.Community.UpdateCheck.CurrentDiscoVersion() == previousVersion)
                 {
                     // Normal Startup
 
@@ -86,7 +92,6 @@ namespace Disco.Web
                 else
                 {
                     // Post-Update Startup
-                    AreaRegistration.RegisterAllAreas();
                     FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
                     RouteConfig.RegisterUpdateRoutes(RouteTable.Routes);
                     BundleConfig.RegisterBundles();
@@ -94,7 +99,7 @@ namespace Disco.Web
 
                     using (DiscoDataContext dbContext = new DiscoDataContext())
                     {
-                        dbContext.DiscoConfiguration.InstalledDatabaseVersion = currentVersion;
+                        dbContext.DiscoConfiguration.InstalledDatabaseVersion = Disco.BI.Interop.Community.UpdateCheck.CurrentDiscoVersion();
                         dbContext.SaveChanges();
                     }
                 }

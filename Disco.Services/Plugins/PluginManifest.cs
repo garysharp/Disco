@@ -257,18 +257,6 @@ namespace Disco.Services.Plugins
 
             return true;
         }
-        internal bool BeforePluginUpdate(DiscoDataContext dbContext, PluginManifest UpdateManifest, ScheduledTaskStatus Status)
-        {
-            // Initialize Plugin
-            InitializePluginEnvironment(dbContext);
-
-            using (var pluginInstance = this.CreateInstance())
-            {
-                pluginInstance.BeforeUpdate(dbContext, UpdateManifest, Status);
-            }
-
-            return true;
-        }
         internal bool AfterPluginUpdate(DiscoDataContext dbContext, PluginManifest PreviousManifest)
         {
             // Initialize Plugin

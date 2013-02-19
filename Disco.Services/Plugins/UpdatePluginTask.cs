@@ -86,6 +86,7 @@ namespace Disco.Services.Plugins
         {
             string pluginsLocation;
             string pluginPackagesLocation;
+            string pluginsStorageLocation;
             PluginLibraryUpdateResponse pluginCatalogue;
             List<Tuple<PluginManifest, string, PluginLibraryItem>> UpdatePlugins = new List<Tuple<PluginManifest, string, PluginLibraryItem>>();
 
@@ -94,11 +95,14 @@ namespace Disco.Services.Plugins
                 pluginCatalogue = Plugins.LoadCatalogue(dbContext);
                 pluginsLocation = dbContext.DiscoConfiguration.PluginsLocation;
                 pluginPackagesLocation = dbContext.DiscoConfiguration.PluginPackagesLocation;
+                pluginsStorageLocation = dbContext.DiscoConfiguration.PluginStorageLocation;
             }
 
             DirectoryInfo pluginDirectoryRoot = new DirectoryInfo(pluginsLocation);
             if (pluginDirectoryRoot.Exists)
             {
+                MirgrateV1Plugins(pluginsLocation, pluginsStorageLocation);
+
                 foreach (DirectoryInfo pluginDirectory in pluginDirectoryRoot.EnumerateDirectories())
                 {
                     string pluginManifestFilename = Path.Combine(pluginDirectory.FullName, "manifest.json");
@@ -128,6 +132,105 @@ namespace Disco.Services.Plugins
             if (UpdatePlugins.Count > 0)
             {
                 ExecuteTaskInternal(Status, pluginPackagesLocation, UpdatePlugins);
+            }
+        }
+
+        internal static void MirgrateV1Plugins(string pluginsLocation, string pluginsStorageLocation)
+        {
+            var migrationPackage = Path.Combine(HttpRuntime.BinDirectory, "Disco1.1-1.2PluginMigration.zip");
+
+            if (File.Exists(migrationPackage))
+            {
+                // eduSTAR.net
+                var eduSTARPluginPath = Path.Combine(pluginsLocation, "EduSTARnetCertificateProvider");
+                if (Directory.Exists(eduSTARPluginPath))
+                {
+                    var eduSTARPluginAssemblyPath = Path.Combine(eduSTARPluginPath, "EduSTARnetCertificateProvider.dll");
+                    if (File.Exists(eduSTARPluginAssemblyPath))
+                    {
+                        // Delete Old Plugin
+                        Directory.Delete(eduSTARPluginPath, true);
+
+                        // Add New Plugin
+                        eduSTARPluginPath = Path.Combine(pluginsLocation, "eduSTARnet");
+                        using (var migrationZipPackageStream = new FileStream(migrationPackage, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        {
+                            using (ZipArchive migrationZipPackage = new ZipArchive(migrationZipPackageStream))
+                            {
+                                var pluginZipPackage = migrationZipPackage.Entries.Where(e => e.Name.Equals("eduSTARnet.discoPlugin", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                                if (pluginZipPackage != null)
+                                {
+                                    using (var pluginPackageStream = pluginZipPackage.Open())
+                                    {
+                                        using (ZipArchive pluginPackageArchive = new ZipArchive(pluginPackageStream))
+                                        {
+                                            foreach (var entry in pluginPackageArchive.Entries)
+                                            {
+                                                var entryPath = Path.Combine(eduSTARPluginPath, entry.FullName);
+                                                Directory.CreateDirectory(Path.GetDirectoryName(entryPath));
+                                                using (var entryOutput = new FileStream(entryPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                                                {
+                                                    using (var entryStream = entry.Open())
+                                                    {
+                                                        entryStream.CopyTo(entryOutput);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // LWT
+                var LWTPluginPath = Path.Combine(pluginsLocation, "LWTWarrantyProvider");
+                if (Directory.Exists(LWTPluginPath))
+                {
+                    var LWTPluginAssemblyPath = Path.Combine(LWTPluginPath, "LWTWarrantyProvider.dll");
+                    if (File.Exists(LWTPluginAssemblyPath))
+                    {
+                        // Delete Old Plugin
+                        Directory.Delete(LWTPluginPath, true);
+                        // Delete Plugin Storage
+                        var LWTPluginStoragePath = Path.Combine(pluginsStorageLocation, "LWTWarrantyProvider");
+                        if (Directory.Exists(LWTPluginStoragePath))
+                            Directory.Delete(LWTPluginStoragePath, true);
+
+                        // Add New Plugin
+                        LWTPluginPath = Path.Combine(pluginsLocation, "LWTPlugin");
+                        using (var migrationZipPackageStream = new FileStream(migrationPackage, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        {
+                            using (ZipArchive migrationZipPackage = new ZipArchive(migrationZipPackageStream))
+                            {
+                                var pluginZipPackage = migrationZipPackage.Entries.Where(e => e.Name.Equals("LWTPlugin.discoPlugin", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                                if (pluginZipPackage != null)
+                                {
+                                    using (var pluginPackageStream = pluginZipPackage.Open())
+                                    {
+                                        using (ZipArchive pluginPackageArchive = new ZipArchive(pluginPackageStream))
+                                        {
+                                            foreach (var entry in pluginPackageArchive.Entries)
+                                            {
+                                                var entryPath = Path.Combine(LWTPluginPath, entry.FullName);
+                                                Directory.CreateDirectory(Path.GetDirectoryName(entryPath));
+                                                using (var entryOutput = new FileStream(entryPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                                                {
+                                                    using (var entryStream = entry.Open())
+                                                    {
+                                                        entryStream.CopyTo(entryOutput);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
             }
         }
 
@@ -211,10 +314,9 @@ namespace Disco.Services.Plugins
                     var updatePluginPath = Path.Combine(dbContext.DiscoConfiguration.PluginsLocation, string.Format("{0}.discoPlugin", updateManifest.Id));
                     File.Move(packageTempFilePath, updatePluginPath);
 
-                    if (existingManifest != null && Plugins.PluginsLoaded)
+                    if (existingManifest != null)
                     {
                         PluginsLog.LogBeforeUpdate(existingManifest, updateManifest);
-                        existingManifest.BeforePluginUpdate(dbContext, updateManifest, Status);
                     }
                 }
             }

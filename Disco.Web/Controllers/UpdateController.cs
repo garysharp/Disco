@@ -21,7 +21,7 @@ namespace Disco.Web.Controllers
         {
             if (!Request.IsLocal && !InitialConfigController.ServerIsCoreSKU.Value)
             {
-                filterContext.Result = new HttpStatusCodeResult(System.Net.HttpStatusCode.ServiceUnavailable, "Initial Configuration of Disco is only allowed via a local connection");
+                filterContext.Result = new HttpStatusCodeResult(System.Net.HttpStatusCode.ServiceUnavailable, "Initialization Configuration of Disco is only allowed via a local connection");
             }
             base.OnActionExecuting(filterContext);
         }
@@ -30,7 +30,12 @@ namespace Disco.Web.Controllers
         {
             var status = UpdatePluginsAfterDiscoUpdateTask.UpdateDiscoPlugins(true);
 
-            return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
+            var model = new Models.Update.IndexModel()
+            {
+                SessionId = status.SessionId
+            };
+
+            return View(model);
         }
     }
 }
