@@ -209,8 +209,8 @@ namespace Disco.BI.Extensions
         public static string GenerateFaultDescriptionFooter(this Job j, DiscoDataContext dbContext, PluginFeatureManifest WarrantyProviderDefinition)
         {
             var versionDisco = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            return string.Format("Automation by Disco v{0}.{1:0000}.{2:0000} (Provider: {3} v{4})",
-                versionDisco.Major, versionDisco.Minor, versionDisco.Build, WarrantyProviderDefinition.Id, WarrantyProviderDefinition.PluginManifest.Version.ToString(3));
+            return string.Format("Automation by Disco v{0}.{1}.{2:0000}.{3:0000} (Provider: {4} v{5})",
+                versionDisco.Major, versionDisco.Minor, versionDisco.Build, versionDisco.Revision, WarrantyProviderDefinition.Id, WarrantyProviderDefinition.PluginManifest.Version.ToString(4));
         }
 
         public static void UpdateSubTypes(this Job j, DiscoDataContext dbContext, List<JobSubType> SubTypes, bool AddComponents, User TechUser)

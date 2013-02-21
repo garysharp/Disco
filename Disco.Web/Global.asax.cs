@@ -171,7 +171,7 @@ namespace Disco.Web
         private static Lazy<string> _Version = new Lazy<string>(() =>
         {
             var AssemblyVersion = typeof(DiscoApplication).Assembly.GetName().Version;
-            return string.Format("{0}.{1}.{2:0000}", AssemblyVersion.Major, AssemblyVersion.Minor, AssemblyVersion.Build);
+            return string.Format("{0}.{1}.{2:0000}.{3:0000}", AssemblyVersion.Major, AssemblyVersion.Minor, AssemblyVersion.Build, AssemblyVersion.Revision);
         });
         public static string Version
         {

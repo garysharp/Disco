@@ -245,6 +245,9 @@ namespace Disco.BI.Interop.ActiveDirectory
                 {
                     if (d.LastNetworkLogonDate.HasValue)
                     {
+                        // Change accuracy to the second
+                        computerLastLogonDate = new DateTime((computerLastLogonDate.Ticks / 10000000L) * 10000000L);
+
                         if (System.DateTime.Compare(d.LastNetworkLogonDate.Value, computerLastLogonDate) < 0)
                         {
                             d.LastNetworkLogonDate = computerLastLogonDate;

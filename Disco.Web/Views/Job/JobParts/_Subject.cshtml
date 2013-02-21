@@ -178,8 +178,10 @@
                                 <div id="Job_Show_Device_Batch" title="Batch">@Html.ActionLink(Model.Job.Device.DeviceBatch.Name, MVC.Config.DeviceBatch.Index(Model.Job.Device.DeviceBatchId))</div>
                             }
                         </div>
-                        @if (Model.Job.JobTypeId == JobType.JobTypeIds.HWar)
+                        @if (Model.Job.Device.DeviceBatch != null)
                         {
+                            if (Model.Job.JobTypeId == JobType.JobTypeIds.HWar)
+                            {
                             <div id="Job_Show_Device_Details_HWar">
                                 <div>DEVICE WARRANTY</div>
                                 <div>Until: <span id="Job_Show_Device_Details_HWar_ValidUntil">@Model.Job.Device.DeviceBatch.WarrantyValidUntil.ToFuzzy("Unknown")</span></div>
@@ -206,9 +208,9 @@
                                     </script>
                                 }
                             </div>    
-                        }
-                        @if (Model.Job.JobTypeId == JobType.JobTypeIds.HNWar)
-                        {
+                            }
+                            if (Model.Job.JobTypeId == JobType.JobTypeIds.HNWar)
+                            {
                             <div id="Job_Show_Device_Details_HNWar">
                                 <div>INSURANCE</div>
                                 <div id="Job_Show_Device_Details_HNWar_InsuranceSupplier">@Model.Job.Device.DeviceBatch.InsuranceSupplier</div>
@@ -236,6 +238,7 @@
                                     </script>
                                 }
                             </div>    
+                            }
                         }
                     </div>
                     @if (Model.Job.DeviceHeld.HasValue)

@@ -293,8 +293,8 @@ WriteLiteral(@">
     $(function () {
         var warrantyProviderDetailLoaded = false;
 
-        $('#jobDetailTabs').bind('tabsshow', function (e, ui) {
-            if ($(ui.panel).is('#jobDetailTab-Warranty')) {
+        $('#jobDetailTabs').on('tabsactivate', function (e, ui) {
+            if ($(ui.newPanel).is('#jobDetailTab-Warranty')) {
                 if (!warrantyProviderDetailLoaded) {
                     var warrantyExternalName = $('#Job_JobMetaWarranty_ExternalName').val();
                     if (warrantyExternalName) {
