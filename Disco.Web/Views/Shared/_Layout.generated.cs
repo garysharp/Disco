@@ -478,7 +478,21 @@ WriteLiteral(" | ");
             
             #line default
             #line hidden
-WriteLiteral("\r\n        </footer>\r\n    </div>\r\n</body>\r\n</html>\r\n");
+WriteLiteral("\r\n        </footer>\r\n    </div>\r\n");
+
+            
+            #line 107 "..\..\Views\Shared\_Layout.cshtml"
+    
+            
+            #line default
+            #line hidden
+            
+            #line 107 "..\..\Views\Shared\_Layout.cshtml"
+       Disco.Services.UIExtensions.UIExtensions.ExecuteExtensionResult(this); 
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n</body>\r\n</html>\r\n");
 
         }
     }

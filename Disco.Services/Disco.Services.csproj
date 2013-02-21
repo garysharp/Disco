@@ -101,6 +101,10 @@
     <Compile Include="Logging\Targets\LogPersistContext.cs" />
     <Compile Include="Logging\Utilities.cs" />
     <Compile Include="Plugins\CommunityInterop\PluginLibraryUpdateTask.cs" />
+    <Compile Include="Plugins\Features\UIExtension\Results\LiteralResult.cs" />
+    <Compile Include="Plugins\Features\UIExtension\Results\PluginResourceScriptResult.cs" />
+    <Compile Include="Plugins\Features\UIExtension\UIExtensionResult.cs" />
+    <Compile Include="Plugins\Features\UIExtension\UIExtensionFeature.cs" />
     <Compile Include="Plugins\UpdatePluginsAfterDiscoUpdateTask.cs" />
     <Compile Include="Plugins\UpdatePluginTask.cs" />
     <Compile Include="Plugins\InstallPluginTask.cs" />
@@ -133,6 +137,7 @@
     <Compile Include="Tasks\ScheduledTaskStatus.cs" />
     <Compile Include="Tasks\ScheduledTasksLiveStatusService.cs" />
     <Compile Include="Tasks\ScheduledTaskStatusLive.cs" />
+    <Compile Include="UIExtensions\UIExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Disco.Data\Disco.Data.csproj">
@@ -152,7 +157,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2001/1/1" BuildVersion_BuildAction="ReBuild" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="True" />
+      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2001/1/1" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

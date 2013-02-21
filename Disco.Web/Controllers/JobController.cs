@@ -10,6 +10,8 @@ using Disco.Models.Repository;
 using System.Web.Script.Serialization;
 using Disco.Services.Plugins.Features.WarrantyProvider;
 using Disco.Services.Plugins;
+using Disco.Services.UIExtensions;
+using Disco.Models.UI.Job;
 
 namespace Disco.Web.Controllers
 {
@@ -211,7 +213,10 @@ namespace Disco.Web.Controllers
 
             m.UpdatableJobSubTypes = m.Job.JobType.JobSubTypes.OrderBy(jst => jst.Description).ToList();
 
-            m.DocumentTemplates = m.Job.AvailableDocumentTemplates(dbContext, DiscoApplication.CurrentUser, DateTime.Now);
+            m.AvailableDocumentTemplates = m.Job.AvailableDocumentTemplates(dbContext, DiscoApplication.CurrentUser, DateTime.Now);
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobShowModel>(this.ControllerContext, m);
 
             return View(m);
         }

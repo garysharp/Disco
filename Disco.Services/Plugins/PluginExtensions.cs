@@ -93,6 +93,10 @@ namespace Disco.Services.Plugins
             var pageAssembly = pageType.Assembly;
             var manifest = Plugins.GetPlugin(pageAssembly);
 
+            return ViewPage.DiscoPluginResourceUrl(Resource, false, manifest);
+        }
+        public static HtmlString DiscoPluginResourceUrl<T>(this WebViewPage<T> ViewPage, string Resource, bool Download, PluginManifest manifest)
+        {
             var resourcePath = manifest.WebResourcePath(Resource);
 
             var routeValues = new RouteValueDictionary(new { PluginId = manifest.Id, res = Resource });
@@ -115,6 +119,10 @@ namespace Disco.Services.Plugins
             var pageAssembly = pageType.Assembly;
             var manifest = Plugins.GetPlugin(pageAssembly);
 
+            return ViewPage.DiscoPluginActionUrl(PluginAction, manifest);
+        }
+        public static HtmlString DiscoPluginActionUrl<T>(this WebViewPage<T> ViewPage, string PluginAction, PluginManifest manifest)
+        {
             var routeValues = new RouteValueDictionary(new { PluginId = manifest.Id, PluginAction = PluginAction });
             string pluginActionUrl = UrlHelper.GenerateUrl("Plugin", null, null, routeValues, RouteTable.Routes, ViewPage.ViewContext.RequestContext, false);
             return new HtmlString(pluginActionUrl);
@@ -126,6 +134,10 @@ namespace Disco.Services.Plugins
             var pageAssembly = pageType.Assembly;
             var manifest = Plugins.GetPlugin(pageAssembly);
 
+            return ViewPage.DiscoPluginConfigureUrl(manifest);
+        }
+        public static HtmlString DiscoPluginConfigureUrl<T>(this WebViewPage<T> ViewPage, PluginManifest manifest)
+        {
             var routeValues = new RouteValueDictionary(new { PluginId = manifest.Id });
             string pluginActionUrl = UrlHelper.GenerateUrl("Config_Plugins_Configure", null, null, routeValues, RouteTable.Routes, ViewPage.ViewContext.RequestContext, false);
             return new HtmlString(pluginActionUrl);
