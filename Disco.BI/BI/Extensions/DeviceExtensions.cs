@@ -114,7 +114,6 @@ namespace Disco.BI.Extensions
                 DeviceProfileId = d.DeviceProfileId,
                 DeviceProfile = dbContext.DeviceProfiles.Find(d.DeviceProfileId),
                 AllowUnauthenticatedEnrol = true,
-                Active = true,
                 DeviceModelId = dm.Id,
                 DeviceModel = dm,
                 DeviceBatchId = d.DeviceBatchId,

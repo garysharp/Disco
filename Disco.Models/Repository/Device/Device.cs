@@ -33,7 +33,9 @@ namespace Disco.Models.Repository
         
         public bool AllowUnauthenticatedEnrol { get; set; }
 
-        public bool Active { get; set; }
+        // Removed 2013-02-21 G#: Redundant - See DecommissionedDate
+        //public bool Active { get; set; }
+        // End Removed 2013-02-21
 
         public DateTime CreatedDate { get; set; }
         public DateTime? EnrolledDate { get; set; }

@@ -256,7 +256,6 @@ namespace Disco.BI.DeviceBI
                         DeviceProfile = deviceProfile,
                         DeviceModel = deviceModel,
                         AllowUnauthenticatedEnrol = false,
-                        Active = true,
                         CreatedDate = DateTime.Now,
                         EnrolledDate = DateTime.Now
                     };
@@ -393,7 +392,6 @@ namespace Disco.BI.DeviceBI
                         DeviceProfile = deviceProfile,
                         DeviceModel = deviceModel,
                         AllowUnauthenticatedEnrol = false,
-                        Active = true,
                         CreatedDate = DateTime.Now,
                         EnrolledDate = DateTime.Now,
                         LastEnrolDate = DateTime.Now

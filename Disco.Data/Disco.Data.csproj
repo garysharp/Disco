@@ -93,6 +93,10 @@
     <Compile Include="Migrations\201301150107063_DBv6.Designer.cs">
       <DependentUpon>201301150107063_DBv6.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201302210057463_DBv7.cs" />
+    <Compile Include="Migrations\201302210057463_DBv7.Designer.cs">
+      <DependentUpon>201302210057463_DBv7.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DiscoDataMigrator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -124,6 +128,9 @@
     <EmbeddedResource Include="Migrations\201301150107063_DBv6.resx">
       <DependentUpon>201301150107063_DBv6.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201302210057463_DBv7.resx">
+      <DependentUpon>201302210057463_DBv7.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -137,7 +144,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2001/1/1" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" />
+      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2001/1/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
