@@ -262,8 +262,8 @@
         /// contains the maximum value. The default is "max".</param>
         /// <returns type="jQuery.validator.unobtrusive.adapters" />
         return this.add(adapterName, [minAttribute || "min", maxAttribute || "max"], function (options) {
-            var min = options.params.min,
-                max = options.params.max;
+            var min = Number(options.params.min),
+                max = Number(options.params.max);
 
             if (min && max) {
                 setValidationValues(options, minMaxRuleName, [min, max]);
