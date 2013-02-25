@@ -31,9 +31,14 @@ namespace Disco.Client.Interop
                         {
                             if (mItem != null)
                             {
-                                DeviceSerialNumber = mItem.GetPropertyValue("SerialNumber").ToString().Trim();
+                                DeviceSerialNumber = mItem.GetPropertyValue("SerialNumber") as string;
+                                if (!string.IsNullOrEmpty(DeviceSerialNumber))
+                                    DeviceSerialNumber = DeviceSerialNumber.Trim();
+
                                 ErrorReporting.DeviceIdentifier = DeviceSerialNumber;
-                                DeviceSMBIOSVersion = mItem.GetPropertyValue("SMBIOSBIOSVersion").ToString().Trim();
+                                DeviceSMBIOSVersion = mItem.GetPropertyValue("SMBIOSBIOSVersion") as string;
+                                if (!string.IsNullOrEmpty(DeviceSMBIOSVersion))
+                                    DeviceSMBIOSVersion = DeviceSMBIOSVersion.Trim();
                             }
                             else
                             {
@@ -59,9 +64,15 @@ namespace Disco.Client.Interop
                         {
                             if (mItem != null)
                             {
-                                DeviceManufacturer = mItem.GetPropertyValue("Manufacturer").ToString().Trim();
-                                DeviceModel = mItem.GetPropertyValue("Model").ToString().Trim();
-                                DeviceIsPartOfDomain = bool.Parse(mItem.GetPropertyValue("PartOfDomain").ToString());
+                                DeviceManufacturer = mItem.GetPropertyValue("Manufacturer") as string;
+                                if (!string.IsNullOrEmpty(DeviceManufacturer))
+                                    DeviceManufacturer = DeviceManufacturer.Trim();
+
+                                DeviceModel = mItem.GetPropertyValue("Model") as string;
+                                if (!string.IsNullOrEmpty(DeviceModel))
+                                    DeviceModel = DeviceModel.Trim();
+
+                                DeviceIsPartOfDomain = (bool)mItem.GetPropertyValue("PartOfDomain");
                                 DeviceType = PCSystemTypeToString((UInt16)mItem.GetPropertyValue("PCSystemType"));
                             }
                             else
@@ -89,8 +100,13 @@ namespace Disco.Client.Interop
                         {
                             if (mItem != null)
                             {
-                                ComputerSystemProductSerialNumber = mItem.GetPropertyValue("IdentifyingNumber").ToString().Trim();
-                                DeviceUUID = mItem.GetPropertyValue("UUID").ToString().Trim();
+                                ComputerSystemProductSerialNumber = mItem.GetPropertyValue("IdentifyingNumber") as string;
+                                if (!string.IsNullOrEmpty(ComputerSystemProductSerialNumber))
+                                    ComputerSystemProductSerialNumber = ComputerSystemProductSerialNumber.Trim();
+
+                                DeviceUUID = mItem.GetPropertyValue("UUID") as string;
+                                if (!string.IsNullOrEmpty(DeviceUUID))
+                                    DeviceUUID = DeviceUUID.Trim();
                             }
                             else
                             {
@@ -122,7 +138,9 @@ namespace Disco.Client.Interop
                             {
                                 if (mItem != null)
                                 {
-                                    DeviceSerialNumber = mItem.GetPropertyValue("SerialNumber").ToString().Trim();
+                                    DeviceSerialNumber = mItem.GetPropertyValue("SerialNumber") as string;
+                                    if (!string.IsNullOrEmpty(DeviceSerialNumber))
+                                        DeviceSerialNumber = DeviceSerialNumber.Trim();
                                 }
                                 else
                                 {
