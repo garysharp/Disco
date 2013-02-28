@@ -11,7 +11,7 @@ using Disco.Models.UI;
 using Disco.Services.Plugins;
 using Disco.Services.Plugins.Features.UIExtension;
 
-namespace Disco.Services.UIExtensions
+namespace Disco.Services.Plugins.Features.UIExtension
 {
     public static class UIExtensions
     {

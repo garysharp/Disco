@@ -97,10 +97,14 @@ namespace Disco.Services.Plugins
         }
         public static HtmlString DiscoPluginResourceUrl<T>(this WebViewPage<T> ViewPage, string Resource, bool Download, PluginManifest manifest)
         {
+            return ViewPage.ViewContext.RequestContext.DiscoPluginResourceUrl(Resource, Download, manifest);
+        }
+        public static HtmlString DiscoPluginResourceUrl(this RequestContext RequestContext, string Resource, bool Download, PluginManifest manifest)
+        {
             var resourcePath = manifest.WebResourcePath(Resource);
 
             var routeValues = new RouteValueDictionary(new { PluginId = manifest.Id, res = Resource });
-            string pluginActionUrl = UrlHelper.GenerateUrl("Plugin_Resources", null, null, routeValues, RouteTable.Routes, ViewPage.ViewContext.RequestContext, false);
+            string pluginActionUrl = UrlHelper.GenerateUrl("Plugin_Resources", null, null, routeValues, RouteTable.Routes, RequestContext, false);
 
             pluginActionUrl += string.Format("?v={0}", resourcePath.Item2);
 
@@ -123,8 +127,12 @@ namespace Disco.Services.Plugins
         }
         public static HtmlString DiscoPluginActionUrl<T>(this WebViewPage<T> ViewPage, string PluginAction, PluginManifest manifest)
         {
+            return ViewPage.ViewContext.RequestContext.DiscoPluginActionUrl(PluginAction, manifest);
+        }
+        public static HtmlString DiscoPluginActionUrl(this RequestContext RequestContext, string PluginAction, PluginManifest manifest)
+        {
             var routeValues = new RouteValueDictionary(new { PluginId = manifest.Id, PluginAction = PluginAction });
-            string pluginActionUrl = UrlHelper.GenerateUrl("Plugin", null, null, routeValues, RouteTable.Routes, ViewPage.ViewContext.RequestContext, false);
+            string pluginActionUrl = UrlHelper.GenerateUrl("Plugin", null, null, routeValues, RouteTable.Routes, RequestContext, false);
             return new HtmlString(pluginActionUrl);
         }
         public static HtmlString DiscoPluginConfigureUrl<T>(this WebViewPage<T> ViewPage)

@@ -5,17 +5,17 @@ using System.Web;
 using System.Web.Mvc;
 using Disco.BI;
 using Disco.BI.Extensions;
+using Disco.Models.UI.Device;
 using Disco.Web.Extensions;
 
 namespace Disco.Web.Models.Device
 {
-    public class ShowModel
+    public class ShowModel : DeviceShowModel
     {
         public Disco.Models.Repository.Device Device { get; set; }
 
-
         public List<Disco.Models.Repository.DeviceProfile> DeviceProfiles { get; set; }
-        public List<SelectListItem> DeviceBatches { get; set; }
+        public List<Disco.Models.Repository.DeviceBatch> DeviceBatches { get; set; }
         public Disco.Models.BI.Job.JobTableModel Jobs { get; set; }
         public List<Disco.Models.Repository.DeviceCertificate> Certificates { get; set; }
 

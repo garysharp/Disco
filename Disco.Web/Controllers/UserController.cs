@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using Disco.Models.Repository;
 using Disco.BI.Extensions;
+using Disco.Services.Plugins.Features.UIExtension;
+using Disco.Models.UI.User;
 
 namespace Disco.Web.Controllers
 {
@@ -13,6 +15,11 @@ namespace Disco.Web.Controllers
         #region Index
         public virtual ActionResult Index()
         {
+            var m = new Models.User.IndexModel();
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<UserIndexModel>(this.ControllerContext, m);
+
             return View();
         }
         #endregion
@@ -42,6 +49,9 @@ namespace Disco.Web.Controllers
             m.Jobs.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.UserId == id));
 
             m.DocumentTemplates = m.User.AvailableDocumentTemplates(dbContext, DiscoApplication.CurrentUser, DateTime.Now);
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<UserShowModel>(this.ControllerContext, m);
 
             return View(m);
         }

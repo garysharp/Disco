@@ -31,9 +31,9 @@ namespace Disco.Web.Views.Device
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.0.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/Show.cshtml")]
-    public class Show : System.Web.Mvc.WebViewPage<Disco.Web.Models.Device.ShowModel>
+    public partial class Show : System.Web.Mvc.WebViewPage<Disco.Web.Models.Device.ShowModel>
     {
         public Show()
         {
@@ -300,7 +300,7 @@ WriteLiteral("                        ");
 
             
             #line 106 "..\..\Views\Device\Show.cshtml"
-                   Write(Html.DropDownListFor(m => m.Device.DeviceBatchId, Model.DeviceBatches));
+                   Write(Html.DropDownListFor(m => m.Device.DeviceBatchId, Model.DeviceBatches.ToSelectListItems(Model.Device.DeviceBatchId)));
 
             
             #line default
@@ -662,14 +662,14 @@ WriteLiteral("                            <a");
 
 WriteLiteral(" class=\"unlocked16\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 15388), Tuple.Create("\"", 15496)
+WriteAttribute("href", Tuple.Create(" href=\"", 15434), Tuple.Create("\"", 15542)
             
             #line 261 "..\..\Views\Device\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 15395), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.UpdateAllowUnauthenticatedEnrol(Model.Device.SerialNumber, "false", true))
+, Tuple.Create(Tuple.Create("", 15441), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.UpdateAllowUnauthenticatedEnrol(Model.Device.SerialNumber, "false", true))
             
             #line default
             #line hidden
-, 15395), false)
+, 15441), false)
 );
 
 WriteLiteral(" title=\"Unauthenticated Enrolment is Allowed\"");
@@ -689,14 +689,14 @@ WriteLiteral("                            <a");
 
 WriteLiteral(" class=\"locked16\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 15721), Tuple.Create("\"", 15828)
+WriteAttribute("href", Tuple.Create(" href=\"", 15767), Tuple.Create("\"", 15874)
             
             #line 266 "..\..\Views\Device\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 15728), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.UpdateAllowUnauthenticatedEnrol(Model.Device.SerialNumber, "true", true))
+, Tuple.Create(Tuple.Create("", 15774), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.UpdateAllowUnauthenticatedEnrol(Model.Device.SerialNumber, "true", true))
             
             #line default
             #line hidden
-, 15728), false)
+, 15774), false)
 );
 
 WriteLiteral(" title=\"Unauthenticated Enrolment is Blocked\"");
@@ -1040,14 +1040,14 @@ WriteLiteral("                <tr");
 
 WriteLiteral(" id=\"Device_AssignedUser_History_Host\"");
 
-WriteAttribute("style", Tuple.Create(" style=\"", 25515), Tuple.Create("\"", 25589)
+WriteAttribute("style", Tuple.Create(" style=\"", 25561), Tuple.Create("\"", 25635)
             
             #line 424 "..\..\Views\Device\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 25523), Tuple.Create<System.Object, System.Int32>(Model.Device.DecommissionedDate.HasValue ? "" : "display: none"
+, Tuple.Create(Tuple.Create("", 25569), Tuple.Create<System.Object, System.Int32>(Model.Device.DecommissionedDate.HasValue ? "" : "display: none"
             
             #line default
             #line hidden
-, 25523), false)
+, 25569), false)
 );
 
 WriteLiteral(">\r\n                    <td");
@@ -1058,14 +1058,14 @@ WriteLiteral(">\r\n                        <div");
 
 WriteLiteral(" id=\"Device_AssignedUser_History\"");
 
-WriteAttribute("style", Tuple.Create(" style=\"", 25692), Tuple.Create("\"", 25766)
+WriteAttribute("style", Tuple.Create(" style=\"", 25738), Tuple.Create("\"", 25812)
             
             #line 426 "..\..\Views\Device\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 25700), Tuple.Create<System.Object, System.Int32>(Model.Device.DecommissionedDate.HasValue ? "" : "display: none"
+, Tuple.Create(Tuple.Create("", 25746), Tuple.Create<System.Object, System.Int32>(Model.Device.DecommissionedDate.HasValue ? "" : "display: none"
             
             #line default
             #line hidden
-, 25700), false)
+, 25746), false)
 );
 
 WriteLiteral(">\r\n                            <h2>\r\n                                Assigned Use" +
@@ -1144,26 +1144,26 @@ WriteLiteral(">\r\n                        <img");
 
 WriteLiteral(" alt=\"Model Image\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 27421), Tuple.Create("\"", 27531)
+WriteAttribute("src", Tuple.Create(" src=\"", 27467), Tuple.Create("\"", 27577)
             
             #line 460 "..\..\Views\Device\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 27427), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(Model.Device.DeviceModelId, Model.Device.DeviceModel.ImageHash()))
+, Tuple.Create(Tuple.Create("", 27473), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(Model.Device.DeviceModelId, Model.Device.DeviceModel.ImageHash()))
             
             #line default
             #line hidden
-, 27427), false)
+, 27473), false)
 );
 
 WriteLiteral(" />\r\n                        <h2>\r\n                            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 27597), Tuple.Create("\"", 27675)
+WriteAttribute("href", Tuple.Create(" href=\"", 27643), Tuple.Create("\"", 27721)
             
             #line 462 "..\..\Views\Device\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 27604), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.DeviceModel.Index(Model.Device.DeviceModelId))
+, Tuple.Create(Tuple.Create("", 27650), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.DeviceModel.Index(Model.Device.DeviceModelId))
             
             #line default
             #line hidden
-, 27604), false)
+, 27650), false)
 );
 
 WriteLiteral(">");

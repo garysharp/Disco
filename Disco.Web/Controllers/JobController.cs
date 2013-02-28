@@ -10,8 +10,8 @@ using Disco.Models.Repository;
 using System.Web.Script.Serialization;
 using Disco.Services.Plugins.Features.WarrantyProvider;
 using Disco.Services.Plugins;
-using Disco.Services.UIExtensions;
 using Disco.Models.UI.Job;
+using Disco.Services.Plugins.Features.UIExtension;
 
 namespace Disco.Web.Controllers
 {
@@ -64,6 +64,10 @@ namespace Disco.Web.Controllers
             //    closedThreshold = closedThreshold.AddDays(-1);
             //m.RecentlyClosedJobs = new Disco.Models.BI.Job.JobTableModel();
             //m.RecentlyClosedJobs.Fill(BI.JobTableModelBI.BuildQuery(dbContext).Where(j => j.ClosedDate > closedThreshold));
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobIndexModel>(this.ControllerContext, m);
+
             return View(m);
         }
         #endregion
@@ -75,6 +79,10 @@ namespace Disco.Web.Controllers
             var m = new Models.Job.ListModel() { Title = "All Open Jobs" };
             m.JobTable = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true };
             m.JobTable.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.ClosedDate == null).OrderBy(j => j.Id));
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+
             return View(Views.List, m);
         }
         public virtual ActionResult DevicesReadyForReturn()
@@ -86,6 +94,10 @@ namespace Disco.Web.Controllers
                 && j.DeviceHeld != null && j.DeviceReturnedDate == null && j.DeviceReadyForReturn != null &&
                 ((!j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue && !j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue) || j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue)
                 && j.ClosedDate == null).OrderBy(j => j.Id));
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+
             return View(Views.List, m);
         }
         public virtual ActionResult DevicesAwaitingRepair()
@@ -98,6 +110,10 @@ namespace Disco.Web.Controllers
                 (j.JobMetaNonWarranty.RepairerLoggedDate != null && j.JobMetaNonWarranty.RepairerCompletedDate == null) ||
                 (j.JobMetaWarranty.ExternalLoggedDate != null && j.JobMetaWarranty.ExternalCompletedDate == null)
                 )).OrderBy(j => j.Id));
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+
             return View(Views.List, m);
         }
 
@@ -114,6 +130,10 @@ namespace Disco.Web.Controllers
                 (j.JobTypeId == JobType.JobTypeIds.HNWar && (!j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue || !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue)) ||
                 (j.JobTypeId == JobType.JobTypeIds.UMgmt && (long)Job.UserManagementFlags.Infringement_BreachFinancialAgreement == (j.Flags & (long)Job.UserManagementFlags.Infringement_BreachFinancialAgreement))
                 )));
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+
             return View(Views.List, m);
         }
 
@@ -126,6 +146,9 @@ namespace Disco.Web.Controllers
                 (j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue && (!j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue)))
                 ).OrderBy(j => j.Id));
 
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+
             return View(Views.List, m);
         }
         public virtual ActionResult AwaitingFinancePayment()
@@ -136,6 +159,10 @@ namespace Disco.Web.Controllers
             m.JobTable.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.ClosedDate == null &&
                 (j.JobTypeId == JobType.JobTypeIds.HNWar && (!j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue || !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue))
                 ).OrderBy(j => j.Id));
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+
             return View(Views.List, m);
         }
         public virtual ActionResult AwaitingFinanceInsuranceProcessing()
@@ -146,6 +173,10 @@ namespace Disco.Web.Controllers
             m.JobTable.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.ClosedDate == null &&
                 (j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.IsInsuranceClaim && !j.JobMetaInsurance.ClaimFormSentDate.HasValue))
                 ).OrderBy(j => j.Id));
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+
             return View(Views.List, m);
         }
         public virtual ActionResult AwaitingFinanceAgreementBreach()
@@ -156,6 +187,10 @@ namespace Disco.Web.Controllers
             m.JobTable.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.ClosedDate == null &&
                 (j.JobTypeId == JobType.JobTypeIds.UMgmt && (long)Job.UserManagementFlags.Infringement_BreachFinancialAgreement == (j.Flags & (long)Job.UserManagementFlags.Infringement_BreachFinancialAgreement))
                 ).OrderBy(j => j.Id));
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+
             return View(Views.List, m);
         }
 
@@ -168,6 +203,10 @@ namespace Disco.Web.Controllers
             m.JobTable = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true };
             m.JobTable.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => (j.WaitingForUserAction.HasValue || (j.JobMetaNonWarranty.AccountingChargeAddedDate != null && j.JobMetaNonWarranty.AccountingChargePaidDate == null))
                                                                           && j.ClosedDate == null).OrderBy(j => j.Id));
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+
             return View(Views.List, m);
         }
         public virtual ActionResult RecentlyClosed()
@@ -183,6 +222,10 @@ namespace Disco.Web.Controllers
             if (dateTimeNow.DayOfWeek == DayOfWeek.Tuesday)
                 closedThreshold = closedThreshold.AddDays(-1);
             m.JobTable.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.ClosedDate > closedThreshold).OrderBy(j => j.Id));
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+
             return View(Views.List, m);
         }
         public virtual ActionResult Locations()
@@ -191,6 +234,10 @@ namespace Disco.Web.Controllers
             var m = new Models.Job.ListModel() { Title = "Held Device Locations" };
             m.JobTable = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true, ShowLocation = true, ShowTechnician = false, ShowType = false };
             m.JobTable.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.ClosedDate == null && j.DeviceHeld.HasValue && !j.DeviceReturnedDate.HasValue).OrderBy(j => j.DeviceHeldLocation));
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+
             return View(Views.List, m);
         }
 
@@ -232,6 +279,9 @@ namespace Disco.Web.Controllers
             };
             m.UpdateModel(dbContext);
 
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobCreateModel>(this.ControllerContext, m);
+
             return View(m);
         }
         [HttpPost]
@@ -241,6 +291,9 @@ namespace Disco.Web.Controllers
 
             if (!ModelState.IsValid)
             {
+                // UI Extensions
+                UIExtensions.ExecuteExtensions<JobCreateModel>(this.ControllerContext, m);
+
                 return View(m);
             }
             else

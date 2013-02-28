@@ -6,11 +6,12 @@ using System.Web.Mvc;
 using Disco.BI;
 using Disco.BI.Extensions;
 using Disco.Models.Interop.ActiveDirectory;
+using Disco.Models.UI.User;
 using Disco.Web.Extensions;
 
 namespace Disco.Web.Models.User
 {
-    public class ShowModel
+    public class ShowModel : UserShowModel
     {
         public Disco.Models.Repository.User User { get; set; }
         public Disco.Models.BI.Job.JobTableModel Jobs { get; set; }

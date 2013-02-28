@@ -9,6 +9,8 @@ using Disco.Data.Repository;
 using Disco.Models.Repository;
 using System.Data.Objects.SqlClient;
 using Disco.Web.Extensions;
+using Disco.Services.Plugins.Features.UIExtension;
+using Disco.Models.UI.Device;
 
 
 namespace Disco.Web.Controllers
@@ -18,6 +20,11 @@ namespace Disco.Web.Controllers
         #region Index
         public virtual ActionResult Index()
         {
+            Models.Device.IndexModel m = new Models.Device.IndexModel();
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<DeviceIndexModel>(this.ControllerContext, m);
+
             return View();
         }
         #endregion
@@ -97,7 +104,7 @@ namespace Disco.Web.Controllers
 
             m.DeviceProfiles = dbContext.DeviceProfiles.ToList();
 
-            m.DeviceBatches = dbContext.DeviceBatches.ToSelectListItems(m.Device.DeviceBatchId);
+            m.DeviceBatches = dbContext.DeviceBatches.ToList();
 
             m.Jobs = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true, ShowDevice = false, IsSmallTable = true, HideClosedJobs = true };
             m.Jobs.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.DeviceSerialNumber == m.Device.SerialNumber)); 
@@ -106,6 +113,9 @@ namespace Disco.Web.Controllers
 
             //m.AttachmentTypes = dbContext.AttachmentTypes.Where(at => at.Scope == AttachmentType.AttachmentTypeScopes.Device).ToList();
             m.DocumentTemplates = m.Device.AvailableDocumentTemplates(dbContext, DiscoApplication.CurrentUser, DateTime.Now);
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<DeviceShowModel>(this.ControllerContext, m);
 
             return View(m);
         }

@@ -97,7 +97,14 @@
     <Compile Include="Repository\User\UserAttachment.cs" />
     <Compile Include="Repository\User\UserDetail.cs" />
     <Compile Include="UI\BaseUIModel.cs" />
+    <Compile Include="UI\Device\DeviceIndexModel.cs" />
+    <Compile Include="UI\Device\DeviceShowModel.cs" />
+    <Compile Include="UI\Job\JobCreateModel.cs" />
+    <Compile Include="UI\Job\JobIndexModel.cs" />
+    <Compile Include="UI\Job\JobListModel.cs" />
     <Compile Include="UI\Job\JobShowModel.cs" />
+    <Compile Include="UI\User\UserIndexModel.cs" />
+    <Compile Include="UI\User\UserShowModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -105,7 +112,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2001/1/1" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" />
+      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2001/1/1" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

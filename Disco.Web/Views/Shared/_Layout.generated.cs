@@ -31,9 +31,9 @@ namespace Disco.Web.Views.Shared
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.0.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Shared/_Layout.cshtml")]
-    public class Layout : System.Web.Mvc.WebViewPage<dynamic>
+    public partial class Layout : System.Web.Mvc.WebViewPage<dynamic>
     {
         public Layout()
         {
@@ -488,7 +488,7 @@ WriteLiteral("\r\n        </footer>\r\n    </div>\r\n");
             #line hidden
             
             #line 107 "..\..\Views\Shared\_Layout.cshtml"
-       Disco.Services.UIExtensions.UIExtensions.ExecuteExtensionResult(this); 
+       Disco.Services.Plugins.Features.UIExtension.UIExtensions.ExecuteExtensionResult(this); 
             
             #line default
             #line hidden

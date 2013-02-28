@@ -466,6 +466,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Device\AddOfflineModel.cs" />
+    <Compile Include="Models\Device\IndexModel.cs" />
     <Compile Include="Models\Device\ShowModel.cs" />
     <Compile Include="Models\InitialConfig\CompleteModel.cs" />
     <Compile Include="Models\InitialConfig\DatabaseModel.cs" />
@@ -480,6 +481,7 @@
     <Compile Include="Models\Job\WarrantyProviderJobDetailsModel.cs" />
     <Compile Include="Models\Search\QueryModel.cs" />
     <Compile Include="Models\Update\IndexModel.cs" />
+    <Compile Include="Models\User\IndexModel.cs" />
     <Compile Include="Models\User\ShowModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="T4MVC.cs">
@@ -1835,7 +1837,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_StartDate="2001/1/1" BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_DetectChanges="False" />
+      <UserProperties BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2001/1/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

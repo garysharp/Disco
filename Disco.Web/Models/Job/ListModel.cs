@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Disco.Models.UI.Job;
 
 namespace Disco.Web.Models.Job
 {
-    public class ListModel
+    public class ListModel : JobListModel
     {
         public string Title { get; set; }
         public Disco.Models.BI.Job.JobTableModel JobTable { get; set; }

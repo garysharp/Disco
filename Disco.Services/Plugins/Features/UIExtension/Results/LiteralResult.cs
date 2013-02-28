@@ -12,14 +12,16 @@ namespace Disco.Services.Plugins.Features.UIExtension.Results
     {
         private string _content;
 
-        public LiteralResult(PluginFeatureManifest Source, string Content) : base(Source)
+        public LiteralResult(PluginFeatureManifest Source, string Content)
+            : base(Source)
         {
             this._content = Content;
         }
 
         public override void ExecuteResult<T>(WebViewPage<T> page)
         {
-            page.Write(new HtmlString(_content));
+            if (!string.IsNullOrEmpty(_content))
+                page.Write(new HtmlString(_content));
         }
     }
 }

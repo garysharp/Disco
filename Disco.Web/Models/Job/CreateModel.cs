@@ -4,11 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using Disco.Data.Repository;
+using Disco.Models.UI.Job;
 
 namespace Disco.Web.Models.Job
 {
     [CustomValidation(typeof(CreateModel), "ValidateCreateModel")]
-    public class CreateModel
+    public class CreateModel : JobCreateModel
     {
         public string DeviceSerialNumber { get; set; }
         public string UserId { get; set; }
@@ -20,9 +21,6 @@ namespace Disco.Web.Models.Job
 
         [DataType(System.ComponentModel.DataAnnotations.DataType.MultilineText)]
         public string Comments { get; set; }
-
-        //public string AssignedUserId { get; set; }
-        //public DateTime? AssignedUserTargetCompletionDate { get; set; }
 
         [Required(ErrorMessage = "Please specify whether the device is held or not")]
         public bool? DeviceHeld { get; set; }

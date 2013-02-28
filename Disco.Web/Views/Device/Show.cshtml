@@ -103,7 +103,7 @@
                         Batch:
                     </th>
                     <td class="value">
-                        @Html.DropDownListFor(m => m.Device.DeviceBatchId, Model.DeviceBatches)
+                        @Html.DropDownListFor(m => m.Device.DeviceBatchId, Model.DeviceBatches.ToSelectListItems(Model.Device.DeviceBatchId))
                         @AjaxHelpers.AjaxLoader() <span id="deviceBatchDetails" class="icon16" title="Batch Details"></span>
                         <script type="text/javascript">
                             $(function () {

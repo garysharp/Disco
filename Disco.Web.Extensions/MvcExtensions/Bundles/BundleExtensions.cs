@@ -15,8 +15,7 @@ namespace Disco.Web.Extensions
             // Ensure 'App-Relative' Url:
             BundleUrl = BundleUrl.StartsWith("~/") ? BundleUrl : (BundleUrl.StartsWith("/") ? string.Concat("~", BundleUrl) : string.Concat("~/", BundleUrl));
 
-            var deferredBundles = default(List<string>);
-            deferredBundles = htmlHelper.ViewContext.HttpContext.Items["Bundles.Deferred"] as List<string>;
+            var deferredBundles = htmlHelper.ViewContext.HttpContext.Items["Bundles.Deferred"] as List<string>;
             if (deferredBundles == null)
             {
                 deferredBundles = new List<string>();
@@ -27,17 +26,34 @@ namespace Disco.Web.Extensions
         }
         public static HtmlString BundleRenderDeferred(this HtmlHelper htmlHelper)
         {
-            var deferredBundles = default(List<string>);
-            deferredBundles = htmlHelper.ViewContext.HttpContext.Items["Bundles.Deferred"] as List<string>;
+            var deferredBundles = htmlHelper.ViewContext.HttpContext.Items["Bundles.Deferred"] as List<string>;
 
-            if (deferredBundles != null)
+            var uiExtensionScripts = htmlHelper.ViewContext.HttpContext.Items["Bundles.UIExtensionScripts"] as List<HtmlString>;
+            var uiExtensionCss = htmlHelper.ViewContext.HttpContext.Items["Bundles.UIExtensionCss"] as List<HtmlString>;
+
+            if (deferredBundles != null || uiExtensionScripts != null || uiExtensionCss != null)
             {
                 StringBuilder bundleUrls = new StringBuilder();
-                deferredBundles.Reverse();
-                foreach (string bundleUrl in deferredBundles)
+
+                if (deferredBundles != null)
                 {
-                    bundleUrls.AppendLine(BundleTable.ResolveBundleHtmlElement(bundleUrl));
+                    deferredBundles.Reverse();
+                    foreach (string bundleUrl in deferredBundles)
+                    {
+                        bundleUrls.AppendLine(BundleTable.ResolveBundleHtmlElement(bundleUrl));
+                    }
                 }
+                if (uiExtensionCss != null)
+                {
+                    foreach (HtmlString extensionUrl in uiExtensionCss)
+                        bundleUrls.Append("<link href=\"").Append(extensionUrl).AppendLine("\" rel=\"stylesheet\" type=\"text/css\" />");
+                }
+                if (uiExtensionScripts != null)
+                {
+                    foreach (HtmlString extensionUrl in uiExtensionScripts)
+                        bundleUrls.Append("<script src=\"").Append(extensionUrl).AppendLine("\" type=\"text/javascript\"></script>");
+                }
+
                 return new HtmlString(bundleUrls.ToString());
             }
             else
