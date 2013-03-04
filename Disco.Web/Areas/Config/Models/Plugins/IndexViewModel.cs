@@ -34,41 +34,36 @@ namespace Disco.Web.Areas.Config.Models.Plugins
             }
         }
 
-        public List<Tuple<Type, List<PluginManifest>>> PluginManifestsByType
+        public List<Tuple<Type, List<PluginManifest>>> PluginManifestsByCategory
         {
             get
             {
                 if (PluginManifests.Count == 0)
-                    return new List<Tuple<Type, List<PluginManifest>>>();
+                    return null;
 
-                var categorisedManifests = PluginManifests.SelectMany(pm => pm.Features)
-                    .GroupBy(fm => fm.CategoryType)
-                    .Select(g => new Tuple<Type, List<PluginManifest>>(g.Key, g.Select(fm => fm.PluginManifest).Distinct().OrderBy(fm => fm.Name).ToList())).ToList();
-                
-                // Ensure all plugins are represented
-                var allCategorisedManifests = categorisedManifests.SelectMany(g => g.Item2).ToList();
 
-                var unrepresentedPlugins = PluginManifests.Where(m => !allCategorisedManifests.Contains(m)).ToList();
-                if (unrepresentedPlugins.Count > 0)
+                List<Tuple<Type, PluginManifest>> pluginsByCategory = new List<Tuple<Type, PluginManifest>>();
+
+                foreach (var pluginManifest in PluginManifests)
                 {
-                    Tuple<Type, List<PluginManifest>> otherCategory = null;
-                    foreach (var category in categorisedManifests)
-                    {
-                        if (category.Item1 == typeof(OtherFeature))
-                        {
-                            otherCategory = category;
-                        }
-                    }
-                    if (otherCategory == null)
-                    {
-                        otherCategory = new Tuple<Type, List<PluginManifest>>(typeof(OtherFeature), new List<PluginManifest>());
-                        categorisedManifests.Add(otherCategory);
-                    }
-                    foreach (var pluginManifest in unrepresentedPlugins)
-                        otherCategory.Item2.Add(pluginManifest);
+                    var orderedFeatures = pluginManifest.Features.OrderBy(pf => pf.Id);
+                    var primaryFeature = orderedFeatures.Where(pf => pf.PrimaryFeature).FirstOrDefault();
+                    Type categoryType;
+
+                    if (primaryFeature == null)
+                        primaryFeature = orderedFeatures.FirstOrDefault();
+
+                    if (primaryFeature == null)
+                        categoryType = typeof(OtherFeature);
+                    else
+                        categoryType = primaryFeature.CategoryType;
+
+                    pluginsByCategory.Add(new Tuple<Type, PluginManifest>(categoryType, pluginManifest));
                 }
 
-                return categorisedManifests;
+                return pluginsByCategory.GroupBy(p => p.Item1)
+                    .OrderBy(g => g.Key.Name)
+                    .Select(g => new Tuple<Type, List<PluginManifest>>(g.Key, g.Select(pg => pg.Item2).OrderBy(p => p.Name).ToList())).ToList();
             }
         }
     }

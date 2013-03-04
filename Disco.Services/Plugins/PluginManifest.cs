@@ -414,5 +414,31 @@ namespace Disco.Services.Plugins
 
             return new Tuple<string, string>(resourcePath, resourceHash.Item1);
         }
+
+        public void LogException(Exception PluginException)
+        {
+            PluginsLog.LogPluginException(this.ToString(), PluginException);
+        }
+        public void LogWarning(string Message)
+        {
+            LogWarning(Message, null);
+        }
+        public void LogWarning(string MessageFormat, params object[] Args)
+        {
+            PluginsLog.LogPluginWarning(this, string.Format(MessageFormat, Args), Args);
+        }
+        public void LogMessage(string Message)
+        {
+            LogMessage(Message, null);
+        }
+        public void LogMessage(string MessageFormat, params object[] Args)
+        {
+            PluginsLog.LogPluginMessage(this, string.Format(MessageFormat, Args), Args);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} [{1} v{2}]", this.Name, this.Id, this.VersionFormatted);
+        }
     }
 }

@@ -24,6 +24,10 @@ namespace Disco.Services.Plugins.Features.UIExtension
         {
             return new LiteralResult(this.Manifest, null);
         }
+        protected LiteralResult ScriptInline(string JavaScriptContent)
+        {
+            return new LiteralResult(this.Manifest, string.Concat("<script type=\"text/javascript\">\n//<!--\n", JavaScriptContent, "\n//-->\n</script>"));
+        }
         protected PluginResourceScriptResult ScriptResource(string Resource, bool PlaceInPageHead)
         {
             return new PluginResourceScriptResult(this.Manifest, Resource, PlaceInPageHead);

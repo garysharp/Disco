@@ -13,7 +13,7 @@
         }
         else
         {
-            var pluginGroups = Model.PluginManifestsByType;
+            var pluginGroups = Model.PluginManifestsByCategory;
 
 
             int itemsPerColumn = pluginGroups.Count / 3;
@@ -38,7 +38,7 @@
                                         <h3>@pluginDefinition.Name</h3>
                                     </a>
                                     <div class="pageMenuBlurb">
-                                        <span class="pluginId">@pluginDefinition.Id</span> | <span class="pluginVersion">v@(pluginDefinition.VersionFormatted)</span> | @pluginDefinition.Author | <a href="@pluginDefinition.Url" target="_blank">More Information</a>
+                                        <span class="pluginVersion">v@(pluginDefinition.VersionFormatted)</span> | @pluginDefinition.Author | <a href="@pluginDefinition.Url" target="_blank">More Information</a>
                                     </div>
                                 }
                             </div>

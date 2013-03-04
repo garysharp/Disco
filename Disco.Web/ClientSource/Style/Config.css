@@ -731,6 +731,13 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
 #plugins .pageMenuArea a > h3:hover {
   color: #4f81bd;
 }
+#plugins .pageMenuArea .pageMenuBlurb {
+  padding-left: 18px;
+}
+#plugins #pageMenu td .pageMenuArea:not(:last-child) {
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
 #plugins #pageMenu td .pageMenuArea > a {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB90CDRcZMTlpMjsAAAKbSURBVDjLbZHBS2NHHMc/82ZeXpLaiNJHDylF6KEIGxFa0Jtdi4IFqfQq2P/As4f9D0rwplIwsDlZiofHStaTVQJCj+6a9SpKL3HhkTx5cZLMTA9uHov4Pf2Y33w/fL8z4vj4mHfv3vNUHz60ouXl5VmtNScnJ3eVmZkfn96ZqVRQj6P7HXj56VwAFAqFsenp6W+73S7NZjMRUH/iPwVqnwC8nJ2drU9NTb3I5XIDpVS6u7v7qlQqEQQBxWLxq83NzX+EEIUkSYJ8Pj+xs7Pz0+cAyuXyTqPR+F5KiTEGrTVCCHzfR2v99d7eXg3AGMPGxsZb4CPwWEEIAUC73ebm5gYhBKVSiTiOcc4RBAHn5+dYa9Fas76+nvXIEvi+jzEG5xyrq6vEcczV1RW+77O2tka73WZ/f58wDHHOZQBvNEgp6ff7hGHI4eEhSinOzs64uLjg+vqaWq3GYDBASom19vkEWmuMMYyPjxNFEUtLS1hrOTg4wBiD53k4554HeJ6H1pp+v59VaTQaWGuRUqKUYjAYADwPcM6Rpim9Xg9jDFJKgiBASokQAuccDw8P5PP5ZwHOOUe1WsU5hxACz/Oy3xlplCZJkmw3Apw2m81fx8bGEEJkFay12YuPDMPhkDiOvwP+/gwgXhtjTq21Yb/fTyuVysPt7e3PW1tbf/q+T7Va/U0p9b7VahW11vlOp3Pt53JtAOI4RimFUgohRG5+fv6Po6Ojf7e3twcLCwtucXHR1ev1NIqiN3Nzc6+klEUpJVJK7u/vEXEcE4YhgJBSfjE5OfnDysrKX4VC4ctSqdQCXKfTedHr9T5GUfRLmqb/DYfDBDB3d3ePgJGSJOHy8pJOt4vneQS5HABaa6xzfFMuUy6XmZiYyDz/AxHBRmZKLqH0AAAAAElFTkSuQmCC) /*Images/Actions/pluginDownloadIcon16.png*/;
 }

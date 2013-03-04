@@ -37,9 +37,9 @@ namespace Disco.Web.Areas.Config.Views.Plugins
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.0.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Config/Views/Plugins/Index.cshtml")]
-    public class Index : System.Web.Mvc.WebViewPage<Disco.Web.Areas.Config.Models.Plugins.IndexViewModel>
+    public partial class Index : System.Web.Mvc.WebViewPage<Disco.Web.Areas.Config.Models.Plugins.IndexViewModel>
     {
         public Index()
         {
@@ -88,7 +88,7 @@ WriteLiteral(">\r\n            <h2>No Plugins are Installed</h2>\r\n        </di
         }
         else
         {
-            var pluginGroups = Model.PluginManifestsByType;
+            var pluginGroups = Model.PluginManifestsByCategory;
 
 
             int itemsPerColumn = pluginGroups.Count / 3;
@@ -169,14 +169,14 @@ WriteLiteral("</h2>\r\n");
             #line hidden
 WriteLiteral("                                    <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 1435), Tuple.Create("\"", 1504)
+WriteAttribute("href", Tuple.Create(" href=\"", 1439), Tuple.Create("\"", 1508)
             
             #line 37 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 1442), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Configure(pluginDefinition.Id))
+, Tuple.Create(Tuple.Create("", 1446), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Configure(pluginDefinition.Id))
             
             #line default
             #line hidden
-, 1442), false)
+, 1446), false)
 );
 
 WriteLiteral(">\r\n                                        <h3>");
@@ -196,26 +196,13 @@ WriteLiteral(" class=\"pageMenuBlurb\"");
 
 WriteLiteral(">\r\n                                        <span");
 
-WriteLiteral(" class=\"pluginId\"");
-
-WriteLiteral(">");
-
-            
-            #line 41 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
-                                                          Write(pluginDefinition.Id);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</span> | <span");
-
 WriteLiteral(" class=\"pluginVersion\"");
 
 WriteLiteral(">v");
 
             
             #line 41 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
-                                                                                                                      Write(pluginDefinition.VersionFormatted);
+                                                                 Write(pluginDefinition.VersionFormatted);
 
             
             #line default
@@ -224,21 +211,21 @@ WriteLiteral("</span> | ");
 
             
             #line 41 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
-                                                                                                                                                                   Write(pluginDefinition.Author);
+                                                                                                              Write(pluginDefinition.Author);
 
             
             #line default
             #line hidden
 WriteLiteral(" | <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 1885), Tuple.Create("\"", 1913)
+WriteAttribute("href", Tuple.Create(" href=\"", 1836), Tuple.Create("\"", 1864)
             
             #line 41 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
-                                                                                                                            , Tuple.Create(Tuple.Create("", 1892), Tuple.Create<System.Object, System.Int32>(pluginDefinition.Url
+                                                                       , Tuple.Create(Tuple.Create("", 1843), Tuple.Create<System.Object, System.Int32>(pluginDefinition.Url
             
             #line default
             #line hidden
-, 1892), false)
+, 1843), false)
 );
 
 WriteLiteral(" target=\"_blank\"");

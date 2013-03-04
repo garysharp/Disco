@@ -28,6 +28,8 @@ namespace Disco.Services.Plugins
             InitializeExceptionWithInner,
             PluginException = 20,
             PluginExceptionWithInner,
+            PluginWarning = 30,
+            PluginMessage = 40,
             PluginReferenceAssemblyLoaded = 50,
             PluginConfigurationLoaded = 100,
             PluginConfigurationSaved = 104,
@@ -142,6 +144,39 @@ namespace Disco.Services.Plugins
                 Log(EventTypeIds.PluginException, Component, ex.GetType().Name, ex.Message, ex.StackTrace);
             }
         }
+        public static void LogPluginWarning(PluginManifest Manifest, string Message, params object[] ExportData)
+        {
+            LogPluginWarningOrMessage(EventTypeIds.PluginWarning, Manifest, Message, ExportData);
+        }
+        public static void LogPluginMessage(PluginManifest Manifest, string Message, params object[] ExportData)
+        {
+            LogPluginWarningOrMessage(EventTypeIds.PluginMessage, Manifest, Message, ExportData);
+        }
+        private static void LogPluginWarningOrMessage(EventTypeIds WarningOrMessage, PluginManifest Manifest, string Message, object[] ExportData)
+        {
+            if (WarningOrMessage != EventTypeIds.PluginMessage && WarningOrMessage != EventTypeIds.PluginWarning)
+                throw new ArgumentException("Only PluginMessage/PluginWarning is allowed", "WarningOrMessage");
+
+            object[] LogData;
+
+            if (ExportData == null || ExportData.Length == 0)
+            {
+                LogData = new object[3];
+            }
+            else
+            {
+                LogData = new object[4 + ExportData.Length];
+                for (int i = 0; i < ExportData.Length; i++)
+                    LogData[4 + i] = ExportData[i];
+            }
+
+            LogData[0] = Manifest.Name;
+            LogData[1] = Manifest.Id;
+            LogData[2] = Manifest.VersionFormatted;
+            LogData[3] = Message;
+
+            Log(WarningOrMessage, LogData);
+        }
 
         protected override List<Logging.Models.LogEventType> LoadEventTypes()
         {
@@ -253,6 +288,28 @@ namespace Disco.Services.Plugins
 					Name = "Plugin Exception with Inner Exception", 
 					Format = "Exception: {0}; {1}: {2}; {3}; Inner: {4}: {5}; {6}", 
 					Severity = (int)LogEventType.Severities.Error, 
+					UseLive = true, 
+					UsePersist = true, 
+					UseDisplay = true
+				}, 
+                new LogEventType
+				{
+					Id = (int)EventTypeIds.PluginWarning, 
+					ModuleId = _ModuleId, 
+					Name = "Plugin Warning", 
+					Format = "{0} [{1} v{2}]: {3}", 
+					Severity = (int)LogEventType.Severities.Warning, 
+					UseLive = true, 
+					UsePersist = true, 
+					UseDisplay = true
+				}, 
+                new LogEventType
+				{
+					Id = (int)EventTypeIds.PluginMessage, 
+					ModuleId = _ModuleId, 
+					Name = "Plugin Message", 
+					Format = "{0} [{1} v{2}]: {3}", 
+					Severity = (int)LogEventType.Severities.Information, 
 					UseLive = true, 
 					UsePersist = true, 
 					UseDisplay = true
