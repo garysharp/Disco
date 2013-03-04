@@ -62,13 +62,11 @@ namespace Disco.BI.Interop.ActiveDirectory
             using (DirectoryEntry machineDE = new DirectoryEntry(account.Path))
             {
                 PropertyValueCollection descriptionProp = machineDE.Properties["description"];
-                bool flag = descriptionProp.Count > 0;
-                if (flag)
+                if (descriptionProp.Count > 0)
                 {
                     descriptionProp.Clear();
                 }
-                flag = !string.IsNullOrEmpty(Description);
-                if (flag)
+                if (!string.IsNullOrEmpty(Description))
                 {
                     descriptionProp.Add(Description);
                 }
@@ -78,25 +76,21 @@ namespace Disco.BI.Interop.ActiveDirectory
         public static void SetDescription(this ActiveDirectoryMachineAccount account, Device Device)
         {
             System.Text.StringBuilder descriptionBuilder = new System.Text.StringBuilder();
-            bool flag = Device.AssignedUserId != null;
-            if (flag)
+
+            if (Device.AssignedUserId != null)
             {
-                descriptionBuilder.Append(Device.AssignedUser.Id);
-                descriptionBuilder.Append(" (");
-                descriptionBuilder.Append(Device.AssignedUser.DisplayName);
-                descriptionBuilder.Append("); ");
+                descriptionBuilder.Append(Device.AssignedUser.Id).Append(" (").Append(Device.AssignedUser.DisplayName).Append("); ");
             }
-            flag = Device.DeviceModelId.HasValue;
-            if (flag)
+
+            if (Device.DeviceModelId.HasValue)
             {
-                descriptionBuilder.Append(Device.DeviceModel.Description);
-                descriptionBuilder.Append("; ");
+                descriptionBuilder.Append(Device.DeviceModel.Description).Append("; ");
             }
-            descriptionBuilder.Append(Device.DeviceProfile.Description);
-            descriptionBuilder.Append("; ");
+
+            descriptionBuilder.Append(Device.DeviceProfile.Description).Append(";");
+
             string description = descriptionBuilder.ToString().Trim();
-            flag = (description.Length > 1024);
-            if (flag)
+            if (description.Length > 1024)
             {
                 description = description.Substring(0, 1024);
             }

@@ -123,7 +123,7 @@ namespace Disco.BI.Extensions
             dbContext.Devices.Add(d2);
             if (!string.IsNullOrEmpty(d.AssignedUserId))
             {
-                User u = UserBI.UserCache.GetUser(d.AssignedUserId, dbContext);
+                User u = UserBI.UserCache.GetUser(d.AssignedUserId, dbContext, true);
                 d2.AssignDevice(dbContext, u);
             }
 
@@ -148,7 +148,7 @@ namespace Disco.BI.Extensions
                     AssignedDate = DateTime.Now
                 };
                 dbContext.DeviceUserAssignments.Add(newDua);
-                
+
                 d.AssignedUserId = u.Id;
                 d.AssignedUser = u;
             }
@@ -163,10 +163,7 @@ namespace Disco.BI.Extensions
                 var adMachineAccount = Interop.ActiveDirectory.ActiveDirectory.GetMachineAccount(d.ComputerName);
                 if (adMachineAccount != null)
                 {
-                    if (newDua == null)
-                        adMachineAccount.SetDescription(string.Empty);
-                    else
-                        adMachineAccount.SetDescription(d);
+                    adMachineAccount.SetDescription(d);
                 }
             }
 
