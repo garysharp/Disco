@@ -1717,9 +1717,7 @@ table.genericData td.id a {
   height: 20px;
   margin-top: -20px;
   right: 320px;
-  font-size: .9em;
-  -moz-opacity: 0.3;
-  opacity: 0.3;
+  font-weight: bold;
 }
 .dataTables_wrapper .dataTables_paginate {
   text-align: right;
@@ -1803,8 +1801,7 @@ table.genericData td.id a {
 }
 .dataTables_wrapper:hover .dataTables_filter,
 .dataTables_wrapper:hover .dataTables_length,
-.dataTables_wrapper:hover .dataTables_paginate a,
-.dataTables_wrapper:hover .dataTables_showStatusClosed {
+.dataTables_wrapper:hover .dataTables_paginate a {
   -moz-opacity: 1;
   opacity: 1;
 }

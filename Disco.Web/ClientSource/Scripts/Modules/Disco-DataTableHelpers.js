@@ -36,31 +36,39 @@
 
             // hideStatusClosed Extension
             if ($table.hasClass('hideStatusClosed')) {
-                var wrapper = $(this).closest('.dataTables_wrapper');
 
-                var wrapperContext = wrapper;
-                if (wrapper.parent('.jobTable').length > 0)
-                    wrapperContext = wrapper.parent();
-                var wrapperPrev = wrapperContext.prev();
-                if (wrapperPrev.length > 0 && (wrapperPrev.is('h1') || wrapperPrev.is('h2') || wrapperPrev.is('h3'))) {
-                    wrapperPrev.data('dataTable_originalContent', wrapperPrev.html()).text('Active ' + wrapperPrev.text());
-                } else {
-                    wrapperPrev = null;
+                // Contains Closed Jobs?
+                var $tbody = $table.children('tbody');
+                var $closedJobs = $tbody.children('tr[data-status="Closed"]');
+
+                if ($closedJobs.length > 0) {
+                    var wrapper = $(this).closest('.dataTables_wrapper');
+                    var wrapperContext = wrapper;
+                    if (wrapper.parent('.jobTable').length > 0)
+                        wrapperContext = wrapper.parent();
+                    var wrapperPrev = wrapperContext.prev();
+                    if (wrapperPrev.length > 0 && (wrapperPrev.is('h1') || wrapperPrev.is('h2') || wrapperPrev.is('h3'))) {
+                        wrapperPrev.data('dataTable_originalContent', wrapperPrev.html()).text('Active ' + wrapperPrev.text());
+                    } else {
+                        wrapperPrev = null;
+                    }
+
+                    var showClosedAnchor = $('<a class="dataTables_showStatusClosed" href="#">').text('Show Closed (' + $closedJobs.length + ')');
+                    wrapper.prepend(showClosedAnchor);
+                    showClosedAnchor.click(function () {
+                        $table.removeClass('hideStatusClosed');
+                        showClosedAnchor.remove();
+                        if (wrapperPrev)
+                            wrapperPrev.html(wrapperPrev.data('dataTable_originalContent'));
+
+                        scrollCheck.apply($table[0]);
+
+                        return false;
+                    });
                 }
-
-                var showClosedAnchor = $('<a class="dataTables_showStatusClosed" href="#">').text('Show Closed');
-                wrapper.prepend(showClosedAnchor);
-                showClosedAnchor.click(function () {
-
-                    $table.removeClass('hideStatusClosed');
-                    showClosedAnchor.remove();
-                    if (wrapperPrev)
-                        wrapperPrev.html(wrapperPrev.data('dataTable_originalContent'));
-
-                    scrollCheck.apply($table[0]);
-                    return false;
-                });
             }
+
+                
 
             dataTables.push(this);
         });
