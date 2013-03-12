@@ -124,6 +124,54 @@ namespace Disco.BI.Extensions
         #endregion
 
         #region Image Extensions
+
+        public static Bitmap RotateImage(this Image Source, float Angle, Brush BackgroundColor = null, bool ResizeIfOver45Deg = true)
+        {
+            int destWidth = Source.Width;
+            int destHeight = Source.Height;
+            bool resizedDest = false;
+
+            if (ResizeIfOver45Deg && ((Angle > 45 && Angle < 135) || (Angle < -45 && Angle > -135)))
+            {
+                destWidth = Source.Height;
+                destHeight = Source.Width;
+                resizedDest = true;
+            }
+
+            Bitmap destination = new Bitmap(destWidth, destHeight);
+            destination.SetResolution(Source.HorizontalResolution, Source.VerticalResolution);
+
+            using (Graphics destinationGraphics = Graphics.FromImage(destination))
+            {
+                destinationGraphics.CompositingQuality = CompositingQuality.HighQuality;
+                destinationGraphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                destinationGraphics.SmoothingMode = SmoothingMode.HighQuality;
+
+                if (BackgroundColor != null)
+                    destinationGraphics.FillRectangle(BackgroundColor, destinationGraphics.VisibleClipBounds);
+
+                float offsetWidth = destWidth / 2;
+                float offsetHeight = destHeight / 2;
+
+                destinationGraphics.TranslateTransform(offsetWidth, offsetHeight);
+                destinationGraphics.RotateTransform(Angle);
+
+                RectangleF destinationLocation;
+
+                if (resizedDest)
+                    destinationLocation = new RectangleF(
+                        offsetHeight * -1, offsetWidth * -1,
+                        destHeight, destWidth);
+                else
+                    destinationLocation = new RectangleF(
+                        offsetWidth * -1, offsetHeight * -1,
+                        destWidth, destHeight);
+
+                destinationGraphics.DrawImage(Source, destinationLocation, new RectangleF(0, 0, Source.Width, Source.Height), GraphicsUnit.Pixel);
+            }
+            return destination;
+        }
+
         public static Bitmap ResizeImage(this Image Source, int Width, int Height, Brush BackgroundColor = null)
         {
             Bitmap destination = new Bitmap(Width, Height);

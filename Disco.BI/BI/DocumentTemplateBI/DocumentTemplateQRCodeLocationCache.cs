@@ -58,7 +58,13 @@ namespace Disco.BI.DocumentTemplateBI
                 foreach (var pdfFieldPosition in pdfReader.AcroFields.GetFieldPositions("DiscoAttachmentId"))
                 {
                     var pdfPageSize = pdfReader.GetPageSize(pdfFieldPosition.page);
-                    locations.Add(new RectangleF((float)System.Math.Min(1.0, System.Math.Max(0.0, (double)(pdfFieldPosition.position.Left / pdfPageSize.Width) - 0.1)), (float)System.Math.Min(1.0, System.Math.Max(0.0, (double)((pdfPageSize.Height - pdfFieldPosition.position.Top) / pdfPageSize.Height) - 0.1)), (float)System.Math.Min(1.0, System.Math.Max(0.0, (double)(pdfFieldPosition.position.Width / pdfPageSize.Width) + 0.2)), (float)System.Math.Min(1.0, System.Math.Max(0.0, (double)(pdfFieldPosition.position.Height / pdfPageSize.Height) + 0.2))));
+                    // Original Position
+                    locations.Add(new RectangleF(
+                        (float)System.Math.Min(1.0, System.Math.Max(0.0, (double)(pdfFieldPosition.position.Left / pdfPageSize.Width) - 0.05)),
+                        (float)System.Math.Min(1.0, System.Math.Max(0.0, (double)((pdfPageSize.Height - pdfFieldPosition.position.Top) / pdfPageSize.Height) - 0.05)),
+                        (float)System.Math.Min(1.0, System.Math.Max(0.0, (double)(pdfFieldPosition.position.Width / pdfPageSize.Width) + 0.1)),
+                        (float)System.Math.Min(1.0, System.Math.Max(0.0, (double)(pdfFieldPosition.position.Height / pdfPageSize.Height) + 0.1))
+                        ));
                 }
             }
             pdfReader.Close();

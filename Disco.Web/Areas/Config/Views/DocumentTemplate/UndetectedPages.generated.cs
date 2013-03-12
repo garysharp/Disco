@@ -31,9 +31,9 @@ namespace Disco.Web.Areas.Config.Views.DocumentTemplate
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.0.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Config/Views/DocumentTemplate/UndetectedPages.cshtml")]
-    public class UndetectedPages : System.Web.Mvc.WebViewPage<Disco.Web.Areas.Config.Models.DocumentTemplate.UndetectedPagesModel>
+    public partial class UndetectedPages : System.Web.Mvc.WebViewPage<Disco.Web.Areas.Config.Models.DocumentTemplate.UndetectedPagesModel>
     {
         public UndetectedPages()
         {
@@ -245,7 +245,7 @@ WriteLiteral("/\';\r\n        var urlImporterUndetectedDelete = \'");
             #line default
             #line hidden
 WriteLiteral("/\';\r\n        var $undetectedPageDialog = $(\'#undetectedPageDialog\').dialog({\r\n   " +
-"         modal: true,\r\n            height: 820,\r\n            width: 800,\r\n      " +
+"         modal: true,\r\n            height: 850,\r\n            width: 800,\r\n      " +
 "      resizable: false,\r\n            autoOpen: false\r\n        });\r\n\r\n        $di" +
 "alogRemove = $(\'#dialogRemove\').dialog({\r\n            resizable: false,\r\n       " +
 "     height: 140,\r\n            modal: true,\r\n            autoOpen: false\r\n      " +
@@ -256,66 +256,66 @@ WriteLiteral("/\';\r\n        var $undetectedPageDialog = $(\'#undetectedPageDia
 " self.selectNextPage = function () {\r\n                var oldSelected = self.sel" +
 "ectedUndetectedPage();\r\n                var oldSelectedIndex = vm.undetectedPage" +
 "s.indexOf(oldSelected);\r\n\r\n                if (vm.undetectedPages().length > 1) " +
-"{\r\n                    if (oldSelectedIndex > vm.undetectedPages().length - 1)\r\n" +
-"                        vm.selectedUndetectedPage(vm.undetectedPages()[oldSelect" +
-"edIndex + 1]);\r\n                    else\r\n                        vm.selectedUnd" +
-"etectedPage(vm.undetectedPages()[oldSelectedIndex - 1]);\r\n                } else" +
-" {\r\n                    $undetectedPageDialog.dialog(\'close\');\r\n                " +
-"    vm.selectedUndetectedPage(null);\r\n                }\r\n            }\r\n        " +
-"}\r\n\r\n        function undetectedPageViewModel(id, timestamp, timestampFuzzy) {\r\n" +
-"            var self = this;\r\n\r\n            self.id = id;\r\n            self.time" +
-"stamp = timestamp;\r\n            self.timestampFuzzy = timestampFuzzy;\r\n         " +
-"   self.thumbnailUrl = \"url(\" + urlUndetectedPageThumbnail + \"&id=\" + id + \")\";\r" +
-"\n            self.previewUrl = \"url(\" + urlUndetectedPagePreview + \"&id=\" + id +" +
-" \")\";\r\n            self.sourceUrl = urlUndetectedPageSource + \"&id=\" + id;\r\n    " +
-"        self.select = function (e, d) {\r\n                vm.selectedUndetectedPa" +
-"ge(self);\r\n                $undetectedPageDialog.dialog(\'open\');\r\n            }\r" +
-"\n\r\n            // Dialog Properties\r\n            self.dialogTemplateId = ko.obse" +
-"rvable(null);\r\n            self.dialogDataId = ko.observable(null);\r\n           " +
-" self.dialogDataIdService = ko.computed(function () {\r\n                return ur" +
-"lDataIdLookupService + self.dialogTemplateId();\r\n            });\r\n            se" +
-"lf.deletePage = function () {\r\n                $undetectedPageDialog.dialog(\'opt" +
-"ion\', \'disabled\', true);\r\n\r\n                $dialogRemove.dialog(\'option\', \'butt" +
-"ons\', {\r\n                    \"Remove\": function () {\r\n                        $d" +
-"ialogRemove.dialog(\"close\");\r\n                        var data = { id: self.id }" +
-";\r\n                        $.ajax({\r\n                            url: urlImporte" +
-"rUndetectedDelete,\r\n                            dataType: \'json\',\r\n             " +
-"               data: data,\r\n                            type: \'POST\',\r\n         " +
-"                   success: function (d) {\r\n                                if (" +
-"d == \'OK\') {\r\n                                    vm.selectNextPage();\r\n        " +
-"                            vm.undetectedPages.remove(self);\r\n                  " +
-"              } else {\r\n                                    alert(\'Unable to del" +
-"ete page: \' + d);\r\n                                }\r\n                          " +
-"      $undetectedPageDialog.dialog(\'option\', \'disabled\', false);\r\n              " +
-"              },\r\n                            error: function (jqXHR, textStatus" +
-", errorThrown) {\r\n                                alert(\'Unable to delete page: " +
-"\' + errorThrown);\r\n                                $undetectedPageDialog.dialog(" +
-"\'option\', \'disabled\', false);\r\n                            }\r\n                  " +
-"      });\r\n                    },\r\n                    \"Cancel\": function () {\r\n" +
-"                        $dialogRemove.dialog(\"close\");\r\n                        " +
-"$undetectedPageDialog.dialog(\'option\', \'disabled\', false);\r\n                    " +
-"}\r\n                });\r\n\r\n                $dialogRemove.dialog(\'open\');\r\n\r\n     " +
-"           return false;\r\n            }\r\n            self.assignPage = function " +
-"() {\r\n                var dtId = self.dialogTemplateId();\r\n                var d" +
-"Id = self.dialogDataId();\r\n                if (!dtId || !dId) {\r\n               " +
-"     alert(\'Please specify a valid Document Type and Data Id\');\r\n               " +
-" } else {\r\n                    $undetectedPageDialog.dialog(\'option\', \'disabled\'" +
-", true);\r\n\r\n                    var data = { id: self.id, DocumentTemplateId: dt" +
-"Id, DataId: dId };\r\n\r\n                    $.ajax({\r\n                        url:" +
-" urlImporterUndetectedAssign,\r\n                        dataType: \'json\',\r\n      " +
-"                  data: data,\r\n                        type: \'POST\',\r\n          " +
-"              success: function (d) {\r\n                            if (d == \'OK\'" +
-") {\r\n                                vm.selectNextPage();\r\n                     " +
-"           vm.undetectedPages.remove(self);\r\n                            } else " +
-"{\r\n                                alert(\'Unable to assign page: \' + d);\r\n      " +
-"                      }\r\n                            $undetectedPageDialog.dialo" +
-"g(\'option\', \'disabled\', false);\r\n                        },\r\n                   " +
-"     error: function (jqXHR, textStatus, errorThrown) {\r\n                       " +
-"     alert(\'Unable to assign page: \' + errorThrown);\r\n                          " +
-"  $undetectedPageDialog.dialog(\'option\', \'disabled\', false);\r\n                  " +
-"      }\r\n                    });\r\n\r\n                }\r\n                return fa" +
-"lse;\r\n            };\r\n        }\r\n\r\n        function init() {\r\n            vm = n" +
-"ew pageViewModel();\r\n\r\n            $.ajax({\r\n                url: \'");
+"{\r\n                    if (oldSelectedIndex + 1 <= vm.undetectedPages().length -" +
+" 1)\r\n                        vm.selectedUndetectedPage(vm.undetectedPages()[oldS" +
+"electedIndex + 1]);\r\n                    else\r\n                        vm.select" +
+"edUndetectedPage(vm.undetectedPages()[oldSelectedIndex - 1]);\r\n                }" +
+" else {\r\n                    $undetectedPageDialog.dialog(\'close\');\r\n           " +
+"         vm.selectedUndetectedPage(null);\r\n                }\r\n            }\r\n   " +
+"     }\r\n\r\n        function undetectedPageViewModel(id, timestamp, timestampFuzzy" +
+") {\r\n            var self = this;\r\n\r\n            self.id = id;\r\n            self" +
+".timestamp = timestamp;\r\n            self.timestampFuzzy = timestampFuzzy;\r\n    " +
+"        self.thumbnailUrl = \"url(\" + urlUndetectedPageThumbnail + \"&id=\" + id + " +
+"\")\";\r\n            self.previewUrl = \"url(\" + urlUndetectedPagePreview + \"&id=\" +" +
+" id + \")\";\r\n            self.sourceUrl = urlUndetectedPageSource + \"&id=\" + id;\r" +
+"\n            self.select = function (e, d) {\r\n                vm.selectedUndetec" +
+"tedPage(self);\r\n                $undetectedPageDialog.dialog(\'open\');\r\n         " +
+"   }\r\n\r\n            // Dialog Properties\r\n            self.dialogTemplateId = ko" +
+".observable(null);\r\n            self.dialogDataId = ko.observable(null);\r\n      " +
+"      self.dialogDataIdService = ko.computed(function () {\r\n                retu" +
+"rn urlDataIdLookupService + self.dialogTemplateId();\r\n            });\r\n         " +
+"   self.deletePage = function () {\r\n                $undetectedPageDialog.dialog" +
+"(\'option\', \'disabled\', true);\r\n\r\n                $dialogRemove.dialog(\'option\', " +
+"\'buttons\', {\r\n                    \"Remove\": function () {\r\n                     " +
+"   $dialogRemove.dialog(\"close\");\r\n                        var data = { id: self" +
+".id };\r\n                        $.ajax({\r\n                            url: urlIm" +
+"porterUndetectedDelete,\r\n                            dataType: \'json\',\r\n        " +
+"                    data: data,\r\n                            type: \'POST\',\r\n    " +
+"                        success: function (d) {\r\n                               " +
+" if (d == \'OK\') {\r\n                                    vm.selectNextPage();\r\n   " +
+"                                 vm.undetectedPages.remove(self);\r\n             " +
+"                   } else {\r\n                                    alert(\'Unable t" +
+"o delete page: \' + d);\r\n                                }\r\n                     " +
+"           $undetectedPageDialog.dialog(\'option\', \'disabled\', false);\r\n         " +
+"                   },\r\n                            error: function (jqXHR, textS" +
+"tatus, errorThrown) {\r\n                                alert(\'Unable to delete p" +
+"age: \' + errorThrown);\r\n                                $undetectedPageDialog.di" +
+"alog(\'option\', \'disabled\', false);\r\n                            }\r\n             " +
+"           });\r\n                    },\r\n                    \"Cancel\": function (" +
+") {\r\n                        $dialogRemove.dialog(\"close\");\r\n                   " +
+"     $undetectedPageDialog.dialog(\'option\', \'disabled\', false);\r\n               " +
+"     }\r\n                });\r\n\r\n                $dialogRemove.dialog(\'open\');\r\n\r\n" +
+"                return false;\r\n            }\r\n            self.assignPage = func" +
+"tion () {\r\n                var dtId = self.dialogTemplateId();\r\n                " +
+"var dId = self.dialogDataId();\r\n                if (!dtId || !dId) {\r\n          " +
+"          alert(\'Please specify a valid Document Type and Data Id\');\r\n          " +
+"      } else {\r\n                    $undetectedPageDialog.dialog(\'option\', \'disa" +
+"bled\', true);\r\n\r\n                    var data = { id: self.id, DocumentTemplateI" +
+"d: dtId, DataId: dId };\r\n\r\n                    $.ajax({\r\n                       " +
+" url: urlImporterUndetectedAssign,\r\n                        dataType: \'json\',\r\n " +
+"                       data: data,\r\n                        type: \'POST\',\r\n     " +
+"                   success: function (d) {\r\n                            if (d ==" +
+" \'OK\') {\r\n                                vm.selectNextPage();\r\n                " +
+"                vm.undetectedPages.remove(self);\r\n                            } " +
+"else {\r\n                                alert(\'Unable to assign page: \' + d);\r\n " +
+"                           }\r\n                            $undetectedPageDialog." +
+"dialog(\'option\', \'disabled\', false);\r\n                        },\r\n              " +
+"          error: function (jqXHR, textStatus, errorThrown) {\r\n                  " +
+"          alert(\'Unable to assign page: \' + errorThrown);\r\n                     " +
+"       $undetectedPageDialog.dialog(\'option\', \'disabled\', false);\r\n             " +
+"           }\r\n                    });\r\n\r\n                }\r\n                retu" +
+"rn false;\r\n            };\r\n        }\r\n\r\n        function init() {\r\n            v" +
+"m = new pageViewModel();\r\n\r\n            $.ajax({\r\n                url: \'");
 
             
             #line 202 "..\..\Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml"

@@ -68,7 +68,7 @@
         var urlImporterUndetectedDelete = '@(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedDelete()))/';
         var $undetectedPageDialog = $('#undetectedPageDialog').dialog({
             modal: true,
-            height: 820,
+            height: 850,
             width: 800,
             resizable: false,
             autoOpen: false
@@ -92,7 +92,7 @@
                 var oldSelectedIndex = vm.undetectedPages.indexOf(oldSelected);
 
                 if (vm.undetectedPages().length > 1) {
-                    if (oldSelectedIndex > vm.undetectedPages().length - 1)
+                    if (oldSelectedIndex + 1 <= vm.undetectedPages().length - 1)
                         vm.selectedUndetectedPage(vm.undetectedPages()[oldSelectedIndex + 1]);
                     else
                         vm.selectedUndetectedPage(vm.undetectedPages()[oldSelectedIndex - 1]);
