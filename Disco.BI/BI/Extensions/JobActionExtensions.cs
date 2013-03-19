@@ -329,9 +329,8 @@ namespace Disco.BI.Extensions
                     if (j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue && (!j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue || !j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue))
                         return false; // Accounting Charge Required, but not added or paid
 
-                    // Removed Rule: 2012-05-31 - A Job can be closed if the decision has been made for the user not to pay...    
-                    //if (j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue)
-                    //    return false; // Accounting Charge Added, but not paid
+                    if (j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue)
+                        return false; // Accounting Charge Added, but not paid
 
                     if (j.JobMetaNonWarranty.IsInsuranceClaim && !j.JobMetaInsurance.ClaimFormSentDate.HasValue)
                         return false; // Is Insurance Claim, but claim form not sent
@@ -344,6 +343,66 @@ namespace Disco.BI.Extensions
         {
             if (!j.CanClose())
                 throw new InvalidOperationException("Close was Denied");
+
+            j.ClosedDate = DateTime.Now;
+            j.ClosedTechUserId = Technician.Id;
+        }
+        #endregion
+
+        #region Force Close
+        public static bool CanForceClose(this Job j)
+        {
+            var canCloseNormally = j.CanClose();
+
+            if (canCloseNormally)
+                return false;
+
+            // Check for Override
+            if (j.ClosedDate.HasValue)
+                return false; // Job already Closed
+
+            if (j.DeviceHeld.HasValue && !j.DeviceReturnedDate.HasValue)
+                return false; // Device not returned to User
+
+            if (j.WaitingForUserAction.HasValue)
+                return false; // Job waiting on User Action
+
+            switch (j.JobTypeId)
+            {
+                case JobType.JobTypeIds.HWar:
+                    if (!string.IsNullOrEmpty(j.JobMetaWarranty.ExternalReference) && !j.JobMetaWarranty.ExternalCompletedDate.HasValue)
+                        return true; // Job Logged (Warranty) but not completed
+                    break;
+                case JobType.JobTypeIds.HNWar:
+                    if (j.JobMetaNonWarranty.RepairerLoggedDate.HasValue && !j.JobMetaNonWarranty.RepairerCompletedDate.HasValue)
+                        return true; // Job Logged (Repair) but not completed
+                    if (j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue && (!j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue || !j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue))
+                        return true; // Accounting Charge Required, but not added or paid
+
+                    if (j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue)
+                        return true; // Accounting Charge Added, but not paid
+
+                    if (j.JobMetaNonWarranty.IsInsuranceClaim && !j.JobMetaInsurance.ClaimFormSentDate.HasValue)
+                        return true; // Is Insurance Claim, but claim form not sent
+                    break;
+            }
+
+            return false;
+        }
+        public static void OnForceClose(this Job j, DiscoDataContext dbContext, User Technician, string Reason)
+        {
+            if (!j.CanForceClose())
+                throw new InvalidOperationException("Force Close was Denied");
+
+            // Write Log
+            JobLog jobLog = new JobLog()
+            {
+                JobId = j.Id,
+                TechUserId = Technician.Id,
+                Timestamp = DateTime.Now,
+                Comments = string.Format("Job Forcibly Closed{0}Reason: {1}", Environment.NewLine, Reason)
+            };
+            dbContext.JobLogs.Add(jobLog);
 
             j.ClosedDate = DateTime.Now;
             j.ClosedTechUserId = Technician.Id;

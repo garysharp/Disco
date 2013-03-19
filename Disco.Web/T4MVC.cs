@@ -127,6 +127,20 @@ public class T4MVC_System_Web_Mvc_ActionResult : System.Web.Mvc.ActionResult, IT
 namespace Links
 {
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+    public static class scripts {
+        private const string URLPATH = "~/scripts";
+        public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+        public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public static class tinymce {
+            private const string URLPATH = "~/scripts/tinymce";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+        }
+    
+    }
+
+    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
     public static class ClientSource {
         private const string URLPATH = "~/ClientSource";
         public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
@@ -145,9 +159,9 @@ namespace Links
                               
                 public static readonly string disco_unobtrusiveValidation_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.unobtrusiveValidation.extensions.min.js") ? Url("disco.unobtrusiveValidation.extensions.min.js") : Url("disco.unobtrusiveValidation.extensions.js");
                               
-                public static readonly string jquery_1_8_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-1.8.3.min.js") ? Url("jquery-1.8.3.min.js") : Url("jquery-1.8.3.js");
+                public static readonly string jquery_1_9_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-1.9.1.min.js") ? Url("jquery-1.9.1.min.js") : Url("jquery-1.9.1.js");
                               
-                public static readonly string jquery_ui_1_9_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui-1.9.2.min.js") ? Url("jquery-ui-1.9.2.min.js") : Url("jquery-ui-1.9.2.js");
+                public static readonly string jquery_ui_1_10_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui-1.10.0.min.js") ? Url("jquery-ui-1.10.0.min.js") : Url("jquery-ui-1.10.0.js");
                               
                 public static readonly string jquery_dataTables_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.dataTables.min.js") ? Url("jquery.dataTables.min.js") : Url("jquery.dataTables.js");
                               
@@ -378,7 +392,7 @@ namespace Links
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/Knockout";
                     public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                     public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string knockout_2_2_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/knockout-2.2.0.min.js") ? Url("knockout-2.2.0.min.js") : Url("knockout-2.2.0.js");
+                    public static readonly string knockout_2_2_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/knockout-2.2.1.min.js") ? Url("knockout-2.2.1.min.js") : Url("knockout-2.2.1.js");
                                   
                 }
             
@@ -902,6 +916,7 @@ namespace Links
                     private const string URLPATH = "~/ClientSource/Style/jQueryUI/images";
                     public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                     public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                    public static readonly string animated_overlay_gif = Url("animated-overlay.gif");
                     public static readonly string ui_bg_diagonals_thick_18_b81900_40x40_png = Url("ui-bg_diagonals-thick_18_b81900_40x40.png");
                     public static readonly string ui_bg_diagonals_thick_20_666666_40x40_png = Url("ui-bg_diagonals-thick_20_666666_40x40.png");
                     public static readonly string ui_bg_flat_10_000000_40x100_png = Url("ui-bg_flat_10_000000_40x100.png");
@@ -5596,6 +5611,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ForceClose()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ForceClose);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Close()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Close);
@@ -5764,6 +5785,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string DeviceReadyForReturn = "DeviceReadyForReturn";
             public readonly string DeviceHeld = "DeviceHeld";
             public readonly string DeviceReturned = "DeviceReturned";
+            public readonly string ForceClose = "ForceClose";
             public readonly string Close = "Close";
             public readonly string Reopen = "Reopen";
             public readonly string Delete = "Delete";
@@ -5834,6 +5856,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string DeviceReadyForReturn = "DeviceReadyForReturn";
             public const string DeviceHeld = "DeviceHeld";
             public const string DeviceReturned = "DeviceReturned";
+            public const string ForceClose = "ForceClose";
             public const string Close = "Close";
             public const string Reopen = "Reopen";
             public const string Delete = "Delete";
@@ -6315,6 +6338,16 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_DeviceReturned
         {
             public readonly string id = "id";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_ForceClose s_params_ForceClose = new ActionParamsClass_ForceClose();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ForceClose ForceCloseParams { get { return s_params_ForceClose; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ForceClose
+        {
+            public readonly string id = "id";
+            public readonly string Reason = "Reason";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_Close s_params_Close = new ActionParamsClass_Close();
@@ -7041,6 +7074,18 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             DeviceReturnedOverride(callInfo, id, redirect);
+            return callInfo;
+        }
+
+        partial void ForceCloseOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Reason, bool? redirect);
+
+        public override System.Web.Mvc.ActionResult ForceClose(int id, string Reason, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ForceClose);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Reason", Reason);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            ForceCloseOverride(callInfo, id, Reason, redirect);
             return callInfo;
         }
 

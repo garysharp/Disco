@@ -1555,6 +1555,29 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
         }
+        public virtual ActionResult ForceClose(int id, string Reason, Nullable<bool> redirect = null)
+        {
+            var j = dbContext.Jobs.Find(id);
+            dbContext.Configuration.LazyLoadingEnabled = true;
+            if (j != null)
+            {
+                if (j.CanForceClose())
+                {
+                    j.OnForceClose(dbContext, DiscoApplication.CurrentUser, Reason);
+
+                    dbContext.SaveChanges();
+                    if (redirect.HasValue && redirect.Value)
+                        return RedirectToAction(MVC.Job.Show(id));
+                    else
+                        return Json("OK", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json("Job's state doesn't allow this action", JsonRequestBehavior.AllowGet);
+                }
+            }
+            return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
+        }
         public virtual ActionResult Close(int id, bool redirect)
         {
             var j = dbContext.Jobs.Find(id);

@@ -337,6 +337,55 @@
     </tr>
     <tr id="Job_Show_Subjects_Actions">
         <td id="Job_Show_Job_Actions">
+            @if (Model.Job.CanForceClose())
+            { 
+                @Html.ActionLinkSmallButton("Forcibly Close Job", MVC.API.Job.Close(Model.Job.Id, true), "Job_Show_Job_Actions_ForceClose_Button")
+                <div id="Job_Show_Job_Actions_ForceClose_Dialog" class="dialog" title="Forcibly Close this Job?">
+                    @using (Html.BeginForm(MVC.API.Job.ForceClose(Model.Job.Id, null, true)))
+                    {
+                        <p>
+                            <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+                            Are you sure?
+                        </p>
+                        <h3>Reason:</h3>
+                        <p>
+                            <textarea name="Reason" class="block"></textarea>
+                        </p>
+                    }
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var button = $('#Job_Show_Job_Actions_ForceClose_Button');
+                        var buttonDialog = null;
+
+                        button.click(function () {
+                            if (!buttonDialog) {
+                                buttonDialog = $('#Job_Show_Job_Actions_ForceClose_Dialog');
+                                buttonDialog.dialog({
+                                    resizable: false,
+                                    modal: true,
+                                    autoOpen: false,
+                                    buttons: {
+                                        "Forcibly Close Job": function () {
+                                            var $this = $(this);
+                                            $this.dialog("disable");
+                                            $this.dialog("option", "buttons", null);
+                                            $this.find('form').submit();
+                                        },
+                                        Cancel: function () {
+                                            $(this).dialog("close");
+                                        }
+                                    }
+                                });
+                            }
+
+                            buttonDialog.dialog('open');
+                            return false;
+                        });
+                    });
+                </script>
+            }
+
             @if (Model.Job.CanClose())
             { 
                 @Html.ActionLinkSmallButton("Close Job", MVC.API.Job.Close(Model.Job.Id, true), "Job_Show_Job_Actions_Close_Button")
