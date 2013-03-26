@@ -24,7 +24,7 @@
                     @if (expressionParts[0].ParseError)
                     {
                         <td class="parseError">
-                            @expressionParts[0].Source
+                            @expressionParts[0].Source.ToMultilineString()
                             <div class="code">
                                 <strong>Expression Compilation Error:</strong><br />
                                 @expressionParts[0].ParseErrorMessage
@@ -34,7 +34,7 @@
                     else
                     { 
                         <td>
-                            @expressionParts[0].Source
+                            @expressionParts[0].Source.ToMultilineString()
                         </td>
                     }
                     <td>
@@ -47,7 +47,7 @@
                     @if (expressionParts[expressionIndex].ParseError)
                     {
                         <td class="parseError">
-                            @expressionParts[expressionIndex].Source
+                            @expressionParts[expressionIndex].Source.ToMultilineString()
                             <div class="code">
                                 <strong>Expression Compilation Error:</strong><br />
                                 @expressionParts[expressionIndex].ParseErrorMessage
@@ -57,7 +57,7 @@
                     else
                     { 
                         <td>
-                            @expressionParts[expressionIndex].Source
+                            @expressionParts[expressionIndex].Source.ToMultilineString()
                         </td>
                     }
                     <td>

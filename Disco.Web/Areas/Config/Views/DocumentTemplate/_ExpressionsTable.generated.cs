@@ -31,9 +31,9 @@ namespace Disco.Web.Areas.Config.Views.DocumentTemplate
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.0.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Config/Views/DocumentTemplate/_ExpressionsTable.cshtml")]
-    public class ExpressionsTable : System.Web.Mvc.WebViewPage<IEnumerable<Disco.BI.Expressions.Expression>>
+    public partial class ExpressionsTable : System.Web.Mvc.WebViewPage<IEnumerable<Disco.BI.Expressions.Expression>>
     {
         public ExpressionsTable()
         {
@@ -142,7 +142,7 @@ WriteLiteral("                            ");
 
             
             #line 27 "..\..\Areas\Config\Views\DocumentTemplate\_ExpressionsTable.cshtml"
-                       Write(expressionParts[0].Source);
+                       Write(expressionParts[0].Source.ToMultilineString());
 
             
             #line default
@@ -180,7 +180,7 @@ WriteLiteral("                            ");
 
             
             #line 37 "..\..\Areas\Config\Views\DocumentTemplate\_ExpressionsTable.cshtml"
-                       Write(expressionParts[0].Source);
+                       Write(expressionParts[0].Source.ToMultilineString());
 
             
             #line default
@@ -241,7 +241,7 @@ WriteLiteral("                            ");
 
             
             #line 50 "..\..\Areas\Config\Views\DocumentTemplate\_ExpressionsTable.cshtml"
-                       Write(expressionParts[expressionIndex].Source);
+                       Write(expressionParts[expressionIndex].Source.ToMultilineString());
 
             
             #line default
@@ -279,7 +279,7 @@ WriteLiteral("                            ");
 
             
             #line 60 "..\..\Areas\Config\Views\DocumentTemplate\_ExpressionsTable.cshtml"
-                       Write(expressionParts[expressionIndex].Source);
+                       Write(expressionParts[expressionIndex].Source.ToMultilineString());
 
             
             #line default
