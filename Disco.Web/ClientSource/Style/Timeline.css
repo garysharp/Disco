@@ -1,5 +1,4 @@
-/*#source /ClientSource/Style/Timeline/graphics.css */
-div.simileAjax-bubble-container {
+﻿div.simileAjax-bubble-container {
     margin:     0px;
     padding:    0px;
     border:     none;
@@ -171,7 +170,6 @@ div.simileAjax-bubble-close {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAB1UlEQVQ4y72Tu4saURjFhW23TRvIH7BtIH9AIKW1iCBiQE3hAyG6qIgBRXwERWRQUSMpdH2gDoiigvgMTCHiA8VH5btJFQgsnL13IGlmk2VZdouvmGHO73zn3DsiAKKnjOhZAIPB4E2/3//U7Xa/tdttptVqfWw2m68eBBDhBRFek/k1mUywWq2wWCwwHA5Rr9d/1mo1yX8BvV4vOJ1Osd/vcT6fcTqdcDwecTgcsFwuQQzAsqzxXkCn03nHcRwvoh/P5/O/YvqezmazQSaT+Z1KpV4LACRnlK5LRePxGOQZo9GIFyYSCVQqFdBYpVIJ4XD4swBASvpBHajjH9d0Oo1YLIZiscj3QLZENpuF2+2+EQBIQdx6vebz73Y7kPYRCARgs9kQiUTQaDR4UDQahdVqFQLIit/pitvtFgQGu93OC30+H8RiMSwWC+LxOFwuFwwGwxcBoFwufyBHhdlshkKhgGAwyOemK+t0OphMJh6m0WhuVSrV1b3HmEwm2Vwuh2q1inw+D9I2GIaB3++H0+mEVquFXC7/+s97EAqFLj0eD0udaH6v1wuHwwGj0QilUgmpVMpIJJKLB6+y2Wx+r9frb9RqNadQKDiZTEaFb1/uZ3rM3AHRX/GLx8FvpQAAAABJRU5ErkJggg==) /*images/close-button.png*/ no-repeat;
 }
 
-/*#source /ClientSource/Style/Timeline/timeline-bundle.css */
 
 
 /*------------------- Horizontal / Vertical lines ----------------*/
@@ -402,7 +400,6 @@ div.simileAjax-bubble-close {
 }
 
 
-/*#source /ClientSource/Style/Timeline/disco.timelineextensions.css */
 .timeline-container {
   border: 1px solid #aaa;
 }

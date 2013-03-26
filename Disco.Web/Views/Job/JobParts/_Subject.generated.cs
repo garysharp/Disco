@@ -1740,14 +1740,14 @@ WriteLiteral("            ");
             #line hidden
             
             #line 524 "..\..\Views\Job\JobParts\_Subject.cshtml"
-           Write(Html.ActionLinkSmallButton("Insurance Claim Form Sent", MVC.API.Job.UpdateInsuranceClaimFormSentDate(Model.Job.Id, "Now", true), "Job_Show_Job_Actions_InsuranceClaimFormSent_Button", "alert"));
+           Write(Html.ActionLinkSmallButton("Insurance Claim Sent", MVC.API.Job.UpdateInsuranceClaimFormSentDate(Model.Job.Id, "Now", true), "Job_Show_Job_Actions_InsuranceClaimSent_Button", "alert"));
 
             
             #line default
             #line hidden
             
             #line 524 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                                                                                                                                                                
+                                                                                                                                                                                                       
             }
 
             

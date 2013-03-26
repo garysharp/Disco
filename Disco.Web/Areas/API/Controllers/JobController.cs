@@ -56,6 +56,14 @@ namespace Disco.Web.Areas.API.Controllers
         const string pWarrantyExternalReference = "warrantyexternalreference";
         const string pWarrantyExternalCompletedDate = "warrantyexternalcompleteddate";
 
+        const string pJobDetailsTabResources = "jobDetailTab-Resources";
+        const string pJobDetailsTabComponents = "jobDetailTab-Components";
+        const string pJobDetailsTabNonWarrantyFinance = "jobDetailTab-NonWarrantyFinance";
+        const string pJobDetailsTabNonWarrantyRepairs = "jobDetailTab-NonWarrantyRepairs";
+        const string pJobDetailsTabNonWarrantyInsurance = "jobDetailTab-NonWarrantyInsurance";
+        const string pJobDetailsTabWarranty = "jobDetailTab-Warranty";
+        const string pJobDetailsTabFlags = "jobDetailTab-Flags";
+
         #endregion
 
         public virtual ActionResult Update(int id, string key, string value = null, Nullable<bool> redirect = null)
@@ -71,6 +79,7 @@ namespace Disco.Web.Areas.API.Controllers
                 var job = dbContext.Jobs.Find(id);
 
                 object resultData = null;
+                string resultUrlFragment = null;
 
                 if (job != null)
                 {
@@ -84,105 +93,139 @@ namespace Disco.Web.Areas.API.Controllers
                             break;
                         case pFlags:
                             UpdateFlags(job, value);
+                            resultUrlFragment = pJobDetailsTabFlags;
                             break;
                         case pNonWarrantyAccountingChargeRequired:
                             resultData = UpdateNonWarrantyAccountingChargeRequired(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyFinance;
                             break;
                         case pNonWarrantyAccountingChargeAdded:
                             resultData = UpdateNonWarrantyAccountingChargeAdded(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyFinance;
                             break;
                         case pNonWarrantyAccountingChargePaid:
                             resultData = UpdateNonWarrantyAccountingChargePaid(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyFinance;
                             break;
                         case pNonWarrantyPurchaseOrderRaised:
                             resultData = UpdateNonWarrantyPurchaseOrderRaised(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyFinance;
                             break;
                         case pNonWarrantyPurchaseOrderReference:
                             UpdateNonWarrantyPurchaseOrderReference(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyFinance;
                             break;
                         case pNonWarrantyPurchaseOrderSent:
                             resultData = UpdateNonWarrantyPurchaseOrderSent(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyFinance;
                             break;
                         case pNonWarrantyInvoiceReceived:
                             resultData = UpdateNonWarrantyInvoiceReceived(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyFinance;
                             break;
                         case pNonWarrantyRepairerName:
                             UpdateNonWarrantyRepairerName(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyRepairs;
                             break;
                         case pNonWarrantyRepairerLoggedDate:
                             UpdateNonWarrantyRepairerLoggedDate(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyRepairs;
                             break;
                         case pNonWarrantyRepairerReference:
                             UpdateNonWarrantyRepairerReference(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyRepairs;
                             break;
                         case pNonWarrantyRepairerCompletedDate:
                             UpdateNonWarrantyRepairerCompletedDate(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyRepairs;
                             break;
                         case pNonWarrantyIsInsuranceClaim:
                             UpdateNonWarrantyIsInsuranceClaim(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceLossOrDamageDate:
                             UpdateInsuranceLossOrDamageDate(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceEventLocation:
                             UpdateInsuranceEventLocation(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceDescription:
                             UpdateInsuranceDescription(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceThirdPartyCaused:
                             UpdateInsuranceThirdPartyCaused(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceThirdPartyCausedName:
                             UpdateInsuranceThirdPartyCausedName(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceThirdPartyCausedWhy:
                             UpdateInsuranceThirdPartyCausedWhy(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceWitnessesNamesAddresses:
                             UpdateInsuranceWitnessesNamesAddresses(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceBurglaryTheftMethodOfEntry:
                             UpdateInsuranceBurglaryTheftMethodOfEntry(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsurancePropertyLastSeenDate:
                             UpdateInsurancePropertyLastSeenDate(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsurancePoliceNotified:
                             UpdateInsurancePoliceNotified(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsurancePoliceNotifiedStation:
                             UpdateInsurancePoliceNotifiedStation(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsurancePoliceNotifiedDate:
                             UpdateInsurancePoliceNotifiedDate(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsurancePoliceNotifiedCrimeReportNo:
                             UpdateInsurancePoliceNotifiedCrimeReportNo(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceRecoverReduceAction:
                             UpdateInsuranceRecoverReduceAction(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceOtherInterestedParties:
                             UpdateInsuranceOtherInterestedParties(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceDateOfPurchase:
                             UpdateInsuranceDateOfPurchase(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceClaimFormSentDate:
                             resultData = UpdateInsuranceClaimFormSentDate(job, value);
+                            resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pWarrantyExternalName:
                             UpdateWarrantyExternalName(job, value);
+                            resultUrlFragment = pJobDetailsTabWarranty;
                             break;
                         case pWarrantyExternalLoggedDate:
                             UpdateWarrantyExternalLoggedDate(job, value);
+                            resultUrlFragment = pJobDetailsTabWarranty;
                             break;
                         case pWarrantyExternalReference:
                             UpdateWarrantyExternalReference(job, value);
+                            resultUrlFragment = pJobDetailsTabWarranty;
                             break;
                         case pWarrantyExternalCompletedDate:
                             UpdateWarrantyExternalCompletedDate(job, value);
+                            resultUrlFragment = pJobDetailsTabWarranty;
                             break;
                         default:
                             throw new Exception("Invalid Update Key");
@@ -193,7 +236,8 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Job Id");
                 }
                 if (redirect.HasValue && redirect.Value)
-                    return RedirectToAction(MVC.Job.Show(job.Id));
+                    return this.RedirectToAction(MVC.Job.Show(job.Id), resultUrlFragment);
+                    //return RedirectToAction(MVC.Job.Show(job.Id));
                 else
                 {
                     if (resultData != null)
@@ -539,7 +583,7 @@ namespace Disco.Web.Areas.API.Controllers
                 Id = job.Id,
                 Result = "OK",
                 UserDescription = DiscoApplication.CurrentUser.ToString()
-            };
+            }.SetDateTime(job.JobMetaNonWarranty.AccountingChargeRequiredDate);
         }
         private Models.Job._DateChangeModel UpdateNonWarrantyAccountingChargeAdded(Job job, string AccountingChargeAddedDate)
         {
@@ -574,7 +618,7 @@ namespace Disco.Web.Areas.API.Controllers
                 Id = job.Id,
                 Result = "OK",
                 UserDescription = DiscoApplication.CurrentUser.ToString()
-            };
+            }.SetDateTime(job.JobMetaNonWarranty.AccountingChargeAddedDate);
         }
         private Models.Job._DateChangeModel UpdateNonWarrantyAccountingChargePaid(Job job, string AccountingChargePaidDate)
         {
@@ -609,7 +653,7 @@ namespace Disco.Web.Areas.API.Controllers
                 Id = job.Id,
                 Result = "OK",
                 UserDescription = DiscoApplication.CurrentUser.ToString()
-            };
+            }.SetDateTime(job.JobMetaNonWarranty.AccountingChargePaidDate);
         }
         private Models.Job._DateChangeModel UpdateNonWarrantyPurchaseOrderRaised(Job job, string PurchaseOrderRaisedDate)
         {
@@ -643,7 +687,7 @@ namespace Disco.Web.Areas.API.Controllers
                 Id = job.Id,
                 Result = "OK",
                 UserDescription = DiscoApplication.CurrentUser.ToString()
-            };
+            }.SetDateTime(job.JobMetaNonWarranty.PurchaseOrderRaisedDate);
         }
         private void UpdateNonWarrantyPurchaseOrderReference(Job job, string PurchaseOrderReference)
         {
@@ -686,7 +730,7 @@ namespace Disco.Web.Areas.API.Controllers
                 Id = job.Id,
                 Result = "OK",
                 UserDescription = DiscoApplication.CurrentUser.ToString()
-            };
+            }.SetDateTime(job.JobMetaNonWarranty.PurchaseOrderSentDate);
         }
         private Models.Job._DateChangeModel UpdateNonWarrantyInvoiceReceived(Job job, string InvoiceReceivedDate)
         {
@@ -720,7 +764,7 @@ namespace Disco.Web.Areas.API.Controllers
                 Id = job.Id,
                 Result = "OK",
                 UserDescription = DiscoApplication.CurrentUser.ToString()
-            };
+            }.SetDateTime(job.JobMetaNonWarranty.InvoiceReceivedDate);
         }
 
         private void UpdateNonWarrantyRepairerName(Job job, string RepairerName)
@@ -869,7 +913,7 @@ namespace Disco.Web.Areas.API.Controllers
                 Id = job.Id,
                 Result = "OK",
                 UserDescription = DiscoApplication.CurrentUser.ToString()
-            };
+            }.SetDateTime(job.JobMetaInsurance.ClaimFormSentDate);
         }
 
         private void UpdateInsuranceDateOfPurchase(Job job, string DateOfPurchase)

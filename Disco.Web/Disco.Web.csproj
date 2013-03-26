@@ -173,6 +173,7 @@
     <Compile Include="Controllers\InitialConfigController.cs" />
     <Compile Include="Controllers\PluginWebHandlerController.cs" />
     <Compile Include="Controllers\UpdateController.cs" />
+    <Compile Include="Extensions\ControllerExtensions.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
     <Compile Include="App_Start\AppConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -1837,7 +1838,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2001/1/1" />
+      <UserProperties BuildVersion_StartDate="2001/1/1" BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_DetectChanges="False" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

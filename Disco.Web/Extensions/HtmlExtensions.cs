@@ -77,7 +77,7 @@ namespace Disco.Web
 
         public static MvcHtmlString ToMultilineString(this string s)
         {
-            return new MvcHtmlString(HttpUtility.HtmlEncode(s).Replace("\n", "<br />").Replace(Environment.NewLine, "<br />"));
+            return new MvcHtmlString(HttpUtility.HtmlEncode(s).Replace(Environment.NewLine, "<br />").Replace("\n", "<br />").Replace("\r", "<br />"));
         }
 
         public static List<Tuple<string, ActionResult>> ToBreadcrumb(this HtmlHelper htmlHelper, string title1, ActionResult link1, string title2 = null, ActionResult link2 = null, string title3 = null, ActionResult link3 = null, string title4 = null, ActionResult link4 = null, string title5 = null, ActionResult link5 = null)

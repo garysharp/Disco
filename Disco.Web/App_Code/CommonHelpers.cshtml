@@ -5,13 +5,13 @@
 @using System.Web.Mvc
 @using System.Web.Mvc.Html;
 @using Disco.Web.Extensions;
-@helper FriendlyDate(DateTime d)
+@helper FriendlyDate(DateTime d, string ElementId = null)
 {
-    <span title="@d.ToFullDateTime()" data-discodatetime="@d.ToSortableDateTime()" class="date nowrap">@d.ToFuzzy()</span>
+    <span @(ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId)))title="@d.ToFullDateTime()" data-discodatetime="@d.ToSortableDateTime()" data-datetimeformatted="@d.ToJavascriptDateTime()" class="date nowrap">@d.ToFuzzy()</span>
 }
-@helper FriendlyDate(DateTime? d, string NullValue = "N/A")
+@helper FriendlyDate(DateTime? d, string NullValue = "N/A", string ElementId = null)
 {
-    <span title="@d.ToFullDateTime(NullValue)" data-discodatetime="@d.ToSortableDateTime()" class="date nowrap">@d.ToFuzzy(NullValue)</span>
+    <span @(ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId)))title="@d.ToFullDateTime(NullValue)" data-discodatetime="@d.ToSortableDateTime()" data-datetimeformatted="@d.ToJavascriptDateTime()" class="date nowrap">@d.ToFuzzy(NullValue)</span>
 }
 @helper RadioButtonList(string id, List<System.Web.Mvc.SelectListItem> items, int columns = 1)
 {

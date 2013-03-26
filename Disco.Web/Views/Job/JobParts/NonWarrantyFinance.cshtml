@@ -1,96 +1,43 @@
 ﻿@model Disco.Web.Models.Job.ShowModel
 <table id="jobNonWarrantyFinance">
     <tr>
-        <th style="width: 200px;">
-            Accounting Charge Required
+        <th style="width: 200px;">Accounting Charge Required
         </th>
         <td>
-            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.AccountingChargeRequiredDate)
+            @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.AccountingChargeRequiredDate, "Not Required", "Job_JobMetaNonWarranty_AccountingChargeRequiredDate")
             <span id="Job_JobMetaNonWarranty_AccountingChargeRequiredUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.AccountingChargeRequiredUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.AccountingChargeRequiredUser.ToString()))</span>
             @AjaxHelpers.AjaxLoader()
-            <script type="text/javascript">
-                $(function () {
-                    document.DiscoFunctions.DateChangeUserHelper(
-                        $('#Job_JobMetaNonWarranty_AccountingChargeRequiredDate'),
-                        $('#Job_JobMetaNonWarranty_AccountingChargeRequiredUser'),
-                        'Not Required',
-                        '@(Url.Action(MVC.API.Job.UpdateNonWarrantyAccountingChargeRequired(Model.Job.Id, null)))',
-                        'AccountingChargeRequiredDate',
-                        @(Model.Job.OpenedDate.ToJavascriptDate())
-                        );
-                });
-            </script>
         </td>
     </tr>
     <tr>
-        <th style="width: 200px;">
-            Accounting Charge Added
+        <th style="width: 200px;">Accounting Charge Added
         </th>
         <td>
-            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.AccountingChargeAddedDate)
+            @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.AccountingChargeAddedDate, "Not Added", "Job_JobMetaNonWarranty_AccountingChargeAddedDate")
             <span id="Job_JobMetaNonWarranty_AccountingChargeAddedUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.AccountingChargeAddedUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.AccountingChargeAddedUser.ToString()))</span>
             @AjaxHelpers.AjaxLoader()
-            <script type="text/javascript">
-                $(function () {
-                    document.DiscoFunctions.DateChangeUserHelper(
-                        $('#Job_JobMetaNonWarranty_AccountingChargeAddedDate'),
-                        $('#Job_JobMetaNonWarranty_AccountingChargeAddedUser'),
-                        'Not Added',
-                        '@(Url.Action(MVC.API.Job.UpdateNonWarrantyAccountingChargeAdded(Model.Job.Id, null)))',
-                        'AccountingChargeAddedDate',
-                        @(Model.Job.OpenedDate.ToJavascriptDate())
-                        );
-                });
-            </script>
         </td>
     </tr>
     <tr>
-        <th style="width: 200px;">
-            Accounting Charge Paid
+        <th style="width: 200px;">Accounting Charge Paid
         </th>
         <td>
-            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.AccountingChargePaidDate)
+            @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.AccountingChargePaidDate, "Not Paid", "Job_JobMetaNonWarranty_AccountingChargePaidDate")
             <span id="Job_JobMetaNonWarranty_AccountingChargePaidUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.AccountingChargePaidUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.AccountingChargePaidUser.ToString()))</span>
             @AjaxHelpers.AjaxLoader()
-            <script type="text/javascript">
-                $(function () {
-                    document.DiscoFunctions.DateChangeUserHelper(
-                        $('#Job_JobMetaNonWarranty_AccountingChargePaidDate'),
-                        $('#Job_JobMetaNonWarranty_AccountingChargePaidUser'),
-                        'Not Paid',
-                        '@(Url.Action(MVC.API.Job.UpdateNonWarrantyAccountingChargePaid(Model.Job.Id, null)))',
-                        'AccountingChargePaidDate',
-                        @(Model.Job.OpenedDate.ToJavascriptDate())
-                        );
-                });
-            </script>
         </td>
     </tr>
     <tr>
-        <th style="width: 200px;">
-            Purchase Order Raised
+        <th style="width: 200px;">Purchase Order Raised
         </th>
         <td>
-            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.PurchaseOrderRaisedDate)
+            @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.PurchaseOrderRaisedDate, "Not Raised", "Job_JobMetaNonWarranty_PurchaseOrderRaisedDate")
             <span id="Job_JobMetaNonWarranty_PurchaseOrderRaisedUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.PurchaseOrderRaisedUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.PurchaseOrderRaisedUser.ToString()))</span>
             @AjaxHelpers.AjaxLoader()
-            <script type="text/javascript">
-                $(function () {
-                    document.DiscoFunctions.DateChangeUserHelper(
-                        $('#Job_JobMetaNonWarranty_PurchaseOrderRaisedDate'),
-                        $('#Job_JobMetaNonWarranty_PurchaseOrderRaisedUser'),
-                        'Not Raised',
-                        '@(Url.Action(MVC.API.Job.UpdateNonWarrantyPurchaseOrderRaised(Model.Job.Id, null)))',
-                        'PurchaseOrderRaisedDate',
-                        @(Model.Job.OpenedDate.ToJavascriptDate())
-                        );
-                });
-            </script>
         </td>
     </tr>
     <tr>
-        <th>
-            Purchase Order Reference
+        <th>Purchase Order Reference
         </th>
         <td>
             @Html.TextBoxFor(m => m.Job.JobMetaNonWarranty.PurchaseOrderReference)
@@ -138,47 +85,165 @@
         </td>
     </tr>
     <tr>
-        <th style="width: 200px;">
-            Purchase Order Sent
+        <th style="width: 200px;">Purchase Order Sent
         </th>
         <td>
-            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.PurchaseOrderSentDate)
+            @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.PurchaseOrderSentDate, "Not Sent", "Job_JobMetaNonWarranty_PurchaseOrderSentDate")
             <span id="Job_JobMetaNonWarranty_PurchaseOrderSentUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.PurchaseOrderSentUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.PurchaseOrderSentUser.ToString()))</span>
             @AjaxHelpers.AjaxLoader()
-            <script type="text/javascript">
-                $(function () {
-                    document.DiscoFunctions.DateChangeUserHelper(
-                        $('#Job_JobMetaNonWarranty_PurchaseOrderSentDate'),
-                        $('#Job_JobMetaNonWarranty_PurchaseOrderSentUser'),
-                        'Not Sent',
-                        '@(Url.Action(MVC.API.Job.UpdateNonWarrantyPurchaseOrderSent(Model.Job.Id, null)))',
-                        'PurchaseOrderSentDate',
-                        @(Model.Job.OpenedDate.ToJavascriptDate())
-                        );
-                });
-            </script>
         </td>
     </tr>
     <tr>
-        <th style="width: 200px;">
-            Invoice Received
+        <th style="width: 200px;">Invoice Received
         </th>
         <td>
-            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.InvoiceReceivedDate)
+            @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.InvoiceReceivedDate, "Not Received", "Job_JobMetaNonWarranty_InvoiceReceivedDate")
             <span id="Job_JobMetaNonWarranty_InvoiceReceivedUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.InvoiceReceivedUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.InvoiceReceivedUser.ToString()))</span>
             @AjaxHelpers.AjaxLoader()
-            <script type="text/javascript">
-                $(function () {
-                    document.DiscoFunctions.DateChangeUserHelper(
-                        $('#Job_JobMetaNonWarranty_InvoiceReceivedDate'),
-                        $('#Job_JobMetaNonWarranty_InvoiceReceivedUser'),
-                        'Not Received',
-                        '@(Url.Action(MVC.API.Job.UpdateNonWarrantyInvoiceReceived(Model.Job.Id, null)))',
-                        'InvoiceReceivedDate',
-                        @(Model.Job.OpenedDate.ToJavascriptDate())
-                        );
-                });
-            </script>
         </td>
     </tr>
 </table>
+<script>
+    (function(){
+        var baseUpdateUrl = '@(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)))';
+
+        var dialog, dialogForm, dialogHeader, dialogDateBox, dialogDatePropertyNameBox;
+        var friendlyName, dateField, userField, updatePropertyName, notSetDisplay, minDate, useAjax;
+
+        function dateDialogGet(){
+            if (!dialog){
+                dialog = $('<div>').attr({'class': 'dialog'})
+                dialogForm = $('<form>').attr({'action': baseUpdateUrl, 'method': 'post'}).appendTo(dialog);
+                var dialogBody = $('<p>').appendTo(dialogForm);
+                dialogHeader = $('<h3>').attr('autofocus', 'autofocus').appendTo(dialogBody);
+                dialogDatePropertyNameBox = $('<input>').attr({'type': 'hidden', 'name': 'key'}).appendTo(dialogBody);
+                dialogDateBox = $('<input>').attr({'type': 'datetime', 'name': 'value'}).css({'display': 'block', 'margin-top': 15, 'margin-left': 'auto', 'margin-right': 'auto' }).appendTo(dialogBody);
+                $('<input>').attr({'type': 'hidden', 'name': 'redirect'}).val('true').appendTo(dialogBody);
+
+                dialog.dialog({
+                    resizable: false,
+                    modal: true,
+                    autoOpen: false,
+                    buttons: {
+                        "Update": dateDialogUpdate,
+                        Cancel: function () {
+                            $(this).dialog("close");
+                        }
+                    },
+                    open: function(){
+                        dialog.dialog('widget').find('.ui-dialog-buttonpane :tabbable:first').focus();
+                    }
+                });
+                dialogDateBox.datetimepicker({
+                    defaultDate: new Date(),
+                    ampm: true,
+                    changeYear: true,
+                    changeMonth: true,
+                    dateFormat: 'yy/mm/dd',
+                });
+            }
+            return dialog;
+        }
+
+        function dateDialogUpdate(){
+            var dateValue = dialogDateBox.val();
+
+            if (useAjax){
+                // Use Ajax
+                var $dateField, $userField;
+                $dateField = $('#' + dateField);
+                if (userField)
+                    $userField = $('#' + userField);
+
+                dialog.dialog("close");
+
+                var $ajaxLoading = ($userField ? $userField.next('.ajaxLoading') : $dateField.next('.ajaxLoading')).show();
+
+                var data = {
+                    key: updatePropertyName,
+                    value: dateValue
+                };
+                $.getJSON(baseUpdateUrl, data, function (response, result) {
+                    if (result != 'success' || response.Result != 'OK') {
+                        alert('Unable to change ' + friendlyName + ' Date:\n' + response);
+                        $ajaxLoading.hide();
+                    } else {
+                        if (response.DateTimeFull){
+                            $dateField.attr('data-datetimeformatted', response.DateTimeJavascript)
+                                .attr('data-discodatetime', response.DateTimeSortable)
+                                .attr('title', response.DateTimeFull)
+                                .text(response.DateTimeFriendly);
+                        }else{
+                            $dateField.attr('data-datetimeformatted', '')
+                                .attr('data-discodatetime', '-1')
+                                .attr('title', notSetDisplay)
+                                .text(notSetDisplay);
+                        }
+                        if ($userField)
+                            $userField.text('by ' + response.UserDescription);
+                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                    }
+                })
+            }else{
+                // Post Form & Redirect
+                dialog.dialog("disable");
+                dialog.dialog("option", "buttons", null);
+
+                dialogDatePropertyNameBox.val(updatePropertyName);
+
+                dialogForm.submit();
+            }
+        }
+
+        function dateDialogOpen(FriendlyName, DateField, UserField, UpdatePropertyName, NotSetDisplay, MinDate, UseAjax){
+            friendlyName = FriendlyName;
+            dateField = DateField;
+            userField = UserField;
+            updatePropertyName = UpdatePropertyName;
+            notSetDisplay = NotSetDisplay;
+            minDate = MinDate;
+            useAjax = UseAjax;
+
+            var d = dateDialogGet();
+
+            d.dialog('option', 'title', friendlyName);
+            dialogHeader.text(friendlyName + ' Date');
+
+            var dfVal = $('#' + DateField).attr('data-datetimeformatted');
+
+            if (dfVal)
+                dialogDateBox.datetimepicker('setDate', new Date(dfVal));
+            else
+                dialogDateBox.datetimepicker('setDate', new Date());
+
+            if (MinDate)
+                dialogDateBox.datetimepicker('option', 'minDate', MinDate);
+            else
+                dialogDateBox.datetimepicker('option', 'minDate', null);
+
+            d.dialog('open');
+        }
+
+        function dateDialogCreateUpdater(FriendlyName, DateField, UserField, UpdatePropertyName, NotSetDisplay, MinDate, UseAjax){
+            $('<a>').attr({href: '#', 'class': 'button small', style: 'margin-right: 5px;'}).text('Update').click(function(event){
+                event.preventDefault();
+                dateDialogOpen(FriendlyName, DateField, UserField, UpdatePropertyName, NotSetDisplay, MinDate, UseAjax);
+            }).insertBefore('#' + DateField);
+        }
+
+        if (!document.DiscoFunctions)
+            document.DiscoFunctions = {};
+        if (!document.DiscoFunctions.DateDialogCreateUpdater)
+            document.DiscoFunctions.DateDialogCreateUpdater = dateDialogCreateUpdater;
+    })();
+    $(function(){
+        var jobOpenDate = '@(Model.Job.OpenedDate.ToJavascriptDateTime())';
+
+        document.DiscoFunctions.DateDialogCreateUpdater('Accounting Charge Required', 'Job_JobMetaNonWarranty_AccountingChargeRequiredDate', 'Job_JobMetaNonWarranty_AccountingChargeRequiredUser', 'NonWarrantyAccountingChargeRequired', 'Not Required', jobOpenDate, false);
+        document.DiscoFunctions.DateDialogCreateUpdater('Accounting Charge Added', 'Job_JobMetaNonWarranty_AccountingChargeAddedDate', 'Job_JobMetaNonWarranty_AccountingChargeAddedUser', 'NonWarrantyAccountingChargeAdded', 'Not Added', jobOpenDate, false);
+        document.DiscoFunctions.DateDialogCreateUpdater('Accounting Charge Paid', 'Job_JobMetaNonWarranty_AccountingChargePaidDate', 'Job_JobMetaNonWarranty_AccountingChargePaidUser', 'NonWarrantyAccountingChargePaid', 'Not Paid', jobOpenDate, false);
+        document.DiscoFunctions.DateDialogCreateUpdater('Purchase Order Raised', 'Job_JobMetaNonWarranty_PurchaseOrderRaisedDate', 'Job_JobMetaNonWarranty_PurchaseOrderRaisedUser', 'NonWarrantyPurchaseOrderRaised', 'Not Raised', jobOpenDate, true);
+        document.DiscoFunctions.DateDialogCreateUpdater('Purchase Order Sent', 'Job_JobMetaNonWarranty_PurchaseOrderSentDate', 'Job_JobMetaNonWarranty_PurchaseOrderSentUser', 'NonWarrantyPurchaseOrderSent', 'Not Sent', jobOpenDate, true);
+        document.DiscoFunctions.DateDialogCreateUpdater('Invoice Received', 'Job_JobMetaNonWarranty_InvoiceReceivedDate', 'Job_JobMetaNonWarranty_InvoiceReceivedUser', 'NonWarrantyInvoiceReceived', 'Not Received', jobOpenDate, true);
+    });
+</script>

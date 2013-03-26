@@ -121,6 +121,17 @@ namespace Disco.BI.Extensions
         {
             return d.ToBinary();
         }
+        public static string ToJavascriptDateTime(this DateTime d)
+        {
+            return d.ToString("yyyy/MM/dd hh:mm tt");
+        }
+        public static string ToJavascriptDateTime(this DateTime? d)
+        {
+            if (d.HasValue)
+                return d.Value.ToString("yyyy/MM/dd hh:mm tt");
+            else
+                return null;
+        }
         #endregion
 
         #region Image Extensions

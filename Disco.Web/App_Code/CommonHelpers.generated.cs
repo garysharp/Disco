@@ -60,11 +60,11 @@ namespace Disco.Web
     #line default
     #line hidden
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.0.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
     public class CommonHelpers : System.Web.WebPages.HelperPage
     {
 
-public static System.Web.WebPages.HelperResult FriendlyDate(DateTime d)
+public static System.Web.WebPages.HelperResult FriendlyDate(DateTime d, string ElementId = null)
 {
 return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
@@ -76,12 +76,22 @@ return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 #line default
 #line hidden
 
-WriteLiteralTo(@__razor_helper_writer, "    <span title=\"");
+WriteLiteralTo(@__razor_helper_writer, "    <span ");
 
 
 
 #line 10 "..\..\App_Code\CommonHelpers.cshtml"
-WriteTo(@__razor_helper_writer, d.ToFullDateTime());
+WriteTo(@__razor_helper_writer, ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId)));
+
+#line default
+#line hidden
+
+WriteLiteralTo(@__razor_helper_writer, "title=\"");
+
+
+
+#line 10 "..\..\App_Code\CommonHelpers.cshtml"
+                                                                       WriteTo(@__razor_helper_writer, d.ToFullDateTime());
 
 #line default
 #line hidden
@@ -91,7 +101,17 @@ WriteLiteralTo(@__razor_helper_writer, "\" data-discodatetime=\"");
 
 
 #line 10 "..\..\App_Code\CommonHelpers.cshtml"
-                           WriteTo(@__razor_helper_writer, d.ToSortableDateTime());
+                                                                                                                WriteTo(@__razor_helper_writer, d.ToSortableDateTime());
+
+#line default
+#line hidden
+
+WriteLiteralTo(@__razor_helper_writer, "\" data-datetimeformatted=\"");
+
+
+
+#line 10 "..\..\App_Code\CommonHelpers.cshtml"
+                                                                                                                                                                 WriteTo(@__razor_helper_writer, d.ToJavascriptDateTime());
 
 #line default
 #line hidden
@@ -101,7 +121,7 @@ WriteLiteralTo(@__razor_helper_writer, "\" class=\"date nowrap\">");
 
 
 #line 10 "..\..\App_Code\CommonHelpers.cshtml"
-                                                                        WriteTo(@__razor_helper_writer, d.ToFuzzy());
+                                                                                                                                                                                                                WriteTo(@__razor_helper_writer, d.ToFuzzy());
 
 #line default
 #line hidden
@@ -120,7 +140,7 @@ WriteLiteralTo(@__razor_helper_writer, "</span>\r\n");
 }
 
 
-public static System.Web.WebPages.HelperResult FriendlyDate(DateTime? d, string NullValue = "N/A")
+public static System.Web.WebPages.HelperResult FriendlyDate(DateTime? d, string NullValue = "N/A", string ElementId = null)
 {
 return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
@@ -132,12 +152,22 @@ return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 #line default
 #line hidden
 
-WriteLiteralTo(@__razor_helper_writer, "    <span title=\"");
+WriteLiteralTo(@__razor_helper_writer, "    <span ");
 
 
 
 #line 14 "..\..\App_Code\CommonHelpers.cshtml"
-WriteTo(@__razor_helper_writer, d.ToFullDateTime(NullValue));
+WriteTo(@__razor_helper_writer, ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId)));
+
+#line default
+#line hidden
+
+WriteLiteralTo(@__razor_helper_writer, "title=\"");
+
+
+
+#line 14 "..\..\App_Code\CommonHelpers.cshtml"
+                                                                       WriteTo(@__razor_helper_writer, d.ToFullDateTime(NullValue));
 
 #line default
 #line hidden
@@ -147,7 +177,17 @@ WriteLiteralTo(@__razor_helper_writer, "\" data-discodatetime=\"");
 
 
 #line 14 "..\..\App_Code\CommonHelpers.cshtml"
-                                    WriteTo(@__razor_helper_writer, d.ToSortableDateTime());
+                                                                                                                         WriteTo(@__razor_helper_writer, d.ToSortableDateTime());
+
+#line default
+#line hidden
+
+WriteLiteralTo(@__razor_helper_writer, "\" data-datetimeformatted=\"");
+
+
+
+#line 14 "..\..\App_Code\CommonHelpers.cshtml"
+                                                                                                                                                                          WriteTo(@__razor_helper_writer, d.ToJavascriptDateTime());
 
 #line default
 #line hidden
@@ -157,7 +197,7 @@ WriteLiteralTo(@__razor_helper_writer, "\" class=\"date nowrap\">");
 
 
 #line 14 "..\..\App_Code\CommonHelpers.cshtml"
-                                                                                 WriteTo(@__razor_helper_writer, d.ToFuzzy(NullValue));
+                                                                                                                                                                                                                         WriteTo(@__razor_helper_writer, d.ToFuzzy(NullValue));
 
 #line default
 #line hidden
