@@ -1066,7 +1066,7 @@
     <Content Include="ClientSource\Style\Images\DeviceTypes\Unknown.png" />
     <Content Include="ClientSource\Style\Images\DeviceTypes\Workstation.png" />
     <Content Include="ClientSource\Style\Images\Heading.png" />
-    <None Include="ClientSource\Style\Images\Icon32.png" />
+    <Content Include="ClientSource\Style\Images\Icon32.png" />
     <None Include="ClientSource\Style\Images\Status\error.png" />
     <None Include="ClientSource\Style\Images\Status\fail32.png" />
     <None Include="ClientSource\Style\Images\Status\fileBroken256.png" />
