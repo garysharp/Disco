@@ -37,7 +37,7 @@ namespace Disco.Web.Controllers
                 && !j.WaitingForUserAction.HasValue
                 && !(j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.RepairerLoggedDate.HasValue && j.JobMetaNonWarranty.IsInsuranceClaim && !j.JobMetaInsurance.ClaimFormSentDate.HasValue))
                 && !(j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.RepairerLoggedDate.HasValue && !j.JobMetaNonWarranty.RepairerCompletedDate.HasValue))
-                && !(j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue))
+                && !(j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.RepairerLoggedDate.HasValue && j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue))
                 && !(j.JobTypeId == JobType.JobTypeIds.HWar && (j.JobMetaWarranty.ExternalLoggedDate.HasValue && !j.JobMetaWarranty.ExternalCompletedDate.HasValue))
                 && (j.DeviceHeld == null || j.DeviceReturnedDate != null || j.DeviceReadyForReturn == null)).OrderBy(j => j.Id));
 
