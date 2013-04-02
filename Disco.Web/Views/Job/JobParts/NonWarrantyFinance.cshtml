@@ -1,4 +1,7 @@
 ﻿@model Disco.Web.Models.Job.ShowModel
+@{
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
+}
 <table id="jobNonWarrantyFinance">
     <tr>
         <th style="width: 200px;">Accounting Charge Required
@@ -104,146 +107,15 @@
     </tr>
 </table>
 <script>
-    (function(){
-        var baseUpdateUrl = '@(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)))';
-
-        var dialog, dialogForm, dialogHeader, dialogDateBox, dialogDatePropertyNameBox;
-        var friendlyName, dateField, userField, updatePropertyName, notSetDisplay, minDate, useAjax;
-
-        function dateDialogGet(){
-            if (!dialog){
-                dialog = $('<div>').attr({'class': 'dialog'})
-                dialogForm = $('<form>').attr({'action': baseUpdateUrl, 'method': 'post'}).appendTo(dialog);
-                var dialogBody = $('<p>').appendTo(dialogForm);
-                dialogHeader = $('<h3>').attr('autofocus', 'autofocus').appendTo(dialogBody);
-                dialogDatePropertyNameBox = $('<input>').attr({'type': 'hidden', 'name': 'key'}).appendTo(dialogBody);
-                dialogDateBox = $('<input>').attr({'type': 'datetime', 'name': 'value'}).css({'display': 'block', 'margin-top': 15, 'margin-left': 'auto', 'margin-right': 'auto' }).appendTo(dialogBody);
-                $('<input>').attr({'type': 'hidden', 'name': 'redirect'}).val('true').appendTo(dialogBody);
-
-                dialog.dialog({
-                    resizable: false,
-                    modal: true,
-                    autoOpen: false,
-                    buttons: {
-                        "Update": dateDialogUpdate,
-                        Cancel: function () {
-                            $(this).dialog("close");
-                        }
-                    },
-                    open: function(){
-                        dialog.dialog('widget').find('.ui-dialog-buttonpane :tabbable:first').focus();
-                    }
-                });
-                dialogDateBox.datetimepicker({
-                    defaultDate: new Date(),
-                    ampm: true,
-                    changeYear: true,
-                    changeMonth: true,
-                    dateFormat: 'yy/mm/dd',
-                });
-            }
-            return dialog;
-        }
-
-        function dateDialogUpdate(){
-            var dateValue = dialogDateBox.val();
-
-            if (useAjax){
-                // Use Ajax
-                var $dateField, $userField;
-                $dateField = $('#' + dateField);
-                if (userField)
-                    $userField = $('#' + userField);
-
-                dialog.dialog("close");
-
-                var $ajaxLoading = ($userField ? $userField.next('.ajaxLoading') : $dateField.next('.ajaxLoading')).show();
-
-                var data = {
-                    key: updatePropertyName,
-                    value: dateValue
-                };
-                $.getJSON(baseUpdateUrl, data, function (response, result) {
-                    if (result != 'success' || response.Result != 'OK') {
-                        alert('Unable to change ' + friendlyName + ' Date:\n' + response);
-                        $ajaxLoading.hide();
-                    } else {
-                        if (response.DateTimeFull){
-                            $dateField.attr('data-datetimeformatted', response.DateTimeJavascript)
-                                .attr('data-discodatetime', response.DateTimeSortable)
-                                .attr('title', response.DateTimeFull)
-                                .text(response.DateTimeFriendly);
-                        }else{
-                            $dateField.attr('data-datetimeformatted', '')
-                                .attr('data-discodatetime', '-1')
-                                .attr('title', notSetDisplay)
-                                .text(notSetDisplay);
-                        }
-                        if ($userField)
-                            $userField.text('by ' + response.UserDescription);
-                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                    }
-                })
-            }else{
-                // Post Form & Redirect
-                dialog.dialog("disable");
-                dialog.dialog("option", "buttons", null);
-
-                dialogDatePropertyNameBox.val(updatePropertyName);
-
-                dialogForm.submit();
-            }
-        }
-
-        function dateDialogOpen(FriendlyName, DateField, UserField, UpdatePropertyName, NotSetDisplay, MinDate, UseAjax){
-            friendlyName = FriendlyName;
-            dateField = DateField;
-            userField = UserField;
-            updatePropertyName = UpdatePropertyName;
-            notSetDisplay = NotSetDisplay;
-            minDate = MinDate;
-            useAjax = UseAjax;
-
-            var d = dateDialogGet();
-
-            d.dialog('option', 'title', friendlyName);
-            dialogHeader.text(friendlyName + ' Date');
-
-            var dfVal = $('#' + DateField).attr('data-datetimeformatted');
-
-            if (dfVal)
-                dialogDateBox.datetimepicker('setDate', new Date(dfVal));
-            else
-                dialogDateBox.datetimepicker('setDate', new Date());
-
-            if (MinDate)
-                dialogDateBox.datetimepicker('option', 'minDate', MinDate);
-            else
-                dialogDateBox.datetimepicker('option', 'minDate', null);
-
-            d.dialog('open');
-        }
-
-        function dateDialogCreateUpdater(FriendlyName, DateField, UserField, UpdatePropertyName, NotSetDisplay, MinDate, UseAjax){
-            $('<a>').attr({href: '#', 'class': 'button small', style: 'margin-right: 5px;'}).text('Update').click(function(event){
-                event.preventDefault();
-                dateDialogOpen(FriendlyName, DateField, UserField, UpdatePropertyName, NotSetDisplay, MinDate, UseAjax);
-            }).insertBefore('#' + DateField);
-        }
-
-        if (!document.DiscoFunctions)
-            document.DiscoFunctions = {};
-        if (!document.DiscoFunctions.DateDialogCreateUpdater)
-            document.DiscoFunctions.DateDialogCreateUpdater = dateDialogCreateUpdater;
-    })();
     $(function(){
+        var updateUrl = '@(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)))';
         var jobOpenDate = '@(Model.Job.OpenedDate.ToJavascriptDateTime())';
 
-        document.DiscoFunctions.DateDialogCreateUpdater('Accounting Charge Required', 'Job_JobMetaNonWarranty_AccountingChargeRequiredDate', 'Job_JobMetaNonWarranty_AccountingChargeRequiredUser', 'NonWarrantyAccountingChargeRequired', 'Not Required', jobOpenDate, false);
-        document.DiscoFunctions.DateDialogCreateUpdater('Accounting Charge Added', 'Job_JobMetaNonWarranty_AccountingChargeAddedDate', 'Job_JobMetaNonWarranty_AccountingChargeAddedUser', 'NonWarrantyAccountingChargeAdded', 'Not Added', jobOpenDate, false);
-        document.DiscoFunctions.DateDialogCreateUpdater('Accounting Charge Paid', 'Job_JobMetaNonWarranty_AccountingChargePaidDate', 'Job_JobMetaNonWarranty_AccountingChargePaidUser', 'NonWarrantyAccountingChargePaid', 'Not Paid', jobOpenDate, false);
-        document.DiscoFunctions.DateDialogCreateUpdater('Purchase Order Raised', 'Job_JobMetaNonWarranty_PurchaseOrderRaisedDate', 'Job_JobMetaNonWarranty_PurchaseOrderRaisedUser', 'NonWarrantyPurchaseOrderRaised', 'Not Raised', jobOpenDate, true);
-        document.DiscoFunctions.DateDialogCreateUpdater('Purchase Order Sent', 'Job_JobMetaNonWarranty_PurchaseOrderSentDate', 'Job_JobMetaNonWarranty_PurchaseOrderSentUser', 'NonWarrantyPurchaseOrderSent', 'Not Sent', jobOpenDate, true);
-        document.DiscoFunctions.DateDialogCreateUpdater('Invoice Received', 'Job_JobMetaNonWarranty_InvoiceReceivedDate', 'Job_JobMetaNonWarranty_InvoiceReceivedUser', 'NonWarrantyInvoiceReceived', 'Not Received', jobOpenDate, true);
+        document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Accounting Charge Required', 'Job_JobMetaNonWarranty_AccountingChargeRequiredDate', 'Job_JobMetaNonWarranty_AccountingChargeRequiredUser', 'NonWarrantyAccountingChargeRequired', 'Not Required', jobOpenDate, false);
+        document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Accounting Charge Added', 'Job_JobMetaNonWarranty_AccountingChargeAddedDate', 'Job_JobMetaNonWarranty_AccountingChargeAddedUser', 'NonWarrantyAccountingChargeAdded', 'Not Added', jobOpenDate, false);
+        document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Accounting Charge Paid', 'Job_JobMetaNonWarranty_AccountingChargePaidDate', 'Job_JobMetaNonWarranty_AccountingChargePaidUser', 'NonWarrantyAccountingChargePaid', 'Not Paid', jobOpenDate, false);
+        document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Purchase Order Raised', 'Job_JobMetaNonWarranty_PurchaseOrderRaisedDate', 'Job_JobMetaNonWarranty_PurchaseOrderRaisedUser', 'NonWarrantyPurchaseOrderRaised', 'Not Raised', jobOpenDate, true);
+        document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Purchase Order Sent', 'Job_JobMetaNonWarranty_PurchaseOrderSentDate', 'Job_JobMetaNonWarranty_PurchaseOrderSentUser', 'NonWarrantyPurchaseOrderSent', 'Not Sent', jobOpenDate, true);
+        document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Invoice Received', 'Job_JobMetaNonWarranty_InvoiceReceivedDate', 'Job_JobMetaNonWarranty_InvoiceReceivedUser', 'NonWarrantyInvoiceReceived', 'Not Received', jobOpenDate, true);
     });
 </script>

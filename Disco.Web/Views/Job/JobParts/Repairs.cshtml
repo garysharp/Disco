@@ -1,4 +1,7 @@
 ﻿@model Disco.Web.Models.Job.ShowModel
+@{
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
+}
 <table id="jobNonWarrantyRepairs">
     <tr>
         <th style="width: 200px;">
@@ -25,20 +28,7 @@
             Repair Logged
         </th>
         <td>
-            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerLoggedDate)
-            @AjaxHelpers.AjaxLoader()
-            <script type="text/javascript">
-                $(function () {
-                    var dateField = $('#Job_JobMetaNonWarranty_RepairerLoggedDate');
-                    document.DiscoFunctions.DateChangeHelper(
-                        dateField,
-                        'Unknown',
-                        '@(Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerLoggedDate(Model.Job.Id, null)))',
-                        'RepairerLoggedDate',
-                        null
-                        );
-                });
-            </script>
+            @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.RepairerLoggedDate, "Not Logged", "Job_JobMetaNonWarranty_RepairerLoggedDate")
         </td>
     </tr>
     <tr>
@@ -66,20 +56,16 @@
             Repair Completed
         </th>
         <td>
-            @Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerCompletedDate)
-            @AjaxHelpers.AjaxLoader()
-            <script type="text/javascript">
-                $(function () {
-                    var dateField = $('#Job_JobMetaNonWarranty_RepairerCompletedDate');
-                    document.DiscoFunctions.DateChangeHelper(
-                        dateField,
-                        'Unknown',
-                        '@(Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerCompletedDate(Model.Job.Id, null)))',
-                        'RepairerCompletedDate',
-                        null
-                        );
-                });
-            </script>
+            @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.RepairerCompletedDate, "Not Completed", "Job_JobMetaNonWarranty_RepairerCompletedDate")
         </td>
     </tr>
 </table>
+<script>
+    $(function () {
+        var updateUrl = '@(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)))';
+        var jobOpenDate = '@(Model.Job.OpenedDate.ToJavascriptDateTime())';
+
+        document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Repairer Name', 'Job_JobMetaNonWarranty_RepairerLoggedDate', null, 'NonWarrantyRepairerLoggedDate', 'Not Logged', jobOpenDate, false);
+        document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Repair Completed', 'Job_JobMetaNonWarranty_RepairerCompletedDate', null, 'NonWarrantyRepairerCompletedDate', 'Not Completed', jobOpenDate, false);
+    });
+</script>

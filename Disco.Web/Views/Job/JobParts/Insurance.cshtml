@@ -2,6 +2,7 @@
 <table id="jobNonWarrantyInsurance">
     @if (Model.Job.JobMetaNonWarranty.IsInsuranceClaim)
     { 
+        Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
         <tr>
             <th style="width: 230px;">
                 Date of Loss or Damage
@@ -342,19 +343,14 @@
                 Claim Form Sent Date
             </th>
             <td>
-                @Html.EditorFor(m => m.Job.JobMetaInsurance.ClaimFormSentDate)
+                @CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.ClaimFormSentDate, "Not Sent", "Job_JobMetaInsurance_ClaimFormSentDate")
                 <span id="Job_JobMetaInsurance_ClaimFormSentUserId">@(string.IsNullOrEmpty(Model.Job.JobMetaInsurance.ClaimFormSentUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaInsurance.ClaimFormSentUser.ToString()))</span>
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
+                <script>
                     $(function () {
-                        document.DiscoFunctions.DateChangeUserHelper(
-                        $('#Job_JobMetaInsurance_ClaimFormSentDate'),
-                        $('#Job_JobMetaInsurance_ClaimFormSentUserId'),
-                        'Unknown',
-                        '@(Url.Action(MVC.API.Job.UpdateInsuranceClaimFormSentDate(Model.Job.Id, null)))',
-                        'ClaimFormSentDate',
-                        @(Model.Job.OpenedDate.ToJavascriptDate())
-                        );
+                        var updateUrl = '@(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)))';
+                        var jobOpenDate = '@(Model.Job.OpenedDate.ToJavascriptDateTime())';
+
+                        document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Claim Form Sent Date', 'Job_JobMetaInsurance_ClaimFormSentDate', 'Job_JobMetaInsurance_ClaimFormSentUserId', 'InsuranceClaimFormSentDate', 'Not Sent', jobOpenDate, false);
                     });
                 </script>
             </td>

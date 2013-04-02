@@ -121,12 +121,12 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		BuildVersion_BuildAction = ReBuild
-		BuildVersion_StartDate = 2001/1/1
-		BuildVersion_BuildVersioningStyle = None.None.None.None
-		BuildVersion_UpdateAssemblyVersion = False
-		BuildVersion_UpdateFileVersion = False
-		BuildVersion_DetectChanges = False
 		BuildVersion_UseGlobalSettings = False
+		BuildVersion_DetectChanges = True
+		BuildVersion_UpdateFileVersion = False
+		BuildVersion_UpdateAssemblyVersion = False
+		BuildVersion_BuildVersioningStyle = None.None.None.None
+		BuildVersion_StartDate = 2001/1/1
+		BuildVersion_BuildAction = ReBuild
 	EndGlobalSection
 EndGlobal

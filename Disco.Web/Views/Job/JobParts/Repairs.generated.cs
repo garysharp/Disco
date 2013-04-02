@@ -31,16 +31,24 @@ namespace Disco.Web.Views.Job.JobParts
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.0.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Job/JobParts/Repairs.cshtml")]
-    public class Repairs : System.Web.Mvc.WebViewPage<Disco.Web.Models.Job.ShowModel>
+    public partial class Repairs : System.Web.Mvc.WebViewPage<Disco.Web.Models.Job.ShowModel>
     {
         public Repairs()
         {
         }
         public override void Execute()
         {
-WriteLiteral("<table");
+            
+            #line 2 "..\..\Views\Job\JobParts\Repairs.cshtml"
+  
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n<table");
 
 WriteLiteral(" id=\"jobNonWarrantyRepairs\"");
 
@@ -53,7 +61,7 @@ WriteLiteral(">\r\n            Repairer Name\r\n        </th>\r\n        <td>\r\
 WriteLiteral("            ");
 
             
-            #line 8 "..\..\Views\Job\JobParts\Repairs.cshtml"
+            #line 11 "..\..\Views\Job\JobParts\Repairs.cshtml"
        Write(Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerName));
 
             
@@ -64,7 +72,7 @@ WriteLiteral("\r\n");
 WriteLiteral("            ");
 
             
-            #line 9 "..\..\Views\Job\JobParts\Repairs.cshtml"
+            #line 12 "..\..\Views\Job\JobParts\Repairs.cshtml"
        Write(AjaxHelpers.AjaxSave());
 
             
@@ -75,7 +83,7 @@ WriteLiteral("\r\n");
 WriteLiteral("            ");
 
             
-            #line 10 "..\..\Views\Job\JobParts\Repairs.cshtml"
+            #line 13 "..\..\Views\Job\JobParts\Repairs.cshtml"
        Write(AjaxHelpers.AjaxLoader());
 
             
@@ -91,7 +99,7 @@ WriteLiteral(">\r\n                $(function () {\r\n                    docume
 "  \'");
 
             
-            #line 16 "..\..\Views\Job\JobParts\Repairs.cshtml"
+            #line 19 "..\..\Views\Job\JobParts\Repairs.cshtml"
                         Write(Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerName(Model.Job.Id, null)));
 
             
@@ -108,45 +116,13 @@ WriteLiteral(">\r\n            Repair Logged\r\n        </th>\r\n        <td>\r\
 WriteLiteral("            ");
 
             
-            #line 28 "..\..\Views\Job\JobParts\Repairs.cshtml"
-       Write(Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerLoggedDate));
+            #line 31 "..\..\Views\Job\JobParts\Repairs.cshtml"
+       Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.RepairerLoggedDate, "Not Logged", "Job_JobMetaNonWarranty_RepairerLoggedDate"));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("            ");
-
-            
-            #line 29 "..\..\Views\Job\JobParts\Repairs.cshtml"
-       Write(AjaxHelpers.AjaxLoader());
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n            <script");
-
-WriteLiteral(" type=\"text/javascript\"");
-
-WriteLiteral(@">
-                $(function () {
-                    var dateField = $('#Job_JobMetaNonWarranty_RepairerLoggedDate');
-                    document.DiscoFunctions.DateChangeHelper(
-                        dateField,
-                        'Unknown',
-                        '");
-
-            
-            #line 36 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                     Write(Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerLoggedDate(Model.Job.Id, null)));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\',\r\n                        \'RepairerLoggedDate\',\r\n                        null\r\n" +
-"                        );\r\n                });\r\n            </script>\r\n        " +
-"</td>\r\n    </tr>\r\n    <tr>\r\n        <th");
+WriteLiteral("\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
@@ -155,7 +131,7 @@ WriteLiteral(">\r\n            Repair Reference\r\n        </th>\r\n        <td>
 WriteLiteral("            ");
 
             
-            #line 49 "..\..\Views\Job\JobParts\Repairs.cshtml"
+            #line 39 "..\..\Views\Job\JobParts\Repairs.cshtml"
        Write(Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerReference));
 
             
@@ -166,7 +142,7 @@ WriteLiteral("\r\n");
 WriteLiteral("            ");
 
             
-            #line 50 "..\..\Views\Job\JobParts\Repairs.cshtml"
+            #line 40 "..\..\Views\Job\JobParts\Repairs.cshtml"
        Write(AjaxHelpers.AjaxSave());
 
             
@@ -177,7 +153,7 @@ WriteLiteral("\r\n");
 WriteLiteral("            ");
 
             
-            #line 51 "..\..\Views\Job\JobParts\Repairs.cshtml"
+            #line 41 "..\..\Views\Job\JobParts\Repairs.cshtml"
        Write(AjaxHelpers.AjaxLoader());
 
             
@@ -193,7 +169,7 @@ WriteLiteral(">\r\n                $(function () {\r\n                    docume
 "       \'");
 
             
-            #line 57 "..\..\Views\Job\JobParts\Repairs.cshtml"
+            #line 47 "..\..\Views\Job\JobParts\Repairs.cshtml"
                         Write(Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerReference(Model.Job.Id, null)));
 
             
@@ -210,45 +186,37 @@ WriteLiteral(">\r\n            Repair Completed\r\n        </th>\r\n        <td>
 WriteLiteral("            ");
 
             
-            #line 69 "..\..\Views\Job\JobParts\Repairs.cshtml"
-       Write(Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerCompletedDate));
+            #line 59 "..\..\Views\Job\JobParts\Repairs.cshtml"
+       Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.RepairerCompletedDate, "Not Completed", "Job_JobMetaNonWarranty_RepairerCompletedDate"));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("            ");
-
-            
-            #line 70 "..\..\Views\Job\JobParts\Repairs.cshtml"
-       Write(AjaxHelpers.AjaxLoader());
+WriteLiteral("\r\n        </td>\r\n    </tr>\r\n</table>\r\n<script>\r\n    $(function () {\r\n        var " +
+"updateUrl = \'");
 
             
-            #line default
-            #line hidden
-WriteLiteral("\r\n            <script");
-
-WriteLiteral(" type=\"text/javascript\"");
-
-WriteLiteral(@">
-                $(function () {
-                    var dateField = $('#Job_JobMetaNonWarranty_RepairerCompletedDate');
-                    document.DiscoFunctions.DateChangeHelper(
-                        dateField,
-                        'Unknown',
-                        '");
-
-            
-            #line 77 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                     Write(Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerCompletedDate(Model.Job.Id, null)));
+            #line 65 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                     Write(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
-WriteLiteral("\',\r\n                        \'RepairerCompletedDate\',\r\n                        nul" +
-"l\r\n                        );\r\n                });\r\n            </script>\r\n     " +
-"   </td>\r\n    </tr>\r\n</table>\r\n");
+WriteLiteral("\';\r\n        var jobOpenDate = \'");
+
+            
+            #line 66 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                       Write(Model.Job.OpenedDate.ToJavascriptDateTime());
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"';
+
+        document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Repairer Name', 'Job_JobMetaNonWarranty_RepairerLoggedDate', null, 'NonWarrantyRepairerLoggedDate', 'Not Logged', jobOpenDate, false);
+        document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Repair Completed', 'Job_JobMetaNonWarranty_RepairerCompletedDate', null, 'NonWarrantyRepairerCompletedDate', 'Not Completed', jobOpenDate, false);
+    });
+</script>");
 
         }
     }
