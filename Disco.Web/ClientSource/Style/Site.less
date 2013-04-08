@@ -891,10 +891,16 @@ input[type="submit"]
         text-transform: uppercase;
         cursor: pointer;
 
-        &:hover
+        &.alert
         {
-            border: 1px solid @ButtonBorderHoverColour;
-            background: @ButtonHoverColour;
+            border-color: @ButtonBorderAlertColour;
+            background-color: @ButtonAlertColour;
+        }
+
+        &.small
+        {
+            padding: 2px 5px;
+            font-size: .9em;
         }
 
         &[disabled]
@@ -902,6 +908,12 @@ input[type="submit"]
             background: @ButtonHoverColour;
             border: 1px solid @ButtonBorderHoverColour;
             cursor: default;
+        }
+
+        &:hover
+        {
+            border: 1px solid @ButtonBorderHoverColour;
+            background: @ButtonHoverColour;
         }
     }
 }

@@ -1982,14 +1982,22 @@ input[type="submit"].button {
   text-transform: uppercase;
   cursor: pointer;
 }
-input[type="submit"].button:hover {
-  border: 1px solid #696969;
-  background: #9e9e9e;
+input[type="submit"].button.alert {
+  border-color: #990000;
+  background-color: #e90000;
+}
+input[type="submit"].button.small {
+  padding: 2px 5px;
+  font-size: .9em;
 }
 input[type="submit"].button[disabled] {
   background: #9e9e9e;
   border: 1px solid #696969;
   cursor: default;
+}
+input[type="submit"].button:hover {
+  border: 1px solid #696969;
+  background: #9e9e9e;
 }
 ul.none {
   list-style: none;
