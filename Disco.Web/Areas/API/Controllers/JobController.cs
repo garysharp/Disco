@@ -1731,6 +1731,17 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json(new Models.Job.CommentsModel() { Result = "Invalid Job Number" }, JsonRequestBehavior.AllowGet);
         }
+        public virtual ActionResult Comment(int id)
+        {
+            var jl = dbContext.JobLogs.Include("TechUser").FirstOrDefault(l => l.Id == id);
+            if (jl != null)
+            {
+                var c = Models.Job._CommentModel.FromJobLog(jl);
+
+                return Json(c, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new Models.Job.CommentsModel() { Result = "Invalid Comment Id" }, JsonRequestBehavior.AllowGet);
+        }
         public virtual ActionResult CommentPost(int id, string comment)
         {
             var j = dbContext.Jobs.Find(id);

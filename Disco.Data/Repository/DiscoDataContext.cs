@@ -68,5 +68,24 @@ namespace Disco.Data.Repository
             modelBuilder.Entity<DeviceProfile>().Property(DeviceProfile.PropertyAccessExpressions.DistributionTypeDb);
         }
 
+        // Hook for Repository Monitor
+        public override int SaveChanges()
+        {
+            int changeCount = 0;
+
+            // Notify before changes are committed
+            var changes = Monitor.RepositoryMonitor.BeforeSaveChanges(this);
+
+            if (changes.Length > 0)
+            {
+                changeCount = base.SaveChanges();
+
+                // Notify after changes are committed
+                Monitor.RepositoryMonitor.AfterSaveChanges(this, changes);
+            }
+
+            return changeCount;
+        }
+
     }
 }

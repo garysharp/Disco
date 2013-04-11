@@ -22,6 +22,9 @@ namespace Disco.Web.Areas.API
             context.Routes.MapConnection<Disco.Services.Tasks.ScheduledTasksLiveStatusService>(
                 "API_Logging_TaskStatusNotifications", "API/Logging/TaskStatusNotifications/{*operation}");
 
+            context.Routes.MapConnection<Disco.BI.Interop.SignalRHandlers.RepositoryMonitorNotifications>(
+                "API_Repository_Notifications", "API/Repository/Notifications/{*operation}");
+
             context.MapRoute(
                 "API_Update",
                 "API/{controller}/Update/{id}/{key}",

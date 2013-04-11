@@ -10,6 +10,7 @@ namespace Disco.Web.Areas.API.Models.Job
     public class _CommentModel
     {
         public int Id { get; set; }
+        public int JobId { get; set; }
         public string Author { get; set; }
         public DateTime Timestamp { get; set; }
         public string Comments { get; set; }
@@ -41,6 +42,7 @@ namespace Disco.Web.Areas.API.Models.Job
             return new _CommentModel
             {
                 Id = jl.Id,
+                JobId = jl.JobId,
                 Author = jl.TechUser.ToString(),
                 Timestamp = jl.Timestamp,
                 Comments = jl.Comments
