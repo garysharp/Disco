@@ -18,7 +18,7 @@ namespace Disco.Models.BI.Job
         public bool ShowStatus { get; set; }
         public bool IsSmallTable { get; set; }
         public bool HideClosedJobs { get; set; }
-        public List<JobTableItemModel> Items { get; set; }
+        public virtual List<JobTableItemModel> Items { get; set; }
 
         public JobTableModel()
         {

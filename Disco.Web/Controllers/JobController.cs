@@ -12,6 +12,7 @@ using Disco.Services.Plugins.Features.WarrantyProvider;
 using Disco.Services.Plugins;
 using Disco.Models.UI.Job;
 using Disco.Services.Plugins.Features.UIExtension;
+using Disco.BI.JobBI;
 
 namespace Disco.Web.Controllers
 {
@@ -19,51 +20,57 @@ namespace Disco.Web.Controllers
     {
 
         #region Index
+        private static object jobListCreationLock = new object();
+
+        private static ManagedJobList jobList_OpenJobs;
+        private static ManagedJobList jobList_LongRunning;
+
         public virtual ActionResult Index()
         {
             var m = new Models.Job.IndexModel();
 
-            //m.MyJobs = JobBI.SelectJobSearchResultItem((from j in dbContext.Jobs
-            //                                              where j.OpenedTechUserId == DiscoApplication.CurrentUser.Id && j.ClosedDate == null && (j.DeviceHeld == null || j.DeviceReturnedDate != null || j.DeviceReadyForReturn == null)
-            //                                              select j));
-            //m.OpenJobs = JobBI.SelectJobSearchResultItem((from j in dbContext.Jobs
-            //                                              where j.OpenedTechUserId != DiscoApplication.CurrentUser.Id && j.ClosedDate == null && (j.DeviceHeld == null || j.DeviceReturnedDate != null || j.DeviceReadyForReturn == null)
-            //                                              select j));
+            if (jobList_OpenJobs == null)
+            {
+                lock (jobListCreationLock)
+                {
+                    if (jobList_OpenJobs == null)
+                    {
+                        jobList_OpenJobs = new ManagedJobList()
+                        {
+                            Name = "Open Jobs Awaiting Technician Action",
+                            FilterFunction = q => q.Where(j => j.ClosedDate == null && !j.WaitingForUserAction.HasValue
+                                && !(j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.RepairerLoggedDate.HasValue && j.JobMetaNonWarranty.IsInsuranceClaim && !j.JobMetaInsurance.ClaimFormSentDate.HasValue))
+                                && !(j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.RepairerLoggedDate.HasValue && !j.JobMetaNonWarranty.RepairerCompletedDate.HasValue))
+                                && !(j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.RepairerLoggedDate.HasValue && j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue))
+                                && !(j.JobTypeId == JobType.JobTypeIds.HWar && (j.JobMetaWarranty.ExternalLoggedDate.HasValue && !j.JobMetaWarranty.ExternalCompletedDate.HasValue))
+                                && (j.DeviceHeld == null || j.DeviceReturnedDate != null || j.DeviceReadyForReturn == null)),
+                            SortFunction = q => q.OrderBy(j => j.Id),
+                            ShowStatus = true
+                        }.Initialize(dbContext);
+                    }
+                }
+            }
+            if (jobList_LongRunning == null)
+            {
+                lock (jobListCreationLock)
+                {
+                    if (jobList_LongRunning == null)
+                    {
+                        var longRunningThreshold = DateTime.Today.AddDays(-7);
 
-            dbContext.Configuration.LazyLoadingEnabled = true;
+                        jobList_LongRunning = new ManagedJobList()
+                        {
+                            Name = "Long Running Jobs",
+                            FilterFunction = q => q.Where(j => j.ClosedDate == null && j.OpenedDate < longRunningThreshold),
+                            SortFunction = q => q.OrderBy(j => j.Id),
+                            ShowStatus = true
+                        }.Initialize(dbContext);
+                    }
+                }
+            }
 
-            m.OpenJobs = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true };
-            m.OpenJobs.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.ClosedDate == null
-                && !j.WaitingForUserAction.HasValue
-                && !(j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.RepairerLoggedDate.HasValue && j.JobMetaNonWarranty.IsInsuranceClaim && !j.JobMetaInsurance.ClaimFormSentDate.HasValue))
-                && !(j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.RepairerLoggedDate.HasValue && !j.JobMetaNonWarranty.RepairerCompletedDate.HasValue))
-                && !(j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.RepairerLoggedDate.HasValue && j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue))
-                && !(j.JobTypeId == JobType.JobTypeIds.HWar && (j.JobMetaWarranty.ExternalLoggedDate.HasValue && !j.JobMetaWarranty.ExternalCompletedDate.HasValue))
-                && (j.DeviceHeld == null || j.DeviceReturnedDate != null || j.DeviceReadyForReturn == null)).OrderBy(j => j.Id));
-
-            var longRunningThreshold = DateTime.Now.AddDays(-7);
-            m.LongRunningJobs = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true };
-            m.LongRunningJobs.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.ClosedDate == null
-                && j.OpenedDate < longRunningThreshold).OrderBy(j => j.Id));
-
-            //m.WaitingForUserActionJobs = new Disco.Models.BI.Job.JobTableModel();
-            //m.WaitingForUserActionJobs.Fill(Disco.BI.JobTableModelBI.BuildQuery(dbContext).Where(j => j.WaitingForUserAction.HasValue
-            //                                                              && j.ClosedDate == null));
-
-            //m.ReadyForReturnJobs = new Disco.Models.BI.Job.JobTableModel();
-            //m.ReadyForReturnJobs.Fill(BI.JobTableModelBI.BuildQuery(dbContext).Where(j => !j.WaitingForUserAction.HasValue
-            //                                                        && j.DeviceHeld != null && j.DeviceReturnedDate == null && j.DeviceReadyForReturn != null
-            //                                                        && j.ClosedDate == null));
-
-            //// 2 Days ago - Ignore Weekend
-            //var dateTimeNow = DateTime.Now;
-            //var closedThreshold = dateTimeNow.AddDays(-2);
-            //if (dateTimeNow.DayOfWeek == DayOfWeek.Monday)
-            //    closedThreshold = closedThreshold.AddDays(-2);
-            //if (dateTimeNow.DayOfWeek == DayOfWeek.Tuesday)
-            //    closedThreshold = closedThreshold.AddDays(-1);
-            //m.RecentlyClosedJobs = new Disco.Models.BI.Job.JobTableModel();
-            //m.RecentlyClosedJobs.Fill(BI.JobTableModelBI.BuildQuery(dbContext).Where(j => j.ClosedDate > closedThreshold));
+            m.OpenJobs = jobList_OpenJobs;
+            m.LongRunningJobs = jobList_LongRunning;
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobIndexModel>(this.ControllerContext, m);

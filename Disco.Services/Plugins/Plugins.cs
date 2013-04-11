@@ -503,7 +503,7 @@ namespace Disco.Services.Plugins
 
         public static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            if (args.RequestingAssembly.Location.StartsWith(PluginPath, StringComparison.InvariantCultureIgnoreCase) && _PluginManifests != null)
+            if (args.RequestingAssembly != null && args.RequestingAssembly.Location.StartsWith(PluginPath, StringComparison.InvariantCultureIgnoreCase) && _PluginManifests != null)
             {
                 // Try best guess first
                 PluginManifest requestingPlugin = _PluginManifests.Values.Where(p => p.Type.Assembly == args.RequestingAssembly).FirstOrDefault();

@@ -78,6 +78,21 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Reactive.Core, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Core.2.1.30214.0\lib\Net45\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Interfaces.2.1.30214.0\lib\Net45\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Linq.2.1.30214.0\lib\Net45\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\packages\Rx-PlatformServices.2.1.30214.0\lib\Net45\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
@@ -157,7 +172,9 @@
     <Compile Include="BI\Interop\Pdf\PdfImporter.cs" />
     <Compile Include="BI\Interop\PluginServices\IDiscoScheduledTask.cs" />
     <Compile Include="BI\Interop\PluginServices\Utilities.cs" />
+    <Compile Include="BI\Interop\SignalRHandlers\RepositoryMonitorNotifications.cs" />
     <Compile Include="BI\Interop\SignalRHandlers\UserHeldDevices.cs" />
+    <Compile Include="BI\JobBI\ManagedJobList.cs" />
     <Compile Include="BI\JobBI\Searching.cs" />
     <Compile Include="BI\JobBI\Statistics\DailyOpenedClosed.cs" />
     <Compile Include="BI\JobBI\Utilities.cs" />

@@ -11,8 +11,10 @@ namespace Disco.BI.Extensions
     public static class JobTableExtensions
     {
 
-        public static void Fill(this JobTableModel model, DiscoDataContext dbContext, IQueryable<Job> Jobs)
+        public static List<JobTableModel.JobTableItemModel> DetermineItems(this JobTableModel model, DiscoDataContext dbContext, IQueryable<Job> Jobs)
         {
+            List<JobTableModel.JobTableItemModel> items;
+
             if (model.ShowStatus)
             {
 
@@ -50,18 +52,18 @@ namespace Disco.BI.Extensions
                     JobMetaNonWarranty_RepairerName = j.JobMetaNonWarranty.RepairerName
                 });
 
-                model.Items = new List<JobTableModel.JobTableItemModel>();
+                items = new List<JobTableModel.JobTableItemModel>();
                 foreach (var j in jobItems)
                 {
                     j.StatusId = j.CalculateStatusId();
                     j.StatusDescription = JobBI.Utilities.JobStatusDescription(j.StatusId, j);
 
-                    model.Items.Add(j);
+                    items.Add(j);
                 }
             }
             else
             {
-                model.Items = Jobs.Select(j => new JobTableModel.JobTableItemModel()
+                items = Jobs.Select(j => new JobTableModel.JobTableItemModel()
                 {
                     Id = j.Id,
                     DeviceAddressId = j.Device.DeviceProfile.DefaultOrganisationAddress,
@@ -84,11 +86,17 @@ namespace Disco.BI.Extensions
 
             if (model.ShowDeviceAddress.Value)
             {
-                foreach (var j in model.Items)
+                foreach (var j in items)
                     if (j.DeviceAddressId.HasValue)
                         j.DeviceAddress = dbContext.DiscoConfiguration.OrganisationAddresses.GetAddress(j.DeviceAddressId.Value).Name;
             }
-        }
 
+            return items;
+        }
+        
+        public static void Fill(this JobTableModel model, DiscoDataContext dbContext, IQueryable<Job> Jobs)
+        {
+            model.Items = model.DetermineItems(dbContext, Jobs);
+        }
     }
 }

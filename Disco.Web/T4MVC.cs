@@ -127,20 +127,6 @@ public class T4MVC_System_Web_Mvc_ActionResult : System.Web.Mvc.ActionResult, IT
 namespace Links
 {
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public static class scripts {
-        private const string URLPATH = "~/scripts";
-        public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-        public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public static class tinymce {
-            private const string URLPATH = "~/scripts/tinymce";
-            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-        }
-    
-    }
-
-    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
     public static class ClientSource {
         private const string URLPATH = "~/ClientSource";
         public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
@@ -5647,6 +5633,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Comment()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Comment);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult CommentPost()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CommentPost);
@@ -5791,6 +5783,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string Delete = "Delete";
             public readonly string ConvertHWarToHNWar = "ConvertHWarToHNWar";
             public readonly string Comments = "Comments";
+            public readonly string Comment = "Comment";
             public readonly string CommentPost = "CommentPost";
             public readonly string CommentRemove = "CommentRemove";
             public readonly string AttachmentDownload = "AttachmentDownload";
@@ -5862,6 +5855,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string Delete = "Delete";
             public const string ConvertHWarToHNWar = "ConvertHWarToHNWar";
             public const string Comments = "Comments";
+            public const string Comment = "Comment";
             public const string CommentPost = "CommentPost";
             public const string CommentRemove = "CommentRemove";
             public const string AttachmentDownload = "AttachmentDownload";
@@ -6391,6 +6385,14 @@ namespace Disco.Web.Areas.API.Controllers
         public ActionParamsClass_Comments CommentsParams { get { return s_params_Comments; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Comments
+        {
+            public readonly string id = "id";
+        }
+        static readonly ActionParamsClass_Comment s_params_Comment = new ActionParamsClass_Comment();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Comment CommentParams { get { return s_params_Comment; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Comment
         {
             public readonly string id = "id";
         }
@@ -7140,6 +7142,16 @@ namespace Disco.Web.Areas.API.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Comments);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             CommentsOverride(callInfo, id);
+            return callInfo;
+        }
+
+        partial void CommentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        public override System.Web.Mvc.ActionResult Comment(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Comment);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            CommentOverride(callInfo, id);
             return callInfo;
         }
 
