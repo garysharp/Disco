@@ -109,7 +109,7 @@ AppPackages/
 # Others
 sql/
 *.Cache
-ClientBin/
+# ClientBin/
 [Ss]tyle[Cc]op.*
 ~$*
 *~

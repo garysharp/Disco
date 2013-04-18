@@ -11,8 +11,17 @@
             <Button x:Name="ButtonStartWebCam" Content="START WEBCAM" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="14, 8" />
         </Grid>
         <Grid x:Name="WebCamShow" Visibility="Collapsed">
-            <Rectangle x:Name="WebCamHost" />
-            <Button x:Name="ButtonCapture" Content="CAPTURE IMAGE" HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="14, 8" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Border Background="Black">
+                <Rectangle x:Name="WebCamHost" OpacityMask="White" />
+            </Border>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="1" Margin="0, 10, 0, 0">
+                <Button x:Name="ButtonCapture" Content="CAPTURE IMAGE (Michael)" HorizontalAlignment="Center" Padding="14, 8" />
+                <TextBlock x:Name="TextBlockWebCamFormat" HorizontalAlignment="Center" Margin="0, 6, 0, 0"></TextBlock>
+            </StackPanel>
         </Grid>
         <Border x:Name="WebCamCaptured" Visibility="Collapsed" Width="600" Height="450" Background="#BBffe3cb" BorderBrush="#FFDB761D" BorderThickness="4" CornerRadius="4">
             <Grid>
@@ -26,7 +35,9 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Rectangle x:Name="WebCamCapturedImage" Grid.ColumnSpan="4" Margin="14" />
+                <Border Background="Black" Grid.ColumnSpan="4" Margin="14">
+                    <Rectangle x:Name="WebCamCapturedImage" />
+                </Border>
                 <Button x:Name="ButtonCancel" Grid.Row="1" Grid.Column="0" Content="CANCEL" HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="14, 8" Margin="6" />
                 <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="10 0">Comments:</TextBlock>
                 <TextBox Grid.Row="1" Grid.Column="2" x:Name="TextBoxComments" Height="24" />

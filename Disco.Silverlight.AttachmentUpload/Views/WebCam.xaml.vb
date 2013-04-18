@@ -21,14 +21,20 @@ Partial Public Class WebCam
             _CaptureSource.VideoCaptureDevice = CaptureDeviceConfiguration.GetDefaultVideoCaptureDevice()
 
             '' Get Best Quality Image
-            _CaptureSource.VideoCaptureDevice.DesiredFormat = (From f In _CaptureSource.VideoCaptureDevice.SupportedFormats Where f.PixelHeight <= 720
-                                                                Order By (f.FramesPerSecond * f.PixelHeight * f.PixelWidth) Descending).FirstOrDefault()
+            Dim format = (From f In _CaptureSource.VideoCaptureDevice.SupportedFormats Where f.PixelHeight <= 720 And f.Stride = 0
+                          Order By (f.PixelHeight * f.PixelWidth) Descending Order By f.FramesPerSecond).FirstOrDefault()
+
+            TextBlockWebCamFormat.Text = String.Format("{0}x{1} at {2}fps", format.PixelWidth, format.PixelHeight, format.FramesPerSecond)
+
+            _CaptureSource.VideoCaptureDevice.DesiredFormat = format
 
             AddHandler _CaptureSource.CaptureImageCompleted, AddressOf CaptureSource_CaptureImageCompleted
             _VideoBrush = New VideoBrush()
             _VideoBrush.Stretch = Stretch.Uniform
             _VideoBrush.SetSource(_CaptureSource)
             WebCamHost.Fill = _VideoBrush
+
+            ButtonCapture.Focus()
         End If
 
         If (CaptureDeviceConfiguration.AllowedDeviceAccess) Then
