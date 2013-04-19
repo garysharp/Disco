@@ -140,6 +140,9 @@ namespace Disco.ClientBootstrapper
             string clientSourceLocation = Path.Combine(tempWorkingDirectory, "PreparationClient.zip");
             using (var webClient = new WebClient())
             {
+                // Don't use a proxy when downloading the Client
+                webClient.Proxy = new WebProxy();
+
                 webClient.DownloadFile("http://disco:9292/Services/Client/PreparationClient", clientSourceLocation);
             }
 
