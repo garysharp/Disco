@@ -79,9 +79,11 @@ namespace Disco.Data.Repository.Monitor
                 var entryState = stateManager.GetObjectStateEntry(monitorEvent.Entity);
                 monitorEvent.EntityKey = entryState.EntityKey.EntityKeyValues.Select(kv => kv.Value).ToArray();
             }
+
+            monitorEvent.afterCommit = true;
         }
 
-        internal static RepositoryMonitorEvent EventFromEntryState(DiscoDataContext dbContext, DbEntityEntry dbEntryState, ObjectStateEntry entryState)
+        internal static RepositoryMonitorEvent EventFromEntryState(DiscoDataContext dbContext, DbEntityEntry dbEntryState, ObjectStateEntry objectEntryState)
         {
             RepositoryMonitorEventType eventType;
             string[] modifiedProperties = null;
@@ -113,14 +115,16 @@ namespace Disco.Data.Repository.Monitor
 
             // Only pass modified properties on Modified Event (Ignore Added/Deleted)
             if (eventType == RepositoryMonitorEventType.Modified)
-                modifiedProperties = entryState.GetModifiedProperties().ToArray();
+                modifiedProperties = objectEntryState.GetModifiedProperties().ToArray();
 
             // Don't pass entity key when entity newly added
             if (eventType != RepositoryMonitorEventType.Added)
-                entityKey = entryState.EntityKey.EntityKeyValues.Select(kv => kv.Value).ToArray();
+                entityKey = objectEntryState.EntityKey.EntityKeyValues.Select(kv => kv.Value).ToArray();
 
             return new RepositoryMonitorEvent()
             {
+                dbEntityState = dbEntryState,
+                objectEntryState = objectEntryState,
                 dbContext = dbContext,
                 EventType = eventType,
                 Entity = dbEntryState.Entity,
