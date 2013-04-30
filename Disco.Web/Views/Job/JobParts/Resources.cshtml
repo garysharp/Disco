@@ -20,6 +20,169 @@
                 <textarea class="commentInput" accesskey="l"></textarea>
                 <span class="action post commentInputPost"></span>
             </div>
+<<<<<<< HEAD
+=======
+            <script type="text/javascript">
+                $(function () {
+                    var jobId = parseInt('@(Model.Job.Id)');
+                    $Comments = $('#Comments');
+                    $CommentOutput = $Comments.find('.commentOutput');
+                    $CommentOutputContainer = $Comments.find('.commentOutputContainer');
+                    $CommentInput = $Comments.find('textarea.commentInput');
+
+                    window.setTimeout(function () {
+                        $CommentOutput[0].scrollTop = $CommentOutput[0].scrollHeight; // Scroll to Bottom
+                    }, 0);
+                    $('#jobDetailTabs').on('tabsactivate', function (event, ui) {
+                        if (ui.newPanel && ui.newPanel.is('#jobDetailTab-Resources')) {
+                            $CommentOutput[0].scrollTop = $CommentOutput[0].scrollHeight; // Scroll to Bottom
+                        }
+                    });
+
+                    $Comments.find('.commentInputPost').click(postComment);
+                    $CommentInput.keypress(function (e) {
+                        if (e.which == 13 && !e.shiftKey) {
+                            postComment();
+                            return false;
+                        }
+                    });
+                    $CommentOutput.find('span.remove').click(removePost);
+
+                    $dialogRemoveLog = $('#dialogRemoveLog');
+                    $dialogRemoveLog.dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        autoOpen: false
+                    });
+
+                    function postComment() {
+                        var comment = $CommentInput.val();
+                        if (comment != '') {
+                            var data = { comment: comment }
+                            $.ajax({
+                                url: '@Url.Action(MVC.API.Job.CommentPost(Model.Job.Id, null))',
+                                dataType: 'json',
+                                data: data,
+                                success: function (d) {
+                                    if (d.Result == 'OK') {
+                                        // Should be added via Repository Notifications
+                                        // addComment(d.Comment, false);
+                                        $CommentInput.val('').attr('disabled', false).focus();
+                                    } else {
+                                        alert('Unable to post comment: ' + d.Result);
+                                        $CommentInput.attr('disabled', false);
+                                    }
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    alert('Unable to post comment: ' + textStatus);
+                                    $CommentInput.attr('disabled', false);
+                                }
+                            });
+                        }
+                    }
+                    function removePost() {
+                        $this = $(this);
+                        var data = { id: $this.closest('div').attr('data-logid') };
+
+                        $dialogRemoveLog.dialog("enable");
+                        $dialogRemoveLog.dialog('option', 'buttons', {
+                            "Remove": function () {
+                                $dialogRemoveLog.dialog("disable");
+                                $dialogRemoveLog.dialog("option", "buttons", null);
+                                $.ajax({
+                                    url: '@Url.Action(MVC.API.Job.CommentRemove())',
+                                    dataType: 'json',
+                                    data: data,
+                                    success: function (d) {
+                                        if (d == 'OK') {
+                                            // Should be removed via Repository Notifications
+                                            //$this.closest('div').slideUp(300).delay(300).queue(function () {
+                                            //    $(this).remove();
+                                            //});
+                                        } else {
+                                            alert('Unable to remove comment: ' + d);
+                                        }
+                                        $dialogRemoveLog.dialog("close");
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        alert('Unable to remove comment: ' + textStatus);
+                                        $dialogRemoveLog.dialog("close");
+                                    }
+                                });
+                            },
+                            "Cancel": function () {
+                                $dialogRemoveLog.dialog("close");
+                            }
+                        });
+
+                        $dialogRemoveLog.dialog('open');
+
+                        return false;
+                    }
+                    function loadLiveComment(id) {
+                        $.ajax({
+                            url: '@Url.Action(MVC.API.Job.Comment())',
+                            dataType: 'json',
+                            data: { id: id },
+                            success: function (d) {
+                                if (d && d.JobId == jobId) {
+                                    addComment(d, false);
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert('Unable to load live comment ' + id + ': ' + textStatus);
+                            }
+                        });
+                    }
+                    function addComment(c, quick) {
+                        var e = $('<div><span class="author" /><span class="remove" /><span class="timestamp" /><span class="comment" /></div>');
+                        e.attr('data-logid', c.Id);
+                        e.find('.author').text(c.Author);
+                        e.find('.timestamp').text(c.TimestampFuzzy).attr('title', c.TimestampFull);
+                        e.find('.remove').click(removePost);
+                        var eComment = e.find('.comment').text(c.Comments);
+                        var commentHtml = eComment.text().replace(/\r\n|\r|\n/g, '<br />');
+                        commentHtml = commentHtml.replace(/\#(\d+)/g, '<a href="@Url.Action(MVC.Job.Show(null))?id=$1">#$1</a>');
+                        eComment.html(commentHtml);
+
+                        $CommentOutput.append(e);
+
+                        if (!quick) {
+                            e.animate({ backgroundColor: '#ffff99' }, 500, function () {
+                                e.animate({ backgroundColor: '#f4f4f4' }, 500);
+                            });
+                            $CommentOutput.animate({ scrollTop: $CommentOutput[0].scrollHeight }, 250)
+                        }
+                    }
+
+                    // Sign up for Live Events
+                    function liveMessageRecieved(d) {
+                        if (d) {
+                            switch (d.EventType) {
+                                case 0: // Added
+                                    loadLiveComment(d.EntityKey[0]);
+                                    break;
+                                case 1: // Removed
+                                    $CommentOutput.children('div[data-logid="' + d.EntityKey[0] + '"]').slideUp(300).delay(300).queue(function () {
+                                        $(this).remove();
+                                    });
+                                    break;
+                            }
+                        }
+                    }
+                    var liveMessagesConnection = $.connection('@(Url.Content("~/API/Repository/Notifications"))')
+                    liveMessagesConnection.received(liveMessageRecieved);
+                    liveMessagesConnection.error(function (e) {
+                        alert('Error: ' + JSON.stringify(e));
+                    });
+                    liveMessagesConnection.start(function () {
+                        liveMessagesConnection.send('/addToGroups:JobLog');
+                    });
+
+                });
+            </script>
+>>>>>>> origin/Repository-Monitor
         </td>
         <td id="Attachments">
             <div class="attachmentOutput">

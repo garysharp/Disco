@@ -31,5 +31,10 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
+<<<<<<< HEAD
 [assembly: AssemblyVersion("1.2.0430.1219")]
 [assembly: AssemblyFileVersion("1.2.0430.1219")]
+=======
+[assembly: AssemblyVersion("1.2.0411.1608")]
+[assembly: AssemblyFileVersion("1.2.0411.1608")]
+>>>>>>> origin/Repository-Monitor
