@@ -24,7 +24,7 @@ Partial Public Class WebCam
             Dim format = (From f In _CaptureSource.VideoCaptureDevice.SupportedFormats Where f.PixelHeight <= 720 And f.Stride = 0
                           Order By (f.PixelHeight * f.PixelWidth) Descending Order By f.FramesPerSecond).FirstOrDefault()
 
-            TextBlockWebCamFormat.Text = String.Format("{0}x{1} at {2}fps", format.PixelWidth, format.PixelHeight, format.FramesPerSecond)
+            TextBlockWebCamFormat.Text = String.Format("{0} - {1}x{2} at {3}fps", _CaptureSource.VideoCaptureDevice.FriendlyName, format.PixelWidth, format.PixelHeight, format.FramesPerSecond)
 
             _CaptureSource.VideoCaptureDevice.DesiredFormat = format
 
