@@ -17,7 +17,7 @@ namespace Disco.BI.Extensions
             {
                 using (Bitmap inputBitmap = new Bitmap(ImageStream))
                 {
-                    using (Image outputBitmap = inputBitmap.ResizeImage(255, 255))
+                    using (Image outputBitmap = inputBitmap.ResizeImage(256, 256))
                     {
                         using (MemoryStream ms = new MemoryStream())
                         {

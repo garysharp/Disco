@@ -145,7 +145,7 @@ namespace Disco.Web.Areas.API.Controllers
                     // DataStore Failed - Use Generic Images
                     if (m.ModelType != null)
                     {
-                        var modelTypePath = Server.MapPath(string.Format("~/Content/Images/DeviceTypes/{0}.png", m.ModelType));
+                        var modelTypePath = Server.MapPath(string.Format("~/ClientSource/Style/Images/DeviceTypes/{0}.png", m.ModelType));
                         if (System.IO.File.Exists(modelTypePath))
                         {
                             return File(modelTypePath, "image/png");

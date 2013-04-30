@@ -265,7 +265,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (System.IO.File.Exists(filename))
                 return File(filename, "image/png");
             else
-                return File("~/Content/Images/Status/fileBroken256.png", "image/png");
+                return File("~/ClientSource/Style/Images/Status/fileBroken256.png", "image/png");
         }
 
         public virtual ActionResult ImporterUndetectedFiles()
