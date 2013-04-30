@@ -97,22 +97,50 @@
     <Compile Include="Repository\User\UserAttachment.cs" />
     <Compile Include="Repository\User\UserDetail.cs" />
     <Compile Include="UI\BaseUIModel.cs" />
+    <Compile Include="UI\Config\DeviceBatch\ConfigDeviceBatchCreateModel.cs" />
+    <Compile Include="UI\Config\DeviceBatch\ConfigDeviceBatchIndexModel.cs" />
+    <Compile Include="UI\Config\DeviceBatch\ConfigDeviceBatchIndexModelItem.cs" />
+    <Compile Include="UI\Config\DeviceBatch\ConfigDeviceBatchShowModel.cs" />
+    <Compile Include="UI\Config\DeviceBatch\ConfigDeviceBatchTimelineModel.cs" />
+    <Compile Include="UI\Config\DeviceModel\ConfigDeviceModelIndexModel.cs" />
+    <Compile Include="UI\Config\DeviceModel\ConfigDeviceModelIndexModelItem.cs" />
+    <Compile Include="UI\Config\DeviceModel\ConfigDeviceModelShowModelComponents.cs" />
+    <Compile Include="UI\Config\DeviceModel\ConfigDeviceModelShowModel.cs" />
+    <Compile Include="UI\Config\DeviceProfile\ConfigDeviceProfileCreateModel.cs" />
+    <Compile Include="UI\Config\DeviceProfile\ConfigDeviceProfileDefaultsModel.cs" />
+    <Compile Include="UI\Config\DeviceProfile\ConfigDeviceProfileIndexModel.cs" />
+    <Compile Include="UI\Config\DeviceProfile\ConfigDeviceProfileIndexModelItem.cs" />
+    <Compile Include="UI\Config\DeviceProfile\ConfigDeviceProfileShowModel.cs" />
+    <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateCreateModel.cs" />
+    <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateExpressionBrowserModel.cs" />
+    <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateImportStatusModel.cs" />
+    <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateIndexModel.cs" />
+    <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateShowModel.cs" />
+    <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateUndetectedPagesModel.cs" />
+    <Compile Include="UI\Config\Enrolment\ConfigEnrolmentIndexModel.cs" />
+    <Compile Include="UI\Config\Enrolment\ConfigEnrolmentStatusModel.cs" />
+    <Compile Include="UI\Config\Logging\ConfigLoggingIndexModel.cs" />
+    <Compile Include="UI\Config\Logging\ConfigLoggingTaskStatusModel.cs" />
+    <Compile Include="UI\Config\Organisation\ConfigOrganisationIndexModel.cs" />
+    <Compile Include="UI\Device\DeviceAddOfflineModel.cs" />
     <Compile Include="UI\Device\DeviceIndexModel.cs" />
     <Compile Include="UI\Device\DeviceShowModel.cs" />
     <Compile Include="UI\Job\JobCreateModel.cs" />
     <Compile Include="UI\Job\JobIndexModel.cs" />
     <Compile Include="UI\Job\JobListModel.cs" />
     <Compile Include="UI\Job\JobShowModel.cs" />
+    <Compile Include="UI\Search\SearchQueryModel.cs" />
     <Compile Include="UI\User\UserIndexModel.cs" />
     <Compile Include="UI\User\UserShowModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" />
+      <UserProperties BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

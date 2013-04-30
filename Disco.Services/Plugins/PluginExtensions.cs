@@ -146,9 +146,13 @@ namespace Disco.Services.Plugins
         }
         public static HtmlString DiscoPluginConfigureUrl<T>(this WebViewPage<T> ViewPage, PluginManifest manifest)
         {
+            return new HtmlString(ViewPage.ViewContext.RequestContext.DiscoPluginConfigureUrl(manifest));
+        }
+        public static string DiscoPluginConfigureUrl(this RequestContext RequestContext, PluginManifest manifest)
+        {
             var routeValues = new RouteValueDictionary(new { PluginId = manifest.Id });
-            string pluginActionUrl = UrlHelper.GenerateUrl("Config_Plugins_Configure", null, null, routeValues, RouteTable.Routes, ViewPage.ViewContext.RequestContext, false);
-            return new HtmlString(pluginActionUrl);
+            string pluginActionUrl = UrlHelper.GenerateUrl("Config_Plugins_Configure", null, null, routeValues, RouteTable.Routes, RequestContext, false);
+            return pluginActionUrl;
         }
         public static MvcForm DiscoPluginActionBeginForm<T>(this WebViewPage<T> ViewPage, string PluginAction, FormMethod method, IDictionary<string, object> htmlAttributes)
         {
@@ -203,7 +207,42 @@ namespace Disco.Services.Plugins
         }
 
 
+        public static void DiscoPluginRegisterStylesheet<T>(this WebViewPage<T> ViewPage, string Resource)
+        {
+            if (string.IsNullOrEmpty(Resource))
+                throw new ArgumentNullException("Resource");
 
+            // Find Plugin
+            var pageType = ViewPage.GetType();
+            var pageAssembly = pageType.Assembly;
+            var manifest = Plugins.GetPlugin(pageAssembly);
+
+            ViewPage.DiscoPluginRegisterStylesheet(Resource, manifest);
+        }
+        public static void DiscoPluginRegisterStylesheet<T>(this WebViewPage<T> ViewPage, string Resource, PluginManifest manifest)
+        {
+            ViewPage.ViewContext.RequestContext.DiscoPluginRegisterStylesheet(Resource, manifest);
+        }
+        public static void DiscoPluginRegisterStylesheet(this RequestContext RequestContext, string Resource, PluginManifest manifest)
+        {
+            var resourcePath = manifest.WebResourcePath(Resource);
+
+            var routeValues = new RouteValueDictionary(new { PluginId = manifest.Id, res = Resource });
+            string pluginResourceUrl = UrlHelper.GenerateUrl("Plugin_Resources", null, null, routeValues, RouteTable.Routes, RequestContext, false);
+
+            pluginResourceUrl += string.Format("?v={0}", resourcePath.Item2);
+
+            HtmlString pluginResourceUrlHtml = new HtmlString(pluginResourceUrl);
+
+            var deferredBundles = RequestContext.HttpContext.Items["Bundles.UIExtensionCss"] as List<HtmlString>;
+            if (deferredBundles == null)
+            {
+                deferredBundles = new List<HtmlString>();
+                HttpContext.Current.Items["Bundles.UIExtensionCss"] = deferredBundles;
+            }
+            if (!deferredBundles.Contains(pluginResourceUrlHtml))
+                deferredBundles.Add(pluginResourceUrlHtml);
+        }
 
         #endregion
     }

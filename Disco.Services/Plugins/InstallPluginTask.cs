@@ -140,7 +140,8 @@ namespace Disco.Services.Plugins
                             Plugins.AddPlugin(packageManifest);
 
                             PluginsLog.LogInstalled(packageManifest);
-                            this.Status.Finished("Plugin Installation Completed", string.Format("/Config/Plugins/{0}", System.Web.HttpUtility.UrlEncode(packageManifest.Id)));
+                            this.Status.SetFinishedUrl(string.Format("/Config/Plugins/{0}", System.Web.HttpUtility.UrlEncode(packageManifest.Id)));
+                            this.Status.UpdateStatus(100, "Plugin Installation Completed");
                         }
                     }
                 }

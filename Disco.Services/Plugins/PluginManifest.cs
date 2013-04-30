@@ -125,6 +125,62 @@ namespace Disco.Services.Plugins
 
             return manifest;
         }
+
+        private static Lazy<IReadOnlyCollection<string>> pluginExcludedAssemblies = new Lazy<IReadOnlyCollection<string>>(() =>
+        {
+            return new List<string>()
+            {
+                "BitMiracle.LibTiff.NET",
+                "C5",
+                "Common.Logging",
+                "DiffieHellman",
+                "Disco.BI",
+                "Disco.Data",
+                "Disco.Models",
+                "Disco.Services",
+                "Disco.Web",
+                "Disco.Web.Extensions",
+                "DotNet.Highcharts",
+                "EntityFramework",
+                "itextsharp",
+                "Microsoft.Web.Infrastructure",
+                "Newtonsoft.Json",
+                "Org.Mentalis.Security",
+                "Quartz",
+                "RazorGenerator.Mvc",
+                "SignalR",
+                "SignalR.Hosting.AspNet",
+                "SignalR.Hosting.Common",
+                "Spring.Core",
+                "System.Data.SqlServerCe",
+                "System.Data.SqlServerCe.Entity",
+                "System.Net.Http.Formatting",
+                "System.Reactive.Core",
+                "System.Reactive.Interfaces",
+                "System.Reactive.Linq",
+                "System.Reactive.PlatformServices",
+                "System.Web.Helpers",
+                "System.Web.Http",
+                "System.Web.Http.WebHost",
+                "System.Web.Mvc",
+                "System.Web.Razor",
+                "System.Web.WebPages.Deployment",
+                "System.Web.WebPages",
+                "System.Web.WebPages.Razor",
+                "T4MVCExtensions",
+                "Tamir.SharpSSH",
+                "WebActivatorEx",
+                "zxing"
+            };
+        });
+        public static IReadOnlyCollection<string> PluginExcludedAssemblies
+        {
+            get
+            {
+                return pluginExcludedAssemblies.Value;
+            }
+        }
+
         /// <summary>
         /// Uses reflection to build a Plugin Manifest
         /// </summary>
@@ -173,16 +229,21 @@ namespace Disco.Services.Plugins
                                         select type).FirstOrDefault();
 
             Dictionary<string, string> pluginAssemblyReferences = new Dictionary<string, string>();
+
             foreach (string referenceFilename in Directory.EnumerateFiles(pluginLocation, "*.dll", SearchOption.TopDirectoryOnly))
             {
                 if (!referenceFilename.Equals(assembly.Location, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    try
+                    // Ignore Excluded Assemblies
+                    if (!PluginExcludedAssemblies.Contains(Path.GetFileNameWithoutExtension(referenceFilename)))
                     {
-                        Assembly pluginRefAssembly = Assembly.ReflectionOnlyLoadFrom(referenceFilename);
-                        pluginAssemblyReferences[pluginRefAssembly.FullName] = referenceFilename.Substring(pluginLocation.Length + 1);
+                        try
+                        {
+                            Assembly pluginRefAssembly = Assembly.ReflectionOnlyLoadFrom(referenceFilename);
+                            pluginAssemblyReferences[pluginRefAssembly.FullName] = referenceFilename.Substring(pluginLocation.Length + 1);
+                        }
+                        catch (Exception) { } // Ignore Load Exceptions
                     }
-                    catch (Exception) { } // Ignore Load Exceptions
                 }
             }
 

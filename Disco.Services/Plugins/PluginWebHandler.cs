@@ -22,7 +22,6 @@ namespace Disco.Services.Plugins
             // Nothing in Base Class
         }
 
-
         #region Action Results
 
         #region Compiled View
@@ -138,6 +137,11 @@ namespace Disco.Services.Plugins
                 throw new ArgumentNullException("url");
 
             return new RedirectResult(url, true);
+        }
+        public ActionResult RedirectToPluginConfiguration()
+        {
+            var routeValues = new RouteValueDictionary(new { PluginId = this.Manifest.Id });
+            return new RedirectToRouteResult("Config_Plugins_Configure", routeValues);
         }
         public ActionResult RedirectToPluginAction(string PluginAction)
         {

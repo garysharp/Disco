@@ -64,7 +64,7 @@ namespace Disco.Services.Plugins.CommunityInterop
             webRequest = (HttpWebRequest)HttpWebRequest.Create(PluginLibraryUpdateUrl());
             webRequest.KeepAlive = false;
 
-            webRequest.ContentType = "application/json";
+            webRequest.ContentType = "application/xml";
             webRequest.Method = WebRequestMethods.Http.Post;
             webRequest.UserAgent = string.Format("Disco/{0} (PluginLibrary)", DiscoBIVersion);
 
