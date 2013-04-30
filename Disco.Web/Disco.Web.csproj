@@ -176,6 +176,11 @@
     </Compile>
     <Compile Include="Areas\API\Controllers\PluginController.cs" />
     <Compile Include="Areas\Config\Models\Config\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceBatch\CreateModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceBatch\TimelineModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceProfile\CreateModel.cs" />
+    <Compile Include="Areas\Config\Models\DocumentTemplate\ImportStatusModel.cs" />
+    <Compile Include="Areas\Config\Models\Enrolment\StatusModel.cs" />
     <Compile Include="Areas\Config\Models\Plugins\InstallModel.cs" />
     <Compile Include="Areas\Config\Views\Plugins\Install.generated.cs">
       <AutoGen>True</AutoGen>
@@ -240,15 +245,15 @@
     <Compile Include="Areas\Config\Controllers\SystemConfigController.cs" />
     <Compile Include="Areas\Config\Models\DeviceBatch\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceBatch\ShowModel.cs" />
-    <Compile Include="Areas\Config\Models\DeviceBatch\_IndexModelDeviceBatch.cs" />
-    <Compile Include="Areas\Config\Models\DeviceModel\DeviceComponentsModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceBatch\_IndexModelItem.cs" />
+    <Compile Include="Areas\Config\Models\DeviceModel\ComponentsModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceModel\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceModel\ShowModel.cs" />
-    <Compile Include="Areas\Config\Models\DeviceModel\_IndexModelDeviceModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceModel\_IndexModelItem.cs" />
     <Compile Include="Areas\Config\Models\DeviceProfile\DefaultsModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceProfile\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceProfile\ShowModel.cs" />
-    <Compile Include="Areas\Config\Models\DeviceProfile\_IndexModelDeviceProfile.cs" />
+    <Compile Include="Areas\Config\Models\DeviceProfile\_IndexModelItem.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\CreateModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\ExpressionBrowserModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\IndexModel.cs" />

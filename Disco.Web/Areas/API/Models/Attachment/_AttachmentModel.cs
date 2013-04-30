@@ -9,6 +9,7 @@ namespace Disco.Web.Areas.API.Models.Attachment
 {
     public class _AttachmentModel
     {
+        public string ParentId { get; set; }
         public int Id { get; set; }
         public string Author { get; set; }
         public DateTime Timestamp { get; set; }
@@ -42,6 +43,7 @@ namespace Disco.Web.Areas.API.Models.Attachment
         {
             return new _AttachmentModel
             {
+                ParentId = ua.UserId,
                 Id = ua.Id,
                 Author = ua.TechUser.ToString(),
                 Timestamp = ua.Timestamp,
@@ -54,6 +56,7 @@ namespace Disco.Web.Areas.API.Models.Attachment
         {
             return new _AttachmentModel
             {
+                ParentId = ja.JobId.ToString(),
                 Id = ja.Id,
                 Author = ja.TechUser.ToString(),
                 Timestamp = ja.Timestamp,
@@ -66,6 +69,7 @@ namespace Disco.Web.Areas.API.Models.Attachment
         {
             return new _AttachmentModel
             {
+                ParentId = da.DeviceSerialNumber,
                 Id = da.Id,
                 Author = da.TechUser.ToString(),
                 Timestamp = da.Timestamp,
