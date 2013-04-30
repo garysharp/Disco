@@ -23,17 +23,7 @@ namespace Disco.Data.Repository.Monitor
         internal static RepositoryMonitorEvent[] BeforeSaveChanges(DiscoDataContext dbContext)
         {
             var contextStateManager = ((IObjectContextAdapter)dbContext).ObjectContext.ObjectStateManager;
-<<<<<<< HEAD
-            //var changes = contextStateManager.GetObjectStateEntries(System.Data.EntityState.Added).Concat(contextStateManager.GetObjectStateEntries(System.Data.EntityState.Deleted)).Concat(contextStateManager.GetObjectStateEntries(System.Data.EntityState.Modified));
 
-            dbContext.ChangeTracker.DetectChanges();
-
-            var events = dbContext.ChangeTracker.Entries().Where(e => e.State != System.Data.EntityState.Unchanged && e.State != System.Data.EntityState.Detached).Select(entryState =>
-            {
-                var monitorEvent = EventFromEntryState(dbContext, entryState, contextStateManager.GetObjectStateEntry(entryState.Entity));
-                // Push to Stream
-                streamBefore.OnNext(monitorEvent);
-=======
             var changes = contextStateManager.GetObjectStateEntries(System.Data.EntityState.Added).Concat(contextStateManager.GetObjectStateEntries(System.Data.EntityState.Deleted)).Concat(contextStateManager.GetObjectStateEntries(System.Data.EntityState.Modified));
 
             var events = changes.Select(entryState =>
@@ -43,7 +33,6 @@ namespace Disco.Data.Repository.Monitor
                 // Push to Stream
                 streamBefore.OnNext(monitorEvent);
 
->>>>>>> origin/Repository-Monitor
                 return monitorEvent;
             }).ToArray();
 
@@ -91,28 +80,16 @@ namespace Disco.Data.Repository.Monitor
                 var entryState = stateManager.GetObjectStateEntry(monitorEvent.Entity);
                 monitorEvent.EntityKey = entryState.EntityKey.EntityKeyValues.Select(kv => kv.Value).ToArray();
             }
-<<<<<<< HEAD
-
-            monitorEvent.afterCommit = true;
-        }
-
-        internal static RepositoryMonitorEvent EventFromEntryState(DiscoDataContext dbContext, DbEntityEntry dbEntryState, ObjectStateEntry objectEntryState)
-=======
         }
 
         internal static RepositoryMonitorEvent EventFromEntryState(ObjectStateEntry entryState)
->>>>>>> origin/Repository-Monitor
         {
             RepositoryMonitorEventType eventType;
             string[] modifiedProperties = null;
             object[] entityKey = null;
             Type entityType;
 
-<<<<<<< HEAD
-            switch (dbEntryState.State)
-=======
             switch (entryState.State)
->>>>>>> origin/Repository-Monitor
             {
                 case System.Data.EntityState.Added:
                     eventType = RepositoryMonitorEventType.Added;
@@ -130,28 +107,6 @@ namespace Disco.Data.Repository.Monitor
                     eventType = RepositoryMonitorEventType.Unchanged;
                     break;
                 default:
-<<<<<<< HEAD
-                    throw new NotSupportedException(string.Format("Database Entry State not supported: {0}", dbEntryState.State.ToString()));
-            }
-
-            entityType = EntityTypeFromProxy(dbEntryState.Entity.GetType());
-
-            // Only pass modified properties on Modified Event (Ignore Added/Deleted)
-            if (eventType == RepositoryMonitorEventType.Modified)
-                modifiedProperties = objectEntryState.GetModifiedProperties().ToArray();
-
-            // Don't pass entity key when entity newly added
-            if (eventType != RepositoryMonitorEventType.Added)
-                entityKey = objectEntryState.EntityKey.EntityKeyValues.Select(kv => kv.Value).ToArray();
-
-            return new RepositoryMonitorEvent()
-            {
-                dbEntityState = dbEntryState,
-                objectEntryState = objectEntryState,
-                dbContext = dbContext,
-                EventType = eventType,
-                Entity = dbEntryState.Entity,
-=======
                     throw new NotSupportedException(string.Format("Database Entry State not supported: {0}", entryState.State.ToString()));
             }
 
@@ -169,7 +124,6 @@ namespace Disco.Data.Repository.Monitor
             {
                 EventType = eventType,
                 Entity = entryState.Entity,
->>>>>>> origin/Repository-Monitor
                 EntityKey = entityKey,
                 EntityType = entityType,
                 ModifiedProperties = modifiedProperties

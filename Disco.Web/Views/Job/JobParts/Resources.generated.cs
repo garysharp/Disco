@@ -167,193 +167,7 @@ WriteLiteral("></textarea>\r\n                <span");
 
 WriteLiteral(" class=\"action post commentInputPost\"");
 
-<<<<<<< HEAD
 WriteLiteral("></span>\r\n            </div>\r\n        </td>\r\n        <td");
-=======
-WriteLiteral("></span>\r\n            </div>\r\n            <script");
-
-WriteLiteral(" type=\"text/javascript\"");
-
-WriteLiteral(">\r\n                $(function () {\r\n                    var jobId = parseInt(\'");
-
-            
-            #line 25 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                      Write(Model.Job.Id);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\');\r\n                    $Comments = $(\'#Comments\');\r\n                    $Commen" +
-"tOutput = $Comments.find(\'.commentOutput\');\r\n                    $CommentOutputC" +
-"ontainer = $Comments.find(\'.commentOutputContainer\');\r\n                    $Comm" +
-"entInput = $Comments.find(\'textarea.commentInput\');\r\n\r\n                    windo" +
-"w.setTimeout(function () {\r\n                        $CommentOutput[0].scrollTop " +
-"= $CommentOutput[0].scrollHeight; // Scroll to Bottom\r\n                    }, 0)" +
-";\r\n                    $(\'#jobDetailTabs\').on(\'tabsactivate\', function (event, u" +
-"i) {\r\n                        if (ui.newPanel && ui.newPanel.is(\'#jobDetailTab-R" +
-"esources\')) {\r\n                            $CommentOutput[0].scrollTop = $Commen" +
-"tOutput[0].scrollHeight; // Scroll to Bottom\r\n                        }\r\n       " +
-"             });\r\n\r\n                    $Comments.find(\'.commentInputPost\').clic" +
-"k(postComment);\r\n                    $CommentInput.keypress(function (e) {\r\n    " +
-"                    if (e.which == 13 && !e.shiftKey) {\r\n                       " +
-"     postComment();\r\n                            return false;\r\n                " +
-"        }\r\n                    });\r\n                    $CommentOutput.find(\'spa" +
-"n.remove\').click(removePost);\r\n\r\n                    $dialogRemoveLog = $(\'#dial" +
-"ogRemoveLog\');\r\n                    $dialogRemoveLog.dialog({\r\n                 " +
-"       resizable: false,\r\n                        height: 140,\r\n                " +
-"        modal: true,\r\n                        autoOpen: false\r\n                 " +
-"   });\r\n\r\n                    function postComment() {\r\n                        " +
-"var comment = $CommentInput.val();\r\n                        if (comment != \'\') {" +
-"\r\n                            var data = { comment: comment }\r\n                 " +
-"           $.ajax({\r\n                                url: \'");
-
-            
-            #line 62 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                 Write(Url.Action(MVC.API.Job.CommentPost(Model.Job.Id, null)));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\',\r\n                                dataType: \'json\',\r\n                          " +
-"      data: data,\r\n                                success: function (d) {\r\n    " +
-"                                if (d.Result == \'OK\') {\r\n                       " +
-"                 // Should be added via Repository Notifications\r\n              " +
-"                          // addComment(d.Comment, false);\r\n                    " +
-"                    $CommentInput.val(\'\').attr(\'disabled\', false).focus();\r\n    " +
-"                                } else {\r\n                                      " +
-"  alert(\'Unable to post comment: \' + d.Result);\r\n                               " +
-"         $CommentInput.attr(\'disabled\', false);\r\n                               " +
-"     }\r\n                                },\r\n                                erro" +
-"r: function (jqXHR, textStatus, errorThrown) {\r\n                                " +
-"    alert(\'Unable to post comment: \' + textStatus);\r\n                           " +
-"         $CommentInput.attr(\'disabled\', false);\r\n                               " +
-" }\r\n                            });\r\n                        }\r\n                " +
-"    }\r\n                    function removePost() {\r\n                        $thi" +
-"s = $(this);\r\n                        var data = { id: $this.closest(\'div\').attr" +
-"(\'data-logid\') };\r\n\r\n                        $dialogRemoveLog.dialog(\"enable\");\r" +
-"\n                        $dialogRemoveLog.dialog(\'option\', \'buttons\', {\r\n       " +
-"                     \"Remove\": function () {\r\n                                $d" +
-"ialogRemoveLog.dialog(\"disable\");\r\n                                $dialogRemove" +
-"Log.dialog(\"option\", \"buttons\", null);\r\n                                $.ajax({" +
-"\r\n                                    url: \'");
-
-            
-            #line 92 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                     Write(Url.Action(MVC.API.Job.CommentRemove()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\',\r\n                                    dataType: \'json\',\r\n                      " +
-"              data: data,\r\n                                    success: function" +
-" (d) {\r\n                                        if (d == \'OK\') {\r\n              " +
-"                              // Should be removed via Repository Notifications\r" +
-"\n                                            //$this.closest(\'div\').slideUp(300)" +
-".delay(300).queue(function () {\r\n                                            // " +
-"   $(this).remove();\r\n                                            //});\r\n       " +
-"                                 } else {\r\n                                     " +
-"       alert(\'Unable to remove comment: \' + d);\r\n                               " +
-"         }\r\n                                        $dialogRemoveLog.dialog(\"clo" +
-"se\");\r\n                                    },\r\n                                 " +
-"   error: function (jqXHR, textStatus, errorThrown) {\r\n                         " +
-"               alert(\'Unable to remove comment: \' + textStatus);\r\n              " +
-"                          $dialogRemoveLog.dialog(\"close\");\r\n                   " +
-"                 }\r\n                                });\r\n                       " +
-"     },\r\n                            \"Cancel\": function () {\r\n                  " +
-"              $dialogRemoveLog.dialog(\"close\");\r\n                            }\r\n" +
-"                        });\r\n\r\n                        $dialogRemoveLog.dialog(\'" +
-"open\');\r\n\r\n                        return false;\r\n                    }\r\n       " +
-"             function loadLiveComment(id) {\r\n                        $.ajax({\r\n " +
-"                           url: \'");
-
-            
-            #line 123 "..\..\Views\Job\JobParts\Resources.cshtml"
-                             Write(Url.Action(MVC.API.Job.Comment()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"',
-                            dataType: 'json',
-                            data: { id: id },
-                            success: function (d) {
-                                if (d && d.JobId == jobId) {
-                                    addComment(d, false);
-                                }
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                alert('Unable to load live comment ' + id + ': ' + textStatus);
-                            }
-                        });
-                    }
-                    function addComment(c, quick) {
-                        var e = $('<div><span class=""author"" /><span class=""remove"" /><span class=""timestamp"" /><span class=""comment"" /></div>');
-                        e.attr('data-logid', c.Id);
-                        e.find('.author').text(c.Author);
-                        e.find('.timestamp').text(c.TimestampFuzzy).attr('title', c.TimestampFull);
-                        e.find('.remove').click(removePost);
-                        var eComment = e.find('.comment').text(c.Comments);
-                        var commentHtml = eComment.text().replace(/\r\n|\r|\n/g, '<br />');
-                        commentHtml = commentHtml.replace(/\#(\d+)/g, '<a href=""");
-
-            
-            #line 144 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                           Write(Url.Action(MVC.Job.Show(null)));
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"?id=$1"">#$1</a>');
-                        eComment.html(commentHtml);
-
-                        $CommentOutput.append(e);
-
-                        if (!quick) {
-                            e.animate({ backgroundColor: '#ffff99' }, 500, function () {
-                                e.animate({ backgroundColor: '#f4f4f4' }, 500);
-                            });
-                            $CommentOutput.animate({ scrollTop: $CommentOutput[0].scrollHeight }, 250)
-                        }
-                    }
-
-                    // Sign up for Live Events
-                    function liveMessageRecieved(d) {
-                        if (d) {
-                            switch (d.EventType) {
-                                case 0: // Added
-                                    loadLiveComment(d.EntityKey[0]);
-                                    break;
-                                case 1: // Removed
-                                    $CommentOutput.children('div[data-logid=""' + d.EntityKey[0] + '""]').slideUp(300).delay(300).queue(function () {
-                                        $(this).remove();
-                                    });
-                                    break;
-                            }
-                        }
-                    }
-                    var liveMessagesConnection = $.connection('");
-
-            
-            #line 172 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                           Write(Url.Content("~/API/Repository/Notifications"));
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"')
-                    liveMessagesConnection.received(liveMessageRecieved);
-                    liveMessagesConnection.error(function (e) {
-                        alert('Error: ' + JSON.stringify(e));
-                    });
-                    liveMessagesConnection.start(function () {
-                        liveMessagesConnection.send('/addToGroups:JobLog');
-                    });
-
-                });
-            </script>
-        </td>
-        <td");
->>>>>>> origin/Repository-Monitor
 
 WriteLiteral(" id=\"Attachments\"");
 
@@ -364,21 +178,13 @@ WriteLiteral(" class=\"attachmentOutput\"");
 WriteLiteral(">\r\n");
 
             
-<<<<<<< HEAD
             #line 26 "..\..\Views\Job\JobParts\Resources.cshtml"
-=======
-            #line 186 "..\..\Views\Job\JobParts\Resources.cshtml"
->>>>>>> origin/Repository-Monitor
                 
             
             #line default
             #line hidden
             
-<<<<<<< HEAD
             #line 26 "..\..\Views\Job\JobParts\Resources.cshtml"
-=======
-            #line 186 "..\..\Views\Job\JobParts\Resources.cshtml"
->>>>>>> origin/Repository-Monitor
                  foreach (var ja in Model.Job.JobAttachments)
                 {
 
@@ -387,7 +193,6 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                    <a");
 
-<<<<<<< HEAD
 WriteAttribute("href", Tuple.Create(" href=\"", 1245), Tuple.Create("\"", 1302)
             
             #line 28 "..\..\Views\Job\JobParts\Resources.cshtml"
@@ -396,26 +201,12 @@ WriteAttribute("href", Tuple.Create(" href=\"", 1245), Tuple.Create("\"", 1302)
             #line default
             #line hidden
 , 1252), false)
-=======
-WriteAttribute("href", Tuple.Create(" href=\"", 9905), Tuple.Create("\"", 9962)
-            
-            #line 188 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 9912), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
-            
-            #line default
-            #line hidden
-, 9912), false)
->>>>>>> origin/Repository-Monitor
 );
 
 WriteLiteral(" data-attachmentid=\"");
 
             
-<<<<<<< HEAD
             #line 28 "..\..\Views\Job\JobParts\Resources.cshtml"
-=======
-            #line 188 "..\..\Views\Job\JobParts\Resources.cshtml"
->>>>>>> origin/Repository-Monitor
                                                                                                Write(ja.Id);
 
             
@@ -426,11 +217,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-mimetype=\"");
 
             
-<<<<<<< HEAD
             #line 28 "..\..\Views\Job\JobParts\Resources.cshtml"
-=======
-            #line 188 "..\..\Views\Job\JobParts\Resources.cshtml"
->>>>>>> origin/Repository-Monitor
                                                                                                                       Write(ja.MimeType);
 
             
@@ -442,7 +229,6 @@ WriteLiteral(">\r\n                        <span");
 
 WriteLiteral(" class=\"icon\"");
 
-<<<<<<< HEAD
 WriteAttribute("title", Tuple.Create(" title=\"", 1404), Tuple.Create("\"", 1424)
             
             #line 29 "..\..\Views\Job\JobParts\Resources.cshtml"
@@ -451,23 +237,12 @@ WriteAttribute("title", Tuple.Create(" title=\"", 1404), Tuple.Create("\"", 1424
             #line default
             #line hidden
 , 1412), false)
-=======
-WriteAttribute("title", Tuple.Create(" title=\"", 10064), Tuple.Create("\"", 10084)
-            
-            #line 189 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 10072), Tuple.Create<System.Object, System.Int32>(ja.Filename
-            
-            #line default
-            #line hidden
-, 10072), false)
->>>>>>> origin/Repository-Monitor
 );
 
 WriteLiteral(">\r\n                            <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-<<<<<<< HEAD
 WriteAttribute("src", Tuple.Create(" src=\"", 1487), Tuple.Create("\"", 1546)
             
             #line 30 "..\..\Views\Job\JobParts\Resources.cshtml"
@@ -476,23 +251,12 @@ WriteAttribute("src", Tuple.Create(" src=\"", 1487), Tuple.Create("\"", 1546)
             #line default
             #line hidden
 , 1493), false)
-=======
-WriteAttribute("src", Tuple.Create(" src=\"", 10147), Tuple.Create("\"", 10206)
-            
-            #line 190 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 10153), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
-            
-            #line default
-            #line hidden
-, 10153), false)
->>>>>>> origin/Repository-Monitor
 );
 
 WriteLiteral(" /></span>\r\n                        <span");
 
 WriteLiteral(" class=\"comments\"");
 
-<<<<<<< HEAD
 WriteAttribute("title", Tuple.Create(" title=\"", 1605), Tuple.Create("\"", 1625)
             
             #line 31 "..\..\Views\Job\JobParts\Resources.cshtml"
@@ -501,58 +265,32 @@ WriteAttribute("title", Tuple.Create(" title=\"", 1605), Tuple.Create("\"", 1625
             #line default
             #line hidden
 , 1613), false)
-=======
-WriteAttribute("title", Tuple.Create(" title=\"", 10265), Tuple.Create("\"", 10285)
-            
-            #line 191 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 10273), Tuple.Create<System.Object, System.Int32>(ja.Comments
-            
-            #line default
-            #line hidden
-, 10273), false)
->>>>>>> origin/Repository-Monitor
 );
 
 WriteLiteral(">\r\n");
 
             
-<<<<<<< HEAD
             #line 32 "..\..\Views\Job\JobParts\Resources.cshtml"
-=======
-            #line 192 "..\..\Views\Job\JobParts\Resources.cshtml"
->>>>>>> origin/Repository-Monitor
                             
             
             #line default
             #line hidden
             
-<<<<<<< HEAD
             #line 32 "..\..\Views\Job\JobParts\Resources.cshtml"
-=======
-            #line 192 "..\..\Views\Job\JobParts\Resources.cshtml"
->>>>>>> origin/Repository-Monitor
                               if (!string.IsNullOrEmpty(ja.DocumentTemplateId))
                               { 
             
             #line default
             #line hidden
             
-<<<<<<< HEAD
             #line 33 "..\..\Views\Job\JobParts\Resources.cshtml"
-=======
-            #line 193 "..\..\Views\Job\JobParts\Resources.cshtml"
->>>>>>> origin/Repository-Monitor
                            Write(ja.DocumentTemplate.Description);
 
             
             #line default
             #line hidden
             
-<<<<<<< HEAD
             #line 33 "..\..\Views\Job\JobParts\Resources.cshtml"
-=======
-            #line 193 "..\..\Views\Job\JobParts\Resources.cshtml"
->>>>>>> origin/Repository-Monitor
                                                                 }
                               else
                               { 
@@ -560,22 +298,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-<<<<<<< HEAD
             #line 35 "..\..\Views\Job\JobParts\Resources.cshtml"
-=======
-            #line 195 "..\..\Views\Job\JobParts\Resources.cshtml"
->>>>>>> origin/Repository-Monitor
                            Write(ja.Comments);
 
             
             #line default
             #line hidden
             
-<<<<<<< HEAD
             #line 35 "..\..\Views\Job\JobParts\Resources.cshtml"
-=======
-            #line 195 "..\..\Views\Job\JobParts\Resources.cshtml"
->>>>>>> origin/Repository-Monitor
                                              }
             
             #line default
@@ -587,11 +317,7 @@ WriteLiteral(" class=\"author\"");
 WriteLiteral(">");
 
             
-<<<<<<< HEAD
             #line 36 "..\..\Views\Job\JobParts\Resources.cshtml"
-=======
-            #line 196 "..\..\Views\Job\JobParts\Resources.cshtml"
->>>>>>> origin/Repository-Monitor
                                                Write(ja.TechUser.ToString());
 
             
@@ -605,7 +331,6 @@ WriteLiteral("></span><span");
 
 WriteLiteral(" class=\"timestamp\"");
 
-<<<<<<< HEAD
 WriteAttribute("title", Tuple.Create(" title=\"", 1995), Tuple.Create("\"", 2033)
             
             #line 36 "..\..\Views\Job\JobParts\Resources.cshtml"
@@ -614,26 +339,12 @@ WriteAttribute("title", Tuple.Create(" title=\"", 1995), Tuple.Create("\"", 2033
             #line default
             #line hidden
 , 2003), false)
-=======
-WriteAttribute("title", Tuple.Create(" title=\"", 10655), Tuple.Create("\"", 10693)
-            
-            #line 196 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                            , Tuple.Create(Tuple.Create("", 10663), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
-            
-            #line default
-            #line hidden
-, 10663), false)
->>>>>>> origin/Repository-Monitor
 );
 
 WriteLiteral(">");
 
             
-<<<<<<< HEAD
             #line 36 "..\..\Views\Job\JobParts\Resources.cshtml"
-=======
-            #line 196 "..\..\Views\Job\JobParts\Resources.cshtml"
->>>>>>> origin/Repository-Monitor
                                                                                                                                                                         Write(ja.Timestamp.ToFuzzy());
 
             
@@ -642,11 +353,7 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n                    </a>   \r\n");
 
             
-<<<<<<< HEAD
             #line 38 "..\..\Views\Job\JobParts\Resources.cshtml"
-=======
-            #line 198 "..\..\Views\Job\JobParts\Resources.cshtml"
->>>>>>> origin/Repository-Monitor
                 }
 
             
@@ -703,13 +410,8 @@ WriteLiteral("></span>\r\n        Are you sure?\r\n    </p>\r\n</div>\r\n<script
 "{\r\n        var jobId = parseInt(\'");
 
             
-<<<<<<< HEAD
             #line 70 "..\..\Views\Job\JobParts\Resources.cshtml"
                           Write(Model.Job.Id);
-=======
-            #line 241 "..\..\Views\Job\JobParts\Resources.cshtml"
-                         Write(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap);
->>>>>>> origin/Repository-Monitor
 
             
             #line default
@@ -756,13 +458,8 @@ WriteLiteral(@"');
                     url: '");
 
             
-<<<<<<< HEAD
             #line 109 "..\..\Views\Job\JobParts\Resources.cshtml"
                      Write(Url.Action(MVC.API.Job.CommentPost(Model.Job.Id, null)));
-=======
-            #line 253 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                   Write(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)));
->>>>>>> origin/Repository-Monitor
 
             
             #line default
@@ -800,13 +497,8 @@ WriteLiteral(@"',
                         url: '");
 
             
-<<<<<<< HEAD
             #line 139 "..\..\Views\Job\JobParts\Resources.cshtml"
                          Write(Url.Action(MVC.API.Job.CommentRemove()));
-=======
-            #line 276 "..\..\Views\Job\JobParts\Resources.cshtml"
-                             Write(Url.Action(MVC.API.Job.Attachment()));
->>>>>>> origin/Repository-Monitor
 
             
             #line default
@@ -845,13 +537,8 @@ WriteLiteral(@"',
                 url: '");
 
             
-<<<<<<< HEAD
             #line 170 "..\..\Views\Job\JobParts\Resources.cshtml"
                  Write(Url.Action(MVC.API.Job.Comment()));
-=======
-            #line 285 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                                                  Write(Url.Action(MVC.API.Job.AttachmentDownload()));
->>>>>>> origin/Repository-Monitor
 
             
             #line default
@@ -880,13 +567,8 @@ WriteLiteral(@"',
             commentHtml = commentHtml.replace(/\#(\d+)/g, '<a href=""");
 
             
-<<<<<<< HEAD
             #line 191 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                Write(Url.Action(MVC.Job.Show(null)));
-=======
-            #line 286 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                 Write(Url.Action(MVC.API.Job.AttachmentThumbnail()));
->>>>>>> origin/Repository-Monitor
 
             
             #line default
@@ -913,66 +595,8 @@ WriteLiteral("?id=$1\">#$1</a>\');\r\n            eComment.html(commentHtml);\r\
 "ed = null;\r\n        Silverlight.createObject(\r\n                \'");
 
             
-<<<<<<< HEAD
             #line 240 "..\..\Views\Job\JobParts\Resources.cshtml"
              Write(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap);
-=======
-            #line 319 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                     Write(Url.Action(MVC.API.Job.AttachmentRemove()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\',\r\n                                    dataType: \'json\',\r\n                      " +
-"              data: data,\r\n                                    success: function" +
-" (d) {\r\n                                        if (d == \'OK\') {\r\n              " +
-"                              $this.hide(300).delay(300).queue(function () {\r\n  " +
-"                                              var $this = $(this);\r\n            " +
-"                                    if ($this.attr(\'data-mimetype\').toLowerCase(" +
-").indexOf(\'image/\') == 0)\r\n                                                    S" +
-"hadowbox.removeCache(this);\r\n                                                $th" +
-"is.remove();\r\n                                            });\r\n                 " +
-"                       } else {\r\n                                            ale" +
-"rt(\'Unable to remove attachment: \' + d);\r\n                                      " +
-"  }\r\n                                        $dialogRemoveAttachment.dialog(\"clo" +
-"se\");\r\n                                    },\r\n                                 " +
-"   error: function (jqXHR, textStatus, errorThrown) {\r\n                         " +
-"               alert(\'Unable to remove attachment: \' + textStatus);\r\n           " +
-"                             $dialogRemoveAttachment.dialog(\"close\");\r\n         " +
-"                           }\r\n                                });\r\n             " +
-"               },\r\n                            \"Cancel\": function () {\r\n        " +
-"                        $dialogRemoveAttachment.dialog(\"close\");\r\n              " +
-"              }\r\n                        });\r\n\r\n                        $dialogR" +
-"emoveAttachment.dialog(\'open\');\r\n\r\n                        return false;\r\n      " +
-"              }\r\n\r\n                    $attachmentOutput.children(\'a\').each(func" +
-"tion () {\r\n                        $this = $(this);\r\n                        if " +
-"($this.attr(\'data-mimetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n            " +
-"                $this.shadowbox({ gallery: \'attachments\', player: \'img\', title: " +
-"$this.find(\'.comments\').text() });\r\n                    });\r\n                });" +
-"\r\n            </script>\r\n        </td>\r\n    </tr>\r\n</table>\r\n<div");
-
-WriteLiteral(" id=\"dialogUpload\"");
-
-WriteLiteral(" title=\"Upload Attachment\"");
-
-WriteLiteral(">\r\n    <div");
-
-WriteLiteral(" id=\"silverlightHostUploadAttachment\"");
-
-WriteLiteral(">\r\n    </div>\r\n</div>\r\n<div");
-
-WriteLiteral(" id=\"dialogRemoveLog\"");
-
-WriteLiteral(" title=\"Remove this Comment?\"");
-
-WriteLiteral(">\r\n    <p>\r\n        <span");
-
-WriteLiteral(" class=\"ui-icon ui-icon-alert\"");
-
-WriteLiteral(" style=\"float: left; margin: 0 7px 20px 0;\"");
-
-WriteLiteral("></span>\r\n        Are you sure?\r\n    </p>\r\n</div>\r\n<div");
->>>>>>> origin/Repository-Monitor
 
             
             #line default

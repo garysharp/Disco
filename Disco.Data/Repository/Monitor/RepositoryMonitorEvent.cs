@@ -1,11 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-<<<<<<< HEAD
 using System.Data.Entity.Infrastructure;
 using System.Data.Objects;
-=======
->>>>>>> origin/Repository-Monitor
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +11,6 @@ namespace Disco.Data.Repository.Monitor
 {
     public class RepositoryMonitorEvent
     {
-<<<<<<< HEAD
         [JsonIgnore]
         internal ObjectStateEntry objectEntryState { get; set; }
         [JsonIgnore]
@@ -25,8 +21,6 @@ namespace Disco.Data.Repository.Monitor
         [JsonIgnore]
         public DiscoDataContext dbContext { get; set; }
 
-=======
->>>>>>> origin/Repository-Monitor
         public RepositoryMonitorEventType EventType { get; set; }
 
         [JsonIgnore]
@@ -46,7 +40,6 @@ namespace Disco.Data.Repository.Monitor
         public object[] EntityKey { get; set; }
 
         public string[] ModifiedProperties { get; set; }
-<<<<<<< HEAD
 
         public T GetPreviousPropertyValue<T>(string PropertyName)
         {
@@ -59,7 +52,5 @@ namespace Disco.Data.Repository.Monitor
         {
             return (T)dbEntityState.CurrentValues[PropertyName];
         }
-=======
->>>>>>> origin/Repository-Monitor
     }
 }
