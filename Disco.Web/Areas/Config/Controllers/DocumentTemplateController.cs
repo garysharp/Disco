@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using Disco.BI;
 using Disco.BI.Extensions;
+using Disco.Services.Plugins.Features.UIExtension;
+using Disco.Models.UI.Config.DocumentTemplate;
 
 namespace Disco.Web.Areas.Config.Controllers
 {
@@ -16,6 +18,10 @@ namespace Disco.Web.Areas.Config.Controllers
             if (string.IsNullOrEmpty(id))
             {
                 var m = new Models.DocumentTemplate.IndexModel() { DocumentTemplates = dbContext.DocumentTemplates.ToList() };
+
+                // UI Extensions
+                UIExtensions.ExecuteExtensions<ConfigDocumentTemplateIndexModel>(this.ControllerContext, m);
+
                 return View(m);
             }
             else
@@ -26,12 +32,21 @@ namespace Disco.Web.Areas.Config.Controllers
                 };
                 m.TemplateExpressions = m.DocumentTemplate.ExtractPdfExpressions(dbContext);
                 m.UpdateModel(dbContext);
+
+                // UI Extensions
+                UIExtensions.ExecuteExtensions<ConfigDocumentTemplateShowModel>(this.ControllerContext, m);
+
                 return View(MVC.Config.DocumentTemplate.Views.Show, m);
             }
         }
 
         public virtual ActionResult ImportStatus()
         {
+            var m = new Models.DocumentTemplate.ImportStatusModel();
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateImportStatusModel>(this.ControllerContext, m);
+
             return View();
         }
         public virtual ActionResult UndetectedPages()
@@ -41,6 +56,9 @@ namespace Disco.Web.Areas.Config.Controllers
                 DocumentTemplates = dbContext.DocumentTemplates.ToList()
             };
 
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateUndetectedPagesModel>(this.ControllerContext, m);
+
             return View(m);
         }
 
@@ -48,6 +66,9 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             var m = new Models.DocumentTemplate.CreateModel();
             m.UpdateModel(dbContext);
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateCreateModel>(this.ControllerContext, m);
 
             return View(m);
         }
@@ -87,6 +108,10 @@ namespace Disco.Web.Areas.Config.Controllers
                     ModelState.AddModelError("Name", "A Document Template with this Name already exists.");
                 }
             }
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateCreateModel>(this.ControllerContext, model);
+
             return View(model);
         }
 
@@ -102,6 +127,9 @@ namespace Disco.Web.Areas.Config.Controllers
                     Variables = BI.Expressions.Expression.StandardVariableTypes(),
                     ExtensionLibraries = BI.Expressions.Expression.ExtensionLibraryTypes()
                 };
+
+                // UI Extensions
+                UIExtensions.ExecuteExtensions<ConfigDocumentTemplateExpressionBrowserModel>(this.ControllerContext, m);
 
                 return View(m);
             }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Disco.Models.UI.Config.Enrolment;
+using Disco.Services.Plugins.Features.UIExtension;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,11 +20,19 @@ namespace Disco.Web.Areas.Config.Controllers
                 MacSshUsername = dbContext.DiscoConfiguration.Bootstrapper.MacSshUsername
             };
 
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigEnrolmentIndexModel>(this.ControllerContext, m);
+
             return View(m);
         }
         public virtual ActionResult Status()
         {
-            return View();
+            var m = new Models.Enrolment.StatusModel();
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigEnrolmentStatusModel>(this.ControllerContext, m);
+
+            return View(m);
         }
 
     }

@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using Disco.Services.Plugins.Features.WarrantyProvider;
 using Disco.Services.Plugins;
 using Disco.BI.Extensions;
+using Disco.Services.Plugins.Features.UIExtension;
+using Disco.Models.UI.Config.DeviceModel;
 
 namespace Disco.Web.Areas.Config.Controllers
 {
@@ -21,7 +23,7 @@ namespace Disco.Web.Areas.Config.Controllers
                     WarrantyProviders = Plugins.GetPluginFeatures(typeof(WarrantyProviderFeature))
                 };
 
-                m.DeviceComponentsModel = new Models.DeviceModel.DeviceComponentsModel()
+                m.DeviceComponentsModel = new Models.DeviceModel.ComponentsModel()
                 {
                     DeviceModelId = m.DeviceModel.Id,
                     DeviceComponents = m.DeviceModel.DeviceComponents.ToList(),
@@ -35,21 +37,32 @@ namespace Disco.Web.Areas.Config.Controllers
                 //m.Devices = dbContext.Devices.Include("DeviceModel").Include("DeviceProfile").Include("AssignedUser")
                 //    .Where(d => d.DeviceModelId == m.DeviceModel.Id).ToList();
 
+                // UI Extensions
+                UIExtensions.ExecuteExtensions<ConfigDeviceModelShowModel>(this.ControllerContext, m);
+
                 return View(MVC.Config.DeviceModel.Views.Show, m);
             }
             else
             {
-                return View(Models.DeviceModel.IndexModel.Build(dbContext));
+                var m = Models.DeviceModel.IndexModel.Build(dbContext);
+
+                // UI Extensions
+                UIExtensions.ExecuteExtensions<ConfigDeviceModelIndexModel>(this.ControllerContext, m);
+
+                return View(m);
             }
         }
 
         public virtual ActionResult GenericComponents()
         {
-            var m = new Models.DeviceModel.DeviceComponentsModel()
+            var m = new Models.DeviceModel.ComponentsModel()
             {
                 DeviceComponents = dbContext.DeviceComponents.Include("JobSubTypes").Where(dc => !dc.DeviceModelId.HasValue).ToList(),
                 JobSubTypes = dbContext.JobSubTypes.Where(jst => jst.JobTypeId == Disco.Models.Repository.JobType.JobTypeIds.HNWar).ToList()
             };
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigDeviceModelComponentsModel>(this.ControllerContext, m);
 
             return View(m);
         }

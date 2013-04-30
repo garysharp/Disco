@@ -6,10 +6,11 @@ using System.Web.Mvc;
 using Disco.BI;
 using Disco.BI.Extensions;
 using Disco.Web.Extensions;
+using Disco.Models.UI.Config.DocumentTemplate;
 
 namespace Disco.Web.Areas.Config.Models.DocumentTemplate
 {
-    public class UndetectedPagesModel
+    public class UndetectedPagesModel : ConfigDocumentTemplateUndetectedPagesModel
     {
         
         public List<Disco.Models.Repository.DocumentTemplate> DocumentTemplates { get; set; }

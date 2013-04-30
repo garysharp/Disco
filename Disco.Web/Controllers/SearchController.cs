@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using Disco.BI;
 using Disco.Data.Repository;
 using Disco.Models.Repository;
+using Disco.Services.Plugins.Features.UIExtension;
+using Disco.Models.UI.Search;
 
 namespace Disco.Web.Controllers
 {
@@ -140,6 +142,9 @@ namespace Disco.Web.Controllers
                     }
                 }
             }
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<SearchQueryModel>(this.ControllerContext, m);
 
             return View(m);
         }

@@ -8,6 +8,8 @@ using Disco.BI;
 using Disco.BI.Extensions;
 using Disco.Services.Plugins.Features.CertificateProvider;
 using Disco.Services.Plugins;
+using Disco.Services.Plugins.Features.UIExtension;
+using Disco.Models.UI.Config.DeviceProfile;
 
 namespace Disco.Web.Areas.Config.Controllers
 {
@@ -45,39 +47,55 @@ namespace Disco.Web.Areas.Config.Controllers
                 //m.OrganisationalUnit = m.DeviceProfile.OrganisationalUnit;
                 //m.ComputerNameTemplate = m.DeviceProfile.ComputerNameTemplate;
 
+                // UI Extensions
+                UIExtensions.ExecuteExtensions<ConfigDeviceProfileShowModel>(this.ControllerContext, m);
+
                 return View(MVC.Config.DeviceProfile.Views.Show, m);
             }
             else
             {
-                return View(Models.DeviceProfile.IndexModel.Build(dbContext));
+                var m = Models.DeviceProfile.IndexModel.Build(dbContext);
+
+                // UI Extensions
+                UIExtensions.ExecuteExtensions<ConfigDeviceProfileIndexModel>(this.ControllerContext, m);
+
+                return View(m);
             }
         }
 
         public virtual ActionResult Create()
         {
-            return View();
+            var m = new Models.DeviceProfile.CreateModel();
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigDeviceProfileCreateModel>(this.ControllerContext, m);
+
+            return View(m);
         }
 
         [HttpPost]
-        public virtual ActionResult Create(Disco.Models.Repository.DeviceProfile model)
+        public virtual ActionResult Create(Models.DeviceProfile.CreateModel model)
         {
             if (ModelState.IsValid)
             {
                 // Check for Existing
-                var existing = dbContext.DeviceProfiles.Where(m => m.Name == model.Name).FirstOrDefault();
+                var existing = dbContext.DeviceProfiles.Where(m => m.Name == model.DeviceProfile.Name).FirstOrDefault();
                 if (existing == null)
                 {
-                    model.ProvisionADAccount = true;
+                    model.DeviceProfile.ProvisionADAccount = true;
 
-                    dbContext.DeviceProfiles.Add(model);
+                    dbContext.DeviceProfiles.Add(model.DeviceProfile);
                     dbContext.SaveChanges();
-                    return RedirectToAction(MVC.Config.DeviceProfile.Index(model.Id));
+                    return RedirectToAction(MVC.Config.DeviceProfile.Index(model.DeviceProfile.Id));
                 }
                 else
                 {
                     ModelState.AddModelError("Name", "A Device Profile with this name already exists.");
                 }
             }
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigDeviceProfileCreateModel>(this.ControllerContext, model);
 
             return View(model);
         }
@@ -92,6 +110,9 @@ namespace Disco.Web.Areas.Config.Controllers
             };
             m.DeviceProfilesAndNone = m.DeviceProfiles.ToList();
             m.DeviceProfilesAndNone.Insert(0, new Disco.Models.Repository.DeviceProfile() { Id = 0, Name = "<No Default>" });
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigDeviceProfileDefaultsModel>(this.ControllerContext, m);
 
             return View(m);
         }

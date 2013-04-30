@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using Disco.Models.UI.Config.DeviceBatch;
 
 namespace Disco.Web.Areas.Config.Models.DeviceBatch
 {
-    public class _IndexModelDeviceBatch
+    public class _IndexModelItem : ConfigDeviceBatchIndexModelItem
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using Disco.Services.Logging;
 using Disco.Services.Logging.Models;
+using Disco.Services.Plugins.Features.UIExtension;
+using Disco.Models.UI.Config.Logging;
 
 namespace Disco.Web.Areas.Config.Controllers
 {
@@ -24,6 +26,9 @@ namespace Disco.Web.Areas.Config.Controllers
                 m.LogModules.Add(logModule, logModule.EventTypes.Values.Where(et => et.UsePersist).ToList());
             }
 
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigLoggingIndexModel>(this.ControllerContext, m);
+
             return View(m);
         }
 
@@ -36,7 +41,12 @@ namespace Disco.Web.Areas.Config.Controllers
             if (taskStatus == null)
                 return RedirectToAction(MVC.Config.Logging.Index());
 
-            return View(new Models.Logging.TaskStatusModel() { SessionId = taskStatus.SessionId });
+            var m = new Models.Logging.TaskStatusModel() { SessionId = taskStatus.SessionId };
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigLoggingTaskStatusModel>(this.ControllerContext, m);
+
+            return View(m);
         }
 
     }

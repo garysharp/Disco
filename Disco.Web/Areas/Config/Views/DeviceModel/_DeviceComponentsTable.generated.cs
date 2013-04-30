@@ -33,7 +33,7 @@ namespace Disco.Web.Areas.Config.Views.DeviceModel
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Config/Views/DeviceModel/_DeviceComponentsTable.cshtml")]
-    public class DeviceComponentsTable : System.Web.Mvc.WebViewPage<Disco.Web.Areas.Config.Models.DeviceModel.DeviceComponentsModel>
+    public class DeviceComponentsTable : System.Web.Mvc.WebViewPage<Disco.Web.Areas.Config.Models.DeviceModel.ComponentsModel>
     {
         public DeviceComponentsTable()
         {

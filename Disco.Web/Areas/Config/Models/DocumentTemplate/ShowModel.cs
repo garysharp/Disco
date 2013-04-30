@@ -4,10 +4,11 @@ using System.Linq;
 using System.Web;
 using Disco.Data.Repository;
 using Disco.Models.Repository;
+using Disco.Models.UI.Config.DocumentTemplate;
 
 namespace Disco.Web.Areas.Config.Models.DocumentTemplate
 {
-    public class ShowModel
+    public class ShowModel : ConfigDocumentTemplateShowModel
     {
         public Disco.Models.Repository.DocumentTemplate DocumentTemplate { get; set; }
 

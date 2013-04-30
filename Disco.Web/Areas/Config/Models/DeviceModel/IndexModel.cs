@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Disco.Data.Repository;
+using Disco.Models.UI.Config.DeviceModel;
 
 namespace Disco.Web.Areas.Config.Models.DeviceModel
 {
-    public class IndexModel
+    public class IndexModel : ConfigDeviceModelIndexModel
     {
-        public List<_IndexModelDeviceModel> DeviceModels { get; set; }
+        public List<ConfigDeviceModelIndexModelItem> DeviceModels { get; set; }
 
         public static IndexModel Build(DiscoDataContext dbContext)
         {
             var m = new IndexModel();
-            m.DeviceModels = dbContext.DeviceModels.OrderBy(dm => dm.Description).Select(dm => new _IndexModelDeviceModel()
+            m.DeviceModels = dbContext.DeviceModels.OrderBy(dm => dm.Description).Select(dm => new _IndexModelItem()
             {
                 Id = dm.Id,
                 Name = dm.Description,
@@ -21,10 +22,9 @@ namespace Disco.Web.Areas.Config.Models.DeviceModel
                 Model = dm.Model,
                 ModelType = dm.ModelType,
                 DeviceCount = dm.Devices.Count
-            }).ToList();
+            }).Cast<ConfigDeviceModelIndexModelItem>().ToList();
 
             return m;
         }
-
     }
 }

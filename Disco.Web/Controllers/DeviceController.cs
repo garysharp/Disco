@@ -36,12 +36,15 @@ namespace Disco.Web.Controllers
             {
                 DefaultDeviceProfileId = dbContext.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId
             };
-            m.DeviceBatches = dbContext.DeviceBatches.ToSelectListItems();
+            m.DeviceBatches = dbContext.DeviceBatches.ToList();
             m.DeviceProfiles = dbContext.DeviceProfiles.ToList();
             if (m.DefaultDeviceProfileId == 0)
             {
                 m.DeviceProfiles.Insert(0, new DeviceProfile() { Id = 0, Name = "Select a Device Profile" });
             }
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<DeviceAddOfflineModel>(this.ControllerContext, m);
 
             return View(m);
         }

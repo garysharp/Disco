@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using Disco.BI;
 using Disco.BI.Extensions;
 using Disco.Web.Extensions;
+using Disco.Services.Plugins.Features.UIExtension;
+using Disco.Models.UI.Config.DeviceBatch;
 
 namespace Disco.Web.Areas.Config.Controllers
 {
@@ -31,35 +33,50 @@ namespace Disco.Web.Areas.Config.Controllers
                 m.DeviceCount = m.DeviceBatch.Devices.Count();
                 m.DeviceDecommissionedCount = m.DeviceBatch.Devices.Count(d => d.DecommissionedDate.HasValue);
 
-                m.DeviceModels = dbContext.DeviceModels.ToSelectListItems();
+                m.DeviceModels = dbContext.DeviceModels.ToList();
+
+                // UI Extensions
+                UIExtensions.ExecuteExtensions<ConfigDeviceBatchShowModel>(this.ControllerContext, m);
 
                 return View(MVC.Config.DeviceBatch.Views.Show, m);
             }
             else
             {
-                return View(Models.DeviceBatch.IndexModel.Build(dbContext));
+                var m = Models.DeviceBatch.IndexModel.Build(dbContext);
+
+                // UI Extensions
+                UIExtensions.ExecuteExtensions<ConfigDeviceBatchIndexModel>(this.ControllerContext, m);
+                
+                return View(m);
             }
         }
 
         public virtual ActionResult Create()
         {
             // Default Batch
-            var m = BI.DeviceBI.BatchUtilities.DefaultNewDeviceBatch(dbContext);
+            var m = new Models.DeviceBatch.CreateModel()
+            {
+                DeviceBatch = BI.DeviceBI.BatchUtilities.DefaultNewDeviceBatch(dbContext)
+            };
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigDeviceBatchCreateModel>(this.ControllerContext, m);
+
             return View(m);
         }
 
         [HttpPost]
-        public virtual ActionResult Create(Disco.Models.Repository.DeviceBatch model)
+        public virtual ActionResult Create(Models.DeviceBatch.CreateModel model)
         {
             if (ModelState.IsValid)
             {
                 // Check for Existing
-                var existing = dbContext.DeviceBatches.Where(m => m.Name == model.Name).FirstOrDefault();
+                var existing = dbContext.DeviceBatches.Where(m => m.Name == model.DeviceBatch.Name).FirstOrDefault();
                 if (existing == null)
                 {
-                    dbContext.DeviceBatches.Add(model);
+                    dbContext.DeviceBatches.Add(model.DeviceBatch);
                     dbContext.SaveChanges();
-                    return RedirectToAction(MVC.Config.DeviceBatch.Index(model.Id));
+                    return RedirectToAction(MVC.Config.DeviceBatch.Index(model.DeviceBatch.Id));
                 }
                 else
                 {
@@ -67,11 +84,19 @@ namespace Disco.Web.Areas.Config.Controllers
                 }
             }
 
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigDeviceBatchCreateModel>(this.ControllerContext, model);
+
             return View(model);
         }
 
         public virtual ActionResult Timeline()
         {
+            var m = new Models.DeviceBatch.TimelineModel();
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigDeviceBatchTimelineModel>(this.ControllerContext, m);
+
             return View();
         }
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Disco.Models.UI.Config.Organisation;
+using Disco.Services.Plugins.Features.UIExtension;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,7 +20,10 @@ namespace Disco.Web.Areas.Config.Controllers
             viewModel.OrganisationName = dbContext.DiscoConfiguration.OrganisationName;
             viewModel.MultiSiteMode = dbContext.DiscoConfiguration.MultiSiteMode;
             viewModel.OrganisationAddresses = dbContext.DiscoConfiguration.OrganisationAddresses.Addresses;
-            
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigOrganisationIndexModel>(this.ControllerContext, viewModel);
+
             return View(viewModel);
         }
 

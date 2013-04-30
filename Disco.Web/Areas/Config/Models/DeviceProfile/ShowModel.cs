@@ -4,10 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Disco.Services.Plugins;
+using Disco.Models.UI.Config.DeviceProfile;
 
 namespace Disco.Web.Areas.Config.Models.DeviceProfile
 {
-    public class ShowModel
+    public class ShowModel : ConfigDeviceProfileShowModel
     {
         public Disco.Models.Repository.DeviceProfile DeviceProfile { get; set; }
         public List<SelectListItem> DeviceProfileDistributionTypes { get; set; }

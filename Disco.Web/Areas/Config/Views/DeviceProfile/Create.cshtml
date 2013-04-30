@@ -1,4 +1,4 @@
-﻿@model Disco.Models.Repository.DeviceProfile
+﻿@model Disco.Web.Areas.Config.Models.DeviceProfile.CreateModel
 @{
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Profiles", MVC.Config.DeviceProfile.Index(null), "Create");
 }
@@ -11,21 +11,21 @@
                     Name:
                 </th>
                 <td>
-                @Html.TextBoxFor(model => model.Name)<br />@Html.ValidationMessageFor(model => model.Name)
+                @Html.TextBoxFor(model => model.DeviceProfile.Name)<br />@Html.ValidationMessageFor(model => model.DeviceProfile.Name)
                 </td>
             </tr>
             <tr>
                 <th>
                     Short Name:
                 </th>
-                <td>@Html.TextBoxFor(model => model.ShortName)<br />@Html.ValidationMessageFor(model => model.ShortName)
+                <td>@Html.TextBoxFor(model => model.DeviceProfile.ShortName)<br />@Html.ValidationMessageFor(model => model.DeviceProfile.ShortName)
                 </td>
             </tr>
             <tr>
                 <th>
                     Description:
                 </th>
-                <td>@Html.TextBoxFor(model => model.Description)<br />@Html.ValidationMessageFor(model => model.Description)
+                <td>@Html.TextBoxFor(model => model.DeviceProfile.Description)<br />@Html.ValidationMessageFor(model => model.DeviceProfile.Description)
                 </td>
             </tr>
         </table>

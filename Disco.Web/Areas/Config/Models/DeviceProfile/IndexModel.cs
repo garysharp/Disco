@@ -4,17 +4,18 @@ using System.Linq;
 using System.Web;
 using Disco.Data.Repository;
 using Disco.BI.Extensions;
+using Disco.Models.UI.Config.DeviceProfile;
 
 namespace Disco.Web.Areas.Config.Models.DeviceProfile
 {
-    public class IndexModel
+    public class IndexModel : ConfigDeviceProfileIndexModel
     {
-        public List<_IndexModelDeviceProfile> DeviceProfiles { get; set; }
+        public List<ConfigDeviceProfileIndexModelItem> DeviceProfiles { get; set; }
 
         public static IndexModel Build(DiscoDataContext dbContext)
         {
             var m = new IndexModel();
-            m.DeviceProfiles = dbContext.DeviceProfiles.OrderBy(dp => dp.Name).Select(dp => new _IndexModelDeviceProfile()
+            m.DeviceProfiles = dbContext.DeviceProfiles.OrderBy(dp => dp.Name).Select(dp => new _IndexModelItem()
             {
                 Id = dp.Id,
                 Name = dp.Name,
@@ -24,7 +25,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceProfile
                 DistributionTypeId = dp.DistributionTypeDb,
                 DeviceCount = dp.Devices.Count,
                 DeviceDecommissionedCount = dp.Devices.Count(d => d.DecommissionedDate.HasValue)
-            }).ToList();
+            }).Cast<ConfigDeviceProfileIndexModelItem>().ToList();
 
             if (DiscoApplication.MultiSiteMode)
             {

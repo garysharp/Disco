@@ -4,11 +4,12 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using Disco.Data.Repository;
+using Disco.Models.UI.Config.DocumentTemplate;
 
 namespace Disco.Web.Areas.Config.Models.DocumentTemplate
 {
     [CustomValidation(typeof(CreateModelValidation), "ValidateCreateModel")]
-    public class CreateModel
+    public class CreateModel : ConfigDocumentTemplateCreateModel
     {
         public Disco.Models.Repository.DocumentTemplate DocumentTemplate { get; set; }
 

@@ -205,7 +205,7 @@
                 Default Device Model:
             </th>
             <td>
-                @Html.DropDownListFor(model => model.DeviceBatch.DefaultDeviceModelId, Model.DeviceModels)
+                @Html.DropDownListFor(model => model.DeviceBatch.DefaultDeviceModelId, Model.DeviceModels.ToSelectListItems())
                 @AjaxHelpers.AjaxSave()
                 @AjaxHelpers.AjaxLoader()
                 <script type="text/javascript">

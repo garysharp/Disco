@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Disco.Models.UI.Search;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 namespace Disco.Web.Models.Search
 {
-    public class QueryModel
+    public class QueryModel : SearchQueryModel
     {
         public string FriendlyTerm { get; set; }
         public string Term { get; set; }

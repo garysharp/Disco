@@ -38,5 +38,6 @@
             Disco v@(Disco.Web.DiscoApplication.Version) @@ @(Disco.Web.DiscoApplication.OrganisationName) | @Html.ActionLink("Credits", MVC.Public.Public.Credits()) | @Html.ActionLink("Licence", MVC.Public.Public.Licence())
         </footer>
     </div>
+    @{ Disco.Services.Plugins.Features.UIExtension.UIExtensions.ExecuteExtensionResult(this); }
 </body>
 </html>

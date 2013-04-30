@@ -8414,9 +8414,9 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Models.Repository.DeviceBatch model);
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Areas.Config.Models.DeviceBatch.CreateModel model);
 
-        public override System.Web.Mvc.ActionResult Create(Disco.Models.Repository.DeviceBatch model)
+        public override System.Web.Mvc.ActionResult Create(Disco.Web.Areas.Config.Models.DeviceBatch.CreateModel model)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
@@ -8677,9 +8677,9 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Models.Repository.DeviceProfile model);
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Areas.Config.Models.DeviceProfile.CreateModel model);
 
-        public override System.Web.Mvc.ActionResult Create(Disco.Models.Repository.DeviceProfile model)
+        public override System.Web.Mvc.ActionResult Create(Disco.Web.Areas.Config.Models.DeviceProfile.CreateModel model)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);

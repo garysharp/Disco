@@ -37,7 +37,7 @@
                     Device Batch:
                 </th>
                 <td>
-                    @Html.DropDownListFor(model => model.Device.DeviceBatchId, Model.DeviceBatches) <br />
+                    @Html.DropDownListFor(model => model.Device.DeviceBatchId, Model.DeviceBatches.ToSelectListItems()) <br />
                     @Html.ValidationMessageFor(model => model.Device.DeviceBatchId)
                 </td>
             </tr>
