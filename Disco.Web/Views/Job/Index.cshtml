@@ -12,9 +12,11 @@
         <h2>Daily Opened &amp; Closed Jobs</h2>
         <div id="chartHostJobDailyOpenedClosed" style="height: 175px;">
         </div>
+        @{
+            var jsonData = new HtmlString(Json.Encode(Model.DailyOpenedClosedStatistics));
+        }
         <script type="text/javascript">
             (function () {
-
                 var chartData;
 
                 function buildChart() {
@@ -105,12 +107,8 @@
                         });
                     });
                 }
-
-
-                $.getJSON('@(Url.Action(MVC.API.Job.StatisticsDailyOpenedClosed()))', function (data) {
-                    chartData = data;
-                    buildChart();
-                });
+                chartData = $.parseJSON('@(jsonData)');
+                buildChart();
             }());
 
         </script>

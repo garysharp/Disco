@@ -7,6 +7,9 @@ using Disco.Models.BI.Job.Statistics;
 using Disco.Data.Repository;
 using Quartz.Impl;
 using Disco.Services.Tasks;
+using System.Reactive.Linq;
+using Disco.Models.Repository;
+using Disco.Data.Repository.Monitor;
 
 namespace Disco.BI.JobBI.Statistics
 {
@@ -15,6 +18,7 @@ namespace Disco.BI.JobBI.Statistics
 
         private static List<DailyOpenedClosedItem> _data;
         private static object _dataLock = new object();
+        private static IDisposable _streamSubscription;
 
 
         public override string TaskName { get { return "Job Statistics - Daily Opened/Closed Task"; } }
@@ -65,7 +69,7 @@ namespace Disco.BI.JobBI.Statistics
 
         private static void UpdateDataHistory(DiscoDataContext dbContext, bool Refresh = false)
         {
-            DateTime historyEnd = DateTime.Now.AddDays(-1).Date;
+            DateTime historyEnd = DateTime.Now.Date;
 
             if (Refresh || _data == null || _data.Count == 0 || _data.Last().Timestamp < historyEnd)
             {
@@ -97,8 +101,62 @@ namespace Disco.BI.JobBI.Statistics
                             resultData.Add(Data(dbContext, processDate));
                             processDate = processDate.AddDays(1);
                         }
-
                         _data = resultData;
+
+                        // Subscribe to Live Repository Events
+                        if (_streamSubscription != null)
+                            _streamSubscription.Dispose();
+                        _streamSubscription = Disco.Data.Repository.Monitor.RepositoryMonitor.StreamBeforeCommit.Where(
+                            e => e.EntityType == typeof(Job) &&
+                                (e.EventType == RepositoryMonitorEventType.Added || (e.EventType == RepositoryMonitorEventType.Modified && e.ModifiedProperties.Contains("ClosedDate")))).Subscribe(RepositoryEvent_JobChange);
+                    }
+                }
+            }
+        }
+
+        private static void RepositoryEvent_JobChange(RepositoryMonitorEvent e)
+        {
+
+            if (e.EventType == RepositoryMonitorEventType.Added)
+            {
+                // New Job
+                var todaysStats = _data.Last();
+                todaysStats.OpenedJobs += 1;
+                todaysStats.TotalJobs += 1;
+            }
+            else
+            {
+                DateTime? previousValue = e.GetPreviousPropertyValue<DateTime?>("ClosedDate");
+                DateTime? currentValue = e.GetCurrentPropertyValue<DateTime?>("ClosedDate");
+
+                if (previousValue.HasValue)
+                {
+                    // Remove Statistics
+                    var statItem = _data.FirstOrDefault(i => i.Timestamp == previousValue.Value.Date);
+                    if (statItem != null)
+                    {
+                        statItem.ClosedJobs -= 1;
+                        statItem.TotalJobs += 1;
+                    }
+                    foreach (var affectedStat in _data.Where(i => i.Timestamp > previousValue))
+                    {
+                        affectedStat.TotalJobs += 1;
+                    }
+                }
+
+                if (currentValue.HasValue)
+                {
+                    // Add Statistics
+                    // Remove Statistics
+                    var statItem = _data.FirstOrDefault(i => i.Timestamp == currentValue.Value.Date);
+                    if (statItem != null)
+                    {
+                        statItem.ClosedJobs += 1;
+                        statItem.TotalJobs -= 1;
+                    }
+                    foreach (var affectedStat in _data.Where(i => i.Timestamp > currentValue))
+                    {
+                        affectedStat.TotalJobs -= 1;
                     }
                 }
             }
@@ -134,7 +192,8 @@ namespace Disco.BI.JobBI.Statistics
             else
                 resultData = _data.ToList();
 
-            resultData.Add(Data(dbContext, DateTime.Today));
+            // Removed - Live Updated via Repository Monitor; See: RepositoryEvent_JobChange
+            //resultData.Add(Data(dbContext, DateTime.Today));
 
             return resultData;
         }

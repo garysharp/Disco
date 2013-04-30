@@ -71,6 +71,7 @@ namespace Disco.Web.Controllers
 
             m.OpenJobs = jobList_OpenJobs;
             m.LongRunningJobs = jobList_LongRunning;
+            m.DailyOpenedClosedStatistics = Disco.BI.JobBI.Statistics.DailyOpenedClosed.Data(dbContext, true);
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobIndexModel>(this.ControllerContext, m);
