@@ -71,12 +71,12 @@
   <ItemGroup>
     <Compile Include="Configuration\CommunityHelpers.cs" />
     <Compile Include="Configuration\ConfigurationBase.cs" />
-    <Compile Include="Configuration\ConfigurationContext.cs" />
+    <Compile Include="Configuration\ConfigurationCache.cs" />
+    <Compile Include="Configuration\SystemConfiguration.cs" />
     <Compile Include="Configuration\Modules\BootstrapperConfiguration.cs" />
     <Compile Include="Configuration\Modules\DeviceProfileConfiguration.cs" />
     <Compile Include="Configuration\Modules\DeviceProfilesConfiguration.cs" />
     <Compile Include="Configuration\Modules\OrganisationAddressesConfiguration.cs" />
-    <Compile Include="Configuration\Modules\WirelessConfiguration.cs" />
     <Compile Include="Migrations\201204250418485_DBv0.cs" />
     <Compile Include="Migrations\201204250418485_DBv0.Designer.cs">
       <DependentUpon>201204250418485_DBv0.cs</DependentUpon>

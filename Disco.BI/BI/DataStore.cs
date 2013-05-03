@@ -14,7 +14,7 @@ namespace Disco.BI
         {
             return CreateLocation(dbContext.DiscoConfiguration, SubLocation, SubSubLocationTimestamp);
         }
-        public static string CreateLocation(ConfigurationContext DiscoConfiguration, string SubLocation, DateTime? SubSubLocationTimestamp = null)
+        public static string CreateLocation(SystemConfiguration DiscoConfiguration, string SubLocation, DateTime? SubSubLocationTimestamp = null)
         {
             string SubSubLocation = string.Empty;
             if (SubSubLocationTimestamp.HasValue)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Disco.Data.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ namespace Disco.Data.Configuration.Modules
 {
     public class BootstrapperConfiguration : ConfigurationBase
     {
-        public BootstrapperConfiguration(ConfigurationContext Context) : base(Context) { }
+        public BootstrapperConfiguration(DiscoDataContext dbContext) : base(dbContext) { }
 
         public override string Scope
         {
@@ -18,11 +19,11 @@ namespace Disco.Data.Configuration.Modules
         {
             get
             {
-                return this.GetValue("MacSshUsername", "root");
+                return this.Get("root");
             }
             set
             {
-                this.SetValue("MacSshUsername", value);
+                this.Set(value);
             }
         }
 
@@ -30,11 +31,11 @@ namespace Disco.Data.Configuration.Modules
         {
             get
             {
-                return ConfigurationContext.DeobsfucateValue(this.GetValue("MacSshPassword", string.Empty));
+                return this.GetDeobsfucated(string.Empty);
             }
             set
             {
-                this.SetValue("MacSshPassword", ConfigurationContext.ObsfucateValue(value));
+                this.SetObsfucated(value);
             }
         }
     }

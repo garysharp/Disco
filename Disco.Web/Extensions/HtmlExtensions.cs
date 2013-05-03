@@ -70,7 +70,7 @@ namespace Disco.Web
         }
         public static MvcHtmlString OrganisationLogoUrl(this UrlHelper urlHelper, int Width = 256, int Height = 256)
         {
-            var config = new Disco.Data.Configuration.ConfigurationContext(null);
+            var config = new Disco.Data.Configuration.SystemConfiguration(null);
             return new MvcHtmlString(urlHelper.Action(MVC.API.System.OrganisationLogo(Width, Height, config.OrganisationLogoHash)));
         }
         #endregion

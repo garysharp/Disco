@@ -85,7 +85,7 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
         public UpdateResponse UpdateLatestResponse { get; set; }
         public bool UpdateBetaDeployment { get; set; }
 
-        public static IndexModel FromConfiguration(ConfigurationContext config)
+        public static IndexModel FromConfiguration(SystemConfiguration config)
         {
             return new IndexModel()
             {
@@ -104,7 +104,7 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
 
         public void ToConfiguration(DiscoDataContext db)
         {
-            ConfigurationContext config = db.DiscoConfiguration;
+            SystemConfiguration config = db.DiscoConfiguration;
             //config.DataStoreLocation = DataStoreLocation;
             config.ProxyAddress = ProxyAddress;
             config.ProxyPort = ProxyPort;

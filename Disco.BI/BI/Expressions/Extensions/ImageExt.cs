@@ -21,7 +21,7 @@ namespace Disco.BI.Expressions.Extensions
         }
         public static FileImageExpressionResult ImageFromDataStoreFile(string RelativeFilePath)
         {
-            var configCache = new Disco.Data.Configuration.ConfigurationContext(null);
+            var configCache = new Disco.Data.Configuration.SystemConfiguration(null);
             string DataStoreLocation = configCache.DataStoreLocation;
             string AbsoluteFilePath = System.IO.Path.Combine(DataStoreLocation, RelativeFilePath);
             return new FileImageExpressionResult(AbsoluteFilePath);
@@ -126,7 +126,7 @@ namespace Disco.BI.Expressions.Extensions
         }
         public static BitmapImageExpressionResult OrganisationLogo()
         {
-            var configCache = new Disco.Data.Configuration.ConfigurationContext(null);
+            var configCache = new Disco.Data.Configuration.SystemConfiguration(null);
             BitmapImageExpressionResult result;
             using (var orgLogo = configCache.OrganisationLogo)
             {

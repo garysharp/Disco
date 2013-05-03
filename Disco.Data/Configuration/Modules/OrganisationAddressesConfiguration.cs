@@ -5,22 +5,20 @@ using System.Text;
 using Disco.Models.BI.Config;
 using Disco.Models.Repository;
 using Newtonsoft.Json;
+using Disco.Data.Repository;
 
 namespace Disco.Data.Configuration.Modules
 {
     public class OrganisationAddressesConfiguration : ConfigurationBase
     {
-        public OrganisationAddressesConfiguration(ConfigurationContext Context) : base(Context) { }
+        public OrganisationAddressesConfiguration(DiscoDataContext dbContext) : base(dbContext) { }
 
-        public override string Scope
-        {
-            get { return "OrganisationAddresses"; }
-        }
+        public override string Scope { get { return "OrganisationAddresses"; } }
 
         public OrganisationAddress GetAddress(int Id)
         {
             var address = default(OrganisationAddress);
-            var addressString = this.GetValue<string>(Id.ToString(), null);
+            var addressString = this.Get<string>(null, Id.ToString());
             if (addressString != null)
             {
                 if (addressString.StartsWith("{"))
@@ -45,28 +43,23 @@ namespace Disco.Data.Configuration.Modules
 
             string addressString = JsonConvert.SerializeObject(Address);
 
-            this.SetValue(Address.Id.ToString(), addressString); //Address.ToConfigurationEntry());
+            this.Set(addressString, Address.Id.ToString()); //Address.ToConfigurationEntry());
             return Address;
         }
         public void RemoveAddress(int Id)
         {
             // Set Config Item to null = Remove Configuration Item
-            this.SetValue<string>(Id.ToString(), null);
+            this.Set<string>(null, Id.ToString());
         }
 
         public List<OrganisationAddress> Addresses
         {
             get
             {
-                Dictionary<string, ConfigurationItem> configAddress = default(Dictionary<string, ConfigurationItem>);
-                if (this.Context.ConfigurationDictionary(this.Scope).TryGetValue(this.Scope, out configAddress))
-                    return configAddress.Select(
-                        ca => ca.Value.Value.StartsWith("{") ?
-                            JsonConvert.DeserializeObject<OrganisationAddress>(ca.Value.Value) :
-                            OrganisationAddress.FromConfigurationEntry(int.Parse(ca.Key), ca.Value.Value)
-                        ).ToList();
-                else
-                    return new List<OrganisationAddress>(); // Empty List - No Addresses
+                return this.Items.Select(ca => ca.Value.StartsWith("{") ?
+                    JsonConvert.DeserializeObject<OrganisationAddress>(ca.Value) :
+                    OrganisationAddress.FromConfigurationEntry(int.Parse(ca.Key), ca.Value)
+                    ).ToList();
             }
         }
 
@@ -77,7 +70,7 @@ namespace Disco.Data.Configuration.Modules
                 int nextId = 0;
                 while (true)
                 {
-                    if (this.Context.ConfigurationItem(this.Scope, nextId.ToString()) == null)
+                    if (this.Get<string>(null, nextId.ToString()) == null)
                         break;
                     nextId++;
                 }

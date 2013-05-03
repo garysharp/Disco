@@ -10,11 +10,11 @@ namespace Disco.Data.Repository
 {
     public class DiscoDataContext : DbContext
     {
-        private Lazy<Configuration.ConfigurationContext> _Configuration;
+        private Lazy<Configuration.SystemConfiguration> _Configuration;
 
         public DiscoDataContext()
         {
-            this._Configuration = new Lazy<Configuration.ConfigurationContext>(() => new Configuration.ConfigurationContext(this));
+            this._Configuration = new Lazy<Configuration.SystemConfiguration>(() => new Configuration.SystemConfiguration(this));
         }
 
         public virtual DbSet<ConfigurationItem> ConfigurationItems { get; set; }
@@ -47,7 +47,7 @@ namespace Disco.Data.Repository
         public virtual DbSet<JobMetaNonWarranty> JobMetaNonWarranties { get; set; }
         public virtual DbSet<JobMetaInsurance> JobMetaInsurances { get; set; }
 
-        public Configuration.ConfigurationContext DiscoConfiguration
+        public Configuration.SystemConfiguration DiscoConfiguration
         {
             get
             {
