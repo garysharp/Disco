@@ -24,11 +24,13 @@ namespace Disco.Data.Repository.Monitor
         {
             var contextStateManager = ((IObjectContextAdapter)dbContext).ObjectContext.ObjectStateManager;
 
-            var changes = contextStateManager.GetObjectStateEntries(System.Data.EntityState.Added).Concat(contextStateManager.GetObjectStateEntries(System.Data.EntityState.Deleted)).Concat(contextStateManager.GetObjectStateEntries(System.Data.EntityState.Modified));
+            dbContext.ChangeTracker.DetectChanges();
+            var changes = dbContext.ChangeTracker.Entries().Where(entry => entry.State == System.Data.EntityState.Added || entry.State == System.Data.EntityState.Deleted || entry.State == System.Data.EntityState.Modified);
 
             var events = changes.Select(entryState =>
             {
-                var monitorEvent = EventFromEntryState(entryState);
+                ObjectStateEntry stateEntry = contextStateManager.GetObjectStateEntry(entryState.Entity);
+                var monitorEvent = EventFromEntryState(dbContext, entryState, stateEntry);
 
                 // Push to Stream
                 streamBefore.OnNext(monitorEvent);
@@ -40,12 +42,9 @@ namespace Disco.Data.Repository.Monitor
         }
         internal static void AfterSaveChanges(DiscoDataContext dbContext, IEnumerable<RepositoryMonitorEvent> changes)
         {
-            var contextStateManager = ((IObjectContextAdapter)dbContext).ObjectContext.ObjectStateManager;
-
             foreach (var change in changes)
             {
-                UpdateAfterEventFromEntryState(change, contextStateManager);
-
+                UpdateAfterEventFromEntryState(change);
                 streamAfter.OnNext(change);
             }
         }
@@ -72,17 +71,16 @@ namespace Disco.Data.Repository.Monitor
             throw new ArgumentException("The EntryProxyType does not inherit from any Repository Models", "EntityProxyType");
         }
 
-        internal static void UpdateAfterEventFromEntryState(RepositoryMonitorEvent monitorEvent, ObjectStateManager stateManager)
+        internal static void UpdateAfterEventFromEntryState(RepositoryMonitorEvent monitorEvent)
         {
             if (monitorEvent.EventType == RepositoryMonitorEventType.Added)
             {
                 // Update Entity Key for Added Events
-                var entryState = stateManager.GetObjectStateEntry(monitorEvent.Entity);
-                monitorEvent.EntityKey = entryState.EntityKey.EntityKeyValues.Select(kv => kv.Value).ToArray();
+                monitorEvent.EntityKey = monitorEvent.objectEntryState.EntityKey.EntityKeyValues.Select(kv => kv.Value).ToArray();
             }
         }
 
-        internal static RepositoryMonitorEvent EventFromEntryState(ObjectStateEntry entryState)
+        internal static RepositoryMonitorEvent EventFromEntryState(DiscoDataContext dbContext, DbEntityEntry entityEntry, ObjectStateEntry entryState)
         {
             RepositoryMonitorEventType eventType;
             string[] modifiedProperties = null;
@@ -126,7 +124,10 @@ namespace Disco.Data.Repository.Monitor
                 Entity = entryState.Entity,
                 EntityKey = entityKey,
                 EntityType = entityType,
-                ModifiedProperties = modifiedProperties
+                ModifiedProperties = modifiedProperties,
+                dbContext = dbContext,
+                dbEntityState = entityEntry,
+                objectEntryState = entryState
             };
         }
     }

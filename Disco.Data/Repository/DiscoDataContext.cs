@@ -73,8 +73,6 @@ namespace Disco.Data.Repository
         {
             int changeCount = 0;
 
-            this.ChangeTracker.DetectChanges();
-
             // Notify before changes are committed
             var changes = Monitor.RepositoryMonitor.BeforeSaveChanges(this);
 
