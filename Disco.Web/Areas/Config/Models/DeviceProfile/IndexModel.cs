@@ -25,7 +25,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceProfile
                 DistributionTypeId = dp.DistributionTypeDb,
                 DeviceCount = dp.Devices.Count,
                 DeviceDecommissionedCount = dp.Devices.Count(d => d.DecommissionedDate.HasValue)
-            }).Cast<ConfigDeviceProfileIndexModelItem>().ToList();
+            }).ToArray().Cast<ConfigDeviceProfileIndexModelItem>().ToList();
 
             if (DiscoApplication.MultiSiteMode)
             {

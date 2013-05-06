@@ -26,7 +26,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceBatch
                 WarrantyExpires = db.WarrantyValidUntil,
                 InsuranceSupplier = db.InsuranceSupplier,
                 InsuredUntil = db.InsuredUntil
-            }).Cast<ConfigDeviceBatchIndexModelItem>().ToList();
+            }).ToArray().Cast<ConfigDeviceBatchIndexModelItem>().ToList();
 
             return m;
         }
