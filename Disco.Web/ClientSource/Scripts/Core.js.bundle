@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bundle minify="true" runOnBuild="true">
   <file>/ClientSource/Scripts/Core/modernizr-2.6.2.js</file>
-  <file>/ClientSource/Scripts/Core/jquery-1.9.1.js</file>
+  <file>/ClientSource/Scripts/Core/jquery-2.0.0.js</file>
   <file>/ClientSource/Scripts/Core/jquery.validate.js</file>
   <file>/ClientSource/Scripts/Core/jquery.validate.unobtrusive.js</file>
   <file>/ClientSource/Scripts/Core/disco.unobtrusiveValidation.extensions.js</file>
-  <file>/ClientSource/Scripts/Core/jquery-ui-1.10.0.js</file>
+  <file>/ClientSource/Scripts/Core/jquery-ui-1.10.3.js</file>
   <file>/ClientSource/Scripts/Core/jquery.watermark.js</file>
   <file>/ClientSource/Scripts/Core/jquery.dataTables.js</file>
   <file>/ClientSource/Scripts/Core/disco.dataTables.extensions.js</file>

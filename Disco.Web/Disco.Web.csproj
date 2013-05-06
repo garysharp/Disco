@@ -802,6 +802,8 @@
     <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.js">
       <DependentUpon>Disco-AjaxHelperIcons.js.bundle</DependentUpon>
     </None>
+    <None Include="ClientSource\Scripts\Core\jquery-ui-1.10.3.js" />
+    <None Include="ClientSource\Scripts\Core\jquery-2.0.0.js" />
     <Content Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.min.js">
       <DependentUpon>Disco-AjaxHelperIcons.js.bundle</DependentUpon>
     </Content>
@@ -927,7 +929,7 @@
     <None Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.js">
       <DependentUpon>jQueryUI-DynaTree.js.bundle</DependentUpon>
     </None>
-    <Content Include="ClientSource\Scripts\Modules\jQuery-SignalR\jquery.signalR-1.0.1.js" />
+    <None Include="ClientSource\Scripts\Modules\jQuery-SignalR\jquery.signalR-1.0.1.js" />
     <Content Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.min.js">
       <DependentUpon>jQueryUI-DynaTree.js.bundle</DependentUpon>
     </Content>
@@ -1268,7 +1270,9 @@
     <Content Include="Global.asax" />
     <None Include="ClientSource\Style\InitialConfig.less" />
     <None Include="ClientSource\Style\Dialog.less" />
-    <None Include="ClientSource\Scripts\Core.js.bundle" />
+    <None Include="ClientSource\Scripts\Core.js.bundle">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.js.bundle" />
     <None Include="ClientSource\Scripts\Modules\Disco-CreateJob.js.bundle" />
     <None Include="ClientSource\Scripts\Modules\tinymce.js.bundle" />
@@ -1304,8 +1308,6 @@
       <LastGenOutput>CommonHelpers.generated.cs</LastGenOutput>
     </None>
     <None Include="Properties\PublishProfiles\HADES3.pubxml" />
-    <None Include="ClientSource\Scripts\Core\jquery-1.9.1.js" />
-    <None Include="ClientSource\Scripts\Core\jquery-ui-1.10.0.js" />
     <None Include="ClientSource\Scripts\Core\jquery.validate.js" />
     <None Include="ClientSource\Scripts\Core\jquery.validate.unobtrusive.js" />
     <None Include="ClientSource\Scripts\Modules\Knockout\knockout-2.2.1.js" />
@@ -1859,7 +1861,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
