@@ -443,7 +443,6 @@ namespace Disco.Web.Areas.API.Controllers
                 job.ExpectedClosedDate = null;
             }
             dbContext.SaveChanges();
-            job.BroadcastUpdate();
         }
         private void UpdateDeviceHeldLocation(Job job, string DeviceHeldLocation)
         {
@@ -577,7 +576,6 @@ namespace Disco.Web.Areas.API.Controllers
             }
             job.JobMetaNonWarranty.AccountingChargeRequiredUserId = DiscoApplication.CurrentUser.Id;
             dbContext.SaveChanges();
-            job.BroadcastUpdate();
             return new Models.Job._DateChangeModel()
             {
                 Id = job.Id,
@@ -612,7 +610,6 @@ namespace Disco.Web.Areas.API.Controllers
             }
             job.JobMetaNonWarranty.AccountingChargeAddedUserId = DiscoApplication.CurrentUser.Id;
             dbContext.SaveChanges();
-            job.BroadcastUpdate();
             return new Models.Job._DateChangeModel()
             {
                 Id = job.Id,
@@ -647,7 +644,6 @@ namespace Disco.Web.Areas.API.Controllers
             }
             job.JobMetaNonWarranty.AccountingChargePaidUserId = DiscoApplication.CurrentUser.Id;
             dbContext.SaveChanges();
-            job.BroadcastUpdate();
             return new Models.Job._DateChangeModel()
             {
                 Id = job.Id,
@@ -1462,7 +1458,6 @@ namespace Disco.Web.Areas.API.Controllers
 
                 job.OnWaitingForUserAction(dbContext, DiscoApplication.CurrentUser, Reason);
                 dbContext.SaveChanges();
-                job.BroadcastUpdate();
                 if (redirect.HasValue && redirect.Value)
                     return RedirectToAction(MVC.Job.Show(job.Id));
                 else
@@ -1492,7 +1487,6 @@ namespace Disco.Web.Areas.API.Controllers
 
                 job.OnNotWaitingForUserAction(dbContext, DiscoApplication.CurrentUser, Resolution);
                 dbContext.SaveChanges();
-                job.BroadcastUpdate();
                 if (redirect.HasValue && redirect.Value)
                     return RedirectToAction(MVC.Job.Show(job.Id));
                 else
@@ -1540,7 +1534,6 @@ namespace Disco.Web.Areas.API.Controllers
                     j.OnDeviceReadyForReturn(DiscoApplication.CurrentUser);
 
                     dbContext.SaveChanges();
-                    j.BroadcastUpdate();
                     if (redirect)
                         return RedirectToAction(MVC.Job.Show(id));
                     else
@@ -1563,7 +1556,6 @@ namespace Disco.Web.Areas.API.Controllers
                     j.OnDeviceHeld(DiscoApplication.CurrentUser);
 
                     dbContext.SaveChanges();
-                    j.BroadcastUpdate();
                     if (redirect)
                         return RedirectToAction(MVC.Job.Show(id));
                     else
@@ -1586,7 +1578,6 @@ namespace Disco.Web.Areas.API.Controllers
                     j.OnDeviceReturned(DiscoApplication.CurrentUser);
 
                     dbContext.SaveChanges();
-                    j.BroadcastUpdate();
                     if (redirect)
                         return RedirectToAction(MVC.Job.Show(id));
                     else
@@ -1655,7 +1646,6 @@ namespace Disco.Web.Areas.API.Controllers
                     j.OnReopen();
 
                     dbContext.SaveChanges();
-                    j.BroadcastUpdate();
                     if (redirect)
                         return RedirectToAction(MVC.Job.Show(id));
                     else

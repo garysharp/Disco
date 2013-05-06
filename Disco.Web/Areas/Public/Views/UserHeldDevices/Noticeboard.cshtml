@@ -453,10 +453,20 @@
             };
 
             var updatedModel = function (id) {
-                var UserId = id.toString();
-                $.getJSON('@(Url.Action(MVC.Public.UserHeldDevices.UserHeldDevice()))', { id: UserId }, function (data) {
-                    processModel(UserId, data, false);
-                });
+                var userId = id.toString();
+
+                $.ajax({
+                    dataType: 'json',
+                    url: '@(Url.Action(MVC.Public.UserHeldDevices.UserHeldDevice()))',
+                    data: { id: userId },
+                    success: function (data) {
+                        processModel(userId, data, false);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        if (textStatus == 'parsererror') // null Result
+                            processModel(userId, null, false);
+                    }
+                })
             };
 
             var connectionError = function () {

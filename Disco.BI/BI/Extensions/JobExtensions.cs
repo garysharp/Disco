@@ -13,13 +13,6 @@ namespace Disco.BI.Extensions
 {
     public static class JobExtensions
     {
-
-        public static void BroadcastUpdate(this Job j)
-        {
-            if (j.UserId != null)
-                Interop.SignalRHandlers.UserHeldDevices.UserJobUpdated(j.UserId);
-        }
-
         public static JobAttachment CreateAttachment(this Job Job, DiscoDataContext dbContext, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, byte[] PdfThumbnail = null)
         {
             if (string.IsNullOrEmpty(MimeType) || MimeType.Equals("unknown/unknown", StringComparison.InvariantCultureIgnoreCase))
