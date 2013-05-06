@@ -22,7 +22,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceModel
                 Model = dm.Model,
                 ModelType = dm.ModelType,
                 DeviceCount = dm.Devices.Count
-            }).Cast<ConfigDeviceModelIndexModelItem>().ToList();
+            }).ToArray().Cast<ConfigDeviceModelIndexModelItem>().ToList();
 
             return m;
         }
