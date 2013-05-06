@@ -1,5 +1,5 @@
 ﻿using Disco.Data.Repository.Monitor;
-using SignalR;
+using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace Disco.BI.Interop.SignalRHandlers
             RepositoryMonitor.StreamAfterCommit.Subscribe(AfterCommit);
         }
 
-        protected override System.Threading.Tasks.Task OnReceivedAsync(IRequest request, string connectionId, string data)
+        protected override Task OnReceived(IRequest request, string connectionId, string data)
         {
             // Add to Group
             if (!string.IsNullOrWhiteSpace(data) && data.StartsWith("/addToGroups:") && data.Length > 13)
@@ -26,7 +26,8 @@ namespace Disco.BI.Interop.SignalRHandlers
                     this.Groups.Add(connectionId, g);
                 }
             }
-            return base.OnReceivedAsync(request, connectionId, data);
+            
+            return base.OnReceived(request, connectionId, data);
         }
 
         private static void AfterCommit(RepositoryMonitorEvent e)

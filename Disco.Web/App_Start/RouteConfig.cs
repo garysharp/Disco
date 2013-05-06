@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using SignalR;
+using Microsoft.AspNet.SignalR;
 
 namespace Disco.Web
 {
@@ -75,7 +75,7 @@ namespace Disco.Web
             // Task Status SignalR Route
             routes.MapConnection<Disco.Services.Tasks.ScheduledTasksLiveStatusService>(
                 "API_Logging_TaskStatusNotifications",
-                "API/Logging/TaskStatusNotifications/{*operation}");
+                "API/Logging/TaskStatusNotifications");
 
             // Task Status Ajax Route
             routes.MapRoute(

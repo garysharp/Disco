@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SignalR;
-using SignalR.Hosting.AspNet;
-using SignalR.Infrastructure;
+using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Infrastructure;
 
 namespace Disco.Services.Tasks
 {
     public class ScheduledTasksLiveStatusService : PersistentConnection
     {
 
-        protected override System.Threading.Tasks.Task OnReceivedAsync(IRequest request, string connectionId, string data)
+        protected override System.Threading.Tasks.Task OnReceived(IRequest request, string connectionId, string data)
         {
             // Add to Group
             if (!string.IsNullOrWhiteSpace(data) && data.StartsWith("/addToGroups:") && data.Length > 13)
@@ -22,8 +21,7 @@ namespace Disco.Services.Tasks
                     this.Groups.Add(connectionId, g);
                 }
             }
-            
-            return base.OnReceivedAsync(request, connectionId, data);
+            return base.OnReceived(request, connectionId, data);
         }
 
         internal static void Broadcast(ScheduledTaskStatusLive SessionStatus)

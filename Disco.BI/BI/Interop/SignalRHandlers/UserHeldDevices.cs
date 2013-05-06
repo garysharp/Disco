@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SignalR;
-using SignalR.Hosting.AspNet;
-using SignalR.Infrastructure;
+using Microsoft.AspNet.SignalR;
 
 namespace Disco.BI.Interop.SignalRHandlers
 {

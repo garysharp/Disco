@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
-using SignalR;
+using Microsoft.AspNet.SignalR;
 
 namespace Disco.Web.Areas.Public
 {
@@ -17,7 +17,7 @@ namespace Disco.Web.Areas.Public
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.Routes.MapConnection<BI.Interop.SignalRHandlers.UserHeldDevices>(
-                "Public_UserHeldDevices_Notifications", "Public/UserHeldDevices/Notifications/{*operation}");
+                "Public_UserHeldDevices_Notifications", "Public/UserHeldDevices/Notifications");
 
             context.MapRoute(
                 "Public_Credits",

@@ -1,4 +1,3 @@
-﻿///#source 1 1 /ClientSource/Scripts/Modules/jQuery-SignalR/jquery.signalR-1.0.1.js
 /* jquery.signalR.core.js */
 /*global window:false */
 /*!
@@ -2006,4 +2005,3 @@
 (function ($) {
     $.signalR.version = "1.0.1";
 }(window.jQuery));
-

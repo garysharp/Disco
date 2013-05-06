@@ -46,27 +46,33 @@
     <Reference Include="DotNet.Highcharts">
       <HintPath>..\packages\DotNet.Highcharts.1.2\lib\DotNet.Highcharts.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.1.0.1\lib\net40\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Owin.1.0.1\lib\net45\Microsoft.AspNet.SignalR.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.1.0.1\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.1.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="Quartz, Version=2.0.1.100, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\Libraries\Quartz\Quartz.dll</HintPath>
     </Reference>
-    <Reference Include="RazorGenerator.Mvc, Version=1.5.4.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="RazorGenerator.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RazorGenerator.Mvc.1.5.4.0\lib\net40\RazorGenerator.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="SignalR">
-      <HintPath>..\packages\SignalR.Server.0.5.3\lib\net40\SignalR.dll</HintPath>
-    </Reference>
-    <Reference Include="SignalR.Hosting.AspNet">
-      <HintPath>..\packages\SignalR.Hosting.AspNet.0.5.3\lib\net45\SignalR.Hosting.AspNet.dll</HintPath>
-    </Reference>
-    <Reference Include="SignalR.Hosting.Common">
-      <HintPath>..\packages\SignalR.Hosting.Common.0.5.3\lib\net40\SignalR.Hosting.Common.dll</HintPath>
+      <HintPath>..\packages\RazorGenerator.Mvc.2.0.1\lib\net40\RazorGenerator.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -157,7 +163,7 @@
     </Reference>
     <Reference Include="T4MVCExtensions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\T4MVCExtensions.3.5.0\lib\net40\T4MVCExtensions.dll</HintPath>
+      <HintPath>..\packages\T4MVCExtensions.3.6.1\lib\net40\T4MVCExtensions.dll</HintPath>
     </Reference>
     <Reference Include="WebActivatorEx">
       <HintPath>..\packages\WebActivatorEx.2.0.1\lib\net40\WebActivatorEx.dll</HintPath>
@@ -921,6 +927,7 @@
     <None Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.js">
       <DependentUpon>jQueryUI-DynaTree.js.bundle</DependentUpon>
     </None>
+    <Content Include="ClientSource\Scripts\Modules\jQuery-SignalR\jquery.signalR-1.0.1.js" />
     <Content Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.min.js">
       <DependentUpon>jQueryUI-DynaTree.js.bundle</DependentUpon>
     </Content>
@@ -1372,7 +1379,7 @@
     <Content Include="ClientSource\Scripts\Modules\tinymce\utils\form_utils.js" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\utils\mctabs.js" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\utils\validate.js" />
-    <None Include="T4MVC.tt.hooks.t4" />
+    <Content Include="T4MVC.tt.hooks.t4" />
     <Content Include="T4MVC.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4MVC.cs</LastGenOutput>
@@ -1768,7 +1775,6 @@
     <None Include="_bin_deployableAssemblies\amd64\sqlceca40.dll" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\README_ENU.txt" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\msvcr90.dll" />
-    <None Include="ClientSource\Scripts\Modules\jQuery-SignalR\jquery.signalR-0.5.3.js" />
     <None Include="ClientSource\Scripts\Core\modernizr-2.6.2.js" />
     <None Include="T4MVC.tt.settings.xml" />
     <Content Include="Web.config">
@@ -1853,7 +1859,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
+      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

@@ -375,6 +375,8 @@ WriteLiteral("></span>\r\n            </div>\r\n        </td>\r\n    </tr>\r\n</
 
 WriteLiteral(" id=\"dialogUpload\"");
 
+WriteLiteral(" class=\"hiddenDialog\"");
+
 WriteLiteral(" title=\"Upload Attachment\"");
 
 WriteLiteral(">\r\n    <div");
@@ -384,6 +386,8 @@ WriteLiteral(" id=\"silverlightHostUploadAttachment\"");
 WriteLiteral(">\r\n    </div>\r\n</div>\r\n<div");
 
 WriteLiteral(" id=\"dialogRemoveLog\"");
+
+WriteLiteral(" class=\"hiddenDialog\"");
 
 WriteLiteral(" title=\"Remove this Comment?\"");
 
@@ -396,6 +400,8 @@ WriteLiteral(" style=\"float: left; margin: 0 7px 20px 0;\"");
 WriteLiteral("></span>\r\n        Are you sure?\r\n    </p>\r\n</div>\r\n<div");
 
 WriteLiteral(" id=\"dialogRemoveAttachment\"");
+
+WriteLiteral(" class=\"hiddenDialog\"");
 
 WriteLiteral(" title=\"Remove this Attachment?\"");
 
@@ -423,6 +429,7 @@ WriteLiteral(@"');
         var $CommentOutput = $Comments.find('.commentOutput');
         var $CommentOutputContainer = $Comments.find('.commentOutputContainer');
         var $CommentInput = $Comments.find('textarea.commentInput');
+        var $dialogRemoveLog;
 
         window.setTimeout(function () {
             $CommentOutput[0].scrollTop = $CommentOutput[0].scrollHeight; // Scroll to Bottom
@@ -442,14 +449,6 @@ WriteLiteral(@"');
         });
         $CommentOutput.find('span.remove').click(removePost);
 
-        $dialogRemoveLog = $('#dialogRemoveLog');
-        $dialogRemoveLog.dialog({
-            resizable: false,
-            height: 140,
-            modal: true,
-            autoOpen: false
-        });
-
         function postComment() {
             var comment = $CommentInput.val();
             if (comment != '') {
@@ -458,46 +457,36 @@ WriteLiteral(@"');
                     url: '");
 
             
-            #line 109 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 102 "..\..\Views\Job\JobParts\Resources.cshtml"
                      Write(Url.Action(MVC.API.Job.CommentPost(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
-WriteLiteral(@"',
-                    dataType: 'json',
-                    data: data,
-                    success: function (d) {
-                        if (d.Result == 'OK') {
-                            // Should be added via Repository Notifications
-                            // addComment(d.Comment, false);
-                            $CommentInput.val('').attr('disabled', false).focus();
-                        } else {
-                            alert('Unable to post comment: ' + d.Result);
-                            $CommentInput.attr('disabled', false);
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        alert('Unable to post comment: ' + textStatus);
-                        $CommentInput.attr('disabled', false);
-                    }
-                });
-            }
-        }
-        function removePost() {
-            $this = $(this);
-            var data = { id: $this.closest('div').attr('data-logid') };
-
-            $dialogRemoveLog.dialog(""enable"");
-            $dialogRemoveLog.dialog('option', 'buttons', {
-                ""Remove"": function () {
-                    $dialogRemoveLog.dialog(""disable"");
-                    $dialogRemoveLog.dialog(""option"", ""buttons"", null);
-                    $.ajax({
-                        url: '");
+WriteLiteral("\',\r\n                    dataType: \'json\',\r\n                    data: data,\r\n     " +
+"               success: function (d) {\r\n                        if (d.Result == " +
+"\'OK\') {\r\n                            // Should be added via Repository Notificat" +
+"ions\r\n                            // addComment(d.Comment, false);\r\n            " +
+"                $CommentInput.val(\'\').attr(\'disabled\', false).focus();\r\n        " +
+"                } else {\r\n                            alert(\'Unable to post comm" +
+"ent: \' + d.Result);\r\n                            $CommentInput.attr(\'disabled\', " +
+"false);\r\n                        }\r\n                    },\r\n                    " +
+"error: function (jqXHR, textStatus, errorThrown) {\r\n                        aler" +
+"t(\'Unable to post comment: \' + textStatus);\r\n                        $CommentInp" +
+"ut.attr(\'disabled\', false);\r\n                    }\r\n                });\r\n       " +
+"     }\r\n        }\r\n        function removePost() {\r\n            $this = $(this);" +
+"\r\n            var data = { id: $this.closest(\'div\').attr(\'data-logid\') };\r\n\r\n   " +
+"         if (!$dialogRemoveLog) {\r\n                $dialogRemoveLog = $(\'#dialog" +
+"RemoveLog\').dialog({\r\n                    resizable: false,\r\n                   " +
+" height: 140,\r\n                    modal: true,\r\n                    autoOpen: f" +
+"alse\r\n                });\r\n            }\r\n\r\n            $dialogRemoveLog.dialog(" +
+"\"enable\").dialog(\'option\', \'buttons\', {\r\n                \"Remove\": function () {" +
+"\r\n                    $dialogRemoveLog.dialog(\"disable\");\r\n                    $" +
+"dialogRemoveLog.dialog(\"option\", \"buttons\", null);\r\n                    $.ajax({" +
+"\r\n                        url: \'");
 
             
-            #line 139 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 140 "..\..\Views\Job\JobParts\Resources.cshtml"
                          Write(Url.Action(MVC.API.Job.CommentRemove()));
 
             
@@ -526,9 +515,7 @@ WriteLiteral(@"',
                 ""Cancel"": function () {
                     $dialogRemoveLog.dialog(""close"");
                 }
-            });
-
-            $dialogRemoveLog.dialog('open');
+            }).dialog('open');
 
             return false;
         }
@@ -537,7 +524,7 @@ WriteLiteral(@"',
                 url: '");
 
             
-            #line 170 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 169 "..\..\Views\Job\JobParts\Resources.cshtml"
                  Write(Url.Action(MVC.API.Job.Comment()));
 
             
@@ -567,35 +554,47 @@ WriteLiteral(@"',
             commentHtml = commentHtml.replace(/\#(\d+)/g, '<a href=""");
 
             
-            #line 191 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 190 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                Write(Url.Action(MVC.Job.Show(null)));
 
             
             #line default
             #line hidden
-WriteLiteral("?id=$1\">#$1</a>\');\r\n            eComment.html(commentHtml);\r\n\r\n            $Comme" +
-"ntOutput.append(e);\r\n\r\n            if (!quick) {\r\n                e.animate({ ba" +
-"ckgroundColor: \'#ffff99\' }, 500, function () {\r\n                    e.animate({ " +
-"backgroundColor: \'#f4f4f4\' }, 500);\r\n                });\r\n                $Comme" +
-"ntOutput.animate({ scrollTop: $CommentOutput[0].scrollHeight }, 250)\r\n          " +
-"  }\r\n        }\r\n        //#endregion\r\n\r\n        //#region Attachments\r\n        i" +
-"f (!document.DiscoFunctions) {\r\n            document.DiscoFunctions = {};\r\n     " +
-"   }\r\n        // For Silverlight Backwards-compatibility\r\n        //  - Reposito" +
-"ry notifications now handles this\r\n        document.DiscoFunctions.addAttachment" +
-" = function () { };\r\n\r\n        $Attachments = $(\'#Attachments\');\r\n        $attac" +
-"hmentOutput = $Attachments.find(\'.attachmentOutput\');\r\n\r\n        $attachmentOutp" +
-"ut.find(\'span.remove\').click(removeLocalAttachment);\r\n\r\n        $(\'#dialogUpload" +
-"\').dialog({\r\n            autoOpen: false,\r\n            draggable: false,\r\n      " +
-"      modal: true,\r\n            resizable: false,\r\n            width: 860,\r\n    " +
-"        height: 550,\r\n            close: function () {\r\n                silverli" +
-"ghtUploadAttachment.content.Navigator.Navigate(\'/Hidden\');\r\n            }\r\n     " +
-"   });\r\n\r\n        $(\'#dialogRemoveAttachment\').dialog({\r\n            resizable: " +
-"false,\r\n            height: 140,\r\n            modal: true,\r\n            autoOpen" +
-": false\r\n        });\r\n\r\n        var onLoadNavigation = null;\r\n        var isLoad" +
-"ed = null;\r\n        Silverlight.createObject(\r\n                \'");
+WriteLiteral(@"?id=$1"">#$1</a>');
+            eComment.html(commentHtml);
+
+            $CommentOutput.append(e);
+
+            if (!quick) {
+                e.animate({ backgroundColor: '#ffff99' }, 500, function () {
+                    e.animate({ backgroundColor: '#f4f4f4' }, 500);
+                });
+                $CommentOutput.animate({ scrollTop: $CommentOutput[0].scrollHeight }, 250)
+            }
+        }
+        //#endregion
+
+        //#region Attachments
+        if (!document.DiscoFunctions) {
+            document.DiscoFunctions = {};
+        }
+        // For Silverlight Backwards-compatibility
+        //  - Repository notifications now handles this
+        document.DiscoFunctions.addAttachment = function () { };
+
+        var $Attachments = $('#Attachments');
+        var $attachmentOutput = $Attachments.find('.attachmentOutput');
+        var $dialogUpload, $dialogRemoveAttachment;
+
+        $attachmentOutput.find('span.remove').click(removeLocalAttachment);
+
+        var onLoadNavigation = null;
+        var isLoaded = null;
+        Silverlight.createObject(
+                '");
 
             
-            #line 240 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 221 "..\..\Views\Job\JobParts\Resources.cshtml"
              Write(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap);
 
             
@@ -616,7 +615,7 @@ WriteLiteral(@"',
                             'UploadUrl=");
 
             
-            #line 252 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 233 "..\..\Views\Job\JobParts\Resources.cshtml"
                                    Write(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)));
 
             
@@ -625,7 +624,7 @@ WriteLiteral(@"',
 WriteLiteral(@"'
                         );
 
-        $attachmentInput = $Attachments.find('.attachmentInput');
+        var $attachmentInput = $Attachments.find('.attachmentInput');
         $attachmentInput.find('.photo').click(function () {
             showDialog('/WebCam');
         });
@@ -633,9 +632,22 @@ WriteLiteral(@"'
             showDialog('/File');
         });
 
-        silverlightUploadAttachment = $('#silverlightUploadAttachment').get(0);
+        var silverlightUploadAttachment = $('#silverlightUploadAttachment').get(0);
         function showDialog(navigationPath) {
-            $('#dialogUpload').dialog('open');
+            if (!$dialogUpload) {
+                $dialogUpload = $('#dialogUpload').dialog({
+                    autoOpen: false,
+                    draggable: false,
+                    modal: true,
+                    resizable: false,
+                    width: 860,
+                    height: 550,
+                    close: function () {
+                        silverlightUploadAttachment.content.Navigator.Navigate('/Hidden');
+                    }
+                });
+            }
+            $dialogUpload.dialog('open');
             if (isLoaded) {
                 silverlightUploadAttachment.content.Navigator.Navigate(navigationPath);
             } else {
@@ -644,75 +656,79 @@ WriteLiteral(@"'
         };
         function addAttachment(id, quick) {
             var data = { id: id };
+
             $.ajax({
                 url: '");
 
             
-            #line 275 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 270 "..\..\Views\Job\JobParts\Resources.cshtml"
                  Write(Url.Action(MVC.API.Job.Attachment()));
 
             
             #line default
             #line hidden
 WriteLiteral(@"',
-                dataType: 'json',
-                data: data,
-                success: function (d) {
-                    if (d.Result == 'OK') {
-                        var a = d.Attachment;
+                    dataType: 'json',
+                    data: data,
+                    success: function (d) {
+                        if (d.Result == 'OK') {
+                            var a = d.Attachment;
 
-                        if (parseInt(a.ParentId) == jobId) {
-                            var e = $('<a><span class=""icon""><img alt=""Attachment Thumbnail"" /></span><span class=""comments""></span><span class=""author""></span><span class=""remove""></span><span class=""timestamp""></span></a>');
+                            if (parseInt(a.ParentId) == jobId) {
+                                var e = $('<a><span class=""icon""><img alt=""Attachment Thumbnail"" /></span><span class=""comments""></span><span class=""author""></span><span class=""remove""></span><span class=""timestamp""></span></a>');
 
-                            e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '");
-
-            
-            #line 285 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                                          Write(Url.Action(MVC.API.Job.AttachmentDownload()));
+                                e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '");
 
             
-            #line default
-            #line hidden
-WriteLiteral("/\' + a.Id);\r\n                            e.find(\'.icon img\').attr(\'src\', \'");
-
-            
-            #line 286 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                         Write(Url.Action(MVC.API.Job.AttachmentThumbnail()));
+            #line 280 "..\..\Views\Job\JobParts\Resources.cshtml"
+                                                                                                              Write(Url.Action(MVC.API.Job.AttachmentDownload()));
 
             
             #line default
             #line hidden
-WriteLiteral("/\' + a.Id);\r\n                            e.find(\'.comments\').text(a.Comments);\r\n " +
-"                           e.find(\'.author\').text(a.Author);\r\n                  " +
-"          e.find(\'.timestamp\').text(a.TimestampFuzzy).attr(\'title\', a.TimestampF" +
-"ull);\r\n                            e.find(\'.remove\').click(removeLocalAttachment" +
-");\r\n                            if (!quick)\r\n                                e.h" +
-"ide();\r\n                            $attachmentOutput.append(e);\r\n              " +
-"              if (!quick)\r\n                                e.show(\'slow\');\r\n    " +
-"                        if (a.MimeType.toLowerCase().indexOf(\'image/\') == 0)\r\n  " +
-"                              e.shadowbox({ gallery: \'attachments\', player: \'img" +
-"\', title: a.Comments });\r\n                        }\r\n                    } else " +
-"{\r\n                        alert(\'Unable to add attachment: \' + d.Result);\r\n    " +
-"                }\r\n                },\r\n                error: function (jqXHR, t" +
-"extStatus, errorThrown) {\r\n                    alert(\'Unable to add attachment: " +
-"\' + textStatus);\r\n                }\r\n            });\r\n        }\r\n        functio" +
-"n removeAttachment(id) {\r\n            var $element = $attachmentOutput.find(\'a[d" +
-"ata-attachmentid=\"\' + id + \'\"]\');\r\n            if ($element.length > 0) {\r\n     " +
-"           $element.hide(300).delay(300).queue(function () {\r\n                  " +
-"  if ($element.attr(\'data-mimetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n    " +
-"                    Shadowbox.removeCache(this);\r\n                    $element.r" +
-"emove();\r\n                });\r\n            }\r\n        }\r\n\r\n        function remo" +
-"veLocalAttachment() {\r\n            $this = $(this).closest(\'a\');\r\n\r\n            " +
-"var data = { id: $this.attr(\'data-attachmentid\') };\r\n\r\n            var $dialogRe" +
-"moveAttachment = $(\'#dialogRemoveAttachment\');\r\n            $dialogRemoveAttachm" +
-"ent.dialog(\"enable\");\r\n            $dialogRemoveAttachment.dialog(\'option\', \'but" +
-"tons\', {\r\n                \"Remove\": function () {\r\n                    $dialogRe" +
-"moveAttachment.dialog(\"disable\");\r\n                    $dialogRemoveAttachment.d" +
-"ialog(\"option\", \"buttons\", null);\r\n                    $.ajax({\r\n               " +
-"         url: \'");
+WriteLiteral("/\' + a.Id);\r\n                                e.find(\'.icon img\').attr(\'src\', \'");
 
             
-            #line 331 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 281 "..\..\Views\Job\JobParts\Resources.cshtml"
+                                                             Write(Url.Action(MVC.API.Job.AttachmentThumbnail()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("/\' + a.Id);\r\n                                e.find(\'.comments\').text(a.Comments)" +
+";\r\n                                e.find(\'.author\').text(a.Author);\r\n          " +
+"                      e.find(\'.timestamp\').text(a.TimestampFuzzy).attr(\'title\', " +
+"a.TimestampFull);\r\n                                e.find(\'.remove\').click(remov" +
+"eLocalAttachment);\r\n                                if (!quick)\r\n               " +
+"                     e.hide();\r\n                                $attachmentOutpu" +
+"t.append(e);\r\n                                if (!quick)\r\n                     " +
+"               e.show(\'slow\');\r\n                                if (a.MimeType.t" +
+"oLowerCase().indexOf(\'image/\') == 0)\r\n                                    e.shad" +
+"owbox({ gallery: \'attachments\', player: \'img\', title: a.Comments });\r\n          " +
+"                  }\r\n                        } else {\r\n                         " +
+"   alert(\'Unable to add attachment: \' + d.Result);\r\n                        }\r\n " +
+"                   },\r\n                    error: function (jqXHR, textStatus, e" +
+"rrorThrown) {\r\n                        alert(\'Unable to add attachment: \' + text" +
+"Status);\r\n                    }\r\n                });\r\n            }\r\n        fun" +
+"ction removeAttachment(id) {\r\n            var $element = $attachmentOutput.find(" +
+"\'a[data-attachmentid=\"\' + id + \'\"]\');\r\n            if ($element.length > 0) {\r\n " +
+"               $element.hide(300).delay(300).queue(function () {\r\n              " +
+"      if ($element.attr(\'data-mimetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n" +
+"                        Shadowbox.removeCache(this);\r\n                    $eleme" +
+"nt.remove();\r\n                });\r\n            }\r\n        }\r\n\r\n        function " +
+"removeLocalAttachment() {\r\n            $this = $(this).closest(\'a\');\r\n\r\n        " +
+"    var data = { id: $this.attr(\'data-attachmentid\') };\r\n\r\n            if (!$dia" +
+"logRemoveAttachment) {\r\n                $dialogRemoveAttachment = $(\'#dialogRemo" +
+"veAttachment\').dialog({\r\n                    resizable: false,\r\n                " +
+"    height: 140,\r\n                    modal: true,\r\n                    autoOpen" +
+": false\r\n                });\r\n            }\r\n\r\n            $dialogRemoveAttachme" +
+"nt.dialog(\"enable\").dialog(\'option\', \'buttons\', {\r\n                \"Remove\": fun" +
+"ction () {\r\n                    $dialogRemoveAttachment.dialog(\"disable\");\r\n    " +
+"                $dialogRemoveAttachment.dialog(\"option\", \"buttons\", null);\r\n    " +
+"                $.ajax({\r\n                        url: \'");
+
+            
+            #line 333 "..\..\Views\Job\JobParts\Resources.cshtml"
                          Write(Url.Action(MVC.API.Job.AttachmentRemove()));
 
             
@@ -734,32 +750,34 @@ WriteLiteral("\',\r\n                        dataType: \'json\',\r\n            
 "to remove attachment: \' + textStatus);\r\n                            $dialogRemov" +
 "eAttachment.dialog(\"close\");\r\n                        }\r\n                    });" +
 "\r\n                },\r\n                \"Cancel\": function () {\r\n                 " +
-"   $dialogRemoveAttachment.dialog(\"close\");\r\n                }\r\n            });\r" +
-"\n\r\n            $dialogRemoveAttachment.dialog(\'open\');\r\n\r\n            return fal" +
-"se;\r\n        }\r\n\r\n        $attachmentOutput.children(\'a\').each(function () {\r\n  " +
-"          $this = $(this);\r\n            if ($this.attr(\'data-mimetype\').toLowerC" +
-"ase().indexOf(\'image/\') == 0)\r\n                $this.shadowbox({ gallery: \'attac" +
-"hments\', player: \'img\', title: $this.find(\'.comments\').text() });\r\n        });\r\n" +
-"        //#endregion\r\n\r\n        //#region LiveEvents\r\n        function liveMessa" +
-"geRecieved(d) {\r\n            if (d) {\r\n                switch (d.EntityTypeName)" +
-" {\r\n                    case \'JobAttachment\':\r\n                        switch (d" +
-".EventType) {\r\n                            case 0: // Added\r\n                   " +
-"             addAttachment(d.EntityKey[0], false);\r\n                            " +
-"    break;\r\n                            case 1: // Removed\r\n                    " +
-"            removeAttachment(d.EntityKey[0]);\r\n                                b" +
-"reak;\r\n                        }\r\n                        break;\r\n              " +
-"      case \'JobLog\':\r\n                        switch (d.EventType) {\r\n          " +
-"                  case 0: // Added\r\n                                loadLiveComm" +
-"ent(d.EntityKey[0]);\r\n                                break;\r\n                  " +
-"          case 1: // Removed\r\n                                $CommentOutput.chi" +
-"ldren(\'div[data-logid=\"\' + d.EntityKey[0] + \'\"]\').slideUp(300).delay(300).queue(" +
-"function () {\r\n                                    $(this).remove();\r\n          " +
-"                      });\r\n                                break;\r\n             " +
-"           }\r\n                        break;\r\n                }\r\n            }\r\n" +
-"        }\r\n        var liveMessagesConnection = $.connection(\'");
+"   $dialogRemoveAttachment.dialog(\"close\");\r\n                }\r\n            }).d" +
+"ialog(\'open\');\r\n\r\n            return false;\r\n        }\r\n\r\n        $attachmentOut" +
+"put.children(\'a\').each(function () {\r\n            $this = $(this);\r\n            " +
+"if ($this.attr(\'data-mimetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n         " +
+"       $this.shadowbox({ gallery: \'attachments\', player: \'img\', title: $this.fin" +
+"d(\'.comments\').text() });\r\n        });\r\n        //#endregion\r\n\r\n        //#regio" +
+"n LiveEvents\r\n        function liveMessageRecieved(d) {\r\n            if (d) {\r\n " +
+"               window.setTimeout(function () {\r\n                    switch (d.En" +
+"tityTypeName) {\r\n                        case \'JobAttachment\':\r\n                " +
+"            switch (d.EventType) {\r\n                                case 0: // A" +
+"dded\r\n                                    addAttachment(d.EntityKey[0], false);\r" +
+"\n                                    break;\r\n                                cas" +
+"e 1: // Removed\r\n                                    removeAttachment(d.EntityKe" +
+"y[0]);\r\n                                    break;\r\n                            " +
+"}\r\n                            break;\r\n                        case \'JobLog\':\r\n " +
+"                           switch (d.EventType) {\r\n                             " +
+"   case 0: // Added\r\n                                    loadLiveComment(d.Entit" +
+"yKey[0]);\r\n                                    break;\r\n                         " +
+"       case 1: // Removed\r\n                                    $CommentOutput.ch" +
+"ildren(\'div[data-logid=\"\' + d.EntityKey[0] + \'\"]\').slideUp(300).delay(300).queue" +
+"(function () {\r\n                                        $(this).remove();\r\n     " +
+"                               });\r\n                                    break;\r\n" +
+"                            }\r\n                            break;\r\n             " +
+"       }\r\n                }, 100);\r\n            }\r\n        }\r\n        var liveMe" +
+"ssagesConnection = $.connection(\'");
 
             
-            #line 400 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 402 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                Write(Url.Content("~/API/Repository/Notifications"));
 
             
