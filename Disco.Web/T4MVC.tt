@@ -1,6 +1,6 @@
 ﻿<#
 /*
-T4MVC Version 3.5.0
+T4MVC Version 3.6.1
 Find latest version and documentation at http://mvccontrib.codeplex.com/wikipage?title=T4MVC
 Discuss on StackOverflow or on Codeplex (https://t4mvc.codeplex.com/discussions)
 
@@ -111,7 +111,7 @@ namespace <#=settings.T4MVCNamespace #>
 
 <#foreach (var resultType in ResultTypes.Values) { #>
 [<#= GeneratedCode #>, DebuggerNonUserCode]
-public class T4MVC_<#=resultType.UniqueName #> : <#=resultType.FullName #>, IT4MVCActionResult
+internal partial class T4MVC_<#=resultType.UniqueName #> : <#=resultType.FullName #>, IT4MVCActionResult
 {
     public T4MVC_<#=resultType.UniqueName #>(string area, string controller, string action, string protocol = null): base(<#resultType.Constructor.WriteNonEmptyParameterValues(true); #>)
     {
@@ -207,7 +207,12 @@ namespace <#=controller.Namespace #>
         [<#= GeneratedCode #>, DebuggerNonUserCode]
         public virtual <#=method.ReturnTypeFullName #> <#=method.Name #>()
         {
+<#if (method.ReturnTypeFullName == "System.Threading.Tasks.Task<System.Web.Mvc.ActionResult>") { #>
+            var callInfo = new T4MVC_<#=method.ReturnTypeUniqueName #>(Area, Name, ActionNames.<#=method.ActionName #><# if (method.ActionUrlHttps) {#>, "https"<#}#>);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+<#} else { #>
             return new T4MVC_<#=method.ReturnTypeUniqueName #>(Area, Name, ActionNames.<#=method.ActionName #><# if (method.ActionUrlHttps) {#>, "https"<#}#>);
+<#} #>
         }
 <#} #>
 <#foreach (var method in controller.CustomActionMethodsUniqueWithoutParameterlessOverload) { #>
@@ -229,7 +234,11 @@ namespace <#=controller.Namespace #>
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, <#=p.RouteNameExpression #>, <#=p.Name #>);
 <#} #>
 <#}#>
+<#if (method.ReturnTypeFullName == "System.Threading.Tasks.Task<System.Web.Mvc.ActionResult>") { #>
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+<#} else { #>
             return callInfo;
+<#} #>
         }
 <#} #>
 
@@ -334,7 +343,11 @@ foreach (var group in controller.UniqueParameterNamesGroupedByActionName) if (gr
 <#} #>
 <#}#>
             <#=method.Name #>Override(callInfo<#if (method.Parameters.Count > 0) { #><#foreach (var p in method.Parameters) { #>, <#=p.Name #><#}}#>);
+<#if (method.ReturnTypeFullName == "System.Threading.Tasks.Task<System.Web.Mvc.ActionResult>") { #>
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+<#} else { #>
             return callInfo;
+<#} #>
         }
 
 <#} #>
@@ -529,14 +542,16 @@ void ProcessAreas(Project project)
 
     // Get the Areas folder
     ProjectItem areaProjectItem = GetProjectItem(project, settings.AreasFolder);
-    if (areaProjectItem == null)
-        return;
-
-    foreach (ProjectItem item in areaProjectItem.ProjectItems)
+    
+    // Process areas folder
+    if (areaProjectItem != null)
     {
-        if (IsFolder(item))
+        foreach (ProjectItem item in areaProjectItem.ProjectItems)
         {
-            ProcessArea(item.ProjectItems, item.Name);
+            if (IsFolder(item))
+            {
+                ProcessArea(item.ProjectItems, item.Name);
+            }
         }
     }
 
@@ -776,10 +791,10 @@ void ProcessControllerActionMethods(ControllerInfo controllerInfo, CodeClass2 cu
             if (method.Type.TypeKind != vsCMTypeRef.vsCMTypeRefCodeType || !(method.Type.CodeType is CodeClass2))
                 continue;
 
-            // We only support action methods that return an ActionResult derived type
-            if (!method.Type.CodeType.get_IsDerivedFrom("System.Web.Mvc.ActionResult"))
+            // We only support action methods that return an ActionResult and Task<ActionResult> derived types
+            if (!method.Type.CodeType.get_IsDerivedFrom("System.Web.Mvc.ActionResult") && method.Type.CodeType.FullName !="System.Threading.Tasks.Task<System.Web.Mvc.ActionResult>")
             {
-                Warning(String.Format("{0} doesn't support {1}.{2} because it doesn't return a supported ActionResult type", T4FileName, type.Name, method.Name));
+                Warning(String.Format("{0} doesn't support {1}.{2} because it doesn't return a supported {3} type", T4FileName, type.Name, method.Name, method.Type.CodeType.FullName));
                 continue;
             }
 
@@ -789,10 +804,10 @@ void ProcessControllerActionMethods(ControllerInfo controllerInfo, CodeClass2 cu
                 continue;
 
             // If we haven't yet seen this return type, keep track of it
-            if (!ResultTypes.ContainsKey(method.Type.CodeType.Name))
+            var resTypeInfo2 = new ResultTypeInfo(method.Type.CodeType);
+            if (!ResultTypes.ContainsKey(resTypeInfo2.FullName))
             {
-                var resTypeInfo = new ResultTypeInfo(method.Type.CodeType);
-                ResultTypes[method.Type.CodeType.FullName] = resTypeInfo;
+                ResultTypes[resTypeInfo2.FullName] = resTypeInfo2;
             }
 
             // Make sure the method is virtual
@@ -1000,17 +1015,19 @@ PopIndent();
 if (!settings.ExcludedStaticFileExtensions.Any(extension => projectItem.Name.EndsWith(extension, StringComparison.OrdinalIgnoreCase))) {
     // if it's a non-minified javascript file
     if (projectItem.Name.EndsWith(".js") && !projectItem.Name.EndsWith(".min.js")) { 
+        string minifiedName = projectItem.Name.Replace(".js", ".min.js");
         if (AddTimestampToStaticLink(projectItem)) { #>
-    public static readonly string <#=Sanitize(projectItem.Name)#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=projectItem.Name.Replace(".js", ".min.js")#>") ? Url("<#=projectItem.Name.Replace(".js", ".min.js")#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=projectItem.Name#>") : Url("<#=projectItem.Name#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=projectItem.Name#>");
+    public static readonly string <#=Sanitize(projectItem.Name)#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=minifiedName#>") : Url("<#=projectItem.Name#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=projectItem.Name#>");
         <#+} else {#>
-    public static readonly string <#=Sanitize(projectItem.Name)#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=projectItem.Name.Replace(".js", ".min.js")#>") ? Url("<#=projectItem.Name.Replace(".js", ".min.js")#>") : Url("<#=projectItem.Name#>");
+    public static readonly string <#=Sanitize(projectItem.Name)#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>") : Url("<#=projectItem.Name#>");
         <#+}  #>          
 <#+}
     else if (projectItem.Name.EndsWith(".css") && !projectItem.Name.EndsWith(".min.css")) { 
+        string minifiedName = projectItem.Name.Replace(".css", ".min.css");
         if (AddTimestampToStaticLink(projectItem)) { #>
-    public static readonly string <#=Sanitize(projectItem.Name)#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=projectItem.Name.Replace(".css", ".min.css")#>") ? Url("<#=projectItem.Name.Replace(".css", ".min.css")#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=projectItem.Name#>") : Url("<#=projectItem.Name#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=projectItem.Name#>");
+    public static readonly string <#=Sanitize(projectItem.Name)#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=minifiedName#>") : Url("<#=projectItem.Name#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=projectItem.Name#>");
         <#+} else {#>
-    public static readonly string <#=Sanitize(projectItem.Name)#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=projectItem.Name.Replace(".css", ".min.css")#>") ? Url("<#=projectItem.Name.Replace(".css", ".min.css")#>") : Url("<#=projectItem.Name#>");
+    public static readonly string <#=Sanitize(projectItem.Name)#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>") : Url("<#=projectItem.Name#>");
         <#+}  #> 
 <#+}
     else if (AddTimestampToStaticLink(projectItem)) { #>
@@ -1178,6 +1195,19 @@ static CodeAttribute2 GetAttribute(CodeElements attributes, string attributeType
             // FullName can throw in some cases, so just ignore those attributes
             continue;
         }
+    }
+    return null;
+}
+
+static CodeAttribute2 GetAttribute(CodeClass2 type, string attributeType)
+{
+    while(type != null) {
+        var attribute = GetAttribute(type.Attributes, attributeType);
+        if(attribute != null)
+            return attribute;
+        if (type.Bases.Count == 0)
+            return null;
+        type = (CodeClass2)type.Bases.Item(1);
     }
     return null;
 }
@@ -1572,10 +1602,12 @@ class FunctionInfo
     public string Name { get { return _method.Name; } }
     public string ReturnType { get { return ReturnTypeImpl.Name; } }
     public string ReturnTypeFullName { get { return ReturnTypeImpl.FullName; } }
-    public string ReturnTypeUniqueName { get { return UniqueFullName(ReturnTypeImpl); } }
+    public string ReturnTypeUniqueName { get { return IsTaskBased ? "System_Web_Mvc_ActionResult" : UniqueFullName(ReturnTypeImpl); } }
     public bool IsPublic { get { return _method.Access == vsCMAccess.vsCMAccessPublic; } }
     public List<MethodParamInfo> Parameters { get; private set; }
     public bool CanBeCalledWithoutParameters { get; private set; }
+	
+    private bool IsTaskBased { get {return ReturnTypeImpl.FullName == "System.Threading.Tasks.Task<System.Web.Mvc.ActionResult>"; } }
 
     // Write out all the parameters as part of a method declaration
     public void WriteFormalParameters(bool first, bool includeDefaults = false)
@@ -1658,7 +1690,7 @@ class ActionMethodInfo : FunctionInfo
             ActionNameValueExpression = arg.Value;
         }
 
-        if (GetAttribute(method.Attributes, settings.AttributeIndicatingHttps) != null || GetAttribute(controller.Attributes, settings.AttributeIndicatingHttps) != null)
+        if (GetAttribute(method.Attributes, settings.AttributeIndicatingHttps) != null || GetAttribute(controller, settings.AttributeIndicatingHttps) != null)
         {
             ActionUrlHttps = true;
         }
@@ -1690,8 +1722,8 @@ class ResultTypeInfo
     }
 
     public string Name { get { return _codeType.Name; } }
-    public string FullName { get { return _codeType.FullName; } }
-    public string UniqueName { get { return UniqueFullName(_codeType); } }
+    public string FullName { get { return this.IsTaskBased ? "System.Web.Mvc.ActionResult" : _codeType.FullName; } }
+    public string UniqueName { get { return this.IsTaskBased ?  "System_Web_Mvc_ActionResult" : UniqueFullName(_codeType); } }
     public FunctionInfo Constructor { get; set; }
     public IEnumerable<FunctionInfo> AbstractMethods
     {
@@ -1701,6 +1733,8 @@ class ResultTypeInfo
                 f => f.MustImplement).Select(f => new FunctionInfo(f));
         }
     }
+
+    private bool IsTaskBased { get {return _codeType.FullName == "System.Threading.Tasks.Task<System.Web.Mvc.ActionResult>"; } }
 }
 
 class MethodParamInfo

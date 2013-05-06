@@ -107,7 +107,7 @@ namespace T4MVC
 }
 
 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-public class T4MVC_System_Web_Mvc_ActionResult : System.Web.Mvc.ActionResult, IT4MVCActionResult
+internal partial class T4MVC_System_Web_Mvc_ActionResult : System.Web.Mvc.ActionResult, IT4MVCActionResult
 {
     public T4MVC_System_Web_Mvc_ActionResult(string area, string controller, string action, string protocol = null): base()
     {
@@ -336,7 +336,7 @@ namespace Links
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/jQuery-SignalR";
                     public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                     public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string jquery_signalR_0_5_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.signalR-0.5.3.min.js") ? Url("jquery.signalR-0.5.3.min.js") : Url("jquery.signalR-0.5.3.js");
+                    public static readonly string jquery_signalR_1_0_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.signalR-1.0.1.min.js") ? Url("jquery.signalR-1.0.1.min.js") : Url("jquery.signalR-1.0.1.js");
                                   
                 }
             
