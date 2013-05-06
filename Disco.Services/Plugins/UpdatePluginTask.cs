@@ -149,7 +149,6 @@ namespace Disco.Services.Plugins
                 if (string.IsNullOrEmpty(packageTempFilePath))
                 {
                     // Download Update
-
                     Status.UpdateStatus(0, string.Format("Downloading Plugin Package: {0}", pluginName), "Connecting...");
                     packageTempFilePath = Path.Combine(pluginPackagesLocation, string.Format("{0}.discoPlugin", pluginId));
 
@@ -160,19 +159,32 @@ namespace Disco.Services.Plugins
                         Directory.CreateDirectory(Path.GetDirectoryName(packageTempFilePath));
 
                     // Need to Download the Package
-                    WebClient downloader = new WebClient();
-                    DateTime progressExpires = DateTime.Now;
-                    downloader.DownloadProgressChanged += (sender, e) =>
+                    HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(catalogueItem.LatestDownloadUrl);
+                    webRequest.KeepAlive = false;
+
+                    webRequest.ContentType = "application/xml";
+                    webRequest.Method = WebRequestMethods.Http.Get;
+                    webRequest.UserAgent = string.Format("Disco/{0} (PluginLibrary)", Disco.Services.Plugins.CommunityInterop.PluginLibraryUpdateTask.CurrentDiscoVersion());
+
+                    using (HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse())
                     {
-                        Console.WriteLine(e.ProgressPercentage);
-                        if (progressExpires <= DateTime.Now)
+                        if (webResponse.StatusCode == HttpStatusCode.OK)
                         {
-                            Status.UpdateStatus(e.ProgressPercentage, string.Format("{0} of {1} KB downloaded", e.BytesReceived / 1024, e.TotalBytesToReceive / 1024));
-                            // Throttle Updates for SignalR
-                            progressExpires = DateTime.Now.AddMilliseconds(250);
+                            Status.UpdateStatus(0, "Downloading...");
+                            using (var wResStream = webResponse.GetResponseStream())
+                            {
+                                using (FileStream fsOut = new FileStream(packageTempFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                                {
+                                    wResStream.CopyTo(fsOut);
+                                }
+                            }
                         }
-                    };
-                    downloader.DownloadFileTaskAsync(new Uri(catalogueItem.LatestDownloadUrl), packageTempFilePath).Wait();
+                        else
+                        {
+                            Status.SetTaskException(new WebException(string.Format("Server responded with: [{0}] {1}", webResponse.StatusCode, webResponse.StatusDescription)));
+                            return;
+                        }
+                    }
                 }
 
                 Status.UpdateStatus(10, "Opening Plugin Package", Path.GetFileName(packageTempFilePath));
