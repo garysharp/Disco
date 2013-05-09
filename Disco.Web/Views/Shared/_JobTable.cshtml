@@ -7,17 +7,15 @@
     }
     else
     {
-        var modelItems = Model.Items;
-        var modelItemsGrouped = modelItems.OrderBy(i => i.DeviceAddress).GroupBy(i => i.DeviceAddress);
-        foreach (var modelItemsGroup in modelItemsGrouped)
+        var multiSiteModels = Model.MultiCampusModels;
+
+        foreach (var multiSiteModel in multiSiteModels)
         {
-            Model.Items = modelItemsGroup.ToList();
-            if (modelItemsGroup.Key != null)
-            { 
-    <h3>
-        @modelItemsGroup.Key</h3>
+            if (!string.IsNullOrEmpty(multiSiteModel.Key))
+            {
+    <h3>@multiSiteModel.Key</h3>
             }
-    @Html.Partial(MVC.Shared.Views._JobTableRender, Model, new ViewDataDictionary())
+    @Html.Partial(MVC.Shared.Views._JobTableRender, multiSiteModel.Value, new ViewDataDictionary())
         }
     }
 }

@@ -21,13 +21,15 @@ namespace Disco.BI.Extensions
                 var jobItems = Jobs.Select(j => new JobTableModel.JobTableItemModelIncludeStatus()
                 {
                     Id = j.Id,
-                    DeviceAddressId = j.Device.DeviceProfile.DefaultOrganisationAddress,
                     OpenedDate = j.OpenedDate,
                     ClosedDate = j.ClosedDate,
                     TypeId = j.JobTypeId,
                     TypeDescription = j.JobType.Description,
                     DeviceSerialNumber = j.Device.SerialNumber,
+                    DeviceProfileId = j.Device.DeviceProfileId,
+                    DeviceModelId = j.Device.DeviceModelId,
                     DeviceModelDescription = j.Device.DeviceModel.Description,
+                    DeviceAddressId = j.Device.DeviceProfile.DefaultOrganisationAddress,
                     UserId = j.UserId,
                     UserDisplayName = j.User.DisplayName,
                     OpenedTechUserId = j.OpenedTechUserId,
@@ -66,13 +68,15 @@ namespace Disco.BI.Extensions
                 items = Jobs.Select(j => new JobTableModel.JobTableItemModel()
                 {
                     Id = j.Id,
-                    DeviceAddressId = j.Device.DeviceProfile.DefaultOrganisationAddress,
                     OpenedDate = j.OpenedDate,
                     ClosedDate = j.ClosedDate,
                     TypeId = j.JobTypeId,
                     TypeDescription = j.JobType.Description,
                     DeviceSerialNumber = j.Device.SerialNumber,
+                    DeviceProfileId = j.Device.DeviceProfileId,
+                    DeviceModelId = j.Device.DeviceModelId,
                     DeviceModelDescription = j.Device.DeviceModel.Description,
+                    DeviceAddressId = j.Device.DeviceProfile.DefaultOrganisationAddress,
                     UserId = j.UserId,
                     UserDisplayName = j.User.DisplayName,
                     OpenedTechUserId = j.OpenedTechUserId,
@@ -84,16 +88,13 @@ namespace Disco.BI.Extensions
             if (!model.ShowDeviceAddress.HasValue)
                 model.ShowDeviceAddress = dbContext.DiscoConfiguration.MultiSiteMode;
 
-            if (model.ShowDeviceAddress.Value)
-            {
-                foreach (var j in items)
-                    if (j.DeviceAddressId.HasValue)
-                        j.DeviceAddress = dbContext.DiscoConfiguration.OrganisationAddresses.GetAddress(j.DeviceAddressId.Value).Name;
-            }
+            foreach (var j in items)
+                if (j.DeviceAddressId.HasValue)
+                    j.DeviceAddress = dbContext.DiscoConfiguration.OrganisationAddresses.GetAddress(j.DeviceAddressId.Value).Name;
 
             return items;
         }
-        
+
         public static void Fill(this JobTableModel model, DiscoDataContext dbContext, IQueryable<Job> Jobs)
         {
             model.Items = model.DetermineItems(dbContext, Jobs);

@@ -30,17 +30,61 @@ namespace Disco.Models.BI.Job
             ShowTechnician = true;
         }
 
+        private JobTableModel CloneEmptyModel()
+        {
+            return new JobTableModel()
+            {
+                ShowId = this.ShowId,
+                ShowDeviceAddress = this.ShowDeviceAddress,
+                ShowDates = this.ShowDates,
+                ShowType = this.ShowType,
+                ShowDevice = this.ShowDevice,
+                ShowUser = this.ShowUser,
+                ShowTechnician = this.ShowTechnician,
+                ShowLocation = this.ShowLocation,
+                ShowStatus = this.ShowStatus,
+                IsSmallTable = this.IsSmallTable,
+                HideClosedJobs = this.HideClosedJobs
+            };
+        }
+
+        public IDictionary<string, JobTableModel> MultiCampusModels
+        {
+            get
+            {
+                var items = this.Items;
+                if (items == null || items.Count > 0)
+                {
+                    return items.OrderBy(i => i.DeviceAddress).GroupBy(i => i.DeviceAddress).ToDictionary(
+                        ig => ig.Key ?? string.Empty,
+                        ig =>
+                        {
+                            var jtm = this.CloneEmptyModel();
+                            jtm.Items = ig.ToList();
+                            return jtm;
+                        }
+                    );
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         public class JobTableItemModel
         {
             public int Id { get; set; }
-            public int? DeviceAddressId { get; set; }
-            public string DeviceAddress { get; set; }
             public DateTime OpenedDate { get; set; }
             public DateTime? ClosedDate { get; set; }
             public string TypeId { get; set; }
             public string TypeDescription { get; set; }
             public string DeviceSerialNumber { get; set; }
+            public int? DeviceModelId { get; set; }
             public string DeviceModelDescription { get; set; }
+            public int? DeviceProfileId { get; set; }
+            public int? DeviceAddressId { get; set; }
+            public string DeviceAddress { get; set; }
             public string UserId { get; set; }
             public string UserDisplayName { get; set; }
             public string OpenedTechUserId { get; set; }
