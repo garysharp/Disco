@@ -1,4 +1,5 @@
 ﻿@model Disco.Web.Areas.Config.Models.DeviceProfile.IndexModel
+@using Disco.Web.Areas.Config.Models.DeviceProfile
 @if (DiscoApplication.MultiSiteMode)
 {
     var deviceProfilesGrouped = Model.DeviceProfiles.OrderBy(i => i.AddressName).GroupBy(i => i.AddressName);
@@ -6,10 +7,10 @@
     {
         if (deviceProfilesGroup.Key != null)
         { <h2>@deviceProfilesGroup.Key</h2> }
-    @Html.Partial(MVC.Config.DeviceProfile.Views._TableRender, deviceProfilesGroup, new ViewDataDictionary())        
+    @Html.Partial(MVC.Config.DeviceProfile.Views._TableRender, deviceProfilesGroup.Cast<_IndexModelItem>(), new ViewDataDictionary())        
     }
 }
 else
 { 
-    @Html.Partial(MVC.Config.DeviceProfile.Views._TableRender, Model.DeviceProfiles, new ViewDataDictionary())
+    @Html.Partial(MVC.Config.DeviceProfile.Views._TableRender, Model.DeviceProfiles.Cast<_IndexModelItem>(), new ViewDataDictionary())
 }

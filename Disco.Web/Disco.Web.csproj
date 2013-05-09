@@ -1157,9 +1157,6 @@
       <DependentUpon>UserHeldDevices.less</DependentUpon>
     </None>
     <None Include="ClientSource\Style\jQueryUI\images\animated-overlay.gif" />
-    <Content Include="ClientSource\Style\jQueryUI\jquery-ui.min.css">
-      <DependentUpon>jquery-ui.css</DependentUpon>
-    </Content>
     <Content Include="ClientSource\Style\Public\UserHeldDevices.min.css">
       <DependentUpon>UserHeldDevices.less</DependentUpon>
     </Content>
@@ -1381,7 +1378,7 @@
     <Content Include="ClientSource\Scripts\Modules\tinymce\utils\form_utils.js" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\utils\mctabs.js" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\utils\validate.js" />
-    <Content Include="T4MVC.tt.hooks.t4" />
+    <None Include="T4MVC.tt.hooks.t4" />
     <Content Include="T4MVC.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4MVC.cs</LastGenOutput>
@@ -1861,7 +1858,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
+      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
