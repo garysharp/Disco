@@ -37,10 +37,9 @@ namespace Disco.BI.JobBI
                     n.EntityType == typeof(JobMetaInsurance) ||
                     (n.EventType == RepositoryMonitorEventType.Modified && (
                         (n.EntityType == typeof(DeviceProfile) && n.ModifiedProperties.Contains("DefaultOrganisationAddress")) ||
-                        (n.EntityType == typeof(DeviceModel) && n.ModifiedProperties.Contains("Description"))
-                    )) ||
-                    (n.EntityType == typeof(Device) && n.ModifiedProperties.Contains("DeviceProfileId") || n.ModifiedProperties.Contains("DeviceModelId"))
-                    )
+                        (n.EntityType == typeof(DeviceModel) && n.ModifiedProperties.Contains("Description")) ||
+                        (n.EntityType == typeof(Device) && n.ModifiedProperties.Contains("DeviceProfileId") || n.ModifiedProperties.Contains("DeviceModelId"))
+                    )))
                 .Subscribe(JobNotification);
 
             return this;

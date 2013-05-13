@@ -110,9 +110,11 @@ namespace Disco.Data.Repository.Monitor
 
             entityType = EntityTypeFromProxy(entryState.Entity.GetType());
 
-            // Only pass modified properties on Modified Event (Ignore Added/Deleted)
+            // Only pass modified properties on Modified Event
             if (eventType == RepositoryMonitorEventType.Modified)
                 modifiedProperties = entryState.GetModifiedProperties().ToArray();
+            else
+                modifiedProperties = new string[] { }; // Empty array for Added/Deleted.
 
             // Don't pass entity key when entity newly added
             if (eventType != RepositoryMonitorEventType.Added)
