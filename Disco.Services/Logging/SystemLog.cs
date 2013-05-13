@@ -44,13 +44,33 @@ namespace Disco.Services.Logging
         }
         public static void LogException(string Component, Exception ex)
         {
-            if (ex.InnerException != null)
+            // Handle Special-Case Errors
+            if (ex is System.Data.Entity.Validation.DbEntityValidationException)
             {
-                Log(EventTypeIds.ExceptionWithInner, Component, ex.GetType().Name, ex.Message, ex.StackTrace, ex.InnerException.GetType().Name, ex.InnerException.Message, ex.InnerException.StackTrace);
+                var dbException = (System.Data.Entity.Validation.DbEntityValidationException)ex;
+
+                StringBuilder message = new StringBuilder();
+                message.AppendLine("Validation failed for one or more entities:");
+                foreach (var dbEntityError in dbException.EntityValidationErrors)
+                {
+                    message.Append("'").Append(dbEntityError.Entry.Entity.GetType().Name).AppendLine("' Object");
+                    foreach (var dbValidationError in dbEntityError.ValidationErrors)
+                    {
+                        message.Append("  ").Append(dbValidationError.PropertyName).Append(": ").AppendLine(dbValidationError.ErrorMessage);
+                    }
+                }
+                Log(EventTypeIds.Exception, Component, ex.GetType().Name, message.ToString(), ex.StackTrace);
             }
             else
             {
-                Log(EventTypeIds.Exception, Component, ex.GetType().Name, ex.Message, ex.StackTrace);
+                if (ex.InnerException != null)
+                {
+                    Log(EventTypeIds.ExceptionWithInner, Component, ex.GetType().Name, ex.Message, ex.StackTrace, ex.InnerException.GetType().Name, ex.InnerException.Message, ex.InnerException.StackTrace);
+                }
+                else
+                {
+                    Log(EventTypeIds.Exception, Component, ex.GetType().Name, ex.Message, ex.StackTrace);
+                }
             }
         }
 
