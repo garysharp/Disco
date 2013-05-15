@@ -18,6 +18,7 @@ namespace Disco.Services.Logging.Models
         public int EventTypeId { get; set; }
         [Required]
         public DateTime Timestamp { get; set; }
+        [Column(TypeName="ntext"), MaxLength]
         public string Arguments { get; set; }
     }
 }

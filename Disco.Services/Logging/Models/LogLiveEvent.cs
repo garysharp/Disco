@@ -27,12 +27,7 @@ namespace Disco.Services.Logging.Models
             object[] Arguments = null;
             if (jsonArguments != null)
             {
-                //var alArguments = fastJSON.JSON.Instance.Parse(jsonArguments) as ArrayList; // Old fastJSON Implementation
                 Arguments = JsonConvert.DeserializeObject<object[]>(jsonArguments);
-                //if (alArguments != null)
-                //{
-                //    Arguments = alArguments.ToArray();
-                //}
             }
             return Create(logModule, eventType, Timestamp, Arguments);
         }

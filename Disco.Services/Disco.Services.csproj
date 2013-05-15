@@ -91,6 +91,7 @@
     <Compile Include="Logging\SystemLog.cs" />
     <Compile Include="Logging\Targets\LogLiveContext.cs" />
     <Compile Include="Logging\Targets\LogPersistContext.cs" />
+    <Compile Include="Logging\Targets\LogPersistContextInitializer.cs" />
     <Compile Include="Logging\Utilities.cs" />
     <Compile Include="Plugins\CommunityInterop\PluginLibraryUpdateTask.cs" />
     <Compile Include="Plugins\Features\UIExtension\Results\LiteralResult.cs" />
@@ -152,7 +153,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

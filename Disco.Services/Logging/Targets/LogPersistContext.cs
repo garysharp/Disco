@@ -11,13 +11,13 @@ namespace Disco.Services.Logging.Targets
     {
         public LogPersistContext(string ConnectionString) : base(ConnectionString) { }
 
+        static LogPersistContext()
+        {
+            Database.SetInitializer<LogPersistContext>(new LogPersistContextInitializer());
+        }
+
         public DbSet<Models.LogModule> Modules { get; set; }
         public DbSet<Models.LogEventType> EventTypes { get; set; }
         public DbSet<Models.LogEvent> Events { get; set; }
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            //modelBuilder.Conventions.Remove<IncludeMetadataConvention>();
-        }
     }
 }
