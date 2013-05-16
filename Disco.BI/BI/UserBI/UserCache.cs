@@ -12,7 +12,7 @@ using Disco.Services.Tasks;
 
 namespace Disco.BI.UserBI
 {
-    public class UserCache : ScheduledTask
+    public class UserCache
     {
         private static ConcurrentDictionary<string, Tuple<User, DateTime>> _Cache = new ConcurrentDictionary<string, Tuple<User, DateTime>>();
         private const long CacheTimeoutTicks = 6000000000; // 10 Minutes
@@ -129,7 +129,7 @@ namespace Disco.BI.UserBI
             return _Cache.TryAdd(key, userRecord);
         }
 
-        private static void CleanStaleCache()
+        internal static void CleanStaleCache()
         {
             var usernames = _Cache.Keys.ToArray();
             foreach (string username in usernames)
@@ -141,53 +141,6 @@ namespace Disco.BI.UserBI
                         _Cache.TryRemove(username, out userRecord);
                 }   
             }
-        }
-
-        //public void InitalizeScheduledTask(DiscoDataContext dbContext, IScheduler Scheduler)
-        //{
-        //    // Run @ every 15mins
-
-        //    // Next 15min interval
-        //    DateTime now = DateTime.Now;
-        //    int mins = (15 - (now.Minute % 15));
-        //    if (mins < 10)
-        //        mins += 15;
-        //    DateTimeOffset startAt = new DateTimeOffset(now).AddMinutes(mins).AddSeconds(now.Second * -1).AddMilliseconds(now.Millisecond * -1);
-
-        //    IJobDetail jobDetail = new JobDetailImpl("UserCache_CleanStaleCache", typeof(UserCache));
-        //    ITrigger trigger = TriggerBuilder.Create().
-        //        WithIdentity("UserCache_CleanStaleCacheTrigger").StartAt(startAt).
-        //        WithSchedule(SimpleScheduleBuilder.RepeatMinutelyForever(15)).
-        //        Build();
-        //    Scheduler.ScheduleJob(jobDetail, trigger);
-        //}
-
-        public override string TaskName { get { return "User Cache - Clean Stale Cache"; } }
-
-        public override bool SingleInstanceTask { get { return true; } }
-        public override bool CancelInitiallySupported { get { return false; } }
-        public override bool LogExceptionsOnly { get { return true; } }
-
-        public override void InitalizeScheduledTask(DiscoDataContext dbContext)
-        {
-            // Run @ every 15mins
-
-            // Next 15min interval
-            DateTime now = DateTime.Now;
-            int mins = (15 - (now.Minute % 15));
-            if (mins < 10)
-                mins += 15;
-            DateTimeOffset startAt = new DateTimeOffset(now).AddMinutes(mins).AddSeconds(now.Second * -1).AddMilliseconds(now.Millisecond * -1);
-
-            TriggerBuilder triggerBuilder = TriggerBuilder.Create().StartAt(startAt).
-                WithSchedule(SimpleScheduleBuilder.RepeatMinutelyForever(15));
-
-            this.ScheduleTask(triggerBuilder);
-        }
-
-        protected override void ExecuteTask()
-        {
-            CleanStaleCache();
         }
     }
 }
