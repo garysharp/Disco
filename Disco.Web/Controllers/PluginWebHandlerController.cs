@@ -10,7 +10,7 @@ namespace Disco.Web.Controllers
 {
     public partial class PluginWebHandlerController : Controller
     {
-        [Authorize(Roles = "Admin")]
+        [AuthorizeDiscoUsersAttribute(Disco.Models.Repository.User.Types.Admin)]
         [OutputCache(Duration = 0, Location = System.Web.UI.OutputCacheLocation.None)]
         public virtual ActionResult Index(string PluginId, string PluginAction)
         {
