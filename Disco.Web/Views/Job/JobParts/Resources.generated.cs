@@ -519,29 +519,31 @@ WriteLiteral(@"',
 
             return false;
         }
-        function loadLiveComment(id) {
-            $.ajax({
-                url: '");
+        function loadLiveComment(key) {
+            if (key.JobId == jobId) {
+                $.ajax({
+                    url: '");
 
             
-            #line 169 "..\..\Views\Job\JobParts\Resources.cshtml"
-                 Write(Url.Action(MVC.API.Job.Comment()));
+            #line 170 "..\..\Views\Job\JobParts\Resources.cshtml"
+                     Write(Url.Action(MVC.API.Job.Comment()));
 
             
             #line default
             #line hidden
 WriteLiteral(@"',
-                dataType: 'json',
-                data: { id: id },
-                success: function (d) {
-                    if (d && d.JobId == jobId) {
-                        addComment(d, false);
+                    dataType: 'json',
+                    data: { id: key.Id },
+                    success: function (d) {
+                        if (d && d.JobId == jobId) {
+                            addComment(d, false);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert('Unable to load live comment ' + id + ': ' + textStatus);
                     }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert('Unable to load live comment ' + id + ': ' + textStatus);
-                }
-            });
+                });
+            }
         }
         function addComment(c, quick) {
             var e = $('<div><span class=""author"" /><span class=""remove"" /><span class=""timestamp"" /><span class=""comment"" /></div>');
@@ -554,7 +556,7 @@ WriteLiteral(@"',
             commentHtml = commentHtml.replace(/\#(\d+)/g, '<a href=""");
 
             
-            #line 190 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 192 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                Write(Url.Action(MVC.Job.Show(null)));
 
             
@@ -594,7 +596,7 @@ WriteLiteral(@"?id=$1"">#$1</a>');
                 '");
 
             
-            #line 221 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 223 "..\..\Views\Job\JobParts\Resources.cshtml"
              Write(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap);
 
             
@@ -615,7 +617,7 @@ WriteLiteral(@"',
                             'UploadUrl=");
 
             
-            #line 233 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 235 "..\..\Views\Job\JobParts\Resources.cshtml"
                                    Write(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)));
 
             
@@ -654,15 +656,17 @@ WriteLiteral(@"'
                 onLoadNavigation = navigationPath;
             }
         };
-        function addAttachment(id, quick) {
-            var data = { id: id };
+        function addAttachment(key, quick) {
 
-            $.ajax({
-                url: '");
+            if (key.JobId == jobId) {
+                var data = { id: key.Id };
+
+                $.ajax({
+                    url: '");
 
             
-            #line 270 "..\..\Views\Job\JobParts\Resources.cshtml"
-                 Write(Url.Action(MVC.API.Job.Attachment()));
+            #line 274 "..\..\Views\Job\JobParts\Resources.cshtml"
+                     Write(Url.Action(MVC.API.Job.Attachment()));
 
             
             #line default
@@ -680,7 +684,7 @@ WriteLiteral(@"',
                                 e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '");
 
             
-            #line 280 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 284 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                               Write(Url.Action(MVC.API.Job.AttachmentDownload()));
 
             
@@ -689,7 +693,7 @@ WriteLiteral(@"',
 WriteLiteral("/\' + a.Id);\r\n                                e.find(\'.icon img\').attr(\'src\', \'");
 
             
-            #line 281 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 285 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                              Write(Url.Action(MVC.API.Job.AttachmentThumbnail()));
 
             
@@ -709,26 +713,27 @@ WriteLiteral("/\' + a.Id);\r\n                                e.find(\'.comments
 "   alert(\'Unable to add attachment: \' + d.Result);\r\n                        }\r\n " +
 "                   },\r\n                    error: function (jqXHR, textStatus, e" +
 "rrorThrown) {\r\n                        alert(\'Unable to add attachment: \' + text" +
-"Status);\r\n                    }\r\n                });\r\n            }\r\n        fun" +
-"ction removeAttachment(id) {\r\n            var $element = $attachmentOutput.find(" +
-"\'a[data-attachmentid=\"\' + id + \'\"]\');\r\n            if ($element.length > 0) {\r\n " +
-"               $element.hide(300).delay(300).queue(function () {\r\n              " +
-"      if ($element.attr(\'data-mimetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n" +
-"                        Shadowbox.removeCache(this);\r\n                    $eleme" +
-"nt.remove();\r\n                });\r\n            }\r\n        }\r\n\r\n        function " +
-"removeLocalAttachment() {\r\n            $this = $(this).closest(\'a\');\r\n\r\n        " +
-"    var data = { id: $this.attr(\'data-attachmentid\') };\r\n\r\n            if (!$dia" +
-"logRemoveAttachment) {\r\n                $dialogRemoveAttachment = $(\'#dialogRemo" +
-"veAttachment\').dialog({\r\n                    resizable: false,\r\n                " +
-"    height: 140,\r\n                    modal: true,\r\n                    autoOpen" +
-": false\r\n                });\r\n            }\r\n\r\n            $dialogRemoveAttachme" +
-"nt.dialog(\"enable\").dialog(\'option\', \'buttons\', {\r\n                \"Remove\": fun" +
-"ction () {\r\n                    $dialogRemoveAttachment.dialog(\"disable\");\r\n    " +
-"                $dialogRemoveAttachment.dialog(\"option\", \"buttons\", null);\r\n    " +
-"                $.ajax({\r\n                        url: \'");
+"Status);\r\n                    }\r\n                });\r\n            }\r\n        }\r\n" +
+"        function removeAttachment(key) {\r\n            if (key.JobId == jobId) {\r" +
+"\n                var $element = $attachmentOutput.find(\'a[data-attachmentid=\"\' +" +
+" key.Id + \'\"]\');\r\n                if ($element.length > 0) {\r\n                  " +
+"  $element.hide(300).delay(300).queue(function () {\r\n                        if " +
+"($element.attr(\'data-mimetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n         " +
+"                   Shadowbox.removeCache(this);\r\n                        $elemen" +
+"t.remove();\r\n                    });\r\n                }\r\n            }\r\n        " +
+"}\r\n\r\n        function removeLocalAttachment() {\r\n            $this = $(this).clo" +
+"sest(\'a\');\r\n\r\n            var data = { id: $this.attr(\'data-attachmentid\') };\r\n\r" +
+"\n            if (!$dialogRemoveAttachment) {\r\n                $dialogRemoveAttac" +
+"hment = $(\'#dialogRemoveAttachment\').dialog({\r\n                    resizable: fa" +
+"lse,\r\n                    height: 140,\r\n                    modal: true,\r\n      " +
+"              autoOpen: false\r\n                });\r\n            }\r\n\r\n           " +
+" $dialogRemoveAttachment.dialog(\"enable\").dialog(\'option\', \'buttons\', {\r\n       " +
+"         \"Remove\": function () {\r\n                    $dialogRemoveAttachment.di" +
+"alog(\"disable\");\r\n                    $dialogRemoveAttachment.dialog(\"option\", \"" +
+"buttons\", null);\r\n                    $.ajax({\r\n                        url: \'");
 
             
-            #line 333 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 340 "..\..\Views\Job\JobParts\Resources.cshtml"
                          Write(Url.Action(MVC.API.Job.AttachmentRemove()));
 
             
@@ -760,24 +765,25 @@ WriteLiteral("\',\r\n                        dataType: \'json\',\r\n            
 "               window.setTimeout(function () {\r\n                    switch (d.En" +
 "tityTypeName) {\r\n                        case \'JobAttachment\':\r\n                " +
 "            switch (d.EventType) {\r\n                                case 0: // A" +
-"dded\r\n                                    addAttachment(d.EntityKey[0], false);\r" +
-"\n                                    break;\r\n                                cas" +
-"e 1: // Removed\r\n                                    removeAttachment(d.EntityKe" +
-"y[0]);\r\n                                    break;\r\n                            " +
-"}\r\n                            break;\r\n                        case \'JobLog\':\r\n " +
-"                           switch (d.EventType) {\r\n                             " +
-"   case 0: // Added\r\n                                    loadLiveComment(d.Entit" +
-"yKey[0]);\r\n                                    break;\r\n                         " +
-"       case 1: // Removed\r\n                                    $CommentOutput.ch" +
-"ildren(\'div[data-logid=\"\' + d.EntityKey[0] + \'\"]\').slideUp(300).delay(300).queue" +
-"(function () {\r\n                                        $(this).remove();\r\n     " +
-"                               });\r\n                                    break;\r\n" +
-"                            }\r\n                            break;\r\n             " +
-"       }\r\n                }, 100);\r\n            }\r\n        }\r\n        var liveMe" +
-"ssagesConnection = $.connection(\'");
+"dded\r\n                                    addAttachment(d.EntityKey, false);\r\n  " +
+"                                  break;\r\n                                case 1" +
+": // Removed\r\n                                    removeAttachment(d.EntityKey);" +
+"\r\n                                    break;\r\n                            }\r\n   " +
+"                         break;\r\n                        case \'JobLog\':\r\n       " +
+"                     switch (d.EventType) {\r\n                                cas" +
+"e 0: // Added\r\n                                    loadLiveComment(d.EntityKey);" +
+"\r\n                                    break;\r\n                                ca" +
+"se 1: // Removed\r\n                                    if (d.EntityKey.JobId == j" +
+"obId) {\r\n                                        $CommentOutput.children(\'div[da" +
+"ta-logid=\"\' + d.EntityKey.Id + \'\"]\').slideUp(300).delay(300).queue(function () {" +
+"\r\n                                            $(this).remove();\r\n               " +
+"                         });\r\n                                    }\r\n           " +
+"                         break;\r\n                            }\r\n                " +
+"            break;\r\n                    }\r\n                }, 100);\r\n           " +
+" }\r\n        }\r\n        var liveMessagesConnection = $.connection(\'");
 
             
-            #line 402 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 411 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                Write(Url.Content("~/API/Repository/Notifications"));
 
             

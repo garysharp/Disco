@@ -37,7 +37,7 @@ namespace Disco.Data.Repository.Monitor
         [JsonIgnore]
         public object Entity { get; set; }
 
-        public object[] EntityKey { get; set; }
+        public Dictionary<string, object> EntityKey { get; set; }
 
         public string[] ModifiedProperties { get; set; }
 

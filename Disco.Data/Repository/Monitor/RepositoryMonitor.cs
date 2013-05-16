@@ -8,6 +8,7 @@ using System.Reactive.Subjects;
 using System.Data.Entity.Infrastructure;
 using System.Collections.Concurrent;
 using System.Data.Objects;
+using Disco.Models.Repository;
 
 namespace Disco.Data.Repository.Monitor
 {
@@ -76,7 +77,7 @@ namespace Disco.Data.Repository.Monitor
             if (monitorEvent.EventType == RepositoryMonitorEventType.Added)
             {
                 // Update Entity Key for Added Events
-                monitorEvent.EntityKey = monitorEvent.objectEntryState.EntityKey.EntityKeyValues.Select(kv => kv.Value).ToArray();
+                monitorEvent.EntityKey = DetermineEntityKey(monitorEvent.objectEntryState);
             }
         }
 
@@ -84,7 +85,7 @@ namespace Disco.Data.Repository.Monitor
         {
             RepositoryMonitorEventType eventType;
             string[] modifiedProperties = null;
-            object[] entityKey = null;
+            Dictionary<string, object> entityKey = null;
             Type entityType;
 
             switch (entryState.State)
@@ -118,7 +119,7 @@ namespace Disco.Data.Repository.Monitor
 
             // Don't pass entity key when entity newly added
             if (eventType != RepositoryMonitorEventType.Added)
-                entityKey = entryState.EntityKey.EntityKeyValues.Select(kv => kv.Value).ToArray();
+                entityKey = DetermineEntityKey(entryState);
 
             return new RepositoryMonitorEvent()
             {
@@ -131,6 +132,46 @@ namespace Disco.Data.Repository.Monitor
                 dbEntityState = entityEntry,
                 objectEntryState = entryState
             };
+        }
+
+        internal static Dictionary<string, object> DetermineEntityKey(ObjectStateEntry entryState)
+        {
+            Dictionary<string, object> key = entryState.EntityKey.EntityKeyValues.ToDictionary(kv => kv.Key, kv => kv.Value);
+
+            if (entryState.Entity is DeviceAttachment)
+            {
+                key["DeviceSerialNumber"] = ((DeviceAttachment)entryState.Entity).DeviceSerialNumber;
+            }
+            if (entryState.Entity is DeviceCertificate)
+            {
+                key["DeviceSerialNumber"] = ((DeviceCertificate)entryState.Entity).DeviceSerialNumber;
+            }
+            if (entryState.Entity is DeviceComponent)
+            {
+                key["DeviceModelId"] = ((DeviceComponent)entryState.Entity).DeviceModelId;
+            }
+            if (entryState.Entity is DeviceUserAssignment)
+            {
+                key["AssignedUserId"] = ((DeviceUserAssignment)entryState.Entity).AssignedUserId;
+            }
+            if (entryState.Entity is JobAttachment)
+            {
+                key["JobId"] = ((JobAttachment)entryState.Entity).JobId;
+            }
+            if (entryState.Entity is JobComponent)
+            {
+                key["JobId"] = ((JobComponent)entryState.Entity).JobId;
+            }
+            if (entryState.Entity is JobLog)
+            {
+                key["JobId"] = ((JobLog)entryState.Entity).JobId;
+            }
+            if (entryState.Entity is UserAttachment)
+            {
+                key["UserId"] = ((UserAttachment)entryState.Entity).UserId;
+            }
+
+            return key;
         }
     }
 }

@@ -164,20 +164,22 @@
 
             return false;
         }
-        function loadLiveComment(id) {
-            $.ajax({
-                url: '@Url.Action(MVC.API.Job.Comment())',
-                dataType: 'json',
-                data: { id: id },
-                success: function (d) {
-                    if (d && d.JobId == jobId) {
-                        addComment(d, false);
+        function loadLiveComment(key) {
+            if (key.JobId == jobId) {
+                $.ajax({
+                    url: '@Url.Action(MVC.API.Job.Comment())',
+                    dataType: 'json',
+                    data: { id: key.Id },
+                    success: function (d) {
+                        if (d && d.JobId == jobId) {
+                            addComment(d, false);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert('Unable to load live comment ' + id + ': ' + textStatus);
                     }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert('Unable to load live comment ' + id + ': ' + textStatus);
-                }
-            });
+                });
+            }
         }
         function addComment(c, quick) {
             var e = $('<div><span class="author" /><span class="remove" /><span class="timestamp" /><span class="comment" /></div>');
@@ -263,11 +265,13 @@
                 onLoadNavigation = navigationPath;
             }
         };
-        function addAttachment(id, quick) {
-            var data = { id: id };
+        function addAttachment(key, quick) {
 
-            $.ajax({
-                url: '@Url.Action(MVC.API.Job.Attachment())',
+            if (key.JobId == jobId) {
+                var data = { id: key.Id };
+
+                $.ajax({
+                    url: '@Url.Action(MVC.API.Job.Attachment())',
                     dataType: 'json',
                     data: data,
                     success: function (d) {
@@ -300,14 +304,17 @@
                     }
                 });
             }
-        function removeAttachment(id) {
-            var $element = $attachmentOutput.find('a[data-attachmentid="' + id + '"]');
-            if ($element.length > 0) {
-                $element.hide(300).delay(300).queue(function () {
-                    if ($element.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
-                        Shadowbox.removeCache(this);
-                    $element.remove();
-                });
+        }
+        function removeAttachment(key) {
+            if (key.JobId == jobId) {
+                var $element = $attachmentOutput.find('a[data-attachmentid="' + key.Id + '"]');
+                if ($element.length > 0) {
+                    $element.hide(300).delay(300).queue(function () {
+                        if ($element.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
+                            Shadowbox.removeCache(this);
+                        $element.remove();
+                    });
+                }
             }
         }
 
@@ -376,22 +383,24 @@
                         case 'JobAttachment':
                             switch (d.EventType) {
                                 case 0: // Added
-                                    addAttachment(d.EntityKey[0], false);
+                                    addAttachment(d.EntityKey, false);
                                     break;
                                 case 1: // Removed
-                                    removeAttachment(d.EntityKey[0]);
+                                    removeAttachment(d.EntityKey);
                                     break;
                             }
                             break;
                         case 'JobLog':
                             switch (d.EventType) {
                                 case 0: // Added
-                                    loadLiveComment(d.EntityKey[0]);
+                                    loadLiveComment(d.EntityKey);
                                     break;
                                 case 1: // Removed
-                                    $CommentOutput.children('div[data-logid="' + d.EntityKey[0] + '"]').slideUp(300).delay(300).queue(function () {
-                                        $(this).remove();
-                                    });
+                                    if (d.EntityKey.JobId == jobId) {
+                                        $CommentOutput.children('div[data-logid="' + d.EntityKey.Id + '"]').slideUp(300).delay(300).queue(function () {
+                                            $(this).remove();
+                                        });
+                                    }
                                     break;
                             }
                             break;
