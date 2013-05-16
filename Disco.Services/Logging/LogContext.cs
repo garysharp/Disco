@@ -237,13 +237,6 @@ namespace Disco.Services.Logging
 
             var reInitalizeJobDetail = new JobDetailImpl("DiscoLogContextReinialize", typeof(LogReInitalizeJob));
 
-            // Simple Trigger - Issue with Day light savings
-            //var reInitalizeTrigger = TriggerBuilder.Create()
-            //    .WithIdentity("DiscoLogContextReinializeTrigger")
-            //    .StartAt(DateBuilder.TomorrowAt(0,0,0))
-            //    .WithSchedule(SimpleScheduleBuilder.Create().WithIntervalInHours(24).RepeatForever())
-            //    .Build();
-            // Use Cron Schedule instead
             var reInitalizeTrigger = TriggerBuilder.Create()
                 .WithIdentity("DiscoLogContextReinializeTrigger")
                 .StartNow()
@@ -251,13 +244,6 @@ namespace Disco.Services.Logging
                 .Build();
 
             _ReInitializeScheduler.ScheduleJob(reInitalizeJobDetail, reInitalizeTrigger);
-        }
-        public static string LiveLogAllEventsGroupName
-        {
-            get
-            {
-                return Targets.LogLiveContext.LiveLogNameAll;
-            }
         }
 
         private LogContext(string PersistantStorePath, string PersistantStoreConnectionString)
@@ -286,7 +272,7 @@ namespace Disco.Services.Logging
                     {
                         string args = null;
                         if (Args != null && Args.Length > 0)
-                        { //args = fastJSON.JSON.Instance.ToJSON(Args, false); // Old fastJSON Implementation
+                        {
                             args = JsonConvert.SerializeObject(Args);
                         }
                         using (var context = new Targets.LogPersistContext(PersistantStoreConnectionString))

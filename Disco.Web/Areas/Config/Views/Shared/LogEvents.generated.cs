@@ -196,7 +196,7 @@ WriteLiteral("\';\r\n            var logModuleLiveGroupName = \'");
 
             
             #line 47 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
-                                      Write(Model.ModuleFilter != null ? Model.ModuleFilter.LiveLogGroupName : Disco.Services.Logging.LogContext.LiveLogAllEventsGroupName);
+                                      Write(Model.ModuleFilter != null ? Model.ModuleFilter.LiveLogGroupName : Disco.BI.Interop.SignalRHandlers.LogNotifications.AllNotifications);
 
             
             #line default

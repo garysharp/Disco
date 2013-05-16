@@ -73,8 +73,10 @@ namespace Disco.Services.Tasks
         #endregion
 
         #region Events
+        public delegate void UpdatedBroadcastEvent(ScheduledTaskStatusLive SessionStatus);
         public delegate void UpdatedEvent(ScheduledTaskStatus sender, string[] ChangedProperties);
         public delegate void CancelingEvent(ScheduledTaskStatus sender);
+        public static event UpdatedBroadcastEvent UpdatedBroadcast;
         public event UpdatedEvent Updated;
         public event CancelingEvent Canceling;
         #endregion
@@ -344,8 +346,8 @@ namespace Disco.Services.Tasks
             if (Updated != null)
                 Updated(this, ChangedProperties);
 
-            if (!_isSilent)
-                ScheduledTasksLiveStatusService.Broadcast(ScheduledTaskStatusLive.FromScheduledTaskStatus(this, ChangedProperties));
+            if (!_isSilent && UpdatedBroadcast != null)
+                UpdatedBroadcast.Invoke(ScheduledTaskStatusLive.FromScheduledTaskStatus(this, ChangedProperties));
         }
     }
 }

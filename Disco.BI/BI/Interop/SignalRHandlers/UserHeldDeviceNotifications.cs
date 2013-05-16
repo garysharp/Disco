@@ -9,12 +9,12 @@ using Disco.Models.Repository;
 
 namespace Disco.BI.Interop.SignalRHandlers
 {
-    public class UserHeldDevices : PersistentConnection
+    public class UserHeldDeviceNotifications : PersistentConnection
     {
         private static bool subscribed = false;
         private static object subscribeLock = new object();
 
-        static UserHeldDevices()
+        static UserHeldDeviceNotifications()
         {
             if (!subscribed)
                 lock (subscribeLock)
@@ -32,7 +32,7 @@ namespace Disco.BI.Interop.SignalRHandlers
             if (j.UserId != null)
             {
                 var connectionManager = GlobalHost.ConnectionManager;
-                var connectionContext = connectionManager.GetConnectionContext<UserHeldDevices>();
+                var connectionContext = connectionManager.GetConnectionContext<UserHeldDeviceNotifications>();
                 if (connectionContext != null)
                     connectionContext.Connection.Broadcast(j.UserId);
             }

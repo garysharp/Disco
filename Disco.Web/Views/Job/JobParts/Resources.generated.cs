@@ -786,7 +786,8 @@ WriteLiteral("\',\r\n                        dataType: \'json\',\r\n            
 WriteLiteral(@"')
         liveMessagesConnection.received(liveMessageRecieved);
         liveMessagesConnection.error(function (e) {
-            alert('Error: ' + JSON.stringify(e));
+            if (e)
+                alert('Error: ' + JSON.stringify(e));
         });
         liveMessagesConnection.start(function () {
             liveMessagesConnection.send('/addToGroups:JobLog,JobAttachment');

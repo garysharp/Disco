@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Disco.BI.Interop.SignalRHandlers
 {
-    public class RepositoryMonitorNotifications : PersistentConnection
+    public class RepositoryMonitorNotifications : AdminAuthorizedPersistentConnection
     {
         public static void Initialize()
         {

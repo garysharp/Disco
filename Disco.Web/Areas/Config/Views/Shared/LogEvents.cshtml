@@ -44,7 +44,7 @@
         $(function () {
             var logEventsHost = $('LogEvents_@(uniqueId)');
             var logModuleId = '@(Model.ModuleFilter != null ? Model.ModuleFilter.ModuleId.ToString() : null)';
-            var logModuleLiveGroupName = '@(Model.ModuleFilter != null ? Model.ModuleFilter.LiveLogGroupName : Disco.Services.Logging.LogContext.LiveLogAllEventsGroupName)';
+            var logModuleLiveGroupName = '@(Model.ModuleFilter != null ? Model.ModuleFilter.LiveLogGroupName : Disco.BI.Interop.SignalRHandlers.LogNotifications.AllNotifications)';
             var logEventTypeFiltered = @(eventTypesFilterJson);
             var logStartFiler = @(AjaxHelpers.JsonDate(Model.StartFilter));
             var logEndFiler = @(AjaxHelpers.JsonDate(Model.EndFilter));

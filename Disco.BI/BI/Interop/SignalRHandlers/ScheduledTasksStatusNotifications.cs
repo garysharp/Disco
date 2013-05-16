@@ -1,14 +1,25 @@
-﻿using System;
+﻿using Disco.Services.Tasks;
+using Microsoft.AspNet.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.AspNet.SignalR;
-using Microsoft.AspNet.SignalR.Infrastructure;
+using System.Threading.Tasks;
 
-namespace Disco.Services.Tasks
+namespace Disco.BI.Interop.SignalRHandlers
 {
-    public class ScheduledTasksLiveStatusService : PersistentConnection
+    public class ScheduledTasksStatusNotifications : AdminAuthorizedPersistentConnection
     {
+        public static bool initialized = false;
+
+        public ScheduledTasksStatusNotifications()
+        {
+            if (!initialized)
+            {
+                initialized = true;
+                Disco.Services.Tasks.ScheduledTaskStatus.UpdatedBroadcast += Broadcast;
+            }
+        }
 
         protected override System.Threading.Tasks.Task OnReceived(IRequest request, string connectionId, string data)
         {
@@ -26,29 +37,20 @@ namespace Disco.Services.Tasks
 
         internal static void Broadcast(ScheduledTaskStatusLive SessionStatus)
         {
-            //var message = Models.LogLiveEvent.Create(logModule, eventType, Timestamp, Arguments);
-
-            var connectionManager = GlobalHost.ConnectionManager; //AspNetHost.DependencyResolver.Resolve<IConnectionManager>();
-            var connectionContext = connectionManager.GetConnectionContext<ScheduledTasksLiveStatusService>();
+            var connectionManager = GlobalHost.ConnectionManager;
+            var connectionContext = connectionManager.GetConnectionContext<ScheduledTasksStatusNotifications>();
             connectionContext.Groups.Send(_GroupNameAll, SessionStatus);
             connectionContext.Groups.Send(SessionStatus.SessionId, SessionStatus);
         }
 
         private const string _GroupNameAll = "__All";
-        //private static string _QualifiedSessionName = typeof(ScheduledTasksLiveStatusService).FullName + ".";
-        //private static string _QualifiedSessionNameAll = _QualifiedSessionName + "__All";
-        //private static string LiveStatusGroup(string SessionId)
-        //{
-        //    return string.Concat(_QualifiedSessionName, SessionId);
-        //}
-        public static string LiveStatusAll
+        
+        public static string AllNotifications
         {
             get
             {
-                //return _QualifiedTypeNameAll;
                 return _GroupNameAll;
             }
         }
-
     }
 }

@@ -1,55 +1,21 @@
-﻿using System;
+﻿using Disco.Services.Logging.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.AspNet.SignalR;
-using Microsoft.AspNet.SignalR.Infrastructure;
+using System.Threading.Tasks;
 
 namespace Disco.Services.Logging.Targets
 {
-    public class LogLiveContext : PersistentConnection
+    public static class LogLiveContext
     {
+        public delegate void LogBroadcastEvent(LogBase logModule, LogEventType eventType, DateTime Timestamp, params object[] Arguments);
+        public static event LogBroadcastEvent LogBroadcast;
 
-        protected override System.Threading.Tasks.Task OnReceived(IRequest request, string connectionId, string data)
+        internal static void Broadcast(LogBase logModule, LogEventType eventType, DateTime Timestamp, params object[] Arguments)
         {
-            // Add to Group
-            if (!string.IsNullOrWhiteSpace(data) && data.StartsWith("/addToGroups:") && data.Length > 13)
-            {
-                var groups = data.Substring(13).Split(',');
-                foreach (var g in groups)
-                {
-                    this.Groups.Add(connectionId, g);
-                }
-            }
-
-            return base.OnReceived(request, connectionId, data);
+            if (LogBroadcast != null)
+                LogBroadcast.Invoke(logModule, eventType, Timestamp, Arguments);
         }
-
-        internal static void Broadcast(LogBase logModule, Models.LogEventType eventType, DateTime Timestamp, params object[] Arguments)
-        {
-            var message = Models.LogLiveEvent.Create(logModule, eventType, Timestamp, Arguments);
-
-            var connectionManager = GlobalHost.ConnectionManager;
-            var connectionContext = connectionManager.GetConnectionContext<LogLiveContext>();
-            connectionContext.Groups.Send(_GroupNameAll, message);
-            connectionContext.Groups.Send(logModule.ModuleName, message);
-        }
-
-        private const string _GroupNameAll = "__All";
-        //private static string _QualifiedTypeName = typeof(LogLiveContext).FullName + ".";
-        //private static string _QualifiedTypeNameAll = _QualifiedTypeName + "__All";
-        //private static string LiveLogNameGroup(string LogName)
-        //{
-        //    return string.Concat(_QualifiedTypeName, LogName);
-        //}
-        public static string LiveLogNameAll
-        {
-            get
-            {
-                //return _QualifiedTypeNameAll;
-                return _GroupNameAll;
-            }
-        }
-
     }
 }
