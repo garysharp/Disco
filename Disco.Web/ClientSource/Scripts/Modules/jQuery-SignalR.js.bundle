@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bundle minify="true" runOnBuild="true">
-  <file>/ClientSource/Scripts/Modules/jQuery-SignalR/jquery.signalR-1.0.1.js</file>
+  <file>/ClientSource/Scripts/Modules/jQuery-SignalR/jquery.signalR-1.1.0.js</file>
 </bundle>

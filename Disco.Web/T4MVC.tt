@@ -1,6 +1,6 @@
 ﻿<#
 /*
-T4MVC Version 3.6.1
+T4MVC Version 3.6.4
 Find latest version and documentation at http://mvccontrib.codeplex.com/wikipage?title=T4MVC
 Discuss on StackOverflow or on Codeplex (https://t4mvc.codeplex.com/discussions)
 
@@ -17,7 +17,7 @@ Please use in accordance to the MvcContrib license (http://mvccontrib.codeplex.c
 #>
 <#@ template language="C#" debug="true" hostspecific="true" #>
 <#@ assembly name="System.Core" #>
-<#@ assembly name="Microsoft.VisualStudio.Shell.Interop.8.0" #>
+<#@ assembly name="Microsoft.VisualStudio.Shell.Interop" #>
 <#@ assembly name="EnvDTE" #>
 <#@ assembly name="EnvDTE80" #>
 <#@ assembly name="VSLangProj" #>
@@ -34,7 +34,7 @@ Please use in accordance to the MvcContrib license (http://mvccontrib.codeplex.c
 <#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
 <# // To debug, uncomment the next two lines !! 
 // System.Diagnostics.Debugger.Launch();
-// System.Diagnostics.Debugger.Break();	
+// System.Diagnostics.Debugger.Break();
 #>
 <#settings=MvcSettings.Load(Host);#>
 <#PrepareDataToRender(this); #>
@@ -499,7 +499,7 @@ void PrepareDataToRender(TextTransformation tt)
     var serviceProvider = Host as IServiceProvider;
     if (serviceProvider != null)
     {
-        Dte = serviceProvider.GetService(typeof(SDTE)) as DTE;
+        Dte = (EnvDTE.DTE)serviceProvider.GetService(typeof(EnvDTE.DTE));
     }
 
     // Fail if we couldn't get the DTE. This can happen when trying to run in TextTransform.exe
@@ -530,7 +530,7 @@ Project GetProjectContainingT4File(DTE dte)
 
     // If the .tt file is not opened, open it
     if (projectItem.Document == null)
-        projectItem.Open(Constants.vsViewKindCode);
+        projectItem.Open(EnvDTE.Constants.vsViewKindCode);
 
     return projectItem.ContainingProject;
 }
@@ -872,13 +872,13 @@ void AddViewsRecursive(ProjectItems items, ViewsFolderInfo viewsFolder, bool use
     // Go through all the files in the subfolder to get the view names
     foreach (ProjectItem item in items)
     {
-        if (item.Kind == Constants.vsProjectItemKindPhysicalFile)
+        if (item.Kind == EnvDTE.Constants.vsProjectItemKindPhysicalFile)
         {
             if (Path.GetExtension(item.Name).Equals(".master", StringComparison.OrdinalIgnoreCase))
                 continue;   // ignore master files
             viewsFolder.AddView(item, useNonQualifiedViewNames);
         }
-        else if (item.Kind == Constants.vsProjectItemKindPhysicalFolder)
+        else if (item.Kind == EnvDTE.Constants.vsProjectItemKindPhysicalFolder)
         {
             string folderName = Path.GetFileName(item.Name);
             if (folderName.Equals("App_LocalResources", StringComparison.OrdinalIgnoreCase))
@@ -968,7 +968,7 @@ void ProcessStaticFiles(Project project, string folder)
 void ProcessStaticFilesRecursive(ProjectItem projectItem, string path)
 {
     int nestedLevel = BuildClassStructureForProvidedPath(path);
-    ProcessStaticFilesRecursive(projectItem, path, false /*hasSameNameAsParent*/);
+    ProcessStaticFilesRecursive(projectItem, path, new HashSet<String>());
     for(int i = 0; i < nestedLevel; ++i) {#>
 }
 <#+
@@ -976,19 +976,21 @@ void ProcessStaticFilesRecursive(ProjectItem projectItem, string path)
     }
 }
 
-void ProcessStaticFilesRecursive(ProjectItem projectItem, string path, bool hasSameNameAsParent)
+void ProcessStaticFilesRecursive(ProjectItem projectItem, string path, HashSet<String> nameSet)
 {
+    // The passed in HashSet is to guarantee uniqueness with our parent and siblings
+    string name = SanitizeWithNoConflicts(projectItem.Name, nameSet);
+
+    // This HashSet is to guarantee uniqueness of our direct children
+    // We add our own name to it to avoid class name conflicts (http://mvccontrib.codeplex.com/workitem/7153)
+    var childrenNameSet = new HashSet<String>();
+    childrenNameSet.Add(name);
+
     if (IsFolder(projectItem))
     {
-        string className = EscapeID(Sanitize(projectItem.Name));
-        // If the folder name is the same as the parent, add a modifier to avoid class name conflicts
-        // http://mvccontrib.codeplex.com/workitem/7153
-        if (hasSameNameAsParent)
-        {
-            className += "_";
-        } #>
+        #>
     [<#= GeneratedCode #>, DebuggerNonUserCode]
-    public static class <#=className #> {
+    public static class <#=EscapeID(name)#> {
         private const string URLPATH = "<#=path#>/<#=projectItem.Name#>";
         public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
@@ -1001,7 +1003,7 @@ foreach (ProjectItem item in projectItem.ProjectItems)
     ProcessStaticFilesRecursive(
         item,
         path + "/" + projectItem.Name,
-        item.Name == projectItem.Name);
+        childrenNameSet);
 }
 
 PopIndent();
@@ -1017,24 +1019,24 @@ if (!settings.ExcludedStaticFileExtensions.Any(extension => projectItem.Name.End
     if (projectItem.Name.EndsWith(".js") && !projectItem.Name.EndsWith(".min.js")) { 
         string minifiedName = projectItem.Name.Replace(".js", ".min.js");
         if (AddTimestampToStaticLink(projectItem)) { #>
-    public static readonly string <#=Sanitize(projectItem.Name)#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=minifiedName#>") : Url("<#=projectItem.Name#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=projectItem.Name#>");
+    public static readonly string <#=name#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=minifiedName#>") : Url("<#=projectItem.Name#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=projectItem.Name#>");
         <#+} else {#>
-    public static readonly string <#=Sanitize(projectItem.Name)#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>") : Url("<#=projectItem.Name#>");
+    public static readonly string <#=name#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>") : Url("<#=projectItem.Name#>");
         <#+}  #>          
 <#+}
     else if (projectItem.Name.EndsWith(".css") && !projectItem.Name.EndsWith(".min.css")) { 
         string minifiedName = projectItem.Name.Replace(".css", ".min.css");
         if (AddTimestampToStaticLink(projectItem)) { #>
-    public static readonly string <#=Sanitize(projectItem.Name)#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=minifiedName#>") : Url("<#=projectItem.Name#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=projectItem.Name#>");
+    public static readonly string <#=name#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=minifiedName#>") : Url("<#=projectItem.Name#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=projectItem.Name#>");
         <#+} else {#>
-    public static readonly string <#=Sanitize(projectItem.Name)#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>") : Url("<#=projectItem.Name#>");
+    public static readonly string <#=name#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>") : Url("<#=projectItem.Name#>");
         <#+}  #> 
 <#+}
     else if (AddTimestampToStaticLink(projectItem)) { #>
-    public static readonly string <#=Sanitize(projectItem.Name)#> = Url("<#=projectItem.Name#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=projectItem.Name#>");
+    public static readonly string <#=name#> = Url("<#=projectItem.Name#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=projectItem.Name#>");
 <#+}
     else { #>
-    public static readonly string <#=Sanitize(projectItem.Name)#> = Url("<#=projectItem.Name#>");
+    public static readonly string <#=name#> = Url("<#=projectItem.Name#>");
 <#+}
 } #>
 <#+
@@ -1042,7 +1044,7 @@ if (!settings.ExcludedStaticFileExtensions.Any(extension => projectItem.Name.End
 // Just register them on the same path as their parent item
 foreach (ProjectItem item in projectItem.ProjectItems)
 {
-    ProcessStaticFilesRecursive(item, path, false);
+    ProcessStaticFilesRecursive(item, path, childrenNameSet);
 }
     }
 }
@@ -1231,13 +1233,27 @@ static string UniqueFullName(CodeType codeType)
 // Return whether a ProjectItem is a folder and not a file
 static bool IsFolder(ProjectItem item)
 {
-    return (item.Kind == Constants.vsProjectItemKindPhysicalFolder);
+    return (item.Kind == EnvDTE.Constants.vsProjectItemKindPhysicalFolder);
 }
 
 static string MakeClassName(string ns, string classname)
 {
     return String.IsNullOrEmpty(ns) ? classname :
         String.IsNullOrEmpty(classname) ? ns : ns + "." + codeProvider.CreateEscapedIdentifier(classname);
+}
+
+static string SanitizeWithNoConflicts(string token, HashSet<string> names)
+{
+    string name = Sanitize(token);
+
+    while (names.Contains(name))
+    {
+        name += "_";
+    }
+
+    names.Add(name);
+
+    return name;
 }
 
 static string Sanitize(string token)
@@ -1606,7 +1622,7 @@ class FunctionInfo
     public bool IsPublic { get { return _method.Access == vsCMAccess.vsCMAccessPublic; } }
     public List<MethodParamInfo> Parameters { get; private set; }
     public bool CanBeCalledWithoutParameters { get; private set; }
-	
+
     private bool IsTaskBased { get {return ReturnTypeImpl.FullName == "System.Threading.Tasks.Task<System.Web.Mvc.ActionResult>"; } }
 
     // Write out all the parameters as part of a method declaration
@@ -2056,7 +2072,7 @@ abstract class XmlSettings : XmlSettingsBase
         var serviceProvider = host as IServiceProvider;
         if (serviceProvider != null)
         {
-            this.DTE = serviceProvider.GetService(typeof(SDTE)) as DTE;
+            this.DTE = (EnvDTE.DTE)serviceProvider.GetService(typeof(EnvDTE.DTE));
         }
 
         // Fail if we couldn't get the DTE. This can happen when trying to run in TextTransform.exe
@@ -2069,7 +2085,7 @@ abstract class XmlSettings : XmlSettingsBase
 
         // If the .tt file is not opened, open it
         if (this.ProjectItem.Document == null)
-            this.ProjectItem.Open(Constants.vsViewKindCode);
+            this.ProjectItem.Open(EnvDTE.Constants.vsViewKindCode);
 
         this.Project = this.ProjectItem.ContainingProject;
 
@@ -2290,6 +2306,7 @@ class Manager
         private EnvDTE.DTE dte;
         private Action<String> checkOutAction;
         private Action<IEnumerable<String>> projectSyncAction;
+        private IVsQueryEditQuerySave2 queryEditSave;
 
         public override String DefaultProjectNamespace
         {
@@ -2339,6 +2356,7 @@ class Manager
             templateProjectItem = dte.Solution.FindProjectItem(host.TemplateFile);
             checkOutAction = (String fileName) => dte.SourceControl.CheckOutItem(fileName);
             projectSyncAction = (IEnumerable<String> keepFileNames) => ProjectSync(templateProjectItem, keepFileNames);
+            queryEditSave = (IVsQueryEditQuerySave2)hostServiceProvider.GetService(typeof(SVsQueryEditQuerySave));
         }
 
         private static void ProjectSync(EnvDTE.ProjectItem templateProjectItem, IEnumerable<String> keepFileNames)
@@ -2362,9 +2380,17 @@ class Manager
 
         private void CheckoutFileIfRequired(String fileName)
         {
-            var sc = dte.SourceControl;
-            if (sc != null && sc.IsItemUnderSCC(fileName) && !sc.IsItemCheckedOut(fileName))
-                checkOutAction.EndInvoke(checkOutAction.BeginInvoke(fileName, null, null));
+            if (queryEditSave != null)
+            {
+                uint pfEditVerdict;
+                queryEditSave.QuerySaveFile(fileName, 0, null, out pfEditVerdict);
+            }
+            else
+            {
+                var sc = dte.SourceControl;
+                if (sc != null && sc.IsItemUnderSCC(fileName) && !sc.IsItemCheckedOut(fileName)) 
+                    checkOutAction.EndInvoke(checkOutAction.BeginInvoke(fileName, null, null));
+            }
         }
     }
 }
