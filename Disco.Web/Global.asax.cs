@@ -21,7 +21,6 @@ namespace Disco.Web
     {
         public DiscoApplication()
         {
-            base.AuthenticateRequest += new EventHandler(DiscoApplication_AuthenticateRequest);
             base.BeginRequest += new EventHandler(DiscoApplication_BeginRequest);
             base.Error += new EventHandler(DiscoApplication_Error);
         }
@@ -125,14 +124,6 @@ namespace Disco.Web
         }
 
         #region Authentication
-        void DiscoApplication_AuthenticateRequest(object sender, EventArgs e)
-        {
-            User u = CurrentUser;
-            if (u != null)
-            {
-                base.Context.User = new GenericPrincipal(base.Context.User.Identity, new string[] { u.Type });
-            }
-        }
 
         public static bool InitialConfig { get; set; }
 

@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Disco.Web
 {
-    [Authorize(Roles = "Admin")]
+    [AuthorizeDiscoUsersAttribute(Disco.Models.Repository.User.Types.Admin)]
     public class dbAdminController : dbController
     {
     }
