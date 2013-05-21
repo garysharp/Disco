@@ -76,10 +76,10 @@ namespace Disco.Data.Repository
             // Notify before changes are committed
             var changes = Monitor.RepositoryMonitor.BeforeSaveChanges(this);
 
+            changeCount = base.SaveChanges();
+
             if (changes.Length > 0)
             {
-                changeCount = base.SaveChanges();
-
                 // Notify after changes are committed
                 Monitor.RepositoryMonitor.AfterSaveChanges(this, changes);
             }
