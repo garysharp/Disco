@@ -13,6 +13,7 @@ using Disco.Services.Plugins;
 using Disco.Models.UI.Job;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.BI.JobBI;
+using Newtonsoft.Json;
 
 namespace Disco.Web.Controllers
 {
@@ -440,8 +441,7 @@ namespace Disco.Web.Controllers
 
                             if (warrantyProviderProperties != null)
                             {
-                                JavaScriptSerializer j = new JavaScriptSerializer();
-                                m.WarrantyProviderPropertiesJson = j.Serialize(warrantyProviderProperties);
+                                m.WarrantyProviderPropertiesJson = JsonConvert.SerializeObject(warrantyProviderProperties);
                             }
                             m.DiscloseProperties = p.SubmitJobDiscloseInfo(dbContext, m.Job, m.OrganisationAddress, m.TechUser, m.FaultDescription, warrantyProviderProperties);
                             return View(Views.LogWarrantyDisclose, m);

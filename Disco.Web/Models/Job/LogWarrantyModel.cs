@@ -8,6 +8,7 @@ using Disco.BI;
 using System.Web.Script.Serialization;
 using Disco.Services.Plugins;
 using Disco.Services.Plugins.Features.WarrantyProvider;
+using Newtonsoft.Json;
 
 namespace Disco.Web.Models.Job
 {
@@ -38,12 +39,11 @@ namespace Disco.Web.Models.Job
         public Dictionary<string, string> WarrantyProviderProperties()
         {
             Dictionary<string, string> p = default(Dictionary<string, string>);
-            if (string.IsNullOrEmpty(this.WarrantyProviderPropertiesJson))
+            if (!string.IsNullOrEmpty(this.WarrantyProviderPropertiesJson))
             {
-                JavaScriptSerializer s = new JavaScriptSerializer();
                 try
                 {
-                    p = s.Deserialize<Dictionary<string, string>>(this.WarrantyProviderPropertiesJson);
+                    p = JsonConvert.DeserializeObject<Dictionary<string, string>>(this.WarrantyProviderPropertiesJson);
                 }
                 catch (Exception)
                 {

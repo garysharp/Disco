@@ -37,8 +37,7 @@
         </table>
     </div>
     @{
-        var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-        var eventTypesFilterJson = (Model.EventTypesFilter != null) ? serializer.Serialize(Model.EventTypesFilter.Select(et => et.Id).ToArray()) : "null";
+        var eventTypesFilterJson = (Model.EventTypesFilter != null) ? Newtonsoft.Json.JsonConvert.SerializeObject(Model.EventTypesFilter.Select(et => et.Id).ToArray()) : "null";
     }
     <script type="text/javascript">
         $(function () {
