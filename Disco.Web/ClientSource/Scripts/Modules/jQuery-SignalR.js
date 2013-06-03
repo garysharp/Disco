@@ -1,8 +1,8 @@
-﻿///#source 1 1 /ClientSource/Scripts/Modules/jQuery-SignalR/jquery.signalR-1.1.0.js
+﻿///#source 1 1 /ClientSource/Scripts/Modules/jQuery-SignalR/jquery.signalR-1.1.2.js
 /* jquery.signalR.core.js */
 /*global window:false */
 /*!
- * ASP.NET SignalR JavaScript Library v1.1.0
+ * ASP.NET SignalR JavaScript Library v1.1.2
  * http://signalr.net/
  *
  * Copyright Microsoft Open Technologies, Inc. All rights reserved.
@@ -2120,6 +2120,6 @@
 /*global window:false */
 /// <reference path="jquery.signalR.core.js" />
 (function ($) {
-    $.signalR.version = "1.1.0";
+    $.signalR.version = "1.1.2";
 }(window.jQuery));
 

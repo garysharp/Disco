@@ -145,7 +145,7 @@ namespace Links
                               
                 public static readonly string disco_unobtrusiveValidation_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.unobtrusiveValidation.extensions.min.js") ? Url("disco.unobtrusiveValidation.extensions.min.js") : Url("disco.unobtrusiveValidation.extensions.js");
                               
-                public static readonly string jquery_2_0_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-2.0.0.min.js") ? Url("jquery-2.0.0.min.js") : Url("jquery-2.0.0.js");
+                public static readonly string jquery_2_0_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-2.0.2.min.js") ? Url("jquery-2.0.2.min.js") : Url("jquery-2.0.2.js");
                               
                 public static readonly string jquery_ui_1_10_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui-1.10.3.min.js") ? Url("jquery-ui-1.10.3.min.js") : Url("jquery-ui-1.10.3.js");
                               
@@ -336,7 +336,7 @@ namespace Links
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/jQuery-SignalR";
                     public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                     public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string jquery_signalR_1_1_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.signalR-1.1.0.min.js") ? Url("jquery.signalR-1.1.0.min.js") : Url("jquery.signalR-1.1.0.js");
+                    public static readonly string jquery_signalR_1_1_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.signalR-1.1.2.min.js") ? Url("jquery.signalR-1.1.2.min.js") : Url("jquery.signalR-1.1.2.js");
                                   
                 }
             
