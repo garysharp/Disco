@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Disco.Services.Tasks;
 using Quartz;
+using Disco.Data.Repository;
 
 namespace Disco.Services.Plugins
 {
@@ -27,6 +28,11 @@ namespace Disco.Services.Plugins
             string manifestFileLocation = Path.Combine(manifest.PluginLocation, "manifest.json");
             if (!File.Exists(manifestFileLocation))
                 throw new FileNotFoundException("Plugin Manifest File Not Found", manifestFileLocation);
+
+            using (DiscoDataContext dbContext = new DiscoDataContext())
+            {
+                manifest.UninstallPlugin(dbContext, UninstallData, this.Status);
+            }
 
             string manifestUninstallFileLocation = Path.Combine(manifest.PluginLocation, "manifest.uninstall.json");
 
