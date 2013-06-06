@@ -31,115 +31,189 @@ namespace Disco.Web.Controllers
             }
 
             m.Success = true;
-            using (dbContext = new DiscoDataContext())
+
+            // Deal with !/@/# Search Shortcuts
+            if (limit == null && term.Length > 0)
             {
-                if (limit == null)
+                switch (term[0])
                 {
-                    if (term.Length < 2 && termInt < 0) // < 2 Characters && Not a Number
-                    {
-                        m.Success = false;
-                        m.ErrorMessage = "A search term of at least two characters is required";
-                        return View(m);
-                    }
-                    m.Devices = BI.DeviceBI.Searching.Search(dbContext, term);
-                    m.Jobs = BI.JobBI.Searching.Search(dbContext, term, null, true, searchDetails);
-                    m.Users = BI.UserBI.Searching.Search(dbContext, term);
+                    case '!':
+                        term = term.Substring(1);
+                        limit = "DeviceSerialNumber";
+                        break;
+                    case '#':
+                        term = term.Substring(1);
+                        limit = "JobId";
+                        if (!int.TryParse(term, out termInt))
+                            termInt = -1;
+                        break;
+                    case '@':
+                        term = term.Substring(1);
+                        limit = "UserId";
+                        break;
                 }
-                else
+            }
+
+            if (limit == null)
+            {
+                if (term.Length < 2 && termInt < 0) // < 2 Characters && Not a Number
                 {
-                    switch (limit.ToLower())
-                    {
-                        case "devicemodel":
-                            int deviceModelId;
-                            if (int.TryParse(term, out deviceModelId))
+                    m.Success = false;
+                    m.ErrorMessage = "A search term of at least two characters is required";
+                    return View(m);
+                }
+                m.Devices = BI.DeviceBI.Searching.Search(dbContext, term);
+                m.Jobs = BI.JobBI.Searching.Search(dbContext, term, null, true, searchDetails);
+                m.Users = BI.UserBI.Searching.Search(dbContext, term);
+            }
+            else
+            {
+                switch (limit.ToLower())
+                {
+                    case "devicemodel":
+                        int deviceModelId;
+                        if (int.TryParse(term, out deviceModelId))
+                        {
+                            var vm = dbContext.DeviceModels.Find(deviceModelId);
+                            if (vm != null)
                             {
-                                var vm = dbContext.DeviceModels.Find(deviceModelId);
-                                if (vm != null)
-                                {
-                                    m.FriendlyTerm = string.Format("Device Model: {0}", vm.ToString());
-                                    m.Devices = BI.DeviceBI.Searching.SearchDeviceModel(dbContext, vm.Id);
-                                    break;
-                                }
+                                m.FriendlyTerm = string.Format("Device Model: {0}", vm.ToString());
+                                m.Devices = BI.DeviceBI.Searching.SearchDeviceModel(dbContext, vm.Id);
+                                break;
                             }
-                            m.FriendlyTerm = string.Format("Device Model: {0}", term);
-                            m.Success = false;
-                            m.ErrorMessage = "Invalid Device Model Id";
-                            break;
-                        case "deviceprofile":
-                            int deviceProfileId;
-                            if (int.TryParse(term, out deviceProfileId))
+                        }
+                        m.FriendlyTerm = string.Format("Device Model: {0}", term);
+                        m.Success = false;
+                        m.ErrorMessage = "Invalid Device Model Id";
+                        break;
+                    case "deviceprofile":
+                        int deviceProfileId;
+                        if (int.TryParse(term, out deviceProfileId))
+                        {
+                            var dp = dbContext.DeviceProfiles.Find(deviceProfileId);
+                            if (dp != null)
                             {
-                                var dp = dbContext.DeviceProfiles.Find(deviceProfileId);
-                                if (dp != null)
-                                {
-                                    m.FriendlyTerm = string.Format("Device Profile: {0}", dp.ToString());
-                                    m.Devices = BI.DeviceBI.Searching.SearchDeviceProfile(dbContext, dp.Id);
-                                    break;
-                                }
+                                m.FriendlyTerm = string.Format("Device Profile: {0}", dp.ToString());
+                                m.Devices = BI.DeviceBI.Searching.SearchDeviceProfile(dbContext, dp.Id);
+                                break;
                             }
-                            m.FriendlyTerm = string.Format("Device Profile: {0}", term);
-                            m.Success = false;
-                            m.ErrorMessage = "Invalid Device Profile Id";
-                            break;
-                        case "devicebatch":
-                            int deviceBatchId;
-                            if (int.TryParse(term, out deviceBatchId))
+                        }
+                        m.FriendlyTerm = string.Format("Device Profile: {0}", term);
+                        m.Success = false;
+                        m.ErrorMessage = "Invalid Device Profile Id";
+                        break;
+                    case "devicebatch":
+                        int deviceBatchId;
+                        if (int.TryParse(term, out deviceBatchId))
+                        {
+                            var db = dbContext.DeviceBatches.Find(deviceBatchId);
+                            if (db != null)
                             {
-                                var db = dbContext.DeviceBatches.Find(deviceBatchId);
-                                if (db != null)
-                                {
-                                    m.FriendlyTerm = string.Format("Device Batch: {0}", db.ToString());
-                                    m.Devices = BI.DeviceBI.Searching.SearchDeviceBatch(dbContext, db.Id);
-                                    break;
-                                }
+                                m.FriendlyTerm = string.Format("Device Batch: {0}", db.ToString());
+                                m.Devices = BI.DeviceBI.Searching.SearchDeviceBatch(dbContext, db.Id);
+                                break;
                             }
-                            m.FriendlyTerm = string.Format("Device Batch: {0}", term);
+                        }
+                        m.FriendlyTerm = string.Format("Device Batch: {0}", term);
+                        m.Success = false;
+                        m.ErrorMessage = "Invalid Device Batch Id";
+                        break;
+                    case "devices":
+                        if (term.Length < 2)
+                        {
                             m.Success = false;
-                            m.ErrorMessage = "Invalid Device Batch Id";
-                            break;
-                        case "devices":
-                            if (term.Length < 2)
+                            m.ErrorMessage = "A search term of at least two characters is required";
+                            return View(m);
+                        }
+                        m.Devices = BI.DeviceBI.Searching.Search(dbContext, term);
+                        if (m.Devices.Count == 1)
+                        {
+                            return RedirectToAction(MVC.Device.Show(m.Devices[0].SerialNumber));
+                        }
+                        break;
+                    case "jobs":
+                        if (term.Length < 2 && termInt < 0)
+                        {
+                            m.Success = false;
+                            m.ErrorMessage = "A search term of at least two characters is required";
+                            return View(m);
+                        }
+                        if (termInt >= 0)
+                        { // Term is a Number - Check for JobId
+                            if (dbContext.Jobs.Count(j => j.Id == termInt) == 1)
+                            {
+                                return RedirectToAction(MVC.Job.Show(termInt));
+                            }
+                        }
+                        m.Jobs = BI.JobBI.Searching.Search(dbContext, term, null, true, searchDetails);
+                        break;
+                    case "users":
+                        if (term.Length < 2)
+                        {
+                            m.Success = false;
+                            m.ErrorMessage = "A search term of at least two characters is required";
+                            return View(m);
+                        }
+                        m.Users = BI.UserBI.Searching.Search(dbContext, term);
+                        if (m.Users.Count == 1)
+                        {
+                            return RedirectToAction(MVC.User.Show(m.Users[0].Id));
+                        }
+                        break;
+                    case "deviceserialnumber":
+                        var device = dbContext.Devices.FirstOrDefault(d => d.SerialNumber == term);
+                        if (device != null)
+                            return RedirectToAction(MVC.Device.Show(term));
+                        else
+                        {
+                            m.Success = false;
+                            m.ErrorMessage = "Unknown Device Serial Number";
+                            return View(m);
+                        }
+                    case "jobid":
+                        if (termInt >= 0)
+                        {
+                            var job = dbContext.Jobs.FirstOrDefault(d => d.Id == termInt);
+                            if (job != null)
+                                return RedirectToAction(MVC.Job.Show(termInt));
+                            else
                             {
                                 m.Success = false;
-                                m.ErrorMessage = "A search term of at least two characters is required";
+                                m.ErrorMessage = "Unknown Job Number";
                                 return View(m);
                             }
-                            m.Devices = BI.DeviceBI.Searching.Search(dbContext, term);
-                            if (m.Devices.Count == 1)
+                        }
+                        else
+                        {
+                            m.Success = false;
+                            m.ErrorMessage = "Invalid Job Number";
+                            return View(m);
+                        }
+                    case "userid":
+                        var user = dbContext.Users.FirstOrDefault(u => u.Id == term);
+                        if (user != null)
+                            return RedirectToAction(MVC.User.Show(term));
+                        else
+                        {
+                            try
                             {
-                                return RedirectToAction(MVC.Device.Show(m.Devices[0].SerialNumber));
-                            }
-                            break;
-                        case "jobs":
-                            if (term.Length < 2 && termInt < 0)
-                            {
-                                m.Success = false;
-                                m.ErrorMessage = "A search term of at least two characters is required";
-                                return View(m);
-                            }
-                            if (termInt >= 0)
-                            { // Term is a Number - Check for JobId
-                                if (dbContext.Jobs.Count(j => j.Id == termInt) == 1)
+                                user = BI.UserBI.UserCache.GetUser(term, dbContext);
+                                if (user != null)
+                                    return RedirectToAction(MVC.User.Show(term));
+                                else
                                 {
-                                    return RedirectToAction(MVC.Job.Show(termInt));
+                                    m.Success = false;
+                                    m.ErrorMessage = "Unknown User Id";
+                                    return View(m);
                                 }
                             }
-                            m.Jobs = BI.JobBI.Searching.Search(dbContext, term, null, true, searchDetails);
-                            break;
-                        case "users":
-                            if (term.Length < 2)
+                            catch (ArgumentException)
                             {
                                 m.Success = false;
-                                m.ErrorMessage = "A search term of at least two characters is required";
+                                m.ErrorMessage = "Unknown User Id";
                                 return View(m);
                             }
-                            m.Users = BI.UserBI.Searching.Search(dbContext, term);
-                            if (m.Users.Count == 1)
-                            {
-                                return RedirectToAction(MVC.User.Show(m.Users[0].Id));
-                            }
-                            break;
-                    }
+                        }
                 }
             }
 
