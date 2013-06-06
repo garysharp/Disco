@@ -29,8 +29,8 @@
                 </td>
             </tr>
         </table>
-        <input type="hidden" name="ComputerNameTemplate" value="DeviceProfile.ShortName + '-' + SerialNumber" />
-        <input type="hidden" name="ProvisionADAccount" value="True" />
+        @Html.HiddenFor(model => model.DeviceProfile.ComputerNameTemplate)
+        @Html.HiddenFor(model => model.DeviceProfile.ProvisionADAccount)
         <p class="actions">
             <input type="submit" class="button" value="Create" />
         </p>

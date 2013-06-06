@@ -31,7 +31,7 @@ namespace Disco.Web.Areas.Config.Views.DeviceProfile
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Config/Views/DeviceProfile/Create.cshtml")]
     public partial class Create : System.Web.Mvc.WebViewPage<Disco.Web.Areas.Config.Models.DeviceProfile.CreateModel>
     {
@@ -124,23 +124,29 @@ WriteLiteral("<br />");
             
             #line default
             #line hidden
-WriteLiteral("\r\n                </td>\r\n            </tr>\r\n        </table>\r\n        <input");
+WriteLiteral("\r\n                </td>\r\n            </tr>\r\n        </table>\r\n");
 
-WriteLiteral(" type=\"hidden\"");
+WriteLiteral("        ");
 
-WriteLiteral(" name=\"ComputerNameTemplate\"");
+            
+            #line 32 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
+   Write(Html.HiddenFor(model => model.DeviceProfile.ComputerNameTemplate));
 
-WriteLiteral(" value=\"DeviceProfile.ShortName + \'-\' + SerialNumber\"");
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n");
 
-WriteLiteral(" />\r\n        <input");
+WriteLiteral("        ");
 
-WriteLiteral(" type=\"hidden\"");
+            
+            #line 33 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
+   Write(Html.HiddenFor(model => model.DeviceProfile.ProvisionADAccount));
 
-WriteLiteral(" name=\"ProvisionADAccount\"");
-
-WriteLiteral(" value=\"True\"");
-
-WriteLiteral(" />\r\n        <p");
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n        <p");
 
 WriteLiteral(" class=\"actions\"");
 

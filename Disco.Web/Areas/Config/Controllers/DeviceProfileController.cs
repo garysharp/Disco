@@ -10,6 +10,7 @@ using Disco.Services.Plugins.Features.CertificateProvider;
 using Disco.Services.Plugins;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Models.UI.Config.DeviceProfile;
+using Disco.Models.Repository;
 
 namespace Disco.Web.Areas.Config.Controllers
 {
@@ -65,7 +66,14 @@ namespace Disco.Web.Areas.Config.Controllers
 
         public virtual ActionResult Create()
         {
-            var m = new Models.DeviceProfile.CreateModel();
+            var m = new Models.DeviceProfile.CreateModel()
+            {
+                DeviceProfile = new DeviceProfile()
+                {
+                    ComputerNameTemplate = "DeviceProfile.ShortName + '-' + SerialNumber",
+                    ProvisionADAccount = true
+                }
+            };
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<ConfigDeviceProfileCreateModel>(this.ControllerContext, m);
