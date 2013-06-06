@@ -31,7 +31,7 @@ namespace Disco.Web.Views.Search
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Search/Query.cshtml")]
     public partial class Query : System.Web.Mvc.WebViewPage<Disco.Web.Models.Search.QueryModel>
     {

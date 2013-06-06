@@ -31,7 +31,7 @@ namespace Disco.Web.Areas.Public.Views.UserHeldDevices
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Public/Views/UserHeldDevices/Noticeboard.cshtml")]
     public partial class Noticeboard : System.Web.Mvc.WebViewPage<dynamic>
     {

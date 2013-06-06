@@ -31,7 +31,7 @@ namespace Disco.Web.Areas.Public.Views.Public
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Public/Views/Public/Licence.cshtml")]
     public partial class Licence : System.Web.Mvc.WebViewPage<dynamic>
     {

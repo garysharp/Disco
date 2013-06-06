@@ -31,7 +31,7 @@ namespace Disco.Web.Areas.Config.Views.DeviceProfile
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Config/Views/DeviceProfile/_TableRender.cshtml")]
     public partial class TableRender : System.Web.Mvc.WebViewPage<IEnumerable<Disco.Web.Areas.Config.Models.DeviceProfile._IndexModelItem>>
     {

@@ -31,7 +31,7 @@ namespace Disco.Web.Views.Device
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/_CertificateTable.cshtml")]
     public partial class CertificateTable : System.Web.Mvc.WebViewPage<IEnumerable<Disco.Models.Repository.DeviceCertificate>>
     {

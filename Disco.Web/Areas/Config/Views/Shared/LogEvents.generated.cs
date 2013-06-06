@@ -31,7 +31,7 @@ namespace Disco.Web.Areas.Config.Views.Shared
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Config/Views/Shared/LogEvents.cshtml")]
     public partial class LogEvents : System.Web.Mvc.WebViewPage<Disco.Web.Areas.Config.Models.Shared.LogEventsModel>
     {

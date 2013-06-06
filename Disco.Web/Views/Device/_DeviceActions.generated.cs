@@ -31,7 +31,7 @@ namespace Disco.Web.Views.Device
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/_DeviceActions.cshtml")]
     public partial class DeviceActions : System.Web.Mvc.WebViewPage<Disco.Models.Repository.Device>
     {

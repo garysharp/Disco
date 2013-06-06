@@ -31,7 +31,7 @@ namespace Disco.Web.Areas.Config.Views.Organisation
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Config/Views/Organisation/Index.cshtml")]
     public partial class Index : System.Web.Mvc.WebViewPage<Disco.Web.Areas.Config.Models.Organisation.IndexModel>
     {

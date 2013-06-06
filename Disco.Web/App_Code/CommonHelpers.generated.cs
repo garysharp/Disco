@@ -60,7 +60,7 @@ namespace Disco.Web
     #line default
     #line hidden
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     public class CommonHelpers : System.Web.WebPages.HelperPage
     {
 

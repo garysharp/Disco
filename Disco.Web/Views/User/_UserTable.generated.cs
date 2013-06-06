@@ -31,7 +31,7 @@ namespace Disco.Web.Views.User
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/User/_UserTable.cshtml")]
     public partial class UserTable : System.Web.Mvc.WebViewPage<IEnumerable<Disco.Models.BI.Search.UserSearchResultItem>>
     {

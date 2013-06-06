@@ -31,7 +31,7 @@ namespace Disco.Web.Areas.Config.Views.DeviceBatch
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Config/Views/DeviceBatch/Index.cshtml")]
     public partial class Index : System.Web.Mvc.WebViewPage<Disco.Web.Areas.Config.Models.DeviceBatch.IndexModel>
     {

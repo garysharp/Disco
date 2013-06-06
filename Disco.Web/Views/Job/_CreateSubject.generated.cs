@@ -31,7 +31,7 @@ namespace Disco.Web.Views.Job
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Job/_CreateSubject.cshtml")]
     public partial class CreateSubject : System.Web.Mvc.WebViewPage<Disco.Web.Models.Job.CreateModel>
     {

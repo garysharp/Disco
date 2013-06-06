@@ -31,7 +31,7 @@ namespace Disco.Web.Areas.Config.Views.DocumentTemplate
     using Disco.Web;
     using Disco.Web.Extensions;
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "1.5.4.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Config/Views/DocumentTemplate/ExpressionBrowser.cshtml")]
     public partial class ExpressionBrowser : System.Web.Mvc.WebViewPage<Disco.Web.Areas.Config.Models.DocumentTemplate.ExpressionBrowserModel>
     {
