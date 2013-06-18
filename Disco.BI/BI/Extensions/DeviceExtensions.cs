@@ -178,5 +178,15 @@ namespace Disco.BI.Extensions
                 return null;
         }
 
+        public static string Status(this Device Device)
+        {
+            if (Device.DecommissionedDate.HasValue)
+                return "Decommissioned";
+
+            if (!Device.EnrolledDate.HasValue)
+                return "Not Enrolled";
+
+            return "Active";
+        }
     }
 }

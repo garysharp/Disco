@@ -1,0 +1,717 @@
+﻿@model Disco.Web.Models.Device.ShowModel
+@{
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
+}
+<table id="Device_Show_Subjects">
+    <tr>
+        <td id="Device_Show_Details">
+            <div>
+                <div id="Device_Show_Details_Asset">
+                    <table class="none verticalHeadings">
+                        <tr>
+                            <td><span title="Computer Name">Name:</span>
+                            </td>
+                            <td>@if (string.IsNullOrWhiteSpace(Model.Device.ComputerName))
+                                {
+                                <span id="Device_Show_Details_Asset_NameUnknown" title="Computer Name" class="smallMessage">&lt;Unknown/Not Allocated&gt;</span>
+                                }
+                                else
+                                {
+                                <h4 id="Device_Show_Details_Asset_Name" title="Computer Name">@Model.Device.ComputerName</h4>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Asset:</td>
+                            <td>@Html.TextBoxFor(m => m.Device.AssetNumber, new { @class = "small discreet" }) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()</td>
+                        </tr>
+                        <tr>
+                            <td>Location:</td>
+                            <td>@Html.TextBoxFor(m => m.Device.Location, new { @class = "small discreet" }) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()</td>
+                        </tr>
+                    </table>
+                    <script>
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper($('#Device_AssetNumber'), 'Unknown', '@Url.Action(MVC.API.Device.UpdateAssetNumber(Model.Device.SerialNumber, null))', 'AssetNumber');
+                            document.DiscoFunctions.PropertyChangeHelper($('#Device_Location'), 'Unknown', '@Url.Action(MVC.API.Device.UpdateLocation(Model.Device.SerialNumber, null))', 'Location');
+                        });
+                    </script>
+                </div>
+                <div id="Device_Show_Details_Dates" class="status">
+                    <table class="none verticalHeadings">
+                        <tr>
+                            <td>Created:
+                            </td>
+                            <td><span id="Device_Show_Details_Dates_Created">@CommonHelpers.FriendlyDate(Model.Device.CreatedDate)</span></td>
+                        </tr>
+                        @if (Model.Device.DecommissionedDate.HasValue)
+                        {
+                            <tr>
+                                <td>Decommissioned:
+                                </td>
+                                <td><span id="Device_Show_Details_Dates_Decommissioned">@CommonHelpers.FriendlyDate(Model.Device.DecommissionedDate)</span></td>
+                            </tr>
+                        }
+
+                        <tr>
+                            <td>Enrolled:
+                            </td>
+                            <td>
+                                @if (Model.Device.EnrolledDate.HasValue)
+                                {
+                                    <text>First: </text><span id="Device_Show_Details_Asset_Enrolled_First">@CommonHelpers.FriendlyDate(Model.Device.EnrolledDate)</span>
+                                    if (Model.Device.LastEnrolDate.HasValue && Model.Device.EnrolledDate.Value != Model.Device.LastEnrolDate.Value)
+                                    {
+                                    <br /><text>Last: </text><span id="Device_Show_Details_Asset_Enrolled_Last">@CommonHelpers.FriendlyDate(Model.Device.LastEnrolDate)</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span id="Device_Show_Details_Asset_Enrolled_Never" class="smallMessage">Never</span>
+                                }
+                                @if (Model.Device.AllowUnauthenticatedEnrol)
+                                {
+                                    <span id="Device_Show_Details_Asset_Enrolled_Trusted" title="Trusted Unauthenticated Enrolment is Allowed"></span>
+                                }
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+                <div id="Device_Show_Details_Status" class="status">
+                    <table class="none verticalHeadings">
+                        <tr>
+                            <td><span title="Last Network Logon Date">Last Seen:</span>
+                            </td>
+                            <td>@{
+                                string lastSeenClass = null;
+                                if (Model.Device.LastNetworkLogonDate.HasValue)
+                                {
+                                    if (Model.Device.LastNetworkLogonDate.Value < DateTime.Now.AddDays(-30))
+                                    {
+                                        lastSeenClass = "error";
+                                    }
+                                    else
+                                    {
+                                        if (Model.Device.LastNetworkLogonDate.Value < DateTime.Now.AddDays(-7))
+                                        {
+                                            lastSeenClass = "alert";
+                                        }
+                                    }
+                                }
+                            }
+                                <span id="Device_Show_Details_Status_LastSeen" class="@lastSeenClass">@CommonHelpers.FriendlyDate(Model.Device.LastNetworkLogonDate)</span></td>
+                            @if (!string.IsNullOrEmpty(Model.Device.ComputerName))
+                            {
+                                <script type="text/javascript">
+                                    $(function () {
+                                        var updated = false;
+                                        var span = $('#Device_Show_Details_Status_LastSeen');
+                                        var spanProgress = null;
+
+                                        $.getJSON('@(Url.Action(MVC.API.Device.LastNetworkLogonDate(Model.Device.SerialNumber)))', function (response, result) {
+
+                                            updated = true;
+                                            if (spanProgress)
+                                                spanProgress.hide();
+
+                                            if (result != 'success') {
+                                                alert('Unable to retrieve latest network logon date:\n' + response);
+                                                $('<span>').addClass('smallMessage').text('[may not be current]').appendTo(span);
+                                            } else {
+                                                span.attr('title', response.Formatted).text(response.Friendly);
+                                            }
+                                        });
+                                        window.setTimeout(function () {
+                                            if (!updated) {
+                                                spanProgress = $('<span>').addClass('ajaxHelperIcon ajaxLoading ajaxShowInitially').attr('title', 'Loading...').appendTo(span);
+                                            }
+                                        }, 250);
+                                    });
+                                </script>
+                            }
+                        </tr>
+                    </table>
+                </div>
+                <div class="status">
+                    @{
+                        var assignedUser = Model.Device.AssignedUser;
+                    }
+                    <table class="none verticalHeadings">
+                        <tr>
+                            <td>Assignment:
+                            </td>
+                            <td>
+                                @if (assignedUser != null)
+                                {
+                                    <div id="Device_Show_User">
+                                        <div id="Device_Show_User_DisplayName" title="Display Name">@Html.ActionLink(assignedUser.DisplayName, MVC.User.Show(assignedUser.Id))</div>
+                                        <div id="Device_Show_User_Id" title="Id">@assignedUser.Id <span id="Device_Show_User_Type" title="Type">[@(assignedUser.Type)]</span></div>
+                                        @if (!string.IsNullOrWhiteSpace(assignedUser.PhoneNumber))
+                                        {
+                                            <div id="Device_Show_User_PhoneNumber" title="Phone Number">@assignedUser.PhoneNumber</div>
+                                        }
+                                        @if (!string.IsNullOrWhiteSpace(assignedUser.EmailAddress))
+                                        {
+                                            <div id="Device_Show_User_EmailAddress" title="Email Address"><a href="mailto:@(Model.Device.AssignedUser.EmailAddress)">@assignedUser.EmailAddress</a></div>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="smallMessage">Not Assigned</span>
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="Device_Show_GenerateDocument_Container" class="status">
+                    @Html.DropDownList("Device_Show_GenerateDocument", Model.DocumentTemplatesSelectListItems)
+                    <script type="text/javascript">
+                        $(function () {
+                            var generatePdfUrl = '@Url.Action(MVC.API.Device.GeneratePdf(Model.Device.SerialNumber.ToString(), null))?DocumentTemplateId=';
+                            var $documentTemplates = $('#Device_Show_GenerateDocument');
+                            $documentTemplates.change(function () {
+                                var v = $documentTemplates.val();
+                                if (v) {
+                                    window.location.href = generatePdfUrl + v;
+                                    $documentTemplates.val('').blur();
+                                }
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+        </td>
+        <td id="Device_Show_Policies" rowspan="2">
+            <div>
+                <div id="Device_Show_Policies_Profile">
+                    <h2 title="Device Profile">@Html.ActionLink(Model.Device.DeviceProfile.Name, MVC.Config.DeviceProfile.Index(Model.Device.DeviceProfileId))</h2>
+                    <table class="none verticalHeadings">
+                        <tr>
+                            <td><span title="Distribution Type">Distribution:</span>
+                            </td>
+                            <td>@Model.Device.DeviceProfile.DistributionType.ToString()
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="Address">Address:</span>
+                            </td>
+                            <td>@{
+                                if (Model.DeviceProfileDefaultOrganisationAddress != null)
+                                {
+                                <span id="Device_Show_Policies_Profile_Address">@Model.DeviceProfileDefaultOrganisationAddress.Name</span>
+                                }
+                                else
+                                {
+                                <span id="Device_Show_Policies_Profile_Address_None" class="smallMessage">None</span>
+                                }
+                            }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="Provision Active Directory Account">Provision Account:</span>
+                            </td>
+                            <td>@(Model.Device.DeviceProfile.ProvisionADAccount ? "Active Directory" : "No")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="Allocate Certificates">Allocate Certificate:</span>
+                            </td>
+                            <td>@(Model.DeviceProfileCertificateProvider != null ? Model.DeviceProfileCertificateProvider.Name : "No")
+                            </td>
+                        </tr>
+                    </table>
+                    @if (Model.Device.CanUpdateDeviceProfile())
+                    {
+                        @Html.ActionLinkSmallButton("Update Profile", MVC.API.Device.UpdateDeviceProfileId(Model.Device.SerialNumber, null, true), "Device_Show_Policies_Profile_Actions_Update_Button")
+
+                        <div id="Device_Show_Policies_Profile_Actions_Update_Dialog" class="dialog" title="Assign to Device Profile">
+                            <div>
+                                <ul class="none">
+                                    @foreach (var dp in Model.DeviceProfiles.OrderBy(i => i.Name))
+                                    {
+                                        <li>
+                                            <input type="radio" data-deviceprofileid="@dp.Id" name="DeviceProfile" id="DeviceProfile_@(dp.Id)" /><label for="DeviceProfile_@(dp.Id)" title="Distribution: @(dp.DistributionType)">@dp.Name</label></li>   
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <script>
+                            $(function () {
+                                var currentProfile = '@(Model.Device.DeviceProfileId)';
+                                var button = $('#Device_Show_Policies_Profile_Actions_Update_Button');
+                                var buttonDialog = null;
+                                var dialogInputs = null;
+                                var dialogContainers = null;
+
+                                button.click(function () {
+
+                                    if (!buttonDialog) {
+                                        buttonDialog = $('#Device_Show_Policies_Profile_Actions_Update_Dialog')
+                                                            .dialog({
+                                                                resizable: false,
+                                                                modal: true,
+                                                                maxHeight: 450,
+                                                                autoOpen: false,
+                                                                buttons: {
+                                                                    "Update Profile": function () {
+                                                                        var deviceProfileId = dialogInputs.filter(':checked').attr('data-deviceprofileid');
+
+                                                                        if (deviceProfileId) {
+                                                                            var $this = $(this);
+                                                                            $this.dialog("disable");
+                                                                            $this.dialog("option", "buttons", null);
+                                                                            window.location.href = button.attr('href') + '&DeviceProfileId=' + deviceProfileId;
+                                                                        } else {
+                                                                            alert('A device profile must be selected');
+                                                                        }
+                                                                    },
+                                                                    Cancel: function () {
+                                                                        $(this).dialog("close");
+                                                                    }
+                                                                }
+                                                            });
+                                        dialogInputs = buttonDialog.find('input');
+                                        dialogContainers = dialogInputs.closest('li');
+
+                                        dialogInputs.change(function () {
+                                            dialogContainers.removeClass('selected');
+                                            $(this).closest('li').addClass('selected');
+                                        });
+                                    }
+
+                                    dialogInputs.filter('[data-deviceprofileid=' + currentProfile + ']').prop('checked', true).change();
+
+                                    buttonDialog.dialog('open');
+                                    return false;
+                                });
+
+                            });
+                        </script>
+                    }
+                </div>
+                <div id="Device_Show_Policies_Batch" class="status">
+                    @if (Model.Device.DeviceBatchId.HasValue)
+                    {
+                        <h2 title="Device Batch">@Html.ActionLink(Model.Device.DeviceBatch.Name, MVC.Config.DeviceBatch.Index(Model.Device.DeviceBatchId.Value))</h2>
+                        <table class="none verticalHeadings">
+                            <tr>
+                                <td><span title="Purchased Date">Purchased:</span>
+                                </td>
+                                <td>@CommonHelpers.FriendlyDate(Model.Device.DeviceBatch.PurchaseDate)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span title="Supplier">Supplier:</span>
+                                </td>
+                                <td>@(Model.Device.DeviceBatch.Supplier ?? "Unknown")
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span title="Warranty Valid Until">Warranty Until:</span>
+                                </td>
+                                <td class="@(Model.Device.DeviceBatch.WarrantyValidUntil.HasValue && Model.Device.DeviceBatch.WarrantyValidUntil.Value < DateTime.Now ? "alert" : null)">@CommonHelpers.FriendlyDate(Model.Device.DeviceBatch.WarrantyValidUntil, "Unknown", null)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span title="Insurance Supplier">Insurance Supplier:</span>
+                                </td>
+                                <td>@(Model.Device.DeviceBatch.InsuranceSupplier ?? "Unknown")
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span title="Insured Until">Insured Until:</span>
+                                </td>
+                                <td class="@(Model.Device.DeviceBatch.InsuredUntil.HasValue && Model.Device.DeviceBatch.InsuredUntil.Value < DateTime.Now ? "alert" : null)">@CommonHelpers.FriendlyDate(Model.Device.DeviceBatch.InsuredUntil, "Unknown", null)
+                                </td>
+                            </tr>
+                        </table>
+                    }
+                    else
+                    {
+                        <h2>Batch: <em>Not Associated</em></h2>
+                    }
+                    @if (Model.Device.CanUpdateDeviceBatch())
+                    {
+                        @Html.ActionLinkSmallButton("Update Batch", MVC.API.Device.UpdateDeviceBatchId(Model.Device.SerialNumber, null, true), "Device_Show_Policies_Batch_Actions_Update_Button")
+
+                        <div id="Device_Show_Policies_Batch_Actions_Update_Dialog" class="dialog" title="Assign to Device Batch">
+                            <div>
+                                <ul class="none">
+                                    @foreach (var db in Model.DeviceBatches.OrderBy(i => i.Name))
+                                    {
+                                        <li>
+                                            <input type="radio" data-devicebatchid="@db.Id" name="DeviceBatch" id="DeviceBatch_@(db.Id)" /><label for="DeviceBatch_@(db.Id)" title="Purchased: @(db.PurchaseDate.ToFuzzy())">@db.Name</label></li>   
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <script>
+                            $(function () {
+                                var currentBatch = '@(Model.Device.DeviceBatchId)';
+                                var button = $('#Device_Show_Policies_Batch_Actions_Update_Button');
+                                var buttonDialog = null;
+                                var dialogInputs = null;
+                                var dialogContainers = null;
+
+                                button.click(function () {
+
+                                    if (!buttonDialog) {
+                                        buttonDialog = $('#Device_Show_Policies_Batch_Actions_Update_Dialog')
+                                                            .dialog({
+                                                                resizable: false,
+                                                                modal: true,
+                                                                maxHeight: 450,
+                                                                autoOpen: false,
+                                                                buttons: {
+                                                                    "Update Batch": function () {
+                                                                        var deviceBatchId = dialogInputs.filter(':checked').attr('data-devicebatchid');
+
+                                                                        if (deviceBatchId) {
+                                                                            var $this = $(this);
+                                                                            $this.dialog("disable");
+                                                                            $this.dialog("option", "buttons", null);
+                                                                            window.location.href = button.attr('href') + '&DeviceBatchId=' + deviceBatchId;
+                                                                        } else {
+                                                                            alert('A device batch must be selected');
+                                                                        }
+                                                                    },
+                                                                    Cancel: function () {
+                                                                        $(this).dialog("close");
+                                                                    }
+                                                                }
+                                                            });
+                                        dialogInputs = buttonDialog.find('input');
+                                        dialogContainers = dialogInputs.closest('li');
+
+                                        dialogInputs.change(function () {
+                                            dialogContainers.removeClass('selected');
+                                            $(this).closest('li').addClass('selected');
+                                        });
+                                    }
+
+                                    dialogInputs.filter('[data-devicebatchid=' + currentBatch + ']').prop('checked', true).change();
+
+                                    buttonDialog.dialog('open');
+                                    return false;
+                                });
+
+                            });
+                        </script>
+                    }
+                </div>
+            </div>
+        </td>
+        <td id="Device_Show_Aspects" rowspan="2">
+            <div>
+                <div id="Device_Show_Aspects_Model" class="clearfix">
+                    <h2 id="Device_Show_Aspects_Model_Description" title="Model Description">@Html.ActionLink(Model.Device.DeviceModel.ToString(), MVC.Config.DeviceModel.Index(Model.Device.DeviceModelId))</h2>
+                    <img id="Device_Show_Aspects_Model_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(Model.Device.DeviceModelId, Model.Device.DeviceModel.ImageHash()))" />
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr id="Device_Show_Subjects_Actions">
+        <td id="Device_Show_Device_Actions">
+            @if (Model.Device.CanCreateJob())
+            {
+                Html.BundleDeferred("~/ClientScripts/Modules/Disco-CreateJob");
+                @Html.ActionLinkSmallButton("Create Job", MVC.Job.Create(Model.Device.SerialNumber, Model.Device.AssignedUserId), "buttonCreateJob")
+            }
+            @if (Model.Device.CanUpdateAssignment())
+            {
+                @Html.ActionLinkSmallButton("Update Assignment", MVC.API.Device.UpdateAssignedUserId(Model.Device.SerialNumber, null, true), "Device_Show_User_Actions_Assign_Button")
+                <div id="Device_Show_User_Actions_Assign_Dialog" class="dialog" title="Assign this Device?">
+                    <p>
+                        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+                        Assign to User:
+                                            <input id="Device_Show_User_Actions_Assign_UserId" type="text" />
+                    </p>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var button = $('#Device_Show_User_Actions_Assign_Button');
+                        var buttonDialog = null;
+                        var inputUserId = null;
+
+                        var dialogButtons = {
+                                                @{
+                if (assignedUser != null)
+                {
+                                                        <text>
+                            "Unassign": function () {
+                                var $this = $(this);
+                                $this.dialog("disable");
+                                $this.dialog("option", "buttons", null);
+                                window.location.href = button.attr('href');
+                            },
+                                                </text>
+                }
+                                                }
+                            "Assign": function () {
+                                var $this = $(this);
+                                var userId = inputUserId.val();
+                                if (userId) {
+                                    $this.dialog("disable");
+                                    $this.dialog("option", "buttons", null);
+                                    window.location.href = button.attr('href') + '&AssignedUserId=' + userId;
+                                } else {
+                                    alert('Enter a user to assign this device');
+                                }
+                            },
+                            Cancel: function () {
+                                $(this).dialog("close");
+                            }
+                        }
+
+                        button.click(function () {
+                            if (!buttonDialog) {
+                                buttonDialog = $('#Device_Show_User_Actions_Assign_Dialog')
+                                                    .dialog({
+                                                        resizable: false,
+                                                        height: 160,
+                                                        modal: true,
+                                                        autoOpen: false,
+                                                        buttons: dialogButtons
+                                                    });
+                                inputUserId = $('#Device_Show_User_Actions_Assign_UserId');
+                                inputUserId.focus(function () { inputUserId.select() })
+                                    .autocomplete({
+                                        source: '@(Url.Action(MVC.API.User.UpstreamUsers()))',
+                                        minLength: 2,
+                                        select: function (e, ui) {
+                                            inputUserId.val(ui.item.Id);
+                                            return false;
+                                        }
+                                    });
+                                inputUserId.data('ui-autocomplete')._renderItem = function (ul, item) {
+                                    return $("<li>")
+                                        .data("item.autocomplete", item)
+                                        .append("<a><strong>" + item.DisplayName + "</strong><br>" + item.Id + " (" + item.Type + ")</a>")
+                                        .appendTo(ul);
+                                };
+                            }
+                            buttonDialog.dialog('open');
+                            inputUserId.focus();
+                            return false;
+                        });
+
+                    });
+                </script>
+            }
+            @if (Model.Device.CanUpdateTrustEnrol())
+            {
+                @Html.ActionLinkSmallButton("Trust Enrol", MVC.API.Device.UpdateAllowUnauthenticatedEnrol(Model.Device.SerialNumber, true.ToString(), true), "Device_Show_Device_Actions_TrustEnrol_Button")
+                <div id="Device_Show_Device_Actions_TrustEnrol_Dialog" title="Trust this Device?">
+                    <div class="ui-widget">
+                        <div class="ui-state-highlight ui-corner-all" style="padding: 6px;">
+                            <div style="padding-bottom: 6px;">
+                                <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+                                This action will allow a device <em>claiming</em> to have the Serial Number '@(Model.Device.SerialNumber)' to be enrolled without authentication.
+                            </div>
+                            <strong>Are you sure you want to allow an unauthenticated enrolment?</strong>
+                        </div>
+                    </div>
+                    <div class="smallMessage" style="margin-top: 10px; font-size: 1em;">
+                        Devices flagged as 'trusted' are allowed a single-use device enrolment without providing authentication (for example: Active Directory Computer Account).<br />
+                        Once a devices enrol, their trust setting is reset and additional enrolments need to be authenticated (domain joined) or manually trusted again.
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var button = $('#Device_Show_Device_Actions_TrustEnrol_Button');
+                        var buttonDialog = $('#Device_Show_Device_Actions_TrustEnrol_Dialog');
+                        var buttonLink = button.attr('href');
+                        button.attr('href', '#');
+                        button.click(function () {
+                            buttonDialog.dialog('open');
+                            return false;
+                        });
+                        buttonDialog.dialog({
+                            resizable: false,
+                            width: 400,
+                            modal: true,
+                            autoOpen: false,
+                            buttons: {
+                                "Trust": function () {
+                                    var $this = $(this);
+                                    $this.dialog("disable");
+                                    $this.dialog("option", "buttons", null);
+                                    window.location.href = buttonLink;
+                                },
+                                Cancel: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    });
+                </script>
+            }
+            @if (Model.Device.CanUpdateUntrustEnrol())
+            {
+                @Html.ActionLinkSmallButton("Untrust Enrol", MVC.API.Device.UpdateAllowUnauthenticatedEnrol(Model.Device.SerialNumber, false.ToString(), true), "Device_Show_Device_Actions_UntrustEnrol_Button")
+                <div id="Device_Show_Device_Actions_UntrustEnrol_Dialog" title="Untrust this Device?">
+                    <div style="padding-bottom: 6px;">
+                        <span class="ui-icon ui-icon-info" style="float: left; margin: 0 7px 20px 0;"></span>
+                        This action will require the device to enrol with authentication (for example: domain joined).
+                    </div>
+                    <strong>Are you sure you want to require an authenticated enrolment?</strong>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var button = $('#Device_Show_Device_Actions_UntrustEnrol_Button');
+                        var buttonDialog = $('#Device_Show_Device_Actions_UntrustEnrol_Dialog');
+                        var buttonLink = button.attr('href');
+                        button.attr('href', '#');
+                        button.click(function () {
+                            buttonDialog.dialog('open');
+                            return false;
+                        });
+                        buttonDialog.dialog({
+                            resizable: false,
+                            width: 400,
+                            modal: true,
+                            autoOpen: false,
+                            buttons: {
+                                "Untrust": function () {
+                                    var $this = $(this);
+                                    $this.dialog("disable");
+                                    $this.dialog("option", "buttons", null);
+                                    window.location.href = buttonLink;
+                                },
+                                Cancel: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    });
+                </script>
+            }
+            @if (Model.Device.CanDecommission())
+            { 
+                @Html.ActionLinkSmallButton("Decommission", MVC.API.Device.Decommission(Model.Device.SerialNumber, true), "Device_Show_Device_Actions_Decommission_Button")
+                <div id="Device_Show_Device_Actions_Decommission_Dialog" class="dialog" title="Decommission this Device?">
+                    <p>
+                        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+                        Are you sure?
+                    </p>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var button = $('#Device_Show_Device_Actions_Decommission_Button');
+                        var buttonDialog = null;
+
+                        button.click(function () {
+
+                            if (!buttonDialog) {
+                                buttonDialog = $('#Device_Show_Device_Actions_Decommission_Dialog')
+                                                    .dialog({
+                                                        resizable: false,
+                                                        height: 140,
+                                                        modal: true,
+                                                        autoOpen: false,
+                                                        buttons: {
+                                                            "Decommission": function () {
+                                                                var $this = $(this);
+                                                                $this.dialog("disable");
+                                                                $this.dialog("option", "buttons", null);
+                                                                window.location.href = button.attr('href');
+                                                            },
+                                                            Cancel: function () {
+                                                                $(this).dialog("close");
+                                                            }
+                                                        }
+                                                    });
+                            }
+
+                            buttonDialog.dialog('open');
+                            return false;
+                        });
+
+                    });
+                </script>
+            }
+            @if (Model.Device.CanRecommission())
+            { 
+                @Html.ActionLinkSmallButton("Recommission", MVC.API.Device.Recommission(Model.Device.SerialNumber, true), "Device_Show_Device_Actions_Recommission_Button")
+                <div id="Device_Show_Device_Actions_Recommission_Dialog" title="Recommission this Device?">
+                    <p>
+                        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+                        Are you sure?
+                    </p>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var button = $('#Device_Show_Device_Actions_Recommission_Button');
+                        var buttonDialog = $('#Device_Show_Device_Actions_Recommission_Dialog');
+                        var buttonLink = button.attr('href');
+                        button.attr('href', '#');
+                        button.click(function () {
+                            buttonDialog.dialog('open');
+                            return false;
+                        });
+                        buttonDialog.dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            autoOpen: false,
+                            buttons: {
+                                "Recommission": function () {
+                                    var $this = $(this);
+                                    $this.dialog("disable");
+                                    $this.dialog("option", "buttons", null);
+                                    window.location.href = buttonLink;
+                                },
+                                Cancel: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    });
+                </script>
+            }
+            @if (Model.Device.CanDelete())
+            { 
+                @Html.ActionLinkSmallButton("Delete Device", MVC.API.Device.Delete(Model.Device.SerialNumber, true), "Device_Show_Device_Actions_Delete_Button")
+                <div id="Device_Show_Device_Actions_Delete_Dialog" title="Delete this Device?">
+                    <p>
+                        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+                        This item will be permanently deleted and cannot be recovered.<br />
+                        Jobs linked to this Device (but not to a User) will be deleted also.<br />
+                        Are you sure?
+                    </p>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var button = $('#Device_Show_Device_Actions_Delete_Button');
+                        var buttonDialog = $('#Device_Show_Device_Actions_Delete_Dialog');
+                        var buttonLink = button.attr('href');
+                        button.attr('href', '#');
+                        button.click(function () {
+                            buttonDialog.dialog('open');
+                            return false;
+                        });
+                        buttonDialog.dialog({
+                            resizable: false,
+                            height: 200,
+                            modal: true,
+                            autoOpen: false,
+                            buttons: {
+                                "Delete": function () {
+                                    var $this = $(this);
+                                    $this.dialog("disable");
+                                    $this.dialog("option", "buttons", null);
+                                    window.location.href = buttonLink;
+                                },
+                                Cancel: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    });
+                </script>
+            }
+        </td>
+    </tr>
+</table>

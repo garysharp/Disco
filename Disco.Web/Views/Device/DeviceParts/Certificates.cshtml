@@ -1,0 +1,44 @@
+﻿@model Disco.Web.Models.Device.ShowModel
+<div id="DeviceDetailTab-Certificates" class="DevicePart">
+    <div class="genericData certificateTable">
+        @if (Model.Certificates.Count() > 0)
+        { 
+            <table class="genericData certificateTable">
+                <tr>
+                    <th>Name
+                    </th>
+                    <th>Enabled
+                    </th>
+                    <th>Allocated
+                    </th>
+                    <th>Expires
+                    </th>
+                </tr>
+                @foreach (var item in Model.Certificates)
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(item.Name, MVC.API.DeviceCertificate.Download(item.Id))
+                        </td>
+                        <td>
+                            @item.Enabled
+                        </td>
+                        <td>
+                            @CommonHelpers.FriendlyDate(item.AllocatedDate)
+                        </td>
+                        <td>
+                            @CommonHelpers.FriendlyDate(item.ExpirationDate)
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        { 
+            <span class="smallMessage">No Certificates Allocated</span>
+        }
+    </div>
+    <script>
+        $('#DeviceDetailTabItems').append('<li><a href="#DeviceDetailTab-Certificates">Certificates [@(Model.Certificates.Count)]</a></li>');
+    </script>
+</div>

@@ -528,10 +528,30 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Views\Device\DeviceParts\AssignmentHistory.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssignmentHistory.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Device\DeviceParts\Certificates.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Certificates.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Device\DeviceParts\Jobs.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Jobs.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Device\DeviceParts\Resources.generated.cs">
       <DependentUpon>Resources.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Device\DeviceParts\_Subject.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_Subject.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Views\Device\Index.generated.cs">
       <DependentUpon>Index.cshtml</DependentUpon>
@@ -539,27 +559,12 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Views\Device\Show.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>Show.cshtml</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Views\Device\_CertificateTable.generated.cs">
-      <DependentUpon>_CertificateTable.cshtml</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Views\Device\_DeviceActions.generated.cs">
-      <DependentUpon>_DeviceActions.cshtml</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Views\Device\_DeviceTable.generated.cs">
       <DependentUpon>_DeviceTable.cshtml</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Views\Device\_DeviceUserAssignmentHistoryTable.generated.cs">
-      <DependentUpon>_DeviceUserAssignmentHistoryTable.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -1388,34 +1393,42 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>AddOffline.generated.cs</LastGenOutput>
     </None>
+    <None Include="Views\Device\DeviceParts\AssignmentHistory.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>AssignmentHistory.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Device\DeviceParts\Certificates.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Certificates.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Device\DeviceParts\Jobs.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Jobs.generated.cs</LastGenOutput>
+    </None>
     <None Include="Views\Device\DeviceParts\Resources.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Resources.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Device\DeviceParts\_Subject.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_Subject.generated.cs</LastGenOutput>
     </None>
     <None Include="Views\Device\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
     </None>
+    <None Include="Views\Device\ARCHIVE_Show.cshtml" />
+    <None Include="Views\Device\ARCHIVE_CertificateTable.cshtml" />
+    <None Include="Views\Device\ARCHIVE_DeviceActions.cshtml" />
     <None Include="Views\Device\Show.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Show.generated.cs</LastGenOutput>
-    </None>
-    <None Include="Views\Device\_CertificateTable.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>_CertificateTable.generated.cs</LastGenOutput>
-    </None>
-    <None Include="Views\Device\_DeviceActions.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>_DeviceActions.generated.cs</LastGenOutput>
     </None>
     <None Include="Views\Device\_DeviceTable.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_DeviceTable.generated.cs</LastGenOutput>
     </None>
-    <None Include="Views\Device\_DeviceUserAssignmentHistoryTable.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>_DeviceUserAssignmentHistoryTable.generated.cs</LastGenOutput>
-    </None>
+    <None Include="Views\Device\ARCHIVE_DeviceUserAssignmentHistoryTable.cshtml" />
     <None Include="Views\Device\_ViewStart.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
@@ -1809,7 +1822,6 @@
   <ItemGroup>
     <Folder Include="Areas\API\Models\WirelessCertificate\" />
     <Folder Include="Areas\Services\Models\" />
-    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

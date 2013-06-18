@@ -1,0 +1,9 @@
+﻿@model Disco.Web.Models.Device.ShowModel
+<div id="DeviceDetailTab-Jobs" class="DevicePart">
+    <div id="DeviceDetailTab-JobsContainer">
+        @Html.Partial(MVC.Shared.Views._JobTable, Model.Jobs)
+    </div>
+    <script>
+        $('#DeviceDetailTabItems').append('<li><a href="#DeviceDetailTab-Jobs">Jobs [@(Model.Device.Jobs == null ? 0 : Model.Device.Jobs.Count)]</a></li>');
+    </script>
+</div>

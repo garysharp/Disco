@@ -18,6 +18,8 @@ namespace Disco.Models.BI.Job
         public bool ShowStatus { get; set; }
         public bool IsSmallTable { get; set; }
         public bool HideClosedJobs { get; set; }
+        public bool EnablePaging { get; set; }
+        public bool EnableFilter { get; set; }
         public virtual List<JobTableItemModel> Items { get; set; }
 
         public JobTableModel()
@@ -28,6 +30,8 @@ namespace Disco.Models.BI.Job
             ShowDevice = true;
             ShowUser = true;
             ShowTechnician = true;
+            EnablePaging = true;
+            EnableFilter = true;
         }
 
         private JobTableModel CloneEmptyModel()
@@ -44,7 +48,9 @@ namespace Disco.Models.BI.Job
                 ShowLocation = this.ShowLocation,
                 ShowStatus = this.ShowStatus,
                 IsSmallTable = this.IsSmallTable,
-                HideClosedJobs = this.HideClosedJobs
+                HideClosedJobs = this.HideClosedJobs,
+                EnablePaging = this.EnablePaging,
+                EnableFilter = this.EnableFilter
             };
         }
 

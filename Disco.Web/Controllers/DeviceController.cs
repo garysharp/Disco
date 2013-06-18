@@ -11,6 +11,7 @@ using System.Data.Objects.SqlClient;
 using Disco.Web.Extensions;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Models.UI.Device;
+using Disco.Services.Plugins;
 
 
 namespace Disco.Web.Controllers
@@ -109,13 +110,27 @@ namespace Disco.Web.Controllers
 
             m.DeviceBatches = dbContext.DeviceBatches.ToList();
 
-            m.Jobs = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true, ShowDevice = false, IsSmallTable = true, HideClosedJobs = true };
-            m.Jobs.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.DeviceSerialNumber == m.Device.SerialNumber)); 
+            m.Jobs = new Disco.Models.BI.Job.JobTableModel()
+            {
+                ShowStatus = true,
+                ShowDevice = false,
+                IsSmallTable = false,
+                HideClosedJobs = true,
+                EnablePaging = false
+            };
+            m.Jobs.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.DeviceSerialNumber == m.Device.SerialNumber).OrderByDescending(j => j.Id)); 
 
             m.Certificates = dbContext.DeviceCertificates.Where(c => c.DeviceSerialNumber == m.Device.SerialNumber).ToList();
 
             //m.AttachmentTypes = dbContext.AttachmentTypes.Where(at => at.Scope == AttachmentType.AttachmentTypeScopes.Device).ToList();
             m.DocumentTemplates = m.Device.AvailableDocumentTemplates(dbContext, DiscoApplication.CurrentUser, DateTime.Now);
+
+            m.DeviceProfileDefaultOrganisationAddress = m.Device.DeviceProfile.DefaultOrganisationAddressDetails(dbContext);
+
+
+            PluginFeatureManifest deviceProfileCertificateProvider;
+            if (Disco.Services.Plugins.Plugins.TryGetPluginFeature(m.Device.DeviceProfile.CertificateProviderId, out deviceProfileCertificateProvider))
+                m.DeviceProfileCertificateProvider = deviceProfileCertificateProvider;
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<DeviceShowModel>(this.ControllerContext, m);

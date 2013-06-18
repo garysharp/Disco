@@ -5,6 +5,7 @@ using System.Text;
 using Disco.Models.Repository;
 using Disco.Data.Repository;
 using Disco.Data.Configuration.Modules;
+using Disco.Models.BI.Config;
 
 namespace Disco.BI.Extensions
 {
@@ -15,6 +16,18 @@ namespace Disco.BI.Extensions
         public static void ComputerNameInvalidateCache(this DeviceProfile deviceProfile)
         {
             Expressions.ExpressionCache.InvalidateKey(ComputerNameExpressionCacheModule, deviceProfile.Id.ToString());
+        }
+
+        public static OrganisationAddress DefaultOrganisationAddressDetails(this DeviceProfile deviceProfile, DiscoDataContext dbContext)
+        {
+            if (deviceProfile.DefaultOrganisationAddress.HasValue)
+            {
+                return dbContext.DiscoConfiguration.OrganisationAddresses.GetAddress(deviceProfile.DefaultOrganisationAddress.Value);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public static bool CanDelete(this DeviceProfile dp, DiscoDataContext dbContext)

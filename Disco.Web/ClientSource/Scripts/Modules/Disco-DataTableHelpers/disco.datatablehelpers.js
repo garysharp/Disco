@@ -6,13 +6,16 @@
             var $table = $(this);
             var tableDrawn = false;
 
+            var enablePaging = $table.hasClass('enablePaging');
+            var enableFilter = $table.hasClass('enableFilter');
+
             var dataTableOptionsPagination = ($table.find('tr').length > 20);
             var dataTableOptions = {
-                "bPaginate": dataTableOptionsPagination,
+                "bPaginate": enablePaging,
                 "sPaginationType": "full_numbers",
                 "bLengthChange": dataTableOptionsPagination,
                 "iDisplayLength": 20,
-                "bFilter": true,
+                "bFilter": enableFilter,
                 "bSort": true,
                 "bInfo": false,
                 "bAutoWidth": false,

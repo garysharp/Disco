@@ -5,7 +5,7 @@
 <div class="jobTable">
     @if (Model != null && Model.Items.Count() > 0)
     { 
-        <table class="jobTable@(Model.IsSmallTable ? " smallTable" : string.Empty)@(Model.HideClosedJobs ? " hideStatusClosed" : string.Empty)">
+        <table class="jobTable@(Model.IsSmallTable ? " smallTable" : string.Empty)@(Model.HideClosedJobs ? " hideStatusClosed" : string.Empty)@(Model.EnablePaging ? " enablePaging" : string.Empty)@(Model.EnableFilter ? " enableFilter" : string.Empty)">
             <thead>
                 <tr>
                     @if (Model.ShowId)

@@ -45,57 +45,64 @@ namespace Disco.Web.Views.Device.DeviceParts
   
     Html.BundleDeferred("~/Style/Shadowbox");
     Html.BundleDeferred("~/ClientScripts/Modules/Shadowbox");
+    Html.BundleDeferred("~/ClientScripts/Modules/Silverlight");
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n<table");
+WriteLiteral("\r\n<div");
+
+WriteLiteral(" id=\"DeviceDetailTab-Resources\"");
+
+WriteLiteral(" class=\"DevicePart\"");
+
+WriteLiteral(">\r\n    <table");
 
 WriteLiteral(" id=\"deviceShowResources\"");
 
-WriteLiteral(">\r\n    <tr>\r\n        <td");
+WriteLiteral(">\r\n        <tr>\r\n            <td");
 
 WriteLiteral(" id=\"Attachments\"");
 
-WriteLiteral(">\r\n            <div");
+WriteLiteral(">\r\n                <div");
 
 WriteLiteral(" class=\"attachmentOutput\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 10 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-                
+            #line 12 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+                    
             
             #line default
             #line hidden
             
-            #line 10 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-                 if (Model.Device.DeviceAttachments != null)
-                {
-                    foreach (var da in Model.Device.DeviceAttachments)
+            #line 12 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+                     if (Model.Device.DeviceAttachments != null)
                     {
+                        foreach (var da in Model.Device.DeviceAttachments)
+                        {
 
             
             #line default
             #line hidden
-WriteLiteral("                    <a");
+WriteLiteral("                        <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 476), Tuple.Create("\"", 536)
+WriteAttribute("href", Tuple.Create(" href=\"", 634), Tuple.Create("\"", 694)
             
-            #line 14 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 483), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentDownload(da.Id))
+            #line 16 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+, Tuple.Create(Tuple.Create("", 641), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentDownload(da.Id))
             
             #line default
             #line hidden
-, 483), false)
+, 641), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
 
             
-            #line 14 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-                                                                                                  Write(da.Id);
+            #line 16 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+                                                                                                      Write(da.Id);
 
             
             #line default
@@ -105,108 +112,108 @@ WriteLiteral("\"");
 WriteLiteral(" data-mimetype=\"");
 
             
-            #line 14 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-                                                                                                                         Write(da.MimeType);
+            #line 16 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+                                                                                                                             Write(da.MimeType);
 
             
             #line default
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(">\r\n                        <span");
+WriteLiteral(">\r\n                            <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 638), Tuple.Create("\"", 658)
+WriteAttribute("title", Tuple.Create(" title=\"", 800), Tuple.Create("\"", 820)
             
-            #line 15 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 646), Tuple.Create<System.Object, System.Int32>(da.Filename
+            #line 17 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+, Tuple.Create(Tuple.Create("", 808), Tuple.Create<System.Object, System.Int32>(da.Filename
             
             #line default
             #line hidden
-, 646), false)
+, 808), false)
 );
 
-WriteLiteral(">\r\n                            <img");
+WriteLiteral(">\r\n                                <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 721), Tuple.Create("\"", 783)
+WriteAttribute("src", Tuple.Create(" src=\"", 887), Tuple.Create("\"", 949)
             
-            #line 16 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 727), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentThumbnail(da.Id))
+            #line 18 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+, Tuple.Create(Tuple.Create("", 893), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentThumbnail(da.Id))
             
             #line default
             #line hidden
-, 727), false)
+, 893), false)
 );
 
-WriteLiteral(" /></span>\r\n                        <span");
+WriteLiteral(" /></span>\r\n                            <span");
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 842), Tuple.Create("\"", 862)
+WriteAttribute("title", Tuple.Create(" title=\"", 1012), Tuple.Create("\"", 1032)
             
-            #line 17 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 850), Tuple.Create<System.Object, System.Int32>(da.Comments
+            #line 19 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+, Tuple.Create(Tuple.Create("", 1020), Tuple.Create<System.Object, System.Int32>(da.Comments
             
             #line default
             #line hidden
-, 850), false)
+, 1020), false)
 );
 
 WriteLiteral(">\r\n");
 
             
-            #line 18 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-                            
+            #line 20 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+                                
             
             #line default
             #line hidden
             
-            #line 18 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-                              if (!string.IsNullOrEmpty(da.DocumentTemplateId))
-                              { 
-            
-            #line default
-            #line hidden
-            
-            #line 19 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-                           Write(da.DocumentTemplate.Description);
-
-            
-            #line default
-            #line hidden
-            
-            #line 19 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-                                                                }
-                              else
-                              { 
+            #line 20 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+                                  if (!string.IsNullOrEmpty(da.DocumentTemplateId))
+                                  { 
             
             #line default
             #line hidden
             
             #line 21 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-                           Write(da.Comments);
+                               Write(da.DocumentTemplate.Description);
 
             
             #line default
             #line hidden
             
             #line 21 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-                                             }
+                                                                    }
+                                  else
+                                  { 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                        </span><span");
+            
+            #line 23 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+                               Write(da.Comments);
+
+            
+            #line default
+            #line hidden
+            
+            #line 23 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+                                                 }
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                            </span><span");
 
 WriteLiteral(" class=\"author\"");
 
 WriteLiteral(">");
 
             
-            #line 22 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-                                               Write(da.TechUser.ToString());
+            #line 24 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+                                                   Write(da.TechUser.ToString());
 
             
             #line default
@@ -219,40 +226,40 @@ WriteLiteral("></span><span");
 
 WriteLiteral(" class=\"timestamp\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 1232), Tuple.Create("\"", 1270)
+WriteAttribute("title", Tuple.Create(" title=\"", 1422), Tuple.Create("\"", 1460)
             
-            #line 22 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-                                                             , Tuple.Create(Tuple.Create("", 1240), Tuple.Create<System.Object, System.Int32>(da.Timestamp.ToFullDateTime()
+            #line 24 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+                                                                 , Tuple.Create(Tuple.Create("", 1430), Tuple.Create<System.Object, System.Int32>(da.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 1240), false)
+, 1430), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 22 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-                                                                                                                                                                        Write(da.Timestamp.ToFuzzy());
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</span>\r\n                    </a>   \r\n");
-
-            
             #line 24 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-                    }
-                }
+                                                                                                                                                                            Write(da.Timestamp.ToFuzzy());
 
             
             #line default
             #line hidden
-WriteLiteral("            </div>\r\n            <div");
+WriteLiteral("</span>\r\n                        </a>   \r\n");
+
+            
+            #line 26 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+                        }
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                </div>\r\n                <div");
 
 WriteLiteral(" class=\"attachmentInput clearfix\"");
 
-WriteLiteral(">\r\n                <span");
+WriteLiteral(">\r\n                    <span");
 
 WriteLiteral(" class=\"action upload\"");
 
@@ -260,52 +267,35 @@ WriteLiteral("></span><span");
 
 WriteLiteral(" class=\"action photo\"");
 
-WriteLiteral("></span>\r\n            </div>\r\n            <script");
+WriteLiteral("></span>\r\n                </div>\r\n                <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(@">
-                Shadowbox.init({
-                    skipSetup: true,
-                    modal: true
-                });
-                $(function () {
-                    if (!document.DiscoFunctions) {
-                        document.DiscoFunctions = {};
-                    }
-                    document.DiscoFunctions.addAttachment = addAttachment;
-
-                    $Attachments = $('#Attachments');
-                    $attachmentOutput = $Attachments.find('.attachmentOutput');
-
-                    $attachmentOutput.find('span.remove').click(removeAttachment);
-
-                    $('#dialogUpload').dialog({ autoOpen: false,
-                        draggable: false,
-                        modal: true,
-                        resizable: false,
-                        width: 860,
-                        height: 550,
-                        close: function () {
-                            silverlightUploadAttachment.content.Navigator.Navigate('/Hidden');
-                        }
-                    });
-
-                    $('#dialogRemoveAttachment').dialog({
-                        resizable: false,
-                        height: 140,
-                        modal: true,
-                        autoOpen: false
-                    });
-
-                    var onLoadNavigation = null;
-                    var isLoaded = null;
-                    Silverlight.createObject(
-                            '");
+WriteLiteral(">\r\n                    Shadowbox.init({\r\n                        skipSetup: true," +
+"\r\n                        modal: true\r\n                    });\r\n                " +
+"    $(function () {\r\n                        if (!document.DiscoFunctions) {\r\n  " +
+"                          document.DiscoFunctions = {};\r\n                       " +
+" }\r\n                        document.DiscoFunctions.addAttachment = addAttachmen" +
+"t;\r\n\r\n                        $Attachments = $(\'#Attachments\');\r\n               " +
+"         $attachmentOutput = $Attachments.find(\'.attachmentOutput\');\r\n\r\n        " +
+"                $attachmentOutput.find(\'span.remove\').click(removeAttachment);\r\n" +
+"\r\n                        $(\'#dialogUpload\').dialog({\r\n                         " +
+"   autoOpen: false,\r\n                            draggable: false,\r\n            " +
+"                modal: true,\r\n                            resizable: false,\r\n   " +
+"                         width: 860,\r\n                            height: 550,\r\n" +
+"                            close: function () {\r\n                              " +
+"  silverlightUploadAttachment.content.Navigator.Navigate(\'/Hidden\');\r\n          " +
+"                  }\r\n                        });\r\n\r\n                        $(\'#" +
+"dialogRemoveAttachment\').dialog({\r\n                            resizable: false," +
+"\r\n                            height: 140,\r\n                            modal: t" +
+"rue,\r\n                            autoOpen: false\r\n                        });\r\n" +
+"\r\n                        var onLoadNavigation = null;\r\n                        " +
+"var isLoaded = null;\r\n                        Silverlight.createObject(\r\n       " +
+"                         \'");
 
             
-            #line 67 "..\..\Views\Device\DeviceParts\Resources.cshtml"
-                         Write(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap);
+            #line 70 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+                             Write(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap);
 
             
             #line default
@@ -314,17 +304,18 @@ WriteLiteral(@"',
                             $('#silverlightHostUploadAttachment').get(0),
                             'silverlightUploadAttachment',
                             { width: '840px', height: '500px', background: 'white', version: '4.0.60310.0' },
-                            { onLoad: function () {
-                                if (onLoadNavigation) {
-                                    silverlightUploadAttachment.content.Navigator.Navigate(onLoadNavigation);
-                                    isLoaded = true;
+                            {
+                                onLoad: function () {
+                                    if (onLoadNavigation) {
+                                        silverlightUploadAttachment.content.Navigator.Navigate(onLoadNavigation);
+                                        isLoaded = true;
+                                    }
                                 }
-                            }
                             },
                             'UploadUrl=");
 
             
-            #line 78 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 82 "..\..\Views\Device\DeviceParts\Resources.cshtml"
                                    Write(Url.Action(MVC.API.Device.AttachmentUpload(Model.Device.SerialNumber, null)));
 
             
@@ -356,7 +347,7 @@ WriteLiteral(@"'
                             url: '");
 
             
-            #line 101 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 105 "..\..\Views\Device\DeviceParts\Resources.cshtml"
                              Write(Url.Action(MVC.API.Device.Attachment()));
 
             
@@ -374,7 +365,7 @@ WriteLiteral(@"',
                                     e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '");
 
             
-            #line 110 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 114 "..\..\Views\Device\DeviceParts\Resources.cshtml"
                                                                                                                   Write(Url.Action(MVC.API.Device.AttachmentDownload()));
 
             
@@ -384,7 +375,7 @@ WriteLiteral("/\' + a.Id);\r\n                                    e.find(\'.icon
 "\'");
 
             
-            #line 111 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 115 "..\..\Views\Device\DeviceParts\Resources.cshtml"
                                                                  Write(Url.Action(MVC.API.Device.AttachmentThumbnail()));
 
             
@@ -417,7 +408,7 @@ WriteLiteral("/\' + a.Id);\r\n                                    e.find(\'.comm
 "                  $.ajax({\r\n                                    url: \'");
 
             
-            #line 143 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 147 "..\..\Views\Device\DeviceParts\Resources.cshtml"
                                      Write(Url.Action(MVC.API.Device.AttachmentRemove()));
 
             
@@ -443,36 +434,47 @@ WriteLiteral("\',\r\n                                    dataType: \'json\',\r\n
 "               },\r\n                            \"Cancel\": function () {\r\n        " +
 "                        $dialogRemoveAttachment.dialog(\"close\");\r\n              " +
 "              }\r\n                        });\r\n\r\n                        $dialogR" +
-"emoveAttachment.dialog(\'open\');\r\n                        \r\n                     " +
-"   return false;\r\n                    }\r\n\r\n                    $attachmentOutput" +
-".children(\'a\').each(function () {\r\n                        $this = $(this);\r\n   " +
-"                     if ($this.attr(\'data-mimetype\').toLowerCase().indexOf(\'imag" +
-"e/\') == 0)\r\n                            $this.shadowbox({ gallery: \'attachments\'" +
-", player: \'img\', title: $this.find(\'.comments\').text() });\r\n                    " +
-"});\r\n                });\r\n            </script>\r\n        </td>\r\n    </tr>\r\n</tab" +
-"le>\r\n<div");
+"emoveAttachment.dialog(\'open\');\r\n\r\n                        return false;\r\n      " +
+"              }\r\n\r\n                    $attachmentOutput.children(\'a\').each(func" +
+"tion () {\r\n                        $this = $(this);\r\n                        if " +
+"($this.attr(\'data-mimetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n            " +
+"                $this.shadowbox({ gallery: \'attachments\', player: \'img\', title: " +
+"$this.find(\'.comments\').text() });\r\n                    });\r\n                });" +
+"\r\n                </script>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n   " +
+" <div");
 
 WriteLiteral(" id=\"dialogUpload\"");
 
 WriteLiteral(" title=\"Upload Attachment\"");
 
-WriteLiteral(">\r\n    <div");
+WriteLiteral(">\r\n        <div");
 
 WriteLiteral(" id=\"silverlightHostUploadAttachment\"");
 
-WriteLiteral(">\r\n    </div>\r\n</div>\r\n<div");
+WriteLiteral(">\r\n        </div>\r\n    </div>\r\n    <div");
 
 WriteLiteral(" id=\"dialogRemoveAttachment\"");
 
 WriteLiteral(" title=\"Remove this Attachment?\"");
 
-WriteLiteral(">\r\n    <p>\r\n        <span");
+WriteLiteral(">\r\n        <p>\r\n            <span");
 
 WriteLiteral(" class=\"ui-icon ui-icon-alert\"");
 
 WriteLiteral(" style=\"float: left; margin: 0 7px 20px 0;\"");
 
-WriteLiteral("></span>\r\n        Are you sure?</p>\r\n</div>");
+WriteLiteral("></span>\r\n            Are you sure?\r\n        </p>\r\n    </div>\r\n    <script>\r\n    " +
+"    $(\'#DeviceDetailTabItems\').append(\'<li><a href=\"#DeviceDetailTab-Resources\" " +
+"id=\"DeviceDetailTab-ResourcesLink\">Attachments [");
+
+            
+            #line 200 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+                                                                                                                                Write(Model.Device.DeviceAttachments == null ? 0 : Model.Device.DeviceAttachments.Count);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("]</a></li>\');\r\n    </script>\r\n</div>\r\n");
 
         }
     }

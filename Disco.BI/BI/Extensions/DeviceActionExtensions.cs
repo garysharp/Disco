@@ -10,10 +10,38 @@ namespace Disco.BI.Extensions
 {
     public static class DeviceActionExtensions
     {
+        public static bool IsDecommissioned(this Device d)
+        {
+            return d.DecommissionedDate.HasValue;
+        }
 
         public static bool CanCreateJob(this Device d)
         {
-            return !d.DecommissionedDate.HasValue;
+            return !d.IsDecommissioned();
+        }
+
+        public static bool CanUpdateAssignment(this Device d)
+        {
+            return !d.IsDecommissioned();
+        }
+
+        public static bool CanUpdateDeviceProfile(this Device d)
+        {
+            return !d.IsDecommissioned();
+        }
+
+        public static bool CanUpdateDeviceBatch(this Device d)
+        {
+            return !d.IsDecommissioned();
+        }
+
+        public static bool CanUpdateTrustEnrol(this Device d)
+        {
+            return !d.IsDecommissioned() && !d.AllowUnauthenticatedEnrol;
+        }
+        public static bool CanUpdateUntrustEnrol(this Device d)
+        {
+            return !d.IsDecommissioned() && d.AllowUnauthenticatedEnrol;
         }
 
         #region Decommission

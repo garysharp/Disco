@@ -11,6 +11,8 @@ namespace Disco.Models.UI.Device
         Disco.Models.Repository.Device Device { get; set; }
 
         List<Disco.Models.Repository.DeviceProfile> DeviceProfiles { get; set; }
+        Disco.Models.BI.Config.OrganisationAddress DeviceProfileDefaultOrganisationAddress { get; set; }
+
         List<Disco.Models.Repository.DeviceBatch> DeviceBatches { get; set; }
 
         Disco.Models.BI.Job.JobTableModel Jobs { get; set; }

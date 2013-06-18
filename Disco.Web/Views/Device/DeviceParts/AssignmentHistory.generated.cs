@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Disco.Web.Views.Device
+namespace Disco.Web.Views.Device.DeviceParts
 {
     using System;
     using System.Collections.Generic;
@@ -32,29 +32,31 @@ namespace Disco.Web.Views.Device
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/_CertificateTable.cshtml")]
-    public partial class CertificateTable : System.Web.Mvc.WebViewPage<IEnumerable<Disco.Models.Repository.DeviceCertificate>>
+    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/DeviceParts/AssignmentHistory.cshtml")]
+    public partial class AssignmentHistory : System.Web.Mvc.WebViewPage<Disco.Web.Models.Device.ShowModel>
     {
-        public CertificateTable()
+        public AssignmentHistory()
         {
         }
         public override void Execute()
         {
 WriteLiteral("<div");
 
-WriteLiteral(" class=\"genericData certificateTable\"");
+WriteLiteral(" id=\"DeviceDetailTab-AssignmentHistory\"");
+
+WriteLiteral(" class=\"DevicePart\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 3 "..\..\Views\Device\_CertificateTable.cshtml"
+            #line 3 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 3 "..\..\Views\Device\_CertificateTable.cshtml"
-     if (Model.Count() > 0)
+            #line 3 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
+     if (Model.Device.DeviceUserAssignments.Count > 0)
     { 
 
             
@@ -62,34 +64,21 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("        <table");
 
-WriteLiteral(" class=\"genericData certificateTable\"");
+WriteLiteral(" class=\"genericData\"");
 
-WriteLiteral(@">
-            <tr>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Enabled
-                </th>
-                <th>
-                    Allocated
-                </th>
-                <th>
-                    Expires
-                </th>
-            </tr>
-");
+WriteLiteral(">\r\n            <tr>\r\n                <th>User\r\n                </th>\r\n           " +
+"     <th>Assigned\r\n                </th>\r\n                <th>Unassigned\r\n      " +
+"          </th>\r\n            </tr>\r\n");
 
             
-            #line 20 "..\..\Views\Device\_CertificateTable.cshtml"
+            #line 14 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 20 "..\..\Views\Device\_CertificateTable.cshtml"
-             foreach (var item in Model)
+            #line 14 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
+             foreach (var dua in Model.Device.DeviceUserAssignments.OrderByDescending(m => m.AssignedDate))
             {
 
             
@@ -100,8 +89,8 @@ WriteLiteral("                <tr>\r\n                    <td>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 24 "..\..\Views\Device\_CertificateTable.cshtml"
-                   Write(Html.ActionLink(item.Name, MVC.API.DeviceCertificate.Download(item.Id)));
+            #line 18 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
+                   Write(Html.ActionLink(dua.AssignedUser.ToString(), MVC.User.Show(dua.AssignedUserId)));
 
             
             #line default
@@ -111,8 +100,8 @@ WriteLiteral("\r\n                    </td>\r\n                    <td>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 27 "..\..\Views\Device\_CertificateTable.cshtml"
-                   Write(item.Enabled);
+            #line 21 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
+                   Write(CommonHelpers.FriendlyDate(dua.AssignedDate));
 
             
             #line default
@@ -122,19 +111,8 @@ WriteLiteral("\r\n                    </td>\r\n                    <td>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 30 "..\..\Views\Device\_CertificateTable.cshtml"
-                   Write(CommonHelpers.FriendlyDate(item.AllocatedDate));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n                    </td>\r\n                    <td>\r\n");
-
-WriteLiteral("                        ");
-
-            
-            #line 33 "..\..\Views\Device\_CertificateTable.cshtml"
-                   Write(CommonHelpers.FriendlyDate(item.ExpirationDate));
+            #line 24 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
+                   Write(CommonHelpers.FriendlyDate(dua.UnassignedDate, "Current"));
 
             
             #line default
@@ -142,7 +120,7 @@ WriteLiteral("                        ");
 WriteLiteral("\r\n                    </td>\r\n                </tr>\r\n");
 
             
-            #line 36 "..\..\Views\Device\_CertificateTable.cshtml"
+            #line 27 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
             }
 
             
@@ -151,7 +129,7 @@ WriteLiteral("\r\n                    </td>\r\n                </tr>\r\n");
 WriteLiteral("        </table>\r\n");
 
             
-            #line 38 "..\..\Views\Device\_CertificateTable.cshtml"
+            #line 29 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
     }
     else
     { 
@@ -163,16 +141,26 @@ WriteLiteral("        <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
-WriteLiteral(">No Certificates Allocated</span>\r\n");
+WriteLiteral(">No Assignment History Available</span>\r\n");
 
             
-            #line 42 "..\..\Views\Device\_CertificateTable.cshtml"
+            #line 33 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
     }
 
             
             #line default
             #line hidden
-WriteLiteral("</div>\r\n");
+WriteLiteral("    <script>\r\n        $(\'#DeviceDetailTabItems\').append(\'<li><a href=\"#DeviceDeta" +
+"ilTab-AssignmentHistory\">Assignment History [");
+
+            
+            #line 35 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
+                                                                                                            Write(Model.Device.DeviceUserAssignments.Count);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("]</a></li>\');\r\n    </script>\r\n</div>\r\n");
 
         }
     }

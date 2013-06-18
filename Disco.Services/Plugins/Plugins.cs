@@ -81,9 +81,43 @@ namespace Disco.Services.Plugins
                 throw new UnknownPluginException(PluginId);
             }
         }
+        public static bool TryGetPlugin(string PluginId, Type ContainsCategoryType, out PluginManifest PluginManifest)
+        {
+            PluginManifest = null;
+
+            if (_PluginManifests == null)
+                return false;
+
+            PluginManifest manifest;
+            if (_PluginManifests.TryGetValue(PluginId, out manifest))
+            {
+                if (ContainsCategoryType == null)
+                {
+                    PluginManifest = manifest;
+                    return true;
+                }
+                else
+                {
+                    foreach (var featureManifest in manifest.Features)
+                    {
+                        if (ContainsCategoryType.IsAssignableFrom(featureManifest.CategoryType))
+                        {
+                            PluginManifest = manifest;
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
         public static PluginManifest GetPlugin(string PluginId)
         {
             return GetPlugin(PluginId, null);
+        }
+        public static bool TryGetPlugin(string PluginId, out PluginManifest PluginManifest)
+        {
+            return TryGetPlugin(PluginId, null, out PluginManifest);
         }
         public static PluginManifest GetPlugin(Assembly PluginAssembly)
         {
@@ -100,6 +134,24 @@ namespace Disco.Services.Plugins
                 throw new UnknownPluginException(PluginAssembly.FullName);
             }
         }
+        public static bool TryGetPlugin(Assembly PluginAssembly, out PluginManifest PluginManifest)
+        {
+            PluginManifest = null;
+
+            if (_PluginAssemblyManifests == null)
+                return false;
+
+            PluginManifest manifest;
+            if (_PluginAssemblyManifests.TryGetValue(PluginAssembly, out manifest))
+            {
+                PluginManifest = manifest;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public static List<PluginManifest> GetPlugins()
         {
             if (_PluginManifests == null)
@@ -108,6 +160,14 @@ namespace Disco.Services.Plugins
             return _PluginManifests.Values.ToList();
         }
 
+        public static bool PluginFeatureInstalled(string PluginFeatureId)
+        {
+            if (_PluginManifests == null)
+                throw new InvalidOperationException("Plugins have not been initialized");
+
+            return _PluginManifests.Values.SelectMany(pm => pm.Features).Where(fm => fm.Id == PluginFeatureId).Count() > 0;
+        }
+        
         public static PluginFeatureManifest GetPluginFeature(string PluginFeatureId, Type CategoryType)
         {
             if (_PluginManifests == null)
@@ -126,9 +186,41 @@ namespace Disco.Services.Plugins
                 else
                     throw new InvalidFeatureCategoryTypeException(CategoryType, PluginFeatureId);
         }
+        public static bool TryGetPluginFeature(string PluginFeatureId, Type CategoryType, out PluginFeatureManifest PluginFeatureManifest)
+        {
+            PluginFeatureManifest = null;
+
+            if (_PluginManifests == null)
+                return false;
+
+            var featureManifest = _PluginManifests.Values.SelectMany(pm => pm.Features).Where(fm => fm.Id == PluginFeatureId).FirstOrDefault();
+
+            if (featureManifest == null)
+                return false;
+
+            if (CategoryType == null)
+            {
+                PluginFeatureManifest = featureManifest;
+                return true;
+            }
+            else
+            {
+                if (CategoryType.IsAssignableFrom(featureManifest.CategoryType))
+                {
+                    PluginFeatureManifest = featureManifest;
+                    return true;
+                }
+                else
+                    return false;
+            }
+        }
         public static PluginFeatureManifest GetPluginFeature(string PluginFeatureId)
         {
             return GetPluginFeature(PluginFeatureId, null);
+        }
+        public static bool TryGetPluginFeature(string PluginFeatureId, out PluginFeatureManifest PluginFeatureManifest)
+        {
+            return TryGetPluginFeature(PluginFeatureId, null, out PluginFeatureManifest);
         }
         public static List<PluginFeatureManifest> GetPluginFeatures(Type FeatureCategoryType)
         {

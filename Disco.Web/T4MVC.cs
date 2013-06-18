@@ -262,38 +262,6 @@ namespace Links
                     public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
                     public static readonly string highcharts_src_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/highcharts.src.min.js") ? Url("highcharts.src.min.js") : Url("highcharts.src.js");
                                   
-                    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-                    public static class modules {
-                        private const string URLPATH = "~/ClientSource/Scripts/Modules/Highcharts/modules";
-                        public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                        public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                        public static readonly string canvas_tools_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/canvas-tools.min.js") ? Url("canvas-tools.min.js") : Url("canvas-tools.js");
-                                      
-                        public static readonly string canvas_tools_src_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/canvas-tools.src.min.js") ? Url("canvas-tools.src.min.js") : Url("canvas-tools.src.js");
-                                      
-                        public static readonly string exporting_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/exporting.min.js") ? Url("exporting.min.js") : Url("exporting.js");
-                                      
-                        public static readonly string exporting_src_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/exporting.src.min.js") ? Url("exporting.src.min.js") : Url("exporting.src.js");
-                                      
-                    }
-                
-                    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-                    public static class themes {
-                        private const string URLPATH = "~/ClientSource/Scripts/Modules/Highcharts/themes";
-                        public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                        public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                        public static readonly string dark_blue_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/dark-blue.min.js") ? Url("dark-blue.min.js") : Url("dark-blue.js");
-                                      
-                        public static readonly string dark_green_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/dark-green.min.js") ? Url("dark-green.min.js") : Url("dark-green.js");
-                                      
-                        public static readonly string gray_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/gray.min.js") ? Url("gray.min.js") : Url("gray.js");
-                                      
-                        public static readonly string grid_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/grid.min.js") ? Url("grid.min.js") : Url("grid.js");
-                                      
-                        public static readonly string skies_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/skies.min.js") ? Url("skies.min.js") : Url("skies.js");
-                                      
-                    }
-                
                 }
             
                 public static readonly string Highcharts_js_bundle = Url("Highcharts.js.bundle");
@@ -1177,21 +1145,23 @@ namespace Disco.Web.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
-                public readonly string _CertificateTable = "_CertificateTable";
-                public readonly string _DeviceActions = "_DeviceActions";
                 public readonly string _DeviceTable = "_DeviceTable";
-                public readonly string _DeviceUserAssignmentHistoryTable = "_DeviceUserAssignmentHistoryTable";
                 public readonly string _ViewStart = "_ViewStart";
                 public readonly string AddOffline = "AddOffline";
+                public readonly string ARCHIVE_CertificateTable = "ARCHIVE_CertificateTable";
+                public readonly string ARCHIVE_DeviceActions = "ARCHIVE_DeviceActions";
+                public readonly string ARCHIVE_DeviceUserAssignmentHistoryTable = "ARCHIVE_DeviceUserAssignmentHistoryTable";
+                public readonly string ARCHIVE_Show = "ARCHIVE_Show";
                 public readonly string Index = "Index";
                 public readonly string Show = "Show";
             }
-            public readonly string _CertificateTable = "~/Views/Device/_CertificateTable.cshtml";
-            public readonly string _DeviceActions = "~/Views/Device/_DeviceActions.cshtml";
             public readonly string _DeviceTable = "~/Views/Device/_DeviceTable.cshtml";
-            public readonly string _DeviceUserAssignmentHistoryTable = "~/Views/Device/_DeviceUserAssignmentHistoryTable.cshtml";
             public readonly string _ViewStart = "~/Views/Device/_ViewStart.cshtml";
             public readonly string AddOffline = "~/Views/Device/AddOffline.cshtml";
+            public readonly string ARCHIVE_CertificateTable = "~/Views/Device/ARCHIVE_CertificateTable.cshtml";
+            public readonly string ARCHIVE_DeviceActions = "~/Views/Device/ARCHIVE_DeviceActions.cshtml";
+            public readonly string ARCHIVE_DeviceUserAssignmentHistoryTable = "~/Views/Device/ARCHIVE_DeviceUserAssignmentHistoryTable.cshtml";
+            public readonly string ARCHIVE_Show = "~/Views/Device/ARCHIVE_Show.cshtml";
             public readonly string Index = "~/Views/Device/Index.cshtml";
             public readonly string Show = "~/Views/Device/Show.cshtml";
             static readonly _DevicePartsClass s_DeviceParts = new _DevicePartsClass();
@@ -1203,8 +1173,16 @@ namespace Disco.Web.Controllers
                 public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
                 public class _ViewNamesClass
                 {
+                    public readonly string _Subject = "_Subject";
+                    public readonly string AssignmentHistory = "AssignmentHistory";
+                    public readonly string Certificates = "Certificates";
+                    public readonly string Jobs = "Jobs";
                     public readonly string Resources = "Resources";
                 }
+                public readonly string _Subject = "~/Views/Device/DeviceParts/_Subject.cshtml";
+                public readonly string AssignmentHistory = "~/Views/Device/DeviceParts/AssignmentHistory.cshtml";
+                public readonly string Certificates = "~/Views/Device/DeviceParts/Certificates.cshtml";
+                public readonly string Jobs = "~/Views/Device/DeviceParts/Jobs.cshtml";
                 public readonly string Resources = "~/Views/Device/DeviceParts/Resources.cshtml";
             }
         }
