@@ -38,68 +38,69 @@ namespace Disco.Web
             if (AppConfig.InitializeDatabase())
             {
                 // Database Initialized
-
                 Debug.WriteLine("Initialized Database: +{0}ms", timer.ElapsedMilliseconds - timer_last);
                 timer_last = timer.ElapsedMilliseconds;
 
-                // Check for Post-Update
-                bool ignoreVersionUpdate = false;
-                bool.TryParse(ConfigurationManager.AppSettings["DiscoIgnoreVersionUpdate"], out ignoreVersionUpdate);
-                Version previousVersion = null;
-
-                if (!ignoreVersionUpdate)
+                using (DiscoDataContext dbContext = new DiscoDataContext())
                 {
-                    using (DiscoDataContext dbContext = new DiscoDataContext())
+                    // Check for Post-Update
+                    bool isVersionUpdate = dbContext.DiscoConfiguration.InstalledDatabaseVersion != Disco.BI.Interop.Community.UpdateCheck.CurrentDiscoVersion();
+                    bool ignoreVersionUpdate = false;
+
+                    if (isVersionUpdate)
                     {
-                        previousVersion = dbContext.DiscoConfiguration.InstalledDatabaseVersion;
-                    }
-                }
-                if (ignoreVersionUpdate || Disco.BI.Interop.Community.UpdateCheck.CurrentDiscoVersion() == previousVersion)
-                {
-                    // Normal Startup
-
-                    AreaRegistration.RegisterAllAreas();
-
-                    Debug.WriteLine("Registered Areas: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                    timer_last = timer.ElapsedMilliseconds;
-
-                    WebApiConfig.Register(GlobalConfiguration.Configuration);
-
-                    Debug.WriteLine("Registered API: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                    timer_last = timer.ElapsedMilliseconds;
-
-                    FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-
-                    Debug.WriteLine("Registered Global Filters: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                    timer_last = timer.ElapsedMilliseconds;
-
-                    RouteConfig.RegisterRoutes(RouteTable.Routes);
-
-                    Debug.WriteLine("Registered Routes: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                    timer_last = timer.ElapsedMilliseconds;
-
-                    BundleConfig.RegisterBundles();
-
-                    Debug.WriteLine("Registered Bundles: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                    timer_last = timer.ElapsedMilliseconds;
-
-                    AppConfig.InitalizeEnvironment();
-
-                    Debug.WriteLine("Initialized Environment: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                    timer_last = timer.ElapsedMilliseconds;
-                }
-                else
-                {
-                    // Post-Update Startup
-                    FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-                    RouteConfig.RegisterUpdateRoutes(RouteTable.Routes);
-                    BundleConfig.RegisterBundles();
-                    AppConfig.InitializeUpdateEnvironment();
-
-                    using (DiscoDataContext dbContext = new DiscoDataContext())
-                    {
+                        // Update Database with New Version
                         dbContext.DiscoConfiguration.InstalledDatabaseVersion = Disco.BI.Interop.Community.UpdateCheck.CurrentDiscoVersion();
                         dbContext.SaveChanges();
+
+                        // Check if configured to Ignore Plugin Updates (Mainly for Dev environment)
+                        bool.TryParse(ConfigurationManager.AppSettings["DiscoIgnoreVersionUpdate"], out ignoreVersionUpdate);
+                        // Only Update if Plugins are installed
+                        if (!ignoreVersionUpdate)
+                            ignoreVersionUpdate = (Disco.Services.Plugins.UpdatePluginTask.OfflineInstalledPlugins(dbContext).Count == 0);
+                    }
+
+                    if (!isVersionUpdate || ignoreVersionUpdate)
+                    {
+                        // Normal Startup
+
+                        AreaRegistration.RegisterAllAreas();
+
+                        Debug.WriteLine("Registered Areas: +{0}ms", timer.ElapsedMilliseconds - timer_last);
+                        timer_last = timer.ElapsedMilliseconds;
+
+                        WebApiConfig.Register(GlobalConfiguration.Configuration);
+
+                        Debug.WriteLine("Registered API: +{0}ms", timer.ElapsedMilliseconds - timer_last);
+                        timer_last = timer.ElapsedMilliseconds;
+
+                        FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+
+                        Debug.WriteLine("Registered Global Filters: +{0}ms", timer.ElapsedMilliseconds - timer_last);
+                        timer_last = timer.ElapsedMilliseconds;
+
+                        RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+                        Debug.WriteLine("Registered Routes: +{0}ms", timer.ElapsedMilliseconds - timer_last);
+                        timer_last = timer.ElapsedMilliseconds;
+
+                        BundleConfig.RegisterBundles();
+
+                        Debug.WriteLine("Registered Bundles: +{0}ms", timer.ElapsedMilliseconds - timer_last);
+                        timer_last = timer.ElapsedMilliseconds;
+
+                        AppConfig.InitalizeEnvironment(dbContext);
+
+                        Debug.WriteLine("Initialized Environment: +{0}ms", timer.ElapsedMilliseconds - timer_last);
+                        timer_last = timer.ElapsedMilliseconds;
+                    }
+                    else
+                    {
+                        // Post-Update Startup
+                        FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+                        RouteConfig.RegisterUpdateRoutes(RouteTable.Routes);
+                        BundleConfig.RegisterBundles();
+                        AppConfig.InitializeUpdateEnvironment(dbContext);
                     }
                 }
             }

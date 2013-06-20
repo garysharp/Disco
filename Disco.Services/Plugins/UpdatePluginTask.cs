@@ -82,21 +82,12 @@ namespace Disco.Services.Plugins
             Plugins.RestartApp(1500);
         }
 
-        internal static void UpdateOffline(ScheduledTaskStatus Status)
+        public static List<PluginManifest> OfflineInstalledPlugins(DiscoDataContext dbContext)
         {
-            string pluginsLocation;
-            string pluginPackagesLocation;
-            string pluginsStorageLocation;
-            PluginLibraryUpdateResponse pluginCatalogue;
-            List<Tuple<PluginManifest, string, PluginLibraryItem>> UpdatePlugins = new List<Tuple<PluginManifest, string, PluginLibraryItem>>();
+            string pluginsLocation = dbContext.DiscoConfiguration.PluginsLocation;
+            string pluginsStorageLocation = dbContext.DiscoConfiguration.PluginStorageLocation;
 
-            using (DiscoDataContext dbContext = new DiscoDataContext())
-            {
-                pluginCatalogue = Plugins.LoadCatalogue(dbContext);
-                pluginsLocation = dbContext.DiscoConfiguration.PluginsLocation;
-                pluginPackagesLocation = dbContext.DiscoConfiguration.PluginPackagesLocation;
-                pluginsStorageLocation = dbContext.DiscoConfiguration.PluginStorageLocation;
-            }
+            List<PluginManifest> installedPluginManifests = new List<PluginManifest>();
 
             DirectoryInfo pluginDirectoryRoot = new DirectoryInfo(pluginsLocation);
             if (pluginDirectoryRoot.Exists)
@@ -114,22 +105,48 @@ namespace Disco.Services.Plugins
                         catch (Exception) { }
 
                         if (pluginManifest != null)
-                        {
-                            // Check for Update
-                            var catalogueItem = pluginCatalogue.Plugins.FirstOrDefault(i => i.Id == pluginManifest.Id && Version.Parse(i.LatestVersion) > pluginManifest.Version);
-
-                            if (catalogueItem != null)
-                            { // Update Available
-                                UpdatePlugins.Add(new Tuple<PluginManifest, string, PluginLibraryItem>(pluginManifest, null, catalogueItem));
-                            }
-                        }
+                            installedPluginManifests.Add(pluginManifest);
                     }
                 }
             }
 
-            if (UpdatePlugins.Count > 0)
+            return installedPluginManifests;
+        }
+
+        internal static void UpdateOffline(ScheduledTaskStatus Status)
+        {
+            PluginLibraryUpdateResponse pluginCatalogue = null;
+            List<PluginManifest> installedPluginManifests;
+            string pluginPackagesLocation;
+            List<Tuple<PluginManifest, string, PluginLibraryItem>> updatePlugins = new List<Tuple<PluginManifest, string, PluginLibraryItem>>();
+
+            
+            using (DiscoDataContext dbContext = new DiscoDataContext())
             {
-                ExecuteTaskInternal(Status, pluginPackagesLocation, UpdatePlugins);
+                pluginPackagesLocation = dbContext.DiscoConfiguration.PluginPackagesLocation;
+                installedPluginManifests = OfflineInstalledPlugins(dbContext);
+
+                if (installedPluginManifests.Count > 0)
+                    pluginCatalogue = Plugins.LoadCatalogue(dbContext);
+            }
+
+            if (pluginCatalogue != null && installedPluginManifests.Count > 0)
+            {
+                foreach (var pluginManifest in installedPluginManifests)
+                {
+                    // Check for Update
+                    var catalogueItem = pluginCatalogue.Plugins.FirstOrDefault(i => i.Id == pluginManifest.Id && Version.Parse(i.LatestVersion) > pluginManifest.Version);
+
+                    if (catalogueItem != null)
+                    { // Update Available
+                        updatePlugins.Add(new Tuple<PluginManifest, string, PluginLibraryItem>(pluginManifest, null, catalogueItem));
+                    }
+                }
+            }
+
+            if (updatePlugins.Count > 0)
+            {
+                ExecuteTaskInternal(Status, pluginPackagesLocation, updatePlugins);
             }
         }
 
