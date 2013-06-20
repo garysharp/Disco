@@ -32,7 +32,7 @@ namespace Disco.Web.Views.Device.DeviceParts
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/DeviceParts/Resources.cshtml")]
+    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/DeviceParts/_Resources.cshtml")]
     public partial class Resources : System.Web.Mvc.WebViewPage<Disco.Web.Models.Device.ShowModel>
     {
         public Resources()
@@ -41,7 +41,7 @@ namespace Disco.Web.Views.Device.DeviceParts
         public override void Execute()
         {
             
-            #line 2 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 2 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
   
     Html.BundleDeferred("~/Style/Shadowbox");
     Html.BundleDeferred("~/ClientScripts/Modules/Shadowbox");
@@ -71,13 +71,13 @@ WriteLiteral(" class=\"attachmentOutput\"");
 WriteLiteral(">\r\n");
 
             
-            #line 12 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 12 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 12 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 12 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                      if (Model.Device.DeviceAttachments != null)
                     {
                         foreach (var da in Model.Device.DeviceAttachments)
@@ -90,7 +90,7 @@ WriteLiteral("                        <a");
 
 WriteAttribute("href", Tuple.Create(" href=\"", 634), Tuple.Create("\"", 694)
             
-            #line 16 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 16 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
 , Tuple.Create(Tuple.Create("", 641), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentDownload(da.Id))
             
             #line default
@@ -101,7 +101,7 @@ WriteAttribute("href", Tuple.Create(" href=\"", 634), Tuple.Create("\"", 694)
 WriteLiteral(" data-attachmentid=\"");
 
             
-            #line 16 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 16 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                                                       Write(da.Id);
 
             
@@ -112,7 +112,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-mimetype=\"");
 
             
-            #line 16 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 16 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                                                                              Write(da.MimeType);
 
             
@@ -126,7 +126,7 @@ WriteLiteral(" class=\"icon\"");
 
 WriteAttribute("title", Tuple.Create(" title=\"", 800), Tuple.Create("\"", 820)
             
-            #line 17 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 17 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
 , Tuple.Create(Tuple.Create("", 808), Tuple.Create<System.Object, System.Int32>(da.Filename
             
             #line default
@@ -140,7 +140,7 @@ WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
 WriteAttribute("src", Tuple.Create(" src=\"", 887), Tuple.Create("\"", 949)
             
-            #line 18 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 18 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
 , Tuple.Create(Tuple.Create("", 893), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentThumbnail(da.Id))
             
             #line default
@@ -154,7 +154,7 @@ WriteLiteral(" class=\"comments\"");
 
 WriteAttribute("title", Tuple.Create(" title=\"", 1012), Tuple.Create("\"", 1032)
             
-            #line 19 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 19 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
 , Tuple.Create(Tuple.Create("", 1020), Tuple.Create<System.Object, System.Int32>(da.Comments
             
             #line default
@@ -165,27 +165,27 @@ WriteAttribute("title", Tuple.Create(" title=\"", 1012), Tuple.Create("\"", 1032
 WriteLiteral(">\r\n");
 
             
-            #line 20 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 20 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 20 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 20 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                   if (!string.IsNullOrEmpty(da.DocumentTemplateId))
                                   { 
             
             #line default
             #line hidden
             
-            #line 21 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 21 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                Write(da.DocumentTemplate.Description);
 
             
             #line default
             #line hidden
             
-            #line 21 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 21 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                     }
                                   else
                                   { 
@@ -193,14 +193,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 23 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 23 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                Write(da.Comments);
 
             
             #line default
             #line hidden
             
-            #line 23 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 23 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                  }
             
             #line default
@@ -212,7 +212,7 @@ WriteLiteral(" class=\"author\"");
 WriteLiteral(">");
 
             
-            #line 24 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 24 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                    Write(da.TechUser.ToString());
 
             
@@ -228,7 +228,7 @@ WriteLiteral(" class=\"timestamp\"");
 
 WriteAttribute("title", Tuple.Create(" title=\"", 1422), Tuple.Create("\"", 1460)
             
-            #line 24 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 24 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                  , Tuple.Create(Tuple.Create("", 1430), Tuple.Create<System.Object, System.Int32>(da.Timestamp.ToFullDateTime()
             
             #line default
@@ -239,7 +239,7 @@ WriteAttribute("title", Tuple.Create(" title=\"", 1422), Tuple.Create("\"", 1460
 WriteLiteral(">");
 
             
-            #line 24 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 24 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                                                                                                                             Write(da.Timestamp.ToFuzzy());
 
             
@@ -248,7 +248,7 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n                        </a>   \r\n");
 
             
-            #line 26 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 26 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                         }
                     }
 
@@ -294,7 +294,7 @@ WriteLiteral(">\r\n                    Shadowbox.init({\r\n                     
 "                         \'");
 
             
-            #line 70 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 70 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                              Write(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap);
 
             
@@ -315,7 +315,7 @@ WriteLiteral(@"',
                             'UploadUrl=");
 
             
-            #line 82 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 82 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                    Write(Url.Action(MVC.API.Device.AttachmentUpload(Model.Device.SerialNumber, null)));
 
             
@@ -347,7 +347,7 @@ WriteLiteral(@"'
                             url: '");
 
             
-            #line 105 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 105 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                              Write(Url.Action(MVC.API.Device.Attachment()));
 
             
@@ -365,7 +365,7 @@ WriteLiteral(@"',
                                     e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '");
 
             
-            #line 114 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 114 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                                                                   Write(Url.Action(MVC.API.Device.AttachmentDownload()));
 
             
@@ -375,7 +375,7 @@ WriteLiteral("/\' + a.Id);\r\n                                    e.find(\'.icon
 "\'");
 
             
-            #line 115 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 115 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                  Write(Url.Action(MVC.API.Device.AttachmentThumbnail()));
 
             
@@ -408,7 +408,7 @@ WriteLiteral("/\' + a.Id);\r\n                                    e.find(\'.comm
 "                  $.ajax({\r\n                                    url: \'");
 
             
-            #line 147 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 147 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                      Write(Url.Action(MVC.API.Device.AttachmentRemove()));
 
             
@@ -468,7 +468,7 @@ WriteLiteral("></span>\r\n            Are you sure?\r\n        </p>\r\n    </div
 "id=\"DeviceDetailTab-ResourcesLink\">Attachments [");
 
             
-            #line 200 "..\..\Views\Device\DeviceParts\Resources.cshtml"
+            #line 200 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                                                                                 Write(Model.Device.DeviceAttachments == null ? 0 : Model.Device.DeviceAttachments.Count);
 
             

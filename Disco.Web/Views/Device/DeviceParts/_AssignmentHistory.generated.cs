@@ -32,7 +32,7 @@ namespace Disco.Web.Views.Device.DeviceParts
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/DeviceParts/AssignmentHistory.cshtml")]
+    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/DeviceParts/_AssignmentHistory.cshtml")]
     public partial class AssignmentHistory : System.Web.Mvc.WebViewPage<Disco.Web.Models.Device.ShowModel>
     {
         public AssignmentHistory()
@@ -49,13 +49,13 @@ WriteLiteral(" class=\"DevicePart\"");
 WriteLiteral(">\r\n");
 
             
-            #line 3 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
+            #line 3 "..\..\Views\Device\DeviceParts\_AssignmentHistory.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 3 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
+            #line 3 "..\..\Views\Device\DeviceParts\_AssignmentHistory.cshtml"
      if (Model.Device.DeviceUserAssignments.Count > 0)
     { 
 
@@ -71,13 +71,13 @@ WriteLiteral(">\r\n            <tr>\r\n                <th>User\r\n             
 "          </th>\r\n            </tr>\r\n");
 
             
-            #line 14 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
+            #line 14 "..\..\Views\Device\DeviceParts\_AssignmentHistory.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 14 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
+            #line 14 "..\..\Views\Device\DeviceParts\_AssignmentHistory.cshtml"
              foreach (var dua in Model.Device.DeviceUserAssignments.OrderByDescending(m => m.AssignedDate))
             {
 
@@ -89,7 +89,7 @@ WriteLiteral("                <tr>\r\n                    <td>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 18 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
+            #line 18 "..\..\Views\Device\DeviceParts\_AssignmentHistory.cshtml"
                    Write(Html.ActionLink(dua.AssignedUser.ToString(), MVC.User.Show(dua.AssignedUserId)));
 
             
@@ -100,7 +100,7 @@ WriteLiteral("\r\n                    </td>\r\n                    <td>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 21 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
+            #line 21 "..\..\Views\Device\DeviceParts\_AssignmentHistory.cshtml"
                    Write(CommonHelpers.FriendlyDate(dua.AssignedDate));
 
             
@@ -111,7 +111,7 @@ WriteLiteral("\r\n                    </td>\r\n                    <td>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 24 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
+            #line 24 "..\..\Views\Device\DeviceParts\_AssignmentHistory.cshtml"
                    Write(CommonHelpers.FriendlyDate(dua.UnassignedDate, "Current"));
 
             
@@ -120,7 +120,7 @@ WriteLiteral("                        ");
 WriteLiteral("\r\n                    </td>\r\n                </tr>\r\n");
 
             
-            #line 27 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
+            #line 27 "..\..\Views\Device\DeviceParts\_AssignmentHistory.cshtml"
             }
 
             
@@ -129,7 +129,7 @@ WriteLiteral("\r\n                    </td>\r\n                </tr>\r\n");
 WriteLiteral("        </table>\r\n");
 
             
-            #line 29 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
+            #line 29 "..\..\Views\Device\DeviceParts\_AssignmentHistory.cshtml"
     }
     else
     { 
@@ -144,7 +144,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">No Assignment History Available</span>\r\n");
 
             
-            #line 33 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
+            #line 33 "..\..\Views\Device\DeviceParts\_AssignmentHistory.cshtml"
     }
 
             
@@ -154,7 +154,7 @@ WriteLiteral("    <script>\r\n        $(\'#DeviceDetailTabItems\').append(\'<li>
 "ilTab-AssignmentHistory\">Assignment History [");
 
             
-            #line 35 "..\..\Views\Device\DeviceParts\AssignmentHistory.cshtml"
+            #line 35 "..\..\Views\Device\DeviceParts\_AssignmentHistory.cshtml"
                                                                                                             Write(Model.Device.DeviceUserAssignments.Count);
 
             

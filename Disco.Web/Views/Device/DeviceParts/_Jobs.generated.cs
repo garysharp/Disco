@@ -32,7 +32,7 @@ namespace Disco.Web.Views.Device.DeviceParts
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/DeviceParts/Jobs.cshtml")]
+    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/DeviceParts/_Jobs.cshtml")]
     public partial class Jobs : System.Web.Mvc.WebViewPage<Disco.Web.Models.Device.ShowModel>
     {
         public Jobs()
@@ -55,7 +55,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("        ");
 
             
-            #line 4 "..\..\Views\Device\DeviceParts\Jobs.cshtml"
+            #line 4 "..\..\Views\Device\DeviceParts\_Jobs.cshtml"
    Write(Html.Partial(MVC.Shared.Views._JobTable, Model.Jobs));
 
             
@@ -65,7 +65,7 @@ WriteLiteral("\r\n    </div>\r\n    <script>\r\n        $(\'#DeviceDetailTabItem
 "f=\"#DeviceDetailTab-Jobs\">Jobs [");
 
             
-            #line 7 "..\..\Views\Device\DeviceParts\Jobs.cshtml"
+            #line 7 "..\..\Views\Device\DeviceParts\_Jobs.cshtml"
                                                                                  Write(Model.Device.Jobs == null ? 0 : Model.Device.Jobs.Count);
 
             

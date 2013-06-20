@@ -144,7 +144,7 @@ WriteLiteral("        ");
 
             
             #line 48 "..\..\Views\Device\Show.cshtml"
-   Write(Html.Partial(MVC.Device.Views.DeviceParts.Jobs, Model));
+   Write(Html.Partial(MVC.Device.Views.DeviceParts._Jobs, Model));
 
             
             #line default
@@ -155,7 +155,7 @@ WriteLiteral("        ");
 
             
             #line 49 "..\..\Views\Device\Show.cshtml"
-   Write(Html.Partial(MVC.Device.Views.DeviceParts.AssignmentHistory, Model));
+   Write(Html.Partial(MVC.Device.Views.DeviceParts._AssignmentHistory, Model));
 
             
             #line default
@@ -166,7 +166,7 @@ WriteLiteral("        ");
 
             
             #line 50 "..\..\Views\Device\Show.cshtml"
-   Write(Html.Partial(MVC.Device.Views.DeviceParts.Resources, Model));
+   Write(Html.Partial(MVC.Device.Views.DeviceParts._Resources, Model));
 
             
             #line default
@@ -177,7 +177,7 @@ WriteLiteral("        ");
 
             
             #line 51 "..\..\Views\Device\Show.cshtml"
-   Write(Html.Partial(MVC.Device.Views.DeviceParts.Certificates, Model));
+   Write(Html.Partial(MVC.Device.Views.DeviceParts._Certificates, Model));
 
             
             #line default
