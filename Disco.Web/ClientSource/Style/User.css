@@ -1,14 +1,21 @@
-.tableData {
+﻿.tableData {
   border: solid 1px #e8eef4;
   border-collapse: collapse;
 }
-.tableData td {
+.tableData > tbody > tr > td {
   border: solid 1px #e8eef4;
   background-color: #fff;
 }
-.tableData th {
+.tableData > tbody > tr:nth-child(odd) > td {
+  background-color: #fcfcfd;
+}
+.tableData > thead > tr > th,
+.tableData > tbody > tr > th {
   background-color: #e8eef4;
   border: solid 1px #e8eef4;
+}
+.tableData > tbody > tr:hover > td {
+  background-color: #e8eef4;
 }
 .tableDataDark {
   border: solid 1px #8db2d8;
@@ -64,31 +71,117 @@
   -moz-opacity: 1;
   opacity: 1;
 }
-table.userTable {
-  border: solid 1px #e8eef4;
-  border-collapse: collapse;
+#User_Show #User_Show_Subjects {
+  table-layout: fixed;
 }
-table.userTable td {
-  border: solid 1px #e8eef4;
-  background-color: #fff;
+#User_Show #User_Show_Subjects > tbody > tr > td {
+  padding-top: 0;
+  height: 100%;
 }
-table.userTable th {
-  background-color: #e8eef4;
-  border: solid 1px #e8eef4;
+#User_Show #User_Show_Subjects > tbody > tr > td > div {
+  position: relative;
 }
-table.userShow td.details {
+#User_Show #User_Show_Subjects > tbody > tr > td > div div.status {
+  margin-top: 2px;
+  padding-top: 2px;
+  border-top: 1px dashed #ddd;
+}
+#User_Show #User_Show_Subjects > tbody > tr > td > div input.discreet {
+  margin-left: -2px;
+}
+#User_Show #User_Show_Subjects > tbody > tr > td:not(:last-child) {
+  border-right: 1px dashed #aaa;
+}
+#User_Show #User_Show_Subjects .dialog {
+  display: none;
+}
+#User_Show #User_Show_Subjects #User_Show_Details {
+  width: 33%;
+}
+#User_Show #User_Show_Subjects #User_Show_Details table.verticalHeadings > tbody > tr > td:first-child {
+  width: 104px;
+  font-weight: bold;
+}
+#User_Show #User_Show_Subjects #User_Show_Details #User_Show_Details_Identity_Id {
+  font-weight: bold;
+}
+#User_Show #User_Show_Subjects #User_Show_Details #User_Show_GenerateDocument_Container {
+  padding-top: 4px;
+}
+#User_Show #User_Show_Subjects #User_Show_Details #User_Show_GenerateDocument_Container #User_Show_GenerateDocument {
   padding: 0;
 }
-table.userShow th.name {
-  width: 150px;
-  text-align: right;
+#User_Show #User_Show_Subjects #User_Show_Details #User_Show_Details_Actions {
+  margin-top: 4px;
 }
-#userShowResources {
+#User_Show #User_Show_Subjects #User_Show_AssignedDevices {
+  width: 66%;
+}
+#User_Show #User_Show_Subjects #User_Show_AssignedDevices .User_Show_AssignedDevices_CurrentAssignment {
+  border-bottom: 1px dashed #ddd;
+  padding: 4px;
+}
+#User_Show #User_Show_Subjects #User_Show_AssignedDevices .User_Show_AssignedDevices_CurrentAssignment td:first-child {
+  width: 90px;
+  font-weight: bold;
+}
+#User_Show #User_Show_Subjects #User_Show_AssignedDevices .User_Show_AssignedDevices_CurrentAssignment img.User_Show_AssignedDevices_CurrentAssignment_Image {
+  float: left;
+  width: 64px;
+  height: 64px;
+  margin-right: 6px;
+}
+#User_Show #User_Show_Subjects #User_Show_AssignedDevices .User_Show_AssignedDevices_CurrentAssignment div.User_Show_AssignedDevices_CurrentAssignment_Details {
+  float: left;
+}
+#User_Show #User_Show_Subjects #User_Show_Subjects_Actions > td {
+  padding-top: 4px;
+}
+#UserDetailTabs {
   margin-top: 10px;
+  /*jQuery Tab Extensions*/
+
+  border-radius: 0;
+  background-image: none;
+  background-color: #fff;
+  border: none;
+  padding: 0;
+}
+#UserDetailTabs #UserDetailTabItems {
+  border-radius: 0;
+  border-top: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-bottom: none;
+  padding: 2px 0 0 4px;
+  background-image: none;
+  background-color: #eee;
+  display: table;
+}
+#UserDetailTabs #UserDetailTabItems > li {
+  top: 0;
+  border-radius: 0;
+  margin: 0 5px 0 0;
+  padding: 0;
+  line-height: normal;
+  margin-right: 4px;
+}
+#UserDetailTabs #UserDetailTabItems > li > a {
+  padding: 5px 8px;
+}
+#UserDetailTabs div.ui-tabs-panel {
+  border-radius: 0;
+  padding: 4px;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-top: none;
+  background-color: #eee;
 }
 #userShowResources #Attachments {
   padding: 0;
   border: 1px solid #cccccc;
+  background-color: #fff;
 }
 #userShowResources #Attachments div.attachmentOutput {
   height: 115px;

@@ -528,23 +528,23 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Views\Device\DeviceParts\AssignmentHistory.generated.cs">
+    <Compile Include="Views\Device\DeviceParts\_AssignmentHistory.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AssignmentHistory.cshtml</DependentUpon>
+      <DependentUpon>_AssignmentHistory.cshtml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Device\DeviceParts\Certificates.generated.cs">
+    <Compile Include="Views\Device\DeviceParts\_Certificates.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Certificates.cshtml</DependentUpon>
+      <DependentUpon>_Certificates.cshtml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Device\DeviceParts\Jobs.generated.cs">
+    <Compile Include="Views\Device\DeviceParts\_Jobs.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Jobs.cshtml</DependentUpon>
+      <DependentUpon>_Jobs.cshtml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Device\DeviceParts\Resources.generated.cs">
-      <DependentUpon>Resources.cshtml</DependentUpon>
+    <Compile Include="Views\Device\DeviceParts\_Resources.generated.cs">
+      <DependentUpon>_Resources.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -764,19 +764,19 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Views\User\Show.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>Show.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\User\UserParts\_Resources.generated.cs">
+      <DependentUpon>_Resources.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Views\User\UserParts\Resources.generated.cs">
-      <DependentUpon>Resources.cshtml</DependentUpon>
+    <Compile Include="Views\User\UserParts\_Subject.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Views\User\_UserDeviceAssignmentHistoryTable.generated.cs">
-      <DependentUpon>_UserDeviceAssignmentHistoryTable.cshtml</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+      <DependentUpon>_Subject.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Views\User\_UserTable.generated.cs">
       <DependentUpon>_UserTable.cshtml</DependentUpon>
@@ -1393,21 +1393,21 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>AddOffline.generated.cs</LastGenOutput>
     </None>
-    <None Include="Views\Device\DeviceParts\AssignmentHistory.cshtml">
+    <None Include="Views\Device\DeviceParts\_AssignmentHistory.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>AssignmentHistory.generated.cs</LastGenOutput>
+      <LastGenOutput>_AssignmentHistory.generated.cs</LastGenOutput>
     </None>
-    <None Include="Views\Device\DeviceParts\Certificates.cshtml">
+    <None Include="Views\Device\DeviceParts\_Certificates.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>Certificates.generated.cs</LastGenOutput>
+      <LastGenOutput>_Certificates.generated.cs</LastGenOutput>
     </None>
-    <None Include="Views\Device\DeviceParts\Jobs.cshtml">
+    <None Include="Views\Device\DeviceParts\_Jobs.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>Jobs.generated.cs</LastGenOutput>
+      <LastGenOutput>_Jobs.generated.cs</LastGenOutput>
     </None>
-    <None Include="Views\Device\DeviceParts\Resources.cshtml">
+    <None Include="Views\Device\DeviceParts\_Resources.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>Resources.generated.cs</LastGenOutput>
+      <LastGenOutput>_Resources.generated.cs</LastGenOutput>
     </None>
     <None Include="Views\Device\DeviceParts\_Subject.cshtml">
       <Generator>RazorGenerator</Generator>
@@ -1417,9 +1417,6 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
     </None>
-    <None Include="Views\Device\ARCHIVE_Show.cshtml" />
-    <None Include="Views\Device\ARCHIVE_CertificateTable.cshtml" />
-    <None Include="Views\Device\ARCHIVE_DeviceActions.cshtml" />
     <None Include="Views\Device\Show.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Show.generated.cs</LastGenOutput>
@@ -1428,7 +1425,6 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_DeviceTable.generated.cs</LastGenOutput>
     </None>
-    <None Include="Views\Device\ARCHIVE_DeviceUserAssignmentHistoryTable.cshtml" />
     <None Include="Views\Device\_ViewStart.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
@@ -1752,17 +1748,19 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
     </None>
+    <None Include="Views\User\ARCHIVE_Show.cshtml" />
     <None Include="Views\User\Show.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Show.generated.cs</LastGenOutput>
     </None>
-    <None Include="Views\User\UserParts\Resources.cshtml">
+    <None Include="Views\User\UserParts\_Resources.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>Resources.generated.cs</LastGenOutput>
+      <LastGenOutput>_Resources.generated.cs</LastGenOutput>
     </None>
-    <None Include="Views\User\_UserDeviceAssignmentHistoryTable.cshtml">
+    <None Include="Views\User\ARCHIVE__UserDeviceAssignmentHistoryTable.cshtml" />
+    <None Include="Views\User\UserParts\_Subject.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>_UserDeviceAssignmentHistoryTable.generated.cs</LastGenOutput>
+      <LastGenOutput>_Subject.generated.cs</LastGenOutput>
     </None>
     <None Include="Views\User\_UserTable.cshtml">
       <Generator>RazorGenerator</Generator>
@@ -1874,7 +1872,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
+      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

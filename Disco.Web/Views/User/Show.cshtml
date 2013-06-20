@@ -1,85 +1,40 @@
 ﻿@model Disco.Web.Models.User.ShowModel
 @{
-    ViewBag.Title = Html.ToBreadcrumb("Users", MVC.User.Index(), string.Format("{0} ({1})", Model.User.DisplayName, Model.User.Id));
-    Html.BundleDeferred("~/ClientScripts/Modules/Silverlight");
-    Html.BundleDeferred("~/ClientScripts/Modules/Disco-CreateJob");
+    ViewBag.Title = Html.ToBreadcrumb("Users", MVC.User.Index(), string.Format("User: {0} ({1})", Model.User.DisplayName, Model.User.Id));
 }
-<table class="userShow">
-    <tr>
-        <th class="name">Id:
-        </th>
-        <td class="value">
-            @Model.User.Id
-        </td>
-        <th class="name">Given Name:
-        </th>
-        <td class="value">
-            @Model.User.GivenName
-        </td>
-    </tr>
-    <tr>
-        <th class="name">Type:
-        </th>
-        <td class="value">
-            @Model.User.Type
-        </td>
-        <th class="name">Surname:
-        </th>
-        <td class="value">
-            @Model.User.Surname
-        </td>
-    </tr>
-    <tr>
-        <th class="name">Display Name:
-        </th>
-        <td class="value" colspan="3">
-            @Model.User.DisplayName
-        </td>
-    </tr>
-    <tr>
-        <th class="name">Email Address:
-        </th>
-        <td class="value">
-            @Model.User.EmailAddress
-        </td>
-        <th class="name">Phone Number:
-        </th>
-        <td class="value">
-            @Model.User.PhoneNumber
-        </td>
-    </tr>
-    <tr>
-        <th class="name">Assigned Devices:
-        </th>
-        <td class="value" colspan="3">
-            @Html.Partial(MVC.User.Views._UserDeviceAssignmentHistoryTable, Model.User)
-        </td>
-    </tr>
-    <tr>
-        <th class="name">Generate Documents:
-        </th>
-        <td class="value" colspan="3">
-            @Html.DropDownList("DocumentTemplates", Model.DocumentTemplatesSelectListItems)
-            <script type="text/javascript">
-                $(function () {
-                    var generatePdfUrl = '@Url.Action(MVC.API.User.GeneratePdf(Model.User.Id, null))?DocumentTemplateId=';
-                    var $documentTemplates = $('#DocumentTemplates');
-                    $documentTemplates.change(function () {
-                        var v = $documentTemplates.val();
-                        if (v) {
-                            window.location.href = generatePdfUrl + v;
-                            $documentTemplates.val('');
+<div id="User_Show">
+    @Html.Partial(MVC.User.Views.UserParts._Subject, Model)
+    <script type="text/javascript">
+        $(function () {
+            var $tabs = $('#UserDetailTabs');
+            $tabs.tabs({
+                activate: function (event, ui) {
+                    window.setTimeout(function () {
+                        var $window = $(window);
+                        var tabHeight = $tabs.height();
+                        var tabOffset = $tabs.offset();
+                        var windowScrollTop = $window.scrollTop();
+                        var windowHeight = $window.height();
+
+                        var tabTopNotShown = windowScrollTop - tabOffset.top;
+                        if (tabTopNotShown > 0) {
+                            $('html').animate({ scrollTop: tabOffset.top }, 125);
+                        } else {
+                            var tabBottomNotShown = ((windowScrollTop + windowHeight) - (tabHeight + tabOffset.top)) * -1;
+                            if (tabBottomNotShown > 0) {
+                                if (tabHeight > windowHeight)
+                                    $('html').animate({ scrollTop: tabOffset.top }, 125);
+                                else
+                                    $('html').animate({ scrollTop: windowScrollTop + tabBottomNotShown }, 125);
+                            }
                         }
-                    });
-                });
-            </script>
-        </td>
-    </tr>
-</table>
-<h2>Jobs</h2>
-@Html.Partial(MVC.Shared.Views._JobTable, Model.Jobs)
-<h2>Attachments</h2>
-@Html.Partial(MVC.User.Views.UserParts.Resources, Model)
-<div class="actionBar">
-    @Html.ActionLinkButton("Create Job", MVC.Job.Create(Model.PrimaryDeviceSerialNumber, Model.User.Id), "buttonCreateJob")
+                    }, 1);
+                }
+            });
+        });
+    </script>
+    <div id="UserDetailTabs">
+        <ul id="UserDetailTabItems"></ul>
+        @Html.Partial(MVC.User.Views.UserParts._Resources, Model)
+    </div>
 </div>

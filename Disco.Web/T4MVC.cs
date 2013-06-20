@@ -39,7 +39,6 @@ public static class MVC
     public static Disco.Web.Controllers.SearchController Search = new Disco.Web.Controllers.T4MVC_SearchController();
     public static Disco.Web.Controllers.UpdateController Update = new Disco.Web.Controllers.T4MVC_UpdateController();
     public static Disco.Web.Controllers.UserController User = new Disco.Web.Controllers.T4MVC_UserController();
-    public static T4MVC.HomeController Home = new T4MVC.HomeController();
     public static T4MVC.SharedController Shared = new T4MVC.SharedController();
 }
 
@@ -1148,20 +1147,12 @@ namespace Disco.Web.Controllers
                 public readonly string _DeviceTable = "_DeviceTable";
                 public readonly string _ViewStart = "_ViewStart";
                 public readonly string AddOffline = "AddOffline";
-                public readonly string ARCHIVE_CertificateTable = "ARCHIVE_CertificateTable";
-                public readonly string ARCHIVE_DeviceActions = "ARCHIVE_DeviceActions";
-                public readonly string ARCHIVE_DeviceUserAssignmentHistoryTable = "ARCHIVE_DeviceUserAssignmentHistoryTable";
-                public readonly string ARCHIVE_Show = "ARCHIVE_Show";
                 public readonly string Index = "Index";
                 public readonly string Show = "Show";
             }
             public readonly string _DeviceTable = "~/Views/Device/_DeviceTable.cshtml";
             public readonly string _ViewStart = "~/Views/Device/_ViewStart.cshtml";
             public readonly string AddOffline = "~/Views/Device/AddOffline.cshtml";
-            public readonly string ARCHIVE_CertificateTable = "~/Views/Device/ARCHIVE_CertificateTable.cshtml";
-            public readonly string ARCHIVE_DeviceActions = "~/Views/Device/ARCHIVE_DeviceActions.cshtml";
-            public readonly string ARCHIVE_DeviceUserAssignmentHistoryTable = "~/Views/Device/ARCHIVE_DeviceUserAssignmentHistoryTable.cshtml";
-            public readonly string ARCHIVE_Show = "~/Views/Device/ARCHIVE_Show.cshtml";
             public readonly string Index = "~/Views/Device/Index.cshtml";
             public readonly string Show = "~/Views/Device/Show.cshtml";
             static readonly _DevicePartsClass s_DeviceParts = new _DevicePartsClass();
@@ -1173,17 +1164,17 @@ namespace Disco.Web.Controllers
                 public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
                 public class _ViewNamesClass
                 {
+                    public readonly string _AssignmentHistory = "_AssignmentHistory";
+                    public readonly string _Certificates = "_Certificates";
+                    public readonly string _Jobs = "_Jobs";
+                    public readonly string _Resources = "_Resources";
                     public readonly string _Subject = "_Subject";
-                    public readonly string AssignmentHistory = "AssignmentHistory";
-                    public readonly string Certificates = "Certificates";
-                    public readonly string Jobs = "Jobs";
-                    public readonly string Resources = "Resources";
                 }
+                public readonly string _AssignmentHistory = "~/Views/Device/DeviceParts/_AssignmentHistory.cshtml";
+                public readonly string _Certificates = "~/Views/Device/DeviceParts/_Certificates.cshtml";
+                public readonly string _Jobs = "~/Views/Device/DeviceParts/_Jobs.cshtml";
+                public readonly string _Resources = "~/Views/Device/DeviceParts/_Resources.cshtml";
                 public readonly string _Subject = "~/Views/Device/DeviceParts/_Subject.cshtml";
-                public readonly string AssignmentHistory = "~/Views/Device/DeviceParts/AssignmentHistory.cshtml";
-                public readonly string Certificates = "~/Views/Device/DeviceParts/Certificates.cshtml";
-                public readonly string Jobs = "~/Views/Device/DeviceParts/Jobs.cshtml";
-                public readonly string Resources = "~/Views/Device/DeviceParts/Resources.cshtml";
             }
         }
     }
@@ -2242,15 +2233,17 @@ namespace Disco.Web.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
-                public readonly string _UserDeviceAssignmentHistoryTable = "_UserDeviceAssignmentHistoryTable";
                 public readonly string _UserTable = "_UserTable";
                 public readonly string _ViewStart = "_ViewStart";
+                public readonly string ARCHIVE__UserDeviceAssignmentHistoryTable = "ARCHIVE__UserDeviceAssignmentHistoryTable";
+                public readonly string ARCHIVE_Show = "ARCHIVE_Show";
                 public readonly string Index = "Index";
                 public readonly string Show = "Show";
             }
-            public readonly string _UserDeviceAssignmentHistoryTable = "~/Views/User/_UserDeviceAssignmentHistoryTable.cshtml";
             public readonly string _UserTable = "~/Views/User/_UserTable.cshtml";
             public readonly string _ViewStart = "~/Views/User/_ViewStart.cshtml";
+            public readonly string ARCHIVE__UserDeviceAssignmentHistoryTable = "~/Views/User/ARCHIVE__UserDeviceAssignmentHistoryTable.cshtml";
+            public readonly string ARCHIVE_Show = "~/Views/User/ARCHIVE_Show.cshtml";
             public readonly string Index = "~/Views/User/Index.cshtml";
             public readonly string Show = "~/Views/User/Show.cshtml";
             static readonly _UserPartsClass s_UserParts = new _UserPartsClass();
@@ -2262,9 +2255,11 @@ namespace Disco.Web.Controllers
                 public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
                 public class _ViewNamesClass
                 {
-                    public readonly string Resources = "Resources";
+                    public readonly string _Resources = "_Resources";
+                    public readonly string _Subject = "_Subject";
                 }
-                public readonly string Resources = "~/Views/User/UserParts/Resources.cshtml";
+                public readonly string _Resources = "~/Views/User/UserParts/_Resources.cshtml";
+                public readonly string _Subject = "~/Views/User/UserParts/_Subject.cshtml";
             }
         }
     }
@@ -2294,27 +2289,6 @@ namespace Disco.Web.Controllers
         }
 
     }
-}
-
-namespace T4MVC
-{
-    public class HomeController
-    {
-
-        static readonly ViewsClass s_views = new ViewsClass();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ViewsClass Views { get { return s_views; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ViewsClass
-        {
-            static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
-            public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
-            public class _ViewNamesClass
-            {
-            }
-        }
-    }
-
 }
 
 namespace T4MVC

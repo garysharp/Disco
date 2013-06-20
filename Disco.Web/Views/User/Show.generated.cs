@@ -43,256 +43,79 @@ namespace Disco.Web.Views.User
             
             #line 2 "..\..\Views\User\Show.cshtml"
   
-    ViewBag.Title = Html.ToBreadcrumb("Users", MVC.User.Index(), string.Format("{0} ({1})", Model.User.DisplayName, Model.User.Id));
-    Html.BundleDeferred("~/ClientScripts/Modules/Silverlight");
-    Html.BundleDeferred("~/ClientScripts/Modules/Disco-CreateJob");
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n<table");
-
-WriteLiteral(" class=\"userShow\"");
-
-WriteLiteral(">\r\n    <tr>\r\n        <th");
-
-WriteLiteral(" class=\"name\"");
-
-WriteLiteral(">Id:\r\n        </th>\r\n        <td");
-
-WriteLiteral(" class=\"value\"");
-
-WriteLiteral(">\r\n");
-
-WriteLiteral("            ");
-
-            
-            #line 12 "..\..\Views\User\Show.cshtml"
-       Write(Model.User.Id);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n        </td>\r\n        <th");
-
-WriteLiteral(" class=\"name\"");
-
-WriteLiteral(">Given Name:\r\n        </th>\r\n        <td");
-
-WriteLiteral(" class=\"value\"");
-
-WriteLiteral(">\r\n");
-
-WriteLiteral("            ");
-
-            
-            #line 17 "..\..\Views\User\Show.cshtml"
-       Write(Model.User.GivenName);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <th");
-
-WriteLiteral(" class=\"name\"");
-
-WriteLiteral(">Type:\r\n        </th>\r\n        <td");
-
-WriteLiteral(" class=\"value\"");
-
-WriteLiteral(">\r\n");
-
-WriteLiteral("            ");
-
-            
-            #line 24 "..\..\Views\User\Show.cshtml"
-       Write(Model.User.Type);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n        </td>\r\n        <th");
-
-WriteLiteral(" class=\"name\"");
-
-WriteLiteral(">Surname:\r\n        </th>\r\n        <td");
-
-WriteLiteral(" class=\"value\"");
-
-WriteLiteral(">\r\n");
-
-WriteLiteral("            ");
-
-            
-            #line 29 "..\..\Views\User\Show.cshtml"
-       Write(Model.User.Surname);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <th");
-
-WriteLiteral(" class=\"name\"");
-
-WriteLiteral(">Display Name:\r\n        </th>\r\n        <td");
-
-WriteLiteral(" class=\"value\"");
-
-WriteLiteral(" colspan=\"3\"");
-
-WriteLiteral(">\r\n");
-
-WriteLiteral("            ");
-
-            
-            #line 36 "..\..\Views\User\Show.cshtml"
-       Write(Model.User.DisplayName);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <th");
-
-WriteLiteral(" class=\"name\"");
-
-WriteLiteral(">Email Address:\r\n        </th>\r\n        <td");
-
-WriteLiteral(" class=\"value\"");
-
-WriteLiteral(">\r\n");
-
-WriteLiteral("            ");
-
-            
-            #line 43 "..\..\Views\User\Show.cshtml"
-       Write(Model.User.EmailAddress);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n        </td>\r\n        <th");
-
-WriteLiteral(" class=\"name\"");
-
-WriteLiteral(">Phone Number:\r\n        </th>\r\n        <td");
-
-WriteLiteral(" class=\"value\"");
-
-WriteLiteral(">\r\n");
-
-WriteLiteral("            ");
-
-            
-            #line 48 "..\..\Views\User\Show.cshtml"
-       Write(Model.User.PhoneNumber);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <th");
-
-WriteLiteral(" class=\"name\"");
-
-WriteLiteral(">Assigned Devices:\r\n        </th>\r\n        <td");
-
-WriteLiteral(" class=\"value\"");
-
-WriteLiteral(" colspan=\"3\"");
-
-WriteLiteral(">\r\n");
-
-WriteLiteral("            ");
-
-            
-            #line 55 "..\..\Views\User\Show.cshtml"
-       Write(Html.Partial(MVC.User.Views._UserDeviceAssignmentHistoryTable, Model.User));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <th");
-
-WriteLiteral(" class=\"name\"");
-
-WriteLiteral(">Generate Documents:\r\n        </th>\r\n        <td");
-
-WriteLiteral(" class=\"value\"");
-
-WriteLiteral(" colspan=\"3\"");
-
-WriteLiteral(">\r\n");
-
-WriteLiteral("            ");
-
-            
-            #line 62 "..\..\Views\User\Show.cshtml"
-       Write(Html.DropDownList("DocumentTemplates", Model.DocumentTemplatesSelectListItems));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n            <script");
-
-WriteLiteral(" type=\"text/javascript\"");
-
-WriteLiteral(">\r\n                $(function () {\r\n                    var generatePdfUrl = \'");
-
-            
-            #line 65 "..\..\Views\User\Show.cshtml"
-                                     Write(Url.Action(MVC.API.User.GeneratePdf(Model.User.Id, null)));
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"?DocumentTemplateId=';
-                    var $documentTemplates = $('#DocumentTemplates');
-                    $documentTemplates.change(function () {
-                        var v = $documentTemplates.val();
-                        if (v) {
-                            window.location.href = generatePdfUrl + v;
-                            $documentTemplates.val('');
-                        }
-                    });
-                });
-            </script>
-        </td>
-    </tr>
-</table>
-<h2>Jobs</h2>
-");
-
-            
-            #line 80 "..\..\Views\User\Show.cshtml"
-Write(Html.Partial(MVC.Shared.Views._JobTable, Model.Jobs));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n<h2>Attachments</h2>\r\n");
-
-            
-            #line 82 "..\..\Views\User\Show.cshtml"
-Write(Html.Partial(MVC.User.Views.UserParts.Resources, Model));
+    ViewBag.Title = Html.ToBreadcrumb("Users", MVC.User.Index(), string.Format("User: {0} ({1})", Model.User.DisplayName, Model.User.Id));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n<div");
 
-WriteLiteral(" class=\"actionBar\"");
+WriteLiteral(" id=\"User_Show\"");
 
 WriteLiteral(">\r\n");
 
 WriteLiteral("    ");
 
             
-            #line 84 "..\..\Views\User\Show.cshtml"
-Write(Html.ActionLinkButton("Create Job", MVC.Job.Create(Model.PrimaryDeviceSerialNumber, Model.User.Id), "buttonCreateJob"));
+            #line 6 "..\..\Views\User\Show.cshtml"
+Write(Html.Partial(MVC.User.Views.UserParts._Subject, Model));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n</div>\r\n");
+WriteLiteral("\r\n    <script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(@">
+        $(function () {
+            var $tabs = $('#UserDetailTabs');
+            $tabs.tabs({
+                activate: function (event, ui) {
+                    window.setTimeout(function () {
+                        var $window = $(window);
+                        var tabHeight = $tabs.height();
+                        var tabOffset = $tabs.offset();
+                        var windowScrollTop = $window.scrollTop();
+                        var windowHeight = $window.height();
+
+                        var tabTopNotShown = windowScrollTop - tabOffset.top;
+                        if (tabTopNotShown > 0) {
+                            $('html').animate({ scrollTop: tabOffset.top }, 125);
+                        } else {
+                            var tabBottomNotShown = ((windowScrollTop + windowHeight) - (tabHeight + tabOffset.top)) * -1;
+                            if (tabBottomNotShown > 0) {
+                                if (tabHeight > windowHeight)
+                                    $('html').animate({ scrollTop: tabOffset.top }, 125);
+                                else
+                                    $('html').animate({ scrollTop: windowScrollTop + tabBottomNotShown }, 125);
+                            }
+                        }
+                    }, 1);
+                }
+            });
+        });
+    </script>
+    <div");
+
+WriteLiteral(" id=\"UserDetailTabs\"");
+
+WriteLiteral(">\r\n        <ul");
+
+WriteLiteral(" id=\"UserDetailTabItems\"");
+
+WriteLiteral("></ul>\r\n");
+
+WriteLiteral("        ");
+
+            
+            #line 38 "..\..\Views\User\Show.cshtml"
+   Write(Html.Partial(MVC.User.Views.UserParts._Resources, Model));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n    </div>\r\n</div>");
 
         }
     }

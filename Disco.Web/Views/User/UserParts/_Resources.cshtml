@@ -2,79 +2,83 @@
 @{
     Html.BundleDeferred("~/Style/Shadowbox");
     Html.BundleDeferred("~/ClientScripts/Modules/Shadowbox");
+    Html.BundleDeferred("~/ClientScripts/Modules/Silverlight");
 }
-<table id="userShowResources">
-    <tr>
-        <td id="Attachments">
-            <div class="attachmentOutput">
-                @if (Model.User.UserAttachments != null)
-                {
-                    foreach (var ua in Model.User.UserAttachments)
+<div id="UserDetailTab-Resources" class="UserPart">
+    <table id="userShowResources">
+        <tr>
+            <td id="Attachments">
+                <div class="attachmentOutput">
+                    @if (Model.User.UserAttachments != null)
                     {
-                    <a href="@Url.Action(MVC.API.User.AttachmentDownload(ua.Id))" data-attachmentid="@ua.Id" data-mimetype="@ua.MimeType">
-                        <span class="icon" title="@ua.Filename">
-                            <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.User.AttachmentThumbnail(ua.Id)))" /></span>
-                        <span class="comments" title="@ua.Comments">
-                            @{if (!string.IsNullOrEmpty(ua.DocumentTemplateId))
-                              { @ua.DocumentTemplate.Description}
-                              else
-                              { @ua.Comments }}
-                        </span><span class="author">@ua.TechUser.ToString()</span><span class="remove"></span>
-                        <span class="timestamp" title="@ua.Timestamp.ToFullDateTime()">@ua.Timestamp.ToFuzzy()</span>
-                    </a>   
-                    }
-                }
-            </div>
-            <div class="attachmentInput clearfix">
-                <span class="action upload"></span><span class="action photo"></span>
-            </div>
-            <script type="text/javascript">
-                Shadowbox.init({
-                    skipSetup: true,
-                    modal: true
-                });
-                $(function () {
-                    if (!document.DiscoFunctions) {
-                        document.DiscoFunctions = {};
-                    }
-                    document.DiscoFunctions.addAttachment = addAttachment;
-
-                    $Attachments = $('#Attachments');
-                    $attachmentOutput = $Attachments.find('.attachmentOutput');
-
-                    $attachmentOutput.find('span.remove').click(removeAttachment);
-
-                    $('#dialogUpload').dialog({ autoOpen: false,
-                        draggable: false,
-                        modal: true,
-                        resizable: false,
-                        width: 860,
-                        height: 550,
-                        close: function () {
-                            silverlightUploadAttachment.content.Navigator.Navigate('/Hidden');
+                        foreach (var ua in Model.User.UserAttachments)
+                        {
+                        <a href="@Url.Action(MVC.API.User.AttachmentDownload(ua.Id))" data-attachmentid="@ua.Id" data-mimetype="@ua.MimeType">
+                            <span class="icon" title="@ua.Filename">
+                                <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.User.AttachmentThumbnail(ua.Id)))" /></span>
+                            <span class="comments" title="@ua.Comments">
+                                @{if (!string.IsNullOrEmpty(ua.DocumentTemplateId))
+                                  { @ua.DocumentTemplate.Description}
+                                  else
+                                  { @ua.Comments }}
+                            </span><span class="author">@ua.TechUser.ToString()</span><span class="remove"></span>
+                            <span class="timestamp" title="@ua.Timestamp.ToFullDateTime()">@ua.Timestamp.ToFuzzy()</span>
+                        </a>   
                         }
+                    }
+                </div>
+                <div class="attachmentInput clearfix">
+                    <span class="action upload"></span><span class="action photo"></span>
+                </div>
+                <script type="text/javascript">
+                    Shadowbox.init({
+                        skipSetup: true,
+                        modal: true
                     });
+                    $(function () {
+                        if (!document.DiscoFunctions) {
+                            document.DiscoFunctions = {};
+                        }
+                        document.DiscoFunctions.addAttachment = addAttachment;
 
-                    $('#dialogRemoveAttachment').dialog({
-                        resizable: false,
-                        height: 140,
-                        modal: true,
-                        autoOpen: false
-                    });
+                        $Attachments = $('#Attachments');
+                        $attachmentOutput = $Attachments.find('.attachmentOutput');
 
-                    var onLoadNavigation = null;
-                    var isLoaded = null;
-                    Silverlight.createObject(
-                            '@(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap)',
+                        $attachmentOutput.find('span.remove').click(removeAttachment);
+
+                        $('#dialogUpload').dialog({
+                            autoOpen: false,
+                            draggable: false,
+                            modal: true,
+                            resizable: false,
+                            width: 860,
+                            height: 550,
+                            close: function () {
+                                silverlightUploadAttachment.content.Navigator.Navigate('/Hidden');
+                            }
+                        });
+
+                        $('#dialogRemoveAttachment').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            autoOpen: false
+                        });
+
+                        var onLoadNavigation = null;
+                        var isLoaded = null;
+                        Silverlight.createObject(
+                                '@(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap)',
                             $('#silverlightHostUploadAttachment').get(0),
                             'silverlightUploadAttachment',
                             { width: '840px', height: '500px', background: 'white', version: '4.0.60310.0' },
-                            { onLoad: function () {
-                                if (onLoadNavigation) {
-                                    silverlightUploadAttachment.content.Navigator.Navigate(onLoadNavigation);
-                                    isLoaded = true;
+                            {
+                                onLoad: function () {
+                                    if (onLoadNavigation) {
+                                        silverlightUploadAttachment.content.Navigator.Navigate(onLoadNavigation);
+                                        isLoaded = true;
+                                    }
                                 }
-                            }
                             },
                             'UploadUrl=@(Url.Action(MVC.API.User.AttachmentUpload(Model.User.Id, null)))'
                         );
@@ -178,16 +182,21 @@
                             $this.shadowbox({ gallery: 'attachments', player: 'img', title: $this.find('.comments').text() });
                     });
                 });
-            </script>
-        </td>
-    </tr>
-</table>
-<div id="dialogUpload" title="Upload Attachment">
-    <div id="silverlightHostUploadAttachment">
+                </script>
+            </td>
+        </tr>
+    </table>
+    <div id="dialogUpload" title="Upload Attachment">
+        <div id="silverlightHostUploadAttachment">
+        </div>
     </div>
-</div>
-<div id="dialogRemoveAttachment" title="Remove this Attachment?">
-    <p>
-        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-        Are you sure?</p>
+    <div id="dialogRemoveAttachment" title="Remove this Attachment?">
+        <p>
+            <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+            Are you sure?
+        </p>
+    </div>
+    <script>
+        $('#UserDetailTabItems').append('<li><a href="#UserDetailTab-Resources" id="UserDetailTab-ResourcesLink">Attachments [@(Model.User.UserAttachments == null ? 0 : Model.User.UserAttachments.Count)]</a></li>');
+    </script>
 </div>
