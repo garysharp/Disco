@@ -1,0 +1,47 @@
+﻿@model Disco.Web.Models.User.ShowModel
+<div id="UserDetailTab-AssignmentHistory" class="UserPart">
+    @if (Model.User.DeviceUserAssignments.Count > 0)
+    { 
+        <table class="genericData">
+            <tr>
+                <th>Device Serial #
+                </th>
+                <th>Device Asset #
+                </th>
+                <th>Device Model
+                </th>
+                <th>Assigned
+                </th>
+                <th>Unassigned
+                </th>
+            </tr>
+            @foreach (var dua in Model.User.DeviceUserAssignments.OrderByDescending(m => m.AssignedDate))
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(dua.Device.SerialNumber, MVC.Device.Show(dua.DeviceSerialNumber))
+                    </td>
+                    <td>
+                        @dua.Device.AssetNumber
+                    </td>
+                    <td>
+                        @dua.Device.DeviceModel.ToString()
+                    </td>
+                    <td>
+                        @CommonHelpers.FriendlyDate(dua.AssignedDate)
+                    </td>
+                    <td>
+                        @CommonHelpers.FriendlyDate(dua.UnassignedDate, "Current")
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    { 
+        <span class="smallMessage">No Assignment History Available</span>
+    }
+    <script>
+        $('#UserDetailTabItems').append('<li><a href="#UserDetailTab-AssignmentHistory">Assignment History [@(Model.User.DeviceUserAssignments.Count)]</a></li>');
+    </script>
+</div>

@@ -2255,9 +2255,13 @@ namespace Disco.Web.Controllers
                 public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
                 public class _ViewNamesClass
                 {
+                    public readonly string _AssignmentHistory = "_AssignmentHistory";
+                    public readonly string _Jobs = "_Jobs";
                     public readonly string _Resources = "_Resources";
                     public readonly string _Subject = "_Subject";
                 }
+                public readonly string _AssignmentHistory = "~/Views/User/UserParts/_AssignmentHistory.cshtml";
+                public readonly string _Jobs = "~/Views/User/UserParts/_Jobs.cshtml";
                 public readonly string _Resources = "~/Views/User/UserParts/_Resources.cshtml";
                 public readonly string _Subject = "~/Views/User/UserParts/_Subject.cshtml";
             }

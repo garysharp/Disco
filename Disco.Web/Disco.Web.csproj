@@ -768,6 +768,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Show.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="Views\User\UserParts\_AssignmentHistory.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_AssignmentHistory.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\User\UserParts\_Jobs.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_Jobs.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="Views\User\UserParts\_Resources.generated.cs">
       <DependentUpon>_Resources.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1753,6 +1763,14 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Show.generated.cs</LastGenOutput>
     </None>
+    <None Include="Views\User\UserParts\_AssignmentHistory.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_AssignmentHistory.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\User\UserParts\_Jobs.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_Jobs.generated.cs</LastGenOutput>
+    </None>
     <None Include="Views\User\UserParts\_Resources.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Resources.generated.cs</LastGenOutput>
@@ -1872,7 +1890,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

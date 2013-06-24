@@ -110,6 +110,28 @@ WriteLiteral("        ");
 
             
             #line 38 "..\..\Views\User\Show.cshtml"
+   Write(Html.Partial(MVC.User.Views.UserParts._Jobs, Model));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n");
+
+WriteLiteral("        ");
+
+            
+            #line 39 "..\..\Views\User\Show.cshtml"
+   Write(Html.Partial(MVC.User.Views.UserParts._AssignmentHistory, Model));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n");
+
+WriteLiteral("        ");
+
+            
+            #line 40 "..\..\Views\User\Show.cshtml"
    Write(Html.Partial(MVC.User.Views.UserParts._Resources, Model));
 
             

@@ -42,11 +42,21 @@ namespace Disco.Web.Controllers
                 // Ignore if User not in Active Directory anymore
             }
 
-
             m.User = dbContext.Users.Where(um => um.Id == id).FirstOrDefault();
 
-            m.Jobs = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true, ShowDevice = true, ShowUser = false, IsSmallTable = true, HideClosedJobs = true };
-            m.Jobs.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.UserId == id));
+            if (m.User == null)
+                throw new ArgumentException("Unknown User Id", "id");
+
+            m.Jobs = new Disco.Models.BI.Job.JobTableModel()
+            {
+                ShowStatus = true,
+                ShowDevice = true,
+                ShowUser = false,
+                IsSmallTable = false,
+                HideClosedJobs = true,
+                EnablePaging = false
+            };
+            m.Jobs.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.UserId == id).OrderByDescending(j => j.Id)); 
 
             m.DocumentTemplates = m.User.AvailableDocumentTemplates(dbContext, DiscoApplication.CurrentUser, DateTime.Now);
 
