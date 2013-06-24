@@ -40,25 +40,33 @@ namespace Disco.Web.Views.User.UserParts
         }
         public override void Execute()
         {
-WriteLiteral("<table");
+            
+            #line 2 "..\..\Views\User\UserParts\_Subject.cshtml"
+  
+    var currentDeviceAssignments = Model.User.DeviceUserAssignments.Where(dua => !dua.UnassignedDate.HasValue).OrderByDescending(dua => dua.AssignedDate).ToList();
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n<table");
 
 WriteLiteral(" id=\"User_Show_Subjects\"");
 
-WriteLiteral(">\r\n    <tr>\r\n        <td");
+WriteLiteral(">\r\n    <tbody>\r\n        <tr>\r\n            <td");
 
 WriteLiteral(" id=\"User_Show_Details\"");
 
-WriteLiteral(">\r\n            <div>\r\n                <div");
+WriteLiteral(">\r\n                <div>\r\n                    <div");
 
 WriteLiteral(" id=\"User_Show_Details_Identity\"");
 
-WriteLiteral(">\r\n                    <table");
+WriteLiteral(">\r\n                        <table");
 
 WriteLiteral(" class=\"none verticalHeadings\"");
 
-WriteLiteral(">\r\n                        <tr>\r\n                            <td><span>Username (" +
-"Id):</span>\r\n                            </td>\r\n                            <td>" +
-"\r\n                                <h4");
+WriteLiteral(">\r\n                            <tr>\r\n                                <td><span>Us" +
+"ername (Id):</span>\r\n                                </td>\r\n                    " +
+"            <td>\r\n                                    <h4");
 
 WriteLiteral(" id=\"User_Show_Details_Identity_Id\"");
 
@@ -67,15 +75,15 @@ WriteLiteral(" title=\"Username\"");
 WriteLiteral(">");
 
             
-            #line 12 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                   Write(Model.User.Id);
+            #line 16 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                       Write(Model.User.Id);
 
             
             #line default
             #line hidden
-WriteLiteral("</h4>\r\n                            </td>\r\n                        </tr>\r\n        " +
-"                <tr>\r\n                            <td>Display Name:</td>\r\n      " +
-"                      <td><span");
+WriteLiteral("</h4>\r\n                                </td>\r\n                            </tr>\r\n" +
+"                            <tr>\r\n                                <td>Display Na" +
+"me:</td>\r\n                                <td><span");
 
 WriteLiteral(" id=\"User_Show_Details_Identity_DisplayName\"");
 
@@ -84,15 +92,15 @@ WriteLiteral(" title=\"Display Name\"");
 WriteLiteral(">");
 
             
-            #line 17 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                  Write(Model.User.DisplayName);
+            #line 21 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                                      Write(Model.User.DisplayName);
 
             
             #line default
             #line hidden
-WriteLiteral("</span></td>\r\n                        </tr>\r\n                        <tr>\r\n      " +
-"                      <td>Given Name:</td>\r\n                            <td><spa" +
-"n");
+WriteLiteral("</span></td>\r\n                            </tr>\r\n                            <tr>" +
+"\r\n                                <td>Given Name:</td>\r\n                        " +
+"        <td><span");
 
 WriteLiteral(" id=\"User_Show_Details_Identity_GivenName\"");
 
@@ -101,14 +109,15 @@ WriteLiteral(" title=\"Given Name\"");
 WriteLiteral(">");
 
             
-            #line 21 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                              Write(Model.User.GivenName);
+            #line 25 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                                  Write(Model.User.GivenName);
 
             
             #line default
             #line hidden
-WriteLiteral("</span></td>\r\n                        </tr>\r\n                        <tr>\r\n      " +
-"                      <td>Surname:</td>\r\n                            <td><span");
+WriteLiteral("</span></td>\r\n                            </tr>\r\n                            <tr>" +
+"\r\n                                <td>Surname:</td>\r\n                           " +
+"     <td><span");
 
 WriteLiteral(" id=\"User_Show_Details_Identity_Surname\"");
 
@@ -117,25 +126,25 @@ WriteLiteral(" title=\"Surname\"");
 WriteLiteral(">");
 
             
-            #line 25 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                         Write(Model.User.Surname);
+            #line 29 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                             Write(Model.User.Surname);
 
             
             #line default
             #line hidden
-WriteLiteral("</span></td>\r\n                        </tr>\r\n                    </table>\r\n      " +
-"          </div>\r\n                <div");
+WriteLiteral("</span></td>\r\n                            </tr>\r\n                        </table>" +
+"\r\n                    </div>\r\n                    <div");
 
 WriteLiteral(" id=\"User_Show_Details_Category\"");
 
 WriteLiteral(" class=\"status\"");
 
-WriteLiteral(">\r\n                    <table");
+WriteLiteral(">\r\n                        <table");
 
 WriteLiteral(" class=\"none verticalHeadings\"");
 
-WriteLiteral(">\r\n                        <tr>\r\n                            <td>Type:\r\n         " +
-"                   </td>\r\n                            <td><span");
+WriteLiteral(">\r\n                            <tr>\r\n                                <td>Type:\r\n " +
+"                               </td>\r\n                                <td><span");
 
 WriteLiteral(" id=\"User_Show_Details_Category_Type\"");
 
@@ -144,41 +153,41 @@ WriteLiteral(" title=\"Type\"");
 WriteLiteral(">");
 
             
-            #line 34 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                   Write(Model.User.Type);
+            #line 38 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                       Write(Model.User.Type);
 
             
             #line default
             #line hidden
-WriteLiteral("</span></td>\r\n                        </tr>\r\n                    </table>\r\n      " +
-"          </div>\r\n                <div");
+WriteLiteral("</span></td>\r\n                            </tr>\r\n                        </table>" +
+"\r\n                    </div>\r\n                    <div");
 
 WriteLiteral(" id=\"User_Show_Details_Attributes\"");
 
 WriteLiteral(" class=\"status\"");
 
-WriteLiteral(">\r\n                    <table");
+WriteLiteral(">\r\n                        <table");
 
 WriteLiteral(" class=\"none verticalHeadings\"");
 
-WriteLiteral(">\r\n                        <tr>\r\n                            <td>Email:</td>\r\n   " +
-"                         <td>\r\n");
+WriteLiteral(">\r\n                            <tr>\r\n                                <td>Email:</" +
+"td>\r\n                                <td>\r\n");
 
             
-            #line 43 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                
+            #line 47 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                    
             
             #line default
             #line hidden
             
-            #line 43 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                 if (!string.IsNullOrEmpty(Model.User.EmailAddress))
-                                {
+            #line 47 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                     if (!string.IsNullOrEmpty(Model.User.EmailAddress))
+                                    {
 
             
             #line default
             #line hidden
-WriteLiteral("                                    <span");
+WriteLiteral("                                        <span");
 
 WriteLiteral(" id=\"User_Show_Details_Attributes_Email\"");
 
@@ -187,8 +196,8 @@ WriteLiteral(" title=\"Email Address [Update in Active Directory]\"");
 WriteLiteral(">");
 
             
-            #line 45 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                                                Write(Model.User.EmailAddress);
+            #line 49 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                                                                    Write(Model.User.EmailAddress);
 
             
             #line default
@@ -196,46 +205,46 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n");
 
             
-            #line 46 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                }
-                                else
-                                {
+            #line 50 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                    }
+                                    else
+                                    {
 
             
             #line default
             #line hidden
-WriteLiteral("                                    <span");
+WriteLiteral("                                        <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">Unknown</span>\r\n");
 
             
-            #line 50 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                }
+            #line 54 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                    }
 
             
             #line default
             #line hidden
-WriteLiteral("                            </td>\r\n                        </tr>\r\n               " +
-"         <tr>\r\n                            <td>Phone:</td>\r\n                    " +
-"        <td>\r\n");
+WriteLiteral("                                </td>\r\n                            </tr>\r\n       " +
+"                     <tr>\r\n                                <td>Phone:</td>\r\n    " +
+"                            <td>\r\n");
 
             
-            #line 56 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                
+            #line 60 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                    
             
             #line default
             #line hidden
             
-            #line 56 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                 if (!string.IsNullOrEmpty(Model.User.PhoneNumber))
-                                {
+            #line 60 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                     if (!string.IsNullOrEmpty(Model.User.PhoneNumber))
+                                    {
 
             
             #line default
             #line hidden
-WriteLiteral("                                    <span");
+WriteLiteral("                                        <span");
 
 WriteLiteral(" id=\"User_Show_Details_Attributes_Phone\"");
 
@@ -244,8 +253,8 @@ WriteLiteral(" title=\"Phone Number [Update in Active Directory]\"");
 WriteLiteral(">");
 
             
-            #line 58 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                                               Write(Model.User.PhoneNumber);
+            #line 62 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                                                                   Write(Model.User.PhoneNumber);
 
             
             #line default
@@ -253,29 +262,29 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n");
 
             
-            #line 59 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                }
-                                else
-                                {
+            #line 63 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                    }
+                                    else
+                                    {
 
             
             #line default
             #line hidden
-WriteLiteral("                                    <span");
+WriteLiteral("                                        <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">Unknown</span>\r\n");
 
             
-            #line 63 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                }
+            #line 67 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                    }
 
             
             #line default
             #line hidden
-WriteLiteral("                            </td>\r\n                        </tr>\r\n               " +
-"     </table>\r\n                </div>\r\n                <div");
+WriteLiteral("                                </td>\r\n                            </tr>\r\n       " +
+"                 </table>\r\n                    </div>\r\n                    <div");
 
 WriteLiteral(" id=\"User_Show_GenerateDocument_Container\"");
 
@@ -283,25 +292,25 @@ WriteLiteral(" class=\"status\"");
 
 WriteLiteral(">\r\n");
 
-WriteLiteral("                    ");
+WriteLiteral("                        ");
 
             
-            #line 69 "..\..\Views\User\UserParts\_Subject.cshtml"
-               Write(Html.DropDownList("User_Show_GenerateDocument", Model.DocumentTemplatesSelectListItems));
+            #line 73 "..\..\Views\User\UserParts\_Subject.cshtml"
+                   Write(Html.DropDownList("User_Show_GenerateDocument", Model.DocumentTemplatesSelectListItems));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                    <script");
+WriteLiteral("\r\n                        <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(">\r\n                        $(function () {\r\n                            var gener" +
-"atePdfUrl = \'");
+WriteLiteral(">\r\n                            $(function () {\r\n                                v" +
+"ar generatePdfUrl = \'");
 
             
-            #line 72 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                             Write(Url.Action(MVC.API.User.GeneratePdf(Model.User.Id, null)));
+            #line 76 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                 Write(Url.Action(MVC.API.User.GeneratePdf(Model.User.Id, null)));
 
             
             #line default
@@ -316,147 +325,149 @@ WriteLiteral(@"?DocumentTemplateId=';
                                 }
                             });
                         });
-                    </script>
-                </div>
-                <div");
+                        </script>
+                    </div>
+                    <div");
 
 WriteLiteral(" id=\"User_Show_Details_Actions\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 85 "..\..\Views\User\UserParts\_Subject.cshtml"
-                    
+            #line 89 "..\..\Views\User\UserParts\_Subject.cshtml"
+                        
             
             #line default
             #line hidden
             
-            #line 85 "..\..\Views\User\UserParts\_Subject.cshtml"
-                      
-                        Html.BundleDeferred("~/ClientScripts/Modules/Disco-CreateJob");
-                    
+            #line 89 "..\..\Views\User\UserParts\_Subject.cshtml"
+                          
+                            Html.BundleDeferred("~/ClientScripts/Modules/Disco-CreateJob");
+                        
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                    ");
+WriteLiteral("                        ");
 
             
-            #line 88 "..\..\Views\User\UserParts\_Subject.cshtml"
-               Write(Html.ActionLinkSmallButton("Create Job", MVC.Job.Create(Model.PrimaryDeviceSerialNumber, Model.User.Id), "buttonCreateJob"));
+            #line 92 "..\..\Views\User\UserParts\_Subject.cshtml"
+                   Write(Html.ActionLinkSmallButton("Create Job", MVC.Job.Create(Model.PrimaryDeviceSerialNumber, Model.User.Id), "User_Show_Details_Actions_CreateJob_Button"));
 
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n                </div>\r\n            </div>\r\n        </td>\r\n        <td");
-
-WriteLiteral(" id=\"User_Show_AssignedDevices\"");
-
-WriteLiteral(">\r\n            <div>\r\n                <div");
-
-WriteLiteral(" id=\"User_Show_AssignedDevices_Active\"");
-
-WriteLiteral(">\r\n                    <h3>Current Device Assignments</h3>\r\n");
-
-            
-            #line 96 "..\..\Views\User\UserParts\_Subject.cshtml"
-                    
-            
-            #line default
-            #line hidden
-            
-            #line 96 "..\..\Views\User\UserParts\_Subject.cshtml"
-                      
-                        var currentAssignments = Model.User.DeviceUserAssignments.Where(dua => !dua.UnassignedDate.HasValue).ToList();
-                    
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
             
-            #line 99 "..\..\Views\User\UserParts\_Subject.cshtml"
-                    
+            #line 93 "..\..\Views\User\UserParts\_Subject.cshtml"
+                        
             
             #line default
             #line hidden
             
-            #line 99 "..\..\Views\User\UserParts\_Subject.cshtml"
-                     if (currentAssignments.Count > 0)
-                    {
-                        foreach (var assignment in currentAssignments)
+            #line 93 "..\..\Views\User\UserParts\_Subject.cshtml"
+                         if (currentDeviceAssignments.Count > 1)
                         {
 
             
             #line default
             #line hidden
-WriteLiteral("                        <div");
+WriteLiteral("                            <div");
 
-WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment clearfix\"");
+WriteLiteral(" id=\"User_Show_Details_Actions_CreateJob_Dialog\"");
 
-WriteLiteral(" data-deviceserialnumber=\"");
+WriteLiteral(" class=\"dialog\"");
+
+WriteLiteral(" title=\"Create Job for Which Device?\"");
+
+WriteLiteral(">\r\n                                <div");
+
+WriteLiteral(" class=\"clearfix\"");
+
+WriteLiteral(">\r\n                                    <span");
+
+WriteLiteral(" class=\"ui-icon ui-icon-info\"");
+
+WriteLiteral(" style=\"float: left; margin: 0 7px 20px 0;\"");
+
+WriteLiteral(@"></span>
+                                    Multiple devices are assigned to this user. Which device should be associated with this job?
+                                </div>
+                                <div>
+                                    <ul");
+
+WriteLiteral(" id=\"CreateJob_Assignments\"");
+
+WriteLiteral(" class=\"none\"");
+
+WriteLiteral(">\r\n");
 
             
-            #line 103 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                              Write(assignment.DeviceSerialNumber);
+            #line 102 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                        
+            
+            #line default
+            #line hidden
+            
+            #line 102 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                         foreach (var assignment in currentDeviceAssignments)
+                                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                            <li");
+
+WriteLiteral(" class=\"CreateJob_Assignment clearfix\"");
+
+WriteLiteral(" data-createjoburl=\"");
+
+            
+            #line 104 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                                    Write(Url.Action(MVC.Job.Create(assignment.DeviceSerialNumber, Model.User.Id)));
 
             
             #line default
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(">\r\n                            <a");
+WriteLiteral(">\r\n                                                <img");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 5464), Tuple.Create("\"", 5531)
-            
-            #line 104 "..\..\Views\User\UserParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 5471), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Device.Show(assignment.Device.SerialNumber))
-            
-            #line default
-            #line hidden
-, 5471), false)
-);
-
-WriteLiteral(">\r\n                                <img");
-
-WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Image\"");
+WriteLiteral(" class=\"CreateJob_Assignment_Image\"");
 
 WriteLiteral(" alt=\"Model Image\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 5647), Tuple.Create("\"", 5768)
+WriteAttribute("src", Tuple.Create(" src=\"", 6326), Tuple.Create("\"", 6447)
             
             #line 105 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                      , Tuple.Create(Tuple.Create("", 5653), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
+                               , Tuple.Create(Tuple.Create("", 6332), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
             
             #line default
             #line hidden
-, 5653), false)
+, 6332), false)
 );
 
-WriteLiteral(" />\r\n                            </a>\r\n                            <div");
+WriteLiteral(" />\r\n                                                <div");
 
-WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Details\"");
+WriteLiteral(" class=\"CreateJob_Assignment_Details\"");
 
-WriteLiteral(">\r\n                                <table");
+WriteLiteral(">\r\n                                                    <table");
 
 WriteLiteral(" class=\"none\"");
 
 WriteLiteral(@">
-                                    <tbody>
-                                        <tr>
-                                            <td>Serial Number:
-                                            </td>
-                                            <td>
-                                                <span");
-
-WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_SerialNumber\"");
-
-WriteLiteral(">");
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Serial Number:
+                                                                </td>
+                                                                <td>
+                                                                    <span>");
 
             
-            #line 114 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                                  Write(Html.ActionLink(assignment.Device.SerialNumber, MVC.Device.Show(assignment.Device.SerialNumber)));
+            #line 113 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                     Write(assignment.Device.SerialNumber);
 
             
             #line default
@@ -464,63 +475,55 @@ WriteLiteral(">");
 WriteLiteral("</span> (<span>");
 
             
-            #line 114 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                                                                                                                                                  Write(assignment.Device.ComputerName);
+            #line 113 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                                                   Write(assignment.Device.ComputerName);
 
             
             #line default
             #line hidden
 WriteLiteral(@"</span>)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Model:
-                                            </td>
-                                            <td>
-                                                <span");
-
-WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Model\"");
-
-WriteLiteral(">");
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Model:
+                                                                </td>
+                                                                <td>
+                                                                    <span>");
 
             
-            #line 121 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                           Write(assignment.Device.DeviceModel.ToString());
+            #line 120 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                     Write(assignment.Device.DeviceModel.ToString());
 
             
             #line default
             #line hidden
 WriteLiteral(@"</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Asset:</td>
-                                            <td>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Asset:</td>
+                                                                <td>
 ");
 
             
-            #line 127 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                
+            #line 126 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                    
             
             #line default
             #line hidden
             
-            #line 127 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                 if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
-                                                {
+            #line 126 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                     if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
+                                                                    {
 
             
             #line default
             #line hidden
-WriteLiteral("                                                    <span");
-
-WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Asset\"");
-
-WriteLiteral(">");
+WriteLiteral("                                                                        <span>");
 
             
-            #line 129 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                               Write(assignment.Device.AssetNumber);
+            #line 128 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                         Write(assignment.Device.AssetNumber);
 
             
             #line default
@@ -528,78 +531,354 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n");
 
             
-            #line 130 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                }
-                                                else
-                                                {
+            #line 129 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                    }
+                                                                    else
+                                                                    {
 
             
             #line default
             #line hidden
-WriteLiteral("                                                    <span");
+WriteLiteral("                                                                        <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">Unknown</span>\r\n");
 
             
-            #line 134 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                }
+            #line 133 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                    }
 
             
             #line default
             #line hidden
-WriteLiteral(@"                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Assigned:</td>
-                                            <td>
-                                                <span");
+WriteLiteral(@"                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Assigned:</td>
+                                                                <td>
+                                                                    <span>");
+
+            
+            #line 139 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                     Write(CommonHelpers.FriendlyDate(assignment.AssignedDate));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"</span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </li>   
+");
+
+            
+            #line 146 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                    </ul>\r\n                                </div>" +
+"\r\n                            </div>\r\n");
+
+WriteLiteral("                            <script>\r\n                                $(function " +
+"() {\r\n                                    var button = $(\'#User_Show_Details_Act" +
+"ions_CreateJob_Button\');\r\n                                    var buttonDialog =" +
+" null;\r\n\r\n                                    button.click(function () {\r\n      " +
+"                                  if (!buttonDialog) {\r\n                        " +
+"                    buttonDialog = $(\'#User_Show_Details_Actions_CreateJob_Dialo" +
+"g\').dialog({\r\n                                                resizable: false,\r" +
+"\n                                                width: 400,\r\n                  " +
+"                              modal: true,\r\n                                    " +
+"            autoOpen: false,\r\n                                                bu" +
+"ttons: {\r\n                                                    Cancel: function (" +
+") {\r\n                                                        $(this).dialog(\"clo" +
+"se\");\r\n                                                    }\r\n                  " +
+"                              }\r\n                                            });" +
+"\r\n\r\n                                            dialogItems = buttonDialog.find(" +
+"\'li.CreateJob_Assignment\');\r\n\r\n                                            dialo" +
+"gItems.click(function () {\r\n                                                var " +
+"$this = $(this);\r\n\r\n                                                buttonDialog" +
+".dialog(\"close\");\r\n\r\n                                                var createJ" +
+"obUrl = $this.attr(\'data-createjoburl\');\r\n                                      " +
+"          document.DiscoFunctions.CreateOpenJobDialog(createJobUrl);\r\n          " +
+"                                  });\r\n                                        }" +
+"\r\n\r\n                                        buttonDialog.dialog(\'open\');\r\n      " +
+"                                  return false;\r\n                               " +
+"     });\r\n                                });\r\n                            </scr" +
+"ipt>\r\n");
+
+            
+            #line 186 "..\..\Views\User\UserParts\_Subject.cshtml"
+                        }
+                        else
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"                            <script>
+                                $(function () {
+                                    $('#User_Show_Details_Actions_CreateJob_Button').click(function () {
+                                        var $this = $(this);
+                                        var href = $this.attr('href');
+
+                                        document.DiscoFunctions.CreateOpenJobDialog(href);
+
+                                        return false;
+                                    });
+                                });
+                            </script>
+");
+
+            
+            #line 201 "..\..\Views\User\UserParts\_Subject.cshtml"
+                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    </div>\r\n                </div>\r\n            </td>\r\n          " +
+"  <td");
+
+WriteLiteral(" id=\"User_Show_AssignedDevices\"");
+
+WriteLiteral(">\r\n                <div>\r\n                    <div");
+
+WriteLiteral(" id=\"User_Show_AssignedDevices_Active\"");
+
+WriteLiteral(">\r\n                        <h3>Current Device Assignments</h3>\r\n");
+
+            
+            #line 209 "..\..\Views\User\UserParts\_Subject.cshtml"
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 209 "..\..\Views\User\UserParts\_Subject.cshtml"
+                         if (currentDeviceAssignments.Count > 0)
+                        {
+                            foreach (var assignment in currentDeviceAssignments)
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <div");
+
+WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment clearfix\"");
+
+WriteLiteral(" data-deviceserialnumber=\"");
+
+            
+            #line 213 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                                                  Write(assignment.DeviceSerialNumber);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(">\r\n                                <a");
+
+WriteAttribute("href", Tuple.Create(" href=\"", 13160), Tuple.Create("\"", 13227)
+            
+            #line 214 "..\..\Views\User\UserParts\_Subject.cshtml"
+, Tuple.Create(Tuple.Create("", 13167), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Device.Show(assignment.Device.SerialNumber))
+            
+            #line default
+            #line hidden
+, 13167), false)
+);
+
+WriteLiteral(">\r\n                                    <img");
+
+WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Image\"");
+
+WriteLiteral(" alt=\"Model Image\"");
+
+WriteAttribute("src", Tuple.Create(" src=\"", 13347), Tuple.Create("\"", 13468)
+            
+            #line 215 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                         , Tuple.Create(Tuple.Create("", 13353), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
+            
+            #line default
+            #line hidden
+, 13353), false)
+);
+
+WriteLiteral(" />\r\n                                </a>\r\n                                <div");
+
+WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Details\"");
+
+WriteLiteral(">\r\n                                    <table");
+
+WriteLiteral(" class=\"none\"");
+
+WriteLiteral(@">
+                                        <tbody>
+                                            <tr>
+                                                <td>Serial Number:
+                                                </td>
+                                                <td>
+                                                    <span");
+
+WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_SerialNumber\"");
+
+WriteLiteral(">");
+
+            
+            #line 224 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                                                      Write(Html.ActionLink(assignment.Device.SerialNumber, MVC.Device.Show(assignment.Device.SerialNumber)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span> (<span>");
+
+            
+            #line 224 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                                                                                                                                                                      Write(assignment.Device.ComputerName);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"</span>)
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Model:
+                                                </td>
+                                                <td>
+                                                    <span");
+
+WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Model\"");
+
+WriteLiteral(">");
+
+            
+            #line 231 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                                               Write(assignment.Device.DeviceModel.ToString());
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Asset:</td>
+                                                <td>
+");
+
+            
+            #line 237 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                    
+            
+            #line default
+            #line hidden
+            
+            #line 237 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                     if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
+                                                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                                        <span");
+
+WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Asset\"");
+
+WriteLiteral(">");
+
+            
+            #line 239 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                                                   Write(assignment.Device.AssetNumber);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span>\r\n");
+
+            
+            #line 240 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                    }
+                                                    else
+                                                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                                        <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">Unknown</span>\r\n");
+
+            
+            #line 244 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Assigned:</td>
+                                                <td>
+                                                    <span");
 
 WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Assigned\"");
 
 WriteLiteral(">");
 
             
-            #line 140 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                              Write(CommonHelpers.FriendlyDate(assignment.AssignedDate));
+            #line 250 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                                                  Write(CommonHelpers.FriendlyDate(assignment.AssignedDate));
 
             
             #line default
             #line hidden
 WriteLiteral(@"</span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>   
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>   
 ");
 
             
-            #line 147 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 257 "..\..\Views\User\UserParts\_Subject.cshtml"
+                            }
                         }
-                    }
-                    else
-                    {
+                        else
+                        {
 
             
             #line default
             #line hidden
-WriteLiteral("                        <span");
+WriteLiteral("                            <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">No Current Device Assignments</span>\r\n");
 
             
-            #line 152 "..\..\Views\User\UserParts\_Subject.cshtml"
-                    }
+            #line 262 "..\..\Views\User\UserParts\_Subject.cshtml"
+                        }
 
             
             #line default
             #line hidden
-WriteLiteral("                </div>\r\n            </div>\r\n        </td>\r\n    </tr>\r\n</table>\r\n");
+WriteLiteral("                    </div>\r\n                </div>\r\n            </td>\r\n        </" +
+"tr>\r\n    </tbody>\r\n</table>\r\n");
 
         }
     }

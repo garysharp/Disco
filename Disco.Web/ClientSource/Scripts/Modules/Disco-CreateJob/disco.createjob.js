@@ -14,11 +14,10 @@
             }
         }
 
-        // Create Job Button
-        $('#buttonCreateJob').click(function () {
-            var $this = $(this);
-            var href = $this.attr('href');
-            
+        if (!document.DiscoFunctions) {
+            document.DiscoFunctions = {};
+        }
+        document.DiscoFunctions.CreateOpenJobDialog = function (url) {
             createJobDialog = $('<div>').attr('id', 'createJobDialog').width('100%').height('100%').appendTo(document.body);
 
             createJobDialog.dialog({
@@ -37,9 +36,17 @@
                 buttons: {}
             });
 
-            var iframe = $('<iframe>').attr({ 'src': href }).width('100%').height('100%').css('border', 'none').appendTo(createJobDialog);
+            var iframe = $('<iframe>').attr({ 'src': url }).width('100%').height('100%').css('border', 'none').appendTo(createJobDialog);
 
             createJobDialog[0].discoDialogMethods = dialogMethods;
+        }
+
+        // Create Job Button
+        $('#buttonCreateJob').click(function () {
+            var $this = $(this);
+            var href = $this.attr('href');
+            
+            document.DiscoFunctions.CreateOpenJobDialog(href);
 
             return false;
         });
