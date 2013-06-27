@@ -120,13 +120,11 @@ namespace Disco.Web.Extensions.MvcExtensions.Bundles
 
             // Write Headers
             var cache = context.Response.Cache;
-            cache.SetCacheability(HttpCacheability.Public);
             cache.SetOmitVaryStar(true);
             cache.SetExpires(DateTime.Now.AddYears(1));
             cache.SetValidUntilExpires(true);
             cache.SetMaxAge(TimeSpan.FromDays(365));
-            cache.SetLastModified(DateTime.Now);
-            cache.VaryByHeaders["User-Agent"] = true;
+            cache.SetCacheability(HttpCacheability.Public);
 
             // Write File
             context.Response.WriteFile(this.File);
