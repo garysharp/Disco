@@ -438,13 +438,12 @@ WriteLiteral(")\';\r\n\r\n        function pageViewModel() {\r\n            var 
 "      }\r\n                }\r\n            }\r\n        }\r\n        function init() {\r" +
 "\n            hostDialogSessions.dialog({\r\n                modal: true,\r\n        " +
 "        height: 664,\r\n                width: 900,\r\n                resizable: fa" +
-"lse,\r\n                autoOpen: false,\r\n                buttons: { \'Close\': func" +
-"tion () { $(this).dialog(\'close\'); } }\r\n            });\r\n            //hostDialo" +
-"gSessionsProgress.progressbar();\r\n\r\n            // Create View Model\r\n          " +
-"  vm = new pageViewModel();\r\n            $.ajax({\r\n                url: \'");
+"lse,\r\n                autoOpen: false\r\n            });\r\n            //hostDialog" +
+"SessionsProgress.progressbar();\r\n\r\n            // Create View Model\r\n           " +
+" vm = new pageViewModel();\r\n            $.ajax({\r\n                url: \'");
 
             
-            #line 309 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 308 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                   Write(Url.Action(MVC.API.DeviceModel.Index()));
 
             
@@ -478,7 +477,7 @@ WriteLiteral(@"',
                 url: '");
 
             
-            #line 334 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 333 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                   Write(Url.Action(MVC.API.Logging.RetrieveEvents()));
 
             
@@ -514,7 +513,7 @@ WriteLiteral(@"',
             liveConnection = $.connection('");
 
             
-            #line 361 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 360 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                        Write(Url.Content("~/API/Logging/Notifications"));
 
             
@@ -527,7 +526,7 @@ WriteLiteral(@"');
                 liveConnection.send('/addToGroups:");
 
             
-            #line 365 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 364 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                               Write(Disco.BI.DeviceBI.EnrolmentLog.Current.LiveLogGroupName);
 
             
