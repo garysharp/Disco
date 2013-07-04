@@ -74,11 +74,18 @@ namespace Disco.Data.Repository.Monitor
 
         internal static void UpdateAfterEventFromEntryState(RepositoryMonitorEvent monitorEvent)
         {
+            monitorEvent.afterCommit = true;
+
             if (monitorEvent.EventType == RepositoryMonitorEventType.Added)
             {
                 // Update Entity Key for Added Events
                 monitorEvent.EntityKey = DetermineEntityKey(monitorEvent.objectEntryState);
             }
+
+            // Execute Deferred Actions
+            if (monitorEvent.executeAfterCommit != null)
+                foreach (var deferredAction in monitorEvent.executeAfterCommit)
+                    deferredAction.Invoke(monitorEvent);
         }
 
         internal static RepositoryMonitorEvent EventFromEntryState(DiscoDataContext dbContext, DbEntityEntry entityEntry, ObjectStateEntry entryState)

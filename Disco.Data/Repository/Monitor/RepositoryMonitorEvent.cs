@@ -12,11 +12,13 @@ namespace Disco.Data.Repository.Monitor
     public class RepositoryMonitorEvent
     {
         [JsonIgnore]
-        internal ObjectStateEntry objectEntryState { get; set; }
+        internal ObjectStateEntry objectEntryState;
         [JsonIgnore]
-        internal DbEntityEntry dbEntityState { get; set; }
+        internal DbEntityEntry dbEntityState;
         [JsonIgnore]
-        internal bool afterCommit { get; set; }
+        internal bool afterCommit;
+        [JsonIgnore]
+        internal List<Action<RepositoryMonitorEvent>> executeAfterCommit;
 
         [JsonIgnore]
         public DiscoDataContext dbContext { get; set; }
@@ -44,13 +46,28 @@ namespace Disco.Data.Repository.Monitor
         public T GetPreviousPropertyValue<T>(string PropertyName)
         {
             if (afterCommit)
-                throw new InvalidOperationException("Unable to determine property values after repository commit");
+                throw new InvalidOperationException("Unable to determine property values after repository commit, use a deferred action instead");
             else
                 return (T)dbEntityState.OriginalValues[PropertyName];
         }
         public T GetCurrentPropertyValue<T>(string PropertyName)
         {
             return (T)dbEntityState.CurrentValues[PropertyName];
+        }
+
+        public void ExecuteAfterCommit(Action<RepositoryMonitorEvent> action){
+            if (afterCommit)
+            {
+                // Execute Immediately
+                action.Invoke(this);
+            }
+            else
+            {
+                // Defer Execution
+                if (executeAfterCommit == null)
+                    executeAfterCommit = new List<Action<RepositoryMonitorEvent>>();
+                executeAfterCommit.Add(action);
+            }
         }
     }
 }
