@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Disco.Web.Areas.Public.Models.UserHeldDevices.UserHeldDeviceModel>
 @{
-    ViewBag.Title = Html.ToBreadcrumb("Public Reports", MVC.Public.Public.Index(), "Technician Held Devices", null);
-    Html.BundleDeferred("~/Style/Public/UserHeldDevices");
+    ViewBag.Title = Html.ToBreadcrumb("Public Reports", MVC.Public.Public.Index(), "Held Devices for Users", null);
+    Html.BundleDeferred("~/Style/Public/HeldDevices");
 }
 <div class="clearfix page">
     <div class="column1">
@@ -14,10 +14,10 @@
             @foreach (var item in DevicesInProcess)
             {
                 <tr>
-                    <td class="userId">
+                    <td class="id">
                         @item.UserId
                     </td>
-                    <td class="userDisplayName">
+                    <td class="description">
                         @item.UserDisplayName@{
                 if (!string.IsNullOrEmpty(item.EstimatedReturnTime))
                 { 
@@ -39,10 +39,10 @@
             @foreach (var item in WaitingForUserActionJobs)
             {
                 <tr>
-                    <td class="userId">
+                    <td class="id">
                         @item.UserId
                     </td>
-                    <td class="userDisplayName">
+                    <td class="description">
                         @item.UserDisplayName
                     </td>
                     <td class="timestamp@(item.IsAlert ? " Alert" : string.Empty)">
@@ -61,10 +61,10 @@
             @foreach (var item in DevicesReadyForReturn)
             {
                 <tr>
-                    <td class="userId">
+                    <td class="id">
                         @item.UserId
                     </td>
-                    <td class="userDisplayName">
+                    <td class="description">
                         @item.UserDisplayName
                     </td>
                     <td class="timestamp@(item.IsAlert ? " Alert" : string.Empty)">

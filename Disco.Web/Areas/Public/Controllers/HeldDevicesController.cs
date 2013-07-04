@@ -1,39 +1,41 @@
-﻿using System;
+﻿using Disco.Data.Repository;
+using Disco.Models.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Disco.BI;
-using Disco.BI.Extensions;
-using Disco.Models.Repository;
 
 namespace Disco.Web.Areas.Public.Controllers
 {
-    public partial class UserHeldDevicesController : dbController
+    public partial class HeldDevicesController : dbController
     {
         #region Helpers
 
-        private List<Models.UserHeldDevices.UserHeldDeviceModel> GetUserHeldDevices(IQueryable<Job> query)
+        private List<Models.HeldDevices.HeldDeviceModel> GetHeldDevices(IQueryable<Job> query)
         {
             var jobs = query.Where(j =>
-                !j.ClosedDate.HasValue && j.Device.AssignedUserId != null &&
+                !j.ClosedDate.HasValue &&
                 j.DeviceSerialNumber != null &&
                 ((j.DeviceHeld.HasValue && !j.DeviceReturnedDate.HasValue) || j.WaitingForUserAction.HasValue)
-                ).Select(j => new Models.UserHeldDevices.HeldJobDeviceModel
+                ).Select(j => new Models.HeldDevices.HeldDeviceQueryModel
                 {
                     JobId = j.Id,
+                    DeviceSerialNumber = j.DeviceSerialNumber,
+                    DeviceComputerName = j.Device.ComputerName,
+                    DeviceLocation = j.Device.Location,
+                    DeviceProfileId = j.Device.DeviceProfileId,
+                    DeviceAddressId = j.Device.DeviceProfile.DefaultOrganisationAddress,
+                    UserId = j.Device.AssignedUserId,
+                    UserDisplayName = j.Device.AssignedUser.DisplayName,
                     WaitingForUserAction = j.WaitingForUserAction.HasValue || ((j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue || j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue) && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue),
                     WaitingForUserActionSince = j.WaitingForUserAction.HasValue ? j.WaitingForUserAction : (j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue ? j.JobMetaNonWarranty.AccountingChargeRequiredDate : j.JobMetaNonWarranty.AccountingChargeAddedDate),
                     ReadyForReturn = j.DeviceReadyForReturn.HasValue,
                     EstimatedReturnTime = j.ExpectedClosedDate,
-                    ReadyForReturnSince = j.DeviceReadyForReturn,
-                    UserId = j.Device.AssignedUserId,
-                    UserDisplayName = j.Device.AssignedUser.DisplayName,
-                    DeviceProfileId = j.Device.DeviceProfileId,
-                    DeviceAddressId = j.Device.DeviceProfile.DefaultOrganisationAddress
-                }).GroupBy(j => j.UserId);
+                    ReadyForReturnSince = j.DeviceReadyForReturn
+                }).GroupBy(j => j.DeviceSerialNumber);
 
-            var thd = new List<Models.UserHeldDevices.UserHeldDeviceModel>();
+            var thd = new List<Models.HeldDevices.HeldDeviceModel>();
             foreach (var job in jobs)
             {
                 if (job.Any(j => j.WaitingForUserAction))
@@ -54,37 +56,36 @@ namespace Disco.Web.Areas.Public.Controllers
             }
             return thd;
         }
-
+        
+        private List<Models.HeldDevices.HeldDeviceModel> GetHeldDevices()
+        {
+            return GetHeldDevices(dbContext.Jobs);
+        }
+        private Models.HeldDevices.HeldDeviceModel GetHeldDevice(string DeviceSerialNumber)
+        {
+            return GetHeldDevices(dbContext.Jobs.Where(j => j.DeviceSerialNumber == DeviceSerialNumber)).FirstOrDefault();
+        }
         #endregion
-
-        private List<Models.UserHeldDevices.UserHeldDeviceModel> GetUserHeldDevices()
-        {
-            return GetUserHeldDevices(dbContext.Jobs);
-        }
-        private Models.UserHeldDevices.UserHeldDeviceModel GetUserHeldDevice(string UserId)
-        {
-            return GetUserHeldDevices(dbContext.Jobs.Where(j => j.Device.AssignedUserId == UserId)).FirstOrDefault();
-        }
 
         public virtual ActionResult Index()
         {
-            return View(GetUserHeldDevices());
+            return View(GetHeldDevices());
         }
 
         public virtual ActionResult ReadyForReturnXml()
         {
-            var readyForReturn = GetUserHeldDevices().Where(j => j.ReadyForReturn && !j.WaitingForUserAction).ToArray();
+            var readyForReturn = GetHeldDevices().Where(j => j.ReadyForReturn && !j.WaitingForUserAction).ToArray();
             return new Extensions.XmlResult(readyForReturn);
         }
         public virtual ActionResult WaitingForUserActionXml()
         {
-            var userHeldDevices = GetUserHeldDevices().Where(j => j.WaitingForUserAction).ToArray();
-            return new Extensions.XmlResult(userHeldDevices);
+            var waitingForUserAction = GetHeldDevices().Where(j => j.WaitingForUserAction).ToArray();
+            return new Extensions.XmlResult(waitingForUserAction);
         }
-        public virtual ActionResult UserHeldDevicesXml()
+        public virtual ActionResult HeldDevicesXml()
         {
-            var userHeldDevices = GetUserHeldDevices().Where(j => !j.ReadyForReturn && !j.WaitingForUserAction).ToArray();
-            return new Extensions.XmlResult(userHeldDevices);
+            var heldDevices = GetHeldDevices().Where(j => !j.ReadyForReturn && !j.WaitingForUserAction).ToArray();
+            return new Extensions.XmlResult(heldDevices);
         }
 
         public virtual ActionResult Noticeboard()
@@ -92,16 +93,15 @@ namespace Disco.Web.Areas.Public.Controllers
             return View();
         }
 
-        public virtual ActionResult UserHeldDevice(string id)
+        public virtual ActionResult HeldDevice(string id)
         {
-            var uhd = GetUserHeldDevice(id);
+            var uhd = GetHeldDevice(id);
             return Json(uhd, JsonRequestBehavior.AllowGet);
         }
-        public virtual ActionResult UserHeldDevices()
+        public virtual ActionResult HeldDevices()
         {
-            var uhd = GetUserHeldDevices();
+            var uhd = GetHeldDevices();
             return Json(uhd, JsonRequestBehavior.AllowGet);
         }
-
     }
 }

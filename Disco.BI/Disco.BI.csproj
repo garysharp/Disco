@@ -181,6 +181,7 @@
     <Compile Include="BI\Interop\PluginServices\Utilities.cs" />
     <Compile Include="BI\Interop\SignalRHandlers\AdminAuthorizedPersistentConnection.cs" />
     <Compile Include="BI\Interop\SignalRHandlers\AuthorizedPersistentConnection.cs" />
+    <Compile Include="BI\Interop\SignalRHandlers\HeldDeviceNotifications.cs" />
     <Compile Include="BI\Interop\SignalRHandlers\LogNotifications.cs" />
     <Compile Include="BI\Interop\SignalRHandlers\RepositoryMonitorNotifications.cs" />
     <Compile Include="BI\Interop\SignalRHandlers\ScheduledTasksStatusNotifications.cs" />
@@ -250,7 +251,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
+      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

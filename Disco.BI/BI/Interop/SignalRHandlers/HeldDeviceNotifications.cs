@@ -9,27 +9,29 @@ using Disco.Models.Repository;
 
 namespace Disco.BI.Interop.SignalRHandlers
 {
-    public class UserHeldDeviceNotifications : PersistentConnection
+    public class HeldDeviceNotifications : PersistentConnection
     {
         private static bool subscribed = false;
         private static object subscribeLock = new object();
         private static IPersistentConnectionContext notificationContext;
 
-        static UserHeldDeviceNotifications()
+        static HeldDeviceNotifications()
         {
             if (!subscribed)
                 lock (subscribeLock)
                     if (!subscribed)
                     {
-                        notificationContext = GlobalHost.ConnectionManager.GetConnectionContext<UserHeldDeviceNotifications>();
+                        notificationContext = GlobalHost.ConnectionManager.GetConnectionContext<HeldDeviceNotifications>();
 
                         Disco.Data.Repository.Monitor.RepositoryMonitor.StreamAfterCommit.Where(e => e.EntityType == typeof(Job)).Subscribe(JobUpdated);
 
-                        Disco.Data.Repository.Monitor.RepositoryMonitor.StreamBeforeCommit.Where(e =>
+                        Disco.Data.Repository.Monitor.RepositoryMonitor.StreamAfterCommit.Where(e =>
                             e.EntityType == typeof(Device) &&
-                            (e.ModifiedProperties.Contains("DeviceModelId") ||
+                            (e.ModifiedProperties.Contains("Location") ||
+                            e.ModifiedProperties.Contains("DeviceModelId") ||
                             e.ModifiedProperties.Contains("DeviceProfileId") ||
                             e.ModifiedProperties.Contains("DeviceBatchId") ||
+                            e.ModifiedProperties.Contains("ComputerName") ||
                             e.ModifiedProperties.Contains("AssignedUserId"))
                             ).Subscribe(DeviceUpdated);
 
@@ -47,36 +49,24 @@ namespace Disco.BI.Interop.SignalRHandlers
             Job j = (Job)e.Entity;
 
             if (j.DeviceSerialNumber != null)
-            {
-                var jobDevice = e.dbContext.Devices.Where(d => d.SerialNumber == j.DeviceSerialNumber).FirstOrDefault();
-
-                if (jobDevice.AssignedUserId != null)
-                    notificationContext.Connection.Broadcast(jobDevice.AssignedUserId);
-            }
+                notificationContext.Connection.Broadcast(j.DeviceSerialNumber);
         }
         private static void DeviceUpdated(RepositoryMonitorEvent e)
         {
             Device d = (Device)e.Entity;
 
-            string previouslyAssignedUserId = null;
-
-            if (e.ModifiedProperties.Contains("AssignedUserId"))
-                previouslyAssignedUserId = e.GetPreviousPropertyValue<string>("AssignedUserId");
-
-            e.ExecuteAfterCommit(me =>
-            {
-                if (previouslyAssignedUserId != null)
-                    notificationContext.Connection.Broadcast(previouslyAssignedUserId);
-
-                if (d.AssignedUserId != null)
-                    notificationContext.Connection.Broadcast(d.AssignedUserId);
-            });
+            notificationContext.Connection.Broadcast(d.SerialNumber);
         }
         private static void UserUpdated(RepositoryMonitorEvent e)
         {
             User u = (User)e.Entity;
 
-            notificationContext.Connection.Broadcast(u.Id);
+            var userDevices = e.dbContext.Devices.Where(d => d.AssignedUserId == u.Id);
+
+            foreach (var userDevice in userDevices)
+            {
+                notificationContext.Connection.Broadcast(userDevice.SerialNumber);
+            }
         }
     }
 }

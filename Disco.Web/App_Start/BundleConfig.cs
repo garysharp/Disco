@@ -27,8 +27,8 @@ namespace Disco.Web
             BundleTable.Add(new Bundle("~/Style/Timeline", Links.ClientSource.Style.Timeline_min_css));
 
             // Styles - Public Targeted
-            BundleTable.Add(new Bundle("~/Style/Public/UserHeldDevices", Links.ClientSource.Style.Public.UserHeldDevices_min_css));
-            BundleTable.Add(new Bundle("~/Style/Public/UserHeldDevicesNoticeboard", Links.ClientSource.Style.Public.UserHeldDevicesNoticeboard_min_css));
+            BundleTable.Add(new Bundle("~/Style/Public/HeldDevices", Links.ClientSource.Style.Public.HeldDevices_min_css));
+            BundleTable.Add(new Bundle("~/Style/Public/HeldDevicesNoticeboard", Links.ClientSource.Style.Public.HeldDevicesNoticeboard_min_css));
 
 
             // Scripts - Core

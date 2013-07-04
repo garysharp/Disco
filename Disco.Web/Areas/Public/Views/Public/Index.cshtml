@@ -5,8 +5,7 @@
     <tr>
         <td style="width: 50%">
             <div class="pageMenuArea">
-                <h2>
-                    Technician Held Devices</h2>
+                <h2>Technician Held Devices for Users</h2>
                 @Html.ActionLinkClass("Report", MVC.Public.UserHeldDevices.Index(), "report")
                 <div class="pageMenuBlurb">
                     Display users involved in current jobs where the user's device is held by the technicians.
@@ -23,7 +22,19 @@
             </div>
         </td>
         <td style="width: 50%">
-            &nbsp;
+            <div class="pageMenuArea">
+                <h2>Technician Held Devices</h2>
+                @Html.ActionLinkClass("Report", MVC.Public.HeldDevices.Index(), "report")
+                <div class="pageMenuBlurb">
+                    Display devices involved in current jobs where the device is held by the technicians.
+                    Also displays devices which are ready to be collected.
+                </div>
+                @Html.ActionLinkClass("Noticeboard", MVC.Public.HeldDevices.Noticeboard(), "noticeboard")
+                <div class="pageMenuBlurb">
+                    Display a full-screen active noticeboard screen which lists devices involved in current
+                    jobs where the device is held by the technicians. Also displays devices which are ready to be collected.
+                </div>
+            </div>
         </td>
     </tr>
 </table>

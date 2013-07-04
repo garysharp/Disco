@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Disco.Web.Areas.Public.Models.HeldDevices.HeldDeviceModel>
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Public Reports", MVC.Public.Public.Index(), "Held Devices", null);
+    Html.BundleDeferred("~/Style/Public/HeldDevices");
+}
+<div class="clearfix page">
+    <div class="column1">
+        @{
+            var DevicesInProcess = Model.Where(i => !i.ReadyForReturn && !i.WaitingForUserAction).ToArray();
+        }
+        <h2>In Process (@DevicesInProcess.Length)</h2>
+        <table class="dataTable">
+            @foreach (var item in DevicesInProcess)
+            {
+                <tr>
+                    <td class="id">
+                        @item.DeviceSerialNumber
+                    </td>
+                    <td class="description">
+                        @if (item.UserId != null)
+                        {
+                            <span class="user">@item.UserDisplayName (@item.UserId)</span>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(item.DeviceLocation))
+                        {
+                            if (item.UserId != null)
+                            {
+                            <text> - </text>
+                            }
+                            @item.DeviceLocation
+                        }
+                        else
+                        {
+                            if (item.UserId == null)
+                            {
+                            @item.DeviceComputerName
+                            }
+                        }
+                        @if (!string.IsNullOrEmpty(item.EstimatedReturnTime))
+                        { 
+                            <span class="smallMessage">(Expected: @item.EstimatedReturnTime)</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="column2">
+        @{
+            var WaitingForUserActionJobs = Model.Where(i => i.WaitingForUserAction).ToArray();
+        }
+        <h2>Waiting for User Action (@WaitingForUserActionJobs.Length)</h2>
+        <table class="dataTable">
+            @foreach (var item in WaitingForUserActionJobs)
+            {
+                <tr>
+                    <td class="id">
+                        @item.DeviceSerialNumber
+                    </td>
+                    <td class="description">
+                        <span class="user">@item.UserDisplayName (@item.UserId)</span>
+                        @if (!string.IsNullOrWhiteSpace(item.DeviceLocation))
+                        {
+                            <text> - </text>@item.DeviceLocation
+                        }
+                    </td>
+                    <td class="timestamp@(item.IsAlert ? " Alert" : string.Empty)">Since @item.WaitingForUserActionSince
+                    </td>
+                </tr>
+            }
+        </table>
+        <hr />
+        @{
+            var DevicesReadyForReturn = Model.Where(i => i.ReadyForReturn && !i.WaitingForUserAction).ToArray();
+        }
+        <h2>Ready for Return (@DevicesReadyForReturn.Length)</h2>
+        <table class="dataTable">
+            @foreach (var item in DevicesReadyForReturn)
+            {
+                <tr>
+                    <td class="id">
+                        @item.DeviceSerialNumber
+                    </td>
+                    <td class="description">
+                        <span class="user">@item.UserDisplayName (@item.UserId)</span>
+                        @if (!string.IsNullOrWhiteSpace(item.DeviceLocation))
+                        {
+                            <text> - </text>@item.DeviceLocation
+                        }
+                    </td>
+                    <td class="timestamp@(item.IsAlert ? " Alert" : string.Empty)">Ready @item.ReadyForReturnSince
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

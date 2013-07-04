@@ -46,7 +46,7 @@ namespace Disco.Web.Areas.Public.Views.UserHeldDevices
     Layout = null;
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
     Html.BundleDeferred("~/ClientScripts/Core");
-    Html.BundleDeferred("~/Style/Public/UserHeldDevicesNoticeboard");
+    Html.BundleDeferred("~/Style/Public/HeldDevicesNoticeboard");
 
             
             #line default
@@ -61,7 +61,7 @@ WriteLiteral(" http-equiv=\"X-UA-Compatible\"");
 
 WriteLiteral(" content=\"IE=edge\"");
 
-WriteLiteral(" />\r\n    <title>Disco - Technician Held Devices</title>\r\n");
+WriteLiteral(" />\r\n    <title>Disco - Technician Held Devices for Users</title>\r\n");
 
 WriteLiteral("    ");
 
@@ -80,7 +80,7 @@ WriteLiteral(">\r\n        <header");
 
 WriteLiteral(" id=\"mainHeader\"");
 
-WriteLiteral(">\r\n    Technician Held Devices\r\n    </header>\r\n        <section");
+WriteLiteral(">\r\n    Technician Held Devices for Users\r\n    </header>\r\n        <section");
 
 WriteLiteral(" id=\"mainSection\"");
 
@@ -359,64 +359,48 @@ WriteLiteral(">\r\n        $(function () {\r\n            var models = {};\r\n  
 "        } else {\r\n                        insertTo(model, $inProcessContent);\r\n " +
 "                       window.setTimeout(updateScrollInProcess, 100);\r\n         " +
 "           }\r\n                }\r\n            }\r\n\r\n            var removeModel = " +
-"function (model) {\r\n                if (model) {\r\n                    if (model." +
-"updateAtToken) {\r\n                        window.clearTimeout(model.updateAtToke" +
-"n);\r\n                    };\r\n                    model.htmlLi.slideUp(\'fast\', fu" +
-"nction () {\r\n                        model.htmlLi.remove();\r\n                   " +
-" });\r\n                }\r\n            };\r\n\r\n            var scheduleModelUpdate =" +
-" function (model) {\r\n                if (model.updateAtToken) {\r\n               " +
-"     window.clearTimeout(model.updateAtToken);\r\n                };\r\n            " +
-"    if (model.UpdateAt) {\r\n                    if (typeof model.UpdateAt == \'str" +
-"ing\' && model.UpdateAt.indexOf(\'\\/Date(\') == 0) {\r\n                        model" +
-".UpdateAt = new Date(parseInt(model.UpdateAt.substr(6)));\r\n                    }" +
-"\r\n                    var nowMilliseconds = new Date().getTime();\r\n             " +
-"       var updateAtMilliseconds = (model.UpdateAt - nowMilliseconds);\r\n         " +
-"           if (updateAtMilliseconds > 0) {\r\n                        model.update" +
-"AtToken = window.setTimeout(function () { updatedModel(model.UserId); }, updateA" +
-"tMilliseconds);\r\n                    } else {\r\n                        model.Upd" +
-"ateAt = null;\r\n                    }\r\n                }\r\n            };\r\n\r\n     " +
-"       var processModel = function (id, model, init) {\r\n                if (!cal" +
-"culateFilter(model)) {\r\n                    removeModel(models[id]);\r\n          " +
-"          delete models[id];\r\n                    sortModels();\r\n               " +
-" } else {\r\n                    var existing = models[id];\r\n                    m" +
-"odels[id] = model;\r\n\r\n                    // Add\r\n                    model.html" +
-"Content = $(\'<div>\').text(model.UserId + \' - \' + model.UserDisplayName);\r\n      " +
-"              if (!model.ReadyForReturn && model.EstimatedReturnTime) {\r\n       " +
-"                 model.htmlContent.append($(\'<span class=\"small\">\').text(\' (Expe" +
-"cted: \' + model.EstimatedReturnTime + \')\'));\r\n                    }\r\n           " +
-"         if (model.WaitingForUserAction) {\r\n                        model.htmlCo" +
-"ntent.append($(\'<span class=\"small\">\').text(\' (Since \' + model.WaitingForUserAct" +
-"ionSince + \')\'));\r\n                    } else {\r\n                        if (mod" +
-"el.ReadyForReturn && model.ReadyForReturnSince) {\r\n                            m" +
-"odel.htmlContent.append($(\'<span class=\"small\">\').text(\' (Ready \' + model.ReadyF" +
-"orReturnSince + \')\'));\r\n                        }\r\n                    }\r\n\r\n    " +
-"                if (existing) {\r\n                        if (existing.ReadyForRe" +
-"turn != model.ReadyForReturn || existing.WaitingForUserAction != model.WaitingFo" +
-"rUserAction) {\r\n                            removeModel(existing);\r\n            " +
-"                model.htmlLi = $(\'<li>\').html(model.htmlContent).data(\'ModelId\'," +
-" id).hide();\r\n                            modelInsert(model);\r\n                 " +
-"           if (init) {\r\n                                model.htmlLi.fadeIn();\r\n" +
-"                            } else {\r\n                                model.html" +
-"Li.slideDown();\r\n                            }\r\n                        } else {" +
-"\r\n                            if (existing.updateAtToken) {\r\n                   " +
-"             window.clearTimeout(existing.updateAtToken);\r\n                     " +
-"       };\r\n                            model.htmlLi = existing.htmlLi;\r\n        " +
-"                    model.htmlLi.slideUp(\'fast\', function () {\r\n                " +
-"                model.htmlLi.html(model.htmlContent).slideDown();\r\n             " +
-"               });\r\n                        }\r\n                    } else {\r\n   " +
-"                     model.htmlLi = $(\'<li>\').html(model.htmlContent).data(\'Mode" +
-"lId\', id).hide();\r\n                        modelInsert(model);\r\n                " +
-"        if (init) {\r\n                            model.htmlLi.fadeIn();\r\n       " +
-"                 } else {\r\n                            model.htmlLi.slideDown(\'s" +
-"low\');\r\n                        }\r\n                    }\r\n                    if" +
-" (model.htmlLi && model.IsAlert) {\r\n                        model.htmlLi.addClas" +
-"s(\'alert\');\r\n                    }\r\n                    scheduleModelUpdate(mode" +
-"l);\r\n                }\r\n            };\r\n\r\n            var updatedModel = functio" +
-"n (id) {\r\n                var userId = id.toString();\r\n\r\n                $.ajax(" +
-"{\r\n                    dataType: \'json\',\r\n                    url: \'");
+"function (model) {\r\n                if (model) {\r\n                    model.html" +
+"Li.slideUp(\'fast\', function () {\r\n                        model.htmlLi.remove();" +
+"\r\n                    });\r\n                }\r\n            };\r\n\r\n            var " +
+"processModel = function (id, model, init) {\r\n                if (!calculateFilte" +
+"r(model)) {\r\n                    removeModel(models[id]);\r\n                    d" +
+"elete models[id];\r\n                    sortModels();\r\n                } else {\r\n" +
+"                    var existing = models[id];\r\n                    models[id] =" +
+" model;\r\n\r\n                    // Add\r\n                    model.htmlContent = $" +
+"(\'<div>\').text(model.UserId + \' - \' + model.UserDisplayName);\r\n                 " +
+"   if (!model.ReadyForReturn && model.EstimatedReturnTime) {\r\n                  " +
+"      model.htmlContent.append($(\'<span class=\"small\">\').text(\' (Expected: \' + m" +
+"odel.EstimatedReturnTime + \')\'));\r\n                    }\r\n                    if" +
+" (model.WaitingForUserAction) {\r\n                        model.htmlContent.appen" +
+"d($(\'<span class=\"small\">\').text(\' (Since \' + model.WaitingForUserActionSince + " +
+"\')\'));\r\n                    } else {\r\n                        if (model.ReadyFor" +
+"Return && model.ReadyForReturnSince) {\r\n                            model.htmlCo" +
+"ntent.append($(\'<span class=\"small\">\').text(\' (Ready \' + model.ReadyForReturnSin" +
+"ce + \')\'));\r\n                        }\r\n                    }\r\n\r\n               " +
+"     if (existing) {\r\n                        if (existing.ReadyForReturn != mod" +
+"el.ReadyForReturn || existing.WaitingForUserAction != model.WaitingForUserAction" +
+") {\r\n                            removeModel(existing);\r\n                       " +
+"     model.htmlLi = $(\'<li>\').html(model.htmlContent).data(\'ModelId\', id).hide()" +
+";\r\n                            modelInsert(model);\r\n                            " +
+"if (init) {\r\n                                model.htmlLi.fadeIn();\r\n           " +
+"                 } else {\r\n                                model.htmlLi.slideDow" +
+"n();\r\n                            }\r\n                        } else {\r\n         " +
+"                   model.htmlLi = existing.htmlLi;\r\n                            " +
+"model.htmlLi.slideUp(\'fast\', function () {\r\n                                mode" +
+"l.htmlLi.html(model.htmlContent).slideDown();\r\n                            });\r\n" +
+"                        }\r\n                    } else {\r\n                       " +
+" model.htmlLi = $(\'<li>\').html(model.htmlContent).data(\'ModelId\', id).hide();\r\n " +
+"                       modelInsert(model);\r\n                        if (init) {\r" +
+"\n                            model.htmlLi.fadeIn();\r\n                        } e" +
+"lse {\r\n                            model.htmlLi.slideDown(\'slow\');\r\n            " +
+"            }\r\n                    }\r\n                    if (model.htmlLi && mo" +
+"del.IsAlert) {\r\n                        model.htmlLi.addClass(\'alert\');\r\n       " +
+"             }\r\n                }\r\n            };\r\n\r\n            var updatedMode" +
+"l = function (id) {\r\n                var userId = id.toString();\r\n\r\n            " +
+"    $.ajax({\r\n                    dataType: \'json\',\r\n                    url: \'");
 
             
-            #line 460 "..\..\Areas\Public\Views\UserHeldDevices\Noticeboard.cshtml"
+            #line 435 "..\..\Areas\Public\Views\UserHeldDevices\Noticeboard.cshtml"
                       Write(Url.Action(MVC.Public.UserHeldDevices.UserHeldDevice()));
 
             
@@ -442,7 +426,7 @@ WriteLiteral(@"',
                         window.location.href = '");
 
             
-            #line 477 "..\..\Areas\Public\Views\UserHeldDevices\Noticeboard.cshtml"
+            #line 452 "..\..\Areas\Public\Views\UserHeldDevices\Noticeboard.cshtml"
                                             Write(Url.Action(MVC.Public.UserHeldDevices.Noticeboard()));
 
             
@@ -453,7 +437,7 @@ WriteLiteral("\';\r\n                    }, 10000);\r\n                }\r\n    
 "rsistantConnection = $.connection(\'");
 
             
-            #line 484 "..\..\Areas\Public\Views\UserHeldDevices\Noticeboard.cshtml"
+            #line 459 "..\..\Areas\Public\Views\UserHeldDevices\Noticeboard.cshtml"
                                                  Write(Url.Content("~/Public/UserHeldDevices/Notifications"));
 
             
@@ -464,7 +448,7 @@ WriteLiteral("\');\r\n                persistantConnection.received(updatedModel
 "tion.start(function () {\r\n                    $.getJSON(\'");
 
             
-            #line 488 "..\..\Areas\Public\Views\UserHeldDevices\Noticeboard.cshtml"
+            #line 463 "..\..\Areas\Public\Views\UserHeldDevices\Noticeboard.cshtml"
                            Write(Url.Action(MVC.Public.UserHeldDevices.UserHeldDevices()));
 
             
@@ -489,14 +473,14 @@ WriteLiteral(">\r\n        <img");
 
 WriteLiteral(" style=\"width: 32px; height: 32px; margin-top: -5px; margin-bottom: -15px;\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 23895), Tuple.Create("\"", 23944)
+WriteAttribute("src", Tuple.Create(" src=\"", 22642), Tuple.Create("\"", 22691)
             
-            #line 500 "..\..\Areas\Public\Views\UserHeldDevices\Noticeboard.cshtml"
-            , Tuple.Create(Tuple.Create("", 23901), Tuple.Create<System.Object, System.Int32>(Links.ClientSource.Style.Images.Icon32_png
+            #line 475 "..\..\Areas\Public\Views\UserHeldDevices\Noticeboard.cshtml"
+            , Tuple.Create(Tuple.Create("", 22648), Tuple.Create<System.Object, System.Int32>(Links.ClientSource.Style.Images.Icon32_png
             
             #line default
             #line hidden
-, 23901), false)
+, 22648), false)
 );
 
 WriteLiteral(" alt=\"Disco Logo\"");

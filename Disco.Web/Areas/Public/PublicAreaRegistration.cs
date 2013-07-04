@@ -19,6 +19,8 @@ namespace Disco.Web.Areas.Public
         {
             context.Routes.MapConnection<UserHeldDeviceNotifications>(
                 "Public_UserHeldDevices_Notifications", "Public/UserHeldDevices/Notifications", new ConnectionConfiguration(), SignalRAuthenticationWorkaround.AddMiddleware);
+            context.Routes.MapConnection<HeldDeviceNotifications>(
+                "Public_HeldDevices_Notifications", "Public/HeldDevices/Notifications", new ConnectionConfiguration(), SignalRAuthenticationWorkaround.AddMiddleware);
 
             context.MapRoute(
                 "Public_Credits",

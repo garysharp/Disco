@@ -15,7 +15,6 @@ namespace Disco.Web.Areas.Public.Models.UserHeldDevices
         public bool IsAlert { get; set; }
         public bool WaitingForUserAction { get; set; }
         public string WaitingForUserActionSince { get; set; }
-        public Nullable<DateTime> UpdateAt { get; set; }
         public int DeviceProfileId { get; set; }
         public string DeviceAddress { get; set; }
     }

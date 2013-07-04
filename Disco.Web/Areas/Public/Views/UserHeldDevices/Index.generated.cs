@@ -43,8 +43,8 @@ namespace Disco.Web.Areas.Public.Views.UserHeldDevices
             
             #line 2 "..\..\Areas\Public\Views\UserHeldDevices\Index.cshtml"
   
-    ViewBag.Title = Html.ToBreadcrumb("Public Reports", MVC.Public.Public.Index(), "Technician Held Devices", null);
-    Html.BundleDeferred("~/Style/Public/UserHeldDevices");
+    ViewBag.Title = Html.ToBreadcrumb("Public Reports", MVC.Public.Public.Index(), "Held Devices for Users", null);
+    Html.BundleDeferred("~/Style/Public/HeldDevices");
 
             
             #line default
@@ -104,7 +104,7 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                <tr>\r\n                    <td");
 
-WriteLiteral(" class=\"userId\"");
+WriteLiteral(" class=\"id\"");
 
 WriteLiteral(">\r\n");
 
@@ -119,7 +119,7 @@ WriteLiteral("                        ");
             #line hidden
 WriteLiteral("\r\n                    </td>\r\n                    <td");
 
-WriteLiteral(" class=\"userDisplayName\"");
+WriteLiteral(" class=\"description\"");
 
 WriteLiteral(">\r\n");
 
@@ -223,7 +223,7 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                <tr>\r\n                    <td");
 
-WriteLiteral(" class=\"userId\"");
+WriteLiteral(" class=\"id\"");
 
 WriteLiteral(">\r\n");
 
@@ -238,7 +238,7 @@ WriteLiteral("                        ");
             #line hidden
 WriteLiteral("\r\n                    </td>\r\n                    <td");
 
-WriteLiteral(" class=\"userDisplayName\"");
+WriteLiteral(" class=\"description\"");
 
 WriteLiteral(">\r\n");
 
@@ -253,15 +253,15 @@ WriteLiteral("                        ");
             #line hidden
 WriteLiteral("\r\n                    </td>\r\n                    <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1816), Tuple.Create("\"", 1874)
-, Tuple.Create(Tuple.Create("", 1824), Tuple.Create("timestamp", 1824), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1795), Tuple.Create("\"", 1853)
+, Tuple.Create(Tuple.Create("", 1803), Tuple.Create("timestamp", 1803), true)
             
             #line 48 "..\..\Areas\Public\Views\UserHeldDevices\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 1833), Tuple.Create<System.Object, System.Int32>(item.IsAlert ? " Alert" : string.Empty
+, Tuple.Create(Tuple.Create("", 1812), Tuple.Create<System.Object, System.Int32>(item.IsAlert ? " Alert" : string.Empty
             
             #line default
             #line hidden
-, 1833), false)
+, 1812), false)
 );
 
 WriteLiteral(">\r\n                        Since ");
@@ -329,7 +329,7 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                <tr>\r\n                    <td");
 
-WriteLiteral(" class=\"userId\"");
+WriteLiteral(" class=\"id\"");
 
 WriteLiteral(">\r\n");
 
@@ -344,7 +344,7 @@ WriteLiteral("                        ");
             #line hidden
 WriteLiteral("\r\n                    </td>\r\n                    <td");
 
-WriteLiteral(" class=\"userDisplayName\"");
+WriteLiteral(" class=\"description\"");
 
 WriteLiteral(">\r\n");
 
@@ -359,15 +359,15 @@ WriteLiteral("                        ");
             #line hidden
 WriteLiteral("\r\n                    </td>\r\n                    <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2641), Tuple.Create("\"", 2699)
-, Tuple.Create(Tuple.Create("", 2649), Tuple.Create("timestamp", 2649), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 2612), Tuple.Create("\"", 2670)
+, Tuple.Create(Tuple.Create("", 2620), Tuple.Create("timestamp", 2620), true)
             
             #line 70 "..\..\Areas\Public\Views\UserHeldDevices\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 2658), Tuple.Create<System.Object, System.Int32>(item.IsAlert ? " Alert" : string.Empty
+, Tuple.Create(Tuple.Create("", 2629), Tuple.Create<System.Object, System.Int32>(item.IsAlert ? " Alert" : string.Empty
             
             #line default
             #line hidden
-, 2658), false)
+, 2629), false)
 );
 
 WriteLiteral(">\r\n                        Ready ");

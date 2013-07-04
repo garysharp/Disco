@@ -60,12 +60,12 @@ WriteLiteral(">\r\n            <div");
 
 WriteLiteral(" class=\"pageMenuArea\"");
 
-WriteLiteral(">\r\n                <h2>\r\n                    Technician Held Devices</h2>\r\n");
+WriteLiteral(">\r\n                <h2>Technician Held Devices for Users</h2>\r\n");
 
 WriteLiteral("                ");
 
             
-            #line 10 "..\..\Areas\Public\Views\Public\Index.cshtml"
+            #line 9 "..\..\Areas\Public\Views\Public\Index.cshtml"
            Write(Html.ActionLinkClass("Report", MVC.Public.UserHeldDevices.Index(), "report"));
 
             
@@ -85,7 +85,7 @@ WriteLiteral(@">
 WriteLiteral("                ");
 
             
-            #line 16 "..\..\Areas\Public\Views\Public\Index.cshtml"
+            #line 15 "..\..\Areas\Public\Views\Public\Index.cshtml"
            Write(Html.ActionLinkClass("Noticeboard", MVC.Public.UserHeldDevices.Noticeboard(), "noticeboard"));
 
             
@@ -107,7 +107,51 @@ WriteLiteral(@">
 
 WriteLiteral(" style=\"width: 50%\"");
 
-WriteLiteral(">\r\n            &nbsp;\r\n        </td>\r\n    </tr>\r\n</table>\r\n");
+WriteLiteral(">\r\n            <div");
+
+WriteLiteral(" class=\"pageMenuArea\"");
+
+WriteLiteral(">\r\n                <h2>Technician Held Devices</h2>\r\n");
+
+WriteLiteral("                ");
+
+            
+            #line 27 "..\..\Areas\Public\Views\Public\Index.cshtml"
+           Write(Html.ActionLinkClass("Report", MVC.Public.HeldDevices.Index(), "report"));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                <div");
+
+WriteLiteral(" class=\"pageMenuBlurb\"");
+
+WriteLiteral(">\r\n                    Display devices involved in current jobs where the device " +
+"is held by the technicians.\r\n                    Also displays devices which are" +
+" ready to be collected.\r\n                </div>\r\n");
+
+WriteLiteral("                ");
+
+            
+            #line 32 "..\..\Areas\Public\Views\Public\Index.cshtml"
+           Write(Html.ActionLinkClass("Noticeboard", MVC.Public.HeldDevices.Noticeboard(), "noticeboard"));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                <div");
+
+WriteLiteral(" class=\"pageMenuBlurb\"");
+
+WriteLiteral(@">
+                    Display a full-screen active noticeboard screen which lists devices involved in current
+                    jobs where the device is held by the technicians. Also displays devices which are ready to be collected.
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+");
 
         }
     }

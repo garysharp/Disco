@@ -9,18 +9,17 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Disco - Technician Held Devices for Users</title>
+    <title>Disco - Held Devices</title>
     @Html.BundleRenderDeferred()
 </head>
 <body>
     <div id="page">
         <header id="mainHeader">
-    Technician Held Devices for Users
-    </header>
+            Held Devices
+        </header>
         <section id="mainSection">
             <div id="inProcess" class="list">
-                <h3>
-                    In Process <span id="inProcessCount"></span>
+                <h3>In Process <span id="inProcessCount"></span>
                 </h3>
                 <div class="content">
                     <ul>
@@ -28,8 +27,7 @@
                 </div>
             </div>
             <div id="readyForReturn" class="list">
-                <h3>
-                    Ready for Return <span id="readyForReturnCount"></span>
+                <h3>Ready for Return <span id="readyForReturnCount"></span>
                 </h3>
                 <div class="content">
                     <ul>
@@ -37,8 +35,7 @@
                 </div>
             </div>
             <div id="waitingForUserAction" class="list">
-                <h3>
-                    Waiting for User Action <span id="waitingForUserActionCount"></span>
+                <h3>Waiting for User Action <span id="waitingForUserActionCount"></span>
                 </h3>
                 <div class="content">
                     <ul>
@@ -141,7 +138,7 @@
             var filterDeviceAddressExclude;
             var filterDeviceProfileInclude;
             var filterDeviceProfileExclude;
-            
+
             var getParameterByName = function (name) {
                 name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
                 var regexS = "[\\?&]" + name + "=([^&#]*)";
@@ -214,10 +211,10 @@
                 modelsReadyForReturnSorted = [];
                 modelsWaitingForUserActionSorted = [];
                 var modelSortFunc = function (a, b) {
-                    if (a.UserId.toUpperCase() == b.UserId.toUpperCase()) {
+                    if (a.DeviceSerialNumber.toUpperCase() == b.DeviceSerialNumber.toUpperCase()) {
                         return 0;
                     } else {
-                        if (a.UserId.toUpperCase() < b.UserId.toUpperCase()) {
+                        if (a.DeviceSerialNumber.toUpperCase() < b.DeviceSerialNumber.toUpperCase()) {
                             return -1
                         } else {
                             return 1
@@ -319,7 +316,7 @@
                 sortModels();
                 var findIndex = function (model, array, offset) {
                     for (var i = 0; i < array.length; i++) {
-                        if (model.UserId == array[i].UserId) {
+                        if (model.DeviceSerialNumber == array[i].DeviceSerialNumber) {
                             var index = i + offset;
                             if (index > (array.length - 1)) {
                                 index = index - (array.length - 1);
@@ -384,7 +381,7 @@
                     models[id] = model;
 
                     // Add
-                    model.htmlContent = $('<div>').text(model.UserId + ' - ' + model.UserDisplayName);
+                    model.htmlContent = $('<div>').text(model.DeviceDescription);
                     if (!model.ReadyForReturn && model.EstimatedReturnTime) {
                         model.htmlContent.append($('<span class="small">').text(' (Expected: ' + model.EstimatedReturnTime + ')'));
                     }
@@ -428,18 +425,18 @@
             };
 
             var updatedModel = function (id) {
-                var userId = id.toString();
+                var deviceSerialNumber = id.toString();
 
                 $.ajax({
                     dataType: 'json',
-                    url: '@(Url.Action(MVC.Public.UserHeldDevices.UserHeldDevice()))',
-                    data: { id: userId },
+                    url: '@(Url.Action(MVC.Public.HeldDevices.HeldDevice()))',
+                    data: { id: deviceSerialNumber },
                     success: function (data) {
-                        processModel(userId, data, false);
+                        processModel(deviceSerialNumber, data, false);
                     },
-                    error: function(jqXHR, textStatus, errorThrown){
+                    error: function (jqXHR, textStatus, errorThrown) {
                         if (textStatus == 'parsererror') // null Result
-                            processModel(userId, null, false);
+                            processModel(deviceSerialNumber, null, false);
                     }
                 })
             };
@@ -449,20 +446,20 @@
                     persistantConnection.stop();
                     persistantConnection = null;
                     window.setTimeout(function () {
-                        window.location.href = '@(Url.Action(MVC.Public.UserHeldDevices.Noticeboard()))';
+                        window.location.href = '@(Url.Action(MVC.Public.HeldDevices.Noticeboard()))';
                     }, 10000);
-                }
+                    }
             }
 
             var init = function () {
                 buildFilters();
-                persistantConnection = $.connection('@(Url.Content("~/Public/UserHeldDevices/Notifications"))');
+                persistantConnection = $.connection('@(Url.Content("~/Public/HeldDevices/Notifications"))');
                 persistantConnection.received(updatedModel);
                 persistantConnection.error(connectionError);
                 persistantConnection.start(function () {
-                    $.getJSON('@(Url.Action(MVC.Public.UserHeldDevices.UserHeldDevices()))', null, function (data) {
+                    $.getJSON('@(Url.Action(MVC.Public.HeldDevices.HeldDevices()))', null, function (data) {
                         for (var i = 0; i < data.length; i++) {
-                            processModel(data[i].UserId, data[i], true);
+                            processModel(data[i].DeviceSerialNumber, data[i], true);
                         }
                     });
                 });

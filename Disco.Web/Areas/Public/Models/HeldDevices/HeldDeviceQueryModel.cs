@@ -1,38 +1,45 @@
-﻿using System;
+﻿using Disco.Data.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Disco.BI;
 using Disco.BI.Extensions;
-using Disco.Data.Repository;
 
-namespace Disco.Web.Areas.Public.Models.UserHeldDevices
+namespace Disco.Web.Areas.Public.Models.HeldDevices
 {
-    public class HeldJobDeviceModel
+    public class HeldDeviceQueryModel
     {
         public int JobId { get; set; }
 
-        public string UserId { get; set; }
-        public string UserDisplayName { get; set; }
+        public string DeviceSerialNumber { get; set; }
+        public string DeviceComputerName { get; set; }
         public int DeviceProfileId { get; set; }
         public int? DeviceAddressId { get; set; }
+        public string DeviceLocation { get; set; }
+
+        public string UserId { get; set; }
+        public string UserDisplayName { get; set; }
+        
         public bool ReadyForReturn { get; set; }
         public bool WaitingForUserAction { get; set; }
         public DateTime? EstimatedReturnTime { get; set; }
         public DateTime? ReadyForReturnSince { get; set; }
         public DateTime? WaitingForUserActionSince { get; set; }
 
-        public UserHeldDeviceModel ToUserHeldDeviceModel(DiscoDataContext dbContext)
+        public HeldDeviceModel ToUserHeldDeviceModel(DiscoDataContext dbContext)
         {
-            var uhdm = new UserHeldDeviceModel()
-                {
-                    UserId = this.UserId,
-                    UserDisplayName = this.UserDisplayName,
-                    ReadyForReturn = this.ReadyForReturn,
-                    WaitingForUserAction = this.WaitingForUserAction,
-                    DeviceProfileId = this.DeviceProfileId,
-                    DeviceAddress = (this.DeviceAddressId.HasValue ? dbContext.DiscoConfiguration.OrganisationAddresses.GetAddress(this.DeviceAddressId.Value).ShortName : string.Empty)
-                };
+            var uhdm = new HeldDeviceModel()
+            {
+                DeviceSerialNumber = this.DeviceSerialNumber,
+                DeviceComputerName = this.DeviceComputerName,
+                DeviceLocation = this.DeviceLocation,
+                DeviceProfileId = this.DeviceProfileId,
+                DeviceAddress = (this.DeviceAddressId.HasValue ? dbContext.DiscoConfiguration.OrganisationAddresses.GetAddress(this.DeviceAddressId.Value).ShortName : string.Empty),
+                UserId = this.UserId,
+                UserDisplayName = this.UserDisplayName,
+                ReadyForReturn = this.ReadyForReturn,
+                WaitingForUserAction = this.WaitingForUserAction
+            };
             var n = DateTime.Now;
             if (!this.ReadyForReturn && this.EstimatedReturnTime.HasValue && this.EstimatedReturnTime.Value > n)
             {

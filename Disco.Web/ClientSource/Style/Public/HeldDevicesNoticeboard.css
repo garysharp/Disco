@@ -25,7 +25,9 @@ div#page {
   padding: 0px;
 }
 header {
-  font-family: "Segoe UI Light", Arial, Verdana, Tahoma, sans-serif;
+  font-family: "Segoe UI", Arial, Verdana, Tahoma, sans-serif;
+  font-weight: lighter;
+  font-stretch: condensed;
   font-size: 2em;
   padding: 10px 20px;
   background-color: rgba(255, 255, 255, 0.7);
@@ -48,8 +50,9 @@ div#mainFooter {
 }
 .list h3 {
   color: #000;
-  font-family: "Segoe UI Light", Arial, Verdana, Tahoma, sans-serif;
-  font-weight: normal;
+  font-family: "Segoe UI", Arial, Verdana, Tahoma, sans-serif;
+  font-weight: lighter;
+  font-stretch: condensed;
   margin-left: 10px;
   margin-bottom: 10px;
   font-size: 1.4em;

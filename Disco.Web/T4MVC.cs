@@ -83,6 +83,7 @@ namespace T4MVC
     public class PublicClass
     {
         public readonly string Name = "Public";
+        public Disco.Web.Areas.Public.Controllers.HeldDevicesController HeldDevices = new Disco.Web.Areas.Public.Controllers.T4MVC_HeldDevicesController();
         public Disco.Web.Areas.Public.Controllers.PublicController Public = new Disco.Web.Areas.Public.Controllers.T4MVC_PublicController();
         public Disco.Web.Areas.Public.Controllers.UserHeldDevicesController UserHeldDevices = new Disco.Web.Areas.Public.Controllers.T4MVC_UserHeldDevicesController();
         public T4MVC.Public.SharedController Shared = new T4MVC.Public.SharedController();
@@ -899,14 +900,14 @@ namespace Links
                 private const string URLPATH = "~/ClientSource/Style/Public";
                 public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                 public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                public static readonly string UserHeldDevices_less = Url("UserHeldDevices.less");
-                public static readonly string UserHeldDevices_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/UserHeldDevices.min.css") ? Url("UserHeldDevices.min.css") : Url("UserHeldDevices.css");
+                public static readonly string HeldDevices_less = Url("HeldDevices.less");
+                public static readonly string HeldDevices_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/HeldDevices.min.css") ? Url("HeldDevices.min.css") : Url("HeldDevices.css");
                      
-                public static readonly string UserHeldDevices_min_css = Url("UserHeldDevices.min.css");
-                public static readonly string UserHeldDevicesNoticeboard_less = Url("UserHeldDevicesNoticeboard.less");
-                public static readonly string UserHeldDevicesNoticeboard_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/UserHeldDevicesNoticeboard.min.css") ? Url("UserHeldDevicesNoticeboard.min.css") : Url("UserHeldDevicesNoticeboard.css");
+                public static readonly string HeldDevices_min_css = Url("HeldDevices.min.css");
+                public static readonly string HeldDevicesNoticeboard_less = Url("HeldDevicesNoticeboard.less");
+                public static readonly string HeldDevicesNoticeboard_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/HeldDevicesNoticeboard.min.css") ? Url("HeldDevicesNoticeboard.min.css") : Url("HeldDevicesNoticeboard.css");
                      
-                public static readonly string UserHeldDevicesNoticeboard_min_css = Url("UserHeldDevicesNoticeboard.min.css");
+                public static readonly string HeldDevicesNoticeboard_min_css = Url("HeldDevicesNoticeboard.min.css");
                 public static readonly string UserHeldDevicesXml_Sharepoint_xslt = Url("UserHeldDevicesXml_Sharepoint.xslt");
             }
         
@@ -9474,6 +9475,172 @@ namespace T4MVC.Config
         }
     }
 
+}
+
+namespace Disco.Web.Areas.Public.Controllers
+{
+    public partial class HeldDevicesController
+    {
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public HeldDevicesController() { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected HeldDevicesController(Dummy d) { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoute(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult HeldDevice()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.HeldDevice);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public HeldDevicesController Actions { get { return MVC.Public.HeldDevices; } }
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Area = "Public";
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Name = "HeldDevices";
+        [GeneratedCode("T4MVC", "2.0")]
+        public const string NameConst = "HeldDevices";
+
+        static readonly ActionNamesClass s_actions = new ActionNamesClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionNamesClass ActionNames { get { return s_actions; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNamesClass
+        {
+            public readonly string Index = "Index";
+            public readonly string ReadyForReturnXml = "ReadyForReturnXml";
+            public readonly string WaitingForUserActionXml = "WaitingForUserActionXml";
+            public readonly string HeldDevicesXml = "HeldDevicesXml";
+            public readonly string Noticeboard = "Noticeboard";
+            public readonly string HeldDevice = "HeldDevice";
+            public readonly string HeldDevices = "HeldDevices";
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNameConstants
+        {
+            public const string Index = "Index";
+            public const string ReadyForReturnXml = "ReadyForReturnXml";
+            public const string WaitingForUserActionXml = "WaitingForUserActionXml";
+            public const string HeldDevicesXml = "HeldDevicesXml";
+            public const string Noticeboard = "Noticeboard";
+            public const string HeldDevice = "HeldDevice";
+            public const string HeldDevices = "HeldDevices";
+        }
+
+
+        static readonly ActionParamsClass_HeldDevice s_params_HeldDevice = new ActionParamsClass_HeldDevice();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_HeldDevice HeldDeviceParams { get { return s_params_HeldDevice; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_HeldDevice
+        {
+            public readonly string id = "id";
+        }
+        static readonly ViewsClass s_views = new ViewsClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ViewsClass Views { get { return s_views; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ViewsClass
+        {
+            static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
+            public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
+            public class _ViewNamesClass
+            {
+                public readonly string Index = "Index";
+                public readonly string Noticeboard = "Noticeboard";
+            }
+            public readonly string Index = "~/Areas/Public/Views/HeldDevices/Index.cshtml";
+            public readonly string Noticeboard = "~/Areas/Public/Views/HeldDevices/Noticeboard.cshtml";
+        }
+    }
+
+    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+    public partial class T4MVC_HeldDevicesController : Disco.Web.Areas.Public.Controllers.HeldDevicesController
+    {
+        public T4MVC_HeldDevicesController() : base(Dummy.Instance) { }
+
+        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        public override System.Web.Mvc.ActionResult Index()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
+            IndexOverride(callInfo);
+            return callInfo;
+        }
+
+        partial void ReadyForReturnXmlOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        public override System.Web.Mvc.ActionResult ReadyForReturnXml()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ReadyForReturnXml);
+            ReadyForReturnXmlOverride(callInfo);
+            return callInfo;
+        }
+
+        partial void WaitingForUserActionXmlOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        public override System.Web.Mvc.ActionResult WaitingForUserActionXml()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.WaitingForUserActionXml);
+            WaitingForUserActionXmlOverride(callInfo);
+            return callInfo;
+        }
+
+        partial void HeldDevicesXmlOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        public override System.Web.Mvc.ActionResult HeldDevicesXml()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.HeldDevicesXml);
+            HeldDevicesXmlOverride(callInfo);
+            return callInfo;
+        }
+
+        partial void NoticeboardOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        public override System.Web.Mvc.ActionResult Noticeboard()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Noticeboard);
+            NoticeboardOverride(callInfo);
+            return callInfo;
+        }
+
+        partial void HeldDeviceOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
+
+        public override System.Web.Mvc.ActionResult HeldDevice(string id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.HeldDevice);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            HeldDeviceOverride(callInfo, id);
+            return callInfo;
+        }
+
+        partial void HeldDevicesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        public override System.Web.Mvc.ActionResult HeldDevices()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.HeldDevices);
+            HeldDevicesOverride(callInfo);
+            return callInfo;
+        }
+
+    }
 }
 
 namespace Disco.Web.Areas.Public.Controllers

@@ -203,6 +203,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Install.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Public\Controllers\HeldDevicesController.cs" />
+    <Compile Include="Areas\Public\Models\HeldDevices\HeldDeviceModel.cs" />
+    <Compile Include="Areas\Public\Models\HeldDevices\HeldDeviceQueryModel.cs" />
+    <Compile Include="Areas\Public\Views\HeldDevices\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Public\Views\HeldDevices\Noticeboard.generated.cs">
+      <DependentUpon>Noticeboard.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Controllers\InitialConfigController.cs" />
     <Compile Include="Controllers\PluginWebHandlerController.cs" />
     <Compile Include="Controllers\UpdateController.cs" />
@@ -811,6 +824,14 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Install.generated.cs</LastGenOutput>
     </None>
+    <Content Include="Areas\Public\Views\HeldDevices\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Areas\Public\Views\HeldDevices\Noticeboard.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Noticeboard.generated.cs</LastGenOutput>
+    </Content>
     <None Include="ClientSource\Scripts\Core.min.js.map">
       <DependentUpon>Core.js.bundle</DependentUpon>
     </None>
@@ -1167,18 +1188,18 @@
     <None Include="ClientSource\Style\jQueryUI\images\ui-icons_ef8c08_256x240.png" />
     <None Include="ClientSource\Style\jQueryUI\images\ui-icons_ffd27a_256x240.png" />
     <None Include="ClientSource\Style\jQueryUI\images\ui-icons_ffffff_256x240.png" />
-    <None Include="ClientSource\Style\Public\UserHeldDevices.css">
-      <DependentUpon>UserHeldDevices.less</DependentUpon>
-    </None>
     <None Include="ClientSource\Style\jQueryUI\images\animated-overlay.gif" />
-    <Content Include="ClientSource\Style\Public\UserHeldDevices.min.css">
-      <DependentUpon>UserHeldDevices.less</DependentUpon>
+    <Content Include="ClientSource\Style\Public\HeldDevices.css">
+      <DependentUpon>HeldDevices.less</DependentUpon>
     </Content>
-    <None Include="ClientSource\Style\Public\UserHeldDevicesNoticeboard.css">
-      <DependentUpon>UserHeldDevicesNoticeboard.less</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Style\Public\UserHeldDevicesNoticeboard.min.css">
-      <DependentUpon>UserHeldDevicesNoticeboard.less</DependentUpon>
+    <Content Include="ClientSource\Style\Public\HeldDevices.min.css">
+      <DependentUpon>HeldDevices.less</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\Public\HeldDevicesNoticeboard.css">
+      <DependentUpon>HeldDevicesNoticeboard.less</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\Public\HeldDevicesNoticeboard.min.css">
+      <DependentUpon>HeldDevicesNoticeboard.less</DependentUpon>
     </Content>
     <Content Include="ClientSource\Style\Public\UserHeldDevicesXml_Sharepoint.xslt">
       <SubType>Designer</SubType>
@@ -1566,8 +1587,8 @@
     <None Include="ClientSource\Style\Site.less" />
     <None Include="ClientSource\Style\User.less" />
     <None Include="ClientSource\Style\Timeline\disco.timelineextensions.less" />
-    <None Include="ClientSource\Style\Public\UserHeldDevices.less" />
-    <None Include="ClientSource\Style\Public\UserHeldDevicesNoticeboard.less" />
+    <None Include="ClientSource\Style\Public\HeldDevices.less" />
+    <None Include="ClientSource\Style\Public\HeldDevicesNoticeboard.less" />
     <None Include="Areas\Config\Views\Config\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
@@ -1890,7 +1911,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
+      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

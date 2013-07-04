@@ -1,4 +1,4 @@
-div.page div.column1 {
+﻿div.page div.column1 {
   width: 44%;
   padding-right: 1%;
   float: left;
@@ -22,9 +22,9 @@ div.page table tr:nth-child(odd) {
 div.page table td.Alert {
   background-color: #FFADAD;
 }
-div.page table td.userId {
-  width: 100px;
+div.page table td.id {
+  width: 120px;
 }
 div.page table td.timestamp {
-  width: 250px;
+  width: 200px;
 }
