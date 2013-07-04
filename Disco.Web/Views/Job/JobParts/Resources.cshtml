@@ -408,15 +408,13 @@
                 }, 100);
             }
         }
-        var liveMessagesConnection = $.connection('@(Url.Content("~/API/Repository/Notifications"))')
+        var liveMessagesConnection = $.connection('@(Url.Content("~/API/Repository/Notifications"))', { addToGroups: 'JobLog,JobAttachment' })
         liveMessagesConnection.received(liveMessageRecieved);
         liveMessagesConnection.error(function (e) {
             if (e)
                 alert('Error: ' + JSON.stringify(e));
         });
-        liveMessagesConnection.start(function () {
-            liveMessagesConnection.send('/addToGroups:JobLog,JobAttachment');
-        });
+        liveMessagesConnection.start();
         //#endregion
 
     });

@@ -246,10 +246,9 @@
             });
         }
         function updateWithLive() {
-            liveConnection = $.connection('@(Url.Content("~/API/Logging/TaskStatusNotifications"))');
+            liveConnection = $.connection('@(Url.Content("~/API/Logging/TaskStatusNotifications"))', {addToGroups: sessionId});
             liveConnection.received(update_Received);
             liveConnection.start(function () {
-                liveConnection.send('/addToGroups:' + sessionId);
                 updateWithAjax();
             });
         }

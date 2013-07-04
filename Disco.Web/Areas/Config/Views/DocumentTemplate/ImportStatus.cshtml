@@ -3,15 +3,13 @@
     Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
 }
-<h2>
-    Documents Imported Today
+<h2>Documents Imported Today
 </h2>
 <div id="importStatus">
     <div id="noSessions" data-bind="visible: noSessions">
-        <h3>
-            No imported documents today</h3>
+        <h3>No imported documents today</h3>
     </div>
-    <div id="sessions" data-bind="visible: !noSessions(), foreach: {data: sessions, afterRender: sessionRendered}"
+    <div id="sessions" data-bind="visible: !noSessions(), foreach: { data: sessions, afterRender: sessionRendered }"
         style="display: none">
         <div class="session">
             <div class="clearfix">
@@ -29,21 +27,18 @@
                     </div>
                 </div>
             </div>
-            <div class="sessionPages clearfix" data-bind="foreach: {data: sessionPages}">
-                <div class="sessionPage" data-bind="style: {backgroundImage: thumbnailUrl}">
+            <div class="sessionPages clearfix" data-bind="foreach: { data: sessionPages }">
+                <div class="sessionPage" data-bind="style: { backgroundImage: thumbnailUrl }">
                     <div class="sessionPageDetails">
-                        <h3 data-bind="text: title">
-                        </h3>
+                        <h3 data-bind="text: title"></h3>
                         <div data-bind="visible: undetected">
                             Disco QR-Code not found<br />
-                            <a target="_blank" data-bind="attr: {href: manuallyAssignUrl}, visible: $parent.sessionEnded">Manually Assign Page</a>
+                            <a target="_blank" data-bind="attr: { href: manuallyAssignUrl }, visible: $parent.sessionEnded">Manually Assign Page</a>
                         </div>
                         <div data-bind="visible: detected">
-                            Document: <a target="_blank" data-bind="text: documentTemplate, attr: {href: documentTemplateUrl}">
-                            </a>
+                            Document: <a target="_blank" data-bind="text: documentTemplate, attr: { href: documentTemplateUrl }"></a>
                             <br />
-                            Target: <a target="_blank" data-bind="text: assignedData, attr: {href: assignedDataUrl}">
-                            </a>
+                            Target: <a target="_blank" data-bind="text: assignedData, attr: { href: assignedDataUrl }"></a>
                         </div>
                         <div data-bind="visible: !(detected() || undetected())">
                             <p class="sessionStatus" data-bind="text: progressStatus">
@@ -58,11 +53,9 @@
                 <table class="logEventsViewport">
                     <thead>
                         <tr>
-                            <th class="icon">
-                                &nbsp;
+                            <th class="icon">&nbsp;
                             </th>
-                            <th class="message">
-                                Message
+                            <th class="message">Message
                             </th>
                         </tr>
                     </thead>
@@ -75,11 +68,9 @@
                     <table class="logEventsViewport" data-bind="visible: messages().length > 0" style="display: none">
                         <tbody data-bind="foreach: messages">
                             <tr>
-                                <td class="icon" data-bind="attr: {title: FormattedTimestamp}, css: {information: EventTypeSeverity == 0, warning: EventTypeSeverity == 1, error: EventTypeSeverity == 2}">
-                                    &nbsp;
+                                <td class="icon" data-bind="attr: { title: FormattedTimestamp }, css: { information: EventTypeSeverity == 0, warning: EventTypeSeverity == 1, error: EventTypeSeverity == 2 }">&nbsp;
                                 </td>
-                                <td class="message" data-bind="text: FormattedMessage, attr: {title: EventTypeName}">
-                                </td>
+                                <td class="message" data-bind="text: FormattedMessage, attr: { title: EventTypeName }"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -309,13 +300,11 @@
             ko.applyBindings(vm);
 
             // Init Persistent Connection
-            liveConnection = $.connection('@(Url.Content("~/API/Logging/Notifications"))');
+            liveConnection = $.connection('@(Url.Content("~/API/Logging/Notifications"))', { addToGroups: '@(Disco.BI.DocumentTemplateBI.Importer.DocumentImporterLog.Current.LiveLogGroupName)' });
             liveConnection.received(parseLog);
             liveConnection.error(function (e) { if (e.status != 200) alert('Live-Log Error: ' + e.statusText + ': ' + e.responseText); });
             isLive = true;
-            liveConnection.start(function () {
-                liveConnection.send('/addToGroups:@(Disco.BI.DocumentTemplateBI.Importer.DocumentImporterLog.Current.LiveLogGroupName)');
-            });
+            liveConnection.start();
         }
         init();
     });

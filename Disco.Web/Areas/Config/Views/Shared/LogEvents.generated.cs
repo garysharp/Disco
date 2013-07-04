@@ -335,14 +335,10 @@ WriteLiteral(@"',
             
             #line default
             #line hidden
-WriteLiteral(@"');
+WriteLiteral(@"', {addToGroups: logModuleLiveGroupName});
                     liveConnection.received(logReceived);
                     liveConnection.error(function(e){if (e.status != 200) alert('Live-Log Error: '+e.statusText +': '+e.responseText);});
-                    liveConnection.start(function(){
-                        if (logModuleLiveGroupName){
-                            liveConnection.send('/addToGroups:' + logModuleLiveGroupName);
-                        }
-                    });
+                    liveConnection.start();
                 }
             }
 

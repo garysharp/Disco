@@ -296,10 +296,9 @@ WriteLiteral("\';\r\n\r\n        // Clear Menu\r\n        $(\'#menu\').empty();\
             
             #line default
             #line hidden
-WriteLiteral(@"');
+WriteLiteral(@"', {addToGroups: sessionId});
             liveConnection.received(update_Received);
             liveConnection.start(function () {
-                liveConnection.send('/addToGroups:' + sessionId);
                 updateWithAjax();
             });
         }

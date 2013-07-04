@@ -21,6 +21,22 @@ namespace Disco.BI.Interop.SignalRHandlers
             }
         }
 
+        protected override Task OnConnected(IRequest request, string connectionId)
+        {
+            string addToGroups = request.QueryString["addToGroups"];
+
+            if (!string.IsNullOrWhiteSpace(addToGroups))
+            {
+                var groups = addToGroups.Split(',');
+                foreach (var g in groups)
+                {
+                    this.Groups.Add(connectionId, g);
+                }
+            }
+
+            return base.OnConnected(request, connectionId);
+        }
+
         protected override System.Threading.Tasks.Task OnReceived(IRequest request, string connectionId, string data)
         {
             // Add to Group

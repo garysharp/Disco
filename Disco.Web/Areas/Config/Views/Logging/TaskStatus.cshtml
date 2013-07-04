@@ -29,7 +29,7 @@
                 </td>
             </tr>
             <tr data-bind="visible: FinishedTimestamp() && !TaskExceptionMessage()">
-                <td class="finishedMessage" data-bind="css: {finishedRedirect: FinishedUrl}">
+                <td class="finishedMessage" data-bind="css: { finishedRedirect: FinishedUrl }">
                     <span data-bind="text: FinishedMessage"></span>
                 </td>
             </tr>
@@ -240,11 +240,10 @@
             });
         }
         function updateWithLive() {
-            liveConnection = $.connection('@(Url.Content("~/API/Logging/TaskStatusNotifications"))');
+            liveConnection = $.connection('@(Url.Content("~/API/Logging/TaskStatusNotifications"))', { addToGroups: sessionId });
             liveConnection.received(update_Received);
             liveConnection.error(function (e) { if (e.status != 200) alert('Live-Status Error: ' + e.statusText + ': ' + e.responseText); });
             liveConnection.start(function () {
-                liveConnection.send('/addToGroups:' + sessionId);
                 updateWithAjax();
             });
         }

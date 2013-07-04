@@ -50,7 +50,7 @@ namespace Disco.Web.Areas.Config.Views.DocumentTemplate
             
             #line default
             #line hidden
-WriteLiteral("\r\n<h2>\r\n    Documents Imported Today\r\n</h2>\r\n<div");
+WriteLiteral("\r\n<h2>Documents Imported Today\r\n</h2>\r\n<div");
 
 WriteLiteral(" id=\"importStatus\"");
 
@@ -60,13 +60,12 @@ WriteLiteral(" id=\"noSessions\"");
 
 WriteLiteral(" data-bind=\"visible: noSessions\"");
 
-WriteLiteral(">\r\n        <h3>\r\n            No imported documents today</h3>\r\n    </div>\r\n    <d" +
-"iv");
+WriteLiteral(">\r\n        <h3>No imported documents today</h3>\r\n    </div>\r\n    <div");
 
 WriteLiteral(" id=\"sessions\"");
 
-WriteLiteral(" data-bind=\"visible: !noSessions(), foreach: {data: sessions, afterRender: sessio" +
-"nRendered}\"");
+WriteLiteral(" data-bind=\"visible: !noSessions(), foreach: { data: sessions, afterRender: sessi" +
+"onRendered }\"");
 
 WriteLiteral("\r\n        style=\"display: none\"");
 
@@ -114,13 +113,13 @@ WriteLiteral(">\r\n                    </div>\r\n                </div>\r\n     
 
 WriteLiteral(" class=\"sessionPages clearfix\"");
 
-WriteLiteral(" data-bind=\"foreach: {data: sessionPages}\"");
+WriteLiteral(" data-bind=\"foreach: { data: sessionPages }\"");
 
 WriteLiteral(">\r\n                <div");
 
 WriteLiteral(" class=\"sessionPage\"");
 
-WriteLiteral(" data-bind=\"style: {backgroundImage: thumbnailUrl}\"");
+WriteLiteral(" data-bind=\"style: { backgroundImage: thumbnailUrl }\"");
 
 WriteLiteral(">\r\n                    <div");
 
@@ -130,7 +129,7 @@ WriteLiteral(">\r\n                        <h3");
 
 WriteLiteral(" data-bind=\"text: title\"");
 
-WriteLiteral(">\r\n                        </h3>\r\n                        <div");
+WriteLiteral("></h3>\r\n                        <div");
 
 WriteLiteral(" data-bind=\"visible: undetected\"");
 
@@ -139,7 +138,7 @@ WriteLiteral(">\r\n                            Disco QR-Code not found<br />\r\n
 
 WriteLiteral(" target=\"_blank\"");
 
-WriteLiteral(" data-bind=\"attr: {href: manuallyAssignUrl}, visible: $parent.sessionEnded\"");
+WriteLiteral(" data-bind=\"attr: { href: manuallyAssignUrl }, visible: $parent.sessionEnded\"");
 
 WriteLiteral(">Manually Assign Page</a>\r\n                        </div>\r\n                      " +
 "  <div");
@@ -150,17 +149,16 @@ WriteLiteral(">\r\n                            Document: <a");
 
 WriteLiteral(" target=\"_blank\"");
 
-WriteLiteral(" data-bind=\"text: documentTemplate, attr: {href: documentTemplateUrl}\"");
+WriteLiteral(" data-bind=\"text: documentTemplate, attr: { href: documentTemplateUrl }\"");
 
-WriteLiteral(">\r\n                            </a>\r\n                            <br />\r\n        " +
-"                    Target: <a");
+WriteLiteral("></a>\r\n                            <br />\r\n                            Target: <a" +
+"");
 
 WriteLiteral(" target=\"_blank\"");
 
-WriteLiteral(" data-bind=\"text: assignedData, attr: {href: assignedDataUrl}\"");
+WriteLiteral(" data-bind=\"text: assignedData, attr: { href: assignedDataUrl }\"");
 
-WriteLiteral(">\r\n                            </a>\r\n                        </div>\r\n            " +
-"            <div");
+WriteLiteral("></a>\r\n                        </div>\r\n                        <div");
 
 WriteLiteral(" data-bind=\"visible: !(detected() || undetected())\"");
 
@@ -190,14 +188,12 @@ WriteLiteral(">\r\n                    <thead>\r\n                        <tr>\r
 
 WriteLiteral(" class=\"icon\"");
 
-WriteLiteral(">\r\n                                &nbsp;\r\n                            </th>\r\n   " +
-"                         <th");
+WriteLiteral(">&nbsp;\r\n                            </th>\r\n                            <th");
 
 WriteLiteral(" class=\"message\"");
 
-WriteLiteral(">\r\n                                Message\r\n                            </th>\r\n  " +
-"                      </tr>\r\n                    </thead>\r\n                </tab" +
-"le>\r\n                <div");
+WriteLiteral(">Message\r\n                            </th>\r\n                        </tr>\r\n     " +
+"               </thead>\r\n                </table>\r\n                <div");
 
 WriteLiteral(" class=\"logEventsViewportContainer\"");
 
@@ -226,19 +222,19 @@ WriteLiteral(">\r\n                            <tr>\r\n                         
 
 WriteLiteral(" class=\"icon\"");
 
-WriteLiteral(" data-bind=\"attr: {title: FormattedTimestamp}, css: {information: EventTypeSeveri" +
-"ty == 0, warning: EventTypeSeverity == 1, error: EventTypeSeverity == 2}\"");
+WriteLiteral(" data-bind=\"attr: { title: FormattedTimestamp }, css: { information: EventTypeSev" +
+"erity == 0, warning: EventTypeSeverity == 1, error: EventTypeSeverity == 2 }\"");
 
-WriteLiteral(">\r\n                                    &nbsp;\r\n                                </" +
-"td>\r\n                                <td");
+WriteLiteral(">&nbsp;\r\n                                </td>\r\n                                <" +
+"td");
 
 WriteLiteral(" class=\"message\"");
 
-WriteLiteral(" data-bind=\"text: FormattedMessage, attr: {title: EventTypeName}\"");
+WriteLiteral(" data-bind=\"text: FormattedMessage, attr: { title: EventTypeName }\"");
 
-WriteLiteral(">\r\n                                </td>\r\n                            </tr>\r\n    " +
-"                    </tbody>\r\n                    </table>\r\n                </di" +
-"v>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<script");
+WriteLiteral("></td>\r\n                            </tr>\r\n                        </tbody>\r\n    " +
+"                </table>\r\n                </div>\r\n            </div>\r\n        </" +
+"div>\r\n    </div>\r\n</div>\r\n<script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -265,7 +261,7 @@ WriteLiteral(">\r\n    $(function () {\r\n        var vm;\r\n        var host = 
 " var urlDeviceShow = \'");
 
             
-            #line 111 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 102 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                          Write(Url.Action(MVC.Device.Show()));
 
             
@@ -274,7 +270,7 @@ WriteLiteral(">\r\n    $(function () {\r\n        var vm;\r\n        var host = 
 WriteLiteral("/\'\r\n        var urlJobShow = \'");
 
             
-            #line 112 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 103 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                       Write(Url.Action(MVC.Job.Show()));
 
             
@@ -283,7 +279,7 @@ WriteLiteral("/\'\r\n        var urlJobShow = \'");
 WriteLiteral("/\'\r\n        var urlUserShow = \'");
 
             
-            #line 113 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 104 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                        Write(Url.Action(MVC.User.Show()));
 
             
@@ -292,7 +288,7 @@ WriteLiteral("/\'\r\n        var urlUserShow = \'");
 WriteLiteral("/\'\r\n        var urlPageThumbnail = \'");
 
             
-            #line 114 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 105 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                             Write(Url.Action(MVC.API.DocumentTemplate.ImporterThumbnail()));
 
             
@@ -301,7 +297,7 @@ WriteLiteral("/\'\r\n        var urlPageThumbnail = \'");
 WriteLiteral("/\'\r\n        var urlDocumentTemplate = \'");
 
             
-            #line 115 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 106 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                                Write(Url.Action(MVC.Config.DocumentTemplate.Index()));
 
             
@@ -310,7 +306,7 @@ WriteLiteral("/\'\r\n        var urlDocumentTemplate = \'");
 WriteLiteral("/\';\r\n        var urlManuallyAssign = \'");
 
             
-            #line 116 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 107 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                              Write(Url.Action(MVC.Config.DocumentTemplate.UndetectedPages()));
 
             
@@ -319,7 +315,7 @@ WriteLiteral("/\';\r\n        var urlManuallyAssign = \'");
 WriteLiteral("\';\r\n        var iconErrorUrl = \'url(");
 
             
-            #line 117 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 108 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                             Write(Links.ClientSource.Style.Images.Status.fail32_png);
 
             
@@ -427,7 +423,7 @@ WriteLiteral(")\';\r\n        var isLive = false;\r\n\r\n        function pageVi
 "          url: \'");
 
             
-            #line 292 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 283 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                   Write(Url.Action(MVC.API.Logging.RetrieveEvents()));
 
             
@@ -456,27 +452,31 @@ WriteLiteral(@"',
             liveConnection = $.connection('");
 
             
-            #line 312 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 303 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                                        Write(Url.Content("~/API/Logging/Notifications"));
 
             
             #line default
             #line hidden
-WriteLiteral(@"');
-            liveConnection.received(parseLog);
-            liveConnection.error(function (e) { if (e.status != 200) alert('Live-Log Error: ' + e.statusText + ': ' + e.responseText); });
-            isLive = true;
-            liveConnection.start(function () {
-                liveConnection.send('/addToGroups:");
+WriteLiteral("\', { addToGroups: \'");
 
             
-            #line 317 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
-                                              Write(Disco.BI.DocumentTemplateBI.Importer.DocumentImporterLog.Current.LiveLogGroupName);
+            #line 303 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+                                                                                                       Write(Disco.BI.DocumentTemplateBI.Importer.DocumentImporterLog.Current.LiveLogGroupName);
 
             
             #line default
             #line hidden
-WriteLiteral("\');\r\n            });\r\n        }\r\n        init();\r\n    });\r\n</script>\r\n");
+WriteLiteral(@"' });
+            liveConnection.received(parseLog);
+            liveConnection.error(function (e) { if (e.status != 200) alert('Live-Log Error: ' + e.statusText + ': ' + e.responseText); });
+            isLive = true;
+            liveConnection.start();
+        }
+        init();
+    });
+</script>
+");
 
         }
     }

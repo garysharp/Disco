@@ -122,7 +122,7 @@ WriteLiteral(">\r\n                <td");
 
 WriteLiteral(" class=\"finishedMessage\"");
 
-WriteLiteral(" data-bind=\"css: {finishedRedirect: FinishedUrl}\"");
+WriteLiteral(" data-bind=\"css: { finishedRedirect: FinishedUrl }\"");
 
 WriteLiteral(">\r\n                    <span");
 
@@ -292,11 +292,10 @@ WriteLiteral("\';\r\n\r\n        var view = $(\'#scheduledTaskStatus\');\r\n    
             
             #line default
             #line hidden
-WriteLiteral(@"');
+WriteLiteral(@"', { addToGroups: sessionId });
             liveConnection.received(update_Received);
             liveConnection.error(function (e) { if (e.status != 200) alert('Live-Status Error: ' + e.statusText + ': ' + e.responseText); });
             liveConnection.start(function () {
-                liveConnection.send('/addToGroups:' + sessionId);
                 updateWithAjax();
             });
         }

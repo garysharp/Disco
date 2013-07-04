@@ -519,20 +519,24 @@ WriteLiteral(@"',
             
             #line default
             #line hidden
-WriteLiteral(@"');
-            liveConnection.received(parseLog);
-            liveConnection.error(function (e) { if (e.status != 200) alert('Live-Log Error: ' + e.statusText + ': ' + e.responseText); });
-            liveConnection.start(function () {
-                liveConnection.send('/addToGroups:");
+WriteLiteral("\', { addToGroups: \'");
 
             
-            #line 364 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
-                                              Write(Disco.BI.DeviceBI.EnrolmentLog.Current.LiveLogGroupName);
+            #line 360 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                                                                                                       Write(Disco.BI.DeviceBI.EnrolmentLog.Current.LiveLogGroupName);
 
             
             #line default
             #line hidden
-WriteLiteral("\');\r\n            });\r\n        }\r\n        init();\r\n    });\r\n</script>\r\n");
+WriteLiteral(@"' });
+            liveConnection.received(parseLog);
+            liveConnection.error(function (e) { if (e.status != 200) alert('Live-Log Error: ' + e.statusText + ': ' + e.responseText); });
+            liveConnection.start();
+        }
+        init();
+    });
+</script>
+");
 
         }
     }

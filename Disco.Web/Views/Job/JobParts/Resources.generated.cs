@@ -789,15 +789,13 @@ WriteLiteral("\',\r\n                        dataType: \'json\',\r\n            
             
             #line default
             #line hidden
-WriteLiteral(@"')
+WriteLiteral(@"', { addToGroups: 'JobLog,JobAttachment' })
         liveMessagesConnection.received(liveMessageRecieved);
         liveMessagesConnection.error(function (e) {
             if (e)
                 alert('Error: ' + JSON.stringify(e));
         });
-        liveMessagesConnection.start(function () {
-            liveMessagesConnection.send('/addToGroups:JobLog,JobAttachment');
-        });
+        liveMessagesConnection.start();
         //#endregion
 
     });
