@@ -1973,10 +1973,12 @@ select {
   padding: 2px;
   color: #444;
 }
-input[type="submit"] {
+input[type="submit"],
+button {
   padding: 5px;
 }
-input[type="submit"].button {
+input[type="submit"].button,
+button.button {
   font-size: 12px;
   padding: 6px 10px 4px 10px;
   margin: 2px;
@@ -1987,20 +1989,24 @@ input[type="submit"].button {
   text-transform: uppercase;
   cursor: pointer;
 }
-input[type="submit"].button.alert {
+input[type="submit"].button.alert,
+button.button.alert {
   border-color: #990000;
   background-color: #e90000;
 }
-input[type="submit"].button.small {
+input[type="submit"].button.small,
+button.button.small {
   padding: 2px 5px;
   font-size: .9em;
 }
-input[type="submit"].button[disabled] {
+input[type="submit"].button[disabled],
+button.button[disabled] {
   background: #9e9e9e;
   border: 1px solid #696969;
   cursor: default;
 }
-input[type="submit"].button:hover {
+input[type="submit"].button:hover,
+button.button:hover {
   border: 1px solid #696969;
   background: #9e9e9e;
 }
