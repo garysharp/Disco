@@ -337,15 +337,31 @@ WriteLiteral("\r\n                    </td>\r\n                    <td");
 
 WriteLiteral(" class=\"description\"");
 
-WriteLiteral(">\r\n                        <span");
+WriteLiteral(">\r\n");
+
+            
+            #line 61 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 61 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                         if (item.UserId != null)
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <span");
 
 WriteLiteral(" class=\"user\"");
 
 WriteLiteral(">");
 
             
-            #line 61 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
-                                      Write(item.UserDisplayName);
+            #line 63 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                                          Write(item.UserDisplayName);
 
             
             #line default
@@ -353,8 +369,8 @@ WriteLiteral(">");
 WriteLiteral(" (");
 
             
-            #line 61 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
-                                                             Write(item.UserId);
+            #line 63 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                                                                 Write(item.UserId);
 
             
             #line default
@@ -362,15 +378,20 @@ WriteLiteral(" (");
 WriteLiteral(")</span>\r\n");
 
             
-            #line 62 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
-                        
+            #line 64 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                        }
+
             
             #line default
             #line hidden
+WriteLiteral("                        ");
+
             
-            #line 62 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+            #line 65 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
                          if (!string.IsNullOrWhiteSpace(item.DeviceLocation))
                         {
+                            if (item.UserId != null)
+                            {
 
             
             #line default
@@ -379,22 +400,45 @@ WriteLiteral("                            ");
 
 WriteLiteral(" - ");
 
+WriteLiteral("\r\n");
+
             
-            #line 64 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
-                                            
+            #line 70 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                            }
+                            
             
             #line default
             #line hidden
             
-            #line 64 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
-                                       Write(item.DeviceLocation);
+            #line 71 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                       Write(item.DeviceLocation);
 
             
             #line default
             #line hidden
             
-            #line 64 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
-                                                                
+            #line 71 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                                                
+                        }
+                        else
+                        {
+                            if (item.UserId == null)
+                            {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 77 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                       Write(item.DeviceComputerName);
+
+            
+            #line default
+            #line hidden
+            
+            #line 77 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                                                    
+                            }
                         }
 
             
@@ -402,21 +446,21 @@ WriteLiteral(" - ");
             #line hidden
 WriteLiteral("                    </td>\r\n                    <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2758), Tuple.Create("\"", 2816)
-, Tuple.Create(Tuple.Create("", 2766), Tuple.Create("timestamp", 2766), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 3267), Tuple.Create("\"", 3325)
+, Tuple.Create(Tuple.Create("", 3275), Tuple.Create("timestamp", 3275), true)
             
-            #line 67 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 2775), Tuple.Create<System.Object, System.Int32>(item.IsAlert ? " Alert" : string.Empty
+            #line 81 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 3284), Tuple.Create<System.Object, System.Int32>(item.IsAlert ? " Alert" : string.Empty
             
             #line default
             #line hidden
-, 2775), false)
+, 3284), false)
 );
 
 WriteLiteral(">Since ");
 
             
-            #line 67 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+            #line 81 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
                                                                                     Write(item.WaitingForUserActionSince);
 
             
@@ -425,7 +469,7 @@ WriteLiteral(">Since ");
 WriteLiteral("\r\n                    </td>\r\n                </tr>\r\n");
 
             
-            #line 70 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+            #line 84 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
             }
 
             
@@ -434,13 +478,13 @@ WriteLiteral("\r\n                    </td>\r\n                </tr>\r\n");
 WriteLiteral("        </table>\r\n        <hr />\r\n");
 
             
-            #line 73 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+            #line 87 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 73 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+            #line 87 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
           
             var DevicesReadyForReturn = Model.Where(i => i.ReadyForReturn && !i.WaitingForUserAction).ToArray();
         
@@ -450,7 +494,7 @@ WriteLiteral("        </table>\r\n        <hr />\r\n");
 WriteLiteral("\r\n        <h2>Ready for Return (");
 
             
-            #line 76 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+            #line 90 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
                          Write(DevicesReadyForReturn.Length);
 
             
@@ -463,13 +507,13 @@ WriteLiteral(" class=\"dataTable\"");
 WriteLiteral(">\r\n");
 
             
-            #line 78 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+            #line 92 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 78 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+            #line 92 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
              foreach (var item in DevicesReadyForReturn)
             {
 
@@ -485,7 +529,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                        ");
 
             
-            #line 82 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+            #line 96 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
                    Write(item.DeviceSerialNumber);
 
             
@@ -495,15 +539,31 @@ WriteLiteral("\r\n                    </td>\r\n                    <td");
 
 WriteLiteral(" class=\"description\"");
 
-WriteLiteral(">\r\n                        <span");
+WriteLiteral(">\r\n");
+
+            
+            #line 99 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 99 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                         if (item.UserId != null)
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <span");
 
 WriteLiteral(" class=\"user\"");
 
 WriteLiteral(">");
 
             
-            #line 85 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
-                                      Write(item.UserDisplayName);
+            #line 101 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                                          Write(item.UserDisplayName);
 
             
             #line default
@@ -511,8 +571,8 @@ WriteLiteral(">");
 WriteLiteral(" (");
 
             
-            #line 85 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
-                                                             Write(item.UserId);
+            #line 101 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                                                                 Write(item.UserId);
 
             
             #line default
@@ -520,15 +580,20 @@ WriteLiteral(" (");
 WriteLiteral(")</span>\r\n");
 
             
-            #line 86 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
-                        
+            #line 102 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                        }
+
             
             #line default
             #line hidden
+WriteLiteral("                        ");
+
             
-            #line 86 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+            #line 103 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
                          if (!string.IsNullOrWhiteSpace(item.DeviceLocation))
                         {
+                            if (item.UserId != null)
+                            {
 
             
             #line default
@@ -537,22 +602,45 @@ WriteLiteral("                            ");
 
 WriteLiteral(" - ");
 
+WriteLiteral("\r\n");
+
             
-            #line 88 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
-                                            
+            #line 108 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                            }
+                            
             
             #line default
             #line hidden
             
-            #line 88 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
-                                       Write(item.DeviceLocation);
+            #line 109 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                       Write(item.DeviceLocation);
 
             
             #line default
             #line hidden
             
-            #line 88 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
-                                                                
+            #line 109 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                                                
+                        }
+                        else
+                        {
+                            if (item.UserId == null)
+                            {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 115 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                       Write(item.DeviceComputerName);
+
+            
+            #line default
+            #line hidden
+            
+            #line 115 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+                                                    
+                            }
                         }
 
             
@@ -560,21 +648,21 @@ WriteLiteral(" - ");
             #line hidden
 WriteLiteral("                    </td>\r\n                    <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 3787), Tuple.Create("\"", 3845)
-, Tuple.Create(Tuple.Create("", 3795), Tuple.Create("timestamp", 3795), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4805), Tuple.Create("\"", 4863)
+, Tuple.Create(Tuple.Create("", 4813), Tuple.Create("timestamp", 4813), true)
             
-            #line 91 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 3804), Tuple.Create<System.Object, System.Int32>(item.IsAlert ? " Alert" : string.Empty
+            #line 119 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 4822), Tuple.Create<System.Object, System.Int32>(item.IsAlert ? " Alert" : string.Empty
             
             #line default
             #line hidden
-, 3804), false)
+, 4822), false)
 );
 
 WriteLiteral(">Ready ");
 
             
-            #line 91 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+            #line 119 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
                                                                                     Write(item.ReadyForReturnSince);
 
             
@@ -583,7 +671,7 @@ WriteLiteral(">Ready ");
 WriteLiteral("\r\n                    </td>\r\n                </tr>\r\n");
 
             
-            #line 94 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
+            #line 122 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
             }
 
             

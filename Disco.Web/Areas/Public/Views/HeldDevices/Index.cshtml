@@ -58,10 +58,24 @@
                         @item.DeviceSerialNumber
                     </td>
                     <td class="description">
-                        <span class="user">@item.UserDisplayName (@item.UserId)</span>
+                        @if (item.UserId != null)
+                        {
+                            <span class="user">@item.UserDisplayName (@item.UserId)</span>
+                        }
                         @if (!string.IsNullOrWhiteSpace(item.DeviceLocation))
                         {
-                            <text> - </text>@item.DeviceLocation
+                            if (item.UserId != null)
+                            {
+                            <text> - </text>
+                            }
+                            @item.DeviceLocation
+                        }
+                        else
+                        {
+                            if (item.UserId == null)
+                            {
+                            @item.DeviceComputerName
+                            }
                         }
                     </td>
                     <td class="timestamp@(item.IsAlert ? " Alert" : string.Empty)">Since @item.WaitingForUserActionSince
@@ -82,10 +96,24 @@
                         @item.DeviceSerialNumber
                     </td>
                     <td class="description">
-                        <span class="user">@item.UserDisplayName (@item.UserId)</span>
+                        @if (item.UserId != null)
+                        {
+                            <span class="user">@item.UserDisplayName (@item.UserId)</span>
+                        }
                         @if (!string.IsNullOrWhiteSpace(item.DeviceLocation))
                         {
-                            <text> - </text>@item.DeviceLocation
+                            if (item.UserId != null)
+                            {
+                            <text> - </text>
+                            }
+                            @item.DeviceLocation
+                        }
+                        else
+                        {
+                            if (item.UserId == null)
+                            {
+                            @item.DeviceComputerName
+                            }
                         }
                     </td>
                     <td class="timestamp@(item.IsAlert ? " Alert" : string.Empty)">Ready @item.ReadyForReturnSince
