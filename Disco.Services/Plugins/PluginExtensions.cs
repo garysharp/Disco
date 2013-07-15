@@ -5,6 +5,7 @@ using System.Text;
 using Disco.Data.Repository;
 using System.IO;
 using System.Web.Mvc;
+using System.Web.WebPages;
 using System.Web.Routing;
 using System.Web;
 using System.Web.Mvc.Html;
@@ -52,6 +53,43 @@ namespace Disco.Services.Plugins
 
             return controller.ModelState.IsValid;
         }
+        public static bool TryUpdateModel(this Controller controller, object model)
+        {
+            return controller.TryUpdateModel(model, null, controller.ValueProvider);
+        }
+        public static bool TryUpdateModel(this Controller controller, object model, IValueProvider valueProvider)
+        {
+            return controller.TryUpdateModel(model, null, valueProvider);
+        }
+        public static bool TryUpdateModel(this Controller controller, object model, string prefix)
+        {
+            return controller.TryUpdateModel(model, prefix, controller.ValueProvider);
+        }
+        public static bool TryUpdateModel(this Controller controller, object model, string prefix, IValueProvider valueProvider)
+        {
+            if (model == null)
+                throw new ArgumentNullException("model");
+            if (valueProvider == null)
+                throw new ArgumentNullException("valueProvider");
+
+            Predicate<string> predicate = propertyName => true;
+            IModelBinder binder = ModelBinders.Binders.GetBinder(model.GetType());
+
+            ModelBindingContext context2 = new ModelBindingContext
+            {
+                ModelMetadata = ModelMetadataProviders.Current.GetMetadataForType(() => model, model.GetType()),
+                ModelName = prefix,
+                ModelState = controller.ModelState,
+                PropertyFilter = predicate,
+                ValueProvider = valueProvider
+            };
+
+            ModelBindingContext bindingContext = context2;
+
+            binder.BindModel(controller.ControllerContext, bindingContext);
+
+            return controller.ModelState.IsValid;
+        }
         #endregion
 
         #region Virtual Directories
@@ -74,7 +112,7 @@ namespace Disco.Services.Plugins
         //{
         //    var routeValues = new RouteValueDictionary(new { PluginId = pluginManifest.Id, PluginAction = PluginAction });
 
-          
+
 
         //    return UrlHelper.GenerateUrl("Plugin", "PluginWebHandler", "Index", routeValues, RouteTable.Routes, requestContext, true);
         //}
@@ -244,6 +282,51 @@ namespace Disco.Services.Plugins
                 deferredBundles.Add(pluginResourceUrlHtml);
         }
 
+        #endregion
+
+        #region Request Caching
+        public static void SetCacheability(this PluginWebHandler Handler, TimeSpan CacheDuration)
+        {
+            var cache = Handler.HostController.Response.Cache;
+            cache.SetOmitVaryStar(true);
+            cache.SetExpires(DateTime.Now.Add(CacheDuration));
+            cache.SetValidUntilExpires(true);
+            cache.SetCacheability(HttpCacheability.Private);
+        }
+        public static void SetCacheabilityOff(this PluginWebHandler Handler)
+        {
+            var cache = Handler.HostController.Response.Cache;
+            cache.SetExpires(DateTime.Now.AddDays(-1));
+            cache.SetCacheability(HttpCacheability.NoCache);
+        }
+        #endregion
+
+        #region Render Partial Compiled
+        private static void RenderPartialCompiledInternal(this HtmlHelper htmlHelper, Type viewType, object model, TextWriter writer)
+        {
+            if (writer == null)
+                throw new ArgumentNullException("writer");
+            WebViewPage page = Activator.CreateInstance(viewType) as WebViewPage;
+            if (page == null)
+                throw new InvalidOperationException("Invalid View Type");
+            page.ViewContext = htmlHelper.ViewContext;
+            page.ViewData = new ViewDataDictionary(model);
+            page.InitHelpers();
+            HttpContextBase httpContext = htmlHelper.ViewContext.HttpContext;
+            page.ExecutePageHierarchy(new WebPageContext(httpContext, null, model), writer, null);
+        }
+        public static MvcHtmlString PartialCompiled(this HtmlHelper htmlHelper, Type viewType)
+        {
+            return PartialCompiled(htmlHelper, viewType, null);
+        }
+        public static MvcHtmlString PartialCompiled(this HtmlHelper htmlHelper, Type viewType, object model)
+        {
+            using (StringWriter writer = new StringWriter(CultureInfo.CurrentCulture))
+            {
+                htmlHelper.RenderPartialCompiledInternal(viewType, model, writer);
+                return MvcHtmlString.Create(writer.ToString());
+            }
+        }
         #endregion
     }
 }
