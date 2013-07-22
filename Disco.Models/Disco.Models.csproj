@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BI\Config\OrganisationAddress.cs" />
+    <Compile Include="BI\Device\ImportDevice.cs" />
     <Compile Include="BI\DocumentTemplate\DocumentState.cs" />
     <Compile Include="BI\Expressions\IImageExpressionResult.cs" />
     <Compile Include="BI\Interop\Community\PluginLibraryCompatibilityItem.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="UI\Config\Logging\ConfigLoggingTaskStatusModel.cs" />
     <Compile Include="UI\Config\Organisation\ConfigOrganisationIndexModel.cs" />
     <Compile Include="UI\Device\DeviceAddOfflineModel.cs" />
+    <Compile Include="UI\Device\DeviceImportModel.cs" />
     <Compile Include="UI\Device\DeviceIndexModel.cs" />
     <Compile Include="UI\Device\DeviceShowModel.cs" />
     <Compile Include="UI\Job\JobCreateModel.cs" />

@@ -46,6 +46,9 @@
     <Reference Include="itextsharp">
       <HintPath>..\Resources\Libraries\iTextSharp\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="LumenWorks.Framework.IO">
+      <HintPath>..\..\..\Resources\Libraries\LumenWorks.Framework.IO\LumenWorks.Framework.IO.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.1.1.2\lib\net40\Microsoft.AspNet.SignalR.Core.dll</HintPath>
@@ -120,6 +123,9 @@
     <Compile Include="BI\AttachmentBI\Utilities.cs" />
     <Compile Include="BI\DeviceBI\BatchUtilities.cs" />
     <Compile Include="BI\DeviceBI\DeviceModelBI.cs" />
+    <Compile Include="BI\DeviceBI\Importing\Import.cs" />
+    <Compile Include="BI\DeviceBI\Importing\ImportParseTask.cs" />
+    <Compile Include="BI\DeviceBI\Importing\ImportProcessTask.cs" />
     <Compile Include="BI\DeviceBI\Searching.cs" />
     <Compile Include="BI\DisposableImageCollection.cs" />
     <Compile Include="BI\DocumentTemplateBI\DocumentTemplateQRCodeLocationCache.cs" />

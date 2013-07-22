@@ -143,6 +143,7 @@ namespace Disco.Services.Plugins
                 "DotNet.Highcharts",
                 "EntityFramework",
                 "itextsharp",
+                "LumenWorks.Framework.IO",
                 "Microsoft.AspNet.SignalR.Core",
                 "Microsoft.AspNet.SignalR.Owin",
                 "Microsoft.AspNet.SignalR.SystemWeb",

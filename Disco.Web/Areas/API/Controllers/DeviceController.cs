@@ -464,5 +464,27 @@ namespace Disco.Web.Areas.API.Controllers
 
         #endregion
 
+        public virtual ActionResult ImportParse(HttpPostedFileBase ImportFile)
+        {
+            if (ImportFile == null || ImportFile.ContentLength == 0)
+                throw new ArgumentNullException("ImportFile");
+
+            var status = Disco.BI.DeviceBI.Importing.ImportParseTask.Run(ImportFile.InputStream);
+
+            status.SetFinishedUrl(Url.Action(MVC.API.Device.ImportProcess(status.SessionId)));
+
+            return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
+        }
+
+        public virtual ActionResult ImportProcess(string ParseTaskSessionKey)
+        {
+            if (string.IsNullOrWhiteSpace(ParseTaskSessionKey))
+                throw new ArgumentNullException("ParseTaskSessionKey");
+
+            var status = Disco.BI.DeviceBI.Importing.ImportProcessTask.Run(ParseTaskSessionKey);
+
+            return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
+        }
+
     }
 }

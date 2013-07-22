@@ -64,7 +64,7 @@ namespace Disco.Web.Controllers
                 if (!string.IsNullOrEmpty(m.Device.SerialNumber) && dbContext.Devices.Count(d => d.SerialNumber == m.Device.SerialNumber) > 0)
                     ModelState.AddModelError("Device.SerialNumber", "A Device what this Serial Number already exists");
             }
-            
+
 
             if (ModelState.IsValid)
             {
@@ -73,6 +73,19 @@ namespace Disco.Web.Controllers
                 return RedirectToAction(MVC.Device.Show(d.SerialNumber));
             }
             return AddOffline();
+        }
+        #endregion
+
+        #region Import
+        [HttpGet]
+        public virtual ActionResult Import()
+        {
+            Models.Device.ImportModel m = new Models.Device.ImportModel();
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<DeviceImportModel>(this.ControllerContext, m);
+
+            return View();
         }
         #endregion
 
@@ -118,7 +131,7 @@ namespace Disco.Web.Controllers
                 HideClosedJobs = true,
                 EnablePaging = false
             };
-            m.Jobs.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.DeviceSerialNumber == m.Device.SerialNumber).OrderByDescending(j => j.Id)); 
+            m.Jobs.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.DeviceSerialNumber == m.Device.SerialNumber).OrderByDescending(j => j.Id));
 
             m.Certificates = dbContext.DeviceCertificates.Where(c => c.DeviceSerialNumber == m.Device.SerialNumber).ToList();
 

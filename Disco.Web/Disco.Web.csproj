@@ -513,6 +513,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Device\AddOfflineModel.cs" />
+    <Compile Include="Models\Device\ImportModel.cs" />
     <Compile Include="Models\Device\IndexModel.cs" />
     <Compile Include="Models\Device\ShowModel.cs" />
     <Compile Include="Models\InitialConfig\CompleteModel.cs" />
@@ -565,6 +566,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>_Subject.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Device\Import.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Import.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Views\Device\Index.generated.cs">
       <DependentUpon>Index.cshtml</DependentUpon>
@@ -1444,6 +1450,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Subject.generated.cs</LastGenOutput>
     </None>
+    <None Include="Views\Device\Import.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Import.generated.cs</LastGenOutput>
+    </None>
     <None Include="Views\Device\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
@@ -1911,7 +1921,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
