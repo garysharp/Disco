@@ -17,7 +17,7 @@ namespace Disco.Web.Areas.Public.Models.HeldDevices
         {
             get
             {
-                StringBuilder sb = new StringBuilder(this.DeviceSerialNumber);
+                StringBuilder sb = new StringBuilder(this.DeviceComputerName);
 
                 if (UserId != null)
                     sb.Append(" - ").Append(this.UserDisplayName).Append(" (").Append(this.UserId).Append(")");
@@ -25,7 +25,7 @@ namespace Disco.Web.Areas.Public.Models.HeldDevices
                 if (!string.IsNullOrWhiteSpace(this.DeviceLocation))
                     sb.Append(" - ").Append(this.DeviceLocation);
                 else if (UserId == null)
-                    sb.Append(" - ").Append(this.DeviceComputerName);
+                    sb.Append(" - ").Append(this.DeviceSerialNumber);
 
                 return sb.ToString();
             }
