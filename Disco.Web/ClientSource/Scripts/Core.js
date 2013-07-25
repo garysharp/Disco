@@ -39599,54 +39599,70 @@ jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, -1], [10, 20, 50, "All"
 
         // Menu Functionality
         var $menu = $('#menu');
-        var $menuSubVisible = [];
-        $menu.find('li').each(function () {
-            var $menuItem = $(this);
-            var $subMenu = $menuItem.children('ul').first();
-            if ($subMenu.length > 0) {
-                $menuItem.mouseover(function () {
-                    menuShow($menuItem, $subMenu);
-                }).mouseout(function () {
-                    menuHide($menuItem, $subMenu);
-                }).addClass('hasSubmenu');
+        var $menuItems = $menu.find('li');
+        var $menuItemParents = $menuItems.filter('.hasSubMenu');
+        var $menuSubMenus = $menuItems.filter('.subMenu');
+        var menuAllowTouchNavigation = null;
 
-                // Touch-enabled browser
-                if (Modernizr.touch) {
-                    $menuItem.on('touchstart', function (e) {
-                        // Already Open - allow 'click'
-                        for (var i = 0; i < $menuSubVisible.length; i++)
-                            if ($menuSubVisible[0] === $subMenu)
-                                return;
-
-                        // Show
-                        menuShow($menuItem, $subMenu);
-                        $menuSubVisible.push($subMenu);
-                        $(document).on('click', menuTouchHide)
-                        e.preventDefault();
-                    });
-                }
-            };
-        });
-        function menuTouchHide() {
-            while ($menuSubVisible.length > 0) {
-                var $subMenu = $menuSubVisible.pop();
-                $subMenu.hide();
-            }
-        }
-        function menuShow($menuItem, $subMenu) {
-            var timeoutToken = $menuItem.data('menuTimeoutToken');
-            if (timeoutToken)
-                window.clearTimeout(timeoutToken);
-            if (!$subMenu.is(':visible'))
+        $menuItemParents.each(function () {
+            var $parent = $(this);
+            var $subMenu = $parent.children('ul.subMenu');
+            $parent.data('menuSubMenu', $subMenu);
+        }).mouseover(function () {
+            var $parent = $(this);
+            var $subMenu = $parent.data('menuSubMenu');
+            var hideToken = $parent.data('menuHideToken');
+            if (hideToken)
+                window.clearTimeout(hideToken);
+            if (!$subMenu.is(':visible')) {
                 $subMenu.show();
-        }
-        function menuHide($menuItem, $subMenu) {
-            var timeoutToken = subMenuHideToken = window.setTimeout(function () {
+                if (menuAllowTouchNavigation !== null)
+                    menuTouchPreventNavigation();
+            }
+        }).mouseout(function () {
+            var $parent = $(this);
+            var $subMenu = $parent.data('menuSubMenu');
+            var hideToken = window.setTimeout(function () {
                 $subMenu.hide();
             }, 250);
-            $menuItem.data('menuTimeoutToken', timeoutToken);
-        }
+            $parent.data('menuHideToken', hideToken);
+        });
 
+        if (Modernizr.touch) {
+            menuAllowTouchNavigation = true;
+            $menuItemParents.children('a').on('touchstart', menuTouchStarted);
+        } else if (window.navigator.msPointerEnabled) {
+            menuAllowTouchNavigation = true;
+            $menuItemParents.children('a').on('MSPointerUp', menuTouchMSPointerUp);
+        }
+        function menuTouchPreventNavigation() {
+            // Block Touch Navigation for 350ms
+            allowTouchNavigation = false;
+            window.setTimeout(function () {
+                allowTouchNavigation = true;
+            }, 350);
+        }
+        function menuTouchNavigationBlockClick(e) {
+            $(this).off('click', menuTouchNavigationBlockClick);
+            e.preventDefault();
+        }
+        //#region TouchEvents Implementation
+        function menuSubMenuVisible($element) {
+            return $element.closest('li').data('menuSubMenu').is(':visible');
+        }
+        function menuTouchStarted(e) {
+            var $this = $(this);
+            if (!menuSubMenuVisible($this))
+                $this.click(menuTouchNavigationBlockClick);
+        }
+        //#endregion
+
+        //#region MS Pointer Implementation
+        function menuTouchMSPointerUp(e) {
+            if (!allowTouchNavigation && e.originalEvent.pointerType == e.originalEvent.MSPOINTER_TYPE_TOUCH)
+                $(this).click(menuTouchNavigationBlockClick);
+        }
+        //#endregion
 
     });
 })(jQuery, window, document, Modernizr);

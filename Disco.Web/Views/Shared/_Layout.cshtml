@@ -28,13 +28,13 @@
             </div>
             <nav>
                 <ul id="menu">
-                    <li>@Html.ActionLink("Jobs", MVC.Job.Index(), accesskey: "1")
-                        <ul>
+                    <li class="hasSubMenu">@Html.ActionLink("Jobs", MVC.Job.Index(), accesskey: "1")
+                        <ul class="subMenu">
                             <li>@Html.ActionLink("Devices Ready for Return", MVC.Job.DevicesReadyForReturn())</li>
                             <li>@Html.ActionLink("Device Held Locations", MVC.Job.Locations())</li>
                             <li>@Html.ActionLink("Awaiting User Action", MVC.Job.AwaitingUserAction())</li>
-                            <li>@Html.ActionLink("Awaiting Finance", MVC.Job.AwaitingFinance())
-                                <ul>
+                            <li class="hasSubMenu">@Html.ActionLink("Awaiting Finance", MVC.Job.AwaitingFinance())
+                                <ul class="subMenu">
                                     <li>@Html.ActionLink("Accounting Charge", MVC.Job.AwaitingFinanceCharge())</li>
                                     <li>@Html.ActionLink("Accounting Payment", MVC.Job.AwaitingFinancePayment())</li>
                                     <li>@Html.ActionLink("Agreement Breach", MVC.Job.AwaitingFinanceAgreementBreach())</li>

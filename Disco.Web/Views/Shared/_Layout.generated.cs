@@ -192,16 +192,24 @@ WriteLiteral("                </div>\r\n            </div>\r\n            <nav>\
 
 WriteLiteral(" id=\"menu\"");
 
-WriteLiteral(">\r\n                    <li>");
+WriteLiteral(">\r\n                    <li");
+
+WriteLiteral(" class=\"hasSubMenu\"");
+
+WriteLiteral(">");
 
             
             #line 31 "..\..\Views\Shared\_Layout.cshtml"
-                   Write(Html.ActionLink("Jobs", MVC.Job.Index(), accesskey: "1"));
+                                      Write(Html.ActionLink("Jobs", MVC.Job.Index(), accesskey: "1"));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                        <ul>\r\n                            <li>");
+WriteLiteral("\r\n                        <ul");
+
+WriteLiteral(" class=\"subMenu\"");
+
+WriteLiteral(">\r\n                            <li>");
 
             
             #line 33 "..\..\Views\Shared\_Layout.cshtml"
@@ -228,16 +236,24 @@ WriteLiteral("</li>\r\n                            <li>");
             
             #line default
             #line hidden
-WriteLiteral("</li>\r\n                            <li>");
+WriteLiteral("</li>\r\n                            <li");
+
+WriteLiteral(" class=\"hasSubMenu\"");
+
+WriteLiteral(">");
 
             
             #line 36 "..\..\Views\Shared\_Layout.cshtml"
-                           Write(Html.ActionLink("Awaiting Finance", MVC.Job.AwaitingFinance()));
+                                              Write(Html.ActionLink("Awaiting Finance", MVC.Job.AwaitingFinance()));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                                <ul>\r\n                                    <li>");
+WriteLiteral("\r\n                                <ul");
+
+WriteLiteral(" class=\"subMenu\"");
+
+WriteLiteral(">\r\n                                    <li>");
 
             
             #line 38 "..\..\Views\Shared\_Layout.cshtml"
