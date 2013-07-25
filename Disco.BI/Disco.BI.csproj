@@ -123,6 +123,7 @@
     <Compile Include="BI\AttachmentBI\Utilities.cs" />
     <Compile Include="BI\DeviceBI\BatchUtilities.cs" />
     <Compile Include="BI\DeviceBI\DeviceModelBI.cs" />
+    <Compile Include="BI\DeviceBI\Importing\Export.cs" />
     <Compile Include="BI\DeviceBI\Importing\Import.cs" />
     <Compile Include="BI\DeviceBI\Importing\ImportParseTask.cs" />
     <Compile Include="BI\DeviceBI\Importing\ImportProcessTask.cs" />
@@ -251,9 +252,7 @@
   <ItemGroup>
     <None Include="Resources\MimeType-unknown48.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BI\CertificateBI\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

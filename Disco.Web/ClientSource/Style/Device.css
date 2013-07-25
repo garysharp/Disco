@@ -17,6 +17,10 @@
 .tableData > tbody > tr:hover > td {
   background-color: #e8eef4;
 }
+.tableData > tfoot > tr > th,
+.tableData > tfoot > tr > td {
+  background-color: #e8eef4;
+}
 .tableDataDark {
   border: solid 1px #8db2d8;
   border-collapse: collapse;
@@ -318,4 +322,93 @@
 }
 #deviceShowResources #Attachments div.attachmentInput span.photo {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAALH0lEQVRYw8WXa4xd11XHf2vvfc59zJ33y+PxYzyel2dsx48hdnCaNMFNFUGgkKCoKLxCE1EJKgoBCbW0fACpoihSUVBQUgW1FCRaJURRcF4iL8eJkzbYY0+Sie3YHs/kzvt13/eeffbmwx07IMFnjnTO3ufonL3+67/W2ue/xHvP/+chfX27+J3ffoCRwV307x5ibP8hWluauf22YwwNDjA2tofBgSFuOniYP/rjR8jOXqO7u4utPVvYu3eM4ZFh9u0/THNLKzftHWXfvlFGR4YZ3bOHA4cOc9udd+nmpsb23i1do4PDI7f+60+eebparX6ktQHA/O+4fP30vj4Azjni2BLbCBvVcHGEjy0+jolrFfp39TU1ZBq2490hH9vDcVQZK2ys9p0/826HSbWlK16FTcmApcWl9kQq/fUgCBBRGO/hRhi8wzmHtZYoqhHHFu8sOIuLa7S0tISlQr7TaHWT4Mdxdr+3lYFSYbVn8sMPm7wEYcWJym54Li96XsoWyE6VWVhf4NN1y7d+Yyf7R3cPtbZ3kEyl0VpjnItxLt40FGOjCsPDw23JRLIfH497Zw8R1/bUSvkdj373r1slbE7FXpnFKlxZ9ExlK7z4swJzqwus5S2lmsM7h1YKEyiSRhEYoTVlWM7Dvn37+u657zdvcG2SyeQRG9XudbHd4+Jqf7W41v3+mXMZLyosOpHpZc+lOcsPP8ox+2aR5Y1VCuWYWuxQogi0kAyEQCtSgZBJBCjxiFZoJSjRKOUx1jC/DneP7esCNBADmC/dc/cjf/Wdv73v+XOWdxdLPP1mkfm1LLliRLEa47xDI+hAERoIlaKtMUBrUAhKQIkgIoholN6cK6k/VwpBIVqxVPB0HxpobGrMtBQLhZUwkcCcnzjzdrnq7/vOM9MkxZJJKRJGSCWEhoSpLwTIDUMKJR6tQLzgtUFwiNKIEjSC1/URrRC1+Y0SChWPMsmwo615sLU5sxImkpjL12bf0xL7Pb2NUigWSASCEoUClNQvSkA8eBGUEgRBhLqnWvBiEJE65Urwqs6CUmrzfUVCacqxB6Vlx7atB5U2p4MgxKysrF9wtlbb0Z1JXLxWIxF4tBLwgjJqs0IEUSAIKI9gEPGIZtOwBhFEeYySzXndEa3qcy0aGynKwPDQ4IEwkSJIJDDr6+ura/OfFPt6RhOXsgFBSL3+xaEDjfebxqXuNQqMaLwCBegbLAkaj9KgUIjWmwwotBZAExvFmoOxvXv3tLV3kEynMbFz8fnzk4u7D+9tezVhCBP1eHtfX72eSCBKoUXQOkTCEGVriLcgghKP2qRfXQ+TaLRWiCh0KKTS0BJCycPBQ+PbP3fHXfUyfPzvvsuZsxNXHvjil0fCRIAJPUrxWYzFo8UgClSYAlvCzU6QHhhHfIi3MXIdwH/Lfq0FZYRME+gEzF5Z5+RzP+KN2lW+962vtxljEtbaqnnn9E+pVSvn2zV3N6YSJE1cz3L9Ge2iFNqESACJt39EfvJNXn31MPc88idQEbxjE7TURw3pRggzMHXmAm/+8/eYm3iNteVZerZvJ5X5drqrs6uzWCzOmo+mPsZ7f0bhaG0KIBa0Bu2lnmTXyyijUGdfJly8QFN/P1vfPc3Vc5e49RcHcDVwFrwDrcEkYebyIuf/8Sny504yZgz7bxplobqdy3Oz4L3p7ure7/Gz5sLFT2hsajrr4yjubg31ak4T1pMaLXUAOqlwuXXspVPM5xxDXQ388p0H+P7TT6LNvSx/cpEdg6P07uqjEpWYPfsWc//+E3oyhsMHb2ZhYZG55RVaMhlWK/MsLM+xe2hoPBEGJ8xGvkA1qs1uLM7UtjQPpIplRTqsU+kFRIFJQfWnLxHbKtZrenq7efGt95n/9D1W/uYVJqYu4pXHJDOkUoYH77iVge42yk746Mo0nQ0NSOxYWFvkC7vHafUwsmdkf3NzMya2ltmZ6cKpk2+sbj0+0DtZKqBrVbwWkqlmdGAoTk2RnjlD2BAyVyryzcf+iYnJ89z1uT6KJUGMQaihraXBG05+NMVY1wgd6QZev/oetaLl/i98nl628s7rpzh35jKHDx0a+NUv/Qpmfm6B+cWlp44c+3zXlk7YMbxIXC6ighSJ1hCco5CEcPh+onQHTR98zM4DBzk2fgjjoUKVXKmIjzyGkPWlZZ58+imWN1bI56rcOn4bP/y3E7x2Psfgni7W2gLm3Qzjo8d7AJGrly+rnbt2VYCgLj3qm8D7b59kOvspnVs78Klmpi5+yi+MHyA7c5XHHn+MB379t5hfXeDnjx6je0s3yTBJmA6p1ark8wUKG2s8+vhfkExamtOQnZnFN6+wlM/S2d7Oo9/4uNyzZdtWc25ycteOnTuNKIV1UMitkG5sYq1iKKokPq9JVIuszF9h9lorG6t55pbXCDJp+lt2kCvlKF4tkUw00NXZRjqTpJAvo2iA5qu8eOY/6U8JnSnD4rylsOHJXl4AHyU6O7v6zfMnThw7fvy4pFIpquUy1YrF2Tx33P5ziCjwELuYu24ep1gtASmOf/FOfnb6XWreUKlUWVtfYvqTKxw8dICWjg7KhQKN6XZuG/t9XjnxMBdCz3ImIt1h2NLdTG/PdhKJlBocGLjDXLp4uVqulEmlUhTLJYqVIuJhY22DyFapuhqFYo1qLcKWKpSVxZYKFIolhvqHmF5Y4S//4M+4NHeJIAh48MGv8mv330tHe8D2LSP8+df+lP7Rg/R1DaJMiy2vx+WZ2ez6k0/8IDv18YfnzPLSkirlirS1tkEc46wH8XjxeCXEFY94j3EWZ2JSTjOfy3H77bfR0dZD9toLTM1fpOXHY6x/bZIf/8sPeOirD9O7tR0jjpdebjh54tnnTszOzJyfX8yeW1xcWHr99VcryVSCYrGEKRRLUq5WN0W6oLQC71FaEfkIYwQVORweFwveR5gwIG2SOGcp5PNohPXvT8I2xda5bnL5dYJEPyjhwsUP/hDUhPeOjY0clUqJIDBordBaYSJbpRZFAFhncXG8+TcUrLVUqxFRFOOcx+OJHTQkM0ycPUfL1h4uzkzzjUe+zbsvv4YkNYO/NMbk2XMM7t7NxMQZ29rcvIj3XLkS31DfIvKZKBWluH6fNElIQxiGWGuJ45ggGYKAUnKdJJRJsby8TMXG7O7bRSqT5sixo7z21huUygUyjQ18+MEkL77wwsW5uexcGIQsLS2Sy60CEEUR3nu895hCLn8DjXWWUqlELpcjjmNEhEKuQKVSJrIWFzu8jwFFKt3A2toKx245ShgGvPjKf9Da2sTIyCANqTQfTE7aI0eOfPl3v/J7/7MVE6FQyGOtrQN46KGvJFZX68gaGxspFIo4F2GMwQQB6XSNKLKI1rgophJVcJsfb+vbzrVr0zQ3NjE6MkAutxWjNesb6/HNR49+s1DIT9R3Nm40oNfDcOHCP9QBPfHEE52nTp169ZYjRwfzubxGeVFKS2ytVKpVbGTBQ6lSxsYWnMM5X++g4gjn6osGWhMkEiTCRGVwePDN0bHRv49tnI3j+HIqlVrz1FW1MYYwDGlpaWF8fBzp6uoyDz38cIez8eHTp9/ZeW1mZqCQz2+LarU2B+nYxaEgOo5jtenNZr/ovYh4rXVstLZ4V1UmyLW2tMwEYfhJ9tPsVKlcOq+UWq5UKsX/szvu3bYjfP7557p7e3srb508GU5OTmamp6cbs9lsx/LySls+n2uslCsNNrYJ55xxzmkQH8c2NsZEqWS61NbeWtBWrzvxK80dLRvDQ0OV3f27q88++8zSLUePFvWmxpPPEmFTOyr+C6xPNMD6P8TnAAAAAElFTkSuQmCC) /*Images/Actions/photo.png*/;
+}
+#deviceImport #ImportFile {
+  width: 100%;
+}
+#deviceImport #documentation {
+  width: 700px;
+  margin: 20px auto;
+}
+#deviceImport #documentation > table > thead > tr > th:first-child {
+  width: 100px;
+}
+#deviceImportReview #errorMessage {
+  font-weight: bold;
+  color: red;
+}
+#deviceImportReview #devicesNavigation {
+  margin-top: 15px;
+  text-align: right;
+}
+#deviceImportReview #devicesNavigation ul {
+  display: inline-block;
+  padding: 1px;
+  border: 1px solid #bbb;
+}
+#deviceImportReview #devicesNavigation ul li {
+  display: inline-block;
+  padding: 1px 6px;
+  margin: 0;
+}
+#deviceImportReview #devicesNavigation ul li.statusError {
+  background-color: #ffd3d3;
+}
+#deviceImportReview #devicesNavigation ul li.statusUpdate {
+  background-color: #d3f3ff;
+}
+#deviceImportReview #devicesNavigation ul li.statusNew {
+  background-color: #d9ffb4;
+}
+#deviceImportReview #devices {
+  border: solid 1px #e8eef4;
+  border-collapse: collapse;
+  margin-top: 6px;
+}
+#deviceImportReview #devices > tbody > tr > td {
+  border: solid 1px #e8eef4;
+  background-color: #fff;
+}
+#deviceImportReview #devices > tbody > tr:nth-child(odd) > td {
+  background-color: #fcfcfd;
+}
+#deviceImportReview #devices > thead > tr > th,
+#deviceImportReview #devices > tbody > tr > th {
+  background-color: #e8eef4;
+  border: solid 1px #e8eef4;
+}
+#deviceImportReview #devices > tbody > tr:hover > td {
+  background-color: #e8eef4;
+}
+#deviceImportReview #devices > tfoot > tr > th,
+#deviceImportReview #devices > tfoot > tr > td {
+  background-color: #e8eef4;
+}
+#deviceImportReview #devices > tbody td {
+  vertical-align: middle;
+  min-height: 32px;
+}
+#deviceImportReview #devices > tbody tr.statusError td {
+  background-color: #ffd3d3;
+}
+#deviceImportReview #devices > tbody tr.statusUpdate td {
+  background-color: #d3f3ff;
+}
+#deviceImportReview #devices > tbody tr.statusNew td {
+  background-color: #d9ffb4;
+}
+#deviceImportReview #devices > tbody tr td.action {
+  font-weight: bold;
+}
+#deviceImportReview #devices > tbody tr td.serialNumber {
+  font-family: Consolas, "Courier New", monospace;
+  font-weight: bold;
+}
+#deviceImportReview #devices > tbody tr td.model img.modelImage {
+  width: 32px;
+  height: 32px;
+  margin-right: 2px;
+}
+#deviceImportReview #devices > tbody .error {
+  font-weight: bold;
 }

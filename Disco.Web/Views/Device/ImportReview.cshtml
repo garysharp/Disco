@@ -1,0 +1,249 @@
+﻿@model Disco.Web.Models.Device.ImportReviewModel
+@using Disco.BI.DeviceBI.Importing
+@{
+    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import Devices", MVC.Device.ImportExport(), string.Format("File: {0}", Model.ImportFilename));
+
+    int importDeviceOkCount = Model.ImportDevices.Count(id => id.Errors.Count == 0);
+    int importDeviceNewCount = Model.ImportDevices.Count(id => id.Errors.Count == 0 && id.Device == null);
+    int importDeviceUpdateCount = Model.ImportDevices.Count(id => id.Errors.Count == 0 && id.Device != null);
+    int importDeviceErrorCount = Model.ImportDevices.Count - importDeviceOkCount;
+}
+<div id="deviceImportReview">
+    @if (Model.ImportDevices.Count > 0)
+    {
+        <h2>Parsed @Model.ImportDevices.Count Device Record@(Model.ImportDevices.Count != 1 ? "s" : null)</h2>
+        <h4>
+            @importDeviceOkCount of @Model.ImportDevices.Count Device@(Model.ImportDevices.Count != 1 ? "s" : null) are ready for import.
+        </h4>
+        if (importDeviceErrorCount > 0)
+        {
+        <h4 id="errorMessage">
+            @(importDeviceErrorCount) Record@(importDeviceErrorCount != 1 ? "s" : null) will be skipped if the import continues
+        </h4>
+        }
+
+        <div id="devicesNavigation">
+            <ul class="none">
+                @if (importDeviceNewCount > 0)
+                {<li class="statusNew">
+                    <input id="devicesNavigationNew" type="checkbox" checked="checked" /><label for="devicesNavigationNew">Show New Devices (@(Model.ImportDevices.Count(id => id.Errors.Count == 0 && id.Device == null)))</label>
+                </li>}@if (importDeviceUpdateCount > 0)
+                      {<li class="statusUpdate">
+                          <input id="devicesNavigationUpdate" type="checkbox" checked="checked" /><label for="devicesNavigationUpdate">Show Updates (@(Model.ImportDevices.Count(id => id.Errors.Count == 0 && id.Device != null)))</label>
+                      </li>}@if (importDeviceErrorCount > 0)
+                            {<li class="statusError">
+                                <input id="devicesNavigationError" type="checkbox" checked="checked" /><label for="devicesNavigationError">Show Errors (@(Model.ImportDevices.Count(id => id.Errors.Count != 0)))</label>
+                            </li>}
+            </ul>
+            <script>
+                $(function () {
+                    $devices = $('#devices');
+                    $rows = $devices.children('tbody').children('tr');
+
+                    $('#devicesNavigationNew').change(function () {
+                        if ($(this).is(':checked'))
+                            $rows.filter('.statusNew').show();
+                        else
+                            $rows.filter('.statusNew').hide();
+                    });
+
+                    $('#devicesNavigationUpdate').change(function () {
+                        if ($(this).is(':checked'))
+                            $rows.filter('.statusUpdate').show();
+                        else
+                            $rows.filter('.statusUpdate').hide();
+                    });
+
+                    $('#devicesNavigationError').change(function () {
+                        if ($(this).is(':checked'))
+                            $rows.filter('.statusError').show();
+                        else
+                            $rows.filter('.statusError').hide();
+                    });
+                });
+            </script>
+        </div>
+        
+        <table id="devices">
+            <thead>
+                <tr>
+                    <th class="row">Row</th>
+                    <th class="action">Action</th>
+                    <th class="serialNumber">Serial Number</th>
+                    <th class="model">Model</th>
+                    <th class="profile">Profile</th>
+                    <th class="batch">Batch</th>
+                    <th class="assignedUser">Assigned User</th>
+                    <th class="location">Location</th>
+                    <th class="assetNumber">Asset Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var device in Model.ImportDevices)
+                {
+                    bool isUpdate = device.Device != null;
+                    string error;
+                    <tr class="status@(device.ImportStatus())">
+                        <td class="row">
+                            @((Model.ImportDevices.IndexOf(device) + 1))
+                        </td>
+                        <td class="action">
+                            @(device.ImportStatus())
+                        </td>
+                        <td class="serialNumber">
+                            @if (device.Device == null)
+                            {
+                                @device.SerialNumber
+                            }
+                            else
+                            {
+                                @Html.ActionLink(device.SerialNumber, MVC.Device.Show(device.SerialNumber), new { target = "_blank" })
+                            }
+
+                            @if (device.Errors.TryGetValue("SerialNumber", out error))
+                            {
+                                <div class="error">@error</div>
+                            }
+                        </td>
+                        <td class="model">
+                            @if (device.Errors.TryGetValue("DeviceModelId", out error))
+                            {
+                                <div class="error">@error</div>
+                            }
+                            else
+                            {
+                                if (!isUpdate || device.DeviceModelId != device.Device.DeviceModelId)
+                                {
+                                <img class="modelImage" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(device.DeviceModel.Id, device.DeviceModel.ImageHash()))" />
+                                @device.DeviceModel.ToString()
+                                }
+                                else
+                                {
+                                <span class="smallMessage">No Change</span>
+                                }
+                            }</td>
+                        <td class="profile">
+                            @if (device.Errors.TryGetValue("DeviceProfileId", out error))
+                            {
+                                <div class="error">@error</div>
+                            }
+                            else
+                            {
+                                if (!isUpdate || device.DeviceProfileId != device.Device.DeviceProfileId)
+                                {
+                                @device.DeviceProfile.ToString()
+                                }
+                                else
+                                {
+                                <span class="smallMessage">No Change</span>
+                                }
+                            }</td>
+                        <td class="batch">
+                            @if (device.Errors.TryGetValue("DeviceBatchId", out error))
+                            {
+                                <div class="error">@error</div>
+                            }
+                            else
+                            {
+                                if (!isUpdate || device.DeviceBatchId != device.Device.DeviceBatchId)
+                                {
+                                    if (device.DeviceBatch == null)
+                                    {
+                                <text>&lt;None&gt;</text>
+                                    }
+                                    else
+                                    {
+                                @device.DeviceBatch.ToString()
+                                    }
+                                }
+                                else
+                                {
+                                <span class="smallMessage">No Change</span>
+                                }
+                            }</td>
+                        <td class="assignedUser">
+                            @if (device.Errors.TryGetValue("AssignedUserId", out error))
+                            {
+                                <div class="error">@error</div>
+                            }
+                            else
+                            {
+                                if (!isUpdate || device.AssignedUserId != device.Device.AssignedUserId)
+                                {
+                                    if (device.AssignedUser == null)
+                                    {
+                                <text>&lt;None&gt;</text>
+                                    }
+                                    else
+                                    {
+                                @device.AssignedUser.ToString()
+                                    }
+                                }
+                                else
+                                {
+                                <span class="smallMessage">No Change</span>
+                                }
+                            }</td>
+                        <td class="location">
+                            @if (device.Errors.TryGetValue("Location", out error))
+                            {
+                                <div class="error">@error</div>
+                            }
+                            else
+                            {
+                                if (!isUpdate || device.Location != device.Device.Location)
+                                {
+                                    if (device.Location == null)
+                                    {
+                                <text>&lt;None&gt;</text>
+                                    }
+                                    else
+                                    {
+                                @device.Location
+                                    }
+                                }
+                                else
+                                {
+                                <span class="smallMessage">No Change</span>
+                                }
+                            }</td>
+                        <td class="assetNumber">
+                            @if (device.Errors.TryGetValue("AssetNumber", out error))
+                            {
+                                <div class="error">@error</div>
+                            }
+                            else
+                            {
+                                if (!isUpdate || device.AssetNumber != device.Device.AssetNumber)
+                                {
+                                    if (device.AssetNumber == null)
+                                    {
+                                <text>&lt;None&gt;</text>
+                                    }
+                                    else
+                                    {
+                                @device.AssetNumber
+                                    }
+                                }
+                                else
+                                {
+                                <span class="smallMessage">No Change</span>
+                                }
+                            }</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+                if (importDeviceOkCount > 0)
+                {
+        <div class="actionBar">
+            @Html.ActionLinkButton(string.Format("Import {0} Device{1}", importDeviceOkCount, importDeviceOkCount != 1 ? "s" : null), MVC.API.Device.ImportProcess(Model.ImportParseTaskId))
+        </div>
+                }
+    }
+    else
+    {
+        <h2>No Devices were found in this file</h2>
+    }
+</div>

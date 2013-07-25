@@ -22,10 +22,9 @@ namespace Disco.BI.DeviceBI.Importing
         public override bool SingleInstanceTask { get { return false; } }
         public override bool CancelInitiallySupported { get { return false; } }
 
-        internal const string ImportParseCacheKey = "ImportParseResults_{0}";
-
         protected override void ExecuteTask()
         {
+            string csvFilename = (string)this.ExecutionContext.JobDetail.JobDataMap["CsvFilename"];
             MemoryStream csvStream = (MemoryStream)this.ExecutionContext.JobDetail.JobDataMap["CsvImport"];
 
             this.Status.UpdateStatus(0, "Parsing CSV File", "Loading Records");
@@ -64,12 +63,20 @@ namespace Disco.BI.DeviceBI.Importing
                 }
             }
 
+            // Create Session Result
+            ImportDeviceSession session = new ImportDeviceSession()
+            {
+                ImportParseTaskId = this.Status.SessionId,
+                ImportFilename = csvFilename,
+                ImportDevices = records
+            };
+
             // Set Results to Cache
-            string key = string.Format(ImportParseCacheKey, this.Status.SessionId);
-            HttpRuntime.Cache.Insert(key, records, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(60), CacheItemPriority.NotRemovable, null);
+            string key = string.Format(Import.ImportParseCacheKey, this.Status.SessionId);
+            HttpRuntime.Cache.Insert(key, session, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(60), CacheItemPriority.NotRemovable, null);
         }
 
-        public static ScheduledTaskStatus Run(Stream CsvImport)
+        public static ScheduledTaskStatus Run(Stream CsvImport, String CsvFilename)
         {
 
             MemoryStream csvStream = new MemoryStream();
@@ -77,7 +84,7 @@ namespace Disco.BI.DeviceBI.Importing
             csvStream.Position = 0;
 
             var task = new ImportParseTask();
-            JobDataMap taskData = new JobDataMap() { { "CsvImport", csvStream } };
+            JobDataMap taskData = new JobDataMap() { { "CsvImport", csvStream }, { "CsvFilename", CsvFilename } };
             return task.ScheduleTask(taskData);
         }
     }

@@ -67,7 +67,7 @@ WriteLiteral("    ");
 
             
             #line 8 "..\..\Views\Device\Index.cshtml"
-Write(Html.ActionLinkButton("Import Devices", MVC.Device.Import()));
+Write(Html.ActionLinkButton("Import/Export Devices", MVC.Device.ImportExport()));
 
             
             #line default

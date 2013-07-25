@@ -17,6 +17,10 @@
 .tableData > tbody > tr:hover > td {
   background-color: #e8eef4;
 }
+.tableData > tfoot > tr > th,
+.tableData > tfoot > tr > td {
+  background-color: #e8eef4;
+}
 .tableDataDark {
   border: solid 1px #8db2d8;
   border-collapse: collapse;

@@ -1195,6 +1195,10 @@ body .ui-tooltip {
 .tableData > tbody > tr:hover > td {
   background-color: #e8eef4;
 }
+.tableData > tfoot > tr > th,
+.tableData > tfoot > tr > td {
+  background-color: #e8eef4;
+}
 .tableDataDark {
   border: solid 1px #8db2d8;
   border-collapse: collapse;
@@ -1668,6 +1672,10 @@ table.genericData > tbody > tr > th {
 table.genericData > tbody > tr:hover > td {
   background-color: #e8eef4;
 }
+table.genericData > tfoot > tr > th,
+table.genericData > tfoot > tr > td {
+  background-color: #e8eef4;
+}
 table.genericData td.id {
   text-align: center;
 }
@@ -1887,6 +1895,10 @@ table.jobTable > tbody > tr > th {
   border: solid 1px #e8eef4;
 }
 table.jobTable > tbody > tr:hover > td {
+  background-color: #e8eef4;
+}
+table.jobTable > tfoot > tr > th,
+table.jobTable > tfoot > tr > td {
   background-color: #e8eef4;
 }
 table.jobTable.hideStatusClosed tr[data-status=Closed] {
@@ -2217,7 +2229,7 @@ div.columnHost .column50 {
   white-space: nowrap;
 }
 .code {
-  font-family: Consolas, monospace;
+  font-family: Consolas, "Courier New", monospace;
 }
 div.code {
   border: 1px dashed #bbb;

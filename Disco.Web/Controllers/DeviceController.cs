@@ -76,16 +76,38 @@ namespace Disco.Web.Controllers
         }
         #endregion
 
-        #region Import
+        #region Import/Export
         [HttpGet]
-        public virtual ActionResult Import()
+        public virtual ActionResult ImportExport()
         {
             Models.Device.ImportModel m = new Models.Device.ImportModel();
+
+            m.DeviceModels = dbContext.DeviceModels.ToList();
+            m.DeviceProfiles = dbContext.DeviceProfiles.ToList();
+            m.DeviceBatches = dbContext.DeviceBatches.ToList();
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<DeviceImportModel>(this.ControllerContext, m);
 
-            return View();
+            return View(m);
+        }
+        [HttpGet]
+        public virtual ActionResult ImportReview(string ImportParseTaskId)
+        {
+            if (string.IsNullOrWhiteSpace(ImportParseTaskId))
+                throw new ArgumentNullException("ImportParseTaskId");
+
+            var session = Disco.BI.DeviceBI.Importing.Import.GetSession(ImportParseTaskId);
+
+            if (session == null)
+                throw new ArgumentException("The Import Parse Task Id is invalid or the session timed out (60 minutes), try importing again", "ImportParseTaskId");
+
+            Models.Device.ImportReviewModel m = Models.Device.ImportReviewModel.FromImportDeviceSession(session);
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<DeviceImportReviewModel>(this.ControllerContext, m);
+
+            return View(m);
         }
         #endregion
 

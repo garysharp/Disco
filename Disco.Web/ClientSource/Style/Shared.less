@@ -1,30 +1,29 @@
 @import "Declarations";
 
 // Data Table Mixin
-.tableData
-{
+.tableData {
     border: solid 1px @TableDataBorderColour;
     border-collapse: collapse;
 
-    &>tbody > tr > td
-    {
+    & > tbody > tr > td {
         border: solid 1px @TableDataBorderColour;
         background-color: #fff;
     }
-	
-	&>tbody > tr:nth-child(odd) > td
-    {
+
+    & > tbody > tr:nth-child(odd) > td {
         background-color: @TableDataRowBackgroundColor;
     }
 
-    &>thead > tr > th, &>tbody > tr > th
-    {
+    & > thead > tr > th, & > tbody > tr > th {
         background-color: @TableDataBorderColour;
         border: solid 1px @TableDataBorderColour;
     }
 
-	&>tbody > tr:hover > td
-    {
+    & > tbody > tr:hover > td {
+        background-color: @TableDataBorderColour;
+    }
+
+    & > tfoot > tr > th, & > tfoot > tr > td {
         background-color: @TableDataBorderColour;
     }
 }

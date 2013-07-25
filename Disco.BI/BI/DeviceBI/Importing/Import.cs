@@ -8,14 +8,23 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using PopulateRecordReferences = System.Tuple<System.Collections.Generic.Dictionary<int, Disco.Models.Repository.DeviceModel>, System.Collections.Generic.Dictionary<int, Disco.Models.Repository.DeviceProfile>, System.Collections.Generic.Dictionary<int, Disco.Models.Repository.DeviceBatch>>;
 
 namespace Disco.BI.DeviceBI.Importing
 {
-    internal static class Import
+    public static class Import
     {
+        internal const string ImportParseCacheKey = "ImportParseResults_{0}";
 
-        internal static void ImportRecord(this ImportDevice device, DiscoDataContext dbContext, PopulateRecordReferences references)
+        public static ImportDeviceSession GetSession(string ImportParseTaskId)
+        {
+            string parseKey = string.Format(ImportParseCacheKey, ImportParseTaskId);
+
+            return (ImportDeviceSession)HttpRuntime.Cache.Get(parseKey);
+        }
+
+        internal static bool ImportRecord(this ImportDevice device, DiscoDataContext dbContext, PopulateRecordReferences references)
         {
             // Skips If Errors
             if (device.Errors == null || device.Errors.Count == 0)
@@ -38,11 +47,16 @@ namespace Disco.BI.DeviceBI.Importing
                         dbContext.Devices.Add(discoDevice);
                     }
 
-                    discoDevice.DeviceModelId = device.DeviceModelId;
-                    discoDevice.DeviceProfileId = device.DeviceProfileId;
-                    discoDevice.DeviceBatchId = device.DeviceBatchId;
-                    discoDevice.Location = device.Location;
-                    discoDevice.AssetNumber = device.AssetNumber;
+                    if (discoDevice.DeviceModelId != device.DeviceModelId)
+                        discoDevice.DeviceModelId = device.DeviceModelId;
+                    if (discoDevice.DeviceProfileId != device.DeviceProfileId)
+                        discoDevice.DeviceProfileId = device.DeviceProfileId;
+                    if (discoDevice.DeviceBatchId != device.DeviceBatchId)
+                        discoDevice.DeviceBatchId = device.DeviceBatchId;
+                    if (discoDevice.Location != device.Location)
+                        discoDevice.Location = device.Location;
+                    if (discoDevice.AssetNumber != device.AssetNumber)
+                        discoDevice.AssetNumber = device.AssetNumber;
 
                     if (discoDevice.AssignedUserId != device.AssignedUserId)
                     {
@@ -50,8 +64,11 @@ namespace Disco.BI.DeviceBI.Importing
                     }
 
                     dbContext.SaveChanges();
+
+                    return true;
                 }
             }
+            return false;
         }
 
         internal static PopulateRecordReferences GetPopulateRecordReferences(DiscoDataContext dbContext)
@@ -72,7 +89,12 @@ namespace Disco.BI.DeviceBI.Importing
 
             // SERIAL NUMBER - Existing Device
             if (!device.Errors.ContainsKey("SerialNumber"))
+            {
                 device.Device = dbContext.Devices.Find(device.SerialNumber);
+                if (device.Device != null && device.Device.DecommissionedDate.HasValue)
+                    device.Errors.Add("SerialNumber", "The device is decommissioned");
+            }
+
 
             // DEVICE MODEL
             if (!device.Errors.ContainsKey("DeviceModelId"))
@@ -223,5 +245,21 @@ namespace Disco.BI.DeviceBI.Importing
                 Errors = errors
             };
         }
+
+        #region ImportDevice Extensions
+
+        public static string ImportStatus(this ImportDevice device)
+        {
+            if (device.Errors.Count > 0)
+                return "Error";
+
+            if (device.Device != null)
+                return "Update";
+
+            return "New";
+        }
+
+        #endregion
+
     }
 }

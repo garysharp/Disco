@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Disco.BI;
 using Disco.BI.Extensions;
 using Disco.Data.Configuration.Modules;
+using Disco.Models.Repository;
 
 namespace Disco.Web.Areas.API.Controllers
 {
@@ -386,6 +387,23 @@ namespace Disco.Web.Areas.API.Controllers
                 else
                     return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
             }
+        }
+        #endregion
+
+        #region Exporting
+        public virtual ActionResult ExportDevices(int id)
+        {
+            DeviceProfile dp = dbContext.DeviceProfiles.Find(id);
+            if (dp == null)
+                throw new ArgumentNullException("id", "Invalid Device Profile Id");
+
+            var devices = dbContext.Devices.Where(d => !d.DecommissionedDate.HasValue && d.DeviceProfileId == dp.Id);
+
+            var export = BI.DeviceBI.Importing.Export.GenerateExport(devices);
+
+            var filename = string.Format("DiscoDeviceExport-Profile_{0}-{1:yyyyMMdd-HHmmss}.csv", dp.Id, DateTime.Now);
+
+            return File(export, "text/csv", filename);
         }
         #endregion
 

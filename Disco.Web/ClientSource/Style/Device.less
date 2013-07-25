@@ -309,3 +309,120 @@
         }
     }
 }
+
+#deviceImport {
+    #ImportFile {
+        width: 100%;
+    }
+
+    #documentation {
+        width: 700px;
+        margin: 20px auto;
+
+        & > table {
+            & > thead > tr > th:first-child {
+                width: 100px;
+            }
+        }
+    }
+}
+
+#deviceImportReview {
+
+    #errorMessage {
+        font-weight: bold;
+        color: red;
+    }
+
+    #devicesNavigation {
+        margin-top: 15px;
+        text-align: right;
+
+        ul {
+            display: inline-block;
+            padding: 1px;
+            border: 1px solid #bbb;
+
+            li {
+                display: inline-block;
+                padding: 1px 6px;
+                margin: 0;
+
+                &.statusError {
+                    background-color: #ffd3d3;
+                }
+
+                &.statusUpdate {
+                    background-color: #d3f3ff;
+                }
+
+                &.statusNew {
+                    background-color: #d9ffb4;
+                }
+            }
+        }
+    }
+
+    #devices {
+        .tableData;
+        margin-top: 6px;
+
+        & > tbody {
+
+            td {
+                vertical-align: middle;
+                min-height: 32px;
+            }
+
+            tr.statusError td {
+                background-color: #ffd3d3;
+            }
+
+            tr.statusUpdate td {
+                background-color: #d3f3ff;
+            }
+
+            tr.statusNew td {
+                background-color: #d9ffb4;
+            }
+
+            tr {
+                td.action {
+                    font-weight: bold;
+                }
+
+                td.serialNumber {
+                    font-family: @FontFamilyMono;
+                    font-weight: bold;
+                }
+
+                td.model {
+                    img.modelImage {
+                        width: 32px;
+                        height: 32px;
+                        margin-right: 2px;
+                    }
+                }
+
+                td.profile {
+                }
+
+                td.batch {
+                }
+
+                td.assignedUser {
+                }
+
+                td.location {
+                }
+
+                td.assetNumber {
+                }
+            }
+
+            .error {
+                font-weight: bold;
+            }
+        }
+    }
+}

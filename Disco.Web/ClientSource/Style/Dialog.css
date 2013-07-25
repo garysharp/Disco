@@ -1,14 +1,25 @@
-.tableData {
+﻿.tableData {
   border: solid 1px #e8eef4;
   border-collapse: collapse;
 }
-.tableData td {
+.tableData > tbody > tr > td {
   border: solid 1px #e8eef4;
   background-color: #fff;
 }
-.tableData th {
+.tableData > tbody > tr:nth-child(odd) > td {
+  background-color: #fcfcfd;
+}
+.tableData > thead > tr > th,
+.tableData > tbody > tr > th {
   background-color: #e8eef4;
   border: solid 1px #e8eef4;
+}
+.tableData > tbody > tr:hover > td {
+  background-color: #e8eef4;
+}
+.tableData > tfoot > tr > th,
+.tableData > tfoot > tr > td {
+  background-color: #e8eef4;
 }
 .tableDataDark {
   border: solid 1px #8db2d8;

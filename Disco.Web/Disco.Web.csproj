@@ -194,6 +194,7 @@
     <Compile Include="Areas\Config\Models\Config\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceBatch\CreateModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceBatch\TimelineModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceBatch\_ShowModelMembership.cs" />
     <Compile Include="Areas\Config\Models\DeviceProfile\CreateModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\ImportStatusModel.cs" />
     <Compile Include="Areas\Config\Models\Enrolment\StatusModel.cs" />
@@ -514,6 +515,7 @@
     </Compile>
     <Compile Include="Models\Device\AddOfflineModel.cs" />
     <Compile Include="Models\Device\ImportModel.cs" />
+    <Compile Include="Models\Device\ImportReviewModel.cs" />
     <Compile Include="Models\Device\IndexModel.cs" />
     <Compile Include="Models\Device\ShowModel.cs" />
     <Compile Include="Models\InitialConfig\CompleteModel.cs" />
@@ -567,10 +569,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>_Subject.cshtml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Device\Import.generated.cs">
+    <Compile Include="Views\Device\ImportExport.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Import.cshtml</DependentUpon>
+      <DependentUpon>ImportExport.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Device\ImportReview.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ImportReview.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Views\Device\Index.generated.cs">
       <DependentUpon>Index.cshtml</DependentUpon>
@@ -856,6 +863,7 @@
     </None>
     <None Include="ClientSource\Scripts\Core\jquery-ui-1.10.3.js" />
     <None Include="ClientSource\Scripts\Core\jquery-2.0.2.js" />
+    <Content Include="ClientSource\Scripts\Core\disco.uicore.js" />
     <Content Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.min.js">
       <DependentUpon>Disco-AjaxHelperIcons.js.bundle</DependentUpon>
     </Content>
@@ -1068,15 +1076,15 @@
     <Content Include="ClientSource\Style\Declarations.min.css">
       <DependentUpon>Declarations.less</DependentUpon>
     </Content>
-    <None Include="ClientSource\Style\Device.css">
-      <DependentUpon>Device.less</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Style\Device.min.css">
-      <DependentUpon>Device.less</DependentUpon>
-    </Content>
     <None Include="ClientSource\Style\Dialog.css">
       <DependentUpon>Dialog.less</DependentUpon>
     </None>
+    <Content Include="ClientSource\Style\Device.css">
+      <DependentUpon>Device.less</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\Device.min.css">
+      <DependentUpon>Device.less</DependentUpon>
+    </Content>
     <Content Include="ClientSource\Style\Dialog.min.css">
       <DependentUpon>Dialog.less</DependentUpon>
     </Content>
@@ -1450,9 +1458,13 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Subject.generated.cs</LastGenOutput>
     </None>
-    <None Include="Views\Device\Import.cshtml">
+    <None Include="Views\Device\ImportExport.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>Import.generated.cs</LastGenOutput>
+      <LastGenOutput>ImportExport.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Device\ImportReview.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>ImportReview.generated.cs</LastGenOutput>
     </None>
     <None Include="Views\Device\Index.cshtml">
       <Generator>RazorGenerator</Generator>

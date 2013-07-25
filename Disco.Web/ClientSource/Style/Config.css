@@ -17,6 +17,10 @@
 .tableData > tbody > tr:hover > td {
   background-color: #e8eef4;
 }
+.tableData > tfoot > tr > th,
+.tableData > tfoot > tr > td {
+  background-color: #e8eef4;
+}
 .tableDataDark {
   border: solid 1px #8db2d8;
   border-collapse: collapse;
@@ -140,6 +144,10 @@ table.expressionsTable > tbody > tr > th {
 table.expressionsTable > tbody > tr:hover > td {
   background-color: #e8eef4;
 }
+table.expressionsTable > tfoot > tr > th,
+table.expressionsTable > tfoot > tr > td {
+  background-color: #e8eef4;
+}
 table.expressionsTable td.parseError {
   background-color: #FFD8D8;
 }
@@ -163,6 +171,10 @@ table.expressionsTable td.parseError {
   border: solid 1px #e8eef4;
 }
 #deviceComponents > tbody > tr:hover > td {
+  background-color: #e8eef4;
+}
+#deviceComponents > tfoot > tr > th,
+#deviceComponents > tfoot > tr > td {
   background-color: #e8eef4;
 }
 #deviceComponents tr th.actions {
@@ -522,7 +534,7 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
   margin-left: 6px;
   background-color: #222;
   color: #0F0;
-  font-family: Consolas, monospace;
+  font-family: Consolas, "Courier New", monospace;
   border: 4px solid #CCC;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;

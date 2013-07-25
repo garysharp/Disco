@@ -28,7 +28,6 @@ namespace Disco.Models.BI.Device
         [StringLength(40)]
         public string AssetNumber { get; set; }
 
-
         public Repository.Device Device { get; set; }
         public Repository.DeviceModel DeviceModel { get; set; }
         public Repository.DeviceProfile DeviceProfile { get; set; }

@@ -464,14 +464,19 @@ namespace Disco.Web.Areas.API.Controllers
 
         #endregion
 
+        #region Importing / Exporting
         public virtual ActionResult ImportParse(HttpPostedFileBase ImportFile)
         {
             if (ImportFile == null || ImportFile.ContentLength == 0)
                 throw new ArgumentNullException("ImportFile");
 
-            var status = Disco.BI.DeviceBI.Importing.ImportParseTask.Run(ImportFile.InputStream);
+            var fileName = ImportFile.FileName;
+            if (fileName.Contains(@"\"))
+                fileName = fileName.Substring(fileName.LastIndexOf('\\') + 1);
 
-            status.SetFinishedUrl(Url.Action(MVC.API.Device.ImportProcess(status.SessionId)));
+            var status = Disco.BI.DeviceBI.Importing.ImportParseTask.Run(ImportFile.InputStream, fileName);
+
+            status.SetFinishedUrl(Url.Action(MVC.Device.ImportReview(status.SessionId)));
 
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }
@@ -483,8 +488,23 @@ namespace Disco.Web.Areas.API.Controllers
 
             var status = Disco.BI.DeviceBI.Importing.ImportProcessTask.Run(ParseTaskSessionKey);
 
+            status.SetFinishedUrl(Url.Action(MVC.Device.Index()));
+
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }
+
+        public virtual ActionResult ExportAllDevices()
+        {
+            // Non-Decommissioned Devices
+            var devices = dbContext.Devices.Where(d => !d.DecommissionedDate.HasValue);
+
+            var export = BI.DeviceBI.Importing.Export.GenerateExport(devices);
+
+            var filename = string.Format("DiscoDeviceExport-AllDevices-{0:yyyyMMdd-HHmmss}.csv", DateTime.Now);
+
+            return File(export, "text/csv", filename);
+        } 
+        #endregion
 
     }
 }

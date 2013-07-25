@@ -20,17 +20,18 @@ namespace Disco.BI.DeviceBI.Importing
 
         protected override void ExecuteTask()
         {
-            string parseKey = (string)this.ExecutionContext.JobDetail.JobDataMap["ParseKey"];
+            string importParseTaskId = (string)this.ExecutionContext.JobDetail.JobDataMap["ImportParseTaskId"];
 
-            if (string.IsNullOrWhiteSpace(parseKey))
-                throw new ArgumentNullException("ParseKey");
+            if (string.IsNullOrWhiteSpace(importParseTaskId))
+                throw new ArgumentNullException("ImportParseTaskId");
 
-            parseKey = string.Format(ImportParseTask.ImportParseCacheKey, parseKey);
+            ImportDeviceSession session = Import.GetSession(importParseTaskId);
 
-            List<ImportDevice> records = (List<ImportDevice>)HttpRuntime.Cache.Get(parseKey);
-
-            if (records == null)
+            if (session == null)
                 throw new InvalidOperationException("The session timed out (60 minutes), try importing again");
+
+            List<ImportDevice> records = session.ImportDevices;
+            int recordsImported = 0;
 
             this.Status.UpdateStatus(0, "Processing Device Import", "Importing Devices");
 
@@ -41,7 +42,8 @@ namespace Disco.BI.DeviceBI.Importing
                 DateTime lastUpdate = DateTime.Now;
                 foreach (var record in records)
                 {
-                    record.ImportRecord(dbContext, populateReferences);
+                    if (record.ImportRecord(dbContext, populateReferences))
+                        recordsImported++;
 
                     if (DateTime.Now.Subtract(lastUpdate).TotalSeconds > 1)
                     {
@@ -52,15 +54,16 @@ namespace Disco.BI.DeviceBI.Importing
                 }
             }
 
+            this.Status.SetFinishedMessage(string.Format("Imported {0} of {1} Devices", recordsImported, records.Count));
         }
 
-        public static ScheduledTaskStatus Run(string ParseTaskSessionKey)
+        public static ScheduledTaskStatus Run(string ImportParseTaskId)
         {
-            if (string.IsNullOrWhiteSpace(ParseTaskSessionKey))
-                throw new ArgumentNullException("ParseTaskSessionKey");
+            if (string.IsNullOrWhiteSpace(ImportParseTaskId))
+                throw new ArgumentNullException("ImportParseTaskId");
 
             var task = new ImportProcessTask();
-            JobDataMap taskData = new JobDataMap() { { "ParseKey", ParseTaskSessionKey } };
+            JobDataMap taskData = new JobDataMap() { { "ImportParseTaskId", ImportParseTaskId } };
             return task.ScheduleTask(taskData);
         }
     }
