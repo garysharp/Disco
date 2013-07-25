@@ -23,24 +23,7 @@
                 </div>
                 <div id="headerMenu">
                     <span>Welcome @Html.ActionLink(DiscoApplication.CurrentUser.ToString(), MVC.User.Show(DiscoApplication.CurrentUser.Id))</span>
-                    @using (Html.BeginForm(MVC.Search.Query(), FormMethod.Get))
-                    {
-                    
-                        @Html.TextBox("term", null, new { accesskey = "s" })
-                        <script type="text/javascript">
-                            //<!--
-                            $(function () {
-                                $('#term').watermark('Search').keypress(function (e) {
-                                    if (e.keyCode == 13) {
-                                        $(this).closest('form').submit();
-                                    }
-                                }).focus(function () {
-                                    $(this).select();
-                                });
-                            });
-                            //-->
-                        </script>
-                    }
+                    @using (Html.BeginForm(MVC.Search.Query(), FormMethod.Get)) { @Html.TextBox("term", null, new { accesskey = "s" }) }
                 </div>
             </div>
             <nav>
@@ -71,28 +54,6 @@
                     <li class="sep"></li>
                     <li>@Html.ActionLink("Configuration", MVC.Config.Config.Index(), accesskey: "0")</li>
                 </ul>
-                <script type="text/javascript">
-                    $(function () {
-                        var $menu = $('#menu');
-                        $menu.find('li').each(function () {
-                            var $menuItem = $(this);
-                            var $subMenu = $menuItem.children('ul').first();
-                            var subMenuHideToken = null;
-                            if ($subMenu.length > 0) {
-                                $menuItem.mouseover(function () {
-                                    if (subMenuHideToken)
-                                        window.clearTimeout(subMenuHideToken);
-                                    if (!$subMenu.is(':visible'))
-                                        $subMenu.show();
-                                }).mouseout(function () {
-                                    subMenuHideToken = window.setTimeout(function () {
-                                        $subMenu.hide();
-                                    }, 250);
-                                }).addClass('hasSubmenu');
-                            };
-                        });
-                    });
-                </script>
             </nav>
         </header>
         <div id="layout_PageHeading">@CommonHelpers.Breadcrumbs(ViewBag.Title ?? string.Empty)</div>

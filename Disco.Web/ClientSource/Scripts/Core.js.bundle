@@ -9,4 +9,5 @@
   <file>/ClientSource/Scripts/Core/jquery.watermark.js</file>
   <file>/ClientSource/Scripts/Core/jquery.dataTables.js</file>
   <file>/ClientSource/Scripts/Core/disco.dataTables.extensions.js</file>
+  <file>/ClientSource/Scripts/Core/disco.uicore.js</file>
 </bundle>
