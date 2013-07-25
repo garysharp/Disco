@@ -38,6 +38,16 @@
             </td>
         </tr>
         <tr>
+            <th>Statistics</th>
+            <td>
+                <div><strong>@Model.DeviceCount.ToString("n0")</strong> @(Model.DeviceCount == 1 ? "devices is" : "devices are") of this model type.</div>
+                @if (Model.DeviceDecommissionedCount > 0)
+                {
+                    <div class="smallMessage">@Model.DeviceDecommissionedCount.ToString("n0") @(Model.DeviceDecommissionedCount == 1 ? "device is" : "devices are") decommissioned.</div>
+                }
+            </td>
+        </tr>
+        <tr>
             <th>
                 Default Purchase Date:
             </th>
@@ -201,5 +211,6 @@
     { 
         @Html.ActionLinkButton("Delete", MVC.API.DeviceModel.Delete(Model.DeviceModel.Id, true), "buttonDelete")
     }
+    @Html.ActionLinkButton("Export Devices", MVC.API.DeviceModel.ExportDevices(Model.DeviceModel.Id))
     @Html.ActionLinkButton("View Devices", MVC.Search.Query(Model.DeviceModel.Id.ToString(), "DeviceModel"))
 </div>

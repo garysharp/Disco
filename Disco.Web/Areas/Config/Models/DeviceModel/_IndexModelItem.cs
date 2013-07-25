@@ -15,6 +15,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceModel
         public string Model { get; set; }
         public string ModelType { get; set; }
         public int DeviceCount { get; set; }
+        public int DeviceDecommissionedCount { get; set; }
 
         public override string ToString()
         {

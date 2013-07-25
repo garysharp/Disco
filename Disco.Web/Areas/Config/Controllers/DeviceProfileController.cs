@@ -20,14 +20,18 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             if (id.HasValue)
             {
-                var m = new Models.DeviceProfile.ShowModel()
+                var m = dbContext.DeviceProfiles.Where(dp => dp.Id == id.Value).Select(dp => new Models.DeviceProfile.ShowModel()
                 {
-                    DeviceProfile = dbContext.DeviceProfiles.Find(id.Value),
-                    OrganisationAddresses = dbContext.DiscoConfiguration.OrganisationAddresses.Addresses,
-                    CertificateProviders = Plugins.GetPluginFeatures(typeof(CertificateProviderFeature))
-                };
+                    DeviceProfile = dp,
+                    DeviceCount = dp.Devices.Count(),
+                    DeviceDecommissionedCount = dp.Devices.Where(d => d.DecommissionedDate.HasValue).Count()
+                }).FirstOrDefault();
 
-                //m.Devices = BI.DeviceBI.SelectDeviceSearchResultItem(dbContext.Devices.Where(d => d.DeviceProfileId == m.DeviceProfile.Id));
+                if (m == null || m.DeviceProfile == null)
+                    throw new ArgumentException("Invalid Device Profile Id", "id");
+
+                m.OrganisationAddresses = dbContext.DiscoConfiguration.OrganisationAddresses.Addresses;
+                m.CertificateProviders = Plugins.GetPluginFeatures(typeof(CertificateProviderFeature));
 
                 var DistributionValues = Enum.GetValues(typeof(Disco.Models.Repository.DeviceProfile.DistributionTypes));
                 m.DeviceProfileDistributionTypes = new List<SelectListItem>();

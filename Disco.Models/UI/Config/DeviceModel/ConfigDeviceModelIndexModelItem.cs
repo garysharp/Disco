@@ -14,5 +14,6 @@ namespace Disco.Models.UI.Config.DeviceModel
         string Model { get; set; }
         string ModelType { get; set; }
         int DeviceCount { get; set; }
+        int DeviceDecommissionedCount { get; set; }
     }
 }

@@ -21,7 +21,8 @@ namespace Disco.Web.Areas.Config.Models.DeviceModel
                 Manufacturer = dm.Manufacturer,
                 Model = dm.Model,
                 ModelType = dm.ModelType,
-                DeviceCount = dm.Devices.Count
+                DeviceCount = dm.Devices.Count,
+                DeviceDecommissionedCount = dm.Devices.Count(d => d.DecommissionedDate.HasValue)
             }).ToArray().Cast<ConfigDeviceModelIndexModelItem>().ToList();
 
             return m;

@@ -10,6 +10,9 @@ namespace Disco.Models.UI.Config.DeviceBatch
     {
         Disco.Models.Repository.DeviceBatch DeviceBatch { get; set; }
         List<Disco.Models.Repository.DeviceModel> DeviceModels { get; set; }
+
+        List<ConfigDeviceBatchShowModelMembership> DeviceModelMembers { get; set; }
+
         int DeviceCount { get; set; }
         int DeviceDecommissionedCount { get; set; }
         bool CanDelete { get; set; }

@@ -20,18 +20,25 @@ namespace Disco.Web.Areas.Config.Controllers
 
             if (id.HasValue)
             {
-                var m = new Models.DeviceBatch.ShowModel()
-                {
-                    DeviceBatch = dbContext.DeviceBatches.Find(id)
-                };
-                if (m.DeviceBatch == null)
-                {
-                    return RedirectToAction(MVC.Config.DeviceBatch.Index(null));
-                }
-                m.CanDelete = m.DeviceBatch.CanDelete(dbContext);
+                var m = dbContext.DeviceBatches.Where(db => db.Id == id.Value)
+                    .Select(db => new Models.DeviceBatch.ShowModel()
+                    {
+                        DeviceBatch = db,
+                        DeviceCount = db.Devices.Count(),
+                        DeviceDecommissionedCount = db.Devices.Count(d => d.DecommissionedDate.HasValue)
+                    }).FirstOrDefault();
 
-                m.DeviceCount = m.DeviceBatch.Devices.Count();
-                m.DeviceDecommissionedCount = m.DeviceBatch.Devices.Count(d => d.DecommissionedDate.HasValue);
+                if (m == null || m.DeviceBatch == null)
+                    throw new ArgumentException("Invalid Device Batch Id", "id");
+
+                m.DeviceModelMembers = m.DeviceBatch.Devices.GroupBy(d => d.DeviceModel).Select(dG => new Models.DeviceBatch._ShowModelMembership()
+                {
+                    DeviceModel = dG.Key,
+                    DeviceCount = dG.Count(),
+                    DeviceDecommissionedCount = dG.Count(d => d.DecommissionedDate.HasValue)
+                }).ToArray().Cast<ConfigDeviceBatchShowModelMembership>().ToList();
+
+                m.CanDelete = m.DeviceBatch.CanDelete(dbContext);
 
                 m.DeviceModels = dbContext.DeviceModels.ToList();
 
@@ -46,7 +53,7 @@ namespace Disco.Web.Areas.Config.Controllers
 
                 // UI Extensions
                 UIExtensions.ExecuteExtensions<ConfigDeviceBatchIndexModel>(this.ControllerContext, m);
-                
+
                 return View(m);
             }
         }

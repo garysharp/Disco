@@ -15,6 +15,9 @@ namespace Disco.Web.Areas.Config.Models.DeviceModel
 
         public List<PluginFeatureManifest> WarrantyProviders { get; set; }
 
+        public int DeviceCount { get; set; }
+        public int DeviceDecommissionedCount { get; set; }
+
         public bool CanDelete { get; set; }
     }
 }

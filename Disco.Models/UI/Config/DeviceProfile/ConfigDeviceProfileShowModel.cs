@@ -11,6 +11,9 @@ namespace Disco.Models.UI.Config.DeviceProfile
         Disco.Models.Repository.DeviceProfile DeviceProfile { get; set; }
         List<Disco.Models.BI.Config.OrganisationAddress> OrganisationAddresses { get; set; }
 
+        int DeviceCount { get; set; }
+        int DeviceDecommissionedCount { get; set; }
+
         bool CanDelete { get; set; }
     }
 }

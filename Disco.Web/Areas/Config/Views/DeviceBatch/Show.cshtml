@@ -8,16 +8,14 @@
 <div class="form deviceBatches" style="width: 730px">
     <table>
         <tr>
-            <th style="width: 150px">
-                Id:
+            <th style="width: 150px">Id:
             </th>
             <td>
                 @Html.DisplayFor(model => model.DeviceBatch.Id)
             </td>
         </tr>
         <tr>
-            <th>
-                Name:
+            <th>Name:
             </th>
             <td>@Html.EditorFor(model => model.DeviceBatch.Name)
                 @AjaxHelpers.AjaxSave()
@@ -35,35 +33,86 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Device Count:
+            <th>Default Device Model:
             </th>
             <td>
-                @if (Model.DeviceBatch.UnitQuantity.HasValue)
-                { 
-                    <span>@Model.DeviceCount of @(Model.DeviceBatch.UnitQuantity.Value)</span>
+                @Html.DropDownListFor(model => model.DeviceBatch.DefaultDeviceModelId, Model.DeviceModels.ToSelectListItems())
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#DeviceBatch_DefaultDeviceModelId'),
+                            null,
+                            '@(Url.Action(MVC.API.DeviceBatch.UpdateDefaultDeviceModelId(Model.DeviceBatch.Id)))',
+                            'DefaultDeviceModelId'
+                        );
+                    });
+                </script>
+                <br />
+                <span class="smallMessage">Devices added offline will default to this Device Model.
+                    Once a device enrols the Device Model will be accurately represented.</span>
+            </td>
+        </tr>
+        <tr>
+            <th>Devices</th>
+            <td>
+                @if (Model.DeviceModelMembers.Count > 0)
+                {
+                    <table class="tableData smallTable">
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>Device Count</th>
+                                <th>Decommissioned</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var membership in Model.DeviceModelMembers.OrderByDescending(dmm => dmm.DeviceCount))
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.ActionLink(membership.DeviceModel.ToString(), MVC.Config.DeviceModel.Index(membership.DeviceModel.Id))
+                                    </td>
+                                    <td>
+                                        @membership.DeviceCount.ToString("n0")
+                                    </td>
+                                    <td>
+                                        @membership.DeviceDecommissionedCount.ToString("n0")
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Total Models: @Model.DeviceModelMembers.Count.ToString("n0")</th>
+                                <th>@Model.DeviceCount.ToString("n0")</th>
+                                <th>@Model.DeviceDecommissionedCount.ToString("n0")</th>
+                            </tr>
+                        </tfoot>
+                    </table>
                 }
                 else
-                { 
-                    @Model.DeviceCount
+                {
+                    <div class="smallMessage">No device models are referenced in this batch.</div>
                 }
-                managed by Disco
-                @if (Model.DeviceDecommissionedCount > 0)
-                { 
-                    <span class="smallMessage">(@(Model.DeviceDecommissionedCount)
-                        Decommissioned)</span>
+                @if (Model.DeviceBatch.UnitQuantity.HasValue && Model.DeviceBatch.UnitQuantity.Value > Model.DeviceCount)
+                {
+                    var missingCount = Model.DeviceBatch.UnitQuantity.Value - Model.DeviceCount;
+                    <div style="padding: 0.7em 0.7em; margin-top: 20px;" class="ui-state-highlight ui-corner-all">
+                        <span style="margin-right: 0.3em; float: left;" class="ui-icon ui-icon-alert"></span>
+                        @Model.DeviceCount.ToString("n0") of @(Model.DeviceBatch.UnitQuantity.Value.ToString("n0")) purchased devices are managed by Disco. <strong>@missingCount.ToString("n0") @(missingCount == 1 ? "is" : "are") not managed</strong>.
+                    </div>
                 }
             </td>
         </tr>
         <tr>
-            <th>
-                Purchase:
+            <th>Purchase:
             </th>
             <td class="details">
                 <table class="sub">
                     <tr>
-                        <th class="name" style="width: 100px">
-                            Purchase Date:
+                        <th class="name" style="width: 100px">Purchase Date:
                         </th>
                         <td>
                             @Html.EditorFor(model => model.DeviceBatch.PurchaseDate)
@@ -84,8 +133,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>
-                            Supplier:
+                        <th>Supplier:
                         </th>
                         <td>
                             @Html.EditorFor(model => model.DeviceBatch.Supplier)
@@ -104,8 +152,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>
-                            Unit Cost:
+                        <th>Unit Cost:
                         </th>
                         <td>
                             @Html.EditorFor(model => model.DeviceBatch.UnitCost)
@@ -124,8 +171,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>
-                            Quantity:
+                        <th>Quantity:
                         </th>
                         <td>
                             @Html.EditorFor(model => model.DeviceBatch.UnitQuantity)
@@ -201,37 +247,12 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Default Device Model:
-            </th>
-            <td>
-                @Html.DropDownListFor(model => model.DeviceBatch.DefaultDeviceModelId, Model.DeviceModels.ToSelectListItems())
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
-                    $(function () {
-                        document.DiscoFunctions.PropertyChangeHelper(
-                            $('#DeviceBatch_DefaultDeviceModelId'),
-                            null,
-                            '@(Url.Action(MVC.API.DeviceBatch.UpdateDefaultDeviceModelId(Model.DeviceBatch.Id)))',
-                            'DefaultDeviceModelId'
-                        );
-                    });
-                </script>
-                <br />
-                <span class="smallMessage">Devices added offline will default to this Device Model.
-                    Once a device enrols the Device Model will be accurately represented.</span>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Warranty:
+            <th>Warranty:
             </th>
             <td class="details">
                 <table class="sub">
                     <tr>
-                        <th class="name" style="width: 100px">
-                            Valid Until:
+                        <th class="name" style="width: 100px">Valid Until:
                         </th>
                         <td>
                             @Html.EditorFor(model => model.DeviceBatch.WarrantyValidUntil)
@@ -309,14 +330,12 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Insurance:
+            <th>Insurance:
             </th>
             <td class="details">
                 <table class="sub">
                     <tr>
-                        <th class="name" style="width: 100px">
-                            Supplier:
+                        <th class="name" style="width: 100px">Supplier:
                         </th>
                         <td>
                             @Html.EditorFor(model => model.DeviceBatch.InsuranceSupplier)
@@ -335,8 +354,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th class="name">
-                            Insured Date:
+                        <th class="name">Insured Date:
                         </th>
                         <td>
                             @Html.EditorFor(model => model.DeviceBatch.InsuredDate)
@@ -357,8 +375,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th class="name">
-                            Insured Until:
+                        <th class="name">Insured Until:
                         </th>
                         <td>
                             @Html.EditorFor(model => model.DeviceBatch.InsuredUntil)
@@ -435,8 +452,7 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Comments:<br />
+            <th>Comments:<br />
                 @AjaxHelpers.AjaxLoader("ajaxComments")
             </th>
             <td>
@@ -499,6 +515,7 @@
     }
     @if (Model.DeviceCount > 0)
     { 
+        @Html.ActionLinkButton("Export Devices", MVC.API.DeviceBatch.ExportDevices(Model.DeviceBatch.Id))
         @Html.ActionLinkButton("View Devices", MVC.Search.Query(Model.DeviceBatch.Id.ToString(), "DeviceBatch"))
     }
 </div>

@@ -17,16 +17,22 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             if (id.HasValue)
             {
-                var m = new Models.DeviceModel.ShowModel()
+                var m = dbContext.DeviceModels.Include("DeviceComponents").Where(dm => dm.Id == id.Value).Select(dm => new Models.DeviceModel.ShowModel()
                 {
-                    DeviceModel = dbContext.DeviceModels.Include("DeviceComponents.JobSubTypes").Where(dm => dm.Id == id.Value).FirstOrDefault(),
-                    WarrantyProviders = Plugins.GetPluginFeatures(typeof(WarrantyProviderFeature))
-                };
+                    DeviceModel = dm,
+                    DeviceCount = dm.Devices.Count(),
+                    DeviceDecommissionedCount = dm.Devices.Where(d => d.DecommissionedDate.HasValue).Count()
+                }).FirstOrDefault();
+
+                if (m == null || m.DeviceModel == null)
+                    throw new ArgumentException("Invalid Device Model Id", "id");
+
+                m.WarrantyProviders = Plugins.GetPluginFeatures(typeof(WarrantyProviderFeature));
 
                 m.DeviceComponentsModel = new Models.DeviceModel.ComponentsModel()
                 {
                     DeviceModelId = m.DeviceModel.Id,
-                    DeviceComponents = m.DeviceModel.DeviceComponents.ToList(),
+                    DeviceComponents = dbContext.DeviceComponents.Include("JobSubTypes").Where(dc => dc.DeviceModelId == m.DeviceModel.Id).ToList(),
                     JobSubTypes = dbContext.JobSubTypes.Where(jst => jst.JobTypeId == Disco.Models.Repository.JobType.JobTypeIds.HNWar).ToList()
                 };
 

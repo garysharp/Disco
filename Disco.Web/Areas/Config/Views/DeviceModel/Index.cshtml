@@ -37,6 +37,11 @@
             </td>
             <td>
                 @item.DeviceCount.ToString("n0")
+                @if (item.DeviceDecommissionedCount > 0)
+                { 
+                    <span class="smallMessage" title="@(item.DeviceDecommissionedCount) Decommissioned">
+                        (@(item.DeviceDecommissionedCount.ToString("n0")))</span>
+                }
             </td>
         </tr>
     }

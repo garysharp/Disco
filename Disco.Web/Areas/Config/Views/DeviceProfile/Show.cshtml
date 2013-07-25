@@ -7,16 +7,14 @@
 <div id="configurationDeviceProfileShow" class="form" style="width: 600px">
     <table>
         <tr>
-            <th>
-                Id:
+            <th>Id:
             </th>
             <td>
                 @Html.DisplayFor(model => model.DeviceProfile.Id)
             </td>
         </tr>
         <tr>
-            <th>
-                Name:
+            <th>Name:
             </th>
             <td>@Html.TextBoxFor(model => model.DeviceProfile.Name)
                 @AjaxHelpers.AjaxSave()
@@ -63,8 +61,7 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Short Name:
+            <th>Short Name:
             </th>
             <td>@Html.TextBoxFor(model => model.DeviceProfile.ShortName)
                 @AjaxHelpers.AjaxSave()
@@ -111,8 +108,7 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Description:
+            <th>Description:
             </th>
             <td>@Html.TextBoxFor(model => model.DeviceProfile.Description)
                 @AjaxHelpers.AjaxSave()
@@ -159,8 +155,17 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Distribution Type:
+            <th>Members</th>
+            <td>
+                <div><strong>@Model.DeviceCount.ToString("n0")</strong> @(Model.DeviceCount == 1 ? "devices is a member" : "devices are members") of this profile.</div>
+                @if (Model.DeviceDecommissionedCount > 0)
+                {
+                    <div class="smallMessage">@Model.DeviceDecommissionedCount.ToString("n0") @(Model.DeviceDecommissionedCount == 1 ? "device is" : "devices are") decommissioned.</div>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Distribution Type:
             </th>
             <td>
                 @Html.DropDownList("DeviceProfile_DistributionType", Model.DeviceProfileDistributionTypes)
@@ -185,8 +190,7 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Address:
+            <th>Address:
             </th>
             <td>
                 @Html.DropDownListFor(m => m.DeviceProfile.DefaultOrganisationAddress, Model.OrganisationAddresses.ToSelectListItems(Model.DeviceProfile.DefaultOrganisationAddress, true, "None"))
@@ -211,8 +215,7 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Allocate Certificates:
+            <th>Allocate Certificates:
             </th>
             <td>
                 @Html.DropDownListFor(model => model.DeviceProfile.CertificateProviderId, Model.CertificateProviders.ToSelectListItems(null, true, "Not Allocated"))
@@ -248,14 +251,12 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Computer Name Template Expression:
+            <th>Computer Name Template Expression:
             </th>
             <td>@Html.TextBoxFor(model => model.DeviceProfile.ComputerNameTemplate)
                 @AjaxHelpers.AjaxSave()
                 @AjaxHelpers.AjaxLoader()
-                <a id="expressionBrowserAnchor" href="@(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser()))">
-                    &nbsp;</a>
+                <a id="expressionBrowserAnchor" href="@(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser()))">&nbsp;</a>
                 <script type="text/javascript">
                     $(function () {
                         var $ComputerNameTemplate = $('#DeviceProfile_ComputerNameTemplate');
@@ -345,8 +346,7 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Default Organisational Unit:
+            <th>Default Organisational Unit:
             </th>
             <td>
                 @Html.HiddenFor(model => model.DeviceProfile.OrganisationalUnit)
@@ -428,37 +428,37 @@
                         var ouChange = function () {
                             if (!ouTreeLoaded) {
                                 $.getJSON('@(Url.Action(MVC.API.DeviceProfile.OrganisationalUnits()))', null, function (data) {
-                                    var dynatreeDataTransformer = function (element) {
-                                        var child = {
-                                            title: element.Name,
-                                            key: element.Path,
-                                            isFolder: true
-                                        }
-                                        if (element.Children) {
-                                            child.children = [];
-                                            for (var i = 0; i < element.Children.length; i++) {
-                                                child.children.push(dynatreeDataTransformer(element.Children[i]));
-                                            }
-                                        }
-                                        return child;
-                                    };
-                                    var dynatreeData = [];
-                                    for (var i = 0; i < data.length; i++) {
-                                        dynatreeData.push(dynatreeDataTransformer(data[i]));
+                                var dynatreeDataTransformer = function (element) {
+                                    var child = {
+                                        title: element.Name,
+                                        key: element.Path,
+                                        isFolder: true
                                     }
-
-                                    ouTree.dynatree({
-                                        children: dynatreeData,
-                                        onActivate: function (node) {
-                                            //alert('node selected: ' + node.data.key);
+                                    if (element.Children) {
+                                        child.children = [];
+                                        for (var i = 0; i < element.Children.length; i++) {
+                                            child.children.push(dynatreeDataTransformer(element.Children[i]));
                                         }
-                                    });
-                                    ouTreeLoaded = true;
-                                    ouUpdateTree();
+                                    }
+                                    return child;
+                                };
+                                var dynatreeData = [];
+                                for (var i = 0; i < data.length; i++) {
+                                    dynatreeData.push(dynatreeDataTransformer(data[i]));
+                                }
+
+                                ouTree.dynatree({
+                                    children: dynatreeData,
+                                    onActivate: function (node) {
+                                        //alert('node selected: ' + node.data.key);
+                                    }
                                 });
-                            } else {
+                                ouTreeLoaded = true;
                                 ouUpdateTree();
-                            }
+                            });
+                        } else {
+                            ouUpdateTree();
+                        }
                             ouDialog.dialog('open');
                         };
 
@@ -497,7 +497,8 @@
 <div id="dialogConfirmDelete" title="Delete this Device Profile?">
     <p>
         <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-        This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+        This item will be permanently deleted and cannot be recovered. Are you sure?
+    </p>
 </div>
 <script type="text/javascript">
     $(function () {
@@ -532,5 +533,6 @@
     { 
         @Html.ActionLinkButton("Delete", MVC.API.DeviceProfile.Delete(Model.DeviceProfile.Id, true), "buttonDelete")
     }
+    @Html.ActionLinkButton("Export Devices", MVC.API.DeviceProfile.ExportDevices(Model.DeviceProfile.Id))
     @Html.ActionLinkButton("View Devices", MVC.Search.Query(Model.DeviceProfile.Id.ToString(), "DeviceProfile"))
 </div>

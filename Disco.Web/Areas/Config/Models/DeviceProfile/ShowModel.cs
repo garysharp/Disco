@@ -16,6 +16,9 @@ namespace Disco.Web.Areas.Config.Models.DeviceProfile
 
         public List<PluginFeatureManifest> CertificateProviders { get; set; }
 
+        public int DeviceCount { get; set; }
+        public int DeviceDecommissionedCount { get; set; }
+
         public bool CanDelete { get; set; }
     }
 }
