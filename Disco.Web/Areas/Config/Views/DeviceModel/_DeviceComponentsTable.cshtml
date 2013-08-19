@@ -52,7 +52,13 @@
             return false;
         });
 
-        var removeComponentConfirmed = function (id, row) {
+        $deviceComponents.on('change', 'input', updateComponent);
+        $deviceComponents.on('focus', 'input', function () { $(this).select(); });
+
+        $deviceComponents.on('click', 'span.remove', removeComponent);
+        $deviceComponents.on('click', 'span.edit', editComponentJobTypes);
+
+        function removeComponentConfirmed(id, row) {
             var data = { id: id };
             $.ajax({
                 url: '@Url.Action(MVC.API.DeviceModel.ComponentRemove())',
@@ -70,7 +76,7 @@
                 }
             });
         }
-        var removeComponent = function () {
+        function removeComponent() {
             var componentRow = $(this).closest('tr');
             var id = componentRow.attr('data-devicecomponentid');
             if (id) {
@@ -84,7 +90,7 @@
                 componentRow.remove();
             }
         }
-        var updateComponent = function () {
+        function updateComponent() {
             var componentRow = $(this).closest('tr');
             componentRow.find('input').attr('disabled', true).addClass('updating');
 
@@ -143,7 +149,7 @@
                 });
             }
         }
-        var editComponentJobTypes = function () {
+        function editComponentJobTypes() {
             var edit$this = $(this);
             var componentRow = edit$this.closest('tr');
 
@@ -246,12 +252,6 @@
         });
 
         $('#CheckboxBulkSelect_dialogUpdateJobTypes').checkboxBulkSelect({ parentSelector: 'div' });
-
-        $deviceComponents.on('change', 'input', updateComponent);
-        $deviceComponents.on('focus', 'input', function () { $(this).select(); });
-
-        $deviceComponents.on('click', 'span.remove', removeComponent);
-        $deviceComponents.on('click', 'span.edit', editComponentJobTypes);
     });
 </script>
 <div id="dialogUpdateJobTypes" title="Update Job Types">
