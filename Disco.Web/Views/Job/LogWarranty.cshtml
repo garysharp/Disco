@@ -11,32 +11,28 @@
     <div id="warrantyJobForm" class="form" style="width: 650px">
         <table>
             <tr>
-                <th>
-                    Internal Job Id:
+                <th>Internal Job Id:
                 </th>
                 <td>
                     @Model.JobId
                 </td>
             </tr>
             <tr>
-                <th>
-                    Device Serial Number:
+                <th>Device Serial Number:
                 </th>
                 <td>
                     @Model.Job.Device.SerialNumber
                 </td>
             </tr>
             <tr>
-                <th>
-                    Device Model:
+                <th>Device Model:
                 </th>
                 <td>
                     @Model.Job.Device.DeviceModel.Manufacturer @Model.Job.Device.DeviceModel.Model
                 </td>
             </tr>
             <tr>
-                <th>
-                    Technician:
+                <th>Technician:
                 </th>
                 <td>
                     @Model.TechUser.DisplayName
@@ -47,23 +43,32 @@
                 </td>
             </tr>
             <tr>
-                <th style="width: 150px">
-                    Repair Address:
+                <th style="width: 150px">Repair Address:
                 </th>
                 <td>
-                    @Html.DropDownListFor(model => model.OrganisationAddressId, Model.OrganisationAddresses.ToSelectListItems(Model.OrganisationAddressId, true))<br />
+                    @Html.DropDownListFor(model => model.OrganisationAddressId, Model.OrganisationAddresses.ToSelectListItems(Model.OrganisationAddressId, (Model.OrganisationAddress == null)))<br />
                     @Html.ValidationMessageFor(m => m.OrganisationAddressId)
                     <div id="organisationAddressDetailsLoading" style="display: none">
                         <img src="@(Links.ClientSource.Style.Images.Status.loading_gif)" alt="Loading" />
                         <span class="smallMessage">Loading Details...</span>
                     </div>
                     <div id="organisationAddressDetails">
+                        @{
+    var oa = Model.OrganisationAddress;
+    if (oa != null)
+    {
+                            <span>@oa.Address</span>
+                            <br />
+                            <span>@oa.Suburb, @oa.Postcode</span>
+                            <br />
+                            <span>@oa.State, @oa.Country</span>
+    }
+                        }
                     </div>
                 </td>
             </tr>
             <tr>
-                <th>
-                    Warranty Provider:
+                <th>Warranty Provider:
                 </th>
                 <td>
                     @Html.DropDownListFor(model => model.WarrantyProviderId, Model.WarrantyProviders.ToSelectListItems(Model.WarrantyProviderId, true))<br />
@@ -73,8 +78,7 @@
         </table>
     </div>
     <div id="warrantyJobFaultDescription" class="form" style="width: 650px; margin-top: 15px;">
-        <h2>
-            Fault Description</h2>
+        <h2>Fault Description</h2>
         <table>
             <tr>
                 <td>
@@ -103,24 +107,6 @@
 
         var $ProviderId = $('#WarrantyProviderId');
 
-        var updateOrganisationAddressDetails = function () {
-            $organisationAddressDetails.slideUp();
-            var orgAddressId = $OrganisationAddressId.val();
-            if (orgAddressId) {
-                $organisationAddressDetailsLoading.slideDown();
-                $.getJSON('@(Url.Action(MVC.API.Job.OrganisationAddress()))', { id: orgAddressId }, function (data) {
-                    $organisationAddressDetails.empty().append(
-                    $('<span>').text(data.Address),
-                    '<br />',
-                    $('<span>').text(data.Suburb + ', ' + data.Postcode),
-                    '<br />',
-                    $('<span>').text(data.State + ', ' + data.Country)
-                );
-                    $organisationAddressDetailsLoading.slideUp();
-                    $organisationAddressDetails.slideDown();
-                });
-            }
-        }
         var updateProviderDetails = function () {
             var providerId = $ProviderId.val();
             var orgAddressId = $OrganisationAddressId.val();
@@ -129,8 +115,7 @@
                 window.location.href = '@(Url.Action(MVC.Job.LogWarranty(Model.JobId, null, null)))?WarrantyProviderId=' + providerId + '&OrganisationAddressId=' + orgAddressId;
             }
         }
-        $OrganisationAddressId.change(updateOrganisationAddressDetails).change(updateProviderDetails);
+        $OrganisationAddressId.change(updateProviderDetails);
         $ProviderId.change(updateProviderDetails);
-        updateOrganisationAddressDetails();
     });
 </script>
