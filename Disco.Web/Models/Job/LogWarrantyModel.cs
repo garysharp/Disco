@@ -62,6 +62,17 @@ namespace Disco.Web.Models.Job
             dbContext.Configuration.LazyLoadingEnabled = true;
             if (Job == null)
             {
+                // Update Job User's Details [#12]
+                string jobUserId = dbContext.Jobs.Where(j => j.Id == JobId).Select(j => j.UserId).FirstOrDefault();
+                if (jobUserId != null)
+                {
+                    // Ignore update errors (Most commonly when the User Id no longer exists in AD)
+                    try
+                    {
+                        Disco.BI.UserBI.UserCache.GetUser(jobUserId, dbContext, true);
+                    } catch (Exception) {}
+                }
+
                 Job = (from j in dbContext.Jobs.Include("Device.DeviceModel").Include("JobMetaWarranty").Include("JobSubTypes")
                        where (j.Id == JobId)
                        select j).FirstOrDefault();
@@ -71,7 +82,8 @@ namespace Disco.Web.Models.Job
                 }
             }
 
-            this.TechUser = DiscoApplication.CurrentUser;
+            // Update TechUser's Details [#12]
+            this.TechUser = Disco.BI.UserBI.UserCache.GetUser(DiscoApplication.CurrentUser.Id, dbContext, true);
 
             WarrantyProviders = Plugins.GetPluginFeatures(typeof(WarrantyProviderFeature));
 
