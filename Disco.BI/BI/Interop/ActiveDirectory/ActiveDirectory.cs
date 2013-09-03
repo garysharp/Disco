@@ -69,7 +69,7 @@ namespace Disco.BI.Interop.ActiveDirectory
             string name = result.Properties["name"][0].ToString();
             string sAMAccountName = result.Properties["sAMAccountName"][0].ToString();
             string distinguishedName = result.Properties["distinguishedName"][0].ToString();
-            string objectSid = ActiveDirectoryHelpers.ConvertBytesToSIDString((byte[])result.Properties["objectSid"][0]);
+            string objectSid = ActiveDirectoryHelpers.ConvertBytesToSDDLString((byte[])result.Properties["objectSid"][0]);
 
             var dNSNameProperty = result.Properties["dNSHostName"];
             string dNSName = null;
@@ -117,7 +117,8 @@ namespace Disco.BI.Interop.ActiveDirectory
             string name = result.Properties["name"][0].ToString();
             string username = result.Properties["sAMAccountName"][0].ToString();
             string distinguishedName = result.Properties["distinguishedName"][0].ToString();
-            string objectSid = ActiveDirectoryHelpers.ConvertBytesToSIDString((byte[])result.Properties["objectSid"][0]);
+            byte[] objectSid = (byte[])result.Properties["objectSid"][0];
+            string objectSidSDDL = ActiveDirectoryHelpers.ConvertBytesToSDDLString(objectSid);
 
             ResultPropertyValueCollection displayNameProp = result.Properties["displayName"];
             string displayName = username;
@@ -140,7 +141,10 @@ namespace Disco.BI.Interop.ActiveDirectory
             if (phoneProp.Count > 0)
                 phone = phoneProp[0].ToString();
 
-            IEnumerable<string> groupCNs = result.Properties["memberOf"].Cast<string>();
+            int primaryGroupID = (int)result.Properties["primaryGroupID"][0];
+            string primaryGroupSid = ActiveDirectoryHelpers.ConvertBytesToSDDLString(ActiveDirectoryHelpers.BuildPrimaryGroupSid(objectSid, primaryGroupID));
+            var groupCNs = result.Properties["memberOf"].Cast<string>().ToList();
+            groupCNs.Add(ActiveDirectoryCachedGroups.GetGroupsCnForSid(primaryGroupSid));
             List<string> groups = ActiveDirectoryCachedGroups.GetGroups(groupCNs).Select(g => g.ToLower()).ToList();
 
             //foreach (string groupCN in result.Properties["memberOf"])
@@ -194,7 +198,7 @@ namespace Disco.BI.Interop.ActiveDirectory
                 DistinguishedName = distinguishedName,
                 sAMAccountName = username,
                 DisplayName = displayName,
-                ObjectSid = objectSid,
+                ObjectSid = objectSidSDDL,
                 Type = type,
                 Path = result.Path,
                 LoadedProperties = additionalProperties
@@ -219,7 +223,8 @@ namespace Disco.BI.Interop.ActiveDirectory
 					"sn", 
 					"givenName", 
 					"memberOf", 
-					"mail", 
+					"primaryGroupID",
+                    "mail", 
 					"telephoneNumber"
                 };
                 loadProperties.AddRange(AdditionalProperties);

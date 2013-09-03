@@ -5,6 +5,7 @@ using System.DirectoryServices;
 using System.DirectoryServices.ActiveDirectory;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 
@@ -128,22 +129,50 @@ namespace Disco.BI.Interop.ActiveDirectory
         }
         #endregion
 
-        [System.Runtime.InteropServices.DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern bool ConvertSidToStringSid(byte[] pSID, ref System.Text.StringBuilder ptrSid);
-        internal static string ConvertBytesToSIDString(byte[] SID)
+        internal static string ConvertBytesToSDDLString(byte[] SID)
         {
-            System.Text.StringBuilder sidString = new System.Text.StringBuilder();
-            bool flag = ActiveDirectoryHelpers.ConvertSidToStringSid(SID, ref sidString);
-            string ConvertBytesToSIDString;
-            if (flag)
+            SecurityIdentifier sID = new SecurityIdentifier(SID, 0);
+
+            return sID.ToString();
+        }
+
+        internal static byte[] ConvertSDDLStringToBytes(string SidSsdlString)
+        {
+            SecurityIdentifier sID = new SecurityIdentifier(SidSsdlString);
+
+            var sidBytes = new byte[sID.BinaryLength];
+
+            sID.GetBinaryForm(sidBytes, 0);
+
+            return sidBytes;
+        }
+
+        internal static byte[] BuildPrimaryGroupSid(byte[] UserSID, int PrimaryGroupId)
+        {
+            var groupSid = (byte[])UserSID.Clone();
+
+            int ridOffset = groupSid.Length - 4;
+            int groupId = PrimaryGroupId;
+            for (int i = 0; i < 4; i++)
             {
-                ConvertBytesToSIDString = sidString.ToString();
+                groupSid[ridOffset + i] = (byte)(groupId & 0xFF);
+                groupId >>= 8;
             }
-            else
+
+            return groupSid;
+        }
+
+        internal static string ConvertBytesToBinarySidString(byte[] SID)
+        {
+            StringBuilder escapedSid = new StringBuilder();
+
+            foreach (var sidByte in SID)
             {
-                ConvertBytesToSIDString = null;
+                escapedSid.Append('\\');
+                escapedSid.Append(sidByte.ToString("x2"));
             }
-            return ConvertBytesToSIDString;
+
+            return escapedSid.ToString();
         }
 
         internal static string EscapeLdapQuery(string query)

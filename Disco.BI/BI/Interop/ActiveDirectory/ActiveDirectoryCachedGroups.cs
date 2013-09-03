@@ -13,6 +13,7 @@ namespace Disco.BI.Interop.ActiveDirectory
 {
     public class ActiveDirectoryCachedGroups : ScheduledTask
     {
+        private static ConcurrentDictionary<string, Tuple<ADCachedGroup, DateTime>> _SidCache = new ConcurrentDictionary<string, Tuple<ADCachedGroup, DateTime>>();
         private static ConcurrentDictionary<string, Tuple<ADCachedGroup, DateTime>> _Cache = new ConcurrentDictionary<string, Tuple<ADCachedGroup, DateTime>>();
         private const long CacheTimeoutTicks = 6000000000; // 10 Minutes
 
@@ -32,6 +33,14 @@ namespace Disco.BI.Interop.ActiveDirectory
         {
             foreach (var group in GetGroupsRecursive(GroupCN, new Stack<ADCachedGroup>()))
                 yield return group.FriendlyName;
+        }
+        public static string GetGroupsCnForSid(string GroupSid)
+        {
+            var sidGroup = GetGroupBySid(GroupSid);
+            if (sidGroup == null)
+                return null;
+            else
+                return sidGroup.CN;
         }
         private static IEnumerable<ADCachedGroup> GetGroupsRecursive(string GroupCN, Stack<ADCachedGroup> RecursiveTree)
         {
@@ -62,8 +71,27 @@ namespace Disco.BI.Interop.ActiveDirectory
             if (groupRecord == null)
             {
                 // Load from AD
-                var group = ADCachedGroup.LoadFromAD(GroupCN);
-                SetValue(GroupCN, group);
+                var group = ADCachedGroup.LoadWithCN(GroupCN);
+                SetValue(group);
+
+                return group;
+            }
+            else
+            {
+                // Return from Cache
+                return groupRecord.Item1;
+            }
+        }
+        private static ADCachedGroup GetGroupBySid(string GroupSid)
+        {
+            // Check Cache
+            Tuple<ADCachedGroup, DateTime> groupRecord = TrySidCache(GroupSid);
+
+            if (groupRecord == null)
+            {
+                // Load from AD
+                var group = ADCachedGroup.LoadWithSid(GroupSid);
+                SetValue(group);
 
                 return group;
             }
@@ -83,33 +111,70 @@ namespace Disco.BI.Interop.ActiveDirectory
                 if (groupRecord.Item2 > DateTime.Now)
                     return groupRecord;
                 else
-                    _Cache.TryRemove(groupCN, out groupRecord);
+                {
+                    if (_Cache.TryRemove(groupCN, out groupRecord))
+                        _SidCache.TryRemove(groupRecord.Item1.ObjectSid, out groupRecord);
+                }
             }
             return null;
         }
-        private static bool SetValue(string GroupCN, ADCachedGroup GroupRecord)
+        private static Tuple<ADCachedGroup, DateTime> TrySidCache(string GroupSid)
         {
-            string key = GroupCN.ToLower();
-            Tuple<ADCachedGroup, DateTime> groupRecord = new Tuple<ADCachedGroup, DateTime>(GroupRecord, DateTime.Now.AddTicks(CacheTimeoutTicks));
-            if (_Cache.ContainsKey(key))
+            Tuple<ADCachedGroup, DateTime> groupRecord;
+            if (_SidCache.TryGetValue(GroupSid, out groupRecord))
             {
-                Tuple<ADCachedGroup, DateTime> oldGroupRecord;
-                if (_Cache.TryGetValue(key, out oldGroupRecord))
+                if (groupRecord.Item2 > DateTime.Now)
+                    return groupRecord;
+                else
                 {
-                    return _Cache.TryUpdate(key, groupRecord, oldGroupRecord);
+                    if (_SidCache.TryRemove(GroupSid, out groupRecord))
+                        _Cache.TryRemove(groupRecord.Item1.CN.ToLower(), out groupRecord);
                 }
             }
-            return _Cache.TryAdd(key, groupRecord);
+            return null;
+        }
+        private static bool SetValue(ADCachedGroup GroupRecord)
+        {
+            Tuple<ADCachedGroup, DateTime> groupRecord = new Tuple<ADCachedGroup, DateTime>(GroupRecord, DateTime.Now.AddTicks(CacheTimeoutTicks));
+            Tuple<ADCachedGroup, DateTime> oldGroupRecord;
+
+            string key = GroupRecord.CN.ToLower();
+            if (_Cache.ContainsKey(key))
+            {
+                if (_Cache.TryGetValue(key, out oldGroupRecord))
+                {
+                    _Cache.TryUpdate(key, groupRecord, oldGroupRecord);
+                }
+            }
+            else
+            {
+                _Cache.TryAdd(key, groupRecord);
+            }
+
+            string sid = GroupRecord.ObjectSid;
+            if (_SidCache.ContainsKey(sid))
+            {
+                if (_SidCache.TryGetValue(sid, out oldGroupRecord))
+                {
+                    _SidCache.TryUpdate(sid, groupRecord, oldGroupRecord);
+                }
+            }
+            else
+            {
+                _SidCache.TryAdd(sid, groupRecord);
+            }
+            return true;
         }
 
         private class ADCachedGroup
         {
+            public string ObjectSid { get; set; }
             public string CN { get; private set; }
             public string FriendlyName { get; private set; }
 
             public List<string> MemberOf { get; private set; }
 
-            public static ADCachedGroup LoadFromAD(string CN)
+            public static ADCachedGroup LoadWithCN(string CN)
             {
                 ADCachedGroup group = null;
 
@@ -122,6 +187,7 @@ namespace Disco.BI.Interop.ActiveDirectory
                             CN = CN
                         };
 
+                        group.ObjectSid = ActiveDirectoryHelpers.ConvertBytesToSDDLString((byte[])groupDE.Properties["objectSid"].Value);
                         group.FriendlyName = (string)groupDE.Properties["sAMAccountName"].Value;
 
                         var groupMemberOf = groupDE.Properties["memberOf"];
@@ -135,6 +201,46 @@ namespace Disco.BI.Interop.ActiveDirectory
                 return group;
             }
 
+            public static ADCachedGroup LoadWithSid(string Sid)
+            {
+                using (DirectoryEntry dRootEntry = ActiveDirectoryHelpers.DefaultLdapRoot)
+                {
+                    var loadProperties = new List<string> {
+					"distinguishedName", 
+					"objectSid", 
+                    "sAMAccountName",
+					"memberOf"
+                };
+
+                    var sidBytes = ActiveDirectoryHelpers.ConvertSDDLStringToBytes(Sid);
+                    var sidBinaryString = ActiveDirectoryHelpers.ConvertBytesToBinarySidString(sidBytes);
+
+                    using (DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, string.Format("(&(objectClass=group)(objectSid={0}))", sidBinaryString), loadProperties.ToArray(), SearchScope.Subtree))
+                    {
+                        SearchResult dResult = dSearcher.FindOne();
+                        if (dResult != null)
+                        {
+                            var group = new ADCachedGroup()
+                            {
+                                CN = (string)dResult.Properties["distinguishedName"][0],
+                                ObjectSid = ActiveDirectoryHelpers.ConvertBytesToSDDLString((byte[])dResult.Properties["objectSid"][0]),
+                                FriendlyName = (string)dResult.Properties["sAMAccountName"][0]
+                            };
+
+                            var groupMemberOf = dResult.Properties["memberOf"];
+                            if (groupMemberOf != null && groupMemberOf.Count > 0)
+                            {
+                                group.MemberOf = groupMemberOf.Cast<string>().ToList();
+                            }
+
+                            return group;
+                        }
+                        else
+                            return null;
+                    }
+                }
+            }
+
             private ADCachedGroup()
             {
                 // Private Constructor
@@ -143,6 +249,7 @@ namespace Disco.BI.Interop.ActiveDirectory
 
         private static void CleanStaleCache()
         {
+            // Clean Cache
             var groupKeys = _Cache.Keys.ToArray();
             foreach (string groupKey in groupKeys)
             {
@@ -150,7 +257,23 @@ namespace Disco.BI.Interop.ActiveDirectory
                 if (_Cache.TryGetValue(groupKey, out groupRecord))
                 {
                     if (groupRecord.Item2 <= DateTime.Now)
+                    {
                         _Cache.TryRemove(groupKey, out groupRecord);
+                    }
+                }
+            }
+
+            // Clean SID Cache
+            groupKeys = _SidCache.Keys.ToArray();
+            foreach (string groupKey in groupKeys)
+            {
+                Tuple<ADCachedGroup, DateTime> groupRecord;
+                if (_SidCache.TryGetValue(groupKey, out groupRecord))
+                {
+                    if (groupRecord.Item2 <= DateTime.Now)
+                    {
+                        _SidCache.TryRemove(groupKey, out groupRecord);
+                    }
                 }
             }
         }
