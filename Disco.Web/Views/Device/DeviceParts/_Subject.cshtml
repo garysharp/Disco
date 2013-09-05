@@ -590,17 +590,30 @@
             }
             @if (Model.Device.CanDecommission())
             { 
-                @Html.ActionLinkSmallButton("Decommission", MVC.API.Device.Decommission(Model.Device.SerialNumber, true), "Device_Show_Device_Actions_Decommission_Button")
-                <div id="Device_Show_Device_Actions_Decommission_Dialog" class="dialog" title="Decommission this Device?">
-                    <p>
-                        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-                        Are you sure?
-                    </p>
+                @Html.ActionLinkSmallButton("Decommission", MVC.API.Device.Decommission(), "Device_Show_Device_Actions_Decommission_Button")
+                <div id="Device_Show_Device_Actions_Decommission_Dialog" class="dialog" title="Device Decommissioning">
+                    <div class="clearfix" style="margin-bottom: 10px;">
+                        <span class="ui-icon ui-icon-info" style="float: left; margin: 0 7px 0 0;"></span>
+                        Why was this Device Decommissioned?
+                    </div>
+                    <div>
+                        <ul class="none">
+                            @foreach (Device.DecommissionReasons decommissionReason in Enum.GetValues(typeof(Device.DecommissionReasons)))
+                            {
+                                <li>
+                                    <input type="radio" id="Device_Show_Device_Actions_Decommission_Reason_@((int)decommissionReason)"
+                                        name="Device_Show_Device_Actions_Decommission_Reason" value="@((int)decommissionReason)" @((decommissionReason== Device.DecommissionReasons.EndOfLife) ? "checked=\"checked\"" : string.Empty)/>
+                                    <label for="Device_Show_Device_Actions_Decommission_Reason_@((int)decommissionReason)">@(decommissionReason.ReasonMessage())</label>
+                                </li>
+                            }
+                        </ul>
+                    </div>
                 </div>
                 <script type="text/javascript">
                     $(function () {
                         var button = $('#Device_Show_Device_Actions_Decommission_Button');
                         var buttonDialog = null;
+                        var deviceSerialNumber = '@(Model.Device.SerialNumber)';
 
                         button.click(function () {
 
@@ -608,15 +621,20 @@
                                 buttonDialog = $('#Device_Show_Device_Actions_Decommission_Dialog')
                                                     .dialog({
                                                         resizable: false,
-                                                        height: 140,
                                                         modal: true,
                                                         autoOpen: false,
                                                         buttons: {
                                                             "Decommission": function () {
+
+                                                                var reasonId = buttonDialog.find('input:checked').val();
+                                                                
                                                                 var $this = $(this);
                                                                 $this.dialog("disable");
                                                                 $this.dialog("option", "buttons", null);
-                                                                window.location.href = button.attr('href');
+
+                                                                var url = button.attr('href') + '/' + deviceSerialNumber + '?Reason=' + reasonId + '&redirect=True';
+
+                                                                window.location.href = url;
                                                             },
                                                             Cancel: function () {
                                                                 $(this).dialog("close");

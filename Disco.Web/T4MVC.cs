@@ -143,6 +143,8 @@ namespace Links
                 public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
                 public static readonly string disco_dataTables_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.dataTables.extensions.min.js") ? Url("disco.dataTables.extensions.min.js") : Url("disco.dataTables.extensions.js");
                               
+                public static readonly string disco_uicore_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.uicore.min.js") ? Url("disco.uicore.min.js") : Url("disco.uicore.js");
+                              
                 public static readonly string disco_unobtrusiveValidation_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.unobtrusiveValidation.extensions.min.js") ? Url("disco.unobtrusiveValidation.extensions.min.js") : Url("disco.unobtrusiveValidation.extensions.js");
                               
                 public static readonly string jquery_2_0_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-2.0.2.min.js") ? Url("jquery-2.0.2.min.js") : Url("jquery-2.0.2.js");
@@ -3491,6 +3493,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_Decommission
         {
             public readonly string id = "id";
+            public readonly string Reason = "Reason";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_Recommission s_params_Recommission = new ActionParamsClass_Recommission();
@@ -3697,14 +3700,15 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
-        partial void DecommissionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, bool redirect);
+        partial void DecommissionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, int Reason, bool redirect);
 
-        public override System.Web.Mvc.ActionResult Decommission(string id, bool redirect)
+        public override System.Web.Mvc.ActionResult Decommission(string id, int Reason, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Decommission);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Reason", Reason);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            DecommissionOverride(callInfo, id, redirect);
+            DecommissionOverride(callInfo, id, Reason, redirect);
             return callInfo;
         }
 

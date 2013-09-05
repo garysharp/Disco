@@ -58,12 +58,13 @@ namespace Disco.BI.Extensions
 
             return true;
         }
-        public static void OnDecommission(this Device d)
+        public static void OnDecommission(this Device d, Disco.Models.Repository.Device.DecommissionReasons Reason)
         {
             if (!d.CanDecommission())
                 throw new InvalidOperationException("Decommission of Device is Denied");
 
             d.DecommissionedDate = DateTime.Now;
+            d.DecommissionReason = Reason;
 
             // Disable AD Account
             if (d.ComputerName != null)
@@ -87,6 +88,7 @@ namespace Disco.BI.Extensions
                 throw new InvalidOperationException("Recommission of Device is Denied");
 
             d.DecommissionedDate = null;
+            d.DecommissionReason = null;
 
             // Enable AD Account
             if (d.ComputerName != null)

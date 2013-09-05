@@ -178,10 +178,39 @@ namespace Disco.BI.Extensions
                 return null;
         }
 
+        public static string ReasonMessage(this Disco.Models.Repository.Device.DecommissionReasons r)
+        {
+            switch (r)
+            {
+                case Device.DecommissionReasons.EndOfLife:
+                    return "End of Life";
+                case Device.DecommissionReasons.Sold:
+                    return "Sold";
+                case Device.DecommissionReasons.Stolen:
+                    return "Stolen";
+                case Device.DecommissionReasons.Lost:
+                    return "Lost";
+                case Device.DecommissionReasons.Damaged:
+                    return "Damaged";
+                case Device.DecommissionReasons.Donated:
+                    return "Donated";
+                default:
+                    return "Unknown";
+            }
+        }
+
+        public static string ReasonMessage(this Disco.Models.Repository.Device.DecommissionReasons? r)
+        {
+            if (!r.HasValue)
+                return "Not Decommissioned";
+
+            return r.Value.ReasonMessage();
+        }
+
         public static string Status(this Device Device)
         {
             if (Device.DecommissionedDate.HasValue)
-                return "Decommissioned";
+                return string.Format("Decommissioned ({0})", Device.DecommissionReason.ReasonMessage());
 
             if (!Device.EnrolledDate.HasValue)
                 return "Not Enrolled";

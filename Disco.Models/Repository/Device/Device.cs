@@ -41,6 +41,7 @@ namespace Disco.Models.Repository
         public DateTime? EnrolledDate { get; set; }
         public DateTime? LastEnrolDate { get; set; }
         public DateTime? DecommissionedDate { get; set; }
+        public DecommissionReasons? DecommissionReason { get; set; }
 
         [ForeignKey("DeviceModelId")]
         public virtual DeviceModel DeviceModel { get; set; }
@@ -64,6 +65,16 @@ namespace Disco.Models.Repository
                 return string.Format("{0} - {1}", this.DeviceModel, this.SerialNumber);
             else
                 return this.SerialNumber;
+        }
+
+        public enum DecommissionReasons
+        {
+            EndOfLife = 0,
+            Sold = 10,
+            Stolen = 20,
+            Lost = 30,
+            Damaged = 40,
+            Donated = 50
         }
     }
 }

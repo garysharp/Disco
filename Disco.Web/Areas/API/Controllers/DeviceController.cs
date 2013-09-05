@@ -213,7 +213,7 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Device Actions
-        public virtual ActionResult Decommission(string id, bool redirect)
+        public virtual ActionResult Decommission(string id, int Reason, bool redirect)
         {
             var d = dbContext.Devices.Find(id);
             dbContext.Configuration.LazyLoadingEnabled = true;
@@ -221,7 +221,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 if (d.CanDecommission())
                 {
-                    d.OnDecommission();
+                    d.OnDecommission((Disco.Models.Repository.Device.DecommissionReasons)Reason);
 
                     dbContext.SaveChanges();
                     if (redirect)
