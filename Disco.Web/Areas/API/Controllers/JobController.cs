@@ -499,9 +499,9 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 else
                 {
-                    if (!job.Flags.HasValue || job.Flags.Value != flags)
+                    if (!job.Flags.HasValue || (long)job.Flags.Value != flags)
                     {
-                        job.Flags = flags;
+                        job.Flags = (Disco.Models.Repository.Job.UserManagementFlags)flags;
                         dbContext.SaveChanges();
                     }
                 }
@@ -1391,7 +1391,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (job == null)
                     throw new Exception("Invalid Job Id");
 
-                long flag = Flag.Value;
+                var flag = Flag.Value;
                 var validFlags = job.ValidFlags();
                 Tuple<string, bool> flagStatus;
                 if (validFlags.TryGetValue((flag < 0 ? flag * -1 : flag), out flagStatus))
@@ -1400,7 +1400,7 @@ namespace Disco.Web.Areas.API.Controllers
                     { // Remove Flag
                         if (flagStatus.Item2)
                         {
-                            job.Flags = (job.Flags ?? 0) ^ (flag * -1);
+                            job.Flags = (Disco.Models.Repository.Job.UserManagementFlags)((long)(job.Flags ?? 0) ^ (flag * -1));
                             dbContext.SaveChanges();
                         }
                     }
@@ -1408,7 +1408,7 @@ namespace Disco.Web.Areas.API.Controllers
                     { // Add Flag
                         if (!flagStatus.Item2)
                         {
-                            job.Flags = (job.Flags ?? 0) | flag;
+                            job.Flags = (Disco.Models.Repository.Job.UserManagementFlags)((long)(job.Flags ?? 0) | flag);
                         }
                         // Write Reason
                         JobLog jobLog = new JobLog()

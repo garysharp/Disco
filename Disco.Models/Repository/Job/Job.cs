@@ -26,7 +26,7 @@ namespace Disco.Models.Repository
         public string ClosedTechUserId { get; set; }
         public DateTime? ClosedDate { get; set; }
 
-        public long? Flags { get; set; }
+        public UserManagementFlags? Flags { get; set; }
 
         [Display(Name = "Technician Held Device")]
         public DateTime? DeviceHeld { get; set; }

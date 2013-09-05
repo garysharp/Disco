@@ -137,7 +137,7 @@ namespace Disco.Web.Controllers
                 (j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.IsInsuranceClaim && !j.JobMetaInsurance.ClaimFormSentDate.HasValue)) ||
                 (j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue && (!j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue))) ||
                 (j.JobTypeId == JobType.JobTypeIds.HNWar && (!j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue || !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue)) ||
-                (j.JobTypeId == JobType.JobTypeIds.UMgmt && (long)Job.UserManagementFlags.Infringement_BreachFinancialAgreement == (j.Flags & (long)Job.UserManagementFlags.Infringement_BreachFinancialAgreement))
+                (j.JobTypeId == JobType.JobTypeIds.UMgmt && Job.UserManagementFlags.Infringement_BreachFinancialAgreement == (j.Flags & Job.UserManagementFlags.Infringement_BreachFinancialAgreement))
                 )));
 
             // UI Extensions
@@ -194,7 +194,7 @@ namespace Disco.Web.Controllers
             var m = new Models.Job.ListModel() { Title = "Jobs Awaiting Finance - Agreement Breach" };
             m.JobTable = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true };
             m.JobTable.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.ClosedDate == null &&
-                (j.JobTypeId == JobType.JobTypeIds.UMgmt && (long)Job.UserManagementFlags.Infringement_BreachFinancialAgreement == (j.Flags & (long)Job.UserManagementFlags.Infringement_BreachFinancialAgreement))
+                (j.JobTypeId == JobType.JobTypeIds.UMgmt && Job.UserManagementFlags.Infringement_BreachFinancialAgreement == (j.Flags & Job.UserManagementFlags.Infringement_BreachFinancialAgreement))
                 ).OrderBy(j => j.Id));
 
             // UI Extensions

@@ -41,7 +41,7 @@ namespace Disco.BI.Extensions
 
             CacheAllFlags();
 
-            var currentFlags = j.Flags ?? 0;
+            var currentFlags = (long)(j.Flags ?? 0);
 
             foreach (var jt in j.JobSubTypes)
             {
@@ -63,7 +63,7 @@ namespace Disco.BI.Extensions
 
             CacheAllFlags();
 
-            var currentFlags = j.Flags ?? 0;
+            var currentFlags = (long)(j.Flags ?? 0);
 
             foreach (var jt in j.JobSubTypes)
             {
