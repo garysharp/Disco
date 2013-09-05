@@ -208,6 +208,15 @@ namespace Disco.Data.Repository
                 context.JobSubTypes.Add(new JobSubType { Id = "BezelCaseBottomCover", JobTypeId = JobType.JobTypeIds.HWar, Description = "Bezel - Case Bottom Load Cover" });
             #endregion
             // End Feature Request
+
+            // Feature Request https://github.com/garysharp/Disco/issues/1
+            #region "Device Stolen/Lost"
+            if (context.JobSubTypes.Count(jst => jst.JobTypeId == JobType.JobTypeIds.HNWar && jst.Id == "DeviceStolen") == 0)
+                context.JobSubTypes.Add(new JobSubType { Id = "DeviceStolen", JobTypeId = JobType.JobTypeIds.HNWar, Description = "Device Stolen" });
+            if (context.JobSubTypes.Count(jst => jst.JobTypeId == JobType.JobTypeIds.HNWar && jst.Id == "DeviceLost") == 0)
+                context.JobSubTypes.Add(new JobSubType { Id = "DeviceLost", JobTypeId = JobType.JobTypeIds.HNWar, Description = "Device Lost" });
+            #endregion
+            // End Feature Request
         }
 
         private static void UpdateDeviceModelConfiguration(this DiscoDataContext context)
