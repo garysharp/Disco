@@ -16,15 +16,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceProfile
         public int? Address { get; set; }
         public string AddressName { get; set; }
         public string Description { get; set; }
-        public int DistributionTypeId { get; set; }
-        
-        public string DistributionType
-        {
-            get
-            {
-                return Enum.GetName(typeof(Disco.Models.Repository.DeviceProfile.DistributionTypes), this.DistributionTypeId);
-            }
-        }
+        public Disco.Models.Repository.DeviceProfile.DistributionTypes DistributionType { get; set; }
 
         public int DeviceCount { get; set; }
         public int DeviceDecommissionedCount { get; set; }

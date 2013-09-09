@@ -27,27 +27,12 @@ namespace Disco.Models.Repository
 
         // Migration from DeviceProfile Configuration
         // 2012-06-14 G#
-        [Required()]
+        [Required]
         public string ComputerNameTemplate { get; set; }
-        public enum DistributionTypes : int
-        {
-            OneToMany = 0,
-            OneToOne = 1
-        }
-        [Column("DistributionType"), EditorBrowsable(EditorBrowsableState.Never)]
-        public int DistributionTypeDb { get; set; }
-        [NotMapped]
-        public DistributionTypes DistributionType
-        {
-            get
-            {
-                return (DistributionTypes)this.DistributionTypeDb;
-            }
-            set
-            {
-                this.DistributionTypeDb = (int)value;
-            }
-        }
+        
+        [Required]
+        public DistributionTypes? DistributionType { get; set; }
+
         public string OrganisationalUnit { get; set; }
         // End Migration
 
@@ -73,11 +58,11 @@ namespace Disco.Models.Repository
         // public bool AllocateCertificate { get; set; } // Renamed from 'AllocateWirelessCertificate'
         [StringLength(64)]
         public string CertificateProviderId { get; set; }
-    }
-    public partial class DeviceProfile
-    {
-        public class PropertyAccessExpressions {
-            public static readonly Expression<Func<DeviceProfile, int>> DistributionTypeDb = x => x.DistributionTypeDb;
+
+        public enum DistributionTypes : int
+        {
+            OneToMany = 0,
+            OneToOne = 1
         }
     }
 }

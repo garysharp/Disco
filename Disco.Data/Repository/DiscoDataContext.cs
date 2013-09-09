@@ -65,7 +65,6 @@ namespace Disco.Data.Repository
             modelBuilder.Entity<Job>().HasMany(m => m.JobSubTypes).WithMany(m => m.Jobs).Map(m => m.ToTable("Jobs_JobSubTypes"));
             modelBuilder.Entity<User>().HasMany(m => m.Jobs).WithOptional(m => m.User);
             modelBuilder.Entity<Device>().HasMany(m => m.Jobs).WithOptional(m => m.Device);
-            modelBuilder.Entity<DeviceProfile>().Property(DeviceProfile.PropertyAccessExpressions.DistributionTypeDb);
         }
 
         // Hook for Repository Monitor

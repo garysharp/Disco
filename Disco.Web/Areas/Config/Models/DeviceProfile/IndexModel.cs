@@ -22,7 +22,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceProfile
                 ShortName = dp.ShortName,
                 Address = dp.DefaultOrganisationAddress,
                 Description = dp.Description,
-                DistributionTypeId = (int)dp.DistributionType,
+                DistributionType = dp.DistributionType.Value,
                 DeviceCount = dp.Devices.Count,
                 DeviceDecommissionedCount = dp.Devices.Count(d => d.DecommissionedDate.HasValue)
             }).ToArray().Cast<ConfigDeviceProfileIndexModelItem>().ToList();

@@ -14,9 +14,7 @@ namespace Disco.Models.UI.Config.DeviceProfile
         int? Address { get; set; }
         string AddressName { get; set; }
         string Description { get; set; }
-        int DistributionTypeId { get; set; }
-
-        string DistributionType { get; }
+        Models.Repository.DeviceProfile.DistributionTypes DistributionType { get; set; }
 
         int DeviceCount { get; set; }
         int DeviceDecommissionedCount { get; set; }

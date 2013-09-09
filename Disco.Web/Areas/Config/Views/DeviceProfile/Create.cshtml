@@ -4,6 +4,7 @@
 }
 @using (Html.BeginForm())
 { 
+    @Html.ValidationSummary(false)
     <div class="form" style="width: 450px">
         <table>
             <tr>
@@ -31,6 +32,7 @@
         </table>
         @Html.HiddenFor(model => model.DeviceProfile.ComputerNameTemplate)
         @Html.HiddenFor(model => model.DeviceProfile.ProvisionADAccount)
+        @Html.HiddenFor(model => model.DeviceProfile.DistributionType)
         <p class="actions">
             <input type="submit" class="button" value="Create" />
         </p>
