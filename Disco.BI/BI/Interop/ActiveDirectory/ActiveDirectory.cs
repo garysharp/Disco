@@ -341,6 +341,7 @@ namespace Disco.BI.Interop.ActiveDirectory
 					"sn", 
 					"givenName", 
 					"memberOf", 
+                    "primaryGroupID",
 					"mail", 
 					"telephoneNumber"
 				}, SearchScope.Subtree))
