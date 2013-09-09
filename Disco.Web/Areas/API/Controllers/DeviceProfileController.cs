@@ -221,6 +221,8 @@ namespace Disco.Web.Areas.API.Controllers
             deviceProfile.ComputerNameTemplate = ComputerNameTemplate;
 
             dbContext.SaveChanges();
+
+            deviceProfile.ComputerNameInvalidateCache();
         }
 
         private void UpdateDefaultOrganisationAddress(Disco.Models.Repository.DeviceProfile deviceProfile, string DefaultOrganisationAddress)
