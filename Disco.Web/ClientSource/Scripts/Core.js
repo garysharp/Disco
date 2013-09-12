@@ -39592,6 +39592,7 @@ jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, -1], [10, 20, 50, "All"
         $('#term').watermark('Search').keypress(function (e) {
             if (e.keyCode == 13) {
                 $(this).closest('form').submit();
+                return false;
             }
         }).focus(function () {
             $(this).select();
