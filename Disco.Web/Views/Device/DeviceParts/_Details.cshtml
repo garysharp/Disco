@@ -1,0 +1,20 @@
+﻿@model Disco.Web.Models.Device.ShowModel
+<div id="DeviceDetailTab-Details" class="DevicePart">
+    <div id="DeviceDetailTab-DetailsContainer">
+        <table class="tableData">
+            <tbody>
+                <tr>
+                    <th>LAN MAC Address</th>
+                    <td>@(Model.Device.DeviceDetails.LanMacAddress() ?? "Unknown")</td>
+                </tr>
+                <tr>
+                    <th>WLAN MAC Address</th>
+                    <td>@(Model.Device.DeviceDetails.WLanMacAddress() ?? "Unknown")</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        $('#DeviceDetailTabItems').append('<li><a href="#DeviceDetailTab-Details">Details</a></li>');
+    </script>
+</div>

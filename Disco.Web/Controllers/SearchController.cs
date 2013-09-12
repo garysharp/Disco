@@ -62,7 +62,7 @@ namespace Disco.Web.Controllers
                     m.ErrorMessage = "A search term of at least two characters is required";
                     return View(m);
                 }
-                m.Devices = BI.DeviceBI.Searching.Search(dbContext, term);
+                m.Devices = BI.DeviceBI.Searching.Search(dbContext, term, null, searchDetails);
                 m.Jobs = BI.JobBI.Searching.Search(dbContext, term, null, true, searchDetails);
                 m.Users = BI.UserBI.Searching.Search(dbContext, term);
             }
@@ -125,7 +125,7 @@ namespace Disco.Web.Controllers
                             m.ErrorMessage = "A search term of at least two characters is required";
                             return View(m);
                         }
-                        m.Devices = BI.DeviceBI.Searching.Search(dbContext, term);
+                        m.Devices = BI.DeviceBI.Searching.Search(dbContext, term, null, searchDetails);
                         if (m.Devices.Count == 1)
                         {
                             return RedirectToAction(MVC.Device.Show(m.Devices[0].SerialNumber));

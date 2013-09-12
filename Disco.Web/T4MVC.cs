@@ -1191,12 +1191,14 @@ namespace Disco.Web.Controllers
                 {
                     public readonly string _AssignmentHistory = "_AssignmentHistory";
                     public readonly string _Certificates = "_Certificates";
+                    public readonly string _Details = "_Details";
                     public readonly string _Jobs = "_Jobs";
                     public readonly string _Resources = "_Resources";
                     public readonly string _Subject = "_Subject";
                 }
                 public readonly string _AssignmentHistory = "~/Views/Device/DeviceParts/_AssignmentHistory.cshtml";
                 public readonly string _Certificates = "~/Views/Device/DeviceParts/_Certificates.cshtml";
+                public readonly string _Details = "~/Views/Device/DeviceParts/_Details.cshtml";
                 public readonly string _Jobs = "~/Views/Device/DeviceParts/_Jobs.cshtml";
                 public readonly string _Resources = "~/Views/Device/DeviceParts/_Resources.cshtml";
                 public readonly string _Subject = "~/Views/Device/DeviceParts/_Subject.cshtml";
@@ -3386,6 +3388,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string ImportParse = "ImportParse";
             public readonly string ImportProcess = "ImportProcess";
             public readonly string ExportAllDevices = "ExportAllDevices";
+            public readonly string MigrateDeviceMacAddressesFromLog = "MigrateDeviceMacAddressesFromLog";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -3412,6 +3415,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string ImportParse = "ImportParse";
             public const string ImportProcess = "ImportProcess";
             public const string ExportAllDevices = "ExportAllDevices";
+            public const string MigrateDeviceMacAddressesFromLog = "MigrateDeviceMacAddressesFromLog";
         }
 
 
@@ -3842,6 +3846,15 @@ namespace Disco.Web.Areas.API.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportAllDevices);
             ExportAllDevicesOverride(callInfo);
+            return callInfo;
+        }
+
+        partial void MigrateDeviceMacAddressesFromLogOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        public override System.Web.Mvc.ActionResult MigrateDeviceMacAddressesFromLog()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MigrateDeviceMacAddressesFromLog);
+            MigrateDeviceMacAddressesFromLogOverride(callInfo);
             return callInfo;
         }
 

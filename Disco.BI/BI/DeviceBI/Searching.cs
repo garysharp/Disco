@@ -10,7 +10,8 @@ namespace Disco.BI.DeviceBI
 {
     public static class Searching
     {
-        private static List<DeviceSearchResultItem> Search_SelectDeviceSearchResultItem(IQueryable<Device> Query, int? LimitCount = null){
+        private static List<DeviceSearchResultItem> Search_SelectDeviceSearchResultItem(IQueryable<Device> Query, int? LimitCount = null)
+        {
             if (LimitCount.HasValue)
                 Query = Query.Take(LimitCount.Value);
 
@@ -28,15 +29,34 @@ namespace Disco.BI.DeviceBI
             }).ToList();
         }
 
-        public static List<DeviceSearchResultItem> Search(DiscoDataContext dbContext, string Term, int? LimitCount = null)
+        public static List<DeviceSearchResultItem> Search(DiscoDataContext dbContext, string Term, int? LimitCount = null, bool SearchDetails = false)
         {
-            return Search_SelectDeviceSearchResultItem(dbContext.Devices.Where(d =>
-                d.AssetNumber.Contains(Term) ||
-                d.ComputerName.Contains(Term) ||
-                d.SerialNumber.Contains(Term) ||
-                d.Location.Contains(Term) ||
-                Term.Contains(d.SerialNumber)
-                ), LimitCount);
+            IQueryable<Device> query;
+
+            query = null;
+
+            if (SearchDetails)
+            {
+                query = dbContext.Devices.Where(d =>
+                    d.AssetNumber.Contains(Term) ||
+                    d.ComputerName.Contains(Term) ||
+                    d.SerialNumber.Contains(Term) ||
+                    d.Location.Contains(Term) ||
+                    Term.Contains(d.SerialNumber) ||
+                    d.DeviceDetails.Any(dd => dd.Value.Contains(Term))
+                    );
+            }
+            else
+            {
+                query = dbContext.Devices.Where(d =>
+                    d.AssetNumber.Contains(Term) ||
+                    d.ComputerName.Contains(Term) ||
+                    d.SerialNumber.Contains(Term) ||
+                    d.Location.Contains(Term) ||
+                    Term.Contains(d.SerialNumber));
+            }
+            
+            return Search_SelectDeviceSearchResultItem(query, LimitCount);
         }
 
         public static List<DeviceSearchResultItem> SearchDeviceModel(DiscoDataContext dbContext, int DeviceModelId, int? LimitCount = null)

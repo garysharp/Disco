@@ -222,6 +222,36 @@
   right: 220px;
   margin-top: -24px;
 }
+#DeviceDetailTab-DetailsContainer > table {
+  border: solid 1px #e8eef4;
+  border-collapse: collapse;
+}
+#DeviceDetailTab-DetailsContainer > table > tbody > tr > td {
+  border: solid 1px #e8eef4;
+  background-color: #fff;
+}
+#DeviceDetailTab-DetailsContainer > table > tbody > tr:nth-child(odd) > td {
+  background-color: #fcfcfd;
+}
+#DeviceDetailTab-DetailsContainer > table > thead > tr > th,
+#DeviceDetailTab-DetailsContainer > table > tbody > tr > th {
+  background-color: #e8eef4;
+  border: solid 1px #e8eef4;
+}
+#DeviceDetailTab-DetailsContainer > table > tbody > tr:hover > td {
+  background-color: #e8eef4;
+}
+#DeviceDetailTab-DetailsContainer > table > tfoot > tr > th,
+#DeviceDetailTab-DetailsContainer > table > tfoot > tr > td {
+  background-color: #e8eef4;
+}
+#DeviceDetailTab-DetailsContainer > table > tbody > tr > th {
+  width: 150px;
+}
+#DeviceDetailTab-DetailsContainer > table > tbody > tr > th,
+#DeviceDetailTab-DetailsContainer > table > tbody > tr > td {
+  padding: 10px 6px;
+}
 #deviceShowResources #Attachments {
   padding: 0;
   border: 1px solid #cccccc;

@@ -13,7 +13,7 @@
                     @if (Model != null)
                     {
                         @Html.Hidden("limit", Model)
-                        if (Model == "jobs")
+                        if (Model == "jobs" || Model == "devices")
                         { 
                         <br />
                         <input type="checkbox" name="searchDetails" id="searchDetails" value="true" /><label

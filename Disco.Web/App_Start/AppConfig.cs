@@ -66,7 +66,7 @@ namespace Disco.Web
             Disco.BI.Interop.SignalRHandlers.RepositoryMonitorNotifications.Initialize();
         }
 
-        public static void InitializeUpdateEnvironment(DiscoDataContext dbContext)
+        public static void InitializeUpdateEnvironment(DiscoDataContext dbContext, Version PreviousVersion)
         {
             // Initialize Logging
             Disco.Services.Logging.LogContext.Initalize(dbContext, DiscoApplication.SchedulerFactory);
@@ -83,6 +83,10 @@ namespace Disco.Web
 
             // Initialize Scheduled Tasks
             Disco.Services.Tasks.ScheduledTasks.InitalizeScheduledTasks(dbContext, DiscoApplication.SchedulerFactory, true);
+
+            // Import MAC Address Migration
+            if (PreviousVersion != null && PreviousVersion < new Version(1, 2, 910, 0))
+                Disco.BI.DeviceBI.Migration.LogMacAddressImporting.SetRequired(dbContext);
         }
 
         public static void DisposeEnvironment()

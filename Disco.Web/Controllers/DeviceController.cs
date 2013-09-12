@@ -118,7 +118,7 @@ namespace Disco.Web.Controllers
 
             dbContext.Configuration.LazyLoadingEnabled = true;
 
-            m.Device = dbContext.Devices
+            m.Device = dbContext.Devices.Include("DeviceDetails")
                 .Where(d => d.SerialNumber == id)
                 .FirstOrDefault();
 

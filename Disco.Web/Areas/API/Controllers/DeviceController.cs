@@ -506,5 +506,11 @@ namespace Disco.Web.Areas.API.Controllers
         } 
         #endregion
 
+        public virtual ActionResult MigrateDeviceMacAddressesFromLog()
+        {
+            var taskStatus = Disco.BI.DeviceBI.Migration.LogMacAddressImporting.ScheduleImmediately();
+            return RedirectToAction(MVC.Config.Logging.TaskStatus(taskStatus.SessionId));
+        }
+
     }
 }

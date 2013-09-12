@@ -544,6 +544,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Views\Device\DeviceParts\_Details.generated.cs">
+      <DependentUpon>_Details.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Views\Device\DeviceParts\_AssignmentHistory.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1438,6 +1443,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>AddOffline.generated.cs</LastGenOutput>
     </None>
+    <Content Include="Views\Device\DeviceParts\_Details.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_Details.generated.cs</LastGenOutput>
+    </Content>
     <None Include="Views\Device\DeviceParts\_AssignmentHistory.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_AssignmentHistory.generated.cs</LastGenOutput>
@@ -1933,7 +1942,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
+      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

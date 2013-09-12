@@ -44,7 +44,8 @@ namespace Disco.Web
                 using (DiscoDataContext dbContext = new DiscoDataContext())
                 {
                     // Check for Post-Update
-                    bool isVersionUpdate = dbContext.DiscoConfiguration.InstalledDatabaseVersion != Disco.BI.Interop.Community.UpdateCheck.CurrentDiscoVersion();
+                    var previousVersion = dbContext.DiscoConfiguration.InstalledDatabaseVersion;
+                    bool isVersionUpdate = previousVersion != Disco.BI.Interop.Community.UpdateCheck.CurrentDiscoVersion();
                     bool ignoreVersionUpdate = false;
 
                     if (isVersionUpdate)
@@ -100,7 +101,7 @@ namespace Disco.Web
                         FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
                         RouteConfig.RegisterUpdateRoutes(RouteTable.Routes);
                         BundleConfig.RegisterBundles();
-                        AppConfig.InitializeUpdateEnvironment(dbContext);
+                        AppConfig.InitializeUpdateEnvironment(dbContext, previousVersion);
                     }
                 }
             }
