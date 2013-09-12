@@ -55,7 +55,7 @@ namespace Disco.BI.DeviceBI.Migration
             {
                 // Schedule in 15mins
                 var trigger = TriggerBuilder.Create()
-                    .StartAt(DateTimeOffset.Now.AddMinutes(15));
+                    .StartAt(DateTimeOffset.Now.AddMinutes(5));
 
                 this.ScheduleTask(trigger);
             }
