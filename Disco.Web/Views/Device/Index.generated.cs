@@ -28,12 +28,14 @@ namespace Disco.Web.Views.Device
     using System.Web.WebPages;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services.Authorization;
+    using Disco.Services.Web;
     using Disco.Web;
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/Index.cshtml")]
-    public partial class Index : System.Web.Mvc.WebViewPage<dynamic>
+    public partial class Index : Disco.Services.Web.WebViewPage<dynamic>
     {
         public Index()
         {
@@ -48,43 +50,145 @@ namespace Disco.Web.Views.Device
             
             #line default
             #line hidden
-WriteLiteral("\r\n<h3>\r\n    Search for a Device</h3>\r\n");
+WriteLiteral("\r\n");
 
             
-            #line 6 "..\..\Views\Device\Index.cshtml"
+            #line 4 "..\..\Views\Device\Index.cshtml"
+ if (Authorization.Has(Claims.Device.Search))
+{
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    <h3>Search for a Device</h3>\r\n");
+
+            
+            #line 7 "..\..\Views\Device\Index.cshtml"
+    
+            
+            #line default
+            #line hidden
+            
+            #line 7 "..\..\Views\Device\Index.cshtml"
 Write(Html.Partial(MVC.Shared.Views._SearchDialog, "devices"));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n<div");
+            
+            #line 7 "..\..\Views\Device\Index.cshtml"
+                                                            
+}
+
+            
+            #line default
+            #line hidden
+            
+            #line 9 "..\..\Views\Device\Index.cshtml"
+ if (Authorization.HasAny(Claims.Device.Actions.Import, Claims.Device.Actions.Export, Claims.Device.Actions.EnrolDevices))
+{
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    <div");
 
 WriteLiteral(" class=\"actionBar\"");
 
 WriteLiteral(">\r\n");
 
-WriteLiteral("    ");
-
             
-            #line 8 "..\..\Views\Device\Index.cshtml"
-Write(Html.ActionLinkButton("Import/Export Devices", MVC.Device.ImportExport()));
+            #line 12 "..\..\Views\Device\Index.cshtml"
+        
+            
+            #line default
+            #line hidden
+            
+            #line 12 "..\..\Views\Device\Index.cshtml"
+         if (Authorization.HasAll(Claims.Device.Actions.Import, Claims.Device.Actions.Export))
+        {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 14 "..\..\Views\Device\Index.cshtml"
+       Write(Html.ActionLinkButton("Import/Export Devices", MVC.Device.ImportExport()));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("    ");
-
             
-            #line 9 "..\..\Views\Device\Index.cshtml"
-Write(Html.ActionLinkButton("Add Offline Device", MVC.Device.AddOffline()));
+            #line 14 "..\..\Views\Device\Index.cshtml"
+                                                                                      
+        }else if (Authorization.Has(Claims.Device.Actions.Import)){
+            
+            
+            #line default
+            #line hidden
+            
+            #line 16 "..\..\Views\Device\Index.cshtml"
+       Write(Html.ActionLinkButton("Import Devices", MVC.Device.ImportExport()));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n</div>\r\n");
+            
+            #line 16 "..\..\Views\Device\Index.cshtml"
+                                                                               
+        }else if (Authorization.Has(Claims.Device.Actions.Export)){
+            
+            
+            #line default
+            #line hidden
+            
+            #line 18 "..\..\Views\Device\Index.cshtml"
+       Write(Html.ActionLinkButton("Export All Devices", MVC.API.Device.ExportAllDevices()));
 
+            
+            #line default
+            #line hidden
+            
+            #line 18 "..\..\Views\Device\Index.cshtml"
+                                                                                           
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        ");
+
+            
+            #line 20 "..\..\Views\Device\Index.cshtml"
+         if (Authorization.Has(Claims.Device.Actions.EnrolDevices))
+        {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 22 "..\..\Views\Device\Index.cshtml"
+       Write(Html.ActionLinkButton("Add Offline Device", MVC.Device.AddOffline()));
+
+            
+            #line default
+            #line hidden
+            
+            #line 22 "..\..\Views\Device\Index.cshtml"
+                                                                                 
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    </div>\r\n");
+
+            
+            #line 25 "..\..\Views\Device\Index.cshtml"
+}
+            
+            #line default
+            #line hidden
         }
     }
 }

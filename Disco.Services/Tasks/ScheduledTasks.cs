@@ -16,7 +16,7 @@ namespace Disco.Services.Tasks
         private static object _RunningTasksLock = new object();
         private static List<ScheduledTaskStatus> _RunningTasks = new List<ScheduledTaskStatus>();
 
-        public static void InitalizeScheduledTasks(DiscoDataContext dbContext, ISchedulerFactory SchedulerFactory, bool InitiallySchedule)
+        public static void InitalizeScheduledTasks(DiscoDataContext database, ISchedulerFactory SchedulerFactory, bool InitiallySchedule)
         {
             ScheduledTasksLog.LogInitializingScheduledTasks();
 
@@ -43,7 +43,7 @@ namespace Disco.Services.Tasks
                         ScheduledTask instance = (ScheduledTask)Activator.CreateInstance(scheduledTaskType);
                         try
                         {
-                            instance.InitalizeScheduledTask(dbContext);
+                            instance.InitalizeScheduledTask(database);
                         }
                         catch (Exception ex)
                         {

@@ -95,14 +95,6 @@
     <Compile Include="DataModelExtension\DocumentTemplateExtensions.cs" />
     <Compile Include="DataModelExtension\JobSubTypeExtensions.cs" />
     <Compile Include="DataModelExtension\JobTypeExtensions.cs" />
-    <Compile Include="MvcExtensions\AuthorizeDiscoUsersAttribute.cs" />
-    <Compile Include="MvcExtensions\Bundles\Bundle.cs" />
-    <Compile Include="MvcExtensions\Bundles\BundleExtensions.cs" />
-    <Compile Include="MvcExtensions\Bundles\BundleHandler.cs" />
-    <Compile Include="MvcExtensions\Bundles\BundleModule.cs" />
-    <Compile Include="MvcExtensions\Bundles\BundleTable.cs" />
-    <Compile Include="MvcExtensions\dbAdminController.cs" />
-    <Compile Include="MvcExtensions\dbController.cs" />
     <Compile Include="MvcExtensions\JsonNet\JsonNetResult.cs" />
     <Compile Include="MvcExtensions\PartialCompiled\PartialCompiledHtmlExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -134,7 +126,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_BuildAction="Both" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_StartDate="2011/7/1" />
+      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="Both" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

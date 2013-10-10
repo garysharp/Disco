@@ -29,9 +29,9 @@ namespace Disco.Services.Plugins
             if (!File.Exists(manifestFileLocation))
                 throw new FileNotFoundException("Plugin Manifest File Not Found", manifestFileLocation);
 
-            using (DiscoDataContext dbContext = new DiscoDataContext())
+            using (DiscoDataContext database = new DiscoDataContext())
             {
-                manifest.UninstallPlugin(dbContext, UninstallData, this.Status);
+                manifest.UninstallPlugin(database, UninstallData, this.Status);
             }
 
             string manifestUninstallFileLocation = Path.Combine(manifest.PluginLocation, "manifest.uninstall.json");

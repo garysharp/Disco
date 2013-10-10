@@ -31,12 +31,12 @@ namespace Disco.BI.Interop.Community
             return string.Format("{0}.{1}.{2:0000}.{3:0000}", v.Major, v.Minor, v.Build, v.Revision);
         }
 
-        public static UpdateResponse Check(DiscoDataContext db, bool UseProxy, ScheduledTaskStatus status = null)
+        public static UpdateResponse Check(DiscoDataContext Database, bool UseProxy, ScheduledTaskStatus status = null)
         {
             if (status != null)
                 status.UpdateStatus(10, "Building Update Request");
 
-            var request = BuildRequest(db);
+            var request = BuildRequest(Database);
             //var requestJson = JsonConvert.SerializeObject(request);
 
             if (status != null)
@@ -78,8 +78,8 @@ namespace Disco.BI.Interop.Community
                         result = (UpdateResponse)xml.Deserialize(wResStream);
                     }
                     //var result = JsonConvert.DeserializeObject<UpdateResponse>(responseContent);
-                    db.DiscoConfiguration.UpdateLastCheck = result;
-                    db.SaveChanges();
+                    Database.DiscoConfiguration.UpdateLastCheck = result;
+                    Database.SaveChanges();
 
                     status.SetFinishedMessage(string.Format("The update server reported Version {0} is the latest.", result.Version));
 
@@ -94,23 +94,28 @@ namespace Disco.BI.Interop.Community
             }
         }
 
-        private static UpdateRequestV1 BuildRequest(DiscoDataContext db)
+        private static UpdateRequestV1 BuildRequest(DiscoDataContext Database)
         {
             var m = new UpdateRequestV1();
 
-            m.DeploymentId = db.DiscoConfiguration.DeploymentId;
+            m.DeploymentId = Database.DiscoConfiguration.DeploymentId;
 
             m.CurrentDiscoVersion = CurrentDiscoVersionFormatted();
 
-            m.OrganisationName = db.DiscoConfiguration.OrganisationName;
+            m.OrganisationName = Database.DiscoConfiguration.OrganisationName;
             m.BroadbandDoeWanId = GetBroadbandDoeWanId();
-            m.BetaDeployment = db.DiscoConfiguration.UpdateBetaDeployment;
+            m.BetaDeployment = Database.DiscoConfiguration.UpdateBetaDeployment;
 
-            m.Stat_JobCounts = db.Jobs.GroupBy(j => j.JobTypeId).Select(g => new Disco.Models.BI.Interop.Community.UpdateRequestV1.Stat { Key = g.Key, Count = g.Count() }).ToList();
-            m.Stat_OpenJobCounts = db.Jobs.Where(j => j.ClosedDate == null).GroupBy(j => j.JobTypeId).Select(g => new Disco.Models.BI.Interop.Community.UpdateRequestV1.Stat { Key = g.Key, Count = g.Count() }).ToList();
+            m.Stat_JobCounts = Database.Jobs.GroupBy(j => j.JobTypeId).Select(g => new Disco.Models.BI.Interop.Community.UpdateRequestV1.Stat { Key = g.Key, Count = g.Count() }).ToList();
+            m.Stat_OpenJobCounts = Database.Jobs.Where(j => j.ClosedDate == null).GroupBy(j => j.JobTypeId).Select(g => new Disco.Models.BI.Interop.Community.UpdateRequestV1.Stat { Key = g.Key, Count = g.Count() }).ToList();
             var activeThreshold = DateTime.Now.AddDays(-60);
-            m.Stat_ActiveDeviceModelCounts = db.DeviceModels.Select(dm => new Disco.Models.BI.Interop.Community.UpdateRequestV1.Stat { Key = dm.Manufacturer + ";" + dm.Model, Count = dm.Devices.Count(d => d.DecommissionedDate == null && (d.LastNetworkLogonDate == null || d.LastNetworkLogonDate > activeThreshold)) }).ToList();
-            m.Stat_UserCounts = db.Users.GroupBy(u => u.Type).Select(g => new Disco.Models.BI.Interop.Community.UpdateRequestV1.Stat { Key = g.Key, Count = g.Count() }).ToList();
+            m.Stat_ActiveDeviceModelCounts = Database.DeviceModels.Select(dm => new Disco.Models.BI.Interop.Community.UpdateRequestV1.Stat { Key = dm.Manufacturer + ";" + dm.Model, Count = dm.Devices.Count(d => d.DecommissionedDate == null && (d.LastNetworkLogonDate == null || d.LastNetworkLogonDate > activeThreshold)) }).ToList();
+            m.Stat_UserCounts = new List<UpdateRequestV1.Stat>() {
+                new UpdateRequestV1.Stat(){
+                     Key = "All Users",
+                     Count = Database.Users.Count()
+                }
+            };
 
             m.InstalledPlugins = Disco.Services.Plugins.Plugins.GetPlugins().Select(manifest => new Disco.Models.BI.Interop.Community.UpdateRequestV1.PluginRef { Id = manifest.Id, Version = manifest.VersionFormatted }).ToList();
 

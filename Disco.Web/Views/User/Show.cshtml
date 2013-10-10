@@ -1,5 +1,7 @@
 ﻿@model Disco.Web.Models.User.ShowModel
 @{
+    Authorization.Require(Claims.User.Show);
+
     ViewBag.Title = Html.ToBreadcrumb("Users", MVC.User.Index(), string.Format("User: {0} ({1})", Model.User.DisplayName, Model.User.Id));
 }
 <div id="User_Show">
@@ -7,36 +9,53 @@
     <script type="text/javascript">
         $(function () {
             var $tabs = $('#UserDetailTabs');
-            $tabs.tabs({
-                activate: function (event, ui) {
-                    window.setTimeout(function () {
-                        var $window = $(window);
-                        var tabHeight = $tabs.height();
-                        var tabOffset = $tabs.offset();
-                        var windowScrollTop = $window.scrollTop();
-                        var windowHeight = $window.height();
+            if ($tabs.children().length > 1) {
+                $tabs.tabs({
+                    activate: function (event, ui) {
+                        window.setTimeout(function () {
+                            var $window = $(window);
+                            var tabHeight = $tabs.height();
+                            var tabOffset = $tabs.offset();
+                            var windowScrollTop = $window.scrollTop();
+                            var windowHeight = $window.height();
 
-                        var tabTopNotShown = windowScrollTop - tabOffset.top;
-                        if (tabTopNotShown > 0) {
-                            $('html').animate({ scrollTop: tabOffset.top }, 125);
-                        } else {
-                            var tabBottomNotShown = ((windowScrollTop + windowHeight) - (tabHeight + tabOffset.top)) * -1;
-                            if (tabBottomNotShown > 0) {
-                                if (tabHeight > windowHeight)
-                                    $('html').animate({ scrollTop: tabOffset.top }, 125);
-                                else
-                                    $('html').animate({ scrollTop: windowScrollTop + tabBottomNotShown }, 125);
+                            var tabTopNotShown = windowScrollTop - tabOffset.top;
+                            if (tabTopNotShown > 0) {
+                                $('html').animate({ scrollTop: tabOffset.top }, 125);
+                            } else {
+                                var tabBottomNotShown = ((windowScrollTop + windowHeight) - (tabHeight + tabOffset.top)) * -1;
+                                if (tabBottomNotShown > 0) {
+                                    if (tabHeight > windowHeight)
+                                        $('html').animate({ scrollTop: tabOffset.top }, 125);
+                                    else
+                                        $('html').animate({ scrollTop: windowScrollTop + tabBottomNotShown }, 125);
+                                }
                             }
-                        }
-                    }, 1);
-                }
-            });
+                        }, 1);
+                    }
+                });
+            } else {
+                $tabs.hide();
+            }
         });
     </script>
     <div id="UserDetailTabs">
         <ul id="UserDetailTabItems"></ul>
-        @Html.Partial(MVC.User.Views.UserParts._Jobs, Model)
-        @Html.Partial(MVC.User.Views.UserParts._AssignmentHistory, Model)
-        @Html.Partial(MVC.User.Views.UserParts._Resources, Model)
+        @if (Authorization.Has(Claims.User.ShowJobs))
+        {
+            @Html.Partial(MVC.User.Views.UserParts._Jobs, Model)
+        }
+        @if (Authorization.Has(Claims.User.ShowAssignmentHistory))
+        {
+            @Html.Partial(MVC.User.Views.UserParts._AssignmentHistory, Model)
+        }
+        @if (Authorization.Has(Claims.User.ShowAttachments))
+        {
+            @Html.Partial(MVC.User.Views.UserParts._Resources, Model)
+        }
+        @if (Authorization.Has(Claims.User.ShowAuthorization))
+        {
+            @Html.Partial(MVC.User.Views.UserParts._Authorization, Model)
+        }
     </div>
 </div>

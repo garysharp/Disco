@@ -49,12 +49,12 @@ namespace Disco.Data.Migrations
         public static void SeedDatabase()
         {
             // Seed/Update Database
-            using (DiscoDataContext dbContext = new DiscoDataContext())
+            using (DiscoDataContext database = new DiscoDataContext())
             {
-                dbContext.SeedDatabase();
+                database.SeedDatabase();
                 try
                 {
-                    dbContext.SaveChanges();
+                    database.SaveChanges();
                 }
                 catch (Exception ex)
                 {

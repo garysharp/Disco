@@ -12,6 +12,17 @@ namespace Disco.BI.Interop.ActiveDirectory
 {
     public static class ActiveDirectory
     {
+        #region Machine Accounts
+
+        private static readonly string[] MachineLoadProperties = {
+                                                                     "name",
+                                                                     "distinguishedName",
+                                                                     "sAMAccountName",
+                                                                     "objectSid",
+                                                                     "dNSHostName",
+                                                                     "netbootGUID",
+                                                                     "isCriticalSystemObject"
+                                                                 };
         public static ActiveDirectoryMachineAccount GetMachineAccount(string ComputerName, System.Guid? UUIDNetbootGUID = null, System.Guid? MacAddressNetbootGUID = null, params string[] AdditionalProperties)
         {
             if (string.IsNullOrWhiteSpace(ComputerName))
@@ -26,36 +37,36 @@ namespace Disco.BI.Interop.ActiveDirectory
 
             using (DirectoryEntry dRootEntry = ActiveDirectoryHelpers.DefaultLdapRoot)
             {
-                var loadProperties = new List<string> { "name", "distinguishedName", "sAMAccountName", "objectSid", "dNSHostName", "netbootGUID", "isCriticalSystemObject" };
-                loadProperties.AddRange(AdditionalProperties);
-                using (DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, string.Format("(&(objectClass=computer)(sAMAccountName={0}))", ActiveDirectoryHelpers.EscapeLdapQuery(sAMAccountName)), loadProperties.ToArray(), SearchScope.Subtree))
+                var loadProperties = AdditionalProperties == null ? MachineLoadProperties : MachineLoadProperties.Concat(AdditionalProperties).ToArray();
+                
+                using (DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, string.Format("(&(objectCategory=computer)(sAMAccountName={0}))", ActiveDirectoryHelpers.EscapeLdapQuery(sAMAccountName)), loadProperties, SearchScope.Subtree))
                 {
                     SearchResult dResult = dSearcher.FindOne();
                     if (dResult != null)
                     {
-                        return ActiveDirectory.DirectorySearchResultToMachineAccount(dResult, AdditionalProperties);
+                        return ActiveDirectory.ActiveDirectoryMachineAccountFromSearchResult(dResult, AdditionalProperties);
                     }
                 }
 
                 if (UUIDNetbootGUID.HasValue)
                 {
-                    using (DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, string.Format("(&(objectClass=computer)(netbootGUID={0}))", ActiveDirectoryHelpers.FormatGuidForLdapQuery(UUIDNetbootGUID.Value)), loadProperties.ToArray(), SearchScope.Subtree))
+                    using (DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, string.Format("(&(objectCategory=computer)(netbootGUID={0}))", ActiveDirectoryHelpers.FormatGuidForLdapQuery(UUIDNetbootGUID.Value)), loadProperties, SearchScope.Subtree))
                     {
                         SearchResult dResult = dSearcher.FindOne();
                         if (dResult != null)
                         {
-                            return ActiveDirectory.DirectorySearchResultToMachineAccount(dResult, AdditionalProperties);
+                            return ActiveDirectory.ActiveDirectoryMachineAccountFromSearchResult(dResult, AdditionalProperties);
                         }
                     }
                 }
                 if (MacAddressNetbootGUID.HasValue)
                 {
-                    using (DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, string.Format("(&(objectClass=computer)(netbootGUID={0}))", ActiveDirectoryHelpers.FormatGuidForLdapQuery(MacAddressNetbootGUID.Value)), loadProperties.ToArray(), SearchScope.Subtree))
+                    using (DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, string.Format("(&(objectCategory=computer)(netbootGUID={0}))", ActiveDirectoryHelpers.FormatGuidForLdapQuery(MacAddressNetbootGUID.Value)), loadProperties, SearchScope.Subtree))
                     {
                         SearchResult dResult = dSearcher.FindOne();
                         if (dResult != null)
                         {
-                            return ActiveDirectory.DirectorySearchResultToMachineAccount(dResult, AdditionalProperties);
+                            return ActiveDirectory.ActiveDirectoryMachineAccountFromSearchResult(dResult, AdditionalProperties);
                         }
                     }
                 }
@@ -64,7 +75,7 @@ namespace Disco.BI.Interop.ActiveDirectory
 
             return null;
         }
-        private static ActiveDirectoryMachineAccount DirectorySearchResultToMachineAccount(SearchResult result, params string[] AdditionalProperties)
+        private static ActiveDirectoryMachineAccount ActiveDirectoryMachineAccountFromSearchResult(SearchResult result, params string[] AdditionalProperties)
         {
             string name = result.Properties["name"][0].ToString();
             string sAMAccountName = result.Properties["sAMAccountName"][0].ToString();
@@ -89,21 +100,22 @@ namespace Disco.BI.Interop.ActiveDirectory
 
             // Additional Properties
             Dictionary<string, object[]> additionalProperties = new Dictionary<string, object[]>();
-            foreach (string propertyName in AdditionalProperties)
-            {
-                var property = result.Properties[propertyName];
-                var propertyValues = new List<object>();
-                for (int index = 0; index < property.Count; index++)
-                    propertyValues.Add(property[index]);
-                additionalProperties.Add(propertyName, propertyValues.ToArray());
-            }
+            if (AdditionalProperties != null)
+                foreach (string propertyName in AdditionalProperties)
+                {
+                    var property = result.Properties[propertyName];
+                    var propertyValues = new List<object>();
+                    for (int index = 0; index < property.Count; index++)
+                        propertyValues.Add(property[index]);
+                    additionalProperties.Add(propertyName, propertyValues.ToArray());
+                }
 
             return new ActiveDirectoryMachineAccount
             {
                 Name = name,
                 DistinguishedName = distinguishedName,
-                sAMAccountName = sAMAccountName,
-                ObjectSid = objectSid,
+                SamAccountName = sAMAccountName,
+                SecurityIdentifier = objectSid,
                 NetbootGUID = netbootGUIDResult,
                 Path = result.Path,
                 Domain = ActiveDirectoryHelpers.DefaultDomainNetBiosName,
@@ -112,132 +124,9 @@ namespace Disco.BI.Interop.ActiveDirectory
                 LoadedProperties = additionalProperties
             };
         }
-        private static ActiveDirectoryUserAccount SearchResultToActiveDirectoryUserAccount(SearchResult result, params string[] AdditionalProperties)
-        {
-            string name = result.Properties["name"][0].ToString();
-            string username = result.Properties["sAMAccountName"][0].ToString();
-            string distinguishedName = result.Properties["distinguishedName"][0].ToString();
-            byte[] objectSid = (byte[])result.Properties["objectSid"][0];
-            string objectSidSDDL = ActiveDirectoryHelpers.ConvertBytesToSDDLString(objectSid);
 
-            ResultPropertyValueCollection displayNameProp = result.Properties["displayName"];
-            string displayName = username;
-            if (displayNameProp.Count > 0)
-                displayName = displayNameProp[0].ToString();
-            string surname = null;
-            ResultPropertyValueCollection surnameProp = result.Properties["sn"];
-            if (surnameProp.Count > 0)
-                surname = surnameProp[0].ToString();
-            string givenName = null;
-            ResultPropertyValueCollection givenNameProp = result.Properties["givenName"];
-            if (givenNameProp.Count > 0)
-                givenName = givenNameProp[0].ToString();
-            string email = null;
-            ResultPropertyValueCollection emailProp = result.Properties["mail"];
-            if (emailProp.Count > 0)
-                email = emailProp[0].ToString();
-            string phone = null;
-            ResultPropertyValueCollection phoneProp = result.Properties["telephoneNumber"];
-            if (phoneProp.Count > 0)
-                phone = phoneProp[0].ToString();
+        #endregion
 
-            int primaryGroupID = (int)result.Properties["primaryGroupID"][0];
-            string primaryGroupSid = ActiveDirectoryHelpers.ConvertBytesToSDDLString(ActiveDirectoryHelpers.BuildPrimaryGroupSid(objectSid, primaryGroupID));
-            var groupCNs = result.Properties["memberOf"].Cast<string>().ToList();
-            groupCNs.Add(ActiveDirectoryCachedGroups.GetGroupsCnForSid(primaryGroupSid));
-            List<string> groups = ActiveDirectoryCachedGroups.GetGroups(groupCNs).Select(g => g.ToLower()).ToList();
-
-            //foreach (string groupCN in result.Properties["memberOf"])
-            //{
-            // Removed 2012-11-30 G# - Moved to Recursive Cache
-            //var groupCNlower = groupCN.ToLower();
-            //if (groupCNlower.StartsWith("cn="))
-            //    groups.Add(groupCNlower.Substring(3, groupCNlower.IndexOf(",") - 3));
-            // End Removed 2012-11-30 G#
-            //}
-
-            string type = null;
-            if (groups.Contains("domain admins") || groups.Contains("disco admins"))
-            {
-                type = "Admin";
-            }
-            else
-            {
-                if (groups.Contains("staff"))
-                {
-                    type = "Staff";
-                }
-                else
-                {
-                    if (groups.Contains("students"))
-                    {
-                        type = "Student";
-                    }
-                }
-            }
-
-            // Additional Properties
-            Dictionary<string, object[]> additionalProperties = new Dictionary<string, object[]>();
-            foreach (string propertyName in AdditionalProperties)
-            {
-                var property = result.Properties[propertyName];
-                var propertyValues = new List<object>();
-                for (int index = 0; index < property.Count; index++)
-                    propertyValues.Add(property[index]);
-                additionalProperties.Add(propertyName, propertyValues.ToArray());
-            }
-
-            return new ActiveDirectoryUserAccount
-            {
-                Domain = ActiveDirectoryHelpers.DefaultDomainNetBiosName,
-                Name = name,
-                Surname = surname,
-                GivenName = givenName,
-                Email = email,
-                Phone = phone,
-                DistinguishedName = distinguishedName,
-                sAMAccountName = username,
-                DisplayName = displayName,
-                ObjectSid = objectSidSDDL,
-                Type = type,
-                Path = result.Path,
-                LoadedProperties = additionalProperties
-            };
-        }
-        public static ActiveDirectoryUserAccount GetUserAccount(string Username, params string[] AdditionalProperties)
-        {
-            if (string.IsNullOrWhiteSpace(Username))
-                throw new System.ArgumentException("Invalid User Account", "Username");
-            string sAMAccountName = Username;
-            if (sAMAccountName.Contains("\\"))
-                sAMAccountName = sAMAccountName.Substring(checked(sAMAccountName.IndexOf("\\") + 1));
-
-            using (DirectoryEntry dRootEntry = ActiveDirectoryHelpers.DefaultLdapRoot)
-            {
-                var loadProperties = new List<string> {
-                    "name", 
-					"distinguishedName", 
-					"sAMAccountName", 
-					"objectSid", 
-					"displayName", 
-					"sn", 
-					"givenName", 
-					"memberOf", 
-					"primaryGroupID",
-                    "mail", 
-					"telephoneNumber"
-                };
-                loadProperties.AddRange(AdditionalProperties);
-                using (DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, string.Format("(&(objectClass=user)(sAMAccountName={0}))", ActiveDirectoryHelpers.EscapeLdapQuery(sAMAccountName)), loadProperties.ToArray(), SearchScope.Subtree))
-                {
-                    SearchResult dResult = dSearcher.FindOne();
-                    if (dResult != null)
-                        return ActiveDirectory.SearchResultToActiveDirectoryUserAccount(dResult, AdditionalProperties);
-                    else
-                        return null;
-                }
-            }
-        }
         public static string OfflineDomainJoinProvision(ref ActiveDirectoryMachineAccount ExistingAccount, string ComputerName, string OrganisationalUnit = null, string EnrolSessionId = null)
         {
             if (ExistingAccount != null && ExistingAccount.IsCriticalSystemObject)
@@ -323,6 +212,21 @@ namespace Disco.BI.Interop.ActiveDirectory
             return DJoinResult;
         }
 
+        #region Users
+
+        private static readonly string[] UserLoadProperties = {
+                                                                   "name", 
+                                                                   "distinguishedName", 
+                                                                   "sAMAccountName", 
+                                                                   "objectSid", 
+                                                                   "displayName", 
+                                                                   "sn", 
+                                                                   "givenName", 
+                                                                   "memberOf", 
+                                                                   "primaryGroupID",
+                                                                   "mail", 
+                                                                   "telephoneNumber"
+                                                               };
         public static List<ActiveDirectoryUserAccount> SearchUsers(string term)
         {
             List<ActiveDirectoryUserAccount> users = new List<ActiveDirectoryUserAccount>();
@@ -331,31 +235,118 @@ namespace Disco.BI.Interop.ActiveDirectory
             term = ActiveDirectoryHelpers.EscapeLdapQuery(term);
             using (DirectoryEntry entry = new DirectoryEntry(string.Format("LDAP://{0}", defaultQualifiedDomainName)))
             {
-                using (DirectorySearcher searcher = new DirectorySearcher(entry, string.Format("(&(objectClass=User)(objectCategory=Person)(|(sAMAccountName=*{0}*)(displayName=*{0}*)))", term), new string[]
-				{
-					"name", 
-					"distinguishedName", 
-					"sAMAccountName", 
-					"objectSid", 
-					"displayName", 
-					"sn", 
-					"givenName", 
-					"memberOf", 
-                    "primaryGroupID",
-					"mail", 
-					"telephoneNumber"
-				}, SearchScope.Subtree))
+                using (DirectorySearcher searcher = new DirectorySearcher(entry, string.Format("(&(objectCategory=Person)(objectCategory=Person)(|(sAMAccountName=*{0}*)(displayName=*{0}*)))", term), UserLoadProperties, SearchScope.Subtree))
                 {
                     searcher.SizeLimit = 30;
                     SearchResultCollection results = searcher.FindAll();
                     foreach (SearchResult result in results)
                     {
-                        users.Add(ActiveDirectory.SearchResultToActiveDirectoryUserAccount(result));
+                        users.Add(ActiveDirectory.ActiveDirectoryUserAccountFromSearchResult(result));
                     }
                 }
             }
             return users;
         }
+        private static ActiveDirectoryUserAccount ActiveDirectoryUserAccountFromSearchResult(SearchResult result, params string[] AdditionalProperties)
+        {
+            string name = result.Properties["name"][0].ToString();
+            string username = result.Properties["sAMAccountName"][0].ToString();
+            string distinguishedName = result.Properties["distinguishedName"][0].ToString();
+            byte[] objectSid = (byte[])result.Properties["objectSid"][0];
+            string objectSidSDDL = ActiveDirectoryHelpers.ConvertBytesToSDDLString(objectSid);
+
+            ResultPropertyValueCollection displayNameProp = result.Properties["displayName"];
+            string displayName = username;
+            if (displayNameProp.Count > 0)
+                displayName = displayNameProp[0].ToString();
+            string surname = null;
+            ResultPropertyValueCollection surnameProp = result.Properties["sn"];
+            if (surnameProp.Count > 0)
+                surname = surnameProp[0].ToString();
+            string givenName = null;
+            ResultPropertyValueCollection givenNameProp = result.Properties["givenName"];
+            if (givenNameProp.Count > 0)
+                givenName = givenNameProp[0].ToString();
+            string email = null;
+            ResultPropertyValueCollection emailProp = result.Properties["mail"];
+            if (emailProp.Count > 0)
+                email = emailProp[0].ToString();
+            string phone = null;
+            ResultPropertyValueCollection phoneProp = result.Properties["telephoneNumber"];
+            if (phoneProp.Count > 0)
+                phone = phoneProp[0].ToString();
+
+            int primaryGroupID = (int)result.Properties["primaryGroupID"][0];
+            string primaryGroupSid = ActiveDirectoryHelpers.ConvertBytesToSDDLString(ActiveDirectoryHelpers.BuildPrimaryGroupSid(objectSid, primaryGroupID));
+            var groupDistinguishedNames = result.Properties["memberOf"].Cast<string>().ToList();
+            groupDistinguishedNames.Add(ActiveDirectoryCachedGroups.GetGroupsDistinguishedNameForSecurityIdentifier(primaryGroupSid));
+            List<string> groups = ActiveDirectoryCachedGroups.GetGroups(groupDistinguishedNames).ToList();
+
+            //foreach (string groupCN in result.Properties["memberOf"])
+            //{
+            // Removed 2012-11-30 G# - Moved to Recursive Cache
+            //var groupCNlower = groupCN.ToLower();
+            //if (groupCNlower.StartsWith("cn="))
+            //    groups.Add(groupCNlower.Substring(3, groupCNlower.IndexOf(",") - 3));
+            // End Removed 2012-11-30 G#
+            //}
+
+            // Additional Properties
+            Dictionary<string, object[]> additionalProperties = new Dictionary<string, object[]>();
+            if (AdditionalProperties != null)
+                foreach (string propertyName in AdditionalProperties)
+                {
+                    var property = result.Properties[propertyName];
+                    var propertyValues = new List<object>();
+                    for (int index = 0; index < property.Count; index++)
+                        propertyValues.Add(property[index]);
+                    additionalProperties.Add(propertyName, propertyValues.ToArray());
+                }
+
+            return new ActiveDirectoryUserAccount
+            {
+                Domain = ActiveDirectoryHelpers.DefaultDomainNetBiosName,
+                Name = name,
+                Surname = surname,
+                GivenName = givenName,
+                Email = email,
+                Phone = phone,
+                DistinguishedName = distinguishedName,
+                SamAccountName = username,
+                DisplayName = displayName,
+                SecurityIdentifier = objectSidSDDL,
+                Groups = groups,
+                Path = result.Path,
+                LoadedProperties = additionalProperties
+            };
+        }
+        public static ActiveDirectoryUserAccount GetUserAccount(string Username, params string[] AdditionalProperties)
+        {
+            if (string.IsNullOrWhiteSpace(Username))
+                throw new System.ArgumentException("Invalid User Account", "Username");
+            string sAMAccountName = Username;
+            if (sAMAccountName.Contains("\\"))
+                sAMAccountName = sAMAccountName.Substring(checked(sAMAccountName.IndexOf("\\") + 1));
+
+            using (DirectoryEntry dRootEntry = ActiveDirectoryHelpers.DefaultLdapRoot)
+            {
+                var loadProperties = AdditionalProperties == null ? UserLoadProperties : UserLoadProperties.Concat(AdditionalProperties).ToArray();
+
+                using (DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, string.Format("(&(objectCategory=Person)(sAMAccountName={0}))", ActiveDirectoryHelpers.EscapeLdapQuery(sAMAccountName)), loadProperties, SearchScope.Subtree))
+                {
+                    SearchResult dResult = dSearcher.FindOne();
+                    if (dResult != null)
+                        return ActiveDirectory.ActiveDirectoryUserAccountFromSearchResult(dResult, AdditionalProperties);
+                    else
+                        return null;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Organisation Units
+
         public static List<ActiveDirectoryOrganisationalUnit> GetOrganisationalUnitStructure()
         {
             ActiveDirectoryOrganisationalUnit DomainOUs = new ActiveDirectoryOrganisationalUnit
@@ -398,6 +389,174 @@ namespace Disco.BI.Interop.ActiveDirectory
                 }
             }
 
+        }
+
+        #endregion
+
+        #region Groups
+
+        private static readonly string[] GroupLoadProperties = {
+                                                                   "name", 
+                                                                   "distinguishedName", 
+                                                                   "cn", 
+                                                                   "sAMAccountName", 
+                                                                   "objectSid", 
+                                                                   "memberOf"
+                                                               };
+        public static ActiveDirectoryGroup GetGroup(string SamAccountName)
+        {
+            if (string.IsNullOrWhiteSpace(SamAccountName))
+                throw new System.ArgumentException("Invalid Group Account", "SamAccountName");
+            string sAMAccountName = SamAccountName;
+            if (sAMAccountName.Contains("\\"))
+                sAMAccountName = sAMAccountName.Substring(checked(sAMAccountName.IndexOf("\\") + 1));
+
+            using (DirectoryEntry dRootEntry = ActiveDirectoryHelpers.DefaultLdapRoot)
+            {
+                using (DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, string.Format("(&(objectCategory=Group)(objectSid={0}))", ActiveDirectoryHelpers.EscapeLdapQuery(sAMAccountName)), GroupLoadProperties, SearchScope.Subtree))
+                {
+                    SearchResult dResult = dSearcher.FindOne();
+                    if (dResult != null)
+                    {
+                        return ActiveDirectoryGroupFromSearchResult(dResult);
+                    }
+                    else
+                        return null;
+                }
+            }
+        }
+        public static ActiveDirectoryGroup GetGroupFromDistinguishedName(string DistinguishedName)
+        {
+            ActiveDirectoryGroup group = null;
+
+            using (DirectoryEntry groupDE = new DirectoryEntry(string.Concat(ActiveDirectoryHelpers.DefaultLdapPath, DistinguishedName)))
+            {
+                if (groupDE != null)
+                {
+                    return ActiveDirectoryGroupFromDirectoryEntry(groupDE);
+                }
+            }
+
+            return group;
+        }
+        public static ActiveDirectoryGroup GetGroupFromSecurityIdentifier(string SecurityIdentifier)
+        {
+            using (DirectoryEntry dRootEntry = ActiveDirectoryHelpers.DefaultLdapRoot)
+            {
+                var sidBytes = ActiveDirectoryHelpers.ConvertSDDLStringToBytes(SecurityIdentifier);
+                var sidBinaryString = ActiveDirectoryHelpers.ConvertBytesToBinarySidString(sidBytes);
+
+                using (DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, string.Format("(&(objectCategory=Group)(objectSid={0}))", sidBinaryString), GroupLoadProperties, SearchScope.Subtree))
+                {
+                    SearchResult dResult = dSearcher.FindOne();
+                    if (dResult != null)
+                    {
+                        return ActiveDirectoryGroupFromSearchResult(dResult);
+                    }
+                    else
+                        return null;
+                }
+            }
+        }
+
+        public static List<ActiveDirectoryGroup> SearchGroups(string term)
+        {
+            List<ActiveDirectoryGroup> results = new List<ActiveDirectoryGroup>();
+            string defaultQualifiedDomainName = ActiveDirectoryHelpers.DefaultDomainQualifiedName;
+            string defaultNetBiosDomainName = ActiveDirectoryHelpers.DefaultDomainNetBiosName;
+            term = ActiveDirectoryHelpers.EscapeLdapQuery(term);
+            using (DirectoryEntry entry = new DirectoryEntry(string.Format("LDAP://{0}", defaultQualifiedDomainName)))
+            {
+                using (DirectorySearcher searcher = new DirectorySearcher(entry, string.Format("(&(objectCategory=Group)(|(sAMAccountName=*{0}*)(name=*{0}*)(cn=*{0}*)))", term), GroupLoadProperties, SearchScope.Subtree))
+                {
+                    searcher.SizeLimit = 30;
+                    SearchResultCollection searchResults = searcher.FindAll();
+                    foreach (SearchResult result in searchResults)
+                    {
+                        results.Add(ActiveDirectory.ActiveDirectoryGroupFromSearchResult(result));
+                    }
+                }
+            }
+            return results;
+        }
+
+        private static ActiveDirectoryGroup ActiveDirectoryGroupFromDirectoryEntry(DirectoryEntry entry)
+        {
+            var name = (string)entry.Properties["name"].Value;
+            var distinguishedName = (string)entry.Properties["distinguishedName"].Value;
+            var cn = (string)entry.Properties["cn"].Value;
+            var sAMAccountName = (string)entry.Properties["sAMAccountName"].Value;
+            var objectSid = ActiveDirectoryHelpers.ConvertBytesToSDDLString((byte[])entry.Properties["objectSid"].Value);
+            var memberOf = entry.Properties["memberOf"].Cast<string>().ToList();
+
+            return new ActiveDirectoryGroup()
+            {
+                Name = name,
+                DistinguishedName = distinguishedName,
+                CommonName = cn,
+                SamAccountName = sAMAccountName,
+                SecurityIdentifier = objectSid,
+                MemberOf = memberOf
+            };
+        }
+        private static ActiveDirectoryGroup ActiveDirectoryGroupFromSearchResult(SearchResult result)
+        {
+            var name = (string)result.Properties["name"][0];
+            var distinguishedName = (string)result.Properties["distinguishedName"][0];
+            var cn = (string)result.Properties["cn"][0];
+            var sAMAccountName = (string)result.Properties["sAMAccountName"][0];
+            var objectSid = ActiveDirectoryHelpers.ConvertBytesToSDDLString((byte[])result.Properties["objectSid"][0]);
+            var memberOf = result.Properties["memberOf"].Cast<string>().ToList();
+
+            return new ActiveDirectoryGroup()
+            {
+                Name = name,
+                DistinguishedName = distinguishedName,
+                CommonName = cn,
+                SamAccountName = sAMAccountName,
+                SecurityIdentifier = objectSid,
+                MemberOf = memberOf
+            };
+        }
+
+        #endregion
+
+        private static readonly string[] ObjectLoadProperties = { "objectCategory" };
+        private static readonly string[] ObjectLoadPropertiesAll = ObjectLoadProperties.Concat(UserLoadProperties).Concat(MachineLoadProperties).Concat(GroupLoadProperties).Distinct().ToArray();
+
+        public static IActiveDirectoryObject GetObject(string SamAccountName)
+        {
+            if (string.IsNullOrWhiteSpace(SamAccountName))
+                throw new System.ArgumentException("Invalid Object Account Name", "SamAccountName");
+            string sAMAccountName = SamAccountName;
+            if (sAMAccountName.Contains("\\"))
+                sAMAccountName = sAMAccountName.Substring(checked(sAMAccountName.IndexOf("\\") + 1));
+
+            using (DirectoryEntry dRootEntry = ActiveDirectoryHelpers.DefaultLdapRoot)
+            {
+                using (DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, string.Format("(&(|(objectCategory=Person)(objectCategory=Computer)(objectCategory=Group))(sAMAccountName={0}))", ActiveDirectoryHelpers.EscapeLdapQuery(sAMAccountName)), ObjectLoadPropertiesAll, SearchScope.Subtree))
+                {
+                    SearchResult dResult = dSearcher.FindOne();
+                    if (dResult != null)
+                    {
+                        var objectCategory = (string)dResult.Properties["objectCategory"][0];
+                        objectCategory = objectCategory.Substring(0, objectCategory.IndexOf(',')).ToLower();
+                        switch (objectCategory)
+                        {
+                            case "cn=person":
+                                return ActiveDirectoryUserAccountFromSearchResult(dResult);
+                            case "cn=computer":
+                                return ActiveDirectoryMachineAccountFromSearchResult(dResult);
+                            case "cn=group":
+                                return ActiveDirectoryGroupFromSearchResult(dResult);
+                            default:
+                                throw new InvalidOperationException("Unexpected objectCategory");
+                        }
+                    }
+                    else
+                        return null;
+                }
+            }
         }
     }
 }

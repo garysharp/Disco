@@ -6,6 +6,8 @@ using Disco.Models.BI.Config;
 using Disco.Models.Repository;
 using Disco.Services.Plugins;
 using Disco.Services.Plugins.Features.WarrantyProvider;
+using Disco.Services.Users;
+using Disco.Services.Authorization;
 
 namespace Disco.BI.Extensions
 {
@@ -15,6 +17,9 @@ namespace Disco.BI.Extensions
         #region Device Held
         public static bool CanDeviceHeld(this Job j)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Job.Properties.DeviceHeld))
+                return false;
+
             return (!j.ClosedDate.HasValue) && (j.DeviceSerialNumber != null) &&
                 (!j.DeviceHeld.HasValue || j.DeviceReturnedDate.HasValue);
         }
@@ -35,6 +40,9 @@ namespace Disco.BI.Extensions
         #region Device Ready for Return
         public static bool CanDeviceReadyForReturn(this Job j)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Job.Properties.DeviceReadyForReturn))
+                return false;
+
             return (!j.ClosedDate.HasValue) && j.DeviceHeld.HasValue &&
                 !j.DeviceReadyForReturn.HasValue && !j.DeviceReturnedDate.HasValue;
         }
@@ -51,6 +59,9 @@ namespace Disco.BI.Extensions
         #region Device Returned
         public static bool CanDeviceReturned(this Job j)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Job.Properties.DeviceReturned))
+                return false;
+
             return (!j.ClosedDate.HasValue) && j.DeviceHeld.HasValue &&
                 !j.DeviceReturnedDate.HasValue;
         }
@@ -67,9 +78,12 @@ namespace Disco.BI.Extensions
         #region Waiting For User Action
         public static bool CanWaitingForUserAction(this Job j)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Job.Properties.WaitingForUserAction))
+                return false;
+
             return !j.ClosedDate.HasValue && (j.UserId != null) && !j.WaitingForUserAction.HasValue;
         }
-        public static void OnWaitingForUserAction(this Job j, DiscoDataContext dbContext, User Technician, string Reason)
+        public static void OnWaitingForUserAction(this Job j, DiscoDataContext Database, User Technician, string Reason)
         {
             if (!j.CanWaitingForUserAction())
                 throw new InvalidOperationException("Waiting for User Action was Denied");
@@ -84,16 +98,19 @@ namespace Disco.BI.Extensions
                 Timestamp = DateTime.Now,
                 Comments = string.Format("Waiting on User Action{0}Reason: {1}", Environment.NewLine, Reason)
             };
-            dbContext.JobLogs.Add(jobLog);
+            Database.JobLogs.Add(jobLog);
         }
         #endregion
 
         #region Not Waiting For User Action
         public static bool CanNotWaitingForUserAction(this Job j)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Job.Properties.NotWaitingForUserAction))
+                return false;
+
             return j.WaitingForUserAction.HasValue;
         }
-        public static void OnNotWaitingForUserAction(this Job j, DiscoDataContext dbContext, User Technician, string Resolution)
+        public static void OnNotWaitingForUserAction(this Job j, DiscoDataContext Database, User Technician, string Resolution)
         {
             if (!j.CanNotWaitingForUserAction())
                 throw new InvalidOperationException("Not Waiting for User Action was Denied");
@@ -108,31 +125,34 @@ namespace Disco.BI.Extensions
                 Timestamp = DateTime.Now,
                 Comments = string.Format("User Action Resolved{0}Resolution: {1}", Environment.NewLine, Resolution)
             };
-            dbContext.JobLogs.Add(jobLog);
+            Database.JobLogs.Add(jobLog);
         }
         #endregion
 
         #region Log Warranty
         public static bool CanLogWarranty(this Job j)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Job.Actions.LogWarranty))
+                return false;
+            
             return !j.ClosedDate.HasValue &&
                 (j.DeviceSerialNumber != null) &&
                 j.JobTypeId == JobType.JobTypeIds.HWar &&
                 string.IsNullOrEmpty(j.JobMetaWarranty.ExternalReference);
         }
-        public static void OnLogWarranty(this Job j, DiscoDataContext dbContext, string FaultDescription, PluginFeatureManifest WarrantyProviderDefinition, OrganisationAddress Address, User TechUser, Dictionary<string, string> WarrantyProviderProperties)
+        public static void OnLogWarranty(this Job j, DiscoDataContext Database, string FaultDescription, PluginFeatureManifest WarrantyProviderDefinition, OrganisationAddress Address, User TechUser, Dictionary<string, string> WarrantyProviderProperties)
         {
             if (!j.CanLogWarranty())
                 throw new InvalidOperationException("Log Warranty was Denied");
 
             if (string.IsNullOrWhiteSpace(FaultDescription))
-                FaultDescription = j.GenerateFaultDescriptionFooter(dbContext, WarrantyProviderDefinition);
+                FaultDescription = j.GenerateFaultDescriptionFooter(Database, WarrantyProviderDefinition);
             else
-                FaultDescription = string.Concat(FaultDescription, Environment.NewLine, Environment.NewLine, j.GenerateFaultDescriptionFooter(dbContext, WarrantyProviderDefinition));
+                FaultDescription = string.Concat(FaultDescription, Environment.NewLine, Environment.NewLine, j.GenerateFaultDescriptionFooter(Database, WarrantyProviderDefinition));
 
             using (WarrantyProviderFeature WarrantyProvider = WarrantyProviderDefinition.CreateInstance<WarrantyProviderFeature>())
             {
-                string providerRef = WarrantyProvider.SubmitJob(dbContext, j, Address, TechUser, FaultDescription, WarrantyProviderProperties);
+                string providerRef = WarrantyProvider.SubmitJob(Database, j, Address, TechUser, FaultDescription, WarrantyProviderProperties);
 
                 j.JobMetaWarranty.ExternalLoggedDate = DateTime.Now;
                 j.JobMetaWarranty.ExternalName = WarrantyProvider.WarrantyProviderId;
@@ -150,7 +170,7 @@ namespace Disco.BI.Extensions
                     Timestamp = DateTime.Now,
                     Comments = string.Format("Warranty Claim Submitted{0}{0}Provider: {1}{0}Repair Address: {2}{0}Provider Reference: {3}{0}{0}{4}", Environment.NewLine, WarrantyProvider.Manifest.Name, Address.Name, providerRef, FaultDescription)
                 };
-                dbContext.JobLogs.Add(jobLog);
+                Database.JobLogs.Add(jobLog);
             }
         }
         #endregion
@@ -158,32 +178,35 @@ namespace Disco.BI.Extensions
         #region Convert HWar to HNWar
         public static bool CanConvertHWarToHNWar(this Job j)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Job.Actions.ConvertHWarToHNWar))
+                return false;
+
             return !j.ClosedDate.HasValue && (j.DeviceSerialNumber != null) &&
                 j.JobTypeId == JobType.JobTypeIds.HWar && string.IsNullOrEmpty(j.JobMetaWarranty.ExternalReference);
         }
-        public static void OnConvertHWarToHNWar(this Job j, DiscoDataContext dbContext)
+        public static void OnConvertHWarToHNWar(this Job j, DiscoDataContext Database)
         {
             if (!j.CanConvertHWarToHNWar())
                 throw new InvalidOperationException("Convert HWar to HNWar was Denied");
 
-            var techUser = UserBI.UserCache.CurrentUser;
+            var techUser = UserService.CurrentUser;
 
             // Remove JobMetaWarranty
             if (j.JobMetaWarranty != null)
-                dbContext.JobMetaWarranties.Remove(j.JobMetaWarranty);
+                Database.JobMetaWarranties.Remove(j.JobMetaWarranty);
 
             // Add JobMetaNonWarranty
             var metaHNWar = new JobMetaNonWarranty() { Job = j };
-            dbContext.JobMetaNonWarranties.Add(metaHNWar);
+            Database.JobMetaNonWarranties.Add(metaHNWar);
 
             // Swap Job Sub Types
             List<string> jobSubTypes = j.JobSubTypes.Select(jst => jst.Id).ToList();
             j.JobSubTypes.Clear();
-            foreach (var jst in dbContext.JobSubTypes.Where(i => i.JobTypeId == JobType.JobTypeIds.HNWar && jobSubTypes.Contains(i.Id)))
+            foreach (var jst in Database.JobSubTypes.Where(i => i.JobTypeId == JobType.JobTypeIds.HNWar && jobSubTypes.Contains(i.Id)))
                 j.JobSubTypes.Add(jst);
 
             // Add Components
-            var components = dbContext.DeviceComponents.Include("JobSubTypes").Where(c => !c.DeviceModelId.HasValue || c.DeviceModelId == j.Device.DeviceModelId);
+            var components = Database.DeviceComponents.Include("JobSubTypes").Where(c => !c.DeviceModelId.HasValue || c.DeviceModelId == j.Device.DeviceModelId);
             var jobComponents = new List<DeviceComponent>();
             foreach (var component in components)
             {
@@ -210,7 +233,7 @@ namespace Disco.BI.Extensions
             }
             foreach (var component in jobComponents)
             {
-                dbContext.JobComponents.Add(new JobComponent()
+                Database.JobComponents.Add(new JobComponent()
                 {
                     Job = j,
                     TechUserId = techUser.Id,
@@ -225,9 +248,9 @@ namespace Disco.BI.Extensions
                 JobId = j.Id,
                 TechUserId = techUser.Id,
                 Timestamp = DateTime.Now,
-                Comments = string.Format("Job Type Converted{0}From: {1}{0}To: {2}", Environment.NewLine, dbContext.JobTypes.Find(JobType.JobTypeIds.HWar), dbContext.JobTypes.Find(JobType.JobTypeIds.HNWar))
+                Comments = string.Format("Job Type Converted{0}From: {1}{0}To: {2}", Environment.NewLine, Database.JobTypes.Find(JobType.JobTypeIds.HWar), Database.JobTypes.Find(JobType.JobTypeIds.HNWar))
             };
-            dbContext.JobLogs.Add(jobLog);
+            Database.JobLogs.Add(jobLog);
 
             j.JobTypeId = JobType.JobTypeIds.HNWar;
         }
@@ -252,6 +275,9 @@ namespace Disco.BI.Extensions
         #region Insurance Claim Form Sent
         public static bool CanInsuranceClaimFormSent(this Job j)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent))
+                return false;
+
             return (j.JobTypeId == JobType.JobTypeIds.HNWar) &&
                 j.JobMetaNonWarranty.IsInsuranceClaim &&
                 !j.JobMetaInsurance.ClaimFormSentDate.HasValue;
@@ -261,7 +287,7 @@ namespace Disco.BI.Extensions
             if (!j.CanInsuranceClaimFormSent())
                 throw new InvalidOperationException("Insurance Claim Form Sent was Denied");
 
-            var techUser = UserBI.UserCache.CurrentUser;
+            var techUser = UserService.CurrentUser;
 
             j.JobMetaInsurance.ClaimFormSentDate = DateTime.Now;
             j.JobMetaInsurance.ClaimFormSentUserId = techUser.Id;
@@ -271,6 +297,9 @@ namespace Disco.BI.Extensions
         #region Log Repair
         public static bool CanLogRepair(this Job j)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Job.Actions.LogRepair))
+                return false;
+
             return (j.JobTypeId == JobType.JobTypeIds.HNWar) &&
                 (j.DeviceSerialNumber != null) &&
                 !j.JobMetaNonWarranty.RepairerLoggedDate.HasValue &&
@@ -292,6 +321,9 @@ namespace Disco.BI.Extensions
         #region Repair Complete
         public static bool CanRepairComplete(this Job j)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerCompletedDate))
+                return false;
+
             return (j.JobTypeId == JobType.JobTypeIds.HNWar) &&
                 j.JobMetaNonWarranty.RepairerLoggedDate.HasValue &&
                 !j.JobMetaNonWarranty.RepairerCompletedDate.HasValue;
@@ -308,6 +340,9 @@ namespace Disco.BI.Extensions
         #region Close
         public static bool CanClose(this Job j)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Job.Actions.Close))
+                return false;
+
             if (j.ClosedDate.HasValue)
                 return false; // Job already Closed
 
@@ -352,6 +387,9 @@ namespace Disco.BI.Extensions
         #region Force Close
         public static bool CanForceClose(this Job j)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Job.Actions.ForceClose))
+                return false;
+
             var canCloseNormally = j.CanClose();
 
             if (canCloseNormally)
@@ -389,7 +427,7 @@ namespace Disco.BI.Extensions
 
             return false;
         }
-        public static void OnForceClose(this Job j, DiscoDataContext dbContext, User Technician, string Reason)
+        public static void OnForceClose(this Job j, DiscoDataContext Database, User Technician, string Reason)
         {
             if (!j.CanForceClose())
                 throw new InvalidOperationException("Force Close was Denied");
@@ -402,7 +440,7 @@ namespace Disco.BI.Extensions
                 Timestamp = DateTime.Now,
                 Comments = string.Format("Job Forcibly Closed{0}Reason: {1}", Environment.NewLine, Reason)
             };
-            dbContext.JobLogs.Add(jobLog);
+            Database.JobLogs.Add(jobLog);
 
             j.ClosedDate = DateTime.Now;
             j.ClosedTechUserId = Technician.Id;
@@ -412,6 +450,9 @@ namespace Disco.BI.Extensions
         #region Reopen
         public static bool CanReopen(this Job j)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Job.Actions.Reopen))
+                return false;
+
             return j.ClosedDate.HasValue;
         }
         public static void OnReopen(this Job j)
@@ -427,47 +468,50 @@ namespace Disco.BI.Extensions
         #region Delete
         public static bool CanDelete(this Job j)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Job.Actions.Delete))
+                return false;
+
             return j.ClosedDate.HasValue;
         }
-        public static void OnDelete(this Job j, DiscoDataContext dbContext)
+        public static void OnDelete(this Job j, DiscoDataContext Database)
         {
             // Job Sub Types
             j.JobSubTypes.Clear();
 
             // Job Attachments
             foreach (var ja in j.JobAttachments.ToArray())
-                ja.OnDelete(dbContext);
+                ja.OnDelete(Database);
             j.JobAttachments.Clear();
 
             // Job Components
             foreach (var jc in j.JobComponents.ToArray())
-                dbContext.JobComponents.Remove(jc);
+                Database.JobComponents.Remove(jc);
             j.JobComponents.Clear();
 
             // Job Logs
             foreach (var jl in j.JobLogs.ToArray())
-                dbContext.JobLogs.Remove(jl);
+                Database.JobLogs.Remove(jl);
             j.JobLogs.Clear();
 
             // Job Meta
             if (j.JobMetaInsurance != null)
             {
-                dbContext.JobMetaInsurances.Remove(j.JobMetaInsurance);
+                Database.JobMetaInsurances.Remove(j.JobMetaInsurance);
                 j.JobMetaInsurance = null;
             }
             if (j.JobMetaNonWarranty != null)
             {
-                dbContext.JobMetaNonWarranties.Remove(j.JobMetaNonWarranty);
+                Database.JobMetaNonWarranties.Remove(j.JobMetaNonWarranty);
                 j.JobMetaNonWarranty = null;
             }
             if (j.JobMetaWarranty != null)
             {
-                dbContext.JobMetaWarranties.Remove(j.JobMetaWarranty);
+                Database.JobMetaWarranties.Remove(j.JobMetaWarranty);
                 j.JobMetaWarranty = null;
             }
 
             // Job
-            dbContext.Jobs.Remove(j);
+            Database.Jobs.Remove(j);
         }
         #endregion
     }

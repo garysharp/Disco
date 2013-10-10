@@ -34,7 +34,7 @@ namespace Disco.Models.BI.Config
         public string ToConfigurationEntry()
         {
             StringBuilder entryBuilder = new StringBuilder();
-            
+
             entryBuilder.AppendLine(Name.Trim());
             entryBuilder.AppendLine(Address.Trim());
             entryBuilder.AppendLine(Suburb.Trim());
@@ -46,7 +46,7 @@ namespace Disco.Models.BI.Config
             {
                 entryBuilder.AppendLine(ShortName.Trim());
             }
-            
+
             return entryBuilder.ToString();
         }
 
@@ -70,5 +70,9 @@ namespace Disco.Models.BI.Config
             throw new ArgumentException("Invalid Configuration Address Entry", "entry");
         }
 
+        public override string ToString()
+        {
+            return string.Format("{0} ({1})", this.Name, this.ShortName);
+        }
     }
 }

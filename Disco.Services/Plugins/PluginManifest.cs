@@ -284,7 +284,7 @@ namespace Disco.Services.Plugins
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented, new VersionConverter());
         }
-        private bool InitializePluginEnvironment(DiscoDataContext dbContext)
+        private bool InitializePluginEnvironment(DiscoDataContext Database)
         {
             if (!environmentInitalized)
             {
@@ -316,58 +316,58 @@ namespace Disco.Services.Plugins
                     this.WebHandlerType = this.PluginAssembly.GetType(this.WebHandlerTypeName, true, true);
 
                 // Update non-static values
-                this.StorageLocation = Path.Combine(dbContext.DiscoConfiguration.PluginStorageLocation, this.Id);
+                this.StorageLocation = Path.Combine(Database.DiscoConfiguration.PluginStorageLocation, this.Id);
 
                 environmentInitalized = true;
             }
 
             return true;
         }
-        internal bool AfterPluginUpdate(DiscoDataContext dbContext, PluginManifest PreviousManifest)
+        internal bool AfterPluginUpdate(DiscoDataContext Database, PluginManifest PreviousManifest)
         {
             // Initialize Plugin
-            InitializePluginEnvironment(dbContext);
+            InitializePluginEnvironment(Database);
 
             using (var pluginInstance = this.CreateInstance())
             {
-                pluginInstance.AfterUpdate(dbContext, PreviousManifest);
+                pluginInstance.AfterUpdate(Database, PreviousManifest);
             }
 
             return true;
         }
-        internal bool UninstallPlugin(DiscoDataContext dbContext, bool UninstallData, ScheduledTaskStatus Status)
+        internal bool UninstallPlugin(DiscoDataContext Database, bool UninstallData, ScheduledTaskStatus Status)
         {
             // Initialize Plugin
-            InitializePluginEnvironment(dbContext);
+            InitializePluginEnvironment(Database);
 
             using (var pluginInstance = this.CreateInstance())
             {
-                pluginInstance.Uninstall(dbContext, UninstallData, Status);
+                pluginInstance.Uninstall(Database, UninstallData, Status);
             }
 
             return true;
         }
-        internal bool InstallPlugin(DiscoDataContext dbContext, ScheduledTaskStatus Status)
+        internal bool InstallPlugin(DiscoDataContext Database, ScheduledTaskStatus Status)
         {
             // Initialize Plugin
-            InitializePluginEnvironment(dbContext);
+            InitializePluginEnvironment(Database);
 
             using (var pluginInstance = this.CreateInstance())
             {
-                pluginInstance.Install(dbContext, Status);
+                pluginInstance.Install(Database, Status);
             }
 
             return true;
         }
-        internal bool InitializePlugin(DiscoDataContext dbContext)
+        internal bool InitializePlugin(DiscoDataContext Database)
         {
             // Initialize Plugin
-            InitializePluginEnvironment(dbContext);
+            InitializePluginEnvironment(Database);
 
             // Initialize Plugin
             using (var pluginInstance = this.CreateInstance())
             {
-                pluginInstance.Initialize(dbContext);
+                pluginInstance.Initialize(Database);
             }
             PluginsLog.LogInitializedPlugin(this);
 
@@ -376,7 +376,7 @@ namespace Disco.Services.Plugins
             {
                 foreach (var feature in Features)
                 {
-                    feature.Initialize(dbContext, this);
+                    feature.Initialize(Database, this);
                 }
             }
             else

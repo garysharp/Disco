@@ -1,0 +1,28 @@
+﻿@model Disco.Web.Areas.Config.Models.AuthorizationRole.CreateModel
+@{
+    Authorization.Require(Claims.DiscoAdminAccount);
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Authorization Roles", MVC.Config.AuthorizationRole.Index(null), "Create");
+}
+@using (Html.BeginForm())
+{ 
+    <div class="form" style="width: 450px">
+        <table>
+            <tr>
+                <th>
+                    Name:
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.AuthorizationRole.Name)<br />@Html.ValidationMessageFor(model => model.AuthorizationRole.Name)
+                </td>
+            </tr>
+        </table>
+        <p class="actions">
+            <input type="submit" class="button" value="Create" />
+        </p>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $('#AuthorizationRole_Name').focus().select();
+        });
+    </script>
+}

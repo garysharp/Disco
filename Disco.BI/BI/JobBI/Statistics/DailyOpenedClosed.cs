@@ -25,7 +25,7 @@ namespace Disco.BI.JobBI.Statistics
         public override bool SingleInstanceTask { get { return true; } }
         public override bool CancelInitiallySupported { get { return false; } }
 
-        public override void InitalizeScheduledTask(DiscoDataContext dbContext)
+        public override void InitalizeScheduledTask(DiscoDataContext Database)
         {
             // Trigger Daily @ 12:29am
             TriggerBuilder triggerBuilder = TriggerBuilder.Create().WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(0, 29));
@@ -34,40 +34,13 @@ namespace Disco.BI.JobBI.Statistics
         }
         protected override void ExecuteTask()
         {
-            using (var dbContext = new DiscoDataContext())
+            using (var database = new DiscoDataContext())
             {
-                UpdateDataHistory(dbContext, true);
+                UpdateDataHistory(database, true);
             }
         }
 
-        //public void InitalizeScheduledTask(DiscoDataContext dbContext, IScheduler Scheduler)
-        //{
-        //    // Run @ 12:29am
-        //    IJobDetail jobDetail = new JobDetailImpl("JobStatisticsDailyOpenedClosed", typeof(DailyOpenedClosed));
-        //    ITrigger trigger = TriggerBuilder.Create().
-        //        WithIdentity("JobStatisticsDailyOpenedClosedTrigger").
-        //        StartNow().
-        //        WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(0, 29)).
-        //        Build();
-        //    Scheduler.ScheduleJob(jobDetail, trigger);
-        //}
-
-        //public void Execute(IJobExecutionContext context)
-        //{
-        //    try
-        //    {
-        //        using (var dbContext = new DiscoDataContext())
-        //        {
-        //            UpdateDataHistory(dbContext, true);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logging.SystemLog.LogException("Disco.BI.JobBI.Statistics.DailyOpenedClosed", ex);
-        //    }
-        //}
-
-        private static void UpdateDataHistory(DiscoDataContext dbContext, bool Refresh = false)
+        private static void UpdateDataHistory(DiscoDataContext Database, bool Refresh = false)
         {
             DateTime historyEnd = DateTime.Now.Date;
 
@@ -98,7 +71,7 @@ namespace Disco.BI.JobBI.Statistics
                         // Cache Data
                         while (processDate <= historyEnd)
                         {
-                            resultData.Add(Data(dbContext, processDate));
+                            resultData.Add(Data(Database, processDate));
                             processDate = processDate.AddDays(1);
                         }
                         _data = resultData;
@@ -162,14 +135,14 @@ namespace Disco.BI.JobBI.Statistics
             }
         }
 
-        private static DailyOpenedClosedItem Data(DiscoDataContext dbContext, DateTime ProcessDate)
+        private static DailyOpenedClosedItem Data(DiscoDataContext Database, DateTime ProcessDate)
         {
             DateTime processDateStart = ProcessDate;
             DateTime processDateEnd = ProcessDate.AddDays(1);
 
-            int totalJobs = dbContext.Jobs.Where(j => j.OpenedDate < processDateEnd && (!j.ClosedDate.HasValue || j.ClosedDate > processDateEnd)).Count();
-            int openedJobs = dbContext.Jobs.Where(j => j.OpenedDate > processDateStart && j.OpenedDate < processDateEnd).Count();
-            int closedJobs = dbContext.Jobs.Where(j => j.ClosedDate > processDateStart && j.ClosedDate < processDateEnd).Count();
+            int totalJobs = Database.Jobs.Where(j => j.OpenedDate < processDateEnd && (!j.ClosedDate.HasValue || j.ClosedDate > processDateEnd)).Count();
+            int openedJobs = Database.Jobs.Where(j => j.OpenedDate > processDateStart && j.OpenedDate < processDateEnd).Count();
+            int closedJobs = Database.Jobs.Where(j => j.ClosedDate > processDateStart && j.ClosedDate < processDateEnd).Count();
 
             return new DailyOpenedClosedItem()
             {
@@ -180,20 +153,17 @@ namespace Disco.BI.JobBI.Statistics
             };
         }
 
-        public static List<DailyOpenedClosedItem> Data(DiscoDataContext dbContext, bool FilterUnimportantWeekends = false)
+        public static List<DailyOpenedClosedItem> Data(DiscoDataContext Database, bool FilterUnimportantWeekends = false)
         {
             List<DailyOpenedClosedItem> resultData;
 
-            UpdateDataHistory(dbContext);
+            UpdateDataHistory(Database);
 
             if (FilterUnimportantWeekends)
                 resultData = _data.Where(i => (i.Timestamp.DayOfWeek != DayOfWeek.Saturday && i.Timestamp.DayOfWeek != DayOfWeek.Sunday) ||
                     (i.OpenedJobs > 0 || i.ClosedJobs > 0)).ToList();
             else
                 resultData = _data.ToList();
-
-            // Removed - Live Updated via Repository Monitor; See: RepositoryEvent_JobChange
-            //resultData.Add(Data(dbContext, DateTime.Today));
 
             return resultData;
         }

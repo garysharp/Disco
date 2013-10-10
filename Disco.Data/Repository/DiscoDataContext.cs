@@ -23,6 +23,7 @@ namespace Disco.Data.Repository
 
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserAttachment> UserAttachments { get; set; }
+        public virtual DbSet<AuthorizationRole> AuthorizationRoles { get; set; }
 
         public virtual DbSet<DeviceUserAssignment> DeviceUserAssignments { get; set; }
 

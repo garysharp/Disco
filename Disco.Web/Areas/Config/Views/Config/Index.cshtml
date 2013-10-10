@@ -1,62 +1,106 @@
 ﻿@model Disco.Web.Areas.Config.Models.Config.IndexModel
 @{
+    Authorization.Require(Claims.Config.Show);
     ViewBag.Title = "Configuration";
 }
 <table id="pageMenu">
     <tr>
-        <td>
-            <div class="pageMenuArea">
-                <h2>Hosting</h2>
-                @Html.ActionLinkClass("System", MVC.Config.SystemConfig.Index(), "config")
-                <div class="pageMenuBlurb">
-                    Update system configuration, such as the Data Storage Location and Proxy settings.
+        @if (Authorization.HasAny(Claims.Config.System.Show, Claims.Config.Organisation.Show, Claims.DiscoAdminAccount, Claims.Config.Logging.Show))
+        {
+            <td>
+                <div class="pageMenuArea">
+                    <h2>Hosting</h2>
+                    @if (Authorization.Has(Claims.Config.System.Show))
+                    {
+                        @Html.ActionLinkClass("System", MVC.Config.SystemConfig.Index(), "config")
+                        <div class="pageMenuBlurb">
+                            Update system configuration, such as the Data Storage Location and Proxy settings.
+                        </div>
+                    }
+                    @if (Authorization.Has(Claims.Config.Organisation.Show))
+                    {
+                        @Html.ActionLinkClass("Organisation Details", MVC.Config.Organisation.Index(), "config")
+                        <div class="pageMenuBlurb">
+                            Update the Organisation Name, Logo and Addresses associated with this organisation.
+                        </div>
+                    }
+                    @if (Authorization.Has(Claims.DiscoAdminAccount))
+                    {
+                        @Html.ActionLinkClass("Authorization Roles", MVC.Config.AuthorizationRole.Index(), "config")
+                        <div class="pageMenuBlurb">
+                            Configure roles and permissions for users.
+                        </div>
+                    }
+                    @if (Authorization.Has(Claims.Config.Logging.Show))
+                    {
+                        @Html.ActionLinkClass("Logging", MVC.Config.Logging.Index(), "config")
+                        <div class="pageMenuBlurb">
+                            Export Log files from various Disco Modules and view Live Logging.
+                        </div>
+                    }
                 </div>
-                @Html.ActionLinkClass("Organisation Details", MVC.Config.Organisation.Index(), "config")
-                <div class="pageMenuBlurb">
-                    Update the Organisation Name, Logo and Addresses associated with this organisation.
-                </div>
-                @Html.ActionLinkClass("Logging", MVC.Config.Logging.Index(), "config")
-                <div class="pageMenuBlurb">
-                    Export Log files from various Disco Modules and view Live Logging.
-                </div>
-            </div>
-        </td>
-        <td>
-            <div class="pageMenuArea">
-                <h2>Devices</h2>
-                @Html.ActionLinkClass("Models", MVC.Config.DeviceModel.Index(), "config")
-                <div class="pageMenuBlurb">
-                    Configure Components, Product Images and default settings for Device Models.
-                </div>
-                @Html.ActionLinkClass("Batches", MVC.Config.DeviceBatch.Index(), "config")
-                <div class="pageMenuBlurb">
-                    Create and Configure Device Batches.
-                </div>
-                @Html.ActionLinkClass("Profiles", MVC.Config.DeviceProfile.Index(), "config")
-                <div class="pageMenuBlurb">
-                    Configure Device Profiles including computer name generation, distribution and Active
+            </td>
+        }
+        @if (Authorization.HasAny(Claims.Config.DeviceModel.Show, Claims.Config.DeviceBatch.Show, Claims.Config.DeviceProfile.Show, Claims.Config.Enrolment.Show))
+        {
+            <td>
+                <div class="pageMenuArea">
+                    <h2>Devices</h2>
+                    @if (Authorization.Has(Claims.Config.DeviceModel.Show))
+                    {
+                        @Html.ActionLinkClass("Models", MVC.Config.DeviceModel.Index(), "config")
+                        <div class="pageMenuBlurb">
+                            Configure Components, Product Images and default settings for Device Models.
+                        </div>
+                    }
+                    @if (Authorization.Has(Claims.Config.DeviceBatch.Show))
+                    {
+                        @Html.ActionLinkClass("Batches", MVC.Config.DeviceBatch.Index(), "config")
+                        <div class="pageMenuBlurb">
+                            Create and Configure Device Batches.
+                        </div>
+                    }
+                    @if (Authorization.Has(Claims.Config.DeviceProfile.Show))
+                    {
+                        @Html.ActionLinkClass("Profiles", MVC.Config.DeviceProfile.Index(), "config")
+                        <div class="pageMenuBlurb">
+                            Configure Device Profiles including computer name generation, distribution and Active
                     Directory OU layout.
+                        </div>
+                    }
+                    @if (Authorization.Has(Claims.Config.Enrolment.Show))
+                    {
+                        @Html.ActionLinkClass("Enrolment", MVC.Config.Enrolment.Index(), "config")
+                        <div class="pageMenuBlurb">
+                            Configure Enrolment settings including secure credentials.
+                        </div>
+                    }
                 </div>
-                @Html.ActionLinkClass("Enrolment", MVC.Config.Enrolment.Index(), "config")
-                <div class="pageMenuBlurb">
-                    Configure Enrolment settings including secure credentials.
-                </div>
-            </div>
-        </td>
-        <td>
-            <div class="pageMenuArea">
-                <h2>Features</h2>
-                @Html.ActionLinkClass("Document Templates", MVC.Config.DocumentTemplate.Index(), "config")
-                <div class="pageMenuBlurb">
-                    Create, Update and Bulk Generate documents based on PDF Templates for Jobs, Devices
+            </td>
+        }
+        @if (Authorization.HasAny(Claims.Config.DocumentTemplate.Show, Claims.Config.Plugin.Show))
+        {
+            <td>
+                <div class="pageMenuArea">
+                    <h2>Features</h2>
+                    @if (Authorization.Has(Claims.Config.DocumentTemplate.Show))
+                    {
+                        @Html.ActionLinkClass("Document Templates", MVC.Config.DocumentTemplate.Index(), "config")
+                        <div class="pageMenuBlurb">
+                            Create, Update and Bulk Generate documents based on PDF Templates for Jobs, Devices
                     and Users.
+                        </div>
+                    }
+                    @if (Authorization.Has(Claims.Config.Plugin.Show))
+                    {
+                        @Html.ActionLinkClass("Plugins", MVC.Config.Plugins.Index(), "config")
+                        <div class="pageMenuBlurb">
+                            Manage extensions to the Disco platform.
+                        </div>
+                    }
                 </div>
-                @Html.ActionLinkClass("Plugins", MVC.Config.Plugins.Index(), "config")
-                <div class="pageMenuBlurb">
-                    Manage extensions to the Disco platform.
-                </div>
-            </div>
-        </td>
+            </td>
+        }
     </tr>
 </table>
 @{

@@ -1,14 +1,12 @@
-﻿using Disco.Data.Repository;
-using Disco.Models.Repository;
-using System;
+﻿using Disco.Models.Repository;
+using Disco.Services.Web;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.Public.Controllers
 {
-    public partial class HeldDevicesController : dbController
+    public partial class HeldDevicesController : DatabaseController
     {
         #region Helpers
 
@@ -40,17 +38,17 @@ namespace Disco.Web.Areas.Public.Controllers
             {
                 if (job.Any(j => j.WaitingForUserAction))
                 {
-                    thd.Add(job.Where(j => j.WaitingForUserAction).OrderBy(j => j.WaitingForUserActionSince).FirstOrDefault().ToUserHeldDeviceModel(dbContext));
+                    thd.Add(job.Where(j => j.WaitingForUserAction).OrderBy(j => j.WaitingForUserActionSince).FirstOrDefault().ToUserHeldDeviceModel(Database));
                 }
                 else
                 {
                     if (job.All(j => j.ReadyForReturn))
                     {
-                        thd.Add(job.FirstOrDefault().ToUserHeldDeviceModel(dbContext));
+                        thd.Add(job.FirstOrDefault().ToUserHeldDeviceModel(Database));
                     }
                     else
                     {
-                        thd.Add(job.Where(j => !j.ReadyForReturn).OrderByDescending(j => j.EstimatedReturnTime).FirstOrDefault().ToUserHeldDeviceModel(dbContext));
+                        thd.Add(job.Where(j => !j.ReadyForReturn).OrderByDescending(j => j.EstimatedReturnTime).FirstOrDefault().ToUserHeldDeviceModel(Database));
                     }
                 }
             }
@@ -59,11 +57,11 @@ namespace Disco.Web.Areas.Public.Controllers
         
         private List<Models.HeldDevices.HeldDeviceModel> GetHeldDevices()
         {
-            return GetHeldDevices(dbContext.Jobs);
+            return GetHeldDevices(Database.Jobs);
         }
         private Models.HeldDevices.HeldDeviceModel GetHeldDevice(string DeviceSerialNumber)
         {
-            return GetHeldDevices(dbContext.Jobs.Where(j => j.DeviceSerialNumber == DeviceSerialNumber)).FirstOrDefault();
+            return GetHeldDevices(Database.Jobs.Where(j => j.DeviceSerialNumber == DeviceSerialNumber)).FirstOrDefault();
         }
         #endregion
 

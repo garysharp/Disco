@@ -28,12 +28,14 @@ namespace Disco.Web.Areas.Config.Views.DeviceModel
     using System.Web.WebPages;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services.Authorization;
+    using Disco.Services.Web;
     using Disco.Web;
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Config/Views/DeviceModel/Index.cshtml")]
-    public partial class Index : System.Web.Mvc.WebViewPage<Disco.Web.Areas.Config.Models.DeviceModel.IndexModel>
+    public partial class Index : Disco.Services.Web.WebViewPage<Disco.Web.Areas.Config.Models.DeviceModel.IndexModel>
     {
         public Index()
         {
@@ -43,6 +45,8 @@ namespace Disco.Web.Areas.Config.Views.DeviceModel
             
             #line 2 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
   
+    Authorization.Require(Claims.Config.DeviceModel.Show);
+    
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Models");
 
             
@@ -73,13 +77,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 23 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 25 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 23 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 25 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
      foreach (var item in Model.DeviceModels)
     {
 
@@ -91,7 +95,7 @@ WriteLiteral("        <tr>\r\n            <td>\r\n");
 WriteLiteral("                ");
 
             
-            #line 27 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 29 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
            Write(Html.ActionLink(item.ToString(), MVC.Config.DeviceModel.Index(item.Id)));
 
             
@@ -102,7 +106,7 @@ WriteLiteral("\r\n            </td>\r\n            <td>\r\n");
 WriteLiteral("                ");
 
             
-            #line 30 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 32 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
            Write(Html.DisplayFor(modelItem => item.Manufacturer));
 
             
@@ -113,7 +117,7 @@ WriteLiteral("\r\n            </td>\r\n            <td>\r\n");
 WriteLiteral("                ");
 
             
-            #line 33 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 35 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
            Write(Html.DisplayFor(modelItem => item.Model));
 
             
@@ -124,7 +128,7 @@ WriteLiteral("\r\n            </td>\r\n            <td>\r\n");
 WriteLiteral("                ");
 
             
-            #line 36 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 38 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
            Write(Html.DisplayFor(modelItem => item.ModelType));
 
             
@@ -135,7 +139,7 @@ WriteLiteral("\r\n            </td>\r\n            <td>\r\n");
 WriteLiteral("                ");
 
             
-            #line 39 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 41 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
            Write(item.DeviceCount.ToString("n0"));
 
             
@@ -144,13 +148,13 @@ WriteLiteral("                ");
 WriteLiteral("\r\n");
 
             
-            #line 40 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 42 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 40 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 42 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
                  if (item.DeviceDecommissionedCount > 0)
                 { 
 
@@ -161,21 +165,21 @@ WriteLiteral("                    <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 1167), Tuple.Create("\"", 1223)
+WriteAttribute("title", Tuple.Create(" title=\"", 1233), Tuple.Create("\"", 1289)
             
-            #line 42 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 1175), Tuple.Create<System.Object, System.Int32>(item.DeviceDecommissionedCount
+            #line 44 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 1241), Tuple.Create<System.Object, System.Int32>(item.DeviceDecommissionedCount
             
             #line default
             #line hidden
-, 1175), false)
-, Tuple.Create(Tuple.Create(" ", 1208), Tuple.Create("Decommissioned", 1209), true)
+, 1241), false)
+, Tuple.Create(Tuple.Create(" ", 1274), Tuple.Create("Decommissioned", 1275), true)
 );
 
 WriteLiteral(">\r\n                        (");
 
             
-            #line 43 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 45 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
                      Write(item.DeviceDecommissionedCount.ToString("n0"));
 
             
@@ -184,7 +188,7 @@ WriteLiteral(">\r\n                        (");
 WriteLiteral(")</span>\r\n");
 
             
-            #line 44 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 46 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
                 }
 
             
@@ -193,7 +197,7 @@ WriteLiteral(")</span>\r\n");
 WriteLiteral("            </td>\r\n        </tr>\r\n");
 
             
-            #line 47 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 49 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
     }
 
             
@@ -208,7 +212,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 50 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 52 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
 Write(Html.ActionLinkButton("Generic Components", MVC.Config.DeviceModel.GenericComponents()));
 
             

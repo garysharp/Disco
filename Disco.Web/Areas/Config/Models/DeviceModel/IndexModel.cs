@@ -11,10 +11,10 @@ namespace Disco.Web.Areas.Config.Models.DeviceModel
     {
         public List<ConfigDeviceModelIndexModelItem> DeviceModels { get; set; }
 
-        public static IndexModel Build(DiscoDataContext dbContext)
+        public static IndexModel Build(DiscoDataContext Database)
         {
             var m = new IndexModel();
-            m.DeviceModels = dbContext.DeviceModels.OrderBy(dm => dm.Description).Select(dm => new _IndexModelItem()
+            m.DeviceModels = Database.DeviceModels.OrderBy(dm => dm.Description).Select(dm => new _IndexModelItem()
             {
                 Id = dm.Id,
                 Name = dm.Description,

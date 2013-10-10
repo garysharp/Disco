@@ -1,5 +1,7 @@
 ﻿@model Disco.Web.Areas.Config.Models.DeviceProfile.CreateModel
 @{
+    Authorization.RequireAll(Claims.Config.DeviceProfile.Create, Claims.Config.DeviceProfile.Configure);
+    
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Profiles", MVC.Config.DeviceProfile.Index(null), "Create");
 }
 @using (Html.BeginForm())

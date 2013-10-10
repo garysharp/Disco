@@ -45,14 +45,14 @@ namespace Disco.BI.DeviceBI.Importing
 
             this.Status.UpdateStatus(20, "Parsing CSV File", string.Format("Linking {0} Records", records.Count));
 
-            using (DiscoDataContext dbContext = new DiscoDataContext())
+            using (DiscoDataContext database = new DiscoDataContext())
             {
-                var populateReferences = Import.GetPopulateRecordReferences(dbContext);
+                var populateReferences = Import.GetPopulateRecordReferences(database);
 
                 DateTime lastUpdate = DateTime.Now;
                 foreach (var record in records)
                 {
-                    record.PopulateRecord(dbContext, populateReferences);
+                    record.PopulateRecord(database, populateReferences);
 
                     if (DateTime.Now.Subtract(lastUpdate).TotalSeconds > 1)
                     {

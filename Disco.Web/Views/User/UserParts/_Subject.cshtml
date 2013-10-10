@@ -1,5 +1,7 @@
 ﻿@model Disco.Web.Models.User.ShowModel
 @{
+    Authorization.Require(Claims.User.Show);
+
     var currentDeviceAssignments = Model.User.DeviceUserAssignments.Where(dua => !dua.UnassignedDate.HasValue).OrderByDescending(dua => dua.AssignedDate).ToList();
 }
 <table id="User_Show_Subjects">
@@ -27,15 +29,6 @@
                             <tr>
                                 <td>Surname:</td>
                                 <td><span id="User_Show_Details_Identity_Surname" title="Surname">@Model.User.Surname</span></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div id="User_Show_Details_Category" class="status">
-                        <table class="none verticalHeadings">
-                            <tr>
-                                <td>Type:
-                                </td>
-                                <td><span id="User_Show_Details_Category_Type" title="Type">@Model.User.Type</span></td>
                             </tr>
                         </table>
                     </div>
@@ -69,29 +62,32 @@
                             </tr>
                         </table>
                     </div>
-                    <div id="User_Show_GenerateDocument_Container" class="status">
-                        @Html.DropDownList("User_Show_GenerateDocument", Model.DocumentTemplatesSelectListItems)
-                        <script type="text/javascript">
-                            $(function () {
-                                var generatePdfUrl = '@Url.Action(MVC.API.User.GeneratePdf(Model.User.Id, null))?DocumentTemplateId=';
-                            var $documentTemplates = $('#User_Show_GenerateDocument');
-                            $documentTemplates.change(function () {
-                                var v = $documentTemplates.val();
-                                if (v) {
-                                    window.location.href = generatePdfUrl + v;
-                                    $documentTemplates.val('').blur();
-                                }
-                            });
-                        });
-                        </script>
-                    </div>
+                    @if (Authorization.Has(Claims.User.Actions.GenerateDocuments))
+                    {
+                        <div id="User_Show_GenerateDocument_Container" class="status">
+                            @Html.DropDownList("User_Show_GenerateDocument", Model.DocumentTemplatesSelectListItems)
+                            <script type="text/javascript">
+                                $(function () {
+                                    var generatePdfUrl = '@Url.Action(MVC.API.User.GeneratePdf(Model.User.Id, null))?DocumentTemplateId=';
+                                    var $documentTemplates = $('#User_Show_GenerateDocument');
+                                    $documentTemplates.change(function () {
+                                        var v = $documentTemplates.val();
+                                        if (v) {
+                                            window.location.href = generatePdfUrl + v;
+                                            $documentTemplates.val('').blur();
+                                        }
+                                    });
+                                });
+                            </script>
+                        </div>
+                    }
                     <div id="User_Show_Details_Actions">
-                        @{
-                            Html.BundleDeferred("~/ClientScripts/Modules/Disco-CreateJob");
-                        }
-                        @Html.ActionLinkSmallButton("Create Job", MVC.Job.Create(Model.PrimaryDeviceSerialNumber, Model.User.Id), "User_Show_Details_Actions_CreateJob_Button")
-                        @if (currentDeviceAssignments.Count > 1)
+                        @if (Authorization.Has(Claims.Job.Actions.Create))
                         {
+                            Html.BundleDeferred("~/ClientScripts/Modules/Disco-CreateJob");
+                            @Html.ActionLinkSmallButton("Create Job", MVC.Job.Create(Model.PrimaryDeviceSerialNumber, Model.User.Id), "User_Show_Details_Actions_CreateJob_Button")
+                            if (currentDeviceAssignments.Count > 1)
+                            {
                             <div id="User_Show_Details_Actions_CreateJob_Dialog" class="dialog" title="Create Job for Which Device?">
                                 <div class="clearfix">
                                     <span class="ui-icon ui-icon-info" style="float: left; margin: 0 7px 20px 0;"></span>
@@ -183,9 +179,9 @@
                                     });
                                 });
                             </script>
-                        }
-                        else
-                        {
+                            }
+                            else
+                            {
                             <script>
                                 $(function () {
                                     $('#User_Show_Details_Actions_CreateJob_Button').click(function () {
@@ -198,6 +194,7 @@
                                     });
                                 });
                             </script>
+                            }
                         }
                     </div>
                 </div>
@@ -211,9 +208,16 @@
                             foreach (var assignment in currentDeviceAssignments)
                             {
                             <div class="User_Show_AssignedDevices_CurrentAssignment clearfix" data-deviceserialnumber="@assignment.DeviceSerialNumber">
-                                <a href="@Url.Action(MVC.Device.Show(assignment.Device.SerialNumber))">
+                                @if (Authorization.Has(Claims.Device.Show))
+                                {
+                                    <a href="@Url.Action(MVC.Device.Show(assignment.Device.SerialNumber))">
+                                        <img class="User_Show_AssignedDevices_CurrentAssignment_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))" />
+                                    </a>
+                                }
+                                else
+                                {
                                     <img class="User_Show_AssignedDevices_CurrentAssignment_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))" />
-                                </a>
+                                }
                                 <div class="User_Show_AssignedDevices_CurrentAssignment_Details">
                                     <table class="none">
                                         <tbody>
@@ -221,7 +225,16 @@
                                                 <td>Serial Number:
                                                 </td>
                                                 <td>
-                                                    <span class="User_Show_AssignedDevices_CurrentAssignment_SerialNumber">@Html.ActionLink(assignment.Device.SerialNumber, MVC.Device.Show(assignment.Device.SerialNumber))</span> (<span>@assignment.Device.ComputerName</span>)
+                                                    <span class="User_Show_AssignedDevices_CurrentAssignment_SerialNumber">
+                                                        @if (Authorization.Has(Claims.Device.Show))
+                                                        {
+                                                            @Html.ActionLink(assignment.Device.SerialNumber, MVC.Device.Show(assignment.Device.SerialNumber))
+                                                        }
+                                                        else
+                                                        {
+                                                            @assignment.Device.SerialNumber
+                                                        }
+                                                    </span>(<span>@assignment.Device.ComputerName</span>)
                                                 </td>
                                             </tr>
                                             <tr>

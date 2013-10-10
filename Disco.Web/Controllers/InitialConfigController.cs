@@ -159,10 +159,10 @@ namespace Disco.Web.Controllers
                     // Save Connection String
                     //Disco.Data.Repository.DiscoDatabaseConnectionFactory.SetDiscoDataContextConnectionString(model.ToConnectionString().ToString(), true);
                     // Write Organisation Name into DB
-                    using (DiscoDataContext db = new DiscoDataContext())
+                    using (DiscoDataContext database = new DiscoDataContext())
                     {
-                        db.DiscoConfiguration.OrganisationName = DiscoApplication.OrganisationName;
-                        db.SaveChanges();
+                        database.DiscoConfiguration.OrganisationName = DiscoApplication.OrganisationName;
+                        database.SaveChanges();
                     }
 
                     return RedirectToAction(MVC.InitialConfig.FileStore());
@@ -180,8 +180,8 @@ namespace Disco.Web.Controllers
             string FileStoreLocation = null;
             try
             {
-                using (DiscoDataContext db = new DiscoDataContext())
-                    FileStoreLocation = db.ConfigurationItems.Where(ci => ci.Scope == "System" && ci.Key == "DataStoreLocation").Select(ci => ci.Value).FirstOrDefault();
+                using (DiscoDataContext database = new DiscoDataContext())
+                    FileStoreLocation = database.ConfigurationItems.Where(ci => ci.Scope == "System" && ci.Key == "DataStoreLocation").Select(ci => ci.Value).FirstOrDefault();
             }
             catch (Exception) { } // Ignore All Errors
 
@@ -205,12 +205,12 @@ namespace Disco.Web.Controllers
             if (ModelState.IsValid)
             {
                 // Ensure Path Exists
-                using (DiscoDataContext db = new DiscoDataContext())
+                using (DiscoDataContext database = new DiscoDataContext())
                 {
-                    var configItem = db.ConfigurationItems.Where(ci => ci.Scope == "System" && ci.Key == "DataStoreLocation").FirstOrDefault();
+                    var configItem = database.ConfigurationItems.Where(ci => ci.Scope == "System" && ci.Key == "DataStoreLocation").FirstOrDefault();
                     if (configItem == null)
                     { // Create Config
-                        db.ConfigurationItems.Add(new Disco.Models.Repository.ConfigurationItem()
+                        database.ConfigurationItems.Add(new Disco.Models.Repository.ConfigurationItem()
                         {
                             Scope = "System",
                             Key = "DataStoreLocation",
@@ -221,7 +221,7 @@ namespace Disco.Web.Controllers
                     { // Update Config
                         configItem.Value = m.FileStoreLocation;
                     }
-                    db.SaveChanges();
+                    database.SaveChanges();
                 }
 
                 // Extract DataStore Template into FileStore

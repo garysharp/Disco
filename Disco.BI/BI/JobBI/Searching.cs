@@ -11,7 +11,7 @@ namespace Disco.BI.JobBI
 {
     public static class Searching
     {
-        public static JobTableModel Search(DiscoDataContext dbContext, string Term, int? LimitCount = null, bool IncludeJobStatus = true, bool SearchDetails = false)
+        public static JobTableModel Search(DiscoDataContext Database, string Term, int? LimitCount = null, bool IncludeJobStatus = true, bool SearchDetails = false)
         {
             int termInt = default(int);
 
@@ -22,7 +22,7 @@ namespace Disco.BI.JobBI
                 // Term is a Number (int)
                 if (SearchDetails)
                 {
-                    query = BuildJobTableModel(dbContext).Where(j =>
+                    query = BuildJobTableModel(Database).Where(j =>
                         j.Id == termInt ||
                         j.DeviceHeldLocation.Contains(Term) ||
                         j.Device.SerialNumber.Contains(Term) ||
@@ -36,7 +36,7 @@ namespace Disco.BI.JobBI
                 }
                 else
                 {
-                    query = BuildJobTableModel(dbContext).Where(j =>
+                    query = BuildJobTableModel(Database).Where(j =>
                         j.Id == termInt ||
                         j.DeviceHeldLocation.Contains(Term) ||
                         j.Device.SerialNumber.Contains(Term) ||
@@ -51,7 +51,7 @@ namespace Disco.BI.JobBI
             {
                 if (SearchDetails)
                 {
-                    query = BuildJobTableModel(dbContext).Where(j =>
+                    query = BuildJobTableModel(Database).Where(j =>
                         j.DeviceHeldLocation.Contains(Term) ||
                         j.Device.SerialNumber.Contains(Term) ||
                         j.Device.AssetNumber.Contains(Term) ||
@@ -64,7 +64,7 @@ namespace Disco.BI.JobBI
                 }
                 else
                 {
-                    query = BuildJobTableModel(dbContext).Where(j =>
+                    query = BuildJobTableModel(Database).Where(j =>
                         j.DeviceHeldLocation.Contains(Term) ||
                         j.Device.SerialNumber.Contains(Term) ||
                         j.Device.AssetNumber.Contains(Term) ||
@@ -79,14 +79,14 @@ namespace Disco.BI.JobBI
                 query = query.Take(LimitCount.Value);
 
             JobTableModel model = new JobTableModel() { ShowStatus = IncludeJobStatus };
-            model.Fill(dbContext, query);
+            model.Fill(Database, query);
 
             return model;
         }
 
-        public static IQueryable<Job> BuildJobTableModel(DiscoDataContext dbContext)
+        public static IQueryable<Job> BuildJobTableModel(DiscoDataContext Database)
         {
-            return dbContext.Jobs.Include("JobType").Include("Device").Include("User").Include("OpenedTechUser");
+            return Database.Jobs.Include("JobType").Include("Device").Include("User").Include("OpenedTechUser");
         }
 
     }

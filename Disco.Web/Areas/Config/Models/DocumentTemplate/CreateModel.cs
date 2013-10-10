@@ -55,12 +55,12 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
             }
         }
 
-        public void UpdateModel(DiscoDataContext dbContext)
+        public void UpdateModel(DiscoDataContext Database)
         {
             if (this.JobTypes == null)
-                JobTypes = dbContext.JobTypes.ToList();
+                JobTypes = Database.JobTypes.ToList();
             if (this.JobSubTypes == null)
-                JobSubTypes = dbContext.JobSubTypes.ToList();
+                JobSubTypes = Database.JobSubTypes.ToList();
         }
 
     }

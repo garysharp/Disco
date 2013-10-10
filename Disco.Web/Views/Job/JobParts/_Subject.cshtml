@@ -1,5 +1,7 @@
 ﻿@model Disco.Web.Models.Job.ShowModel
-
+@{
+    Authorization.Require(Claims.Job.Show);
+}
 <table id="Job_Show_Subjects">
     <tr>
         <td id="Job_Show_Job">
@@ -17,7 +19,9 @@
                                 <td>
                                     <span title="Expected to Close">Expected:</span>
                                 </td>
-                                <td>@Html.TextBoxFor(m => m.Job.ExpectedClosedDate, new { @class = "small discreet" }) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
+                                <td>@if (Authorization.Has(Claims.Job.Properties.ExpectedClosedDate))
+                                    {
+                                    @Html.TextBoxFor(m => m.Job.ExpectedClosedDate, new { @class = "small discreet" }) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
                                     <script type="text/javascript">
                                         $(function () {
                                             var $ajaxSave = $('#Job_ExpectedClosedDate').next('.ajaxSave');
@@ -58,6 +62,11 @@
                                                 });
                                         });
                                     </script>
+                                    }
+                                    else
+                                    {
+                                    @CommonHelpers.FriendlyDate(Model.Job.ExpectedClosedDate)
+                                    }
                                 </td>
                             </tr>
                         }
@@ -93,81 +102,90 @@
                                         <li title="@jobSubType.Id">@jobSubType.Description</li>
                                     }
                                 </ul>
-                                @if (!Model.Job.ClosedDate.HasValue)
+                                @if (Authorization.Has(Claims.Job.Actions.UpdateSubTypes) && !Model.Job.ClosedDate.HasValue)
                                 {
                                     <a href="#" id="Job_Show_Job_SubTypes_Update">Update Sub Types</a>
                                 }
                             </td>
                         </tr>
                     </table>
-                    <div id="Job_Show_Job_SubTypes_Update_Dialog" title="Update Job Types">
-                        <div>
-                            <h2>
-                                @Model.Job.JobType.Description</h2>
-                            @using (Html.BeginForm(MVC.API.Job.UpdateSubTypes(Model.Job.Id, redirect: true), FormMethod.Post, new { id = "formUpdateJobTypes" }))
-                            {
-                                @CommonHelpers.CheckBoxList("SubTypes", Model.UpdatableJobSubTypes.ToSelectListItems(Model.Job.JobSubTypes.ToList()), 3)    
-                                <hr />
-                                <div>
-                                    <input type="checkbox" value="true" id="UpdateJobTypesAddComponents" name="AddComponents"
-                                        checked="checked" /><label for="UpdateJobTypesAddComponents">Add Components for newly added Sub Types</label>
-                                </div>
-                            }
+                    @if (Authorization.Has(Claims.Job.Actions.UpdateSubTypes))
+                    {
+                        <div id="Job_Show_Job_SubTypes_Update_Dialog" title="Update Job Types">
+                            <div>
+                                <h2>
+                                    @Model.Job.JobType.Description</h2>
+                                @using (Html.BeginForm(MVC.API.Job.UpdateSubTypes(Model.Job.Id, redirect: true), FormMethod.Post, new { id = "formUpdateJobTypes" }))
+                                {
+                                    @CommonHelpers.CheckBoxList("SubTypes", Model.UpdatableJobSubTypes.ToSelectListItems(Model.Job.JobSubTypes.ToList()), 3)    
+                                    <hr />
+                                    <div>
+                                        <input type="checkbox" value="true" id="UpdateJobTypesAddComponents" name="AddComponents"
+                                            checked="checked" /><label for="UpdateJobTypesAddComponents">Add Components for newly added Sub Types</label>
+                                    </div>
+                                }
+                            </div>
                         </div>
-                    </div>
-                    <script>
-                        $(function(){
-                            var $Job_Show_Job_SubTypes_Update_Dialog = null;
+                        <script>
+                            $(function(){
+                                var $Job_Show_Job_SubTypes_Update_Dialog = null;
 
-                            $('#Job_Show_Job_SubTypes_Update').click(function () {
-                                if (!$Job_Show_Job_SubTypes_Update_Dialog) {
-                                    $Job_Show_Job_SubTypes_Update_Dialog = $('#Job_Show_Job_SubTypes_Update_Dialog');
-                                    $Job_Show_Job_SubTypes_Update_Dialog.dialog({
-                                        resizable: false,
-                                        modal: true,
-                                        autoOpen: false,
-                                        width: 700,
-                                        buttons: {
-                                            "Save": function () {
-                                                $('#formUpdateJobTypes').submit();
-                                                $Job_Show_Job_SubTypes_Update_Dialog.dialog("disable");
-                                            },
-                                            Cancel: function () {
-                                                $(this).dialog("close");
+                                $('#Job_Show_Job_SubTypes_Update').click(function () {
+                                    if (!$Job_Show_Job_SubTypes_Update_Dialog) {
+                                        $Job_Show_Job_SubTypes_Update_Dialog = $('#Job_Show_Job_SubTypes_Update_Dialog');
+                                        $Job_Show_Job_SubTypes_Update_Dialog.dialog({
+                                            resizable: false,
+                                            modal: true,
+                                            autoOpen: false,
+                                            width: 700,
+                                            buttons: {
+                                                "Save": function () {
+                                                    $('#formUpdateJobTypes').submit();
+                                                    $Job_Show_Job_SubTypes_Update_Dialog.dialog("disable");
+                                                },
+                                                Cancel: function () {
+                                                    $(this).dialog("close");
+                                                }
                                             }
-                                        }
-                                    });
-                                }
+                                        });
+                                    }
 
-                                $Job_Show_Job_SubTypes_Update_Dialog.dialog('open');
-                                return false;
+                                    $Job_Show_Job_SubTypes_Update_Dialog.dialog('open');
+                                    return false;
+                                });
                             });
-                        });
-                    </script>
+                        </script>
+                    }
                 </div>
-                <div id="Job_Show_GenerateDocument_Container" class="status">
-                    @Html.DropDownList("Job_Show_GenerateDocument", Model.DocumentTemplatesSelectListItems)
-                    <script type="text/javascript">
-                        $(function () {
-                            var generatePdfUrl = '@Url.Action(MVC.API.Job.GeneratePdf(Model.Job.Id.ToString(), null))?DocumentTemplateId=';
-                            var $documentTemplates = $('#Job_Show_GenerateDocument');
-                            $documentTemplates.change(function () {
-                                var v = $documentTemplates.val();
-                                if (v) {
-                                    window.location.href = generatePdfUrl + v;
-                                    $documentTemplates.val('').blur();
-                                }
+                @if (Authorization.Has(Claims.Job.Actions.GenerateDocuments))
+                {
+                    <div id="Job_Show_GenerateDocument_Container" class="status">
+                        @Html.DropDownList("Job_Show_GenerateDocument", Model.DocumentTemplatesSelectListItems)
+                        <script type="text/javascript">
+                            $(function () {
+                                var generatePdfUrl = '@Url.Action(MVC.API.Job.GeneratePdf(Model.Job.Id.ToString(), null))?DocumentTemplateId=';
+                                var $documentTemplates = $('#Job_Show_GenerateDocument');
+                                $documentTemplates.change(function () {
+                                    var v = $documentTemplates.val();
+                                    if (v) {
+                                        window.location.href = generatePdfUrl + v;
+                                        $documentTemplates.val('').blur();
+                                    }
+                                });
                             });
-                        });
-                    </script>
-                </div>
+                        </script>
+                    </div>
+                }
             </div>
         </td>
         @if (Model.Job.Device != null)
         {
             <td id="Job_Show_Device">
                 <div>
-                    <h2 id="Job_Show_Device_SerialNumber" title="Serial Number">@Html.ActionLink(Model.Job.DeviceSerialNumber, MVC.Device.Show(Model.Job.DeviceSerialNumber))</h2>
+                    <h2 id="Job_Show_Device_SerialNumber" title="Serial Number">@if (Authorization.Has(Claims.Device.Show))
+                                                                                {@Html.ActionLink(Model.Job.DeviceSerialNumber, MVC.Device.Show(Model.Job.DeviceSerialNumber))}
+                                                                                else
+                                                                                {@Model.Job.DeviceSerialNumber}</h2>
                     <div class="clearfix">
                         <div id="Job_Show_Device_Details">
                             <img id="Job_Show_Device_Model_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(Model.Job.Device.DeviceModelId, Model.Job.Device.DeviceModel.ImageHash()))" />
@@ -247,7 +265,22 @@
                             <table class="none">
                                 <tr>
                                     <td>Location:</td>
-                                    <td>@Html.TextBoxFor(m => m.Job.DeviceHeldLocation, new { @class = "small discreet" }) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()</td>
+                                    <td>
+                                        <span id="Job_Show_Device_DeviceHeld_Location">
+                                            @if (Authorization.Has(Claims.Job.Properties.DeviceHeldLocation))
+                                            {
+                                                @Html.TextBoxFor(m => m.Job.DeviceHeldLocation, new { @class = "small discreet" }) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
+                                            }
+                                            else if (string.IsNullOrEmpty(Model.Job.DeviceHeldLocation))
+                                            {
+                                                <span class="smallMessage">&lt;None/Unknown&gt;</span>
+                                            }
+                                            else
+                                            {
+                                                @Model.Job.DeviceHeldLocation
+                                            }
+                                        </span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>Held Since:</td>
@@ -268,47 +301,49 @@
                                     </tr>
                                 }
                             </table>
+                            @if (Authorization.Has(Claims.Job.Properties.DeviceHeldLocation))
+                            {
+                                <script type="text/javascript">
+                                    $(function () {
+                                        var $deviceHeldLocation = $('#Job_DeviceHeldLocation');
+                                        var $ajaxSave = $deviceHeldLocation.next('.ajaxSave');
 
-                            <script type="text/javascript">
-                                $(function () {
-                                    var $deviceHeldLocation = $('#Job_DeviceHeldLocation');
-                                    var $ajaxSave = $deviceHeldLocation.next('.ajaxSave');
-
-                                    $deviceHeldLocation
-                                        .watermark('Unknown')
-                                        .focus(function () { $deviceHeldLocation.select() })
-                                        .keydown(function (e) {
-                                            $ajaxSave.show();
-                                            if (e.which == 13) {
-                                                $(this).blur();
-                                            }
-                                        }).blur(function () {
-                                            $ajaxSave.hide();
-                                        })
-                                        .change(function () {
-                                            $ajaxSave.hide();
-                                            $ajaxLoading = $ajaxSave.next('.ajaxLoading').show();
-                                            var data = { DeviceHeldLocation: $deviceHeldLocation.val() };
-                                            $.ajax({
-                                                url: '@Url.Action(MVC.API.Job.UpdateDeviceHeldLocation(Model.Job.Id, null))',
-                                                dataType: 'json',
-                                                data: data,
-                                                success: function (d) {
-                                                    if (d == 'OK') {
-                                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                                    } else {
-                                                        $ajaxLoading.hide();
-                                                        alert('Unable to update device held location: ' + d);
-                                                    }
-                                                },
-                                                error: function (jqXHR, textStatus, errorThrown) {
-                                                    alert('Unable to update device held location: ' + textStatus);
-                                                    $ajaxLoading.hide();
+                                        $deviceHeldLocation
+                                            .watermark('Unknown')
+                                            .focus(function () { $deviceHeldLocation.select() })
+                                            .keydown(function (e) {
+                                                $ajaxSave.show();
+                                                if (e.which == 13) {
+                                                    $(this).blur();
                                                 }
+                                            }).blur(function () {
+                                                $ajaxSave.hide();
+                                            })
+                                            .change(function () {
+                                                $ajaxSave.hide();
+                                                $ajaxLoading = $ajaxSave.next('.ajaxLoading').show();
+                                                var data = { DeviceHeldLocation: $deviceHeldLocation.val() };
+                                                $.ajax({
+                                                    url: '@Url.Action(MVC.API.Job.UpdateDeviceHeldLocation(Model.Job.Id, null))',
+                                                    dataType: 'json',
+                                                    data: data,
+                                                    success: function (d) {
+                                                        if (d == 'OK') {
+                                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                                        } else {
+                                                            $ajaxLoading.hide();
+                                                            alert('Unable to update device held location: ' + d);
+                                                        }
+                                                    },
+                                                    error: function (jqXHR, textStatus, errorThrown) {
+                                                        alert('Unable to update device held location: ' + textStatus);
+                                                        $ajaxLoading.hide();
+                                                    }
+                                                });
                                             });
-                                        });
-                                });
-                            </script>
+                                    });
+                                </script>
+                            }
                         </div>
                     }
                 </div>
@@ -318,8 +353,12 @@
         {
             <td id="Job_Show_User">
                 <div>
-                    <h2 id="Job_Show_User_DisplayName" title="Display Name">@Html.ActionLink(Model.Job.User.DisplayName, MVC.User.Show(Model.Job.UserId))</h2>
-                    <div id="Job_Show_User_Id" title="Id">@Model.Job.UserId <span id="Job_Show_User_Type" title="Type">[@(Model.Job.User.Type)]</span></div>
+                    <h2 id="Job_Show_User_DisplayName" title="Display Name">@if (Authorization.Has(Claims.User.Show))
+                                                                            {@Html.ActionLink(Model.Job.User.DisplayName, MVC.User.Show(Model.Job.UserId))}
+                                                                            else
+                                                                            {@Model.Job.User.DisplayName}
+                    </h2>
+                    <div id="Job_Show_User_Id" title="Id">@Model.Job.UserId</div>
                     @if (!string.IsNullOrWhiteSpace(Model.Job.User.PhoneNumber))
                     {<div id="Job_Show_User_PhoneNumber" title="Phone Number">Phone: @Model.Job.User.PhoneNumber</div>}
                     @if (!string.IsNullOrWhiteSpace(Model.Job.User.EmailAddress))

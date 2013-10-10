@@ -1,5 +1,7 @@
 ﻿@model Disco.Web.Models.Job.CreateModel
 @{
+    Authorization.Require(Claims.Job.Actions.Create);
+    
     Layout = "~/Views/Shared/_DialogLayout.cshtml";
     ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), "Create");
 }

@@ -17,38 +17,57 @@
     <script type="text/javascript">
         $(function () {
             var $tabs = $('#DeviceDetailTabs');
-            $tabs.tabs({
-                activate: function (event, ui) {
-                    window.setTimeout(function () {
-                        var $window = $(window);
-                        var tabHeight = $tabs.height();
-                        var tabOffset = $tabs.offset();
-                        var windowScrollTop = $window.scrollTop();
-                        var windowHeight = $window.height();
+            if ($tabs.children().length > 1) {
+                $tabs.tabs({
+                    activate: function (event, ui) {
+                        window.setTimeout(function () {
+                            var $window = $(window);
+                            var tabHeight = $tabs.height();
+                            var tabOffset = $tabs.offset();
+                            var windowScrollTop = $window.scrollTop();
+                            var windowHeight = $window.height();
 
-                        var tabTopNotShown = windowScrollTop - tabOffset.top;
-                        if (tabTopNotShown > 0) {
-                            $('html').animate({ scrollTop: tabOffset.top }, 125);
-                        } else {
-                            var tabBottomNotShown = ((windowScrollTop + windowHeight) - (tabHeight + tabOffset.top)) * -1;
-                            if (tabBottomNotShown > 0) {
-                                if (tabHeight > windowHeight)
-                                    $('html').animate({ scrollTop: tabOffset.top }, 125);
-                                else
-                                    $('html').animate({ scrollTop: windowScrollTop + tabBottomNotShown }, 125);
+                            var tabTopNotShown = windowScrollTop - tabOffset.top;
+                            if (tabTopNotShown > 0) {
+                                $('html').animate({ scrollTop: tabOffset.top }, 125);
+                            } else {
+                                var tabBottomNotShown = ((windowScrollTop + windowHeight) - (tabHeight + tabOffset.top)) * -1;
+                                if (tabBottomNotShown > 0) {
+                                    if (tabHeight > windowHeight)
+                                        $('html').animate({ scrollTop: tabOffset.top }, 125);
+                                    else
+                                        $('html').animate({ scrollTop: windowScrollTop + tabBottomNotShown }, 125);
+                                }
                             }
-                        }
-                    }, 1);
-                }
-            });
+                        }, 1);
+                    }
+                });
+            } else {
+                $tabs.hide();
+            }
         });
     </script>
     <div id="DeviceDetailTabs">
         <ul id="DeviceDetailTabItems"></ul>
-        @Html.Partial(MVC.Device.Views.DeviceParts._Jobs, Model)
-        @Html.Partial(MVC.Device.Views.DeviceParts._Details, Model)
-        @Html.Partial(MVC.Device.Views.DeviceParts._AssignmentHistory, Model)
-        @Html.Partial(MVC.Device.Views.DeviceParts._Resources, Model)
-        @Html.Partial(MVC.Device.Views.DeviceParts._Certificates, Model)
+        @if (Authorization.Has(Claims.Device.ShowJobs))
+        {
+            @Html.Partial(MVC.Device.Views.DeviceParts._Jobs, Model)
+        }
+        @if (Authorization.Has(Claims.Device.ShowDetails))
+        {
+            @Html.Partial(MVC.Device.Views.DeviceParts._Details, Model)
+        }
+        @if (Authorization.Has(Claims.Device.ShowAssignmentHistory))
+        {
+            @Html.Partial(MVC.Device.Views.DeviceParts._AssignmentHistory, Model)
+        }
+        @if (Authorization.Has(Claims.Device.ShowAttachments))
+        {
+            @Html.Partial(MVC.Device.Views.DeviceParts._Resources, Model)
+        }
+        @if (Authorization.Has(Claims.Device.ShowCertificates))
+        {
+            @Html.Partial(MVC.Device.Views.DeviceParts._Certificates, Model)
+        }
     </div>
 </div>

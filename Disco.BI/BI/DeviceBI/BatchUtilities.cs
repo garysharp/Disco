@@ -9,7 +9,7 @@ namespace Disco.BI.DeviceBI
 {
     public static class BatchUtilities
     {
-        public static DeviceBatch DefaultNewDeviceBatch(DiscoDataContext dbContext)
+        public static DeviceBatch DefaultNewDeviceBatch(DiscoDataContext Database)
         {
             return new DeviceBatch()
             {

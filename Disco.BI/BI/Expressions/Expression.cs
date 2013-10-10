@@ -167,14 +167,14 @@ namespace Disco.BI.Expressions
             return e;
         }
 
-        public static IDictionary StandardVariables(DocumentTemplate AttachmentType, DiscoDataContext DataContext, User User, System.DateTime TimeStamp, DocumentState DocumentState)
+        public static IDictionary StandardVariables(DocumentTemplate AttachmentType, DiscoDataContext Database, User User, System.DateTime TimeStamp, DocumentState DocumentState)
         {
             return new Hashtable
 			{
 
 				{
 					"DataContext", 
-					DataContext
+					Database
 				}, 
 
 				{

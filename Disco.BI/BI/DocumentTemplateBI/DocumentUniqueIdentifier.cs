@@ -115,7 +115,7 @@ namespace Disco.BI.DocumentTemplateBI
             }
             throw new System.ArgumentException(string.Format("Invalid Document Unique Identifier Version ({0})", s[1]), "UniqueIdentifier");
         }
-        public bool LoadComponents(DiscoDataContext Context)
+        public bool LoadComponents(DiscoDataContext Database)
         {
             bool LoadComponents;
             if (!this._loadedComponentsOk.HasValue)
@@ -142,7 +142,7 @@ namespace Disco.BI.DocumentTemplateBI
                 }
                 else
                 {
-                    this._documentTemplate = Context.DocumentTemplates.Find(this.TemplateTypeId);
+                    this._documentTemplate = Database.DocumentTemplates.Find(this.TemplateTypeId);
                     if (this._documentTemplate != null)
                     {
                         scopeType = this._documentTemplate.Scope;
@@ -158,7 +158,7 @@ namespace Disco.BI.DocumentTemplateBI
                     switch (scopeType)
                     {
                         case DocumentTemplate.DocumentTemplateScopes.Device:
-                            Device d = Context.Devices.Find(this.DataId);
+                            Device d = Database.Devices.Find(this.DataId);
                             if (d != null)
                             {
                                 this._data = d;
@@ -169,7 +169,7 @@ namespace Disco.BI.DocumentTemplateBI
                             }
                             break;
                         case DocumentTemplate.DocumentTemplateScopes.Job:
-                            Job i = Context.Jobs.Find(int.Parse(this.DataId));
+                            Job i = Database.Jobs.Find(int.Parse(this.DataId));
                             if (i != null)
                             {
                                 this._data = i;
@@ -180,7 +180,7 @@ namespace Disco.BI.DocumentTemplateBI
                             }
                             break;
                         case DocumentTemplate.DocumentTemplateScopes.User:
-                            User u = Context.Users.Find(this.DataId);
+                            User u = Database.Users.Find(this.DataId);
                             if (u != null)
                             {
                                 this._data = u;

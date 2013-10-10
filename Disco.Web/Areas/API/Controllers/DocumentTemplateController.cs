@@ -1,15 +1,18 @@
-﻿using System;
+﻿using Disco.BI;
+using Disco.BI.Extensions;
+using Disco.Models.Repository;
+using Disco.Services.Authorization;
+using Disco.Services.Users;
+using Disco.Services.Web;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Disco.BI;
-using Disco.BI.Extensions;
-using Disco.Models.Repository;
 
 namespace Disco.Web.Areas.API.Controllers
 {
-    public partial class DocumentTemplateController : dbAdminController
+    public partial class DocumentTemplateController : AuthorizedDatabaseController
     {
 
         const string pDescription = "description";
@@ -17,6 +20,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pFilterExpression = "filterexpression";
         const string pFlattenForm = "flattenform";
 
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
         public virtual ActionResult Update(string id, string key, string value = null, bool redirect = false)
         {
             try
@@ -25,7 +29,7 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new ArgumentNullException("id");
                 if (string.IsNullOrEmpty(key))
                     throw new ArgumentNullException("key");
-                var documentTemplate = dbContext.DocumentTemplates.Find(id);
+                var documentTemplate = Database.DocumentTemplates.Find(id);
                 if (documentTemplate != null)
                 {
                     switch (key.ToLower())
@@ -37,6 +41,7 @@ namespace Disco.Web.Areas.API.Controllers
                             UpdateScope(documentTemplate, value);
                             break;
                         case pFilterExpression:
+                            Authorization.Require(Claims.Config.DocumentTemplate.ConfigureFilterExpression);
                             UpdateFilterExpression(documentTemplate, value);
                             break;
                         case pFlattenForm:
@@ -64,16 +69,16 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
-        [HttpGet]
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Upload), HttpGet]
         public virtual ActionResult Template(string id)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException("id");
-            var documentTemplate = dbContext.DocumentTemplates.Find(id);
+            var documentTemplate = Database.DocumentTemplates.Find(id);
             if (documentTemplate == null)
                 throw new ArgumentException("Invalid Document Template Id", "id");
 
-            var filename = documentTemplate.RepositoryFilename(dbContext);
+            var filename = documentTemplate.RepositoryFilename(Database);
             if (System.IO.File.Exists(filename))
             {
                 return File(filename, DocumentTemplate.PdfMimeType, string.Format("{0}.pdf", documentTemplate.Id));
@@ -83,18 +88,19 @@ namespace Disco.Web.Areas.API.Controllers
                 throw new InvalidOperationException("Template not found");
             }
         }
-        [HttpPost]
+
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Upload, Claims.Config.DocumentTemplate.Configure), HttpPost]
         public virtual ActionResult Template(string id, bool redirect, HttpPostedFileBase Template)
         {
             try
             {
                 if (string.IsNullOrEmpty(id))
                     throw new ArgumentNullException("id");
-                var documentTemplate = dbContext.DocumentTemplates.Find(id);
+                var documentTemplate = Database.DocumentTemplates.Find(id);
                 if (documentTemplate == null)
                     throw new ArgumentException("Invalid Document Template Id", "id");
 
-                documentTemplate.SavePdfTemplate(dbContext, Template.InputStream);
+                documentTemplate.SavePdfTemplate(Database, Template.InputStream);
 
                 if (redirect)
                     return RedirectToAction(MVC.Config.DocumentTemplate.Index(documentTemplate.Id));
@@ -111,29 +117,34 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         #region Update Shortcut Methods
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
         public virtual ActionResult UpdateDescription(string id, string Description = null, bool redirect = false)
         {
             return Update(id, pDescription, Description, redirect);
         }
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Configure, Claims.Config.DocumentTemplate.ConfigureFilterExpression)]
         public virtual ActionResult UpdateFilterExpression(string id, string FilterExpression = null, bool redirect = false)
         {
             return Update(id, pFilterExpression, FilterExpression, redirect);
         }
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
         public virtual ActionResult UpdateFlattenForm(string id, string FlattenForm = null, bool redirect = false)
         {
             return Update(id, pFlattenForm, FlattenForm, redirect);
         }
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
         public virtual ActionResult UpdateScope(string id, string Scope = null, bool redirect = false)
         {
             return Update(id, pScope, Scope, redirect);
         }
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
         public virtual ActionResult UpdateSubTypes(string id, List<string> SubTypes = null)
         {
             try
             {
                 if (string.IsNullOrEmpty(id))
                     throw new ArgumentNullException("id");
-                var documentTemplate = dbContext.DocumentTemplates.Find(id);
+                var documentTemplate = Database.DocumentTemplates.Find(id);
 
                 UpdateSubTypes(documentTemplate, SubTypes);
 
@@ -153,7 +164,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (!string.IsNullOrWhiteSpace(Description))
             {
                 documentTemplate.Description = Description.Trim();
-                dbContext.SaveChanges();
+                Database.SaveChanges();
                 return;
             }
             throw new Exception("Invalid Description");
@@ -164,7 +175,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 if (Disco.Models.Repository.DocumentTemplate.DocumentTemplateScopes.ToList().Contains(Scope))
                 {
-                    dbContext.Configuration.LazyLoadingEnabled = true;
+                    Database.Configuration.LazyLoadingEnabled = true;
 
                     documentTemplate.Scope = Scope;
 
@@ -175,7 +186,7 @@ namespace Disco.Web.Areas.API.Controllers
                             documentTemplate.JobSubTypes.Remove(st);
                     }
 
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
                     return;
                 }
             }
@@ -194,7 +205,7 @@ namespace Disco.Web.Areas.API.Controllers
             // Invalidate Cache
             documentTemplate.FilterExpressionInvalidateCache();
 
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
         private void UpdateFlattenForm(Disco.Models.Repository.DocumentTemplate documentTemplate, string FlattenForm)
         {
@@ -211,11 +222,11 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Boolean Format");
             }
 
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
         private void UpdateSubTypes(Disco.Models.Repository.DocumentTemplate documentTemplate, List<string> SubTypes)
         {
-            dbContext.Configuration.LazyLoadingEnabled = true;
+            Database.Configuration.LazyLoadingEnabled = true;
 
             // Remove All Existing
             if (documentTemplate.JobSubTypes != null)
@@ -232,35 +243,21 @@ namespace Disco.Web.Areas.API.Controllers
                 {
                     var typeId = stId.Substring(0, stId.IndexOf("_"));
                     var subTypeId = stId.Substring(stId.IndexOf("_") + 1);
-                    var subType = dbContext.JobSubTypes.FirstOrDefault(jst => jst.JobTypeId == typeId && jst.Id == subTypeId);
+                    var subType = Database.JobSubTypes.FirstOrDefault(jst => jst.JobTypeId == typeId && jst.Id == subTypeId);
                     subTypes.Add(subType);
                 }
                 documentTemplate.JobSubTypes = subTypes;
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
         #endregion
 
-
-
         #region Actions
 
-        [OutputCache(NoStore = true, Duration = 0)]
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.UndetectedPages), OutputCache(NoStore = true, Duration = 0)]
         public virtual ActionResult ImporterThumbnail(string SessionId, int PageNumber)
         {
-            // Load from Cache
-            //var cacheKey = string.Format("Disco.BI.DocumentImporter-{0}-{1}", SessionId, PageNumber);
-            //var cacheValue = HttpContext.Cache.Get(cacheKey);
-            //if (cacheValue != null)
-            //{
-            //    var cacheFile = cacheValue as byte[];
-            //    if (cacheFile != null)
-            //    {
-            //        return File(cacheFile, "image/png");
-            //    }
-            //}
-
-            var dataStoreSessionPagesCacheLocation = DataStore.CreateLocation(dbContext, "Cache\\DocumentDropBox_SessionPages");
+            var dataStoreSessionPagesCacheLocation = DataStore.CreateLocation(Database, "Cache\\DocumentDropBox_SessionPages");
             var filename = System.IO.Path.Combine(dataStoreSessionPagesCacheLocation, string.Format("{0}-{1}", SessionId, PageNumber));
             if (System.IO.File.Exists(filename))
                 return File(filename, "image/png");
@@ -268,9 +265,10 @@ namespace Disco.Web.Areas.API.Controllers
                 return File("~/ClientSource/Style/Images/Status/fileBroken256.png", "image/png");
         }
 
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.UndetectedPages)]
         public virtual ActionResult ImporterUndetectedFiles()
         {
-            var undetectedLocation = DataStore.CreateLocation(dbContext, "DocumentDropBox_Unassigned");
+            var undetectedLocation = DataStore.CreateLocation(Database, "DocumentDropBox_Unassigned");
             var undetectedDirectory = new System.IO.DirectoryInfo(undetectedLocation);
             var m = undetectedDirectory.GetFiles("*.pdf").Select(f => new Models.DocumentTemplate.ImporterUndetectedFilesModel()
             {
@@ -281,6 +279,8 @@ namespace Disco.Web.Areas.API.Controllers
 
             return Json(m);
         }
+
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.UndetectedPages)]
         public virtual ActionResult ImporterUndetectedDataIdLookup(string id, string term, int limitCount = 20)
         {
             if (!string.IsNullOrEmpty(id) && !string.IsNullOrWhiteSpace(term))
@@ -306,7 +306,7 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 else
                 {
-                    var documentTemplate = dbContext.DocumentTemplates.Find(id);
+                    var documentTemplate = Database.DocumentTemplates.Find(id);
                     if (documentTemplate != null)
                         searchScope = documentTemplate.Scope;
                     else
@@ -318,13 +318,13 @@ namespace Disco.Web.Areas.API.Controllers
                     switch (searchScope)
                     {
                         case DocumentTemplate.DocumentTemplateScopes.Device:
-                            results = BI.DeviceBI.Searching.Search(dbContext, term, limitCount).Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
+                            results = BI.DeviceBI.Searching.Search(Database, term, limitCount).Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
                             break;
                         case DocumentTemplate.DocumentTemplateScopes.Job:
-                            results = BI.JobBI.Searching.Search(dbContext, term, limitCount, false).Items.Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
+                            results = BI.JobBI.Searching.Search(Database, term, limitCount, false).Items.Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
                             break;
                         case DocumentTemplate.DocumentTemplateScopes.User:
-                            results = BI.UserBI.Searching.Search(dbContext, term, limitCount).Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
+                            results = BI.UserBI.Searching.Search(Database, term, limitCount).Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
                             break;
                         default:
                             results = null;
@@ -337,11 +337,13 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json(null, JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.UndetectedPages)]
         public virtual ActionResult ImporterUndetectedFile(string id, Nullable<bool> Source, Nullable<bool> Thumbnail)
         {
             if (!string.IsNullOrEmpty(id))
             {
-                var undetectedLocation = DataStore.CreateLocation(dbContext, "DocumentDropBox_Unassigned");
+                var undetectedLocation = DataStore.CreateLocation(Database, "DocumentDropBox_Unassigned");
                 if (Source.HasValue && Source.Value)
                 {
                     var filename = System.IO.Path.Combine(undetectedLocation, string.Concat(id, ".pdf"));
@@ -372,11 +374,13 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return HttpNotFound();
         }
+
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.UndetectedPages)]
         public virtual ActionResult ImporterUndetectedAssign(string id, string DocumentTemplateId, string DataId)
         {
-            var undetectedLocation = DataStore.CreateLocation(dbContext, "DocumentDropBox_Unassigned");
+            var undetectedLocation = DataStore.CreateLocation(Database, "DocumentDropBox_Unassigned");
             var filename = System.IO.Path.Combine(undetectedLocation, string.Concat(id, ".pdf"));
-            if (BI.Interop.Pdf.PdfImporter.ProcessPdfAttachment(filename, dbContext, DocumentTemplateId, DataId, DiscoApplication.CurrentUser.Id, DateTime.Now))
+            if (BI.Interop.Pdf.PdfImporter.ProcessPdfAttachment(filename, Database, DocumentTemplateId, DataId, UserService.CurrentUserId, DateTime.Now))
             {
                 // Delete File
                 System.IO.File.Delete(filename);
@@ -396,9 +400,11 @@ namespace Disco.Web.Areas.API.Controllers
                 return Json("Unable to Import File with the supplied parameters");
             }
         }
+
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.UndetectedPages)]
         public virtual ActionResult ImporterUndetectedDelete(string id)
         {
-            var undetectedLocation = DataStore.CreateLocation(dbContext, "DocumentDropBox_Unassigned");
+            var undetectedLocation = DataStore.CreateLocation(Database, "DocumentDropBox_Unassigned");
             var filename = System.IO.Path.Combine(undetectedLocation, string.Concat(id, ".pdf"));
             if (System.IO.File.Exists(filename))
             {
@@ -421,32 +427,49 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.BulkGenerate)]
         public virtual ActionResult BulkGenerate(string id, string DataIds = null)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException("id");
             if (string.IsNullOrEmpty(DataIds))
                 throw new ArgumentNullException("DataIds");
-            var documentTemplate = dbContext.DocumentTemplates.Find(id);
+            var documentTemplate = Database.DocumentTemplates.Find(id);
             if (documentTemplate == null)
                 throw new ArgumentException("Invalid Document Template Id", "id");
 
+            switch (documentTemplate.Scope)
+            {
+                case DocumentTemplate.DocumentTemplateScopes.Device:
+                    Authorization.Require(Claims.Device.Actions.GenerateDocuments);
+                    break;
+                case DocumentTemplate.DocumentTemplateScopes.Job:
+                    Authorization.Require(Claims.Job.Actions.GenerateDocuments);
+                    break;
+                case DocumentTemplate.DocumentTemplateScopes.User:
+                    Authorization.Require(Claims.User.Actions.GenerateDocuments);
+                    break;
+                default:
+                    throw new InvalidOperationException("Unknown DocumentType Scope");
+            }
+
             var dataIds = DataIds.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             var timeStamp = DateTime.Now;
-            var pdf = documentTemplate.GeneratePdfBulk(dbContext, DiscoApplication.CurrentUser, timeStamp, dataIds);
+            var pdf = documentTemplate.GeneratePdfBulk(Database, UserService.CurrentUser, timeStamp, dataIds);
 
             return File(pdf, "application/pdf", string.Format("{0}_Bulk_{1:yyyyMMdd-HHmmss}.pdf", documentTemplate.Id, timeStamp));
         }
 
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Delete)]
         public virtual ActionResult Delete(string id, Nullable<bool> redirect = false)
         {
             try
             {
-                var at = dbContext.DocumentTemplates.Include("JobSubTypes").FirstOrDefault(a => a.Id == id);
+                var at = Database.DocumentTemplates.Include("JobSubTypes").FirstOrDefault(a => a.Id == id);
                 if (at != null)
                 {
-                    at.Delete(dbContext);
-                    dbContext.SaveChanges();
+                    at.Delete(Database);
+                    Database.SaveChanges();
                     if (redirect.HasValue && redirect.Value)
                         return RedirectToAction(MVC.Config.DocumentTemplate.Index(null));
                     else

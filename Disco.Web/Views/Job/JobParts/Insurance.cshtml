@@ -1,11 +1,15 @@
 ﻿@model Disco.Web.Models.Job.ShowModel
+@{
+    Authorization.Require(Claims.Job.ShowNonWarrantyInsurance);
+}
 <table id="jobNonWarrantyInsurance">
     @if (Model.Job.JobMetaNonWarranty.IsInsuranceClaim)
-    { 
-        Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
+    {
+        if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails))
+        {
+            Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
         <tr>
-            <th style="width: 230px;">
-                Date of Loss or Damage
+            <th style="width: 230px;">Date of Loss or Damage
             </th>
             <td>
                 @Html.EditorFor(m => m.Job.JobMetaInsurance.LossOrDamageDate)
@@ -25,8 +29,7 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Event Location
+            <th>Event Location
             </th>
             <td>
                 @Html.EditorFor(m => m.Job.JobMetaInsurance.EventLocation)
@@ -45,8 +48,7 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Description
+            <th>Description
             </th>
             <td>
                 @Html.EditorFor(m => m.Job.JobMetaInsurance.Description)
@@ -65,8 +67,7 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 200px;">
-                &nbsp;
+            <th style="width: 200px;">&nbsp;
             </th>
             <td>
                 @Html.EditorFor(m => m.Job.JobMetaInsurance.ThirdPartyCaused)@Html.LabelFor(m => m.Job.JobMetaInsurance.ThirdPartyCaused)
@@ -74,15 +75,13 @@
                 @AjaxHelpers.AjaxLoader()
                 <div id="Job_JobMetaInsurance_ThirdPartyCaused_Details" style="padding-left: 25px;">
                     <div>
-                        <h5>
-                            Third Party Name</h5>
+                        <h5>Third Party Name</h5>
                         @Html.EditorFor(m => m.Job.JobMetaInsurance.ThirdPartyCausedName)
                         @AjaxHelpers.AjaxSave()
                         @AjaxHelpers.AjaxLoader()
                     </div>
                     <div>
-                        <h5>
-                            Why Third Parties Fault</h5>
+                        <h5>Why Third Parties Fault</h5>
                         @Html.EditorFor(m => m.Job.JobMetaInsurance.ThirdPartyCausedWhy)
                         @AjaxHelpers.AjaxSave()
                         @AjaxHelpers.AjaxLoader()
@@ -133,8 +132,7 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Witnessed by (Name/Address)
+            <th>Witnessed by (Name/Address)
             </th>
             <td>
                 @Html.EditorFor(m => m.Job.JobMetaInsurance.WitnessesNamesAddresses)
@@ -153,8 +151,7 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Burglary/Theft - Method of Entry
+            <th>Burglary/Theft - Method of Entry
             </th>
             <td>
                 @Html.EditorFor(m => m.Job.JobMetaInsurance.BurglaryTheftMethodOfEntry)
@@ -173,8 +170,7 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 200px;">
-                Property Last Seen
+            <th style="width: 200px;">Property Last Seen
             </th>
             <td>
                 @Html.EditorFor(m => m.Job.JobMetaInsurance.PropertyLastSeenDate)
@@ -194,8 +190,7 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 200px;">
-                &nbsp;
+            <th style="width: 200px;">&nbsp;
             </th>
             <td>
                 @Html.EditorFor(m => m.Job.JobMetaInsurance.PoliceNotified)@Html.LabelFor(m => m.Job.JobMetaInsurance.PoliceNotified)
@@ -203,21 +198,18 @@
                 @AjaxHelpers.AjaxLoader()
                 <div id="Job_JobMetaInsurance_PoliceNotified_Details" style="padding-left: 25px;">
                     <div>
-                        <h5>
-                            Station</h5>
+                        <h5>Station</h5>
                         @Html.EditorFor(m => m.Job.JobMetaInsurance.PoliceNotifiedStation)
                         @AjaxHelpers.AjaxSave()
                         @AjaxHelpers.AjaxLoader()
                     </div>
                     <div>
-                        <h5>
-                            Date</h5>
+                        <h5>Date</h5>
                         @Html.EditorFor(m => m.Job.JobMetaInsurance.PoliceNotifiedDate)
                         @AjaxHelpers.AjaxLoader()
                     </div>
                     <div>
-                        <h5>
-                            Crime Report #</h5>
+                        <h5>Crime Report #</h5>
                         @Html.EditorFor(m => m.Job.JobMetaInsurance.PoliceNotifiedCrimeReportNo)
                         @AjaxHelpers.AjaxSave()
                         @AjaxHelpers.AjaxLoader()
@@ -277,8 +269,7 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Action to Recover/Reduce Loss
+            <th>Action to Recover/Reduce Loss
             </th>
             <td>
                 @Html.EditorFor(m => m.Job.JobMetaInsurance.RecoverReduceAction)
@@ -297,8 +288,7 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Other Interested Parties
+            <th>Other Interested Parties
             </th>
             <td>
                 @Html.EditorFor(m => m.Job.JobMetaInsurance.OtherInterestedParties)
@@ -317,8 +307,7 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 200px;">
-                Date of Purchase
+            <th style="width: 200px;">Date of Purchase
             </th>
             <td>
                 @Html.EditorFor(m => m.Job.JobMetaInsurance.DateOfPurchase)
@@ -339,8 +328,214 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Claim Form Sent Date
+            <th>Claim Form Sent Date
+            </th>
+            <td>
+                @CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.ClaimFormSentDate, "Not Sent", "Job_JobMetaInsurance_ClaimFormSentDate")
+                <span id="Job_JobMetaInsurance_ClaimFormSentUserId">@(string.IsNullOrEmpty(Model.Job.JobMetaInsurance.ClaimFormSentUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaInsurance.ClaimFormSentUser.ToString()))</span>
+                <script>
+                    $(function () {
+                        var updateUrl = '@(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)))';
+                        var jobOpenDate = '@(Model.Job.OpenedDate.ToJavascriptDateTime())';
+
+                        document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Claim Form Sent Date', 'Job_JobMetaInsurance_ClaimFormSentDate', 'Job_JobMetaInsurance_ClaimFormSentUserId', 'InsuranceClaimFormSentDate', 'Not Sent', jobOpenDate, false);
+                    });
+                </script>
+            </td>
+        </tr>
+        }
+        else
+        {
+        <tr>
+            <th style="width: 230px;">Date of Loss or Damage
+            </th>
+            <td>
+                @CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.LossOrDamageDate, "Unknown", null)
+            </td>
+        </tr>
+        <tr>
+            <th>Event Location
+            </th>
+            <td>
+                @if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.EventLocation))
+                {
+                    <span class="smallMessage">&lt;Unknown/None&gt;</span>
+                }
+                else
+                {
+                    @Model.Job.JobMetaInsurance.EventLocation
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Description
+            </th>
+            <td>
+                @if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.Description))
+                {
+                    <span class="smallMessage">&lt;None&gt;</span>
+                }
+                else
+                {
+                    @Model.Job.JobMetaInsurance.Description
+                }
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px;">Caused by Third Party
+            </th>
+            <td>
+                @if (Model.Job.JobMetaInsurance.ThirdPartyCaused)
+                {
+                    <div id="Job_JobMetaInsurance_ThirdPartyCaused_Details" style="padding-left: 25px;">
+                        <div>
+                            <h5>Third Party Name</h5>
+                            @if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.ThirdPartyCausedName))
+                            {
+                                <span class="smallMessage">&lt;Unknown&gt;</span>
+                            }
+                            else
+                            {
+                                @Model.Job.JobMetaInsurance.ThirdPartyCausedName
+                            }
+                        </div>
+                        <div>
+                            <h5>Why Third Parties Fault</h5>
+                            @if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.ThirdPartyCausedWhy))
+                            {
+                                <span class="smallMessage">&lt;Unknown&gt;</span>
+                            }
+                            else
+                            {
+                                @Model.Job.JobMetaInsurance.ThirdPartyCausedWhy
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <span class="smallMessage">&lt;Not Caused by Third Party&gt;</span>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Witnessed by (Name/Address)
+            </th>
+            <td>
+                @if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.WitnessesNamesAddresses))
+                {
+                    <span class="smallMessage">&lt;Unknown/None&gt;</span>
+                }
+                else
+                {
+                    @Model.Job.JobMetaInsurance.WitnessesNamesAddresses
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Burglary/Theft - Method of Entry
+            </th>
+            <td>
+                @if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.BurglaryTheftMethodOfEntry))
+                {
+                    <span class="smallMessage">&lt;Unknown/None&gt;</span>
+                }
+                else
+                {
+                    @Model.Job.JobMetaInsurance.BurglaryTheftMethodOfEntry
+                }
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px;">Property Last Seen
+            </th>
+            <td>
+                @CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.PropertyLastSeenDate, "Unknown", null)
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px;">&nbsp;
+            Police Notified
+            </th>
+            <td>
+                @if (Model.Job.JobMetaInsurance.PoliceNotified)
+                {
+                    <div id="Job_JobMetaInsurance_PoliceNotified_Details" style="padding-left: 25px;">
+                        <div>
+                            <h5>Station</h5>
+                            @if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.PoliceNotifiedStation))
+                            {
+                                <span class="smallMessage">&lt;Unknown&gt;</span>
+                            }
+                            else
+                            {
+                                @Model.Job.JobMetaInsurance.PoliceNotifiedStation
+                            }
+                        </div>
+                        <div>
+                            <h5>Date</h5>
+                            @CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.PoliceNotifiedDate, "Unknown", null)
+                        </div>
+                        <div>
+                            <h5>Crime Report #</h5>
+                            @if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.PoliceNotifiedCrimeReportNo))
+                            {
+                                <span class="smallMessage">&lt;Unknown&gt;</span>
+                            }
+                            else
+                            {
+                                @Model.Job.JobMetaInsurance.PoliceNotifiedCrimeReportNo
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <span class="smallMessage">&lt;Not Notified&gt;</span>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Action to Recover/Reduce Loss
+            </th>
+            <td>
+                @if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.RecoverReduceAction))
+                {
+                    <span class="smallMessage">&lt;Unknown/None&gt;</span>
+                }
+                else
+                {
+                    @Model.Job.JobMetaInsurance.RecoverReduceAction
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Other Interested Parties
+            </th>
+            <td>
+                @if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.OtherInterestedParties))
+                {
+                    <span class="smallMessage">&lt;Unknown/None&gt;</span>
+                }
+                else
+                {
+                    @Model.Job.JobMetaInsurance.OtherInterestedParties
+                }
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px;">Date of Purchase
+            </th>
+            <td>
+                @CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.DateOfPurchase, "Unknown", null)
+            </td>
+        </tr>
+        }
+    }
+    @if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent))
+    {
+        <tr>
+            <th>Claim Form Sent Date
             </th>
             <td>
                 @CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.ClaimFormSentDate, "Not Sent", "Job_JobMetaInsurance_ClaimFormSentDate")
@@ -356,21 +551,34 @@
             </td>
         </tr>
     }
-    <tr>
-        <th>
-            Insurance Claim
-        </th>
-        <td>
-            <div style="padding: 8px; text-align: center">
-                @if (Model.Job.JobMetaNonWarranty.IsInsuranceClaim)
-                {
-                    @Html.ActionLinkButton("Remove Insurance Claim", MVC.API.Job.UpdateNonWarrantyIsInsuranceClaim(Model.Job.Id, false, true))
-                }
-                else
-                {
-                    @Html.ActionLinkButton("Add Insurance Claim", MVC.API.Job.UpdateNonWarrantyIsInsuranceClaim(Model.Job.Id, true, true))
-                }
-            </div>
-        </td>
-    </tr>
+    else
+    {
+        <tr>
+            <th>Claim Form Sent Date
+            </th>
+            <td>
+                @CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.ClaimFormSentDate, "Not Sent", "Job_JobMetaInsurance_ClaimFormSentDate")
+                <span id="Job_JobMetaInsurance_ClaimFormSentUserId">@(string.IsNullOrEmpty(Model.Job.JobMetaInsurance.ClaimFormSentUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaInsurance.ClaimFormSentUser.ToString()))</span>
+            </td>
+        </tr>
+    }
+    @if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.IsInsuranceClaim))
+    {
+        <tr>
+            <th>Insurance Claim
+            </th>
+            <td>
+                <div style="padding: 8px; text-align: center">
+                    @if (Model.Job.JobMetaNonWarranty.IsInsuranceClaim)
+                    {
+                        @Html.ActionLinkButton("Remove Insurance Claim", MVC.API.Job.UpdateNonWarrantyIsInsuranceClaim(Model.Job.Id, false, true))
+                    }
+                    else
+                    {
+                        @Html.ActionLinkButton("Add Insurance Claim", MVC.API.Job.UpdateNonWarrantyIsInsuranceClaim(Model.Job.Id, true, true))
+                    }
+                </div>
+            </td>
+        </tr>
+    }
 </table>

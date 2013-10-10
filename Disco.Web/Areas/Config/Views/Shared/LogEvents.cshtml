@@ -1,5 +1,7 @@
 ﻿@model Disco.Web.Areas.Config.Models.Shared.LogEventsModel
 @{
+    Authorization.Require(Claims.Config.Logging.Show);
+    
     Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
     var uniqueId = Guid.NewGuid().ToString("N");

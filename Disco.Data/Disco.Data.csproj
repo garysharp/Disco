@@ -113,6 +113,10 @@
     <Compile Include="Migrations\201309050648129_DBv8.Designer.cs">
       <DependentUpon>201309050648129_DBv8.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201310010352238_DBv9.cs" />
+    <Compile Include="Migrations\201310010352238_DBv9.Designer.cs">
+      <DependentUpon>201310010352238_DBv9.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DiscoDataMigrator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -123,7 +127,6 @@
     </Compile>
     <Compile Include="Repository\DiscoDatabaseConnectionFactory.cs" />
     <Compile Include="Repository\DiscoDataContext.cs" />
-    <Compile Include="Repository\DiscoDataContextInitializer.cs" />
     <Compile Include="Repository\DiscoDataSeeder.cs" />
     <Compile Include="Repository\Monitor\RepositoryMonitor.cs" />
     <Compile Include="Repository\Monitor\RepositoryMonitorEvent.cs" />
@@ -153,6 +156,9 @@
     <EmbeddedResource Include="Migrations\201309050648129_DBv8.resx">
       <DependentUpon>201309050648129_DBv8.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201310010352238_DBv9.resx">
+      <DependentUpon>201310010352238_DBv9.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -166,7 +172,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" />
+      <UserProperties BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

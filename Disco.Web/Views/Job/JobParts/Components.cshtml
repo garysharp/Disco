@@ -1,21 +1,31 @@
 ﻿@model Disco.Web.Models.Job.ShowModel
 @{
-    Html.BundleDeferred("~/ClientScripts/Modules/jQuery-NumberFormatter");
+    Authorization.Require(Claims.Job.ShowNonWarrantyComponents);
+
+    var hasEdit = Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.EditComponents);
+    var hasAdd = Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.AddComponents);
+
+    if (hasEdit)
+    {
+        Html.BundleDeferred("~/ClientScripts/Modules/jQuery-NumberFormatter");
     }
+}
 <table id="jobComponents">
     <tr>
-        <th>
-            Description
+        <th>Description
         </th>
-        <th>
-            Cost
+        <th>Cost
         </th>
-        <th class="actions">
-            &nbsp;
-        </th>
+        @if (hasEdit)
+        {
+            <th class="actions">&nbsp;
+            </th>
+        }
     </tr>
-    @foreach (var jc in Model.Job.JobComponents)
+    @if (hasEdit)
     {
+        foreach (var jc in Model.Job.JobComponents)
+        {
         <tr data-jobcomponentid="@jc.Id">
             <td>
                 <input type="text" class="description" value="@jc.Description" />
@@ -27,161 +37,189 @@
                 <span class="remove"></span>
             </td>
         </tr>
+        }
     }
+    else
+    {
+        foreach (var jc in Model.Job.JobComponents)
+        {
+        <tr data-jobcomponentid="@jc.Id">
+            <td>
+                <span class="description">@jc.Description</span>
+            </td>
+            <td>
+                <span class="cost">@jc.Cost.ToString("C")</span>
+            </td>
+        </tr>
+        }
+    }
+
     <tr>
         <td>
-            <a href="#" id="jobComponentsAdd">Add Component</a>
+            @if (hasEdit && hasAdd)
+            {
+                <a href="#" id="jobComponentsAdd">Add Component</a>
+            }
+            &nbsp;
         </td>
-        <td colspan="2" class="totalCost">
-            Total: <span id="jobComponentsTotalCost"></span>
+        <td colspan="@(hasEdit ? 2 : 1)" class="totalCost">Total: <span id="jobComponentsTotalCost">
+            @if (!hasEdit)
+            {
+                @Model.Job.JobComponentsTotalCost().ToString("C")
+            }
+        </span>
         </td>
     </tr>
 </table>
-<div id="dialogRemoveComponent" title="Remove this Component?">
-    <p>
-        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-        Are you sure?</p>
-</div>
-<script type="text/javascript">
-    $(function () {
-        var $jobComponents = $('#jobComponents');
+@if (hasEdit)
+{
+    <div id="dialogRemoveComponent" title="Remove this Component?">
+        <p>
+            <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+            Are you sure?
+        </p>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            var $jobComponents = $('#jobComponents');
 
-        $jobComponents.on('change', 'input', updateComponent);
-        $jobComponents.on('focus', 'input', function () { $(this).select() });
+            $jobComponents.on('change', 'input', updateComponent);
+            $jobComponents.on('focus', 'input', function () { $(this).select() });
 
 
-        $jobComponents.on('click', 'span.remove', removeComponent);
+            $jobComponents.on('click', 'span.remove', removeComponent);
 
-        $('#jobComponentsAdd').click(function () {
-            var jc = $('<tr><td><input type="text" class="description" /></td><td><input type="text" class="cost" /></td><td><span class="remove"></span></td></tr>');
-            jc.find('input').focus(function () { $(this).select() })
-            jc.insertBefore($jobComponents.find('tr').last());
-            jc.find('input.description').focus();
-            return false;
-        });
+            $('#jobComponentsAdd').click(function () {
+                var jc = $('<tr><td><input type="text" class="description" /></td><td><input type="text" class="cost" /></td><td><span class="remove"></span></td></tr>');
+                jc.find('input').focus(function () { $(this).select() })
+                jc.insertBefore($jobComponents.find('tr').last());
+                jc.find('input.description').focus();
+                return false;
+            });
 
-        $('#dialogRemoveComponent').dialog({
-            resizable: false,
-            height: 140,
-            modal: true,
-            autoOpen: false
-        });
+            $('#dialogRemoveComponent').dialog({
+                resizable: false,
+                height: 140,
+                modal: true,
+                autoOpen: false
+            });
 
-        function removeComponent() {
-            var componentRow = $(this).closest('tr');
-            var id = componentRow.attr('data-jobcomponentid');
-            if (id) {
-                var data = { id: id };
+            function removeComponent() {
+                var componentRow = $(this).closest('tr');
+                var id = componentRow.attr('data-jobcomponentid');
+                if (id) {
+                    var data = { id: id };
 
-                var $dialogRemoveComponent = $('#dialogRemoveComponent');
-                $dialogRemoveComponent.dialog("enable");
-                $dialogRemoveComponent.dialog('option', 'buttons', {
-                    "Remove": function () {
-                        $dialogRemoveComponent.dialog("disable");
-                        $dialogRemoveComponent.dialog("option", "buttons", null);
-                        $.ajax({
-                            url: '@Url.Action(MVC.API.Job.ComponentRemove())',
-                            dataType: 'json',
-                            data: data,
-                            success: function (d) {
-                                if (d == 'OK') {
-                                    componentRow.remove();
-                                    updateTotalCost();
-                                } else {
-                                    alert('Unable to remove component: ' + d);
+                    var $dialogRemoveComponent = $('#dialogRemoveComponent');
+                    $dialogRemoveComponent.dialog("enable");
+                    $dialogRemoveComponent.dialog('option', 'buttons', {
+                        "Remove": function () {
+                            $dialogRemoveComponent.dialog("disable");
+                            $dialogRemoveComponent.dialog("option", "buttons", null);
+                            $.ajax({
+                                url: '@Url.Action(MVC.API.Job.ComponentRemove())',
+                                dataType: 'json',
+                                data: data,
+                                success: function (d) {
+                                    if (d == 'OK') {
+                                        componentRow.remove();
+                                        updateTotalCost();
+                                    } else {
+                                        alert('Unable to remove component: ' + d);
+                                    }
+                                    $dialogRemoveComponent.dialog("close");
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    alert('Unable to remove component: ' + textStatus);
+                                    $dialogRemoveComponent.dialog("close");
                                 }
-                                $dialogRemoveComponent.dialog("close");
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                alert('Unable to remove component: ' + textStatus);
-                                $dialogRemoveComponent.dialog("close");
-                            }
-                        });
-                    },
-                    Cancel: function () {
-                        $dialogRemoveComponent.dialog("close");
-                    }
+                            });
+                        },
+                        Cancel: function () {
+                            $dialogRemoveComponent.dialog("close");
+                        }
+                    });
+
+                    $dialogRemoveComponent.dialog('open');
+
+                } else {
+                    // New - Remove
+                    componentRow.remove();
+                    updateTotalCost();
+                }
+            }
+            function updateTotalCost() {
+                var totalCost = 0;
+
+                $jobComponents.find('input.cost').each(function () {
+                    var v = $(this).val();
+                    v = $.parseNumber(v, { format: '#,##0.00', locale: 'au' });
+                    if (!isNaN(v))
+                        totalCost += v;
                 });
+                var totalCostFormatted = $.formatNumber(totalCost, { format: '#,##0.00', locale: 'au' });
+                $('#jobComponentsTotalCost').text('$' + totalCostFormatted);
+            }
+            function updateComponent() {
+                var componentRow = $(this).closest('tr');
 
-                $dialogRemoveComponent.dialog('open');
+                componentRow.find('input').attr('disabled', true).addClass('updating');
 
-            } else {
-                // New - Remove
-                componentRow.remove();
+                var id = componentRow.attr('data-jobcomponentid');
+                if (id) {
+                    // Update
+                    var data = {
+                        id: id,
+                        Description: componentRow.find('input.description').val(),
+                        Cost: componentRow.find('input.cost').val()
+                    };
+                    $.ajax({
+                        url: '@Url.Action(MVC.API.Job.ComponentUpdate())',
+                        dataType: 'json',
+                        data: data,
+                        success: function (d) {
+                            componentRow.find('input').attr('disabled', false).removeClass('updating');
+                            if (d.Result == 'OK') {
+                                componentRow.find('input.description').val(d.Component.Description);
+                                componentRow.find('input.cost').val(d.Component.Cost);
+                            } else {
+                                alert('Unable to update component: ' + d.Result);
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert('Unable to update component: ' + textStatus);
+                        }
+                    });
+                } else {
+                    // Add
+                    var data = {
+                        id: id,
+                        Description: componentRow.find('input.description').val(),
+                        Cost: componentRow.find('input.cost').val()
+                    };
+                    $.ajax({
+                        url: '@Url.Action(MVC.API.Job.ComponentAdd(Model.Job.Id, null, null))',
+                        dataType: 'json',
+                        data: data,
+                        success: function (d) {
+                            componentRow.find('input').attr('disabled', false).removeClass('updating');
+                            if (d.Result == 'OK') {
+                                componentRow.attr('data-jobcomponentid', d.Component.Id);
+                                componentRow.find('input.description').val(d.Component.Description);
+                                componentRow.find('input.cost').val(d.Component.Cost);
+                            } else {
+                                alert('Unable to add component: ' + d.Result);
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert('Unable to add component: ' + textStatus);
+                        }
+                    });
+                }
                 updateTotalCost();
             }
-        }
-        function updateTotalCost() {
-            var totalCost = 0;
-
-            $jobComponents.find('input.cost').each(function () {
-                var v = $(this).val();
-                v = $.parseNumber(v, { format: '#,##0.00', locale: 'au' });
-                if (!isNaN(v))
-                    totalCost += v;
-            });
-            var totalCostFormatted = $.formatNumber(totalCost, { format: '#,##0.00', locale: 'au' });
-            $('#jobComponentsTotalCost').text('$' + totalCostFormatted);
-        }
-        function updateComponent() {
-            var componentRow = $(this).closest('tr');
-
-            componentRow.find('input').attr('disabled', true).addClass('updating');
-
-            var id = componentRow.attr('data-jobcomponentid');
-            if (id) {
-                // Update
-                var data = {
-                    id: id,
-                    Description: componentRow.find('input.description').val(),
-                    Cost: componentRow.find('input.cost').val()
-                };
-                $.ajax({
-                    url: '@Url.Action(MVC.API.Job.ComponentUpdate())',
-                    dataType: 'json',
-                    data: data,
-                    success: function (d) {
-                        componentRow.find('input').attr('disabled', false).removeClass('updating');
-                        if (d.Result == 'OK') {
-                            componentRow.find('input.description').val(d.Component.Description);
-                            componentRow.find('input.cost').val(d.Component.Cost);
-                        } else {
-                            alert('Unable to update component: ' + d.Result);
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        alert('Unable to update component: ' + textStatus);
-                    }
-                });
-            } else {
-                // Add
-                var data = {
-                    id: id,
-                    Description: componentRow.find('input.description').val(),
-                    Cost: componentRow.find('input.cost').val()
-                };
-                $.ajax({
-                    url: '@Url.Action(MVC.API.Job.ComponentAdd(Model.Job.Id, null, null))',
-                    dataType: 'json',
-                    data: data,
-                    success: function (d) {
-                        componentRow.find('input').attr('disabled', false).removeClass('updating');
-                        if (d.Result == 'OK') {
-                            componentRow.attr('data-jobcomponentid', d.Component.Id);
-                            componentRow.find('input.description').val(d.Component.Description);
-                            componentRow.find('input.cost').val(d.Component.Cost);
-                        } else {
-                            alert('Unable to add component: ' + d.Result);
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        alert('Unable to add component: ' + textStatus);
-                    }
-                });
-            }
             updateTotalCost();
-        }
-        updateTotalCost();
 
-    });
-</script>
+        });
+    </script>
+}

@@ -12,6 +12,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceProfile
     {
         public Disco.Models.Repository.DeviceProfile DeviceProfile { get; set; }
         public List<SelectListItem> DeviceProfileDistributionTypes { get; set; }
+        public Disco.Models.BI.Config.OrganisationAddress DefaultOrganisationAddress { get; set; }
         public List<Disco.Models.BI.Config.OrganisationAddress> OrganisationAddresses { get; set; }
 
         public List<PluginFeatureManifest> CertificateProviders { get; set; }

@@ -23,7 +23,7 @@ namespace Disco.Web.Extensions
             }
 
             if (IncludeNoModelItem)
-                items.Insert(0, new SelectListItem() { Value = string.Empty, Text = "Unknown", Selected = !SelectedId.HasValue });
+                items.Insert(0, new SelectListItem() { Value = string.Empty, Text = "<None Selected>", Selected = !SelectedId.HasValue });
 
             return items;
         }

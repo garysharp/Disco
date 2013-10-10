@@ -6,6 +6,8 @@ using Disco.Models.Repository;
 using System.IO;
 using System.Drawing;
 using Disco.Data.Repository;
+using Disco.Services.Users;
+using Disco.Services.Authorization;
 
 namespace Disco.BI.Extensions
 {
@@ -73,22 +75,24 @@ namespace Disco.BI.Extensions
         }
 
         #region Actions
-        // Added 2012-11-26 G# - Need ability to delete Device Models
-        public static bool CanDelete(this DeviceModel dm, DiscoDataContext dbContext)
+        public static bool CanDelete(this DeviceModel dm, DiscoDataContext Database)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Config.DeviceModel.Delete))
+                return false;
+
             // Can't Delete Default Model (Id: 1)
             if (dm.Id == 1)
                 return false;
 
             // Can't Delete if Contains Devices
-            if (dbContext.Devices.Count(d => d.DeviceModelId == dm.Id) > 0)
+            if (Database.Devices.Count(d => d.DeviceModelId == dm.Id) > 0)
                 return false;
 
             return true;
         }
-        public static void Delete(this DeviceModel dm, DiscoDataContext dbContext)
+        public static void Delete(this DeviceModel dm, DiscoDataContext Database)
         {
-            if (!dm.CanDelete(dbContext))
+            if (!dm.CanDelete(Database))
                 throw new InvalidOperationException("The state of this Device Model doesn't allow it to be deleted");
 
             // Delete Image
@@ -97,13 +101,13 @@ namespace Disco.BI.Extensions
                 File.Delete(deviceModelImagePath);
 
             // Delete any Device Model Components
-            foreach (var deviceModelComponent in dbContext.DeviceComponents.Where(dc => dc.DeviceModelId == dm.Id).ToList())
+            foreach (var deviceModelComponent in Database.DeviceComponents.Where(dc => dc.DeviceModelId == dm.Id).ToList())
             {
-                dbContext.DeviceComponents.Remove(deviceModelComponent);
+                Database.DeviceComponents.Remove(deviceModelComponent);
             }
 
             // Delete Model
-            dbContext.DeviceModels.Remove(dm);
+            Database.DeviceModels.Remove(dm);
         }
         // End Added 2012-11-26 G#
         #endregion

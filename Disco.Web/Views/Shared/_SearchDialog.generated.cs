@@ -28,12 +28,14 @@ namespace Disco.Web.Views.Shared
     using System.Web.WebPages;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services.Authorization;
+    using Disco.Services.Web;
     using Disco.Web;
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Shared/_SearchDialog.cshtml")]
-    public partial class SearchDialog : System.Web.Mvc.WebViewPage<string>
+    public partial class SearchDialog : Disco.Services.Web.WebViewPage<string>
     {
         public SearchDialog()
         {

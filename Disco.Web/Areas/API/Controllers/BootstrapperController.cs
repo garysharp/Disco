@@ -1,23 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Disco.Services.Authorization;
+using Disco.Services.Web;
+using System;
 using System.Web.Mvc;
-using Disco.BI.Extensions;
 
 namespace Disco.Web.Areas.API.Controllers
 {
-    public partial class BootstrapperController : dbAdminController
+    [DiscoAuthorize(Claims.Config.Enrolment.Configure)]
+    public partial class BootstrapperController : AuthorizedDatabaseController
     {
-
         public virtual ActionResult MacSshUsername(string MacSshUsername)
         {
             try
             {
                 if (!string.IsNullOrWhiteSpace(MacSshUsername))
                 {
-                    dbContext.DiscoConfiguration.Bootstrapper.MacSshUsername = MacSshUsername;
-                    dbContext.SaveChanges();
+                    Database.DiscoConfiguration.Bootstrapper.MacSshUsername = MacSshUsername;
+                    Database.SaveChanges();
                     return Json("OK", JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -36,8 +34,8 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 if (!string.IsNullOrWhiteSpace(MacSshPassword))
                 {
-                    dbContext.DiscoConfiguration.Bootstrapper.MacSshPassword = MacSshPassword;
-                    dbContext.SaveChanges();
+                    Database.DiscoConfiguration.Bootstrapper.MacSshPassword = MacSshPassword;
+                    Database.SaveChanges();
                     return Json("OK", JsonRequestBehavior.AllowGet);
                 }
                 else

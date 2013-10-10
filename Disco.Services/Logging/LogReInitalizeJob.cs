@@ -11,9 +11,9 @@ namespace Disco.Services.Logging
     {
         public void Execute(IJobExecutionContext context)
         {
-            using (DiscoDataContext DiscoContext = new DiscoDataContext())
+            using (DiscoDataContext database = new DiscoDataContext())
             {
-                LogContext.ReInitalize(DiscoContext);
+                LogContext.ReInitalize(database);
             }
         }
     }

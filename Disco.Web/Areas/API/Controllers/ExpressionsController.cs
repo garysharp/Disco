@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Disco.Services.Authorization;
+using Disco.Services.Web;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.API.Controllers
 {
-    public partial class ExpressionsController : dbAdminController
+    [DiscoAuthorize(Claims.DiscoAdminAccount)]
+    public partial class ExpressionsController : AuthorizedDatabaseController
     {
         public virtual ActionResult ValidateExpression(string Expression)
         {

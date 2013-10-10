@@ -1,39 +1,41 @@
 ﻿@model Disco.Web.Areas.Config.Models.DocumentTemplate.UndetectedPagesModel
 @{
+    Authorization.Require(Claims.Config.DocumentTemplate.UndetectedPages);
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(), "Undetected Pages");
     Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
 }
 <div id="undetectedPagesContainer">
     <div id="noUndetectedPages" data-bind="visible: noUndetectedPages">
-        <h3>
-            No Undetected Pages</h3>
+        <h3>No Undetected Pages</h3>
     </div>
-    <ul id="undetectedPages" class="clearfix" data-bind="visible: !noUndetectedPages(), foreach: {data: undetectedPages}">
-        <li class="undetectedPage" data-bind="style: {backgroundImage: thumbnailUrl}, click: select">
-            <div class="pageDetails" data-bind="text: timestampFuzzy, attr: {title: timestamp}">
+    <ul id="undetectedPages" class="clearfix" data-bind="visible: !noUndetectedPages(), foreach: { data: undetectedPages }">
+        <li class="undetectedPage" data-bind="style: { backgroundImage: thumbnailUrl }, click: select">
+            <div class="pageDetails" data-bind="text: timestampFuzzy, attr: { title: timestamp }">
             </div>
         </li>
     </ul>
 </div>
 <div id="undetectedPageDialog" data-bind="with: selectedUndetectedPage">
-    <div class="pagePreview" data-bind="style: {backgroundImage: previewUrl}">
+    <div class="pagePreview" data-bind="style: { backgroundImage: previewUrl }">
     </div>
     <div class="actions">
-        <a href="#" class="button" target="_blank" data-bind="attr: {href: sourceUrl}">Download</a>
+        <a href="#" class="button" target="_blank" data-bind="attr: { href: sourceUrl }">Download</a>
         <a href="#" class="button" id="dialogDeleteButton" data-bind="click: deletePage">Delete</a>
     </div>
     <div class="actions">
         Type: @Html.DropDownList("dialogDocumentTemplateId", Model.DocumentTemplatesSelectListItems, new Dictionary<string, object> { { "data-bind", "value: dialogTemplateId" } })
         Data:
-        <input id="dialogDataId" type="text" data-bind="value: dialogDataId, autocomplete: {source: dialogDataIdService, minLength: 3, position: {my: 'left bottom', at: 'left top'}}" />
+        <input id="dialogDataId" type="text" data-bind="value: dialogDataId, autocomplete: { source: dialogDataIdService, minLength: 3, position: { my: 'left bottom', at: 'left top' } }" />
         <a href="#" class="button" id="dialogAssignButton" data-bind="click: assignPage">Assign</a>
     </div>
 </div>
 <div id="dialogRemove" title="Delete this Page?">
     <p>
         <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-        Are you sure?</p>
+        Are you sure?
+    </p>
 </div>
 <script type="text/javascript">
     ko.bindingHandlers.autocomplete = {

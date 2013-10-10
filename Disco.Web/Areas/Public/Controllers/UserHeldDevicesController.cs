@@ -1,15 +1,12 @@
-﻿using System;
+﻿using Disco.Models.Repository;
+using Disco.Services.Web;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Disco.BI;
-using Disco.BI.Extensions;
-using Disco.Models.Repository;
 
 namespace Disco.Web.Areas.Public.Controllers
 {
-    public partial class UserHeldDevicesController : dbController
+    public partial class UserHeldDevicesController : DatabaseController
     {
         #region Helpers
 
@@ -38,17 +35,17 @@ namespace Disco.Web.Areas.Public.Controllers
             {
                 if (job.Any(j => j.WaitingForUserAction))
                 {
-                    thd.Add(job.Where(j => j.WaitingForUserAction).OrderBy(j => j.WaitingForUserActionSince).FirstOrDefault().ToUserHeldDeviceModel(dbContext));
+                    thd.Add(job.Where(j => j.WaitingForUserAction).OrderBy(j => j.WaitingForUserActionSince).FirstOrDefault().ToUserHeldDeviceModel(Database));
                 }
                 else
                 {
                     if (job.All(j => j.ReadyForReturn))
                     {
-                        thd.Add(job.FirstOrDefault().ToUserHeldDeviceModel(dbContext));
+                        thd.Add(job.FirstOrDefault().ToUserHeldDeviceModel(Database));
                     }
                     else
                     {
-                        thd.Add(job.Where(j => !j.ReadyForReturn).OrderByDescending(j => j.EstimatedReturnTime).FirstOrDefault().ToUserHeldDeviceModel(dbContext));
+                        thd.Add(job.Where(j => !j.ReadyForReturn).OrderByDescending(j => j.EstimatedReturnTime).FirstOrDefault().ToUserHeldDeviceModel(Database));
                     }
                 }
             }
@@ -59,11 +56,11 @@ namespace Disco.Web.Areas.Public.Controllers
 
         private List<Models.UserHeldDevices.UserHeldDeviceModel> GetUserHeldDevices()
         {
-            return GetUserHeldDevices(dbContext.Jobs);
+            return GetUserHeldDevices(Database.Jobs);
         }
         private Models.UserHeldDevices.UserHeldDeviceModel GetUserHeldDevice(string UserId)
         {
-            return GetUserHeldDevices(dbContext.Jobs.Where(j => j.Device.AssignedUserId == UserId)).FirstOrDefault();
+            return GetUserHeldDevices(Database.Jobs.Where(j => j.Device.AssignedUserId == UserId)).FirstOrDefault();
         }
 
         public virtual ActionResult Index()

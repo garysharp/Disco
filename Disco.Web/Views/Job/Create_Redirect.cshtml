@@ -1,5 +1,7 @@
 ﻿@model Disco.Web.Models.Job.CreateRedirectModel
 @{
+    Authorization.Require(Claims.Job.Actions.Create);
+    
     Layout = null;
     ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), "Create - Redirecting...");
 }

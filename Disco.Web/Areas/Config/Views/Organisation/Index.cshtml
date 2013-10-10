@@ -1,5 +1,9 @@
 ﻿@model Disco.Web.Areas.Config.Models.Organisation.IndexModel
 @{
+    Authorization.Require(Claims.Config.Organisation.Show);
+
+    var canConfigAddresses = Authorization.Has(Claims.Config.Organisation.ConfigureAddresses);
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Organisation Details");
     Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
     Html.BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
@@ -10,7 +14,8 @@
         <tr>
             <th style="width: 160px">Name:
             </th>
-            <td>
+            <td>@if (Authorization.Has(Claims.Config.Organisation.ConfigureName))
+                {
                 @Html.EditorFor(m => m.OrganisationName)
                 @AjaxHelpers.AjaxLoader()
                 <script type="text/javascript">
@@ -24,13 +29,21 @@
                         );
                     });
                 </script>
+                }
+                else
+                {
+                <h3>@Model.OrganisationName</h3>
+                }
             </td>
         </tr>
         <tr>
             <th style="width: 160px">Logo:
-                <br />
-                <br />
-                <a id="buttonUpdateOrganisationLogo" href="#" class="button">Update</a>
+                @if (Authorization.Has(Claims.Config.Organisation.ConfigureLogo))
+                {
+                    <br />
+                    <br />
+                    <a id="buttonUpdateOrganisationLogo" href="#" class="button">Update</a>
+                }
             </th>
             <td>
                 <div style="text-align: center;">
@@ -41,13 +54,10 @@
         <tr>
             <th style="width: 160px">Multi-Site Mode:
             </th>
-            <td>
+            <td>@if (Authorization.Has(Claims.Config.Organisation.ConfigureMultiSiteMode))
+                {
                 @Html.EditorFor(m => m.MultiSiteMode) @Html.LabelFor(m => m.MultiSiteMode)
                 @AjaxHelpers.AjaxLoader()
-                <div id="messageMultiSiteMode" style="display: none; padding: 0.7em 0.7em; margin-top: 20px;" class="ui-state-highlight ui-corner-all">
-                    <span style="margin-right: 0.3em; float: left;" class="ui-icon ui-icon-info"></span>
-                    Multi-Site mode is recommended where multiple addresses are configured.
-                </div>
                 <script type="text/javascript">
                     $(function () {
                         var field = $('#MultiSiteMode');
@@ -57,19 +67,30 @@
                         '@(Url.Action(MVC.API.System.UpdateMultiSiteMode()))',
                         'MultiSiteMode'
                         );
-
-                        var $orgAddresses = $('#organisationAddresses');
-                        if ($orgAddresses.length > 0 && $orgAddresses.find('tr').length > 2)
-                            $('#messageMultiSiteMode').show();
                     });
                 </script>
+                }
+                else
+                {
+                <input name="MultiSiteMode" class="check-box" id="MultiSiteMode" type="checkbox" @(Model.MultiSiteMode ? new HtmlString("checked=\"checked\" ") : new HtmlString(string.Empty))disabled="disabled">  @Html.LabelFor(m => m.MultiSiteMode)
+                }
+                @if (Model.OrganisationAddresses.Count > 1)
+                {
+                    <div id="messageMultiSiteMode" style="padding: 0.7em 0.7em; margin-top: 20px;" class="ui-state-highlight ui-corner-all">
+                        <span style="margin-right: 0.3em; float: left;" class="ui-icon ui-icon-info"></span>
+                        Multi-Site mode is recommended where multiple addresses are configured.
+                    </div>
+                }
             </td>
         </tr>
         <tr>
             <th style="width: 160px">Addresses:
-                <br />
-                <br />
-                <a href="#" id="createAddress" class="button">Create</a>
+                @if (canConfigAddresses)
+                {
+                    <br />
+                    <br />
+                    <a href="#" id="createAddress" class="button">Create</a>
+                }
             </th>
             <td>
                 @if (Model.OrganisationAddresses.Count > 0)
@@ -96,7 +117,10 @@
                                     <span class="smallMessage">Fax:</span> <span class="faxNumber">@Html.DisplayFor(modelItem => item.FaxNumber)</span>
                                 </td>
                                 <td>
-                                    <span class="edit" title="Edit Address"></span><span class="delete" title="Delete Address"></span>
+                                    @if (canConfigAddresses)
+                                    {
+                                        <span class="edit" title="Edit Address"></span><span class="delete" title="Delete Address"></span>
+                                    }
                                 </td>
                             </tr>
                         }
@@ -110,165 +134,170 @@
         </tr>
     </table>
 </div>
-<div id="dialogUpdateOrganisationLogo" title="Update Organisation Logo">
-    @using (Html.BeginForm(MVC.API.System.OrganisationLogo(true, null, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        <h3>Update Action</h3>
-        <div style="margin-top: 10px; padding-bottom: 5px;">
-            <input id="updateOrganisationLogoResetLogo" type="radio" name="ResetLogo" value="true"
-                checked="checked" /><label for="updateOrganisationLogoResetLogo">Remove Logo</label>
-        </div>
-        <div style="margin-top: 5px; border-top: 1px dashed #aaa; padding-top: 5px;">
-            <input id="updateOrganisationLogoUploadLogo" type="radio" name="ResetLogo" value="false" /><label
-                for="updateOrganisationLogoUploadLogo">Upload Logo</label>
-            <div id="updateOrganisationLogoUploadLogoContainer" style="display: none; padding-left: 10px;">
-                <input id="updateOrganisationLogoUploadLogoImage" type="file" name="Image" />
-                <span id="updateOrganisationLogoUploadLogoImageRequired" class="field-validation-valid field-validation-error">* Required</span>
+@if (Authorization.Has(Claims.Config.Organisation.ConfigureLogo))
+{
+    <div id="dialogUpdateOrganisationLogo" title="Update Organisation Logo">
+        @using (Html.BeginForm(MVC.API.System.OrganisationLogo(true, null, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <h3>Update Action</h3>
+            <div style="margin-top: 10px; padding-bottom: 5px;">
+                <input id="updateOrganisationLogoResetLogo" type="radio" name="ResetLogo" value="true"
+                    checked="checked" /><label for="updateOrganisationLogoResetLogo">Remove Logo</label>
             </div>
-        </div>
-    }
-</div>
-<script type="text/javascript">
-    $(function () {
-        var button = $('#buttonUpdateOrganisationLogo');
-        var buttonDialog = $('#dialogUpdateOrganisationLogo');
-        button.click(function () {
-            buttonDialog.dialog('open');
-            return false;
-        });
-        buttonDialog.find('input[type="radio"]').click(function () {
-            if ($('#updateOrganisationLogoUploadLogo').is(':checked')) {
-                $('#updateOrganisationLogoUploadLogoImage').removeAttr('disabled');
-                $('#updateOrganisationLogoUploadLogoContainer').slideDown();
-            }
-            else {
-                $('#updateOrganisationLogoUploadLogoContainer').slideUp();
-                $('#updateOrganisationLogoUploadLogoImage').attr('disabled', 'disabled');
-            }
-        });
-        buttonDialog.dialog({
-            resizable: false,
-            height: 200,
-            modal: true,
-            autoOpen: false,
-            buttons: {
-                "Save": function () {
-                    var $this = $(this);
+            <div style="margin-top: 5px; border-top: 1px dashed #aaa; padding-top: 5px;">
+                <input id="updateOrganisationLogoUploadLogo" type="radio" name="ResetLogo" value="false" /><label
+                    for="updateOrganisationLogoUploadLogo">Upload Logo</label>
+                <div id="updateOrganisationLogoUploadLogoContainer" style="display: none; padding-left: 10px;">
+                    <input id="updateOrganisationLogoUploadLogoImage" type="file" name="Image" />
+                    <span id="updateOrganisationLogoUploadLogoImageRequired" class="field-validation-valid field-validation-error">* Required</span>
+                </div>
+            </div>
+        }
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            var button = $('#buttonUpdateOrganisationLogo');
+            var buttonDialog = $('#dialogUpdateOrganisationLogo');
+            button.click(function () {
+                buttonDialog.dialog('open');
+                return false;
+            });
+            buttonDialog.find('input[type="radio"]').click(function () {
+                if ($('#updateOrganisationLogoUploadLogo').is(':checked')) {
+                    $('#updateOrganisationLogoUploadLogoImage').removeAttr('disabled');
+                    $('#updateOrganisationLogoUploadLogoContainer').slideDown();
+                }
+                else {
+                    $('#updateOrganisationLogoUploadLogoContainer').slideUp();
+                    $('#updateOrganisationLogoUploadLogoImage').attr('disabled', 'disabled');
+                }
+            });
+            buttonDialog.dialog({
+                resizable: false,
+                height: 200,
+                modal: true,
+                autoOpen: false,
+                buttons: {
+                    "Save": function () {
+                        var $this = $(this);
 
-                    var $image = $('#updateOrganisationLogoUploadLogoImage');
-                    if ($('#updateOrganisationLogoUploadLogo').is(':checked') && $image.val() == '') {
-                        $image.addClass('input-validation-error');
-                        $('#updateOrganisationLogoUploadLogoImageRequired').removeClass('field-validation-valid');
-                    } else {
-                        $image.removeClass('input-validation-error');
-                        $('#updateOrganisationLogoUploadLogoImageRequired').addClass('field-validation-valid');
-                        $this.dialog("disable");
-                        $this.dialog("option", "buttons", null);
-                        $this.find('form').submit();
+                        var $image = $('#updateOrganisationLogoUploadLogoImage');
+                        if ($('#updateOrganisationLogoUploadLogo').is(':checked') && $image.val() == '') {
+                            $image.addClass('input-validation-error');
+                            $('#updateOrganisationLogoUploadLogoImageRequired').removeClass('field-validation-valid');
+                        } else {
+                            $image.removeClass('input-validation-error');
+                            $('#updateOrganisationLogoUploadLogoImageRequired').addClass('field-validation-valid');
+                            $this.dialog("disable");
+                            $this.dialog("option", "buttons", null);
+                            $this.find('form').submit();
+                        }
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
                     }
-                },
-                Cancel: function () {
-                    $(this).dialog("close");
                 }
-            }
+            });
         });
-    });
-</script>
-<div id="dialogConfirmRemove" title="Delete this Component?">
-    <p>
-        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-        This item will be permanently deleted and cannot be recovered. Are you sure?
-    </p>
-</div>
-<div id="dialogEdit" title="Edit/Create Address">
-    <table>
-        <tr>
-            <td>Short&nbsp;Name
-            </td>
-            <td>
-                <input id="editShortName" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>Name
-            </td>
-            <td>
-                <input id="editName" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>Address
-            </td>
-            <td>
-                <input id="editAddress" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>Suburb
-            </td>
-            <td>
-                <input id="editSuburb" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>Postcode
-            </td>
-            <td>
-                <input id="editPostcode" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>State
-            </td>
-            <td>
-                <input id="editState" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>Country
-            </td>
-            <td>
-                <input id="editCountry" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>Phone Number
-            </td>
-            <td>
-                <input id="editPhoneNumber" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>Fax Number
-            </td>
-            <td>
-                <input id="editFaxNumber" type="text" />
-            </td>
-        </tr>
-    </table>
-</div>
-<script type="text/javascript">
-    $(function () {
-        $("#dialogConfirmRemove").dialog({
-            resizable: false,
-            modal: true,
-            autoOpen: false,
-            buttons: {
-                "Delete": function () {
-                    return null;
-                },
-                Cancel: function () {
-                    $(this).dialog("close");
+    </script>
+}
+@if (canConfigAddresses)
+{
+    <div id="dialogConfirmRemove" title="Delete this Address?">
+        <p>
+            <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+            This item will be permanently deleted and cannot be recovered. Are you sure?
+        </p>
+    </div>
+    <div id="dialogEdit" title="Edit/Create Address">
+        <table>
+            <tr>
+                <td>Short&nbsp;Name
+                </td>
+                <td>
+                    <input id="editShortName" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>Name
+                </td>
+                <td>
+                    <input id="editName" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>Address
+                </td>
+                <td>
+                    <input id="editAddress" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>Suburb
+                </td>
+                <td>
+                    <input id="editSuburb" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>Postcode
+                </td>
+                <td>
+                    <input id="editPostcode" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>State
+                </td>
+                <td>
+                    <input id="editState" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>Country
+                </td>
+                <td>
+                    <input id="editCountry" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>Phone Number
+                </td>
+                <td>
+                    <input id="editPhoneNumber" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>Fax Number
+                </td>
+                <td>
+                    <input id="editFaxNumber" type="text" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $("#dialogConfirmRemove").dialog({
+                resizable: false,
+                modal: true,
+                autoOpen: false,
+                buttons: {
+                    "Delete": function () {
+                        return null;
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
                 }
-            }
-        });
-        $('#organisationAddresses').find('span.delete').click(function () {
-            var componentRow = $(this).closest('tr');
-            var id = componentRow.attr('data-addressid');
-            if (id) {
-                var dialog = $("#dialogConfirmRemove");
-                var buttons = dialog.dialog("option", "buttons");
-                buttons['Delete'] = function () { $(this).dialog("disable"); window.location.href = '@(Url.Action(MVC.API.System.DeleteOrganisationAddress()))' + '?redirect=true&id=' + id; };
+            });
+            $('#organisationAddresses').find('span.delete').click(function () {
+                var componentRow = $(this).closest('tr');
+                var id = componentRow.attr('data-addressid');
+                if (id) {
+                    var dialog = $("#dialogConfirmRemove");
+                    var buttons = dialog.dialog("option", "buttons");
+                    buttons['Delete'] = function () { $(this).dialog("disable"); window.location.href = '@(Url.Action(MVC.API.System.DeleteOrganisationAddress()))' + '?redirect=true&id=' + id; };
                 var buttons = dialog.dialog("option", "buttons", buttons);
                 dialog.dialog('open');
             }
@@ -368,4 +397,5 @@
         });
 
     });
-</script>
+    </script>
+}

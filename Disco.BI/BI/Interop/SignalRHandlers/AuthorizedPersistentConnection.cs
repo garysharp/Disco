@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.SignalR;
+﻿using Disco.Services.Users;
+using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace Disco.BI.Interop.SignalRHandlers
 {
     public class AuthorizedPersistentConnection : PersistentConnection
     {
-        private string[] authorizedUserTypes = null;
+        private string authorizedClaim = null;
 
-        protected virtual string[] AuthorizedUserTypes { get { return authorizedUserTypes; } }
+        protected virtual string AuthorizedClaim { get { return authorizedClaim; } }
 
         protected override bool AuthorizeRequest(IRequest request)
         {
@@ -19,17 +20,15 @@ namespace Disco.BI.Interop.SignalRHandlers
                 return false;
             else
             {
-                var user = UserBI.UserCache.CurrentUser;
-                if (user == null)
-                    return false;
+                var authToken = UserService.CurrentAuthorization;
+                
+                if (authToken == null)
+                    return false; // No Current User
 
-                if (AuthorizedUserTypes == null || AuthorizedUserTypes.Length == 0)
-                    return true;
-
-                if (AuthorizedUserTypes.Contains(user.Type))
-                    return true;
-
-                return false;
+                if (authorizedClaim == null)
+                    return true; // Just Authenticate - no Authorization
+                else
+                    return authToken.Has(authorizedClaim);
             }
         }
     }

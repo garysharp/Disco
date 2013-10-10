@@ -14,10 +14,10 @@ namespace Disco.Services.Plugins
 
         #region Lifecycle
         // Events/Triggers for Custom Plugin Initialization (Optional)
-        public virtual void Install(DiscoDataContext dbContext, ScheduledTaskStatus Status) { return; }
-        public virtual void Initialize(DiscoDataContext dbContext) { return; }
-        public virtual void Uninstall(DiscoDataContext dbContext, bool UninstallData, ScheduledTaskStatus Status) { return; }
-        public virtual void AfterUpdate(DiscoDataContext dbContext, PluginManifest PreviousManifest) { return; }
+        public virtual void Install(DiscoDataContext Database, ScheduledTaskStatus Status) { return; }
+        public virtual void Initialize(DiscoDataContext Database) { return; }
+        public virtual void Uninstall(DiscoDataContext Database, bool UninstallData, ScheduledTaskStatus Status) { return; }
+        public virtual void AfterUpdate(DiscoDataContext Database, PluginManifest PreviousManifest) { return; }
         #endregion
 
         public virtual void Dispose()

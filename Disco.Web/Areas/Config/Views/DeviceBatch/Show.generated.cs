@@ -28,12 +28,14 @@ namespace Disco.Web.Areas.Config.Views.DeviceBatch
     using System.Web.WebPages;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services.Authorization;
+    using Disco.Services.Web;
     using Disco.Web;
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Config/Views/DeviceBatch/Show.cshtml")]
-    public partial class Show : System.Web.Mvc.WebViewPage<Disco.Web.Areas.Config.Models.DeviceBatch.ShowModel>
+    public partial class Show : Disco.Services.Web.WebViewPage<Disco.Web.Areas.Config.Models.DeviceBatch.ShowModel>
     {
         public Show()
         {
@@ -43,10 +45,19 @@ namespace Disco.Web.Areas.Config.Views.DeviceBatch
             
             #line 2 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
   
+    Authorization.Require(Claims.Config.DeviceBatch.Show);
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Batches", MVC.Config.DeviceBatch.Index(null), Model.DeviceBatch.ToString());
-    Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
-    Html.BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
-    Html.BundleDeferred("~/ClientScripts/Modules/tinymce");
+
+    var canConfig = Authorization.Has(Claims.Config.DeviceBatch.Configure);
+    var canDeviceModelShow = Authorization.Has(Claims.Config.DeviceModel.Show);
+
+    if (canConfig)
+    {
+        Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
+        Html.BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
+        Html.BundleDeferred("~/ClientScripts/Modules/tinymce");
+    }
 
             
             #line default
@@ -66,96 +77,170 @@ WriteLiteral(">Id:\r\n            </th>\r\n            <td>\r\n");
 WriteLiteral("                ");
 
             
-            #line 14 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 23 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
            Write(Html.DisplayFor(model => model.DeviceBatch.Id));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>Name:\r\n        " +
-"    </th>\r\n            <td>");
+"    </th>\r\n            <td>\r\n");
 
             
-            #line 20 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-           Write(Html.EditorFor(model => model.DeviceBatch.Name));
+            #line 30 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 30 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                 if (canConfig)
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 32 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+               Write(Html.EditorFor(model => model.DeviceBatch.Name));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                ");
-
             
-            #line 21 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-           Write(AjaxHelpers.AjaxSave());
+            #line 32 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                    
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 33 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+               Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                ");
-
             
-            #line 22 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 33 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                           
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 34 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <script");
+            
+            #line 34 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                             
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(">\r\n                    $(function () {\r\n                        document.DiscoFun" +
-"ctions.PropertyChangeHelper(\r\n                            $(\'#DeviceBatch_Name\')" +
-",\r\n                            \'Invalid Name\',\r\n                            \'");
+WriteLiteral(@">
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                $('#DeviceBatch_Name'),
+                                'Invalid Name',
+                                '");
 
             
-            #line 28 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-                         Write(Url.Action(MVC.API.DeviceBatch.UpdateName(Model.DeviceBatch.Id)));
+            #line 40 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                             Write(Url.Action(MVC.API.DeviceBatch.UpdateName(Model.DeviceBatch.Id)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'BatchName\'\r\n                        );\r\n        " +
-"            });\r\n                </script>\r\n            </td>\r\n        </tr>\r\n  " +
-"      <tr>\r\n            <th>Default Device Model:\r\n            </th>\r\n          " +
-"  <td>\r\n");
-
-WriteLiteral("                ");
+"                });\r\n                    </script>\r\n");
 
             
-            #line 39 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-           Write(Html.DropDownListFor(model => model.DeviceBatch.DefaultDeviceModelId, Model.DeviceModels.ToSelectListItems()));
+            #line 45 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                }
+                else
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 48 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+               Write(Model.DeviceBatch.Name);
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                ");
+            
+            #line 48 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                           
+                }
 
             
-            #line 40 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line default
+            #line hidden
+WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>Default Device Mo" +
+"del:\r\n            </th>\r\n            <td>");
+
+            
+            #line 55 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                 if (canConfig)
+                {
+                
+            
+            #line default
+            #line hidden
+            
+            #line 57 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+           Write(Html.DropDownListFor(model => model.DeviceBatch.DefaultDeviceModelId, Model.DeviceModels.ToSelectListItems(null, true)));
+
+            
+            #line default
+            #line hidden
+            
+            #line 57 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                                                                        
+                
+            
+            #line default
+            #line hidden
+            
+            #line 58 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
            Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                ");
-
             
-            #line 41 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 58 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                       
+                
+            
+            #line default
+            #line hidden
+            
+            #line 59 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
            Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <script");
+            
+            #line 59 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                         
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -165,15 +250,56 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "  \'");
 
             
-            #line 47 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 65 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                          Write(Url.Action(MVC.API.DeviceBatch.UpdateDefaultDeviceModelId(Model.DeviceBatch.Id)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'DefaultDeviceModelId\'\r\n                        )" +
-";\r\n                    });\r\n                </script>\r\n                <br />\r\n " +
-"               <span");
+";\r\n                    });\r\n                </script>\r\n");
+
+            
+            #line 70 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                }
+                else
+                {
+                    if (Model.DefaultDeviceModel == null)
+                    {
+            
+            #line default
+            #line hidden
+WriteLiteral("<span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>");
+
+            
+            #line 74 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                             }
+                    else
+                    {
+            
+            #line default
+            #line hidden
+            
+            #line 76 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                Write(Model.DefaultDeviceModel.ToString());
+
+            
+            #line default
+            #line hidden
+            
+            #line 76 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                         ;
+                    }
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <br />\r\n                <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
@@ -183,13 +309,13 @@ WriteLiteral(">Devices added offline will default to this Device Model.\r\n     
 "      <td>\r\n");
 
             
-            #line 60 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 87 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 60 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 87 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                  if (Model.DeviceModelMembers.Count > 0)
                 {
 
@@ -212,13 +338,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 71 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 98 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 71 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 98 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                              foreach (var membership in Model.DeviceModelMembers.OrderByDescending(dmm => dmm.DeviceCount))
                             {
 
@@ -227,22 +353,59 @@ WriteLiteral(@">
             #line hidden
 WriteLiteral("                                <tr>\r\n                                    <td>\r\n");
 
-WriteLiteral("                                        ");
-
             
-            #line 75 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-                                   Write(Html.ActionLink(membership.DeviceModel.ToString(), MVC.Config.DeviceModel.Index(membership.DeviceModel.Id)));
+            #line 102 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                        
+            
+            #line default
+            #line hidden
+            
+            #line 102 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                         if (canDeviceModelShow)
+                                        {
+                                            
+            
+            #line default
+            #line hidden
+            
+            #line 104 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                       Write(Html.ActionLink(membership.DeviceModel.ToString(), MVC.Config.DeviceModel.Index(membership.DeviceModel.Id)));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                                    </td>\r\n                                    " +
-"<td>\r\n");
+            
+            #line 104 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                                                                                        
+                                        }
+                                        else
+                                        {
+                                            
+            
+            #line default
+            #line hidden
+            
+            #line 108 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                       Write(membership.DeviceModel.ToString());
+
+            
+            #line default
+            #line hidden
+            
+            #line 108 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                              
+                                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                    </td>\r\n                                    <t" +
+"d>\r\n");
 
 WriteLiteral("                                        ");
 
             
-            #line 78 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 112 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                    Write(membership.DeviceCount.ToString("n0"));
 
             
@@ -254,7 +417,7 @@ WriteLiteral("\r\n                                    </td>\r\n                 
 WriteLiteral("                                        ");
 
             
-            #line 81 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 115 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                    Write(membership.DeviceDecommissionedCount.ToString("n0"));
 
             
@@ -264,7 +427,7 @@ WriteLiteral("\r\n                                    </td>\r\n                 
 ">\r\n");
 
             
-            #line 84 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 118 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                             }
 
             
@@ -274,7 +437,7 @@ WriteLiteral("                        </tbody>\r\n                        <tfoot
 "              <tr>\r\n                                <th>Total Models: ");
 
             
-            #line 88 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 122 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                              Write(Model.DeviceModelMembers.Count.ToString("n0"));
 
             
@@ -283,7 +446,7 @@ WriteLiteral("                        </tbody>\r\n                        <tfoot
 WriteLiteral("</th>\r\n                                <th>");
 
             
-            #line 89 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 123 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                Write(Model.DeviceCount.ToString("n0"));
 
             
@@ -292,7 +455,7 @@ WriteLiteral("</th>\r\n                                <th>");
 WriteLiteral("</th>\r\n                                <th>");
 
             
-            #line 90 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 124 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                Write(Model.DeviceDecommissionedCount.ToString("n0"));
 
             
@@ -302,7 +465,7 @@ WriteLiteral("</th>\r\n                            </tr>\r\n                    
 "               </table>\r\n");
 
             
-            #line 94 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 128 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                 }
                 else
                 {
@@ -317,7 +480,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">No device models are referenced in this batch.</div>\r\n");
 
             
-            #line 98 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 132 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                 }
 
             
@@ -326,7 +489,7 @@ WriteLiteral(">No device models are referenced in this batch.</div>\r\n");
 WriteLiteral("                ");
 
             
-            #line 99 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 133 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                  if (Model.DeviceBatch.UnitQuantity.HasValue && Model.DeviceBatch.UnitQuantity.Value > Model.DeviceCount)
                 {
                     var missingCount = Model.DeviceBatch.UnitQuantity.Value - Model.DeviceCount;
@@ -351,7 +514,7 @@ WriteLiteral("></span>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 104 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 138 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                    Write(Model.DeviceCount.ToString("n0"));
 
             
@@ -360,7 +523,7 @@ WriteLiteral("                        ");
 WriteLiteral(" of ");
 
             
-            #line 104 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 138 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                          Write(Model.DeviceBatch.UnitQuantity.Value.ToString("n0"));
 
             
@@ -369,7 +532,7 @@ WriteLiteral(" of ");
 WriteLiteral(" purchased devices are managed by Disco. <strong>");
 
             
-            #line 104 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 138 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                                                                                                Write(missingCount.ToString("n0"));
 
             
@@ -378,7 +541,7 @@ WriteLiteral(" purchased devices are managed by Disco. <strong>");
 WriteLiteral(" ");
 
             
-            #line 104 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 138 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                                                                                                                              Write(missingCount == 1 ? "is" : "are");
 
             
@@ -387,7 +550,7 @@ WriteLiteral(" ");
 WriteLiteral(" not managed</strong>.\r\n                    </div>\r\n");
 
             
-            #line 106 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 140 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                 }
 
             
@@ -410,38 +573,59 @@ WriteLiteral(" style=\"width: 100px\"");
 
 WriteLiteral(">Purchase Date:\r\n                        </th>\r\n                        <td>\r\n");
 
-WriteLiteral("                            ");
-
             
-            #line 118 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-                       Write(Html.EditorFor(model => model.DeviceBatch.PurchaseDate));
+            #line 152 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 152 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                             if (canConfig)
+                            {
+                                
+            
+            #line default
+            #line hidden
+            
+            #line 154 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                           Write(Html.EditorFor(model => model.DeviceBatch.PurchaseDate));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                            ");
-
             
-            #line 119 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-                       Write(AjaxHelpers.AjaxLoader());
+            #line 154 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                        
+                                
+            
+            #line default
+            #line hidden
+            
+            #line 155 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                           Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral(@"
-                            <script>
-                                $(function () {
-                                    var dateField = $('#DeviceBatch_PurchaseDate');
-                                    document.DiscoFunctions.DateChangeHelper(
-                                        dateField,
-                                        'Invalid Date',
-                                        '");
+            
+            #line 155 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                         
 
             
-            #line 126 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-                                     Write(Url.Action(MVC.API.DeviceBatch.UpdatePurchaseDate(Model.DeviceBatch.Id)));
+            #line default
+            #line hidden
+WriteLiteral(@"                                <script>
+                                    $(function () {
+                                        var dateField = $('#DeviceBatch_PurchaseDate');
+                                        document.DiscoFunctions.DateChangeHelper(
+                                            dateField,
+                                            'Invalid Date',
+                                            '");
+
+            
+            #line 162 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                         Write(Url.Action(MVC.API.DeviceBatch.UpdatePurchaseDate(Model.DeviceBatch.Id)));
 
             
             #line default
@@ -451,48 +635,89 @@ WriteLiteral(@"',
                                         null,
                                         true
                                     );
-                                });
-                            </script>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Supplier:
-                        </th>
-                        <td>
+                                    });
+                                </script>
 ");
 
-WriteLiteral("                            ");
+            
+            #line 169 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                            }
+                            else
+                            {
+                                
+            
+            #line default
+            #line hidden
+            
+            #line 172 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                           Write(CommonHelpers.FriendlyDate(Model.DeviceBatch.PurchaseDate));
 
             
-            #line 139 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line default
+            #line hidden
+            
+            #line 172 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                           
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        </td>\r\n                    </tr>\r\n                    <tr" +
+">\r\n                        <th>Supplier:\r\n                        </th>\r\n       " +
+"                 <td>");
+
+            
+            #line 179 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                             if (canConfig)
+                            {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 181 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                        Write(Html.EditorFor(model => model.DeviceBatch.Supplier));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                            ");
-
             
-            #line 140 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 181 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 182 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                        Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                            ");
-
             
-            #line 141 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 182 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                   
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 183 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                        Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                            <script");
+            
+            #line 183 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                     
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -504,57 +729,110 @@ WriteLiteral(@">
                                         '");
 
             
-            #line 147 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 189 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                      Write(Url.Action(MVC.API.DeviceBatch.UpdateSupplier(Model.DeviceBatch.Id)));
 
             
             #line default
             #line hidden
-WriteLiteral(@"',
-                                        'Supplier'
-                                    );
-                                });
-                            </script>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Unit Cost:
-                        </th>
-                        <td>
-");
-
-WriteLiteral("                            ");
+WriteLiteral("\',\r\n                                        \'Supplier\'\r\n                         " +
+"           );\r\n                                });\r\n                            " +
+"</script>\r\n");
 
             
-            #line 158 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 194 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                            }
+                            else
+                            {
+                                if (string.IsNullOrEmpty(Model.DeviceBatch.Supplier))
+                                {
+            
+            #line default
+            #line hidden
+WriteLiteral("<span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>");
+
+            
+            #line 198 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                         }
+                                else
+                                {
+            
+            #line default
+            #line hidden
+            
+            #line 200 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                            Write(Model.DeviceBatch.Supplier);
+
+            
+            #line default
+            #line hidden
+            
+            #line 200 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                            }
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        </td>\r\n                    </tr>\r\n                    <tr" +
+">\r\n                        <th>Unit Cost:\r\n                        </th>\r\n      " +
+"                  <td>");
+
+            
+            #line 207 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                             if (canConfig)
+                            {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 209 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                        Write(Html.EditorFor(model => model.DeviceBatch.UnitCost));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                            ");
-
             
-            #line 159 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 209 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 210 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                        Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                            ");
-
             
-            #line 160 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 210 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                   
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 211 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                        Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                            <script");
+            
+            #line 211 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                     
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -566,57 +844,110 @@ WriteLiteral(@">
                                         '");
 
             
-            #line 166 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 217 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                      Write(Url.Action(MVC.API.DeviceBatch.UpdateUnitCost(Model.DeviceBatch.Id)));
 
             
             #line default
             #line hidden
-WriteLiteral(@"',
-                                        'UnitCost'
-                                    );
-                                });
-                            </script>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Quantity:
-                        </th>
-                        <td>
-");
-
-WriteLiteral("                            ");
+WriteLiteral("\',\r\n                                        \'UnitCost\'\r\n                         " +
+"           );\r\n                                });\r\n                            " +
+"</script>\r\n");
 
             
-            #line 177 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 222 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                            }
+                            else
+                            {
+                                if (!Model.DeviceBatch.UnitCost.HasValue)
+                                {
+            
+            #line default
+            #line hidden
+WriteLiteral("<span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>");
+
+            
+            #line 226 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                         }
+                                else
+                                {
+            
+            #line default
+            #line hidden
+            
+            #line 228 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                            Write(Model.DeviceBatch.UnitCost.Value.ToString("C"));
+
+            
+            #line default
+            #line hidden
+            
+            #line 228 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                }
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        </td>\r\n                    </tr>\r\n                    <tr" +
+">\r\n                        <th>Quantity:\r\n                        </th>\r\n       " +
+"                 <td>");
+
+            
+            #line 235 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                             if (canConfig)
+                            {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 237 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                        Write(Html.EditorFor(model => model.DeviceBatch.UnitQuantity));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                            ");
-
             
-            #line 178 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 237 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                    
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 238 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                        Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                            ");
-
             
-            #line 179 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 238 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                   
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 239 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                        Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                            <script");
+            
+            #line 239 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                     
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -628,28 +959,64 @@ WriteLiteral(@">
                                         '");
 
             
-            #line 185 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 245 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                      Write(Url.Action(MVC.API.DeviceBatch.UpdateUnitQuantity(Model.DeviceBatch.Id)));
 
             
             #line default
             #line hidden
-WriteLiteral(@"',
-                                        'UnitQuantity'
-                                    );
-                                });
-                            </script>
-                        </td>
-                    </tr>
-                </table>
-                <div");
+WriteLiteral("\',\r\n                                        \'UnitQuantity\'\r\n                     " +
+"               );\r\n                                });\r\n                        " +
+"    </script>\r\n");
+
+            
+            #line 250 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                            }
+                            else
+                            {
+                                if (!Model.DeviceBatch.UnitQuantity.HasValue)
+                                {
+            
+            #line default
+            #line hidden
+WriteLiteral("<span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>");
+
+            
+            #line 254 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                         }
+                                else
+                                {
+            
+            #line default
+            #line hidden
+            
+            #line 256 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                            Write(Model.DeviceBatch.UnitQuantity.Value.ToString("n0"));
+
+            
+            #line default
+            #line hidden
+            
+            #line 256 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                     }
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        </td>\r\n                    </tr>\r\n                </table" +
+">\r\n                <div");
 
 WriteLiteral(" id=\"DeviceBatch_PurchaseDetails_Container\"");
 
 WriteLiteral(">\r\n                    <div>\r\n                        Details ");
 
             
-            #line 195 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 263 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                            Write(AjaxHelpers.AjaxLoader("ajaxPurchaseDetails"));
 
             
@@ -657,68 +1024,129 @@ WriteLiteral(">\r\n                    <div>\r\n                        Details 
             #line hidden
 WriteLiteral("\r\n                    </div>\r\n");
 
-WriteLiteral("                    ");
-
             
-            #line 197 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-               Write(Html.EditorFor(model => model.DeviceBatch.PurchaseDetails));
+            #line 265 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 265 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                     if (canConfig)
+                    {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 267 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                   Write(Html.EditorFor(model => model.DeviceBatch.PurchaseDetails));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                    <script");
+            
+            #line 267 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                   
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
-                        $(function () {
-                            var model = {
-                                $field: $('#DeviceBatch_PurchaseDetails'),
-                                fieldName: 'PurchaseDetails',
-                                $ajax_loading: null,
-                                $ajax_ok: null,
-                                updated: function () {
-                                    if (!model.$ajax_loading)
-                                        model.$ajax_loading = $('#ajax' + model.fieldName + '_loading');
-                                    if (!model.$ajax_ok)
-                                        model.$ajax_ok = $('#ajax' + model.fieldName + '_ok');
-                                    model.$ajax_loading.show();
-                                    var data = {};
-                                    data[model.fieldName] = model.$field.tinymce().getContent();
-                                    $.ajax({
-                                        url: '");
+                            $(function () {
+                                var model = {
+                                    $field: $('#DeviceBatch_PurchaseDetails'),
+                                    fieldName: 'PurchaseDetails',
+                                    $ajax_loading: null,
+                                    $ajax_ok: null,
+                                    updated: function () {
+                                        if (!model.$ajax_loading)
+                                            model.$ajax_loading = $('#ajax' + model.fieldName + '_loading');
+                                        if (!model.$ajax_ok)
+                                            model.$ajax_ok = $('#ajax' + model.fieldName + '_ok');
+                                        model.$ajax_loading.show();
+                                        var data = {};
+                                        data[model.fieldName] = model.$field.tinymce().getContent();
+                                        $.ajax({
+                                            url: '");
 
             
-            #line 214 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-                                          Write(Url.Action(MVC.API.DeviceBatch.UpdatePurchaseDetails(Model.DeviceBatch.Id)));
+            #line 284 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                              Write(Url.Action(MVC.API.DeviceBatch.UpdatePurchaseDetails(Model.DeviceBatch.Id)));
 
             
             #line default
             #line hidden
-WriteLiteral("\',\r\n                                        dataType: \'json\',\r\n                  " +
-"                      data: data,\r\n                                        tradi" +
-"tional: true,\r\n                                        type: \'POST\',\r\n          " +
-"                              success: function (d) {\r\n                         " +
-"                   if (d == \'OK\') {\r\n                                           " +
-"     model.$ajax_loading.hide();\r\n                                              " +
-"  model.$ajax_ok.show().delay(\'fast\').fadeOut(\'slow\');\r\n                        " +
-"                    } else {\r\n                                                mo" +
-"del.$ajax_loading.hide();\r\n                                                alert" +
-"(\'Unable to update purchase details: \' + d);\r\n                                  " +
-"          }\r\n                                        },\r\n                       " +
-"                 error: function (jqXHR, textStatus, errorThrown) {\r\n           " +
-"                                 alert(\'Unable to update purchase details: \' + e" +
-"rrorThrown);\r\n                                            model.$ajax_loading.hi" +
-"de();\r\n                                        }\r\n                              " +
-"      })\r\n                                }\r\n                            };\r\n\r\n " +
-"                           model.$field.tinymce({\r\n                             " +
-"   theme: \'simple\',\r\n                                setup: function (ed) {\r\n   " +
-"                                 ed.onInit.add(function (ed) {\r\n                " +
-"                        $(ed.getWin()).blur(model.updated);\r\n                   " +
-"                 });\r\n                                }\r\n                       " +
-"     });\r\n                        });\r\n                    </script>\r\n          " +
-"      </div>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>Wa" +
-"rranty:\r\n            </th>\r\n            <td");
+WriteLiteral("\',\r\n                                            dataType: \'json\',\r\n              " +
+"                              data: data,\r\n                                     " +
+"       traditional: true,\r\n                                            type: \'PO" +
+"ST\',\r\n                                            success: function (d) {\r\n     " +
+"                                           if (d == \'OK\') {\r\n                   " +
+"                                 model.$ajax_loading.hide();\r\n                  " +
+"                                  model.$ajax_ok.show().delay(\'fast\').fadeOut(\'s" +
+"low\');\r\n                                                } else {\r\n              " +
+"                                      model.$ajax_loading.hide();\r\n             " +
+"                                       alert(\'Unable to update purchase details:" +
+" \' + d);\r\n                                                }\r\n                   " +
+"                         },\r\n                                            error: " +
+"function (jqXHR, textStatus, errorThrown) {\r\n                                   " +
+"             alert(\'Unable to update purchase details: \' + errorThrown);\r\n      " +
+"                                          model.$ajax_loading.hide();\r\n         " +
+"                                   }\r\n                                        })" +
+"\r\n                                    }\r\n                                };\r\n\r\n " +
+"                               model.$field.tinymce({\r\n                         " +
+"           theme: \'simple\',\r\n                                    setup: function" +
+" (ed) {\r\n                                        ed.onInit.add(function (ed) {\r\n" +
+"                                            $(ed.getWin()).blur(model.updated);\r" +
+"\n                                        });\r\n                                  " +
+"  }\r\n                                });\r\n                            });\r\n     " +
+"                   </script>\r\n");
+
+            
+            #line 316 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(Model.DeviceBatch.PurchaseDetails))
+                        {
+            
+            #line default
+            #line hidden
+WriteLiteral("<span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>");
+
+            
+            #line 320 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                 }
+                        else
+                        {
+            
+            #line default
+            #line hidden
+            
+            #line 322 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                     Write(new HtmlString(Model.DeviceBatch.PurchaseDetails));
+
+            
+            #line default
+            #line hidden
+            
+            #line 322 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                             }
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                </div>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n         " +
+"   <th>Warranty:\r\n            </th>\r\n            <td");
 
 WriteLiteral(" class=\"details\"");
 
@@ -734,38 +1162,59 @@ WriteLiteral(" style=\"width: 100px\"");
 
 WriteLiteral(">Valid Until:\r\n                        </th>\r\n                        <td>\r\n");
 
-WriteLiteral("                            ");
-
             
-            #line 258 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-                       Write(Html.EditorFor(model => model.DeviceBatch.WarrantyValidUntil));
+            #line 336 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 336 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                             if (canConfig)
+                            {
+                                
+            
+            #line default
+            #line hidden
+            
+            #line 338 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                           Write(Html.EditorFor(model => model.DeviceBatch.WarrantyValidUntil));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                            ");
-
             
-            #line 259 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-                       Write(AjaxHelpers.AjaxLoader());
+            #line 338 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                              
+                                
+            
+            #line default
+            #line hidden
+            
+            #line 339 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                           Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral(@"
-                            <script>
-                                $(function () {
-                                    var dateField = $('#DeviceBatch_WarrantyValidUntil');
-                                    document.DiscoFunctions.DateChangeHelper(
-                                        dateField,
-                                        'Warranty Valid Until',
-                                        '");
+            
+            #line 339 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                         
 
             
-            #line 266 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-                                     Write(Url.Action(MVC.API.DeviceBatch.UpdateWarrantyValidUntil(Model.DeviceBatch.Id)));
+            #line default
+            #line hidden
+WriteLiteral(@"                                <script>
+                                    $(function () {
+                                        var dateField = $('#DeviceBatch_WarrantyValidUntil');
+                                        document.DiscoFunctions.DateChangeHelper(
+                                            dateField,
+                                            'Warranty Valid Until',
+                                            '");
+
+            
+            #line 346 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                         Write(Url.Action(MVC.API.DeviceBatch.UpdateWarrantyValidUntil(Model.DeviceBatch.Id)));
 
             
             #line default
@@ -775,19 +1224,43 @@ WriteLiteral(@"',
                                         null,
                                         true
                                     );
-                                });
-                            </script>
-                        </td>
-                    </tr>
-                </table>
-                <div");
+                                    });
+                                </script>
+");
+
+            
+            #line 353 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                            }
+                            else
+                            {
+                                
+            
+            #line default
+            #line hidden
+            
+            #line 356 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                           Write(CommonHelpers.FriendlyDate(Model.DeviceBatch.WarrantyValidUntil, "Unknown"));
+
+            
+            #line default
+            #line hidden
+            
+            #line 356 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                                            
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        </td>\r\n                    </tr>\r\n                </table" +
+">\r\n                <div");
 
 WriteLiteral(" id=\"DeviceBatch_WarrantyDetails_Container\"");
 
 WriteLiteral(">\r\n                    <div>\r\n                        Details ");
 
             
-            #line 278 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 363 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                            Write(AjaxHelpers.AjaxLoader("ajaxWarrantyDetails"));
 
             
@@ -795,68 +1268,129 @@ WriteLiteral(">\r\n                    <div>\r\n                        Details 
             #line hidden
 WriteLiteral("\r\n                    </div>\r\n");
 
-WriteLiteral("                    ");
-
             
-            #line 280 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-               Write(Html.EditorFor(model => model.DeviceBatch.WarrantyDetails));
+            #line 365 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 365 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                     if (canConfig)
+                    {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 367 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                   Write(Html.EditorFor(model => model.DeviceBatch.WarrantyDetails));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                    <script");
+            
+            #line 367 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                   
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
-                        $(function () {
-                            var model = {
-                                $field: $('#DeviceBatch_WarrantyDetails'),
-                                fieldName: 'WarrantyDetails',
-                                $ajax_loading: null,
-                                $ajax_ok: null,
-                                updated: function () {
-                                    if (!model.$ajax_loading)
-                                        model.$ajax_loading = $('#ajax' + model.fieldName + '_loading');
-                                    if (!model.$ajax_ok)
-                                        model.$ajax_ok = $('#ajax' + model.fieldName + '_ok');
-                                    model.$ajax_loading.show();
-                                    var data = {};
-                                    data[model.fieldName] = model.$field.tinymce().getContent();
-                                    $.ajax({
-                                        url: '");
+                            $(function () {
+                                var model = {
+                                    $field: $('#DeviceBatch_WarrantyDetails'),
+                                    fieldName: 'WarrantyDetails',
+                                    $ajax_loading: null,
+                                    $ajax_ok: null,
+                                    updated: function () {
+                                        if (!model.$ajax_loading)
+                                            model.$ajax_loading = $('#ajax' + model.fieldName + '_loading');
+                                        if (!model.$ajax_ok)
+                                            model.$ajax_ok = $('#ajax' + model.fieldName + '_ok');
+                                        model.$ajax_loading.show();
+                                        var data = {};
+                                        data[model.fieldName] = model.$field.tinymce().getContent();
+                                        $.ajax({
+                                            url: '");
 
             
-            #line 297 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-                                          Write(Url.Action(MVC.API.DeviceBatch.UpdateWarrantyDetails(Model.DeviceBatch.Id)));
+            #line 384 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                              Write(Url.Action(MVC.API.DeviceBatch.UpdateWarrantyDetails(Model.DeviceBatch.Id)));
 
             
             #line default
             #line hidden
-WriteLiteral("\',\r\n                                        dataType: \'json\',\r\n                  " +
-"                      data: data,\r\n                                        tradi" +
-"tional: true,\r\n                                        type: \'POST\',\r\n          " +
-"                              success: function (d) {\r\n                         " +
-"                   if (d == \'OK\') {\r\n                                           " +
-"     model.$ajax_loading.hide();\r\n                                              " +
-"  model.$ajax_ok.show().delay(\'fast\').fadeOut(\'slow\');\r\n                        " +
-"                    } else {\r\n                                                mo" +
-"del.$ajax_loading.hide();\r\n                                                alert" +
-"(\'Unable to update warranty details: \' + d);\r\n                                  " +
-"          }\r\n                                        },\r\n                       " +
-"                 error: function (jqXHR, textStatus, errorThrown) {\r\n           " +
-"                                 alert(\'Unable to update warranty details: \' + e" +
-"rrorThrown);\r\n                                            model.$ajax_loading.hi" +
-"de();\r\n                                        }\r\n                              " +
-"      })\r\n                                }\r\n                            };\r\n\r\n " +
-"                           model.$field.tinymce({\r\n                             " +
-"   theme: \'simple\',\r\n                                setup: function (ed) {\r\n   " +
-"                                 ed.onInit.add(function (ed) {\r\n                " +
-"                        $(ed.getWin()).blur(model.updated);\r\n                   " +
-"                 });\r\n                                }\r\n                       " +
-"     });\r\n                        });\r\n                    </script>\r\n          " +
-"      </div>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>In" +
-"surance:\r\n            </th>\r\n            <td");
+WriteLiteral("\',\r\n                                            dataType: \'json\',\r\n              " +
+"                              data: data,\r\n                                     " +
+"       traditional: true,\r\n                                            type: \'PO" +
+"ST\',\r\n                                            success: function (d) {\r\n     " +
+"                                           if (d == \'OK\') {\r\n                   " +
+"                                 model.$ajax_loading.hide();\r\n                  " +
+"                                  model.$ajax_ok.show().delay(\'fast\').fadeOut(\'s" +
+"low\');\r\n                                                } else {\r\n              " +
+"                                      model.$ajax_loading.hide();\r\n             " +
+"                                       alert(\'Unable to update warranty details:" +
+" \' + d);\r\n                                                }\r\n                   " +
+"                         },\r\n                                            error: " +
+"function (jqXHR, textStatus, errorThrown) {\r\n                                   " +
+"             alert(\'Unable to update warranty details: \' + errorThrown);\r\n      " +
+"                                          model.$ajax_loading.hide();\r\n         " +
+"                                   }\r\n                                        })" +
+"\r\n                                    }\r\n                                };\r\n\r\n " +
+"                               model.$field.tinymce({\r\n                         " +
+"           theme: \'simple\',\r\n                                    setup: function" +
+" (ed) {\r\n                                        ed.onInit.add(function (ed) {\r\n" +
+"                                            $(ed.getWin()).blur(model.updated);\r" +
+"\n                                        });\r\n                                  " +
+"  }\r\n                                });\r\n                            });\r\n     " +
+"                   </script>\r\n");
+
+            
+            #line 416 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(Model.DeviceBatch.WarrantyDetails))
+                        {
+            
+            #line default
+            #line hidden
+WriteLiteral("<span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>");
+
+            
+            #line 420 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                 }
+                        else
+                        {
+            
+            #line default
+            #line hidden
+            
+            #line 422 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                     Write(new HtmlString(Model.DeviceBatch.WarrantyDetails));
+
+            
+            #line default
+            #line hidden
+            
+            #line 422 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                             }
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                </div>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n         " +
+"   <th>Insurance:\r\n            </th>\r\n            <td");
 
 WriteLiteral(" class=\"details\"");
 
@@ -870,40 +1404,59 @@ WriteLiteral(" class=\"name\"");
 
 WriteLiteral(" style=\"width: 100px\"");
 
-WriteLiteral(">Supplier:\r\n                        </th>\r\n                        <td>\r\n");
-
-WriteLiteral("                            ");
+WriteLiteral(">Supplier:\r\n                        </th>\r\n                        <td>");
 
             
-            #line 341 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 435 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                             if (canConfig)
+                            {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 437 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                        Write(Html.EditorFor(model => model.DeviceBatch.InsuranceSupplier));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                            ");
-
             
-            #line 342 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 437 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                         
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 438 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                        Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                            ");
-
             
-            #line 343 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 438 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                   
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 439 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                        Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                            <script");
+            
+            #line 439 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                     
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -915,48 +1468,100 @@ WriteLiteral(@">
                                         '");
 
             
-            #line 349 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 445 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                      Write(Url.Action(MVC.API.DeviceBatch.UpdateInsuranceSupplier(Model.DeviceBatch.Id)));
 
             
             #line default
             #line hidden
-WriteLiteral(@"',
-                                        'InsuranceSupplier'
-                                    );
-                                });
-                            </script>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th");
+WriteLiteral("\',\r\n                                        \'InsuranceSupplier\'\r\n                " +
+"                    );\r\n                                });\r\n                   " +
+"         </script>\r\n");
+
+            
+            #line 450 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                            }
+                            else
+                            {
+                                if (string.IsNullOrEmpty(Model.DeviceBatch.InsuranceSupplier))
+                                {
+            
+            #line default
+            #line hidden
+WriteLiteral("<span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>");
+
+            
+            #line 454 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                         }
+                                else
+                                {
+            
+            #line default
+            #line hidden
+            
+            #line 456 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                            Write(Model.DeviceBatch.InsuranceSupplier);
+
+            
+            #line default
+            #line hidden
+            
+            #line 456 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                     ;
+                                }
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        </td>\r\n                    </tr>\r\n                    <tr" +
+">\r\n                        <th");
 
 WriteLiteral(" class=\"name\"");
 
-WriteLiteral(">Insured Date:\r\n                        </th>\r\n                        <td>\r\n");
-
-WriteLiteral("                            ");
+WriteLiteral(">Insured Date:\r\n                        </th>\r\n                        <td>");
 
             
-            #line 360 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 464 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                             if (canConfig)
+                            {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 466 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                        Write(Html.EditorFor(model => model.DeviceBatch.InsuredDate));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                            ");
-
             
-            #line 361 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 466 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                   
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 467 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                        Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral(@"
-                            <script>
+            
+            #line 467 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                     
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"                            <script>
                                 $(function () {
                                     var dateField = $('#DeviceBatch_InsuredDate');
                                     document.DiscoFunctions.DateChangeHelper(
@@ -965,7 +1570,7 @@ WriteLiteral(@"
                                         '");
 
             
-            #line 368 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 474 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                      Write(Url.Action(MVC.API.DeviceBatch.UpdateInsuredDate(Model.DeviceBatch.Id)));
 
             
@@ -978,37 +1583,76 @@ WriteLiteral(@"',
                                     );
                                 });
                             </script>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th");
+");
+
+            
+            #line 481 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                            }
+                            else
+                            {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 484 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                       Write(CommonHelpers.FriendlyDate(Model.DeviceBatch.InsuredDate, "Unknown"));
+
+            
+            #line default
+            #line hidden
+            
+            #line 484 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                                 
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        </td>\r\n                    </tr>\r\n                    <tr" +
+">\r\n                        <th");
 
 WriteLiteral(" class=\"name\"");
 
-WriteLiteral(">Insured Until:\r\n                        </th>\r\n                        <td>\r\n");
-
-WriteLiteral("                            ");
+WriteLiteral(">Insured Until:\r\n                        </th>\r\n                        <td>");
 
             
-            #line 381 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 491 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                             if (canConfig)
+                            {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 493 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                        Write(Html.EditorFor(model => model.DeviceBatch.InsuredUntil));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                            ");
-
             
-            #line 382 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 493 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                    
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 494 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                        Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral(@"
-                            <script>
+            
+            #line 494 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                     
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"                            <script>
                                 $(function () {
                                     var dateField = $('#DeviceBatch_InsuredUntil');
                                     document.DiscoFunctions.DateChangeHelper(
@@ -1017,7 +1661,7 @@ WriteLiteral(@"
                                         '");
 
             
-            #line 389 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 501 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                      Write(Url.Action(MVC.API.DeviceBatch.UpdateInsuredUntil(Model.DeviceBatch.Id)));
 
             
@@ -1030,17 +1674,41 @@ WriteLiteral(@"',
                                     );
                                 });
                             </script>
-                        </td>
-                    </tr>
-                </table>
-                <div");
+");
+
+            
+            #line 508 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                            }
+                            else
+                            {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 511 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                       Write(CommonHelpers.FriendlyDate(Model.DeviceBatch.InsuredUntil, "Unknown"));
+
+            
+            #line default
+            #line hidden
+            
+            #line 511 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                                  
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        </td>\r\n                    </tr>\r\n                </table" +
+">\r\n                <div");
 
 WriteLiteral(" id=\"DeviceBatch_InsuranceDetails_Container\"");
 
 WriteLiteral(">\r\n                    <div>\r\n                        Details ");
 
             
-            #line 401 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 518 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                            Write(AjaxHelpers.AjaxLoader("ajaxInsuranceDetails"));
 
             
@@ -1048,89 +1716,163 @@ WriteLiteral(">\r\n                    <div>\r\n                        Details 
             #line hidden
 WriteLiteral("\r\n                    </div>\r\n");
 
-WriteLiteral("                    ");
-
             
-            #line 403 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-               Write(Html.EditorFor(model => model.DeviceBatch.InsuranceDetails));
+            #line 520 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 520 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                     if (canConfig)
+                    {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 522 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                   Write(Html.EditorFor(model => model.DeviceBatch.InsuranceDetails));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                    <script");
+            
+            #line 522 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                    
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
-                        $(function () {
-                            var model = {
-                                $DeviceBatch_Comments: $('#DeviceBatch_InsuranceDetails'),
-                                $ajax_loading: null,
-                                $ajax_ok: null,
-                                updated: function () {
-                                    if (!model.$ajax_loading)
-                                        model.$ajax_loading = $('#ajaxInsuranceDetails_loading');
-                                    if (!model.$ajax_ok)
-                                        model.$ajax_ok = $('#ajaxInsuranceDetails_ok');
-                                    model.$ajax_loading.show();
-                                    var data = { InsuranceDetails: model.$DeviceBatch_Comments.tinymce().getContent() };
-                                    $.ajax({
-                                        url: '");
+                            $(function () {
+                                var model = {
+                                    $DeviceBatch_Comments: $('#DeviceBatch_InsuranceDetails'),
+                                    $ajax_loading: null,
+                                    $ajax_ok: null,
+                                    updated: function () {
+                                        if (!model.$ajax_loading)
+                                            model.$ajax_loading = $('#ajaxInsuranceDetails_loading');
+                                        if (!model.$ajax_ok)
+                                            model.$ajax_ok = $('#ajaxInsuranceDetails_ok');
+                                        model.$ajax_loading.show();
+                                        var data = { InsuranceDetails: model.$DeviceBatch_Comments.tinymce().getContent() };
+                                        $.ajax({
+                                            url: '");
 
             
-            #line 418 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-                                          Write(Url.Action(MVC.API.DeviceBatch.UpdateInsuranceDetails(Model.DeviceBatch.Id)));
+            #line 537 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                              Write(Url.Action(MVC.API.DeviceBatch.UpdateInsuranceDetails(Model.DeviceBatch.Id)));
 
             
             #line default
             #line hidden
-WriteLiteral("\',\r\n                                        dataType: \'json\',\r\n                  " +
-"                      data: data,\r\n                                        tradi" +
-"tional: true,\r\n                                        type: \'POST\',\r\n          " +
-"                              success: function (d) {\r\n                         " +
-"                   if (d == \'OK\') {\r\n                                           " +
-"     model.$ajax_loading.hide();\r\n                                              " +
-"  model.$ajax_ok.show().delay(\'fast\').fadeOut(\'slow\');\r\n                        " +
-"                    } else {\r\n                                                mo" +
-"del.$ajax_loading.hide();\r\n                                                alert" +
-"(\'Unable to update insurance details: \' + d);\r\n                                 " +
-"           }\r\n                                        },\r\n                      " +
-"                  error: function (jqXHR, textStatus, errorThrown) {\r\n          " +
-"                                  alert(\'Unable to update insurance details: \' +" +
-" errorThrown);\r\n                                            model.$ajax_loading." +
-"hide();\r\n                                        }\r\n                            " +
-"        })\r\n                                }\r\n                            };\r\n\r" +
-"\n                            model.$DeviceBatch_Comments.tinymce({\r\n            " +
-"                    theme: \'simple\',\r\n                                setup: fun" +
-"ction (ed) {\r\n                                    //ed.onChange.add(model.update" +
-"dThrottle);\r\n                                    ed.onInit.add(function (ed) {\r\n" +
-"                                        $(ed.getWin()).blur(model.updated);\r\n   " +
-"                                 });\r\n                                }\r\n       " +
-"                     });\r\n                        });\r\n                    </scr" +
-"ipt>\r\n                </div>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n  " +
-"          <th>Comments:<br />\r\n");
+WriteLiteral("\',\r\n                                            dataType: \'json\',\r\n              " +
+"                              data: data,\r\n                                     " +
+"       traditional: true,\r\n                                            type: \'PO" +
+"ST\',\r\n                                            success: function (d) {\r\n     " +
+"                                           if (d == \'OK\') {\r\n                   " +
+"                                 model.$ajax_loading.hide();\r\n                  " +
+"                                  model.$ajax_ok.show().delay(\'fast\').fadeOut(\'s" +
+"low\');\r\n                                                } else {\r\n              " +
+"                                      model.$ajax_loading.hide();\r\n             " +
+"                                       alert(\'Unable to update insurance details" +
+": \' + d);\r\n                                                }\r\n                  " +
+"                          },\r\n                                            error:" +
+" function (jqXHR, textStatus, errorThrown) {\r\n                                  " +
+"              alert(\'Unable to update insurance details: \' + errorThrown);\r\n    " +
+"                                            model.$ajax_loading.hide();\r\n       " +
+"                                     }\r\n                                        " +
+"})\r\n                                    }\r\n                                };\r\n\r" +
+"\n                                model.$DeviceBatch_Comments.tinymce({\r\n        " +
+"                            theme: \'simple\',\r\n                                  " +
+"  setup: function (ed) {\r\n                                        //ed.onChange." +
+"add(model.updatedThrottle);\r\n                                        ed.onInit.a" +
+"dd(function (ed) {\r\n                                            $(ed.getWin()).b" +
+"lur(model.updated);\r\n                                        });\r\n              " +
+"                      }\r\n                                });\r\n                  " +
+"          });\r\n                        </script>\r\n");
+
+            
+            #line 570 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(Model.DeviceBatch.InsuranceDetails))
+                        {
+            
+            #line default
+            #line hidden
+WriteLiteral("<span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>");
+
+            
+            #line 574 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                 }
+                        else
+                        {
+            
+            #line default
+            #line hidden
+            
+            #line 576 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                     Write(new HtmlString(Model.DeviceBatch.InsuranceDetails));
+
+            
+            #line default
+            #line hidden
+            
+            #line 576 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                              }
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                </div>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n         " +
+"   <th>Comments:<br />\r\n");
 
 WriteLiteral("                ");
 
             
-            #line 456 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 583 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
            Write(AjaxHelpers.AjaxLoader("ajaxComments"));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n            </th>\r\n            <td>\r\n");
-
-WriteLiteral("                ");
+WriteLiteral("\r\n            </th>\r\n            <td>");
 
             
-            #line 459 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 585 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                 if (canConfig)
+                {
+                
+            
+            #line default
+            #line hidden
+            
+            #line 587 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
            Write(Html.EditorFor(model => model.DeviceBatch.Comments));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <script");
+            
+            #line 587 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                    
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -1151,7 +1893,7 @@ WriteLiteral(@">
                                     url: '");
 
             
-            #line 474 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 602 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                       Write(Url.Action(MVC.API.DeviceBatch.UpdateComments(Model.DeviceBatch.Id)));
 
             
@@ -1178,21 +1920,61 @@ WriteLiteral("\',\r\n                                    dataType: \'json\',\r\n
 "           ed.onInit.add(function (ed) {\r\n                                    $(" +
 "ed.getWin()).blur(model.updated);\r\n                                });\r\n        " +
 "                    }\r\n                        });\r\n                    });\r\n   " +
-"             </script>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n" +
-"<div");
+"             </script>\r\n");
+
+            
+            #line 635 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(Model.DeviceBatch.Comments))
+                    {
+            
+            #line default
+            #line hidden
+WriteLiteral("<span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>");
+
+            
+            #line 639 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                             }
+                    else
+                    {
+            
+            #line default
+            #line hidden
+            
+            #line 641 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                 Write(new HtmlString(Model.DeviceBatch.Comments));
+
+            
+            #line default
+            #line hidden
+            
+            #line 641 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                  }
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n<div");
 
 WriteLiteral(" class=\"actionBar\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 512 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 648 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 512 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 648 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
      if (Model.CanDelete)
     { 
         
@@ -1200,14 +1982,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 514 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 650 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
    Write(Html.ActionLinkButton("Delete", MVC.API.DeviceBatch.Delete(Model.DeviceBatch.Id, true), "buttonDelete"));
 
             
             #line default
             #line hidden
             
-            #line 514 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 650 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                                                 
     }
 
@@ -1217,37 +1999,43 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 516 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 652 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
      if (Model.DeviceCount > 0)
-    { 
+    {
+        if (Authorization.Has(Claims.Device.Actions.Export))
+        {
         
             
             #line default
             #line hidden
             
-            #line 518 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 656 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
    Write(Html.ActionLinkButton("Export Devices", MVC.API.DeviceBatch.ExportDevices(Model.DeviceBatch.Id)));
 
             
             #line default
             #line hidden
             
-            #line 518 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 656 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                                          
+        }
+        if (Authorization.Has(Claims.Device.Search))
+        {
         
             
             #line default
             #line hidden
             
-            #line 519 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 660 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
    Write(Html.ActionLinkButton("View Devices", MVC.Search.Query(Model.DeviceBatch.Id.ToString(), "DeviceBatch")));
 
             
             #line default
             #line hidden
             
-            #line 519 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 660 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                                                 
+        }
     }
 
             

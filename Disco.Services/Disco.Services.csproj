@@ -73,6 +73,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
     </Reference>
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -88,6 +89,45 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authorization\AccessDeniedException.cs" />
+    <Compile Include="Authorization\AuthorizationToken.cs" />
+    <Compile Include="Authorization\ClaimNavigatorItem.cs" />
+    <Compile Include="Authorization\DiscoAuthorizeAllAttribute.cs" />
+    <Compile Include="Authorization\DiscoAuthorizeAnyAttribute.cs" />
+    <Compile Include="Authorization\DiscoAuthorizeAttribute.cs" />
+    <Compile Include="Authorization\Roles\BaseRoleClaimGroup.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Configuration\ConfigClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Configuration\DeviceBatch\DeviceBatchClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Configuration\DeviceCertificate\DeviceCertificateClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Configuration\DeviceModel\DeviceModelClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Configuration\DeviceProfile\DeviceProfileClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Configuration\DocumentTemplate\DocumentTemplateClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Configuration\Enrolment\EnrolmentClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Configuration\Logging\LoggingClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Configuration\Origanisation\OrganisationClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Configuration\Plugin\PluginClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Configuration\System\SystemClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Device\DeviceActionsClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Device\DeviceClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Device\DevicePropertiesClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Job\JobActionsClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Job\JobListsClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Job\JobNonWarrantyPropertiesClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Job\JobClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Job\JobPropertiesClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Job\JobTypesClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Job\JobWarrantyPropertiesClaims.cs" />
+    <Compile Include="Authorization\Claims.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Claims.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Authorization\Roles\ClaimDetailsAttribute.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\User\UserActionsClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\User\UserClaims.cs" />
+    <Compile Include="Authorization\Roles\RoleCache.cs" />
+    <Compile Include="Authorization\Roles\RoleClaims.cs" />
+    <Compile Include="Authorization\Roles\RoleToken.cs" />
     <Compile Include="Logging\LogBase.cs" />
     <Compile Include="Logging\LogContext.cs" />
     <Compile Include="Logging\LogReInitalizeJob.cs" />
@@ -141,6 +181,19 @@
     <Compile Include="Tasks\ScheduledTaskStatus.cs" />
     <Compile Include="Tasks\ScheduledTaskStatusLive.cs" />
     <Compile Include="Plugins\Features\UIExtension\UIExtensions.cs" />
+    <Compile Include="Users\Cache.cs" />
+    <Compile Include="Users\CacheCleanTask.cs" />
+    <Compile Include="Users\Searching.cs" />
+    <Compile Include="Users\UserService.cs" />
+    <Compile Include="Web\AuthorizedController.cs" />
+    <Compile Include="Web\AuthorizedDatabaseController.cs" />
+    <Compile Include="Web\Bundles\Bundle.cs" />
+    <Compile Include="Web\Bundles\BundleExtensions.cs" />
+    <Compile Include="Web\Bundles\BundleHandler.cs" />
+    <Compile Include="Web\Bundles\BundleModule.cs" />
+    <Compile Include="Web\Bundles\BundleTable.cs" />
+    <Compile Include="Web\DatabaseController.cs" />
+    <Compile Include="Web\WebViewPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Disco.Data\Disco.Data.csproj">
@@ -154,7 +207,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Authorization\Claims.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Claims.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

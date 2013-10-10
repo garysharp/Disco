@@ -1,4 +1,7 @@
 ﻿@model Disco.Web.Models.User.ShowModel
+@{
+    Authorization.Require(Claims.User.ShowAssignmentHistory);
+}
 <div id="UserDetailTab-AssignmentHistory" class="UserPart">
     @if (Model.User.DeviceUserAssignments.Count > 0)
     { 
@@ -19,7 +22,14 @@
             {
                 <tr>
                     <td>
-                        @Html.ActionLink(dua.Device.SerialNumber, MVC.Device.Show(dua.DeviceSerialNumber))
+                        @if (Authorization.Has(Claims.Device.Show))
+                        {
+                            @Html.ActionLink(dua.Device.SerialNumber, MVC.Device.Show(dua.DeviceSerialNumber))
+                        }
+                        else
+                        {
+                            @dua.Device.SerialNumber
+                        }
                     </td>
                     <td>
                         @dua.Device.AssetNumber

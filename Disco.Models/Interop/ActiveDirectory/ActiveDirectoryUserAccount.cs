@@ -6,7 +6,7 @@ using Disco.Models.Repository;
 
 namespace Disco.Models.Interop.ActiveDirectory
 {
-    public class ActiveDirectoryUserAccount
+    public class ActiveDirectoryUserAccount : IActiveDirectoryObject
     {
         public string DisplayName { get; set; }
         public string DistinguishedName { get; set; }
@@ -15,25 +15,23 @@ namespace Disco.Models.Interop.ActiveDirectory
         public string GivenName { get; set; }
         public List<string> Groups { get; set; }
         public string Name { get; set; }
-        public string ObjectSid { get; set; }
+        public string SecurityIdentifier { get; set; }
         public string Path { get; set; }
         public string Phone { get; set; }
-        public string sAMAccountName { get; set; }
+        public string SamAccountName { get; set; }
         public string Surname { get; set; }
-        public string Type { get; set; }
         public Dictionary<string, object[]> LoadedProperties { get; set; }
 
         public User ToRepositoryUser()
         {
             return new User
             {
-                Id = this.sAMAccountName,
+                Id = this.SamAccountName,
                 DisplayName = this.DisplayName,
                 Surname = this.Surname,
                 GivenName = this.GivenName,
                 EmailAddress = this.Email,
                 PhoneNumber = this.Phone,
-                Type = this.Type
             };
         }
 

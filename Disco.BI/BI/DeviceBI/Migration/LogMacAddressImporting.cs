@@ -19,26 +19,26 @@ namespace Disco.BI.DeviceBI.Migration
         public override bool CancelInitiallySupported { get { return false; } }
 
         #region Required Helpers
-        private static string RequiredFilePath(DiscoDataContext dbContext)
+        private static string RequiredFilePath(DiscoDataContext Database)
         {
-            if (dbContext.DiscoConfiguration.DataStoreLocation != null)
-                return System.IO.Path.Combine(dbContext.DiscoConfiguration.DataStoreLocation, "_LogMacAddressImportingRequired.txt");
+            if (Database.DiscoConfiguration.DataStoreLocation != null)
+                return System.IO.Path.Combine(Database.DiscoConfiguration.DataStoreLocation, "_LogMacAddressImportingRequired.txt");
             else
                 return null;
         }
 
-        public static bool IsRequired(DiscoDataContext dbContext)
+        public static bool IsRequired(DiscoDataContext Database)
         {
-            var requiredFilePath = RequiredFilePath(dbContext);
+            var requiredFilePath = RequiredFilePath(Database);
 
             if (requiredFilePath == null)
                 return false;
             else
                 return System.IO.File.Exists(requiredFilePath);
         }
-        public static void SetRequired(DiscoDataContext dbContext)
+        public static void SetRequired(DiscoDataContext Database)
         {
-            var requiredFilePath = RequiredFilePath(dbContext);
+            var requiredFilePath = RequiredFilePath(Database);
 
             if (requiredFilePath != null)
             {
@@ -49,9 +49,9 @@ namespace Disco.BI.DeviceBI.Migration
         }
         #endregion
 
-        public override void InitalizeScheduledTask(DiscoDataContext dbContext)
+        public override void InitalizeScheduledTask(DiscoDataContext Database)
         {
-            if (IsRequired(dbContext))
+            if (IsRequired(Database))
             {
                 // Schedule in 15mins
                 var trigger = TriggerBuilder.Create()
@@ -73,7 +73,7 @@ namespace Disco.BI.DeviceBI.Migration
 
         protected override void ExecuteTask()
         {
-            using (DiscoDataContext dbContext = new DiscoDataContext())
+            using (DiscoDataContext database = new DiscoDataContext())
             {
                 Status.UpdateStatus(0, "Importing MAC Addresses", "Querying Logs for Details");
                 // Load Logs
@@ -82,7 +82,7 @@ namespace Disco.BI.DeviceBI.Migration
                     Module = DeviceBI.EnrolmentLog.Current.ModuleId,
                     EventTypes = new List<int>() { (int)DeviceBI.EnrolmentLog.EventTypeIds.SessionDeviceInfo }
                 };
-                var results = logRetriever.Query(dbContext);
+                var results = logRetriever.Query(database);
 
                 Status.UpdateStatus(50, string.Format("Passing {0} logs", results.Count));
 
@@ -93,7 +93,7 @@ namespace Disco.BI.DeviceBI.Migration
 
                 Status.UpdateStatus(75, string.Format("Importing {0} details", addresses.Count));
 
-                var devices = dbContext.Devices.Include("DeviceDetails").ToList();
+                var devices = database.Devices.Include("DeviceDetails").ToList();
 
                 Tuple<string, string> addressResult;
                 foreach (var device in devices)
@@ -109,10 +109,10 @@ namespace Disco.BI.DeviceBI.Migration
 
                 Status.UpdateStatus(90, "Saving to Database");
 
-                dbContext.SaveChanges();
+                database.SaveChanges();
 
                 // Finished - Remove Placeholder File
-                var requiredFilePath = RequiredFilePath(dbContext);
+                var requiredFilePath = RequiredFilePath(database);
                 if (System.IO.File.Exists(requiredFilePath))
                     System.IO.File.Delete(requiredFilePath);
             }

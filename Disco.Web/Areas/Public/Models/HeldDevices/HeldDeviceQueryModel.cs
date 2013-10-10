@@ -26,7 +26,7 @@ namespace Disco.Web.Areas.Public.Models.HeldDevices
         public DateTime? ReadyForReturnSince { get; set; }
         public DateTime? WaitingForUserActionSince { get; set; }
 
-        public HeldDeviceModel ToUserHeldDeviceModel(DiscoDataContext dbContext)
+        public HeldDeviceModel ToUserHeldDeviceModel(DiscoDataContext Database)
         {
             var uhdm = new HeldDeviceModel()
             {
@@ -34,7 +34,7 @@ namespace Disco.Web.Areas.Public.Models.HeldDevices
                 DeviceComputerName = this.DeviceComputerName,
                 DeviceLocation = this.DeviceLocation,
                 DeviceProfileId = this.DeviceProfileId,
-                DeviceAddress = (this.DeviceAddressId.HasValue ? dbContext.DiscoConfiguration.OrganisationAddresses.GetAddress(this.DeviceAddressId.Value).ShortName : string.Empty),
+                DeviceAddress = (this.DeviceAddressId.HasValue ? Database.DiscoConfiguration.OrganisationAddresses.GetAddress(this.DeviceAddressId.Value).ShortName : string.Empty),
                 UserId = this.UserId,
                 UserDisplayName = this.UserDisplayName,
                 ReadyForReturn = this.ReadyForReturn,

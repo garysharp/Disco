@@ -11,10 +11,10 @@ namespace Disco.Web.Areas.Config.Models.DeviceBatch
     {
         public List<ConfigDeviceBatchIndexModelItem> DeviceBatches { get; set; }
 
-        public static IndexModel Build(DiscoDataContext dbContext)
+        public static IndexModel Build(DiscoDataContext Database)
         {
             var m = new IndexModel();
-            m.DeviceBatches = dbContext.DeviceBatches.OrderBy(db => db.Name).Select(db => new _IndexModelItem()
+            m.DeviceBatches = Database.DeviceBatches.OrderBy(db => db.Name).Select(db => new _IndexModelItem()
             {
                 Id = db.Id,
                 Name = db.Name,
@@ -27,6 +27,9 @@ namespace Disco.Web.Areas.Config.Models.DeviceBatch
                 InsuranceSupplier = db.InsuranceSupplier,
                 InsuredUntil = db.InsuredUntil
             }).ToArray().Cast<ConfigDeviceBatchIndexModelItem>().ToList();
+
+            foreach (var item in m.DeviceBatches.Where(db => db.DefaultDeviceModel == null))
+                item.DefaultDeviceModel = "<None Specified>";
 
             return m;
         }

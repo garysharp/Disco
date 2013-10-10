@@ -1,4 +1,7 @@
 ﻿@model Disco.Web.Models.Device.ShowModel
+@{
+    Authorization.Require(Claims.Device.ShowDetails);
+}
 <div id="DeviceDetailTab-Details" class="DevicePart">
     <div id="DeviceDetailTab-DetailsContainer">
         <table class="tableData">

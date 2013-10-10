@@ -95,12 +95,12 @@ namespace Disco.Services.Plugins
                         if (Plugins.GetPlugins().FirstOrDefault(p => p.Id == packageManifest.Id) != null)
                             throw new InvalidOperationException(string.Format("The '{0} [{1}]' Plugin is already installed, please uninstall any existing versions before trying again", packageManifest.Name, packageManifest.Id));
 
-                        using (DiscoDataContext dbContext = new DiscoDataContext())
+                        using (DiscoDataContext database = new DiscoDataContext())
                         {
-                            string packagePath = Path.Combine(dbContext.DiscoConfiguration.PluginsLocation, packageManifest.Id);
+                            string packagePath = Path.Combine(database.DiscoConfiguration.PluginsLocation, packageManifest.Id);
 
                             // Check for Compatibility
-                            var compatibilityData = Plugins.LoadCompatibilityData(dbContext);
+                            var compatibilityData = Plugins.LoadCompatibilityData(database);
                             var pluginCompatibility = compatibilityData.Plugins.FirstOrDefault(i => i.Id.Equals(packageManifest.Id, StringComparison.InvariantCultureIgnoreCase) && packageManifest.Version == Version.Parse(i.Version));
                             if (pluginCompatibility != null && !pluginCompatibility.Compatible)
                                 throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] is not compatible: {2}", packageManifest.Id, packageManifest.VersionFormatted, pluginCompatibility.Reason));
@@ -144,11 +144,11 @@ namespace Disco.Services.Plugins
 
                             // Install Plugin
                             this.Status.UpdateStatus(80, "Initial Package Configuration");
-                            packageManifest.InstallPlugin(dbContext, this.Status);
+                            packageManifest.InstallPlugin(database, this.Status);
 
                             // Initialize Plugin
                             this.Status.UpdateStatus(98, "Initializing Plugin for Use");
-                            packageManifest.InitializePlugin(dbContext);
+                            packageManifest.InitializePlugin(database);
 
                             // Add Plugin Manifest to Host Environment
                             Plugins.AddPlugin(packageManifest);

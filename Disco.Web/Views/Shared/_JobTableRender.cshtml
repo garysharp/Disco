@@ -9,36 +9,28 @@
             <thead>
                 <tr>
                     @if (Model.ShowId)
-                    { <th class="id">
-                        Ref
+                    { <th class="id">Ref
                     </th> }
                     @if (Model.ShowStatus)
-                    { <th class="status">
-                        Status
+                    { <th class="status">Status
                     </th> }
                     @if (Model.ShowDates)
-                    { <th class="dates">
-                        Dates
+                    { <th class="dates">Dates
                     </th> }
                     @if (Model.ShowType)
-                    { <th class="type">
-                        Type
+                    { <th class="type">Type
                     </th> }
                     @if (Model.ShowDevice)
-                    {<th class="device">
-                        Device
+                    {<th class="device">Device
                     </th> }
                     @if (Model.ShowUser)
-                    { <th class="user">
-                        User
+                    { <th class="user">User
                     </th> }
                     @if (Model.ShowTechnician)
-                    { <th class="technician">
-                        Technician
+                    { <th class="technician">Technician
                     </th> }
                     @if (Model.ShowLocation)
-                    { <th class="location">
-                        Location
+                    { <th class="location">Location
                     </th> }
                 </tr>
             </thead>
@@ -48,7 +40,14 @@
                     <tr data-id="@(item.Id)" data-status="@(Model.ShowStatus ? item.StatusId : null)">
                         @if (Model.ShowId)
                         { <td class="id">
-                            @Html.ActionLink(item.Id.ToString(), MVC.Job.Show(item.Id))
+                            @if (Authorization.Has(Claims.Job.Show))
+                            {
+                                @Html.ActionLink(item.Id.ToString(), MVC.Job.Show(item.Id))
+                            }
+                            else
+                            {
+                                @item.Id.ToString()
+                            }
                         </td> }
                         @if (Model.ShowStatus)
                         { <td class="status">
@@ -68,7 +67,14 @@
                         { <td class="device">
                             @if (item.DeviceSerialNumber != null)
                             {
+                                if (Authorization.Has(Claims.Device.Show))
+                                {
                                 @Html.ActionLink(item.DeviceSerialNumber, MVC.Device.Show(item.DeviceSerialNumber), new { Title = item.DeviceModelDescription })
+                                }
+                                else
+                                {
+                                <span title="@item.DeviceModelDescription">@item.DeviceSerialNumber</span>
+                                }
                             }
                             else
                             { 
@@ -79,7 +85,14 @@
                         {<td class="user">
                             @if (item.UserId != null)
                             {
+                                if (Authorization.Has(Claims.User.Show))
+                                {
                                 @Html.ActionLink(string.Format("{0} ({1})", item.UserDisplayName, item.UserId), MVC.User.Show(item.UserId))
+                                }
+                                else
+                                {
+                                @(string.Format("{0} ({1})", item.UserDisplayName, item.UserId))
+                                }
                             }
                             else
                             { 

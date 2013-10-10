@@ -6,7 +6,7 @@
     Query: '<span style="font-weight: bold;">@(Model.FriendlyTerm != null ? Model.FriendlyTerm : Model.Term)</span>'</h2>
 @if (Model.Success)
 {
-    if (Model.Jobs != null)
+    if (Model.Jobs != null && Authorization.Has(Claims.Job.Search))
     { 
     <h2>
         Jobs</h2>
@@ -14,7 +14,7 @@
         @Html.Partial(MVC.Shared.Views._JobTable, @Model.Jobs)
     </div>
     }
-    if (Model.Devices != null)
+    if (Model.Devices != null && Authorization.Has(Claims.Device.Search))
     { 
     <h2>
         Devices</h2>
@@ -22,7 +22,7 @@
         @Html.Partial(MVC.Device.Views._DeviceTable, @Model.Devices)
     </div>
     }
-    if (Model.Users != null)
+    if (Model.Users != null && Authorization.Has(Claims.User.Search))
     { 
     <h2>
         Users</h2>

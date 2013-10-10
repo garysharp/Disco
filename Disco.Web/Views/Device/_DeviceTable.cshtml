@@ -1,30 +1,26 @@
 ﻿@model IEnumerable<Disco.Models.BI.Search.DeviceSearchResultItem>
+@{
+    var canShowDevices = Authorization.Has(Claims.Device.Show);
+}
 <div class="genericData deviceTable">
     @if (Model != null && Model.Count() > 0)
     { 
         <table class="genericData deviceTable">
             <thead>
                 <tr>
-                    <th>
-                        Serial#
+                    <th>Serial#
                     </th>
-                    <th>
-                        Asset#
+                    <th>Asset#
                     </th>
-                    <th>
-                        Name
+                    <th>Name
                     </th>
-                    <th>
-                        Model
+                    <th>Model
                     </th>
-                    <th>
-                        Profile
+                    <th>Profile
                     </th>
-                    <th>
-                        Assigned User
+                    <th>Assigned User
                     </th>
-                    <th>
-                        Jobs
+                    <th>Jobs
                     </th>
                 </tr>
             </thead>
@@ -33,7 +29,10 @@
                 {
                     <tr class="@(item.DecommissionedDate.HasValue ? "decommissioned" : string.Empty)">
                         <td>
-                            @Html.ActionLink(item.SerialNumber, MVC.Device.Show(item.SerialNumber))
+                            @if (canShowDevices)
+                            {@Html.ActionLink(item.SerialNumber, MVC.Device.Show(item.SerialNumber))}
+                            else
+                            {@item.SerialNumber}
                         </td>
                         <td>
                             @item.AssetNumber

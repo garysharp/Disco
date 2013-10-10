@@ -1,5 +1,8 @@
 ﻿@model Disco.Web.Areas.Config.Models.DeviceProfile.IndexModel
 @using Disco.Web.Areas.Config.Models.DeviceProfile
+@{
+    Authorization.Require(Claims.Config.DeviceProfile.Show);
+}
 @if (DiscoApplication.MultiSiteMode)
 {
     var deviceProfilesGrouped = Model.DeviceProfiles.OrderBy(i => i.AddressName).GroupBy(i => i.AddressName);

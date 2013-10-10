@@ -1,6 +1,8 @@
 ﻿@model Disco.Web.Models.Device.ImportReviewModel
 @using Disco.BI.DeviceBI.Importing
 @{
+    Authorization.Require(Claims.Device.Actions.Import);
+    
     ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import Devices", MVC.Device.ImportExport(), string.Format("File: {0}", Model.ImportFilename));
 
     int importDeviceOkCount = Model.ImportDevices.Count(id => id.Errors.Count == 0);

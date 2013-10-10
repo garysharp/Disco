@@ -1,9 +1,6 @@
-﻿using System.IO;
+﻿using Disco.Services.Web.Bundles;
+using System.IO;
 using System.Web;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Disco.Web.Extensions.MvcExtensions.Bundles;
 
 namespace Disco.Web
 {
@@ -23,6 +20,7 @@ namespace Disco.Web
             BundleTable.Add(new Bundle("~/Style/Credits", Links.ClientSource.Style.Credits_min_css));
             BundleTable.Add(new Bundle("~/Style/InitialConfig", Links.ClientSource.Style.InitialConfig_min_css));
             BundleTable.Add(new Bundle("~/Style/jQueryUI/dynatree", Links.ClientSource.Style.jQueryUI.dynatree.ui_dynatree_min_css));
+            BundleTable.Add(new Bundle("~/Style/Fancytree", Links.ClientSource.Style.Fancytree.ui_fancytree_min_css));
             BundleTable.Add(new Bundle("~/Style/Shadowbox", Links.ClientSource.Style.Shadowbox_min_css));
             BundleTable.Add(new Bundle("~/Style/Timeline", Links.ClientSource.Style.Timeline_min_css));
 

@@ -2,6 +2,7 @@
 using Disco.Data.Repository;
 using Disco.Models.BI.Device;
 using Disco.Models.Repository;
+using Disco.Services.Users;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,13 +25,13 @@ namespace Disco.BI.DeviceBI.Importing
             return (ImportDeviceSession)HttpRuntime.Cache.Get(parseKey);
         }
 
-        internal static bool ImportRecord(this ImportDevice device, DiscoDataContext dbContext, PopulateRecordReferences references)
+        internal static bool ImportRecord(this ImportDevice device, DiscoDataContext Database, PopulateRecordReferences references)
         {
             // Skips If Errors
             if (device.Errors == null || device.Errors.Count == 0)
             {
                 // Re-Populate & Skip If Errors
-                device.PopulateRecord(dbContext, references);
+                device.PopulateRecord(Database, references);
                 if (device.Errors == null || device.Errors.Count == 0)
                 {
                     Device discoDevice = device.Device;
@@ -44,7 +45,7 @@ namespace Disco.BI.DeviceBI.Importing
                             CreatedDate = DateTime.Now,
                             AllowUnauthenticatedEnrol = true,
                         };
-                        dbContext.Devices.Add(discoDevice);
+                        Database.Devices.Add(discoDevice);
                     }
 
                     if (discoDevice.DeviceModelId != device.DeviceModelId)
@@ -60,10 +61,10 @@ namespace Disco.BI.DeviceBI.Importing
 
                     if (discoDevice.AssignedUserId != device.AssignedUserId)
                     {
-                        discoDevice.AssignDevice(dbContext, device.AssignedUser);
+                        discoDevice.AssignDevice(Database, device.AssignedUser);
                     }
 
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
 
                     return true;
                 }
@@ -71,16 +72,16 @@ namespace Disco.BI.DeviceBI.Importing
             return false;
         }
 
-        internal static PopulateRecordReferences GetPopulateRecordReferences(DiscoDataContext dbContext)
+        internal static PopulateRecordReferences GetPopulateRecordReferences(DiscoDataContext Database)
         {
             return new PopulateRecordReferences(
-                dbContext.DeviceModels.ToDictionary(dm => dm.Id),
-                dbContext.DeviceProfiles.ToDictionary(dp => dp.Id),
-                dbContext.DeviceBatches.ToDictionary(db => db.Id)
+                Database.DeviceModels.ToDictionary(dm => dm.Id),
+                Database.DeviceProfiles.ToDictionary(dp => dp.Id),
+                Database.DeviceBatches.ToDictionary(db => db.Id)
                 );
         }
 
-        internal static void PopulateRecord(this ImportDevice device, DiscoDataContext dbContext, PopulateRecordReferences references)
+        internal static void PopulateRecord(this ImportDevice device, DiscoDataContext Database, PopulateRecordReferences references)
         {
 
             var deviceModels = references.Item1;
@@ -90,7 +91,7 @@ namespace Disco.BI.DeviceBI.Importing
             // SERIAL NUMBER - Existing Device
             if (!device.Errors.ContainsKey("SerialNumber"))
             {
-                device.Device = dbContext.Devices.Find(device.SerialNumber);
+                device.Device = Database.Devices.Find(device.SerialNumber);
                 if (device.Device != null && device.Device.DecommissionedDate.HasValue)
                     device.Errors.Add("SerialNumber", "The device is decommissioned");
             }
@@ -135,7 +136,7 @@ namespace Disco.BI.DeviceBI.Importing
             {
                 try
                 {
-                    device.AssignedUser = UserBI.UserCache.GetUser(device.AssignedUserId, dbContext, true);
+                    device.AssignedUser = UserService.GetUser(device.AssignedUserId, Database, true);
                 }
                 catch (ArgumentException)
                 {

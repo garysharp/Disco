@@ -1,37 +1,57 @@
 ﻿@model Disco.Web.Areas.Config.Models.DocumentTemplate.IndexModel
 @{
+    Authorization.Require(Claims.Config.DocumentTemplate.Show);
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates");
 }
-<table class="tableData">
-    <tr>
-        <th>
-            Id
-        </th>
-        <th>
-            Description
-        </th>
-        <th>
-            Scope
-        </th>
-    </tr>
-    @foreach (var item in Model.DocumentTemplates)
-    {
+@if (Model.DocumentTemplates.Count == 0)
+{
+    <div class="form" style="width: 450px; padding: 100px 0;">
+        <h2>No document templates are configured</h2>
+    </div>  
+}
+else
+{
+    <table class="tableData">
         <tr>
-            <td>
-                @Html.ActionLink(item.Id.ToString(), MVC.Config.DocumentTemplate.Index(item.Id))
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Scope)
-            </td>
+            <th>Id
+            </th>
+            <th>Description
+            </th>
+            <th>Scope
+            </th>
         </tr>
-    }
-</table>
+        @foreach (var item in Model.DocumentTemplates)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Id.ToString(), MVC.Config.DocumentTemplate.Index(item.Id))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Scope)
+                </td>
+            </tr>
+        }
+    </table>
+}
 <div class="actionBar">
-    @Html.ActionLinkButton("Undetected Pages", MVC.Config.DocumentTemplate.UndetectedPages())
-    @Html.ActionLinkButton("Import Status", MVC.Config.DocumentTemplate.ImportStatus())
-    @Html.ActionLinkButton("Expression Browser", MVC.Config.DocumentTemplate.ExpressionBrowser())
-    @Html.ActionLinkButton("Create Document Template", MVC.Config.DocumentTemplate.Create())
+    @if (Authorization.Has(Claims.Config.DocumentTemplate.UndetectedPages))
+    {
+        @Html.ActionLinkButton("Undetected Pages", MVC.Config.DocumentTemplate.UndetectedPages())
+    }
+    @if (Authorization.Has(Claims.Config.DocumentTemplate.ShowStatus))
+    {
+        @Html.ActionLinkButton("Import Status", MVC.Config.DocumentTemplate.ImportStatus())
+    }
+    @if (Authorization.Has(Claims.Config.Show))
+    {
+        @Html.ActionLinkButton("Expression Browser", MVC.Config.DocumentTemplate.ExpressionBrowser())
+    }
+    @if (Authorization.HasAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure))
+    {
+        @Html.ActionLinkButton("Create Document Template", MVC.Config.DocumentTemplate.Create())
+    }
 </div>

@@ -8,13 +8,15 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using Disco.Models.Interop.ActiveDirectory;
+using Disco.Services.Users;
+using Disco.Services.Authorization;
 
 namespace Disco.BI.Extensions
 {
     public static class DeviceExtensions
     {
 
-        public static string ComputerNameRender(this Device device, DiscoDataContext context)
+        public static string ComputerNameRender(this Device device, DiscoDataContext Database)
         {
             DeviceProfile deviceProfile = device.DeviceProfile;
             Expressions.Expression computerNameTemplateExpression = null;
@@ -24,7 +26,7 @@ namespace Disco.BI.Extensions
                 //return Expressions.Expression.TokenizeSingleDynamic(null, deviceProfile.Configuration(context).ComputerNameTemplate, 0);
                 return Expressions.Expression.TokenizeSingleDynamic(null, deviceProfile.ComputerNameTemplate, 0);
             });
-            System.Collections.IDictionary evaluatorVariables = Expressions.Expression.StandardVariables(null, context, UserBI.UserCache.CurrentUser, System.DateTime.Now, null);
+            System.Collections.IDictionary evaluatorVariables = Expressions.Expression.StandardVariables(null, Database, UserService.CurrentUser, System.DateTime.Now, null);
             string rendered;
             try
             {
@@ -40,12 +42,12 @@ namespace Disco.BI.Extensions
             }
             return rendered.ToString();
         }
-        public static System.Collections.Generic.List<DocumentTemplate> AvailableDocumentTemplates(this Device d, DiscoDataContext Context, User User, System.DateTime TimeStamp)
+        public static System.Collections.Generic.List<DocumentTemplate> AvailableDocumentTemplates(this Device d, DiscoDataContext Database, User User, System.DateTime TimeStamp)
         {
-            List<DocumentTemplate> ats = Context.DocumentTemplates
+            List<DocumentTemplate> ats = Database.DocumentTemplates
                 .Where(at => at.Scope == Disco.Models.Repository.DocumentTemplate.DocumentTemplateScopes.Device).ToList();
 
-            return ats.Where(at => at.FilterExpressionMatches(d, Context, User, TimeStamp, DocumentState.DefaultState())).ToList();
+            return ats.Where(at => at.FilterExpressionMatches(d, Database, User, TimeStamp, DocumentState.DefaultState())).ToList();
         }
 
         public static bool UpdateLastNetworkLogonDate(this Device Device)
@@ -53,7 +55,7 @@ namespace Disco.BI.Extensions
             return ActiveDirectoryUpdateLastNetworkLogonDateJob.UpdateLastNetworkLogonDate(Device);
         }
 
-        public static DeviceAttachment CreateAttachment(this Device Device, DiscoDataContext dbContext, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, byte[] PdfThumbnail = null)
+        public static DeviceAttachment CreateAttachment(this Device Device, DiscoDataContext Database, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, byte[] PdfThumbnail = null)
         {
             if (string.IsNullOrEmpty(MimeType) || MimeType.Equals("unknown/unknown", StringComparison.InvariantCultureIgnoreCase))
                 MimeType = Interop.MimeTypes.ResolveMimeType(Filename);
@@ -71,20 +73,20 @@ namespace Disco.BI.Extensions
             if (DocumentTemplate != null)
                 da.DocumentTemplateId = DocumentTemplate.Id;
 
-            dbContext.DeviceAttachments.Add(da);
-            dbContext.SaveChanges();
+            Database.DeviceAttachments.Add(da);
+            Database.SaveChanges();
 
-            da.SaveAttachment(dbContext, Content);
+            da.SaveAttachment(Database, Content);
             Content.Position = 0;
             if (PdfThumbnail == null)
-                da.GenerateThumbnail(dbContext, Content);
+                da.GenerateThumbnail(Database, Content);
             else
-                da.SaveThumbnailAttachment(dbContext, PdfThumbnail);
+                da.SaveThumbnailAttachment(Database, PdfThumbnail);
 
             return da;
         }
 
-        public static Device AddOffline(this Device d, DiscoDataContext dbContext)
+        public static Device AddOffline(this Device d, DiscoDataContext Database)
         {
             // Just Include:
             // - Serial Number
@@ -93,17 +95,31 @@ namespace Disco.BI.Extensions
             // - Assigned User Id
             // - Batch
 
+            // Enforce Authorization
+            var auth = UserService.CurrentAuthorization;
+            if (!auth.Has(Claims.Device.Properties.AssetNumber))
+                d.AssetNumber = null;
+            if (!auth.Has(Claims.Device.Properties.Location))
+                d.Location = null;
+            if (!auth.Has(Claims.Device.Properties.DeviceBatch))
+                d.DeviceBatchId = null;
+            if (!auth.Has(Claims.Device.Properties.DeviceProfile))
+                d.DeviceProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId;
+            if (!auth.Has(Claims.Device.Actions.AssignUser))
+                d.AssignedUserId = null;
+
+
             // Batch
             DeviceBatch db = default(DeviceBatch);
             if (d.DeviceBatchId.HasValue)
-                db = dbContext.DeviceBatches.Find(d.DeviceBatchId.Value);
+                db = Database.DeviceBatches.Find(d.DeviceBatchId.Value);
 
             // Default Device Model
             DeviceModel dm = default(DeviceModel);
             if (db != null && db.DefaultDeviceModelId.HasValue)
-                dm = dbContext.DeviceModels.Find(db.DefaultDeviceModelId); // From Batch
+                dm = Database.DeviceModels.Find(db.DefaultDeviceModelId); // From Batch
             else
-                dm = dbContext.DeviceModels.Find(1); // Default
+                dm = Database.DeviceModels.Find(1); // Default
 
             Device d2 = new Device()
             {
@@ -112,7 +128,7 @@ namespace Disco.BI.Extensions
                 Location = d.Location,
                 CreatedDate = DateTime.Now,
                 DeviceProfileId = d.DeviceProfileId,
-                DeviceProfile = dbContext.DeviceProfiles.Find(d.DeviceProfileId),
+                DeviceProfile = Database.DeviceProfiles.Find(d.DeviceProfileId),
                 AllowUnauthenticatedEnrol = true,
                 DeviceModelId = dm.Id,
                 DeviceModel = dm,
@@ -120,22 +136,22 @@ namespace Disco.BI.Extensions
                 DeviceBatch = db
             };
 
-            dbContext.Devices.Add(d2);
+            Database.Devices.Add(d2);
             if (!string.IsNullOrEmpty(d.AssignedUserId))
             {
-                User u = UserBI.UserCache.GetUser(d.AssignedUserId, dbContext, true);
-                d2.AssignDevice(dbContext, u);
+                User u = UserService.GetUser(d.AssignedUserId, Database, true);
+                d2.AssignDevice(Database, u);
             }
 
             return d2;
         }
 
-        public static DeviceUserAssignment AssignDevice(this Device d, DiscoDataContext dbContext, User u)
+        public static DeviceUserAssignment AssignDevice(this Device d, DiscoDataContext Database, User u)
         {
             DeviceUserAssignment newDua = default(DeviceUserAssignment);
 
             // Mark existing assignments as Unassigned
-            foreach (var dua in dbContext.DeviceUserAssignments.Where(m => m.DeviceSerialNumber == d.SerialNumber && !m.UnassignedDate.HasValue))
+            foreach (var dua in Database.DeviceUserAssignments.Where(m => m.DeviceSerialNumber == d.SerialNumber && !m.UnassignedDate.HasValue))
                 dua.UnassignedDate = DateTime.Now;
 
             if (u != null)
@@ -147,7 +163,7 @@ namespace Disco.BI.Extensions
                     AssignedUserId = u.Id,
                     AssignedDate = DateTime.Now
                 };
-                dbContext.DeviceUserAssignments.Add(newDua);
+                Database.DeviceUserAssignments.Add(newDua);
 
                 d.AssignedUserId = u.Id;
                 d.AssignedUser = u;

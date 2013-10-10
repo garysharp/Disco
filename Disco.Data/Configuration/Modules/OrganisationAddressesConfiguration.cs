@@ -11,7 +11,7 @@ namespace Disco.Data.Configuration.Modules
 {
     public class OrganisationAddressesConfiguration : ConfigurationBase
     {
-        public OrganisationAddressesConfiguration(DiscoDataContext dbContext) : base(dbContext) { }
+        public OrganisationAddressesConfiguration(DiscoDataContext Database) : base(Database) { }
 
         public override string Scope { get { return "OrganisationAddresses"; } }
 

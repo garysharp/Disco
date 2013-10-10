@@ -53,7 +53,7 @@ namespace Disco.BI.Interop.Community
             }
         }
 
-        public override void InitalizeScheduledTask(Data.Repository.DiscoDataContext dbContext)
+        public override void InitalizeScheduledTask(Data.Repository.DiscoDataContext Database)
         {
             // Random time between midday and midnight.
             var rnd = new Random();
@@ -69,17 +69,17 @@ namespace Disco.BI.Interop.Community
 
         protected override void ExecuteTask()
         {
-            using (DiscoDataContext db = new DiscoDataContext())
+            using (DiscoDataContext database = new DiscoDataContext())
             {
                 try
                 {
-                    UpdateCheck.Check(db, true, this.Status);
+                    UpdateCheck.Check(database, true, this.Status);
                 }
                 catch (Exception ex)
                 {
                     ScheduledTasksLog.LogScheduledTaskException(this.Status.TaskName, this.Status.SessionId, this.Status.TaskType, ex);
                     // Could be proxy error - try again without proxy:
-                    UpdateCheck.Check(db, false, this.Status);
+                    UpdateCheck.Check(database, false, this.Status);
                 }
             }
         }

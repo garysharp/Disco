@@ -1,271 +1,312 @@
 ﻿@model Disco.Web.Areas.Config.Models.DeviceModel.ComponentsModel
 @{
+    Authorization.Require(Claims.Config.DeviceModel.Show);
+
+    var canConfig = Authorization.Has(Claims.Config.DeviceModel.ConfigureComponents);
+
     Html.BundleDeferred("~/ClientScripts/Modules/Disco-jQueryExtensions");
 }
-<table id="deviceComponents" data-devicemodelid="@(Model.DeviceModelId.HasValue ? Model.DeviceModelId.Value.ToString() : string.Empty)">
-    <tr>
-        <th>
-            Description
-        </th>
-        <th>
-            Cost
-        </th>
-        <th>
-            Job Types
-        </th>
-        <th class="actions">
-            &nbsp;
-        </th>
-    </tr>
-    @foreach (var item in Model.DeviceComponents)
-    {
-        <tr data-devicecomponentid="@item.Id">
-            <td>
-                <input type="text" class="description" value="@item.Description" />
-            </td>
-            <td>
-                <input type="text" class="cost" value="@item.Cost.ToString("C")" />
-            </td>
-            <td>
-                <span class="edit@(item.JobSubTypes.Count > 0 ? " editAlert" : string.Empty)"></span>
-            </td>
-            <td>
-                <span class="remove"></span>
+@if (canConfig)
+{
+    <table id="deviceComponents" data-devicemodelid="@(Model.DeviceModelId.HasValue ? Model.DeviceModelId.Value.ToString() : string.Empty)">
+        <tr>
+            <th>Description
+            </th>
+            <th>Cost
+            </th>
+            <th>Job Types
+            </th>
+            <th class="actions">&nbsp;
+            </th>
+        </tr>
+        @foreach (var item in Model.DeviceComponents)
+        {
+            <tr data-devicecomponentid="@item.Id">
+                <td>
+                    <input type="text" class="description" value="@item.Description" />
+                </td>
+                <td>
+                    <input type="text" class="cost" value="@item.Cost.ToString("C")" />
+                </td>
+                <td>
+                    <span class="edit@(item.JobSubTypes.Count > 0 ? " editAlert" : string.Empty)"></span>
+                </td>
+                <td>
+                    <span class="remove"></span>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td colspan="4">
+                <a href="#" id="addDeviceComponent">Add Component</a>
             </td>
         </tr>
-    }
-    <tr>
-        <td colspan="4">
-            <a href="#" id="addDeviceComponent">Add Component</a>
-        </td>
-    </tr>
-</table>
-<script type="text/javascript">
-    $(function () {
-        var $deviceComponents = $('#deviceComponents');
+    </table>
+    <script type="text/javascript">
+        $(function () {
+            var $deviceComponents = $('#deviceComponents');
 
-        $('#addDeviceComponent').click(function () {
-            var dc = $('<tr><td><input type="text" class="description" /></td><td><input type="text" class="cost" /></td><td><span class="edit"></span></td><td><span class="remove"></span></td></tr>');
-            dc.find('input').focus(function () { $(this).select() })
-            dc.insertBefore($deviceComponents.find('tr').last());
-            dc.find('input.description').focus();
-            return false;
-        });
+            $('#addDeviceComponent').click(function () {
+                var dc = $('<tr><td><input type="text" class="description" /></td><td><input type="text" class="cost" /></td><td><span class="edit"></span></td><td><span class="remove"></span></td></tr>');
+                dc.find('input').focus(function () { $(this).select() })
+                dc.insertBefore($deviceComponents.find('tr').last());
+                dc.find('input.description').focus();
+                return false;
+            });
 
-        $deviceComponents.on('change', 'input', updateComponent);
-        $deviceComponents.on('focus', 'input', function () { $(this).select(); });
+            $deviceComponents.on('change', 'input', updateComponent);
+            $deviceComponents.on('focus', 'input', function () { $(this).select(); });
 
-        $deviceComponents.on('click', 'span.remove', removeComponent);
-        $deviceComponents.on('click', 'span.edit', editComponentJobTypes);
+            $deviceComponents.on('click', 'span.remove', removeComponent);
+            $deviceComponents.on('click', 'span.edit', editComponentJobTypes);
 
-        function removeComponentConfirmed(id, row) {
-            var data = { id: id };
-            $.ajax({
-                url: '@Url.Action(MVC.API.DeviceModel.ComponentRemove())',
-                dataType: 'json',
-                data: data,
-                success: function (d) {
-                    if (d == 'OK') {
-                        row.remove();
-                    } else {
-                        alert('Unable to remove component: ' + d);
+            function removeComponentConfirmed(id, row) {
+                var data = { id: id };
+                $.ajax({
+                    url: '@Url.Action(MVC.API.DeviceModel.ComponentRemove())',
+                    dataType: 'json',
+                    data: data,
+                    success: function (d) {
+                        if (d == 'OK') {
+                            row.remove();
+                        } else {
+                            alert('Unable to remove component: ' + d);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert('Unable to remove component: ' + textStatus);
                     }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert('Unable to remove component: ' + textStatus);
+                });
+        }
+            function removeComponent() {
+                var componentRow = $(this).closest('tr');
+                var id = componentRow.attr('data-devicecomponentid');
+                if (id) {
+                    var dialog = $("#dialogConfirmRemove");
+                    var buttons = dialog.dialog("option", "buttons");
+                    buttons['Remove'] = function () { removeComponentConfirmed(id, componentRow); $(this).dialog("close"); };
+                    var buttons = dialog.dialog("option", "buttons", buttons);
+                    dialog.dialog('open');
+                } else {
+                    // New - Remove
+                    componentRow.remove();
+                }
+            }
+            function updateComponent() {
+                var componentRow = $(this).closest('tr');
+                componentRow.find('input').attr('disabled', true).addClass('updating');
+
+                var id = componentRow.attr('data-devicecomponentid');
+                if (id) {
+                    // Update
+                    var data = {
+                        id: id,
+                        Description: componentRow.find('input.description').val(),
+                        Cost: componentRow.find('input.cost').val()
+                    };
+                    $.ajax({
+                        url: '@Url.Action(MVC.API.DeviceModel.ComponentUpdate())',
+                        dataType: 'json',
+                        type: 'POST',
+                        data: data,
+                        success: function (d) {
+                            componentRow.find('input').attr('disabled', false).removeClass('updating');
+                            if (d.Result == 'OK') {
+                                componentRow.find('input.description').val(d.Component.Description);
+                                componentRow.find('input.cost').val(d.Component.Cost);
+                            } else {
+                                alert('Unable to update component: ' + d.Result);
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert('Unable to update component: ' + textStatus);
+                        }
+                    });
+                } else {
+                    // Add
+                    id = componentRow.closest('table').attr('data-devicemodelid');
+                    var data = {
+                        id: id,
+                        Description: componentRow.find('input.description').val(),
+                        Cost: componentRow.find('input.cost').val()
+                    };
+                    $.ajax({
+                        url: '@Url.Action(MVC.API.DeviceModel.ComponentAdd(null, null, null))',
+                        dataType: 'json',
+                        type: 'POST',
+                        data: data,
+                        success: function (d) {
+                            componentRow.find('input').attr('disabled', false).removeClass('updating');
+                            if (d.Result == 'OK') {
+                                componentRow.attr('data-devicecomponentid', d.Component.Id);
+                                componentRow.find('input.description').val(d.Component.Description);
+                                componentRow.find('input.cost').val(d.Component.Cost);
+                            } else {
+                                alert('Unable to add component: ' + d.Result);
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert('Unable to add component: ' + textStatus);
+                        }
+                    });
+                }
+            }
+            function editComponentJobTypes() {
+                var edit$this = $(this);
+                var componentRow = edit$this.closest('tr');
+
+                var id = componentRow.attr('data-devicecomponentid');
+
+                if (id) {
+                    var data = {
+                        id: id
+                    };
+                    $.ajax({
+                        url: '@Url.Action(MVC.API.DeviceModel.Component())',
+                        dataType: 'json',
+                        data: data,
+                        success: function (d) {
+                            componentRow.find('input').attr('disabled', false).removeClass('updating');
+                            if (d.Result == 'OK') {
+                                $dialogUpdateJobTypes = $('#dialogUpdateJobTypes');
+                                $dialogUpdateJobTypes.find('input:checked').each(function () { $(this).prop('checked', false) });
+                                for (var i = 0; i < d.Component.JobSubTypes.length; i++) {
+                                    var sjt = d.Component.JobSubTypes[i];
+                                    $dialogUpdateJobTypes.find('#SubTypes_' + sjt).prop('checked', true);
+                                }
+                                $('#CheckboxBulkSelect_dialogUpdateJobTypes').checkboxBulkSelect('update');
+                                var buttons = $dialogUpdateJobTypes.dialog("option", "buttons");
+                                buttons['Save'] = function () {
+                                    $dialogUpdateJobTypes.dialog("disable");
+                                    var selectedSJTs = [];
+                                    $dialogUpdateJobTypes.find('input:checked').each(function () { selectedSJTs.push($(this).val()) });
+
+                                    var data = {
+                                        id: id,
+                                        JobSubTypes: selectedSJTs
+                                    };
+                                    $.ajax({
+                                        url: '@Url.Action(MVC.API.DeviceModel.ComponentUpdateJobSubTypes())',
+                                        dataType: 'json',
+                                        type: 'POST',
+                                        traditional: true,
+                                        data: data,
+                                        success: function (d) {
+                                            if (d.Result == 'OK') {
+                                                if (d.Component.JobSubTypes.length > 0) {
+                                                    edit$this.addClass('editAlert');
+                                                } else {
+                                                    edit$this.removeClass('editAlert');
+                                                }
+                                                $dialogUpdateJobTypes.dialog("enable");
+                                                $dialogUpdateJobTypes.dialog("close");
+                                            } else {
+                                                alert('Unable to update component sub types: ' + d.Result);
+                                            }
+                                        },
+                                        error: function (jqXHR, textStatus, errorThrown) {
+                                            alert('Unable to update component sub types: ' + textStatus);
+                                        }
+                                    });
+                                };
+                                var buttons = $dialogUpdateJobTypes.dialog("option", "buttons", buttons);
+                                $dialogUpdateJobTypes.dialog('open');
+                            } else {
+                                alert('Unable to load component: ' + d.Result);
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert('Unable to load component: ' + textStatus);
+                        }
+                    });
+                }
+
+            }
+
+            $("#dialogConfirmRemove").dialog({
+                resizable: false,
+                height: 140,
+                modal: true,
+                autoOpen: false,
+                buttons: {
+                    "Remove": function () {
+                        $(this).dialog("close");
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
                 }
             });
-        }
-        function removeComponent() {
-            var componentRow = $(this).closest('tr');
-            var id = componentRow.attr('data-devicecomponentid');
-            if (id) {
-                var dialog = $("#dialogConfirmRemove");
-                var buttons = dialog.dialog("option", "buttons");
-                buttons['Remove'] = function () { removeComponentConfirmed(id, componentRow); $(this).dialog("close"); };
-                var buttons = dialog.dialog("option", "buttons", buttons);
-                dialog.dialog('open');
-            } else {
-                // New - Remove
-                componentRow.remove();
-            }
-        }
-        function updateComponent() {
-            var componentRow = $(this).closest('tr');
-            componentRow.find('input').attr('disabled', true).addClass('updating');
 
-            var id = componentRow.attr('data-devicecomponentid');
-            if (id) {
-                // Update
-                var data = {
-                    id: id,
-                    Description: componentRow.find('input.description').val(),
-                    Cost: componentRow.find('input.cost').val()
-                };
-                $.ajax({
-                    url: '@Url.Action(MVC.API.DeviceModel.ComponentUpdate())',
-                    dataType: 'json',
-                    type: 'POST',
-                    data: data,
-                    success: function (d) {
-                        componentRow.find('input').attr('disabled', false).removeClass('updating');
-                        if (d.Result == 'OK') {
-                            componentRow.find('input.description').val(d.Component.Description);
-                            componentRow.find('input.cost').val(d.Component.Cost);
-                        } else {
-                            alert('Unable to update component: ' + d.Result);
-                        }
+            $('#dialogUpdateJobTypes').dialog({
+                resizable: false,
+                modal: true,
+                autoOpen: false,
+                width: 550,
+                buttons: {
+                    "Save": function () {
+                        $(this).dialog("close");
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        alert('Unable to update component: ' + textStatus);
+                    Cancel: function () {
+                        $(this).dialog("close");
                     }
-                });
-            } else {
-                // Add
-                id = componentRow.closest('table').attr('data-devicemodelid');
-                var data = {
-                    id: id,
-                    Description: componentRow.find('input.description').val(),
-                    Cost: componentRow.find('input.cost').val()
-                };
-                $.ajax({
-                    url: '@Url.Action(MVC.API.DeviceModel.ComponentAdd(null, null, null))',
-                    dataType: 'json',
-                    type: 'POST',
-                    data: data,
-                    success: function (d) {
-                        componentRow.find('input').attr('disabled', false).removeClass('updating');
-                        if (d.Result == 'OK') {
-                            componentRow.attr('data-devicecomponentid', d.Component.Id);
-                            componentRow.find('input.description').val(d.Component.Description);
-                            componentRow.find('input.cost').val(d.Component.Cost);
-                        } else {
-                            alert('Unable to add component: ' + d.Result);
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        alert('Unable to add component: ' + textStatus);
-                    }
-                });
-            }
-        }
-        function editComponentJobTypes() {
-            var edit$this = $(this);
-            var componentRow = edit$this.closest('tr');
-
-            var id = componentRow.attr('data-devicecomponentid');
-
-            if (id) {
-                var data = {
-                    id: id
-                };
-                $.ajax({
-                    url: '@Url.Action(MVC.API.DeviceModel.Component())',
-                    dataType: 'json',
-                    data: data,
-                    success: function (d) {
-                        componentRow.find('input').attr('disabled', false).removeClass('updating');
-                        if (d.Result == 'OK') {
-                            $dialogUpdateJobTypes = $('#dialogUpdateJobTypes');
-                            $dialogUpdateJobTypes.find('input:checked').each(function () { $(this).prop('checked', false) });
-                            for (var i = 0; i < d.Component.JobSubTypes.length; i++) {
-                                var sjt = d.Component.JobSubTypes[i];
-                                $dialogUpdateJobTypes.find('#SubTypes_' + sjt).prop('checked', true);
-                            }
-                            $('#CheckboxBulkSelect_dialogUpdateJobTypes').checkboxBulkSelect('update');
-                            var buttons = $dialogUpdateJobTypes.dialog("option", "buttons");
-                            buttons['Save'] = function () {
-                                $dialogUpdateJobTypes.dialog("disable");
-                                var selectedSJTs = [];
-                                $dialogUpdateJobTypes.find('input:checked').each(function () { selectedSJTs.push($(this).val()) });
-
-                                var data = {
-                                    id: id,
-                                    JobSubTypes: selectedSJTs
-                                };
-                                $.ajax({
-                                    url: '@Url.Action(MVC.API.DeviceModel.ComponentUpdateJobSubTypes())',
-                                    dataType: 'json',
-                                    type: 'POST',
-                                    traditional: true,
-                                    data: data,
-                                    success: function (d) {
-                                        if (d.Result == 'OK') {
-                                            if (d.Component.JobSubTypes.length > 0) {
-                                                edit$this.addClass('editAlert');
-                                            } else {
-                                                edit$this.removeClass('editAlert');
-                                            }
-                                            $dialogUpdateJobTypes.dialog("enable");
-                                            $dialogUpdateJobTypes.dialog("close");
-                                        } else {
-                                            alert('Unable to update component sub types: ' + d.Result);
-                                        }
-                                    },
-                                    error: function (jqXHR, textStatus, errorThrown) {
-                                        alert('Unable to update component sub types: ' + textStatus);
-                                    }
-                                });
-                            };
-                            var buttons = $dialogUpdateJobTypes.dialog("option", "buttons", buttons);
-                            $dialogUpdateJobTypes.dialog('open');
-                        } else {
-                            alert('Unable to load component: ' + d.Result);
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        alert('Unable to load component: ' + textStatus);
-                    }
-                });
-            }
-
-        }
-
-        $("#dialogConfirmRemove").dialog({
-            resizable: false,
-            height: 140,
-            modal: true,
-            autoOpen: false,
-            buttons: {
-                "Remove": function () {
-                    $(this).dialog("close");
-                },
-                Cancel: function () {
-                    $(this).dialog("close");
                 }
-            }
-        });
+            });
 
-        $('#dialogUpdateJobTypes').dialog({
-            resizable: false,
-            modal: true,
-            autoOpen: false,
-            width: 550,
-            buttons: {
-                "Save": function () {
-                    $(this).dialog("close");
-                },
-                Cancel: function () {
-                    $(this).dialog("close");
-                }
-            }
+            $('#CheckboxBulkSelect_dialogUpdateJobTypes').checkboxBulkSelect({ parentSelector: 'div' });
         });
-
-        $('#CheckboxBulkSelect_dialogUpdateJobTypes').checkboxBulkSelect({ parentSelector: 'div' });
-    });
-</script>
-<div id="dialogUpdateJobTypes" title="Update Job Types">
-    <div>
-        <h2>
-            Hardware Non-Warranty Job Types</h2>
-        @CommonHelpers.CheckBoxList("SubTypes", Model.JobSubTypes.ToSelectListItems(), 2)
-        <br />
-        <span id="CheckboxBulkSelect_dialogUpdateJobTypes" class="checkboxBulkSelectContainer">
-        </span>
+    </script>
+    <div id="dialogUpdateJobTypes" title="Update Job Types">
+        <div>
+            <h2>Hardware Non-Warranty Job Types</h2>
+            @CommonHelpers.CheckBoxList("SubTypes", Model.JobSubTypes.ToSelectListItems(), 2)
+            <br />
+            <span id="CheckboxBulkSelect_dialogUpdateJobTypes" class="checkboxBulkSelectContainer"></span>
+        </div>
     </div>
-</div>
-<div id="dialogConfirmRemove" title="Delete this Component?">
-    <p>
-        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-        This item will be permanently deleted and cannot be recovered. Are you sure?</p>
-</div>
+    <div id="dialogConfirmRemove" title="Delete this Component?">
+        <p>
+            <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+            This item will be permanently deleted and cannot be recovered. Are you sure?
+        </p>
+    </div>
+}
+else
+{
+    <table id="deviceComponents" data-devicemodelid="@(Model.DeviceModelId.HasValue ? Model.DeviceModelId.Value.ToString() : string.Empty)">
+        <tr>
+            <th>Description
+            </th>
+            <th>Cost
+            </th>
+            <th>Job Types
+            </th>
+        </tr>
+        @foreach (var item in Model.DeviceComponents)
+        {
+            <tr data-devicecomponentid="@item.Id">
+                <td>
+                    @item.Description
+                </td>
+                <td>
+                    @item.Cost.ToString("C")
+                </td>
+                <td>
+                    @if (item.JobSubTypes.Count > 0)
+                    {
+                        <ul>
+                            @foreach (var jst in item.JobSubTypes)
+                            {
+                                <li>@jst.Description</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span class="smallMessage">&lt;None Specified&gt;</span>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+}

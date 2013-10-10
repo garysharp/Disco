@@ -1,5 +1,7 @@
 ﻿@model Disco.Web.Areas.Config.Models.DocumentTemplate.CreateModel
 @{
+    Authorization.RequireAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure);
+    
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(null), "Create");
 }
 @using (Html.BeginForm(MVC.Config.DocumentTemplate.Create(), FormMethod.Post, new { enctype = "multipart/form-data" }))

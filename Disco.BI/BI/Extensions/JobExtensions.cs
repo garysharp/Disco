@@ -13,7 +13,7 @@ namespace Disco.BI.Extensions
 {
     public static class JobExtensions
     {
-        public static JobAttachment CreateAttachment(this Job Job, DiscoDataContext dbContext, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, byte[] PdfThumbnail = null)
+        public static JobAttachment CreateAttachment(this Job Job, DiscoDataContext Database, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, byte[] PdfThumbnail = null)
         {
             if (string.IsNullOrEmpty(MimeType) || MimeType.Equals("unknown/unknown", StringComparison.InvariantCultureIgnoreCase))
                 MimeType = Interop.MimeTypes.ResolveMimeType(Filename);
@@ -31,15 +31,15 @@ namespace Disco.BI.Extensions
             if (DocumentTemplate != null)
                 ja.DocumentTemplateId = DocumentTemplate.Id;
 
-            dbContext.JobAttachments.Add(ja);
-            dbContext.SaveChanges();
+            Database.JobAttachments.Add(ja);
+            Database.SaveChanges();
 
-            ja.SaveAttachment(dbContext, Content);
+            ja.SaveAttachment(Database, Content);
             Content.Position = 0;
             if (PdfThumbnail == null)
-                ja.GenerateThumbnail(dbContext, Content);
+                ja.GenerateThumbnail(Database, Content);
             else
-                ja.SaveThumbnailAttachment(dbContext, PdfThumbnail);
+                ja.SaveThumbnailAttachment(Database, PdfThumbnail);
 
             return ja;
         }
@@ -146,9 +146,9 @@ namespace Disco.BI.Extensions
             return Job.JobStatusIds.Open;
         }
 
-        public static List<DocumentTemplate> AvailableDocumentTemplates(this Job j, DiscoDataContext dbContext, User User, DateTime TimeStamp)
+        public static List<DocumentTemplate> AvailableDocumentTemplates(this Job j, DiscoDataContext Database, User User, DateTime TimeStamp)
         {
-            var dts = dbContext.DocumentTemplates.Include("JobSubTypes")
+            var dts = Database.DocumentTemplates.Include("JobSubTypes")
                 .Where(dt => dt.Scope == DocumentTemplate.DocumentTemplateScopes.Job)
                 .ToList();
 
@@ -171,7 +171,7 @@ namespace Disco.BI.Extensions
             }
 
             // Evaluate Filters
-            dts = dts.Where(dt => dt.FilterExpressionMatches(j, dbContext, User, TimeStamp, DocumentState.DefaultState())).ToList();
+            dts = dts.Where(dt => dt.FilterExpressionMatches(j, Database, User, TimeStamp, DocumentState.DefaultState())).ToList();
 
             return dts;
         }
@@ -188,7 +188,7 @@ namespace Disco.BI.Extensions
             return d;
         }
 
-        public static string GenerateFaultDescription(this Job j, DiscoDataContext dbContext)
+        public static string GenerateFaultDescription(this Job j, DiscoDataContext Database)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -199,14 +199,14 @@ namespace Disco.BI.Extensions
             return sb.ToString();
         }
 
-        public static string GenerateFaultDescriptionFooter(this Job j, DiscoDataContext dbContext, PluginFeatureManifest WarrantyProviderDefinition)
+        public static string GenerateFaultDescriptionFooter(this Job j, DiscoDataContext Database, PluginFeatureManifest WarrantyProviderDefinition)
         {
             var versionDisco = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             return string.Format("Automation by Disco v{0}.{1}.{2:0000}.{3:0000} (Provider: {4} v{5})",
                 versionDisco.Major, versionDisco.Minor, versionDisco.Build, versionDisco.Revision, WarrantyProviderDefinition.Id, WarrantyProviderDefinition.PluginManifest.Version.ToString(4));
         }
 
-        public static void UpdateSubTypes(this Job j, DiscoDataContext dbContext, List<JobSubType> SubTypes, bool AddComponents, User TechUser)
+        public static void UpdateSubTypes(this Job j, DiscoDataContext Database, List<JobSubType> SubTypes, bool AddComponents, User TechUser)
         {
             if (SubTypes == null || SubTypes.Count == 0)
                 throw new ArgumentException("The Job must contain at least one Sub Type");
@@ -246,7 +246,7 @@ namespace Disco.BI.Extensions
                     foreach (var t in addedSubTypes)
                         logBuilder.Append("- ").AppendLine(t.ToString());
                 }
-                dbContext.JobLogs.Add(new JobLog()
+                Database.JobLogs.Add(new JobLog()
                 {
                     JobId = j.Id,
                     TechUserId = TechUser.Id,
@@ -258,7 +258,7 @@ namespace Disco.BI.Extensions
             // Add Components
             if (AddComponents && addedSubTypes.Count > 0 && j.DeviceSerialNumber != null)
             {
-                var components = dbContext.DeviceComponents.Include("JobSubTypes").Where(c => !c.DeviceModelId.HasValue || c.DeviceModelId == j.Device.DeviceModelId);
+                var components = Database.DeviceComponents.Include("JobSubTypes").Where(c => !c.DeviceModelId.HasValue || c.DeviceModelId == j.Device.DeviceModelId);
                 var addedComponents = new List<DeviceComponent>();
                 foreach (var c in components)
                 {
@@ -280,7 +280,7 @@ namespace Disco.BI.Extensions
                 {
                     if (!j.JobComponents.Any(jc => jc.Description.Equals(c.Description, StringComparison.InvariantCultureIgnoreCase)))
                     { // Job Component with matching Description doesn't exist.
-                        dbContext.JobComponents.Add(new JobComponent()
+                        Database.JobComponents.Add(new JobComponent()
                         {
                             Job = j,
                             TechUserId = TechUser.Id,

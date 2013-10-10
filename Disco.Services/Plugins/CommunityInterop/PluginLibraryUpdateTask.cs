@@ -48,13 +48,13 @@ namespace Disco.Services.Plugins.CommunityInterop
 
             Status.UpdateStatus(1, "Updating Plugin Library Catalogue", "Building Request");
 
-            using (DiscoDataContext dbContext = new DiscoDataContext())
+            using (DiscoDataContext database = new DiscoDataContext())
             {
-                catalogueFile = Plugins.CatalogueFile(dbContext);
+                catalogueFile = Plugins.CatalogueFile(database);
 
                 updateRequestBody = new PluginLibraryUpdateRequest()
                 {
-                    DeploymentId = dbContext.DiscoConfiguration.DeploymentId,
+                    DeploymentId = database.DiscoConfiguration.DeploymentId,
                     HostVersion = typeof(Plugins).Assembly.GetName().Version.ToString(4)
                 };
             }
@@ -111,13 +111,13 @@ namespace Disco.Services.Plugins.CommunityInterop
 
             Status.UpdateStatus(50, "Updating Plugin Library Compatibility", "Building Request");
 
-            using (DiscoDataContext dbContext = new DiscoDataContext())
+            using (DiscoDataContext database = new DiscoDataContext())
             {
-                compatibilityFile = Plugins.CompatibilityFile(dbContext);
+                compatibilityFile = Plugins.CompatibilityFile(database);
 
                 compatRequestBody = new PluginLibraryCompatibilityRequest()
                 {
-                    DeploymentId = dbContext.DiscoConfiguration.DeploymentId,
+                    DeploymentId = database.DiscoConfiguration.DeploymentId,
                     HostVersion = typeof(Plugins).Assembly.GetName().Version.ToString(4)
                 };
             }
@@ -200,7 +200,7 @@ namespace Disco.Services.Plugins.CommunityInterop
             }
         }
 
-        public override void InitalizeScheduledTask(DiscoDataContext dbContext)
+        public override void InitalizeScheduledTask(DiscoDataContext Database)
         {
             // Random time between midday and midnight.
             var rnd = new Random();

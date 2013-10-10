@@ -1,25 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Disco.Services.Authorization;
+using Disco.Services.Web;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.Config.Controllers
 {
-    public partial class SystemConfigController : dbAdminController
+    public partial class SystemConfigController : AuthorizedDatabaseController
     {
-        [HttpGet]
+        [DiscoAuthorize(Claims.Config.System.Show), HttpGet]
         public virtual ActionResult Index()
         {
-            var m = Models.SystemConfig.IndexModel.FromConfiguration(dbContext.DiscoConfiguration);
+            var m = Models.SystemConfig.IndexModel.FromConfiguration(Database.DiscoConfiguration);
             return View(m);
         }
-        [HttpPost]
+
+        [DiscoAuthorizeAll(Claims.Config.System.Show, Claims.Config.System.ConfigureProxy), HttpPost]
         public virtual ActionResult Index(Models.SystemConfig.IndexModel config)
         {
             if (ModelState.IsValid)
             {
-                config.ToConfiguration(dbContext);
+                config.ToConfiguration(Database);
                 return RedirectToAction(MVC.Config.Config.Index());
             }
             else

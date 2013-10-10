@@ -12,10 +12,10 @@ namespace Disco.Web.Areas.Config.Models.DeviceProfile
     {
         public List<ConfigDeviceProfileIndexModelItem> DeviceProfiles { get; set; }
 
-        public static IndexModel Build(DiscoDataContext dbContext)
+        public static IndexModel Build(DiscoDataContext Database)
         {
             var m = new IndexModel();
-            m.DeviceProfiles = dbContext.DeviceProfiles.OrderBy(dp => dp.Name).Select(dp => new _IndexModelItem()
+            m.DeviceProfiles = Database.DeviceProfiles.OrderBy(dp => dp.Name).Select(dp => new _IndexModelItem()
             {
                 Id = dp.Id,
                 Name = dp.Name,
@@ -31,7 +31,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceProfile
             {
                 foreach (var dp in m.DeviceProfiles)
                     if (dp.Address.HasValue)
-                        dp.AddressName = dbContext.DiscoConfiguration.OrganisationAddresses.GetAddress(dp.Address.Value).Name;
+                        dp.AddressName = Database.DiscoConfiguration.OrganisationAddresses.GetAddress(dp.Address.Value).Name;
             }
 
             return m;

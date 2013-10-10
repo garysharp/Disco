@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Disco.BI;
-using Disco.Data.Repository;
-using Disco.Models.Repository;
+﻿using Disco.Models.UI.Search;
+using Disco.Services.Authorization;
 using Disco.Services.Plugins.Features.UIExtension;
-using Disco.Models.UI.Search;
+using Disco.Services.Users;
+using Disco.Services.Web;
+using System;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Disco.Web.Controllers
 {
-    public partial class SearchController : dbAdminController
+    public partial class SearchController : AuthorizedDatabaseController
     {
         #region Query
+        [DiscoAuthorizeAny(Claims.Job.Search, Claims.Device.Search, Claims.User.Search)]
         public virtual ActionResult Query(string term, string limit = null, bool searchDetails = false)
         {
             term = term.Trim();
@@ -62,23 +61,29 @@ namespace Disco.Web.Controllers
                     m.ErrorMessage = "A search term of at least two characters is required";
                     return View(m);
                 }
-                m.Devices = BI.DeviceBI.Searching.Search(dbContext, term, null, searchDetails);
-                m.Jobs = BI.JobBI.Searching.Search(dbContext, term, null, true, searchDetails);
-                m.Users = BI.UserBI.Searching.Search(dbContext, term);
+                if (Authorization.Has(Claims.Job.Search))
+                    m.Jobs = BI.JobBI.Searching.Search(Database, term, null, true, searchDetails);
+
+                if (Authorization.Has(Claims.Device.Search))
+                    m.Devices = BI.DeviceBI.Searching.Search(Database, term, null, searchDetails);
+
+                if (Authorization.Has(Claims.User.Search))
+                    m.Users = BI.UserBI.Searching.Search(Database, term);
             }
             else
             {
                 switch (limit.ToLower())
                 {
                     case "devicemodel":
+                        Authorization.Require(Claims.Device.Search);
                         int deviceModelId;
                         if (int.TryParse(term, out deviceModelId))
                         {
-                            var vm = dbContext.DeviceModels.Find(deviceModelId);
+                            var vm = Database.DeviceModels.Find(deviceModelId);
                             if (vm != null)
                             {
                                 m.FriendlyTerm = string.Format("Device Model: {0}", vm.ToString());
-                                m.Devices = BI.DeviceBI.Searching.SearchDeviceModel(dbContext, vm.Id);
+                                m.Devices = BI.DeviceBI.Searching.SearchDeviceModel(Database, vm.Id);
                                 break;
                             }
                         }
@@ -87,14 +92,15 @@ namespace Disco.Web.Controllers
                         m.ErrorMessage = "Invalid Device Model Id";
                         break;
                     case "deviceprofile":
+                        Authorization.Require(Claims.Device.Search);
                         int deviceProfileId;
                         if (int.TryParse(term, out deviceProfileId))
                         {
-                            var dp = dbContext.DeviceProfiles.Find(deviceProfileId);
+                            var dp = Database.DeviceProfiles.Find(deviceProfileId);
                             if (dp != null)
                             {
                                 m.FriendlyTerm = string.Format("Device Profile: {0}", dp.ToString());
-                                m.Devices = BI.DeviceBI.Searching.SearchDeviceProfile(dbContext, dp.Id);
+                                m.Devices = BI.DeviceBI.Searching.SearchDeviceProfile(Database, dp.Id);
                                 break;
                             }
                         }
@@ -103,14 +109,15 @@ namespace Disco.Web.Controllers
                         m.ErrorMessage = "Invalid Device Profile Id";
                         break;
                     case "devicebatch":
+                        Authorization.Require(Claims.Device.Search);
                         int deviceBatchId;
                         if (int.TryParse(term, out deviceBatchId))
                         {
-                            var db = dbContext.DeviceBatches.Find(deviceBatchId);
+                            var db = Database.DeviceBatches.Find(deviceBatchId);
                             if (db != null)
                             {
                                 m.FriendlyTerm = string.Format("Device Batch: {0}", db.ToString());
-                                m.Devices = BI.DeviceBI.Searching.SearchDeviceBatch(dbContext, db.Id);
+                                m.Devices = BI.DeviceBI.Searching.SearchDeviceBatch(Database, db.Id);
                                 break;
                             }
                         }
@@ -119,19 +126,21 @@ namespace Disco.Web.Controllers
                         m.ErrorMessage = "Invalid Device Batch Id";
                         break;
                     case "devices":
+                        Authorization.Require(Claims.Device.Search);
                         if (term.Length < 2)
                         {
                             m.Success = false;
                             m.ErrorMessage = "A search term of at least two characters is required";
                             return View(m);
                         }
-                        m.Devices = BI.DeviceBI.Searching.Search(dbContext, term, null, searchDetails);
+                        m.Devices = BI.DeviceBI.Searching.Search(Database, term, null, searchDetails);
                         if (m.Devices.Count == 1)
                         {
                             return RedirectToAction(MVC.Device.Show(m.Devices[0].SerialNumber));
                         }
                         break;
                     case "jobs":
+                        Authorization.Require(Claims.Job.Search);
                         if (term.Length < 2 && termInt < 0)
                         {
                             m.Success = false;
@@ -140,28 +149,30 @@ namespace Disco.Web.Controllers
                         }
                         if (termInt >= 0)
                         { // Term is a Number - Check for JobId
-                            if (dbContext.Jobs.Count(j => j.Id == termInt) == 1)
+                            if (Database.Jobs.Count(j => j.Id == termInt) == 1)
                             {
                                 return RedirectToAction(MVC.Job.Show(termInt));
                             }
                         }
-                        m.Jobs = BI.JobBI.Searching.Search(dbContext, term, null, true, searchDetails);
+                        m.Jobs = BI.JobBI.Searching.Search(Database, term, null, true, searchDetails);
                         break;
                     case "users":
+                        Authorization.Require(Claims.User.Search);
                         if (term.Length < 2)
                         {
                             m.Success = false;
                             m.ErrorMessage = "A search term of at least two characters is required";
                             return View(m);
                         }
-                        m.Users = BI.UserBI.Searching.Search(dbContext, term);
+                        m.Users = BI.UserBI.Searching.Search(Database, term);
                         if (m.Users.Count == 1)
                         {
                             return RedirectToAction(MVC.User.Show(m.Users[0].Id));
                         }
                         break;
                     case "deviceserialnumber":
-                        var device = dbContext.Devices.FirstOrDefault(d => d.SerialNumber == term);
+                        Authorization.Require(Claims.Device.Search);
+                        var device = Database.Devices.FirstOrDefault(d => d.SerialNumber == term);
                         if (device != null)
                             return RedirectToAction(MVC.Device.Show(term));
                         else
@@ -171,9 +182,10 @@ namespace Disco.Web.Controllers
                             return View(m);
                         }
                     case "jobid":
+                        Authorization.Require(Claims.Job.Search);
                         if (termInt >= 0)
                         {
-                            var job = dbContext.Jobs.FirstOrDefault(d => d.Id == termInt);
+                            var job = Database.Jobs.FirstOrDefault(d => d.Id == termInt);
                             if (job != null)
                                 return RedirectToAction(MVC.Job.Show(termInt));
                             else
@@ -190,14 +202,15 @@ namespace Disco.Web.Controllers
                             return View(m);
                         }
                     case "userid":
-                        var user = dbContext.Users.FirstOrDefault(u => u.Id == term);
+                        Authorization.Require(Claims.User.Search);
+                        var user = Database.Users.FirstOrDefault(u => u.Id == term);
                         if (user != null)
                             return RedirectToAction(MVC.User.Show(term));
                         else
                         {
                             try
                             {
-                                user = BI.UserBI.UserCache.GetUser(term, dbContext);
+                                user = UserService.GetUser(term, Database);
                                 if (user != null)
                                     return RedirectToAction(MVC.User.Show(term));
                                 else

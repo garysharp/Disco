@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Disco.Models.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,6 @@ namespace Disco.Models.UI.User
         Disco.Models.Repository.User User { get; set; }
         Disco.Models.BI.Job.JobTableModel Jobs { get; set; }
         List<Disco.Models.Repository.DocumentTemplate> DocumentTemplates { get; set; }
+        IClaimNavigatorItem ClaimNavigator { get; set; }
     }
 }

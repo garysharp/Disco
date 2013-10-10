@@ -1,0 +1,320 @@
+﻿@model Disco.Web.Areas.Config.Models.AuthorizationRole.ShowModel
+@using Disco.Models.Authorization;
+@{
+    Authorization.Require(Claims.DiscoAdminAccount);
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Authorization Roles", MVC.Config.AuthorizationRole.Index(null), Model.Token.Role.Name);
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
+    Html.BundleDeferred("~/Style/Fancytree");
+    Html.BundleDeferred("~/ClientScripts/Modules/jQuery-Fancytree");
+}
+<div id="Config_AuthRoles_Show" class="form" style="width: 550px">
+    <table>
+        <tr>
+            <th style="width: 150px">Id:
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Token.Role.Id)
+            </td>
+        </tr>
+        <tr>
+            <th>Name:
+            </th>
+            <td>@Html.EditorFor(model => model.Token.Role.Name)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Token_Role_Name'),
+                            'Invalid Name',
+                            '@(Url.Action(MVC.API.AuthorizationRole.UpdateName(Model.Token.Role.Id)))',
+                            'RoleName'
+                        );
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th>Linked Groups/Users:</th>
+            <td>
+                @if (Model.Token.SubjectIds.Count == 0)
+                {
+                    <span class="smallMessage">None Associated</span>
+                }
+                else
+                {
+                    <ul id="Config_AuthRoles_Subjects" class="none">
+                        @foreach (var sg in Model.Subjects)
+                        {
+                            <li class="@(sg.IsGroup ? "group" : "user")">@(sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id))</li>
+                        }
+                    </ul>
+                }
+                <div>
+                    <a id="Config_AuthRoles_Subjects_Update" href="#" class="button small">Update</a>
+                    <div id="Config_AuthRoles_Subjects_Update_Dialog" class="dialog" title="Authorization Role Linked Groups/Users">
+                        <div id="Config_AuthRoles_Subjects_Update_Dialog_ListContainer">
+                            <span id="Config_AuthRoles_Subjects_Update_Dialog_None" class="smallMessage">None Associated</span>
+                            <ul id="Config_AuthRoles_Subjects_Update_Dialog_List" class="none">
+                                @foreach (var sg in Model.Subjects)
+                                {
+                                    <li class="@(sg.IsGroup ? "group" : "user")" data-subjectid="@sg.Id">@(sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id)) <span class="remove"></span></li>
+                                }
+                            </ul>
+                        </div>
+                        <div id="Config_AuthRoles_Subjects_Update_Dialog_AddContainer">
+                            <input type="text" id="Config_AuthRoles_Subjects_Update_Dialog_TextAdd" />
+                            <a id="Config_AuthRoles_Subjects_Update_Dialog_Add" href="#" class="button small">Add</a>
+                        </div>
+                        <form id="Config_AuthRoles_Subjects_Update_Dialog_Form" action="@(Url.Action(MVC.API.AuthorizationRole.UpdateSubjects(Model.Token.Role.Id, null, true)))" method="post"></form>
+                    </div>
+                    <script>
+                        (function(){
+                            var dialog, textAdd, list, noSubjects, form;
+                            
+                            function showDialog(){
+                                if (!dialog){
+                                    dialog = $('#Config_AuthRoles_Subjects_Update_Dialog').dialog({
+                                        resizable: false,
+                                        modal: true,
+                                        autoOpen: false,
+                                        width: 350,
+                                        height: 420,
+                                        buttons: {
+                                            "Save Changes": saveChanges,
+                                            Cancel: cancel
+                                        }
+                                    });
+
+                                    dialog.on('click', '.remove', remove);
+
+                                    list = $('#Config_AuthRoles_Subjects_Update_Dialog_List');
+                                    noSubjects = $('#Config_AuthRoles_Subjects_Update_Dialog_None');
+
+                                    textAdd = $('#Config_AuthRoles_Subjects_Update_Dialog_TextAdd');
+
+                                    textAdd.watermark('Search Subjects')
+                                        .autocomplete({
+                                            source: '@(Url.Action(MVC.API.AuthorizationRole.SearchSubjects()))',
+                                            minLength: 2,
+                                            focus: function (e, ui) {
+                                                textAdd.val(ui.item.Id);
+                                                return false;
+                                            },
+                                            select: function (e, ui) {
+                                                textAdd.val(ui.item.Id).blur();
+                                                return false;
+                                            }
+                                        }).data('ui-autocomplete')._renderItem = function (ul, item) {
+                                            return $("<li></li>")
+                                                .data("item.autocomplete", item)
+                                                .append("<a><strong>" + item.Name + "</strong><br>" + item.Id + " (" + item.Type + ")</a>")
+                                                .appendTo(ul);
+                                        };
+
+                                    $('#Config_AuthRoles_Subjects_Update_Dialog_Add').click(add);
+                                }
+
+                                dialog.dialog('open');
+
+                                updateNoSubjects();
+                                return false;
+                            }
+
+                            function cancel(){
+                                $(this).dialog("close");
+
+                                list.find('li').each(function(){
+                                    $this = $(this);
+                                    if ($this.is('[data-subjectstatus="new"]')){
+                                        $this.remove();
+                                    }else{
+                                        if ($this.is('[data-subjectstatus="removed"]')){
+                                            $this.show();
+                                        }
+                                    }
+                                });
+                            }
+
+                            function remove(){
+                                $this = $(this).closest('li');
+
+                                if ($this.is('[data-subjectstatus="new"]')){
+                                    $this.remove();
+                                }else{
+                                    $this.attr('data-subjectstatus', 'removed').hide();
+                                }
+
+                                updateNoSubjects();
+                            }
+
+                            function add(){
+                                
+                                var id = textAdd.val();
+
+                                $.ajax({
+                                    url: '@Url.Action(MVC.API.AuthorizationRole.Subject())',
+                                    method: 'get',
+                                    data: { Id: id }
+                                }).done(function(response){
+                                    if (response){
+                                        if (list.find('li[data-subjectid="'+response.Id+'"]').length == 0){
+                                            var li = $('<li>')
+                                                .append($('<span>').text(response.Id == response.Name ?  response.Id : response.Name + ' [' + response.Id + ']'))
+                                                .append($('<span>').addClass('remove'))
+                                                .addClass(response.Type)
+                                                .attr('data-subjectid', response.Id)
+                                                .attr('data-subjectstatus', 'new');
+
+                                            list.append(li);
+
+                                            updateNoSubjects();                                        
+                                        }else{
+                                            alert('That subject has already been added');
+                                        }
+                                    }else{
+                                        alert('Unknown Id');
+                                    }
+                                }).fail(function(jqXHR, textStatus, errorThrown){
+                                    alert('Error: ' + errorThrown);
+                                });
+                                }
+
+                            function updateNoSubjects(){
+                                if (list.find('li:visible').length > 0)
+                                    noSubjects.hide();
+                                else
+                                    noSubjects.show();
+                            }
+
+                            function saveChanges(){
+                                var form = $('#Config_AuthRoles_Subjects_Update_Dialog_Form').empty();
+
+                                list.find('li[data-subjectstatus!="removed"]').each(function(){
+                                    var subjectId = $(this).attr('data-subjectid');
+                                    
+                                    form.append($('<input>').attr({
+                                        'name': 'Subjects',
+                                        'type': 'hidden'
+                                    }).val(subjectId));
+
+                                }).get();
+
+                                form.submit();
+
+                                dialog.dialog("disable");
+                                dialog.dialog("option", "buttons", null);
+                            }
+
+                            $(function(){
+                                $('#Config_AuthRoles_Subjects_Update').click(showDialog);
+                            });
+
+                        })();
+                    </script>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div id="Config_AuthRoles_Claims_Tree">
+                </div>
+                <div>
+                    <a href="#" id="Config_AuthRoles_Claims_SaveChanges" class="button small disabled">Save Changes</a>@AjaxHelpers.AjaxLoader()
+                </div>
+                <script>
+                    (function(){
+                        var claimNodes = @(new HtmlString(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ClaimNavigatorFancyTreeNodes)));
+
+                        $(function(){
+                            var saveButton = $('#Config_AuthRoles_Claims_SaveChanges');
+                            var ajaxLoading = saveButton.next('.ajaxLoading');
+
+                            var tree = $('#Config_AuthRoles_Claims_Tree').fancytree({
+                                source: claimNodes,
+                                checkbox: true,
+                                selectMode: 3,
+                                select: function(){
+                                    saveButton.removeClass('disabled');
+                                }
+                            });
+
+                            saveButton.click(function(){
+                                if (!saveButton.is('.disabled')){
+                                    var selectedNodes = tree.fancytree('getTree').getSelectedNodes();
+
+                                    var selectedKeys = [];
+                                    for (var i = 0; i < selectedNodes.length; i++) {
+                                        var node = selectedNodes[i];
+                                        if (!node.folder)
+                                            selectedKeys.push(node.key);
+                                    }
+
+                                    ajaxLoading.show()
+
+                                    $.ajax({
+                                        url: '@Url.Action(MVC.API.AuthorizationRole.UpdateClaims(Model.Token.Role.Id))',
+                                        method: 'post',
+                                        data: { ClaimKeys: selectedKeys },
+                                        traditional: true
+                                    }).done(function(response, result){
+                                        if (result != 'success' || response != 'OK') {
+                                            alert('Unable to save changes:\n' + response);
+                                            ajaxLoading.hide();
+                                        } else {
+                                            saveButton.addClass('disabled');
+                                            ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        }
+                                    }).fail(function(jqXHR, textStatus, errorThrown){
+                                        alert('Error: ' + errorThrown);
+                                    });
+                                }
+                                return false;
+                            });
+                        });
+                    })();
+                </script>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="actionBar">
+    @Html.ActionLinkButton("Delete", MVC.API.AuthorizationRole.Delete(Model.Token.Role.Id, true), "Config_AuthRoles_Actions_Delete_Button")
+    <div id="Config_AuthRoles_Actions_Delete_Dialog" title="Delete this Authorization Role?">
+        <p>
+            <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+            This item will be permanently deleted and cannot be recovered.<br />
+            <br />
+            Are you sure?
+        </p>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            var button = $('#Config_AuthRoles_Actions_Delete_Button');
+            var buttonDialog = $('#Config_AuthRoles_Actions_Delete_Dialog');
+            var buttonLink = button.attr('href');
+            button.attr('href', '#');
+            button.click(function () {
+                buttonDialog.dialog('open');
+                return false;
+            });
+            buttonDialog.dialog({
+                resizable: false,
+                modal: true,
+                autoOpen: false,
+                buttons: {
+                    "Delete": function () {
+                        var $this = $(this);
+                        $this.dialog("disable");
+                        $this.dialog("option", "buttons", null);
+                        window.location.href = buttonLink;
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        });
+    </script>
+</div>

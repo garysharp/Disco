@@ -28,19 +28,29 @@ namespace Disco.Web.Views.Device.DeviceParts
     using System.Web.WebPages;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services.Authorization;
+    using Disco.Services.Web;
     using Disco.Web;
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/DeviceParts/_Details.cshtml")]
-    public partial class Details : System.Web.Mvc.WebViewPage<Disco.Web.Models.Device.ShowModel>
+    public partial class Details : Disco.Services.Web.WebViewPage<Disco.Web.Models.Device.ShowModel>
     {
         public Details()
         {
         }
         public override void Execute()
         {
-WriteLiteral("<div");
+            
+            #line 2 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+  
+    Authorization.Require(Claims.Device.ShowDetails);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n<div");
 
 WriteLiteral(" id=\"DeviceDetailTab-Details\"");
 
@@ -58,7 +68,7 @@ WriteLiteral(">\r\n            <tbody>\r\n                <tr>\r\n              
 "ress</th>\r\n                    <td>");
 
             
-            #line 8 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 11 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                     Write(Model.Device.DeviceDetails.LanMacAddress() ?? "Unknown");
 
             
@@ -68,7 +78,7 @@ WriteLiteral("</td>\r\n                </tr>\r\n                <tr>\r\n        
 "MAC Address</th>\r\n                    <td>");
 
             
-            #line 12 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 15 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                     Write(Model.Device.DeviceDetails.WLanMacAddress() ?? "Unknown");
 
             

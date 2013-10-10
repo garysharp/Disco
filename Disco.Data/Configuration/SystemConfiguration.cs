@@ -13,13 +13,13 @@ namespace Disco.Data.Configuration
 {
     public class SystemConfiguration : ConfigurationBase
     {
-        public SystemConfiguration(DiscoDataContext dbContext)
-            : base(dbContext)
+        public SystemConfiguration(DiscoDataContext Database)
+            : base(Database)
         {
             // Init Modules
-            this.moduleBootstrapperConfiguration = new Lazy<Modules.BootstrapperConfiguration>(() => new Modules.BootstrapperConfiguration(dbContext));
-            this.moduleDeviceProfilesConfiguration = new Lazy<Modules.DeviceProfilesConfiguration>(() => new Modules.DeviceProfilesConfiguration(dbContext));
-            this.moduleOrganisationAddressesConfiguration = new Lazy<Modules.OrganisationAddressesConfiguration>(() => new Modules.OrganisationAddressesConfiguration(dbContext));
+            this.moduleBootstrapperConfiguration = new Lazy<Modules.BootstrapperConfiguration>(() => new Modules.BootstrapperConfiguration(Database));
+            this.moduleDeviceProfilesConfiguration = new Lazy<Modules.DeviceProfilesConfiguration>(() => new Modules.DeviceProfilesConfiguration(Database));
+            this.moduleOrganisationAddressesConfiguration = new Lazy<Modules.OrganisationAddressesConfiguration>(() => new Modules.OrganisationAddressesConfiguration(Database));
         }
 
         #region Configuration Modules

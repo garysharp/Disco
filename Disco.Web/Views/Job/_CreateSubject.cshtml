@@ -1,4 +1,7 @@
 ﻿@model Disco.Web.Models.Job.CreateModel
+@{
+    Authorization.Require(Claims.Job.Actions.Create);
+}
 <table>
     <tr>
         <td>
@@ -19,7 +22,7 @@
             { 
                 <span><strong>Serial Number:</strong> @Model.Device.SerialNumber</span><br />
                 <span><strong>Name:</strong> @Model.Device.ComputerName</span><br />
-                <span><strong>Model:</strong> @Model.Device.DeviceModel.ToString()</span><br />
+                <span><strong>Model:</strong> @Model.Device.DeviceModel.ToString()</span>
             }
         </td>
         <td>
@@ -33,8 +36,7 @@
             else
             {
                 <span><strong>Id:</strong> @Model.User.Id</span><br />
-                <span><strong>Name:</strong> @Model.User.DisplayName</span><br />
-                <span><strong>Type:</strong> @Model.User.Type</span>
+                <span><strong>Name:</strong> @Model.User.DisplayName</span>
             }
         </td>
     </tr>

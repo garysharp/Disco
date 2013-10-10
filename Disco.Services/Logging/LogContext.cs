@@ -70,10 +70,10 @@ namespace Disco.Services.Logging
             }
         }
 
-        private static void InitalizeDatabase(Targets.LogPersistContext logDbContext)
+        private static void InitalizeDatabase(Targets.LogPersistContext LogDatabase)
         {
             // Add Modules
-            var existingModules = logDbContext.Modules.Include("EventTypes").ToDictionary(m => m.Id);
+            var existingModules = LogDatabase.Modules.Include("EventTypes").ToDictionary(m => m.Id);
             foreach (var module in LogModules)
             {
                 // Update/Insert Module
@@ -95,7 +95,7 @@ namespace Disco.Services.Logging
                         Name = module.Value.ModuleName,
                         Description = module.Value.ModuleDescription
                     };
-                    logDbContext.Modules.Add(dbModule);
+                    LogDatabase.Modules.Add(dbModule);
                 }
                 // Update/Insert Event Types
                 Dictionary<int, Models.LogEventType> existingEventTypes = (dbModule.EventTypes == null) ? new Dictionary<int, Models.LogEventType>() : dbModule.EventTypes.ToDictionary(et => et.Id);
@@ -123,17 +123,17 @@ namespace Disco.Services.Logging
                             Severity = eventType.Value.Severity,
                             Format = eventType.Value.Format
                         };
-                        logDbContext.EventTypes.Add(dbEventType);
+                        LogDatabase.EventTypes.Add(dbEventType);
                     }
                 }
             }
 
-            logDbContext.SaveChanges();
+            LogDatabase.SaveChanges();
         }
 
-        public static string LogFileBasePath(DiscoDataContext DiscoContext)
+        public static string LogFileBasePath(DiscoDataContext Database)
         {
-            var logDirectoryBase = Path.Combine(DiscoContext.DiscoConfiguration.DataStoreLocation, "Logs");
+            var logDirectoryBase = Path.Combine(Database.DiscoConfiguration.DataStoreLocation, "Logs");
             // Create Directory Structure
             if (!Directory.Exists(logDirectoryBase))
             {
@@ -155,9 +155,9 @@ namespace Disco.Services.Logging
             return logDirectoryBase;
         }
 
-        public static string LogFilePath(DiscoDataContext DiscoContext, DateTime Date, bool CreateDirectory = true)
+        public static string LogFilePath(DiscoDataContext Database, DateTime Date, bool CreateDirectory = true)
         {
-            var logDirectoryBase = LogFileBasePath(DiscoContext);
+            var logDirectoryBase = LogFileBasePath(Database);
             var logDirectory = Path.Combine(logDirectoryBase, Date.Year.ToString());
             if (CreateDirectory && !Directory.Exists(logDirectory))
             {
@@ -167,11 +167,11 @@ namespace Disco.Services.Logging
             return Path.Combine(logDirectory, logFileName);
         }
 
-        internal static void ReInitalize(DiscoDataContext DiscoContext)
+        internal static void ReInitalize(DiscoDataContext Database)
         {
             lock (_CurrentLock)
             {
-                var logPath = LogFilePath(DiscoContext, DateTime.Today);
+                var logPath = LogFilePath(Database, DateTime.Today);
 
                 //var connectionString = string.Format("Data Source=\"{0}\"", logPath);
 
@@ -204,7 +204,7 @@ namespace Disco.Services.Logging
             try
             {
                 // Get Yesterdays Log
-                var yesterdaysLogPath = LogFilePath(DiscoContext, DateTime.Today.AddDays(-1), false);
+                var yesterdaysLogPath = LogFilePath(Database, DateTime.Today.AddDays(-1), false);
                 if (File.Exists(yesterdaysLogPath))
                 {
                     SqlCeConnectionStringBuilder sqlCeCSB = new SqlCeConnectionStringBuilder();
@@ -229,9 +229,9 @@ namespace Disco.Services.Logging
         }
 
         private static IScheduler _ReInitializeScheduler;
-        public static void Initalize(DiscoDataContext DiscoContext, ISchedulerFactory SchedulerFactory)
+        public static void Initalize(DiscoDataContext Database, ISchedulerFactory SchedulerFactory)
         {
-            ReInitalize(DiscoContext);
+            ReInitalize(Database);
 
             _ReInitializeScheduler = SchedulerFactory.GetScheduler();
 

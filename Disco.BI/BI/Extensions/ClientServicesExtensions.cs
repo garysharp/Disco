@@ -6,6 +6,7 @@ using Disco.Models.ClientServices;
 using System.Web;
 using Disco.Data.Repository;
 using Disco.Models.Repository;
+using Disco.Services.Users;
 
 namespace Disco.BI.Extensions
 {
@@ -20,10 +21,10 @@ namespace Disco.BI.Extensions
             if (HttpContext.Current.Request.IsAuthenticated)
                 username = HttpContext.Current.User.Identity.Name;
 
-            using (DiscoDataContext dbContext = new DiscoDataContext())
+            using (DiscoDataContext database = new DiscoDataContext())
             {
-                EnrolResponse response = DeviceBI.DeviceEnrol.Enrol(dbContext, username, request);
-                dbContext.SaveChanges();
+                EnrolResponse response = DeviceBI.DeviceEnrol.Enrol(database, username, request);
+                database.SaveChanges();
                 return response;
             }
         }
@@ -40,14 +41,14 @@ namespace Disco.BI.Extensions
             if (username == null)
                 throw new InvalidOperationException("Unauthenticated Http Context");
 
-            using (DiscoDataContext dbContext = new DiscoDataContext())
+            using (DiscoDataContext database = new DiscoDataContext())
             {
-                User user = UserBI.UserCache.GetUser(username, dbContext, true);
+                User user = UserService.GetUser(username, database, true);
                 WhoAmIResponse response = new WhoAmIResponse()
                 {
                     Username = user.Id,
                     DisplayName = user.DisplayName,
-                    Type = user.Type
+                    Type = "TODO!"
                 };
                 return response;
             }
@@ -58,10 +59,10 @@ namespace Disco.BI.Extensions
             if (HttpContext.Current == null)
                 throw new PlatformNotSupportedException("This function can only be accessed from within ASP.NET");
 
-            using (DiscoDataContext dbContext = new DiscoDataContext())
+            using (DiscoDataContext database = new DiscoDataContext())
             {
-                MacEnrolResponse response = DeviceBI.DeviceEnrol.MacEnrol(dbContext, request, false);
-                dbContext.SaveChanges();
+                MacEnrolResponse response = DeviceBI.DeviceEnrol.MacEnrol(database, request, false);
+                database.SaveChanges();
                 return response;
             }
         }

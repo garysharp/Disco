@@ -1,5 +1,10 @@
 ﻿@model Disco.Web.Areas.Config.Models.Enrolment.IndexModel
 @{
+    Authorization.Require(Claims.Config.Enrolment.Show);
+
+    var canConfig = Authorization.Has(Claims.Config.Enrolment.Configure);
+    var canShowStatus = Authorization.Has(Claims.Config.Enrolment.ShowStatus);
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Enrolment");
 }
 <div class="form" style="width: 530px;">
@@ -8,7 +13,9 @@
         <tr>
             <th>Username:
             </th>
-            <td>@Html.TextBoxFor(model => model.MacSshUsername)
+            <td>@if (canConfig)
+                {
+                @Html.TextBoxFor(model => model.MacSshUsername)
                 @AjaxHelpers.AjaxSave()
                 @AjaxHelpers.AjaxLoader()
                 <script type="text/javascript">
@@ -50,12 +57,26 @@
                     });
                     });
                 </script>
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(Model.MacSshUsername))
+                    {
+                <span class="smallMessage">&lt;None Specified&gt;</span>
+                    }
+                    else
+                    {
+                @Model.MacSshUsername
+                    }
+                }
             </td>
         </tr>
+
         <tr>
             <th>Password:
             </th>
-            <td>
+            <td>@if (canConfig)
+                {
                 <input id="MacSshPassword" type="password" />
                 @AjaxHelpers.AjaxSave()
                 @AjaxHelpers.AjaxLoader()
@@ -98,6 +119,11 @@
                     });
                     });
                 </script>
+                }
+                else
+                {
+                <text>********</text>
+                }
             </td>
         </tr>
         <tr>
@@ -115,8 +141,10 @@
         </tr>
     </table>
 </div>
-<h2>Live Enrolment Logging</h2>
-@Html.Partial(MVC.Config.Shared.Views.LogEvents, new Disco.Web.Areas.Config.Models.Shared.LogEventsModel()
+@if (canShowStatus && Authorization.Has(Claims.Config.Logging.Show))
+{
+    <h2>Live Enrolment Logging</h2>
+    @Html.Partial(MVC.Config.Shared.Views.LogEvents, new Disco.Web.Areas.Config.Models.Shared.LogEventsModel()
 {
     IsLive = true,
     TakeFilter = 100,
@@ -124,7 +152,14 @@
     ModuleFilter = Disco.BI.DeviceBI.EnrolmentLog.Current,
     ViewPortHeight = 250
 })
+}
 <div class="actionBar">
-    @Html.ActionLinkButton("Download Bootstrapper", MVC.Services.Client.Bootstrapper())
-    @Html.ActionLinkButton("Enrolment Status", MVC.Config.Enrolment.Status())
+    @if (Authorization.Has(Claims.Config.Enrolment.DownloadBootstrapper))
+    {
+        @Html.ActionLinkButton("Download Bootstrapper", MVC.Services.Client.Bootstrapper())
+    }
+    @if (canShowStatus)
+    {
+        @Html.ActionLinkButton("Enrolment Status", MVC.Config.Enrolment.Status())
+    }
 </div>

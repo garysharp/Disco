@@ -28,12 +28,14 @@ namespace Disco.Web.Areas.Config.Views.DeviceProfile
     using System.Web.WebPages;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services.Authorization;
+    using Disco.Services.Web;
     using Disco.Web;
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Config/Views/DeviceProfile/Create.cshtml")]
-    public partial class Create : System.Web.Mvc.WebViewPage<Disco.Web.Areas.Config.Models.DeviceProfile.CreateModel>
+    public partial class Create : Disco.Services.Web.WebViewPage<Disco.Web.Areas.Config.Models.DeviceProfile.CreateModel>
     {
         public Create()
         {
@@ -43,6 +45,8 @@ namespace Disco.Web.Areas.Config.Views.DeviceProfile
             
             #line 2 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
   
+    Authorization.RequireAll(Claims.Config.DeviceProfile.Create, Claims.Config.DeviceProfile.Configure);
+    
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Profiles", MVC.Config.DeviceProfile.Index(null), "Create");
 
             
@@ -51,7 +55,7 @@ namespace Disco.Web.Areas.Config.Views.DeviceProfile
 WriteLiteral("\r\n");
 
             
-            #line 5 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
+            #line 7 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
  using (Html.BeginForm())
 { 
     
@@ -59,14 +63,14 @@ WriteLiteral("\r\n");
             #line default
             #line hidden
             
-            #line 7 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
+            #line 9 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
 Write(Html.ValidationSummary(false));
 
             
             #line default
             #line hidden
             
-            #line 7 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
+            #line 9 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
                                   
 
             
@@ -84,7 +88,7 @@ WriteLiteral(">\r\n        <table>\r\n            <tr>\r\n                <th>\r
 WriteLiteral("                ");
 
             
-            #line 15 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
+            #line 17 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
            Write(Html.TextBoxFor(model => model.DeviceProfile.Name));
 
             
@@ -93,7 +97,7 @@ WriteLiteral("                ");
 WriteLiteral("<br />");
 
             
-            #line 15 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
+            #line 17 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
                                                                     Write(Html.ValidationMessageFor(model => model.DeviceProfile.Name));
 
             
@@ -103,7 +107,7 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>
 ">\r\n                    Short Name:\r\n                </th>\r\n                <td>");
 
             
-            #line 22 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
+            #line 24 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
                Write(Html.TextBoxFor(model => model.DeviceProfile.ShortName));
 
             
@@ -112,7 +116,7 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>
 WriteLiteral("<br />");
 
             
-            #line 22 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
+            #line 24 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
                                                                              Write(Html.ValidationMessageFor(model => model.DeviceProfile.ShortName));
 
             
@@ -123,7 +127,7 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>
 "");
 
             
-            #line 29 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
+            #line 31 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
                Write(Html.TextBoxFor(model => model.DeviceProfile.Description));
 
             
@@ -132,7 +136,7 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>
 WriteLiteral("<br />");
 
             
-            #line 29 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
+            #line 31 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
                                                                                Write(Html.ValidationMessageFor(model => model.DeviceProfile.Description));
 
             
@@ -143,7 +147,7 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n        </table>
 WriteLiteral("        ");
 
             
-            #line 33 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
+            #line 35 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
    Write(Html.HiddenFor(model => model.DeviceProfile.ComputerNameTemplate));
 
             
@@ -154,7 +158,7 @@ WriteLiteral("\r\n");
 WriteLiteral("        ");
 
             
-            #line 34 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
+            #line 36 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
    Write(Html.HiddenFor(model => model.DeviceProfile.ProvisionADAccount));
 
             
@@ -165,7 +169,7 @@ WriteLiteral("\r\n");
 WriteLiteral("        ");
 
             
-            #line 35 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
+            #line 37 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
    Write(Html.HiddenFor(model => model.DeviceProfile.DistributionType));
 
             
@@ -193,7 +197,7 @@ WriteLiteral(">\r\n        $(function () {\r\n            $(\'#Name\').focus().s
 "\r\n    </script>\r\n");
 
             
-            #line 45 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
+            #line 47 "..\..\Areas\Config\Views\DeviceProfile\Create.cshtml"
 }
 
             

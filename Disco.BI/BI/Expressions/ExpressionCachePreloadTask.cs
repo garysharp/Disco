@@ -17,7 +17,7 @@ namespace Disco.BI.Expressions
         public override bool SingleInstanceTask { get { return true; } }
         public override bool CancelInitiallySupported { get { return false; } }
 
-        public override void InitalizeScheduledTask(DiscoDataContext dbContext)
+        public override void InitalizeScheduledTask(DiscoDataContext Database)
         {
             // Run in Background 1 Second after Scheduled (on App Startup)
             TriggerBuilder triggerBuilder = TriggerBuilder.Create().StartAt(new DateTimeOffset(DateTime.Now).AddSeconds(5));
@@ -28,9 +28,9 @@ namespace Disco.BI.Expressions
         protected override void ExecuteTask()
         {
             // Cache Document Template Filter Expressions
-            using (DiscoDataContext dbContext = new DiscoDataContext())
+            using (DiscoDataContext database = new DiscoDataContext())
             {
-                foreach (var documentTemplate in dbContext.DocumentTemplates.Where(dt => dt.FilterExpression != null && dt.FilterExpression != string.Empty))
+                foreach (var documentTemplate in database.DocumentTemplates.Where(dt => dt.FilterExpression != null && dt.FilterExpression != string.Empty))
                 {
                     if (!string.IsNullOrWhiteSpace(documentTemplate.FilterExpression))
                         documentTemplate.FilterExpressionFromCache();

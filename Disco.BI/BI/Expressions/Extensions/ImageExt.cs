@@ -26,39 +26,39 @@ namespace Disco.BI.Expressions.Extensions
             string AbsoluteFilePath = System.IO.Path.Combine(DataStoreLocation, RelativeFilePath);
             return new FileImageExpressionResult(AbsoluteFilePath);
         }
-        public static FileImageExpressionResult JobAttachmentFirstImage(Job Job, DiscoDataContext dbContext)
+        public static FileImageExpressionResult JobAttachmentFirstImage(Job Job, DiscoDataContext Database)
         {
             var attachment = Job.JobAttachments.FirstOrDefault(ja => ja.MimeType.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase));
             if (attachment != null)
             {
-                var filename = attachment.RepositoryFilename(dbContext);
+                var filename = attachment.RepositoryFilename(Database);
                 return new FileImageExpressionResult(filename);
             }
             else
                 return null;
         }
-        public static FileImageExpressionResult JobAttachmentLastImage(Job Job, DiscoDataContext dbContext)
+        public static FileImageExpressionResult JobAttachmentLastImage(Job Job, DiscoDataContext Database)
         {
             var attachment = Job.JobAttachments.LastOrDefault(ja => ja.MimeType.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase));
             if (attachment != null)
             {
-                var filename = attachment.RepositoryFilename(dbContext);
+                var filename = attachment.RepositoryFilename(Database);
                 return new FileImageExpressionResult(filename);
             }
             else
                 return null;
         }
-        public static FileImageExpressionResult JobAttachmentImage(JobAttachment JobAttachment, DiscoDataContext dbContext)
+        public static FileImageExpressionResult JobAttachmentImage(JobAttachment JobAttachment, DiscoDataContext Database)
         {
             if (JobAttachment == null)
                 throw new ArgumentNullException("JobAttachment");
             if (!JobAttachment.MimeType.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase))
                 throw new ArgumentException("Invalid Image MimeType for Attachment");
 
-            var filename = JobAttachment.RepositoryFilename(dbContext);
+            var filename = JobAttachment.RepositoryFilename(Database);
             return new FileImageExpressionResult(filename);
         }
-        public static FileMontageImageExpressionResult JobAttachmentImageMontage(Job Job, DiscoDataContext dbContext)
+        public static FileMontageImageExpressionResult JobAttachmentImageMontage(Job Job, DiscoDataContext Database)
         {
             if (Job == null)
                 throw new ArgumentNullException("Job");
@@ -69,14 +69,14 @@ namespace Disco.BI.Expressions.Extensions
 
             if (attachments.Count > 0)
             {
-                var attachmentFilepaths = attachments.Select(a => a.RepositoryFilename(dbContext)).ToList();
+                var attachmentFilepaths = attachments.Select(a => a.RepositoryFilename(Database)).ToList();
 
                 return new FileMontageImageExpressionResult(attachmentFilepaths);
             }
             else
                 return null;
         }
-        public static FileMontageImageExpressionResult JobAttachmentsImageMontage(ArrayList JobAttachments, DiscoDataContext dbContext)
+        public static FileMontageImageExpressionResult JobAttachmentsImageMontage(ArrayList JobAttachments, DiscoDataContext Database)
         {
             if (JobAttachments == null)
                 throw new ArgumentNullException("JobAttachments");
@@ -85,7 +85,7 @@ namespace Disco.BI.Expressions.Extensions
 
             if (attachments.Count > 0)
             {
-                var attachmentFilepaths = attachments.Select(a => a.RepositoryFilename(dbContext)).ToList();
+                var attachmentFilepaths = attachments.Select(a => a.RepositoryFilename(Database)).ToList();
 
                 return new FileMontageImageExpressionResult(attachmentFilepaths);
             }

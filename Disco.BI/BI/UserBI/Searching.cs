@@ -5,6 +5,7 @@ using System.Text;
 using Disco.Models.BI.Search;
 using Disco.Models.Repository;
 using Disco.Data.Repository;
+using Disco.Services.Users;
 
 namespace Disco.BI.UserBI
 {
@@ -32,7 +33,7 @@ namespace Disco.BI.UserBI
             }).ToList();
         }
 
-        public static List<UserSearchResultItem> Search(DiscoDataContext dbContext, string Term, int? LimitCount = null)
+        public static List<UserSearchResultItem> Search(DiscoDataContext Database, string Term, int? LimitCount = null)
         {
             if (string.IsNullOrWhiteSpace(Term) || Term.Length < 2)
                 throw new ArgumentException("Search Term must contain at least two characters", "Term");
@@ -41,16 +42,16 @@ namespace Disco.BI.UserBI
             var adImportedUsers = Interop.ActiveDirectory.ActiveDirectory.SearchUsers(Term).Select(adU => adU.ToRepositoryUser());
             foreach (var adU in adImportedUsers)
             {
-                var existingUser = dbContext.Users.Find(adU.Id);
+                var existingUser = Database.Users.Find(adU.Id);
                 if (existingUser != null)
                     existingUser.UpdateSelf(adU);
                 else
-                    dbContext.Users.Add(adU);
-                dbContext.SaveChanges();
-                UserCache.InvalidateValue(adU.Id);
+                    Database.Users.Add(adU);
+                Database.SaveChanges();
+                UserService.InvalidateCachedUser(adU.Id);
             }
 
-            return Search_SelectUserSearchResultItems(dbContext.Users.Where(u =>
+            return Search_SelectUserSearchResultItems(Database.Users.Where(u =>
                 u.Id.Contains(Term) ||
                 u.Surname.Contains(Term) ||
                 u.GivenName.Contains(Term) ||

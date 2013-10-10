@@ -32,7 +32,7 @@ namespace Disco.BI
                     if (deviceModel == null)
                     {
                         // Create the Device Model in a different DataContext so we don't have to commit unrelated changes
-                        using (DiscoDataContext dbContext = new DiscoDataContext())
+                        using (DiscoDataContext database = new DiscoDataContext())
                         {
                             var addDeviceModel = new DeviceModel
                             {
@@ -41,8 +41,8 @@ namespace Disco.BI
                                 ModelType = ModelType,
                                 Description = string.Format("{0} {1}", Manufacturer, Model)
                             };
-                            dbContext.DeviceModels.Add(addDeviceModel);
-                            dbContext.SaveChanges();
+                            database.DeviceModels.Add(addDeviceModel);
+                            database.SaveChanges();
                         }
 
                         // Obtain the Device Model with the in-scope DataContext

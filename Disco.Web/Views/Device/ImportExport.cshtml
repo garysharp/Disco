@@ -1,7 +1,10 @@
 ﻿@model Disco.Web.Models.Device.ImportModel
 @{
+    Authorization.RequireAny(Claims.Device.Actions.Import, Claims.Device.Actions.Export);
+
     ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import/Export Devices");
 }
+@if (Authorization.Has(Claims.Device.Actions.Import)){
 <div id="deviceImport">
     @using (Html.BeginForm(MVC.API.Device.ImportParse(), FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
@@ -185,8 +188,10 @@
             });
         </script>
     </div>
-
-    <div class="actionBar">
-        @Html.ActionLinkButton("Export All Devices", MVC.API.Device.ExportAllDevices())
-    </div>
 </div>
+}
+@if (Authorization.Has(Claims.Device.Actions.Export)){
+<div class="actionBar">
+    @Html.ActionLinkButton("Export All Devices", MVC.API.Device.ExportAllDevices())
+</div>
+}

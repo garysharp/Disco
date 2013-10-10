@@ -1,0 +1,43 @@
+﻿@model Disco.Web.Areas.Config.Models.AuthorizationRole.IndexModel
+@{
+    Authorization.Require(Claims.DiscoAdminAccount);
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Authorization Roles");
+}
+@if (Model.Tokens.Count == 0)
+{
+    <div class="form" style="width: 450px; padding: 100px 0;">
+        <h2>No authorization roles are configured</h2>
+    </div>  
+}
+else
+{
+    <table class="tableData">
+        <tr>
+            <th>Name
+            </th>
+            <th>Linked Groups/Users
+            </th>
+        </tr>
+        @foreach (var item in Model.Tokens)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Role.Name, MVC.Config.AuthorizationRole.Index(item.Role.Id))
+                </td>
+                <td>
+                    @if (item.SubjectIds.Count == 0)
+                    {
+                        <span class="smallMessage">&lt;None&gt;</span>
+                    }
+                    else
+                    {
+                        @(string.Join(", ", item.SubjectIds.OrderBy(i => i)))
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+}
+<div class="actionBar">
+    @Html.ActionLinkButton("Create Authorization Role", MVC.Config.AuthorizationRole.Create())
+</div>

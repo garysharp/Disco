@@ -13,9 +13,9 @@ namespace Disco.Data.Migrations
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(DiscoDataContext context)
+        protected override void Seed(DiscoDataContext Database)
         {
-            context.SeedDatabase();
+            Database.SeedDatabase();
         }
     }
 }

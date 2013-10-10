@@ -1,13 +1,23 @@
 ﻿@model Disco.Web.Models.Device.ShowModel
 @{
+    Authorization.Require(Claims.Device.ShowAttachments);
+
+    var canAddAttachments = Authorization.Has(Claims.Device.Actions.AddAttachments);
+    var canRemoveAnyAttachments = Authorization.Has(Claims.Device.Actions.RemoveAnyAttachments);
+    var canRemoveOwnAttachments = Authorization.Has(Claims.Device.Actions.RemoveOwnAttachments);
+
     Html.BundleDeferred("~/Style/Shadowbox");
     Html.BundleDeferred("~/ClientScripts/Modules/Shadowbox");
-    Html.BundleDeferred("~/ClientScripts/Modules/Silverlight");
+
+    if (Authorization.Has(Claims.Device.Actions.AddAttachments))
+    {
+        Html.BundleDeferred("~/ClientScripts/Modules/Silverlight");
+    }
 }
 <div id="DeviceDetailTab-Resources" class="DevicePart">
     <table id="deviceShowResources">
         <tr>
-            <td id="Attachments">
+            <td id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments")">
                 <div class="attachmentOutput">
                     @if (Model.Device.DeviceAttachments != null)
                     {
@@ -21,29 +31,34 @@
                                   { @da.DocumentTemplate.Description}
                                   else
                                   { @da.Comments }}
-                            </span><span class="author">@da.TechUser.ToString()</span><span class="remove"></span><span class="timestamp" title="@da.Timestamp.ToFullDateTime()">@da.Timestamp.ToFuzzy()</span>
+                            </span><span class="author">@da.TechUser.ToString()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && da.TechUserId == CurrentUser.Id))
+                                                                                      {<text><span class="remove"></span></text>}<span class="timestamp" title="@da.Timestamp.ToFullDateTime()">@da.Timestamp.ToFuzzy()</span>
                         </a>   
                         }
                     }
                 </div>
-                <div class="attachmentInput clearfix">
-                    <span class="action upload"></span><span class="action photo"></span>
-                </div>
+                @if (canAddAttachments)
+                {
+                    <div class="attachmentInput clearfix">
+                        <span class="action upload"></span><span class="action photo"></span>
+                    </div>
+                }
                 <script type="text/javascript">
                     Shadowbox.init({
                         skipSetup: true,
                         modal: true
                     });
                     $(function () {
+                        $Attachments = $('#Attachments');
+                        $attachmentOutput = $Attachments.find('.attachmentOutput');
+
+                        @if (canAddAttachments)
+                        {<text>
+                        //#region Add Attachments
                         if (!document.DiscoFunctions) {
                             document.DiscoFunctions = {};
                         }
                         document.DiscoFunctions.addAttachment = addAttachment;
-
-                        $Attachments = $('#Attachments');
-                        $attachmentOutput = $Attachments.find('.attachmentOutput');
-
-                        $attachmentOutput.find('span.remove').click(removeAttachment);
 
                         $('#dialogUpload').dialog({
                             autoOpen: false,
@@ -57,6 +72,101 @@
                             }
                         });
 
+
+
+                        var onLoadNavigation = null;
+                        var isLoaded = null;
+                        Silverlight.createObject(
+                                '@(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap)',
+                                $('#silverlightHostUploadAttachment').get(0),
+                                'silverlightUploadAttachment',
+                                { width: '840px', height: '500px', background: 'white', version: '4.0.60310.0' },
+                                {
+                                    onLoad: function () {
+                                        if (onLoadNavigation) {
+                                            silverlightUploadAttachment.content.Navigator.Navigate(onLoadNavigation);
+                                            isLoaded = true;
+                                        }
+                                    }
+                                },
+                                'UploadUrl=@(Url.Action(MVC.API.Device.AttachmentUpload(Model.Device.SerialNumber, null)))'
+                        );
+
+                        $attachmentInput = $Attachments.find('.attachmentInput');
+                        $attachmentInput.find('.photo').click(function () {
+                            showDialog('/WebCam');
+                        });
+                        $attachmentInput.find('.upload').click(function () {
+                            showDialog('/File');
+                        });
+
+                        silverlightUploadAttachment = $('#silverlightUploadAttachment').get(0);
+                        function showDialog(navigationPath) {
+                            $('#dialogUpload').dialog('open');
+                            if (isLoaded) {
+                                silverlightUploadAttachment.content.Navigator.Navigate(navigationPath);
+                            } else {
+                                onLoadNavigation = navigationPath;
+                            }
+                        };
+
+                        function addAttachment(id, quick) {
+                            var data = { id: id };
+                            $.ajax({
+                                url: '@Url.Action(MVC.API.Device.Attachment())',
+                                dataType: 'json',
+                                data: data,
+                                success: function (d) {
+                                    if (d.Result == 'OK') {
+                                        var a = d.Attachment;
+                                        @if (canRemoveAnyAttachments)
+                                        {<text>buildAttachment(a, true);</text>}
+                                        else if (canRemoveOwnAttachments)
+                                        {<text>buildAttachment(a, (a.AuthorId === '@(CurrentUser.Id)'));</text>}
+                                        else
+                                        {<text>buildAttachment(a, false);</text>}
+                                        
+                                    } else {
+                                        alert('Unable to add attachment: ' + d.Result);
+                                    }
+                                },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        alert('Unable to add attachment: ' + textStatus);
+                                    }
+                                });
+                        }
+
+                        function buildAttachment(a, canRemove) {
+                            var t = '<a><span class="icon"><img alt="Attachment Thumbnail" /></span><span class="comments"></span><span class="author"></span>';
+                            if (canRemove)
+                                t += '<span class="remove"></span>';
+                            t += '<span class="timestamp"></span></a>';
+
+                            var e = $(t);
+
+                            e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '@(Url.Action(MVC.API.Device.AttachmentDownload()))/' + a.Id);
+                            e.find('.icon img').attr('src', '@(Url.Action(MVC.API.Device.AttachmentThumbnail()))/' + a.Id);
+                            e.find('.comments').text(a.Comments);
+                            e.find('.author').text(a.Author);
+                            e.find('.timestamp').text(a.TimestampFuzzy).attr('title', a.TimestampFull);
+                            if (canRemove)
+                                e.find('.remove').click(removeAttachment);
+                            if (!quick)
+                                e.hide();
+                            $attachmentOutput.append(e);
+                            if (!quick)
+                                e.show('slow');
+                            if (a.MimeType.toLowerCase().indexOf('image/') == 0)
+                                e.shadowbox({ gallery: 'attachments', player: 'img', title: a.Comments });
+                        }
+
+                        //#endregion
+                        </text>}
+                        @if (canRemoveAnyAttachments || canRemoveOwnAttachments)
+                        {<text>
+                        //#region Remove Attachments
+                        $attachmentOutput.find('span.remove').click(removeAttachment);
+
                         $('#dialogRemoveAttachment').dialog({
                             resizable: false,
                             height: 140,
@@ -64,117 +174,50 @@
                             autoOpen: false
                         });
 
-                        var onLoadNavigation = null;
-                        var isLoaded = null;
-                        Silverlight.createObject(
-                                '@(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap)',
-                            $('#silverlightHostUploadAttachment').get(0),
-                            'silverlightUploadAttachment',
-                            { width: '840px', height: '500px', background: 'white', version: '4.0.60310.0' },
-                            {
-                                onLoad: function () {
-                                    if (onLoadNavigation) {
-                                        silverlightUploadAttachment.content.Navigator.Navigate(onLoadNavigation);
-                                        isLoaded = true;
-                                    }
-                                }
-                            },
-                            'UploadUrl=@(Url.Action(MVC.API.Device.AttachmentUpload(Model.Device.SerialNumber, null)))'
-                        );
+                        function removeAttachment() {
+                            $this = $(this).closest('a');
 
-                    $attachmentInput = $Attachments.find('.attachmentInput');
-                    $attachmentInput.find('.photo').click(function () {
-                        showDialog('/WebCam');
-                    });
-                    $attachmentInput.find('.upload').click(function () {
-                        showDialog('/File');
-                    });
-
-                    silverlightUploadAttachment = $('#silverlightUploadAttachment').get(0);
-                    function showDialog(navigationPath) {
-                        $('#dialogUpload').dialog('open');
-                        if (isLoaded) {
-                            silverlightUploadAttachment.content.Navigator.Navigate(navigationPath);
-                        } else {
-                            onLoadNavigation = navigationPath;
-                        }
-                    };
-                    function addAttachment(id, quick) {
-                        var data = { id: id };
-                        $.ajax({
-                            url: '@Url.Action(MVC.API.Device.Attachment())',
-                            dataType: 'json',
-                            data: data,
-                            success: function (d) {
-                                if (d.Result == 'OK') {
-                                    var a = d.Attachment;
-
-                                    var e = $('<a><span class="icon"><img alt="Attachment Thumbnail" /></span><span class="comments"></span><span class="author"></span><span class="remove"></span><span class="timestamp"></span></a>');
-
-                                    e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '@(Url.Action(MVC.API.Device.AttachmentDownload()))/' + a.Id);
-                                    e.find('.icon img').attr('src', '@(Url.Action(MVC.API.Device.AttachmentThumbnail()))/' + a.Id);
-                                    e.find('.comments').text(a.Comments);
-                                    e.find('.author').text(a.Author);
-                                    e.find('.timestamp').text(a.TimestampFuzzy).attr('title', a.TimestampFull);
-                                    e.find('.remove').click(removeAttachment);
-                                    if (!quick)
-                                        e.hide();
-                                    $attachmentOutput.append(e);
-                                    if (!quick)
-                                        e.show('slow');
-                                    if (a.MimeType.toLowerCase().indexOf('image/') == 0)
-                                        e.shadowbox({ gallery: 'attachments', player: 'img', title: a.Comments });
-                                } else {
-                                    alert('Unable to add attachment: ' + d.Result);
-                                }
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                alert('Unable to add attachment: ' + textStatus);
-                            }
-                        });
-                    }
-                    function removeAttachment() {
-                        $this = $(this).closest('a');
-
-                        var data = { id: $this.attr('data-attachmentid') };
-                        var $dialogRemoveAttachment = $('#dialogRemoveAttachment');
-                        $dialogRemoveAttachment.dialog("enable");
-                        $dialogRemoveAttachment.dialog('option', 'buttons', {
-                            "Remove": function () {
-                                $dialogRemoveAttachment.dialog("disable");
-                                $dialogRemoveAttachment.dialog("option", "buttons", null);
-                                $.ajax({
-                                    url: '@Url.Action(MVC.API.Device.AttachmentRemove())',
-                                    dataType: 'json',
-                                    data: data,
-                                    success: function (d) {
-                                        if (d == 'OK') {
-                                            $this.hide(300).delay(300).queue(function () {
-                                                var $this = $(this);
-                                                if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
-                                                    Shadowbox.removeCache(this);
-                                                $this.remove();
-                                            });
-                                        } else {
-                                            alert('Unable to remove attachment: ' + d);
+                            var data = { id: $this.attr('data-attachmentid') };
+                            var $dialogRemoveAttachment = $('#dialogRemoveAttachment');
+                            $dialogRemoveAttachment.dialog("enable");
+                            $dialogRemoveAttachment.dialog('option', 'buttons', {
+                                "Remove": function () {
+                                    $dialogRemoveAttachment.dialog("disable");
+                                    $dialogRemoveAttachment.dialog("option", "buttons", null);
+                                    $.ajax({
+                                        url: '@Url.Action(MVC.API.Device.AttachmentRemove())',
+                                        dataType: 'json',
+                                        data: data,
+                                        success: function (d) {
+                                            if (d == 'OK') {
+                                                $this.hide(300).delay(300).queue(function () {
+                                                    var $this = $(this);
+                                                    if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
+                                                        Shadowbox.removeCache(this);
+                                                    $this.remove();
+                                                });
+                                            } else {
+                                                alert('Unable to remove attachment: ' + d);
+                                            }
+                                            $dialogRemoveAttachment.dialog("close");
+                                        },
+                                        error: function (jqXHR, textStatus, errorThrown) {
+                                            alert('Unable to remove attachment: ' + textStatus);
+                                            $dialogRemoveAttachment.dialog("close");
                                         }
-                                        $dialogRemoveAttachment.dialog("close");
-                                    },
-                                    error: function (jqXHR, textStatus, errorThrown) {
-                                        alert('Unable to remove attachment: ' + textStatus);
-                                        $dialogRemoveAttachment.dialog("close");
-                                    }
-                                });
-                            },
-                            "Cancel": function () {
-                                $dialogRemoveAttachment.dialog("close");
-                            }
-                        });
+                                    });
+                                },
+                                "Cancel": function () {
+                                    $dialogRemoveAttachment.dialog("close");
+                                }
+                            });
 
-                        $dialogRemoveAttachment.dialog('open');
+                            $dialogRemoveAttachment.dialog('open');
 
-                        return false;
-                    }
+                            return false;
+                        }
+                        //#endregion
+                        </text>}
 
                     $attachmentOutput.children('a').each(function () {
                         $this = $(this);

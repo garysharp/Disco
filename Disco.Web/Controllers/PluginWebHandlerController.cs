@@ -5,12 +5,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Disco.Services.Plugins;
+using Disco.Services.Authorization;
 
 namespace Disco.Web.Controllers
 {
     public partial class PluginWebHandlerController : Controller
     {
-        [AuthorizeDiscoUsersAttribute(Disco.Models.Repository.User.Types.Admin)]
+        [DiscoAuthorize(Claims.DiscoAdminAccount)]
         [OutputCache(Duration = 0, Location = System.Web.UI.OutputCacheLocation.None)]
         public virtual ActionResult Index(string PluginId, string PluginAction)
         {

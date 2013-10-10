@@ -1,22 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Disco.BI.Extensions;
+﻿using Disco.Services.Authorization;
 using Disco.Services.Logging;
 using Disco.Services.Tasks;
+using Disco.Services.Web;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Disco.Web.Areas.API.Controllers
 {
-    public partial class LoggingController : dbAdminController
+    public partial class LoggingController : AuthorizedDatabaseController
     {
+        [DiscoAuthorize(Claims.Config.Logging.Show)]
         public virtual ActionResult Modules()
         {
             var m = LogContext.LogModules.Values.Select(lm => Models.Logs.LogModuleModel.FromLogModule(lm)).ToList();
 
             return Json(m, JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorize(Claims.Config.Logging.Show)]
         public virtual ActionResult RetrieveEvents(string Format, DateTime? Start = null, DateTime? End = null, int? ModuleId = null, List<int> EventTypeIds = null, int? Take = null)
         {
              var logRetriever = new ReadLogContext()
@@ -27,7 +30,7 @@ namespace Disco.Web.Areas.API.Controllers
                 EventTypes = EventTypeIds,
                 Take = Take
             };
-            var results = logRetriever.Query(dbContext);
+            var results = logRetriever.Query(Database);
 
             switch (Format.ToLower())
             {
@@ -46,6 +49,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
 
         }
+
         public virtual ActionResult ScheduledTaskStatus(string id)
         {
             if (string.IsNullOrEmpty(id))

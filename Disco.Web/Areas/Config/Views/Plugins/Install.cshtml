@@ -1,6 +1,10 @@
 ﻿@model Disco.Web.Areas.Config.Models.Plugins.InstallModel
 @using Disco.Services.Plugins;
 @{
+    Authorization.Require(Claims.Config.Plugin.Install);
+
+    var canInstallLocal = Authorization.Has(Claims.Config.Plugin.InstallLocal);
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Plugins", MVC.Config.Plugins.Index(), "Install Plugin");
 }
 <div id="pluginCatalog">
@@ -31,14 +35,20 @@
                         var installedPlugin = Plugins.PluginInstalled(plugin.Id) ? Plugins.GetPlugin(plugin.Id) : null;
                             <div class="pageMenuArea pluginItem@(installedPlugin != null ? " pluginInstalled" : string.Empty)">
                                 <h2 class="pluginName">@plugin.Name
-                                    @if (installedPlugin == null){
-                                    <a class="pluginInstallLink button" href="@(Url.Action(MVC.API.Plugin.Install(plugin.Id)))">Install</a>
-                                    }else{
-                                    if (Version.Parse(plugin.LatestVersion) > installedPlugin.Version){
-                                        <a class="pluginUpdateLink button" href="@(Url.Action(MVC.API.Plugin.Update(plugin.Id)))">Update</a>    
-                                    }else{
-                                        <a class="pluginInstalledLink button disabled" href="#">Installed</a>    
+                                    @if (installedPlugin == null)
+                                    {
+                                        <a class="pluginInstallLink button" href="@(Url.Action(MVC.API.Plugin.Install(plugin.Id)))">Install</a>
                                     }
+                                    else
+                                    {
+                                        if (Version.Parse(plugin.LatestVersion) > installedPlugin.Version)
+                                        {
+                                        <a class="pluginUpdateLink button" href="@(Url.Action(MVC.API.Plugin.Update(plugin.Id)))">Update</a>    
+                                        }
+                                        else
+                                        {
+                                        <a class="pluginInstalledLink button disabled" href="#">Installed</a>    
+                                        }
                                     }
                                 </h2>
                                 <div class="pluginItemBlurb">@(new HtmlString(plugin.Blurb))</div>
@@ -63,19 +73,22 @@
         <strong>Only Install plugins from a trusted source.</strong>
     </div>
 </div>
-<div id="dialogUploadPlugin" title="Install Plugin Package">
-    <div style="padding-bottom: 10px;">
-        @using (Html.BeginForm(MVC.API.Plugin.InstallLocal(), FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
-            <label for="pluginFile">Plugin Package: </label>
-            <input id="pluginFile" name="Plugin" type="file" />
-        }
+@if (canInstallLocal)
+{
+    <div id="dialogUploadPlugin" title="Install Plugin Package">
+        <div style="padding-bottom: 10px;">
+            @using (Html.BeginForm(MVC.API.Plugin.InstallLocal(), FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <label for="pluginFile">Plugin Package: </label>
+                <input id="pluginFile" name="Plugin" type="file" />
+            }
+        </div>
+        <div style="padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-error ui-corner-all">
+            <span style="margin-right: 0.3em; margin-bottom: 2em; float: left;" class="ui-icon ui-icon-alert"></span>Warning: All plugins run with the same level of network privileges as the Disco Web App.<br />
+            <strong>Only install plugins from a trusted source.</strong>
+        </div>
     </div>
-    <div style="padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-error ui-corner-all">
-        <span style="margin-right: 0.3em; margin-bottom: 2em; float: left;" class="ui-icon ui-icon-alert"></span>Warning: All plugins run with the same level of network privileges as the Disco Web App.<br />
-        <strong>Only install plugins from a trusted source.</strong>
-    </div>
-</div>
+}
 <script>
     $(function () {
         var $selectedPlugin;
@@ -132,6 +145,8 @@
             return false;
         });
 
+        @if (canInstallLocal)
+        {<text>
         // Upload
         var $dialogUpload = $('#dialogUploadPlugin').dialog({
             resizable: false,
@@ -157,9 +172,13 @@
             $dialogUpload.dialog('open');
             return false;
         });
+        </text>}
     });
 </script>
 <div class="actionBar">
     @Html.ActionLinkButton("Update Catalogue", MVC.API.Plugin.UpdateLibraryCatalogue())
-    @Html.ActionLinkButton("Install Plugin Package", MVC.API.Plugin.InstallLocal(), "buttonUpload")
+    @if (canInstallLocal)
+    {
+        @Html.ActionLinkButton("Install Plugin Package", MVC.API.Plugin.InstallLocal(), "buttonUpload")
+    }
 </div>

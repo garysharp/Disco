@@ -1,4 +1,6 @@
 ﻿@{
+    Authorization.Require(Claims.Config.DeviceBatch.ShowTimeline);
+    
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Batches", MVC.Config.DeviceBatch.Index(null), "Timeline");
     Html.BundleDeferred("~/Style/Timeline");
     Html.BundleDeferred("~/ClientScripts/Modules/Timeline");

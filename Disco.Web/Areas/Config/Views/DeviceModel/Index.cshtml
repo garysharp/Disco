@@ -1,5 +1,7 @@
 ﻿@model Disco.Web.Areas.Config.Models.DeviceModel.IndexModel
 @{
+    Authorization.Require(Claims.Config.DeviceModel.Show);
+    
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Models");
 }
 <table class="tableData">

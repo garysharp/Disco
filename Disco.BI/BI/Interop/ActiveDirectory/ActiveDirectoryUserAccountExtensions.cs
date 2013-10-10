@@ -5,11 +5,6 @@ namespace Disco.BI.Interop.ActiveDirectory
 {
     internal static class ActiveDirectoryUserAccountExtensions
     {
-        public static bool HasRole(this ActiveDirectoryUserAccount account, string Role)
-        {
-            return account.Groups != null && account.Groups.Contains(Role.ToLower());
-        }
-
         public static object GetPropertyValue(this ActiveDirectoryUserAccount account, string PropertyName, int Index = 0)
         {
             switch (PropertyName.ToLower())
@@ -17,11 +12,11 @@ namespace Disco.BI.Interop.ActiveDirectory
                 case "name":
                     return account.Name;
                 case "samaccountname":
-                    return account.sAMAccountName;
+                    return account.SamAccountName;
                 case "distinguishedname":
                     return account.DistinguishedName;
                 case "objectsid":
-                    return account.ObjectSid;
+                    return account.SecurityIdentifier;
                 case "sn":
                     return account.Surname;
                 case "givenname":

@@ -21,7 +21,7 @@ namespace Disco.Data.Repository.Monitor
         internal List<Action<RepositoryMonitorEvent>> executeAfterCommit;
 
         [JsonIgnore]
-        public DiscoDataContext dbContext { get; set; }
+        public DiscoDataContext Database { get; set; }
 
         public RepositoryMonitorEventType EventType { get; set; }
 

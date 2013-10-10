@@ -1,23 +1,23 @@
-﻿using System;
+﻿using Disco.BI.Extensions;
+using Disco.Models.UI.Config.DocumentTemplate;
+using Disco.Services.Authorization;
+using Disco.Services.Plugins.Features.UIExtension;
+using Disco.Services.Web;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Disco.BI;
-using Disco.BI.Extensions;
-using Disco.Services.Plugins.Features.UIExtension;
-using Disco.Models.UI.Config.DocumentTemplate;
 
 namespace Disco.Web.Areas.Config.Controllers
 {
-    public partial class DocumentTemplateController : dbAdminController
+    public partial class DocumentTemplateController : AuthorizedDatabaseController
     {
-
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Show)]
         public virtual ActionResult Index(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
-                var m = new Models.DocumentTemplate.IndexModel() { DocumentTemplates = dbContext.DocumentTemplates.ToList() };
+                var m = new Models.DocumentTemplate.IndexModel() { DocumentTemplates = Database.DocumentTemplates.ToList() };
 
                 // UI Extensions
                 UIExtensions.ExecuteExtensions<ConfigDocumentTemplateIndexModel>(this.ControllerContext, m);
@@ -28,10 +28,10 @@ namespace Disco.Web.Areas.Config.Controllers
             {
                 var m = new Models.DocumentTemplate.ShowModel()
                 {
-                    DocumentTemplate = dbContext.DocumentTemplates.Include("JobSubTypes").Where(at => at.Id == id).FirstOrDefault()
+                    DocumentTemplate = Database.DocumentTemplates.Include("JobSubTypes").Where(at => at.Id == id).FirstOrDefault()
                 };
-                m.TemplateExpressions = m.DocumentTemplate.ExtractPdfExpressions(dbContext);
-                m.UpdateModel(dbContext);
+                m.TemplateExpressions = m.DocumentTemplate.ExtractPdfExpressions(Database);
+                m.UpdateModel(Database);
 
                 // UI Extensions
                 UIExtensions.ExecuteExtensions<ConfigDocumentTemplateShowModel>(this.ControllerContext, m);
@@ -40,6 +40,7 @@ namespace Disco.Web.Areas.Config.Controllers
             }
         }
 
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.ShowStatus)]
         public virtual ActionResult ImportStatus()
         {
             var m = new Models.DocumentTemplate.ImportStatusModel();
@@ -49,11 +50,13 @@ namespace Disco.Web.Areas.Config.Controllers
 
             return View();
         }
+
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.UndetectedPages)]
         public virtual ActionResult UndetectedPages()
         {
             var m = new Models.DocumentTemplate.UndetectedPagesModel()
             {
-                DocumentTemplates = dbContext.DocumentTemplates.ToList()
+                DocumentTemplates = Database.DocumentTemplates.ToList()
             };
 
             // UI Extensions
@@ -62,10 +65,11 @@ namespace Disco.Web.Areas.Config.Controllers
             return View(m);
         }
 
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure)]
         public virtual ActionResult Create()
         {
             var m = new Models.DocumentTemplate.CreateModel();
-            m.UpdateModel(dbContext);
+            m.UpdateModel(Database);
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<ConfigDocumentTemplateCreateModel>(this.ControllerContext, m);
@@ -73,19 +77,19 @@ namespace Disco.Web.Areas.Config.Controllers
             return View(m);
         }
 
-        [HttpPost]
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure), HttpPost]
         public virtual ActionResult Create(Models.DocumentTemplate.CreateModel model)
         {
-            model.UpdateModel(dbContext);
+            model.UpdateModel(Database);
 
             if (ModelState.IsValid)
             {
                 // Check for Existing
-                var existing = dbContext.DocumentTemplates.Where(m => m.Id == model.DocumentTemplate.Id).FirstOrDefault();
+                var existing = Database.DocumentTemplates.Where(m => m.Id == model.DocumentTemplate.Id).FirstOrDefault();
                 if (existing == null)
                 {
 
-                    dbContext.DocumentTemplates.Add(model.DocumentTemplate);
+                    Database.DocumentTemplates.Add(model.DocumentTemplate);
 
                     if (model.DocumentTemplate.Scope == Disco.Models.Repository.DocumentTemplate.DocumentTemplateScopes.Job)
                     {
@@ -96,10 +100,10 @@ namespace Disco.Web.Areas.Config.Controllers
                         //    model.AttachmentType.JobSubTypes.Add(jobSubType);
                     }
 
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
 
                     // Save Template
-                    model.DocumentTemplate.SavePdfTemplate(dbContext, model.Template.InputStream);
+                    model.DocumentTemplate.SavePdfTemplate(Database, model.Template.InputStream);
 
                     return RedirectToAction(MVC.Config.DocumentTemplate.Index(model.DocumentTemplate.Id));
                 }
@@ -115,6 +119,7 @@ namespace Disco.Web.Areas.Config.Controllers
             return View(model);
         }
 
+        [DiscoAuthorize(Claims.Config.Show)]
         public virtual ActionResult ExpressionBrowser(string type, bool StaticDeclaredMembersOnly = false)
         {
             if (string.IsNullOrWhiteSpace(type))

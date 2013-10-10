@@ -1,9 +1,17 @@
 ﻿@model Disco.Web.Areas.Config.Models.DeviceProfile.IndexModel
 @{
+    Authorization.Require(Claims.Config.DeviceProfile.Show);
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Profiles");
 }
 @Html.Partial(MVC.Config.DeviceProfile.Views._Table, Model, new ViewDataDictionary())
 <div class="actionBar">
-    @Html.ActionLinkButton("Modify Default Profiles", MVC.Config.DeviceProfile.Defaults())
-    @Html.ActionLinkButton("Create Device Profile", MVC.Config.DeviceProfile.Create())
+    @if (Authorization.Has(Claims.Config.DeviceProfile.ConfigureDefaults))
+    {
+        @Html.ActionLinkButton("Modify Default Profiles", MVC.Config.DeviceProfile.Defaults())
+    }
+    @if (Authorization.HasAll(Claims.Config.DeviceProfile.Configure, Claims.Config.DeviceProfile.Create))
+    {
+        @Html.ActionLinkButton("Create Device Profile", MVC.Config.DeviceProfile.Create())
+    }
 </div>

@@ -26,7 +26,7 @@ namespace Disco.Services.Plugins
         [JsonIgnore]
         public Type CategoryType { get; private set; }
 
-        internal bool Initialize(DiscoDataContext dbContext, PluginManifest pluginManifest)
+        internal bool Initialize(DiscoDataContext Database, PluginManifest pluginManifest)
         {
             this.PluginManifest = pluginManifest;
 
@@ -38,7 +38,7 @@ namespace Disco.Services.Plugins
 
             using (var instance = this.CreateInstance())
             {
-                instance.Initialize(dbContext);
+                instance.Initialize(Database);
             }
 
             PluginsLog.LogInitializedPluginFeature(this.PluginManifest, this);

@@ -21,7 +21,7 @@ namespace Disco.BI.Interop.ActiveDirectory
         public override bool SingleInstanceTask { get { return true; } }
         public override bool CancelInitiallySupported { get { return false; } }
 
-        public override void InitalizeScheduledTask(DiscoDataContext dbContext)
+        public override void InitalizeScheduledTask(DiscoDataContext Database)
         {
             // ActiveDirectoryUpdateLastNetworkLogonDateJob @ 11:30pm
             TriggerBuilder triggerBuilder = TriggerBuilder.Create().
@@ -35,11 +35,11 @@ namespace Disco.BI.Interop.ActiveDirectory
             int changeCount;
 
             this.Status.UpdateStatus(1, "Starting", "Connecting to the Database and initializing the environment");
-            using (DiscoDataContext dbContext = new DiscoDataContext())
+            using (DiscoDataContext database = new DiscoDataContext())
             {
-                UpdateLastNetworkLogonDates(dbContext, this.Status);
+                UpdateLastNetworkLogonDates(database, this.Status);
                 this.Status.UpdateStatus(95, "Updating Database", "Writing last network logon dates to the Database");
-                changeCount = dbContext.SaveChanges();
+                changeCount = database.SaveChanges();
                 this.Status.Finished(string.Format("{0} Device last network logon dates updated", changeCount), "/Config/SystemConfig");
             }
 
@@ -86,7 +86,7 @@ namespace Disco.BI.Interop.ActiveDirectory
                         {
                             using (DirectoryEntry dRootEntry = ActiveDirectoryHelpers.DefaultDCLdapRoot(dcName))
                             {
-                                DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, string.Format("(&(objectClass=computer)(sAMAccountName={0}$))", ActiveDirectoryHelpers.EscapeLdapQuery(Device.ComputerName)), new string[]
+                                DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, string.Format("(&(objectCategory=Computer)(sAMAccountName={0}$))", ActiveDirectoryHelpers.EscapeLdapQuery(Device.ComputerName)), new string[]
 									{
 										"lastLogon"
 									}, SearchScope.Subtree);
@@ -150,7 +150,7 @@ namespace Disco.BI.Interop.ActiveDirectory
             UpdateLastNetworkLogonDate = false;
             return UpdateLastNetworkLogonDate;
         }
-        private static void UpdateLastNetworkLogonDates(DiscoDataContext context, ScheduledTaskStatus status)
+        private static void UpdateLastNetworkLogonDates(DiscoDataContext Database, ScheduledTaskStatus status)
         {
             System.Collections.Generic.Dictionary<string, System.DateTime> computerLastLogonDates = new System.Collections.Generic.Dictionary<string, System.DateTime>();
 
@@ -176,7 +176,7 @@ namespace Disco.BI.Interop.ActiveDirectory
                             double progressDCStart = 5 + (progressDCCount * progressDCProgress);
                             status.UpdateStatus(progressDCStart, string.Format("Querying Domain Controller: {0}", dcName), "Searching...");
 
-                            using (DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, "(objectClass=computer)", new string[] { "sAMAccountName", "lastLogon" }, SearchScope.Subtree))
+                            using (DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, "(objectCategory=Computer)", new string[] { "sAMAccountName", "lastLogon" }, SearchScope.Subtree))
                             {
                                 using (SearchResultCollection dResults = dSearcher.FindAll())
                                 {
@@ -238,7 +238,7 @@ namespace Disco.BI.Interop.ActiveDirectory
             }
 
 
-            foreach (Device d in context.Devices.Where(device => device.ComputerName != null))
+            foreach (Device d in Database.Devices.Where(device => device.ComputerName != null))
             {
                 DateTime computerLastLogonDate;
                 if (computerLastLogonDates.TryGetValue(d.ComputerName.ToUpper(), out computerLastLogonDate))

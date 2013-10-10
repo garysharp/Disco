@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authorization\IAuthorizationToken.cs" />
+    <Compile Include="Authorization\IClaimNavigatorItem.cs" />
+    <Compile Include="Authorization\IRoleToken.cs" />
     <Compile Include="BI\Config\OrganisationAddress.cs" />
     <Compile Include="BI\Device\ImportDevice.cs" />
     <Compile Include="BI\Device\ImportDeviceSession.cs" />
@@ -72,7 +75,9 @@
     <Compile Include="ClientServices\WhoAmI.cs" />
     <Compile Include="ClientServices\WhoAmIResponse.cs" />
     <Compile Include="Interop\ActiveDirectory\ActiveDirectoryMachineAccount.cs" />
+    <Compile Include="Interop\ActiveDirectory\ActiveDirectoryGroup.cs" />
     <Compile Include="Interop\ActiveDirectory\ActiveDirectoryUserAccount.cs" />
+    <Compile Include="Interop\ActiveDirectory\IActiveDirectoryObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\ConfigurationItem.cs" />
     <Compile Include="Repository\Device\Device.cs" />
@@ -98,7 +103,11 @@
     <Compile Include="Repository\User\User.cs" />
     <Compile Include="Repository\User\UserAttachment.cs" />
     <Compile Include="Repository\User\UserDetail.cs" />
+    <Compile Include="Repository\User\AuthorizationRole.cs" />
     <Compile Include="UI\BaseUIModel.cs" />
+    <Compile Include="UI\Config\AuthorizationRole\ConfigAuthorizationRoleCreateModel.cs" />
+    <Compile Include="UI\Config\AuthorizationRole\ConfigAuthorizationRoleIndexModel.cs" />
+    <Compile Include="UI\Config\AuthorizationRole\ConfigAuthorizationRoleShowModel.cs" />
     <Compile Include="UI\Config\DeviceBatch\ConfigDeviceBatchCreateModel.cs" />
     <Compile Include="UI\Config\DeviceBatch\ConfigDeviceBatchIndexModel.cs" />
     <Compile Include="UI\Config\DeviceBatch\ConfigDeviceBatchIndexModelItem.cs" />

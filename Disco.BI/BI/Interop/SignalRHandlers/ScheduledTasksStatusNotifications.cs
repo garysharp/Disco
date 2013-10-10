@@ -1,4 +1,5 @@
-﻿using Disco.Services.Tasks;
+﻿using Disco.Services.Authorization;
+using Disco.Services.Tasks;
 using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,11 @@ using System.Threading.Tasks;
 
 namespace Disco.BI.Interop.SignalRHandlers
 {
-    public class ScheduledTasksStatusNotifications : AdminAuthorizedPersistentConnection
+    public class ScheduledTasksStatusNotifications : AuthorizedPersistentConnection
     {
         public static bool initialized = false;
+
+        protected override string AuthorizedClaim { get { return Claims.DiscoAdminAccount; } }
 
         public ScheduledTasksStatusNotifications()
         {

@@ -12,8 +12,8 @@ namespace Disco.Services.Plugins
     {
         public PluginManifest Manifest { get; set; }
 
-        public abstract PluginConfigurationHandlerGetResponse Get(DiscoDataContext dbContext, Controller controller);
-        public abstract bool Post(DiscoDataContext dbContext, FormCollection form, Controller controller);
+        public abstract PluginConfigurationHandlerGetResponse Get(DiscoDataContext Database, Controller controller);
+        public abstract bool Post(DiscoDataContext Database, FormCollection form, Controller controller);
 
         public virtual void Dispose()
         {

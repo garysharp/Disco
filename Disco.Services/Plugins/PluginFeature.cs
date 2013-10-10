@@ -12,7 +12,7 @@ namespace Disco.Services.Plugins
         public PluginFeatureManifest Manifest {get; internal set;}
 
         // Allow Custom Initialization (Optional)
-        public virtual void Initialize(DiscoDataContext dbContext) { return; }
+        public virtual void Initialize(DiscoDataContext Database) { return; }
 
         public virtual void Dispose()
         {

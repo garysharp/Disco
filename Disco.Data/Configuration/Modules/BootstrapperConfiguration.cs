@@ -8,7 +8,7 @@ namespace Disco.Data.Configuration.Modules
 {
     public class BootstrapperConfiguration : ConfigurationBase
     {
-        public BootstrapperConfiguration(DiscoDataContext dbContext) : base(dbContext) { }
+        public BootstrapperConfiguration(DiscoDataContext Database) : base(Database) { }
 
         public override string Scope
         {

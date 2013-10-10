@@ -10,7 +10,7 @@ namespace Disco.BI.JobBI
 {
     public static class Utilities
     {
-        public static Job Create(DiscoDataContext dbContext, Device device, User user, JobType type, List<JobSubType> subTypes, User initialTech)
+        public static Job Create(DiscoDataContext Database, Device device, User user, JobType type, List<JobSubType> subTypes, User initialTech)
         {
             Job j = new Job()
             {
@@ -38,19 +38,19 @@ namespace Disco.BI.JobBI
             List<JobSubType> jobSubTypes = subTypes.ToList();
             j.JobSubTypes = jobSubTypes;
 
-            dbContext.Jobs.Add(j);
+            Database.Jobs.Add(j);
 
             switch (type.Id)
             {
                 case JobType.JobTypeIds.HWar:
-                    dbContext.JobMetaWarranties.Add(new JobMetaWarranty() { Job = j });
+                    Database.JobMetaWarranties.Add(new JobMetaWarranty() { Job = j });
                     break;
                 case JobType.JobTypeIds.HNWar:
-                    dbContext.JobMetaNonWarranties.Add(new JobMetaNonWarranty() { Job = j });
+                    Database.JobMetaNonWarranties.Add(new JobMetaNonWarranty() { Job = j });
                     if (device != null)
                     {
                         // Add Job Components
-                        var components = dbContext.DeviceComponents.Include("JobSubTypes").Where(c => !c.DeviceModelId.HasValue || c.DeviceModelId == j.Device.DeviceModelId);
+                        var components = Database.DeviceComponents.Include("JobSubTypes").Where(c => !c.DeviceModelId.HasValue || c.DeviceModelId == j.Device.DeviceModelId);
                         var addedComponents = new List<DeviceComponent>();
                         foreach (var c in components)
                         {
@@ -76,7 +76,7 @@ namespace Disco.BI.JobBI
                             }
                         }
                         foreach (var c in addedComponents)
-                            dbContext.JobComponents.Add(new JobComponent()
+                            Database.JobComponents.Add(new JobComponent()
                             {
                                 Job = j,
                                 TechUserId = initialTech.Id,

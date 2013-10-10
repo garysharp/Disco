@@ -12,13 +12,14 @@ using Disco.BI.Expressions;
 using System.Collections;
 using Disco.BI.Extensions;
 using Disco.Models.BI.Expressions;
+using Disco.Services.Users;
 
 namespace Disco.BI.Interop.Pdf
 {
     public static class PdfGenerator
     {
 
-        public static System.IO.Stream GenerateBulkFromTemplate(DocumentTemplate dt, DiscoDataContext dbContext, User CreatorUser, System.DateTime Timestamp, params object[] DataObjects)
+        public static System.IO.Stream GenerateBulkFromTemplate(DocumentTemplate dt, DiscoDataContext Database, User CreatorUser, System.DateTime Timestamp, params object[] DataObjects)
         {
             if (DataObjects.Length > 0)
             {
@@ -27,7 +28,7 @@ namespace Disco.BI.Interop.Pdf
                 {
                     foreach (object d in DataObjects)
                     {
-                        generatedPdfs.Add(dt.GeneratePdf(dbContext, d, CreatorUser, Timestamp, state, true));
+                        generatedPdfs.Add(dt.GeneratePdf(Database, d, CreatorUser, Timestamp, state, true));
                         state.SequenceNumber++;
                         state.FlushScopeCache();
                     }
@@ -47,24 +48,24 @@ namespace Disco.BI.Interop.Pdf
             return null;
         }
 
-        public static System.IO.Stream GenerateBulkFromTemplate(DocumentTemplate dt, DiscoDataContext dbContext, User CreatorUser, System.DateTime Timestamp, params string[] DataObjectsIds)
+        public static System.IO.Stream GenerateBulkFromTemplate(DocumentTemplate dt, DiscoDataContext Database, User CreatorUser, System.DateTime Timestamp, params string[] DataObjectsIds)
         {
             object[] DataObjects;
 
             switch (dt.Scope)
             {
                 case DocumentTemplate.DocumentTemplateScopes.Device:
-                    DataObjects = dbContext.Devices.Where(d => DataObjectsIds.Contains(d.SerialNumber)).ToArray();
+                    DataObjects = Database.Devices.Where(d => DataObjectsIds.Contains(d.SerialNumber)).ToArray();
                     break;
                 case DocumentTemplate.DocumentTemplateScopes.Job:
                     int[] intDataObjectsIds = DataObjectsIds.Select(i => int.Parse(i)).ToArray();
-                    DataObjects = dbContext.Jobs.Where(j => intDataObjectsIds.Contains(j.Id)).ToArray();
+                    DataObjects = Database.Jobs.Where(j => intDataObjectsIds.Contains(j.Id)).ToArray();
                     break;
                 case DocumentTemplate.DocumentTemplateScopes.User:
                     DataObjects = new object[DataObjectsIds.Length];
                     for (int idIndex = 0; idIndex < DataObjectsIds.Length; idIndex++)
                     {
-                        DataObjects[idIndex] = UserBI.UserCache.GetUser(DataObjectsIds[idIndex], dbContext, true);
+                        DataObjects[idIndex] = UserService.GetUser(DataObjectsIds[idIndex], Database, true);
                         if (DataObjects[idIndex] == null)
                             throw new Exception(string.Format("Unknown Username specified: {0}", DataObjectsIds[idIndex]));
                     }
@@ -73,10 +74,10 @@ namespace Disco.BI.Interop.Pdf
                     throw new InvalidOperationException("Invalid DocumentType Scope");
             }
 
-            return GenerateBulkFromTemplate(dt, dbContext, CreatorUser, Timestamp, DataObjects);
+            return GenerateBulkFromTemplate(dt, Database, CreatorUser, Timestamp, DataObjects);
         }
 
-        public static System.IO.Stream GenerateFromTemplate(DocumentTemplate dt, DiscoDataContext dbContext, object Data, User CreatorUser, System.DateTime TimeStamp, DocumentState State, bool FlattenFields = false)
+        public static System.IO.Stream GenerateFromTemplate(DocumentTemplate dt, DiscoDataContext Database, object Data, User CreatorUser, System.DateTime TimeStamp, DocumentState State, bool FlattenFields = false)
         {
             // Validate Data
             switch (dt.Scope)
@@ -97,15 +98,15 @@ namespace Disco.BI.Interop.Pdf
                     throw new InvalidOperationException("Invalid AttachmentType Scope");
             }
 
-            dbContext.Configuration.LazyLoadingEnabled = true;
+            Database.Configuration.LazyLoadingEnabled = true;
 
             // Override FlattenFields if Document Template instructs.
             if (dt.FlattenForm)
                 FlattenFields = true;
 
-            ConcurrentDictionary<string, Expression> expressionCache = dt.PdfExpressionsFromCache(dbContext);
+            ConcurrentDictionary<string, Expression> expressionCache = dt.PdfExpressionsFromCache(Database);
 
-            string templateFilename = dt.RepositoryFilename(dbContext);
+            string templateFilename = dt.RepositoryFilename(Database);
             PdfReader pdfReader = new PdfReader(templateFilename);
 
             MemoryStream pdfGeneratedStream = new MemoryStream();
@@ -114,7 +115,7 @@ namespace Disco.BI.Interop.Pdf
             pdfStamper.FormFlattening = FlattenFields;
             pdfStamper.Writer.CloseStream = false;
 
-            IDictionary expressionVariables = Expression.StandardVariables(dt, dbContext, CreatorUser, TimeStamp, State);
+            IDictionary expressionVariables = Expression.StandardVariables(dt, Database, CreatorUser, TimeStamp, State);
 
             foreach (string pdfFieldKey in pdfStamper.AcroFields.Fields.Keys)
             {
@@ -240,7 +241,7 @@ namespace Disco.BI.Interop.Pdf
                     Timestamp = DateTime.Now
                 };
                 jl.Comments = string.Format("Document Generated{0}{1} [{2}]", Environment.NewLine, dt.Description, dt.Id);
-                dbContext.JobLogs.Add(jl);
+                Database.JobLogs.Add(jl);
             }
 
             pdfGeneratedStream.Position = 0;

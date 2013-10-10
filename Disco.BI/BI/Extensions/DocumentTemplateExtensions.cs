@@ -19,13 +19,13 @@ namespace Disco.BI.Extensions
     {
         private const string DocumentTemplateExpressionCacheTemplate = "DocumentTemplate_{0}";
 
-        public static string RepositoryFilename(this DocumentTemplate dt, DiscoDataContext dbContext)
+        public static string RepositoryFilename(this DocumentTemplate dt, DiscoDataContext Database)
         {
-            return System.IO.Path.Combine(DataStore.CreateLocation(dbContext, "DocumentTemplates"), string.Format("{0}.pdf", dt.Id));
+            return System.IO.Path.Combine(DataStore.CreateLocation(Database, "DocumentTemplates"), string.Format("{0}.pdf", dt.Id));
         }
-        public static string SavePdfTemplate(this DocumentTemplate dt, DiscoDataContext dbContext, Stream TemplateFile)
+        public static string SavePdfTemplate(this DocumentTemplate dt, DiscoDataContext Database, Stream TemplateFile)
         {
-            string filePath = dt.RepositoryFilename(dbContext);
+            string filePath = dt.RepositoryFilename(Database);
             using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
             {
                 TemplateFile.CopyTo(fs);
@@ -39,14 +39,14 @@ namespace Disco.BI.Extensions
             return Interop.Pdf.PdfImporter.GetPageImages(pdfReader, PageNumber);
         }
 
-        public static ConcurrentDictionary<string, Expression> PdfExpressionsFromCache(this DocumentTemplate dt, DiscoDataContext dbContext)
+        public static ConcurrentDictionary<string, Expression> PdfExpressionsFromCache(this DocumentTemplate dt, DiscoDataContext Database)
         {
             string cacheModuleKey = string.Format(DocumentTemplateExpressionCacheTemplate, dt.Id);
             var module = Expressions.ExpressionCache.GetModule(cacheModuleKey);
             if (module == null)
             {
                 // Cache
-                string templateFilename = dt.RepositoryFilename(dbContext);
+                string templateFilename = dt.RepositoryFilename(Database);
                 PdfReader pdfReader = new PdfReader(templateFilename);
                 int pdfFieldOrdinal = 0;
                 foreach (string pdfFieldKey in pdfReader.AcroFields.Fields.Keys)
@@ -61,21 +61,21 @@ namespace Disco.BI.Extensions
             return module;
         }
 
-        public static List<BI.Expressions.Expression> ExtractPdfExpressions(this DocumentTemplate dt, DiscoDataContext dbContext)
+        public static List<BI.Expressions.Expression> ExtractPdfExpressions(this DocumentTemplate dt, DiscoDataContext Database)
         {
-            return dt.PdfExpressionsFromCache(dbContext).Values.OrderBy(e => e.Ordinal).ToList();
+            return dt.PdfExpressionsFromCache(Database).Values.OrderBy(e => e.Ordinal).ToList();
         }
-        public static System.IO.Stream GeneratePdfBulk(this DocumentTemplate dt, DiscoDataContext dbContext, User CreatorUser, System.DateTime Timestamp, params string[] DataObjectsIds)
+        public static System.IO.Stream GeneratePdfBulk(this DocumentTemplate dt, DiscoDataContext Database, User CreatorUser, System.DateTime Timestamp, params string[] DataObjectsIds)
         {
-            return Interop.Pdf.PdfGenerator.GenerateBulkFromTemplate(dt, dbContext, CreatorUser, Timestamp, DataObjectsIds);
+            return Interop.Pdf.PdfGenerator.GenerateBulkFromTemplate(dt, Database, CreatorUser, Timestamp, DataObjectsIds);
         }
-        public static System.IO.Stream GeneratePdfBulk(this DocumentTemplate dt, DiscoDataContext dbContext, User CreatorUser, System.DateTime Timestamp, params object[] DataObjects)
+        public static System.IO.Stream GeneratePdfBulk(this DocumentTemplate dt, DiscoDataContext Database, User CreatorUser, System.DateTime Timestamp, params object[] DataObjects)
         {
-            return Interop.Pdf.PdfGenerator.GenerateBulkFromTemplate(dt, dbContext, CreatorUser, Timestamp, DataObjects);
+            return Interop.Pdf.PdfGenerator.GenerateBulkFromTemplate(dt, Database, CreatorUser, Timestamp, DataObjects);
         }
-        public static System.IO.Stream GeneratePdf(this DocumentTemplate dt, DiscoDataContext dbContext, object Data, User CreatorUser, System.DateTime TimeStamp, DocumentState State, bool FlattenFields = false)
+        public static System.IO.Stream GeneratePdf(this DocumentTemplate dt, DiscoDataContext Database, object Data, User CreatorUser, System.DateTime TimeStamp, DocumentState State, bool FlattenFields = false)
         {
-            return Interop.Pdf.PdfGenerator.GenerateFromTemplate(dt, dbContext, Data, CreatorUser, TimeStamp, State, FlattenFields);
+            return Interop.Pdf.PdfGenerator.GenerateFromTemplate(dt, Database, Data, CreatorUser, TimeStamp, State, FlattenFields);
         }
 
         public static Expression FilterExpressionFromCache(this DocumentTemplate dt)
@@ -86,12 +86,12 @@ namespace Disco.BI.Extensions
         {
             ExpressionCache.InvalidateKey("DocumentTemplateFilterExpression", dt.Id);
         }
-        public static bool FilterExpressionMatches(this DocumentTemplate dt, object Data, DiscoDataContext DataContext, User User, System.DateTime TimeStamp, DocumentState State)
+        public static bool FilterExpressionMatches(this DocumentTemplate dt, object Data, DiscoDataContext Database, User User, System.DateTime TimeStamp, DocumentState State)
         {
             if (!string.IsNullOrEmpty(dt.FilterExpression))
             {
                 Expression compiledExpression = dt.FilterExpressionFromCache();
-                System.Collections.IDictionary evaluatorVariables = Expression.StandardVariables(dt, DataContext, User, TimeStamp, State);
+                System.Collections.IDictionary evaluatorVariables = Expression.StandardVariables(dt, Database, User, TimeStamp, State);
                 try
                 {
                     object er = compiledExpression.EvaluateFirst<object>(Data, evaluatorVariables);
@@ -170,14 +170,14 @@ namespace Disco.BI.Extensions
                 Page
             );
         }
-        public static List<RectangleF> QRCodeLocations(this DocumentTemplate dt, DiscoDataContext dbContext)
+        public static List<RectangleF> QRCodeLocations(this DocumentTemplate dt, DiscoDataContext Database)
         {
-            return DocumentTemplateBI.DocumentTemplateQRCodeLocationCache.GetLocations(dt, dbContext);
+            return DocumentTemplateBI.DocumentTemplateQRCodeLocationCache.GetLocations(dt, Database);
         }
-        public static void Delete(this DocumentTemplate dt, DiscoDataContext Context)
+        public static void Delete(this DocumentTemplate dt, DiscoDataContext Database)
         {
             // Find & Rename all references
-            foreach (DeviceAttachment a in Context.DeviceAttachments.Where(a => a.DocumentTemplateId == dt.Id))
+            foreach (DeviceAttachment a in Database.DeviceAttachments.Where(a => a.DocumentTemplateId == dt.Id))
             {
                 a.Comments = string.Format("{0} - {1}", dt.Description, a.Comments);
                 if (a.Comments.Length > 500)
@@ -185,7 +185,7 @@ namespace Disco.BI.Extensions
                 a.DocumentTemplateId = null;
                 a.DocumentTemplate = null;
             }
-            foreach (JobAttachment a in Context.JobAttachments.Where(a => a.DocumentTemplateId == dt.Id))
+            foreach (JobAttachment a in Database.JobAttachments.Where(a => a.DocumentTemplateId == dt.Id))
             {
                 a.Comments = string.Format("{0} - {1}", dt.Description, a.Comments);
                 if (a.Comments.Length > 500)
@@ -193,7 +193,7 @@ namespace Disco.BI.Extensions
                 a.DocumentTemplateId = null;
                 a.DocumentTemplate = null;
             }
-            foreach (UserAttachment a in Context.UserAttachments.Where(a => a.DocumentTemplateId == dt.Id))
+            foreach (UserAttachment a in Database.UserAttachments.Where(a => a.DocumentTemplateId == dt.Id))
             {
                 a.Comments = string.Format("{0} - {1}", dt.Description, a.Comments);
                 if (a.Comments.Length > 500)
@@ -206,7 +206,7 @@ namespace Disco.BI.Extensions
             dt.JobSubTypes.Clear();
 
             // Delete Template
-            string templateRepositoryFilename = dt.RepositoryFilename(Context);
+            string templateRepositoryFilename = dt.RepositoryFilename(Database);
             if (System.IO.File.Exists(templateRepositoryFilename))
                 System.IO.File.Delete(templateRepositoryFilename);
 
@@ -214,7 +214,7 @@ namespace Disco.BI.Extensions
             dt.FilterExpressionInvalidateCache();
 
             // Delete Document Template from Repository
-            Context.DocumentTemplates.Remove(dt);
+            Database.DocumentTemplates.Remove(dt);
         }
     }
 }

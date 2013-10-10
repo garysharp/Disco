@@ -22,28 +22,72 @@
                         <img src="@Links.ClientSource.Style.Images.Heading_png" alt="DISCO - ICT Asset Management" /></a>
                 </div>
                 <div id="headerMenu">
-                    <span>Welcome @Html.ActionLink(DiscoApplication.CurrentUser.ToString(), MVC.User.Show(DiscoApplication.CurrentUser.Id))</span>
-                    @using (Html.BeginForm(MVC.Search.Query(), FormMethod.Get)) { @Html.TextBox("term", null, new { accesskey = "s" }) }
+                    <span>Welcome @if (Authorization.Has(Claims.User.Show))
+                                  { @Html.ActionLink(CurrentUser.ToString(), MVC.User.Show(CurrentUser.Id))}
+                                  else
+                                  {@CurrentUser.ToString()}</span>
+                    @using (Html.BeginForm(MVC.Search.Query(), FormMethod.Get))
+                    { @Html.TextBox("term", null, new { accesskey = "s" }) }
                 </div>
             </div>
             <nav>
                 <ul id="menu">
                     <li class="hasSubMenu">@Html.ActionLink("Jobs", MVC.Job.Index(), accesskey: "1")
                         <ul class="subMenu">
-                            <li>@Html.ActionLink("Devices Ready for Return", MVC.Job.DevicesReadyForReturn())</li>
-                            <li>@Html.ActionLink("Device Held Locations", MVC.Job.Locations())</li>
-                            <li>@Html.ActionLink("Awaiting User Action", MVC.Job.AwaitingUserAction())</li>
-                            <li class="hasSubMenu">@Html.ActionLink("Awaiting Finance", MVC.Job.AwaitingFinance())
-                                <ul class="subMenu">
-                                    <li>@Html.ActionLink("Accounting Charge", MVC.Job.AwaitingFinanceCharge())</li>
-                                    <li>@Html.ActionLink("Accounting Payment", MVC.Job.AwaitingFinancePayment())</li>
-                                    <li>@Html.ActionLink("Agreement Breach", MVC.Job.AwaitingFinanceAgreementBreach())</li>
-                                    <li>@Html.ActionLink("Insurance Processing", MVC.Job.AwaitingFinanceInsuranceProcessing())</li>
-                                </ul>
-                            </li>
-                            <li>@Html.ActionLink("Awaiting Device Repair", MVC.Job.DevicesAwaitingRepair())</li>
-                            <li>@Html.ActionLink("All Open", MVC.Job.AllOpen())</li>
-                            <li>@Html.ActionLink("Recently Closed", MVC.Job.RecentlyClosed())</li>
+                            @if (Authorization.Has(Claims.Job.Lists.DevicesReadyForReturn))
+                            {
+                                <li>@Html.ActionLink("Devices Ready for Return", MVC.Job.DevicesReadyForReturn())</li>
+                            }
+                            @if (Authorization.Has(Claims.Job.Lists.Locations))
+                            {
+                                <li>@Html.ActionLink("Device Held Locations", MVC.Job.Locations())</li>
+                            }
+                            @if (Authorization.Has(Claims.Job.Lists.AwaitingUserAction))
+                            {
+                                <li>@Html.ActionLink("Awaiting User Action", MVC.Job.AwaitingUserAction())</li>
+                            }
+                            @if (Authorization.Has(Claims.Job.Lists.AwaitingFinance))
+                            {
+                                if (Authorization.HasAny(Claims.Job.Lists.AwaitingFinanceCharge, Claims.Job.Lists.AwaitingFinancePayment, Claims.Job.Lists.AwaitingFinanceAgreementBreach, Claims.Job.Lists.AwaitingFinanceInsuranceProcessing))
+                                {
+                                <li class="hasSubMenu">@Html.ActionLink("Awaiting Finance", MVC.Job.AwaitingFinance())
+                                    <ul class="subMenu">
+                                        @if (Authorization.Has(Claims.Job.Lists.AwaitingFinanceCharge))
+                                        {
+                                            <li>@Html.ActionLink("Accounting Charge", MVC.Job.AwaitingFinanceCharge())</li>
+                                        }
+                                        @if (Authorization.Has(Claims.Job.Lists.AwaitingFinancePayment))
+                                        {
+                                            <li>@Html.ActionLink("Accounting Payment", MVC.Job.AwaitingFinancePayment())</li>
+                                        }
+                                        @if (Authorization.Has(Claims.Job.Lists.AwaitingFinanceAgreementBreach))
+                                        {
+                                            <li>@Html.ActionLink("Agreement Breach", MVC.Job.AwaitingFinanceAgreementBreach())</li>
+                                        }
+                                        @if (Authorization.Has(Claims.Job.Lists.AwaitingFinanceInsuranceProcessing))
+                                        {
+                                            <li>@Html.ActionLink("Insurance Processing", MVC.Job.AwaitingFinanceInsuranceProcessing())</li>
+                                        }
+                                    </ul>
+                                </li>
+                                }
+                                else
+                                {
+                                <li>@Html.ActionLink("Awaiting Finance", MVC.Job.AwaitingFinance())</li>
+                                }
+                            }
+                            @if (Authorization.Has(Claims.Job.Lists.DevicesAwaitingRepair))
+                            {
+                                <li>@Html.ActionLink("Awaiting Device Repair", MVC.Job.DevicesAwaitingRepair())</li>
+                            }
+                            @if (Authorization.Has(Claims.Job.Lists.AllOpen))
+                            {
+                                <li>@Html.ActionLink("All Open", MVC.Job.AllOpen())</li>
+                            }
+                            @if (Authorization.Has(Claims.Job.Lists.RecentlyClosed))
+                            {
+                                <li>@Html.ActionLink("Recently Closed", MVC.Job.RecentlyClosed())</li>
+                            }
                         </ul>
                     </li>
                     <li class="sep"></li>
@@ -51,8 +95,11 @@
                     <li class="sep"></li>
                     <li>@Html.ActionLink("Users", MVC.User.Index(), accesskey: "3")</li>
                     <li class="moveRight">@Html.ActionLink("Public Reports", MVC.Public.Public.Index())</li>
-                    <li class="sep"></li>
-                    <li>@Html.ActionLink("Configuration", MVC.Config.Config.Index(), accesskey: "0")</li>
+                    @if (Authorization.Has(Claims.Config.Show))
+                    {
+                        <li class="sep"></li>
+                        <li>@Html.ActionLink("Configuration", MVC.Config.Config.Index(), accesskey: "0")</li>
+                    }
                 </ul>
             </nav>
         </header>

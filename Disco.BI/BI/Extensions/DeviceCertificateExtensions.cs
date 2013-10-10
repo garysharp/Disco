@@ -11,16 +11,10 @@ namespace Disco.BI.Extensions
     public static class DeviceCertificateExtensions
     {
 
-        public static Tuple<DeviceCertificate, List<string>> AllocateCertificate(this Device device, DiscoDataContext dbContext)
+        public static Tuple<DeviceCertificate, List<string>> AllocateCertificate(this Device device, DiscoDataContext Database)
         {
             if (!string.IsNullOrEmpty(device.DeviceProfile.CertificateProviderId))
             {
-                // REMOVED 2012-07-18 G# - Plugin is responsible for checking
-                //var deviceCertificates = dbContext.DeviceCertificates.Where(c =>
-                //    c.DeviceSerialNumber == device.SerialNumber &&
-                //    c.ProviderId == device.DeviceProfile.CertificateProviderId &&
-                //    c.Enabled == true).ToList();
-
                 // Load Plugin
                 PluginFeatureManifest featureManifest = Plugins.GetPluginFeature(device.DeviceProfile.CertificateProviderId, typeof(CertificateProviderFeature));
 
@@ -32,7 +26,7 @@ namespace Disco.BI.Extensions
                     //    return new Tuple<DeviceCertificate, List<string>>(deviceCertificates[0], providerPlugin.RemoveExistingCertificateNames());
                     //else
 
-                    return providerFeature.AllocateCertificate(dbContext, device);    
+                    return providerFeature.AllocateCertificate(Database, device);    
                 }
             }
 

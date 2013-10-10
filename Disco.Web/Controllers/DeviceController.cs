@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Disco.BI;
-using Disco.BI.Extensions;
-using Disco.Data.Repository;
+﻿using Disco.BI.Extensions;
 using Disco.Models.Repository;
-using System.Data.Objects.SqlClient;
-using Disco.Web.Extensions;
-using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Models.UI.Device;
+using Disco.Services.Authorization;
 using Disco.Services.Plugins;
+using Disco.Services.Plugins.Features.UIExtension;
+using Disco.Services.Users;
+using Disco.Services.Web;
+using System;
+using System.Linq;
+using System.Web.Mvc;
 
 
 namespace Disco.Web.Controllers
 {
-    public partial class DeviceController : dbAdminController
+    public partial class DeviceController : AuthorizedDatabaseController
     {
         #region Index
         public virtual ActionResult Index()
@@ -31,17 +28,24 @@ namespace Disco.Web.Controllers
         #endregion
 
         #region Add Offline
+        [DiscoAuthorize(Claims.Device.Actions.EnrolDevices)]
         public virtual ActionResult AddOffline()
         {
             var m = new Models.Device.AddOfflineModel()
             {
-                DefaultDeviceProfileId = dbContext.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId
+                DefaultDeviceProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId
             };
-            m.DeviceBatches = dbContext.DeviceBatches.ToList();
-            m.DeviceProfiles = dbContext.DeviceProfiles.ToList();
-            if (m.DefaultDeviceProfileId == 0)
+            
+            if (Authorization.Has(Claims.Device.Properties.DeviceBatch))
+                m.DeviceBatches = Database.DeviceBatches.ToList();
+            
+            if (Authorization.Has(Claims.Device.Properties.DeviceProfile))
             {
-                m.DeviceProfiles.Insert(0, new DeviceProfile() { Id = 0, Name = "Select a Device Profile" });
+                m.DeviceProfiles = Database.DeviceProfiles.ToList();
+                if (m.DefaultDeviceProfileId == 0)
+                {
+                    m.DeviceProfiles.Insert(0, new DeviceProfile() { Id = 0, Name = "Select a Device Profile" });
+                }
             }
 
             // UI Extensions
@@ -49,7 +53,7 @@ namespace Disco.Web.Controllers
 
             return View(m);
         }
-        [HttpPost]
+        [DiscoAuthorize(Claims.Device.Actions.EnrolDevices), HttpPost]
         public virtual ActionResult AddOffline(Models.Device.AddOfflineModel m)
         {
             // Trim Serial Number & Error Check
@@ -61,15 +65,14 @@ namespace Disco.Web.Controllers
             else
             {
                 // Ensure Existing Device Doesn't Exist
-                if (!string.IsNullOrEmpty(m.Device.SerialNumber) && dbContext.Devices.Count(d => d.SerialNumber == m.Device.SerialNumber) > 0)
+                if (!string.IsNullOrEmpty(m.Device.SerialNumber) && Database.Devices.Count(d => d.SerialNumber == m.Device.SerialNumber) > 0)
                     ModelState.AddModelError("Device.SerialNumber", "A Device what this Serial Number already exists");
             }
 
-
             if (ModelState.IsValid)
             {
-                var d = m.Device.AddOffline(dbContext);
-                dbContext.SaveChanges();
+                var d = m.Device.AddOffline(Database);
+                Database.SaveChanges();
                 return RedirectToAction(MVC.Device.Show(d.SerialNumber));
             }
             return AddOffline();
@@ -77,21 +80,24 @@ namespace Disco.Web.Controllers
         #endregion
 
         #region Import/Export
-        [HttpGet]
+        [DiscoAuthorizeAny(Claims.Device.Actions.Import, Claims.Device.Actions.Export), HttpGet]
         public virtual ActionResult ImportExport()
         {
             Models.Device.ImportModel m = new Models.Device.ImportModel();
 
-            m.DeviceModels = dbContext.DeviceModels.ToList();
-            m.DeviceProfiles = dbContext.DeviceProfiles.ToList();
-            m.DeviceBatches = dbContext.DeviceBatches.ToList();
+            if (Authorization.Has(Claims.Device.Actions.Import))
+            {
+                m.DeviceModels = Database.DeviceModels.ToList();
+                m.DeviceProfiles = Database.DeviceProfiles.ToList();
+                m.DeviceBatches = Database.DeviceBatches.ToList();
+            }
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<DeviceImportModel>(this.ControllerContext, m);
 
             return View(m);
         }
-        [HttpGet]
+        [DiscoAuthorize(Claims.Device.Actions.Import), HttpGet]
         public virtual ActionResult ImportReview(string ImportParseTaskId)
         {
             if (string.IsNullOrWhiteSpace(ImportParseTaskId))
@@ -112,24 +118,19 @@ namespace Disco.Web.Controllers
         #endregion
 
         #region Show
+        [DiscoAuthorize(Claims.Device.Show)]
         public virtual ActionResult Show(string id)
         {
             var m = new Models.Device.ShowModel();
 
-            dbContext.Configuration.LazyLoadingEnabled = true;
+            Database.Configuration.LazyLoadingEnabled = true;
 
-            m.Device = dbContext.Devices.Include("DeviceDetails")
-                .Where(d => d.SerialNumber == id)
-                .FirstOrDefault();
+            m.Device = Database.Devices
+                .Include("DeviceModel").Include("DeviceDetails").Include("DeviceUserAssignments.AssignedUser").Include("DeviceAttachments")
+                .FirstOrDefault(d => d.SerialNumber == id);
 
             if (m.Device == null)
                 throw new ArgumentException(string.Format("Unknown Device: [{0}]", id), "id");
-
-            // Removed 2012-07-03 G#
-            // Deferred to Ajax call - improve load performance
-            // Update Device LastNetworkLogonDate
-            //if (m.Device.UpdateLastNetworkLogonDate())
-            //    dbContext.SaveChanges();
 
             // No Necessary - Yet...
             //if (!string.IsNullOrWhiteSpace(m.Device.ComputerName))
@@ -141,27 +142,32 @@ namespace Disco.Web.Controllers
             //    }
             //}
 
-            m.DeviceProfiles = dbContext.DeviceProfiles.ToList();
+            if (Authorization.Has(Claims.Device.Properties.DeviceProfile))
+                m.DeviceProfiles = Database.DeviceProfiles.ToList();
 
-            m.DeviceBatches = dbContext.DeviceBatches.ToList();
+            if (Authorization.Has(Claims.Device.Properties.DeviceBatch))
+                m.DeviceBatches = Database.DeviceBatches.ToList();
 
-            m.Jobs = new Disco.Models.BI.Job.JobTableModel()
+            if (Authorization.Has(Claims.Device.ShowJobs))
             {
-                ShowStatus = true,
-                ShowDevice = false,
-                IsSmallTable = false,
-                HideClosedJobs = true,
-                EnablePaging = false
-            };
-            m.Jobs.Fill(dbContext, BI.JobBI.Searching.BuildJobTableModel(dbContext).Where(j => j.DeviceSerialNumber == m.Device.SerialNumber).OrderByDescending(j => j.Id));
+                m.Jobs = new Disco.Models.BI.Job.JobTableModel()
+                {
+                    ShowStatus = true,
+                    ShowDevice = false,
+                    IsSmallTable = false,
+                    HideClosedJobs = true,
+                    EnablePaging = false
+                };
+                m.Jobs.Fill(Database, BI.JobBI.Searching.BuildJobTableModel(Database).Where(j => j.DeviceSerialNumber == m.Device.SerialNumber).OrderByDescending(j => j.Id));
+            }
 
-            m.Certificates = dbContext.DeviceCertificates.Where(c => c.DeviceSerialNumber == m.Device.SerialNumber).ToList();
+            if (Authorization.Has(Claims.Device.ShowCertificates))
+                m.Certificates = Database.DeviceCertificates.Where(c => c.DeviceSerialNumber == m.Device.SerialNumber).ToList();
 
-            //m.AttachmentTypes = dbContext.AttachmentTypes.Where(at => at.Scope == AttachmentType.AttachmentTypeScopes.Device).ToList();
-            m.DocumentTemplates = m.Device.AvailableDocumentTemplates(dbContext, DiscoApplication.CurrentUser, DateTime.Now);
+            if (Authorization.Has(Claims.Device.Actions.GenerateDocuments))
+                m.DocumentTemplates = m.Device.AvailableDocumentTemplates(Database, UserService.CurrentUser, DateTime.Now);
 
-            m.DeviceProfileDefaultOrganisationAddress = m.Device.DeviceProfile.DefaultOrganisationAddressDetails(dbContext);
-
+            m.DeviceProfileDefaultOrganisationAddress = m.Device.DeviceProfile.DefaultOrganisationAddressDetails(Database);
 
             PluginFeatureManifest deviceProfileCertificateProvider;
             if (Disco.Services.Plugins.Plugins.TryGetPluginFeature(m.Device.DeviceProfile.CertificateProviderId, out deviceProfileCertificateProvider))

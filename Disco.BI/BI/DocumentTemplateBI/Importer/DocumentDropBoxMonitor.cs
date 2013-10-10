@@ -16,15 +16,15 @@ namespace Disco.BI.DocumentTemplateBI.Importer
 
         public const string WatcherFilter = "*.pdf";
         public string DropBoxLocation { get; private set; }
-     
-        public DocumentDropBoxMonitor(DiscoDataContext Context, ISchedulerFactory SchedulerFactory, Cache HttpCache)
+
+        public DocumentDropBoxMonitor(DiscoDataContext Database, ISchedulerFactory SchedulerFactory, Cache HttpCache)
         {
-            if (Context == null)
+            if (Database == null)
                 throw new System.ArgumentNullException("Context");
             
             this._httpCache = HttpCache;
 
-            var location = DataStore.CreateLocation(Context, "DocumentDropBox");
+            var location = DataStore.CreateLocation(Database, "DocumentDropBox");
             this.DropBoxLocation = location.EndsWith(@"\") ? location : string.Concat(location, @"\");
             
             this._scheduler = SchedulerFactory.GetScheduler();

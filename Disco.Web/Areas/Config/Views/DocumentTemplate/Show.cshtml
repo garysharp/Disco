@@ -1,28 +1,52 @@
 ﻿@model Disco.Web.Areas.Config.Models.DocumentTemplate.ShowModel
 @{
+    Authorization.Require(Claims.Config.DocumentTemplate.Show);
+
+    var canConfig = Authorization.Has(Claims.Config.DocumentTemplate.Configure);
+
+    #region Can Bulk Generate
+    var canBulkGenerate = Authorization.Has(Claims.Config.DocumentTemplate.BulkGenerate);
+    if (canBulkGenerate)
+    {
+        switch (Model.DocumentTemplate.Scope)
+        {
+            case DocumentTemplate.DocumentTemplateScopes.Device:
+                canBulkGenerate = Authorization.Has(Claims.Device.Actions.GenerateDocuments);
+                break;
+            case DocumentTemplate.DocumentTemplateScopes.Job:
+                canBulkGenerate = Authorization.Has(Claims.Job.Actions.GenerateDocuments);
+                break;
+            case DocumentTemplate.DocumentTemplateScopes.User:
+                canBulkGenerate = Authorization.Has(Claims.User.Actions.GenerateDocuments);
+                break;
+            default:
+                throw new InvalidOperationException("Invalid DocumentType Scope");
+        }
+    }
+    #endregion
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(null), Model.DocumentTemplate.Description);
 }
 <div class="form" style="width: 650px">
     <table>
         <tr>
-            <th>
-                Id:
+            <th>Id:
             </th>
             <td>@Html.DisplayFor(model => model.DocumentTemplate.Id)
             </td>
         </tr>
         <tr>
-            <th>
-                Stored Instances:
+            <th>Stored Instances:
             </th>
             <td>@Html.DisplayFor(model => model.StoredInstanceCount)
             </td>
         </tr>
         <tr>
-            <th>
-                Description:
+            <th>Description:
             </th>
-            <td>@Html.TextBoxFor(model => model.DocumentTemplate.Description)
+            <td>@if (canConfig)
+                {
+                @Html.TextBoxFor(model => model.DocumentTemplate.Description)
                 @AjaxHelpers.AjaxSave()
                 @AjaxHelpers.AjaxLoader()
                 <script type="text/javascript">
@@ -64,13 +88,25 @@
                                 });
                     });
                 </script>
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(Model.DocumentTemplate.Description))
+                    {
+                <span class="smallMessage">&lt;None Specified&gt;</span>
+                    }
+                    else
+                    {
+                @Model.DocumentTemplate.Description
+                    }
+                }
             </td>
         </tr>
         <tr>
-            <th>
-                Always Flatten Form:
+            <th>Always Flatten Form:
             </th>
-            <td>
+            <td>@if (canConfig)
+                {
                 <input id="DocumentTemplate_FlattenForm" type="checkbox" @(Model.DocumentTemplate.FlattenForm ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
                 @AjaxHelpers.AjaxLoader()
                 <script type="text/javascript">
@@ -90,13 +126,18 @@
                         });
                     });
                 </script>
+                }
+                else
+                {
+                <input id="DocumentTemplate_FlattenForm" type="checkbox" @(Model.DocumentTemplate.FlattenForm ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
+                }
             </td>
         </tr>
         <tr>
-            <th>
-                Scope:
+            <th>Scope:
             </th>
-            <td>
+            <td>@if (canConfig)
+                {
                 @Html.DropDownListFor(model => model.DocumentTemplate.Scope, Model.Scopes.ToSelectListItems(null))
                 @AjaxHelpers.AjaxLoader()
                 <script type="text/javascript">
@@ -191,66 +232,92 @@
                         scopeChange();
                     });
                 </script>
+                }
+                else
+                {
+                @Model.DocumentTemplate.Scope
+                }
             </td>
         </tr>
-        <tr id="trJobTypes">
-            <th class="name">
-                Types:
-            </th>
-            <td class="value">
-                @CommonHelpers.CheckBoxList("Types", Model.JobTypes.ToSelectListItems(Model.Types), 2)
-            </td>
-        </tr>
-        @foreach (var jt in Model.JobTypes)
+        @if (canConfig || (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.Job))
         {
+            <tr id="trJobTypes">
+                <th class="name">Types:
+                </th>
+                <td class="value">
+                    @CommonHelpers.CheckBoxList("Types", Model.JobTypes.ToSelectListItems(Model.Types), 2)
+                </td>
+            </tr>
+            foreach (var jt in Model.JobTypes)
+            {
             <tr id="trJobSubType@(jt.Id)" class="jobSubTypes">
                 <th class="name">
                     @jt.Description<br />
                     Sub Types<br />
-                    @CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id))
+                    @if (canConfig)
+                    {
+                        @CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id))
+                    }
                 </th>
                 <td class="value">
                     @CommonHelpers.CheckBoxList("SubTypes", Model.JobSubTypes.Where(jst => jst.JobTypeId == jt.Id).ToList().ToSelectListItems(Model.SubTypes), 2)
                 </td>
             </tr>   
+            }
+            if (canConfig)
+            {
+            <tr id="trJobTypeActions">
+                <th class="name"></th>
+                <td class="value">
+                    <a id="TypeAction_Save" href="#" class="button">Save Job Types</a>@AjaxHelpers.AjaxLoader()
+                </td>
+            </tr>
+            }
+            else if (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.Job)
+            {
+            <script>
+                $(function () {
+                    $('.jobSubTypes').hide().find('input[type="checkbox"]').prop('disabled', true);
+                    $('#trJobTypes').find('input[type="checkbox"]').prop('disabled', true).filter(':checked').each(function () {
+                        $('#trJobSubType' + $(this).val()).show();
+                    });
+                });
+            </script>
+            }
         }
-        <tr id="trJobTypeActions">
-            <th class="name">
-            </th>
-            <td class="value">
-                <a id="TypeAction_Save" href="#" class="button">Save Job Types</a>@AjaxHelpers.AjaxLoader()
-            </td>
-        </tr>
         <tr>
-            <th>
-                Template PDF
+            <th>Template PDF
             </th>
             <td>
                 @Html.ActionLink("Download Template", MVC.API.DocumentTemplate.Template(Model.DocumentTemplate.Id))
-                <br />
-                @using (Html.BeginForm(MVC.API.DocumentTemplate.Template(Model.DocumentTemplate.Id, true, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
+                @if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.Upload))
                 {
+                    <br />
+                    using (Html.BeginForm(MVC.API.DocumentTemplate.Template(Model.DocumentTemplate.Id, true, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
                     <input type="file" name="Template" id="Template" style="width: 250px;" />
                     <input class="button" type="submit" value="Upload" />
-                }
-                <script type="text/javascript">
-                    $(function () {
-                        var $template = $('#Template');
-                        $template.closest('form').submit(function () {
-                            if ($template.val() == '') {
-                                alert('A template file is required to upload.');
-                                return false;
-                            }
+                    }
+                    <script type="text/javascript">
+                        $(function () {
+                            var $template = $('#Template');
+                            $template.closest('form').submit(function () {
+                                if ($template.val() == '') {
+                                    alert('A template file is required to upload.');
+                                    return false;
+                                }
+                            });
                         });
-                    });
-                </script>
+                    </script>
+                }
             </td>
         </tr>
         <tr>
-            <th>
-                Filter Expression:
+            <th>Filter Expression:
             </th>
-            <td>@Html.TextBoxFor(model => model.DocumentTemplate.FilterExpression)
+            <td>@if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
+                {
+                @Html.TextBoxFor(model => model.DocumentTemplate.FilterExpression)
                 @AjaxHelpers.AjaxRemove()
                 @AjaxHelpers.AjaxLoader()
                 <script type="text/javascript">
@@ -300,32 +367,47 @@
                         };
                     });
                 </script>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Bulk Generate
-            </th>
-            <td>
-                @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
+                }
+                else
                 {
-                    <textarea name="DataIds"></textarea>
-                    <input class="button" type="submit" value="Generate" />
+                    if (string.IsNullOrWhiteSpace(Model.DocumentTemplate.FilterExpression))
+                    {
+                <span class="smallMessage">&lt;None Specified&gt;</span>
+                    }
+                    else
+                    {
+                <div class="code">
+                    @Model.DocumentTemplate.FilterExpression
+                </div>
+                    }
                 }
             </td>
         </tr>
+        @if (canBulkGenerate)
+        {
+            <tr>
+                <th>Bulk Generate
+                </th>
+                <td>
+                    @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
+                    {
+                        <textarea name="DataIds"></textarea>
+                        <input class="button" type="submit" value="Generate" />
+                    }
+                </td>
+            </tr>
+        }
     </table>
 </div>
-<h2>
-    Template Expressions</h2>
+<h2>Template Expressions</h2>
 @Html.Partial(MVC.Config.DocumentTemplate.Views._ExpressionsTable, Model.TemplateExpressions)
 <div id="dialogConfirmDelete" title="Delete this Document Template?">
     <p>
-        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 100px 0;">
-        </span>This item will be permanently deleted and cannot be recovered.<br />
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 100px 0;"></span>This item will be permanently deleted and cannot be recovered.<br />
         <em>This <strong>will not delete attachments</strong> which have already been imported,
             but any generated documents will no longer be automatically imported.</em><br />
-        Are you sure?</p>
+        Are you sure?
+    </p>
 </div>
 <script type="text/javascript">
     $(function () {
@@ -357,6 +439,12 @@
     });
 </script>
 <div class="actionBar">
-    @Html.ActionLinkButton("Expression Browser", MVC.Config.DocumentTemplate.ExpressionBrowser())
-    @Html.ActionLinkButton("Delete", MVC.API.DocumentTemplate.Delete(Model.DocumentTemplate.Id, true), "buttonDelete")
+    @if (Authorization.Has(Claims.Config.Show))
+    {
+        @Html.ActionLinkButton("Expression Browser", MVC.Config.DocumentTemplate.ExpressionBrowser())
+    }
+    @if (Authorization.Has(Claims.Config.DocumentTemplate.Delete))
+    {
+        @Html.ActionLinkButton("Delete", MVC.API.DocumentTemplate.Delete(Model.DocumentTemplate.Id, true), "buttonDelete")
+    }
 </div>

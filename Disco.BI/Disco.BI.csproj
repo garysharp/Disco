@@ -143,6 +143,7 @@
     <Compile Include="BI\Expressions\Extensions\UserExt.cs" />
     <Compile Include="BI\Extensions\AttachmentActionExtensions.cs" />
     <Compile Include="BI\Extensions\AttachmentExtensions.cs" />
+    <Compile Include="BI\Extensions\AuthorizationRoleExtensions.cs" />
     <Compile Include="BI\Extensions\ClientServicesExtensions.cs" />
     <Compile Include="BI\Extensions\DeviceActionExtensions.cs" />
     <Compile Include="BI\Extensions\DeviceBatchExtensions.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="BI\DocumentTemplateBI\Importer\DocumentImporterLog.cs" />
     <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectory.cs" />
     <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryCachedGroups.cs" />
+    <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryGroupExtensions.cs" />
     <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryHelpers.cs" />
     <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryMachineAccountExtensions.cs" />
     <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryOrganisationalUnit.cs" />
@@ -186,9 +188,6 @@
     <Compile Include="BI\Interop\MimeTypes.cs" />
     <Compile Include="BI\Interop\Pdf\PdfGenerator.cs" />
     <Compile Include="BI\Interop\Pdf\PdfImporter.cs" />
-    <Compile Include="BI\Interop\PluginServices\IDiscoScheduledTask.cs" />
-    <Compile Include="BI\Interop\PluginServices\Utilities.cs" />
-    <Compile Include="BI\Interop\SignalRHandlers\AdminAuthorizedPersistentConnection.cs" />
     <Compile Include="BI\Interop\SignalRHandlers\AuthorizedPersistentConnection.cs" />
     <Compile Include="BI\Interop\SignalRHandlers\HeldDeviceNotifications.cs" />
     <Compile Include="BI\Interop\SignalRHandlers\LogNotifications.cs" />
@@ -201,9 +200,6 @@
     <Compile Include="BI\JobBI\Statistics\DailyOpenedClosed.cs" />
     <Compile Include="BI\JobBI\Utilities.cs" />
     <Compile Include="BI\UserBI\Searching.cs" />
-    <Compile Include="BI\UserBI\UserCache.cs" />
-    <Compile Include="BI\UserBI\UserCachePruneTask.cs" />
-    <Compile Include="BI\UserBI\Utilities.cs" />
     <Compile Include="BI\Extensions\UtilityExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

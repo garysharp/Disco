@@ -28,12 +28,14 @@ namespace Disco.Web.Views.Device
     using System.Web.WebPages;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services.Authorization;
+    using Disco.Services.Web;
     using Disco.Web;
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/Show.cshtml")]
-    public partial class Show : System.Web.Mvc.WebViewPage<Disco.Web.Models.Device.ShowModel>
+    public partial class Show : Disco.Services.Web.WebViewPage<Disco.Web.Models.Device.ShowModel>
     {
         public Show()
         {
@@ -101,36 +103,27 @@ WriteLiteral("\r\n    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(@">
-        $(function () {
-            var $tabs = $('#DeviceDetailTabs');
-            $tabs.tabs({
-                activate: function (event, ui) {
-                    window.setTimeout(function () {
-                        var $window = $(window);
-                        var tabHeight = $tabs.height();
-                        var tabOffset = $tabs.offset();
-                        var windowScrollTop = $window.scrollTop();
-                        var windowHeight = $window.height();
-
-                        var tabTopNotShown = windowScrollTop - tabOffset.top;
-                        if (tabTopNotShown > 0) {
-                            $('html').animate({ scrollTop: tabOffset.top }, 125);
-                        } else {
-                            var tabBottomNotShown = ((windowScrollTop + windowHeight) - (tabHeight + tabOffset.top)) * -1;
-                            if (tabBottomNotShown > 0) {
-                                if (tabHeight > windowHeight)
-                                    $('html').animate({ scrollTop: tabOffset.top }, 125);
-                                else
-                                    $('html').animate({ scrollTop: windowScrollTop + tabBottomNotShown }, 125);
-                            }
-                        }
-                    }, 1);
-                }
-            });
-        });
-    </script>
-    <div");
+WriteLiteral(">\r\n        $(function () {\r\n            var $tabs = $(\'#DeviceDetailTabs\');\r\n    " +
+"        if ($tabs.children().length > 1) {\r\n                $tabs.tabs({\r\n      " +
+"              activate: function (event, ui) {\r\n                        window.s" +
+"etTimeout(function () {\r\n                            var $window = $(window);\r\n " +
+"                           var tabHeight = $tabs.height();\r\n                    " +
+"        var tabOffset = $tabs.offset();\r\n                            var windowS" +
+"crollTop = $window.scrollTop();\r\n                            var windowHeight = " +
+"$window.height();\r\n\r\n                            var tabTopNotShown = windowScro" +
+"llTop - tabOffset.top;\r\n                            if (tabTopNotShown > 0) {\r\n " +
+"                               $(\'html\').animate({ scrollTop: tabOffset.top }, 1" +
+"25);\r\n                            } else {\r\n                                var " +
+"tabBottomNotShown = ((windowScrollTop + windowHeight) - (tabHeight + tabOffset.t" +
+"op)) * -1;\r\n                                if (tabBottomNotShown > 0) {\r\n      " +
+"                              if (tabHeight > windowHeight)\r\n                   " +
+"                     $(\'html\').animate({ scrollTop: tabOffset.top }, 125);\r\n    " +
+"                                else\r\n                                        $(" +
+"\'html\').animate({ scrollTop: windowScrollTop + tabBottomNotShown }, 125);\r\n     " +
+"                           }\r\n                            }\r\n                   " +
+"     }, 1);\r\n                    }\r\n                });\r\n            } else {\r\n " +
+"               $tabs.hide();\r\n            }\r\n        });\r\n    </script>\r\n    <di" +
+"v");
 
 WriteLiteral(" id=\"DeviceDetailTabs\"");
 
@@ -140,60 +133,136 @@ WriteLiteral(" id=\"DeviceDetailTabItems\"");
 
 WriteLiteral("></ul>\r\n");
 
-WriteLiteral("        ");
-
-            
-            #line 48 "..\..\Views\Device\Show.cshtml"
-   Write(Html.Partial(MVC.Device.Views.DeviceParts._Jobs, Model));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("        ");
-
-            
-            #line 49 "..\..\Views\Device\Show.cshtml"
-   Write(Html.Partial(MVC.Device.Views.DeviceParts._Details, Model));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("        ");
-
-            
-            #line 50 "..\..\Views\Device\Show.cshtml"
-   Write(Html.Partial(MVC.Device.Views.DeviceParts._AssignmentHistory, Model));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("        ");
-
-            
-            #line 51 "..\..\Views\Device\Show.cshtml"
-   Write(Html.Partial(MVC.Device.Views.DeviceParts._Resources, Model));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("        ");
-
             
             #line 52 "..\..\Views\Device\Show.cshtml"
-   Write(Html.Partial(MVC.Device.Views.DeviceParts._Certificates, Model));
+        
+            
+            #line default
+            #line hidden
+            
+            #line 52 "..\..\Views\Device\Show.cshtml"
+         if (Authorization.Has(Claims.Device.ShowJobs))
+        {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 54 "..\..\Views\Device\Show.cshtml"
+       Write(Html.Partial(MVC.Device.Views.DeviceParts._Jobs, Model));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n    </div>\r\n</div>\r\n");
+            
+            #line 54 "..\..\Views\Device\Show.cshtml"
+                                                                    
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        ");
+
+            
+            #line 56 "..\..\Views\Device\Show.cshtml"
+         if (Authorization.Has(Claims.Device.ShowDetails))
+        {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 58 "..\..\Views\Device\Show.cshtml"
+       Write(Html.Partial(MVC.Device.Views.DeviceParts._Details, Model));
+
+            
+            #line default
+            #line hidden
+            
+            #line 58 "..\..\Views\Device\Show.cshtml"
+                                                                       
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        ");
+
+            
+            #line 60 "..\..\Views\Device\Show.cshtml"
+         if (Authorization.Has(Claims.Device.ShowAssignmentHistory))
+        {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 62 "..\..\Views\Device\Show.cshtml"
+       Write(Html.Partial(MVC.Device.Views.DeviceParts._AssignmentHistory, Model));
+
+            
+            #line default
+            #line hidden
+            
+            #line 62 "..\..\Views\Device\Show.cshtml"
+                                                                                 
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        ");
+
+            
+            #line 64 "..\..\Views\Device\Show.cshtml"
+         if (Authorization.Has(Claims.Device.ShowAttachments))
+        {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 66 "..\..\Views\Device\Show.cshtml"
+       Write(Html.Partial(MVC.Device.Views.DeviceParts._Resources, Model));
+
+            
+            #line default
+            #line hidden
+            
+            #line 66 "..\..\Views\Device\Show.cshtml"
+                                                                         
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        ");
+
+            
+            #line 68 "..\..\Views\Device\Show.cshtml"
+         if (Authorization.Has(Claims.Device.ShowCertificates))
+        {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 70 "..\..\Views\Device\Show.cshtml"
+       Write(Html.Partial(MVC.Device.Views.DeviceParts._Certificates, Model));
+
+            
+            #line default
+            #line hidden
+            
+            #line 70 "..\..\Views\Device\Show.cshtml"
+                                                                            
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    </div>\r\n</div>\r\n");
 
         }
     }

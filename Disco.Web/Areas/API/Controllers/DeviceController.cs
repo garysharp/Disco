@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Disco.BI.Extensions;
+using Disco.BI.Interop.ActiveDirectory;
+using Disco.Services.Authorization;
+using Disco.Services.Users;
+using Disco.Services.Web;
+using System;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Disco.BI.Extensions;
-using Disco.BI;
-using Disco.BI.Interop.ActiveDirectory;
-using System.IO;
 
 namespace Disco.Web.Areas.API.Controllers
 {
-    public partial class DeviceController : dbAdminController
+    public partial class DeviceController : AuthorizedDatabaseController
     {
 
         const string pDeviceProfileId = "deviceprofileid";
@@ -22,7 +23,7 @@ namespace Disco.Web.Areas.API.Controllers
 
         public virtual ActionResult Update(string id, string key, string value = null, bool redirect = false)
         {
-            dbContext.Configuration.LazyLoadingEnabled = true;
+            Database.Configuration.LazyLoadingEnabled = true;
 
             try
             {
@@ -30,27 +31,33 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new ArgumentNullException("id");
                 if (string.IsNullOrEmpty(key))
                     throw new ArgumentNullException("key");
-                var device = dbContext.Devices.Find(id);
+                var device = Database.Devices.Find(id);
                 if (device != null)
                 {
                     switch (key.ToLower())
                     {
                         case pDeviceProfileId:
+                            Authorization.Require(Claims.Device.Properties.DeviceProfile);
                             UpdateDeviceProfileId(device, value);
                             break;
                         case pDeviceBatchId:
+                            Authorization.Require(Claims.Device.Properties.DeviceBatch);
                             UpdateDeviceBatchId(device, value);
                             break;
                         case pAssetNumber:
+                            Authorization.Require(Claims.Device.Properties.AssetNumber);
                             UpdateAssetNumber(device, value);
                             break;
                         case pAssignedUserId:
+                            Authorization.Require(Claims.Device.Actions.AssignUser);
                             UpdateAssignedUserId(device, value);
                             break;
                         case pLocation:
+                            Authorization.Require(Claims.Device.Properties.Location);
                             UpdateLocation(device, value);
                             break;
                         case pAllowUnauthenticatedEnrol:
+                            Authorization.Require(Claims.Device.Actions.AllowUnauthenticatedEnrol);
                             UpdateAllowUnauthenticatedEnrol(device, value);
                             break;
                         default:
@@ -76,30 +83,43 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         #region Update Shortcut Methods
+
+        [DiscoAuthorize(Claims.Device.Properties.DeviceProfile)]
         public virtual ActionResult UpdateDeviceProfileId(string id, string DeviceProfileId = null, bool redirect = false)
         {
             return Update(id, pDeviceProfileId, DeviceProfileId, redirect);
         }
+
+        [DiscoAuthorize(Claims.Device.Properties.DeviceBatch)]
         public virtual ActionResult UpdateDeviceBatchId(string id, string DeviceBatchId = null, bool redirect = false)
         {
             return Update(id, pDeviceBatchId, DeviceBatchId, redirect);
         }
+
+        [DiscoAuthorize(Claims.Device.Properties.AssetNumber)]
         public virtual ActionResult UpdateAssetNumber(string id, string AssetNumber = null, bool redirect = false)
         {
             return Update(id, pAssetNumber, AssetNumber, redirect);
         }
+
+        [DiscoAuthorize(Claims.Device.Properties.Location)]
         public virtual ActionResult UpdateLocation(string id, string Location = null, bool redirect = false)
         {
             return Update(id, pLocation, Location, redirect);
         }
+
+        [DiscoAuthorize(Claims.Device.Actions.AssignUser)]
         public virtual ActionResult UpdateAssignedUserId(string id, string AssignedUserId = null, bool redirect = false)
         {
             return Update(id, pAssignedUserId, AssignedUserId, redirect);
         }
+
+        [DiscoAuthorize(Claims.Device.Actions.AllowUnauthenticatedEnrol)]
         public virtual ActionResult UpdateAllowUnauthenticatedEnrol(string id, string AllowUnauthenticatedEnrol = null, bool redirect = false)
         {
             return Update(id, pAllowUnauthenticatedEnrol, AllowUnauthenticatedEnrol, redirect);
         }
+
         #endregion
 
         #region Update Properties
@@ -110,7 +130,7 @@ namespace Disco.Web.Areas.API.Controllers
                 int pId;
                 if (int.TryParse(DeviceProfileId, out pId))
                 {
-                    var p = dbContext.DeviceProfiles.Find(pId);
+                    var p = Database.DeviceProfiles.Find(pId);
                     if (p != null)
                     {
                         device.DeviceProfileId = p.Id;
@@ -124,7 +144,7 @@ namespace Disco.Web.Areas.API.Controllers
                                 adMachineAccount.SetDescription(device);
                         }
 
-                        dbContext.SaveChanges();
+                        Database.SaveChanges();
                         return;
                     }
                 }
@@ -138,13 +158,13 @@ namespace Disco.Web.Areas.API.Controllers
                 int bId;
                 if (int.TryParse(DeviceBatchId, out bId))
                 {
-                    var b = dbContext.DeviceBatches.Find(bId);
+                    var b = Database.DeviceBatches.Find(bId);
                     if (b != null)
                     {
                         device.DeviceBatchId = b.Id;
                         device.DeviceBatch = b;
 
-                        dbContext.SaveChanges();
+                        Database.SaveChanges();
                         return;
                     }
                 }
@@ -155,7 +175,7 @@ namespace Disco.Web.Areas.API.Controllers
                 device.DeviceBatchId = null;
                 device.DeviceBatch = null;
 
-                dbContext.SaveChanges();
+                Database.SaveChanges();
                 return;
             }
             throw new Exception("Invalid Device Batch Id");
@@ -166,7 +186,7 @@ namespace Disco.Web.Areas.API.Controllers
                 device.AssetNumber = null;
             else
                 device.AssetNumber = AssetNumber.Trim();
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
         private void UpdateLocation(Disco.Models.Repository.Device device, string Location)
         {
@@ -174,27 +194,24 @@ namespace Disco.Web.Areas.API.Controllers
                 device.Location = null;
             else
                 device.Location = Location.Trim();
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
         private void UpdateAssignedUserId(Disco.Models.Repository.Device device, string UserId)
         {
-            var daus = dbContext.DeviceUserAssignments.Where(m => m.DeviceSerialNumber == device.SerialNumber && m.UnassignedDate == null);
+            var daus = Database.DeviceUserAssignments.Where(m => m.DeviceSerialNumber == device.SerialNumber && m.UnassignedDate == null);
             Disco.Models.Repository.User u = null;
             if (!string.IsNullOrEmpty(UserId))
             {
-                // Changed 2012-12-13 G# - Stop error when assigning user - Force Refresh
-                // http://www.discoict.com.au/forum/support/2012/11/error-when-assigning-multiple-devices-to-single-user.aspx
-                //u = BI.UserBI.UserCache.GetUser(UserId, dbContext);
-                u = BI.UserBI.UserCache.GetUser(UserId, dbContext, true);
-                // End Changed 2012-12-13 G#
+                UserService.GetUser(UserId, Database, true);
+                
                 if (u == null)
                 {
                     throw new Exception("Invalid Username");
                 }
             }
 
-            device.AssignDevice(dbContext, u);
-            dbContext.SaveChanges();
+            device.AssignDevice(Database, u);
+            Database.SaveChanges();
         }
         private void UpdateAllowUnauthenticatedEnrol(Disco.Models.Repository.Device device, string AllowUnauthenticatedEnrol)
         {
@@ -207,23 +224,25 @@ namespace Disco.Web.Areas.API.Controllers
             if (device.AllowUnauthenticatedEnrol != bAllowUnauthenticatedEnrol)
             {
                 device.AllowUnauthenticatedEnrol = bAllowUnauthenticatedEnrol;
-                dbContext.SaveChanges();
+                Database.SaveChanges();
             }
         }
         #endregion
 
         #region Device Actions
+
+        [DiscoAuthorize(Claims.Device.Actions.Decommission)]
         public virtual ActionResult Decommission(string id, int Reason, bool redirect)
         {
-            var d = dbContext.Devices.Find(id);
-            dbContext.Configuration.LazyLoadingEnabled = true;
+            var d = Database.Devices.Find(id);
+            Database.Configuration.LazyLoadingEnabled = true;
             if (d != null)
             {
                 if (d.CanDecommission())
                 {
                     d.OnDecommission((Disco.Models.Repository.Device.DecommissionReasons)Reason);
 
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
                     if (redirect)
                         return RedirectToAction(MVC.Device.Show(id));
                     else
@@ -236,17 +255,19 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json("Invalid Device Serial Number", JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorize(Claims.Device.Actions.Recommission)]
         public virtual ActionResult Recommission(string id, bool redirect)
         {
-            var d = dbContext.Devices.Find(id);
-            dbContext.Configuration.LazyLoadingEnabled = true;
+            var d = Database.Devices.Find(id);
+            Database.Configuration.LazyLoadingEnabled = true;
             if (d != null)
             {
                 if (d.CanRecommission())
                 {
                     d.OnRecommission();
 
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
                     if (redirect)
                         return RedirectToAction(MVC.Device.Show(id));
                     else
@@ -259,17 +280,19 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json("Invalid Device Serial Number", JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorize(Claims.Device.Actions.Delete)]
         public virtual ActionResult Delete(string id, bool redirect)
         {
-            var j = dbContext.Devices.Find(id);
-            dbContext.Configuration.LazyLoadingEnabled = true;
+            var j = Database.Devices.Find(id);
+            Database.Configuration.LazyLoadingEnabled = true;
             if (j != null)
             {
                 if (j.CanDelete())
                 {
-                    j.OnDelete(dbContext);
+                    j.OnDelete(Database);
 
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
                     if (redirect)
                         return RedirectToAction(MVC.Device.Index());
                     else
@@ -282,26 +305,28 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json("Invalid Device Serial Number", JsonRequestBehavior.AllowGet);
         }
+
         #endregion
 
+        [DiscoAuthorize(Claims.Device.Actions.GenerateDocuments)]
         public virtual ActionResult GeneratePdf(string id, string DocumentTemplateId)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException("id");
             if (string.IsNullOrEmpty(DocumentTemplateId))
                 throw new ArgumentNullException("AttachmentTypeId");
-            var device = dbContext.Devices.Find(id);
+            var device = Database.Devices.Find(id);
             if (device != null)
             {
-                var documentTemplate = dbContext.DocumentTemplates.Find(DocumentTemplateId);
+                var documentTemplate = Database.DocumentTemplates.Find(DocumentTemplateId);
                 if (documentTemplate != null)
                 {
                     var timeStamp = DateTime.Now;
                     Stream pdf;
                     using (var generationState = Disco.Models.BI.DocumentTemplates.DocumentState.DefaultState()){
-                        pdf = documentTemplate.GeneratePdf(dbContext, device, DiscoApplication.CurrentUser, timeStamp, generationState);
+                        pdf = documentTemplate.GeneratePdf(Database, device, UserService.CurrentUser, timeStamp, generationState);
                     }
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
                     return File(pdf, "application/pdf", string.Format("{0}_{1}_{2:yyyyMMdd-HHmmss}.pdf", documentTemplate.Id, device.SerialNumber, timeStamp));
                 }
                 else
@@ -315,16 +340,17 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
+        [DiscoAuthorize(Claims.Device.Show)]
         public virtual ActionResult LastNetworkLogonDate(string id)
         {
-            var device = dbContext.Devices.Find(id);
+            var device = Database.Devices.Find(id);
             if (device == null)
             {
                 return HttpNotFound("Invalid Device Serial Number");
             }
 
             if (device.UpdateLastNetworkLogonDate())
-                dbContext.SaveChanges();
+                Database.SaveChanges();
 
             var result = new
             {
@@ -337,13 +363,14 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         #region Device Attachements
-        [OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
+
+        [DiscoAuthorize(Claims.Device.ShowAttachments), OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
         public virtual ActionResult AttachmentDownload(int id)
         {
-            var da = dbContext.DeviceAttachments.Find(id);
+            var da = Database.DeviceAttachments.Find(id);
             if (da != null)
             {
-                var filePath = da.RepositoryFilename(dbContext);
+                var filePath = da.RepositoryFilename(Database);
                 if (System.IO.File.Exists(filePath))
                 {
                     return File(filePath, da.MimeType, da.Filename);
@@ -355,13 +382,14 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return HttpNotFound("Invalid Attachment Number");
         }
-        [OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
+
+        [DiscoAuthorize(Claims.Device.ShowAttachments), OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
         public virtual ActionResult AttachmentThumbnail(int id)
         {
-            var da = dbContext.DeviceAttachments.Find(id);
+            var da = Database.DeviceAttachments.Find(id);
             if (da != null)
             {
-                var thumbPath = da.RepositoryThumbnailFilename(dbContext);
+                var thumbPath = da.RepositoryThumbnailFilename(Database);
                 if (System.IO.File.Exists(thumbPath))
                 {
                     if (thumbPath.EndsWith(".png", StringComparison.InvariantCultureIgnoreCase))
@@ -374,9 +402,11 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return HttpNotFound("Invalid Attachment Number");
         }
+
+        [DiscoAuthorize(Claims.Device.Actions.AddAttachments)]
         public virtual ActionResult AttachmentUpload(string id, string Comments)
         {
-            var d = dbContext.Devices.Find(id);
+            var d = Database.Devices.Find(id);
             if (d != null)
             {
                 if (Request.Files.Count > 0)
@@ -391,18 +421,18 @@ namespace Disco.Web.Areas.API.Controllers
                         var da = new Disco.Models.Repository.DeviceAttachment()
                         {
                             DeviceSerialNumber = d.SerialNumber,
-                            TechUserId = DiscoApplication.CurrentUser.Id,
+                            TechUserId = UserService.CurrentUserId,
                             Filename = file.FileName,
                             MimeType = contentType,
                             Timestamp = DateTime.Now,
                             Comments = Comments
                         };
-                        dbContext.DeviceAttachments.Add(da);
-                        dbContext.SaveChanges();
+                        Database.DeviceAttachments.Add(da);
+                        Database.SaveChanges();
 
-                        da.SaveAttachment(dbContext, file.InputStream);
+                        da.SaveAttachment(Database, file.InputStream);
 
-                        da.GenerateThumbnail(dbContext);
+                        da.GenerateThumbnail(Database);
 
                         return Json(da.Id, JsonRequestBehavior.AllowGet);
                     }
@@ -411,9 +441,11 @@ namespace Disco.Web.Areas.API.Controllers
             }
             throw new Exception("Invalid Device Serial Number");
         }
+
+        [DiscoAuthorize(Claims.Device.ShowAttachments)]
         public virtual ActionResult Attachment(int id)
         {
-            var da = dbContext.DeviceAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var da = Database.DeviceAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (da != null)
             {
 
@@ -427,9 +459,11 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json(new Models.Attachment.AttachmentModel() { Result = "Invalid Attachment Number" }, JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorize(Claims.Device.ShowAttachments)]
         public virtual ActionResult Attachments(string id)
         {
-            var d = dbContext.Devices.Include("DeviceAttachments.TechUser").Where(m => m.SerialNumber == id).FirstOrDefault();
+            var d = Database.Devices.Include("DeviceAttachments.TechUser").Where(m => m.SerialNumber == id).FirstOrDefault();
             if (d != null)
             {
                 var m = new Models.Attachment.AttachmentsModel()
@@ -442,22 +476,21 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json(new Models.Attachment.AttachmentsModel() { Result = "Invalid Device Serial Number" }, JsonRequestBehavior.AllowGet);
         }
+        
+        [DiscoAuthorizeAny(Claims.Job.Actions.RemoveAnyAttachments, Claims.Job.Actions.RemoveOwnAttachments)]
         public virtual ActionResult AttachmentRemove(int id)
         {
-            var da = dbContext.DeviceAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var da = Database.DeviceAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (da != null)
             {
-                // 2012-02-17 G# Remove - 'Delete Own Comments' policy
-                //if (da.TechUserId == DiscoApplication.CurrentUser.Id)
-                //{
-                da.OnDelete(dbContext);
-                dbContext.SaveChanges();
+                if (da.TechUserId.Equals(CurrentUser.Id, StringComparison.InvariantCultureIgnoreCase))
+                    Authorization.RequireAny(Claims.Device.Actions.RemoveAnyAttachments, Claims.Device.Actions.RemoveOwnAttachments);
+                else
+                    Authorization.Require(Claims.Device.Actions.RemoveAnyAttachments);
+
+                da.OnDelete(Database);
+                Database.SaveChanges();
                 return Json("OK", JsonRequestBehavior.AllowGet);
-                //}
-                //else
-                //{
-                //    return Json("You can only delete your own attachments.", JsonRequestBehavior.AllowGet);
-                //}
             }
             return Json("Invalid Attachment Number", JsonRequestBehavior.AllowGet);
         }
@@ -465,6 +498,8 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Importing / Exporting
+
+        [DiscoAuthorize(Claims.Device.Actions.Import)]
         public virtual ActionResult ImportParse(HttpPostedFileBase ImportFile)
         {
             if (ImportFile == null || ImportFile.ContentLength == 0)
@@ -481,6 +516,7 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }
 
+        [DiscoAuthorize(Claims.Device.Actions.Import)]
         public virtual ActionResult ImportProcess(string ParseTaskSessionKey)
         {
             if (string.IsNullOrWhiteSpace(ParseTaskSessionKey))
@@ -493,10 +529,11 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }
 
+        [DiscoAuthorize(Claims.Device.Actions.Export)]
         public virtual ActionResult ExportAllDevices()
         {
             // Non-Decommissioned Devices
-            var devices = dbContext.Devices.Where(d => !d.DecommissionedDate.HasValue);
+            var devices = Database.Devices.Where(d => !d.DecommissionedDate.HasValue);
 
             var export = BI.DeviceBI.Importing.Export.GenerateExport(devices);
 
@@ -504,13 +541,14 @@ namespace Disco.Web.Areas.API.Controllers
 
             return File(export, "text/csv", filename);
         } 
+
         #endregion
 
+        [DiscoAuthorize(Claims.DiscoAdminAccount)]
         public virtual ActionResult MigrateDeviceMacAddressesFromLog()
         {
             var taskStatus = Disco.BI.DeviceBI.Migration.LogMacAddressImporting.ScheduleImmediately();
             return RedirectToAction(MVC.Config.Logging.TaskStatus(taskStatus.SessionId));
         }
-
     }
 }

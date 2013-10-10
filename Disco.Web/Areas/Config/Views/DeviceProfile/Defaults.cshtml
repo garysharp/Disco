@@ -1,5 +1,7 @@
 ﻿@model Disco.Web.Areas.Config.Models.DeviceProfile.DefaultsModel
 @{
+    Authorization.Require(Claims.Config.DeviceProfile.ConfigureDefaults);
+    
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Profiles", MVC.Config.DeviceProfile.Index(null), "Defaults");
 }
 <div class="form" style="width: 600px">

@@ -29,7 +29,7 @@ namespace Disco.BI.DeviceBI
             }).ToList();
         }
 
-        public static List<DeviceSearchResultItem> Search(DiscoDataContext dbContext, string Term, int? LimitCount = null, bool SearchDetails = false)
+        public static List<DeviceSearchResultItem> Search(DiscoDataContext Database, string Term, int? LimitCount = null, bool SearchDetails = false)
         {
             IQueryable<Device> query;
 
@@ -37,7 +37,7 @@ namespace Disco.BI.DeviceBI
 
             if (SearchDetails)
             {
-                query = dbContext.Devices.Where(d =>
+                query = Database.Devices.Where(d =>
                     d.AssetNumber.Contains(Term) ||
                     d.ComputerName.Contains(Term) ||
                     d.SerialNumber.Contains(Term) ||
@@ -48,7 +48,7 @@ namespace Disco.BI.DeviceBI
             }
             else
             {
-                query = dbContext.Devices.Where(d =>
+                query = Database.Devices.Where(d =>
                     d.AssetNumber.Contains(Term) ||
                     d.ComputerName.Contains(Term) ||
                     d.SerialNumber.Contains(Term) ||
@@ -59,17 +59,17 @@ namespace Disco.BI.DeviceBI
             return Search_SelectDeviceSearchResultItem(query, LimitCount);
         }
 
-        public static List<DeviceSearchResultItem> SearchDeviceModel(DiscoDataContext dbContext, int DeviceModelId, int? LimitCount = null)
+        public static List<DeviceSearchResultItem> SearchDeviceModel(DiscoDataContext Database, int DeviceModelId, int? LimitCount = null)
         {
-            return Search_SelectDeviceSearchResultItem(dbContext.Devices.Where(d => d.DeviceModelId == DeviceModelId), LimitCount);
+            return Search_SelectDeviceSearchResultItem(Database.Devices.Where(d => d.DeviceModelId == DeviceModelId), LimitCount);
         }
-        public static List<DeviceSearchResultItem> SearchDeviceProfile(DiscoDataContext dbContext, int DeviceProfileId, int? LimitCount = null)
+        public static List<DeviceSearchResultItem> SearchDeviceProfile(DiscoDataContext Database, int DeviceProfileId, int? LimitCount = null)
         {
-            return Search_SelectDeviceSearchResultItem(dbContext.Devices.Where(d => d.DeviceProfileId == DeviceProfileId), LimitCount);
+            return Search_SelectDeviceSearchResultItem(Database.Devices.Where(d => d.DeviceProfileId == DeviceProfileId), LimitCount);
         }
-        public static List<DeviceSearchResultItem> SearchDeviceBatch(DiscoDataContext dbContext, int DeviceBatchId, int? LimitCount = null)
+        public static List<DeviceSearchResultItem> SearchDeviceBatch(DiscoDataContext Database, int DeviceBatchId, int? LimitCount = null)
         {
-            return Search_SelectDeviceSearchResultItem(dbContext.Devices.Where(d => d.DeviceBatchId == DeviceBatchId), LimitCount);
+            return Search_SelectDeviceSearchResultItem(Database.Devices.Where(d => d.DeviceBatchId == DeviceBatchId), LimitCount);
         }
 
     }

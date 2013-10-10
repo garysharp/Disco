@@ -16,7 +16,7 @@ namespace Disco.BI.DocumentTemplateBI
     {
         private static ConcurrentDictionary<string, List<RectangleF>> _Cache = new ConcurrentDictionary<string, List<RectangleF>>();
 
-        public static List<RectangleF> GetLocations(DocumentTemplate dt, DiscoDataContext dbContext)
+        public static List<RectangleF> GetLocations(DocumentTemplate dt, DiscoDataContext Database)
         {
             // Check Cache
             List<RectangleF> locations;
@@ -25,7 +25,7 @@ namespace Disco.BI.DocumentTemplateBI
                 return locations;
             }
             // Generate Cache
-            return GenerateLocations(dt, dbContext);
+            return GenerateLocations(dt, Database);
         }
 
         public static bool InvalidateLocations(DocumentTemplate dt)
@@ -47,9 +47,9 @@ namespace Disco.BI.DocumentTemplateBI
             return _Cache.TryAdd(DocumentTemplateId, Locations);
         }
 
-        internal static List<RectangleF> GenerateLocations(DocumentTemplate dt, DiscoDataContext dbContext)
+        internal static List<RectangleF> GenerateLocations(DocumentTemplate dt, DiscoDataContext Database)
         {
-            string templateFilename = dt.RepositoryFilename(dbContext);
+            string templateFilename = dt.RepositoryFilename(Database);
             PdfReader pdfReader = new PdfReader(templateFilename);
             List<RectangleF> locations = new List<RectangleF>();
 

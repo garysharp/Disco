@@ -1,4 +1,8 @@
 ﻿@model Disco.Web.Models.Device.ShowModel
+@{
+    Authorization.Require(Claims.Device.ShowCertificates);
+    var hasDownloadCert = Authorization.Has(Claims.Config.DeviceCertificate.DownloadCertificates);
+}
 <div id="DeviceDetailTab-Certificates" class="DevicePart">
     <div class="genericData certificateTable">
         @if (Model.Certificates.Count() > 0)
@@ -18,7 +22,14 @@
                 {
                     <tr>
                         <td>
-                            @Html.ActionLink(item.Name, MVC.API.DeviceCertificate.Download(item.Id))
+                            @if (hasDownloadCert)
+                            {
+                                @Html.ActionLink(item.Name, MVC.API.DeviceCertificate.Download(item.Id))
+                            }
+                            else
+                            {
+                                @item.Name
+                            }
                         </td>
                         <td>
                             @item.Enabled

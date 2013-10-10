@@ -4,7 +4,7 @@
 @using Disco.Web;
 @using System.Web.Mvc
 @using System.Web.Mvc.Html;
-@using Disco.Web.Extensions;
+@using Disco.Services.Web;
 @helper FriendlyDate(DateTime d, string ElementId = null)
 {
     <span @(ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId)))title="@d.ToFullDateTime()" data-discodatetime="@d.ToSortableDateTime()" data-datetimeformatted="@d.ToJavascriptDateTime()" class="date nowrap">@d.ToFuzzy()</span>

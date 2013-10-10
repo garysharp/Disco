@@ -1,6 +1,15 @@
 ﻿@model Disco.Web.Models.Device.AddOfflineModel
 @{
+    Authorization.Require(Claims.Device.Actions.EnrolDevices);
+
     ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Add Offline");
+
+    var hasAssetNumber = Authorization.Has(Claims.Device.Properties.AssetNumber);
+    var hasLocation = Authorization.Has(Claims.Device.Properties.Location);
+    var hasDeviceBatch = Authorization.Has(Claims.Device.Properties.DeviceBatch);
+    var hasDeviceProfile = Authorization.Has(Claims.Device.Properties.DeviceProfile);
+    var hasAssignUser = Authorization.Has(Claims.Device.Actions.AssignUser);
+    
 }
 @using (Html.BeginForm())
 {
@@ -8,86 +17,111 @@
     <div class="form" style="width: 450px">
         <table>
             <tr>
-                <th>
-                    Serial Number:
+                <th>Serial Number:
                 </th>
                 <td>
                     @Html.TextBoxFor(model => model.Device.SerialNumber)<br />
                     @Html.ValidationMessageFor(model => model.Device.SerialNumber)
                 </td>
             </tr>
-            <tr>
-                <th>
-                    Asset Number:
-                </th>
-                <td>@Html.TextBoxFor(model => model.Device.AssetNumber)<br />
-                @Html.ValidationMessageFor(model => model.Device.AssetNumber)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    Location:
-                </th>
-                <td>@Html.TextBoxFor(model => model.Device.Location)<br />
-                @Html.ValidationMessageFor(model => model.Device.Location)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    Device Batch:
-                </th>
-                <td>
-                    @Html.DropDownListFor(model => model.Device.DeviceBatchId, Model.DeviceBatches.ToSelectListItems()) <br />
-                    @Html.ValidationMessageFor(model => model.Device.DeviceBatchId)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    Device Profile:
-                </th>
-                <td>
-                    @Html.DropDownListFor(model => model.Device.DeviceProfileId, Model.DeviceProfiles.ToSelectListItems(Model.DefaultDeviceProfileId))<br />
-                    @Html.ValidationMessageFor(model => model.Device.DeviceProfileId)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    Assigned User:
-                </th>
-                <td>
-                    @Html.TextBoxFor(model => model.Device.AssignedUserId)<br />
-                    @Html.ValidationMessageFor(model => model.Device.AssignedUserId)
-                </td>
-            </tr>
+            @if (hasAssetNumber)
+            {
+                <tr>
+                    <th>Asset Number:
+                    </th>
+                    <td>@Html.TextBoxFor(model => model.Device.AssetNumber)<br />
+                        @Html.ValidationMessageFor(model => model.Device.AssetNumber)
+                    </td>
+                </tr>
+            }
+            @if (hasLocation)
+            {
+                <tr>
+                    <th>Location:
+                    </th>
+                    <td>@Html.TextBoxFor(model => model.Device.Location)<br />
+                        @Html.ValidationMessageFor(model => model.Device.Location)
+                    </td>
+                </tr>
+            }
+            @if (hasDeviceBatch)
+            {
+                <tr>
+                    <th>Device Batch:
+                    </th>
+                    <td>
+                        @Html.DropDownListFor(model => model.Device.DeviceBatchId, Model.DeviceBatches.ToSelectListItems())
+                        <br />
+                        @Html.ValidationMessageFor(model => model.Device.DeviceBatchId)
+                    </td>
+                </tr>
+            }
+            @if (hasDeviceProfile)
+            {
+                <tr>
+                    <th>Device Profile:
+                    </th>
+                    <td>
+                        @Html.DropDownListFor(model => model.Device.DeviceProfileId, Model.DeviceProfiles.ToSelectListItems(Model.DefaultDeviceProfileId))<br />
+                        @Html.ValidationMessageFor(model => model.Device.DeviceProfileId)
+                    </td>
+                </tr>
+            }
+            @if (hasAssignUser)
+            {
+                <tr>
+                    <th>Assigned User:
+                    </th>
+                    <td>
+                        @Html.TextBoxFor(model => model.Device.AssignedUserId)<br />
+                        @Html.ValidationMessageFor(model => model.Device.AssignedUserId)
+                    </td>
+                </tr>
+            }
         </table>
         <p class="actions">
+            @if (!hasDeviceProfile)
+            {
+                @Html.Hidden("Device.DeviceProfileId", Model.DefaultDeviceProfileId)
+            }
+
             <input type="submit" class="button" value="Add" />
         </p>
-        <script type="text/javascript">
-            $(function () {
-                $SerialNumber = $('#Device_SerialNumber');
-                $AssetNumber = $('#Device_AssetNumber');
-                $Location = $('#Device_Location');
-                $AssignedUserId = $('#Device_AssignedUserId');
+            <script type="text/javascript">
+                $(function () {
+                    var $SerialNumber = $('#Device_SerialNumber').focus();
 
-                $SerialNumber.focus().keydown(function (e) {
+                @if (hasAssignUser)
+                {<text>
+                $SerialNumber.keydown(function (e) {
                     if (e.which == 13) {
-                        $AssignedUserId.focus();
+                        $('#Device_AssignedUserId').focus();
+                        return false;
+                    }
+                });</text>}
+@if (hasAssetNumber)
+{<text>
+                    $('#Device_AssetNumber').keydown(function (e) {
+                    if (e.which == 13) {
+                        @if (hasLocation)
+                        {<text>$('#Device_Location').focus(); return false;</text>}
+                        else if (hasAssignUser)
+                        {<text>$('#Device_AssignedUserId').focus(); return false;</text>}
+                    }
+                });
+                </text>}
+@if (hasLocation && hasAssignUser)
+{<text>
+                    $('#Device_Location').keydown(function (e) {
+                    if (e.which == 13) {
+                        $('#Device_AssignedUserId').focus();
                         return false;
                     }
                 });
-                $AssetNumber.keydown(function (e) {
-                    if (e.which == 13) {
-                        $Location.focus();
-                        return false;
-                    }
-                });
-                $Location.keydown(function (e) {
-                    if (e.which == 13) {
-                        $AssignedUserId.focus();
-                        return false;
-                    }
-                });
+                </text>}
+                    @if (hasAssignUser)
+{<text>
+                    var $AssignedUserId = $('#Device_AssignedUserId');
                 $AssignedUserId
                     .watermark('Search Users')
                     .focus(function () { $AssignedUserId.select() })
@@ -108,7 +142,8 @@
                         .append("<a><strong>" + item.DisplayName + "</strong><br>" + item.Id + " (" + item.Type + ")</a>")
                         .appendTo(ul);
                     };
+                </text>}
             });
-        </script>
+            </script>
     </div>
 }

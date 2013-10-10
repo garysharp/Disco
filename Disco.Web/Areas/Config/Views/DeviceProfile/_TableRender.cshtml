@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<Disco.Web.Areas.Config.Models.DeviceProfile._IndexModelItem>
+@{
+    Authorization.Require(Claims.Config.DeviceProfile.Show);
+}
 <table class="tableData deviceProfileTable">
     <tr>
         <th class="name">

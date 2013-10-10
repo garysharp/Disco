@@ -8,6 +8,8 @@ using Disco.BI.Extensions;
 using Disco.Models.Interop.ActiveDirectory;
 using Disco.Models.UI.User;
 using Disco.Web.Extensions;
+using Disco.Models.Authorization;
+using Disco.Web.Models.Shared;
 
 namespace Disco.Web.Models.User
 {
@@ -16,6 +18,20 @@ namespace Disco.Web.Models.User
         public Disco.Models.Repository.User User { get; set; }
         public Disco.Models.BI.Job.JobTableModel Jobs { get; set; }
         public List<Disco.Models.Repository.DocumentTemplate> DocumentTemplates { get; set; }
+        public IClaimNavigatorItem ClaimNavigator { get; set; }
+
+        public FancyTreeNode[] ClaimNavigatorFancyTreeNodes
+        {
+            get
+            {
+                var rootNode = FancyTreeNode.FromClaimNavigatorItem(this.ClaimNavigator, true);
+                rootNode.expanded = true;
+
+                return new FancyTreeNode[] {
+                    rootNode
+                };
+            }
+        }
 
         public List<SelectListItem> DocumentTemplatesSelectListItems
         {

@@ -12,7 +12,7 @@ namespace Disco.BI.Extensions
 {
     public static class UserExtensions
     {
-        public static UserAttachment CreateAttachment(this User User, DiscoDataContext dbContext, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, byte[] PdfThumbnail = null)
+        public static UserAttachment CreateAttachment(this User User, DiscoDataContext Database, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, byte[] PdfThumbnail = null)
         {
             if (string.IsNullOrEmpty(MimeType) || MimeType.Equals("unknown/unknown", StringComparison.InvariantCultureIgnoreCase))
                 MimeType = Interop.MimeTypes.ResolveMimeType(Filename);
@@ -30,25 +30,25 @@ namespace Disco.BI.Extensions
             if (DocumentTemplate != null)
                 ua.DocumentTemplateId = DocumentTemplate.Id;
 
-            dbContext.UserAttachments.Add(ua);
-            dbContext.SaveChanges();
+            Database.UserAttachments.Add(ua);
+            Database.SaveChanges();
 
-            ua.SaveAttachment(dbContext, Content);
+            ua.SaveAttachment(Database, Content);
             Content.Position = 0;
             if (PdfThumbnail == null)
-                ua.GenerateThumbnail(dbContext, Content);
+                ua.GenerateThumbnail(Database, Content);
             else
-                ua.SaveThumbnailAttachment(dbContext, PdfThumbnail);
+                ua.SaveThumbnailAttachment(Database, PdfThumbnail);
 
             return ua;
         }
 
-        public static List<DocumentTemplate> AvailableDocumentTemplates(this User u, DiscoDataContext dbContext, User User, DateTime TimeStamp)
+        public static List<DocumentTemplate> AvailableDocumentTemplates(this User u, DiscoDataContext Database, User User, DateTime TimeStamp)
         {
-            var dts = dbContext.DocumentTemplates.Include("JobSubTypes")
+            var dts = Database.DocumentTemplates.Include("JobSubTypes")
                .Where(dt => dt.Scope == DocumentTemplate.DocumentTemplateScopes.User)
                .ToArray()
-               .Where(dt => dt.FilterExpressionMatches(u, dbContext, User, TimeStamp, DocumentState.DefaultState())).ToList();
+               .Where(dt => dt.FilterExpressionMatches(u, Database, User, TimeStamp, DocumentState.DefaultState())).ToList();
 
             return dts;
         }

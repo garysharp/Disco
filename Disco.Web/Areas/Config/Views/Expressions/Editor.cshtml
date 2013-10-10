@@ -1,5 +1,9 @@
 ﻿@model Disco.Web.Areas.Config.Models.Expressions.EditorModel
 @{
+    // Under Construction - Not In Production
+    
+    Authorization.Require(Claims.DiscoAdminAccount);
+    
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Expressions");
     Html.BundleDeferred("~/ClientScripts/Modules/Disco-ExpressionEditor");
 }

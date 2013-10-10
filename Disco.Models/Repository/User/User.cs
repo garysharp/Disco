@@ -19,8 +19,6 @@ namespace Disco.Models.Repository
         [StringLength(200)]
         public string GivenName { get; set; }
 
-        [StringLength(8)]
-        public string Type { get; set; }
         [StringLength(100)]
         public string PhoneNumber { get; set; }
         [StringLength(150)]
@@ -31,17 +29,6 @@ namespace Disco.Models.Repository
         public virtual IList<DeviceUserAssignment> DeviceUserAssignments { get; set; }
         [InverseProperty("UserId")]
         public virtual IList<Job> Jobs { get; set; }
-
-        //#region Helper Members
-        //[NotMapped, XmlIgnore, ScriptIgnore]
-        //public List<DeviceUserAssignment> CurrentDeviceUserAssignments
-        //{
-        //    get
-        //    {
-        //        return this.DeviceUserAssignments.Where(dua => !dua.UnassignedDate.HasValue).ToList();
-        //    }
-        //}
-        //#endregion
 
         public override string ToString()
         {
@@ -63,17 +50,6 @@ namespace Disco.Models.Repository
                 this.EmailAddress = u.EmailAddress;
             if (this.PhoneNumber != u.PhoneNumber)
                 this.PhoneNumber = u.PhoneNumber;
-            if (this.Type != u.Type)
-                this.Type = u.Type;
         }
-
-        public static class Types
-        {
-            public const string Admin = "Admin";
-            public const string Computer = "Computer";
-            public const string Staff = "Staff";
-            public const string Student = "Student";
-        }
-
     }
 }

@@ -1,8 +1,15 @@
 ﻿@model Disco.Web.Models.Job.ShowModel
 @{
     ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id.ToString()));
-    Html.BundleDeferred("~/ClientScripts/Modules/Silverlight");
+
+    if (Authorization.Has(Claims.Job.Actions.AddAttachments))
+    {
+        Html.BundleDeferred("~/ClientScripts/Modules/Silverlight");
+    }
+
     Html.BundleDeferred("~/ClientScripts/Modules/jQueryUI-TimePicker");
+
+    Authorization.Require(Claims.Job.Show);
 }
 <div id="Job_Show">
     <div id="Job_Show_Status">
@@ -18,39 +25,57 @@
     <script type="text/javascript">
         $(function () {
             var $tabs = $('#jobDetailTabs');
-            $tabs.tabs({
-                activate: function (event, ui) {
-                    window.setTimeout(function () {
-                        var $window = $(window);
-                        var tabHeight = $tabs.height();
-                        var tabOffset = $tabs.offset();
-                        var windowScrollTop = $window.scrollTop();
-                        var windowHeight = $window.height();
+            if ($tabs.children().length > 1) {
+                $tabs.tabs({
+                    activate: function (event, ui) {
+                        window.setTimeout(function () {
+                            var $window = $(window);
+                            var tabHeight = $tabs.height();
+                            var tabOffset = $tabs.offset();
+                            var windowScrollTop = $window.scrollTop();
+                            var windowHeight = $window.height();
 
-                        var tabTopNotShown = windowScrollTop - tabOffset.top;
-                        if (tabTopNotShown > 0) {
-                            $('html').animate({ scrollTop: tabOffset.top }, 125);
-                        } else {
-                            var tabBottomNotShown = ((windowScrollTop + windowHeight) - (tabHeight + tabOffset.top)) * -1;
-                            if (tabBottomNotShown > 0) {
-                                if (tabHeight > windowHeight)
-                                    $('html').animate({ scrollTop: tabOffset.top }, 125);
-                                else
-                                    $('html').animate({ scrollTop: windowScrollTop + tabBottomNotShown }, 125);
+                            var tabTopNotShown = windowScrollTop - tabOffset.top;
+                            if (tabTopNotShown > 0) {
+                                $('html').animate({ scrollTop: tabOffset.top }, 125);
+                            } else {
+                                var tabBottomNotShown = ((windowScrollTop + windowHeight) - (tabHeight + tabOffset.top)) * -1;
+                                if (tabBottomNotShown > 0) {
+                                    if (tabHeight > windowHeight)
+                                        $('html').animate({ scrollTop: tabOffset.top }, 125);
+                                    else
+                                        $('html').animate({ scrollTop: windowScrollTop + tabBottomNotShown }, 125);
+                                }
                             }
-                        }
-                    }, 1);
-                }
-            });
+                        }, 1);
+                    }
+                });
+            } else {
+                $tabs.hide();
+            }
         });
     </script>
     <div id="jobDetailTabs">
         <ul id="jobDetailTabItems">
-            <li><a href="#jobDetailTab-Resources">Log and Attachments</a></li>
+            @if (Authorization.HasAll(Claims.Job.ShowLogs, Claims.Job.ShowAttachments))
+            {
+                <li><a href="#jobDetailTab-Resources">Log and Attachments</a></li>
+            }
+            else if (Authorization.Has(Claims.Job.ShowLogs))
+            {
+                <li><a href="#jobDetailTab-Resources">Log</a></li>
+            }
+            else if (Authorization.Has(Claims.Job.ShowLogs))
+            {
+                <li><a href="#jobDetailTab-Resources">Attachments</a></li>
+            }
         </ul>
-        <div id="jobDetailTab-Resources" class="jobPart">
-            @Html.Partial(MVC.Job.Views.JobParts.Resources, Model)
-        </div>
+        @if (Authorization.HasAny(Claims.Job.ShowLogs, Claims.Job.ShowAttachments))
+        {
+            <div id="jobDetailTab-Resources" class="jobPart">
+                @Html.Partial(MVC.Job.Views.JobParts.Resources, Model)
+            </div>
+        }
         @Html.Partial(MVC.Job.Views.JobParts.JobMetaAdditions, Model)
     </div>
 </div>

@@ -8,43 +8,44 @@ using System.Threading.Tasks;
 using Disco.Data.Repository;
 using Disco.Services.Tasks;
 using Quartz;
+using Disco.Models.Interop.ActiveDirectory;
 
 namespace Disco.BI.Interop.ActiveDirectory
 {
     public class ActiveDirectoryCachedGroups : ScheduledTask
     {
-        private static ConcurrentDictionary<string, Tuple<ADCachedGroup, DateTime>> _SidCache = new ConcurrentDictionary<string, Tuple<ADCachedGroup, DateTime>>();
-        private static ConcurrentDictionary<string, Tuple<ADCachedGroup, DateTime>> _Cache = new ConcurrentDictionary<string, Tuple<ADCachedGroup, DateTime>>();
+        private static ConcurrentDictionary<string, Tuple<ActiveDirectoryGroup, DateTime>> _SecurityIdentifierCache = new ConcurrentDictionary<string, Tuple<ActiveDirectoryGroup, DateTime>>();
+        private static ConcurrentDictionary<string, Tuple<ActiveDirectoryGroup, DateTime>> _DistinguishedNameCache = new ConcurrentDictionary<string, Tuple<ActiveDirectoryGroup, DateTime>>();
         private const long CacheTimeoutTicks = 6000000000; // 10 Minutes
 
-        public static IEnumerable<string> GetGroups(IEnumerable<string> GroupCNs)
+        public static IEnumerable<string> GetGroups(IEnumerable<string> DistinguishedNames)
         {
-            List<ADCachedGroup> groups = new List<ADCachedGroup>();
+            List<ActiveDirectoryGroup> groups = new List<ActiveDirectoryGroup>();
 
-            foreach (var groupCN in GroupCNs)
-                foreach (var group in GetGroupsRecursive(groupCN, new Stack<ADCachedGroup>()))
+            foreach (var distinguishedName in DistinguishedNames)
+                foreach (var group in GetGroupsRecursive(distinguishedName, new Stack<ActiveDirectoryGroup>()))
                     if (!groups.Contains(group))
                     {
                         groups.Add(group);
-                        yield return group.FriendlyName;
+                        yield return group.SamAccountName;
                     }
         }
-        public static IEnumerable<string> GetGroups(string GroupCN)
+        public static IEnumerable<string> GetGroups(string DistinguishedName)
         {
-            foreach (var group in GetGroupsRecursive(GroupCN, new Stack<ADCachedGroup>()))
-                yield return group.FriendlyName;
+            foreach (var group in GetGroupsRecursive(DistinguishedName, new Stack<ActiveDirectoryGroup>()))
+                yield return group.SamAccountName;
         }
-        public static string GetGroupsCnForSid(string GroupSid)
+        public static string GetGroupsDistinguishedNameForSecurityIdentifier(string SecurityIdentifier)
         {
-            var sidGroup = GetGroupBySid(GroupSid);
-            if (sidGroup == null)
+            var group = GetGroupBySecurityIdentifier(SecurityIdentifier);
+            if (group == null)
                 return null;
             else
-                return sidGroup.CN;
+                return group.DistinguishedName;
         }
-        private static IEnumerable<ADCachedGroup> GetGroupsRecursive(string GroupCN, Stack<ADCachedGroup> RecursiveTree)
+        private static IEnumerable<ActiveDirectoryGroup> GetGroupsRecursive(string DistinguishedName, Stack<ActiveDirectoryGroup> RecursiveTree)
         {
-            var group = GetGroup(GroupCN);
+            var group = GetGroup(DistinguishedName);
 
             if (group != null && !RecursiveTree.Contains(group))
             {
@@ -54,24 +55,24 @@ namespace Disco.BI.Interop.ActiveDirectory
                 {
                     RecursiveTree.Push(group);
 
-                    foreach (var memberOfGroupCN in group.MemberOf)
-                        foreach (var memberOfGroup in GetGroupsRecursive(memberOfGroupCN, RecursiveTree))
-                            yield return memberOfGroup;
+                    foreach (var parentDistinguishedName in group.MemberOf)
+                        foreach (var parentGroup in GetGroupsRecursive(parentDistinguishedName, RecursiveTree))
+                            yield return parentGroup;
 
                     RecursiveTree.Pop();
                 }
             }
         }
 
-        private static ADCachedGroup GetGroup(string GroupCN)
+        private static ActiveDirectoryGroup GetGroup(string DistinguishedName)
         {
             // Check Cache
-            Tuple<ADCachedGroup, DateTime> groupRecord = TryCache(GroupCN);
+            Tuple<ActiveDirectoryGroup, DateTime> groupRecord = TryCache(DistinguishedName);
 
             if (groupRecord == null)
             {
                 // Load from AD
-                var group = ADCachedGroup.LoadWithCN(GroupCN);
+                var group = ActiveDirectory.GetGroupFromDistinguishedName(DistinguishedName);
                 SetValue(group);
 
                 return group;
@@ -82,15 +83,15 @@ namespace Disco.BI.Interop.ActiveDirectory
                 return groupRecord.Item1;
             }
         }
-        private static ADCachedGroup GetGroupBySid(string GroupSid)
+        private static ActiveDirectoryGroup GetGroupBySecurityIdentifier(string SecurityIdentifier)
         {
             // Check Cache
-            Tuple<ADCachedGroup, DateTime> groupRecord = TrySidCache(GroupSid);
+            Tuple<ActiveDirectoryGroup, DateTime> groupRecord = TrySecurityIdentifierCache(SecurityIdentifier);
 
             if (groupRecord == null)
             {
                 // Load from AD
-                var group = ADCachedGroup.LoadWithSid(GroupSid);
+                var group = ActiveDirectory.GetGroupFromSecurityIdentifier(SecurityIdentifier);
                 SetValue(group);
 
                 return group;
@@ -102,177 +103,96 @@ namespace Disco.BI.Interop.ActiveDirectory
             }
         }
 
-        private static Tuple<ADCachedGroup, DateTime> TryCache(string GroupCN)
+        private static Tuple<ActiveDirectoryGroup, DateTime> TryCache(string DistinguishedName)
         {
-            string groupCN = GroupCN.ToLower();
-            Tuple<ADCachedGroup, DateTime> groupRecord;
-            if (_Cache.TryGetValue(groupCN, out groupRecord))
+            string distinguishedName = DistinguishedName.ToLower();
+            Tuple<ActiveDirectoryGroup, DateTime> groupRecord;
+            if (_DistinguishedNameCache.TryGetValue(distinguishedName, out groupRecord))
             {
                 if (groupRecord.Item2 > DateTime.Now)
                     return groupRecord;
                 else
                 {
-                    if (_Cache.TryRemove(groupCN, out groupRecord))
-                        _SidCache.TryRemove(groupRecord.Item1.ObjectSid, out groupRecord);
+                    if (_DistinguishedNameCache.TryRemove(distinguishedName, out groupRecord))
+                        _SecurityIdentifierCache.TryRemove(groupRecord.Item1.SecurityIdentifier, out groupRecord);
                 }
             }
             return null;
         }
-        private static Tuple<ADCachedGroup, DateTime> TrySidCache(string GroupSid)
+        private static Tuple<ActiveDirectoryGroup, DateTime> TrySecurityIdentifierCache(string SecurityIdentifier)
         {
-            Tuple<ADCachedGroup, DateTime> groupRecord;
-            if (_SidCache.TryGetValue(GroupSid, out groupRecord))
+            Tuple<ActiveDirectoryGroup, DateTime> groupRecord;
+            if (_SecurityIdentifierCache.TryGetValue(SecurityIdentifier, out groupRecord))
             {
                 if (groupRecord.Item2 > DateTime.Now)
                     return groupRecord;
                 else
                 {
-                    if (_SidCache.TryRemove(GroupSid, out groupRecord))
-                        _Cache.TryRemove(groupRecord.Item1.CN.ToLower(), out groupRecord);
+                    if (_SecurityIdentifierCache.TryRemove(SecurityIdentifier, out groupRecord))
+                        _DistinguishedNameCache.TryRemove(groupRecord.Item1.DistinguishedName.ToLower(), out groupRecord);
                 }
             }
             return null;
         }
-        private static bool SetValue(ADCachedGroup GroupRecord)
+        private static bool SetValue(ActiveDirectoryGroup Group)
         {
-            Tuple<ADCachedGroup, DateTime> groupRecord = new Tuple<ADCachedGroup, DateTime>(GroupRecord, DateTime.Now.AddTicks(CacheTimeoutTicks));
-            Tuple<ADCachedGroup, DateTime> oldGroupRecord;
+            Tuple<ActiveDirectoryGroup, DateTime> groupRecord = new Tuple<ActiveDirectoryGroup, DateTime>(Group, DateTime.Now.AddTicks(CacheTimeoutTicks));
+            Tuple<ActiveDirectoryGroup, DateTime> oldGroupRecord;
 
-            string key = GroupRecord.CN.ToLower();
-            if (_Cache.ContainsKey(key))
+            string key = Group.DistinguishedName.ToLower();
+            if (_DistinguishedNameCache.ContainsKey(key))
             {
-                if (_Cache.TryGetValue(key, out oldGroupRecord))
+                if (_DistinguishedNameCache.TryGetValue(key, out oldGroupRecord))
                 {
-                    _Cache.TryUpdate(key, groupRecord, oldGroupRecord);
+                    _DistinguishedNameCache.TryUpdate(key, groupRecord, oldGroupRecord);
                 }
             }
             else
             {
-                _Cache.TryAdd(key, groupRecord);
+                _DistinguishedNameCache.TryAdd(key, groupRecord);
             }
 
-            string sid = GroupRecord.ObjectSid;
-            if (_SidCache.ContainsKey(sid))
+            string securityIdentifier = Group.SecurityIdentifier;
+            if (_SecurityIdentifierCache.ContainsKey(securityIdentifier))
             {
-                if (_SidCache.TryGetValue(sid, out oldGroupRecord))
+                if (_SecurityIdentifierCache.TryGetValue(securityIdentifier, out oldGroupRecord))
                 {
-                    _SidCache.TryUpdate(sid, groupRecord, oldGroupRecord);
+                    _SecurityIdentifierCache.TryUpdate(securityIdentifier, groupRecord, oldGroupRecord);
                 }
             }
             else
             {
-                _SidCache.TryAdd(sid, groupRecord);
+                _SecurityIdentifierCache.TryAdd(securityIdentifier, groupRecord);
             }
             return true;
-        }
-
-        private class ADCachedGroup
-        {
-            public string ObjectSid { get; set; }
-            public string CN { get; private set; }
-            public string FriendlyName { get; private set; }
-
-            public List<string> MemberOf { get; private set; }
-
-            public static ADCachedGroup LoadWithCN(string CN)
-            {
-                ADCachedGroup group = null;
-
-                using (DirectoryEntry groupDE = new DirectoryEntry(string.Concat(ActiveDirectoryHelpers.DefaultLdapPath, CN)))
-                {
-                    if (groupDE != null)
-                    {
-                        group = new ADCachedGroup()
-                        {
-                            CN = CN
-                        };
-
-                        group.ObjectSid = ActiveDirectoryHelpers.ConvertBytesToSDDLString((byte[])groupDE.Properties["objectSid"].Value);
-                        group.FriendlyName = (string)groupDE.Properties["sAMAccountName"].Value;
-
-                        var groupMemberOf = groupDE.Properties["memberOf"];
-                        if (groupMemberOf != null && groupMemberOf.Count > 0)
-                        {
-                            group.MemberOf = groupMemberOf.Cast<string>().ToList();
-                        }
-                    }
-                }
-
-                return group;
-            }
-
-            public static ADCachedGroup LoadWithSid(string Sid)
-            {
-                using (DirectoryEntry dRootEntry = ActiveDirectoryHelpers.DefaultLdapRoot)
-                {
-                    var loadProperties = new List<string> {
-					"distinguishedName", 
-					"objectSid", 
-                    "sAMAccountName",
-					"memberOf"
-                };
-
-                    var sidBytes = ActiveDirectoryHelpers.ConvertSDDLStringToBytes(Sid);
-                    var sidBinaryString = ActiveDirectoryHelpers.ConvertBytesToBinarySidString(sidBytes);
-
-                    using (DirectorySearcher dSearcher = new DirectorySearcher(dRootEntry, string.Format("(&(objectClass=group)(objectSid={0}))", sidBinaryString), loadProperties.ToArray(), SearchScope.Subtree))
-                    {
-                        SearchResult dResult = dSearcher.FindOne();
-                        if (dResult != null)
-                        {
-                            var group = new ADCachedGroup()
-                            {
-                                CN = (string)dResult.Properties["distinguishedName"][0],
-                                ObjectSid = ActiveDirectoryHelpers.ConvertBytesToSDDLString((byte[])dResult.Properties["objectSid"][0]),
-                                FriendlyName = (string)dResult.Properties["sAMAccountName"][0]
-                            };
-
-                            var groupMemberOf = dResult.Properties["memberOf"];
-                            if (groupMemberOf != null && groupMemberOf.Count > 0)
-                            {
-                                group.MemberOf = groupMemberOf.Cast<string>().ToList();
-                            }
-
-                            return group;
-                        }
-                        else
-                            return null;
-                    }
-                }
-            }
-
-            private ADCachedGroup()
-            {
-                // Private Constructor
-            }
         }
 
         private static void CleanStaleCache()
         {
             // Clean Cache
-            var groupKeys = _Cache.Keys.ToArray();
+            var groupKeys = _DistinguishedNameCache.Keys.ToArray();
             foreach (string groupKey in groupKeys)
             {
-                Tuple<ADCachedGroup, DateTime> groupRecord;
-                if (_Cache.TryGetValue(groupKey, out groupRecord))
+                Tuple<ActiveDirectoryGroup, DateTime> groupRecord;
+                if (_DistinguishedNameCache.TryGetValue(groupKey, out groupRecord))
                 {
                     if (groupRecord.Item2 <= DateTime.Now)
                     {
-                        _Cache.TryRemove(groupKey, out groupRecord);
+                        _DistinguishedNameCache.TryRemove(groupKey, out groupRecord);
                     }
                 }
             }
 
             // Clean SID Cache
-            groupKeys = _SidCache.Keys.ToArray();
+            groupKeys = _SecurityIdentifierCache.Keys.ToArray();
             foreach (string groupKey in groupKeys)
             {
-                Tuple<ADCachedGroup, DateTime> groupRecord;
-                if (_SidCache.TryGetValue(groupKey, out groupRecord))
+                Tuple<ActiveDirectoryGroup, DateTime> groupRecord;
+                if (_SecurityIdentifierCache.TryGetValue(groupKey, out groupRecord))
                 {
                     if (groupRecord.Item2 <= DateTime.Now)
                     {
-                        _SidCache.TryRemove(groupKey, out groupRecord);
+                        _SecurityIdentifierCache.TryRemove(groupKey, out groupRecord);
                     }
                 }
             }
@@ -284,7 +204,7 @@ namespace Disco.BI.Interop.ActiveDirectory
         public override bool CancelInitiallySupported { get { return false; } }
         public override bool LogExceptionsOnly { get { return true; } }
 
-        public override void InitalizeScheduledTask(DiscoDataContext dbContext)
+        public override void InitalizeScheduledTask(DiscoDataContext Database)
         {
             // Run @ every 15mins
 

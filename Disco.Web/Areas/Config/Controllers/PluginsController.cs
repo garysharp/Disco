@@ -1,30 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Disco.Models.BI.Interop.Community;
+﻿using Disco.Services.Authorization;
 using Disco.Services.Plugins;
-using Disco.Services.Tasks;
+using Disco.Services.Users;
+using Disco.Services.Web;
 using Disco.Web.Areas.Config.Models.Plugins;
+using System;
+using System.Web.Mvc;
 
 namespace Disco.Web.Areas.Config.Controllers
 {
-    public partial class PluginsController : dbAdminController
+    public partial class PluginsController : AuthorizedDatabaseController
     {
-        [HttpGet]
+        [DiscoAuthorize(Claims.Config.Plugin.Show), HttpGet]
         public virtual ActionResult Index()
         {
             Models.Plugins.IndexViewModel vm = new Models.Plugins.IndexViewModel()
                 {
                     PluginManifests = Plugins.GetPlugins(),
-                    Catalogue = Plugins.LoadCatalogue(dbContext)
+                    Catalogue = Plugins.LoadCatalogue(Database)
                 };
             return View(vm);
         }
 
         #region Plugin Configuration
-        [HttpPost]
+        [DiscoAuthorize(Claims.Config.Plugin.Configure), HttpPost]
         public virtual ActionResult Configure(string PluginId, FormCollection form)
         {
             if (string.IsNullOrEmpty(PluginId))
@@ -34,24 +32,24 @@ namespace Disco.Web.Areas.Config.Controllers
 
             using (PluginConfigurationHandler configHandler = manifest.CreateConfigurationHandler())
             {
-                if (configHandler.Post(dbContext, form, this))
+                if (configHandler.Post(Database, form, this))
                 {
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
 
-                    PluginsLog.LogPluginConfigurationSaved(manifest.Id, DiscoApplication.CurrentUser.Id);
+                    PluginsLog.LogPluginConfigurationSaved(manifest.Id, UserService.CurrentUserId);
 
                     return RedirectToAction(MVC.Config.Plugins.Index());
                 }
                 else
                 {
                     // Config Errors
-                    PluginConfigurationViewModel vm = new PluginConfigurationViewModel(configHandler.Get(dbContext, this));
+                    PluginConfigurationViewModel vm = new PluginConfigurationViewModel(configHandler.Get(Database, this));
                     return View(Views.Configure, vm);
                 }
             }
         }
 
-        [HttpGet]
+        [DiscoAuthorize(Claims.Config.Plugin.Configure), HttpGet]
         public virtual ActionResult Configure(string PluginId)
         {
             if (string.IsNullOrEmpty(PluginId))
@@ -61,18 +59,18 @@ namespace Disco.Web.Areas.Config.Controllers
 
             using (PluginConfigurationHandler configHandler = manifest.CreateConfigurationHandler())
             {
-                PluginConfigurationViewModel vm = new PluginConfigurationViewModel(configHandler.Get(dbContext, this));
-                PluginsLog.LogPluginConfigurationLoaded(manifest.Id, DiscoApplication.CurrentUser.Id);
+                PluginConfigurationViewModel vm = new PluginConfigurationViewModel(configHandler.Get(Database, this));
+                PluginsLog.LogPluginConfigurationLoaded(manifest.Id, UserService.CurrentUserId);
                 return View(Views.Configure, vm);
             }
         }
         #endregion
 
+        [DiscoAuthorize(Claims.Config.Plugin.Install)]
         public virtual ActionResult Install()
         {
             // Check for recent catalogue
-
-            var catalogue = Plugins.LoadCatalogue(dbContext);
+            var catalogue = Plugins.LoadCatalogue(Database);
 
             if (catalogue == null || catalogue.ResponseTimestamp < DateTime.Now.AddHours(-1))
             {

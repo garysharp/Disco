@@ -13,6 +13,6 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
     {
         // Certificate Plugin Requirements
         public abstract string CertificateProviderId { get; }
-        public abstract Tuple<DeviceCertificate, List<string>> AllocateCertificate(DiscoDataContext dbContext, Device Device);
+        public abstract Tuple<DeviceCertificate, List<string>> AllocateCertificate(DiscoDataContext Database, Device Device);
     }
 }

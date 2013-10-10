@@ -1,23 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Disco.Services.Plugins.Features.WarrantyProvider;
-using Disco.Services.Plugins;
-using Disco.BI.Extensions;
-using Disco.Services.Plugins.Features.UIExtension;
+﻿using Disco.BI.Extensions;
 using Disco.Models.UI.Config.DeviceModel;
+using Disco.Services.Authorization;
+using Disco.Services.Plugins;
+using Disco.Services.Plugins.Features.UIExtension;
+using Disco.Services.Plugins.Features.WarrantyProvider;
+using Disco.Services.Web;
+using System;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Disco.Web.Areas.Config.Controllers
 {
-    public partial class DeviceModelController : dbAdminController
+    public partial class DeviceModelController : AuthorizedDatabaseController
     {
+        [DiscoAuthorize(Claims.Config.DeviceModel.Show)]
         public virtual ActionResult Index(int? id)
         {
             if (id.HasValue)
             {
-                var m = dbContext.DeviceModels.Include("DeviceComponents").Where(dm => dm.Id == id.Value).Select(dm => new Models.DeviceModel.ShowModel()
+                var m = Database.DeviceModels.Include("DeviceComponents").Where(dm => dm.Id == id.Value).Select(dm => new Models.DeviceModel.ShowModel()
                 {
                     DeviceModel = dm,
                     DeviceCount = dm.Devices.Count(),
@@ -32,16 +33,11 @@ namespace Disco.Web.Areas.Config.Controllers
                 m.DeviceComponentsModel = new Models.DeviceModel.ComponentsModel()
                 {
                     DeviceModelId = m.DeviceModel.Id,
-                    DeviceComponents = dbContext.DeviceComponents.Include("JobSubTypes").Where(dc => dc.DeviceModelId == m.DeviceModel.Id).ToList(),
-                    JobSubTypes = dbContext.JobSubTypes.Where(jst => jst.JobTypeId == Disco.Models.Repository.JobType.JobTypeIds.HNWar).ToList()
+                    DeviceComponents = Database.DeviceComponents.Include("JobSubTypes").Where(dc => dc.DeviceModelId == m.DeviceModel.Id).ToList(),
+                    JobSubTypes = Database.JobSubTypes.Where(jst => jst.JobTypeId == Disco.Models.Repository.JobType.JobTypeIds.HNWar).ToList()
                 };
 
-                m.CanDelete = m.DeviceModel.CanDelete(dbContext);
-
-                //m.Devices = BI.DeviceBI.SelectDeviceSearchResultItem(dbContext.Devices.Where(d => d.DeviceModelId == m.DeviceModel.Id));
-
-                //m.Devices = dbContext.Devices.Include("DeviceModel").Include("DeviceProfile").Include("AssignedUser")
-                //    .Where(d => d.DeviceModelId == m.DeviceModel.Id).ToList();
+                m.CanDelete = m.DeviceModel.CanDelete(Database);
 
                 // UI Extensions
                 UIExtensions.ExecuteExtensions<ConfigDeviceModelShowModel>(this.ControllerContext, m);
@@ -50,7 +46,7 @@ namespace Disco.Web.Areas.Config.Controllers
             }
             else
             {
-                var m = Models.DeviceModel.IndexModel.Build(dbContext);
+                var m = Models.DeviceModel.IndexModel.Build(Database);
 
                 // UI Extensions
                 UIExtensions.ExecuteExtensions<ConfigDeviceModelIndexModel>(this.ControllerContext, m);
@@ -59,12 +55,13 @@ namespace Disco.Web.Areas.Config.Controllers
             }
         }
 
+        [DiscoAuthorize(Claims.Config.DeviceModel.Show)]
         public virtual ActionResult GenericComponents()
         {
             var m = new Models.DeviceModel.ComponentsModel()
             {
-                DeviceComponents = dbContext.DeviceComponents.Include("JobSubTypes").Where(dc => !dc.DeviceModelId.HasValue).ToList(),
-                JobSubTypes = dbContext.JobSubTypes.Where(jst => jst.JobTypeId == Disco.Models.Repository.JobType.JobTypeIds.HNWar).ToList()
+                DeviceComponents = Database.DeviceComponents.Include("JobSubTypes").Where(dc => !dc.DeviceModelId.HasValue).ToList(),
+                JobSubTypes = Database.JobSubTypes.Where(jst => jst.JobTypeId == Disco.Models.Repository.JobType.JobTypeIds.HNWar).ToList()
             };
 
             // UI Extensions

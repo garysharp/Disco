@@ -10,9 +10,9 @@ namespace Disco.BI
     public static class DataStore
     {
 
-        public static string CreateLocation(DiscoDataContext dbContext, string SubLocation, DateTime? SubSubLocationTimestamp = null)
+        public static string CreateLocation(DiscoDataContext Database, string SubLocation, DateTime? SubSubLocationTimestamp = null)
         {
-            return CreateLocation(dbContext.DiscoConfiguration, SubLocation, SubSubLocationTimestamp);
+            return CreateLocation(Database.DiscoConfiguration, SubLocation, SubSubLocationTimestamp);
         }
         public static string CreateLocation(SystemConfiguration DiscoConfiguration, string SubLocation, DateTime? SubSubLocationTimestamp = null)
         {

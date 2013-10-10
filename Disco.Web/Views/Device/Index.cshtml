@@ -1,10 +1,25 @@
 ﻿@{
     ViewBag.Title = "Devices";
 }
-<h3>
-    Search for a Device</h3>
-@Html.Partial(MVC.Shared.Views._SearchDialog, "devices")
-<div class="actionBar">
-    @Html.ActionLinkButton("Import/Export Devices", MVC.Device.ImportExport())
-    @Html.ActionLinkButton("Add Offline Device", MVC.Device.AddOffline())
-</div>
+@if (Authorization.Has(Claims.Device.Search))
+{
+    <h3>Search for a Device</h3>
+    @Html.Partial(MVC.Shared.Views._SearchDialog, "devices")
+}
+@if (Authorization.HasAny(Claims.Device.Actions.Import, Claims.Device.Actions.Export, Claims.Device.Actions.EnrolDevices))
+{
+    <div class="actionBar">
+        @if (Authorization.HasAll(Claims.Device.Actions.Import, Claims.Device.Actions.Export))
+        {
+            @Html.ActionLinkButton("Import/Export Devices", MVC.Device.ImportExport())
+        }else if (Authorization.Has(Claims.Device.Actions.Import)){
+            @Html.ActionLinkButton("Import Devices", MVC.Device.ImportExport())
+        }else if (Authorization.Has(Claims.Device.Actions.Export)){
+            @Html.ActionLinkButton("Export All Devices", MVC.API.Device.ExportAllDevices())
+        }
+        @if (Authorization.Has(Claims.Device.Actions.EnrolDevices))
+        {
+            @Html.ActionLinkButton("Add Offline Device", MVC.Device.AddOffline())
+        }
+    </div>
+}

@@ -1,18 +1,26 @@
 ﻿@model Disco.Web.Models.Job.ShowModel
 @using Disco.Models.Repository;
 @{
+    Authorization.Require(Claims.Job.Show);
+    
     Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
 }
 @switch (Model.Job.JobTypeId)
 {
     case JobType.JobTypeIds.HWar:
-        @Html.Partial(MVC.Job.Views.JobParts.Warranty);
+        if (Authorization.Has(Claims.Job.ShowWarranty))
+        {    
+            @Html.Partial(MVC.Job.Views.JobParts.Warranty);
+        }
         break;
     case JobType.JobTypeIds.HNWar:
         @Html.Partial(MVC.Job.Views.JobParts.NonWarranty);
         break;
     case JobType.JobTypeIds.UMgmt:
-        @Html.Partial(MVC.Job.Views.JobParts.Flags);
+        if (Authorization.Has(Claims.Job.ShowFlags))
+        {    
+            @Html.Partial(MVC.Job.Views.JobParts.Flags);
+        }
         break;
     default:
         break;

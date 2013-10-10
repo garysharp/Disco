@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<Disco.BI.Expressions.Expression>
+@{
+    Authorization.Require(Claims.Config.DocumentTemplate.Show);
+}
 <div class="expressionsTable">
     @if (Model.Count() > 0)
     { 

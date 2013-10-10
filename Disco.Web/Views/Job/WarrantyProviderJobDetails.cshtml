@@ -1,6 +1,8 @@
 ﻿@model Disco.Web.Models.Job.WarrantyProviderJobDetailsModel
 @{ Layout = null;
 
+   Authorization.Require(Claims.Job.Properties.WarrantyProperties.ProviderDetails);
+   
    if (Model.JobDetailsException != null)
    {
     <h3>

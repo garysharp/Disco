@@ -1,29 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Disco.BI;
-using Disco.BI.Extensions;
+﻿using Disco.BI.Extensions;
+using Disco.Services.Authorization;
+using Disco.Services.Users;
+using Disco.Services.Web;
+using System;
 using System.IO;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Disco.Web.Areas.API.Controllers
 {
-    public partial class UserController : dbAdminController
+    public partial class UserController : AuthorizedDatabaseController
     {
+        [DiscoAuthorize(Claims.User.Search)]
         public virtual ActionResult UpstreamUsers(string term)
         {
             return Json(BI.UserBI.Searching.SearchUpstream(term), JsonRequestBehavior.AllowGet);
         }
 
         #region User Attachements
+
+        [DiscoAuthorize(Claims.User.ShowAttachments)]
         [OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
         public virtual ActionResult AttachmentDownload(int id)
         {
-            var ua = dbContext.UserAttachments.Find(id);
+            var ua = Database.UserAttachments.Find(id);
             if (ua != null)
             {
-                var filePath = ua.RepositoryFilename(dbContext);
+                var filePath = ua.RepositoryFilename(Database);
                 if (System.IO.File.Exists(filePath))
                 {
                     return File(filePath, ua.MimeType, ua.Filename);
@@ -35,13 +38,15 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return HttpNotFound("Invalid Attachment Number");
         }
+
+        [DiscoAuthorize(Claims.User.ShowAttachments)]
         [OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
         public virtual ActionResult AttachmentThumbnail(int id)
         {
-            var ua = dbContext.UserAttachments.Find(id);
+            var ua = Database.UserAttachments.Find(id);
             if (ua != null)
             {
-                var thumbPath = ua.RepositoryThumbnailFilename(dbContext);
+                var thumbPath = ua.RepositoryThumbnailFilename(Database);
                 if (System.IO.File.Exists(thumbPath))
                 {
                     if (thumbPath.EndsWith(".png", StringComparison.InvariantCultureIgnoreCase))
@@ -54,9 +59,11 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return HttpNotFound("Invalid Attachment Number");
         }
+
+        [DiscoAuthorize(Claims.User.Actions.AddAttachments)]
         public virtual ActionResult AttachmentUpload(string id, string Comments)
         {
-            var u = dbContext.Users.Find(id);
+            var u = Database.Users.Find(id);
             if (u != null)
             {
                 if (Request.Files.Count > 0)
@@ -71,18 +78,18 @@ namespace Disco.Web.Areas.API.Controllers
                         var ua = new Disco.Models.Repository.UserAttachment()
                         {
                             UserId = u.Id,
-                            TechUserId = DiscoApplication.CurrentUser.Id,
+                            TechUserId = UserService.CurrentUserId,
                             Filename = file.FileName,
                             MimeType = contentType,
                             Timestamp = DateTime.Now,
                             Comments = Comments
                         };
-                        dbContext.UserAttachments.Add(ua);
-                        dbContext.SaveChanges();
+                        Database.UserAttachments.Add(ua);
+                        Database.SaveChanges();
 
-                        ua.SaveAttachment(dbContext, file.InputStream);
+                        ua.SaveAttachment(Database, file.InputStream);
 
-                        ua.GenerateThumbnail(dbContext);
+                        ua.GenerateThumbnail(Database);
 
                         return Json(ua.Id, JsonRequestBehavior.AllowGet);
                     }
@@ -91,9 +98,11 @@ namespace Disco.Web.Areas.API.Controllers
             }
             throw new Exception("Invalid User Id");
         }
+
+        [DiscoAuthorize(Claims.User.ShowAttachments)]
         public virtual ActionResult Attachment(int id)
         {
-            var ua = dbContext.UserAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var ua = Database.UserAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (ua != null)
             {
 
@@ -107,9 +116,11 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json(new Models.Attachment.AttachmentModel() { Result = "Invalid Attachment Number" }, JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorize(Claims.User.ShowAttachments)]
         public virtual ActionResult Attachments(string id)
         {
-            var u = dbContext.Users.Include("UserAttachments.TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var u = Database.Users.Include("UserAttachments.TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (u != null)
             {
                 var m = new Models.Attachment.AttachmentsModel()
@@ -122,47 +133,47 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json(new Models.Attachment.AttachmentsModel() { Result = "Invalid User Id" }, JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorizeAny(Claims.User.Actions.RemoveAnyAttachments, Claims.User.Actions.RemoveOwnAttachments)]
         public virtual ActionResult AttachmentRemove(int id)
         {
-            var ua = dbContext.UserAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var ua = Database.UserAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (ua != null)
             {
-                // 2012-02-17 G# Remove - 'Delete Own Comments' policy
-                //if (ua.TechUserId == DiscoApplication.CurrentUser.Id)
-                //{
-                ua.OnDelete(dbContext);
-                dbContext.SaveChanges();
+                if (ua.TechUserId.Equals(CurrentUser.Id, StringComparison.InvariantCultureIgnoreCase))
+                    Authorization.RequireAny(Claims.User.Actions.RemoveAnyAttachments, Claims.User.Actions.RemoveOwnAttachments);
+                else
+                    Authorization.Require(Claims.User.Actions.RemoveAnyAttachments);
+
+                ua.OnDelete(Database);
+                Database.SaveChanges();
                 return Json("OK", JsonRequestBehavior.AllowGet);
-                //}
-                //else
-                //{
-                //    return Json("You can only delete your own attachments.", JsonRequestBehavior.AllowGet);
-                //}
             }
             return Json("Invalid Attachment Number", JsonRequestBehavior.AllowGet);
         }
 
         #endregion
 
+        [DiscoAuthorize(Claims.User.Actions.GenerateDocuments)]
         public virtual ActionResult GeneratePdf(string id, string DocumentTemplateId)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException("id");
             if (string.IsNullOrEmpty(DocumentTemplateId))
                 throw new ArgumentNullException("AttachmentTypeId");
-            var user = dbContext.Users.Find(id);
+            var user = Database.Users.Find(id);
             if (user != null)
             {
-                var documentTemplate = dbContext.DocumentTemplates.Find(DocumentTemplateId);
+                var documentTemplate = Database.DocumentTemplates.Find(DocumentTemplateId);
                 if (documentTemplate != null)
                 {
                     var timeStamp = DateTime.Now;
                     Stream pdf;
                     using (var generationState = Disco.Models.BI.DocumentTemplates.DocumentState.DefaultState())
                     {
-                        pdf = documentTemplate.GeneratePdf(dbContext, user, DiscoApplication.CurrentUser, timeStamp, generationState);
+                        pdf = documentTemplate.GeneratePdf(Database, user, UserService.CurrentUser, timeStamp, generationState);
                     }
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
                     return File(pdf, "application/pdf", string.Format("{0}_{1}_{2:yyyyMMdd-HHmmss}.pdf", documentTemplate.Id, user.Id, timeStamp));
                 }
                 else

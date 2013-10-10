@@ -2081,7 +2081,8 @@ div.form > table table.sub > tbody > tr > th.name {
   width: 33%;
   padding: 10px;
 }
-#pageMenu td .pageMenuArea > a {
+#pageMenu td .pageMenuArea > a,
+#pageMenu td .pageMenuArea > h3 {
   text-decoration: none;
   font-size: 1.2em;
   padding-left: 18px;
@@ -2089,7 +2090,8 @@ div.form > table table.sub > tbody > tr > th.name {
   background-repeat: no-repeat;
   background-position: left center;
 }
-#pageMenu td .pageMenuArea > a:hover {
+#pageMenu td .pageMenuArea > a:hover,
+#pageMenu td .pageMenuArea > h3:hover {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACf0lEQVQ4y32SO4/UZRSHn3Pey/8yszNy2RmUXVxDDKgFkYTYYaKx0cKGxm+hJGhljBZgYaFQW1phYWFCNH4GTfACCSa6KhFidl0GdtiZ//u+x2LEsCg+zclJzvmdqxx973umRfBOcN5x+9dN7lzfQoMjZWNl1Lw27IcTX1++ebpqI1QBbSI0EderUO7DzIiDGlGhpAw5MzVZttXRy3Ubx6UUHsTvEijG+rlj//jxlc/ZSLodTz5xZG1P+GL94rcvplw29EGB9Xee4r+QEDAjpVsJfW7l2NrMLq1/de3VnMvv90T0yttP8zD2HF6mjTpp5sZ4AvH46omDLxy55JWRFVsUOXT22vMmrIjIfq8sOZU1VRkLtAUbHBhW450De1cjEIOwHSObl69/c+OH316Spt7ws8f2P2NwtMDB6Kj6Qfq9qPucsDys3LhY4VE6GhVaBS2Jn57c96wjf3nzl61Tvtu8M7VSbpvxZzLr7Zj1N/8eoZYCCNGBF8E5qJxwN8Nd9cd7g/pTX02nDdBg0gNawRBZzFfMSAaTmWFmIFAMggr9qN082Sd+by0bIjziRJwTllR1KIsVd+qYtuKb7/4okqIhBZzCIGje2Ulnclc+8pNJ95lBUBWngheRCqgA7TBNUU9a7T5WDw5hELD5PJ/OZucBxMweesbRBz+TVU+5GC6qGI2TWem6M3mWL+RZopul3Z/4L5qAd7KklSdmo5unNylcuD9E/y/fzFO23LB/y2GeN0op58UMimHFsFx2d3D4/R/ZrgfceH20uELnCcjV4HirE/nQx4B4B6EgVUDbarGDx9+9QhDITc12f4gUAMOAYHKoF2lTtKuL9zW4Z8z4C2DFDQO2dDsSAAAAAElFTkSuQmCC) /*Images/Actions/pageMenuIconHover.png*/;
 }
 #pageMenu td .pageMenuArea .pageMenuBlurb {

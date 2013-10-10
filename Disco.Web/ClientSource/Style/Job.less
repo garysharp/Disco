@@ -170,14 +170,6 @@
             }
         }
 
-        #Job_Show_User
-        {
-            #Job_Show_User_Type
-            {
-                font-style: italic;
-            }
-        }
-
         #Job_Show_Subjects_Actions
         {
             &>td
@@ -324,6 +316,10 @@
             }
         }
 
+        &.cannotAddLogs div.commentOutput {
+            height: 300px;
+        }
+
         div.commentInput
         {
             border-top: 1px solid @SubtleBorderColour;
@@ -468,6 +464,10 @@
                     }
                 }
             }
+        }
+
+        &.cannotAddAttachments div.attachmentOutput {
+            height: 300px;
         }
 
         div.attachmentInput

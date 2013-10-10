@@ -1,5 +1,7 @@
 ﻿@model Disco.Web.Models.Device.ShowModel
 @{
+    Authorization.Require(Claims.Device.Show);
+
     Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
 }
 <table id="Device_Show_Subjects">
@@ -23,19 +25,42 @@
                         </tr>
                         <tr>
                             <td>Asset:</td>
-                            <td>@Html.TextBoxFor(m => m.Device.AssetNumber, new { @class = "small discreet" }) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()</td>
+                            <td>
+                                @if (Authorization.Has(Claims.Device.Properties.AssetNumber))
+                                {
+                                    @Html.TextBoxFor(m => m.Device.AssetNumber, new { @class = "small discreet" }) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
+                                }
+                                else
+                                {
+                                    <span class="small discreet">@Model.Device.AssetNumber</span>
+                                }
+                            </td>
                         </tr>
                         <tr>
                             <td>Location:</td>
-                            <td>@Html.TextBoxFor(m => m.Device.Location, new { @class = "small discreet" }) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()</td>
+                            <td>
+                                @if (Authorization.Has(Claims.Device.Properties.Location))
+                                {
+                                    @Html.TextBoxFor(m => m.Device.Location, new { @class = "small discreet" }) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
+                                }
+                                else
+                                {
+                                    <span class="small discreet">@Model.Device.Location</span>
+                                }
+                            </td>
                         </tr>
                     </table>
-                    <script>
-                        $(function () {
-                            document.DiscoFunctions.PropertyChangeHelper($('#Device_AssetNumber'), 'Unknown', '@Url.Action(MVC.API.Device.UpdateAssetNumber(Model.Device.SerialNumber, null))', 'AssetNumber');
-                            document.DiscoFunctions.PropertyChangeHelper($('#Device_Location'), 'Unknown', '@Url.Action(MVC.API.Device.UpdateLocation(Model.Device.SerialNumber, null))', 'Location');
-                        });
-                    </script>
+                    @if (Authorization.HasAny(Claims.Device.Properties.AssetNumber, Claims.Device.Properties.Location))
+                    {
+                        <script>
+                            $(function () {
+                                @if (Authorization.Has(Claims.Device.Properties.AssetNumber))
+                                {<text>document.DiscoFunctions.PropertyChangeHelper($('#Device_AssetNumber'), 'Unknown', '@Url.Action(MVC.API.Device.UpdateAssetNumber(Model.Device.SerialNumber, null))', 'AssetNumber');</text>}
+                                @if (Authorization.Has(Claims.Device.Properties.Location))
+                                {<text>document.DiscoFunctions.PropertyChangeHelper($('#Device_Location'), 'Unknown', '@Url.Action(MVC.API.Device.UpdateLocation(Model.Device.SerialNumber, null))', 'Location');</text>}
+                            });
+                        </script>
+                    }
                 </div>
                 <div id="Device_Show_Details_Dates" class="status">
                     <table class="none verticalHeadings">
@@ -146,7 +171,7 @@
                                 {
                                     <div id="Device_Show_User">
                                         <div id="Device_Show_User_DisplayName" title="Display Name">@Html.ActionLink(assignedUser.DisplayName, MVC.User.Show(assignedUser.Id))</div>
-                                        <div id="Device_Show_User_Id" title="Id">@assignedUser.Id <span id="Device_Show_User_Type" title="Type">[@(assignedUser.Type)]</span></div>
+                                        <div id="Device_Show_User_Id" title="Id">@assignedUser.Id</div>
                                         @if (!string.IsNullOrWhiteSpace(assignedUser.PhoneNumber))
                                         {
                                             <div id="Device_Show_User_PhoneNumber" title="Phone Number">@assignedUser.PhoneNumber</div>
@@ -165,11 +190,13 @@
                         </tr>
                     </table>
                 </div>
-                <div id="Device_Show_GenerateDocument_Container" class="status">
-                    @Html.DropDownList("Device_Show_GenerateDocument", Model.DocumentTemplatesSelectListItems)
-                    <script type="text/javascript">
-                        $(function () {
-                            var generatePdfUrl = '@Url.Action(MVC.API.Device.GeneratePdf(Model.Device.SerialNumber.ToString(), null))?DocumentTemplateId=';
+                @if (Authorization.Has(Claims.Device.Actions.GenerateDocuments))
+                {
+                    <div id="Device_Show_GenerateDocument_Container" class="status">
+                        @Html.DropDownList("Device_Show_GenerateDocument", Model.DocumentTemplatesSelectListItems)
+                        <script type="text/javascript">
+                            $(function () {
+                                var generatePdfUrl = '@Url.Action(MVC.API.Device.GeneratePdf(Model.Device.SerialNumber.ToString(), null))?DocumentTemplateId=';
                             var $documentTemplates = $('#Device_Show_GenerateDocument');
                             $documentTemplates.change(function () {
                                 var v = $documentTemplates.val();
@@ -179,8 +206,9 @@
                                 }
                             });
                         });
-                    </script>
-                </div>
+                        </script>
+                    </div>
+                }
             </div>
         </td>
         <td id="Device_Show_Policies" rowspan="2">
@@ -602,7 +630,7 @@
                             {
                                 <li>
                                     <input type="radio" id="Device_Show_Device_Actions_Decommission_Reason_@((int)decommissionReason)"
-                                        name="Device_Show_Device_Actions_Decommission_Reason" value="@((int)decommissionReason)" @((decommissionReason== Device.DecommissionReasons.EndOfLife) ? "checked=\"checked\"" : string.Empty)/>
+                                        name="Device_Show_Device_Actions_Decommission_Reason" value="@((int)decommissionReason)" @((decommissionReason == Device.DecommissionReasons.EndOfLife) ? "checked=\"checked\"" : string.Empty)/>
                                     <label for="Device_Show_Device_Actions_Decommission_Reason_@((int)decommissionReason)">@(decommissionReason.ReasonMessage())</label>
                                 </li>
                             }
@@ -627,7 +655,7 @@
                                                             "Decommission": function () {
 
                                                                 var reasonId = buttonDialog.find('input:checked').val();
-                                                                
+
                                                                 var $this = $(this);
                                                                 $this.dialog("disable");
                                                                 $this.dialog("option", "buttons", null);

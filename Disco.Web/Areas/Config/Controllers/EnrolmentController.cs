@@ -1,23 +1,19 @@
 ﻿using Disco.Models.UI.Config.Enrolment;
+using Disco.Services.Authorization;
 using Disco.Services.Plugins.Features.UIExtension;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using Disco.Services.Web;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.Config.Controllers
 {
-    public partial class EnrolmentController : dbAdminController
+    public partial class EnrolmentController : AuthorizedDatabaseController
     {
-        //
-        // GET: /Config/Bootstrapper/
-
+        [DiscoAuthorize(Claims.Config.Enrolment.Show)]
         public virtual ActionResult Index()
         {
             var m = new Models.Enrolment.IndexModel()
             {
-                MacSshUsername = dbContext.DiscoConfiguration.Bootstrapper.MacSshUsername
+                MacSshUsername = Database.DiscoConfiguration.Bootstrapper.MacSshUsername
             };
 
             // UI Extensions
@@ -25,6 +21,8 @@ namespace Disco.Web.Areas.Config.Controllers
 
             return View(m);
         }
+
+        [DiscoAuthorize(Claims.Config.Enrolment.ShowStatus)]
         public virtual ActionResult Status()
         {
             var m = new Models.Enrolment.StatusModel();

@@ -191,11 +191,11 @@ namespace Disco.BI.Interop.ActiveDirectory
                 case "name":
                     return account.Name;
                 case "samaccountname":
-                    return account.sAMAccountName;
+                    return account.SamAccountName;
                 case "distinguishedname":
                     return account.DistinguishedName;
                 case "objectsid":
-                    return account.ObjectSid;
+                    return account.SecurityIdentifier;
                 case "netbootguid":
                     return account.NetbootGUID;
                 default:
@@ -268,7 +268,9 @@ namespace Disco.BI.Interop.ActiveDirectory
             if (account.IsCriticalSystemObject)
                 throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco refuses to modify it", account.DistinguishedName));
 
-            if (!account.ParentDistinguishedName.Equals(NewOrganisationUnit, StringComparison.InvariantCultureIgnoreCase))
+            var parentDistinguishedName = account.ParentDistinguishedName();
+
+            if (parentDistinguishedName != null && !parentDistinguishedName.Equals(NewOrganisationUnit, StringComparison.InvariantCultureIgnoreCase))
             {
                 string ouPath;
                 if (string.IsNullOrWhiteSpace(NewOrganisationUnit))
@@ -284,6 +286,15 @@ namespace Disco.BI.Interop.ActiveDirectory
                     }
                 }
             }
+        }
+
+        public static string ParentDistinguishedName(this ActiveDirectoryMachineAccount account)
+        {
+            // Determine Parent
+            if (!string.IsNullOrWhiteSpace(account.DistinguishedName))
+                return account.DistinguishedName.Substring(0, account.DistinguishedName.IndexOf(",DC=")).Substring(account.DistinguishedName.IndexOf(",") + 1);
+            else
+                return null;
         }
 
     }

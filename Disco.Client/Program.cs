@@ -44,7 +44,7 @@ namespace Disco.Client
 
             // Ignore Local Proxies
             WebRequest.DefaultWebProxy = new WebProxy();
-            // Override Http 100 Continue Behavour
+            // Override Http 100 Continue Behaviour
             ServicePointManager.Expect100Continue = false;
 
             // Assume success unless otherwise notified

@@ -1,4 +1,7 @@
 ﻿@model Disco.Web.Models.User.ShowModel
+@{
+    Authorization.Require(Claims.User.ShowJobs);
+}
 <div id="UserDetailTab-Jobs" class="UserPart">
     <div id="UserDetailTab-JobsContainer">
         @Html.Partial(MVC.Shared.Views._JobTable, Model.Jobs)

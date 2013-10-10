@@ -1,5 +1,7 @@
 ﻿@model Disco.Web.Areas.Config.Models.DocumentTemplate.ExpressionBrowserModel
 @{
+    Authorization.Require(Claims.Config.Show);
+    
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(null), "Expression Browser");
     Html.BundleDeferred("~/Style/jQueryUI/dynatree");
     Html.BundleDeferred("~/ClientScripts/Modules/jQueryUI-DynaTree");

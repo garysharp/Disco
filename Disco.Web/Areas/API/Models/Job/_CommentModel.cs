@@ -11,6 +11,7 @@ namespace Disco.Web.Areas.API.Models.Job
     {
         public int Id { get; set; }
         public int JobId { get; set; }
+        public string AuthorId { get; set; }
         public string Author { get; set; }
         public DateTime Timestamp { get; set; }
         public string Comments { get; set; }
@@ -43,6 +44,7 @@ namespace Disco.Web.Areas.API.Models.Job
             {
                 Id = jl.Id,
                 JobId = jl.JobId,
+                AuthorId = jl.TechUserId,
                 Author = jl.TechUser.ToString(),
                 Timestamp = jl.Timestamp,
                 Comments = jl.Comments

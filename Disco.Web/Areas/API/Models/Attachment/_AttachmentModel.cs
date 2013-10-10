@@ -12,6 +12,7 @@ namespace Disco.Web.Areas.API.Models.Attachment
         public string ParentId { get; set; }
         public int Id { get; set; }
         public string Author { get; set; }
+        public string AuthorId { get; set; }
         public DateTime Timestamp { get; set; }
         public string Comments { get; set; }
         public string Filename { get; set; }
@@ -45,6 +46,7 @@ namespace Disco.Web.Areas.API.Models.Attachment
             {
                 ParentId = ua.UserId,
                 Id = ua.Id,
+                AuthorId = ua.TechUserId,
                 Author = ua.TechUser.ToString(),
                 Timestamp = ua.Timestamp,
                 Comments = ua.Comments,
@@ -58,6 +60,7 @@ namespace Disco.Web.Areas.API.Models.Attachment
             {
                 ParentId = ja.JobId.ToString(),
                 Id = ja.Id,
+                AuthorId = ja.TechUserId,
                 Author = ja.TechUser.ToString(),
                 Timestamp = ja.Timestamp,
                 Comments = ja.Comments,
@@ -71,6 +74,7 @@ namespace Disco.Web.Areas.API.Models.Attachment
             {
                 ParentId = da.DeviceSerialNumber,
                 Id = da.Id,
+                AuthorId = da.TechUserId,
                 Author = da.TechUser.ToString(),
                 Timestamp = da.Timestamp,
                 Comments = da.Comments,

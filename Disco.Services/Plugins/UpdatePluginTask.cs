@@ -32,10 +32,10 @@ namespace Disco.Services.Plugins
 
             List<Tuple<PluginManifest, string, PluginLibraryItem>> updatePlugins;
 
-            using (DiscoDataContext dbContext = new DiscoDataContext())
+            using (DiscoDataContext database = new DiscoDataContext())
             {
-                catalogue = Plugins.LoadCatalogue(dbContext);
-                pluginPackagesLocation = dbContext.DiscoConfiguration.PluginPackagesLocation;
+                catalogue = Plugins.LoadCatalogue(database);
+                pluginPackagesLocation = database.DiscoConfiguration.PluginPackagesLocation;
             }
 
             if (!string.IsNullOrEmpty(pluginId))
@@ -82,10 +82,10 @@ namespace Disco.Services.Plugins
             Plugins.RestartApp(1500);
         }
 
-        public static List<PluginManifest> OfflineInstalledPlugins(DiscoDataContext dbContext)
+        public static List<PluginManifest> OfflineInstalledPlugins(DiscoDataContext Database)
         {
-            string pluginsLocation = dbContext.DiscoConfiguration.PluginsLocation;
-            string pluginsStorageLocation = dbContext.DiscoConfiguration.PluginStorageLocation;
+            string pluginsLocation = Database.DiscoConfiguration.PluginsLocation;
+            string pluginsStorageLocation = Database.DiscoConfiguration.PluginStorageLocation;
 
             List<PluginManifest> installedPluginManifests = new List<PluginManifest>();
 
@@ -121,13 +121,13 @@ namespace Disco.Services.Plugins
             List<Tuple<PluginManifest, string, PluginLibraryItem>> updatePlugins = new List<Tuple<PluginManifest, string, PluginLibraryItem>>();
 
             
-            using (DiscoDataContext dbContext = new DiscoDataContext())
+            using (DiscoDataContext database = new DiscoDataContext())
             {
-                pluginPackagesLocation = dbContext.DiscoConfiguration.PluginPackagesLocation;
-                installedPluginManifests = OfflineInstalledPlugins(dbContext);
+                pluginPackagesLocation = database.DiscoConfiguration.PluginPackagesLocation;
+                installedPluginManifests = OfflineInstalledPlugins(database);
 
                 if (installedPluginManifests.Count > 0)
-                    pluginCatalogue = Plugins.LoadCatalogue(dbContext);
+                    pluginCatalogue = Plugins.LoadCatalogue(database);
             }
 
             if (pluginCatalogue != null && installedPluginManifests.Count > 0)
@@ -231,15 +231,15 @@ namespace Disco.Services.Plugins
 
                 Status.UpdateStatus(20, string.Format("{0} [{1} v{2}] by {3}", updateManifest.Name, updateManifest.Id, updateManifest.Version.ToString(4), updateManifest.Author), "Initializing Update Environment");
 
-                using (DiscoDataContext dbContext = new DiscoDataContext())
+                using (DiscoDataContext database = new DiscoDataContext())
                 {
                     // Check for Compatibility
-                    var compatibilityData = Plugins.LoadCompatibilityData(dbContext);
+                    var compatibilityData = Plugins.LoadCompatibilityData(database);
                     var pluginCompatibility = compatibilityData.Plugins.FirstOrDefault(i => i.Id.Equals(updateManifest.Id, StringComparison.InvariantCultureIgnoreCase) && updateManifest.Version == Version.Parse(i.Version));
                     if (pluginCompatibility != null && !pluginCompatibility.Compatible)
                         throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] is not compatible: {2}", updateManifest.Id, updateManifest.VersionFormatted, pluginCompatibility.Reason));
 
-                    var updatePluginPath = Path.Combine(dbContext.DiscoConfiguration.PluginsLocation, string.Format("{0}.discoPlugin", updateManifest.Id));
+                    var updatePluginPath = Path.Combine(database.DiscoConfiguration.PluginsLocation, string.Format("{0}.discoPlugin", updateManifest.Id));
                     File.Move(packageTempFilePath, updatePluginPath);
 
                     if (existingManifest != null)

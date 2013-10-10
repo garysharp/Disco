@@ -11,30 +11,30 @@ namespace Disco.Data.Configuration
 {
     public abstract class ConfigurationBase
     {
-        private DiscoDataContext dbContext;
+        private DiscoDataContext Database;
 
         public abstract string Scope { get; }
 
-        public ConfigurationBase(DiscoDataContext dbContext)
+        public ConfigurationBase(DiscoDataContext Database)
         {
-            this.dbContext = dbContext;
+            this.Database = Database;
         }
 
         protected List<ConfigurationItem> Items
         {
             get
             {
-                return ConfigurationCache.GetConfigurationItems(dbContext, this.Scope);
+                return ConfigurationCache.GetConfigurationItems(Database, this.Scope);
             }
         }
 
         private void SetValue<ValueType>(string Key, ValueType Value)
         {
-            ConfigurationCache.SetConfigurationValue(dbContext, this.Scope, Key, Value);
+            ConfigurationCache.SetConfigurationValue(Database, this.Scope, Key, Value);
         }
         private ValueType GetValue<ValueType>(string Key, ValueType Default)
         {
-            return ConfigurationCache.GetConfigurationValue(dbContext, this.Scope, Key, Default);
+            return ConfigurationCache.GetConfigurationValue(Database, this.Scope, Key, Default);
         }
 
         protected void Set<ValueType>(ValueType Value, [CallerMemberName] string Key = null)

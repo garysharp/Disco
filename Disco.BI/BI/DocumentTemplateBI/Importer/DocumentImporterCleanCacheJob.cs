@@ -13,7 +13,7 @@ namespace Disco.BI.DocumentTemplateBI.Importer
         public override bool SingleInstanceTask { get { return true; } }
         public override bool CancelInitiallySupported { get { return false; } }
 
-        public override void InitalizeScheduledTask(DiscoDataContext dbContext)
+        public override void InitalizeScheduledTask(DiscoDataContext Database)
         {
             // Trigger Daily @ 12:30am
             TriggerBuilder triggerBuilder = TriggerBuilder.Create().WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(0, 30));
@@ -24,9 +24,9 @@ namespace Disco.BI.DocumentTemplateBI.Importer
         protected override void ExecuteTask()
         {
             string dataStoreLocation;
-            using (DiscoDataContext dbContext = new DiscoDataContext())
+            using (DiscoDataContext database = new DiscoDataContext())
             {
-                dataStoreLocation = DataStore.CreateLocation(dbContext, "Cache\\DocumentDropBox_SessionPages");
+                dataStoreLocation = DataStore.CreateLocation(database, "Cache\\DocumentDropBox_SessionPages");
             }
 
             int deleteCount = 0;

@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Disco.BI.Extensions;
+using Disco.BI.Interop.ActiveDirectory;
+using Disco.Services.Authorization;
+using Disco.Services.Web;
+using System;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using Disco.BI;
-using Disco.BI.Extensions;
-using System.IO;
-using System.Drawing;
-using System.Text;
-using Disco.Services.Tasks;
-using Disco.BI.Interop.ActiveDirectory;
-using Disco.Models.Repository;
 
 namespace Disco.Web.Areas.API.Controllers
 {
-    public partial class SystemController : dbAdminController
+    public partial class SystemController : AuthorizedDatabaseController
     {
-
+        [DiscoAuthorize(Claims.Config.System.Show)]
         public virtual ActionResult UpdateLastNetworkLogonDates()
         {
             var taskStatus = ActiveDirectoryUpdateLastNetworkLogonDateJob.ScheduleImmediately();
@@ -24,44 +22,46 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Config.Logging.TaskStatus(taskStatus.SessionId));
         }
 
+        [DiscoAuthorize(Claims.DiscoAdminAccount)]
         public virtual ActionResult UpdateAttachmentThumbnails()
         {
             // Device Attachments
-            var das = dbContext.DeviceAttachments.Where(da => da.MimeType == "application/pdf");
+            var das = Database.DeviceAttachments.Where(da => da.MimeType == "application/pdf");
             foreach (var da in das)
             {
-                var fileName = da.RepositoryThumbnailFilename(dbContext);
+                var fileName = da.RepositoryThumbnailFilename(Database);
                 if (!System.IO.File.Exists(fileName))
                 {
-                    da.GenerateThumbnail(dbContext);
+                    da.GenerateThumbnail(Database);
                 }
             }
 
             // User Attachments
-            var uas = dbContext.UserAttachments.Where(ua => ua.MimeType == "application/pdf");
+            var uas = Database.UserAttachments.Where(ua => ua.MimeType == "application/pdf");
             foreach (var ua in uas)
             {
-                var fileName = ua.RepositoryThumbnailFilename(dbContext);
+                var fileName = ua.RepositoryThumbnailFilename(Database);
                 if (!System.IO.File.Exists(fileName))
                 {
-                    ua.GenerateThumbnail(dbContext);
+                    ua.GenerateThumbnail(Database);
                 }
             }
 
             // Job Attachments
-            var jas = dbContext.JobAttachments.Where(ja => ja.MimeType == "application/pdf");
+            var jas = Database.JobAttachments.Where(ja => ja.MimeType == "application/pdf");
             foreach (var ja in jas)
             {
-                var fileName = ja.RepositoryThumbnailFilename(dbContext);
+                var fileName = ja.RepositoryThumbnailFilename(Database);
                 if (!System.IO.File.Exists(fileName))
                 {
-                    ja.GenerateThumbnail(dbContext);
+                    ja.GenerateThumbnail(Database);
                 }
             }
 
             return Content("Done", "text/text");
         }
 
+        [DiscoAuthorize(Claims.Config.System.Show)]
         public virtual ActionResult UpdateCheck()
         {
             var ts = Disco.BI.Interop.Community.UpdateCheckTask.ScheduleNow();
@@ -72,16 +72,17 @@ namespace Disco.Web.Areas.API.Controllers
         #region Organisation
 
         #region Organisation Name
+        [DiscoAuthorize(Claims.Config.Organisation.ConfigureName)]
         public virtual ActionResult UpdateOrganisationName(string OrganisationName, bool redirect = false)
         {
             if (string.IsNullOrWhiteSpace(OrganisationName))
-                dbContext.DiscoConfiguration.OrganisationName = null;
+                Database.DiscoConfiguration.OrganisationName = null;
             else
-                dbContext.DiscoConfiguration.OrganisationName = OrganisationName;
+                Database.DiscoConfiguration.OrganisationName = OrganisationName;
 
-            dbContext.SaveChanges();
+            Database.SaveChanges();
 
-            DiscoApplication.OrganisationName = dbContext.DiscoConfiguration.OrganisationName;
+            DiscoApplication.OrganisationName = Database.DiscoConfiguration.OrganisationName;
 
             if (redirect)
                 return RedirectToAction(MVC.Config.Organisation.Index());
@@ -99,7 +100,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (Height < 1)
                 throw new ArgumentOutOfRangeException("Height");
 
-            using (Stream logoStream = dbContext.DiscoConfiguration.OrganisationLogo)
+            using (Stream logoStream = Database.DiscoConfiguration.OrganisationLogo)
             {
                 using (Image logoBitmap = Bitmap.FromStream(logoStream))
                 {
@@ -107,12 +108,12 @@ namespace Disco.Web.Areas.API.Controllers
                 }
             }
         }
-        [HttpPost]
+        [DiscoAuthorize(Claims.Config.Organisation.ConfigureLogo), HttpPost]
         public virtual ActionResult OrganisationLogo(bool redirect, HttpPostedFileBase Image, bool? ResetLogo = null)
         {
             if (ResetLogo.HasValue && ResetLogo.Value)
             {
-                dbContext.DiscoConfiguration.OrganisationLogo = null;
+                Database.DiscoConfiguration.OrganisationLogo = null;
 
                 if (redirect)
                     return RedirectToAction(MVC.Config.Organisation.Index());
@@ -124,7 +125,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 if (Image.ContentType.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    dbContext.DiscoConfiguration.OrganisationLogo = Image.InputStream;
+                    Database.DiscoConfiguration.OrganisationLogo = Image.InputStream;
 
                     if (redirect)
                         return RedirectToAction(MVC.Config.Organisation.Index());
@@ -147,7 +148,7 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Organisation Addresses
-
+        [DiscoAuthorize(Claims.Config.Organisation.ConfigureAddresses)]
         public virtual ActionResult UpdateOrganisationAddress(Disco.Models.BI.Config.OrganisationAddress organisationAddress, bool redirect = false)
         {
             if (organisationAddress == null)
@@ -156,8 +157,8 @@ namespace Disco.Web.Areas.API.Controllers
             }
             if (ModelState.IsValid)
             {
-                dbContext.DiscoConfiguration.OrganisationAddresses.SetAddress(organisationAddress);
-                dbContext.SaveChanges();
+                Database.DiscoConfiguration.OrganisationAddresses.SetAddress(organisationAddress);
+                Database.SaveChanges();
                 if (redirect)
                     return RedirectToAction(MVC.Config.Organisation.Index());
                 else
@@ -183,10 +184,11 @@ namespace Disco.Web.Areas.API.Controllers
                     return Json(em.ToString(), JsonRequestBehavior.AllowGet);
             }
         }
+        [DiscoAuthorize(Claims.Config.Organisation.ConfigureAddresses)]
         public virtual ActionResult DeleteOrganisationAddress(int Id, bool redirect = false)
         {
-            dbContext.DiscoConfiguration.OrganisationAddresses.RemoveAddress(Id);
-            dbContext.SaveChanges();
+            Database.DiscoConfiguration.OrganisationAddresses.RemoveAddress(Id);
+            Database.SaveChanges();
 
             if (redirect)
                 return RedirectToAction(MVC.Config.Organisation.Index());
@@ -198,13 +200,14 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region MultiSiteMode
 
+        [DiscoAuthorize(Claims.Config.Organisation.ConfigureMultiSiteMode)]
         public virtual ActionResult UpdateMultiSiteMode(bool MultiSiteMode, bool redirect = false)
         {
-            dbContext.DiscoConfiguration.MultiSiteMode = MultiSiteMode;
+            Database.DiscoConfiguration.MultiSiteMode = MultiSiteMode;
 
-            dbContext.SaveChanges();
+            Database.SaveChanges();
 
-            DiscoApplication.MultiSiteMode = dbContext.DiscoConfiguration.MultiSiteMode;
+            DiscoApplication.MultiSiteMode = Database.DiscoConfiguration.MultiSiteMode;
 
             if (redirect)
                 return RedirectToAction(MVC.Config.Organisation.Index());

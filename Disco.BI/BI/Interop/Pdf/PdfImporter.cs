@@ -205,7 +205,7 @@ namespace Disco.BI.Interop.Pdf
             return null;
         }
 
-        private static DetectImageResult DetectImage(DiscoDataContext dbContext, Bitmap pageImageOriginal, string SessionId, IEnumerable<DocumentTemplate> detectDocumentTemplates, DetectStateHints StateHints)
+        private static DetectImageResult DetectImage(DiscoDataContext Database, Bitmap pageImageOriginal, string SessionId, IEnumerable<DocumentTemplate> detectDocumentTemplates, DetectStateHints StateHints)
         {
             Bitmap pageImage = pageImageOriginal;
             double pageImageModifiedScale = 1;
@@ -270,7 +270,7 @@ namespace Disco.BI.Interop.Pdf
                     {
                         foreach (DocumentTemplate dt in detectDocumentTemplates)
                         {
-                            var locationBag = dt.QRCodeLocations(dbContext);
+                            var locationBag = dt.QRCodeLocations(Database);
                             foreach (var location in locationBag)
                             {
                                 result = DetectImageFromSegment(pageImage, zxingMfr, zxingMfrHints,
@@ -303,7 +303,7 @@ namespace Disco.BI.Interop.Pdf
             }
         }
 
-        private static DetectPageResult DetectPage(DiscoDataContext dbContext, PdfReader pdfReader, int PageNumber, string SessionId, string DataStoreSessionCacheLocation, IEnumerable<DocumentTemplate> detectDocumentTemplates, DetectStateHints StateHints)
+        private static DetectPageResult DetectPage(DiscoDataContext Database, PdfReader pdfReader, int PageNumber, string SessionId, string DataStoreSessionCacheLocation, IEnumerable<DocumentTemplate> detectDocumentTemplates, DetectStateHints StateHints)
         {
             DetectPageResult result = new DetectPageResult() { PageNumber = PageNumber };
 
@@ -325,7 +325,7 @@ namespace Disco.BI.Interop.Pdf
                     {
                         DocumentImporterLog.LogImportPageProgress(SessionId, PageNumber, (int)(10 + (pageProgressInterval * pageImages.IndexOf(pageImageOriginal))), String.Format("Processing Page Image {0} of {1}", pageImages.IndexOf(pageImageOriginal) + 1, pageImages.Count));
 
-                        using (var zxingResult = DetectImage(dbContext, pageImageOriginal, SessionId, detectDocumentTemplates, StateHints))
+                        using (var zxingResult = DetectImage(Database, pageImageOriginal, SessionId, detectDocumentTemplates, StateHints))
                         {
                             if (zxingResult != null)
                             {
@@ -377,9 +377,9 @@ namespace Disco.BI.Interop.Pdf
             }
         }
 
-        public static bool ProcessPdfAttachment(string Filename, DiscoDataContext dbContext, string SessionId, Cache HttpCache)
+        public static bool ProcessPdfAttachment(string Filename, DiscoDataContext Database, string SessionId, Cache HttpCache)
         {
-            var dataStoreUnassignedLocation = DataStore.CreateLocation(dbContext, "DocumentDropBox_Unassigned");
+            var dataStoreUnassignedLocation = DataStore.CreateLocation(Database, "DocumentDropBox_Unassigned");
 
             DocumentImporterLog.LogImportProgress(SessionId, 0, "Reading File");
 
@@ -389,8 +389,8 @@ namespace Disco.BI.Interop.Pdf
 
                 var pdfPagesAssigned = new Dictionary<int, Tuple<DocumentUniqueIdentifier, byte[]>>();
 
-                var dataStoreSessionPagesCacheLocation = DataStore.CreateLocation(dbContext, "Cache\\DocumentDropBox_SessionPages");
-                var detectDocumentTemplates = dbContext.DocumentTemplates.ToArray();
+                var dataStoreSessionPagesCacheLocation = DataStore.CreateLocation(Database, "Cache\\DocumentDropBox_SessionPages");
+                var detectDocumentTemplates = Database.DocumentTemplates.ToArray();
 
                 double progressInterval = 70 / pdfReader.NumberOfPages;
 
@@ -401,14 +401,14 @@ namespace Disco.BI.Interop.Pdf
                     DocumentImporterLog.LogImportProgress(SessionId, (int)(PageNumber * progressInterval), string.Format("Processing Page {0} of {1}", PageNumber, pdfReader.NumberOfPages));
                     DocumentImporterLog.LogImportPageStarting(SessionId, PageNumber);
 
-                    using (var pageResult = DetectPage(dbContext, pdfReader, PageNumber, SessionId, dataStoreSessionPagesCacheLocation, detectDocumentTemplates, detectStateHints))
+                    using (var pageResult = DetectPage(Database, pdfReader, PageNumber, SessionId, dataStoreSessionPagesCacheLocation, detectDocumentTemplates, detectStateHints))
                     {
                         if (pageResult.DetectedIdentifier != null)
                         {
                             var docId = pageResult.DetectedIdentifier;
                             pdfPagesAssigned.Add(PageNumber, new Tuple<DocumentUniqueIdentifier, byte[]>(docId, pageResult.AttachmentThumbnailImage.ToArray()));
 
-                            docId.LoadComponents(dbContext);
+                            docId.LoadComponents(Database);
                             DocumentImporterLog.LogImportPageDetected(SessionId, PageNumber, docId.DocumentUniqueId, docId.DocumentTemplate.Description, docId.DocumentTemplate.Scope, docId.DataId, docId.DataDescription);
                         }
                         else
@@ -441,7 +441,7 @@ namespace Disco.BI.Interop.Pdf
                         var documentPortionIdentifier = documentPortionInfo.Item1;
                         var documentPortionThumbnail = documentPortionInfo.Item2;
 
-                        if (!documentPortionIdentifier.LoadComponents(dbContext))
+                        if (!documentPortionIdentifier.LoadComponents(Database))
                         {
                             // Unknown Document Unique Id
                             foreach (var dp in documentPortion)
@@ -477,7 +477,7 @@ namespace Disco.BI.Interop.Pdf
 
                                 msBuilder.Position = 0;
 
-                                var attachmentSuccess = documentPortionIdentifier.ImportPdfAttachment(dbContext, msBuilder, documentPortionThumbnail);
+                                var attachmentSuccess = documentPortionIdentifier.ImportPdfAttachment(Database, msBuilder, documentPortionThumbnail);
 
                                 if (!attachmentSuccess)
                                 { // Unable to add Attachment
@@ -538,13 +538,13 @@ namespace Disco.BI.Interop.Pdf
 
             return true;
         }
-        public static bool ProcessPdfAttachment(string Filename, DiscoDataContext dbContext, string DocumentTemplateId, string DataId, string UserId, DateTime Timestamp)
+        public static bool ProcessPdfAttachment(string Filename, DiscoDataContext Database, string DocumentTemplateId, string DataId, string UserId, DateTime Timestamp)
         {
             using (FileStream fs = new FileStream(Filename, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
             {
                 DocumentUniqueIdentifier identifier = new DocumentUniqueIdentifier(DocumentTemplateId, DataId, UserId, Timestamp);
-                identifier.LoadComponents(dbContext);
-                return identifier.ImportPdfAttachment(dbContext, fs, null);
+                identifier.LoadComponents(Database);
+                return identifier.ImportPdfAttachment(Database, fs, null);
             }
         }
 

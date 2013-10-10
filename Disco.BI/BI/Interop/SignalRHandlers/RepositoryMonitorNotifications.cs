@@ -1,4 +1,5 @@
 ﻿using Disco.Data.Repository.Monitor;
+using Disco.Services.Authorization;
 using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace Disco.BI.Interop.SignalRHandlers
 {
-    public class RepositoryMonitorNotifications : AdminAuthorizedPersistentConnection
+    public class RepositoryMonitorNotifications : AuthorizedPersistentConnection
     {
+        protected override string AuthorizedClaim { get { return Claims.DiscoAdminAccount; } }
+
         public static void Initialize()
         {
             RepositoryMonitor.StreamAfterCommit.Subscribe(AfterCommit);

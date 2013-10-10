@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Disco.BI.Extensions;
-using Disco.Web.Extensions;
+﻿using Disco.BI.Extensions;
 using Disco.Models.Repository;
-using Disco.Data.Configuration;
+using Disco.Services.Authorization;
+using Disco.Services.Users;
+using Disco.Services.Web;
+using Disco.Web.Extensions;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Disco.Web.Areas.API.Controllers
 {
-    public partial class JobController : dbAdminController
+    public partial class JobController : AuthorizedDatabaseController
     {
 
         #region Property Constants
@@ -75,8 +76,10 @@ namespace Disco.Web.Areas.API.Controllers
                 if (string.IsNullOrEmpty(key))
                     throw new ArgumentNullException("key");
 
-                dbContext.Configuration.LazyLoadingEnabled = true;
-                var job = dbContext.Jobs.Find(id);
+                var authToken = UserService.CurrentAuthorization;
+
+                Database.Configuration.LazyLoadingEnabled = true;
+                var job = Database.Jobs.Find(id);
 
                 object resultData = null;
                 string resultUrlFragment = null;
@@ -86,144 +89,180 @@ namespace Disco.Web.Areas.API.Controllers
                     switch (key.ToLower())
                     {
                         case pExpectedClosedDate:
+                            Authorization.Require(Claims.Job.Properties.ExpectedClosedDate);
                             UpdateExpectedClosedDate(job, value);
                             break;
                         case pDeviceHeldLocation:
+                            Authorization.Require(Claims.Job.Properties.DeviceHeldLocation);
                             UpdateDeviceHeldLocation(job, value);
                             break;
                         case pFlags:
+                            Authorization.Require(Claims.Job.Properties.Flags);
                             UpdateFlags(job, value);
                             resultUrlFragment = pJobDetailsTabFlags;
                             break;
                         case pNonWarrantyAccountingChargeRequired:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.AccountingChargeRequired);
                             resultData = UpdateNonWarrantyAccountingChargeRequired(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyFinance;
                             break;
                         case pNonWarrantyAccountingChargeAdded:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.AccountingChargeAdded);
                             resultData = UpdateNonWarrantyAccountingChargeAdded(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyFinance;
                             break;
                         case pNonWarrantyAccountingChargePaid:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.AccountingChargePaid);
                             resultData = UpdateNonWarrantyAccountingChargePaid(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyFinance;
                             break;
                         case pNonWarrantyPurchaseOrderRaised:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.PurchaseOrderRaised);
                             resultData = UpdateNonWarrantyPurchaseOrderRaised(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyFinance;
                             break;
                         case pNonWarrantyPurchaseOrderReference:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.PurchaseOrderReference);
                             UpdateNonWarrantyPurchaseOrderReference(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyFinance;
                             break;
                         case pNonWarrantyPurchaseOrderSent:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.PurchaseOrderSent);
                             resultData = UpdateNonWarrantyPurchaseOrderSent(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyFinance;
                             break;
                         case pNonWarrantyInvoiceReceived:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InvoiceReceived);
                             resultData = UpdateNonWarrantyInvoiceReceived(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyFinance;
                             break;
                         case pNonWarrantyRepairerName:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.RepairerName);
                             UpdateNonWarrantyRepairerName(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyRepairs;
                             break;
                         case pNonWarrantyRepairerLoggedDate:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.RepairerLoggedDate);
                             UpdateNonWarrantyRepairerLoggedDate(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyRepairs;
                             break;
                         case pNonWarrantyRepairerReference:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.RepairerReference);
                             UpdateNonWarrantyRepairerReference(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyRepairs;
                             break;
                         case pNonWarrantyRepairerCompletedDate:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.RepairerCompletedDate);
                             UpdateNonWarrantyRepairerCompletedDate(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyRepairs;
                             break;
                         case pNonWarrantyIsInsuranceClaim:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.IsInsuranceClaim);
                             UpdateNonWarrantyIsInsuranceClaim(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceLossOrDamageDate:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails);
                             UpdateInsuranceLossOrDamageDate(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceEventLocation:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails);
                             UpdateInsuranceEventLocation(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceDescription:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails);
                             UpdateInsuranceDescription(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceThirdPartyCaused:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails);
                             UpdateInsuranceThirdPartyCaused(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceThirdPartyCausedName:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails);
                             UpdateInsuranceThirdPartyCausedName(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceThirdPartyCausedWhy:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails);
                             UpdateInsuranceThirdPartyCausedWhy(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceWitnessesNamesAddresses:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails);
                             UpdateInsuranceWitnessesNamesAddresses(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceBurglaryTheftMethodOfEntry:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails);
                             UpdateInsuranceBurglaryTheftMethodOfEntry(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsurancePropertyLastSeenDate:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails);
                             UpdateInsurancePropertyLastSeenDate(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsurancePoliceNotified:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails);
                             UpdateInsurancePoliceNotified(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsurancePoliceNotifiedStation:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails);
                             UpdateInsurancePoliceNotifiedStation(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsurancePoliceNotifiedDate:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails);
                             UpdateInsurancePoliceNotifiedDate(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsurancePoliceNotifiedCrimeReportNo:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails);
                             UpdateInsurancePoliceNotifiedCrimeReportNo(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceRecoverReduceAction:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails);
                             UpdateInsuranceRecoverReduceAction(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceOtherInterestedParties:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails);
                             UpdateInsuranceOtherInterestedParties(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceDateOfPurchase:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails);
                             UpdateInsuranceDateOfPurchase(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pInsuranceClaimFormSentDate:
+                            Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent);
                             resultData = UpdateInsuranceClaimFormSentDate(job, value);
                             resultUrlFragment = pJobDetailsTabNonWarrantyInsurance;
                             break;
                         case pWarrantyExternalName:
+                            Authorization.Require(Claims.Job.Properties.WarrantyProperties.ExternalName);
                             UpdateWarrantyExternalName(job, value);
                             resultUrlFragment = pJobDetailsTabWarranty;
                             break;
                         case pWarrantyExternalLoggedDate:
+                            Authorization.Require(Claims.Job.Properties.WarrantyProperties.ExternalLoggedDate);
                             UpdateWarrantyExternalLoggedDate(job, value);
                             resultUrlFragment = pJobDetailsTabWarranty;
                             break;
                         case pWarrantyExternalReference:
+                            Authorization.Require(Claims.Job.Properties.WarrantyProperties.ExternalReference);
                             UpdateWarrantyExternalReference(job, value);
                             resultUrlFragment = pJobDetailsTabWarranty;
                             break;
                         case pWarrantyExternalCompletedDate:
+                            Authorization.Require(Claims.Job.Properties.WarrantyProperties.ExternalCompletedDate);
                             UpdateWarrantyExternalCompletedDate(job, value);
                             resultUrlFragment = pJobDetailsTabWarranty;
                             break;
@@ -237,7 +276,7 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 if (redirect.HasValue && redirect.Value)
                     return this.RedirectToAction(MVC.Job.Show(job.Id), resultUrlFragment);
-                    //return RedirectToAction(MVC.Job.Show(job.Id));
+                //return RedirectToAction(MVC.Job.Show(job.Id));
                 else
                 {
                     if (resultData != null)
@@ -260,64 +299,79 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         #region Update Shortcut Methods
+        [DiscoAuthorize(Claims.Job.Properties.ExpectedClosedDate)]
         public virtual ActionResult UpdateExpectedClosedDate(int id, string ExpectedClosedDate, Nullable<bool> redirect = null)
         {
             return Update(id, pExpectedClosedDate, ExpectedClosedDate, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.DeviceHeldLocation)]
         public virtual ActionResult UpdateDeviceHeldLocation(int id, string DeviceHeldLocation, Nullable<bool> redirect = null)
         {
             return Update(id, pDeviceHeldLocation, DeviceHeldLocation, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.Flags)]
         public virtual ActionResult UpdateFlags(int id, string Flags, Nullable<bool> redirect = null)
         {
             return Update(id, pFlags, Flags, redirect);
         }
 
         #region NonWarranty
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.AccountingChargeRequired)]
         public virtual ActionResult UpdateNonWarrantyAccountingChargeRequired(int id, string AccountingChargeRequiredDate, Nullable<bool> redirect = null)
         {
             return Update(id, pNonWarrantyAccountingChargeRequired, AccountingChargeRequiredDate, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.AccountingChargeAdded)]
         public virtual ActionResult UpdateNonWarrantyAccountingChargeAdded(int id, string AccountingChargeAddedDate, Nullable<bool> redirect = null)
         {
             return Update(id, pNonWarrantyAccountingChargeAdded, AccountingChargeAddedDate, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.AccountingChargePaid)]
         public virtual ActionResult UpdateNonWarrantyAccountingChargePaid(int id, string AccountingChargePaidDate, Nullable<bool> redirect = null)
         {
             return Update(id, pNonWarrantyAccountingChargePaid, AccountingChargePaidDate, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.PurchaseOrderRaised)]
         public virtual ActionResult UpdateNonWarrantyPurchaseOrderRaised(int id, string PurchaseOrderRaisedDate, Nullable<bool> redirect = null)
         {
             return Update(id, pNonWarrantyPurchaseOrderRaised, PurchaseOrderRaisedDate, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.PurchaseOrderReference)]
         public virtual ActionResult UpdateNonWarrantyPurchaseOrderReference(int id, string PurchaseOrderReference, Nullable<bool> redirect = null)
         {
             return Update(id, pNonWarrantyPurchaseOrderReference, PurchaseOrderReference, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.PurchaseOrderSent)]
         public virtual ActionResult UpdateNonWarrantyPurchaseOrderSent(int id, string PurchaseOrderSentDate, Nullable<bool> redirect = null)
         {
             return Update(id, pNonWarrantyPurchaseOrderSent, PurchaseOrderSentDate, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InvoiceReceived)]
         public virtual ActionResult UpdateNonWarrantyInvoiceReceived(int id, string InvoiceReceivedDate, Nullable<bool> redirect = null)
         {
             return Update(id, pNonWarrantyInvoiceReceived, InvoiceReceivedDate, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.RepairerName)]
         public virtual ActionResult UpdateNonWarrantyRepairerName(int id, string RepairerName, Nullable<bool> redirect = null)
         {
             return Update(id, pNonWarrantyRepairerName, RepairerName, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.RepairerLoggedDate)]
         public virtual ActionResult UpdateNonWarrantyRepairerLoggedDate(int id, string RepairerLoggedDate, Nullable<bool> redirect = null)
         {
             return Update(id, pNonWarrantyRepairerLoggedDate, RepairerLoggedDate, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.RepairerReference)]
         public virtual ActionResult UpdateNonWarrantyRepairerReference(int id, string RepairerReference, Nullable<bool> redirect = null)
         {
             return Update(id, pNonWarrantyRepairerReference, RepairerReference, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.RepairerCompletedDate)]
         public virtual ActionResult UpdateNonWarrantyRepairerCompletedDate(int id, string RepairerCompletedDate, Nullable<bool> redirect = null)
         {
             return Update(id, pNonWarrantyRepairerCompletedDate, RepairerCompletedDate, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.IsInsuranceClaim)]
         public virtual ActionResult UpdateNonWarrantyIsInsuranceClaim(int id, bool IsInsuranceClaim, Nullable<bool> redirect = null)
         {
             return Update(id, pNonWarrantyIsInsuranceClaim, IsInsuranceClaim.ToString(), redirect);
@@ -326,74 +380,92 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region Insurance
 
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
         public virtual ActionResult UpdateInsuranceLossOrDamageDate(int id, string LossOrDamageDate, Nullable<bool> redirect = null)
         {
             return Update(id, pInsuranceLossOrDamageDate, LossOrDamageDate, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
         public virtual ActionResult UpdateInsuranceEventLocation(int id, string EventLocation, Nullable<bool> redirect = null)
         {
             return Update(id, pInsuranceEventLocation, EventLocation, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
         public virtual ActionResult UpdateInsuranceDescription(int id, string Description, Nullable<bool> redirect = null)
         {
             return Update(id, pInsuranceDescription, Description, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
         public virtual ActionResult UpdateInsuranceThirdPartyCaused(int id, string ThirdPartyCaused, Nullable<bool> redirect = null)
         {
             return Update(id, pInsuranceThirdPartyCaused, ThirdPartyCaused, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
         public virtual ActionResult UpdateInsuranceThirdPartyCausedName(int id, string ThirdPartyCausedName, Nullable<bool> redirect = null)
         {
             return Update(id, pInsuranceThirdPartyCausedName, ThirdPartyCausedName, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
         public virtual ActionResult UpdateInsuranceThirdPartyCausedWhy(int id, string ThirdPartyCausedWhy, Nullable<bool> redirect = null)
         {
             return Update(id, pInsuranceThirdPartyCausedWhy, ThirdPartyCausedWhy, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
         public virtual ActionResult UpdateInsuranceWitnessesNamesAddresses(int id, string WitnessesNamesAddresses, Nullable<bool> redirect = null)
         {
             return Update(id, pInsuranceWitnessesNamesAddresses, WitnessesNamesAddresses, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
         public virtual ActionResult UpdateInsuranceBurglaryTheftMethodOfEntry(int id, string BurglaryTheftMethodOfEntry, Nullable<bool> redirect = null)
         {
             return Update(id, pInsuranceBurglaryTheftMethodOfEntry, BurglaryTheftMethodOfEntry, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
         public virtual ActionResult UpdateInsurancePropertyLastSeenDate(int id, string PropertyLastSeenDate, Nullable<bool> redirect = null)
         {
             return Update(id, pInsurancePropertyLastSeenDate, PropertyLastSeenDate, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
         public virtual ActionResult UpdateInsurancePoliceNotified(int id, string PoliceNotified, Nullable<bool> redirect = null)
         {
             return Update(id, pInsurancePoliceNotified, PoliceNotified, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
         public virtual ActionResult UpdateInsurancePoliceNotifiedStation(int id, string PoliceNotifiedStation, Nullable<bool> redirect = null)
         {
             return Update(id, pInsurancePoliceNotifiedStation, PoliceNotifiedStation, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
         public virtual ActionResult UpdateInsurancePoliceNotifiedDate(int id, string PoliceNotifiedDate, Nullable<bool> redirect = null)
         {
             return Update(id, pInsurancePoliceNotifiedDate, PoliceNotifiedDate, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
         public virtual ActionResult UpdateInsurancePoliceNotifiedCrimeReportNo(int id, string PoliceNotifiedCrimeReportNo, Nullable<bool> redirect = null)
         {
             return Update(id, pInsurancePoliceNotifiedCrimeReportNo, PoliceNotifiedCrimeReportNo, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
         public virtual ActionResult UpdateInsuranceRecoverReduceAction(int id, string RecoverReduceAction, Nullable<bool> redirect = null)
         {
             return Update(id, pInsuranceRecoverReduceAction, RecoverReduceAction, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
         public virtual ActionResult UpdateInsuranceOtherInterestedParties(int id, string OtherInterestedParties, Nullable<bool> redirect = null)
         {
             return Update(id, pInsuranceOtherInterestedParties, OtherInterestedParties, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
         public virtual ActionResult UpdateInsuranceDateOfPurchase(int id, string DateOfPurchase, Nullable<bool> redirect = null)
         {
             return Update(id, pInsuranceDateOfPurchase, DateOfPurchase, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent)]
         public virtual ActionResult UpdateInsuranceClaimFormSentDate(int id, string ClaimFormSentDate, Nullable<bool> redirect = null)
         {
             return Update(id, pInsuranceClaimFormSentDate, ClaimFormSentDate, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent)]
         public virtual ActionResult UpdateInsuranceClaimFormSentUserId(int id, string ClaimFormSentUserId, Nullable<bool> redirect = null)
         {
             return Update(id, pInsuranceClaimFormSentUserId, ClaimFormSentUserId, redirect);
@@ -402,18 +474,22 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Warranty
+        [DiscoAuthorize(Claims.Job.Properties.WarrantyProperties.ExternalName)]
         public virtual ActionResult UpdateWarrantyExternalName(int id, string ExternalName, Nullable<bool> redirect = null)
         {
             return Update(id, pWarrantyExternalName, ExternalName, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.WarrantyProperties.ExternalLoggedDate)]
         public virtual ActionResult UpdateWarrantyExternalLoggedDate(int id, string ExternalLoggedDate, Nullable<bool> redirect = null)
         {
             return Update(id, pWarrantyExternalLoggedDate, ExternalLoggedDate, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.WarrantyProperties.ExternalReference)]
         public virtual ActionResult UpdateWarrantyExternalReference(int id, string ExternalReference, Nullable<bool> redirect = null)
         {
             return Update(id, pWarrantyExternalReference, ExternalReference, redirect);
         }
+        [DiscoAuthorize(Claims.Job.Properties.WarrantyProperties.ExternalCompletedDate)]
         public virtual ActionResult UpdateWarrantyExternalCompletedDate(int id, string ExternalCompletedDate, Nullable<bool> redirect = null)
         {
             return Update(id, pWarrantyExternalCompletedDate, ExternalCompletedDate, redirect);
@@ -442,7 +518,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 job.ExpectedClosedDate = null;
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
         private void UpdateDeviceHeldLocation(Job job, string DeviceHeldLocation)
         {
@@ -451,7 +527,7 @@ namespace Disco.Web.Areas.API.Controllers
             else
                 job.DeviceHeldLocation = DeviceHeldLocation;
 
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
         private void UpdateFlags(Job job, string Flags)
         {
@@ -466,7 +542,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (!job.Flags.HasValue)
                 {
                     job.Flags = null;
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
                 }
             }
             else
@@ -494,7 +570,7 @@ namespace Disco.Web.Areas.API.Controllers
                     if (job.Flags.HasValue)
                     {
                         job.Flags = null;
-                        dbContext.SaveChanges();
+                        Database.SaveChanges();
                     }
                 }
                 else
@@ -502,7 +578,7 @@ namespace Disco.Web.Areas.API.Controllers
                     if (!job.Flags.HasValue || (long)job.Flags.Value != flags)
                     {
                         job.Flags = (Disco.Models.Repository.Job.UserManagementFlags)flags;
-                        dbContext.SaveChanges();
+                        Database.SaveChanges();
                     }
                 }
             }
@@ -544,9 +620,9 @@ namespace Disco.Web.Areas.API.Controllers
                     jmi.OtherInterestedParties = job.User.DisplayName;
 
                 job.JobMetaInsurance = jmi;
-                dbContext.JobMetaInsurances.Add(jmi);
+                Database.JobMetaInsurances.Add(jmi);
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private Models.Job._DateChangeModel UpdateNonWarrantyAccountingChargeRequired(Job job, string AccountingChargeRequiredDate)
@@ -574,13 +650,13 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Date Format");
                 }
             }
-            job.JobMetaNonWarranty.AccountingChargeRequiredUserId = DiscoApplication.CurrentUser.Id;
-            dbContext.SaveChanges();
+            job.JobMetaNonWarranty.AccountingChargeRequiredUserId = CurrentUser.Id;
+            Database.SaveChanges();
             return new Models.Job._DateChangeModel()
             {
                 Id = job.Id,
                 Result = "OK",
-                UserDescription = DiscoApplication.CurrentUser.ToString()
+                UserDescription = CurrentUser.ToString()
             }.SetDateTime(job.JobMetaNonWarranty.AccountingChargeRequiredDate);
         }
         private Models.Job._DateChangeModel UpdateNonWarrantyAccountingChargeAdded(Job job, string AccountingChargeAddedDate)
@@ -608,13 +684,13 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Date Format");
                 }
             }
-            job.JobMetaNonWarranty.AccountingChargeAddedUserId = DiscoApplication.CurrentUser.Id;
-            dbContext.SaveChanges();
+            job.JobMetaNonWarranty.AccountingChargeAddedUserId = CurrentUser.Id;
+            Database.SaveChanges();
             return new Models.Job._DateChangeModel()
             {
                 Id = job.Id,
                 Result = "OK",
-                UserDescription = DiscoApplication.CurrentUser.ToString()
+                UserDescription = CurrentUser.ToString()
             }.SetDateTime(job.JobMetaNonWarranty.AccountingChargeAddedDate);
         }
         private Models.Job._DateChangeModel UpdateNonWarrantyAccountingChargePaid(Job job, string AccountingChargePaidDate)
@@ -642,13 +718,13 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Date Format");
                 }
             }
-            job.JobMetaNonWarranty.AccountingChargePaidUserId = DiscoApplication.CurrentUser.Id;
-            dbContext.SaveChanges();
+            job.JobMetaNonWarranty.AccountingChargePaidUserId = CurrentUser.Id;
+            Database.SaveChanges();
             return new Models.Job._DateChangeModel()
             {
                 Id = job.Id,
                 Result = "OK",
-                UserDescription = DiscoApplication.CurrentUser.ToString()
+                UserDescription = CurrentUser.ToString()
             }.SetDateTime(job.JobMetaNonWarranty.AccountingChargePaidDate);
         }
         private Models.Job._DateChangeModel UpdateNonWarrantyPurchaseOrderRaised(Job job, string PurchaseOrderRaisedDate)
@@ -676,13 +752,13 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Date Format");
                 }
             }
-            job.JobMetaNonWarranty.PurchaseOrderRaisedUserId = DiscoApplication.CurrentUser.Id;
-            dbContext.SaveChanges();
+            job.JobMetaNonWarranty.PurchaseOrderRaisedUserId = CurrentUser.Id;
+            Database.SaveChanges();
             return new Models.Job._DateChangeModel()
             {
                 Id = job.Id,
                 Result = "OK",
-                UserDescription = DiscoApplication.CurrentUser.ToString()
+                UserDescription = CurrentUser.ToString()
             }.SetDateTime(job.JobMetaNonWarranty.PurchaseOrderRaisedDate);
         }
         private void UpdateNonWarrantyPurchaseOrderReference(Job job, string PurchaseOrderReference)
@@ -692,7 +768,7 @@ namespace Disco.Web.Areas.API.Controllers
             else
                 job.JobMetaNonWarranty.PurchaseOrderReference = PurchaseOrderReference;
 
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
         private Models.Job._DateChangeModel UpdateNonWarrantyPurchaseOrderSent(Job job, string PurchaseOrderSentDate)
         {
@@ -719,13 +795,13 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Date Format");
                 }
             }
-            job.JobMetaNonWarranty.PurchaseOrderSentUserId = DiscoApplication.CurrentUser.Id;
-            dbContext.SaveChanges();
+            job.JobMetaNonWarranty.PurchaseOrderSentUserId = CurrentUser.Id;
+            Database.SaveChanges();
             return new Models.Job._DateChangeModel()
             {
                 Id = job.Id,
                 Result = "OK",
-                UserDescription = DiscoApplication.CurrentUser.ToString()
+                UserDescription = CurrentUser.ToString()
             }.SetDateTime(job.JobMetaNonWarranty.PurchaseOrderSentDate);
         }
         private Models.Job._DateChangeModel UpdateNonWarrantyInvoiceReceived(Job job, string InvoiceReceivedDate)
@@ -753,13 +829,13 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Date Format");
                 }
             }
-            job.JobMetaNonWarranty.InvoiceReceivedUserId = DiscoApplication.CurrentUser.Id;
-            dbContext.SaveChanges();
+            job.JobMetaNonWarranty.InvoiceReceivedUserId = CurrentUser.Id;
+            Database.SaveChanges();
             return new Models.Job._DateChangeModel()
             {
                 Id = job.Id,
                 Result = "OK",
-                UserDescription = DiscoApplication.CurrentUser.ToString()
+                UserDescription = CurrentUser.ToString()
             }.SetDateTime(job.JobMetaNonWarranty.InvoiceReceivedDate);
         }
 
@@ -779,7 +855,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 job.JobMetaNonWarranty.RepairerName = RepairerName.Trim();
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
         private void UpdateNonWarrantyRepairerLoggedDate(Job job, string RepairerLoggedDate)
         {
@@ -812,7 +888,7 @@ namespace Disco.Web.Areas.API.Controllers
                     }
                 }
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
         private void UpdateNonWarrantyRepairerReference(Job job, string RepairerReference)
         {
@@ -830,7 +906,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 job.JobMetaNonWarranty.RepairerReference = RepairerReference.Trim();
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
         private void UpdateNonWarrantyRepairerCompletedDate(Job job, string RepairerCompletedDate)
         {
@@ -863,7 +939,7 @@ namespace Disco.Web.Areas.API.Controllers
                     }
                 }
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         #endregion
@@ -902,13 +978,13 @@ namespace Disco.Web.Areas.API.Controllers
                     }
                 }
             }
-            job.JobMetaInsurance.ClaimFormSentUserId = DiscoApplication.CurrentUser.Id;
-            dbContext.SaveChanges();
+            job.JobMetaInsurance.ClaimFormSentUserId = CurrentUser.Id;
+            Database.SaveChanges();
             return new Models.Job._DateChangeModel()
             {
                 Id = job.Id,
                 Result = "OK",
-                UserDescription = DiscoApplication.CurrentUser.ToString()
+                UserDescription = CurrentUser.ToString()
             }.SetDateTime(job.JobMetaInsurance.ClaimFormSentDate);
         }
 
@@ -933,7 +1009,7 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 job.JobMetaInsurance.DateOfPurchase = dt;
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateInsuranceOtherInterestedParties(Job job, string OtherInterestedParties)
@@ -952,7 +1028,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 job.JobMetaInsurance.OtherInterestedParties = OtherInterestedParties.Trim();
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateInsuranceRecoverReduceAction(Job job, string RecoverReduceAction)
@@ -971,7 +1047,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 job.JobMetaInsurance.RecoverReduceAction = RecoverReduceAction.Trim();
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateInsurancePoliceNotifiedCrimeReportNo(Job job, string PoliceNotifiedCrimeReportNo)
@@ -990,7 +1066,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 job.JobMetaInsurance.PoliceNotifiedCrimeReportNo = PoliceNotifiedCrimeReportNo.Trim();
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateInsurancePoliceNotifiedDate(Job job, string PoliceNotifiedDate)
@@ -1014,7 +1090,7 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 job.JobMetaInsurance.PoliceNotifiedDate = dt;
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateInsurancePoliceNotifiedStation(Job job, string PoliceNotifiedStation)
@@ -1033,7 +1109,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 job.JobMetaInsurance.PoliceNotifiedStation = PoliceNotifiedStation.Trim();
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateInsurancePoliceNotified(Job job, string PoliceNotified)
@@ -1051,7 +1127,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
 
             job.JobMetaInsurance.PoliceNotified = b;
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateInsurancePropertyLastSeenDate(Job job, string PropertyLastSeenDate)
@@ -1078,7 +1154,7 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Date Format");
                 }
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateInsuranceBurglaryTheftMethodOfEntry(Job job, string BurglaryTheftMethodOfEntry)
@@ -1097,7 +1173,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 job.JobMetaInsurance.BurglaryTheftMethodOfEntry = BurglaryTheftMethodOfEntry.Trim();
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateInsuranceWitnessesNamesAddresses(Job job, string WitnessesNamesAddresses)
@@ -1116,7 +1192,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 job.JobMetaInsurance.WitnessesNamesAddresses = WitnessesNamesAddresses.Trim();
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateInsuranceThirdPartyCausedWhy(Job job, string ThirdPartyCausedWhy)
@@ -1135,7 +1211,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 job.JobMetaInsurance.ThirdPartyCausedWhy = ThirdPartyCausedWhy.Trim();
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateInsuranceThirdPartyCausedName(Job job, string ThirdPartyCausedName)
@@ -1154,7 +1230,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 job.JobMetaInsurance.ThirdPartyCausedName = ThirdPartyCausedName.Trim();
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateInsuranceThirdPartyCaused(Job job, string ThirdPartyCaused)
@@ -1172,7 +1248,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
 
             job.JobMetaInsurance.ThirdPartyCaused = b;
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateInsuranceDescription(Job job, string Description)
@@ -1191,7 +1267,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 job.JobMetaInsurance.Description = Description.Trim();
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateInsuranceEventLocation(Job job, string EventLocation)
@@ -1210,7 +1286,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 job.JobMetaInsurance.EventLocation = EventLocation.Trim();
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateInsuranceLossOrDamageDate(Job job, string LossOrDamageDate)
@@ -1237,7 +1313,7 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Date Format");
                 }
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
         #endregion
 
@@ -1258,7 +1334,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 job.JobMetaWarranty.ExternalName = ExternalName.Trim();
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateWarrantyExternalLoggedDate(Job job, string ExternalLoggedDate)
@@ -1285,7 +1361,7 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Date Format");
                 }
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateWarrantyExternalReference(Job job, string ExternalReference)
@@ -1304,8 +1380,9 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 job.JobMetaWarranty.ExternalReference = ExternalReference.Trim();
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
+        
         private void UpdateWarrantyExternalCompletedDate(Job job, string ExternalCompletedDate)
         {
             // Validate Is Warranty Job
@@ -1337,13 +1414,15 @@ namespace Disco.Web.Areas.API.Controllers
                     }
                 }
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
         #endregion
 
         #endregion
 
         #region Job Actions
+
+        [DiscoAuthorize(Claims.Job.Actions.UpdateSubTypes)]
         public virtual ActionResult UpdateSubTypes(int id, List<string> SubTypes = null, Nullable<bool> AddComponents = null, Nullable<bool> redirect = null)
         {
             try
@@ -1357,14 +1436,14 @@ namespace Disco.Web.Areas.API.Controllers
                 if (AddComponents == null)
                     AddComponents = false;
 
-                dbContext.Configuration.LazyLoadingEnabled = true;
-                var job = dbContext.Jobs.Include("JobSubTypes").Where(j => j.Id == id).FirstOrDefault();
+                Database.Configuration.LazyLoadingEnabled = true;
+                var job = Database.Jobs.Include("JobSubTypes").Where(j => j.Id == id).FirstOrDefault();
                 if (job == null)
                     throw new Exception("Invalid Job Id");
 
-                var subTypes = dbContext.JobSubTypes.Where(jst => SubTypes.Contains(jst.JobTypeId + "_" + jst.Id)).ToList();
-                job.UpdateSubTypes(dbContext, subTypes, AddComponents.Value, DiscoApplication.CurrentUser);
-                dbContext.SaveChanges();
+                var subTypes = Database.JobSubTypes.Where(jst => SubTypes.Contains(jst.JobTypeId + "_" + jst.Id)).ToList();
+                job.UpdateSubTypes(Database, subTypes, AddComponents.Value, CurrentUser);
+                Database.SaveChanges();
                 if (redirect.HasValue && redirect.Value)
                     return RedirectToAction(MVC.Job.Show(job.Id));
                 else
@@ -1378,6 +1457,8 @@ namespace Disco.Web.Areas.API.Controllers
                     return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+
+        [DiscoAuthorize(Claims.Job.Properties.Flags)]
         public virtual ActionResult UpdateFlag(int id, long? Flag, string Reason, Nullable<bool> redirect = null)
         {
             try
@@ -1387,7 +1468,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (!Flag.HasValue || Flag.Value == 0)
                     throw new ArgumentNullException("Flag");
 
-                var job = dbContext.Jobs.Include("JobSubTypes").Where(j => j.Id == id).FirstOrDefault();
+                var job = Database.Jobs.Include("JobSubTypes").Where(j => j.Id == id).FirstOrDefault();
                 if (job == null)
                     throw new Exception("Invalid Job Id");
 
@@ -1401,7 +1482,7 @@ namespace Disco.Web.Areas.API.Controllers
                         if (flagStatus.Item2)
                         {
                             job.Flags = (Disco.Models.Repository.Job.UserManagementFlags)((long)(job.Flags ?? 0) ^ (flag * -1));
-                            dbContext.SaveChanges();
+                            Database.SaveChanges();
                         }
                     }
                     else
@@ -1414,13 +1495,13 @@ namespace Disco.Web.Areas.API.Controllers
                         JobLog jobLog = new JobLog()
                         {
                             JobId = job.Id,
-                            TechUserId = DiscoApplication.CurrentUser.Id,
+                            TechUserId = CurrentUser.Id,
                             Timestamp = DateTime.Now,
                             Comments = string.Format("Added Flag: {0}{1}Reason: {2}", flagStatus.Item1, Environment.NewLine, Reason)
                         };
-                        dbContext.JobLogs.Add(jobLog);
+                        Database.JobLogs.Add(jobLog);
 
-                        dbContext.SaveChanges();
+                        Database.SaveChanges();
                     }
 
 
@@ -1442,6 +1523,8 @@ namespace Disco.Web.Areas.API.Controllers
                     return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+
+        [DiscoAuthorize(Claims.Job.Properties.WaitingForUserAction)]
         public virtual ActionResult WaitingForUserAction(int id, string Reason, Nullable<bool> redirect = null)
         {
             try
@@ -1449,15 +1532,15 @@ namespace Disco.Web.Areas.API.Controllers
                 if (id < 0)
                     throw new ArgumentOutOfRangeException("id");
 
-                dbContext.Configuration.LazyLoadingEnabled = true;
-                var job = dbContext.Jobs.Where(j => j.Id == id).FirstOrDefault();
+                Database.Configuration.LazyLoadingEnabled = true;
+                var job = Database.Jobs.Where(j => j.Id == id).FirstOrDefault();
                 if (job == null)
                     throw new Exception("Invalid Job Id");
                 if (!job.CanWaitingForUserAction())
                     throw new InvalidOperationException("Unable to set Waiting For User Action");
 
-                job.OnWaitingForUserAction(dbContext, DiscoApplication.CurrentUser, Reason);
-                dbContext.SaveChanges();
+                job.OnWaitingForUserAction(Database, CurrentUser, Reason);
+                Database.SaveChanges();
                 if (redirect.HasValue && redirect.Value)
                     return RedirectToAction(MVC.Job.Show(job.Id));
                 else
@@ -1471,6 +1554,8 @@ namespace Disco.Web.Areas.API.Controllers
                     return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+
+        [DiscoAuthorize(Claims.Job.Properties.NotWaitingForUserAction)]
         public virtual ActionResult NotWaitingForUserAction(int id, string Resolution, Nullable<bool> redirect = null)
         {
             try
@@ -1478,15 +1563,15 @@ namespace Disco.Web.Areas.API.Controllers
                 if (id < 0)
                     throw new ArgumentOutOfRangeException("id");
 
-                dbContext.Configuration.LazyLoadingEnabled = true;
-                var job = dbContext.Jobs.Where(j => j.Id == id).FirstOrDefault();
+                Database.Configuration.LazyLoadingEnabled = true;
+                var job = Database.Jobs.Where(j => j.Id == id).FirstOrDefault();
                 if (job == null)
                     throw new Exception("Invalid Job Id");
                 if (!job.CanNotWaitingForUserAction())
                     throw new InvalidOperationException("Unable to set Waiting For User Action");
 
-                job.OnNotWaitingForUserAction(dbContext, DiscoApplication.CurrentUser, Resolution);
-                dbContext.SaveChanges();
+                job.OnNotWaitingForUserAction(Database, CurrentUser, Resolution);
+                Database.SaveChanges();
                 if (redirect.HasValue && redirect.Value)
                     return RedirectToAction(MVC.Job.Show(job.Id));
                 else
@@ -1501,16 +1586,17 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
+        [DiscoAuthorize(Claims.Job.Actions.LogRepair)]
         public virtual ActionResult LogRepair(int id, string RepairerName, string RepairerReference, bool? redirect = null)
         {
-            var j = dbContext.Jobs.Include("JobMetaNonWarranty").Where(job => job.Id == id).FirstOrDefault();
+            var j = Database.Jobs.Include("JobMetaNonWarranty").Where(job => job.Id == id).FirstOrDefault();
             if (j != null)
             {
                 if (j.CanLogRepair())
                 {
                     j.OnLogRepair(RepairerName, RepairerReference);
 
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
 
                     if (redirect.HasValue && redirect.Value)
                         return RedirectToAction(MVC.Job.Show(id));
@@ -1524,16 +1610,18 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorize(Claims.Job.Properties.DeviceReadyForReturn)]
         public virtual ActionResult DeviceReadyForReturn(int id, bool redirect)
         {
-            var j = dbContext.Jobs.Find(id);
+            var j = Database.Jobs.Find(id);
             if (j != null)
             {
                 if (j.CanDeviceReadyForReturn())
                 {
-                    j.OnDeviceReadyForReturn(DiscoApplication.CurrentUser);
+                    j.OnDeviceReadyForReturn(CurrentUser);
 
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
                     if (redirect)
                         return RedirectToAction(MVC.Job.Show(id));
                     else
@@ -1546,16 +1634,18 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorize(Claims.Job.Properties.DeviceHeld)]
         public virtual ActionResult DeviceHeld(int id, bool redirect)
         {
-            var j = dbContext.Jobs.Find(id);
+            var j = Database.Jobs.Find(id);
             if (j != null)
             {
                 if (j.CanDeviceHeld())
                 {
-                    j.OnDeviceHeld(DiscoApplication.CurrentUser);
+                    j.OnDeviceHeld(CurrentUser);
 
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
                     if (redirect)
                         return RedirectToAction(MVC.Job.Show(id));
                     else
@@ -1568,16 +1658,18 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorize(Claims.Job.Properties.DeviceReturned)]
         public virtual ActionResult DeviceReturned(int id, bool redirect)
         {
-            var j = dbContext.Jobs.Find(id);
+            var j = Database.Jobs.Find(id);
             if (j != null)
             {
                 if (j.CanDeviceReturned())
                 {
-                    j.OnDeviceReturned(DiscoApplication.CurrentUser);
+                    j.OnDeviceReturned(CurrentUser);
 
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
                     if (redirect)
                         return RedirectToAction(MVC.Job.Show(id));
                     else
@@ -1590,17 +1682,19 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorize(Claims.Job.Actions.ForceClose)]
         public virtual ActionResult ForceClose(int id, string Reason, Nullable<bool> redirect = null)
         {
-            var j = dbContext.Jobs.Find(id);
-            dbContext.Configuration.LazyLoadingEnabled = true;
+            var j = Database.Jobs.Find(id);
+            Database.Configuration.LazyLoadingEnabled = true;
             if (j != null)
             {
                 if (j.CanForceClose())
                 {
-                    j.OnForceClose(dbContext, DiscoApplication.CurrentUser, Reason);
+                    j.OnForceClose(Database, CurrentUser, Reason);
 
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
                     if (redirect.HasValue && redirect.Value)
                         return RedirectToAction(MVC.Job.Show(id));
                     else
@@ -1613,17 +1707,19 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorize(Claims.Job.Actions.Close)]
         public virtual ActionResult Close(int id, bool redirect)
         {
-            var j = dbContext.Jobs.Find(id);
-            dbContext.Configuration.LazyLoadingEnabled = true;
+            var j = Database.Jobs.Find(id);
+            Database.Configuration.LazyLoadingEnabled = true;
             if (j != null)
             {
                 if (j.CanClose())
                 {
-                    j.OnClose(DiscoApplication.CurrentUser);
+                    j.OnClose(CurrentUser);
 
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
                     if (redirect)
                         return RedirectToAction(MVC.Job.Show(id));
                     else
@@ -1636,16 +1732,18 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorize(Claims.Job.Actions.Reopen)]
         public virtual ActionResult Reopen(int id, bool redirect)
         {
-            var j = dbContext.Jobs.Find(id);
+            var j = Database.Jobs.Find(id);
             if (j != null)
             {
                 if (j.CanReopen())
                 {
                     j.OnReopen();
 
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
                     if (redirect)
                         return RedirectToAction(MVC.Job.Show(id));
                     else
@@ -1658,17 +1756,19 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorize(Claims.Job.Actions.Delete)]
         public virtual ActionResult Delete(int id, bool redirect)
         {
-            var j = dbContext.Jobs.Find(id);
-            dbContext.Configuration.LazyLoadingEnabled = true;
+            var j = Database.Jobs.Find(id);
+            Database.Configuration.LazyLoadingEnabled = true;
             if (j != null)
             {
                 if (j.CanDelete())
                 {
-                    j.OnDelete(dbContext);
+                    j.OnDelete(Database);
 
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
                     if (redirect)
                         return RedirectToAction(MVC.Job.Index());
                     else
@@ -1682,17 +1782,18 @@ namespace Disco.Web.Areas.API.Controllers
             return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
         }
 
+        [DiscoAuthorize(Claims.Job.Actions.ConvertHWarToHNWar)]
         public virtual ActionResult ConvertHWarToHNWar(int id, bool redirect)
         {
-            var j = dbContext.Jobs.Find(id);
-            dbContext.Configuration.LazyLoadingEnabled = true;
+            var j = Database.Jobs.Find(id);
+            Database.Configuration.LazyLoadingEnabled = true;
             if (j != null)
             {
                 if (j.CanConvertHWarToHNWar())
                 {
-                    j.OnConvertHWarToHNWar(dbContext);
+                    j.OnConvertHWarToHNWar(Database);
 
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
                     if (redirect)
                         return RedirectToAction(MVC.Job.Show(j.Id));
                     else
@@ -1709,9 +1810,10 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Job Comments
+        [DiscoAuthorize(Claims.Job.ShowLogs)]
         public virtual ActionResult Comments(int id)
         {
-            var j = dbContext.Jobs.Include("JobLogs.TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var j = Database.Jobs.Include("JobLogs.TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (j != null)
             {
                 var c = new Models.Job.CommentsModel() { Result = "OK" };
@@ -1721,9 +1823,10 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json(new Models.Job.CommentsModel() { Result = "Invalid Job Number" }, JsonRequestBehavior.AllowGet);
         }
+        [DiscoAuthorize(Claims.Job.ShowLogs)]
         public virtual ActionResult Comment(int id)
         {
-            var jl = dbContext.JobLogs.Include("TechUser").FirstOrDefault(l => l.Id == id);
+            var jl = Database.JobLogs.Include("TechUser").FirstOrDefault(l => l.Id == id);
             if (jl != null)
             {
                 var c = Models.Job._CommentModel.FromJobLog(jl);
@@ -1732,43 +1835,42 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json(new Models.Job.CommentsModel() { Result = "Invalid Comment Id" }, JsonRequestBehavior.AllowGet);
         }
+        [DiscoAuthorize(Claims.Job.Actions.AddLogs)]
         public virtual ActionResult CommentPost(int id, string comment)
         {
-            var j = dbContext.Jobs.Find(id);
+            var j = Database.Jobs.Find(id);
             if (j != null)
             {
                 var jl = new Disco.Models.Repository.JobLog()
                 {
                     JobId = j.Id,
-                    TechUserId = DiscoApplication.CurrentUser.Id,
+                    TechUserId = CurrentUser.Id,
                     Timestamp = DateTime.Now,
                     Comments = comment
                 };
-                dbContext.JobLogs.Add(jl);
-                dbContext.SaveChanges();
+                Database.JobLogs.Add(jl);
+                Database.SaveChanges();
 
-                jl = dbContext.JobLogs.Include("TechUser").Where(m => m.Id == jl.Id).FirstOrDefault();
+                jl = Database.JobLogs.Include("TechUser").Where(m => m.Id == jl.Id).FirstOrDefault();
                 return Json(new Models.Job.CommentPostModel() { Result = "OK", Comment = Models.Job._CommentModel.FromJobLog(jl) }, JsonRequestBehavior.AllowGet);
             }
             return Json(new Models.Job.CommentPostModel() { Result = "Invalid Job Number" }, JsonRequestBehavior.AllowGet);
         }
+        
+        [DiscoAuthorizeAny(Claims.Job.Actions.RemoveAnyLogs, Claims.Job.Actions.RemoveOwnLogs)]
         public virtual ActionResult CommentRemove(int id)
         {
-            var jl = dbContext.JobLogs.Find(id);
+            var jl = Database.JobLogs.Find(id);
             if (jl != null)
             {
-                // 2012-02-17 G# Remove - 'Delete Own Comments' policy
-                // Only Delete Own Comments
-                //if (jl.TechUserId == DiscoApplication.CurrentUser.Id)
-                //{
-                dbContext.JobLogs.Remove(jl);
-                dbContext.SaveChanges();
+                if (jl.TechUserId.Equals(CurrentUser.Id, StringComparison.InvariantCultureIgnoreCase))
+                    Authorization.RequireAny(Claims.Job.Actions.RemoveAnyLogs, Claims.Job.Actions.RemoveOwnLogs);
+                else
+                    Authorization.Require(Claims.Job.Actions.RemoveAnyLogs);
+
+                Database.JobLogs.Remove(jl);
+                Database.SaveChanges();
                 return Json("OK", JsonRequestBehavior.AllowGet);
-                //}
-                //else
-                //{
-                //    return Json("You can only delete your own comments.", JsonRequestBehavior.AllowGet);
-                //}
             }
             // Doesn't Exist/Already Deleted - OK
             return Json("OK", JsonRequestBehavior.AllowGet);
@@ -1777,13 +1879,13 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region Job Attachements
 
-        [OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
+        [DiscoAuthorize(Claims.Job.ShowAttachments), OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
         public virtual ActionResult AttachmentDownload(int id)
         {
-            var ja = dbContext.JobAttachments.Find(id);
+            var ja = Database.JobAttachments.Find(id);
             if (ja != null)
             {
-                var filePath = ja.RepositoryFilename(dbContext);
+                var filePath = ja.RepositoryFilename(Database);
                 if (System.IO.File.Exists(filePath))
                 {
                     return File(filePath, ja.MimeType, ja.Filename);
@@ -1795,13 +1897,14 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return HttpNotFound("Invalid Attachment Number");
         }
-        [OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
+        
+        [DiscoAuthorize(Claims.Job.ShowAttachments), OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
         public virtual ActionResult AttachmentThumbnail(int id)
         {
-            var ja = dbContext.JobAttachments.Find(id);
+            var ja = Database.JobAttachments.Find(id);
             if (ja != null)
             {
-                var thumbPath = ja.RepositoryThumbnailFilename(dbContext);
+                var thumbPath = ja.RepositoryThumbnailFilename(Database);
                 var thumbFileInfo = new FileInfo(thumbPath);
                 if (thumbFileInfo.Exists && thumbFileInfo.Length > 0)
                 {
@@ -1815,9 +1918,11 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return HttpNotFound("Invalid Attachment Number");
         }
+
+        [DiscoAuthorize(Claims.Job.Actions.AddAttachments)]
         public virtual ActionResult AttachmentUpload(int id, string Comments)
         {
-            var j = dbContext.Jobs.Find(id);
+            var j = Database.Jobs.Find(id);
             if (j != null)
             {
                 if (Request.Files.Count > 0)
@@ -1832,18 +1937,18 @@ namespace Disco.Web.Areas.API.Controllers
                         var ja = new Disco.Models.Repository.JobAttachment()
                         {
                             JobId = j.Id,
-                            TechUserId = DiscoApplication.CurrentUser.Id,
+                            TechUserId = CurrentUser.Id,
                             Filename = file.FileName,
                             MimeType = contentType,
                             Timestamp = DateTime.Now,
                             Comments = Comments
                         };
-                        dbContext.JobAttachments.Add(ja);
-                        dbContext.SaveChanges();
+                        Database.JobAttachments.Add(ja);
+                        Database.SaveChanges();
 
-                        ja.SaveAttachment(dbContext, file.InputStream);
+                        ja.SaveAttachment(Database, file.InputStream);
 
-                        ja.GenerateThumbnail(dbContext);
+                        ja.GenerateThumbnail(Database);
 
                         return Json(ja.Id, JsonRequestBehavior.AllowGet);
                     }
@@ -1852,9 +1957,11 @@ namespace Disco.Web.Areas.API.Controllers
             }
             throw new Exception("Invalid Job Number");
         }
+
+        [DiscoAuthorize(Claims.Job.ShowAttachments)]
         public virtual ActionResult Attachment(int id)
         {
-            var ja = dbContext.JobAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var ja = Database.JobAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (ja != null)
             {
 
@@ -1868,9 +1975,11 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json(new Models.Attachment.AttachmentModel() { Result = "Invalid Attachment Number" }, JsonRequestBehavior.AllowGet);
         }
+        
+        [DiscoAuthorize(Claims.Job.ShowAttachments)]
         public virtual ActionResult Attachments(int id)
         {
-            var j = dbContext.Jobs.Include("JobAttachments.TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var j = Database.Jobs.Include("JobAttachments.TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (j != null)
             {
                 var m = new Models.Attachment.AttachmentsModel()
@@ -1883,22 +1992,21 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json(new Models.Attachment.AttachmentsModel() { Result = "Invalid Attachment Number" }, JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorizeAny(Claims.Job.Actions.RemoveAnyAttachments, Claims.Job.Actions.RemoveOwnAttachments)]
         public virtual ActionResult AttachmentRemove(int id)
         {
-            var ja = dbContext.JobAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var ja = Database.JobAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (ja != null)
             {
-                // 2012-02-17 G# Remove - 'Delete Own Comments' policy
-                //if (ja.TechUserId == DiscoApplication.CurrentUser.Id)
-                //{
-                ja.OnDelete(dbContext);
-                dbContext.SaveChanges();
+                if (ja.TechUserId.Equals(CurrentUser.Id, StringComparison.InvariantCultureIgnoreCase))
+                    Authorization.RequireAny(Claims.Job.Actions.RemoveAnyAttachments, Claims.Job.Actions.RemoveOwnAttachments);
+                else
+                    Authorization.Require(Claims.Job.Actions.RemoveAnyAttachments);
+                
+                ja.OnDelete(Database);
+                Database.SaveChanges();
                 return Json("OK", JsonRequestBehavior.AllowGet);
-                //}
-                //else
-                //{
-                //    return Json("You can only delete your own attachments.", JsonRequestBehavior.AllowGet);
-                //}
             }
             return Json("Invalid Attachment Number", JsonRequestBehavior.AllowGet);
         }
@@ -1906,9 +2014,11 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Job Components
+
+        [DiscoAuthorizeAll(Claims.Job.Properties.NonWarrantyProperties.AddComponents, Claims.Job.Properties.NonWarrantyProperties.EditComponents)]
         public virtual ActionResult ComponentAdd(int id, string Description, string Cost)
         {
-            var j = dbContext.Jobs.Find(id);
+            var j = Database.Jobs.Find(id);
             if (j != null)
             {
                 decimal cost = 0;
@@ -1923,18 +2033,20 @@ namespace Disco.Web.Areas.API.Controllers
                     JobId = j.Id,
                     Description = Description,
                     Cost = cost,
-                    TechUserId = DiscoApplication.CurrentUser.Id
+                    TechUserId = CurrentUser.Id
                 };
-                dbContext.JobComponents.Add(jc);
-                dbContext.SaveChanges();
+                Database.JobComponents.Add(jc);
+                Database.SaveChanges();
 
                 return Json(new Models.Job.ComponentModel { Result = "OK", Component = Models.Job._ComponentModel.FromJobComponent(jc) }, JsonRequestBehavior.AllowGet);
             }
             return Json(new Models.Job.ComponentModel { Result = "Invalid Job Number" }, JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.EditComponents)]
         public virtual ActionResult ComponentUpdate(int id, string Description, string Cost)
         {
-            var jc = dbContext.JobComponents.Find(id);
+            var jc = Database.JobComponents.Find(id);
             if (jc != null)
             {
                 decimal cost = 0;
@@ -1947,55 +2059,60 @@ namespace Disco.Web.Areas.API.Controllers
 
                 jc.Description = Description;
                 jc.Cost = cost;
-                dbContext.SaveChanges();
+                Database.SaveChanges();
 
                 return Json(new Models.Job.ComponentModel { Result = "OK", Component = Models.Job._ComponentModel.FromJobComponent(jc) }, JsonRequestBehavior.AllowGet);
             }
             return Json(new Models.Job.ComponentModel { Result = "Invalid Job Component Number" }, JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.EditComponents)]
         public virtual ActionResult ComponentRemove(int id)
         {
-            var jc = dbContext.JobComponents.Find(id);
+            var jc = Database.JobComponents.Find(id);
             if (jc != null)
             {
-                dbContext.JobComponents.Remove(jc);
-                dbContext.SaveChanges();
+                Database.JobComponents.Remove(jc);
+                Database.SaveChanges();
                 return Json("OK", JsonRequestBehavior.AllowGet);
             }
             return Json("Invalid Job Component Number", JsonRequestBehavior.AllowGet);
         }
+
         #endregion
 
         #region Job Statistics
 
+        [DiscoAuthorize(Claims.Job.Show)]
         public virtual ActionResult StatisticsDailyOpenedClosed()
         {
-            var result = BI.JobBI.Statistics.DailyOpenedClosed.Data(dbContext, true);
+            var result = BI.JobBI.Statistics.DailyOpenedClosed.Data(Database, true);
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         #endregion
 
+        [DiscoAuthorize(Claims.Job.Actions.GenerateDocuments)]
         public virtual ActionResult GeneratePdf(string id, string DocumentTemplateId)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException("id");
             if (string.IsNullOrEmpty(DocumentTemplateId))
                 throw new ArgumentNullException("AttachmentTypeId");
-            var job = dbContext.Jobs.Find(int.Parse(id));
+            var job = Database.Jobs.Find(int.Parse(id));
             if (job != null)
             {
-                var documentTemplate = dbContext.DocumentTemplates.Find(DocumentTemplateId);
+                var documentTemplate = Database.DocumentTemplates.Find(DocumentTemplateId);
                 if (documentTemplate != null)
                 {
                     var timeStamp = DateTime.Now;
                     Stream pdf;
                     using (var generationState = Disco.Models.BI.DocumentTemplates.DocumentState.DefaultState())
                     {
-                        pdf = documentTemplate.GeneratePdf(dbContext, job, DiscoApplication.CurrentUser, timeStamp, generationState);
+                        pdf = documentTemplate.GeneratePdf(Database, job, CurrentUser, timeStamp, generationState);
                     }
-                    dbContext.SaveChanges();
+                    Database.SaveChanges();
                     return File(pdf, "application/pdf", string.Format("{0}_{1}_{2:yyyyMMdd-HHmmss}.pdf", documentTemplate.Id, job.Id, timeStamp));
                 }
                 else
@@ -2007,12 +2124,6 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 throw new ArgumentException("Invalid Job Id", "id");
             }
-        }
-
-        public virtual ActionResult OrganisationAddress(int id)
-        {
-            var address = dbContext.DiscoConfiguration.OrganisationAddresses.GetAddress(id);
-            return Json(address, JsonRequestBehavior.AllowGet);
         }
     }
 }

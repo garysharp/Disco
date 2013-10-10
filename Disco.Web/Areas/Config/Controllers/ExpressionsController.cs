@@ -1,22 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Disco.Services.Authorization;
+using Disco.Services.Web;
+using System;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.Config.Controllers
 {
-    public partial class ExpressionsController : Controller
+    [DiscoAuthorize(Claims.DiscoAdminAccount)]
+    public partial class ExpressionsController : AuthorizedDatabaseController
     {
-        //
-        // GET: /Config/Expressions/
+        // Under Construction - Not In Production
 
         public virtual ActionResult Index()
         {
-            return View(Views.Editor, new Models.Expressions.EditorModel()
-            {
-                Expression = @"JobComponentsTotalCost() < 100 ? JobComponentsTotalCost().ToString('c') : '$100.00'"
-            });
+            throw new NotImplementedException();
+
+            //return View(Views.Editor, new Models.Expressions.EditorModel()
+            //{
+            //    Expression = @"JobComponentsTotalCost() < 100 ? JobComponentsTotalCost().ToString('c') : '$100.00'"
+            //});
         }
 
     }

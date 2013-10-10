@@ -1,6 +1,8 @@
 ﻿@{
     ViewBag.Title = "Users";
 }
-<h3>
-    Search for a User</h3>
-@Html.Partial(MVC.Shared.Views._SearchDialog, "users")
+@if (Authorization.Has(Claims.User.Search))
+{
+    <h3>Search for a User</h3>
+    @Html.Partial(MVC.Shared.Views._SearchDialog, "users")
+}

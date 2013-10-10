@@ -9,7 +9,7 @@ namespace Disco.Data.Configuration.Modules
 {
     public class DeviceProfilesConfiguration : ConfigurationBase
     {
-        public DeviceProfilesConfiguration(DiscoDataContext dbContext) : base(dbContext) { }
+        public DeviceProfilesConfiguration(DiscoDataContext Database) : base(Database) { }
 
         public override string Scope { get { return "DeviceProfiles"; } }
 

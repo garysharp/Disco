@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Disco.BI.Extensions;
 using System.Reactive.Linq;
+using Disco.Services.Users;
 
 namespace Disco.BI.JobBI
 {
@@ -20,10 +21,22 @@ namespace Disco.BI.JobBI
         private IDisposable unsubscribeToken;
         private object updateLock = new object();
 
-        public ManagedJobList Initialize(DiscoDataContext dbContext)
+        public override List<JobTableItemModel> Items
+        {
+            get
+            {
+                return base.Items.PermissionsFiltered(UserService.CurrentAuthorization);
+            }
+            set
+            {
+                throw new InvalidOperationException("Items cannot be manually set in a Managed Job List");
+            }
+        }
+
+        public ManagedJobList Initialize(DiscoDataContext Database)
         {
             // Initially fill table
-            this.Items = this.SortFunction(this.DetermineItems(dbContext, this.FilterFunction(dbContext.Jobs))).ToList();
+            base.Items = this.SortFunction(this.DetermineItems(Database, this.FilterFunction(Database.Jobs))).ToList();
 
             // Subscribe for Changes
             // - Job (or Job Meta) Changes
@@ -65,19 +78,19 @@ namespace Disco.BI.JobBI
                             if (e.EntityType == typeof(DeviceProfile))
                             {
                                 int deviceProfileId = ((DeviceProfile)e.Entity).Id;
-                                existingItems = this.Items.Where(i => i.DeviceProfileId == deviceProfileId).ToArray();
+                                existingItems = base.Items.Where(i => i.DeviceProfileId == deviceProfileId).ToArray();
                             }
                             else
                                 if (e.EntityType == typeof(DeviceModel))
                                 {
                                     int deviceModelId = ((DeviceModel)e.Entity).Id;
-                                    existingItems = this.Items.Where(i => i.DeviceModelId == deviceModelId).ToArray();
+                                    existingItems = base.Items.Where(i => i.DeviceModelId == deviceModelId).ToArray();
                                 }
                                 else
                                     if (e.EntityType == typeof(Device))
                                     {
                                         string deviceSerialNumber = ((Device)e.Entity).SerialNumber;
-                                        existingItems = this.Items.Where(i => i.DeviceSerialNumber == deviceSerialNumber).ToArray();
+                                        existingItems = base.Items.Where(i => i.DeviceSerialNumber == deviceSerialNumber).ToArray();
                                     }
                                     else
                                         return;  // Subscription should never reach
@@ -93,20 +106,20 @@ namespace Disco.BI.JobBI
             if (jobIds.Count == 0)
                 return;
             else
-                UpdateJobs(e.dbContext, jobIds, existingItems);
+                UpdateJobs(e.Database, jobIds, existingItems);
         }
 
-        private void UpdateJobs(DiscoDataContext dbContext, List<int> jobIds, JobTableItemModel[] existingItems = null)
+        private void UpdateJobs(DiscoDataContext Database, List<int> jobIds, JobTableItemModel[] existingItems = null)
         {
             lock (updateLock)
             {
                 // Check for existing items, if not handed them
                 if (existingItems == null)
-                    existingItems = this.Items.Where(i => jobIds.Contains(i.Id)).ToArray();
+                    existingItems = base.Items.Where(i => jobIds.Contains(i.Id)).ToArray();
+                
+                var updatedItems = this.DetermineItems(Database, this.FilterFunction(Database.Jobs.Where(j => jobIds.Contains(j.Id))));
 
-                var updatedItems = this.DetermineItems(dbContext, this.FilterFunction(dbContext.Jobs.Where(j => jobIds.Contains(j.Id))));
-
-                var refreshedList = this.Items.ToList();
+                var refreshedList = base.Items.ToList();
 
                 // Remove Existing
                 if (existingItems.Length > 0)
@@ -119,7 +132,7 @@ namespace Disco.BI.JobBI
                         refreshedList.Add(updatedItem);
 
                 // Reorder
-                this.Items = this.SortFunction(refreshedList).ToList();
+                base.Items = this.SortFunction(refreshedList).ToList();
             }
         }
 

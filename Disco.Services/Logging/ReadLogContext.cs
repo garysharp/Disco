@@ -29,14 +29,14 @@ namespace Disco.Services.Logging
             return true;
         }
 
-        public List<Models.LogLiveEvent> Query(DiscoDataContext DiscoContext)
+        public List<Models.LogLiveEvent> Query(DiscoDataContext Database)
         {
             List<Models.LogLiveEvent> results = new List<LogLiveEvent>();
 
             // Validate Options
             this.Validate();
 
-            var relevantLogFiles = RelevantLogFiles(DiscoContext);
+            var relevantLogFiles = RelevantLogFiles(Database);
             relevantLogFiles.Reverse();
             foreach (var logFile in relevantLogFiles)
             {
@@ -73,10 +73,10 @@ namespace Disco.Services.Logging
             }
         }
 
-        private List<Tuple<string, DateTime>> RelevantLogFiles(DiscoDataContext DiscoContext)
+        private List<Tuple<string, DateTime>> RelevantLogFiles(DiscoDataContext Database)
         {
             List<Tuple<string, DateTime>> relevantFiles = new List<Tuple<string, DateTime>>();
-            var logDirectoryBase = LogContext.LogFileBasePath(DiscoContext);
+            var logDirectoryBase = LogContext.LogFileBasePath(Database);
             var logDirectoryBaseInfo = new DirectoryInfo(logDirectoryBase);
             var endDate = this.End.HasValue ? this.End.Value : DateTime.Now;
             var endDateYear = endDate.Year.ToString();
@@ -91,7 +91,7 @@ namespace Disco.Services.Logging
                     var queryDate = this.Start.Value.Date;
                     while (queryDate <= endDate)
                     {
-                        var fileName = LogContext.LogFilePath(DiscoContext, queryDate, false);
+                        var fileName = LogContext.LogFilePath(Database, queryDate, false);
                         if (File.Exists(fileName))
                             relevantFiles.Add(new Tuple<string, DateTime>(fileName, LogFileDate(fileName).Value));
 

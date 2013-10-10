@@ -48,7 +48,7 @@ namespace Disco.BI.Interop.SignalRHandlers
 
             if (j.DeviceSerialNumber != null)
             {
-                var jobDevice = e.dbContext.Devices.Where(d => d.SerialNumber == j.DeviceSerialNumber).FirstOrDefault();
+                var jobDevice = e.Database.Devices.Where(d => d.SerialNumber == j.DeviceSerialNumber).FirstOrDefault();
 
                 if (jobDevice.AssignedUserId != null)
                     notificationContext.Connection.Broadcast(jobDevice.AssignedUserId);

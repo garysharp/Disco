@@ -9,12 +9,14 @@ using Disco.BI.Extensions;
 using Disco.Data.Repository;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
+using Disco.Services.Authorization;
 
 namespace Disco.Web.Areas.Services.Controllers
 {
     [OutputCache(Duration = 0)]
     public partial class ClientController : Controller
     {
+        [DiscoAuthorize(Claims.Config.Enrolment.DownloadBootstrapper)]
         public virtual ActionResult Bootstrapper()
         {
             return File(Links.ClientBin.Disco_ClientBootstrapper_exe, "application/x-msdownload", "Disco.ClientBootstrapper.exe");
@@ -56,11 +58,11 @@ namespace Disco.Web.Areas.Services.Controllers
                     }
                 case "macsecureenrol":
                     {
-                        using (var dbContext = new DiscoDataContext())
+                        using (var database = new DiscoDataContext())
                         {
                             var host = HttpContext.Request.UserHostAddress;
-                            MacSecureEnrolResponse enrolResponse = BI.DeviceBI.DeviceEnrol.MacSecureEnrol(dbContext, host);
-                            dbContext.SaveChanges();
+                            MacSecureEnrolResponse enrolResponse = BI.DeviceBI.DeviceEnrol.MacSecureEnrol(database, host);
+                            database.SaveChanges();
                             return Json(enrolResponse, JsonRequestBehavior.AllowGet);
                         }
                     }

@@ -1,8 +1,18 @@
 ﻿@model Disco.Web.Areas.Config.Models.DeviceProfile.ShowModel
 @{
+    Authorization.Require(Claims.Config.DeviceProfile.Show);
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Profiles", MVC.Config.DeviceProfile.Index(null), Model.DeviceProfile.ToString());
-    Html.BundleDeferred("~/Style/jQueryUI/dynatree");
-    Html.BundleDeferred("~/ClientScripts/Modules/jQueryUI-DynaTree");
+
+    var canConfig = Authorization.Has(Claims.Config.DeviceProfile.Configure);
+    var canConfigExpression = Authorization.Has(Claims.Config.DeviceProfile.ConfigureComputerNameTemplate);
+    var canDelete = (Authorization.Has(Claims.Config.DeviceProfile.Delete) && Model.CanDelete);
+
+    if (canConfig)
+    {
+        Html.BundleDeferred("~/Style/jQueryUI/dynatree");
+        Html.BundleDeferred("~/ClientScripts/Modules/jQueryUI-DynaTree");
+    }
 }
 <div id="configurationDeviceProfileShow" class="form" style="width: 600px">
     <table>
@@ -16,7 +26,9 @@
         <tr>
             <th>Name:
             </th>
-            <td>@Html.TextBoxFor(model => model.DeviceProfile.Name)
+            <td>@if (canConfig)
+                {
+                @Html.TextBoxFor(model => model.DeviceProfile.Name)
                 @AjaxHelpers.AjaxSave()
                 @AjaxHelpers.AjaxLoader()
                 <script type="text/javascript">
@@ -58,12 +70,19 @@
                             });
                     });
                 </script>
+                }
+                else
+                {
+                @Model.DeviceProfile.Name
+                }
             </td>
         </tr>
         <tr>
             <th>Short Name:
             </th>
-            <td>@Html.TextBoxFor(model => model.DeviceProfile.ShortName)
+            <td>@if (canConfig)
+                {
+                @Html.TextBoxFor(model => model.DeviceProfile.ShortName)
                 @AjaxHelpers.AjaxSave()
                 @AjaxHelpers.AjaxLoader()
                 <script type="text/javascript">
@@ -105,12 +124,19 @@
                             });
                     });
                 </script>
+                }
+                else
+                {
+                @Model.DeviceProfile.ShortName
+                }
             </td>
         </tr>
         <tr>
             <th>Description:
             </th>
-            <td>@Html.TextBoxFor(model => model.DeviceProfile.Description)
+            <td>@if (canConfig)
+                {
+                @Html.TextBoxFor(model => model.DeviceProfile.Description)
                 @AjaxHelpers.AjaxSave()
                 @AjaxHelpers.AjaxLoader()
                 <script type="text/javascript">
@@ -152,6 +178,11 @@
                             });
                     });
                 </script>
+                }
+                else
+                {
+                @Model.DeviceProfile.Description
+                }
             </td>
         </tr>
         <tr>
@@ -167,7 +198,8 @@
         <tr>
             <th>Distribution Type:
             </th>
-            <td>
+            <td>@if (canConfig)
+                {
                 @Html.DropDownList("DeviceProfile_DistributionType", Model.DeviceProfileDistributionTypes)
                 @AjaxHelpers.AjaxLoader()
                 <script type="text/javascript">
@@ -187,12 +219,18 @@
                         });
                     });
                 </script>
+                }
+                else
+                {
+                @Model.DeviceProfile.DistributionType.ToString()
+                }
             </td>
         </tr>
         <tr>
             <th>Address:
             </th>
-            <td>
+            <td>@if (canConfig)
+                {
                 @Html.DropDownListFor(m => m.DeviceProfile.DefaultOrganisationAddress, Model.OrganisationAddresses.ToSelectListItems(Model.DeviceProfile.DefaultOrganisationAddress, true, "None"))
                 @AjaxHelpers.AjaxLoader()
                 <script type="text/javascript">
@@ -212,12 +250,25 @@
                         });
                     });
                 </script>
+                }
+                else
+                {
+                    if (Model.DefaultOrganisationAddress == null)
+                    {
+                <span class="smallMessage">&lt;None Specified&gt;</span>
+                    }
+                    else
+                    {
+                @Model.DefaultOrganisationAddress.ToString()
+                    }
+                }
             </td>
         </tr>
         <tr>
             <th>Allocate Certificates:
             </th>
-            <td>
+            <td>@if (canConfig)
+                {
                 @Html.DropDownListFor(model => model.DeviceProfile.CertificateProviderId, Model.CertificateProviders.ToSelectListItems(null, true, "Not Allocated"))
                 @AjaxHelpers.AjaxLoader()
                 <script type="text/javascript">
@@ -248,12 +299,34 @@
                         });
                     });
                 </script>
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(Model.DeviceProfile.CertificateProviderId))
+                    {
+                <span class="smallMessage">&lt;None Allocated&gt;</span>
+                    }
+                    else
+                    {
+                        var cp = Model.CertificateProviders.FirstOrDefault(p => p.Id == Model.DeviceProfile.CertificateProviderId);
+                        if (cp == null)
+                        {
+                <span class="smallMessage">&lt;None Allocated&gt;</span>
+                        }
+                        else
+                        {
+                @cp.Name
+                        }
+                    }
+                }
             </td>
         </tr>
         <tr>
             <th>Computer Name Template Expression:
             </th>
-            <td>@Html.TextBoxFor(model => model.DeviceProfile.ComputerNameTemplate)
+            <td>@if (canConfig && canConfigExpression)
+                {
+                @Html.TextBoxFor(model => model.DeviceProfile.ComputerNameTemplate)
                 @AjaxHelpers.AjaxSave()
                 @AjaxHelpers.AjaxLoader()
                 <a id="expressionBrowserAnchor" href="@(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser()))">&nbsp;</a>
@@ -295,60 +368,89 @@
                             });
                     });
                 </script>
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(Model.DeviceProfile.ComputerNameTemplate))
+                    {
+                <span class="smallMessage">&lt;None Specified&gt;</span>
+                    }
+                    else
+                    {
+                <div class="code">
+                    @Model.DeviceProfile.ComputerNameTemplate
+                </div>
+                    }
+                }
                 <div style="margin-top: 8px;">
                     <label for="DeviceProfile_ProvisionADAccount">
                         Provision Active Directory Account:
                     </label>
-                    <input id="DeviceProfile_ProvisionADAccount" type="checkbox" @(Model.DeviceProfile.ProvisionADAccount ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
-                    @AjaxHelpers.AjaxLoader()
-                    <script type="text/javascript">
-                        $(function () {
-                            $('#DeviceProfile_ProvisionADAccount').click(function () {
-                                var $this = $(this);
-                                var $ajaxLoading = $this.next('.ajaxLoading').show();
-                                var data = { ProvisionADAccount: $this.is(':checked') };
-                                $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateProvisionADAccount(Model.DeviceProfile.Id))', data, function (response, result) {
-                                    if (result != 'success' || response != 'OK') {
-                                        alert('Unable to change Provision AD Account:\n' + response);
-                                        $ajaxLoading.hide();
-                                    } else {
-                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                    }
+                    @if (canConfig)
+                    {
+                        <input id="DeviceProfile_ProvisionADAccount" type="checkbox" @(Model.DeviceProfile.ProvisionADAccount ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
+                        @AjaxHelpers.AjaxLoader()
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#DeviceProfile_ProvisionADAccount').click(function () {
+                                    var $this = $(this);
+                                    var $ajaxLoading = $this.next('.ajaxLoading').show();
+                                    var data = { ProvisionADAccount: $this.is(':checked') };
+                                    $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateProvisionADAccount(Model.DeviceProfile.Id))', data, function (response, result) {
+                                        if (result != 'success' || response != 'OK') {
+                                            alert('Unable to change Provision AD Account:\n' + response);
+                                            $ajaxLoading.hide();
+                                        } else {
+                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        }
+                                    });
                                 });
                             });
-                        });
-                    </script>
+                        </script>
+                    }
+                    else
+                    {
+                        <input id="DeviceProfile_ProvisionADAccount" type="checkbox" @(Model.DeviceProfile.ProvisionADAccount ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
+                    }
                 </div>
                 <div style="margin-top: 8px;">
                     <label for="DeviceProfile_EnforceComputerNameConvention">
                         Enforce Naming Convention:
                     </label>
-                    <input id="DeviceProfile_EnforceComputerNameConvention" type="checkbox" @(Model.DeviceProfile.EnforceComputerNameConvention ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
-                    @AjaxHelpers.AjaxLoader()
-                    <script type="text/javascript">
-                        $(function () {
-                            $('#DeviceProfile_EnforceComputerNameConvention').click(function () {
-                                var $this = $(this);
-                                var $ajaxLoading = $this.next('.ajaxLoading').show();
-                                var data = { EnforceComputerNameConvention: $this.is(':checked') };
-                                $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateEnforceComputerNameConvention(Model.DeviceProfile.Id))', data, function (response, result) {
-                                    if (result != 'success' || response != 'OK') {
-                                        alert('Unable to change Enforce Computer Name Convention:\n' + response);
-                                        $ajaxLoading.hide();
-                                    } else {
-                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                    }
+                    @if (canConfig)
+                    {
+                        <input id="DeviceProfile_EnforceComputerNameConvention" type="checkbox" @(Model.DeviceProfile.EnforceComputerNameConvention ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
+                        @AjaxHelpers.AjaxLoader()
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#DeviceProfile_EnforceComputerNameConvention').click(function () {
+                                    var $this = $(this);
+                                    var $ajaxLoading = $this.next('.ajaxLoading').show();
+                                    var data = { EnforceComputerNameConvention: $this.is(':checked') };
+                                    $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateEnforceComputerNameConvention(Model.DeviceProfile.Id))', data, function (response, result) {
+                                        if (result != 'success' || response != 'OK') {
+                                            alert('Unable to change Enforce Computer Name Convention:\n' + response);
+                                            $ajaxLoading.hide();
+                                        } else {
+                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        }
+                                    });
                                 });
                             });
-                        });
-                    </script>
+                        </script>
+                    }
+                    else
+                    {
+                        <input id="DeviceProfile_EnforceComputerNameConvention" type="checkbox" @(Model.DeviceProfile.EnforceComputerNameConvention ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
+                    }
                 </div>
             </td>
         </tr>
         <tr>
             <th>Default Organisational Unit:
             </th>
-            <td>
+            <td>@if (canConfig)
+                {
                 @Html.HiddenFor(model => model.DeviceProfile.OrganisationalUnit)
                 <div id="displayOrganisationalUnit">
                 </div>
@@ -466,19 +568,35 @@
                         updateDisplayOrganisationalUnit();
                     });
                 </script>
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(Model.DeviceProfile.OrganisationalUnit))
+                    {
+                <span>{Default Computers Container}</span>
+                    }
+                    else
+                    {
+                <span>
+                    @string.Join(" > ", Model.DeviceProfile.OrganisationalUnit.Split(',').Select(s => s.Substring(3)).Reverse())
+                </span>
+                    }
+                }
                 <div style="margin-top: 8px;">
                     <label for="DeviceProfile_EnforceOrganisationalUnit">
                         Enforce:
                     </label>
-                    <input id="DeviceProfile_EnforceOrganisationalUnit" type="checkbox" @(Model.DeviceProfile.EnforceOrganisationalUnit ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
-                    @AjaxHelpers.AjaxLoader()
-                    <script type="text/javascript">
-                        $(function () {
-                            $('#DeviceProfile_EnforceOrganisationalUnit').click(function () {
-                                var $this = $(this);
-                                var $ajaxLoading = $this.next('.ajaxLoading').show();
-                                var data = { EnforceOrganisationalUnit: $this.is(':checked') };
-                                $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateEnforceOrganisationalUnit(Model.DeviceProfile.Id))', data, function (response, result) {
+                    @if (canConfig)
+                    {
+                        <input id="DeviceProfile_EnforceOrganisationalUnit" type="checkbox" @(Model.DeviceProfile.EnforceOrganisationalUnit ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
+                        @AjaxHelpers.AjaxLoader()
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#DeviceProfile_EnforceOrganisationalUnit').click(function () {
+                                    var $this = $(this);
+                                    var $ajaxLoading = $this.next('.ajaxLoading').show();
+                                    var data = { EnforceOrganisationalUnit: $this.is(':checked') };
+                                    $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateEnforceOrganisationalUnit(Model.DeviceProfile.Id))', data, function (response, result) {
                                     if (result != 'success' || response != 'OK') {
                                         alert('Unable to change Enforce Organisation Unit:\n' + response);
                                         $ajaxLoading.hide();
@@ -488,51 +606,65 @@
                                 });
                             });
                         });
-                    </script>
+                        </script>
+                    }
+                    else
+                    {
+                        <input id="DeviceProfile_EnforceOrganisationalUnit" type="checkbox" @(Model.DeviceProfile.EnforceOrganisationalUnit ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
+                    }
                 </div>
             </td>
         </tr>
     </table>
 </div>
-<div id="dialogConfirmDelete" title="Delete this Device Profile?">
-    <p>
-        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-        This item will be permanently deleted and cannot be recovered. Are you sure?
-    </p>
-</div>
-<script type="text/javascript">
-    $(function () {
+@if (canDelete)
+{
+    <div id="dialogConfirmDelete" title="Delete this Device Profile?">
+        <p>
+            <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+            This item will be permanently deleted and cannot be recovered. Are you sure?
+        </p>
+    </div>
+    <script type="text/javascript">
+        $(function () {
 
-        var button = $('#buttonDelete');
-        var buttonLink = button.attr('href');
-        button.attr('href', '#');
-        button.click(function () {
-            $("#dialogConfirmDelete").dialog('open');
-        });
+            var button = $('#buttonDelete');
+            var buttonLink = button.attr('href');
+            button.attr('href', '#');
+            button.click(function () {
+                $("#dialogConfirmDelete").dialog('open');
+            });
 
-        $("#dialogConfirmDelete").dialog({
-            resizable: false,
-            height: 140,
-            modal: true,
-            autoOpen: false,
-            buttons: {
-                "Delete": function () {
-                    $(this).dialog('disable');
-                    window.location.href = buttonLink;
-                },
-                Cancel: function () {
-                    $(this).dialog("close");
+            $("#dialogConfirmDelete").dialog({
+                resizable: false,
+                height: 140,
+                modal: true,
+                autoOpen: false,
+                buttons: {
+                    "Delete": function () {
+                        $(this).dialog('disable');
+                        window.location.href = buttonLink;
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
                 }
-            }
-        });
+            });
 
-    });
-</script>
+        });
+    </script>
+}
 <div class="actionBar">
-    @if (Model.CanDelete)
+    @if (canDelete)
     { 
         @Html.ActionLinkButton("Delete", MVC.API.DeviceProfile.Delete(Model.DeviceProfile.Id, true), "buttonDelete")
     }
-    @Html.ActionLinkButton("Export Devices", MVC.API.DeviceProfile.ExportDevices(Model.DeviceProfile.Id))
-    @Html.ActionLinkButton("View Devices", MVC.Search.Query(Model.DeviceProfile.Id.ToString(), "DeviceProfile"))
+    @if (Authorization.Has(Claims.Device.Actions.Export))
+    {
+        @Html.ActionLinkButton("Export Devices", MVC.API.DeviceProfile.ExportDevices(Model.DeviceProfile.Id))
+    }
+    @if (Authorization.Has(Claims.Device.Search))
+    {
+        @Html.ActionLinkButton("View Devices", MVC.Search.Query(Model.DeviceProfile.Id.ToString(), "DeviceProfile"))
+    }
 </div>

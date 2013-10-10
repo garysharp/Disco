@@ -38,16 +38,16 @@ namespace Disco.Web.Models.Job
         public Disco.Models.Repository.User User { get; set; }
         public List<Disco.Models.Repository.JobType> JobTypes { get; set; }
         public List<Disco.Models.Repository.JobSubType> JobSubTypes { get; set; }
-        public void UpdateModel(DiscoDataContext dbContext)
+        public void UpdateModel(DiscoDataContext Database)
         {
             if (this.JobTypes == null)
-                JobTypes = dbContext.JobTypes.ToList();
+                JobTypes = Database.JobTypes.ToList();
             if (this.JobSubTypes == null)
-                JobSubTypes = dbContext.JobSubTypes.ToList();
+                JobSubTypes = Database.JobSubTypes.ToList();
 
             if (!string.IsNullOrEmpty(DeviceSerialNumber))
             {
-                this.Device = dbContext.Devices.Include("DeviceModel").Where(d => d.SerialNumber == DeviceSerialNumber).FirstOrDefault();
+                this.Device = Database.Devices.Include("DeviceModel").Where(d => d.SerialNumber == DeviceSerialNumber).FirstOrDefault();
                 if (this.Device == null)
                 {
                     throw new ArgumentException("Invalid Device Serial Number Specified", "DeviceSerialNumber");
@@ -101,7 +101,7 @@ namespace Disco.Web.Models.Job
             }
             if (!string.IsNullOrEmpty(UserId))
             {
-                this.User = dbContext.Users.Find(UserId);
+                this.User = Database.Users.Find(UserId);
                 if (this.User == null)
                 {
                     throw new ArgumentException("Invalid User Id Specified", "UserId");

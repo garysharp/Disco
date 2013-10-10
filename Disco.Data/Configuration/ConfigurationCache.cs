@@ -16,7 +16,7 @@ namespace Disco.Data.Configuration
         private static List<ConfigurationItem> configurationItems = new List<ConfigurationItem>();
         private static object configurationItemsLock = new object();
 
-        private static void LoadConfigurationItems(DiscoDataContext dbContext, string Scope, bool Reload)
+        private static void LoadConfigurationItems(DiscoDataContext Database, string Scope, bool Reload)
         {
             if (Reload || !configDictionary.ContainsKey(Scope))
             {
@@ -24,10 +24,10 @@ namespace Disco.Data.Configuration
                 {
                     if (Reload || !configDictionary.ContainsKey(Scope))
                     {
-                        if (dbContext == null)
+                        if (Database == null)
                             throw new InvalidOperationException("Cache-miss where Configuration Item requested from Cache-Only Configuration Context");
 
-                        var newItems = dbContext.ConfigurationItems.Where(ci => ci.Scope == Scope).ToArray();
+                        var newItems = Database.ConfigurationItems.Where(ci => ci.Scope == Scope).ToArray();
 
                         if (configDictionary.ContainsKey(Scope))
                         {
@@ -43,15 +43,15 @@ namespace Disco.Data.Configuration
                 }
             }
         }
-        private static Dictionary<string, Dictionary<string, ConfigurationItem>> ConfigurationDictionary(DiscoDataContext dbContext, string IncludingScope)
+        private static Dictionary<string, Dictionary<string, ConfigurationItem>> ConfigurationDictionary(DiscoDataContext Database, string IncludingScope)
         {
-            LoadConfigurationItems(dbContext, IncludingScope, false);
+            LoadConfigurationItems(Database, IncludingScope, false);
             return configDictionary;
         }
-        private static ConfigurationItem ConfigurationItem(DiscoDataContext dbContext, string Scope, string Key)
+        private static ConfigurationItem ConfigurationItem(DiscoDataContext Database, string Scope, string Key)
         {
             Dictionary<string, ConfigurationItem> scopeDict = default(Dictionary<string, ConfigurationItem>);
-            if (ConfigurationDictionary(dbContext, Scope).TryGetValue(Scope, out scopeDict))
+            if (ConfigurationDictionary(Database, Scope).TryGetValue(Scope, out scopeDict))
             {
                 ConfigurationItem item = default(ConfigurationItem);
                 if (scopeDict.TryGetValue(Key, out item))
@@ -59,42 +59,42 @@ namespace Disco.Data.Configuration
             }
             return null;
         }
-        private static List<ConfigurationItem> ConfigurationItems(DiscoDataContext dbContext, string IncludingScope)
+        private static List<ConfigurationItem> ConfigurationItems(DiscoDataContext Database, string IncludingScope)
         {
-            LoadConfigurationItems(dbContext, IncludingScope, false);
+            LoadConfigurationItems(Database, IncludingScope, false);
             return configurationItems;
         }
 
         #endregion
 
         #region Public Helpers
-        internal static ValueType GetConfigurationValue<ValueType>(DiscoDataContext dbContext, string Scope, string Key, ValueType Default)
+        internal static ValueType GetConfigurationValue<ValueType>(DiscoDataContext Database, string Scope, string Key, ValueType Default)
         {
-            var ci = ConfigurationItem(dbContext, Scope, Key);
+            var ci = ConfigurationItem(Database, Scope, Key);
             if (ci == null)
                 return Default;
             else
                 return (ValueType)Convert.ChangeType(ci.Value, typeof(ValueType));
         }
-        internal static void SetConfigurationValue<ValueType>(DiscoDataContext dbContext, string Scope, string Key, ValueType Value)
+        internal static void SetConfigurationValue<ValueType>(DiscoDataContext Database, string Scope, string Key, ValueType Value)
         {
-            if (dbContext == null)
+            if (Database == null)
                 throw new InvalidOperationException("Cannot save changes with a CacheOnly Context");
 
-            var ci = ConfigurationItem(dbContext, Scope, Key);
+            var ci = ConfigurationItem(Database, Scope, Key);
             if (ci == null && Value != null)
             {
                 lock (configurationItemsLock)
                 {
-                    ci = ConfigurationItem(dbContext, Scope, Key);
+                    ci = ConfigurationItem(Database, Scope, Key);
                     if (ci == null)
                     {
                         // Create Configuration Item
                         ci = new ConfigurationItem() { Scope = Scope, Key = Key, Value = Value.ToString() };
                         // Add Item to DB & Internal Collections
-                        dbContext.ConfigurationItems.Add(ci);
-                        ConfigurationItems(dbContext, Scope).Add(ci);
-                        ConfigurationDictionary(dbContext, Scope)[Scope].Add(Key, ci);
+                        Database.ConfigurationItems.Add(ci);
+                        ConfigurationItems(Database, Scope).Add(ci);
+                        ConfigurationDictionary(Database, Scope)[Scope].Add(Key, ci);
                         ci = null;
                     }
                 }
@@ -103,17 +103,17 @@ namespace Disco.Data.Configuration
             {
                 lock (configurationItemsLock)
                 {
-                    var entityInfo = dbContext.Entry(ci);
+                    var entityInfo = Database.Entry(ci);
                     if (entityInfo.State == System.Data.EntityState.Detached)
                     {
                         // Reload Scope from DB
-                        LoadConfigurationItems(dbContext, Scope, true);
-                        ci = ConfigurationItem(dbContext, Scope, Key);
+                        LoadConfigurationItems(Database, Scope, true);
+                        ci = ConfigurationItem(Database, Scope, Key);
                     }
 
                     if (Value == null)
                     {
-                        dbContext.ConfigurationItems.Remove(ci);
+                        Database.ConfigurationItems.Remove(ci);
                         configurationItems.Remove(ci);
                         configDictionary[Scope].Remove(Key);
                     }
@@ -125,9 +125,9 @@ namespace Disco.Data.Configuration
             }
         }
 
-        internal static List<ConfigurationItem> GetConfigurationItems(DiscoDataContext dbContext, string Scope)
+        internal static List<ConfigurationItem> GetConfigurationItems(DiscoDataContext Database, string Scope)
         {
-            return ConfigurationDictionary(dbContext, Scope)[Scope].Values.ToList();
+            return ConfigurationDictionary(Database, Scope)[Scope].Values.ToList();
         }
 
         internal static string ObsfucateValue(string Value)

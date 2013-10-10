@@ -1,4 +1,6 @@
 ﻿@{
+    Authorization.Require(Claims.Config.Enrolment.ShowStatus);
+    
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Enrolment", MVC.Config.Enrolment.Index(), "Status");
     Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");

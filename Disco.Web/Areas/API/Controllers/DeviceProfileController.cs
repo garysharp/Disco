@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Disco.BI;
-using Disco.BI.Extensions;
-using Disco.Data.Configuration.Modules;
+﻿using Disco.BI.Extensions;
 using Disco.Models.Repository;
+using Disco.Services.Authorization;
+using Disco.Services.Web;
+using System;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Disco.Web.Areas.API.Controllers
 {
-    public partial class DeviceProfileController : dbAdminController
+    public partial class DeviceProfileController : AuthorizedDatabaseController
     {
 
         const string pDescription = "description";
@@ -25,15 +23,18 @@ namespace Disco.Web.Areas.API.Controllers
         const string pEnforceOrganisationalUnit = "enforceorganisationalunit";
         const string pProvisionADAccount = "provisionadaccount";
 
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         public virtual ActionResult Update(int id, string key, string value = null, Nullable<bool> redirect = null)
         {
+            Authorization.Require(Claims.Config.DeviceProfile.Configure);
+
             try
             {
                 if (id < 0)
                     throw new ArgumentOutOfRangeException("id");
                 if (string.IsNullOrEmpty(key))
                     throw new ArgumentNullException("key");
-                var deviceProfile = dbContext.DeviceProfiles.Find(id);
+                var deviceProfile = Database.DeviceProfiles.Find(id);
                 if (deviceProfile != null)
                 {
                     switch (key.ToLower())
@@ -60,6 +61,7 @@ namespace Disco.Web.Areas.API.Controllers
                             UpdateDefaultOrganisationAddress(deviceProfile, value);
                             break;
                         case pComputerNameTemplate:
+                            Authorization.Require(Claims.Config.DeviceProfile.ConfigureComputerNameTemplate);
                             UpdateComputerNameTemplate(deviceProfile, value);
                             break;
                         case pEnforceComputerNameConvention:
@@ -92,54 +94,75 @@ namespace Disco.Web.Areas.API.Controllers
                     return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+
         #region Update Shortcut Methods
+
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         public virtual ActionResult UpdateDescription(int id, string Description = null, Nullable<bool> redirect = null)
         {
             return Update(id, pDescription, Description, redirect);
         }
+
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         public virtual ActionResult UpdateName(int id, string ProfileName = null, Nullable<bool> redirect = null)
         {
             return Update(id, pName, ProfileName, redirect);
         }
+
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         public virtual ActionResult UpdateShortName(int id, string ShortName = null, Nullable<bool> redirect = null)
         {
             return Update(id, pShortName, ShortName, redirect);
         }
+
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         public virtual ActionResult UpdateDistributionType(int id, string DistributionType = null, Nullable<bool> redirect = null)
         {
             return Update(id, pDistributionType, DistributionType, redirect);
         }
+
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         public virtual ActionResult UpdateCertificateProviderId(int id, string CertificateProviderId = null, Nullable<bool> redirect = null)
         {
             return Update(id, pCertificateProviderId, CertificateProviderId, redirect);
         }
+
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         public virtual ActionResult UpdateOrganisationalUnit(int id, string OrganisationalUnit = null, Nullable<bool> redirect = null)
         {
             return Update(id, pOrganisationalUnit, OrganisationalUnit, redirect);
         }
+
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         public virtual ActionResult UpdateDefaultOrganisationAddress(int id, string DefaultOrganisationAddress = null, Nullable<bool> redirect = null)
         {
             return Update(id, pDefaultOrganisationAddress, DefaultOrganisationAddress, redirect);
         }
+
+        [DiscoAuthorizeAll(Claims.Config.DeviceProfile.Configure, Claims.Config.DeviceProfile.ConfigureComputerNameTemplate)]
         public virtual ActionResult UpdateComputerNameTemplate(int id, string ComputerNameTemplate = null, Nullable<bool> redirect = null)
         {
             return Update(id, pComputerNameTemplate, ComputerNameTemplate, redirect);
         }
-        // Added 2012-06-14 G#
+
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         public virtual ActionResult UpdateEnforceComputerNameConvention(int id, string EnforceComputerNameConvention = null, Nullable<bool> redirect = null)
         {
             return Update(id, pEnforceComputerNameConvention, EnforceComputerNameConvention, redirect);
         }
-        // Added 2012-06-14 G#
+
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         public virtual ActionResult UpdateEnforceOrganisationalUnit(int id, string EnforceOrganisationalUnit = null, Nullable<bool> redirect = null)
         {
             return Update(id, pEnforceOrganisationalUnit, EnforceOrganisationalUnit, redirect);
         }
-        // Added 2012-06-28 G#
+
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         public virtual ActionResult UpdateProvisionADAccount(int id, string ProvisionADAccount = null, Nullable<bool> redirect = null)
         {
             return Update(id, pProvisionADAccount, ProvisionADAccount, redirect);
         }
+
         #endregion
 
         #region Update Properties
@@ -149,7 +172,7 @@ namespace Disco.Web.Areas.API.Controllers
                 deviceProfile.Description = null;
             else
                 deviceProfile.Description = Description;
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateName(Disco.Models.Repository.DeviceProfile deviceProfile, string Name)
@@ -158,7 +181,7 @@ namespace Disco.Web.Areas.API.Controllers
                 throw new Exception("Profile name cannot be empty");
             else
                 deviceProfile.Name = Name;
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateShortName(Disco.Models.Repository.DeviceProfile deviceProfile, string ShortName)
@@ -167,7 +190,7 @@ namespace Disco.Web.Areas.API.Controllers
                 throw new Exception("Profile short name cannot be empty");
             else
                 deviceProfile.ShortName = ShortName;
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateDistributionType(Disco.Models.Repository.DeviceProfile deviceProfile, string DistributionType)
@@ -175,10 +198,8 @@ namespace Disco.Web.Areas.API.Controllers
             int iDt;
             if (int.TryParse(DistributionType, out iDt))
             {
-                // Removed 2012-06-14 G# - Properties moved to DeviceProfile model & DB Migrated in DBv3.
-                //deviceProfile.Configuration(dbContext).DistributionType = (DeviceProfileConfiguration.DeviceProfileDistributionTypes)iDt;
                 deviceProfile.DistributionType = (Disco.Models.Repository.DeviceProfile.DistributionTypes)iDt;
-                dbContext.SaveChanges();
+                Database.SaveChanges();
                 return;
             }
             throw new Exception("Invalid Distribution Type Number");
@@ -199,28 +220,29 @@ namespace Disco.Web.Areas.API.Controllers
                 else
                     deviceProfile.CertificateProviderId = featureManifest.Id;
             }
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
         private void UpdateOrganisationalUnit(Disco.Models.Repository.DeviceProfile deviceProfile, string OrganisationalUnit)
         {
             if (string.IsNullOrWhiteSpace(OrganisationalUnit))
                 OrganisationalUnit = null;
-            // Removed 2012-06-14 G# - Properties moved to DeviceProfile model & DB Migrated in DBv3.
-            //deviceProfile.Configuration(dbContext).OrganisationalUnit = OrganisationalUnit;
+
             deviceProfile.OrganisationalUnit = OrganisationalUnit;
 
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
+
         private void UpdateComputerNameTemplate(Disco.Models.Repository.DeviceProfile deviceProfile, string ComputerNameTemplate)
         {
+            Authorization.Require(Claims.Config.DeviceProfile.ConfigureComputerNameTemplate);
+
             if (string.IsNullOrWhiteSpace(ComputerNameTemplate))
                 throw new Exception("ComputerNameTemplate is Required");
-            // Removed 2012-06-14 G# - Properties moved to DeviceProfile model & DB Migrated in DBv3.
-            //deviceProfile.Configuration(dbContext).ComputerNameTemplate = ComputerNameTemplate;
+
             deviceProfile.ComputerNameTemplate = ComputerNameTemplate;
 
-            dbContext.SaveChanges();
+            Database.SaveChanges();
 
             deviceProfile.ComputerNameInvalidateCache();
         }
@@ -237,7 +259,7 @@ namespace Disco.Web.Areas.API.Controllers
                 int daoId;
                 if (int.TryParse(DefaultOrganisationAddress, out daoId))
                 {
-                    var oa = dbContext.DiscoConfiguration.OrganisationAddresses.GetAddress(daoId);
+                    var oa = Database.DiscoConfiguration.OrganisationAddresses.GetAddress(daoId);
                     if (oa != null)
                     {
                         deviceProfile.DefaultOrganisationAddress = oa.Id;
@@ -254,10 +276,9 @@ namespace Disco.Web.Areas.API.Controllers
             }
 
 
-            dbContext.SaveChanges();
+            Database.SaveChanges();
         }
 
-        // Added 2012-06-14 G#
         private void UpdateEnforceComputerNameConvention(Disco.Models.Repository.DeviceProfile deviceProfile, string EnforceComputerNameConvention)
         {
             bool bValue;
@@ -265,12 +286,12 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 deviceProfile.EnforceComputerNameConvention = bValue;
 
-                dbContext.SaveChanges();
+                Database.SaveChanges();
                 return;
             }
             throw new Exception("Invalid Boolean Value");
         }
-        // Added 2012-06-14 G#
+        
         private void UpdateEnforceOrganisationalUnit(Disco.Models.Repository.DeviceProfile deviceProfile, string EnforceOrganisationalUnit)
         {
             bool bValue;
@@ -278,12 +299,12 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 deviceProfile.EnforceOrganisationalUnit = bValue;
 
-                dbContext.SaveChanges();
+                Database.SaveChanges();
                 return;
             }
             throw new Exception("Invalid Boolean Value");
         }
-        // Added 2012-06-28 G#
+        
         private void UpdateProvisionADAccount(Disco.Models.Repository.DeviceProfile deviceProfile, string ProvisionADAccount)
         {
             bool bValue;
@@ -291,13 +312,14 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 deviceProfile.ProvisionADAccount = bValue;
 
-                dbContext.SaveChanges();
+                Database.SaveChanges();
                 return;
             }
             throw new Exception("Invalid Boolean Value");
         }
         #endregion
 
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         public virtual ActionResult OrganisationalUnits()
         {
             var OUs = BI.Interop.ActiveDirectory.ActiveDirectory.GetOrganisationalUnitStructure();
@@ -306,15 +328,16 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region Actions
 
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Delete)]
         public virtual ActionResult Delete(int id, Nullable<bool> redirect = false)
         {
             try
             {
-                var dp = dbContext.DeviceProfiles.Find(id);
+                var dp = Database.DeviceProfiles.Find(id);
                 if (dp != null)
                 {
-                    dp.Delete(dbContext);
-                    dbContext.SaveChanges();
+                    dp.Delete(Database);
+                    Database.SaveChanges();
                     if (redirect.HasValue && redirect.Value)
                         return RedirectToAction(MVC.Config.DeviceProfile.Index(null));
                     else
@@ -334,15 +357,17 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Defaults
+
+        [DiscoAuthorize(Claims.Config.DeviceProfile.ConfigureDefaults)]
         public virtual ActionResult Default(int id, Nullable<bool> redirect = null)
         {
             try
             {
-                var dp = dbContext.DeviceProfiles.Find(id);
+                var dp = Database.DeviceProfiles.Find(id);
                 if (dp != null)
                 {
-                    dbContext.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId = dp.Id;
-                    dbContext.SaveChanges();
+                    Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId = dp.Id;
+                    Database.SaveChanges();
                     if (redirect.HasValue && redirect.Value)
                         return RedirectToAction(MVC.Config.DeviceProfile.Index(id));
                     else
@@ -358,6 +383,8 @@ namespace Disco.Web.Areas.API.Controllers
                     return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+
+        [DiscoAuthorize(Claims.Config.DeviceProfile.ConfigureDefaults)]
         public virtual ActionResult DefaultAddDeviceOffline(int id, Nullable<bool> redirect = false)
         {
             try
@@ -365,7 +392,7 @@ namespace Disco.Web.Areas.API.Controllers
                 int defaultValue = 0;
                 if (id > 0)
                 {
-                    var dp = dbContext.DeviceProfiles.Find(id);
+                    var dp = Database.DeviceProfiles.Find(id);
                     if (dp != null)
                     {
                         defaultValue = dp.Id;
@@ -375,8 +402,8 @@ namespace Disco.Web.Areas.API.Controllers
                         throw new Exception("Invalid Device Profile Number");
                     }
                 }
-                dbContext.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId = defaultValue;
-                dbContext.SaveChanges();
+                Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId = defaultValue;
+                Database.SaveChanges();
                 if (redirect.HasValue && redirect.Value)
                     return RedirectToAction(MVC.Config.DeviceProfile.Index(id));
                 else
@@ -390,16 +417,18 @@ namespace Disco.Web.Areas.API.Controllers
                     return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+
         #endregion
 
         #region Exporting
+        [DiscoAuthorizeAll(Claims.Config.DeviceProfile.Show, Claims.Device.Actions.Export)]
         public virtual ActionResult ExportDevices(int id)
         {
-            DeviceProfile dp = dbContext.DeviceProfiles.Find(id);
+            DeviceProfile dp = Database.DeviceProfiles.Find(id);
             if (dp == null)
                 throw new ArgumentNullException("id", "Invalid Device Profile Id");
 
-            var devices = dbContext.Devices.Where(d => !d.DecommissionedDate.HasValue && d.DeviceProfileId == dp.Id);
+            var devices = Database.Devices.Where(d => !d.DecommissionedDate.HasValue && d.DeviceProfileId == dp.Id);
 
             var export = BI.DeviceBI.Importing.Export.GenerateExport(devices);
 

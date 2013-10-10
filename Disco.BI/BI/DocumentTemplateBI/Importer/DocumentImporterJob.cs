@@ -40,12 +40,12 @@ namespace Disco.BI.DocumentTemplateBI.Importer
 
             try
             {
-                using (DiscoDataContext dbContext = new DiscoDataContext())
+                using (DiscoDataContext database = new DiscoDataContext())
                 {
                     if (retryCount < 18)
                     {
                         context.JobDetail.JobDataMap["RetryCount"] = (++retryCount);
-                        bool processResult = Interop.Pdf.PdfImporter.ProcessPdfAttachment(filename, dbContext, sessionId, httpCache);
+                        bool processResult = Interop.Pdf.PdfImporter.ProcessPdfAttachment(filename, database, sessionId, httpCache);
 
                         if (processResult)
                         {
@@ -60,7 +60,7 @@ namespace Disco.BI.DocumentTemplateBI.Importer
                             {
                                 try
                                 {
-                                    string folderError = DataStore.CreateLocation(dbContext, "DocumentDropBox_Errors");
+                                    string folderError = DataStore.CreateLocation(database, "DocumentDropBox_Errors");
                                     string filenameError = Path.Combine(folderError, Path.GetFileName(filename));
                                     int filenameErrorCount = 0;
                                     while (File.Exists(filenameError))
@@ -85,7 +85,7 @@ namespace Disco.BI.DocumentTemplateBI.Importer
                         {
                             try
                             {
-                                string folderError = DataStore.CreateLocation(dbContext, "DocumentDropBox_Errors");
+                                string folderError = DataStore.CreateLocation(database, "DocumentDropBox_Errors");
                                 string filenameError = Path.Combine(folderError, Path.GetFileName(filename));
                                 int filenameErrorCount = 0;
                                 while (File.Exists(filenameError))

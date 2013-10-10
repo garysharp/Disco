@@ -28,12 +28,14 @@ namespace Disco.Web.Areas.Public.Views.HeldDevices
     using System.Web.WebPages;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services.Authorization;
+    using Disco.Services.Web;
     using Disco.Web;
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Public/Views/HeldDevices/Index.cshtml")]
-    public partial class Index : System.Web.Mvc.WebViewPage<IEnumerable<Disco.Web.Areas.Public.Models.HeldDevices.HeldDeviceModel>>
+    public partial class Index : Disco.Services.Web.WebViewPage<IEnumerable<Disco.Web.Areas.Public.Models.HeldDevices.HeldDeviceModel>>
     {
         public Index()
         {

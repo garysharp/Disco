@@ -1,5 +1,6 @@
 ﻿@model Disco.Web.Areas.Config.Models.DeviceBatch.CreateModel
 @{
+    Authorization.Require(Claims.Config.DeviceBatch.Create);
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Batches", MVC.Config.DeviceBatch.Index(null), "Create");
 }
 @using (Html.BeginForm())

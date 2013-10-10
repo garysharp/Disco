@@ -34,12 +34,14 @@ namespace Disco.Web.Views.Device
     #line hidden
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services.Authorization;
+    using Disco.Services.Web;
     using Disco.Web;
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/ImportReview.cshtml")]
-    public partial class ImportReview : System.Web.Mvc.WebViewPage<Disco.Web.Models.Device.ImportReviewModel>
+    public partial class ImportReview : Disco.Services.Web.WebViewPage<Disco.Web.Models.Device.ImportReviewModel>
     {
         public ImportReview()
         {
@@ -49,6 +51,8 @@ namespace Disco.Web.Views.Device
             
             #line 3 "..\..\Views\Device\ImportReview.cshtml"
   
+    Authorization.Require(Claims.Device.Actions.Import);
+    
     ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import Devices", MVC.Device.ImportExport(), string.Format("File: {0}", Model.ImportFilename));
 
     int importDeviceOkCount = Model.ImportDevices.Count(id => id.Errors.Count == 0);
@@ -66,13 +70,13 @@ WriteLiteral(" id=\"deviceImportReview\"");
 WriteLiteral(">\r\n");
 
             
-            #line 12 "..\..\Views\Device\ImportReview.cshtml"
+            #line 14 "..\..\Views\Device\ImportReview.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 12 "..\..\Views\Device\ImportReview.cshtml"
+            #line 14 "..\..\Views\Device\ImportReview.cshtml"
      if (Model.ImportDevices.Count > 0)
     {
 
@@ -82,7 +86,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("        <h2>Parsed ");
 
             
-            #line 14 "..\..\Views\Device\ImportReview.cshtml"
+            #line 16 "..\..\Views\Device\ImportReview.cshtml"
               Write(Model.ImportDevices.Count);
 
             
@@ -91,7 +95,7 @@ WriteLiteral("        <h2>Parsed ");
 WriteLiteral(" Device Record");
 
             
-            #line 14 "..\..\Views\Device\ImportReview.cshtml"
+            #line 16 "..\..\Views\Device\ImportReview.cshtml"
                                                        Write(Model.ImportDevices.Count != 1 ? "s" : null);
 
             
@@ -104,7 +108,7 @@ WriteLiteral("        <h4>\r\n");
 WriteLiteral("            ");
 
             
-            #line 16 "..\..\Views\Device\ImportReview.cshtml"
+            #line 18 "..\..\Views\Device\ImportReview.cshtml"
        Write(importDeviceOkCount);
 
             
@@ -113,7 +117,7 @@ WriteLiteral("            ");
 WriteLiteral(" of ");
 
             
-            #line 16 "..\..\Views\Device\ImportReview.cshtml"
+            #line 18 "..\..\Views\Device\ImportReview.cshtml"
                                Write(Model.ImportDevices.Count);
 
             
@@ -122,7 +126,7 @@ WriteLiteral(" of ");
 WriteLiteral(" Device");
 
             
-            #line 16 "..\..\Views\Device\ImportReview.cshtml"
+            #line 18 "..\..\Views\Device\ImportReview.cshtml"
                                                                  Write(Model.ImportDevices.Count != 1 ? "s" : null);
 
             
@@ -131,7 +135,7 @@ WriteLiteral(" Device");
 WriteLiteral(" are ready for import.\r\n        </h4>\r\n");
 
             
-            #line 18 "..\..\Views\Device\ImportReview.cshtml"
+            #line 20 "..\..\Views\Device\ImportReview.cshtml"
         if (importDeviceErrorCount > 0)
         {
 
@@ -147,7 +151,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("            ");
 
             
-            #line 21 "..\..\Views\Device\ImportReview.cshtml"
+            #line 23 "..\..\Views\Device\ImportReview.cshtml"
         Write(importDeviceErrorCount);
 
             
@@ -156,7 +160,7 @@ WriteLiteral("            ");
 WriteLiteral(" Record");
 
             
-            #line 21 "..\..\Views\Device\ImportReview.cshtml"
+            #line 23 "..\..\Views\Device\ImportReview.cshtml"
                                         Write(importDeviceErrorCount != 1 ? "s" : null);
 
             
@@ -165,7 +169,7 @@ WriteLiteral(" Record");
 WriteLiteral(" will be skipped if the import continues\r\n        </h4>\r\n");
 
             
-            #line 23 "..\..\Views\Device\ImportReview.cshtml"
+            #line 25 "..\..\Views\Device\ImportReview.cshtml"
         }
 
 
@@ -183,13 +187,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 27 "..\..\Views\Device\ImportReview.cshtml"
+            #line 29 "..\..\Views\Device\ImportReview.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 27 "..\..\Views\Device\ImportReview.cshtml"
+            #line 29 "..\..\Views\Device\ImportReview.cshtml"
                  if (importDeviceNewCount > 0)
                 {
             
@@ -214,7 +218,7 @@ WriteLiteral(" for=\"devicesNavigationNew\"");
 WriteLiteral(">Show New Devices (");
 
             
-            #line 29 "..\..\Views\Device\ImportReview.cshtml"
+            #line 31 "..\..\Views\Device\ImportReview.cshtml"
                                                                                                                                          Write(Model.ImportDevices.Count(id => id.Errors.Count == 0 && id.Device == null));
 
             
@@ -223,13 +227,13 @@ WriteLiteral(">Show New Devices (");
 WriteLiteral(")</label>\r\n                </li>");
 
             
-            #line 30 "..\..\Views\Device\ImportReview.cshtml"
+            #line 32 "..\..\Views\Device\ImportReview.cshtml"
                      }
             
             #line default
             #line hidden
             
-            #line 30 "..\..\Views\Device\ImportReview.cshtml"
+            #line 32 "..\..\Views\Device\ImportReview.cshtml"
                        if (importDeviceUpdateCount > 0)
                       {
             
@@ -254,7 +258,7 @@ WriteLiteral(" for=\"devicesNavigationUpdate\"");
 WriteLiteral(">Show Updates (");
 
             
-            #line 32 "..\..\Views\Device\ImportReview.cshtml"
+            #line 34 "..\..\Views\Device\ImportReview.cshtml"
                                                                                                                                                  Write(Model.ImportDevices.Count(id => id.Errors.Count == 0 && id.Device != null));
 
             
@@ -263,13 +267,13 @@ WriteLiteral(">Show Updates (");
 WriteLiteral(")</label>\r\n                      </li>");
 
             
-            #line 33 "..\..\Views\Device\ImportReview.cshtml"
+            #line 35 "..\..\Views\Device\ImportReview.cshtml"
                            }
             
             #line default
             #line hidden
             
-            #line 33 "..\..\Views\Device\ImportReview.cshtml"
+            #line 35 "..\..\Views\Device\ImportReview.cshtml"
                              if (importDeviceErrorCount > 0)
                             {
             
@@ -294,7 +298,7 @@ WriteLiteral(" for=\"devicesNavigationError\"");
 WriteLiteral(">Show Errors (");
 
             
-            #line 35 "..\..\Views\Device\ImportReview.cshtml"
+            #line 37 "..\..\Views\Device\ImportReview.cshtml"
                                                                                                                                                     Write(Model.ImportDevices.Count(id => id.Errors.Count != 0));
 
             
@@ -303,7 +307,7 @@ WriteLiteral(">Show Errors (");
 WriteLiteral(")</label>\r\n                            </li>");
 
             
-            #line 36 "..\..\Views\Device\ImportReview.cshtml"
+            #line 38 "..\..\Views\Device\ImportReview.cshtml"
                                  }
 
             
@@ -341,7 +345,7 @@ WriteLiteral(@"            </ul>
 ");
 
             
-            #line 66 "..\..\Views\Device\ImportReview.cshtml"
+            #line 68 "..\..\Views\Device\ImportReview.cshtml"
         
 
             
@@ -391,13 +395,13 @@ WriteLiteral(">Asset Number</th>\r\n                </tr>\r\n            </thead
 "dy>\r\n");
 
             
-            #line 82 "..\..\Views\Device\ImportReview.cshtml"
+            #line 84 "..\..\Views\Device\ImportReview.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 82 "..\..\Views\Device\ImportReview.cshtml"
+            #line 84 "..\..\Views\Device\ImportReview.cshtml"
                  foreach (var device in Model.ImportDevices)
                 {
                     bool isUpdate = device.Device != null;
@@ -408,15 +412,15 @@ WriteLiteral(">Asset Number</th>\r\n                </tr>\r\n            </thead
             #line hidden
 WriteLiteral("                    <tr");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4390), Tuple.Create("\"", 4428)
-, Tuple.Create(Tuple.Create("", 4398), Tuple.Create("status", 4398), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4454), Tuple.Create("\"", 4492)
+, Tuple.Create(Tuple.Create("", 4462), Tuple.Create("status", 4462), true)
             
-            #line 86 "..\..\Views\Device\ImportReview.cshtml"
-, Tuple.Create(Tuple.Create("", 4404), Tuple.Create<System.Object, System.Int32>(device.ImportStatus()
+            #line 88 "..\..\Views\Device\ImportReview.cshtml"
+, Tuple.Create(Tuple.Create("", 4468), Tuple.Create<System.Object, System.Int32>(device.ImportStatus()
             
             #line default
             #line hidden
-, 4404), false)
+, 4468), false)
 );
 
 WriteLiteral(">\r\n                        <td");
@@ -428,7 +432,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                            ");
 
             
-            #line 88 "..\..\Views\Device\ImportReview.cshtml"
+            #line 90 "..\..\Views\Device\ImportReview.cshtml"
                         Write((Model.ImportDevices.IndexOf(device) + 1));
 
             
@@ -443,7 +447,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                            ");
 
             
-            #line 91 "..\..\Views\Device\ImportReview.cshtml"
+            #line 93 "..\..\Views\Device\ImportReview.cshtml"
                         Write(device.ImportStatus());
 
             
@@ -456,13 +460,13 @@ WriteLiteral(" class=\"serialNumber\"");
 WriteLiteral(">\r\n");
 
             
-            #line 94 "..\..\Views\Device\ImportReview.cshtml"
+            #line 96 "..\..\Views\Device\ImportReview.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 94 "..\..\Views\Device\ImportReview.cshtml"
+            #line 96 "..\..\Views\Device\ImportReview.cshtml"
                              if (device.Device == null)
                             {
                                 
@@ -470,14 +474,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 96 "..\..\Views\Device\ImportReview.cshtml"
+            #line 98 "..\..\Views\Device\ImportReview.cshtml"
                            Write(device.SerialNumber);
 
             
             #line default
             #line hidden
             
-            #line 96 "..\..\Views\Device\ImportReview.cshtml"
+            #line 98 "..\..\Views\Device\ImportReview.cshtml"
                                                     
                             }
                             else
@@ -487,14 +491,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 100 "..\..\Views\Device\ImportReview.cshtml"
+            #line 102 "..\..\Views\Device\ImportReview.cshtml"
                            Write(Html.ActionLink(device.SerialNumber, MVC.Device.Show(device.SerialNumber), new { target = "_blank" }));
 
             
             #line default
             #line hidden
             
-            #line 100 "..\..\Views\Device\ImportReview.cshtml"
+            #line 102 "..\..\Views\Device\ImportReview.cshtml"
                                                                                                                                       
                             }
 
@@ -504,13 +508,13 @@ WriteLiteral(">\r\n");
 WriteLiteral("\r\n");
 
             
-            #line 103 "..\..\Views\Device\ImportReview.cshtml"
+            #line 105 "..\..\Views\Device\ImportReview.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 103 "..\..\Views\Device\ImportReview.cshtml"
+            #line 105 "..\..\Views\Device\ImportReview.cshtml"
                              if (device.Errors.TryGetValue("SerialNumber", out error))
                             {
 
@@ -524,7 +528,7 @@ WriteLiteral(" class=\"error\"");
 WriteLiteral(">");
 
             
-            #line 105 "..\..\Views\Device\ImportReview.cshtml"
+            #line 107 "..\..\Views\Device\ImportReview.cshtml"
                                               Write(error);
 
             
@@ -533,7 +537,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 106 "..\..\Views\Device\ImportReview.cshtml"
+            #line 108 "..\..\Views\Device\ImportReview.cshtml"
                             }
 
             
@@ -546,13 +550,13 @@ WriteLiteral(" class=\"model\"");
 WriteLiteral(">\r\n");
 
             
-            #line 109 "..\..\Views\Device\ImportReview.cshtml"
+            #line 111 "..\..\Views\Device\ImportReview.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 109 "..\..\Views\Device\ImportReview.cshtml"
+            #line 111 "..\..\Views\Device\ImportReview.cshtml"
                              if (device.Errors.TryGetValue("DeviceModelId", out error))
                             {
 
@@ -566,7 +570,7 @@ WriteLiteral(" class=\"error\"");
 WriteLiteral(">");
 
             
-            #line 111 "..\..\Views\Device\ImportReview.cshtml"
+            #line 113 "..\..\Views\Device\ImportReview.cshtml"
                                               Write(error);
 
             
@@ -575,7 +579,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 112 "..\..\Views\Device\ImportReview.cshtml"
+            #line 114 "..\..\Views\Device\ImportReview.cshtml"
                             }
                             else
                             {
@@ -591,33 +595,33 @@ WriteLiteral(" class=\"modelImage\"");
 
 WriteLiteral(" alt=\"Model Image\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 5949), Tuple.Create("\"", 6048)
+WriteAttribute("src", Tuple.Create(" src=\"", 6013), Tuple.Create("\"", 6112)
             
-            #line 117 "..\..\Views\Device\ImportReview.cshtml"
-, Tuple.Create(Tuple.Create("", 5955), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(device.DeviceModel.Id, device.DeviceModel.ImageHash()))
+            #line 119 "..\..\Views\Device\ImportReview.cshtml"
+, Tuple.Create(Tuple.Create("", 6019), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(device.DeviceModel.Id, device.DeviceModel.ImageHash()))
             
             #line default
             #line hidden
-, 5955), false)
+, 6019), false)
 );
 
 WriteLiteral(" />\r\n");
 
             
-            #line 118 "..\..\Views\Device\ImportReview.cshtml"
+            #line 120 "..\..\Views\Device\ImportReview.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 118 "..\..\Views\Device\ImportReview.cshtml"
+            #line 120 "..\..\Views\Device\ImportReview.cshtml"
                            Write(device.DeviceModel.ToString());
 
             
             #line default
             #line hidden
             
-            #line 118 "..\..\Views\Device\ImportReview.cshtml"
+            #line 120 "..\..\Views\Device\ImportReview.cshtml"
                                                               
                                 }
                                 else
@@ -633,7 +637,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">No Change</span>\r\n");
 
             
-            #line 123 "..\..\Views\Device\ImportReview.cshtml"
+            #line 125 "..\..\Views\Device\ImportReview.cshtml"
                                 }
                             }
             
@@ -646,13 +650,13 @@ WriteLiteral(" class=\"profile\"");
 WriteLiteral(">\r\n");
 
             
-            #line 126 "..\..\Views\Device\ImportReview.cshtml"
+            #line 128 "..\..\Views\Device\ImportReview.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 126 "..\..\Views\Device\ImportReview.cshtml"
+            #line 128 "..\..\Views\Device\ImportReview.cshtml"
                              if (device.Errors.TryGetValue("DeviceProfileId", out error))
                             {
 
@@ -666,7 +670,7 @@ WriteLiteral(" class=\"error\"");
 WriteLiteral(">");
 
             
-            #line 128 "..\..\Views\Device\ImportReview.cshtml"
+            #line 130 "..\..\Views\Device\ImportReview.cshtml"
                                               Write(error);
 
             
@@ -675,7 +679,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 129 "..\..\Views\Device\ImportReview.cshtml"
+            #line 131 "..\..\Views\Device\ImportReview.cshtml"
                             }
                             else
                             {
@@ -686,14 +690,14 @@ WriteLiteral("</div>\r\n");
             #line default
             #line hidden
             
-            #line 134 "..\..\Views\Device\ImportReview.cshtml"
+            #line 136 "..\..\Views\Device\ImportReview.cshtml"
                            Write(device.DeviceProfile.ToString());
 
             
             #line default
             #line hidden
             
-            #line 134 "..\..\Views\Device\ImportReview.cshtml"
+            #line 136 "..\..\Views\Device\ImportReview.cshtml"
                                                                 
                                 }
                                 else
@@ -709,7 +713,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">No Change</span>\r\n");
 
             
-            #line 139 "..\..\Views\Device\ImportReview.cshtml"
+            #line 141 "..\..\Views\Device\ImportReview.cshtml"
                                 }
                             }
             
@@ -722,13 +726,13 @@ WriteLiteral(" class=\"batch\"");
 WriteLiteral(">\r\n");
 
             
-            #line 142 "..\..\Views\Device\ImportReview.cshtml"
+            #line 144 "..\..\Views\Device\ImportReview.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 142 "..\..\Views\Device\ImportReview.cshtml"
+            #line 144 "..\..\Views\Device\ImportReview.cshtml"
                              if (device.Errors.TryGetValue("DeviceBatchId", out error))
                             {
 
@@ -742,7 +746,7 @@ WriteLiteral(" class=\"error\"");
 WriteLiteral(">");
 
             
-            #line 144 "..\..\Views\Device\ImportReview.cshtml"
+            #line 146 "..\..\Views\Device\ImportReview.cshtml"
                                               Write(error);
 
             
@@ -751,7 +755,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 145 "..\..\Views\Device\ImportReview.cshtml"
+            #line 147 "..\..\Views\Device\ImportReview.cshtml"
                             }
                             else
                             {
@@ -770,7 +774,7 @@ WriteLiteral("&lt;None&gt;");
 WriteLiteral("\r\n");
 
             
-            #line 153 "..\..\Views\Device\ImportReview.cshtml"
+            #line 155 "..\..\Views\Device\ImportReview.cshtml"
                                     }
                                     else
                                     {
@@ -779,14 +783,14 @@ WriteLiteral("\r\n");
             #line default
             #line hidden
             
-            #line 156 "..\..\Views\Device\ImportReview.cshtml"
+            #line 158 "..\..\Views\Device\ImportReview.cshtml"
                            Write(device.DeviceBatch.ToString());
 
             
             #line default
             #line hidden
             
-            #line 156 "..\..\Views\Device\ImportReview.cshtml"
+            #line 158 "..\..\Views\Device\ImportReview.cshtml"
                                                               
                                     }
                                 }
@@ -803,7 +807,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">No Change</span>\r\n");
 
             
-            #line 162 "..\..\Views\Device\ImportReview.cshtml"
+            #line 164 "..\..\Views\Device\ImportReview.cshtml"
                                 }
                             }
             
@@ -816,13 +820,13 @@ WriteLiteral(" class=\"assignedUser\"");
 WriteLiteral(">\r\n");
 
             
-            #line 165 "..\..\Views\Device\ImportReview.cshtml"
+            #line 167 "..\..\Views\Device\ImportReview.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 165 "..\..\Views\Device\ImportReview.cshtml"
+            #line 167 "..\..\Views\Device\ImportReview.cshtml"
                              if (device.Errors.TryGetValue("AssignedUserId", out error))
                             {
 
@@ -836,7 +840,7 @@ WriteLiteral(" class=\"error\"");
 WriteLiteral(">");
 
             
-            #line 167 "..\..\Views\Device\ImportReview.cshtml"
+            #line 169 "..\..\Views\Device\ImportReview.cshtml"
                                               Write(error);
 
             
@@ -845,7 +849,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 168 "..\..\Views\Device\ImportReview.cshtml"
+            #line 170 "..\..\Views\Device\ImportReview.cshtml"
                             }
                             else
                             {
@@ -864,7 +868,7 @@ WriteLiteral("&lt;None&gt;");
 WriteLiteral("\r\n");
 
             
-            #line 176 "..\..\Views\Device\ImportReview.cshtml"
+            #line 178 "..\..\Views\Device\ImportReview.cshtml"
                                     }
                                     else
                                     {
@@ -873,14 +877,14 @@ WriteLiteral("\r\n");
             #line default
             #line hidden
             
-            #line 179 "..\..\Views\Device\ImportReview.cshtml"
+            #line 181 "..\..\Views\Device\ImportReview.cshtml"
                            Write(device.AssignedUser.ToString());
 
             
             #line default
             #line hidden
             
-            #line 179 "..\..\Views\Device\ImportReview.cshtml"
+            #line 181 "..\..\Views\Device\ImportReview.cshtml"
                                                                
                                     }
                                 }
@@ -897,7 +901,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">No Change</span>\r\n");
 
             
-            #line 185 "..\..\Views\Device\ImportReview.cshtml"
+            #line 187 "..\..\Views\Device\ImportReview.cshtml"
                                 }
                             }
             
@@ -910,13 +914,13 @@ WriteLiteral(" class=\"location\"");
 WriteLiteral(">\r\n");
 
             
-            #line 188 "..\..\Views\Device\ImportReview.cshtml"
+            #line 190 "..\..\Views\Device\ImportReview.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 188 "..\..\Views\Device\ImportReview.cshtml"
+            #line 190 "..\..\Views\Device\ImportReview.cshtml"
                              if (device.Errors.TryGetValue("Location", out error))
                             {
 
@@ -930,7 +934,7 @@ WriteLiteral(" class=\"error\"");
 WriteLiteral(">");
 
             
-            #line 190 "..\..\Views\Device\ImportReview.cshtml"
+            #line 192 "..\..\Views\Device\ImportReview.cshtml"
                                               Write(error);
 
             
@@ -939,7 +943,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 191 "..\..\Views\Device\ImportReview.cshtml"
+            #line 193 "..\..\Views\Device\ImportReview.cshtml"
                             }
                             else
                             {
@@ -958,7 +962,7 @@ WriteLiteral("&lt;None&gt;");
 WriteLiteral("\r\n");
 
             
-            #line 199 "..\..\Views\Device\ImportReview.cshtml"
+            #line 201 "..\..\Views\Device\ImportReview.cshtml"
                                     }
                                     else
                                     {
@@ -967,14 +971,14 @@ WriteLiteral("\r\n");
             #line default
             #line hidden
             
-            #line 202 "..\..\Views\Device\ImportReview.cshtml"
+            #line 204 "..\..\Views\Device\ImportReview.cshtml"
                            Write(device.Location);
 
             
             #line default
             #line hidden
             
-            #line 202 "..\..\Views\Device\ImportReview.cshtml"
+            #line 204 "..\..\Views\Device\ImportReview.cshtml"
                                                 
                                     }
                                 }
@@ -991,7 +995,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">No Change</span>\r\n");
 
             
-            #line 208 "..\..\Views\Device\ImportReview.cshtml"
+            #line 210 "..\..\Views\Device\ImportReview.cshtml"
                                 }
                             }
             
@@ -1004,13 +1008,13 @@ WriteLiteral(" class=\"assetNumber\"");
 WriteLiteral(">\r\n");
 
             
-            #line 211 "..\..\Views\Device\ImportReview.cshtml"
+            #line 213 "..\..\Views\Device\ImportReview.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 211 "..\..\Views\Device\ImportReview.cshtml"
+            #line 213 "..\..\Views\Device\ImportReview.cshtml"
                              if (device.Errors.TryGetValue("AssetNumber", out error))
                             {
 
@@ -1024,7 +1028,7 @@ WriteLiteral(" class=\"error\"");
 WriteLiteral(">");
 
             
-            #line 213 "..\..\Views\Device\ImportReview.cshtml"
+            #line 215 "..\..\Views\Device\ImportReview.cshtml"
                                               Write(error);
 
             
@@ -1033,7 +1037,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 214 "..\..\Views\Device\ImportReview.cshtml"
+            #line 216 "..\..\Views\Device\ImportReview.cshtml"
                             }
                             else
                             {
@@ -1052,7 +1056,7 @@ WriteLiteral("&lt;None&gt;");
 WriteLiteral("\r\n");
 
             
-            #line 222 "..\..\Views\Device\ImportReview.cshtml"
+            #line 224 "..\..\Views\Device\ImportReview.cshtml"
                                     }
                                     else
                                     {
@@ -1061,14 +1065,14 @@ WriteLiteral("\r\n");
             #line default
             #line hidden
             
-            #line 225 "..\..\Views\Device\ImportReview.cshtml"
+            #line 227 "..\..\Views\Device\ImportReview.cshtml"
                            Write(device.AssetNumber);
 
             
             #line default
             #line hidden
             
-            #line 225 "..\..\Views\Device\ImportReview.cshtml"
+            #line 227 "..\..\Views\Device\ImportReview.cshtml"
                                                    
                                     }
                                 }
@@ -1085,7 +1089,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">No Change</span>\r\n");
 
             
-            #line 231 "..\..\Views\Device\ImportReview.cshtml"
+            #line 233 "..\..\Views\Device\ImportReview.cshtml"
                                 }
                             }
             
@@ -1094,7 +1098,7 @@ WriteLiteral(">No Change</span>\r\n");
 WriteLiteral("</td>\r\n                    </tr>\r\n");
 
             
-            #line 234 "..\..\Views\Device\ImportReview.cshtml"
+            #line 236 "..\..\Views\Device\ImportReview.cshtml"
                 }
 
             
@@ -1103,7 +1107,7 @@ WriteLiteral("</td>\r\n                    </tr>\r\n");
 WriteLiteral("            </tbody>\r\n        </table>\r\n");
 
             
-            #line 237 "..\..\Views\Device\ImportReview.cshtml"
+            #line 239 "..\..\Views\Device\ImportReview.cshtml"
 
                 if (importDeviceOkCount > 0)
                 {
@@ -1120,7 +1124,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("            ");
 
             
-            #line 241 "..\..\Views\Device\ImportReview.cshtml"
+            #line 243 "..\..\Views\Device\ImportReview.cshtml"
        Write(Html.ActionLinkButton(string.Format("Import {0} Device{1}", importDeviceOkCount, importDeviceOkCount != 1 ? "s" : null), MVC.API.Device.ImportProcess(Model.ImportParseTaskId)));
 
             
@@ -1129,7 +1133,7 @@ WriteLiteral("            ");
 WriteLiteral("\r\n        </div>\r\n");
 
             
-            #line 243 "..\..\Views\Device\ImportReview.cshtml"
+            #line 245 "..\..\Views\Device\ImportReview.cshtml"
                 }
     }
     else
@@ -1141,7 +1145,7 @@ WriteLiteral("\r\n        </div>\r\n");
 WriteLiteral("        <h2>No Devices were found in this file</h2>\r\n");
 
             
-            #line 248 "..\..\Views\Device\ImportReview.cshtml"
+            #line 250 "..\..\Views\Device\ImportReview.cshtml"
     }
 
             

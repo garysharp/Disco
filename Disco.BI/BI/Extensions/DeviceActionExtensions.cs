@@ -5,6 +5,8 @@ using System.Text;
 using Disco.Models.Repository;
 using Disco.Data.Repository;
 using Disco.BI.Interop.ActiveDirectory;
+using Disco.Services.Users;
+using Disco.Services.Authorization;
 
 namespace Disco.BI.Extensions
 {
@@ -17,36 +19,57 @@ namespace Disco.BI.Extensions
 
         public static bool CanCreateJob(this Device d)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Job.Actions.Create))
+                return false;
+
             return !d.IsDecommissioned();
         }
 
         public static bool CanUpdateAssignment(this Device d)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Device.Actions.AssignUser))
+                return false;
+
             return !d.IsDecommissioned();
         }
 
         public static bool CanUpdateDeviceProfile(this Device d)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Device.Properties.DeviceProfile))
+                return false;
+
             return !d.IsDecommissioned();
         }
 
         public static bool CanUpdateDeviceBatch(this Device d)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Device.Properties.DeviceBatch))
+                return false;
+
             return !d.IsDecommissioned();
         }
 
         public static bool CanUpdateTrustEnrol(this Device d)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Device.Actions.AllowUnauthenticatedEnrol))
+                return false;
+
             return !d.IsDecommissioned() && !d.AllowUnauthenticatedEnrol;
         }
         public static bool CanUpdateUntrustEnrol(this Device d)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Device.Actions.AllowUnauthenticatedEnrol))
+                return false;
+
             return !d.IsDecommissioned() && d.AllowUnauthenticatedEnrol;
         }
 
         #region Decommission
         public static bool CanDecommission(this Device d)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Device.Actions.Decommission))
+                return false;
+
             if (d.DecommissionedDate.HasValue)
                 return false; // Already Decommissioned
 
@@ -80,6 +103,9 @@ namespace Disco.BI.Extensions
         #region Recommission
         public static bool CanRecommission(this Device d)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Device.Actions.Recommission))
+                return false;
+
             return d.DecommissionedDate.HasValue;
         }
         public static void OnRecommission(this Device d)
@@ -105,17 +131,20 @@ namespace Disco.BI.Extensions
         #region Delete
         public static bool CanDelete(this Device d)
         {
+            if (!UserService.CurrentAuthorization.Has(Claims.Device.Actions.Delete))
+                return false;
+
             return d.DecommissionedDate.HasValue;
         }
-        public static void OnDelete(this Device d, DiscoDataContext dbContext)
+        public static void OnDelete(this Device d, DiscoDataContext Database)
         {
             // Delete Jobs
-            foreach (Job j in dbContext.Jobs.Where(i => i.DeviceSerialNumber == d.SerialNumber))
+            foreach (Job j in Database.Jobs.Where(i => i.DeviceSerialNumber == d.SerialNumber))
             {
                 if (j.UserId == null)
                 { // No User associated, thus must Delete whole Job
                     if (j.CanDelete())
-                        j.OnDelete(dbContext);
+                        j.OnDelete(Database);
                     else
                         throw new InvalidOperationException(string.Format("Deletion of Device is Denied (See Job# {0})", j.Id));
                 }
@@ -128,35 +157,35 @@ namespace Disco.BI.Extensions
                     JobLog jobLog = new JobLog()
                     {
                         JobId = j.Id,
-                        TechUserId = UserBI.UserCache.CurrentUser.Id,
+                        TechUserId = UserService.CurrentUser.Id,
                         Timestamp = DateTime.Now,
                         Comments = string.Format("Device Deleted{0}{0}Serial Number: {1}{0}Computer Name: {2}{0}Model: {3}{0}Profile: {4}",
                                                     Environment.NewLine, d.SerialNumber, d.ComputerName, d.DeviceModel, d.DeviceProfile)
                     };
-                    dbContext.JobLogs.Add(jobLog);
+                    Database.JobLogs.Add(jobLog);
                 }
             }
 
             // Disable Wireless Certificates
-            foreach (var wc in dbContext.DeviceCertificates.Where(i => i.DeviceSerialNumber == d.SerialNumber))
+            foreach (var wc in Database.DeviceCertificates.Where(i => i.DeviceSerialNumber == d.SerialNumber))
             {
                 wc.DeviceSerialNumber = null;
                 wc.Enabled = false;
             }
             // Delete Device Details
-            foreach (var dd in dbContext.DeviceDetails.Where(i => i.DeviceSerialNumber == d.SerialNumber))
-                dbContext.DeviceDetails.Remove(dd);
+            foreach (var dd in Database.DeviceDetails.Where(i => i.DeviceSerialNumber == d.SerialNumber))
+                Database.DeviceDetails.Remove(dd);
             // Delete Device Attachments
-            foreach (var da in dbContext.DeviceAttachments.Where(i => i.DeviceSerialNumber == d.SerialNumber))
+            foreach (var da in Database.DeviceAttachments.Where(i => i.DeviceSerialNumber == d.SerialNumber))
             {
-                da.RepositoryDelete(dbContext);
-                dbContext.DeviceAttachments.Remove(da);
+                da.RepositoryDelete(Database);
+                Database.DeviceAttachments.Remove(da);
             }
             // Delete Device User Assignments
-            foreach (var dua in dbContext.DeviceUserAssignments.Where(i => i.DeviceSerialNumber == d.SerialNumber))
-                dbContext.DeviceUserAssignments.Remove(dua);
+            foreach (var dua in Database.DeviceUserAssignments.Where(i => i.DeviceSerialNumber == d.SerialNumber))
+                Database.DeviceUserAssignments.Remove(dua);
 
-            dbContext.Devices.Remove(d);
+            Database.Devices.Remove(d);
         }
         #endregion
     }

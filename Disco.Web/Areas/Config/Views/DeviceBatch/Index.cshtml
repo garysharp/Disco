@@ -1,69 +1,78 @@
 ﻿@model Disco.Web.Areas.Config.Models.DeviceBatch.IndexModel
 @{
+    Authorization.Require(Claims.Config.DeviceBatch.Show);
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Batches");
 }
-<table class="tableData">
-    <tr>
-        <th>
-            Name
-        </th>
-        <th>
-            Default Model
-        </th>
-        <th>
-            Purchase Date
-        </th>
-        <th>
-            Warranty Expires
-        </th>
-        <th>
-            Insurance Expires
-        </th>
-        <th>
-            Device Count
-        </th>
-    </tr>
-    @foreach (var item in Model.DeviceBatches)
-    {
+@if (Model.DeviceBatches.Count == 0)
+{
+    <div class="form" style="width: 450px; padding: 100px 0;">
+        <h2>No device batches are configured</h2>
+    </div>  
+}
+else
+{
+    <table class="tableData">
         <tr>
-            <td>
-                @Html.ActionLink(item.Name, MVC.Config.DeviceBatch.Index(item.Id))
-            </td>
-            <td>
-                @item.DefaultDeviceModel
-            </td>
-            <td>
-                @CommonHelpers.FriendlyDate(item.PurchaseDate)
-            </td>
-            <td>
-                @CommonHelpers.FriendlyDate(item.WarrantyExpires, "Unknown")
-            </td>
-            <td>
-                @CommonHelpers.FriendlyDate(item.InsuredUntil, item.InsuranceSupplier == null ? "N/A" : "Unknown")
-                @(item.InsuranceSupplier == null ? string.Empty : string.Format("[{0}]", item.InsuranceSupplier))
-            </td>
-            <td>
-                @if (item.PurchaseUnitQuantity.HasValue)
-                { 
-                    <span>@item.DeviceCount.ToString("n0")/@(item.PurchaseUnitQuantity.Value.ToString("n0"))</span>
-                }
-                else
-                { 
-                    @item.DeviceCount.ToString("n0")
-                }
-                @if (item.DeviceDecommissionedCount > 0)
-                { 
-                    <span class="smallMessage" title="@(item.DeviceDecommissionedCount.ToString("n0")) Decommissioned">
-                        (@(item.DeviceDecommissionedCount.ToString("n0")))</span>
-                }
-            </td>
+            <th>Name
+            </th>
+            <th>Default Model
+            </th>
+            <th>Purchase Date
+            </th>
+            <th>Warranty Expires
+            </th>
+            <th>Insurance Expires
+            </th>
+            <th>Device Count
+            </th>
         </tr>
-    }
-</table>
-<div class="actionBar">
-    @if (Model.DeviceBatches.Count > 0)
-    { 
-        @Html.ActionLinkButton("Timeline", MVC.Config.DeviceBatch.Timeline())
-    }
-    @Html.ActionLinkButton("Create Device Batch", MVC.Config.DeviceBatch.Create())
-</div>
+        @foreach (var item in Model.DeviceBatches)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Name, MVC.Config.DeviceBatch.Index(item.Id))
+                </td>
+                <td>
+                    @item.DefaultDeviceModel
+                </td>
+                <td>
+                    @CommonHelpers.FriendlyDate(item.PurchaseDate)
+                </td>
+                <td>
+                    @CommonHelpers.FriendlyDate(item.WarrantyExpires, "Unknown")
+                </td>
+                <td>
+                    @CommonHelpers.FriendlyDate(item.InsuredUntil, item.InsuranceSupplier == null ? "N/A" : "Unknown")
+                    @(item.InsuranceSupplier == null ? string.Empty : string.Format("[{0}]", item.InsuranceSupplier))
+                </td>
+                <td>
+                    @if (item.PurchaseUnitQuantity.HasValue)
+                    { 
+                        <span>@item.DeviceCount.ToString("n0")/@(item.PurchaseUnitQuantity.Value.ToString("n0"))</span>
+                    }
+                    else
+                    { 
+                        @item.DeviceCount.ToString("n0")
+                    }
+                    @if (item.DeviceDecommissionedCount > 0)
+                    { 
+                        <span class="smallMessage" title="@(item.DeviceDecommissionedCount.ToString("n0")) Decommissioned">(@(item.DeviceDecommissionedCount.ToString("n0")))</span>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+}
+@if (Authorization.HasAny(Claims.Config.DeviceBatch.Create, Claims.Config.DeviceBatch.ShowTimeline))
+{
+    <div class="actionBar">
+        @if (Authorization.Has(Claims.Config.DeviceBatch.ShowTimeline) && Model.DeviceBatches.Count > 0)
+        { 
+            @Html.ActionLinkButton("Timeline", MVC.Config.DeviceBatch.Timeline())
+        }
+        @if (Authorization.HasAll(Claims.Config.DeviceBatch.Create, Claims.Config.DeviceBatch.Configure))
+        {
+            @Html.ActionLinkButton("Create Device Batch", MVC.Config.DeviceBatch.Create())
+        }
+    </div>
+}

@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Disco.Data.Repository;
 using Disco.Models.Repository;
+using Disco.Services.Users;
 
 namespace Disco.Web
 {
@@ -41,24 +42,24 @@ namespace Disco.Web
                 Debug.WriteLine("Initialized Database: +{0}ms", timer.ElapsedMilliseconds - timer_last);
                 timer_last = timer.ElapsedMilliseconds;
 
-                using (DiscoDataContext dbContext = new DiscoDataContext())
+                using (DiscoDataContext database = new DiscoDataContext())
                 {
                     // Check for Post-Update
-                    var previousVersion = dbContext.DiscoConfiguration.InstalledDatabaseVersion;
+                    var previousVersion = database.DiscoConfiguration.InstalledDatabaseVersion;
                     bool isVersionUpdate = previousVersion != Disco.BI.Interop.Community.UpdateCheck.CurrentDiscoVersion();
                     bool ignoreVersionUpdate = false;
 
                     if (isVersionUpdate)
                     {
                         // Update Database with New Version
-                        dbContext.DiscoConfiguration.InstalledDatabaseVersion = Disco.BI.Interop.Community.UpdateCheck.CurrentDiscoVersion();
-                        dbContext.SaveChanges();
+                        database.DiscoConfiguration.InstalledDatabaseVersion = Disco.BI.Interop.Community.UpdateCheck.CurrentDiscoVersion();
+                        database.SaveChanges();
 
                         // Check if configured to Ignore Plugin Updates (Mainly for Dev environment)
                         bool.TryParse(ConfigurationManager.AppSettings["DiscoIgnoreVersionUpdate"], out ignoreVersionUpdate);
                         // Only Update if Plugins are installed
                         if (!ignoreVersionUpdate)
-                            ignoreVersionUpdate = (Disco.Services.Plugins.UpdatePluginTask.OfflineInstalledPlugins(dbContext).Count == 0);
+                            ignoreVersionUpdate = (Disco.Services.Plugins.UpdatePluginTask.OfflineInstalledPlugins(database).Count == 0);
                     }
 
                     if (!isVersionUpdate || ignoreVersionUpdate)
@@ -90,7 +91,7 @@ namespace Disco.Web
                         Debug.WriteLine("Registered Bundles: +{0}ms", timer.ElapsedMilliseconds - timer_last);
                         timer_last = timer.ElapsedMilliseconds;
 
-                        AppConfig.InitalizeEnvironment(dbContext);
+                        AppConfig.InitalizeNormalEnvironment(database);
 
                         Debug.WriteLine("Initialized Environment: +{0}ms", timer.ElapsedMilliseconds - timer_last);
                         timer_last = timer.ElapsedMilliseconds;
@@ -101,7 +102,7 @@ namespace Disco.Web
                         FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
                         RouteConfig.RegisterUpdateRoutes(RouteTable.Routes);
                         BundleConfig.RegisterBundles();
-                        AppConfig.InitializeUpdateEnvironment(dbContext, previousVersion);
+                        AppConfig.InitializeUpdateEnvironment(database, previousVersion);
                     }
                 }
             }
@@ -129,16 +130,6 @@ namespace Disco.Web
 
         public static bool InitialConfig { get; set; }
 
-        public static User CurrentUser
-        {
-            get
-            {
-                if (!InitialConfig)
-                    return BI.UserBI.UserCache.CurrentUser;
-                else
-                    return null;
-            }
-        }
         #endregion
         #region Cached Properties
 

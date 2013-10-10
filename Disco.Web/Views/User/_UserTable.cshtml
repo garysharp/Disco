@@ -5,23 +5,17 @@
         <table class="genericData userTable">
             <thead>
                 <tr>
-                    <th>
-                        Id
+                    <th>Id
                     </th>
-                    <th>
-                        Surname
+                    <th>Surname
                     </th>
-                    <th>
-                        Given Name
+                    <th>Given Name
                     </th>
-                    <th>
-                        Display Name
+                    <th>Display Name
                     </th>
-                    <th>
-                        Assigned Devices
+                    <th>Assigned Devices
                     </th>
-                    <th>
-                        Jobs
+                    <th>Jobs
                     </th>
                 </tr>
             </thead>
@@ -30,7 +24,14 @@
                 {
                     <tr>
                         <td>
-                            @Html.ActionLink(item.Id, MVC.User.Show(item.Id))
+                            @if (Authorization.Has(Claims.User.Show))
+                            {
+                                @Html.ActionLink(item.Id, MVC.User.Show(item.Id))
+                            }
+                            else
+                            {
+                                @item.Id
+                            }
                         </td>
                         <td>
                             @item.Surname

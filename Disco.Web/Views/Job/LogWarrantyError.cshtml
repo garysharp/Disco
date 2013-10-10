@@ -1,5 +1,7 @@
 ﻿@model Disco.Web.Models.Job.LogWarrantyModel
 @{
+    Authorization.Require(Claims.Job.Actions.LogWarranty);
+    
     ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Log Warranty Error");
 }
 <div class="form" style="width: 650px">

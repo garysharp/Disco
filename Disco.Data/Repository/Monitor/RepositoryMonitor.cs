@@ -21,17 +21,17 @@ namespace Disco.Data.Repository.Monitor
         public static Subject<RepositoryMonitorEvent> StreamBeforeCommit { get { return streamBefore; } }
         public static Subject<RepositoryMonitorEvent> StreamAfterCommit { get { return streamAfter; } }
 
-        internal static RepositoryMonitorEvent[] BeforeSaveChanges(DiscoDataContext dbContext)
+        internal static RepositoryMonitorEvent[] BeforeSaveChanges(DiscoDataContext Database)
         {
-            var contextStateManager = ((IObjectContextAdapter)dbContext).ObjectContext.ObjectStateManager;
+            var contextStateManager = ((IObjectContextAdapter)Database).ObjectContext.ObjectStateManager;
 
-            dbContext.ChangeTracker.DetectChanges();
-            var changes = dbContext.ChangeTracker.Entries().Where(entry => entry.State == System.Data.EntityState.Added || entry.State == System.Data.EntityState.Deleted || entry.State == System.Data.EntityState.Modified);
+            Database.ChangeTracker.DetectChanges();
+            var changes = Database.ChangeTracker.Entries().Where(entry => entry.State == System.Data.EntityState.Added || entry.State == System.Data.EntityState.Deleted || entry.State == System.Data.EntityState.Modified);
 
             var events = changes.Select(entryState =>
             {
                 ObjectStateEntry stateEntry = contextStateManager.GetObjectStateEntry(entryState.Entity);
-                var monitorEvent = EventFromEntryState(dbContext, entryState, stateEntry);
+                var monitorEvent = EventFromEntryState(Database, entryState, stateEntry);
 
                 // Push to Stream
                 streamBefore.OnNext(monitorEvent);
@@ -41,7 +41,7 @@ namespace Disco.Data.Repository.Monitor
 
             return events;
         }
-        internal static void AfterSaveChanges(DiscoDataContext dbContext, IEnumerable<RepositoryMonitorEvent> changes)
+        internal static void AfterSaveChanges(DiscoDataContext Database, IEnumerable<RepositoryMonitorEvent> changes)
         {
             foreach (var change in changes)
             {
@@ -88,7 +88,7 @@ namespace Disco.Data.Repository.Monitor
                     deferredAction.Invoke(monitorEvent);
         }
 
-        internal static RepositoryMonitorEvent EventFromEntryState(DiscoDataContext dbContext, DbEntityEntry entityEntry, ObjectStateEntry entryState)
+        internal static RepositoryMonitorEvent EventFromEntryState(DiscoDataContext Database, DbEntityEntry entityEntry, ObjectStateEntry entryState)
         {
             RepositoryMonitorEventType eventType;
             string[] modifiedProperties = null;
@@ -135,7 +135,7 @@ namespace Disco.Data.Repository.Monitor
                 EntityKey = entityKey,
                 EntityType = entityType,
                 ModifiedProperties = modifiedProperties,
-                dbContext = dbContext,
+                Database = Database,
                 dbEntityState = entityEntry,
                 objectEntryState = entryState
             };

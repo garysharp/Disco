@@ -28,12 +28,14 @@ namespace Disco.Web.Views.Device
     using System.Web.WebPages;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services.Authorization;
+    using Disco.Services.Web;
     using Disco.Web;
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/ImportExport.cshtml")]
-    public partial class ImportExport : System.Web.Mvc.WebViewPage<Disco.Web.Models.Device.ImportModel>
+    public partial class ImportExport : Disco.Services.Web.WebViewPage<Disco.Web.Models.Device.ImportModel>
     {
         public ImportExport()
         {
@@ -43,25 +45,36 @@ namespace Disco.Web.Views.Device
             
             #line 2 "..\..\Views\Device\ImportExport.cshtml"
   
+    Authorization.RequireAny(Claims.Device.Actions.Import, Claims.Device.Actions.Export);
+
     ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import/Export Devices");
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n<div");
+WriteLiteral("\r\n");
+
+            
+            #line 7 "..\..\Views\Device\ImportExport.cshtml"
+ if (Authorization.Has(Claims.Device.Actions.Import)){
+
+            
+            #line default
+            #line hidden
+WriteLiteral("<div");
 
 WriteLiteral(" id=\"deviceImport\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 6 "..\..\Views\Device\ImportExport.cshtml"
+            #line 9 "..\..\Views\Device\ImportExport.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 6 "..\..\Views\Device\ImportExport.cshtml"
+            #line 9 "..\..\Views\Device\ImportExport.cshtml"
      using (Html.BeginForm(MVC.API.Device.ImportParse(), FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         
@@ -69,14 +82,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 8 "..\..\Views\Device\ImportExport.cshtml"
+            #line 11 "..\..\Views\Device\ImportExport.cshtml"
    Write(Html.ValidationSummary());
 
             
             #line default
             #line hidden
             
-            #line 8 "..\..\Views\Device\ImportExport.cshtml"
+            #line 11 "..\..\Views\Device\ImportExport.cshtml"
                                  
 
             
@@ -96,7 +109,7 @@ WriteLiteral(">\r\n            <h2>Import Devices</h2>\r\n            <table>\r\
 WriteLiteral("                        ");
 
             
-            #line 14 "..\..\Views\Device\ImportExport.cshtml"
+            #line 17 "..\..\Views\Device\ImportExport.cshtml"
                    Write(Html.LabelFor(m => m.ImportFile));
 
             
@@ -131,7 +144,7 @@ WriteLiteral(" value=\"Import\"");
 WriteLiteral(" />\r\n            </p>\r\n        </div>\r\n");
 
             
-            #line 25 "..\..\Views\Device\ImportExport.cshtml"
+            #line 28 "..\..\Views\Device\ImportExport.cshtml"
     }
 
             
@@ -196,7 +209,7 @@ WriteLiteral(" class=\"code\"");
 WriteLiteral(">1</span> [");
 
             
-            #line 51 "..\..\Views\Device\ImportExport.cshtml"
+            #line 54 "..\..\Views\Device\ImportExport.cshtml"
                                                                                                                                                                      Write(Html.ActionLink(Model.DeviceModels[0].ToString(), MVC.Config.DeviceModel.Index(Model.DeviceModels[0].Id)));
 
             
@@ -220,7 +233,7 @@ WriteLiteral(" class=\"code\"");
 WriteLiteral(">1</span> [");
 
             
-            #line 56 "..\..\Views\Device\ImportExport.cshtml"
+            #line 59 "..\..\Views\Device\ImportExport.cshtml"
                                                                                                                                                                          Write(Html.ActionLink(Model.DeviceProfiles[0].ToString(), MVC.Config.DeviceProfile.Index(Model.DeviceProfiles[0].Id)));
 
             
@@ -291,13 +304,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 94 "..\..\Views\Device\ImportExport.cshtml"
+            #line 97 "..\..\Views\Device\ImportExport.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 94 "..\..\Views\Device\ImportExport.cshtml"
+            #line 97 "..\..\Views\Device\ImportExport.cshtml"
                      foreach (var dm in Model.DeviceModels)
                     {
 
@@ -307,7 +320,7 @@ WriteLiteral(@">
 WriteLiteral("                        <tr>\r\n                            <td>");
 
             
-            #line 97 "..\..\Views\Device\ImportExport.cshtml"
+            #line 100 "..\..\Views\Device\ImportExport.cshtml"
                            Write(Html.ActionLink(dm.Id.ToString(), MVC.Config.DeviceModel.Index(dm.Id)));
 
             
@@ -316,7 +329,7 @@ WriteLiteral("                        <tr>\r\n                            <td>")
 WriteLiteral("</td>\r\n                            <td>");
 
             
-            #line 98 "..\..\Views\Device\ImportExport.cshtml"
+            #line 101 "..\..\Views\Device\ImportExport.cshtml"
                            Write(dm.ToString());
 
             
@@ -325,7 +338,7 @@ WriteLiteral("</td>\r\n                            <td>");
 WriteLiteral("</td>\r\n                            <td>");
 
             
-            #line 99 "..\..\Views\Device\ImportExport.cshtml"
+            #line 102 "..\..\Views\Device\ImportExport.cshtml"
                            Write(dm.Manufacturer);
 
             
@@ -334,7 +347,7 @@ WriteLiteral("</td>\r\n                            <td>");
 WriteLiteral("</td>\r\n                            <td>");
 
             
-            #line 100 "..\..\Views\Device\ImportExport.cshtml"
+            #line 103 "..\..\Views\Device\ImportExport.cshtml"
                            Write(dm.Model);
 
             
@@ -343,7 +356,7 @@ WriteLiteral("</td>\r\n                            <td>");
 WriteLiteral("</td>\r\n                        </tr>\r\n");
 
             
-            #line 102 "..\..\Views\Device\ImportExport.cshtml"
+            #line 105 "..\..\Views\Device\ImportExport.cshtml"
                     }
 
             
@@ -374,13 +387,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 118 "..\..\Views\Device\ImportExport.cshtml"
+            #line 121 "..\..\Views\Device\ImportExport.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 118 "..\..\Views\Device\ImportExport.cshtml"
+            #line 121 "..\..\Views\Device\ImportExport.cshtml"
                      foreach (var dp in Model.DeviceProfiles)
                     {
 
@@ -390,7 +403,7 @@ WriteLiteral(@">
 WriteLiteral("                        <tr>\r\n                            <td>");
 
             
-            #line 121 "..\..\Views\Device\ImportExport.cshtml"
+            #line 124 "..\..\Views\Device\ImportExport.cshtml"
                            Write(Html.ActionLink(dp.Id.ToString(), MVC.Config.DeviceProfile.Index(dp.Id)));
 
             
@@ -399,7 +412,7 @@ WriteLiteral("                        <tr>\r\n                            <td>")
 WriteLiteral("</td>\r\n                            <td>");
 
             
-            #line 122 "..\..\Views\Device\ImportExport.cshtml"
+            #line 125 "..\..\Views\Device\ImportExport.cshtml"
                            Write(dp.Name);
 
             
@@ -408,7 +421,7 @@ WriteLiteral("</td>\r\n                            <td>");
 WriteLiteral("</td>\r\n                            <td>");
 
             
-            #line 123 "..\..\Views\Device\ImportExport.cshtml"
+            #line 126 "..\..\Views\Device\ImportExport.cshtml"
                            Write(dp.ShortName);
 
             
@@ -417,7 +430,7 @@ WriteLiteral("</td>\r\n                            <td>");
 WriteLiteral("</td>\r\n                            <td>");
 
             
-            #line 124 "..\..\Views\Device\ImportExport.cshtml"
+            #line 127 "..\..\Views\Device\ImportExport.cshtml"
                            Write(dp.Description);
 
             
@@ -426,7 +439,7 @@ WriteLiteral("</td>\r\n                            <td>");
 WriteLiteral("</td>\r\n                        </tr>\r\n");
 
             
-            #line 126 "..\..\Views\Device\ImportExport.cshtml"
+            #line 129 "..\..\Views\Device\ImportExport.cshtml"
                     }
 
             
@@ -456,13 +469,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 141 "..\..\Views\Device\ImportExport.cshtml"
+            #line 144 "..\..\Views\Device\ImportExport.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 141 "..\..\Views\Device\ImportExport.cshtml"
+            #line 144 "..\..\Views\Device\ImportExport.cshtml"
                      foreach (var db in Model.DeviceBatches)
                     {
 
@@ -472,7 +485,7 @@ WriteLiteral(@">
 WriteLiteral("                        <tr>\r\n                            <td>");
 
             
-            #line 144 "..\..\Views\Device\ImportExport.cshtml"
+            #line 147 "..\..\Views\Device\ImportExport.cshtml"
                            Write(Html.ActionLink(db.Id.ToString(), MVC.Config.DeviceBatch.Index(db.Id)));
 
             
@@ -481,7 +494,7 @@ WriteLiteral("                        <tr>\r\n                            <td>")
 WriteLiteral("</td>\r\n                            <td>");
 
             
-            #line 145 "..\..\Views\Device\ImportExport.cshtml"
+            #line 148 "..\..\Views\Device\ImportExport.cshtml"
                            Write(db.Name);
 
             
@@ -490,7 +503,7 @@ WriteLiteral("</td>\r\n                            <td>");
 WriteLiteral("</td>\r\n                            <td>");
 
             
-            #line 146 "..\..\Views\Device\ImportExport.cshtml"
+            #line 149 "..\..\Views\Device\ImportExport.cshtml"
                            Write(CommonHelpers.FriendlyDate(db.PurchaseDate));
 
             
@@ -499,7 +512,7 @@ WriteLiteral("</td>\r\n                            <td>");
 WriteLiteral("</td>\r\n                        </tr>\r\n");
 
             
-            #line 148 "..\..\Views\Device\ImportExport.cshtml"
+            #line 151 "..\..\Views\Device\ImportExport.cshtml"
                     }
 
             
@@ -524,23 +537,45 @@ WriteLiteral("                </tbody>\r\n            </table>\r\n        </div>
 "efault();\r\n                    if (!$showDeviceBatchesDialog)\r\n                 " +
 "       $showDeviceBatchesDialog = $(\'#showDeviceBatchesDialog\').dialog(dialogOpt" +
 "ions);\r\n                    $showDeviceBatchesDialog.dialog(\'open\');\r\n          " +
-"      });\r\n            });\r\n        </script>\r\n    </div>\r\n\r\n    <div");
+"      });\r\n            });\r\n        </script>\r\n    </div>\r\n</div>\r\n");
+
+            
+            #line 192 "..\..\Views\Device\ImportExport.cshtml"
+}
+
+            
+            #line default
+            #line hidden
+            
+            #line 193 "..\..\Views\Device\ImportExport.cshtml"
+ if (Authorization.Has(Claims.Device.Actions.Export)){
+
+            
+            #line default
+            #line hidden
+WriteLiteral("<div");
 
 WriteLiteral(" class=\"actionBar\"");
 
 WriteLiteral(">\r\n");
 
-WriteLiteral("        ");
+WriteLiteral("    ");
 
             
-            #line 190 "..\..\Views\Device\ImportExport.cshtml"
-   Write(Html.ActionLinkButton("Export All Devices", MVC.API.Device.ExportAllDevices()));
+            #line 195 "..\..\Views\Device\ImportExport.cshtml"
+Write(Html.ActionLinkButton("Export All Devices", MVC.API.Device.ExportAllDevices()));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n    </div>\r\n</div>\r\n");
+WriteLiteral("\r\n</div>\r\n");
 
+            
+            #line 197 "..\..\Views\Device\ImportExport.cshtml"
+}
+            
+            #line default
+            #line hidden
         }
     }
 }

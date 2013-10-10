@@ -190,7 +190,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CommonHelpers.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="Areas\API\Controllers\AuthorizationRoleController.cs" />
     <Compile Include="Areas\API\Controllers\PluginController.cs" />
+    <Compile Include="Areas\API\Models\AuthorizationRole\SubjectItem.cs" />
+    <Compile Include="Areas\Config\Controllers\AuthorizationRoleController.cs" />
+    <Compile Include="Areas\Config\Models\AuthorizationRole\CreateModel.cs" />
+    <Compile Include="Areas\Config\Models\AuthorizationRole\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\AuthorizationRole\ShowModel.cs" />
     <Compile Include="Areas\Config\Models\Config\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceBatch\CreateModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceBatch\TimelineModel.cs" />
@@ -199,6 +205,21 @@
     <Compile Include="Areas\Config\Models\DocumentTemplate\ImportStatusModel.cs" />
     <Compile Include="Areas\Config\Models\Enrolment\StatusModel.cs" />
     <Compile Include="Areas\Config\Models\Plugins\InstallModel.cs" />
+    <Compile Include="Areas\Config\Views\AuthorizationRole\Create.generated.cs">
+      <DependentUpon>Create.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\AuthorizationRole\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\AuthorizationRole\Show.generated.cs">
+      <DependentUpon>Show.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Areas\Config\Views\Plugins\Install.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -530,6 +551,7 @@
     <Compile Include="Models\Job\ShowModel.cs" />
     <Compile Include="Models\Job\WarrantyProviderJobDetailsModel.cs" />
     <Compile Include="Models\Search\QueryModel.cs" />
+    <Compile Include="Models\Shared\FancyTreeNode.cs" />
     <Compile Include="Models\Update\IndexModel.cs" />
     <Compile Include="Models\User\IndexModel.cs" />
     <Compile Include="Models\User\ShowModel.cs" />
@@ -799,6 +821,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Show.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="Views\User\UserParts\_Authorization.generated.cs">
+      <DependentUpon>_Authorization.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Views\User\UserParts\_AssignmentHistory.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -838,6 +865,18 @@
   <ItemGroup>
     <Content Include="ClientBin\Disco.ClientBootstrapper.exe" />
     <Content Include="ClientBin\Disco.Silverlight.AttachmentUpload.xap" />
+    <Content Include="Areas\Config\Views\AuthorizationRole\Create.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Create.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Areas\Config\Views\AuthorizationRole\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Areas\Config\Views\AuthorizationRole\Show.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Show.generated.cs</LastGenOutput>
+    </Content>
     <None Include="Areas\Config\Views\Plugins\Install.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Install.generated.cs</LastGenOutput>
@@ -863,6 +902,10 @@
     <Content Include="ClientSource\Scripts\Core.min.js">
       <DependentUpon>Core.js.bundle</DependentUpon>
     </Content>
+    <Content Include="ClientSource\Scripts\Modules\jQuery-Fancytree.js">
+      <DependentUpon>jQuery-Fancytree.js.bundle</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Scripts\Modules\jQuery-Fancytree.js.bundle" />
     <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.js">
       <DependentUpon>Disco-AjaxHelperIcons.js.bundle</DependentUpon>
     </None>
@@ -896,6 +939,9 @@
     <None Include="ClientSource\Scripts\Modules\Highcharts.min.js.map">
       <DependentUpon>Highcharts.js.bundle</DependentUpon>
     </None>
+    <Content Include="ClientSource\Scripts\Modules\jQuery-Fancytree.min.js.map">
+      <DependentUpon>jQuery-Fancytree.js.bundle</DependentUpon>
+    </Content>
     <None Include="ClientSource\Scripts\Modules\jQuery-Isotope.min.js.map">
       <DependentUpon>jQuery-Isotope.js.bundle</DependentUpon>
     </None>
@@ -939,6 +985,10 @@
     <None Include="ClientSource\Scripts\Modules\jQuery-Isotope.js">
       <DependentUpon>jQuery-Isotope.js.bundle</DependentUpon>
     </None>
+    <Content Include="ClientSource\Scripts\Modules\jQuery-Fancytree.min.js">
+      <DependentUpon>jQuery-Fancytree.js.bundle</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Scripts\Modules\jQuery-Fancytree\jquery.fancytree-all.js" />
     <Content Include="ClientSource\Scripts\Modules\jQuery-Isotope.min.js">
       <DependentUpon>jQuery-Isotope.js.bundle</DependentUpon>
     </Content>
@@ -1127,6 +1177,16 @@
     <None Include="ClientSource\Style\Images\Actions\remove.png" />
     <None Include="ClientSource\Style\Images\Actions\removeSubtle.png" />
     <None Include="ClientSource\Style\Images\Actions\unlocked.png" />
+    <None Include="ClientSource\Style\Fancytree\icons.gif" />
+    <None Include="ClientSource\Style\Fancytree\loading.gif" />
+    <None Include="ClientSource\Style\Fancytree\ui.fancytree.css" />
+    <Content Include="ClientSource\Style\Fancytree\ui.fancytree.min.css">
+      <DependentUpon>ui.fancytree.css</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Style\Images\Actions\pluginDownloadIcon16.png" />
+    <None Include="ClientSource\Style\Images\Actions\pluginDownloadIconHover16.png" />
+    <None Include="ClientSource\Style\Images\Actions\user16.png" />
+    <None Include="ClientSource\Style\Images\Actions\userGroup16.png" />
     <Content Include="ClientSource\Style\Images\AttachmentTypes\document.png" />
     <Content Include="ClientSource\Style\Images\AttachmentTypes\expressionBrowserIcons.png" />
     <Content Include="ClientSource\Style\Images\AttachmentTypes\image.png" />
@@ -1810,11 +1870,14 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
     </None>
-    <None Include="Views\User\ARCHIVE_Show.cshtml" />
     <None Include="Views\User\Show.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Show.generated.cs</LastGenOutput>
     </None>
+    <Content Include="Views\User\UserParts\_Authorization.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_Authorization.generated.cs</LastGenOutput>
+    </Content>
     <None Include="Views\User\UserParts\_AssignmentHistory.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_AssignmentHistory.generated.cs</LastGenOutput>
@@ -1827,7 +1890,6 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Resources.generated.cs</LastGenOutput>
     </None>
-    <None Include="Views\User\ARCHIVE__UserDeviceAssignmentHistoryTable.cshtml" />
     <None Include="Views\User\UserParts\_Subject.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Subject.generated.cs</LastGenOutput>
@@ -1880,7 +1942,9 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Layout.generated.cs</LastGenOutput>
     </None>
-    <None Include="Views\Web.config" />
+    <None Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

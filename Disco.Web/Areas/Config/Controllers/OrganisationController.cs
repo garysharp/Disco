@@ -1,25 +1,24 @@
 ﻿using Disco.Models.UI.Config.Organisation;
+using Disco.Services.Authorization;
 using Disco.Services.Plugins.Features.UIExtension;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using Disco.Services.Web;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.Config.Controllers
 {
-    public partial class OrganisationController : dbAdminController
+    public partial class OrganisationController : AuthorizedDatabaseController
     {
         //
         // GET: /Config/Organisation/
 
+        [DiscoAuthorize(Claims.Config.Organisation.Show)]
         public virtual ActionResult Index()
         {
             var viewModel = new Models.Organisation.IndexModel();
 
-            viewModel.OrganisationName = dbContext.DiscoConfiguration.OrganisationName;
-            viewModel.MultiSiteMode = dbContext.DiscoConfiguration.MultiSiteMode;
-            viewModel.OrganisationAddresses = dbContext.DiscoConfiguration.OrganisationAddresses.Addresses;
+            viewModel.OrganisationName = Database.DiscoConfiguration.OrganisationName;
+            viewModel.MultiSiteMode = Database.DiscoConfiguration.MultiSiteMode;
+            viewModel.OrganisationAddresses = Database.DiscoConfiguration.OrganisationAddresses.Addresses;
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<ConfigOrganisationIndexModel>(this.ControllerContext, viewModel);

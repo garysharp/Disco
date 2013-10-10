@@ -1,4 +1,5 @@
-﻿using Disco.Services.Logging;
+﻿using Disco.Services.Authorization;
+using Disco.Services.Logging;
 using Disco.Services.Logging.Models;
 using Microsoft.AspNet.SignalR;
 using System;
@@ -9,9 +10,11 @@ using System.Threading.Tasks;
 
 namespace Disco.BI.Interop.SignalRHandlers
 {
-    public class LogNotifications : AdminAuthorizedPersistentConnection
+    public class LogNotifications : AuthorizedPersistentConnection
     {
         public static bool initialized = false;
+
+        protected override string AuthorizedClaim { get { return Claims.DiscoAdminAccount; } }
 
         public LogNotifications()
         {

@@ -94,11 +94,15 @@ namespace Disco.Web.Areas.Config
                 "Config/DocumentTemplate/{id}",
                 new { controller = "DocumentTemplate", action = "Index", id = UrlParameter.Optional }
             );
-
             context.MapRoute(
-                "Config_Warranty",
-                "Config/Warranty/{id}",
-                new { controller = "Warranty", action = "Index", id = UrlParameter.Optional }
+                "Config_AuthorizationRole_Create",
+                "Config/AuthorizationRole/Create",
+                new { controller = "AuthorizationRole", action = "Create", id = UrlParameter.Optional }
+            );
+            context.MapRoute(
+                "Config_AuthorizationRole",
+                "Config/AuthorizationRole/{id}",
+                new { controller = "AuthorizationRole", action = "Index", id = UrlParameter.Optional }
             );
 
             context.MapRoute(

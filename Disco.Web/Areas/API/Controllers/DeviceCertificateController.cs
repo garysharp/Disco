@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Disco.Services.Authorization;
+using Disco.Services.Web;
+using System;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.API.Controllers
 {
-    public partial class DeviceCertificateController : dbAdminController
+    public partial class DeviceCertificateController : AuthorizedDatabaseController
     {
 
+        [DiscoAuthorize(Claims.Config.DeviceCertificate.DownloadCertificates)]
         public virtual ActionResult Download(int id)
         {
-            var wc = dbContext.DeviceCertificates.Find(id);
+            var wc = Database.DeviceCertificates.Find(id);
             if (wc == null)
             {
                 throw new Exception("Invalid Device Certificate Id");

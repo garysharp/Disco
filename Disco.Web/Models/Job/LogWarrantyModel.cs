@@ -9,6 +9,7 @@ using System.Web.Script.Serialization;
 using Disco.Services.Plugins;
 using Disco.Services.Plugins.Features.WarrantyProvider;
 using Newtonsoft.Json;
+using Disco.Services.Users;
 
 namespace Disco.Web.Models.Job
 {
@@ -57,23 +58,23 @@ namespace Disco.Web.Models.Job
 
         public Exception Error { get; set; }
 
-        public void UpdateModel(DiscoDataContext dbContext, bool IsPostBack)
+        public void UpdateModel(DiscoDataContext Database, bool IsPostBack)
         {
-            dbContext.Configuration.LazyLoadingEnabled = true;
+            Database.Configuration.LazyLoadingEnabled = true;
             if (Job == null)
             {
                 // Update Job User's Details [#12]
-                string jobUserId = dbContext.Jobs.Where(j => j.Id == JobId).Select(j => j.UserId).FirstOrDefault();
+                string jobUserId = Database.Jobs.Where(j => j.Id == JobId).Select(j => j.UserId).FirstOrDefault();
                 if (jobUserId != null)
                 {
                     // Ignore update errors (Most commonly when the User Id no longer exists in AD)
                     try
                     {
-                        Disco.BI.UserBI.UserCache.GetUser(jobUserId, dbContext, true);
+                        UserService.GetUser(jobUserId, Database, true);
                     } catch (Exception) {}
                 }
 
-                Job = (from j in dbContext.Jobs.Include("Device.DeviceModel").Include("JobMetaWarranty").Include("JobSubTypes")
+                Job = (from j in Database.Jobs.Include("Device.DeviceModel").Include("JobMetaWarranty").Include("JobSubTypes")
                        where (j.Id == JobId)
                        select j).FirstOrDefault();
                 if (Job == null)
@@ -83,7 +84,7 @@ namespace Disco.Web.Models.Job
             }
 
             // Update TechUser's Details [#12]
-            this.TechUser = Disco.BI.UserBI.UserCache.GetUser(DiscoApplication.CurrentUser.Id, dbContext, true);
+            this.TechUser = UserService.GetUser(UserService.CurrentUserId, Database, true);
 
             WarrantyProviders = Plugins.GetPluginFeatures(typeof(WarrantyProviderFeature));
 
@@ -95,7 +96,7 @@ namespace Disco.Web.Models.Job
             if (!string.IsNullOrEmpty(WarrantyProviderId))
                 WarrantyProvider = Plugins.GetPluginFeature(WarrantyProviderId, typeof(WarrantyProviderFeature));
 
-            this.OrganisationAddresses = dbContext.DiscoConfiguration.OrganisationAddresses.Addresses;
+            this.OrganisationAddresses = Database.DiscoConfiguration.OrganisationAddresses.Addresses;
 
             if (!IsPostBack && !this.OrganisationAddressId.HasValue)
             {

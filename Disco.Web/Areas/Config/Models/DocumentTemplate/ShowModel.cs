@@ -36,26 +36,26 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
             }
         }
 
-        public void UpdateModel(DiscoDataContext dbContext)
+        public void UpdateModel(DiscoDataContext Database)
         {
 
             switch (this.DocumentTemplate.Scope)
             {
                 case Disco.Models.Repository.DocumentTemplate.DocumentTemplateScopes.Device:
-                    this.StoredInstanceCount = dbContext.DeviceAttachments.Count(a => a.DocumentTemplateId == this.DocumentTemplate.Id);
+                    this.StoredInstanceCount = Database.DeviceAttachments.Count(a => a.DocumentTemplateId == this.DocumentTemplate.Id);
                     break;
                 case Disco.Models.Repository.DocumentTemplate.DocumentTemplateScopes.Job:
-                    this.StoredInstanceCount = dbContext.JobAttachments.Count(a => a.DocumentTemplateId == this.DocumentTemplate.Id);
+                    this.StoredInstanceCount = Database.JobAttachments.Count(a => a.DocumentTemplateId == this.DocumentTemplate.Id);
                     break;
                 case Disco.Models.Repository.DocumentTemplate.DocumentTemplateScopes.User:
-                    this.StoredInstanceCount = dbContext.UserAttachments.Count(a => a.DocumentTemplateId == this.DocumentTemplate.Id);
+                    this.StoredInstanceCount = Database.UserAttachments.Count(a => a.DocumentTemplateId == this.DocumentTemplate.Id);
                     break;
             }
 
             if (this.JobTypes == null)
-                JobTypes = dbContext.JobTypes.ToList();
+                JobTypes = Database.JobTypes.ToList();
             if (this.JobSubTypes == null)
-                JobSubTypes = dbContext.JobSubTypes.ToList();
+                JobSubTypes = Database.JobSubTypes.ToList();
 
             if (DocumentTemplate != null)
             {

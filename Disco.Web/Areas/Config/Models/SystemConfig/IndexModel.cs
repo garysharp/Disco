@@ -102,9 +102,9 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
             };
         }
 
-        public void ToConfiguration(DiscoDataContext db)
+        public void ToConfiguration(DiscoDataContext Database)
         {
-            SystemConfiguration config = db.DiscoConfiguration;
+            SystemConfiguration config = Database.DiscoConfiguration;
             //config.DataStoreLocation = DataStoreLocation;
             config.ProxyAddress = ProxyAddress;
             config.ProxyPort = ProxyPort;
@@ -112,11 +112,11 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
             config.ProxyPassword = ProxyPassword;
             DiscoApplication.SetGlobalProxy(ProxyAddress, ProxyPort, ProxyUsername, ProxyPassword);
 
-            db.SaveChanges();
+            Database.SaveChanges();
 
             // Try and check for updates if needed - After Proxy Changed
-            if (db.DiscoConfiguration.UpdateLastCheck == null
-                || db.DiscoConfiguration.UpdateLastCheck.ResponseTimestamp < DateTime.Now.AddDays(-1))
+            if (Database.DiscoConfiguration.UpdateLastCheck == null
+                || Database.DiscoConfiguration.UpdateLastCheck.ResponseTimestamp < DateTime.Now.AddDays(-1))
             {
                 Disco.BI.Interop.Community.UpdateCheckTask.ScheduleNow();
             }
