@@ -10,6 +10,7 @@ using System.Web.Routing;
 using System.Web;
 using System.Web.Mvc.Html;
 using System.Globalization;
+using Disco.Services.Web.Bundles;
 
 namespace Disco.Services.Plugins
 {
@@ -93,34 +94,13 @@ namespace Disco.Services.Plugins
         #endregion
 
         #region Virtual Directories
-        //public static string WebHandlerResource(this PluginManifest pluginManifest, string resourcePath, RequestContext requestContext)
-        //{
-        //    var rootPath = WebHandlerRootUrl(pluginManifest, requestContext);
-        //    return string.Concat(rootPath, resourcePath);
-        //}
-        //public static string WebHandlerRootUrl(this PluginManifest pluginManifest, RequestContext requestContext)
-        //{
-        //    var tempPath = pluginManifest.WebHandlerActionUrl(requestContext, "_");
-        //    return tempPath.Substring(0, tempPath.LastIndexOf(@"/") + 1);
-        //}
-        //public static string WebHandlerActionUrl(this PluginManifest pluginManifest, RequestContext requestContext, string PluginAction)
-        //{
-        //    var routeValues = new RouteValueDictionary(new { PluginId = pluginManifest.Id, PluginAction = PluginAction });
-        //    return UrlHelper.GenerateUrl("Plugin", "PluginWebHandler", "Index", routeValues, RouteTable.Routes, requestContext, true);
-        //}
-        //public static string WebHandlerResourceUrl(this PluginManifest pluginManifest, RequestContext requestContext, string PluginAction)
-        //{
-        //    var routeValues = new RouteValueDictionary(new { PluginId = pluginManifest.Id, PluginAction = PluginAction });
 
-
-
-        //    return UrlHelper.GenerateUrl("Plugin", "PluginWebHandler", "Index", routeValues, RouteTable.Routes, requestContext, true);
-        //}
-
+        [Obsolete("Inherit ViewPages from 'Disco.Services.Plugins.WebViewPage' instead.")]
         public static HtmlString DiscoPluginResourceUrl<T>(this WebViewPage<T> ViewPage, string Resource)
         {
             return ViewPage.DiscoPluginResourceUrl(Resource, false);
         }
+        [Obsolete("Inherit ViewPages from 'Disco.Services.Plugins.WebViewPage' instead.")]
         public static HtmlString DiscoPluginResourceUrl<T>(this WebViewPage<T> ViewPage, string Resource, bool Download)
         {
             if (string.IsNullOrEmpty(Resource))
@@ -133,10 +113,12 @@ namespace Disco.Services.Plugins
 
             return ViewPage.DiscoPluginResourceUrl(Resource, false, manifest);
         }
+        [Obsolete("Inherit ViewPages from 'Disco.Services.Plugins.WebViewPage' instead.")]
         public static HtmlString DiscoPluginResourceUrl<T>(this WebViewPage<T> ViewPage, string Resource, bool Download, PluginManifest manifest)
         {
             return ViewPage.ViewContext.RequestContext.DiscoPluginResourceUrl(Resource, Download, manifest);
         }
+        [Obsolete]
         public static HtmlString DiscoPluginResourceUrl(this RequestContext RequestContext, string Resource, bool Download, PluginManifest manifest)
         {
             var resourcePath = manifest.WebResourcePath(Resource);
@@ -151,6 +133,7 @@ namespace Disco.Services.Plugins
 
             return new HtmlString(pluginActionUrl);
         }
+        [Obsolete("Inherit ViewPages from 'Disco.Services.Plugins.WebViewPage' instead.")]
         public static HtmlString DiscoPluginActionUrl<T>(this WebViewPage<T> ViewPage, string PluginAction)
         {
             if (string.IsNullOrEmpty(PluginAction))
@@ -163,16 +146,19 @@ namespace Disco.Services.Plugins
 
             return ViewPage.DiscoPluginActionUrl(PluginAction, manifest);
         }
+        [Obsolete("Inherit ViewPages from 'Disco.Services.Plugins.WebViewPage' instead.")]
         public static HtmlString DiscoPluginActionUrl<T>(this WebViewPage<T> ViewPage, string PluginAction, PluginManifest manifest)
         {
             return ViewPage.ViewContext.RequestContext.DiscoPluginActionUrl(PluginAction, manifest);
         }
+        [Obsolete("Inherit ViewPages from 'Disco.Services.Plugins.WebViewPage' instead.")]
         public static HtmlString DiscoPluginActionUrl(this RequestContext RequestContext, string PluginAction, PluginManifest manifest)
         {
             var routeValues = new RouteValueDictionary(new { PluginId = manifest.Id, PluginAction = PluginAction });
             string pluginActionUrl = UrlHelper.GenerateUrl("Plugin", null, null, routeValues, RouteTable.Routes, RequestContext, false);
             return new HtmlString(pluginActionUrl);
         }
+        [Obsolete("Inherit ViewPages from 'Disco.Services.Plugins.WebViewPage' instead.")]
         public static HtmlString DiscoPluginConfigureUrl<T>(this WebViewPage<T> ViewPage)
         {
             // Find Plugin
@@ -182,16 +168,19 @@ namespace Disco.Services.Plugins
 
             return ViewPage.DiscoPluginConfigureUrl(manifest);
         }
+        [Obsolete("Inherit ViewPages from 'Disco.Services.Plugins.WebViewPage' instead.")]
         public static HtmlString DiscoPluginConfigureUrl<T>(this WebViewPage<T> ViewPage, PluginManifest manifest)
         {
             return new HtmlString(ViewPage.ViewContext.RequestContext.DiscoPluginConfigureUrl(manifest));
         }
+        [Obsolete]
         public static string DiscoPluginConfigureUrl(this RequestContext RequestContext, PluginManifest manifest)
         {
             var routeValues = new RouteValueDictionary(new { PluginId = manifest.Id });
             string pluginActionUrl = UrlHelper.GenerateUrl("Config_Plugins_Configure", null, null, routeValues, RouteTable.Routes, RequestContext, false);
             return pluginActionUrl;
         }
+        [Obsolete("Inherit ViewPages from 'Disco.Services.Plugins.WebViewPage' instead.")]
         public static MvcForm DiscoPluginActionBeginForm<T>(this WebViewPage<T> ViewPage, string PluginAction, FormMethod method, IDictionary<string, object> htmlAttributes)
         {
             if (string.IsNullOrEmpty(PluginAction))
@@ -207,19 +196,29 @@ namespace Disco.Services.Plugins
 
             return ViewPage.FormHelper(pluginActionUrl, method, htmlAttributes);
         }
+        [Obsolete("Inherit ViewPages from 'Disco.Services.Plugins.WebViewPage' instead.")]
         public static MvcForm DiscoPluginActionBeginForm<T>(this WebViewPage<T> ViewPage, string PluginAction, FormMethod method)
         {
+#pragma warning disable 618
             return ViewPage.DiscoPluginActionBeginForm(PluginAction, method, null);
+#pragma warning restore 618
         }
+        [Obsolete("Inherit ViewPages from 'Disco.Services.Plugins.WebViewPage' instead.")]
         public static MvcForm DiscoPluginActionBeginForm<T>(this WebViewPage<T> ViewPage, string PluginAction, IDictionary<string, object> htmlAttributes)
         {
+#pragma warning disable 618
             return ViewPage.DiscoPluginActionBeginForm(PluginAction, FormMethod.Post, htmlAttributes);
+#pragma warning restore 618
         }
+        [Obsolete("Inherit ViewPages from 'Disco.Services.Plugins.WebViewPage' instead.")]
         public static MvcForm DiscoPluginActionBeginForm<T>(this WebViewPage<T> ViewPage, string PluginAction)
         {
+#pragma warning disable 618
             return ViewPage.DiscoPluginActionBeginForm(PluginAction, FormMethod.Post, null);
+#pragma warning restore 618
         }
 
+        [Obsolete("Inherit ViewPages from 'Disco.Services.Plugins.WebViewPage' instead.")]
         private static MvcForm FormHelper<T>(this WebViewPage<T> ViewPage, string formAction, FormMethod method, IDictionary<string, object> htmlAttributes)
         {
             TagBuilder builder = new TagBuilder("form");
@@ -244,7 +243,7 @@ namespace Disco.Services.Plugins
             return form;
         }
 
-
+        [Obsolete("Inherit ViewPages from 'Disco.Services.Plugins.WebViewPage' instead.")]
         public static void DiscoPluginRegisterStylesheet<T>(this WebViewPage<T> ViewPage, string Resource)
         {
             if (string.IsNullOrEmpty(Resource))
@@ -257,10 +256,12 @@ namespace Disco.Services.Plugins
 
             ViewPage.DiscoPluginRegisterStylesheet(Resource, manifest);
         }
+        [Obsolete("Inherit ViewPages from 'Disco.Services.Plugins.WebViewPage' instead.")]
         public static void DiscoPluginRegisterStylesheet<T>(this WebViewPage<T> ViewPage, string Resource, PluginManifest manifest)
         {
             ViewPage.ViewContext.RequestContext.DiscoPluginRegisterStylesheet(Resource, manifest);
         }
+        [Obsolete]
         public static void DiscoPluginRegisterStylesheet(this RequestContext RequestContext, string Resource, PluginManifest manifest)
         {
             var resourcePath = manifest.WebResourcePath(Resource);
@@ -272,11 +273,11 @@ namespace Disco.Services.Plugins
 
             HtmlString pluginResourceUrlHtml = new HtmlString(pluginResourceUrl);
 
-            var deferredBundles = RequestContext.HttpContext.Items["Bundles.UIExtensionCss"] as List<HtmlString>;
+            var deferredBundles = RequestContext.HttpContext.Items[Bundle.UIExtensionCssKey] as List<HtmlString>;
             if (deferredBundles == null)
             {
                 deferredBundles = new List<HtmlString>();
-                HttpContext.Current.Items["Bundles.UIExtensionCss"] = deferredBundles;
+                HttpContext.Current.Items[Bundle.UIExtensionCssKey] = deferredBundles;
             }
             if (!deferredBundles.Contains(pluginResourceUrlHtml))
                 deferredBundles.Add(pluginResourceUrlHtml);
@@ -285,6 +286,7 @@ namespace Disco.Services.Plugins
         #endregion
 
         #region Request Caching
+        [Obsolete]
         public static void SetCacheability(this PluginWebHandler Handler, TimeSpan CacheDuration)
         {
             var cache = Handler.HostController.Response.Cache;
@@ -293,6 +295,7 @@ namespace Disco.Services.Plugins
             cache.SetValidUntilExpires(true);
             cache.SetCacheability(HttpCacheability.Private);
         }
+        [Obsolete]
         public static void SetCacheabilityOff(this PluginWebHandler Handler)
         {
             var cache = Handler.HostController.Response.Cache;
@@ -302,6 +305,7 @@ namespace Disco.Services.Plugins
         #endregion
 
         #region Render Partial Compiled
+        [Obsolete]
         private static void RenderPartialCompiledInternal(this HtmlHelper htmlHelper, Type viewType, object model, TextWriter writer)
         {
             if (writer == null)
@@ -315,15 +319,19 @@ namespace Disco.Services.Plugins
             HttpContextBase httpContext = htmlHelper.ViewContext.HttpContext;
             page.ExecutePageHierarchy(new WebPageContext(httpContext, null, model), writer, null);
         }
+        [Obsolete]
         public static MvcHtmlString PartialCompiled(this HtmlHelper htmlHelper, Type viewType)
         {
             return PartialCompiled(htmlHelper, viewType, null);
         }
+        [Obsolete]
         public static MvcHtmlString PartialCompiled(this HtmlHelper htmlHelper, Type viewType, object model)
         {
             using (StringWriter writer = new StringWriter(CultureInfo.CurrentCulture))
             {
+#pragma warning disable 618
                 htmlHelper.RenderPartialCompiledInternal(viewType, model, writer);
+#pragma warning restore 618
                 return MvcHtmlString.Create(writer.ToString());
             }
         }

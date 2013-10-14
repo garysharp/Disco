@@ -34,16 +34,16 @@ namespace Disco.Web.Extensions
         {
             htmlHelper.RenderPartialCompiledInternal(viewType, model, htmlHelper.ViewContext.Writer);
         }
-        public static MvcHtmlString PartialCompiled(this HtmlHelper htmlHelper, Type viewType)
+        public static HtmlString PartialCompiled(this HtmlHelper htmlHelper, Type viewType)
         {
             return PartialCompiled(htmlHelper, viewType, null);
         }
-        public static MvcHtmlString PartialCompiled(this HtmlHelper htmlHelper, Type viewType, object model)
+        public static HtmlString PartialCompiled(this HtmlHelper htmlHelper, Type viewType, object model)
         {
             using (StringWriter writer = new StringWriter(CultureInfo.CurrentCulture))
             {
                 htmlHelper.RenderPartialCompiledInternal(viewType, model, writer);
-                return MvcHtmlString.Create(writer.ToString());
+                return new HtmlString(writer.ToString());
             }
         }
         #endregion

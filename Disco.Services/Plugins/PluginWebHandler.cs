@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Disco.Data.Repository;
+using Disco.Models.Repository;
+using Disco.Services.Authorization;
+using Disco.Services.Users;
+using RazorGenerator.Mvc;
+using System;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using RazorGenerator.Mvc;
 
 namespace Disco.Services.Plugins
 {
@@ -14,18 +16,103 @@ namespace Disco.Services.Plugins
     {
         public PluginManifest Manifest { get; set; }
         public Controller HostController { get; set; }
+        protected DiscoDataContext Database;
+
+        public void OnActionExecuting()
+        {
+            this.Database = new DiscoDataContext();
+            this.Database.Configuration.LazyLoadingEnabled = false;
+        }
 
         public abstract ActionResult ExecuteAction(string ActionName);
 
         public virtual void Dispose()
         {
-            // Nothing in Base Class
+            if (this.Database != null)
+            {
+                this.Database.Dispose();
+                this.Database = null;
+            }
         }
+
+        public AuthorizationToken Authorization
+        {
+            get
+            {
+                return UserService.CurrentAuthorization;
+            }
+        }
+
+        public User CurrentUser
+        {
+            get
+            {
+                return UserService.CurrentUser;
+            }
+        }
+
+        #region Caching
+
+        public void SetCacheability(TimeSpan CacheDuration)
+        {
+            var cache = this.HostController.Response.Cache;
+            cache.SetOmitVaryStar(true);
+            cache.SetExpires(DateTime.Now.Add(CacheDuration));
+            cache.SetValidUntilExpires(true);
+            cache.SetCacheability(HttpCacheability.Private);
+        }
+        public void SetCacheabilityOff()
+        {
+            var cache = this.HostController.Response.Cache;
+            cache.SetExpires(DateTime.Now.AddDays(-1));
+            cache.SetCacheability(HttpCacheability.NoCache);
+        }
+
+        #endregion
 
         #region Action Results
 
         #region Compiled View
         private static string[] _viewFileNames = new string[] { "cshtml" };
+
+        public ActionResult CompiledView<ViewType>(object Model, bool UseDiscoLayout) where ViewType : WebViewPage
+        {
+            string layoutPath = UseDiscoLayout ? "~/Views/Shared/_Layout.cshtml" : null;
+
+            IView v = new PrecompiledMvcView(this.HostController.Request.Path, layoutPath, typeof(ViewType), false, _viewFileNames);
+
+            if (Model != null)
+                this.HostController.ViewData.Model = Model;
+
+            return new ViewResult { View = v, ViewData = this.HostController.ViewData, TempData = this.HostController.TempData };
+        }
+        public ActionResult CompiledView<ViewType>(bool UseDiscoLayout) where ViewType : WebViewPage
+        {
+            return this.CompiledView<ViewType>(null, UseDiscoLayout);
+        }
+        public ActionResult CompiledView<ViewType>(object Model) where ViewType : WebViewPage
+        {
+            return this.CompiledView<ViewType>(Model, true);
+        }
+        public ActionResult CompiledView<ViewType>() where ViewType : WebViewPage
+        {
+            return this.CompiledView<ViewType>(false, true);
+        }
+        public ActionResult CompiledPartialView<ViewType>(object Model) where ViewType : WebViewPage
+        {
+            IView v = new PrecompiledMvcView(this.HostController.Request.Path, typeof(ViewType), false, _viewFileNames);
+
+            if (Model != null)
+                this.HostController.ViewData.Model = Model;
+
+            return new PartialViewResult { View = v, ViewData = this.HostController.ViewData, TempData = this.HostController.TempData };
+        }
+        public ActionResult CompiledPartialView<ViewType>() where ViewType : WebViewPage
+        {
+            return this.CompiledView<ViewType>();
+        }
+        
+        [Obsolete("Use Generic Methods")]
         public ActionResult CompiledView(Type CompiledViewType, object Model, bool UseDiscoLayout)
         {
             string layoutPath = UseDiscoLayout ? "~/Views/Shared/_Layout.cshtml" : null;
@@ -37,19 +124,23 @@ namespace Disco.Services.Plugins
 
             return new ViewResult { View = v, ViewData = this.HostController.ViewData, TempData = this.HostController.TempData };
         }
+        [Obsolete("Use Generic Methods")]
         public ActionResult CompiledView(Type CompiledViewType, bool UseDiscoLayout)
         {
             return this.CompiledView(CompiledViewType, null, UseDiscoLayout);
         }
+        [Obsolete("Use Generic Methods")]
         public ActionResult CompiledView(Type CompiledViewType, object Model)
         {
             return this.CompiledView(CompiledViewType, Model, true);
         }
-        public  ActionResult CompiledView(Type CompiledViewType)
+        [Obsolete("Use Generic Methods")]
+        public ActionResult CompiledView(Type CompiledViewType)
         {
             return this.CompiledView(CompiledViewType, false, true);
         }
-        public  ActionResult CompiledPartialView(Type PartialCompiledViewType, object Model)
+        [Obsolete("Use Generic Methods")]
+        public ActionResult CompiledPartialView(Type PartialCompiledViewType, object Model)
         {
             IView v = new PrecompiledMvcView(this.HostController.Request.Path, PartialCompiledViewType, false, _viewFileNames);
 
@@ -58,7 +149,8 @@ namespace Disco.Services.Plugins
 
             return new PartialViewResult { View = v, ViewData = this.HostController.ViewData, TempData = this.HostController.TempData };
         }
-        public  ActionResult CompiledPartialView(Type PartialCompiledViewType)
+        [Obsolete("Use Generic Methods")]
+        public ActionResult CompiledPartialView(Type PartialCompiledViewType)
         {
             return this.CompiledView(PartialCompiledViewType, null);
         }

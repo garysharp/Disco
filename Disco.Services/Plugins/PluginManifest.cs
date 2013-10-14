@@ -12,6 +12,8 @@ using Disco.Data.Repository;
 using Disco.Services.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Disco.Services.Authorization;
+using System.Web.Routing;
 
 namespace Disco.Services.Plugins
 {
@@ -54,6 +56,8 @@ namespace Disco.Services.Plugins
         private Type ConfigurationHandlerType { get; set; }
         [JsonIgnore]
         private Type WebHandlerType { get; set; }
+        [JsonIgnore]
+        private DiscoAuthorizeBaseAttribute[] WebHandlerAuthorizers { get; set; }
 
         [JsonIgnore]
         public string PluginLocation { get; private set; }
@@ -426,6 +430,18 @@ namespace Disco.Services.Plugins
             if (!typeof(PluginWebHandler).IsAssignableFrom(this.WebHandlerType))
                 throw new ArgumentException("The Plugin WebHandlerType must inherit Disco.Services.Plugins.PluginWebHandler", "WebHandlerType");
 
+            // Determine WebHandler Authorize Attributes
+            if (this.WebHandlerAuthorizers == null)
+            {
+                this.WebHandlerAuthorizers = this.WebHandlerType.GetCustomAttributes<DiscoAuthorizeBaseAttribute>(true).ToArray();
+            }
+            if (this.WebHandlerAuthorizers.Length > 0)
+            {
+                var attributeDenied = this.WebHandlerAuthorizers.FirstOrDefault(a => !a.IsAuthorized(HostController.HttpContext));
+                if (attributeDenied != null)
+                    throw new AccessDeniedException(attributeDenied.HandleUnauthorizedMessage());
+            }
+
             var handler = (PluginWebHandler)Activator.CreateInstance(this.WebHandlerType);
 
             handler.Manifest = this;
@@ -479,6 +495,18 @@ namespace Disco.Services.Plugins
             WebResourceHashes[resourceKey] = resourceHash;
 
             return new Tuple<string, string>(resourcePath, resourceHash.Item1);
+        }
+        public string WebResourceUrl(string Resource)
+        {
+            var resourcePath = this.WebResourcePath(Resource);
+            
+            var url = UrlHelper.GenerateUrl("Plugin_Resources", null, null,
+                new RouteValueDictionary(new Dictionary<string, object>() { { "PluginId", this.Id }, { "res", Resource } }),
+                RouteTable.Routes, HttpContext.Current.Request.RequestContext, false);
+            
+            url += string.Format("?v={0}", resourcePath.Item2);
+
+            return url;
         }
 
         public void LogException(Exception PluginException)

@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Disco.Services.Web.Bundles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace Disco.Services.Plugins.Features.UIExtension.Results
 {
@@ -16,13 +19,13 @@ namespace Disco.Services.Plugins.Features.UIExtension.Results
             : base(Source)
         {
             this._resource = Resource;
-            this._resourceUrl = HttpContext.Current.Request.RequestContext.DiscoPluginResourceUrl(Resource, false, Source.PluginManifest);
+            this._resourceUrl = new HtmlString(Source.PluginManifest.WebResourceUrl(Resource));
 
-            var deferredBundles = HttpContext.Current.Items["Bundles.UIExtensionCss"] as List<HtmlString>;
+            var deferredBundles = HttpContext.Current.Items[Bundle.UIExtensionCssKey] as List<HtmlString>;
             if (deferredBundles == null)
             {
                 deferredBundles = new List<HtmlString>();
-                HttpContext.Current.Items["Bundles.UIExtensionCss"] = deferredBundles;
+                HttpContext.Current.Items[Bundle.UIExtensionCssKey] = deferredBundles;
             }
             if (!deferredBundles.Contains(this._resourceUrl))
                 deferredBundles.Add(this._resourceUrl);

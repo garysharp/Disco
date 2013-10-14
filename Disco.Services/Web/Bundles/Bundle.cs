@@ -11,6 +11,10 @@ namespace Disco.Services.Web.Bundles
 {
     public class Bundle
     {
+        public const string DeferredKey = "Bundles.Deferred";
+        public const string UIExtensionScriptsKey = "Bundles.UIExtensionScripts";
+        public const string UIExtensionCssKey = "Bundles.UIExtensionCss";
+
         private DateTime? _FileLastModified { get; set; }
         private string _FileHash { get; set; }
         private string _VersionUrl { get; set; }

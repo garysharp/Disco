@@ -16,21 +16,21 @@ namespace Disco.Services.Web
             // Ensure 'App-Relative' Url:
             BundleUrl = BundleUrl.StartsWith("~/") ? BundleUrl : (BundleUrl.StartsWith("/") ? string.Concat("~", BundleUrl) : string.Concat("~/", BundleUrl));
 
-            var deferredBundles = htmlHelper.ViewContext.HttpContext.Items["Bundles.Deferred"] as List<string>;
+            var deferredBundles = htmlHelper.ViewContext.HttpContext.Items[Bundle.DeferredKey] as List<string>;
             if (deferredBundles == null)
             {
                 deferredBundles = new List<string>();
-                htmlHelper.ViewContext.HttpContext.Items["Bundles.Deferred"] = deferredBundles;
+                htmlHelper.ViewContext.HttpContext.Items[Bundle.DeferredKey] = deferredBundles;
             }
             if (!deferredBundles.Contains(BundleUrl))
                 deferredBundles.Add(BundleUrl);
         }
         public static HtmlString BundleRenderDeferred(this HtmlHelper htmlHelper)
         {
-            var deferredBundles = htmlHelper.ViewContext.HttpContext.Items["Bundles.Deferred"] as List<string>;
+            var deferredBundles = htmlHelper.ViewContext.HttpContext.Items[Bundle.DeferredKey] as List<string>;
 
-            var uiExtensionScripts = htmlHelper.ViewContext.HttpContext.Items["Bundles.UIExtensionScripts"] as List<HtmlString>;
-            var uiExtensionCss = htmlHelper.ViewContext.HttpContext.Items["Bundles.UIExtensionCss"] as List<HtmlString>;
+            var uiExtensionScripts = htmlHelper.ViewContext.HttpContext.Items[Bundle.UIExtensionScriptsKey] as List<HtmlString>;
+            var uiExtensionCss = htmlHelper.ViewContext.HttpContext.Items[Bundle.UIExtensionCssKey] as List<HtmlString>;
 
             if (deferredBundles != null || uiExtensionScripts != null || uiExtensionCss != null)
             {

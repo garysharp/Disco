@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace Disco.Services.Plugins.Features.UIExtension.Results
 {
@@ -18,7 +19,7 @@ namespace Disco.Services.Plugins.Features.UIExtension.Results
             this.results = Results;
         }
 
-        public override void ExecuteResult<T>(System.Web.Mvc.WebViewPage<T> page)
+        public override void ExecuteResult<T>(WebViewPage<T> page)
         {
             foreach (var result in this.results)
             {

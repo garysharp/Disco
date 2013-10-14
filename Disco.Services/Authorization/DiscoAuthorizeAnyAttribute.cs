@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace Disco.Services.Authorization
 {
-    public class DiscoAuthorizeAnyAttribute : AuthorizeAttribute
+    public class DiscoAuthorizeAnyAttribute : DiscoAuthorizeBaseAttribute
     {
         string[] authorizedClaims;
 
@@ -20,22 +20,17 @@ namespace Disco.Services.Authorization
             this.authorizedClaims = AuthorisedClaims;
         }
 
-        protected override bool AuthorizeCore(System.Web.HttpContextBase httpContext)
+        public override bool IsAuthorized(System.Web.HttpContextBase httpContext)
         {
-            if (httpContext == null)
-                throw new ArgumentNullException("httpContext");
-
-            var authToken = UserService.CurrentAuthorization;
-
-            if (authToken == null)
+            if (Token == null)
                 return false; // No Current User
 
-            return authToken.HasAny(authorizedClaims);
+            return Token.HasAny(authorizedClaims);
         }
 
-        protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
+        public override string HandleUnauthorizedMessage()
         {
-            filterContext.Result = new HttpUnauthorizedResult(AuthorizationToken.BuildRequireAnyMessage(authorizedClaims));
+            return AuthorizationToken.BuildRequireAnyMessage(authorizedClaims);
         }
     }
 }

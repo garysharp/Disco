@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Disco.Services.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -18,6 +19,14 @@ namespace Disco.Services.Plugins
 
             if (methodDescriptor == null)
                 return this.HttpNotFound("Unknown Plugin Method");
+
+            // Authorize Method
+            if (methodDescriptor.Authorizers.Length > 0)
+            {
+                var attributeDenied = methodDescriptor.Authorizers.FirstOrDefault(a => !a.IsAuthorized(HostController.HttpContext));
+                if (attributeDenied != null)
+                    return new HttpUnauthorizedResult(attributeDenied.HandleUnauthorizedMessage());
+            }
 
             var methodParams = BuildMethodParameters(handlerType, methodDescriptor.MethodInfo, ActionName, this.HostController);
 
@@ -63,24 +72,6 @@ namespace Disco.Services.Plugins
                         parameterValue = methodParam.DefaultValue;
 
                 result[i] = parameterValue;
-
-                //var paramInstance = Activator.CreateInstance(methodParam.ParameterType);
-                
-                //IModelBinder binder = ModelBinders.Binders.GetBinder(methodParam.ParameterType);
-                //ModelBindingContext bindingContext = new ModelBindingContext
-                //{
-                //    ModelMetadata = ModelMetadataProviders.Current.GetMetadataForType(() => paramInstance, methodParam.ParameterType),
-                //    ModelName = methodParam.Name,
-                //    ModelState = HostController.ModelState,
-                //    PropertyFilter = (p) => true,
-                //    ValueProvider = HostController.ValueProvider
-                //};
-                //binder.BindModel(HostController.ControllerContext, bindingContext);
-
-                //if (methodParam.HasDefaultValue && paramInstance == null)
-                //    paramInstance = methodParam.DefaultValue;
-
-                //result[i] = paramInstance;
             }
 
             return result;
@@ -102,7 +93,8 @@ namespace Disco.Services.Plugins
                     var item = new WebHandlerCachedItem()
                     {
                         Method = method.Name,
-                        MethodInfo = method
+                        MethodInfo = method,
+                        Authorizers = method.GetCustomAttributes<DiscoAuthorizeBaseAttribute>().ToArray()
                     };
                     result.Add(item.Method.ToLower(), item);
                 }
@@ -115,6 +107,7 @@ namespace Disco.Services.Plugins
         {
             public string Method { get; set; }
             public MethodInfo MethodInfo { get; set; }
+            public DiscoAuthorizeBaseAttribute[] Authorizers { get; set; }
         }
         #endregion
     }

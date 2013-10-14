@@ -11,7 +11,6 @@ namespace Disco.Web.Controllers
 {
     public partial class PluginWebHandlerController : Controller
     {
-        [DiscoAuthorize(Claims.DiscoAdminAccount)]
         [OutputCache(Duration = 0, Location = System.Web.UI.OutputCacheLocation.None)]
         public virtual ActionResult Index(string PluginId, string PluginAction)
         {
@@ -19,11 +18,20 @@ namespace Disco.Web.Controllers
 
             if (manifest.HasWebHandler)
             {
-                using (var pluginWebHandler = manifest.CreateWebHandler(this))
+                try
                 {
-                    return pluginWebHandler.ExecuteAction(PluginAction);
+                    using (var pluginWebHandler = manifest.CreateWebHandler(this))
+                    {
+                        pluginWebHandler.OnActionExecuting();
+                        return pluginWebHandler.ExecuteAction(PluginAction);
+                    }
+                }
+                catch (AccessDeniedException accessDeniedException)
+                {
+                    return new HttpUnauthorizedResult(accessDeniedException.Message);
                 }
             }
+
             return HttpNotFound("Plugin has no Web Handler");
         }
 
@@ -42,7 +50,7 @@ namespace Disco.Web.Controllers
             {
                 return HttpNotFound("Plugin Resource Not Found");
             }
-            
+
             var pluginResourcePath = pluginResource.Item1;
 
             var mimeType = Disco.BI.Interop.MimeTypes.ResolveMimeType(pluginResourcePath);
