@@ -969,61 +969,8 @@ WriteLiteral("\',\r\n                        \'DateOfPurchase\',\r\n            
 "                     true\r\n                        );\r\n                    });\r\n" +
 "                </script>\r\n            </td>\r\n        </tr>\r\n");
 
-WriteLiteral("        <tr>\r\n            <th>Claim Form Sent Date\r\n            </th>\r\n          " +
-"  <td>\r\n");
-
-WriteLiteral("                ");
-
             
-            #line 334 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.ClaimFormSentDate, "Not Sent", "Job_JobMetaInsurance_ClaimFormSentDate"));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n                <span");
-
-WriteLiteral(" id=\"Job_JobMetaInsurance_ClaimFormSentUserId\"");
-
-WriteLiteral(">");
-
-            
-            #line 335 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                                                Write(string.IsNullOrEmpty(Model.Job.JobMetaInsurance.ClaimFormSentUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaInsurance.ClaimFormSentUser.ToString()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</span>\r\n                <script>\r\n                    $(function () {\r\n         " +
-"               var updateUrl = \'");
-
-            
-            #line 338 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                     Write(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\';\r\n                        var jobOpenDate = \'");
-
-            
-            #line 339 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                       Write(Model.Job.OpenedDate.ToJavascriptDateTime());
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"';
-
-                        document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Claim Form Sent Date', 'Job_JobMetaInsurance_ClaimFormSentDate', 'Job_JobMetaInsurance_ClaimFormSentUserId', 'InsuranceClaimFormSentDate', 'Not Sent', jobOpenDate, false);
-                    });
-                </script>
-            </td>
-        </tr>
-");
-
-            
-            #line 346 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 330 "..\..\Views\Job\JobParts\Insurance.cshtml"
         }
         else
         {
@@ -1040,7 +987,7 @@ WriteLiteral(">Date of Loss or Damage\r\n            </th>\r\n            <td>\r
 WriteLiteral("                ");
 
             
-            #line 353 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 337 "..\..\Views\Job\JobParts\Insurance.cshtml"
            Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.LossOrDamageDate, "Unknown", null));
 
             
@@ -1052,13 +999,13 @@ WriteLiteral("        <tr>\r\n            <th>Event Location\r\n            </th
 "\r\n");
 
             
-            #line 360 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 344 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 360 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 344 "..\..\Views\Job\JobParts\Insurance.cshtml"
                  if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.EventLocation))
                 {
 
@@ -1072,7 +1019,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
 
             
-            #line 363 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 347 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 }
                 else
                 {
@@ -1081,14 +1028,14 @@ WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
             #line default
             #line hidden
             
-            #line 366 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 350 "..\..\Views\Job\JobParts\Insurance.cshtml"
                Write(Model.Job.JobMetaInsurance.EventLocation);
 
             
             #line default
             #line hidden
             
-            #line 366 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 350 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                                              
                 }
 
@@ -1100,13 +1047,13 @@ WriteLiteral("            </td>\r\n        </tr>\r\n");
 WriteLiteral("        <tr>\r\n            <th>Description\r\n            </th>\r\n            <td>\r\n");
 
             
-            #line 374 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 358 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 374 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 358 "..\..\Views\Job\JobParts\Insurance.cshtml"
                  if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.Description))
                 {
 
@@ -1120,7 +1067,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;None&gt;</span>\r\n");
 
             
-            #line 377 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 361 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 }
                 else
                 {
@@ -1129,14 +1076,14 @@ WriteLiteral(">&lt;None&gt;</span>\r\n");
             #line default
             #line hidden
             
-            #line 380 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 364 "..\..\Views\Job\JobParts\Insurance.cshtml"
                Write(Model.Job.JobMetaInsurance.Description);
 
             
             #line default
             #line hidden
             
-            #line 380 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 364 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                                            
                 }
 
@@ -1152,13 +1099,13 @@ WriteLiteral(" style=\"width: 200px;\"");
 WriteLiteral(">Caused by Third Party\r\n            </th>\r\n            <td>\r\n");
 
             
-            #line 388 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 372 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 388 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 372 "..\..\Views\Job\JobParts\Insurance.cshtml"
                  if (Model.Job.JobMetaInsurance.ThirdPartyCaused)
                 {
 
@@ -1175,13 +1122,13 @@ WriteLiteral(">\r\n                        <div>\r\n                            
 "e</h5>\r\n");
 
             
-            #line 393 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 377 "..\..\Views\Job\JobParts\Insurance.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 393 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 377 "..\..\Views\Job\JobParts\Insurance.cshtml"
                              if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.ThirdPartyCausedName))
                             {
 
@@ -1195,7 +1142,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;Unknown&gt;</span>\r\n");
 
             
-            #line 396 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 380 "..\..\Views\Job\JobParts\Insurance.cshtml"
                             }
                             else
                             {
@@ -1204,14 +1151,14 @@ WriteLiteral(">&lt;Unknown&gt;</span>\r\n");
             #line default
             #line hidden
             
-            #line 399 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 383 "..\..\Views\Job\JobParts\Insurance.cshtml"
                            Write(Model.Job.JobMetaInsurance.ThirdPartyCausedName);
 
             
             #line default
             #line hidden
             
-            #line 399 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 383 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                                                                 
                             }
 
@@ -1222,13 +1169,13 @@ WriteLiteral("                        </div>\r\n                        <div>\r\
 "          <h5>Why Third Parties Fault</h5>\r\n");
 
             
-            #line 404 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 388 "..\..\Views\Job\JobParts\Insurance.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 404 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 388 "..\..\Views\Job\JobParts\Insurance.cshtml"
                              if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.ThirdPartyCausedWhy))
                             {
 
@@ -1242,7 +1189,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;Unknown&gt;</span>\r\n");
 
             
-            #line 407 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 391 "..\..\Views\Job\JobParts\Insurance.cshtml"
                             }
                             else
                             {
@@ -1251,14 +1198,14 @@ WriteLiteral(">&lt;Unknown&gt;</span>\r\n");
             #line default
             #line hidden
             
-            #line 410 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 394 "..\..\Views\Job\JobParts\Insurance.cshtml"
                            Write(Model.Job.JobMetaInsurance.ThirdPartyCausedWhy);
 
             
             #line default
             #line hidden
             
-            #line 410 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 394 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                                                                
                             }
 
@@ -1268,7 +1215,7 @@ WriteLiteral(">&lt;Unknown&gt;</span>\r\n");
 WriteLiteral("                        </div>\r\n                    </div>\r\n");
 
             
-            #line 414 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 398 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 }
                 else
                 {
@@ -1283,7 +1230,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;Not Caused by Third Party&gt;</span>\r\n");
 
             
-            #line 418 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 402 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 }
 
             
@@ -1295,13 +1242,13 @@ WriteLiteral("        <tr>\r\n            <th>Witnessed by (Name/Address)\r\n   
 "         <td>\r\n");
 
             
-            #line 425 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 409 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 425 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 409 "..\..\Views\Job\JobParts\Insurance.cshtml"
                  if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.WitnessesNamesAddresses))
                 {
 
@@ -1315,7 +1262,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
 
             
-            #line 428 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 412 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 }
                 else
                 {
@@ -1324,14 +1271,14 @@ WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
             #line default
             #line hidden
             
-            #line 431 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 415 "..\..\Views\Job\JobParts\Insurance.cshtml"
                Write(Model.Job.JobMetaInsurance.WitnessesNamesAddresses);
 
             
             #line default
             #line hidden
             
-            #line 431 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 415 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                                                        
                 }
 
@@ -1344,13 +1291,13 @@ WriteLiteral("        <tr>\r\n            <th>Burglary/Theft - Method of Entry\r
 "\r\n            <td>\r\n");
 
             
-            #line 439 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 423 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 439 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 423 "..\..\Views\Job\JobParts\Insurance.cshtml"
                  if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.BurglaryTheftMethodOfEntry))
                 {
 
@@ -1364,7 +1311,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
 
             
-            #line 442 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 426 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 }
                 else
                 {
@@ -1373,14 +1320,14 @@ WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
             #line default
             #line hidden
             
-            #line 445 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 429 "..\..\Views\Job\JobParts\Insurance.cshtml"
                Write(Model.Job.JobMetaInsurance.BurglaryTheftMethodOfEntry);
 
             
             #line default
             #line hidden
             
-            #line 445 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 429 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                                                           
                 }
 
@@ -1398,7 +1345,7 @@ WriteLiteral(">Property Last Seen\r\n            </th>\r\n            <td>\r\n")
 WriteLiteral("                ");
 
             
-            #line 453 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 437 "..\..\Views\Job\JobParts\Insurance.cshtml"
            Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.PropertyLastSeenDate, "Unknown", null));
 
             
@@ -1413,13 +1360,13 @@ WriteLiteral(" style=\"width: 200px;\"");
 WriteLiteral(">&nbsp;\r\n            Police Notified\r\n            </th>\r\n            <td>\r\n");
 
             
-            #line 461 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 445 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 461 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 445 "..\..\Views\Job\JobParts\Insurance.cshtml"
                  if (Model.Job.JobMetaInsurance.PoliceNotified)
                 {
 
@@ -1435,13 +1382,13 @@ WriteLiteral(" style=\"padding-left: 25px;\"");
 WriteLiteral(">\r\n                        <div>\r\n                            <h5>Station</h5>\r\n");
 
             
-            #line 466 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 450 "..\..\Views\Job\JobParts\Insurance.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 466 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 450 "..\..\Views\Job\JobParts\Insurance.cshtml"
                              if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.PoliceNotifiedStation))
                             {
 
@@ -1455,7 +1402,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;Unknown&gt;</span>\r\n");
 
             
-            #line 469 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 453 "..\..\Views\Job\JobParts\Insurance.cshtml"
                             }
                             else
                             {
@@ -1464,14 +1411,14 @@ WriteLiteral(">&lt;Unknown&gt;</span>\r\n");
             #line default
             #line hidden
             
-            #line 472 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 456 "..\..\Views\Job\JobParts\Insurance.cshtml"
                            Write(Model.Job.JobMetaInsurance.PoliceNotifiedStation);
 
             
             #line default
             #line hidden
             
-            #line 472 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 456 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                                                                  
                             }
 
@@ -1484,7 +1431,7 @@ WriteLiteral("                        </div>\r\n                        <div>\r\
 WriteLiteral("                            ");
 
             
-            #line 477 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 461 "..\..\Views\Job\JobParts\Insurance.cshtml"
                        Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.PoliceNotifiedDate, "Unknown", null));
 
             
@@ -1494,13 +1441,13 @@ WriteLiteral("\r\n                        </div>\r\n                        <div
 "            <h5>Crime Report #</h5>\r\n");
 
             
-            #line 481 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 465 "..\..\Views\Job\JobParts\Insurance.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 481 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 465 "..\..\Views\Job\JobParts\Insurance.cshtml"
                              if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.PoliceNotifiedCrimeReportNo))
                             {
 
@@ -1514,7 +1461,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;Unknown&gt;</span>\r\n");
 
             
-            #line 484 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 468 "..\..\Views\Job\JobParts\Insurance.cshtml"
                             }
                             else
                             {
@@ -1523,14 +1470,14 @@ WriteLiteral(">&lt;Unknown&gt;</span>\r\n");
             #line default
             #line hidden
             
-            #line 487 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 471 "..\..\Views\Job\JobParts\Insurance.cshtml"
                            Write(Model.Job.JobMetaInsurance.PoliceNotifiedCrimeReportNo);
 
             
             #line default
             #line hidden
             
-            #line 487 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 471 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                                                                        
                             }
 
@@ -1540,7 +1487,7 @@ WriteLiteral(">&lt;Unknown&gt;</span>\r\n");
 WriteLiteral("                        </div>\r\n                    </div>\r\n");
 
             
-            #line 491 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 475 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 }
                 else
                 {
@@ -1555,7 +1502,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;Not Notified&gt;</span>\r\n");
 
             
-            #line 495 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 479 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 }
 
             
@@ -1567,13 +1514,13 @@ WriteLiteral("        <tr>\r\n            <th>Action to Recover/Reduce Loss\r\n 
 "           <td>\r\n");
 
             
-            #line 502 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 486 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 502 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 486 "..\..\Views\Job\JobParts\Insurance.cshtml"
                  if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.RecoverReduceAction))
                 {
 
@@ -1587,7 +1534,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
 
             
-            #line 505 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 489 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 }
                 else
                 {
@@ -1596,14 +1543,14 @@ WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
             #line default
             #line hidden
             
-            #line 508 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 492 "..\..\Views\Job\JobParts\Insurance.cshtml"
                Write(Model.Job.JobMetaInsurance.RecoverReduceAction);
 
             
             #line default
             #line hidden
             
-            #line 508 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 492 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                                                    
                 }
 
@@ -1616,13 +1563,13 @@ WriteLiteral("        <tr>\r\n            <th>Other Interested Parties\r\n      
 "      <td>\r\n");
 
             
-            #line 516 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 500 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 516 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 500 "..\..\Views\Job\JobParts\Insurance.cshtml"
                  if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.OtherInterestedParties))
                 {
 
@@ -1636,7 +1583,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
 
             
-            #line 519 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 503 "..\..\Views\Job\JobParts\Insurance.cshtml"
                 }
                 else
                 {
@@ -1645,14 +1592,14 @@ WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
             #line default
             #line hidden
             
-            #line 522 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 506 "..\..\Views\Job\JobParts\Insurance.cshtml"
                Write(Model.Job.JobMetaInsurance.OtherInterestedParties);
 
             
             #line default
             #line hidden
             
-            #line 522 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 506 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                                                       
                 }
 
@@ -1670,7 +1617,7 @@ WriteLiteral(">Date of Purchase\r\n            </th>\r\n            <td>\r\n");
 WriteLiteral("                ");
 
             
-            #line 530 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 514 "..\..\Views\Job\JobParts\Insurance.cshtml"
            Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.DateOfPurchase, "Unknown", null));
 
             
@@ -1679,19 +1626,10 @@ WriteLiteral("                ");
 WriteLiteral("\r\n            </td>\r\n        </tr>\r\n");
 
             
-            #line 533 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 517 "..\..\Views\Job\JobParts\Insurance.cshtml"
         }
-    }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("    ");
-
-            
-            #line 535 "..\..\Views\Job\JobParts\Insurance.cshtml"
-     if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent))
-    {
+        if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent))
+        {
 
             
             #line default
@@ -1702,7 +1640,7 @@ WriteLiteral("        <tr>\r\n            <th>Claim Form Sent Date\r\n          
 WriteLiteral("                ");
 
             
-            #line 541 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 524 "..\..\Views\Job\JobParts\Insurance.cshtml"
            Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.ClaimFormSentDate, "Not Sent", "Job_JobMetaInsurance_ClaimFormSentDate"));
 
             
@@ -1715,7 +1653,7 @@ WriteLiteral(" id=\"Job_JobMetaInsurance_ClaimFormSentUserId\"");
 WriteLiteral(">");
 
             
-            #line 542 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 525 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                                                 Write(string.IsNullOrEmpty(Model.Job.JobMetaInsurance.ClaimFormSentUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaInsurance.ClaimFormSentUser.ToString()));
 
             
@@ -1725,7 +1663,7 @@ WriteLiteral("</span>\r\n                <script>\r\n                    $(funct
 "               var updateUrl = \'");
 
             
-            #line 545 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 528 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                      Write(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)));
 
             
@@ -1734,7 +1672,7 @@ WriteLiteral("</span>\r\n                <script>\r\n                    $(funct
 WriteLiteral("\';\r\n                        var jobOpenDate = \'");
 
             
-            #line 546 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 529 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                        Write(Model.Job.OpenedDate.ToJavascriptDateTime());
 
             
@@ -1750,10 +1688,10 @@ WriteLiteral(@"';
 ");
 
             
-            #line 553 "..\..\Views\Job\JobParts\Insurance.cshtml"
-    }
-    else
-    {
+            #line 536 "..\..\Views\Job\JobParts\Insurance.cshtml"
+        }
+        else
+        {
 
             
             #line default
@@ -1764,7 +1702,7 @@ WriteLiteral("        <tr>\r\n            <th>Claim Form Sent Date\r\n          
 WriteLiteral("                ");
 
             
-            #line 560 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 543 "..\..\Views\Job\JobParts\Insurance.cshtml"
            Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.ClaimFormSentDate, "Not Sent", "Job_JobMetaInsurance_ClaimFormSentDate"));
 
             
@@ -1777,7 +1715,7 @@ WriteLiteral(" id=\"Job_JobMetaInsurance_ClaimFormSentUserId\"");
 WriteLiteral(">");
 
             
-            #line 561 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 544 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                                                 Write(string.IsNullOrEmpty(Model.Job.JobMetaInsurance.ClaimFormSentUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaInsurance.ClaimFormSentUser.ToString()));
 
             
@@ -1786,7 +1724,8 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n            </td>\r\n        </tr>\r\n");
 
             
-            #line 564 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 547 "..\..\Views\Job\JobParts\Insurance.cshtml"
+        }
     }
 
             
@@ -1795,7 +1734,7 @@ WriteLiteral("</span>\r\n            </td>\r\n        </tr>\r\n");
 WriteLiteral("    ");
 
             
-            #line 565 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 549 "..\..\Views\Job\JobParts\Insurance.cshtml"
      if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.IsInsuranceClaim))
     {
 
@@ -1810,13 +1749,13 @@ WriteLiteral(" style=\"padding: 8px; text-align: center\"");
 WriteLiteral(">\r\n");
 
             
-            #line 572 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 556 "..\..\Views\Job\JobParts\Insurance.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 572 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 556 "..\..\Views\Job\JobParts\Insurance.cshtml"
                      if (Model.Job.JobMetaNonWarranty.IsInsuranceClaim)
                     {
                         
@@ -1824,14 +1763,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 574 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 558 "..\..\Views\Job\JobParts\Insurance.cshtml"
                    Write(Html.ActionLinkButton("Remove Insurance Claim", MVC.API.Job.UpdateNonWarrantyIsInsuranceClaim(Model.Job.Id, false, true)));
 
             
             #line default
             #line hidden
             
-            #line 574 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 558 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                                                                                                                                   
                     }
                     else
@@ -1841,14 +1780,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 578 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 562 "..\..\Views\Job\JobParts\Insurance.cshtml"
                    Write(Html.ActionLinkButton("Add Insurance Claim", MVC.API.Job.UpdateNonWarrantyIsInsuranceClaim(Model.Job.Id, true, true)));
 
             
             #line default
             #line hidden
             
-            #line 578 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 562 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                                                                                                                               
                     }
 
@@ -1858,7 +1797,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                </div>\r\n            </td>\r\n        </tr>\r\n");
 
             
-            #line 583 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 567 "..\..\Views\Job\JobParts\Insurance.cshtml"
     }
 
             

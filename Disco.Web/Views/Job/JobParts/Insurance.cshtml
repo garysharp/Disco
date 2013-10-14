@@ -327,22 +327,6 @@
                 </script>
             </td>
         </tr>
-        <tr>
-            <th>Claim Form Sent Date
-            </th>
-            <td>
-                @CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.ClaimFormSentDate, "Not Sent", "Job_JobMetaInsurance_ClaimFormSentDate")
-                <span id="Job_JobMetaInsurance_ClaimFormSentUserId">@(string.IsNullOrEmpty(Model.Job.JobMetaInsurance.ClaimFormSentUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaInsurance.ClaimFormSentUser.ToString()))</span>
-                <script>
-                    $(function () {
-                        var updateUrl = '@(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)))';
-                        var jobOpenDate = '@(Model.Job.OpenedDate.ToJavascriptDateTime())';
-
-                        document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Claim Form Sent Date', 'Job_JobMetaInsurance_ClaimFormSentDate', 'Job_JobMetaInsurance_ClaimFormSentUserId', 'InsuranceClaimFormSentDate', 'Not Sent', jobOpenDate, false);
-                    });
-                </script>
-            </td>
-        </tr>
         }
         else
         {
@@ -531,9 +515,8 @@
             </td>
         </tr>
         }
-    }
-    @if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent))
-    {
+        if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent))
+        {
         <tr>
             <th>Claim Form Sent Date
             </th>
@@ -550,9 +533,9 @@
                 </script>
             </td>
         </tr>
-    }
-    else
-    {
+        }
+        else
+        {
         <tr>
             <th>Claim Form Sent Date
             </th>
@@ -561,6 +544,7 @@
                 <span id="Job_JobMetaInsurance_ClaimFormSentUserId">@(string.IsNullOrEmpty(Model.Job.JobMetaInsurance.ClaimFormSentUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaInsurance.ClaimFormSentUser.ToString()))</span>
             </td>
         </tr>
+        }
     }
     @if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.IsInsuranceClaim))
     {
