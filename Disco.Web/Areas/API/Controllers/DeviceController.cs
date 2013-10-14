@@ -202,12 +202,10 @@ namespace Disco.Web.Areas.API.Controllers
             Disco.Models.Repository.User u = null;
             if (!string.IsNullOrEmpty(UserId))
             {
-                UserService.GetUser(UserId, Database, true);
+                u = UserService.GetUser(UserId, Database, true);
                 
                 if (u == null)
-                {
                     throw new Exception("Invalid Username");
-                }
             }
 
             device.AssignDevice(Database, u);
