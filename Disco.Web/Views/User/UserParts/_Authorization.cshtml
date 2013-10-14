@@ -73,13 +73,21 @@
             }
             <div id="UserDetailTab-Authorization_Membership_Groups_Container">
                 <h4>Associated Active Directory Security Groups</h4>
-                <ul id="UserDetailTab-Authorization_Membership_Groups">
-                    @foreach (var group in Model.AuthorizationToken.GroupMembership)
-                    {
-                        <li>@group</li>
-                    }
-                </ul>
-                <span class="smallMessage">[Note: Includes inherited groups]</span>
+                @if (Model.AuthorizationToken != null)
+                {
+                    <ul id="UserDetailTab-Authorization_Membership_Groups">
+                        @foreach (var group in Model.AuthorizationToken.GroupMembership)
+                        {
+                            <li>@group</li>
+                        }
+                    </ul>
+                    <span class="smallMessage">[Note: Includes inherited groups]</span>
+                }
+                else
+                {
+                    <h5>&lt;None&gt;</h5>
+                    <span class="smallMessage">[Note: Not found in Active Directory]</span>    
+                }
             </div>
         </div>
 

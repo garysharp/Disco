@@ -327,32 +327,47 @@ WriteLiteral("            <div");
 
 WriteLiteral(" id=\"UserDetailTab-Authorization_Membership_Groups_Container\"");
 
-WriteLiteral(">\r\n                <h4>Associated Active Directory Security Groups</h4>\r\n        " +
-"        <ul");
+WriteLiteral(">\r\n                <h4>Associated Active Directory Security Groups</h4>\r\n");
+
+            
+            #line 76 "..\..\Views\User\UserParts\_Authorization.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 76 "..\..\Views\User\UserParts\_Authorization.cshtml"
+                 if (Model.AuthorizationToken != null)
+                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <ul");
 
 WriteLiteral(" id=\"UserDetailTab-Authorization_Membership_Groups\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 77 "..\..\Views\User\UserParts\_Authorization.cshtml"
-                    
+            #line 79 "..\..\Views\User\UserParts\_Authorization.cshtml"
+                        
             
             #line default
             #line hidden
-            
-            #line 77 "..\..\Views\User\UserParts\_Authorization.cshtml"
-                     foreach (var group in Model.AuthorizationToken.GroupMembership)
-                    {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                        <li>");
-
             
             #line 79 "..\..\Views\User\UserParts\_Authorization.cshtml"
-                       Write(group);
+                         foreach (var group in Model.AuthorizationToken.GroupMembership)
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <li>");
+
+            
+            #line 81 "..\..\Views\User\UserParts\_Authorization.cshtml"
+                           Write(group);
 
             
             #line default
@@ -360,20 +375,47 @@ WriteLiteral("                        <li>");
 WriteLiteral("</li>\r\n");
 
             
-            #line 80 "..\..\Views\User\UserParts\_Authorization.cshtml"
-                    }
+            #line 82 "..\..\Views\User\UserParts\_Authorization.cshtml"
+                        }
 
             
             #line default
             #line hidden
-WriteLiteral("                </ul>\r\n                <span");
+WriteLiteral("                    </ul>\r\n");
+
+WriteLiteral("                    <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
-WriteLiteral(">[Note: Includes inherited groups]</span>\r\n            </div>\r\n        </div>\r\n\r\n" +
-"\r\n    </div>\r\n    <script>\r\n        $(\'#UserDetailTabItems\').append(\'<li><a href" +
-"=\"#UserDetailTab-Authorization\">Authorization</a></li>\');\r\n    </script>\r\n</div>" +
-"\r\n");
+WriteLiteral(">[Note: Includes inherited groups]</span>\r\n");
+
+            
+            #line 85 "..\..\Views\User\UserParts\_Authorization.cshtml"
+                }
+                else
+                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <h5>&lt;None&gt;</h5>\r\n");
+
+WriteLiteral("                    <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">[Note: Not found in Active Directory]</span>    \r\n");
+
+            
+            #line 90 "..\..\Views\User\UserParts\_Authorization.cshtml"
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </div>\r\n        </div>\r\n\r\n\r\n    </div>\r\n    <script>\r\n        $(\'#Use" +
+"rDetailTabItems\').append(\'<li><a href=\"#UserDetailTab-Authorization\">Authorizati" +
+"on</a></li>\');\r\n    </script>\r\n</div>\r\n");
 
         }
     }
