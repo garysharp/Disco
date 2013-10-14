@@ -47,7 +47,15 @@
                     <ul id="Config_AuthRoles_Subjects" class="none">
                         @foreach (var sg in Model.Subjects)
                         {
-                            <li class="@(sg.IsGroup ? "group" : "user")">@(sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id))</li>
+                            var displayName = sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id);
+                            <li class="@(sg.IsGroup ? "group" : "user")">@if (sg.IsGroup)
+                                                                         {
+                                                                             @displayName
+                                                                         }
+                                                                         else
+                                                                         {
+                                                                             <a href="@(Url.Action(MVC.User.Show(sg.Id)))#UserDetailTab-Authorization">@displayName</a>
+                                                                         }</li>
                         }
                     </ul>
                 }

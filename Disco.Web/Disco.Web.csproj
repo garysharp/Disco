@@ -865,18 +865,18 @@
   <ItemGroup>
     <Content Include="ClientBin\Disco.ClientBootstrapper.exe" />
     <Content Include="ClientBin\Disco.Silverlight.AttachmentUpload.xap" />
-    <Content Include="Areas\Config\Views\AuthorizationRole\Create.cshtml">
+    <None Include="Areas\Config\Views\AuthorizationRole\Create.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\Config\Views\AuthorizationRole\Index.cshtml">
+    </None>
+    <None Include="Areas\Config\Views\AuthorizationRole\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\Config\Views\AuthorizationRole\Show.cshtml">
+    </None>
+    <None Include="Areas\Config\Views\AuthorizationRole\Show.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Show.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Areas\Config\Views\Plugins\Install.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Install.generated.cs</LastGenOutput>
@@ -1504,10 +1504,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>AddOffline.generated.cs</LastGenOutput>
     </None>
-    <Content Include="Views\Device\DeviceParts\_Details.cshtml">
+    <None Include="Views\Device\DeviceParts\_Details.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Details.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Views\Device\DeviceParts\_AssignmentHistory.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_AssignmentHistory.generated.cs</LastGenOutput>
@@ -1875,10 +1875,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Show.generated.cs</LastGenOutput>
     </None>
-    <Content Include="Views\User\UserParts\_Authorization.cshtml">
+    <None Include="Views\User\UserParts\_Authorization.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Authorization.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Views\User\UserParts\_AssignmentHistory.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_AssignmentHistory.generated.cs</LastGenOutput>

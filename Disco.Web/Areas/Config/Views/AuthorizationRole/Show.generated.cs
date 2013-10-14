@@ -182,35 +182,84 @@ WriteLiteral(">\r\n");
             #line 48 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                          foreach (var sg in Model.Subjects)
                         {
+                            var displayName = sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id);
 
             
             #line default
             #line hidden
 WriteLiteral("                            <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2069), Tuple.Create("\"", 2109)
+WriteAttribute("class", Tuple.Create(" class=\"", 2187), Tuple.Create("\"", 2227)
             
-            #line 50 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 2077), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
+            #line 51 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 2195), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
             
             #line default
             #line hidden
-, 2077), false)
+, 2195), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 50 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                                     Write(sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id));
+            #line 51 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                          if (sg.IsGroup)
+                                                                         {
+                                                                             
+            
+            #line default
+            #line hidden
+            
+            #line 53 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                        Write(displayName);
 
+            
+            #line default
+            #line hidden
+            
+            #line 53 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                                         
+                                                                         }
+                                                                         else
+                                                                         {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                                                             <a");
+
+WriteAttribute("href", Tuple.Create(" href=\"", 2724), Tuple.Create("\"", 2794)
+            
+            #line 57 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+       , Tuple.Create(Tuple.Create("", 2731), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.User.Show(sg.Id))
+            
+            #line default
+            #line hidden
+, 2731), false)
+, Tuple.Create(Tuple.Create("", 2766), Tuple.Create("#UserDetailTab-Authorization", 2766), true)
+);
+
+WriteLiteral(">");
+
+            
+            #line 57 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                                                                                                  Write(displayName);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</a>\r\n");
+
+            
+            #line 58 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                         }
             
             #line default
             #line hidden
 WriteLiteral("</li>\r\n");
 
             
-            #line 51 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 59 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                         }
 
             
@@ -219,7 +268,7 @@ WriteLiteral("</li>\r\n");
 WriteLiteral("                    </ul>\r\n");
 
             
-            #line 53 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 61 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                 }
 
             
@@ -260,13 +309,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 60 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 68 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 60 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 68 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                                  foreach (var sg in Model.Subjects)
                                 {
 
@@ -275,20 +324,20 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                    <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2982), Tuple.Create("\"", 3022)
+WriteAttribute("class", Tuple.Create(" class=\"", 3687), Tuple.Create("\"", 3727)
             
-            #line 62 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 2990), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
+            #line 70 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 3695), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
             
             #line default
             #line hidden
-, 2990), false)
+, 3695), false)
 );
 
 WriteLiteral(" data-subjectid=\"");
 
             
-            #line 62 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 70 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                                                                                             Write(sg.Id);
 
             
@@ -299,7 +348,7 @@ WriteLiteral("\"");
 WriteLiteral(">");
 
             
-            #line 62 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 70 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                                                                                                      Write(sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id));
 
             
@@ -312,7 +361,7 @@ WriteLiteral(" class=\"remove\"");
 WriteLiteral("></span></li>\r\n");
 
             
-            #line 63 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 71 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                                 }
 
             
@@ -341,14 +390,14 @@ WriteLiteral(">Add</a>\r\n                        </div>\r\n                    
 
 WriteLiteral(" id=\"Config_AuthRoles_Subjects_Update_Dialog_Form\"");
 
-WriteAttribute("action", Tuple.Create(" action=\"", 3681), Tuple.Create("\"", 3778)
+WriteAttribute("action", Tuple.Create(" action=\"", 4386), Tuple.Create("\"", 4483)
             
-            #line 70 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-         , Tuple.Create(Tuple.Create("", 3690), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.AuthorizationRole.UpdateSubjects(Model.Token.Role.Id, null, true))
+            #line 78 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+         , Tuple.Create(Tuple.Create("", 4395), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.AuthorizationRole.UpdateSubjects(Model.Token.Role.Id, null, true))
             
             #line default
             #line hidden
-, 3690), false)
+, 4395), false)
 );
 
 WriteLiteral(" method=\"post\"");
@@ -375,7 +424,7 @@ WriteLiteral("></form>\r\n                    </div>\r\n                    <scr
 "ce: \'");
 
             
-            #line 99 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 107 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                                                  Write(Url.Action(MVC.API.AuthorizationRole.SearchSubjects()));
 
             
@@ -419,7 +468,7 @@ WriteLiteral("\',\r\n                                            minLength: 2,\r
 "\n                                    url: \'");
 
             
-            #line 157 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 165 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                                      Write(Url.Action(MVC.API.AuthorizationRole.Subject()));
 
             
@@ -483,7 +532,7 @@ WriteLiteral(" class=\"button small disabled\"");
 WriteLiteral(">Save Changes</a>");
 
             
-            #line 224 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 232 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                                                                                                                   Write(AjaxHelpers.AjaxLoader());
 
             
@@ -493,7 +542,7 @@ WriteLiteral("\r\n                </div>\r\n                <script>\r\n        
 "(){\r\n                        var claimNodes = ");
 
             
-            #line 228 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 236 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                                      Write(new HtmlString(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ClaimNavigatorFancyTreeNodes)));
 
             
@@ -532,7 +581,7 @@ WriteLiteral(@";
                                         url: '");
 
             
-            #line 258 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 266 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                                          Write(Url.Action(MVC.API.AuthorizationRole.UpdateClaims(Model.Token.Role.Id)));
 
             
@@ -572,7 +621,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 284 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 292 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
 Write(Html.ActionLinkButton("Delete", MVC.API.AuthorizationRole.Delete(Model.Token.Role.Id, true), "Config_AuthRoles_Actions_Delete_Button"));
 
             
