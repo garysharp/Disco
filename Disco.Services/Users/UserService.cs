@@ -37,17 +37,26 @@ namespace Disco.Services.Users
         {
             get
             {
+                string userId;
+
                 // Check for ASP.NET
                 if (HttpContext.Current != null)
                 {
                     if (HttpContext.Current.Request.IsAuthenticated)
-                        return HttpContext.Current.User.Identity.Name;
+                        userId = HttpContext.Current.User.Identity.Name;
                     else
                         return null;
                 }
+                else
+                {
+                    // User default User
+                    userId = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+                }
 
-                // User default User
-                return System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+                if (userId.Contains("\\"))
+                    return userId.Substring(checked(userId.IndexOf("\\") + 1));
+                else
+                    return userId;
             }
         }
 
