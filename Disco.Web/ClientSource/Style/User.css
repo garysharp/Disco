@@ -197,6 +197,66 @@
   right: 220px;
   margin-top: -24px;
 }
+#UserDetailTab-Authorization #UserDetailTab-AuthorizationContainer {
+  background-color: #fff;
+  border: 1px solid #cccccc;
+}
+#UserDetailTab-Authorization #UserDetailTab-Authorization_ClaimsTree_Container {
+  width: 50%;
+  float: left;
+  padding: 6px 10px 6px 4px;
+}
+#UserDetailTab-Authorization #UserDetailTab-Authorization_ClaimsTree_Container > span.smallMessage:last-child {
+  display: block;
+  text-align: right;
+}
+#UserDetailTab-Authorization .fancytree-container {
+  border: none;
+}
+#UserDetailTab-Authorization span.fancytree-node.fancytree-selected {
+  font-style: normal;
+}
+#UserDetailTab-Authorization span.fancytree-checkbox {
+  margin-left: 3px;
+  background-position: -96px -32px;
+}
+#UserDetailTab-Authorization span.fancytree-checkbox:hover {
+  background-position: -96px -32px;
+}
+#UserDetailTab-Authorization .fancytree-partsel span.fancytree-checkbox {
+  background-position: -128px -32px;
+}
+#UserDetailTab-Authorization .fancytree-partsel span.fancytree-checkbox:hover {
+  background-position: -128px -32px;
+}
+#UserDetailTab-Authorization .fancytree-selected span.fancytree-checkbox {
+  background-position: -112px -32px;
+}
+#UserDetailTab-Authorization .fancytree-selected span.fancytree-checkbox:hover {
+  background-position: -112px -32px;
+}
+#UserDetailTab-Authorization #UserDetailTab-Authorization_Membership {
+  width: 40%;
+  float: right;
+  padding: 6px 10px;
+  border-left: 1px dashed #cccccc;
+  border-bottom: 1px dashed #cccccc;
+}
+#UserDetailTab-Authorization #UserDetailTab-Authorization_Membership #UserDetailTab-Authorization_Membership_Roles {
+  margin-bottom: 10px;
+}
+#UserDetailTab-Authorization #UserDetailTab-Authorization_Membership #UserDetailTab-Authorization_Membership_Groups_Container > span.smallMessage:last-child {
+  display: block;
+  text-align: right;
+}
+#UserDetailTab-Authorization #UserDetailTab-Authorization_NoAccess {
+  width: 50%;
+  float: left;
+  padding: 6px 10px;
+}
+#UserDetailTab-Authorization #UserDetailTab-Authorization_NoAccess h3 {
+  margin-bottom: 10px;
+}
 #userShowResources #Attachments {
   padding: 0;
   border: 1px solid #cccccc;

@@ -18,6 +18,7 @@ namespace Disco.Web.Models.User
         public Disco.Models.Repository.User User { get; set; }
         public Disco.Models.BI.Job.JobTableModel Jobs { get; set; }
         public List<Disco.Models.Repository.DocumentTemplate> DocumentTemplates { get; set; }
+        public IAuthorizationToken AuthorizationToken { get; set; }
         public IClaimNavigatorItem ClaimNavigator { get; set; }
 
         public FancyTreeNode[] ClaimNavigatorFancyTreeNodes

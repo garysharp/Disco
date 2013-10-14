@@ -1,35 +1,87 @@
 ﻿@model Disco.Web.Models.User.ShowModel
+@using Disco.Services.Authorization.Roles;
 @{
     Authorization.Require(Claims.User.ShowAuthorization);
+
+    var isDiscoAdmin = Authorization.Has(Claims.DiscoAdminAccount);
 
     Html.BundleDeferred("~/Style/Fancytree");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-Fancytree");
 }
 <div id="UserDetailTab-Authorization" class="UserPart">
-    <div id="UserDetailTab-AuthorizationContainer">
-        
+    <div id="UserDetailTab-AuthorizationContainer" class="clearfix">
+
         @if (Model.ClaimNavigator != null)
         {
-            <div id="Config_AuthRoles_Claims_Tree">
+            <div id="UserDetailTab-Authorization_ClaimsTree_Container">
+                <h3>Effective Permissions</h3>
+                <div id="UserDetailTab-Authorization_ClaimsTree">
                 </div>
                 <script>
                     (function(){
                         var claimNodes = @(new HtmlString(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ClaimNavigatorFancyTreeNodes)));
 
                         $(function(){
-                            var tree = $('#Config_AuthRoles_Claims_Tree').fancytree({
+                            var tree = $('#UserDetailTab-Authorization_ClaimsTree').fancytree({
                                 source: claimNodes,
                                 checkbox: true,
-                                selectMode: 3
+                                selectMode: 3,
+                                keyboard: false
                             });
                         });
                     })();
                 </script>
+                <span class="smallMessage">Calculated from authorization roles</span>
+            </div>
         }
         else
         {
-            <div>NO ACCESS</div>
+            <div id="UserDetailTab-Authorization_NoAccess">
+                <h3>User Not Authorized</h3>
+                <p>The user (<span class="code">@(Model.User.Id)</span>) is not authorized to access any authenticated components.</p>
+                @if (isDiscoAdmin)
+                {
+                    @Html.ActionLinkButton("Configure Authorization Roles", MVC.Config.AuthorizationRole.Index(null), null, "small")
+                }
+            </div>
         }
+        <div id="UserDetailTab-Authorization_Membership">
+            @if (Model.ClaimNavigator != null)
+            {
+                <h3>Associated Roles</h3>
+                <ul id="UserDetailTab-Authorization_Membership_Roles">
+                    @foreach (var roleToken in Model.AuthorizationToken.RoleTokens.Cast<RoleToken>())
+                    {
+                        <li>@if (roleToken.Role.Id < 0)
+                            {
+                            <text>@roleToken.Role.Name <span class="code">[SYSTEM ROLE]</span></text>
+                            }
+                            else
+                            {
+                                if (isDiscoAdmin)
+                                {
+                            @Html.ActionLink(roleToken.Role.Name, MVC.Config.AuthorizationRole.Index(roleToken.Role.Id))
+                                }
+                                else
+                                {
+                            @roleToken.Role.Name
+                                }
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+            <div id="UserDetailTab-Authorization_Membership_Groups_Container">
+                <h4>Associated Active Directory Security Groups</h4>
+                <ul id="UserDetailTab-Authorization_Membership_Groups">
+                    @foreach (var group in Model.AuthorizationToken.GroupMembership)
+                    {
+                        <li>@group</li>
+                    }
+                </ul>
+                <span class="smallMessage">[Note: Includes inherited groups]</span>
+            </div>
+        </div>
 
 
     </div>

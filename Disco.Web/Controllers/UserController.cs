@@ -69,8 +69,8 @@ namespace Disco.Web.Controllers
             {
                 if (Authorization.Has(Claims.User.ShowAuthorization))
                 {
-                    var userAuth = UserService.GetAuthorization(id);
-                    var claims = userAuth.RoleTokens.Cast<RoleToken>().Select(rt => rt.Claims).ToArray();
+                    m.AuthorizationToken = UserService.GetAuthorization(id);
+                    var claims = m.AuthorizationToken.RoleTokens.Cast<RoleToken>().Select(rt => rt.Claims).ToArray();
                     if (claims.Length > 0)
                         m.ClaimNavigator = Claims.RoleClaimNavigator.BuildClaimTree(claims);
                 }

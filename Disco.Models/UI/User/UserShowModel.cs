@@ -12,6 +12,7 @@ namespace Disco.Models.UI.User
         Disco.Models.Repository.User User { get; set; }
         Disco.Models.BI.Job.JobTableModel Jobs { get; set; }
         List<Disco.Models.Repository.DocumentTemplate> DocumentTemplates { get; set; }
+        IAuthorizationToken AuthorizationToken { get; set; }
         IClaimNavigatorItem ClaimNavigator { get; set; }
     }
 }

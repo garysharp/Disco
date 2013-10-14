@@ -1180,6 +1180,7 @@
     <None Include="ClientSource\Style\Fancytree\icons.gif" />
     <None Include="ClientSource\Style\Fancytree\loading.gif" />
     <None Include="ClientSource\Style\Fancytree\ui.fancytree.css" />
+    <None Include="ClientSource\Style\Fancytree\icons-DiscoMod.png" />
     <Content Include="ClientSource\Style\Fancytree\ui.fancytree.min.css">
       <DependentUpon>ui.fancytree.css</DependentUpon>
     </Content>
@@ -2006,7 +2007,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

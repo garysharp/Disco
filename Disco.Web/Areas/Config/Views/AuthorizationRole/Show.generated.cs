@@ -511,7 +511,8 @@ WriteLiteral(@";
                                 selectMode: 3,
                                 select: function(){
                                     saveButton.removeClass('disabled');
-                                }
+                                },
+                                keyboard: false
                             });
 
                             saveButton.click(function(){
@@ -531,7 +532,7 @@ WriteLiteral(@";
                                         url: '");
 
             
-            #line 257 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 258 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                                          Write(Url.Action(MVC.API.AuthorizationRole.UpdateClaims(Model.Token.Role.Id)));
 
             
@@ -571,7 +572,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 283 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 284 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
 Write(Html.ActionLinkButton("Delete", MVC.API.AuthorizationRole.Delete(Model.Token.Role.Id, true), "Config_AuthRoles_Actions_Delete_Button"));
 
             
