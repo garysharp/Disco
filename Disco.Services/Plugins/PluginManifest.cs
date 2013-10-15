@@ -439,7 +439,7 @@ namespace Disco.Services.Plugins
             {
                 var attributeDenied = this.WebHandlerAuthorizers.FirstOrDefault(a => !a.IsAuthorized(HostController.HttpContext));
                 if (attributeDenied != null)
-                    throw new AccessDeniedException(attributeDenied.HandleUnauthorizedMessage());
+                    throw new AccessDeniedException(attributeDenied.HandleUnauthorizedMessage(), string.Format("[Plugin]::{0}::[Handler]", this.Id));
             }
 
             var handler = (PluginWebHandler)Activator.CreateInstance(this.WebHandlerType);
@@ -476,7 +476,7 @@ namespace Disco.Services.Plugins
                 var fileDateCheck = System.IO.File.GetLastWriteTime(resourcePath);
                 if (fileDateCheck == resourceHash.Item2)
 #endif
-                return new Tuple<string, string>(resourcePath, resourceHash.Item1);
+                    return new Tuple<string, string>(resourcePath, resourceHash.Item1);
             }
 
             if (!File.Exists(resourcePath))
@@ -499,11 +499,11 @@ namespace Disco.Services.Plugins
         public string WebResourceUrl(string Resource)
         {
             var resourcePath = this.WebResourcePath(Resource);
-            
+
             var url = UrlHelper.GenerateUrl("Plugin_Resources", null, null,
                 new RouteValueDictionary(new Dictionary<string, object>() { { "PluginId", this.Id }, { "res", Resource } }),
                 RouteTable.Routes, HttpContext.Current.Request.RequestContext, false);
-            
+
             url += string.Format("?v={0}", resourcePath.Item2);
 
             return url;

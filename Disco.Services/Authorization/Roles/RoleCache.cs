@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Disco.Services.Authorization.Roles
 {
-    public static class RoleCache
+    internal static class RoleCache
     {
         internal const int AdministratorsTokenId = -1;
         internal const int ComputerAccountTokenId = -200;

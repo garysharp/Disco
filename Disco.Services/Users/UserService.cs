@@ -159,6 +159,8 @@ namespace Disco.Services.Users
             Database.AuthorizationRoles.Add(Role);
             Database.SaveChanges();
 
+            AuthorizationLog.LogRoleCreated(Role, CurrentUserId);
+
             // Add to Cache
             RoleCache.AddRole(Role);
 
@@ -174,6 +176,8 @@ namespace Disco.Services.Users
 
             Database.AuthorizationRoles.Remove(Role);
             Database.SaveChanges();
+
+            AuthorizationLog.LogRoleDeleted(Role, CurrentUserId);
 
             // Remove from Role Cache
             RoleCache.RemoveRole(Role);

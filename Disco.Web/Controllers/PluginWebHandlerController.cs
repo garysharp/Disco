@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using Disco.Services.Plugins;
 using Disco.Services.Authorization;
+using Disco.Services.Users;
 
 namespace Disco.Web.Controllers
 {
@@ -28,6 +29,9 @@ namespace Disco.Web.Controllers
                 }
                 catch (AccessDeniedException accessDeniedException)
                 {
+                    if (UserService.CurrentUserId != null)
+                        AuthorizationLog.LogAccessDenied(UserService.CurrentUserId, string.Format("{0} [{1}]", accessDeniedException.Resource, Request.RawUrl), accessDeniedException.Message);
+
                     return new HttpUnauthorizedResult(accessDeniedException.Message);
                 }
             }

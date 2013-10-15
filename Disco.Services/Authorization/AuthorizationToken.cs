@@ -3,6 +3,7 @@ using Disco.Models.Repository;
 using Disco.Services.Authorization.Roles;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -133,7 +134,7 @@ namespace Disco.Services.Authorization
         public void Require(string ClaimKey)
         {
             if (!Has(ClaimKey))
-                throw new AccessDeniedException(BuildRequireMessage(ClaimKey));
+                throw new AccessDeniedException(BuildRequireMessage(ClaimKey), GetRequireResource());
         }
 
         /// <summary>
@@ -143,7 +144,7 @@ namespace Disco.Services.Authorization
         public void RequireAll(params string[] ClaimKeys)
         {
             if (!HasAll(ClaimKeys))
-                throw new AccessDeniedException(BuildRequireAllMessage(ClaimKeys));
+                throw new AccessDeniedException(BuildRequireAllMessage(ClaimKeys), GetRequireResource());
         }
         
         /// <summary>
@@ -153,7 +154,29 @@ namespace Disco.Services.Authorization
         public void RequireAny(params string[] ClaimKeys)
         {
             if (!HasAny(ClaimKeys))
-                throw new AccessDeniedException(BuildRequireAnyMessage(ClaimKeys));
+                throw new AccessDeniedException(BuildRequireAnyMessage(ClaimKeys), GetRequireResource());
+        }
+
+        private string GetRequireResource()
+        {
+            var stackTrace = new StackTrace(2, true);
+            if (stackTrace.FrameCount > 1)
+            {
+                var frame = stackTrace.GetFrame(0);
+
+                // Filename
+                var filename = frame.GetFileName();
+                if (!string.IsNullOrEmpty(filename) && filename.Contains("\\Disco\\Disco."))
+                    filename = filename.Substring(filename.IndexOf("\\Disco\\Disco.") + 7);
+
+                var method = frame.GetMethod();
+                var resource = string.Format("{0}::{1}", method.DeclaringType.FullName, method.Name);
+                if (!string.IsNullOrEmpty(filename))
+                    resource = string.Format("{0} [{1}]", resource, filename);
+
+                return resource;
+            }
+            return "[Unknown]";
         }
 
         #endregion

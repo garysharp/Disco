@@ -10,6 +10,8 @@ namespace Disco.Services.Authorization
 {
     public abstract class DiscoAuthorizeBaseAttribute : AuthorizeAttribute
     {
+        public string AuthorizeResource { get; set; }
+
         protected AuthorizationToken Token
         {
             get
@@ -33,7 +35,29 @@ namespace Disco.Services.Authorization
         {
             string resultMessage = HandleUnauthorizedMessage();
 
+            LogAccessDenied(filterContext, resultMessage);
+
             filterContext.Result = new HttpUnauthorizedResult(resultMessage);
+        }
+
+        public void LogAccessDenied(AuthorizationContext FilterContext, string ResultMessage)
+        {
+            // Don't log anonymous
+            if (Token != null)
+            {
+                // Calculate Authorize Resource
+                if (AuthorizeResource == null)
+                {
+                    var controllerName = FilterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+                    var actionName = FilterContext.ActionDescriptor.ActionName;
+
+                    AuthorizeResource = string.Format("{0}::{1}", controllerName, actionName);
+                }
+
+                var resource = string.Format("{0} [{1}]", AuthorizeResource, FilterContext.HttpContext.Request.RawUrl);
+
+                AuthorizationLog.LogAccessDenied(Token.User.Id, resource, ResultMessage);
+            }
         }
     }
 }

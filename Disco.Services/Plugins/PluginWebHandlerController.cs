@@ -15,34 +15,42 @@ namespace Disco.Services.Plugins
         public override ActionResult ExecuteAction(string ActionName)
         {
             var handlerType = this.GetType();
-            var methodDescriptor = FindControllerMethod(handlerType, ActionName);
+            var methodDescriptor = FindControllerMethod(Manifest, handlerType, ActionName);
 
             if (methodDescriptor == null)
                 return this.HttpNotFound("Unknown Plugin Method");
-
+            
             // Authorize Method
             if (methodDescriptor.Authorizers.Length > 0)
             {
                 var attributeDenied = methodDescriptor.Authorizers.FirstOrDefault(a => !a.IsAuthorized(HostController.HttpContext));
                 if (attributeDenied != null)
-                    return new HttpUnauthorizedResult(attributeDenied.HandleUnauthorizedMessage());
+                {
+                    var message = attributeDenied.HandleUnauthorizedMessage();
+                    var resource = string.Format("{0} [{1}]", attributeDenied.AuthorizeResource, HostController.Request.RawUrl);
+
+                    if (CurrentUser != null)
+                        AuthorizationLog.LogAccessDenied(CurrentUser.Id, resource, message);
+
+                    return new HttpUnauthorizedResult(message);
+                }
             }
 
-            var methodParams = BuildMethodParameters(handlerType, methodDescriptor.MethodInfo, ActionName, this.HostController);
+            var methodParams = BuildMethodParameters(Manifest, handlerType, methodDescriptor.MethodInfo, ActionName, this.HostController);
 
             return (ActionResult)methodDescriptor.MethodInfo.Invoke(this, methodParams);
         }
 
-        private static WebHandlerCachedItem FindControllerMethod(Type Handler, string ActionName)
+        private static WebHandlerCachedItem FindControllerMethod(PluginManifest Manifest, Type Handler, string ActionName)
         {
-            var descriptors = CacheWebHandler(Handler);
+            var descriptors = CacheWebHandler(Manifest, Handler);
             WebHandlerCachedItem method;
             if (descriptors.TryGetValue(ActionName.ToLower(), out method))
                 return method; // Not Found
             else
                 return null; // Not Found
         }
-        private static object[] BuildMethodParameters(Type Handler, MethodInfo methodInfo, string ActionName, Controller HostController)
+        private static object[] BuildMethodParameters(PluginManifest Manifest, Type Handler, MethodInfo methodInfo, string ActionName, Controller HostController)
         {
             var methodParams = methodInfo.GetParameters();
             var result = new object[methodParams.Length];
@@ -69,7 +77,7 @@ namespace Disco.Services.Plugins
                 var parameterValue = modelBinder.BindModel(HostController.ControllerContext, bindingContext);
 
                 if (parameterValue == null && methodParam.HasDefaultValue)
-                        parameterValue = methodParam.DefaultValue;
+                    parameterValue = methodParam.DefaultValue;
 
                 result[i] = parameterValue;
             }
@@ -79,7 +87,7 @@ namespace Disco.Services.Plugins
 
         #region Method Cache
         private static Dictionary<Type, Dictionary<string, WebHandlerCachedItem>> WebHandlerCachedItems = new Dictionary<Type, Dictionary<string, WebHandlerCachedItem>>();
-        private static Dictionary<string, WebHandlerCachedItem> CacheWebHandler(Type Handler)
+        private static Dictionary<string, WebHandlerCachedItem> CacheWebHandler(PluginManifest Manifest, Type Handler)
         {
             Dictionary<string, WebHandlerCachedItem> result;
 
@@ -90,11 +98,15 @@ namespace Disco.Services.Plugins
                 var methods = Array.FindAll<MethodInfo>(Handler.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly), mi => { return !mi.IsSpecialName && typeof(ActionResult).IsAssignableFrom(mi.ReturnType); });
                 foreach (var method in methods)
                 {
+                    var authorizers = method.GetCustomAttributes<DiscoAuthorizeBaseAttribute>().ToArray();
+                    foreach (var authorizer in authorizers)
+                        authorizer.AuthorizeResource = string.Format("[Plugin]::{0}::{1}", Manifest.Id, method.Name);
+
                     var item = new WebHandlerCachedItem()
                     {
                         Method = method.Name,
                         MethodInfo = method,
-                        Authorizers = method.GetCustomAttributes<DiscoAuthorizeBaseAttribute>().ToArray()
+                        Authorizers = authorizers
                     };
                     result.Add(item.Method.ToLower(), item);
                 }

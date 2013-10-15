@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Disco.Data.Repository;
+using Disco.Services.Authorization;
+using Disco.Services.Users;
+using System;
 using System.Configuration;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
-using System.Security.Principal;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Disco.Data.Repository;
-using Disco.Models.Repository;
-using Disco.Services.Users;
 
 namespace Disco.Web
 {
@@ -219,7 +216,22 @@ namespace Disco.Web
         {
             try
             {
-                Disco.Services.Logging.SystemLog.LogException("Global Application Exception Caught", Server.GetLastError());
+                var ex = Server.GetLastError();
+
+                if (ex is AccessDeniedException)
+                {
+                    var accessDeniedException = (AccessDeniedException)ex;
+                    var resource = accessDeniedException.Resource;
+                    var httpContext = HttpContext.Current;
+                    if (httpContext != null && httpContext.Request != null)
+                        resource = string.Format("{0} [{1}]", resource, httpContext.Request.RawUrl);
+
+                    AuthorizationLog.LogAccessDenied(UserService.CurrentUserId ?? "[Anonymous]", resource, accessDeniedException.Message);
+                }
+                else
+                {
+                    Disco.Services.Logging.SystemLog.LogException("Global Application Exception Caught", ex);
+                }
             }
             catch (Exception)
             {

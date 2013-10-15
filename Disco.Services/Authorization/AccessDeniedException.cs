@@ -8,25 +8,35 @@ namespace Disco.Services.Authorization
 {
     public class AccessDeniedException : Exception
     {
-        private string _message { get; set; }
+        private string message { get; set; }
+        private string resource { get; set; }
 
-        public AccessDeniedException(string Message)
+        public AccessDeniedException(string Message, string Resource)
         {
-            this._message = Message;
+            this.message = Message;
+            this.resource = Resource;
         }
 
         public override string Message
         {
             get
             {
-                if (this._message == null)
+                if (this.message == null)
                 {
                     return "Your account does not have the required permission to access this Disco feature.";
                 }
                 else
                 {
-                    return this._message;
+                    return this.message;
                 }
+            }
+        }
+
+        public string Resource
+        {
+            get
+            {
+                return this.resource;
             }
         }
     }

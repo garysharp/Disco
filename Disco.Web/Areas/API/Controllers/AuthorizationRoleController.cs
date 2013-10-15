@@ -3,6 +3,7 @@ using Disco.BI.Interop.ActiveDirectory;
 using Disco.Models.Interop.ActiveDirectory;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
+using Disco.Services.Authorization.Roles;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using System;
@@ -71,24 +72,37 @@ namespace Disco.Web.Areas.API.Controllers
                     {
                         throw new Exception("An Authorization Role with that name already exists");
                     }
-
+                    var oldRoleName = AuthorizationRole.Name;
                     AuthorizationRole.Name = Name;
                     UserService.UpdateAuthorizationRole(Database, AuthorizationRole);
+                    AuthorizationLog.LogRoleConfiguredRenamed(AuthorizationRole, CurrentUser.Id, oldRoleName);
                 }
             }
         }
 
         private void UpdateClaims(AuthorizationRole AuthorizationRole, string[] ClaimKeys)
         {
-            var claims = Claims.BuildClaims(ClaimKeys);
-            AuthorizationRole.SetClaims(claims);
+            var proposedClaims = Claims.BuildClaims(ClaimKeys);
+            
+            var currentToken = RoleToken.FromAuthorizationRole(AuthorizationRole);            
+            var currentClaimKeys = Claims.GetClaimKeys(currentToken.Claims);
+            var removedClaims = currentClaimKeys.Except(ClaimKeys).ToArray();
+            var addedClaims = ClaimKeys.Except(currentClaimKeys).ToArray();
 
+            AuthorizationRole.SetClaims(proposedClaims);
             UserService.UpdateAuthorizationRole(Database, AuthorizationRole);
+
+            if (removedClaims.Length > 0)
+                AuthorizationLog.LogRoleConfiguredClaimsRemoved(AuthorizationRole, CurrentUser.Id, removedClaims);
+            if (addedClaims.Length > 0)
+                AuthorizationLog.LogRoleConfiguredClaimsAdded(AuthorizationRole, CurrentUser.Id, addedClaims);
         }
 
         private void UpdateSubjects(AuthorizationRole AuthorizationRole, string[] Subjects)
         {
             string subjectIds = null;
+            string[] removedSubjects = null;
+            string[] addedSubjects = null;
 
             // Validate Subjects
             if (Subjects != null && Subjects.Length > 0)
@@ -99,7 +113,12 @@ namespace Disco.Web.Areas.API.Controllers
                 if (invalidSubjects.Count > 0)
                     throw new ArgumentException(string.Format("Subjects not found: {0}", string.Join(", ", invalidSubjects)), "Subjects");
 
-                subjectIds = string.Join(",", subjects.Select(s => s.Item2.SamAccountName).OrderBy(s => s));
+                var proposedSubjects = subjects.Select(s => s.Item2.SamAccountName).OrderBy(s => s).ToArray();
+                var currentSubjects = AuthorizationRole.SubjectIds.Split(',');
+                removedSubjects = currentSubjects.Except(proposedSubjects).ToArray();
+                addedSubjects = proposedSubjects.Except(currentSubjects).ToArray();
+
+                subjectIds = string.Join(",", proposedSubjects);
 
                 if (string.IsNullOrEmpty(subjectIds))
                     subjectIds = null;
@@ -109,6 +128,11 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 AuthorizationRole.SubjectIds = subjectIds;
                 UserService.UpdateAuthorizationRole(Database, AuthorizationRole);
+
+                if (removedSubjects != null && removedSubjects.Length > 0)
+                    AuthorizationLog.LogRoleConfiguredSubjectsRemoved(AuthorizationRole, CurrentUser.Id, removedSubjects);
+                if (addedSubjects != null && addedSubjects.Length > 0)
+                    AuthorizationLog.LogRoleConfiguredSubjectsAdded(AuthorizationRole, CurrentUser.Id, addedSubjects);
             }
         }
 
@@ -189,7 +213,6 @@ namespace Disco.Web.Areas.API.Controllers
                 if (ar != null)
                 {
                     ar.Delete(Database);
-                    Database.SaveChanges();
 
                     if (redirect.HasValue && redirect.Value)
                         return RedirectToAction(MVC.Config.AuthorizationRole.Index(null));

@@ -63,13 +63,13 @@ namespace Disco.Services.Authorization
 {
 	public static class Claims
 	{
-		private static Dictionary<string, Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string>> _roleClaims;
+		private static Dictionary<string, Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>> _roleClaims;
 		private static ClaimNavigatorItem _claimNavigator;
 
 		static Claims()
         {
 #region Role Claim Dictionary
-            _roleClaims = new Dictionary<string, Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string>>()
+            _roleClaims = new Dictionary<string, Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>>()
 			{
 <#WriteAccessHashes(permissionRoot);#>
 			};
@@ -86,31 +86,40 @@ namespace Disco.Services.Authorization
 			get { return _claimNavigator; }
 		}
 
-		public static Func<RoleClaims, bool> GetClaimAccessor(string ClaimKey) {
-			Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string> claimFunc;
+		internal static Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool> GetClaimDefinition(string ClaimKey) {
+			Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool> claimDef;
 
-            if (!_roleClaims.TryGetValue(ClaimKey, out claimFunc))
+            if (!_roleClaims.TryGetValue(ClaimKey, out claimDef))
                 throw new ArgumentException("Unknown Claim Key", "ClaimKey");
 
-            return claimFunc.Item1;
+            return new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(claimDef.Item1, claimDef.Item2, claimDef.Item3, claimDef.Item4, claimDef.Item5);
+		}
+
+		public static Func<RoleClaims, bool> GetClaimAccessor(string ClaimKey) {
+			Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool> claimDef;
+
+            if (!_roleClaims.TryGetValue(ClaimKey, out claimDef))
+                throw new ArgumentException("Unknown Claim Key", "ClaimKey");
+
+            return claimDef.Item1;
 		}
 
 		public static Action<RoleClaims, bool> GetClaimSetter(string ClaimKey) {
-			Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string> claimFunc;
+			Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool> claimDef;
 
-            if (!_roleClaims.TryGetValue(ClaimKey, out claimFunc))
+            if (!_roleClaims.TryGetValue(ClaimKey, out claimDef))
                 throw new ArgumentException("Unknown Claim Key", "ClaimKey");
 
-            return claimFunc.Item2;
+            return claimDef.Item2;
 		}
 
-		public static Tuple<string, string> GetClaimDetails(string ClaimKey) {
-			Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string> claimFunc;
+		public static Tuple<string, string, bool> GetClaimDetails(string ClaimKey) {
+			Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool> claimDef;
 
-            if (!_roleClaims.TryGetValue(ClaimKey, out claimFunc))
+            if (!_roleClaims.TryGetValue(ClaimKey, out claimDef))
                 throw new ArgumentException("Unknown Claim Key", "ClaimKey");
 
-            return new Tuple<string, string>(claimFunc.Item3, claimFunc.Item4);
+            return new Tuple<string, string, bool>(claimDef.Item3, claimDef.Item4, claimDef.Item5);
 		}
 
 		public static RoleClaims BuildClaims(IEnumerable<string> ClaimKeys){
@@ -150,9 +159,10 @@ namespace Disco.Services.Authorization
 
 		public static void Set(this RoleClaims c, string ClaimKey, bool Value)
         {
-            Action<RoleClaims, bool> claimSetter = Claims.GetClaimSetter(ClaimKey);
+            var claimDefinition = Claims.GetClaimDefinition(ClaimKey);
 
-            claimSetter(c, Value);
+			if (!claimDefinition.Item5)
+				claimDefinition.Item2(c, Value);
         }
 
 		public static void SetClaims(this AuthorizationRole role, RoleClaims Claims)
@@ -250,7 +260,7 @@ void WriteAccessHashes_Recurse(Permission p, string Prefix, Stack<string> parent
 		parents.Pop();
     }else{
 		var fqn = string.Concat(Prefix, p.Name);
-		hashes.AppendFormat("				{{ \"{0}\", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string>(c => {1}.{2}, (c, v) => {1}.{2} = v, \"{3}\", \"{4}\") }},", fqn, parents.Peek(), p.Name, p.FriendlyName, p.Description);
+		hashes.AppendFormat("				{{ \"{0}\", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => {1}.{2}, (c, v) => {1}.{2} = v, \"{3}\", \"{4}\", {5}) }},", fqn, parents.Peek(), p.Name, p.FriendlyName, p.Description, p.Hidden ? "true" : "false");
 		hashes.AppendLine();
     }
 }
