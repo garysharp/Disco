@@ -1,18 +1,16 @@
-using System;
-using System.Linq;
-using System.Text.RegularExpressions;
-using Disco.BI.Interop.ActiveDirectory;
 using Disco.BI.Extensions;
-using Disco.Data.Configuration.Modules;
+using Disco.BI.Interop.ActiveDirectory;
 using Disco.Data.Repository;
 using Disco.Models.ClientServices;
 using Disco.Models.Interop.ActiveDirectory;
 using Disco.Models.Repository;
-using Tamir.SharpSsh;
-using Disco.Services.Plugins;
-using Disco.Services.Plugins.Features.CertificateProvider;
-using Disco.Services.Users;
 using Disco.Services.Authorization;
+using Disco.Services.Users;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Tamir.SharpSsh;
 
 namespace Disco.BI.DeviceBI
 {
@@ -396,9 +394,15 @@ namespace Disco.BI.DeviceBI
                         AllowUnauthenticatedEnrol = false,
                         CreatedDate = DateTime.Now,
                         EnrolledDate = DateTime.Now,
-                        LastEnrolDate = DateTime.Now
+                        LastEnrolDate = DateTime.Now,
+                        DeviceDetails = new List<DeviceDetail>()
                     };
                     Database.Devices.Add(RepoDevice);
+
+                    if (!string.IsNullOrEmpty(Request.DeviceLanMacAddress))
+                        RepoDevice.DeviceDetails.LanMacAddress(RepoDevice, Request.DeviceLanMacAddress);
+                    if (!string.IsNullOrEmpty(Request.DeviceWlanMacAddress))
+                        RepoDevice.DeviceDetails.WLanMacAddress(RepoDevice, Request.DeviceWlanMacAddress);
                 }
                 else
                 {
@@ -413,6 +417,11 @@ namespace Disco.BI.DeviceBI
                         EnrolmentLog.LogSessionDevice(sessionId, Request.DeviceSerialNumber, deviceModel.Id);
 
                     RepoDevice.DeviceModel = deviceModel;
+
+                    if (!string.IsNullOrEmpty(Request.DeviceLanMacAddress))
+                        RepoDevice.DeviceDetails.LanMacAddress(RepoDevice, Request.DeviceLanMacAddress);
+                    if (!string.IsNullOrEmpty(Request.DeviceWlanMacAddress))
+                        RepoDevice.DeviceDetails.WLanMacAddress(RepoDevice, Request.DeviceWlanMacAddress);
 
                     if (!RepoDevice.EnrolledDate.HasValue)
                         RepoDevice.EnrolledDate = DateTime.Now;
