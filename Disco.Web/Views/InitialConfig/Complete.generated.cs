@@ -455,11 +455,11 @@ WriteAttribute("class", Tuple.Create(" class=\"", 4945), Tuple.Create("\"", 5021
 
 WriteLiteral("></span>Connectivity to <a");
 
-WriteLiteral(" href=\"http://discoict.com.au\"");
+WriteLiteral(" href=\"https://discoict.com.au\"");
 
 WriteLiteral(" target=\"_blank\"");
 
-WriteLiteral(">http://discoict.com.au</a></h3>\r\n                    <div");
+WriteLiteral(">https://discoict.com.au</a></h3>\r\n                    <div");
 
 WriteLiteral(" class=\"testResult\"");
 
@@ -484,11 +484,11 @@ WriteLiteral("                            ");
 
 WriteLiteral("A connection was successfully established to <a");
 
-WriteLiteral(" href=\"http://discoict.com.au\"");
+WriteLiteral(" href=\"https://discoict.com.au\"");
 
 WriteLiteral(" target=\"_blank\"");
 
-WriteLiteral(">http://discoict.com.au</a>.");
+WriteLiteral(">https://discoict.com.au</a>.");
 
 WriteLiteral("\r\n");
 
@@ -505,12 +505,12 @@ WriteLiteral("                            ");
 
 WriteLiteral("There was an error establishing a connection to <a");
 
-WriteLiteral(" href=\"http://discoict.com.au\"");
+WriteLiteral(" href=\"https://discoict.com.au\"");
 
 WriteLiteral(" target=\"_blank\"");
 
-WriteLiteral(">http://discoict.com.au</a>. This may be caused by missing proxy settings - after" +
-" starting Disco check these settings in the \'System\' configuration area.");
+WriteLiteral(">https://discoict.com.au</a>. This may be caused by missing proxy settings - afte" +
+"r starting Disco check these settings in the \'System\' configuration area.");
 
 WriteLiteral("\r\n");
 
@@ -632,14 +632,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 7791), Tuple.Create("\"", 7846)
+WriteAttribute("href", Tuple.Create(" href=\"", 7797), Tuple.Create("\"", 7852)
             
             #line 161 "..\..\Views\InitialConfig\Complete.cshtml"
-, Tuple.Create(Tuple.Create("", 7798), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.InitialConfig.RestartWebApp())
+, Tuple.Create(Tuple.Create("", 7804), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.InitialConfig.RestartWebApp())
             
             #line default
             #line hidden
-, 7798), false)
+, 7804), false)
 );
 
 WriteLiteral(" class=\"button\"");
@@ -659,14 +659,14 @@ WriteLiteral("            <a");
 
 WriteLiteral(" id=\"tryAgain\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 7956), Tuple.Create("\"", 8006)
+WriteAttribute("href", Tuple.Create(" href=\"", 7962), Tuple.Create("\"", 8012)
             
             #line 165 "..\..\Views\InitialConfig\Complete.cshtml"
-, Tuple.Create(Tuple.Create("", 7963), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.InitialConfig.Complete())
+, Tuple.Create(Tuple.Create("", 7969), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.InitialConfig.Complete())
             
             #line default
             #line hidden
-, 7963), false)
+, 7969), false)
 );
 
 WriteLiteral(" class=\"button\"");

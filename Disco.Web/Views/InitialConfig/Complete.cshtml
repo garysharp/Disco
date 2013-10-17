@@ -105,16 +105,16 @@
             </tr>
             <tr>
                 <td>
-                    <h3><span class="icon @(Model.DiscoIctComAuWebResult == null ? "success" : "warning")"></span>Connectivity to <a href="http://discoict.com.au" target="_blank">http://discoict.com.au</a></h3>
+                    <h3><span class="icon @(Model.DiscoIctComAuWebResult == null ? "success" : "warning")"></span>Connectivity to <a href="https://discoict.com.au" target="_blank">https://discoict.com.au</a></h3>
                     <div class="testResult">
                         @{
                             if (Model.DiscoIctComAuWebResult == null)
                             {
-                            <text>A connection was successfully established to <a href="http://discoict.com.au" target="_blank">http://discoict.com.au</a>.</text>
+                            <text>A connection was successfully established to <a href="https://discoict.com.au" target="_blank">https://discoict.com.au</a>.</text>
                             }
                             else
                             {
-                            <text>There was an error establishing a connection to <a href="http://discoict.com.au" target="_blank">http://discoict.com.au</a>. This may be caused by missing proxy settings - after starting Disco check these settings in the 'System' configuration area.</text>
+                            <text>There was an error establishing a connection to <a href="https://discoict.com.au" target="_blank">https://discoict.com.au</a>. This may be caused by missing proxy settings - after starting Disco check these settings in the 'System' configuration area.</text>
                             <br />
                             <div class="exception">
                                 @{var ex = Model.DiscoIctComAuWebResult;

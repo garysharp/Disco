@@ -70,13 +70,13 @@ WriteLiteral(" id=\"pluginCatalogHeading\"");
 
 WriteLiteral(">The plugin catalogue [<a");
 
-WriteLiteral(" href=\"http://discoict.com.au/\"");
+WriteLiteral(" href=\"https://discoict.com.au/\"");
 
-WriteLiteral(">http://discoict.com.au</a>] was last updated ");
+WriteLiteral(">https://discoict.com.au</a>] was last updated ");
 
             
             #line 11 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
-                                                                                                                                  Write(CommonHelpers.FriendlyDate(Model.Catalogue.ResponseTimestamp));
+                                                                                                                                    Write(CommonHelpers.FriendlyDate(Model.Catalogue.ResponseTimestamp));
 
             
             #line default
@@ -160,16 +160,16 @@ WriteLiteral("                    <td>\r\n");
             #line hidden
 WriteLiteral("                            <div");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1592), Tuple.Create("\"", 1685)
-, Tuple.Create(Tuple.Create("", 1600), Tuple.Create("pageMenuArea", 1600), true)
-, Tuple.Create(Tuple.Create(" ", 1612), Tuple.Create("pluginItem", 1613), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1594), Tuple.Create("\"", 1687)
+, Tuple.Create(Tuple.Create("", 1602), Tuple.Create("pageMenuArea", 1602), true)
+, Tuple.Create(Tuple.Create(" ", 1614), Tuple.Create("pluginItem", 1615), true)
             
             #line 36 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
-, Tuple.Create(Tuple.Create("", 1623), Tuple.Create<System.Object, System.Int32>(installedPlugin != null ? " pluginInstalled" : string.Empty
+, Tuple.Create(Tuple.Create("", 1625), Tuple.Create<System.Object, System.Int32>(installedPlugin != null ? " pluginInstalled" : string.Empty
             
             #line default
             #line hidden
-, 1623), false)
+, 1625), false)
 );
 
 WriteLiteral(">\r\n                                <h2");
@@ -205,14 +205,14 @@ WriteLiteral("                                        <a");
 
 WriteLiteral(" class=\"pluginInstallLink button\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 1939), Tuple.Create("\"", 1994)
+WriteAttribute("href", Tuple.Create(" href=\"", 1941), Tuple.Create("\"", 1996)
             
             #line 40 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
-   , Tuple.Create(Tuple.Create("", 1946), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Plugin.Install(plugin.Id))
+   , Tuple.Create(Tuple.Create("", 1948), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Plugin.Install(plugin.Id))
             
             #line default
             #line hidden
-, 1946), false)
+, 1948), false)
 );
 
 WriteLiteral(">Install</a>\r\n");
@@ -232,14 +232,14 @@ WriteLiteral("                                        <a");
 
 WriteLiteral(" class=\"pluginUpdateLink button\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 2354), Tuple.Create("\"", 2408)
+WriteAttribute("href", Tuple.Create(" href=\"", 2356), Tuple.Create("\"", 2410)
             
             #line 46 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
-  , Tuple.Create(Tuple.Create("", 2361), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Plugin.Update(plugin.Id))
+  , Tuple.Create(Tuple.Create("", 2363), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Plugin.Update(plugin.Id))
             
             #line default
             #line hidden
-, 2361), false)
+, 2363), false)
 );
 
 WriteLiteral(">Update</a>    \r\n");
@@ -323,14 +323,14 @@ WriteLiteral("</span> | ");
             #line hidden
 WriteLiteral(" | <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 3115), Tuple.Create("\"", 3133)
+WriteAttribute("href", Tuple.Create(" href=\"", 3117), Tuple.Create("\"", 3135)
             
             #line 56 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
-                                                                                       , Tuple.Create(Tuple.Create("", 3122), Tuple.Create<System.Object, System.Int32>(plugin.Url
+                                                                                       , Tuple.Create(Tuple.Create("", 3124), Tuple.Create<System.Object, System.Int32>(plugin.Url
             
             #line default
             #line hidden
-, 3122), false)
+, 3124), false)
 );
 
 WriteLiteral(" target=\"_blank\"");

@@ -720,12 +720,12 @@ WriteLiteral("@ ");
             
             #line default
             #line hidden
-WriteLiteral(" | <a\r\n                href=\"http://discoict.com.au/\" target=\"_blank\">discoict.co" +
-"m.au</a> | ");
+WriteLiteral(" | <a\r\n                href=\"https://discoict.com.au/\" target=\"_blank\">discoict.c" +
+"om.au</a> | ");
 
             
             #line 112 "..\..\Views\Shared\_Layout.cshtml"
-                                                                                Write(Html.ActionLink("Credits", MVC.Public.Public.Credits()));
+                                                                                 Write(Html.ActionLink("Credits", MVC.Public.Public.Credits()));
 
             
             #line default
@@ -734,7 +734,7 @@ WriteLiteral(" | ");
 
             
             #line 112 "..\..\Views\Shared\_Layout.cshtml"
-                                                                                                                                           Write(Html.ActionLink("Licence", MVC.Public.Public.Licence()));
+                                                                                                                                            Write(Html.ActionLink("Licence", MVC.Public.Public.Licence()));
 
             
             #line default

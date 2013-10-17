@@ -50,13 +50,13 @@ namespace Disco.Web.Models.InitialConfig
             }
             #endregion
 
-            #region Communicate with http://discoict.com.au/
+            #region Communicate with https://discoict.com.au/
             try
             {
                 Dns.GetHostEntry("discoict.com.au");
                 try
                 {
-                    HttpWebRequest wReq = (HttpWebRequest)HttpWebRequest.Create("http://discoict.com.au/");
+                    HttpWebRequest wReq = (HttpWebRequest)HttpWebRequest.Create("https://discoict.com.au/");
                     // Added: 2013-02-08 G#
                     // Fix for Proxy Servers which dont support KeepAlive
                     wReq.KeepAlive = false;

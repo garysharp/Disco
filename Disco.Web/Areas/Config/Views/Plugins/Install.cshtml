@@ -8,7 +8,7 @@
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Plugins", MVC.Config.Plugins.Index(), "Install Plugin");
 }
 <div id="pluginCatalog">
-    <h4 id="pluginCatalogHeading">The plugin catalogue [<a href="http://discoict.com.au/">http://discoict.com.au</a>] was last updated @CommonHelpers.FriendlyDate(Model.Catalogue.ResponseTimestamp)
+    <h4 id="pluginCatalogHeading">The plugin catalogue [<a href="https://discoict.com.au/">https://discoict.com.au</a>] was last updated @CommonHelpers.FriendlyDate(Model.Catalogue.ResponseTimestamp)
     </h4>
     @if (Model.Catalogue.Plugins.Count == 0)
     { 

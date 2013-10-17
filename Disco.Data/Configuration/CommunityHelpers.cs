@@ -26,7 +26,7 @@ namespace Disco.Data.Configuration
             catch (Exception)
             { } // Ignore Errors
 
-            return "http://discoict.com.au/base/";
+            return "https://discoict.com.au/base/";
         }
     }
 }
