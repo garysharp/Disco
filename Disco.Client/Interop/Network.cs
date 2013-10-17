@@ -13,7 +13,7 @@ namespace Disco.Client.Interop
         private static NetworkAdapterInfo PrimaryLanNetworkAdapter { get; set; }
         private static NetworkAdapterInfo PrimaryWlanNetworkAdapter { get; set; }
 
-        static Network()
+        public static void Initialize()
         {
             // Get All Adapters
             RetrieveLanAdapters();

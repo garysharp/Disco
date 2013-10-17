@@ -59,6 +59,10 @@ namespace Disco.Client
             {
                 Presentation.DelayUI = true; // Add Delays on Error
             }
+
+            // Initialize Interop
+            Interop.SystemAudit.Initialize();
+            Interop.Network.Initialize();
         }
 
         public static bool WhoAmI()

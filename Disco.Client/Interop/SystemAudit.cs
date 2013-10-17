@@ -18,7 +18,7 @@ namespace Disco.Client.Interop
         public static string DeviceUUID { get; private set; }
         public static bool DeviceIsPartOfDomain { get; private set; }
 
-        static SystemAudit()
+        public static void Initialize()
         {
             // Get BIOS Information
             try
