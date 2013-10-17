@@ -114,7 +114,7 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new ArgumentException(string.Format("Subjects not found: {0}", string.Join(", ", invalidSubjects)), "Subjects");
 
                 var proposedSubjects = subjects.Select(s => s.Item2.SamAccountName).OrderBy(s => s).ToArray();
-                var currentSubjects = AuthorizationRole.SubjectIds.Split(',');
+                var currentSubjects = AuthorizationRole.SubjectIds == null ? new string[0] : AuthorizationRole.SubjectIds.Split(',');
                 removedSubjects = currentSubjects.Except(proposedSubjects).ToArray();
                 addedSubjects = proposedSubjects.Except(currentSubjects).ToArray();
 
