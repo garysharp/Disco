@@ -347,7 +347,7 @@ namespace Disco.BI.DeviceBI
                 {
                     if (!authenticatedToken.Has(Claims.Device.Actions.EnrolDevices))
                     {
-                        if (authenticatedToken.Has(Claims.ComputerAccount))
+                        if (!authenticatedToken.Has(Claims.ComputerAccount))
                             throw new EnrolSafeException(string.Format("Connection not correctly authenticated (SN: {0}; Auth User: {1})", Request.DeviceSerialNumber, authenticatedToken.User.Id));
                         if (!authenticatedToken.User.Id.Equals(string.Format("{0}$", Request.DeviceComputerName), System.StringComparison.InvariantCultureIgnoreCase))
                             throw new EnrolSafeException(string.Format("Connection not correctly authenticated (SN: {0}; Auth User: {1})", Request.DeviceSerialNumber, authenticatedToken.User.Id));

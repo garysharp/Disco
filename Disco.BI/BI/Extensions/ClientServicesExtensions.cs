@@ -7,6 +7,7 @@ using System.Web;
 using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Services.Users;
+using Disco.Services.Authorization;
 
 namespace Disco.BI.Extensions
 {
@@ -43,12 +44,13 @@ namespace Disco.BI.Extensions
 
             using (DiscoDataContext database = new DiscoDataContext())
             {
-                User user = UserService.GetUser(username, database, true);
+                AuthorizationToken token = UserService.GetAuthorization(username, database, true);
+
                 WhoAmIResponse response = new WhoAmIResponse()
                 {
-                    Username = user.Id,
-                    DisplayName = user.DisplayName,
-                    Type = "TODO!"
+                    Username = token.User.Id,
+                    DisplayName = token.User.DisplayName,
+                    Type = token.Has(Claims.ComputerAccount) ? "Computer Account" : "User Account"
                 };
                 return response;
             }
