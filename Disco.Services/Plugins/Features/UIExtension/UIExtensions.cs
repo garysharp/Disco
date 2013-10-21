@@ -46,6 +46,7 @@ namespace Disco.Services.Plugins.Features.UIExtension
             {
                 using (var uiExtInstance = uiExt.CreateInstance<UIExtensionFeature<UIModel>>())
                 {
+                    uiExtInstance.Context = context;
                     uiExtResults.Enqueue(uiExtInstance.ExecuteAction(context, model));
                 }
             }

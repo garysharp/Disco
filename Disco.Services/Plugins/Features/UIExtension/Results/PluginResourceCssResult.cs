@@ -13,18 +13,18 @@ namespace Disco.Services.Plugins.Features.UIExtension.Results
     public class PluginResourceCssResult : UIExtensionResult
     {
         private string _resource;
-        private HtmlString _resourceUrl;
+        private string _resourceUrl;
 
         public PluginResourceCssResult(PluginFeatureManifest Source, string Resource)
             : base(Source)
         {
             this._resource = Resource;
-            this._resourceUrl = new HtmlString(Source.PluginManifest.WebResourceUrl(Resource));
+            this._resourceUrl = Source.PluginManifest.WebResourceUrl(Resource);
 
-            var deferredBundles = HttpContext.Current.Items[Bundle.UIExtensionCssKey] as List<HtmlString>;
+            var deferredBundles = HttpContext.Current.Items[Bundle.UIExtensionCssKey] as List<string>;
             if (deferredBundles == null)
             {
-                deferredBundles = new List<HtmlString>();
+                deferredBundles = new List<string>();
                 HttpContext.Current.Items[Bundle.UIExtensionCssKey] = deferredBundles;
             }
             if (!deferredBundles.Contains(this._resourceUrl))

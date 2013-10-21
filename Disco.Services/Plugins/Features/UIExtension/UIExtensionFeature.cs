@@ -12,7 +12,26 @@ namespace Disco.Services.Plugins.Features.UIExtension
     [PluginFeatureCategory(DisplayName = "User Interface Extensions")]
     public abstract class UIExtensionFeature<UIModel> : PluginFeature where UIModel : BaseUIModel
     {
+        public ControllerContext Context { get; set; }
+
         public abstract UIExtensionResult ExecuteAction(ControllerContext context, UIModel model);
+
+        #region Bundles
+        public void IncludeStyleSheet(string Resource)
+        {
+            if (this.Context == null)
+                throw new NullReferenceException("This method can only be called when a Context is available");
+
+            this.Context.HttpContext.IncludeStyleSheetResource(Resource, this.Manifest.PluginManifest);
+        }
+        public void IncludeScript(string Resource)
+        {
+            if (this.Context == null)
+                throw new NullReferenceException("This method can only be called when a Context is available");
+
+            this.Context.HttpContext.IncludeScriptResource(Resource, this.Manifest.PluginManifest);
+        }
+        #endregion
 
         #region ActionResults
 
@@ -40,9 +59,14 @@ namespace Disco.Services.Plugins.Features.UIExtension
         {
             return new MultipleResult(this.Manifest, Results);
         }
+        [Obsolete("Use: PartialCompiled<ViewType>(dynamic Model)")]
         protected PrecompiledPartialViewResult Partial(Type PartialViewType, object Model = null)
         {
             return new PrecompiledPartialViewResult(this.Manifest, PartialViewType, Model);
+        }
+        protected PrecompiledPartialViewResult PartialCompiled<ViewType>(dynamic Model = null) where ViewType : WebViewPage
+        {
+            return new PrecompiledPartialViewResult(this.Manifest, typeof(ViewType), Model);
         }
 
         #endregion

@@ -29,8 +29,8 @@ namespace Disco.Services.Web
         {
             var deferredBundles = htmlHelper.ViewContext.HttpContext.Items[Bundle.DeferredKey] as List<string>;
 
-            var uiExtensionScripts = htmlHelper.ViewContext.HttpContext.Items[Bundle.UIExtensionScriptsKey] as List<HtmlString>;
-            var uiExtensionCss = htmlHelper.ViewContext.HttpContext.Items[Bundle.UIExtensionCssKey] as List<HtmlString>;
+            var uiExtensionScripts = htmlHelper.ViewContext.HttpContext.Items[Bundle.UIExtensionScriptsKey] as List<string>;
+            var uiExtensionCss = htmlHelper.ViewContext.HttpContext.Items[Bundle.UIExtensionCssKey] as List<string>;
 
             if (deferredBundles != null || uiExtensionScripts != null || uiExtensionCss != null)
             {
@@ -46,12 +46,12 @@ namespace Disco.Services.Web
                 }
                 if (uiExtensionCss != null)
                 {
-                    foreach (HtmlString extensionUrl in uiExtensionCss)
+                    foreach (string extensionUrl in uiExtensionCss)
                         bundleUrls.Append("<link href=\"").Append(extensionUrl).AppendLine("\" rel=\"stylesheet\" type=\"text/css\" />");
                 }
                 if (uiExtensionScripts != null)
                 {
-                    foreach (HtmlString extensionUrl in uiExtensionScripts)
+                    foreach (string extensionUrl in uiExtensionScripts)
                         bundleUrls.Append("<script src=\"").Append(extensionUrl).AppendLine("\" type=\"text/javascript\"></script>");
                 }
 

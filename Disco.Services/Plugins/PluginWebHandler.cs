@@ -70,6 +70,19 @@ namespace Disco.Services.Plugins
 
         #endregion
 
+        #region Bundles
+
+        public void IncludeStyleSheet(string Resource)
+        {
+            this.HostController.HttpContext.IncludeStyleSheetResource(Resource, this.Manifest);
+        }
+        public void IncludeScript(string Resource)
+        {
+            this.HostController.HttpContext.IncludeScriptResource(Resource, this.Manifest);
+        }
+
+        #endregion
+
         #region Action Results
 
         #region Compiled View

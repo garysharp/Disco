@@ -17,7 +17,7 @@ namespace Disco.Web.Areas.Config.Models.Plugins
             this.Manifest = response.Manifest;
 
             this.PluginViewType = response.ViewType;
-            this.PluginViewModel = response.ViewModel;
+            this.PluginViewModel = response.Model;
         }
     }
 }

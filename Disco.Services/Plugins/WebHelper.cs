@@ -83,29 +83,11 @@ namespace Disco.Services.Plugins
 
         public void IncludeStyleSheet(string Resource)
         {
-            var url = ResourceUrl(Resource);
-
-            var deferredBundles = ViewPage.Context.Items[Bundle.UIExtensionCssKey] as List<HtmlString>;
-            if (deferredBundles == null)
-            {
-                deferredBundles = new List<HtmlString>();
-                ViewPage.Context.Items[Bundle.UIExtensionCssKey] = deferredBundles;
-            }
-            if (!deferredBundles.Contains(url))
-                deferredBundles.Add(url);
+            ViewPage.Context.IncludeStyleSheetResource(Resource, this.Manifest);
         }
         public void IncludeJavaScript(string Resource)
         {
-            var url = ResourceUrl(Resource);
-
-            var deferredBundles = ViewPage.Context.Items[Bundle.UIExtensionScriptsKey] as List<HtmlString>;
-            if (deferredBundles == null)
-            {
-                deferredBundles = new List<HtmlString>();
-                ViewPage.Context.Items[Bundle.UIExtensionScriptsKey] = deferredBundles;
-            }
-            if (!deferredBundles.Contains(url))
-                deferredBundles.Add(url);
+            ViewPage.Context.IncludeScriptResource(Resource, this.Manifest);
         }
 
         public HtmlString PartialCompiled<ViewType>(object Model) where ViewType : WebViewPage

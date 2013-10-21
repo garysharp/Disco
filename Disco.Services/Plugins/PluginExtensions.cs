@@ -93,6 +93,35 @@ namespace Disco.Services.Plugins
         }
         #endregion
 
+        #region Bundling
+        public static void IncludeStyleSheetResource(this HttpContextBase Context, string Resource, PluginManifest manifest)
+        {
+            var resourceUrl = manifest.WebResourceUrl(Resource);
+            
+            var deferredBundles = Context.Items[Bundle.UIExtensionCssKey] as List<string>;
+            if (deferredBundles == null)
+            {
+                deferredBundles = new List<string>();
+                HttpContext.Current.Items[Bundle.UIExtensionCssKey] = deferredBundles;
+            }
+            if (!deferredBundles.Contains(resourceUrl))
+                deferredBundles.Add(resourceUrl);
+        }
+        public static void IncludeScriptResource(this HttpContextBase Context, string Resource, PluginManifest manifest)
+        {
+            var resourcePath = manifest.WebResourceUrl(Resource);
+
+            var deferredBundles = Context.Items[Bundle.UIExtensionScriptsKey] as List<string>;
+            if (deferredBundles == null)
+            {
+                deferredBundles = new List<string>();
+                HttpContext.Current.Items[Bundle.UIExtensionScriptsKey] = deferredBundles;
+            }
+            if (!deferredBundles.Contains(resourcePath))
+                deferredBundles.Add(resourcePath);
+        }
+        #endregion
+
         #region Virtual Directories
 
         [Obsolete("Inherit ViewPages from 'Disco.Services.Plugins.WebViewPage' instead.")]

@@ -20,17 +20,24 @@ namespace Disco.Services.Plugins
             // Nothing in Base Class
         }
 
+        [Obsolete("Use: Response<ViewType>(dynamic ViewModel)")]
         protected PluginConfigurationHandlerGetResponse GetResponse(Type ViewType, dynamic ViewModel = null)
         {
             return new PluginConfigurationHandlerGetResponse(this.Manifest, ViewType, ViewModel);
         }
+
+        protected PluginConfigurationHandlerGetResponse Response<ViewType>(dynamic Model = null) where ViewType : WebViewPage
+        {
+            return new PluginConfigurationHandlerGetResponse(this.Manifest, typeof(ViewType), Model);
+        }
+
         public class PluginConfigurationHandlerGetResponse
         {
             public PluginManifest Manifest { get; set; }
             public Type ViewType { get; set; }
-            public dynamic ViewModel { get; set; }
+            public dynamic Model { get; set; }
 
-            public PluginConfigurationHandlerGetResponse(PluginManifest Manifest, Type ViewType, dynamic ViewModel = null)
+            public PluginConfigurationHandlerGetResponse(PluginManifest Manifest, Type ViewType, dynamic Model = null)
             {
                 if (ViewType == null)
                     throw new ArgumentNullException("ViewType");
@@ -40,7 +47,7 @@ namespace Disco.Services.Plugins
                 this.Manifest = Manifest;
 
                 this.ViewType = ViewType;
-                this.ViewModel = ViewModel;
+                this.Model = Model;
             }
         }
     }
