@@ -51,7 +51,7 @@ namespace Disco.Services.Plugins
             }
 
             this.Status.Finished("Restarting Disco, please wait...", "/Config/Plugins");
-            Plugins.RestartApp(1500);
+            Plugins.RestartApp(2500);
         }
 
         public static ScheduledTaskStatus UninstallPlugin(PluginManifest Manifest, bool UninstallData)

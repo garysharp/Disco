@@ -1,9 +1,11 @@
 ﻿using Disco.Services.Authorization;
 using Disco.Services.Plugins;
 using Disco.Services.Plugins.CommunityInterop;
+using Disco.Services.Tasks;
 using Disco.Services.Web;
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -117,7 +119,28 @@ namespace Disco.Web.Areas.API.Controllers
 
             Plugin.SaveAs(tempPluginLocation);
 
-            var status = InstallPluginTask.InstallLocalPlugin(tempPluginLocation, true);
+            // Check for Install/Update
+            PluginManifest packageManifest;
+            using (var packageStream = System.IO.File.OpenRead(tempPluginLocation))
+            {
+                using (ZipArchive packageArchive = new ZipArchive(packageStream, ZipArchiveMode.Read, false))
+                {
+                    ZipArchiveEntry packageManifestEntry = packageArchive.GetEntry("manifest.json");
+                    if (packageManifestEntry == null)
+                        throw new InvalidDataException("The plugin package does not contain the 'manifest.json' entry");
+
+                    using (Stream packageManifestStream = packageManifestEntry.Open())
+                    {
+                        packageManifest = PluginManifest.FromPluginManifestFile(packageManifestStream);
+                    }
+                }
+            }
+            
+            ScheduledTaskStatus status;
+            if (Plugins.PluginInstalled(packageManifest.Id))
+                status = UpdatePluginTask.UpdateLocalPlugin(packageManifest.Id, tempPluginLocation);
+            else
+                status = InstallPluginTask.InstallLocalPlugin(tempPluginLocation, true);
 
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }

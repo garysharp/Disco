@@ -79,7 +79,7 @@ namespace Disco.Services.Plugins
             ExecuteTaskInternal(this.Status, pluginPackagesLocation, updatePlugins);
 
             this.Status.Finished("Restarting Disco, please wait...", "/Config/Plugins");
-            Plugins.RestartApp(1500);
+            Plugins.RestartApp(2500);
         }
 
         public static List<PluginManifest> OfflineInstalledPlugins(DiscoDataContext Database)
@@ -226,8 +226,8 @@ namespace Disco.Services.Plugins
 
                 // Ensure not already installed
                 if (existingManifest != null)
-                    if (updateManifest.Version <= existingManifest.Version)
-                        throw new InvalidOperationException("Only newer versions can be used to update a plugin");
+                    if (updateManifest.Version < existingManifest.Version)
+                        throw new InvalidOperationException("Older versions cannot update existing plugins");
 
                 Status.UpdateStatus(20, string.Format("{0} [{1} v{2}] by {3}", updateManifest.Name, updateManifest.Id, updateManifest.Version.ToString(4), updateManifest.Author), "Initializing Update Environment");
 
