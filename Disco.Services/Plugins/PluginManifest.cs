@@ -457,6 +457,17 @@ namespace Disco.Services.Plugins
                 return string.Format("/Plugin/{0}", HttpUtility.UrlEncode(this.Id));
             }
         }
+        public string WebActionUrl(string Action)
+        {
+            if (!HasWebHandler)
+                throw new NotSupportedException("This plugin doesn't have a web handler");
+
+            var url = UrlHelper.GenerateUrl("Plugin", null, null,
+                new RouteValueDictionary(new Dictionary<string, object>() { { "PluginId", this.Id }, { "PluginAction", Action } }),
+                RouteTable.Routes, HttpContext.Current.Request.RequestContext, false);
+
+            return url;
+        }
 
         public Tuple<string, string> WebResourcePath(string Resource)
         {

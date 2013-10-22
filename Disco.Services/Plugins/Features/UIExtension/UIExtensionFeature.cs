@@ -13,25 +13,25 @@ namespace Disco.Services.Plugins.Features.UIExtension
     public abstract class UIExtensionFeature<UIModel> : PluginFeature where UIModel : BaseUIModel
     {
         public ControllerContext Context { get; set; }
+        private Lazy<WebHelper> plugin;
+        protected WebHelper Plugin
+        {
+            get
+            {
+                return plugin.Value;
+            }
+        }
+        public UIExtensionFeature()
+        {
+            this.plugin = new Lazy<WebHelper>(new Func<WebHelper>(() => {
+                if (this.Context == null)
+                    throw new InvalidOperationException("The Context property is not initialized");
+
+                return new WebHelper(this.Context.HttpContext, this.Manifest.PluginManifest);
+            }));
+        }
 
         public abstract UIExtensionResult ExecuteAction(ControllerContext context, UIModel model);
-
-        #region Bundles
-        public void IncludeStyleSheet(string Resource)
-        {
-            if (this.Context == null)
-                throw new NullReferenceException("This method can only be called when a Context is available");
-
-            this.Context.HttpContext.IncludeStyleSheetResource(Resource, this.Manifest.PluginManifest);
-        }
-        public void IncludeScript(string Resource)
-        {
-            if (this.Context == null)
-                throw new NullReferenceException("This method can only be called when a Context is available");
-
-            this.Context.HttpContext.IncludeScriptResource(Resource, this.Manifest.PluginManifest);
-        }
-        #endregion
 
         #region ActionResults
 

@@ -17,6 +17,19 @@ namespace Disco.Services.Plugins
         public PluginManifest Manifest { get; set; }
         public Controller HostController { get; set; }
         protected DiscoDataContext Database;
+        private Lazy<WebHelper> plugin;
+        protected WebHelper Plugin
+        {
+            get
+            {
+                return plugin.Value;
+            }
+        }
+
+        public PluginWebHandler()
+        {
+            this.plugin = new Lazy<WebHelper>(new Func<WebHelper>(() => new WebHelper(this.HostController.HttpContext, this.Manifest)));
+        }
 
         public void OnActionExecuting()
         {
@@ -70,19 +83,6 @@ namespace Disco.Services.Plugins
 
         #endregion
 
-        #region Bundles
-
-        public void IncludeStyleSheet(string Resource)
-        {
-            this.HostController.HttpContext.IncludeStyleSheetResource(Resource, this.Manifest);
-        }
-        public void IncludeScript(string Resource)
-        {
-            this.HostController.HttpContext.IncludeScriptResource(Resource, this.Manifest);
-        }
-
-        #endregion
-
         #region Action Results
 
         #region Compiled View
@@ -124,7 +124,7 @@ namespace Disco.Services.Plugins
         {
             return this.CompiledView<ViewType>();
         }
-        
+
         [Obsolete("Use Generic Methods")]
         public ActionResult CompiledView(Type CompiledViewType, object Model, bool UseDiscoLayout)
         {
