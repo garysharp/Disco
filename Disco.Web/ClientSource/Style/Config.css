@@ -542,6 +542,29 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
   padding: 2px;
   height: 430px;
 }
+#dialogBulkGenerate .brief {
+  margin: 0 0 8px 0;
+}
+#dialogBulkGenerate .brief .scopeDescBulkGenerate {
+  font-weight: bold;
+}
+#dialogBulkGenerate .brief div.examples {
+  margin: 8px auto;
+  width: 300px;
+}
+#dialogBulkGenerate .brief div.examples div {
+  margin: 2px 4px 2px 0;
+  width: 150px;
+  float: left;
+}
+#dialogBulkGenerate .brief div.examples div.example1 {
+  width: 100px;
+}
+#dialogBulkGenerate textarea {
+  width: 100%;
+  height: 200px;
+  margin: 0 auto;
+}
 #importStatus #sessions .session {
   padding: 4px;
   margin-bottom: 10px;

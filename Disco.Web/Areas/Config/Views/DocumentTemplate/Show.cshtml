@@ -383,20 +383,6 @@
                 }
             </td>
         </tr>
-        @if (canBulkGenerate)
-        {
-            <tr>
-                <th>Bulk Generate
-                </th>
-                <td>
-                    @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
-                    {
-                        <textarea name="DataIds"></textarea>
-                        <input class="button" type="submit" value="Generate" />
-                    }
-                </td>
-            </tr>
-        }
     </table>
 </div>
 <h2>Template Expressions</h2>
@@ -442,6 +428,80 @@
     @if (Authorization.Has(Claims.Config.Show))
     {
         @Html.ActionLinkButton("Expression Browser", MVC.Config.DocumentTemplate.ExpressionBrowser())
+    }
+    @if (canBulkGenerate)
+    {
+        <a id="buttonBulkGenerate" href="#" class="button">Bulk Generate</a>
+        <div id="dialogBulkGenerate" class="hiddenDialog" title="Bulk Generate: @(Model.DocumentTemplate.Id)">
+            <div class="brief">
+                <div>
+                    Enter multiple <span class="scopeDescBulkGenerate"></span>&nbsp;separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                </div>
+                <div class="examples clearfix">
+                    <h4>Examples:</h4>
+                    <div class="example1 code"></div>
+                    <div class="example2 code"></div>
+                    <div class="example3 code"></div>
+                </div>
+            </div>
+            @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
+            {
+                <div class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="DataIds"></div>
+                <textarea id="inputBulkGenerateDataIds" name="DataIds" data-val="true" data-val-required="Identifiers are required"></textarea>
+            }
+        </div>
+
+        <script>
+            $(function () {
+                var dialog;
+
+                $('#buttonBulkGenerate').click(function () {
+                    if (!dialog) {
+                        dialog = $('#dialogBulkGenerate').dialog({
+                            resizable: false,
+                            modal: true,
+                            autoOpen: false,
+                            width: 460,
+                            buttons: {
+                                "Bulk Generate": function () {
+                                    dialog.find('form').submit();
+                                    dialog.dialog("disable");
+                                },
+                                Close: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+
+                        $.validator.unobtrusive.reparse('#inputBulkGenerateDataIds');
+                    }
+
+                    switch ($('#DocumentTemplate_Scope').val()) {
+                        case 'Device':
+                            dialog.find('.scopeDescBulkGenerate').text('Device Serial Numbers');
+                            dialog.find('.example1').html('01234567<br />ABCD9876<br />8VQ6G2R');
+                            dialog.find('.example2').text('01234567,ABCD9876,8VQ6G2R');
+                            dialog.find('.example3').text('01234567;ABCD9876;8VQ6G2R');
+                            break;
+                        case 'Job':
+                            dialog.find('.scopeDescBulkGenerate').text('Job Ids');
+                            dialog.find('.example1').html('86<br />99<br />44');
+                            dialog.find('.example2').text('86,99,44');
+                            dialog.find('.example3').text('86;99;44');
+                            break;
+                        case 'User':
+                            dialog.find('.scopeDescBulkGenerate').text('User Ids');
+                            dialog.find('.example1').html('user6<br />smi0099<br />rsmith');
+                            dialog.find('.example2').text('user6,smi0099,rsmith');
+                            dialog.find('.example3').text('user6;smi0099;rsmith');
+                            break;
+                    }
+
+                    dialog.dialog('open');
+                    return false;
+                });
+            });
+        </script>
     }
     @if (Authorization.Has(Claims.Config.DocumentTemplate.Delete))
     {
