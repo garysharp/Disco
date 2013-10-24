@@ -66,6 +66,8 @@ namespace Disco.Services.Authorization
 				{ "Config.Organisation.ConfigureMultiSiteMode", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Organisation.ConfigureMultiSiteMode, (c, v) => c.Config.Organisation.ConfigureMultiSiteMode = v, "Configure Multi-Site Mode", "Can configure multi-site mode", false) },
 				{ "Config.Organisation.ConfigureName", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Organisation.ConfigureName, (c, v) => c.Config.Organisation.ConfigureName = v, "Configure Name", "Can configure the organisation name", false) },
 				{ "Config.Organisation.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Organisation.Show, (c, v) => c.Config.Organisation.Show = v, "Show Organisation Details", "Can show the organisation details", false) },
+				{ "Config.JobPreferences.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.JobPreferences.Configure, (c, v) => c.Config.JobPreferences.Configure = v, "Configure Job Preferences", "Can configure job preferences", false) },
+				{ "Config.JobPreferences.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.JobPreferences.Show, (c, v) => c.Config.JobPreferences.Show = v, "Show Job Preferences", "Can show job preferences", false) },
 				{ "Config.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Show, (c, v) => c.Config.Show = v, "Show Configuration", "Can show the configuration menu", false) },
 				{ "Job.Lists.AllOpen", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AllOpen, (c, v) => c.Job.Lists.AllOpen = v, "All Open List", "Can show list", false) },
 				{ "Job.Lists.AwaitingFinanceAgreementBreach", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AwaitingFinanceAgreementBreach, (c, v) => c.Job.Lists.AwaitingFinanceAgreementBreach = v, "Awaiting Finance Agreement Breach List", "Can show list (NOTE: Requires Awaiting Finance List)", false) },
@@ -247,6 +249,10 @@ namespace Disco.Services.Authorization
 				            new ClaimNavigatorItem("Config.Organisation.ConfigureMultiSiteMode", false),
 				            new ClaimNavigatorItem("Config.Organisation.ConfigureName", false),
 				            new ClaimNavigatorItem("Config.Organisation.Show", false)
+				        }),
+				        new ClaimNavigatorItem("Config.JobPreferences", "Job Preferences", "Permissions related to Job Preferences", false, new List<IClaimNavigatorItem>() {
+				            new ClaimNavigatorItem("Config.JobPreferences.Configure", false),
+				            new ClaimNavigatorItem("Config.JobPreferences.Show", false)
 				        }),
 				        new ClaimNavigatorItem("Config.Show", false)
 				    }),
@@ -439,7 +445,7 @@ namespace Disco.Services.Authorization
 			return c;
 		}
 
-        public static List<string> GetClaimKeys(RoleClaims Claims)
+		public static List<string> GetClaimKeys(RoleClaims Claims)
         {
             var claims = Claims;
             return _roleClaims.Where(rc => rc.Value.Item1(claims)).Select(rc => rc.Key).ToList();
@@ -490,6 +496,8 @@ namespace Disco.Services.Authorization
 			c.Config.Organisation.ConfigureMultiSiteMode = true;
 			c.Config.Organisation.ConfigureName = true;
 			c.Config.Organisation.Show = true;
+			c.Config.JobPreferences.Configure = true;
+			c.Config.JobPreferences.Show = true;
 			c.Config.Show = true;
 			c.Job.Lists.AllOpen = true;
 			c.Job.Lists.AwaitingFinanceAgreementBreach = true;
@@ -898,6 +906,23 @@ namespace Disco.Services.Authorization
                 /// <para>Can show the organisation details</para>
                 /// </summary>
                 public const string Show = "Config.Organisation.Show";
+            }
+
+            /// <summary>Job Preferences
+            /// <para>Permissions related to Job Preferences</para>
+            /// </summary>
+            public static class JobPreferences
+            {
+
+                /// <summary>Configure Job Preferences
+                /// <para>Can configure job preferences</para>
+                /// </summary>
+                public const string Configure = "Config.JobPreferences.Configure";
+
+                /// <summary>Show Job Preferences
+                /// <para>Can show job preferences</para>
+                /// </summary>
+                public const string Show = "Config.JobPreferences.Show";
             }
 
             /// <summary>Show Configuration

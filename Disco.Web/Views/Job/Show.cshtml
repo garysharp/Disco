@@ -14,7 +14,8 @@
 <div id="Job_Show">
     <div id="Job_Show_Status">
         @{ var jobStatusInfo = Model.Job.Status();}
-        <span class="icon JobStatus@(jobStatusInfo.Item1)"></span>@jobStatusInfo.Item2
+        <span class="icon JobStatus@(jobStatusInfo.Item1)"></span>@jobStatusInfo.Item2 @if (Model.IsLongRunning)
+                                                                                       {<span class="smallMessage">(Long Running)</span>}
         <script type="text/javascript">
             $(function () {
                 $('#Job_Show_Status').appendTo('#layout_PageHeading')

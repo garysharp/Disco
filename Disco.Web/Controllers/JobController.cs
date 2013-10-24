@@ -1,5 +1,6 @@
 ﻿using Disco.BI.Extensions;
 using Disco.BI.JobBI;
+using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.UI.Job;
 using Disco.Services.Authorization;
@@ -19,15 +20,49 @@ namespace Disco.Web.Controllers
     {
 
         #region Index
+
+
+        #region Managed Job Lists
         private static object jobListCreationLock = new object();
 
         private static ManagedJobList jobList_OpenJobs;
         private static ManagedJobList jobList_LongRunning;
 
-        public virtual ActionResult Index()
+        internal static ManagedJobList ReInitializeLongRunningJobList(DiscoDataContext Database)
         {
-            var m = new Models.Job.IndexModel();
+            if (jobList_LongRunning == null)
+                return InitializeLongRunningJobList(Database);
+            else
+            {
+                var longRunningThreshold = DateTime.Today.AddDays(Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold * -1);
 
+                return jobList_LongRunning.ReInitialize(Database, q => q.Where(j => j.ClosedDate == null && j.OpenedDate < longRunningThreshold));
+            }
+        }
+        internal static ManagedJobList InitializeLongRunningJobList(DiscoDataContext Database)
+        {
+            if (jobList_LongRunning == null)
+            {
+                lock (jobListCreationLock)
+                {
+                    if (jobList_LongRunning == null)
+                    {
+                        var longRunningThreshold = DateTime.Today.AddDays(Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold * -1);
+
+                        jobList_LongRunning = new ManagedJobList()
+                        {
+                            Name = "Long Running Jobs",
+                            FilterFunction = q => q.Where(j => j.ClosedDate == null && j.OpenedDate < longRunningThreshold),
+                            SortFunction = q => q.OrderBy(j => j.Id),
+                            ShowStatus = true
+                        }.Initialize(Database);
+                    }
+                }
+            }
+            return jobList_LongRunning;
+        }
+        internal static ManagedJobList InitializeOpenJobList(DiscoDataContext Database)
+        {
             if (jobList_OpenJobs == null)
             {
                 lock (jobListCreationLock)
@@ -49,24 +84,16 @@ namespace Disco.Web.Controllers
                     }
                 }
             }
-            if (jobList_LongRunning == null)
-            {
-                lock (jobListCreationLock)
-                {
-                    if (jobList_LongRunning == null)
-                    {
-                        var longRunningThreshold = DateTime.Today.AddDays(-7);
+            return jobList_OpenJobs;
+        }
+        #endregion
 
-                        jobList_LongRunning = new ManagedJobList()
-                        {
-                            Name = "Long Running Jobs",
-                            FilterFunction = q => q.Where(j => j.ClosedDate == null && j.OpenedDate < longRunningThreshold),
-                            SortFunction = q => q.OrderBy(j => j.Id),
-                            ShowStatus = true
-                        }.Initialize(Database);
-                    }
-                }
-            }
+        public virtual ActionResult Index()
+        {
+            var m = new Models.Job.IndexModel();
+
+            InitializeOpenJobList(Database);
+            InitializeLongRunningJobList(Database);
 
             if (Authorization.Has(Claims.Job.Lists.AwaitingTechnicianAction))
                 m.OpenJobs = jobList_OpenJobs;
@@ -316,6 +343,8 @@ namespace Disco.Web.Controllers
                 default:
                     throw new InvalidOperationException("Unknown JobType");
             }
+
+            m.IsLongRunning = (m.Job.OpenedDate < DateTime.Today.AddDays(Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold * -1));
 
             if (Authorization.Has(Claims.Job.Actions.UpdateSubTypes))
                 m.UpdatableJobSubTypes = m.Job.JobType.JobSubTypes.OrderBy(jst => jst.Description).ToList();

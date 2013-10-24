@@ -58,6 +58,7 @@ namespace T4MVC
         public Disco.Web.Areas.API.Controllers.DocumentTemplateController DocumentTemplate = new Disco.Web.Areas.API.Controllers.T4MVC_DocumentTemplateController();
         public Disco.Web.Areas.API.Controllers.ExpressionsController Expressions = new Disco.Web.Areas.API.Controllers.T4MVC_ExpressionsController();
         public Disco.Web.Areas.API.Controllers.JobController Job = new Disco.Web.Areas.API.Controllers.T4MVC_JobController();
+        public Disco.Web.Areas.API.Controllers.JobPreferencesController JobPreferences = new Disco.Web.Areas.API.Controllers.T4MVC_JobPreferencesController();
         public Disco.Web.Areas.API.Controllers.LoggingController Logging = new Disco.Web.Areas.API.Controllers.T4MVC_LoggingController();
         public Disco.Web.Areas.API.Controllers.PluginController Plugin = new Disco.Web.Areas.API.Controllers.T4MVC_PluginController();
         public Disco.Web.Areas.API.Controllers.SystemController System = new Disco.Web.Areas.API.Controllers.T4MVC_SystemController();
@@ -75,6 +76,7 @@ namespace T4MVC
         public Disco.Web.Areas.Config.Controllers.DocumentTemplateController DocumentTemplate = new Disco.Web.Areas.Config.Controllers.T4MVC_DocumentTemplateController();
         public Disco.Web.Areas.Config.Controllers.EnrolmentController Enrolment = new Disco.Web.Areas.Config.Controllers.T4MVC_EnrolmentController();
         public Disco.Web.Areas.Config.Controllers.ExpressionsController Expressions = new Disco.Web.Areas.Config.Controllers.T4MVC_ExpressionsController();
+        public Disco.Web.Areas.Config.Controllers.JobPreferencesController JobPreferences = new Disco.Web.Areas.Config.Controllers.T4MVC_JobPreferencesController();
         public Disco.Web.Areas.Config.Controllers.LoggingController Logging = new Disco.Web.Areas.Config.Controllers.T4MVC_LoggingController();
         public Disco.Web.Areas.Config.Controllers.OrganisationController Organisation = new Disco.Web.Areas.Config.Controllers.T4MVC_OrganisationController();
         public Disco.Web.Areas.Config.Controllers.PluginsController Plugins = new Disco.Web.Areas.Config.Controllers.T4MVC_PluginsController();
@@ -758,6 +760,7 @@ namespace Links
                 private const string URLPATH = "~/ClientSource/Style/Fancytree";
                 public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                 public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public static readonly string icons_DiscoMod_png = Url("icons-DiscoMod.png");
                 public static readonly string icons_gif = Url("icons.gif");
                 public static readonly string loading_gif = Url("loading.gif");
                 public static readonly string ui_fancytree_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/ui.fancytree.min.css") ? Url("ui.fancytree.min.css") : Url("ui.fancytree.css");
@@ -7737,6 +7740,104 @@ namespace Disco.Web.Areas.API.Controllers
 
 namespace Disco.Web.Areas.API.Controllers
 {
+    public partial class JobPreferencesController
+    {
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public JobPreferencesController() { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected JobPreferencesController(Dummy d) { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoute(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateLongRunningJobDaysThreshold()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLongRunningJobDaysThreshold);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public JobPreferencesController Actions { get { return MVC.API.JobPreferences; } }
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Area = "API";
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Name = "JobPreferences";
+        [GeneratedCode("T4MVC", "2.0")]
+        public const string NameConst = "JobPreferences";
+
+        static readonly ActionNamesClass s_actions = new ActionNamesClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionNamesClass ActionNames { get { return s_actions; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNamesClass
+        {
+            public readonly string UpdateLongRunningJobDaysThreshold = "UpdateLongRunningJobDaysThreshold";
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNameConstants
+        {
+            public const string UpdateLongRunningJobDaysThreshold = "UpdateLongRunningJobDaysThreshold";
+        }
+
+
+        static readonly ActionParamsClass_UpdateLongRunningJobDaysThreshold s_params_UpdateLongRunningJobDaysThreshold = new ActionParamsClass_UpdateLongRunningJobDaysThreshold();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateLongRunningJobDaysThreshold UpdateLongRunningJobDaysThresholdParams { get { return s_params_UpdateLongRunningJobDaysThreshold; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateLongRunningJobDaysThreshold
+        {
+            public readonly string LongRunningJobDaysThreshold = "LongRunningJobDaysThreshold";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ViewsClass s_views = new ViewsClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ViewsClass Views { get { return s_views; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ViewsClass
+        {
+            static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
+            public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
+            public class _ViewNamesClass
+            {
+            }
+        }
+    }
+
+    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+    public partial class T4MVC_JobPreferencesController : Disco.Web.Areas.API.Controllers.JobPreferencesController
+    {
+        public T4MVC_JobPreferencesController() : base(Dummy.Instance) { }
+
+        partial void UpdateLongRunningJobDaysThresholdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int LongRunningJobDaysThreshold, bool redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateLongRunningJobDaysThreshold(int LongRunningJobDaysThreshold, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLongRunningJobDaysThreshold);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "LongRunningJobDaysThreshold", LongRunningJobDaysThreshold);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateLongRunningJobDaysThresholdOverride(callInfo, LongRunningJobDaysThreshold, redirect);
+            return callInfo;
+        }
+
+    }
+}
+
+namespace Disco.Web.Areas.API.Controllers
+{
     public partial class LoggingController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -9616,6 +9717,89 @@ namespace Disco.Web.Areas.Config.Controllers
     public partial class T4MVC_ExpressionsController : Disco.Web.Areas.Config.Controllers.ExpressionsController
     {
         public T4MVC_ExpressionsController() : base(Dummy.Instance) { }
+
+        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        public override System.Web.Mvc.ActionResult Index()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
+            IndexOverride(callInfo);
+            return callInfo;
+        }
+
+    }
+}
+
+namespace Disco.Web.Areas.Config.Controllers
+{
+    public partial class JobPreferencesController
+    {
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public JobPreferencesController() { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected JobPreferencesController(Dummy d) { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoute(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public JobPreferencesController Actions { get { return MVC.Config.JobPreferences; } }
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Area = "Config";
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Name = "JobPreferences";
+        [GeneratedCode("T4MVC", "2.0")]
+        public const string NameConst = "JobPreferences";
+
+        static readonly ActionNamesClass s_actions = new ActionNamesClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionNamesClass ActionNames { get { return s_actions; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNamesClass
+        {
+            public readonly string Index = "Index";
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNameConstants
+        {
+            public const string Index = "Index";
+        }
+
+
+        static readonly ViewsClass s_views = new ViewsClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ViewsClass Views { get { return s_views; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ViewsClass
+        {
+            static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
+            public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
+            public class _ViewNamesClass
+            {
+                public readonly string Index = "Index";
+            }
+            public readonly string Index = "~/Areas/Config/Views/JobPreferences/Index.cshtml";
+        }
+    }
+
+    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+    public partial class T4MVC_JobPreferencesController : Disco.Web.Areas.Config.Controllers.JobPreferencesController
+    {
+        public T4MVC_JobPreferencesController() : base(Dummy.Instance) { }
 
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 

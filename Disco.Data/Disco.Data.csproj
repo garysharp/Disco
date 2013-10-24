@@ -72,6 +72,7 @@
     <Compile Include="Configuration\CommunityHelpers.cs" />
     <Compile Include="Configuration\ConfigurationBase.cs" />
     <Compile Include="Configuration\ConfigurationCache.cs" />
+    <Compile Include="Configuration\Modules\JobPreferencesConfiguration.cs" />
     <Compile Include="Configuration\SystemConfiguration.cs" />
     <Compile Include="Configuration\Modules\BootstrapperConfiguration.cs" />
     <Compile Include="Configuration\Modules\DeviceProfileConfiguration.cs" />
@@ -172,7 +173,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

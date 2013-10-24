@@ -20,6 +20,7 @@ namespace Disco.Data.Configuration
             this.moduleBootstrapperConfiguration = new Lazy<Modules.BootstrapperConfiguration>(() => new Modules.BootstrapperConfiguration(Database));
             this.moduleDeviceProfilesConfiguration = new Lazy<Modules.DeviceProfilesConfiguration>(() => new Modules.DeviceProfilesConfiguration(Database));
             this.moduleOrganisationAddressesConfiguration = new Lazy<Modules.OrganisationAddressesConfiguration>(() => new Modules.OrganisationAddressesConfiguration(Database));
+            this.moduleJobPreferencesConfiguration = new Lazy<Modules.JobPreferencesConfiguration>(() => new Modules.JobPreferencesConfiguration(Database));
         }
 
         #region Configuration Modules
@@ -27,6 +28,7 @@ namespace Disco.Data.Configuration
         private Lazy<Modules.BootstrapperConfiguration> moduleBootstrapperConfiguration;
         private Lazy<Modules.DeviceProfilesConfiguration> moduleDeviceProfilesConfiguration;
         private Lazy<Modules.OrganisationAddressesConfiguration> moduleOrganisationAddressesConfiguration;
+        private Lazy<Modules.JobPreferencesConfiguration> moduleJobPreferencesConfiguration;
 
         public Modules.BootstrapperConfiguration Bootstrapper
         {
@@ -47,6 +49,13 @@ namespace Disco.Data.Configuration
             get
             {
                 return moduleOrganisationAddressesConfiguration.Value;
+            }
+        }
+        public Modules.JobPreferencesConfiguration JobPreferences
+        {
+            get
+            {
+                return moduleJobPreferencesConfiguration.Value;
             }
         }
 

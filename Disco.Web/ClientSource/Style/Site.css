@@ -921,6 +921,9 @@ div.form > table table.sub > tbody > tr > th.name {
 #pageMenu td .pageMenuArea:not(:last-child) {
   border-bottom: 1px dashed #aaa;
 }
+#pageMenu td .pageMenuArea.noSeperator {
+  border-bottom: none;
+}
 #pageMenu td:first-child {
   padding-left: 0;
 }

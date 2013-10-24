@@ -13,14 +13,18 @@ using Disco.Services.Users;
 
 namespace Disco.BI.JobBI
 {
+    using FilterFunc = Func<IQueryable<Job>, IQueryable<Job>>;
+    using SortFunc = Func<IEnumerable<Disco.Models.BI.Job.JobTableModel.JobTableItemModel>, IEnumerable<Disco.Models.BI.Job.JobTableModel.JobTableItemModel>>;
+    using Disco.Services.Logging;
+
     public class ManagedJobList : JobTableModel, IDisposable
     {
         public string Name { get; set; }
-        public Func<IQueryable<Job>, IQueryable<Job>> FilterFunction { get; set; }
-        public Func<IEnumerable<JobTableItemModel>, IEnumerable<JobTableItemModel>> SortFunction { get; set; }
+        public FilterFunc FilterFunction { get; set; }
+        public SortFunc SortFunction { get; set; }
         private IDisposable unsubscribeToken;
         private object updateLock = new object();
-
+        
         public override List<JobTableItemModel> Items
         {
             get
@@ -35,27 +39,63 @@ namespace Disco.BI.JobBI
 
         public ManagedJobList Initialize(DiscoDataContext Database)
         {
-            // Initially fill table
-            base.Items = this.SortFunction(this.DetermineItems(Database, this.FilterFunction(Database.Jobs))).ToList();
+            // Can only Initialize once
+            if (base.Items != null)
+                return ReInitialize(Database);
 
-            // Subscribe for Changes
-            // - Job (or Job Meta) Changes
-            // - Device Profile Address Changes (for multi-campus Schools)
-            // - Device Model Description Changes
-            // - Device's Profile or Model Changes
-            unsubscribeToken = RepositoryMonitor.StreamAfterCommit
-                .Where(n => n.EntityType == typeof(Job) ||
-                    n.EntityType == typeof(JobMetaWarranty) ||
-                    n.EntityType == typeof(JobMetaNonWarranty) ||
-                    n.EntityType == typeof(JobMetaInsurance) ||
-                    (n.EventType == RepositoryMonitorEventType.Modified && (
-                        (n.EntityType == typeof(DeviceProfile) && n.ModifiedProperties.Contains("DefaultOrganisationAddress")) ||
-                        (n.EntityType == typeof(DeviceModel) && n.ModifiedProperties.Contains("Description")) ||
-                        (n.EntityType == typeof(Device) && n.ModifiedProperties.Contains("DeviceProfileId") || n.ModifiedProperties.Contains("DeviceModelId"))
-                    )))
-                .Subscribe(JobNotification);
+            lock (updateLock)
+            {
+                // Subscribe for Changes
+                // - Job (or Job Meta) Changes
+                // - Device Profile Address Changes (for multi-campus Schools)
+                // - Device Model Description Changes
+                // - Device's Profile or Model Changes
+                unsubscribeToken = RepositoryMonitor.StreamAfterCommit
+                    .Where(n => n.EntityType == typeof(Job) ||
+                        n.EntityType == typeof(JobMetaWarranty) ||
+                        n.EntityType == typeof(JobMetaNonWarranty) ||
+                        n.EntityType == typeof(JobMetaInsurance) ||
+                        (n.EventType == RepositoryMonitorEventType.Modified && (
+                            (n.EntityType == typeof(DeviceProfile) && n.ModifiedProperties.Contains("DefaultOrganisationAddress")) ||
+                            (n.EntityType == typeof(DeviceModel) && n.ModifiedProperties.Contains("Description")) ||
+                            (n.EntityType == typeof(Device) && n.ModifiedProperties.Contains("DeviceProfileId") || n.ModifiedProperties.Contains("DeviceModelId"))
+                        )))
+                    .Subscribe(JobNotification, NotificationError);
 
+                // Initially fill table
+                base.Items = this.SortFunction(this.DetermineItems(Database, this.FilterFunction(Database.Jobs))).ToList();
+            }
             return this;
+        }
+
+        public ManagedJobList ReInitialize(DiscoDataContext Database)
+        {
+            return ReInitialize(Database, null, null);
+        }
+        public ManagedJobList ReInitialize(DiscoDataContext Database, FilterFunc FilterFunction)
+        {
+            return ReInitialize(Database, FilterFunction, null);
+        }
+        public ManagedJobList ReInitialize(DiscoDataContext Database, FilterFunc FilterFunction, SortFunc SortFunction)
+        {
+            if (Database == null)
+                throw new ArgumentNullException("Database");
+
+            lock (updateLock)
+            {
+                if (FilterFunction != null)
+                    this.FilterFunction = FilterFunction;
+                if (SortFunction != null)
+                    this.SortFunction = SortFunction;
+
+                base.Items = this.SortFunction(this.DetermineItems(Database, this.FilterFunction(Database.Jobs))).ToList();
+            }
+            return this;
+        }
+
+        private void NotificationError(Exception ex)
+        {
+            SystemLog.LogException(string.Format("Disco.BI.JobBI.ManagedJobList: [{0}]", this.Name), ex);
         }
 
         private void JobNotification(RepositoryMonitorEvent e)

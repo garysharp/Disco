@@ -4,15 +4,11 @@ using Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DeviceModel;
 using Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DeviceProfile;
 using Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DocumentTemplate;
 using Disco.Services.Authorization.Roles.ClaimGroups.Configuration.Enrolment;
+using Disco.Services.Authorization.Roles.ClaimGroups.Configuration.JobPreferences;
 using Disco.Services.Authorization.Roles.ClaimGroups.Configuration.Logging;
 using Disco.Services.Authorization.Roles.ClaimGroups.Configuration.Origanisation;
 using Disco.Services.Authorization.Roles.ClaimGroups.Configuration.Plugin;
 using Disco.Services.Authorization.Roles.ClaimGroups.Configuration.System;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration
 {
@@ -31,6 +27,7 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration
             this.Plugin = new PluginClaims();
             this.System = new SystemClaims();
             this.Organisation = new OrganisationClaims();
+            this.JobPreferences = new JobPreferencesClaims();
         }
 
         [ClaimDetails("Show Configuration", "Can show the configuration menu")]
@@ -55,5 +52,7 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration
         public SystemClaims System { get; set; }
 
         public OrganisationClaims Organisation { get; set; }
+
+        public JobPreferencesClaims JobPreferences { get; set; }
     }
 }

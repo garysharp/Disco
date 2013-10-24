@@ -58,6 +58,7 @@ using Disco.Models.Repository;
 using Disco.Services.Authorization.Roles;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Disco.Services.Authorization
 {
@@ -129,6 +130,12 @@ namespace Disco.Services.Authorization
 
 			return c;
 		}
+
+		public static List<string> GetClaimKeys(RoleClaims Claims)
+        {
+            var claims = Claims;
+            return _roleClaims.Where(rc => rc.Value.Item1(claims)).Select(rc => rc.Key).ToList();
+        }
 
 		public static RoleClaims AdministratorClaims() {
 			var c = new RoleClaims();

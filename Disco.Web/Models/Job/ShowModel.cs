@@ -13,6 +13,8 @@ namespace Disco.Web.Models.Job
     {
         public Disco.Models.Repository.Job Job { get; set; }
 
+        public bool IsLongRunning { get; set; }
+
         public List<Disco.Models.Repository.DocumentTemplate> AvailableDocumentTemplates { get; set; }
         public List<Disco.Models.Repository.JobSubType> UpdatableJobSubTypes { get; set; }
 

@@ -9,6 +9,7 @@ namespace Disco.Models.UI.Job
     public interface JobShowModel : BaseUIModel
     {
         Repository.Job Job { get; set; }
+        bool IsLongRunning { get; set; }
         List<Repository.DocumentTemplate> AvailableDocumentTemplates { get; set; }
         List<Repository.JobSubType> UpdatableJobSubTypes { get; set; }
     }

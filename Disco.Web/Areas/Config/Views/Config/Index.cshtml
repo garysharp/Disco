@@ -78,27 +78,44 @@
                 </div>
             </td>
         }
-        @if (Authorization.HasAny(Claims.Config.DocumentTemplate.Show, Claims.Config.Plugin.Show))
+        @if (Authorization.HasAny(Claims.Config.JobPreferences.Show, Claims.Config.DocumentTemplate.Show, Claims.Config.Plugin.Show))
         {
             <td>
-                <div class="pageMenuArea">
-                    <h2>Features</h2>
-                    @if (Authorization.Has(Claims.Config.DocumentTemplate.Show))
-                    {
-                        @Html.ActionLinkClass("Document Templates", MVC.Config.DocumentTemplate.Index(), "config")
-                        <div class="pageMenuBlurb">
-                            Create, Update and Bulk Generate documents based on PDF Templates for Jobs, Devices
+                @if (Authorization.HasAny(Claims.Config.JobPreferences.Show))
+                {
+                    <div class="pageMenuArea noSeperator">
+                        <h2>Jobs</h2>
+                        @if (Authorization.Has(Claims.Config.JobPreferences.Show))
+                        {
+                            @Html.ActionLinkClass("General Preferences", MVC.Config.JobPreferences.Index(), "config")
+                            <div class="pageMenuBlurb">
+                                Configure general preferences related to jobs.
+                            </div>
+                        }
+                    </div>
+                }
+
+                @if (Authorization.HasAny(Claims.Config.DocumentTemplate.Show, Claims.Config.Plugin.Show))
+                {
+                    <div class="pageMenuArea">
+                        <h2>Features</h2>
+                        @if (Authorization.Has(Claims.Config.DocumentTemplate.Show))
+                        {
+                            @Html.ActionLinkClass("Document Templates", MVC.Config.DocumentTemplate.Index(), "config")
+                            <div class="pageMenuBlurb">
+                                Create, Update and Bulk Generate documents based on PDF Templates for Jobs, Devices
                     and Users.
-                        </div>
-                    }
-                    @if (Authorization.Has(Claims.Config.Plugin.Show))
-                    {
-                        @Html.ActionLinkClass("Plugins", MVC.Config.Plugins.Index(), "config")
-                        <div class="pageMenuBlurb">
-                            Manage extensions to the Disco platform.
-                        </div>
-                    }
-                </div>
+                            </div>
+                        }
+                        @if (Authorization.Has(Claims.Config.Plugin.Show))
+                        {
+                            @Html.ActionLinkClass("Plugins", MVC.Config.Plugins.Index(), "config")
+                            <div class="pageMenuBlurb">
+                                Manage extensions to the Disco platform.
+                            </div>
+                        }
+                    </div>
+                }
             </td>
         }
     </tr>
