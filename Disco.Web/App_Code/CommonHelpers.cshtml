@@ -40,7 +40,7 @@
                     itemNextId++;
                     var itemId = forceUniqueIds.HasValue ? string.Format("{0}_{1}_{2}", id, item.Value, forceUniqueIds++) : string.Format("{0}_{1}", id, item.Value);
                             <li>
-                                <input id="@itemId" name="@id" value="@item.Value" type="@inputType" @(item.Selected ? "checked=\"checked\" " : " ")/><label for="@itemId">@item.Text</label></li>
+                                <input id="@itemId" name="@id" value="@item.Value" type="@inputType" @(item.Selected ? new HtmlString("checked=\"checked\" ") : null)/><label for="@itemId">@item.Text</label></li>
                 }
                         }
                     </ul>
