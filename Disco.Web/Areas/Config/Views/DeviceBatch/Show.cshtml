@@ -305,8 +305,11 @@
 
                                 model.$field.tinymce({
                                     theme: 'simple',
+                                    add_unload_trigger: false,
+                                    schema: "html5",
+                                    statusbar: false,
                                     setup: function (ed) {
-                                        ed.onInit.add(function (ed) {
+                                        ed.on('init', function () {
                                             $(ed.getWin()).blur(model.updated);
                                         });
                                     }
@@ -405,8 +408,11 @@
 
                                 model.$field.tinymce({
                                     theme: 'simple',
+                                    add_unload_trigger: false,
+                                    schema: "html5",
+                                    statusbar: false,
                                     setup: function (ed) {
-                                        ed.onInit.add(function (ed) {
+                                        ed.on('init', function () {
                                             $(ed.getWin()).blur(model.updated);
                                         });
                                     }
@@ -523,7 +529,7 @@
                         <script type="text/javascript">
                             $(function () {
                                 var model = {
-                                    $DeviceBatch_Comments: $('#DeviceBatch_InsuranceDetails'),
+                                    $field: $('#DeviceBatch_InsuranceDetails'),
                                     $ajax_loading: null,
                                     $ajax_ok: null,
                                     updated: function () {
@@ -532,7 +538,7 @@
                                         if (!model.$ajax_ok)
                                             model.$ajax_ok = $('#ajaxInsuranceDetails_ok');
                                         model.$ajax_loading.show();
-                                        var data = { InsuranceDetails: model.$DeviceBatch_Comments.tinymce().getContent() };
+                                        var data = { InsuranceDetails: model.$field.tinymce().getContent() };
                                         $.ajax({
                                             url: '@(Url.Action(MVC.API.DeviceBatch.UpdateInsuranceDetails(Model.DeviceBatch.Id)))',
                                             dataType: 'json',
@@ -556,11 +562,13 @@
                                     }
                                 };
 
-                                model.$DeviceBatch_Comments.tinymce({
+                                model.$field.tinymce({
                                     theme: 'simple',
+                                    add_unload_trigger: false,
+                                    schema: "html5",
+                                    statusbar: false,
                                     setup: function (ed) {
-                                        //ed.onChange.add(model.updatedThrottle);
-                                        ed.onInit.add(function (ed) {
+                                        ed.on('init', function () {
                                             $(ed.getWin()).blur(model.updated);
                                         });
                                     }
@@ -588,7 +596,7 @@
                 <script type="text/javascript">
                     $(function () {
                         var model = {
-                            $DeviceBatch_Comments: $('#DeviceBatch_Comments'),
+                            $field: $('#DeviceBatch_Comments'),
                             $ajax_loading: null,
                             $ajax_ok: null,
                             updated: function () {
@@ -597,7 +605,7 @@
                                 if (!model.$ajax_ok)
                                     model.$ajax_ok = $('#ajaxComments_ok');
                                 model.$ajax_loading.show();
-                                var data = { Comments: model.$DeviceBatch_Comments.tinymce().getContent() };
+                                var data = { Comments: model.$field.tinymce().getContent() };
                                 $.ajax({
                                     url: '@(Url.Action(MVC.API.DeviceBatch.UpdateComments(Model.DeviceBatch.Id)))',
                                     dataType: 'json',
@@ -621,11 +629,13 @@
                             }
                         };
 
-                        model.$DeviceBatch_Comments.tinymce({
+                        model.$field.tinymce({
                             theme: 'simple',
+                            add_unload_trigger: false,
+                            schema: "html5",
+                            statusbar: false,
                             setup: function (ed) {
-                                //ed.onChange.add(model.updatedThrottle);
-                                ed.onInit.add(function (ed) {
+                                ed.on('init', function () {
                                     $(ed.getWin()).blur(model.updated);
                                 });
                             }

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bundle minify="true" runOnBuild="true">
-  <file>/ClientSource/Scripts/Modules/Knockout/knockout-2.2.1.js</file>
+  <file>/ClientSource/Scripts/Modules/Knockout/knockout-2.3.0.js</file>
 </bundle>

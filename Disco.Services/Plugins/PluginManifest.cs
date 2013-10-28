@@ -144,7 +144,6 @@ namespace Disco.Services.Plugins
                 "Disco.Services",
                 "Disco.Web",
                 "Disco.Web.Extensions",
-                "DotNet.Highcharts",
                 "EntityFramework",
                 "itextsharp",
                 "LumenWorks.Framework.IO",

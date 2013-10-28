@@ -1,6 +1,6 @@
 ﻿<#
 /*
-T4MVC Version 3.6.5
+T4MVC Version 3.7.4
 Find latest version and documentation at http://mvccontrib.codeplex.com/wikipage?title=T4MVC
 Discuss on StackOverflow or on Codeplex (https://t4mvc.codeplex.com/discussions)
 
@@ -118,7 +118,7 @@ internal partial class T4MVC_<#=resultType.UniqueName #> : <#=resultType.FullNam
         this.InitMVCT4Result(area, controller, action, protocol);
     }
     <#foreach (var method in resultType.AbstractMethods) { #> 
-    <#=method.IsPublic ? "public" : "protected" #> override void <#=method.Name #>(<#method.WriteFormalParameters(true); #>) { }
+    <#=method.IsPublic ? "public" : "protected" #> override <#=method.ReturnType#> <#=method.Name #>(<#method.WriteFormalParameters(true); #>) {<# if(method.ReturnType != "void") {#> return default(<#=method.ReturnType#>); <#} #> }
     <#} #>
 
     public string Controller { get; set; }
@@ -133,7 +133,7 @@ internal partial class T4MVC_<#=resultType.UniqueName #> : <#=resultType.FullNam
 namespace <#=settings.LinksNamespace #>
 {
 <#
-foreach (string folder in settings.StaticFilesFolders) {
+foreach (string folder in settings.StaticFilesFolders.Concat(GetStaticFilesViewFolders())) {
     ProcessStaticFiles(Project, folder);
 }
 #>
@@ -773,12 +773,12 @@ void ProcessControllerActionMethods(ControllerInfo controllerInfo, CodeClass2 cu
             {
                 //Async methods return void and there could be multiple matching Completed methods, so we will use
                 //the generic ActionResult as the return type for the method.
-                var resultType = Project.CodeModel.CodeTypeFromFullName("System.Web.Mvc.ActionResult");
+                var resultType = Project.CodeModel.CreateCodeTypeRef("System.Web.Mvc.ActionResult");
                 // If we haven't yet seen this return type, keep track of it
-                if (!ResultTypes.ContainsKey(resultType.Name))
+                if (!ResultTypes.ContainsKey(resultType.AsFullName))
                 {
                     var resTypeInfo = new ResultTypeInfo(resultType);
-                    ResultTypes[resultType.FullName] = resTypeInfo;
+                    ResultTypes[resultType.AsFullName] = resTypeInfo;
                 }
 
                 // Collect misc info about the action method and add it to the collection
@@ -803,8 +803,12 @@ void ProcessControllerActionMethods(ControllerInfo controllerInfo, CodeClass2 cu
             if (isAsyncController && method.Name.EndsWith("Completed", StringComparison.OrdinalIgnoreCase))
                 continue;
 
+            var methodType = method.Type;
+            if(method.Type.CodeType.FullName == "System.Threading.Tasks.Task<System.Web.Mvc.ActionResult>")
+                methodType = Project.CodeModel.CreateCodeTypeRef("System.Web.Mvc.ActionResult");
+
             // If we haven't yet seen this return type, keep track of it
-            var resTypeInfo2 = new ResultTypeInfo(method.Type.CodeType);
+            var resTypeInfo2 = new ResultTypeInfo(methodType);
             if (!ResultTypes.ContainsKey(resTypeInfo2.FullName))
             {
                 ResultTypes[resTypeInfo2.FullName] = resTypeInfo2;
@@ -874,8 +878,10 @@ void AddViewsRecursive(ProjectItems items, ViewsFolderInfo viewsFolder, bool use
     {
         if (item.Kind == EnvDTE.Constants.vsProjectItemKindPhysicalFile)
         {
-            if (Path.GetExtension(item.Name).Equals(".master", StringComparison.OrdinalIgnoreCase))
-                continue;   // ignore master files
+            // Ignore some extensions that are normally not views
+            if (settings.ExcludedViewExtensions.Any(extension => Path.GetExtension(item.Name).Equals(extension, StringComparison.OrdinalIgnoreCase)))
+                continue;
+
             viewsFolder.AddView(item, useNonQualifiedViewNames);
         }
         else if (item.Kind == EnvDTE.Constants.vsProjectItemKindPhysicalFolder)
@@ -947,6 +953,19 @@ RenderViewsRecursive(subFolder, controller);
 PopIndent();
 
 WriteLine("}");
+    }
+}
+
+IEnumerable<string> GetStaticFilesViewFolders()
+{
+    if (settings.AddAllViewsFoldersToStaticFilesFolders)
+    {
+        foreach (var area in Areas)
+        {
+            yield return area.Name == null ?
+                settings.ViewsRootFolder :
+                settings.AreasFolder + "\\" + area.Name + "\\" + settings.ViewsRootFolder;
+        }
     }
 }
 
@@ -1022,7 +1041,7 @@ if (!settings.ExcludedStaticFileExtensions.Any(extension => projectItem.Name.End
     public static readonly string <#=name#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=minifiedName#>") : Url("<#=projectItem.Name#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=projectItem.Name#>");
         <#+} else {#>
     public static readonly string <#=name#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>") : Url("<#=projectItem.Name#>");
-        <#+}  #>          
+<#+}  #>
 <#+}
     else if (projectItem.Name.EndsWith(".css") && !projectItem.Name.EndsWith(".min.css")) { 
         string minifiedName = projectItem.Name.Replace(".css", ".min.css");
@@ -1212,6 +1231,11 @@ static CodeAttribute2 GetAttribute(CodeClass2 type, string attributeType)
         type = (CodeClass2)type.Bases.Item(1);
     }
     return null;
+}
+
+static string UniqueFullName(CodeTypeRef codeType)
+{
+	return UniqueFullName(codeType.CodeType);
 }
 
 static string UniqueFullName(CodeType codeType)
@@ -1613,17 +1637,17 @@ class FunctionInfo
         }
     }
 
-    protected virtual CodeType ReturnTypeImpl { get { return _method.Type.CodeType; } }
+    protected virtual CodeTypeRef ReturnTypeImpl { get { return _method.Type; } }
 
     public string Name { get { return _method.Name; } }
-    public string ReturnType { get { return ReturnTypeImpl.Name; } }
-    public string ReturnTypeFullName { get { return ReturnTypeImpl.FullName; } }
+    public string ReturnType { get { return ReturnTypeImpl.AsString; } }
+    public string ReturnTypeFullName { get { return ReturnTypeImpl.AsFullName; } }
     public string ReturnTypeUniqueName { get { return IsTaskBased ? "System_Web_Mvc_ActionResult" : UniqueFullName(ReturnTypeImpl); } }
     public bool IsPublic { get { return _method.Access == vsCMAccess.vsCMAccessPublic; } }
     public List<MethodParamInfo> Parameters { get; private set; }
     public bool CanBeCalledWithoutParameters { get; private set; }
 
-    private bool IsTaskBased { get {return ReturnTypeImpl.FullName == "System.Threading.Tasks.Task<System.Web.Mvc.ActionResult>"; } }
+    private bool IsTaskBased { get {return ReturnTypeImpl.AsFullName == "System.Threading.Tasks.Task<System.Web.Mvc.ActionResult>"; } }
 
     // Write out all the parameters as part of a method declaration
     public void WriteFormalParameters(bool first, bool includeDefaults = false)
@@ -1686,7 +1710,7 @@ class FunctionInfo
 // Data structure to collect data about an action method
 class ActionMethodInfo : FunctionInfo
 {
-    public ActionMethodInfo(CodeFunction2 method, CodeClass2 controller, CodeType asyncType = null)
+    public ActionMethodInfo(CodeFunction2 method, CodeClass2 controller, CodeTypeRef asyncType = null)
         : base(method)
     {
         if(asyncType != null) 
@@ -1713,8 +1737,8 @@ class ActionMethodInfo : FunctionInfo
     }
 
     string _actionName;
-    CodeType _returnType;
-    protected override CodeType ReturnTypeImpl { get { return _returnType ?? base.ReturnTypeImpl; } }
+    CodeTypeRef _returnType;
+    protected override CodeTypeRef ReturnTypeImpl { get { return _returnType ?? base.ReturnTypeImpl; } }
 
     public string ActionName { get { return _actionName ?? base.Name; } }
     public string ActionNameValueExpression { get; set; }
@@ -1727,33 +1751,33 @@ class ActionMethodInfo : FunctionInfo
 // Data about an ActionResult derived type
 class ResultTypeInfo
 {
-    CodeType _codeType;
-    public ResultTypeInfo(CodeType codeType)
+    CodeTypeRef _codeType;
+    public ResultTypeInfo(CodeTypeRef codeType)
     {
         _codeType = codeType;
 
         // Use the constructor with the least number of parameters
-        var ctor = _codeType.Members.OfType<CodeFunction2>()
+        var ctor = _codeType.CodeType.Members.OfType<CodeFunction2>()
             .Where(f => f.FunctionKind == vsCMFunction.vsCMFunctionConstructor)
             .OrderBy(f => f.Parameters.Count)
             .FirstOrDefault();
         Constructor = new FunctionInfo(ctor);
     }
 
-    public string Name { get { return _codeType.Name; } }
-    public string FullName { get { return this.IsTaskBased ? "System.Web.Mvc.ActionResult" : _codeType.FullName; } }
+    public string Name { get { return _codeType.AsString; } }
+    public string FullName { get { return this.IsTaskBased ? "System.Web.Mvc.ActionResult" : _codeType.AsFullName; } }
     public string UniqueName { get { return this.IsTaskBased ?  "System_Web_Mvc_ActionResult" : UniqueFullName(_codeType); } }
     public FunctionInfo Constructor { get; set; }
     public IEnumerable<FunctionInfo> AbstractMethods
     {
         get
         {
-            return _codeType.Members.OfType<CodeFunction2>().Where(
+            return _codeType.CodeType.Members.OfType<CodeFunction2>().Where(
                 f => f.MustImplement).Select(f => new FunctionInfo(f));
         }
     }
 
-    private bool IsTaskBased { get {return _codeType.FullName == "System.Threading.Tasks.Task<System.Web.Mvc.ActionResult>"; } }
+    private bool IsTaskBased { get {return _codeType.AsFullName == "System.Threading.Tasks.Task<System.Web.Mvc.ActionResult>"; } }
 }
 
 class MethodParamInfo
@@ -1798,9 +1822,17 @@ class MvcSettings : XmlSettings
             "Scripts",
             "Content",
         }, "FileFolder");
-        this.ExcludedStaticFileExtensions = new XmlStringArray(new string[] {   
-            ".cs"  
-        }, "Extension");  
+        this.ExcludedStaticFileExtensions = new XmlStringArray(new string[] {
+            ".cs",
+            ".cshtml",
+            ".aspx",
+            ".ascx"
+        }, "Extension");
+        this.ExcludedViewExtensions = new XmlStringArray(new string[] {
+            ".master",
+            ".js",
+            ".css"
+        }, "Extension");
         this.AttributeIndicatingHttps = "System.Web.Mvc.RequireHttpsAttribute";
         this.GenerateSecureLinksInDebugMode = false;
         this.ParamsPropertySuffix = "Params";
@@ -1854,8 +1886,14 @@ class MvcSettings : XmlSettings
     [System.ComponentModel.Description("Folders containing static files for which links are generated (e.g. Links.Scripts.Map_js)")]
     public XmlStringArray StaticFilesFolders { get; set; }
 
+    [System.ComponentModel.Description("If true, static file helpers are generated for all view folders. See https://t4mvc.codeplex.com/discussions/445358")]
+    public bool AddAllViewsFoldersToStaticFilesFolders { get; set; }
+
     [System.ComponentModel.Description("Static files to exclude from the generated links")]
     public XmlStringArray ExcludedStaticFileExtensions { get; set; }
+
+    [System.ComponentModel.Description("Files to exclude from the generated views")]
+    public XmlStringArray ExcludedViewExtensions { get; set; }
 
     [System.ComponentModel.Description("When creating links with T4MVC, it can force them to HTTPS if the action method you are linking to requires Http.")]
     public string AttributeIndicatingHttps { get; set; }
