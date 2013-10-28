@@ -523,6 +523,7 @@ namespace Disco.BI.DeviceBI
                         ActiveDirectoryUserAccount AssignedUserInfo = ActiveDirectory.GetUserAccount(RepoDevice.AssignedUser.Id);
                         EnrolmentLog.LogSessionTaskAssigningUser(sessionId, RepoDevice.SerialNumber, AssignedUserInfo.DisplayName, AssignedUserInfo.SamAccountName, AssignedUserInfo.Domain, AssignedUserInfo.SecurityIdentifier);
                         response.AllowBootstrapperUninstall = true;
+                        response.DeviceAssignedUserIsLocalAdmin = RepoDevice.DeviceProfile.AssignedUserLocalAdmin;
                         response.DeviceAssignedUserUsername = AssignedUserInfo.SamAccountName;
                         response.DeviceAssignedUserDomain = AssignedUserInfo.Domain;
                         response.DeviceAssignedUserName = AssignedUserInfo.DisplayName;

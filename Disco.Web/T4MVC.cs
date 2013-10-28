@@ -4472,6 +4472,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateAssignedUserLocalAdmin()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAssignedUserLocalAdmin);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Delete()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
@@ -4522,6 +4528,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateEnforceComputerNameConvention = "UpdateEnforceComputerNameConvention";
             public readonly string UpdateEnforceOrganisationalUnit = "UpdateEnforceOrganisationalUnit";
             public readonly string UpdateProvisionADAccount = "UpdateProvisionADAccount";
+            public readonly string UpdateAssignedUserLocalAdmin = "UpdateAssignedUserLocalAdmin";
             public readonly string OrganisationalUnits = "OrganisationalUnits";
             public readonly string Delete = "Delete";
             public readonly string Default = "Default";
@@ -4544,6 +4551,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateEnforceComputerNameConvention = "UpdateEnforceComputerNameConvention";
             public const string UpdateEnforceOrganisationalUnit = "UpdateEnforceOrganisationalUnit";
             public const string UpdateProvisionADAccount = "UpdateProvisionADAccount";
+            public const string UpdateAssignedUserLocalAdmin = "UpdateAssignedUserLocalAdmin";
             public const string OrganisationalUnits = "OrganisationalUnits";
             public const string Delete = "Delete";
             public const string Default = "Default";
@@ -4671,6 +4679,16 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string ProvisionADAccount = "ProvisionADAccount";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateAssignedUserLocalAdmin s_params_UpdateAssignedUserLocalAdmin = new ActionParamsClass_UpdateAssignedUserLocalAdmin();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateAssignedUserLocalAdmin UpdateAssignedUserLocalAdminParams { get { return s_params_UpdateAssignedUserLocalAdmin; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateAssignedUserLocalAdmin
+        {
+            public readonly string id = "id";
+            public readonly string AssignedUserLocalAdmin = "AssignedUserLocalAdmin";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
@@ -4869,6 +4887,18 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ProvisionADAccount", ProvisionADAccount);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateProvisionADAccountOverride(callInfo, id, ProvisionADAccount, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateAssignedUserLocalAdminOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string AssignedUserLocalAdmin, bool? redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateAssignedUserLocalAdmin(int id, string AssignedUserLocalAdmin, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAssignedUserLocalAdmin);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "AssignedUserLocalAdmin", AssignedUserLocalAdmin);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateAssignedUserLocalAdminOverride(callInfo, id, AssignedUserLocalAdmin, redirect);
             return callInfo;
         }
 

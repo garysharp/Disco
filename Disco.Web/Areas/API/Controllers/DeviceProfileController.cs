@@ -22,6 +22,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pEnforceComputerNameConvention = "enforcecomputernameconvention";
         const string pEnforceOrganisationalUnit = "enforceorganisationalunit";
         const string pProvisionADAccount = "provisionadaccount";
+        const string pAssignedUserLocalAdmin = "assigneduserlocaladmin";
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         public virtual ActionResult Update(int id, string key, string value = null, Nullable<bool> redirect = null)
@@ -72,6 +73,9 @@ namespace Disco.Web.Areas.API.Controllers
                             break;
                         case pProvisionADAccount:
                             UpdateProvisionADAccount(deviceProfile, value);
+                            break;
+                        case pAssignedUserLocalAdmin:
+                            UpdateAssignedUserLocalAdmin(deviceProfile, value);
                             break;
                         default:
                             throw new Exception("Invalid Update Key");
@@ -161,6 +165,12 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult UpdateProvisionADAccount(int id, string ProvisionADAccount = null, Nullable<bool> redirect = null)
         {
             return Update(id, pProvisionADAccount, ProvisionADAccount, redirect);
+        }
+
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        public virtual ActionResult UpdateAssignedUserLocalAdmin(int id, string AssignedUserLocalAdmin = null, Nullable<bool> redirect = null)
+        {
+            return Update(id, pAssignedUserLocalAdmin, AssignedUserLocalAdmin, redirect);
         }
 
         #endregion
@@ -311,6 +321,19 @@ namespace Disco.Web.Areas.API.Controllers
             if (bool.TryParse(ProvisionADAccount, out bValue))
             {
                 deviceProfile.ProvisionADAccount = bValue;
+
+                Database.SaveChanges();
+                return;
+            }
+            throw new Exception("Invalid Boolean Value");
+        }
+
+        private void UpdateAssignedUserLocalAdmin(DeviceProfile deviceProfile, string AssignedUserLocalAdmin)
+        {
+            bool bValue;
+            if (bool.TryParse(AssignedUserLocalAdmin, out bValue))
+            {
+                deviceProfile.AssignedUserLocalAdmin = bValue;
 
                 Database.SaveChanges();
                 return;

@@ -16,7 +16,9 @@ namespace Disco.Models.ClientServices
         public string DeviceAssignedUserName { get; set; }
         public string DeviceAssignedUserSID { get; set; }
         public string DeviceAssignedUserUsername { get; set; }
-        
+
+        public bool DeviceAssignedUserIsLocalAdmin { get; set; }
+
         public string OfflineDomainJoin { get; set; }
         
         public string DeviceCertificate { get; set; }

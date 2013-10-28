@@ -17,7 +17,7 @@
 <div id="configurationDeviceProfileShow" class="form" style="width: 600px">
     <table>
         <tr>
-            <th>Id:
+            <th style="width: 230px;">Id:
             </th>
             <td>
                 @Html.DisplayFor(model => model.DeviceProfile.Id)
@@ -383,49 +383,14 @@
                     }
                 }
                 <div style="margin-top: 8px;">
-                    <label for="DeviceProfile_ProvisionADAccount">
-                        Provision Active Directory Account:
-                    </label>
-                    @if (canConfig)
-                    {
-                        <input id="DeviceProfile_ProvisionADAccount" type="checkbox" @(Model.DeviceProfile.ProvisionADAccount ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
-                        @AjaxHelpers.AjaxLoader()
-                        <script type="text/javascript">
-                            $(function () {
-                                $('#DeviceProfile_ProvisionADAccount').click(function () {
-                                    var $this = $(this);
-                                    var $ajaxLoading = $this.next('.ajaxLoading').show();
-                                    var data = { ProvisionADAccount: $this.is(':checked') };
-                                    $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateProvisionADAccount(Model.DeviceProfile.Id))', data, function (response, result) {
-                                        if (result != 'success' || response != 'OK') {
-                                            alert('Unable to change Provision AD Account:\n' + response);
-                                            $ajaxLoading.hide();
-                                        } else {
-                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                        }
-                                    });
-                                });
-                            });
-                        </script>
-                    }
-                    else
-                    {
-                        <input id="DeviceProfile_ProvisionADAccount" type="checkbox" @(Model.DeviceProfile.ProvisionADAccount ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
-                    }
-                </div>
-                <div style="margin-top: 8px;">
-                    <label for="DeviceProfile_EnforceComputerNameConvention">
-                        Enforce Naming Convention:
-                    </label>
                     @if (canConfig)
                     {
                         <input id="DeviceProfile_EnforceComputerNameConvention" type="checkbox" @(Model.DeviceProfile.EnforceComputerNameConvention ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
-                        @AjaxHelpers.AjaxLoader()
                         <script type="text/javascript">
                             $(function () {
                                 $('#DeviceProfile_EnforceComputerNameConvention').click(function () {
                                     var $this = $(this);
-                                    var $ajaxLoading = $this.next('.ajaxLoading').show();
+                                    var $ajaxLoading = $this.nextAll('.ajaxLoading').show();
                                     var data = { EnforceComputerNameConvention: $this.is(':checked') };
                                     $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateEnforceComputerNameConvention(Model.DeviceProfile.Id))', data, function (response, result) {
                                         if (result != 'success' || response != 'OK') {
@@ -443,6 +408,80 @@
                     {
                         <input id="DeviceProfile_EnforceComputerNameConvention" type="checkbox" @(Model.DeviceProfile.EnforceComputerNameConvention ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
                     }
+                    <label for="DeviceProfile_EnforceComputerNameConvention">
+                        Enforce Naming Convention
+                    </label>
+                    @AjaxHelpers.AjaxLoader()
+                </div>
+                <div class="smallMessage" style="margin-top: 8px;">
+                    Note: Computer names are only changed when Active Directory accounts are provisioned.
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>Active Directory</th>
+            <td>
+                <div>
+                    @if (canConfig)
+                    {
+                        <input id="DeviceProfile_ProvisionADAccount" type="checkbox" @(Model.DeviceProfile.ProvisionADAccount ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#DeviceProfile_ProvisionADAccount').click(function () {
+                                    var $this = $(this);
+                                    var $ajaxLoading = $this.nextAll('.ajaxLoading').show();
+                                    var data = { ProvisionADAccount: $this.is(':checked') };
+                                    $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateProvisionADAccount(Model.DeviceProfile.Id))', data, function (response, result) {
+                                        if (result != 'success' || response != 'OK') {
+                                            alert('Unable to change Provision AD Account:\n' + response);
+                                            $ajaxLoading.hide();
+                                        } else {
+                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                    }
+                    else
+                    {
+                        <input id="DeviceProfile_ProvisionADAccount" type="checkbox" @(Model.DeviceProfile.ProvisionADAccount ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
+                    }
+                    <label for="DeviceProfile_ProvisionADAccount">
+                        Provision Active Directory Account
+                    </label>
+                    @AjaxHelpers.AjaxLoader()
+                </div>
+                <div style="margin-top: 8px;">
+                    @if (canConfig)
+                    {
+                        <input id="DeviceProfile_AssignedUserLocalAdmin" type="checkbox" @(Model.DeviceProfile.AssignedUserLocalAdmin ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#DeviceProfile_AssignedUserLocalAdmin').click(function () {
+                                    var $this = $(this);
+                                    var $ajaxLoading = $this.nextAll('.ajaxLoading').show();
+                                    var data = { AssignedUserLocalAdmin: $this.is(':checked') };
+                                    $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateAssignedUserLocalAdmin(Model.DeviceProfile.Id))', data, function (response, result) {
+                                        if (result != 'success' || response != 'OK') {
+                                            alert('Unable to change Assigned User Is Local Administrator:\n' + response);
+                                            $ajaxLoading.hide();
+                                        } else {
+                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                    }
+                    else
+                    {
+                        <input id="DeviceProfile_AssignedUserLocalAdmin" type="checkbox" @(Model.DeviceProfile.AssignedUserLocalAdmin ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
+                    }
+                    <label for="DeviceProfile_AssignedUserLocalAdmin">
+                        Assigned User is Local Administrator
+                    </label>
+                    @AjaxHelpers.AjaxLoader()
                 </div>
             </td>
         </tr>
@@ -583,35 +622,35 @@
                     }
                 }
                 <div style="margin-top: 8px;">
-                    <label for="DeviceProfile_EnforceOrganisationalUnit">
-                        Enforce:
-                    </label>
                     @if (canConfig)
                     {
                         <input id="DeviceProfile_EnforceOrganisationalUnit" type="checkbox" @(Model.DeviceProfile.EnforceOrganisationalUnit ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
-                        @AjaxHelpers.AjaxLoader()
                         <script type="text/javascript">
                             $(function () {
                                 $('#DeviceProfile_EnforceOrganisationalUnit').click(function () {
                                     var $this = $(this);
-                                    var $ajaxLoading = $this.next('.ajaxLoading').show();
+                                    var $ajaxLoading = $this.nextAll('.ajaxLoading').show();
                                     var data = { EnforceOrganisationalUnit: $this.is(':checked') };
                                     $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateEnforceOrganisationalUnit(Model.DeviceProfile.Id))', data, function (response, result) {
-                                    if (result != 'success' || response != 'OK') {
-                                        alert('Unable to change Enforce Organisation Unit:\n' + response);
-                                        $ajaxLoading.hide();
-                                    } else {
-                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                    }
+                                        if (result != 'success' || response != 'OK') {
+                                            alert('Unable to change Enforce Organisation Unit:\n' + response);
+                                            $ajaxLoading.hide();
+                                        } else {
+                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        }
+                                    });
                                 });
                             });
-                        });
                         </script>
                     }
                     else
                     {
                         <input id="DeviceProfile_EnforceOrganisationalUnit" type="checkbox" @(Model.DeviceProfile.EnforceOrganisationalUnit ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
                     }
+                    <label for="DeviceProfile_EnforceOrganisationalUnit">
+                        Enforce Organisational Unit
+                    </label>
+                    @AjaxHelpers.AjaxLoader()
                 </div>
             </td>
         </tr>

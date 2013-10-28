@@ -43,7 +43,7 @@ namespace Disco.Client.Extensions
                 throw new ClientServiceException("Enrolment", "Server denied enrolment (Empty Response)");
 
             ErrorReporting.EnrolmentSessionId = enrolResponse.SessionId;
-            
+
             if (!string.IsNullOrEmpty(enrolResponse.ErrorMessage))
                 throw new ClientServiceException("Enrolment", enrolResponse.ErrorMessage);
 
@@ -102,7 +102,8 @@ namespace Disco.Client.Extensions
                 // Flush Logged-On History
                 if (!string.IsNullOrEmpty(enrolResponse.DeviceDomainName))
                 {
-                    using (RegistryKey regWinlogon  = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon", true)){
+                    using (RegistryKey regWinlogon = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon", true))
+                    {
                         regWinlogon.SetValue("DefaultDomainName", enrolResponse.DeviceDomainName, RegistryValueKind.String);
                         regWinlogon.SetValue("DefaultUserName", String.Empty, RegistryValueKind.String);
                     }
@@ -130,9 +131,10 @@ namespace Disco.Client.Extensions
             // Only run task if Assigned User was specified
             if (!string.IsNullOrWhiteSpace(enrolResponse.DeviceAssignedUserSID))
             {
-                Presentation.UpdateStatus("Enrolling Device", string.Format(@"Configuring permissions for the device owner:{0}{1} ({2}\{3})", Environment.NewLine, enrolResponse.DeviceAssignedUserName, enrolResponse.DeviceAssignedUserDomain, enrolResponse.DeviceAssignedUserUsername), true, -1, 3000);
+                Presentation.UpdateStatus("Enrolling Device", string.Format(@"Configuring the device owner:{0}{1} ({2}\{3})", Environment.NewLine, enrolResponse.DeviceAssignedUserName, enrolResponse.DeviceAssignedUserDomain, enrolResponse.DeviceAssignedUserUsername), true, -1, 3000);
 
-                Interop.LocalAuthentication.AddLocalGroupMembership("Administrators", enrolResponse.DeviceAssignedUserSID, enrolResponse.DeviceAssignedUserUsername, enrolResponse.DeviceAssignedUserDomain);
+                if (enrolResponse.DeviceAssignedUserIsLocalAdmin)
+                    Interop.LocalAuthentication.AddLocalGroupMembership("Administrators", enrolResponse.DeviceAssignedUserSID, enrolResponse.DeviceAssignedUserUsername, enrolResponse.DeviceAssignedUserDomain);
 
                 // Make Windows think this user was the last to logon
                 using (RegistryKey regWinlogon = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon", true))
@@ -183,6 +185,6 @@ namespace Disco.Client.Extensions
                 Interop.Certificates.AddCertificate(StoreName.My, StoreLocation.LocalMachine, certPersonal);
             }
         }
-        
+
     }
 }

@@ -43,6 +43,8 @@ namespace Disco.Models.Repository
         // 2012-06-28 G#
         public bool ProvisionADAccount { get; set; }
 
+        public bool AssignedUserLocalAdmin { get; set; }
+
         public virtual IList<Device> Devices { get; set; }
 
         public override string ToString()
