@@ -68,11 +68,11 @@ WriteLiteral(" id=\"configurationDeviceProfileShow\"");
 
 WriteLiteral(" class=\"form\"");
 
-WriteLiteral(" style=\"width: 600px\"");
+WriteLiteral(" style=\"width: 640px\"");
 
 WriteLiteral(">\r\n    <table>\r\n        <tr>\r\n            <th");
 
-WriteLiteral(" style=\"width: 230px;\"");
+WriteLiteral(" style=\"width: 170px;\"");
 
 WriteLiteral(">Id:\r\n            </th>\r\n            <td>\r\n");
 
@@ -895,8 +895,8 @@ WriteLiteral(">&lt;None Allocated&gt;</span>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>Computer Name Tem" +
-"plate Expression:\r\n            </th>\r\n            <td>");
+WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>Computer Name<br " +
+"/>Template Expression:\r\n            </th>\r\n            <td>");
 
             
             #line 327 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
@@ -952,14 +952,14 @@ WriteLiteral("                <a");
 
 WriteLiteral(" id=\"expressionBrowserAnchor\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 16256), Tuple.Create("\"", 16325)
+WriteAttribute("href", Tuple.Create(" href=\"", 16261), Tuple.Create("\"", 16330)
             
             #line 332 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 16263), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser())
+, Tuple.Create(Tuple.Create("", 16268), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser())
             
             #line default
             #line hidden
-, 16263), false)
+, 16268), false)
 );
 
 WriteLiteral(">&nbsp;</a>\r\n");
@@ -1022,47 +1022,66 @@ WriteLiteral(@"',
                 }
                 else
                 {
-                    if (string.IsNullOrWhiteSpace(Model.DeviceProfile.ComputerNameTemplate))
-                    {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                <span");
-
-WriteLiteral(" class=\"smallMessage\"");
-
-WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
-
-            
-            #line 377 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                    }
-                    else
-                    {
 
             
             #line default
             #line hidden
 WriteLiteral("                <div");
 
+WriteLiteral(" id=\"displayComputerNameTemplate\"");
+
 WriteLiteral(" class=\"code\"");
 
 WriteLiteral(">\r\n");
 
-WriteLiteral("                    ");
-
             
-            #line 381 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-               Write(Model.DeviceProfile.ComputerNameTemplate);
+            #line 375 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 375 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                     if (string.IsNullOrWhiteSpace(Model.DeviceProfile.ComputerNameTemplate))
+                    {
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                </div>\r\n");
+WriteLiteral("                        <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
 
             
-            #line 383 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 378 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     }
+                    else
+                    {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 381 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                   Write(Model.DeviceProfile.ComputerNameTemplate);
+
+            
+            #line default
+            #line hidden
+            
+            #line 381 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                                                                 
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                </div>\r\n");
+
+            
+            #line 384 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                 }
 
             
@@ -1192,16 +1211,10 @@ WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(" style=\"margin-top: 8px;\"");
 
-WriteLiteral(@">
-                    Note: Computer names are only changed when Active Directory accounts are provisioned.
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <th>Active Directory</th>
-            <td>
-                <div>
-");
+WriteLiteral(">\r\n                    Note: Computer names are only changed when Active Director" +
+"y accounts are provisioned.\r\n                </div>\r\n            </td>\r\n        " +
+"</tr>\r\n        <tr>\r\n            <th>Policies</th>\r\n            <td>\r\n          " +
+"      <div>\r\n");
 
             
             #line 425 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
@@ -1433,11 +1446,132 @@ WriteLiteral("                    ");
             
             #line default
             #line hidden
+WriteLiteral("\r\n                </div>\r\n                <div");
+
+WriteLiteral(" style=\"margin-top: 8px;\"");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 487 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 487 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                     if (canConfig)
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <input");
+
+WriteLiteral(" id=\"DeviceProfile_AllowUntrustedReimageJobEnrolment\"");
+
+WriteLiteral(" type=\"checkbox\"");
+
+WriteLiteral(" ");
+
+            
+            #line 489 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                                                                                                Write(Model.DeviceProfile.AllowUntrustedReimageJobEnrolment ? new MvcHtmlString("checked=\"checked\" ") : null);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("/>\r\n");
+
+WriteLiteral("                        <script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(@">
+                            $(function () {
+                                $('#DeviceProfile_AllowUntrustedReimageJobEnrolment').click(function () {
+                                    var $this = $(this);
+                                    var $ajaxLoading = $this.nextAll('.ajaxLoading').show();
+                                    var data = { AllowUntrustedReimageJobEnrolment: $this.is(':checked') };
+                                    $.getJSON('");
+
+            
+            #line 496 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                                          Write(Url.Action(MVC.API.DeviceProfile.UpdateAllowUntrustedReimageJobEnrolment(Model.DeviceProfile.Id)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"', data, function (response, result) {
+                                        if (result != 'success' || response != 'OK') {
+                                            alert('Unable to change Allow Untrusted Reimage Job Enrolment:\n' + response);
+                                            $ajaxLoading.hide();
+                                        } else {
+                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+");
+
+            
+            #line 507 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                    }
+                    else
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <input");
+
+WriteLiteral(" id=\"DeviceProfile_AllowUntrustedReimageJobEnrolment\"");
+
+WriteLiteral(" type=\"checkbox\"");
+
+WriteLiteral(" ");
+
+            
+            #line 510 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                                                                                                Write(Model.DeviceProfile.AllowUntrustedReimageJobEnrolment ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" disabled=\"disabled\" />\r\n");
+
+            
+            #line 511 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <label");
+
+WriteLiteral(" for=\"DeviceProfile_AllowUntrustedReimageJobEnrolment\"");
+
+WriteLiteral(">\r\n                        Allow Untrusted Enrolment Where a <span");
+
+WriteLiteral(" class=\"code\"");
+
+WriteLiteral(">\'Software - Reimage\'</span> Job is Open\r\n                    </label>\r\n");
+
+WriteLiteral("                    ");
+
+            
+            #line 515 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
 WriteLiteral("\r\n                </div>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n       " +
 "     <th>Default Organisational Unit:\r\n            </th>\r\n            <td>");
 
             
-            #line 491 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 522 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                  if (canConfig)
                 {
                 
@@ -1445,14 +1579,14 @@ WriteLiteral("\r\n                </div>\r\n            </td>\r\n        </tr>\r
             #line default
             #line hidden
             
-            #line 493 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 524 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
            Write(Html.HiddenFor(model => model.DeviceProfile.OrganisationalUnit));
 
             
             #line default
             #line hidden
             
-            #line 493 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 524 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                 
 
             
@@ -1462,6 +1596,8 @@ WriteLiteral("                <div");
 
 WriteLiteral(" id=\"displayOrganisationalUnit\"");
 
+WriteLiteral(" class=\"code\"");
+
 WriteLiteral(">\r\n                </div>\r\n");
 
 WriteLiteral("                <a");
@@ -1470,24 +1606,26 @@ WriteLiteral(" id=\"changeOrganisationalUnit\"");
 
 WriteLiteral(" href=\"#\"");
 
+WriteLiteral(" class=\"button small\"");
+
 WriteLiteral(">Change</a>");
 
             
-            #line 496 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                                                                    
+            #line 527 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                                                                                         
             
             #line default
             #line hidden
             
-            #line 496 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                                                               Write(AjaxHelpers.AjaxLoader());
+            #line 527 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                                                                                    Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 496 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                                                                                             
+            #line 527 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                                                                                                                  
 
             
             #line default
@@ -1532,7 +1670,7 @@ WriteLiteral(@">
                             $.getJSON('");
 
             
-            #line 522 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 553 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                   Write(Url.Action(MVC.API.DeviceProfile.UpdateOrganisationalUnit(Model.DeviceProfile.Id, null)));
 
             
@@ -1573,7 +1711,7 @@ WriteLiteral("\', data, function (response, result) {\r\n                       
 "getJSON(\'");
 
             
-            #line 571 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 602 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                        Write(Url.Action(MVC.API.DeviceProfile.OrganisationalUnits()));
 
             
@@ -1606,20 +1744,40 @@ WriteLiteral("\', null, function (data) {\r\n                                var
 "             });\r\n                </script>\r\n");
 
             
-            #line 610 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 641 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(Model.DeviceProfile.OrganisationalUnit))
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <div");
+
+WriteLiteral(" id=\"displayOrganisationalUnit\"");
+
+WriteLiteral(" class=\"code\"");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 645 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 645 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                     if (string.IsNullOrEmpty(Model.DeviceProfile.OrganisationalUnit))
                     {
 
             
             #line default
             #line hidden
-WriteLiteral("                <span>{Default Computers Container}</span>\r\n");
+WriteLiteral("                        <span>{Default Computers Container}</span>\r\n");
 
             
-            #line 616 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 648 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     }
                     else
                     {
@@ -1627,22 +1785,30 @@ WriteLiteral("                <span>{Default Computers Container}</span>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("                <span>\r\n");
+WriteLiteral("                        <span>\r\n");
 
-WriteLiteral("                    ");
+WriteLiteral("                            ");
 
             
-            #line 620 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-               Write(string.Join(" > ", Model.DeviceProfile.OrganisationalUnit.Split(',').Select(s => s.Substring(3)).Reverse()));
+            #line 652 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                       Write(string.Join(" > ", Model.DeviceProfile.OrganisationalUnit.Split(',').Select(s => s.Substring(3)).Reverse()));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                </span>\r\n");
+WriteLiteral("\r\n                        </span>\r\n");
 
             
-            #line 622 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 654 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                </div>\r\n");
+
+            
+            #line 656 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                 }
 
             
@@ -1655,13 +1821,13 @@ WriteLiteral(" style=\"margin-top: 8px;\"");
 WriteLiteral(">\r\n");
 
             
-            #line 625 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 658 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 625 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 658 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                      if (canConfig)
                     {
 
@@ -1677,7 +1843,7 @@ WriteLiteral(" type=\"checkbox\"");
 WriteLiteral(" ");
 
             
-            #line 627 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 660 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                         Write(Model.DeviceProfile.EnforceOrganisationalUnit ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty));
 
             
@@ -1698,7 +1864,7 @@ WriteLiteral(@">
                                     $.getJSON('");
 
             
-            #line 634 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 667 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                           Write(Url.Action(MVC.API.DeviceProfile.UpdateEnforceOrganisationalUnit(Model.DeviceProfile.Id)));
 
             
@@ -1718,7 +1884,7 @@ WriteLiteral(@"', data, function (response, result) {
 ");
 
             
-            #line 645 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 678 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     }
                     else
                     {
@@ -1735,7 +1901,7 @@ WriteLiteral(" type=\"checkbox\"");
 WriteLiteral(" ");
 
             
-            #line 648 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 681 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                         Write(Model.DeviceProfile.EnforceOrganisationalUnit ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty));
 
             
@@ -1744,7 +1910,7 @@ WriteLiteral(" ");
 WriteLiteral(" disabled=\"disabled\" />\r\n");
 
             
-            #line 649 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 682 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     }
 
             
@@ -1760,7 +1926,7 @@ WriteLiteral(">\r\n                        Enforce Organisational Unit\r\n      
 WriteLiteral("                    ");
 
             
-            #line 653 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 686 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                Write(AjaxHelpers.AjaxLoader());
 
             
@@ -1770,7 +1936,7 @@ WriteLiteral("\r\n                </div>\r\n            </td>\r\n        </tr>\r
 "\n");
 
             
-            #line 659 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 692 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
  if (canDelete)
 {
 
@@ -1827,7 +1993,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 695 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 728 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
 }
 
             
@@ -1840,13 +2006,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 697 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 730 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 697 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 730 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (canDelete)
     { 
         
@@ -1854,14 +2020,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 699 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 732 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
    Write(Html.ActionLinkButton("Delete", MVC.API.DeviceProfile.Delete(Model.DeviceProfile.Id, true), "buttonDelete"));
 
             
             #line default
             #line hidden
             
-            #line 699 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 732 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                     
     }
 
@@ -1871,7 +2037,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 701 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 734 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (Authorization.Has(Claims.Device.Actions.Export))
     {
         
@@ -1879,14 +2045,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 703 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 736 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
    Write(Html.ActionLinkButton("Export Devices", MVC.API.DeviceProfile.ExportDevices(Model.DeviceProfile.Id)));
 
             
             #line default
             #line hidden
             
-            #line 703 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 736 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                              
     }
 
@@ -1896,7 +2062,7 @@ WriteLiteral("    ");
 WriteLiteral("    ");
 
             
-            #line 705 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 738 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (Authorization.Has(Claims.Device.Search))
     {
         
@@ -1904,14 +2070,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 707 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 740 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
    Write(Html.ActionLinkButton("View Devices", MVC.Search.Query(Model.DeviceProfile.Id.ToString(), "DeviceProfile")));
 
             
             #line default
             #line hidden
             
-            #line 707 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 740 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                     
     }
 

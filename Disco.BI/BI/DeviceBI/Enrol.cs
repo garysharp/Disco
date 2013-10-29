@@ -356,9 +356,23 @@ namespace Disco.BI.DeviceBI
                 else
                 {
                     if (RepoDevice == null)
+                    {
                         throw new EnrolSafeException(string.Format("Unknown Device Serial Number (SN: '{0}')", Request.DeviceSerialNumber));
+                    }
                     if (!RepoDevice.AllowUnauthenticatedEnrol)
-                        throw new EnrolSafeException(string.Format("Device isn't allowed an Unauthenticated Enrolment (SN: '{0}')", Request.DeviceSerialNumber));
+                    {
+                        if (RepoDevice.DeviceProfile.AllowUntrustedReimageJobEnrolment)
+                        {
+                            if (Database.Jobs.Count(j => j.DeviceSerialNumber == RepoDevice.SerialNumber && j.JobTypeId == JobType.JobTypeIds.SImg && !j.ClosedDate.HasValue) == 0)
+                            {
+                                throw new EnrolSafeException(string.Format("Device has no open 'Software - Reimage' job (SN: '{0}')", Request.DeviceSerialNumber));
+                            }
+                        }
+                        else
+                        {
+                            throw new EnrolSafeException(string.Format("Device isn't allowed an Unauthenticated Enrolment (SN: '{0}')", Request.DeviceSerialNumber));
+                        }
+                    }
                 }
                 if (Request.DeviceIsPartOfDomain && !string.IsNullOrWhiteSpace(Request.DeviceComputerName))
                 {

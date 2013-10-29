@@ -45,6 +45,8 @@ namespace Disco.Models.Repository
 
         public bool AssignedUserLocalAdmin { get; set; }
 
+        public bool AllowUntrustedReimageJobEnrolment { get; set; }
+
         public virtual IList<Device> Devices { get; set; }
 
         public override string ToString()

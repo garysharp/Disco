@@ -23,6 +23,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pEnforceOrganisationalUnit = "enforceorganisationalunit";
         const string pProvisionADAccount = "provisionadaccount";
         const string pAssignedUserLocalAdmin = "assigneduserlocaladmin";
+        const string pAllowUntrustedReimageJobEnrolment = "allowuntrustedreimagejobrnrolment";
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         public virtual ActionResult Update(int id, string key, string value = null, Nullable<bool> redirect = null)
@@ -76,6 +77,9 @@ namespace Disco.Web.Areas.API.Controllers
                             break;
                         case pAssignedUserLocalAdmin:
                             UpdateAssignedUserLocalAdmin(deviceProfile, value);
+                            break;
+                        case pAllowUntrustedReimageJobEnrolment:
+                            UpdateAllowUntrustedReimageJobEnrolment(deviceProfile, value);
                             break;
                         default:
                             throw new Exception("Invalid Update Key");
@@ -173,6 +177,11 @@ namespace Disco.Web.Areas.API.Controllers
             return Update(id, pAssignedUserLocalAdmin, AssignedUserLocalAdmin, redirect);
         }
 
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        public virtual ActionResult UpdateAllowUntrustedReimageJobEnrolment(int id, string AllowUntrustedReimageJobEnrolment = null, Nullable<bool> redirect = null)
+        {
+            return Update(id, pAllowUntrustedReimageJobEnrolment, AllowUntrustedReimageJobEnrolment, redirect);
+        }
         #endregion
 
         #region Update Properties
@@ -301,7 +310,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             throw new Exception("Invalid Boolean Value");
         }
-        
+
         private void UpdateEnforceOrganisationalUnit(Disco.Models.Repository.DeviceProfile deviceProfile, string EnforceOrganisationalUnit)
         {
             bool bValue;
@@ -314,7 +323,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             throw new Exception("Invalid Boolean Value");
         }
-        
+
         private void UpdateProvisionADAccount(Disco.Models.Repository.DeviceProfile deviceProfile, string ProvisionADAccount)
         {
             bool bValue;
@@ -334,6 +343,19 @@ namespace Disco.Web.Areas.API.Controllers
             if (bool.TryParse(AssignedUserLocalAdmin, out bValue))
             {
                 deviceProfile.AssignedUserLocalAdmin = bValue;
+
+                Database.SaveChanges();
+                return;
+            }
+            throw new Exception("Invalid Boolean Value");
+        }
+
+        private void UpdateAllowUntrustedReimageJobEnrolment(DeviceProfile deviceProfile, string AllowUntrustedReimageJobEnrolment)
+        {
+            bool bValue;
+            if (bool.TryParse(AllowUntrustedReimageJobEnrolment, out bValue))
+            {
+                deviceProfile.AllowUntrustedReimageJobEnrolment = bValue;
 
                 Database.SaveChanges();
                 return;

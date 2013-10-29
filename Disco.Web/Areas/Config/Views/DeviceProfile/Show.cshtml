@@ -14,10 +14,10 @@
         Html.BundleDeferred("~/ClientScripts/Modules/jQueryUI-DynaTree");
     }
 }
-<div id="configurationDeviceProfileShow" class="form" style="width: 600px">
+<div id="configurationDeviceProfileShow" class="form" style="width: 640px">
     <table>
         <tr>
-            <th style="width: 230px;">Id:
+            <th style="width: 170px;">Id:
             </th>
             <td>
                 @Html.DisplayFor(model => model.DeviceProfile.Id)
@@ -322,7 +322,7 @@
             </td>
         </tr>
         <tr>
-            <th>Computer Name Template Expression:
+            <th>Computer Name<br />Template Expression:
             </th>
             <td>@if (canConfig && canConfigExpression)
                 {
@@ -371,16 +371,16 @@
                 }
                 else
                 {
-                    if (string.IsNullOrWhiteSpace(Model.DeviceProfile.ComputerNameTemplate))
+                <div id="displayComputerNameTemplate" class="code">
+                    @if (string.IsNullOrWhiteSpace(Model.DeviceProfile.ComputerNameTemplate))
                     {
-                <span class="smallMessage">&lt;None Specified&gt;</span>
+                        <span class="smallMessage">&lt;None Specified&gt;</span>
                     }
                     else
                     {
-                <div class="code">
-                    @Model.DeviceProfile.ComputerNameTemplate
-                </div>
+                        @Model.DeviceProfile.ComputerNameTemplate
                     }
+                </div>
                 }
                 <div style="margin-top: 8px;">
                     @if (canConfig)
@@ -419,7 +419,7 @@
             </td>
         </tr>
         <tr>
-            <th>Active Directory</th>
+            <th>Policies</th>
             <td>
                 <div>
                     @if (canConfig)
@@ -483,6 +483,37 @@
                     </label>
                     @AjaxHelpers.AjaxLoader()
                 </div>
+                <div style="margin-top: 8px;">
+                    @if (canConfig)
+                    {
+                        <input id="DeviceProfile_AllowUntrustedReimageJobEnrolment" type="checkbox" @(Model.DeviceProfile.AllowUntrustedReimageJobEnrolment ? new MvcHtmlString("checked=\"checked\" ") : null)/>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#DeviceProfile_AllowUntrustedReimageJobEnrolment').click(function () {
+                                    var $this = $(this);
+                                    var $ajaxLoading = $this.nextAll('.ajaxLoading').show();
+                                    var data = { AllowUntrustedReimageJobEnrolment: $this.is(':checked') };
+                                    $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateAllowUntrustedReimageJobEnrolment(Model.DeviceProfile.Id))', data, function (response, result) {
+                                        if (result != 'success' || response != 'OK') {
+                                            alert('Unable to change Allow Untrusted Reimage Job Enrolment:\n' + response);
+                                            $ajaxLoading.hide();
+                                        } else {
+                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                    }
+                    else
+                    {
+                        <input id="DeviceProfile_AllowUntrustedReimageJobEnrolment" type="checkbox" @(Model.DeviceProfile.AllowUntrustedReimageJobEnrolment ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
+                    }
+                    <label for="DeviceProfile_AllowUntrustedReimageJobEnrolment">
+                        Allow Untrusted Enrolment Where a <span class="code">'Software - Reimage'</span> Job is Open
+                    </label>
+                    @AjaxHelpers.AjaxLoader()
+                </div>
             </td>
         </tr>
         <tr>
@@ -491,9 +522,9 @@
             <td>@if (canConfig)
                 {
                 @Html.HiddenFor(model => model.DeviceProfile.OrganisationalUnit)
-                <div id="displayOrganisationalUnit">
+                <div id="displayOrganisationalUnit" class="code">
                 </div>
-                <a id="changeOrganisationalUnit" href="#">Change</a>@AjaxHelpers.AjaxLoader()
+                <a id="changeOrganisationalUnit" href="#" class="button small">Change</a>@AjaxHelpers.AjaxLoader()
                 <div id="dialogOrganisationalUnit" title="Default Organisational Unit">
                     <div id="treeOrganisationalUnit">
                     </div>
@@ -610,16 +641,18 @@
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(Model.DeviceProfile.OrganisationalUnit))
+                <div id="displayOrganisationalUnit" class="code">
+                    @if (string.IsNullOrEmpty(Model.DeviceProfile.OrganisationalUnit))
                     {
-                <span>{Default Computers Container}</span>
+                        <span>{Default Computers Container}</span>
                     }
                     else
                     {
-                <span>
-                    @string.Join(" > ", Model.DeviceProfile.OrganisationalUnit.Split(',').Select(s => s.Substring(3)).Reverse())
-                </span>
+                        <span>
+                            @string.Join(" > ", Model.DeviceProfile.OrganisationalUnit.Split(',').Select(s => s.Substring(3)).Reverse())
+                        </span>
                     }
+                </div>
                 }
                 <div style="margin-top: 8px;">
                     @if (canConfig)
