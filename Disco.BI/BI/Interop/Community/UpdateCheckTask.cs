@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Disco.Data.Repository;
-using Disco.Services.Logging;
+﻿using Disco.Data.Repository;
 using Disco.Services.Tasks;
 using Quartz;
+using System;
+using System.Linq;
 
 namespace Disco.BI.Interop.Community
 {

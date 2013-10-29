@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Disco.Data.Repository;
+using Disco.Models.BI.Interop.Community;
+using Disco.Models.Repository;
+using Disco.Services.Tasks;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-using Disco.Data.Repository;
-using Disco.Models.BI.Interop.Community;
-using Disco.Services.Tasks;
-using Newtonsoft.Json;
 
 namespace Disco.BI.Interop.Community
 {
@@ -108,6 +106,7 @@ namespace Disco.BI.Interop.Community
 
             m.Stat_JobCounts = Database.Jobs.GroupBy(j => j.JobTypeId).Select(g => new Disco.Models.BI.Interop.Community.UpdateRequestV1.Stat { Key = g.Key, Count = g.Count() }).ToList();
             m.Stat_OpenJobCounts = Database.Jobs.Where(j => j.ClosedDate == null).GroupBy(j => j.JobTypeId).Select(g => new Disco.Models.BI.Interop.Community.UpdateRequestV1.Stat { Key = g.Key, Count = g.Count() }).ToList();
+            m.Stat_DeviceModelCounts = Database.DeviceModels.Select(dm => new Disco.Models.BI.Interop.Community.UpdateRequestV1.Stat { Key = dm.Manufacturer + ";" + dm.Model, Count = dm.Devices.Count(d => d.DecommissionedDate == null) }).ToList();
             var activeThreshold = DateTime.Now.AddDays(-60);
             m.Stat_ActiveDeviceModelCounts = Database.DeviceModels.Select(dm => new Disco.Models.BI.Interop.Community.UpdateRequestV1.Stat { Key = dm.Manufacturer + ";" + dm.Model, Count = dm.Devices.Count(d => d.DecommissionedDate == null && (d.LastNetworkLogonDate == null || d.LastNetworkLogonDate > activeThreshold)) }).ToList();
             m.Stat_UserCounts = new List<UpdateRequestV1.Stat>() {
@@ -116,6 +115,8 @@ namespace Disco.BI.Interop.Community
                      Count = Database.Users.Count()
                 }
             };
+
+            m.Stat_JobWarrantyVendorCounts = Database.Jobs.Where(j => j.JobTypeId == JobType.JobTypeIds.HWar && j.JobMetaWarranty.ExternalLoggedDate.HasValue && j.JobMetaWarranty.ExternalName != null).GroupBy(j => j.JobMetaWarranty.ExternalName).Select(g => new Disco.Models.BI.Interop.Community.UpdateRequestV1.Stat { Key = g.Key ?? "<Unknown>", Count = g.Count() }).ToList();
 
             m.InstalledPlugins = Disco.Services.Plugins.Plugins.GetPlugins().Select(manifest => new Disco.Models.BI.Interop.Community.UpdateRequestV1.PluginRef { Id = manifest.Id, Version = manifest.VersionFormatted }).ToList();
 
