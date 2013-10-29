@@ -147,6 +147,7 @@ namespace Disco.Services.Authorization
 				{ "Job.ShowNonWarrantyRepairs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowNonWarrantyRepairs, (c, v) => c.Job.ShowNonWarrantyRepairs = v, "Show Non-Warranty Repairs", "Can show non-warranty job repairs", false) },
 				{ "Job.ShowWarranty", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowWarranty, (c, v) => c.Job.ShowWarranty = v, "Show Warranty", "Can show job warranty", false) },
 				{ "Device.Properties.AssetNumber", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Properties.AssetNumber, (c, v) => c.Device.Properties.AssetNumber = v, "Asset Number Property", "Can update property", false) },
+				{ "Device.Properties.Details", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Properties.Details, (c, v) => c.Device.Properties.Details = v, "Detail Properties", "Can update detail properties", false) },
 				{ "Device.Properties.DeviceBatch", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Properties.DeviceBatch, (c, v) => c.Device.Properties.DeviceBatch = v, "Device Batch Property", "Can update property", false) },
 				{ "Device.Properties.DeviceProfile", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Properties.DeviceProfile, (c, v) => c.Device.Properties.DeviceProfile = v, "Device Profile Property", "Can update property", false) },
 				{ "Device.Properties.Location", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Properties.Location, (c, v) => c.Device.Properties.Location = v, "Location Property", "Can update property", false) },
@@ -350,6 +351,7 @@ namespace Disco.Services.Authorization
 				    new ClaimNavigatorItem("Device", "Device", "Permissions related to Devices", false, new List<IClaimNavigatorItem>() {
 				        new ClaimNavigatorItem("Device.Properties", "Device Properties", "Permissions related to Device Properties", false, new List<IClaimNavigatorItem>() {
 				            new ClaimNavigatorItem("Device.Properties.AssetNumber", false),
+				            new ClaimNavigatorItem("Device.Properties.Details", false),
 				            new ClaimNavigatorItem("Device.Properties.DeviceBatch", false),
 				            new ClaimNavigatorItem("Device.Properties.DeviceProfile", false),
 				            new ClaimNavigatorItem("Device.Properties.Location", false)
@@ -577,6 +579,7 @@ namespace Disco.Services.Authorization
 			c.Job.ShowNonWarrantyRepairs = true;
 			c.Job.ShowWarranty = true;
 			c.Device.Properties.AssetNumber = true;
+			c.Device.Properties.Details = true;
 			c.Device.Properties.DeviceBatch = true;
 			c.Device.Properties.DeviceProfile = true;
 			c.Device.Properties.Location = true;
@@ -1381,6 +1384,11 @@ namespace Disco.Services.Authorization
                 /// <para>Can update property</para>
                 /// </summary>
                 public const string AssetNumber = "Device.Properties.AssetNumber";
+
+                /// <summary>Detail Properties
+                /// <para>Can update detail properties</para>
+                /// </summary>
+                public const string Details = "Device.Properties.Details";
 
                 /// <summary>Device Batch Property
                 /// <para>Can update property</para>

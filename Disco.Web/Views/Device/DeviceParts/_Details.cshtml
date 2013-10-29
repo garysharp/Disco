@@ -1,6 +1,13 @@
 ﻿@model Disco.Web.Models.Device.ShowModel
 @{
     Authorization.Require(Claims.Device.ShowDetails);
+
+    var canConfig = Authorization.Has(Claims.Device.Properties.Details);
+
+    if (canConfig)
+    {
+        Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
+    }
 }
 <div id="DeviceDetailTab-Details" class="DevicePart">
     <div id="DeviceDetailTab-DetailsContainer">
@@ -13,6 +20,23 @@
                 <tr>
                     <th>WLAN MAC Address</th>
                     <td>@(Model.Device.DeviceDetails.WLanMacAddress() ?? "Unknown")</td>
+                </tr>
+                <tr>
+                    <th>AC Adapter</th>
+                    <td>@if (canConfig)
+                        {
+                        @Html.TextBox("DeviceDetail_ACAdapter", Model.Device.DeviceDetails.ACAdapter()) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
+                        <script>
+                            $(function () {
+                                document.DiscoFunctions.PropertyChangeHelper($('#DeviceDetail_ACAdapter'), 'Unknown', '@Url.Action(MVC.API.Device.UpdateDetailACAdapter(Model.Device.SerialNumber, null))', 'DetailACAdapter');
+                            });
+                        </script>
+                        }
+                        else
+                        {
+                        @(Model.Device.DeviceDetails.ACAdapter() ?? "Unknown")
+                        }
+                    </td>
                 </tr>
             </tbody>
         </table>

@@ -20,6 +20,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pAssignedUserId = "assigneduserid";
         const string pLocation = "location";
         const string pAllowUnauthenticatedEnrol = "allowunauthenticatedenrol";
+        const string pDetailACAdapter = "detailacadapter";
 
         public virtual ActionResult Update(string id, string key, string value = null, bool redirect = false)
         {
@@ -59,6 +60,10 @@ namespace Disco.Web.Areas.API.Controllers
                         case pAllowUnauthenticatedEnrol:
                             Authorization.Require(Claims.Device.Actions.AllowUnauthenticatedEnrol);
                             UpdateAllowUnauthenticatedEnrol(device, value);
+                            break;
+                        case pDetailACAdapter:
+                            Authorization.Require(Claims.Device.Properties.Details);
+                            UpdateDetailACAdapter(device, value);
                             break;
                         default:
                             throw new Exception("Invalid Update Key");
@@ -118,6 +123,12 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult UpdateAllowUnauthenticatedEnrol(string id, string AllowUnauthenticatedEnrol = null, bool redirect = false)
         {
             return Update(id, pAllowUnauthenticatedEnrol, AllowUnauthenticatedEnrol, redirect);
+        }
+
+        [DiscoAuthorize(Claims.Device.Properties.Details)]
+        public virtual ActionResult UpdateDetailACAdapter(string id, string DetailACAdapter = null, bool redirect = false)
+        {
+            return Update(id, pDetailACAdapter, DetailACAdapter, redirect);
         }
 
         #endregion
@@ -203,7 +214,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (!string.IsNullOrEmpty(UserId))
             {
                 u = UserService.GetUser(UserId, Database, true);
-                
+
                 if (u == null)
                     throw new Exception("Invalid Username");
             }
@@ -224,6 +235,14 @@ namespace Disco.Web.Areas.API.Controllers
                 device.AllowUnauthenticatedEnrol = bAllowUnauthenticatedEnrol;
                 Database.SaveChanges();
             }
+        }
+        private void UpdateDetailACAdapter(Disco.Models.Repository.Device device, string ACAdapter)
+        {
+            if (string.IsNullOrWhiteSpace(ACAdapter))
+                device.DeviceDetails.ACAdapter(device, null);
+            else
+                device.DeviceDetails.ACAdapter(device, ACAdapter.Trim());
+            Database.SaveChanges();
         }
         #endregion
 
@@ -321,7 +340,8 @@ namespace Disco.Web.Areas.API.Controllers
                 {
                     var timeStamp = DateTime.Now;
                     Stream pdf;
-                    using (var generationState = Disco.Models.BI.DocumentTemplates.DocumentState.DefaultState()){
+                    using (var generationState = Disco.Models.BI.DocumentTemplates.DocumentState.DefaultState())
+                    {
                         pdf = documentTemplate.GeneratePdf(Database, device, UserService.CurrentUser, timeStamp, generationState);
                     }
                     Database.SaveChanges();
@@ -474,7 +494,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json(new Models.Attachment.AttachmentsModel() { Result = "Invalid Device Serial Number" }, JsonRequestBehavior.AllowGet);
         }
-        
+
         [DiscoAuthorizeAny(Claims.Job.Actions.RemoveAnyAttachments, Claims.Job.Actions.RemoveOwnAttachments)]
         public virtual ActionResult AttachmentRemove(int id)
         {
@@ -538,7 +558,7 @@ namespace Disco.Web.Areas.API.Controllers
             var filename = string.Format("DiscoDeviceExport-AllDevices-{0:yyyyMMdd-HHmmss}.csv", DateTime.Now);
 
             return File(export, "text/csv", filename);
-        } 
+        }
 
         #endregion
 

@@ -3349,6 +3349,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateDetailACAdapter()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDetailACAdapter);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Decommission()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Decommission);
@@ -3448,6 +3454,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateLocation = "UpdateLocation";
             public readonly string UpdateAssignedUserId = "UpdateAssignedUserId";
             public readonly string UpdateAllowUnauthenticatedEnrol = "UpdateAllowUnauthenticatedEnrol";
+            public readonly string UpdateDetailACAdapter = "UpdateDetailACAdapter";
             public readonly string Decommission = "Decommission";
             public readonly string Recommission = "Recommission";
             public readonly string Delete = "Delete";
@@ -3475,6 +3482,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateLocation = "UpdateLocation";
             public const string UpdateAssignedUserId = "UpdateAssignedUserId";
             public const string UpdateAllowUnauthenticatedEnrol = "UpdateAllowUnauthenticatedEnrol";
+            public const string UpdateDetailACAdapter = "UpdateDetailACAdapter";
             public const string Decommission = "Decommission";
             public const string Recommission = "Recommission";
             public const string Delete = "Delete";
@@ -3562,6 +3570,16 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string AllowUnauthenticatedEnrol = "AllowUnauthenticatedEnrol";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateDetailACAdapter s_params_UpdateDetailACAdapter = new ActionParamsClass_UpdateDetailACAdapter();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateDetailACAdapter UpdateDetailACAdapterParams { get { return s_params_UpdateDetailACAdapter; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateDetailACAdapter
+        {
+            public readonly string id = "id";
+            public readonly string DetailACAdapter = "DetailACAdapter";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_Decommission s_params_Decommission = new ActionParamsClass_Decommission();
@@ -3775,6 +3793,18 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "AllowUnauthenticatedEnrol", AllowUnauthenticatedEnrol);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateAllowUnauthenticatedEnrolOverride(callInfo, id, AllowUnauthenticatedEnrol, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateDetailACAdapterOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DetailACAdapter, bool redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateDetailACAdapter(string id, string DetailACAdapter, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDetailACAdapter);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DetailACAdapter", DetailACAdapter);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateDetailACAdapterOverride(callInfo, id, DetailACAdapter, redirect);
             return callInfo;
         }
 

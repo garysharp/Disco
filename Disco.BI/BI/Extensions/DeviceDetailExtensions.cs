@@ -63,7 +63,16 @@ namespace Disco.BI.Extensions
             }
 
             if (detail.Value != Value)
-                detail.Value = Value;
+            {
+                if (Value == null)
+                {
+                    device.DeviceDetails.Remove(detail);
+                }
+                else
+                {
+                    detail.Value = Value;
+                }
+            }
         } 
         #endregion
 
@@ -103,6 +112,25 @@ namespace Disco.BI.Extensions
         {
             device.SetDetail(ScopeHardware, KeyWLanMacAddress, WLanMacAddress);
         } 
+        #endregion
+
+        #region ACAdapter
+        public const string KeyACAdapter = "ACAdapter";
+        /// <summary>
+        /// Gets the ACAdapter Device Detail Value
+        /// </summary>
+        /// <returns>The ACAdapter or null</returns>
+        public static string ACAdapter(this IEnumerable<DeviceDetail> details)
+        {
+            return details.GetDetail(ScopeHardware, KeyACAdapter);
+        }
+        /// <summary>
+        /// Sets the ACAdapter Device Detail Value
+        /// </summary>
+        public static void ACAdapter(this IEnumerable<DeviceDetail> details, Device device, string ACAdapter)
+        {
+            device.SetDetail(ScopeHardware, KeyACAdapter, ACAdapter);
+        }
         #endregion
 
     }

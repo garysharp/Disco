@@ -20,5 +20,8 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.Device
 
         [ClaimDetails("Location Property", "Can update property")]
         public bool Location { get; set; }
+
+        [ClaimDetails("Detail Properties", "Can update detail properties")]
+        public bool Details { get; set; }
     }
 }
