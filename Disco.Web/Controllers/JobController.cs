@@ -344,7 +344,9 @@ namespace Disco.Web.Controllers
                     throw new InvalidOperationException("Unknown JobType");
             }
 
-            m.IsLongRunning = (m.Job.OpenedDate < DateTime.Today.AddDays(Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold * -1));
+            m.IsLongRunning =
+                (!m.Job.ClosedDate.HasValue && m.Job.OpenedDate < DateTime.Today.AddDays(Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold * -1)) ||
+                (m.Job.ClosedDate.HasValue && m.Job.OpenedDate.AddDays(Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold) < m.Job.ClosedDate.Value);
 
             if (Authorization.Has(Claims.Job.Actions.UpdateSubTypes))
                 m.UpdatableJobSubTypes = m.Job.JobType.JobSubTypes.OrderBy(jst => jst.Description).ToList();
