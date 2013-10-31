@@ -481,7 +481,7 @@ namespace Disco.BI.DeviceBI
                     response.DeviceDomainName = MachineInfo.Domain;
 
                     // Enforce Computer Name Convention
-                    if (RepoDevice.DeviceProfile.EnforceComputerNameConvention)
+                    if (!MachineInfo.IsCriticalSystemObject && RepoDevice.DeviceProfile.EnforceComputerNameConvention)
                     {
                         var calculatedComputerName = RepoDevice.ComputerNameRender(Database);
                         if (!Request.DeviceComputerName.Equals(calculatedComputerName, StringComparison.InvariantCultureIgnoreCase))
@@ -499,7 +499,7 @@ namespace Disco.BI.DeviceBI
                     }
 
                     // Enforce Organisation Unit
-                    if (response.OfflineDomainJoin == null && RepoDevice.DeviceProfile.EnforceOrganisationalUnit)
+                    if (!MachineInfo.IsCriticalSystemObject && response.OfflineDomainJoin == null && RepoDevice.DeviceProfile.EnforceOrganisationalUnit)
                     {
                         var parentDistinguishedName = MachineInfo.ParentDistinguishedName();
 
@@ -518,7 +518,7 @@ namespace Disco.BI.DeviceBI
                     }
 
                 }
-                if (MachineInfo != null)
+                if (MachineInfo != null && !MachineInfo.IsCriticalSystemObject)
                 {
                     EnrolmentLog.LogSessionProgress(sessionId, 75, "Updating Active Directory Computer Account Properties");
                     MachineInfo.UpdateNetbootGUID(Request.DeviceUUID, Request.DeviceLanMacAddress);

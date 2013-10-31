@@ -21,7 +21,15 @@ namespace Disco.Client.Interop
             if (NetworkAdapters.Count > 0)
             {
                 // Only Retrieve Wlan Adapters if at least one adapter was found by WMI
-                RetrieveWlanAdapters();
+                try
+                {
+                    RetrieveWlanAdapters();
+                }
+                catch (DllNotFoundException)
+                {
+                    // Ignore DllNotFoundException
+                    // This which indicates 'Wlanapi.dll' isn't present (eg. Windows Servers)
+                }
 
                 // Determine Primary Adapters
 

@@ -93,7 +93,7 @@ namespace Disco.BI.Extensions
             if (d.ComputerName != null)
             {
                 var adAccount = d.ActiveDirectoryAccount();
-                if (adAccount != null)
+                if (adAccount != null && !adAccount.IsCriticalSystemObject)
                 {
                     adAccount.DisableAccount();
                 }
@@ -120,7 +120,7 @@ namespace Disco.BI.Extensions
             if (d.ComputerName != null)
             {
                 var adAccount = d.ActiveDirectoryAccount();
-                if (adAccount != null)
+                if (adAccount != null && !adAccount.IsCriticalSystemObject)
                 {
                     adAccount.EnableAccount();
                 }
