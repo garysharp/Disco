@@ -8,14 +8,28 @@ namespace Disco.Services.Plugins
 {
     public abstract class PluginWebViewPage<T> : Disco.Services.Web.WebViewPage<T>
     {
-        public WebPageHelper<T> Plugin { get; private set; }
+        private Lazy<WebPageHelper<T>> _plugin;
+
+        public PluginManifest Manifest {get;private set;}
+        public WebPageHelper<T> Plugin
+        {
+            get
+            {
+                return _plugin.Value;
+            }
+        }
 
         public PluginWebViewPage()
         {
             var self = this.GetType();
-            var manifest = Plugins.GetPlugin(self.Assembly);
+            this.Manifest = Plugins.GetPlugin(self.Assembly);
 
-            this.Plugin = new WebPageHelper<T>(this, manifest);
+            this._plugin = new Lazy<WebPageHelper<T>>(() => {
+                if (this.Context == null)
+                    throw new InvalidOperationException("The WebViewPage Context property is not initialized");
+
+                return new WebPageHelper<T>(this, this.Manifest);
+            });
         }
     }
 }
