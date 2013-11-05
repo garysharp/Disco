@@ -453,7 +453,7 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new InvalidOperationException("Unknown DocumentType Scope");
             }
 
-            var dataIds = DataIds.Split(new string[] { Environment.NewLine, ",", ";" }, StringSplitOptions.RemoveEmptyEntries);
+            var dataIds = DataIds.Split(new string[] { Environment.NewLine, ",", ";" }, StringSplitOptions.RemoveEmptyEntries).Select(d => d.Trim()).Where(d => !string.IsNullOrEmpty(d)).ToArray();
             var timeStamp = DateTime.Now;
             var pdf = documentTemplate.GeneratePdfBulk(Database, UserService.CurrentUser, timeStamp, dataIds);
 

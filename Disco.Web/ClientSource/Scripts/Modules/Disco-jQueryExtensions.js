@@ -15,14 +15,6 @@
                 if ($checkboxes.length > 0) {
                     var $selectAll, $selectNone;
 
-                    $selectAll = $('<a>').addClass('selectAll').attr('href', '#').text('ALL').click(selectAll);
-                    $selectNone = $('<a>').addClass('selectNone').attr('href', '#').text('NONE').click(selectNone);
-
-                    $this.append($('<span>').text('Select: '), $selectAll, $('<span>').text(' | '), $selectNone);
-                    $checkboxes.click(update);
-
-                    update();
-
                     function selectAll() {
                         $checkboxes.attr('checked', 'checked');
                         update();
@@ -36,6 +28,14 @@
                     function update() {
                         checkboxBulkSelectMethods.update.apply($this, [$checkboxes, options.parentSelector, $selectAll, $selectNone]);
                     }
+
+                    $selectAll = $('<a>').addClass('selectAll').attr('href', '#').text('ALL').click(selectAll);
+                    $selectNone = $('<a>').addClass('selectNone').attr('href', '#').text('NONE').click(selectNone);
+
+                    $this.append($('<span>').text('Select: '), $selectAll, $('<span>').text(' | '), $selectNone);
+                    $checkboxes.click(update);
+
+                    update();
                 }
             });
         },

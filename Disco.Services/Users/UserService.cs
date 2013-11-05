@@ -231,7 +231,7 @@ namespace Disco.Services.Users
                     adAccount = _GetActiveDirectoryUserAccount(UserId, null);
 
                     if (adAccount == null)
-                        throw new ArgumentException(string.Format("Invalid Username: '{0}'; User doesn't in AD", UserId), "Username");
+                        throw new ArgumentException(string.Format("Invalid Username: '{0}'; User not found in Active Directory", UserId), "Username");
                 }
                 catch (COMException ex)
                 {

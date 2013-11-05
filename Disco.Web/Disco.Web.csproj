@@ -1070,28 +1070,28 @@
     <Content Include="ClientSource\Scripts\Modules\Silverlight.min.js">
       <DependentUpon>Silverlight.js.bundle</DependentUpon>
     </Content>
+    <None Include="ClientSource\Scripts\Modules\Timeline.min.js.map">
+      <DependentUpon>Timeline.js.bundle</DependentUpon>
+    </None>
     <None Include="ClientSource\Scripts\Modules\Timeline\disco.simileajaxextensions.js" />
     <None Include="ClientSource\Scripts\Modules\Timeline\disco.timelineextensions.js" />
     <None Include="ClientSource\Scripts\Modules\Timeline\labellers.js" />
     <None Include="ClientSource\Scripts\Modules\Timeline\simile-ajax-bundle-DiscoMod.js" />
     <None Include="ClientSource\Scripts\Modules\Timeline\timeline-bundle.js" />
-    <None Include="ClientSource\Scripts\Modules\timeline.js">
-      <DependentUpon>Timeline.js.bundle</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Scripts\Modules\Timeline.min.js">
-      <DependentUpon>Timeline.js.bundle</DependentUpon>
-    </Content>
     <None Include="ClientSource\Scripts\Modules\Timeline\timeline.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce.min.js.map">
       <DependentUpon>tinymce.js.bundle</DependentUpon>
-    </None>
-    <None Include="ClientSource\Scripts\Modules\Timeline.min.js.map">
-      <DependentUpon>Timeline.js.bundle</DependentUpon>
     </None>
     <None Include="ClientSource\Scripts\Modules\tinymce\disco.tinymceextensions.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce.js">
       <DependentUpon>tinymce.js.bundle</DependentUpon>
     </None>
+    <None Include="ClientSource\Scripts\Modules\Timeline.js">
+      <DependentUpon>Timeline.js.bundle</DependentUpon>
+    </None>
+    <Content Include="ClientSource\Scripts\Modules\Timeline.min.js">
+      <DependentUpon>Timeline.js.bundle</DependentUpon>
+    </Content>
     <Content Include="ClientSource\Scripts\Modules\tinymce.min.js">
       <DependentUpon>tinymce.js.bundle</DependentUpon>
     </Content>
@@ -1968,7 +1968,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
