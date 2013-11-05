@@ -344,6 +344,11 @@ a:hover {
 a:active {
   color: #335a87;
 }
+a[disabled] {
+  color: #696969;
+  text-decoration: none;
+  cursor: default;
+}
 a.button {
   display: inline-block;
   padding: 4px 10px;

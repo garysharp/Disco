@@ -282,6 +282,12 @@ a {
     &:active {
         color: @HyperLinkColour;
     }
+
+    &[disabled] {
+        color: @ButtonBorderHoverColour;
+        text-decoration: none;
+        cursor: default;
+    }
 }
     // Anchor Tags (Button)
     a.button {

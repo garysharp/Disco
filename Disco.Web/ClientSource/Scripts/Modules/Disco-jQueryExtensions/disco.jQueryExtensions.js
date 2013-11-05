@@ -15,12 +15,12 @@
                     var $selectAll, $selectNone;
 
                     function selectAll() {
-                        $checkboxes.attr('checked', 'checked');
+                        $checkboxes.prop('checked', true);
                         update();
                         return false;
                     }
                     function selectNone() {
-                        $checkboxes.removeAttr('checked');
+                        $checkboxes.prop('checked', false);
                         update();
                         return false;
                     }
@@ -53,17 +53,17 @@
 
                 if ($checkboxes.length == $selectedCheckboxes.length) {
                     // All Selected
-                    $selectAll.attr('disabled', 'disabled');
-                    $selectNone.removeAttr('disabled');
+                    $selectAll.prop('disabled', true);
+                    $selectNone.prop('disabled', false);
                 } else {
                     if ($selectedCheckboxes.length == 0) {
                         // None Selected
-                        $selectNone.attr('disabled', 'disabled');
-                        $selectAll.removeAttr('disabled');
+                        $selectNone.prop('disabled', true);
+                        $selectAll.prop('disabled', false);
                     } else {
                         // Some Selected
-                        $selectAll.removeAttr('disabled');
-                        $selectNone.removeAttr('disabled');
+                        $selectAll.prop('disabled', false);
+                        $selectNone.prop('disabled', false);
                     }
                 }
             });
