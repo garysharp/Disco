@@ -1,6 +1,7 @@
 ﻿using Disco.Data.Repository;
 using Disco.Services.Authorization;
 using Disco.Services.Users;
+using Disco.Services.Web;
 using System;
 using System.Configuration;
 using System.Diagnostics;
@@ -214,29 +215,7 @@ namespace Disco.Web
         #region Global Error Logging
         void DiscoApplication_Error(object sender, EventArgs e)
         {
-            try
-            {
-                var ex = Server.GetLastError();
-
-                if (ex is AccessDeniedException)
-                {
-                    var accessDeniedException = (AccessDeniedException)ex;
-                    var resource = accessDeniedException.Resource;
-                    var httpContext = HttpContext.Current;
-                    if (httpContext != null && httpContext.Request != null)
-                        resource = string.Format("{0} [{1}]", resource, httpContext.Request.RawUrl);
-
-                    AuthorizationLog.LogAccessDenied(UserService.CurrentUserId ?? "[Anonymous]", resource, accessDeniedException.Message);
-                }
-                else
-                {
-                    Disco.Services.Logging.SystemLog.LogException("Global Application Exception Caught", ex);
-                }
-            }
-            catch (Exception)
-            {
-                // Ignore all logging errors
-            }
+            this.HandleException();
         }
         #endregion
     }

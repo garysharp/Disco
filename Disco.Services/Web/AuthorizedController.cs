@@ -11,7 +11,7 @@ using System.Web.Mvc;
 namespace Disco.Services.Web
 {
     [DiscoAuthorize]
-    public abstract class AuthorizedController : Controller
+    public abstract class AuthorizedController : BaseController
     {
         public AuthorizationToken Authorization
         {

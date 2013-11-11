@@ -91,13 +91,11 @@ namespace Disco.Services.Plugins
         {
             return PartialCompiled<ViewType>(null);
         }
-        private void RenderPartialCompiled<ViewType>(TextWriter Writer, object Model)
+        private void RenderPartialCompiled<ViewType>(TextWriter Writer, object Model) where ViewType : WebViewPage
         {
             if (Writer == null)
                 throw new ArgumentNullException("Writer");
             WebViewPage page = Activator.CreateInstance(typeof(ViewType)) as WebViewPage;
-            if (page == null)
-                throw new InvalidOperationException("Invalid View Type");
             page.ViewContext = ViewPage.ViewContext;
             page.ViewData = new ViewDataDictionary(Model);
             page.InitHelpers();
