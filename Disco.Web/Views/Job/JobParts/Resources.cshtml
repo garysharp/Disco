@@ -30,7 +30,7 @@
                     {
                         <div data-logid="@jl.Id">
                             <span class="author">@jl.TechUser.ToString()</span>@if (canRemoveAnyLogs || (canRemoveOwnLogs && jl.TechUserId == CurrentUser.Id))
-                                                                                      {<text><span class="remove"></span></text>}<span class="timestamp" title="@jl.Timestamp.ToFullDateTime()">@jl.Timestamp.ToFuzzy()</span>
+                                                                               {<text><span class="remove"></span></text>}<span class="timestamp" title="@jl.Timestamp.ToFullDateTime()">@jl.Timestamp.ToFuzzy()</span>
                             <span class="comment">@jl.Comments.ToMultilineJobRefString()</span>
                         </div>
                     }
@@ -313,21 +313,6 @@
             var $dialogUpload;
             var onLoadNavigation = null;
             var isLoaded = null;
-            Silverlight.createObject(
-                    '@(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap)',
-                            $('#silverlightHostUploadAttachment').get(0),
-                            'silverlightUploadAttachment',
-                            { width: '840px', height: '500px', background: 'white', version: '4.0.60310.0' },
-                            {
-                                onLoad: function () {
-                                    if (onLoadNavigation) {
-                                        silverlightUploadAttachment.content.Navigator.Navigate(onLoadNavigation);
-                                        isLoaded = true;
-                                    }
-                                }
-                            },
-                            'UploadUrl=@(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)))'
-                        );
 
             var $attachmentInput = $Attachments.find('.attachmentInput');
             $attachmentInput.find('.photo').click(function () {
@@ -340,25 +325,42 @@
             var silverlightUploadAttachment = $('#silverlightUploadAttachment').get(0);
             function showDialog(navigationPath) {
                 if (!$dialogUpload) {
-                    $dialogUpload = $('#dialogUpload').dialog({
-                        autoOpen: false,
-                        draggable: false,
-                        modal: true,
-                        resizable: false,
-                        width: 860,
-                        height: 550,
-                        close: function () {
-                            silverlightUploadAttachment.content.Navigator.Navigate('/Hidden');
-                        }
-                    });
-                }
-                $dialogUpload.dialog('open');
-                if (isLoaded) {
-                    silverlightUploadAttachment.content.Navigator.Navigate(navigationPath);
-                } else {
-                    onLoadNavigation = navigationPath;
-                }
-            };
+                    Silverlight.createObject(
+                        '@(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap)',
+                        $('#silverlightHostUploadAttachment').get(0),
+                        'silverlightUploadAttachment',
+                        { width: '840px', height: '500px', background: 'white', version: '4.0.60310.0' },
+                        {
+                            onLoad: function () {
+                                if (onLoadNavigation) {
+                                    $('#silverlightUploadAttachment').get(0).content.Navigator.Navigate(onLoadNavigation);
+                                    isLoaded = true;
+                                }
+                            }
+                        },
+                        'UploadUrl=@(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)))'
+                    );
+
+                        $dialogUpload = $('#dialogUpload').dialog({
+                            autoOpen: false,
+                            draggable: false,
+                            modal: true,
+                            resizable: false,
+                            width: 860,
+                            height: 550,
+                            close: function () {
+                                if (silverlightUploadAttachment && silverlightUploadAttachment.content)
+                                    silverlightUploadAttachment.content.Navigator.Navigate('/Hidden');
+                            }
+                        });
+                    }
+                    $dialogUpload.dialog('open');
+                    if (isLoaded) {
+                        silverlightUploadAttachment.content.Navigator.Navigate(navigationPath);
+                    } else {
+                        onLoadNavigation = navigationPath;
+                    }
+                };
 
             //#endregion
             </text>}
@@ -438,12 +440,17 @@
                             if (d.Result == 'OK') {
                                 var a = d.Attachment;
                                 @if (canRemoveAnyAttachments)
-                                {<text>buildAttachment(a, true);</text>}
+                                {
+                                <text>buildAttachment(a, true, quick);</text>
+                                }
                                 else if (canRemoveOwnAttachments)
-                                {<text>buildAttachment(a, (a.AuthorId === '@(CurrentUser.Id)'));</text>}
+                                {
+                                <text>buildAttachment(a, (a.AuthorId === '@(CurrentUser.Id)'), quick);</text>
+                                }
                                 else
-                                {<text>buildAttachment(a, false);</text>}
-
+                                {
+                                <text>buildAttachment(a, false, quick);</text>
+                                }
                             } else {
                                 alert('Unable to add attachment: ' + d.Result);
                             }
@@ -454,7 +461,7 @@
                     });
                 }
             }
-            function buildAttachment(a, canRemove) {
+            function buildAttachment(a, canRemove, quick) {
                 if (parseInt(a.ParentId) == jobId) {
                     var t = '<a><span class="icon"><img alt="Attachment Thumbnail" /></span><span class="comments"></span><span class="author"></span>';
                     if (canRemove)

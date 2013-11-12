@@ -117,12 +117,17 @@
                                     if (d.Result == 'OK') {
                                         var a = d.Attachment;
                                         @if (canRemoveAnyAttachments)
-                                        {<text>buildAttachment(a, true);</text>}
+                                        {
+                                        <text>buildAttachment(a, true, quick);</text>
+                                        }
                                         else if (canRemoveOwnAttachments)
-                                        {<text>buildAttachment(a, (a.AuthorId === '@(CurrentUser.Id)'));</text>}
+                                        {
+                                        <text>buildAttachment(a, (a.AuthorId === '@(CurrentUser.Id)'), quick);</text>
+                                        }
                                         else
-                                        {<text>buildAttachment(a, false);</text>}
-
+                                        {
+                                        <text>buildAttachment(a, false, quick);</text>
+                                        }
                                     } else {
                                         alert('Unable to add attachment: ' + d.Result);
                                     }
@@ -132,7 +137,7 @@
                                 }
                             });
                         }
-                        function buildAttachment(a, canRemove) {
+                        function buildAttachment(a, canRemove, quick) {
                             var t = '<a><span class="icon"><img alt="Attachment Thumbnail" /></span><span class="comments"></span><span class="author"></span>';
                             if (canRemove)
                                 t += '<span class="remove"></span>';
