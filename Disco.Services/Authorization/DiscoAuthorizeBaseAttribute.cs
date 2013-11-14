@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -34,30 +35,44 @@ namespace Disco.Services.Authorization
         protected sealed override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             string resultMessage = HandleUnauthorizedMessage();
+            string resultResource = BuildAuthorizeResource(filterContext);
 
-            LogAccessDenied(filterContext, resultMessage);
+            // Log Access Denied
+            if (Token != null) // Don't log anonymous
+                AuthorizationLog.LogAccessDenied(Token.User.Id, resultResource, resultMessage);
 
-            filterContext.Result = new HttpUnauthorizedResult(resultMessage);
+            // Build Response View
+            var ex = new AccessDeniedException(resultMessage, resultResource);
+            HandleErrorInfo model = new HandleErrorInfo(ex, filterContext.ActionDescriptor.ControllerDescriptor.ControllerName, filterContext.ActionDescriptor.ActionName);
+            ViewResult result = new ViewResult
+            {
+                ViewName = "Error",
+                MasterName = Token == null ? "_PublicLayout" : "_Layout",
+                ViewData = new ViewDataDictionary<HandleErrorInfo>(model),
+                TempData = filterContext.Controller.TempData
+            };
+
+            filterContext.Result = result;
+            var contextResponse = filterContext.HttpContext.Response;
+            contextResponse.Clear();
+            contextResponse.StatusCode = (int)HttpStatusCode.Unauthorized;
+            contextResponse.TrySkipIisCustomErrors = true;
         }
 
-        public void LogAccessDenied(AuthorizationContext FilterContext, string ResultMessage)
+        private string BuildAuthorizeResource(AuthorizationContext FilterContext)
         {
-            // Don't log anonymous
-            if (Token != null)
+            var authResource = AuthorizeResource;
+            var url = FilterContext.HttpContext.Request.RawUrl;
+
+            if (authResource == null)
             {
-                // Calculate Authorize Resource
-                if (AuthorizeResource == null)
-                {
-                    var controllerName = FilterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
-                    var actionName = FilterContext.ActionDescriptor.ActionName;
+                var controllerName = FilterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+                var actionName = FilterContext.ActionDescriptor.ActionName;
 
-                    AuthorizeResource = string.Format("{0}::{1}", controllerName, actionName);
-                }
-
-                var resource = string.Format("{0} [{1}]", AuthorizeResource, FilterContext.HttpContext.Request.RawUrl);
-
-                AuthorizationLog.LogAccessDenied(Token.User.Id, resource, ResultMessage);
+                authResource = string.Format("{0}::{1}", controllerName, actionName);
             }
+
+            return string.Format("{0} [{1}]", authResource, url);
         }
     }
 }

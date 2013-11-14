@@ -45,25 +45,26 @@ namespace Disco.Services.Authorization
 
         #region Token Accessors
 
-        internal const string RequireAuthenticationMessage = "This Disco feature requires authentication.";
-        internal const string RequireDiscoAuthorizationMessage = "Your account does not have the required permission to access this Disco feature. This feature requires your account to be included in at least one Disco Authorization Role.";
-        internal const string RequireMessageTemplate = "Your account does not have the required permission ({0}) to access this Disco feature.";
-        internal const string RequireAllMessageTemplate = "Your account does not have the required permission to access this Disco feature. This feature requires permission for: {0}.";
-        internal const string RequireAnyMessageTemplate = "Your account does not have the required permission to access this Disco feature. This feature requires at least one of these permissions: {0}.";
+        internal const string RequireAuthenticationMessage = "This feature requires authentication.";
+        internal const string RequireDiscoAuthorizationMessage = "Your account does not have the required permission to access this feature. This feature requires your account to be included in at least one Disco Authorization Role.";
+        internal const string RequireMessageTemplate = "Your account does not have the required permission to access this feature.\r\n";
+        internal const string RequireMessageSingleTemplate = RequireMessageTemplate + "This feature requires the following permission:\r\n- {0}";
+        internal const string RequireAllMessageTemplate = RequireMessageTemplate + "This feature requires permission for:{0}.";
+        internal const string RequireAnyMessageTemplate = RequireMessageTemplate + "This feature requires at least one of these permissions:{0}.";
 
         internal static string BuildRequireMessage(string ClaimKey)
         {
-            return string.Format(RequireMessageTemplate, Claims.GetClaimDetails(ClaimKey).Item1);
+            return string.Format(RequireMessageSingleTemplate, Claims.GetClaimDetails(ClaimKey).Item1);
         }
         internal static string BuildRequireAllMessage(IEnumerable<string> ClaimKeys)
         {
             var claimFriendlyNames = ClaimKeys.Select(ck => Claims.GetClaimDetails(ck).Item1);
-            return string.Format(RequireAllMessageTemplate, string.Join("; ", claimFriendlyNames));
+            return string.Format(RequireAllMessageTemplate, string.Join("\r\n- ", claimFriendlyNames));
         }
         internal static string BuildRequireAnyMessage(IEnumerable<string> ClaimKeys)
         {
             var claimFriendlyNames = ClaimKeys.Select(ck => Claims.GetClaimDetails(ck).Item1);
-            return string.Format(RequireAnyMessageTemplate, string.Join("; ", claimFriendlyNames));
+            return string.Format(RequireAnyMessageTemplate, string.Join("\r\n- ", claimFriendlyNames));
         }
 
         /// <summary>

@@ -200,6 +200,33 @@ header, #header {
     .border-radius4(0, 0, 6px, 6px);
 }
 
+#layout_Error {
+    min-height: 200px;
+
+    table {
+        background-color: #fff;
+    }
+
+    h1, h2, h3, h4, h5 {
+        color: #fff;
+        white-space: pre-wrap;
+    }
+
+        h2.error {
+            margin-bottom: 10px;
+        }
+
+    .stacktrace {
+        white-space: pre;
+        overflow: auto;
+    }
+
+    & > div {
+        margin: 0 auto;
+        width: 650px;
+    }
+}
+
 #layout_uiExtensions {
     display: none;
 }

@@ -268,6 +268,31 @@ header .watermark,
   -webkit-border-radius: 0 0 6px 6px;
   border-radius: 0 0 6px 6px;
 }
+#layout_Error {
+  min-height: 200px;
+}
+#layout_Error table {
+  background-color: #fff;
+}
+#layout_Error h1,
+#layout_Error h2,
+#layout_Error h3,
+#layout_Error h4,
+#layout_Error h5 {
+  color: #fff;
+  white-space: pre-wrap;
+}
+#layout_Error h2.error {
+  margin-bottom: 10px;
+}
+#layout_Error .stacktrace {
+  white-space: pre;
+  overflow: auto;
+}
+#layout_Error > div {
+  margin: 0 auto;
+  width: 650px;
+}
 #layout_uiExtensions {
   display: none;
 }

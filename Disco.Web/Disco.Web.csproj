@@ -509,8 +509,18 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Areas\Public\Views\Shared\_Layout.generated.cs">
-      <DependentUpon>_Layout.cshtml</DependentUpon>
+    <Compile Include="Views\Shared\DisplayTemplates\AccessDeniedException.generated.cs">
+      <DependentUpon>AccessDeniedException.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Shared\DisplayTemplates\Exception.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Exception.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\_PublicLayout.generated.cs">
+      <DependentUpon>_PublicLayout.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -1778,9 +1788,17 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Licence.generated.cs</LastGenOutput>
     </None>
-    <None Include="Areas\Public\Views\Shared\_Layout.cshtml">
+    <Content Include="Views\Shared\DisplayTemplates\AccessDeniedException.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>_Layout.generated.cs</LastGenOutput>
+      <LastGenOutput>AccessDeniedException.generated.cs</LastGenOutput>
+    </Content>
+    <None Include="Views\Shared\DisplayTemplates\Exception.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Exception.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Shared\_PublicLayout.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_PublicLayout.generated.cs</LastGenOutput>
     </None>
     <None Include="Areas\Public\Views\UserHeldDevices\Index.cshtml">
       <Generator>RazorGenerator</Generator>
@@ -1915,6 +1933,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\API\Models\WirelessCertificate\" />
+    <Folder Include="Areas\Public\Views\Shared\" />
     <Folder Include="Areas\Services\Models\" />
   </ItemGroup>
   <ItemGroup>
@@ -1968,7 +1987,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
+      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

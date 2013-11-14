@@ -1,38 +1,15 @@
 ﻿@model System.Web.Mvc.HandleErrorInfo
 @{
-    ViewBag.Title = "Server Error";
-
+    ViewBag.Title = "An Error Occurred";
+    
     var ex = Model.Exception;
-
-
-    while (ex != null)
-    {
-
-    <div class="form" style="width: 650px">
-        <h2 style="white-space: pre;">@ex.Message</h2>
-        <table style="background-color: #fff;">
-            <tr>
-                <th style="width: 40px;">Type:</th>
-                <td>
-                    @ex.GetType().Name
-                </td>
-            </tr>
-            <tr>
-                <th>Stack:
-                </th>
-                <td>
-                    <div class="code" style="width: 560px; white-space: pre; overflow: auto;">@ex.StackTrace</div>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-        ex = ex.InnerException;
-    }
 }
-<script>
-    $(function () {
-        $('#layout_PageHeading').css({ 'background': '#C80000', 'color': '#fff' });
-        $('#layout_Page').css({ 'background': 'linear-gradient(to top, #F2B0B0, #C80000 200px)' }).find('h2').css({ 'color': '#fff' });
-    });
-</script>
+<div id="layout_Error">
+    @Html.DisplayFor(m => m.Exception)
+    <script>
+        $(function () {
+            $('#layout_PageHeading').css({ 'background': '#C80000', 'color': '#fff' });
+            $('#layout_Page').css({ 'background': 'linear-gradient(to top, #F2B0B0, #C80000 200px)' });
+        });
+    </script>
+</div>

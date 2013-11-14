@@ -1,0 +1,52 @@
+﻿@model System.Exception
+@{
+    var ex = Model;
+}
+<i class="icon"></i>
+@while (ex != null)
+{
+    <div class="form" style="width: 650px">
+        <h2 class="error">@ex.Message</h2>
+        <table>
+            <tr>
+                <td>
+                    Details <a href="#" class="toClipboard smallMessage">(Copy to Clipboard)</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="code stacktrace" style="width: 638px;">@ex.Message
+[@ex.GetType().FullName]
+
+Stack Trace:
+@ex.StackTrace</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    ex = ex.InnerException;
+}
+<script>
+    $(function () {
+        var toClipboardLinks = $('#layout_Error').find('a.toClipboard');
+
+        if (window.clipboardData) {
+            // Clipboard access available
+            toClipboardLinks.click(function (e) {
+                $this = $(this);
+
+                var details = $this.closest('table').find('div.stacktrace').text();
+                details = $.trim(details).replace(/\n/gm, '\r\n');
+                window.clipboardData.setData('Text', details);
+
+                alert('Details copied to Clipboard');
+
+                return false;
+            });
+        } else {
+            // No Clipboard access available - hide links
+            toClipboardLinks.hide();
+        }
+    });
+</script>

@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Disco.Web.Views.Shared
+namespace Disco.Web.Views.Shared.DisplayTemplates
 {
     using System;
     using System.Collections.Generic;
@@ -34,47 +34,56 @@ namespace Disco.Web.Views.Shared
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Shared/Error.cshtml")]
-    public partial class Error : Disco.Services.Web.WebViewPage<System.Web.Mvc.HandleErrorInfo>
+    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Shared/DisplayTemplates/AccessDeniedException.cshtml")]
+    public partial class AccessDeniedException : Disco.Services.Web.WebViewPage<Disco.Services.Authorization.AccessDeniedException>
     {
-        public Error()
+        public AccessDeniedException()
         {
         }
         public override void Execute()
         {
             
-            #line 2 "..\..\Views\Shared\Error.cshtml"
+            #line 2 "..\..\Views\Shared\DisplayTemplates\AccessDeniedException.cshtml"
   
-    ViewBag.Title = "An Error Occurred";
-    
-    var ex = Model.Exception;
+    ViewBag.Title = "Authorization Required";
+    Disco.Services.Authorization.AccessDeniedException ex = (Disco.Services.Authorization.AccessDeniedException)Model;
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n<div");
+WriteLiteral("\r\n<i");
 
-WriteLiteral(" id=\"layout_Error\"");
+WriteLiteral(" class=\"icon accessDenied\"");
 
-WriteLiteral(">\r\n");
+WriteLiteral("></i>\r\n<div>\r\n    <h2");
 
-WriteLiteral("    ");
+WriteLiteral(" class=\"error\"");
+
+WriteLiteral(">");
 
             
-            #line 8 "..\..\Views\Shared\Error.cshtml"
-Write(Html.DisplayFor(m => m.Exception));
+            #line 8 "..\..\Views\Shared\DisplayTemplates\AccessDeniedException.cshtml"
+                 Write(ex.Message);
 
             
             #line default
             #line hidden
-WriteLiteral(@"
-    <script>
-        $(function () {
-            $('#layout_PageHeading').css({ 'background': '#C80000', 'color': '#fff' });
-            $('#layout_Page').css({ 'background': 'linear-gradient(to top, #F2B0B0, #C80000 200px)' });
-        });
-    </script>
-</div>");
+WriteLiteral("</h2>\r\n    <h4>Feature:</h4>\r\n    <div");
+
+WriteLiteral(" class=\"code stacktrace\"");
+
+WriteLiteral(" style=\"width: 560px;\"");
+
+WriteLiteral(">");
+
+            
+            #line 10 "..\..\Views\Shared\DisplayTemplates\AccessDeniedException.cshtml"
+                                                  Write(ex.Resource);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</div>\r\n</div>");
 
         }
     }

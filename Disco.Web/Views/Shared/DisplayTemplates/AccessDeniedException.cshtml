@@ -1,0 +1,11 @@
+﻿@model Disco.Services.Authorization.AccessDeniedException
+@{
+    ViewBag.Title = "Authorization Required";
+    Disco.Services.Authorization.AccessDeniedException ex = (Disco.Services.Authorization.AccessDeniedException)Model;
+}
+<i class="icon accessDenied"></i>
+<div>
+    <h2 class="error">@ex.Message</h2>
+    <h4>Feature:</h4>
+    <div class="code stacktrace" style="width: 560px;">@ex.Resource</div>
+</div>

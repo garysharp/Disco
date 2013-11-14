@@ -25,7 +25,7 @@ namespace Disco.Services.Web
 
             string controllerName = (string)filterContext.RouteData.Values["controller"];
             string actionName = (string)filterContext.RouteData.Values["action"];
-            HandleErrorInfo model = new HandleErrorInfo(ex, controllerName, actionName);
+            HandleErrorInfo model = new HandleErrorInfo(ex, controllerName ?? "Unknown", actionName ?? "Unknown");
             ViewResult result = new ViewResult
             {
                 ViewName = "Error",
