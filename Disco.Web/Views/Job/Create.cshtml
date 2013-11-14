@@ -2,7 +2,7 @@
 @{
     Authorization.Require(Claims.Job.Actions.Create);
     
-    Layout = "~/Views/Shared/_DialogLayout.cshtml";
+    Layout = MVC.Shared.Views._DialogLayout;
     ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), "Create");
 }
 <div id="createJob_Container">

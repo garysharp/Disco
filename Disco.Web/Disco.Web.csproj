@@ -1788,10 +1788,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Licence.generated.cs</LastGenOutput>
     </None>
-    <Content Include="Views\Shared\DisplayTemplates\AccessDeniedException.cshtml">
+    <None Include="Views\Shared\DisplayTemplates\AccessDeniedException.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>AccessDeniedException.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Views\Shared\DisplayTemplates\Exception.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Exception.generated.cs</LastGenOutput>
@@ -1933,7 +1933,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\API\Models\WirelessCertificate\" />
-    <Folder Include="Areas\Public\Views\Shared\" />
     <Folder Include="Areas\Services\Models\" />
   </ItemGroup>
   <ItemGroup>

@@ -90,7 +90,6 @@ namespace T4MVC
         public Disco.Web.Areas.Public.Controllers.HeldDevicesController HeldDevices = new Disco.Web.Areas.Public.Controllers.T4MVC_HeldDevicesController();
         public Disco.Web.Areas.Public.Controllers.PublicController Public = new Disco.Web.Areas.Public.Controllers.T4MVC_PublicController();
         public Disco.Web.Areas.Public.Controllers.UserHeldDevicesController UserHeldDevices = new Disco.Web.Areas.Public.Controllers.T4MVC_UserHeldDevicesController();
-        public T4MVC.Public.SharedController Shared = new T4MVC.Public.SharedController();
     }
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
     public class ServicesClass
@@ -373,7 +372,7 @@ namespace Links
                 }
             
                 public static readonly string Timeline_js_bundle = Url("Timeline.js.bundle");
-                public static readonly string timeline_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/timeline.min.js") ? Url("timeline.min.js") : Url("timeline.js");
+                public static readonly string Timeline_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Timeline.min.js") ? Url("Timeline.min.js") : Url("Timeline.js");
                 public static readonly string Timeline_min_js = Url("Timeline.min.js");
                 public static readonly string Timeline_min_js_map = Url("Timeline.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -2163,6 +2162,7 @@ namespace T4MVC
                 public readonly string _JobTable = "_JobTable";
                 public readonly string _JobTableRender = "_JobTableRender";
                 public readonly string _Layout = "_Layout";
+                public readonly string _PublicLayout = "_PublicLayout";
                 public readonly string _SearchDialog = "_SearchDialog";
                 public readonly string Error = "Error";
             }
@@ -2171,8 +2171,17 @@ namespace T4MVC
             public readonly string _JobTable = "~/Views/Shared/_JobTable.cshtml";
             public readonly string _JobTableRender = "~/Views/Shared/_JobTableRender.cshtml";
             public readonly string _Layout = "~/Views/Shared/_Layout.cshtml";
+            public readonly string _PublicLayout = "~/Views/Shared/_PublicLayout.cshtml";
             public readonly string _SearchDialog = "~/Views/Shared/_SearchDialog.cshtml";
             public readonly string Error = "~/Views/Shared/Error.cshtml";
+            static readonly _DisplayTemplatesClass s_DisplayTemplates = new _DisplayTemplatesClass();
+            public _DisplayTemplatesClass DisplayTemplates { get { return s_DisplayTemplates; } }
+            [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+            public partial class _DisplayTemplatesClass
+            {
+                public readonly string AccessDeniedException = "AccessDeniedException";
+                public readonly string Exception = "Exception";
+            }
         }
     }
 
@@ -10565,29 +10574,6 @@ namespace Disco.Web.Areas.Public.Controllers
         }
 
     }
-}
-
-namespace T4MVC.Public
-{
-    public class SharedController
-    {
-
-        static readonly ViewsClass s_views = new ViewsClass();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ViewsClass Views { get { return s_views; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ViewsClass
-        {
-            static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
-            public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
-            public class _ViewNamesClass
-            {
-                public readonly string _Layout = "_Layout";
-            }
-            public readonly string _Layout = "~/Areas/Public/Views/Shared/_Layout.cshtml";
-        }
-    }
-
 }
 
 namespace Disco.Web.Areas.Services.Controllers

@@ -45,7 +45,7 @@ namespace Disco.Web.Areas.Public.Views
             
             #line 1 "..\..\Areas\Public\Views\_ViewStart.cshtml"
   
-    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+    Layout = MVC.Shared.Views._PublicLayout;
 
             
             #line default
