@@ -60,7 +60,15 @@ namespace Disco.Data.Repository
         {
             if (Database.DeviceProfiles.Count() == 0)
             {
-                Database.DeviceProfiles.Add(new DeviceProfile { ShortName = "WS", Name = "Default", Description = "Initial Default Workstation Profile", ComputerNameTemplate = "DeviceProfile.ShortName + ''-'' + SerialNumber" });
+                Database.DeviceProfiles.Add(
+                    new DeviceProfile
+                    {
+                        ShortName = "WS",
+                        Name = "Default",
+                        Description = "Initial Default Workstation Profile",
+                        ComputerNameTemplate = "DeviceProfile.ShortName + ''-'' + SerialNumber",
+                        DistributionType = DeviceProfile.DistributionTypes.OneToMany
+                    });
             }
         }
         public static void SeedJobSubTypes(this DiscoDataContext Database)
