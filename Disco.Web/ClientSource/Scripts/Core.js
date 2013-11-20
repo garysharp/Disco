@@ -39567,174 +39567,115 @@ jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, -1], [10, 20, 50, "All"
         var $menu = $('#menu');
 
         if ($menu.length > 0) {
-            if (Modernizr.touch) {
-                // Touch Events
-                $menu
-                    .on('mouseover', 'li.hasSubMenu', function (e) {
-                        var $this = $(this);
-                        var $subMenu = $this.children('ul.subMenu');
-                        var hideToken = $this.data('menuHideToken');
-                        if (hideToken)
-                            window.clearTimeout(hideToken);
-                        if (!$subMenu.is(':visible'))
-                            $subMenu.show();
-                    })
-                    .on('mouseout', 'li.hasSubMenu', function (e) {
-                        var $this = $(this);
-                        var $subMenu = $this.children('ul.subMenu');
-                        var hideToken = window.setTimeout(function () {
-                            $subMenu.hide();
-                        }, 250);
-                        $this.data('menuHideToken', hideToken);
-                    })
-                    .on('touchstart', 'li.hasSubMenu', function (e) {
-                        var $this = $(this);
-                        var $link = $this.children('a');
-                        var $subMenu = $this.children('ul.subMenu');
-                        if (!$subMenu.is(':visible')) {
-                            $subMenu.show();
-                            e.preventDefault();
-                            e.stopPropagation();
-                            return false;
+
+            function subMenuShow() {
+                var $this = $(this);
+                var $subMenu = $this.children('ul.subMenu');
+                var hideToken = $this.data('menuHideToken');
+
+                if (hideToken)
+                    window.clearTimeout(hideToken);
+
+                if (!$subMenu.is(':visible'))
+                    $subMenu.show();
+            }
+            function subMenuHide() {
+                var $this = $(this);
+                var $subMenu = $this.children('ul.subMenu');
+
+                var hideToken = window.setTimeout(function () {
+                    $subMenu.hide();
+                }, 250);
+
+                $this.data('menuHideToken', hideToken);
+            }
+            function subMenuTouchDown(e, preventClick) {
+                var $this = $(this);
+                var $link = $this.children('a');
+                var $subMenu = $this.children('ul.subMenu');
+
+                if (!$subMenu.is(':visible')) {
+
+                    $subMenu.show();
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if (preventClick) {
+                        // Stop Click Event
+                        if ($link.length > 0) {
+                            var preventClick = function () { $link.off('click', preventClick); return false; }
+                            $link.on('click', preventClick);
                         }
-                    });
-            } else if (Modernizr.testProp('pointerEvents')) {
+                    }
+
+                    return false;
+                }
+            }
+
+            if (Modernizr.hasEvent('pointerdown')) {
                 // Pointer Events
                 $menu
                     .on('pointerover', 'li.hasSubMenu', function (e) {
-                        if (e.originalEvent.pointerType != 'touch') {
-                            var $this = $(this);
-                            var $subMenu = $this.children('ul.subMenu');
-                            var hideToken = $this.data('menuHideToken');
-                            if (hideToken)
-                                window.clearTimeout(hideToken);
-                            if (!$subMenu.is(':visible'))
-                                $subMenu.show();
+                        if (e.originalEvent.pointerType !== 'touch') {
+                            subMenuShow.call(this);
                         }
                     })
                     .on('pointerout', 'li.hasSubMenu', function (e) {
-                        if (e.originalEvent.pointerType != 'touch') {
-                            var $this = $(this);
-                            var $subMenu = $this.children('ul.subMenu');
-                            var hideToken = window.setTimeout(function () {
-                                $subMenu.hide();
-                            }, 250);
-                            $this.data('menuHideToken', hideToken);
+                        if (e.originalEvent.pointerType !== 'touch') {
+                            subMenuHide.call(this);
                         }
                     })
                     .on('pointerdown', 'li.hasSubMenu', function (e) {
-                        if (e.originalEvent.pointerType == 'touch') {
-                            var $this = $(this);
-                            var $link = $this.children('a');
-                            var $subMenu = $this.children('ul.subMenu');
-                            if (!$subMenu.is(':visible')) {
-                                $subMenu.show();
-                                e.preventDefault();
-                                e.stopPropagation();
-
-                                // Stop Click Event
-                                if ($link.length > 0) {
-                                    var preventClick = function () { $link.off('click', preventClick); return false; }
-                                    $link.on('click', preventClick);
-                                }
-
-                                return false;
-                            }
+                        if (e.originalEvent.pointerType === 'touch') {
+                            return subMenuTouchDown.call(this, e, true);
                         }
                     });
                 $(document).on('pointerdown', function (e) {
-                    if (e.originalEvent.pointerType == 'touch') {
+                    if (e.originalEvent.pointerType === 'touch') {
                         if ($(e.target).closest('#menu').length == 0)
                             $menu.find('li.hasSubMenu>ul.subMenu:visible').hide();
                     }
                 });
+            } else if (Modernizr.hasEvent('mspointerdown')) {
+                // MS Pointer Events
+                $menu
+                    .on('MSPointerOver', 'li.hasSubMenu', function (e) {
+                        if (e.originalEvent.pointerType !== e.originalEvent.MSPOINTER_TYPE_TOUCH) {
+                            subMenuShow.call(this);
+                        }
+                    })
+                    .on('MSPointerOut', 'li.hasSubMenu', function (e) {
+                        if (e.originalEvent.pointerType !== e.originalEvent.MSPOINTER_TYPE_TOUCH) {
+                            subMenuHide.call(this);
+                        }
+                    })
+                    .on('MSPointerDown', 'li.hasSubMenu', function (e) {
+                        if (e.originalEvent.pointerType === e.originalEvent.MSPOINTER_TYPE_TOUCH) {
+                            return subMenuTouchDown.call(this, e, true);
+                        }
+                    });
+                $(document).on('MSPointerDown', function (e) {
+                    if (e.originalEvent.pointerType === e.originalEvent.MSPOINTER_TYPE_TOUCH) {
+                        if ($(e.target).closest('#menu').length == 0)
+                            $menu.find('li.hasSubMenu>ul.subMenu:visible').hide();
+                    }
+                });
+            } else if (Modernizr.touch) {
+                // Touch Events
+                $menu
+                    .on('mouseover', 'li.hasSubMenu', subMenuShow)
+                    .on('mouseout', 'li.hasSubMenu', subMenuHide)
+                    .on('touchstart', 'li.hasSubMenu', function (e) {
+                        return subMenuTouchDown.call(this, e, false);
+                    });
             } else {
                 // Mouse Events
                 $menu
-                    .on('mouseover', 'li.hasSubMenu', function () {
-                        var $this = $(this);
-                        var $subMenu = $this.children('ul.subMenu');
-                        var hideToken = $this.data('menuHideToken');
-                        if (hideToken)
-                            window.clearTimeout(hideToken);
-                        if (!$subMenu.is(':visible'))
-                            $subMenu.show();
-                    })
-                    .on('mouseout', 'li.hasSubMenu', function () {
-                        var $this = $(this);
-                        var $subMenu = $this.children('ul.subMenu');
-                        var hideToken = window.setTimeout(function () {
-                            $subMenu.hide();
-                        }, 250);
-                        $this.data('menuHideToken', hideToken);
-                    });
+                    .on('mouseover', 'li.hasSubMenu', subMenuShow)
+                    .on('mouseout', 'li.hasSubMenu', subMenuHide);
             }
         }
-
-        //var $menuItems = $menu.find('li');
-        //var $menuItemParents = $menuItems.filter('.hasSubMenu');
-        //var $menuSubMenus = $menuItems.filter('.subMenu');
-        //var menuAllowTouchNavigation = null;
-
-        //$menuItemParents.each(function () {
-        //    var $parent = $(this);
-        //    var $subMenu = $parent.children('ul.subMenu');
-        //    $parent.data('menuSubMenu', $subMenu);
-        //}).mouseover(function () {
-        //    var $parent = $(this);
-        //    var $subMenu = $parent.data('menuSubMenu');
-        //    var hideToken = $parent.data('menuHideToken');
-        //    if (hideToken)
-        //        window.clearTimeout(hideToken);
-        //    if (!$subMenu.is(':visible')) {
-        //        $subMenu.show();
-        //        if (menuAllowTouchNavigation !== null)
-        //            menuTouchPreventNavigation();
-        //    }
-        //}).mouseout(function () {
-        //    var $parent = $(this);
-        //    var $subMenu = $parent.data('menuSubMenu');
-        //    var hideToken = window.setTimeout(function () {
-        //        $subMenu.hide();
-        //    }, 250);
-        //    $parent.data('menuHideToken', hideToken);
-        //});
-
-        //if (Modernizr.touch) {
-        //    menuAllowTouchNavigation = true;
-        //    $menuItemParents.children('a').on('touchstart', menuTouchStarted);
-        //} else if (window.navigator.msPointerEnabled) {
-        //    menuAllowTouchNavigation = true;
-        //    $menuItemParents.children('a').on('MSPointerUp', menuTouchMSPointerUp);
-        //}
-        //function menuTouchPreventNavigation() {
-        //    // Block Touch Navigation for 350ms
-        //    allowTouchNavigation = false;
-        //    window.setTimeout(function () {
-        //        allowTouchNavigation = true;
-        //    }, 350);
-        //}
-        //function menuTouchNavigationBlockClick(e) {
-        //    $(this).off('click', menuTouchNavigationBlockClick);
-        //    e.preventDefault();
-        //}
-        ////#region TouchEvents Implementation
-        //function menuSubMenuVisible($element) {
-        //    return $element.closest('li').data('menuSubMenu').is(':visible');
-        //}
-        //function menuTouchStarted(e) {
-        //    var $this = $(this);
-        //    if (!menuSubMenuVisible($this))
-        //        $this.click(menuTouchNavigationBlockClick);
-        //}
-        ////#endregion
-
-        ////#region MS Pointer Implementation
-        //function menuTouchMSPointerUp(e) {
-        //    if (!allowTouchNavigation && e.originalEvent.pointerType == e.originalEvent.MSPOINTER_TYPE_TOUCH)
-        //        $(this).click(menuTouchNavigationBlockClick);
-        //}
-        ////#endregion
 
     });
 })(jQuery, window, document, Modernizr);
