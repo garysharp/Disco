@@ -149,8 +149,10 @@ namespace Disco.ClientBootstrapper
             // Unzip Client
             statusUI.UpdateStatus(null, "Extracting", "Retrieving Preparation Client, Please wait...", true, -1);
             string clientLocation = Path.Combine(tempWorkingDirectory, "PreparationClient");
-            if (!Directory.Exists(clientLocation))
-                Directory.CreateDirectory(clientLocation);
+            if (Directory.Exists(clientLocation))
+                Directory.Delete(clientLocation, true);
+
+            Directory.CreateDirectory(clientLocation);
             using (var clientSource = Ionic.Zip.ZipFile.Read(clientSourceLocation))
             {
                 clientSource.ExtractAll(clientLocation, Ionic.Zip.ExtractExistingFileAction.OverwriteSilently);
