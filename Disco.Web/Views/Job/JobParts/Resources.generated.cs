@@ -1038,63 +1038,63 @@ WriteLiteral(@"
                 showDialog('/File');
             });
 
-            var silverlightUploadAttachment = $('#silverlightUploadAttachment').get(0);
             function showDialog(navigationPath) {
                 if (!$dialogUpload) {
                     Silverlight.createObject(
-                        '");
+                            '");
 
             
-            #line 329 "..\..\Views\Job\JobParts\Resources.cshtml"
-                     Write(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap);
+            #line 328 "..\..\Views\Job\JobParts\Resources.cshtml"
+                         Write(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap);
 
             
             #line default
             #line hidden
 WriteLiteral(@"',
-                        $('#silverlightHostUploadAttachment').get(0),
-                        'silverlightUploadAttachment',
-                        { width: '840px', height: '500px', background: 'white', version: '4.0.60310.0' },
-                        {
-                            onLoad: function () {
-                                if (onLoadNavigation) {
-                                    $('#silverlightUploadAttachment').get(0).content.Navigator.Navigate(onLoadNavigation);
-                                    isLoaded = true;
+                            $('#silverlightHostUploadAttachment').get(0),
+                            'silverlightUploadAttachment',
+                            { width: '840px', height: '500px', background: 'white', version: '4.0.60310.0' },
+                            {
+                                onLoad: function () {
+                                    if (onLoadNavigation) {
+                                        $('#silverlightUploadAttachment').get(0).content.Navigator.Navigate(onLoadNavigation);
+                                        isLoaded = true;
+                                    }
                                 }
-                            }
-                        },
-                        'UploadUrl=");
+                            },
+                            'UploadUrl=");
 
             
-            #line 341 "..\..\Views\Job\JobParts\Resources.cshtml"
-                               Write(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)));
+            #line 340 "..\..\Views\Job\JobParts\Resources.cshtml"
+                                   Write(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
-WriteLiteral(@"'
-                    );
+WriteLiteral(@"');
 
-                        $dialogUpload = $('#dialogUpload').dialog({
-                            autoOpen: false,
-                            draggable: false,
-                            modal: true,
-                            resizable: false,
-                            width: 860,
-                            height: 550,
-                            close: function () {
-                                if (silverlightUploadAttachment && silverlightUploadAttachment.content)
-                                    silverlightUploadAttachment.content.Navigator.Navigate('/Hidden');
-                            }
-                        });
-                    }
-                    $dialogUpload.dialog('open');
-                    if (isLoaded) {
-                        silverlightUploadAttachment.content.Navigator.Navigate(navigationPath);
-                    } else {
-                        onLoadNavigation = navigationPath;
-                    }
-                };
+                            $dialogUpload = $('#dialogUpload').dialog({
+                                autoOpen: false,
+                                draggable: false,
+                                modal: true,
+                                resizable: false,
+                                width: 860,
+                                height: 550,
+                                close: function () {
+                                    var sl = $('#silverlightUploadAttachment').get(0);
+                                    if (sl.content)
+                                        sl.content.Navigator.Navigate('/Hidden');
+                                }
+                            });
+
+                        }
+                        $dialogUpload.dialog('open');
+                        if (isLoaded) {
+                            $('#silverlightUploadAttachment').get(0).content.Navigator.Navigate(navigationPath);
+                        } else {
+                            onLoadNavigation = navigationPath;
+                        }
+                    };
 
             //#endregion
             ");
