@@ -235,7 +235,7 @@ namespace Disco.BI.Interop.ActiveDirectory
             term = ActiveDirectoryHelpers.EscapeLdapQuery(term);
             using (DirectoryEntry entry = new DirectoryEntry(string.Format("LDAP://{0}", defaultQualifiedDomainName)))
             {
-                using (DirectorySearcher searcher = new DirectorySearcher(entry, string.Format("(&(objectCategory=Person)(objectCategory=Person)(|(sAMAccountName=*{0}*)(displayName=*{0}*)))", term), UserLoadProperties, SearchScope.Subtree))
+                using (DirectorySearcher searcher = new DirectorySearcher(entry, string.Format("(&(objectCategory=Person)(objectClass=user)(|(sAMAccountName=*{0}*)(displayName=*{0}*)))", term), UserLoadProperties, SearchScope.Subtree))
                 {
                     searcher.SizeLimit = 30;
                     SearchResultCollection results = searcher.FindAll();
