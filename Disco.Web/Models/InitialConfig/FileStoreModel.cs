@@ -40,6 +40,10 @@ namespace Disco.Web.Models.InitialConfig
                     }
                     else
                     {
+                        // Drive Letter doesn't exist
+                        if (branchParent.Path == null)
+                            break;
+
                         // New
                         branchModel = FileStoreDirectoryModel.FromNew(branchesCase[i], Path.Combine(branchParent.Path, branchesCase[i]));
                         branchParent.SubDirectories.Add(branchModel.Name.ToUpper(), branchModel);
