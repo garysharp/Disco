@@ -210,7 +210,7 @@ namespace Disco.BI.Extensions
             var jobComponents = new List<DeviceComponent>();
             foreach (var component in components)
             {
-                if (!component.DeviceModelId.HasValue)
+                if (component.JobSubTypes.Count == 0)
                 {
                     jobComponents.Add(component);
                 }
