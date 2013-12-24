@@ -370,7 +370,7 @@
                                     @foreach (var db in Model.DeviceBatches.OrderBy(i => i.Name))
                                     {
                                         <li>
-                                            <input type="radio" data-devicebatchid="@db.Id" name="DeviceBatch" id="DeviceBatch_@(db.Id)" /><label for="DeviceBatch_@(db.Id)" title="Purchased: @(db.PurchaseDate.ToFuzzy())">@db.Name</label></li>   
+                                            <input type="radio" data-devicebatchid="@db.Id" name="DeviceBatch" id="DeviceBatch_@(db.Id)" /><label for="DeviceBatch_@(db.Id)" title="Purchased: @(db.PurchaseDate.FromNow())">@db.Name</label></li>   
                                     }
                                 </ul>
                             </div>

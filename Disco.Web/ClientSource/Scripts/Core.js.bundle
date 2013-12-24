@@ -8,6 +8,9 @@
   <file>/ClientSource/Scripts/Core/jquery-ui-1.10.3.js</file>
   <file>/ClientSource/Scripts/Core/jquery.watermark.js</file>
   <file>/ClientSource/Scripts/Core/jquery.dataTables.js</file>
+	<file>/ClientSource/Scripts/Core/moment.js</file>
+	<file>/ClientSource/Scripts/Core/moment.en-au.js</file>
+	<file>/ClientSource/Scripts/Core/disco.moment.extensions.js</file>
   <file>/ClientSource/Scripts/Core/disco.dataTables.extensions.js</file>
   <file>/ClientSource/Scripts/Core/disco.uicore.js</file>
 </bundle>

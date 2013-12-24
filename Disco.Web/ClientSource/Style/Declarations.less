@@ -1,28 +1,36 @@
 // Default Colours
 @BackgroundColour: #D1D1D1;
+@BackgroundColourGradient: #f2f2f2;
+@BackgroundColourLight: #fafafa;
+@HeaderBackgroundColour: #515151;
 
 @HyperLinkColour: #335A87;
-@HyperLinkHoverColour:  #4f81bd;
+@HyperLinkHoverColour: lighten(@HyperLinkColour, 20%);
 
-@ButtonColour: #DB761D;
-@ButtonBorderColour: #875A33;
+@ButtonColour: #1e6dab;
+@ButtonBorderColour: darken(@ButtonColour, 5%);
 @ButtonHoverColour: #9e9e9e;
-@ButtonBorderHoverColour: #696969;
+@ButtonBorderHoverColour: darken(@ButtonHoverColour, 20%);
 @ButtonAlertColour: #e90000;
 @ButtonBorderAlertColour: #990000;
 
-@MenuHoverColour: #FFD5BA;
-@ActionBarBorder: #E5BD99;
-@ActionBarBackgound: #F2F2F2;
+@MenuHoverColour: lighten(@HyperLinkHoverColour, 30%);
+@ActionBarBorder: @BackgroundColour;
+@ActionBarBackgound: @BackgroundColourGradient;
 
-@FormBorderColour: #005fab;
-@TableDataBorderColour: #e8eef4;
-@TableDataDarkBorderColour: #8db2d8;
+@FormBorderColour: @ButtonColour;
+@FormBackgroundOddColour: @BackgroundColourGradient;
+@FormBackgroundEvenColour: @white;
+@TableDataBorderColour: #f4f4f4;
+@TableDataDarkBorderColour: #d8d8d8;
 @TableDataRowBackgroundColor: hsl(hue(@TableDataBorderColour), saturation(@TableDataBorderColour), 99%);
 
 @SubtleColour: #ededed;
 @SubtleBorderColour: #ccc;
 
+@HighlightColour: lighten(@HyperLinkColour, 50%);
+
+@FontBodyColour: #333;
 @FontFamilyBody: "Segoe UI", Arial, Verdana, Tahoma, sans-serif;
 @FontFamilyHeading: "Segoe UI", Arial, Verdana, Tahoma, sans-serif;
 @FontFamilyMono: Consolas, "Courier New", monospace;
@@ -45,3 +53,8 @@
   -webkit-border-radius: @topLeftRadius @topRightRadius @bottomLeftRadius @bottomRightRadius;
   border-radius: @topLeftRadius @topRightRadius @bottomLeftRadius @bottomRightRadius;
 }
+
+// Standard Colours
+
+@white: #fff;
+@black: #000;

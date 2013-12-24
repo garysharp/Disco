@@ -26,6 +26,7 @@ namespace Disco.Web.Views.Job
     using System.Web.Security;
     using System.Web.UI;
     using System.Web.WebPages;
+    using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
     using Disco.Services.Authorization;
@@ -108,7 +109,7 @@ WriteLiteral(" ");
 
             
             #line 17 "..\..\Views\Job\Show.cshtml"
-                                                                                        if (Model.IsLongRunning)
+                                                                                        if (Model.LongRunning.HasValue)
                                                                                        {
             
             #line default
@@ -117,11 +118,20 @@ WriteLiteral("<span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
-WriteLiteral(">(Long Running)</span>");
+WriteLiteral(">(Long Running: ");
 
             
             #line 18 "..\..\Views\Job\Show.cshtml"
-                                                                                                                                        }
+                                                                                                                             Write(Model.LongRunning.Value.Humanize(false));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(")</span>");
+
+            
+            #line 18 "..\..\Views\Job\Show.cshtml"
+                                                                                                                                                                                  }
 
             
             #line default

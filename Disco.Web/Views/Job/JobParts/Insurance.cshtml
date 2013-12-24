@@ -526,7 +526,7 @@
                 <script>
                     $(function () {
                         var updateUrl = '@(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)))';
-                        var jobOpenDate = '@(Model.Job.OpenedDate.ToJavascriptDateTime())';
+                        var jobOpenDate = '@(Model.Job.OpenedDate.ToJavaScript())';
 
                         document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Claim Form Sent Date', 'Job_JobMetaInsurance_ClaimFormSentDate', 'Job_JobMetaInsurance_ClaimFormSentUserId', 'InsuranceClaimFormSentDate', 'Not Sent', jobOpenDate, false);
                     });

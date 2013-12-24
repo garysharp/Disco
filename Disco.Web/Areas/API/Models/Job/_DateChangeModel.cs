@@ -18,9 +18,9 @@ namespace Disco.Web.Areas.API.Models.Job
 
         public _DateChangeModel SetDateTime(DateTime? date)
         {
-            this.DateTimeFriendly = date.ToFuzzy(null);
-            this.DateTimeJavascript = date.ToJavascriptDateTime();
-            this.DateTimeSortable = date.ToSortableDateTime();
+            this.DateTimeFriendly = date.FromNow(null);
+            this.DateTimeJavascript = date.ToJavaScript();
+            this.DateTimeSortable = date.ToSortable();
             this.DateTimeFull = date.ToFullDateTime(null);
 
             return this;

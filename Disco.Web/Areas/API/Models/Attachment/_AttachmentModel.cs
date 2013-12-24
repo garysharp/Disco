@@ -21,7 +21,7 @@ namespace Disco.Web.Areas.API.Models.Attachment
         {
             get
             {
-                return Timestamp.ToFuzzy();
+                return Timestamp.FromNow();
             }
             set
             {

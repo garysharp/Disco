@@ -26,6 +26,7 @@ namespace Disco.Web.Views.User.UserParts
     using System.Web.Security;
     using System.Web.UI;
     using System.Web.WebPages;
+    using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
     using Disco.Services.Authorization;
@@ -279,7 +280,7 @@ WriteLiteral(">");
 
             
             #line 35 "..\..\Views\User\UserParts\_Resources.cshtml"
-                                                                                                                                                                                           Write(ua.Timestamp.ToFuzzy());
+                                                                                                                                                                                           Write(ua.Timestamp.FromNow());
 
             
             #line default

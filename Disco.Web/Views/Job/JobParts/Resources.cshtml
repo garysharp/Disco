@@ -30,7 +30,7 @@
                     {
                         <div data-logid="@jl.Id">
                             <span class="author">@jl.TechUser.ToString()</span>@if (canRemoveAnyLogs || (canRemoveOwnLogs && jl.TechUserId == CurrentUser.Id))
-                                                                               {<text><span class="remove"></span></text>}<span class="timestamp" title="@jl.Timestamp.ToFullDateTime()">@jl.Timestamp.ToFuzzy()</span>
+                                                                               {<text><span class="remove"></span></text>}<span class="timestamp" title="@jl.Timestamp.ToFullDateTime()">@jl.Timestamp.FromNow()</span>
                             <span class="comment">@jl.Comments.ToMultilineJobRefString()</span>
                         </div>
                     }
@@ -59,7 +59,7 @@
                                   else
                                   { @ja.Comments }}
                             </span><span class="author">@ja.TechUser.ToString()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ja.TechUserId == CurrentUser.Id))
-                                                                                      {<text><span class="remove"></span></text>}<span class="timestamp" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.ToFuzzy()</span>
+                                                                                      {<text><span class="remove"></span></text>}<span class="timestamp" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.FromNow()</span>
                         </a>   
                     }
                 </div>

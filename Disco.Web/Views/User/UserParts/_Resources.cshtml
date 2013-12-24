@@ -32,7 +32,7 @@
                                   else
                                   { @ua.Comments }}
                             </span><span class="author">@ua.TechUser.ToString()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ua.TechUserId == CurrentUser.Id))
-                                                                                      {<text><span class="remove"></span></text>}<span class="timestamp" title="@ua.Timestamp.ToFullDateTime()">@ua.Timestamp.ToFuzzy()</span>
+                                                                                      {<text><span class="remove"></span></text>}<span class="timestamp" title="@ua.Timestamp.ToFullDateTime()">@ua.Timestamp.FromNow()</span>
                         </a>   
                         }
                     }

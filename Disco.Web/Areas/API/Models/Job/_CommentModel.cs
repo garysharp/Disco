@@ -19,7 +19,7 @@ namespace Disco.Web.Areas.API.Models.Job
         {
             get
             {
-                return Timestamp.ToFuzzy();
+                return Timestamp.FromNow();
             }
             set
             {

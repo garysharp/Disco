@@ -373,7 +373,7 @@ namespace Disco.Web.Areas.API.Controllers
             var result = new
             {
                 Timestamp = device.LastNetworkLogonDate,
-                Friendly = device.LastNetworkLogonDate.ToFuzzy("Unknown"),
+                Friendly = device.LastNetworkLogonDate.FromNow("Unknown"),
                 Formatted = device.LastNetworkLogonDate.ToFullDateTime("Unknown")
             };
 

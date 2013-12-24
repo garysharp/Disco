@@ -200,7 +200,7 @@
 	/*jQuery Tab Extensions*/
 	border-radius: 0;
 	background-image: none;
-	background-color: #fff;
+	background-color: @white;
 	border: none;
 	padding: 0;
 
@@ -247,14 +247,14 @@
         height: 300px;
         padding: 0;
         border: 1px solid @SubtleBorderColour;
-        background-color: #fff;
+        background-color: @white;
 
         div.commentOutput
         {
             height: 249px;
             overflow: auto;
-            background-color: #f4f4f4;
-            color: #000;
+            background-color: @BackgroundColourLight;
+            color: @black;
 
             &>div
             {
@@ -357,7 +357,7 @@
                 width: 32px;
                 cursor: pointer;
                 float: left;
-                border: 1px solid #fff;
+                border: 1px solid @white;
                 padding: 3px;
                 background-repeat: no-repeat;
                 background-position: 2px 3px;
@@ -366,7 +366,6 @@
                 {
                     background-color: @SubtleColour;
                     border: 1px solid @SubtleBorderColour;
-                    .border-radius(3px);
                 }
             }
 
@@ -382,7 +381,7 @@
         height: 300px;
         padding: 0;
         border: 1px solid @SubtleBorderColour;
-        background-color: #fff;
+        background-color: @white;
 
         div.attachmentOutput
         {
@@ -398,10 +397,9 @@
                 padding: 2px;
                 margin: 2px;
                 font-size: 0.95em;
-                border: 1px solid #fff;
-                color: #000;
+                border: 1px solid @white;
+                color: @black;
                 text-decoration: none;
-                .border-radius(3px);
 
                 span.comments, span.author, span.timestamp
                 {
@@ -474,7 +472,7 @@
         {
             border-top: 1px solid @SubtleBorderColour;
             height: 40px;
-            background-color: #fff;
+            background-color: @white;
             padding: 5px;
 
             span.action
@@ -485,7 +483,7 @@
                 width: 32px;
                 cursor: pointer;
                 float: right;
-                border: 1px solid #fff;
+                border: 1px solid @white;
                 padding: 3px;
                 background-repeat: no-repeat;
                 background-position: 2px 3px;
@@ -494,7 +492,6 @@
                 {
                     background-color: @SubtleColour;
                     border: 1px solid @SubtleBorderColour;
-                    .border-radius(3px);
                 }
             }
 
@@ -547,7 +544,7 @@
         {
             background-position: right center;
             background-repeat: no-repeat;
-            background-image: url(data:image/gif;base64,R0lGODlhEAALAPQAAP///9t2Hfnq3vfl1fvz7Nt5Itt2HeGORey7kOipcvTZwd+IO+WdXu6/l+irdfXbxeCKPtt4IOWfYvrx6Pjp3Pz49eKTTvnr3/z38/TXvvHLqvbiz/v17wAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA) /*Images/Status/loading.gif*/;
+            background-image: url(data:image/gif;base64,R0lGODlhEAALAPQAAP///zNah+Hm7dng6O7x9DddiTNah1d3nJqtw3+Xs8fS3k5vlm6JqaGzx4KatcrU4FFymDZciHGMq+ru8t/l7Pb3+V9+oeLo7vT2+MTP3LLB0dTc5fHz9gAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA) /*Images/Status/loading.gif*/;
         }
 
         .totalCost
@@ -682,9 +679,8 @@
     #createJob_Type
     {
         border: 1px solid #ccc;
-        background-color: #f2f2f2;
+        background-color: @BackgroundColourGradient;
         padding: 2px 4px;
-        .border-radius4(0, 0, 0, 6px);
     }
 
     #createJob_SubTypes
@@ -693,8 +689,7 @@
         border: 1px solid #ccc;
         border-top: none;
         padding: 2px 4px;
-        background-color: #f2f2f2;
-        .border-radius4(0, 0, 6px, 6px);
+        background-color: @BackgroundColourGradient;
 
         .createJob_SubType
         {
@@ -704,17 +699,15 @@
 
         #createJob_Type li, #createJob_SubTypes li
         {
-            -moz-border-radius: 3px;
-            -webkit-border-radius: 3px;
-            border-radius: 3px;
             margin: 2px 8px 2px 0;
             padding: 0 0 0 4px;
         }
 
             #createJob_Type li.highlight, #createJob_SubTypes li.highlight
             {
-                background-color: #f6cd8a;
-                color: #000;
+                background-color: @HighlightColour;
+                font-weight: 600;
+                color: @black;
             }
 
 
@@ -722,16 +715,16 @@
     {
         #Comments
         {
-            width: 600px;
+            width: 100%;
+            min-width: 500px;
         }
     }
 
     #createJob_QuickLogAutoCloseContainer
     {
         border: 1px solid #ccc;
-        background-color: #f2f2f2;
+        background-color: @BackgroundColourGradient;
         padding: 2px 4px;
-        .border-radius4(0, 0, 0, 6px);
 
         h3
         {
@@ -751,8 +744,7 @@
         border: 1px solid #ccc;
         border-top: none;
         padding: 2px 4px;
-        background-color: #f2f2f2;
-        .border-radius4(0, 0, 6px, 6px);
+        background-color: @BackgroundColourGradient;
 
         h3
         {

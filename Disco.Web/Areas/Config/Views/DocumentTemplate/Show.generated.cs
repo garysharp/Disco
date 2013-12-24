@@ -26,6 +26,7 @@ namespace Disco.Web.Areas.Config.Views.DocumentTemplate
     using System.Web.Security;
     using System.Web.UI;
     using System.Web.WebPages;
+    using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
     using Disco.Services.Authorization;

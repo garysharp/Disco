@@ -912,6 +912,7 @@
       <DependentUpon>Core.js.bundle</DependentUpon>
     </None>
     <None Include="ClientSource\Scripts\Core\disco.dataTables.extensions.js" />
+    <None Include="ClientSource\Scripts\Core\disco.moment.extensions.js" />
     <None Include="ClientSource\Scripts\Core\disco.unobtrusiveValidation.extensions.js" />
     <None Include="ClientSource\Scripts\Core\jquery.dataTables.js" />
     <None Include="ClientSource\Scripts\Core\jquery.watermark.js" />
@@ -930,6 +931,8 @@
     </None>
     <None Include="ClientSource\Scripts\Core\jquery-ui-1.10.3.js" />
     <None Include="ClientSource\Scripts\Core\disco.uicore.js" />
+    <None Include="ClientSource\Scripts\Core\moment.en-au.js" />
+    <None Include="ClientSource\Scripts\Core\moment.js" />
     <Content Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.min.js">
       <DependentUpon>Disco-AjaxHelperIcons.js.bundle</DependentUpon>
     </Content>
@@ -1274,21 +1277,21 @@
     <Content Include="ClientSource\Style\jQueryUI\dynatree\ui.dynatree.min.css">
       <DependentUpon>ui.dynatree.css</DependentUpon>
     </Content>
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_flat_10_000000_40x100.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_100_f6f6f6_1x400.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_100_fdf5ce_1x400.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_222222_256x240.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_228ef1_256x240.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_ef8c08_256x240.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_ffd27a_256x240.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_ffffff_256x240.png" />
     <None Include="ClientSource\Style\jQueryUI\images\animated-overlay.gif" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_75_dadada_1x400.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_222222_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_2e83ff_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_454545_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_888888_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_cd0a0a_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\jquery-ui.css" />
     <Content Include="ClientSource\Style\Public\HeldDevices.css">
       <DependentUpon>HeldDevices.less</DependentUpon>
     </Content>
@@ -1397,7 +1400,7 @@
     <Content Include="ClientSource\Style\User.min.css">
       <DependentUpon>User.less</DependentUpon>
     </Content>
-    <None Include="ClientSource\Style\jQueryUI\jquery-ui.css" />
+    <None Include="ClientSource\Style\jQueryUI\old_jquery-ui.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <None Include="ClientSource\Style\InitialConfig.less" />
@@ -1425,7 +1428,9 @@
     <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.min.js.map">
       <DependentUpon>Disco-AjaxHelperIcons.js.bundle</DependentUpon>
     </None>
-    <None Include="ClientSource\Style\BundleSite.css.bundle" />
+    <None Include="ClientSource\Style\BundleSite.css.bundle">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="ClientSource\Style\Timeline.css.bundle" />
     <None Include="Properties\PublishProfiles\Debug Installer.pubxml" />
     <None Include="Properties\PublishProfiles\Installer.pubxml" />

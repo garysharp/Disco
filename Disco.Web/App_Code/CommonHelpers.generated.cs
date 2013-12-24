@@ -20,13 +20,13 @@ namespace Disco.Web
     using System.Web;
     using System.Web.Helpers;
     
-    #line 5 "..\..\App_Code\CommonHelpers.cshtml"
+    #line 6 "..\..\App_Code\CommonHelpers.cshtml"
     using System.Web.Mvc;
     
     #line default
     #line hidden
     
-    #line 6 "..\..\App_Code\CommonHelpers.cshtml"
+    #line 7 "..\..\App_Code\CommonHelpers.cshtml"
     using System.Web.Mvc.Html;
     
     #line default
@@ -37,24 +37,30 @@ namespace Disco.Web
     using System.Web.WebPages.Html;
     
     #line 2 "..\..\App_Code\CommonHelpers.cshtml"
-    using Disco.BI.Extensions;
+    using Disco;
     
     #line default
     #line hidden
     
     #line 3 "..\..\App_Code\CommonHelpers.cshtml"
-    using Disco.Models.Repository;
-    
-    #line default
-    #line hidden
-    
-    #line 7 "..\..\App_Code\CommonHelpers.cshtml"
-    using Disco.Services.Web;
+    using Disco.BI.Extensions;
     
     #line default
     #line hidden
     
     #line 4 "..\..\App_Code\CommonHelpers.cshtml"
+    using Disco.Models.Repository;
+    
+    #line default
+    #line hidden
+    
+    #line 8 "..\..\App_Code\CommonHelpers.cshtml"
+    using Disco.Services.Web;
+    
+    #line default
+    #line hidden
+    
+    #line 5 "..\..\App_Code\CommonHelpers.cshtml"
     using Disco.Web;
     
     #line default
@@ -70,13 +76,7 @@ return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 9 "..\..\App_Code\CommonHelpers.cshtml"
- 
-
-#line default
-#line hidden
-
-WriteLiteralTo(@__razor_helper_writer, "    <span ");
+WriteLiteralTo(@__razor_helper_writer, "<span ");
 
 
 
@@ -91,7 +91,7 @@ WriteLiteralTo(@__razor_helper_writer, "title=\"");
 
 
 #line 10 "..\..\App_Code\CommonHelpers.cshtml"
-                                                                       WriteTo(@__razor_helper_writer, d.ToFullDateTime());
+                                                                    WriteTo(@__razor_helper_writer, d.ToFullDateTime());
 
 #line default
 #line hidden
@@ -101,7 +101,7 @@ WriteLiteralTo(@__razor_helper_writer, "\" data-discodatetime=\"");
 
 
 #line 10 "..\..\App_Code\CommonHelpers.cshtml"
-                                                                                                                WriteTo(@__razor_helper_writer, d.ToSortableDateTime());
+                                                                                                             WriteTo(@__razor_helper_writer, d.ToSortable());
 
 #line default
 #line hidden
@@ -111,7 +111,7 @@ WriteLiteralTo(@__razor_helper_writer, "\" data-datetimeformatted=\"");
 
 
 #line 10 "..\..\App_Code\CommonHelpers.cshtml"
-                                                                                                                                                                 WriteTo(@__razor_helper_writer, d.ToJavascriptDateTime());
+                                                                                                                                                      WriteTo(@__razor_helper_writer, d.ToJavaScript());
 
 #line default
 #line hidden
@@ -121,42 +121,36 @@ WriteLiteralTo(@__razor_helper_writer, "\" class=\"date nowrap\">");
 
 
 #line 10 "..\..\App_Code\CommonHelpers.cshtml"
-                                                                                                                                                                                                                WriteTo(@__razor_helper_writer, d.ToFuzzy());
+                                                                                                                                                                                             WriteTo(@__razor_helper_writer, d.FromNow());
 
 #line default
 #line hidden
 
-WriteLiteralTo(@__razor_helper_writer, "</span>\r\n");
+WriteLiteralTo(@__razor_helper_writer, "</span>");
 
 
 
-#line 11 "..\..\App_Code\CommonHelpers.cshtml"
-
+#line 10 "..\..\App_Code\CommonHelpers.cshtml"
+                                                                                                                                                                                                                                               
 #line default
 #line hidden
 
 });
 
-}
+                                                                                                                                                                                                                                               }
 
 
-public static System.Web.WebPages.HelperResult FriendlyDate(DateTime? d, string NullValue = "N/A", string ElementId = null)
+public static System.Web.WebPages.HelperResult FriendlyDate(DateTime? d, string NullValue = "n/a", string ElementId = null)
 {
 return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 13 "..\..\App_Code\CommonHelpers.cshtml"
- 
-
-#line default
-#line hidden
-
-WriteLiteralTo(@__razor_helper_writer, "    <span ");
+WriteLiteralTo(@__razor_helper_writer, "<span ");
 
 
 
-#line 14 "..\..\App_Code\CommonHelpers.cshtml"
+#line 12 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId)));
 
 #line default
@@ -166,8 +160,8 @@ WriteLiteralTo(@__razor_helper_writer, "title=\"");
 
 
 
-#line 14 "..\..\App_Code\CommonHelpers.cshtml"
-                                                                       WriteTo(@__razor_helper_writer, d.ToFullDateTime(NullValue));
+#line 12 "..\..\App_Code\CommonHelpers.cshtml"
+                                                                    WriteTo(@__razor_helper_writer, d.ToFullDateTime(NullValue));
 
 #line default
 #line hidden
@@ -176,8 +170,8 @@ WriteLiteralTo(@__razor_helper_writer, "\" data-discodatetime=\"");
 
 
 
-#line 14 "..\..\App_Code\CommonHelpers.cshtml"
-                                                                                                                         WriteTo(@__razor_helper_writer, d.ToSortableDateTime());
+#line 12 "..\..\App_Code\CommonHelpers.cshtml"
+                                                                                                                      WriteTo(@__razor_helper_writer, d.ToSortable());
 
 #line default
 #line hidden
@@ -186,8 +180,8 @@ WriteLiteralTo(@__razor_helper_writer, "\" data-datetimeformatted=\"");
 
 
 
-#line 14 "..\..\App_Code\CommonHelpers.cshtml"
-                                                                                                                                                                          WriteTo(@__razor_helper_writer, d.ToJavascriptDateTime());
+#line 12 "..\..\App_Code\CommonHelpers.cshtml"
+                                                                                                                                                               WriteTo(@__razor_helper_writer, d.ToJavaScript());
 
 #line default
 #line hidden
@@ -196,24 +190,24 @@ WriteLiteralTo(@__razor_helper_writer, "\" class=\"date nowrap\">");
 
 
 
-#line 14 "..\..\App_Code\CommonHelpers.cshtml"
-                                                                                                                                                                                                                         WriteTo(@__razor_helper_writer, d.ToFuzzy(NullValue));
+#line 12 "..\..\App_Code\CommonHelpers.cshtml"
+                                                                                                                                                                                                      WriteTo(@__razor_helper_writer, d.FromNow(NullValue));
 
 #line default
 #line hidden
 
-WriteLiteralTo(@__razor_helper_writer, "</span>\r\n");
+WriteLiteralTo(@__razor_helper_writer, "</span>");
 
 
 
-#line 15 "..\..\App_Code\CommonHelpers.cshtml"
-
+#line 12 "..\..\App_Code\CommonHelpers.cshtml"
+                                                                                                                                                                                                                                                                 
 #line default
 #line hidden
 
 });
 
-}
+                                                                                                                                                                                                                                                                 }
 
 
 public static System.Web.WebPages.HelperResult RadioButtonList(string id, List<System.Web.Mvc.SelectListItem> items, int columns = 1)
@@ -222,21 +216,21 @@ return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 17 "..\..\App_Code\CommonHelpers.cshtml"
+#line 14 "..\..\App_Code\CommonHelpers.cshtml"
  
     
 #line default
 #line hidden
 
 
-#line 18 "..\..\App_Code\CommonHelpers.cshtml"
+#line 15 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, ItemList("radio", id, items, columns));
 
 #line default
 #line hidden
 
 
-#line 18 "..\..\App_Code\CommonHelpers.cshtml"
+#line 15 "..\..\App_Code\CommonHelpers.cshtml"
                                           
 
 #line default
@@ -253,21 +247,21 @@ return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 21 "..\..\App_Code\CommonHelpers.cshtml"
+#line 18 "..\..\App_Code\CommonHelpers.cshtml"
  
     
 #line default
 #line hidden
 
 
-#line 22 "..\..\App_Code\CommonHelpers.cshtml"
+#line 19 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, ItemList("checkbox", id, items, columns, alignEven, forceUniqueIds));
 
 #line default
 #line hidden
 
 
-#line 22 "..\..\App_Code\CommonHelpers.cshtml"
+#line 19 "..\..\App_Code\CommonHelpers.cshtml"
                                                                         
 
 #line default
@@ -284,7 +278,7 @@ return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 25 "..\..\App_Code\CommonHelpers.cshtml"
+#line 22 "..\..\App_Code\CommonHelpers.cshtml"
  
     int itemsPerColumn = items.Count / columns;
     int columnWidth = (100 / columns);
@@ -297,7 +291,7 @@ WriteLiteralTo(@__razor_helper_writer, "    <table class=\"none\">\r\n        <t
 
 
 
-#line 31 "..\..\App_Code\CommonHelpers.cshtml"
+#line 28 "..\..\App_Code\CommonHelpers.cshtml"
              for (int i = 0; i < columns; i++)
             {
 
@@ -308,7 +302,7 @@ WriteLiteralTo(@__razor_helper_writer, "                <td");
 
 
 
-#line 33 "..\..\App_Code\CommonHelpers.cshtml"
+#line 30 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, alignEven ? new HtmlString(string.Format(" style=\"width: {0}%\"", columnWidth)) : new HtmlString(string.Empty));
 
 #line default
@@ -318,7 +312,7 @@ WriteLiteralTo(@__razor_helper_writer, ">\r\n                    <ul class=\"non
 
 
 
-#line 35 "..\..\App_Code\CommonHelpers.cshtml"
+#line 32 "..\..\App_Code\CommonHelpers.cshtml"
                           
                 int itemsForThisColumn = itemsPerColumn + (items.Count % columns > i ? 1 : 0);
                 for (int i2 = 0; i2 < itemsForThisColumn && itemNextId < items.Count; i2++)
@@ -334,7 +328,7 @@ WriteLiteralTo(@__razor_helper_writer, "                            <li>\r\n    
 
 
 
-#line 43 "..\..\App_Code\CommonHelpers.cshtml"
+#line 40 "..\..\App_Code\CommonHelpers.cshtml"
             WriteTo(@__razor_helper_writer, itemId);
 
 #line default
@@ -344,7 +338,7 @@ WriteLiteralTo(@__razor_helper_writer, "\" name=\"");
 
 
 
-#line 43 "..\..\App_Code\CommonHelpers.cshtml"
+#line 40 "..\..\App_Code\CommonHelpers.cshtml"
                            WriteTo(@__razor_helper_writer, id);
 
 #line default
@@ -354,7 +348,7 @@ WriteLiteralTo(@__razor_helper_writer, "\" value=\"");
 
 
 
-#line 43 "..\..\App_Code\CommonHelpers.cshtml"
+#line 40 "..\..\App_Code\CommonHelpers.cshtml"
                                        WriteTo(@__razor_helper_writer, item.Value);
 
 #line default
@@ -364,7 +358,7 @@ WriteLiteralTo(@__razor_helper_writer, "\" type=\"");
 
 
 
-#line 43 "..\..\App_Code\CommonHelpers.cshtml"
+#line 40 "..\..\App_Code\CommonHelpers.cshtml"
                                                           WriteTo(@__razor_helper_writer, inputType);
 
 #line default
@@ -374,7 +368,7 @@ WriteLiteralTo(@__razor_helper_writer, "\" ");
 
 
 
-#line 43 "..\..\App_Code\CommonHelpers.cshtml"
+#line 40 "..\..\App_Code\CommonHelpers.cshtml"
                                                                        WriteTo(@__razor_helper_writer, item.Selected ? new HtmlString("checked=\"checked\" ") : null);
 
 #line default
@@ -384,7 +378,7 @@ WriteLiteralTo(@__razor_helper_writer, "/><label for=\"");
 
 
 
-#line 43 "..\..\App_Code\CommonHelpers.cshtml"
+#line 40 "..\..\App_Code\CommonHelpers.cshtml"
                                                                                                                                                     WriteTo(@__razor_helper_writer, itemId);
 
 #line default
@@ -394,7 +388,7 @@ WriteLiteralTo(@__razor_helper_writer, "\">");
 
 
 
-#line 43 "..\..\App_Code\CommonHelpers.cshtml"
+#line 40 "..\..\App_Code\CommonHelpers.cshtml"
                                                                                                                                                              WriteTo(@__razor_helper_writer, item.Text);
 
 #line default
@@ -404,7 +398,7 @@ WriteLiteralTo(@__razor_helper_writer, "</label></li>\r\n");
 
 
 
-#line 44 "..\..\App_Code\CommonHelpers.cshtml"
+#line 41 "..\..\App_Code\CommonHelpers.cshtml"
                 }
                         
 
@@ -415,7 +409,7 @@ WriteLiteralTo(@__razor_helper_writer, "                    </ul>\r\n           
 
 
 
-#line 48 "..\..\App_Code\CommonHelpers.cshtml"
+#line 45 "..\..\App_Code\CommonHelpers.cshtml"
             }
 
 #line default
@@ -425,7 +419,7 @@ WriteLiteralTo(@__razor_helper_writer, "        </tr>\r\n    </table>\r\n");
 
 
 
-#line 51 "..\..\App_Code\CommonHelpers.cshtml"
+#line 48 "..\..\App_Code\CommonHelpers.cshtml"
 
 #line default
 #line hidden
@@ -435,41 +429,41 @@ WriteLiteralTo(@__razor_helper_writer, "        </tr>\r\n    </table>\r\n");
 }
 
 
-public static System.Web.WebPages.HelperResult FriendlyDateAndUser(DateTime? d, User u, string DateNullValue = "N/A")
+public static System.Web.WebPages.HelperResult FriendlyDateAndUser(DateTime? d, User u, string DateNullValue = "n/a")
 {
 return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 53 "..\..\App_Code\CommonHelpers.cshtml"
+#line 50 "..\..\App_Code\CommonHelpers.cshtml"
  
     
 #line default
 #line hidden
 
 
-#line 54 "..\..\App_Code\CommonHelpers.cshtml"
+#line 51 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, FriendlyDate(d, DateNullValue));
 
 #line default
 #line hidden
 
 
-#line 54 "..\..\App_Code\CommonHelpers.cshtml"
+#line 51 "..\..\App_Code\CommonHelpers.cshtml"
                                    ;
     
 #line default
 #line hidden
 
 
-#line 55 "..\..\App_Code\CommonHelpers.cshtml"
+#line 52 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, FriendlyUser(u, null, "by"));
 
 #line default
 #line hidden
 
 
-#line 55 "..\..\App_Code\CommonHelpers.cshtml"
+#line 52 "..\..\App_Code\CommonHelpers.cshtml"
                                 ;
 
 #line default
@@ -486,35 +480,35 @@ return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 58 "..\..\App_Code\CommonHelpers.cshtml"
+#line 55 "..\..\App_Code\CommonHelpers.cshtml"
  
     
 #line default
 #line hidden
 
 
-#line 59 "..\..\App_Code\CommonHelpers.cshtml"
+#line 56 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, FriendlyDate(d));
 
 #line default
 #line hidden
 
 
-#line 59 "..\..\App_Code\CommonHelpers.cshtml"
+#line 56 "..\..\App_Code\CommonHelpers.cshtml"
                     ;
     
 #line default
 #line hidden
 
 
-#line 60 "..\..\App_Code\CommonHelpers.cshtml"
+#line 57 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, FriendlyUser(u, null, "by"));
 
 #line default
 #line hidden
 
 
-#line 60 "..\..\App_Code\CommonHelpers.cshtml"
+#line 57 "..\..\App_Code\CommonHelpers.cshtml"
                                 ;
 
 #line default
@@ -525,13 +519,13 @@ WriteTo(@__razor_helper_writer, FriendlyUser(u, null, "by"));
 }
 
 
-public static System.Web.WebPages.HelperResult FriendlyDateAndTitleUser(DateTime? d, User u, string DateNullValue = "N/A")
+public static System.Web.WebPages.HelperResult FriendlyDateAndTitleUser(DateTime? d, User u, string DateNullValue = "n/a")
 {
 return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 63 "..\..\App_Code\CommonHelpers.cshtml"
+#line 60 "..\..\App_Code\CommonHelpers.cshtml"
  
 
 #line default
@@ -541,7 +535,7 @@ WriteLiteralTo(@__razor_helper_writer, "    <span title=\"");
 
 
 
-#line 64 "..\..\App_Code\CommonHelpers.cshtml"
+#line 61 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, d.ToFullDateTime(DateNullValue));
 
 #line default
@@ -551,7 +545,7 @@ WriteLiteralTo(@__razor_helper_writer, " by ");
 
 
 
-#line 64 "..\..\App_Code\CommonHelpers.cshtml"
+#line 61 "..\..\App_Code\CommonHelpers.cshtml"
                       WriteTo(@__razor_helper_writer, u);
 
 #line default
@@ -561,8 +555,8 @@ WriteLiteralTo(@__razor_helper_writer, "\" data-discodatetime=\"");
 
 
 
-#line 64 "..\..\App_Code\CommonHelpers.cshtml"
-                                              WriteTo(@__razor_helper_writer, d.ToSortableDateTime());
+#line 61 "..\..\App_Code\CommonHelpers.cshtml"
+                                              WriteTo(@__razor_helper_writer, d.ToSortable());
 
 #line default
 #line hidden
@@ -571,8 +565,8 @@ WriteLiteralTo(@__razor_helper_writer, "\" class=\"date nowrap\">");
 
 
 
-#line 64 "..\..\App_Code\CommonHelpers.cshtml"
-                                                                                           WriteTo(@__razor_helper_writer, d.ToFuzzy(DateNullValue));
+#line 61 "..\..\App_Code\CommonHelpers.cshtml"
+                                                                                   WriteTo(@__razor_helper_writer, d.FromNow(DateNullValue));
 
 #line default
 #line hidden
@@ -581,7 +575,7 @@ WriteLiteralTo(@__razor_helper_writer, "</span>\r\n");
 
 
 
-#line 65 "..\..\App_Code\CommonHelpers.cshtml"
+#line 62 "..\..\App_Code\CommonHelpers.cshtml"
 
 #line default
 #line hidden
@@ -597,7 +591,7 @@ return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 67 "..\..\App_Code\CommonHelpers.cshtml"
+#line 64 "..\..\App_Code\CommonHelpers.cshtml"
  
 
 #line default
@@ -607,7 +601,7 @@ WriteLiteralTo(@__razor_helper_writer, "    <span title=\"");
 
 
 
-#line 68 "..\..\App_Code\CommonHelpers.cshtml"
+#line 65 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, d.ToFullDateTime());
 
 #line default
@@ -617,7 +611,7 @@ WriteLiteralTo(@__razor_helper_writer, " by ");
 
 
 
-#line 68 "..\..\App_Code\CommonHelpers.cshtml"
+#line 65 "..\..\App_Code\CommonHelpers.cshtml"
          WriteTo(@__razor_helper_writer, u);
 
 #line default
@@ -627,8 +621,8 @@ WriteLiteralTo(@__razor_helper_writer, "\" data-discodatetime=\"");
 
 
 
-#line 68 "..\..\App_Code\CommonHelpers.cshtml"
-                                 WriteTo(@__razor_helper_writer, d.ToSortableDateTime());
+#line 65 "..\..\App_Code\CommonHelpers.cshtml"
+                                 WriteTo(@__razor_helper_writer, d.ToSortable());
 
 #line default
 #line hidden
@@ -637,8 +631,8 @@ WriteLiteralTo(@__razor_helper_writer, "\" class=\"date nowrap\">");
 
 
 
-#line 68 "..\..\App_Code\CommonHelpers.cshtml"
-                                                                              WriteTo(@__razor_helper_writer, d.ToFuzzy());
+#line 65 "..\..\App_Code\CommonHelpers.cshtml"
+                                                                      WriteTo(@__razor_helper_writer, d.FromNow());
 
 #line default
 #line hidden
@@ -647,7 +641,7 @@ WriteLiteralTo(@__razor_helper_writer, "</span>\r\n");
 
 
 
-#line 69 "..\..\App_Code\CommonHelpers.cshtml"
+#line 66 "..\..\App_Code\CommonHelpers.cshtml"
 
 #line default
 #line hidden
@@ -663,7 +657,7 @@ return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 71 "..\..\App_Code\CommonHelpers.cshtml"
+#line 68 "..\..\App_Code\CommonHelpers.cshtml"
  
     if (u != null)
     { 
@@ -672,7 +666,7 @@ return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 #line hidden
 
 
-#line 74 "..\..\App_Code\CommonHelpers.cshtml"
+#line 71 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, prepend);
 
 #line default
@@ -683,7 +677,7 @@ WriteLiteralTo(@__razor_helper_writer, " <span title=\"");
 
 
 
-#line 74 "..\..\App_Code\CommonHelpers.cshtml"
+#line 71 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, u);
 
 #line default
@@ -693,7 +687,7 @@ WriteLiteralTo(@__razor_helper_writer, "\">");
 
 
 
-#line 74 "..\..\App_Code\CommonHelpers.cshtml"
+#line 71 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, u.Id);
 
 #line default
@@ -703,7 +697,7 @@ WriteLiteralTo(@__razor_helper_writer, "</span>\r\n");
 
 
 
-#line 75 "..\..\App_Code\CommonHelpers.cshtml"
+#line 72 "..\..\App_Code\CommonHelpers.cshtml"
     }
     else
     { 
@@ -715,7 +709,7 @@ WriteLiteralTo(@__razor_helper_writer, "    <span>");
 
 
 
-#line 78 "..\..\App_Code\CommonHelpers.cshtml"
+#line 75 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, nullValue);
 
 #line default
@@ -725,7 +719,7 @@ WriteLiteralTo(@__razor_helper_writer, "</span>\r\n");
 
 
 
-#line 79 "..\..\App_Code\CommonHelpers.cshtml"
+#line 76 "..\..\App_Code\CommonHelpers.cshtml"
     }
 
 #line default
@@ -742,7 +736,7 @@ return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 82 "..\..\App_Code\CommonHelpers.cshtml"
+#line 79 "..\..\App_Code\CommonHelpers.cshtml"
  
     for (int index = 0; index < BreadCrumbs.Count; index++)
     {
@@ -757,7 +751,7 @@ WriteLiteralTo(@__razor_helper_writer, "    <span>&gt;</span>\r\n");
 
 
 
-#line 89 "..\..\App_Code\CommonHelpers.cshtml"
+#line 86 "..\..\App_Code\CommonHelpers.cshtml"
         }
         if (breadCrumb.Item2 == null)
         {
@@ -766,14 +760,14 @@ WriteLiteralTo(@__razor_helper_writer, "    <span>&gt;</span>\r\n");
 #line hidden
 
 
-#line 92 "..\..\App_Code\CommonHelpers.cshtml"
+#line 89 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, breadCrumb.Item1);
 
 #line default
 #line hidden
 
 
-#line 92 "..\..\App_Code\CommonHelpers.cshtml"
+#line 89 "..\..\App_Code\CommonHelpers.cshtml"
                      
         }
         else
@@ -783,14 +777,14 @@ WriteTo(@__razor_helper_writer, breadCrumb.Item1);
 #line hidden
 
 
-#line 96 "..\..\App_Code\CommonHelpers.cshtml"
+#line 93 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, Html.GetPageHelper().ActionLink(breadCrumb.Item1, breadCrumb.Item2));
 
 #line default
 #line hidden
 
 
-#line 96 "..\..\App_Code\CommonHelpers.cshtml"
+#line 93 "..\..\App_Code\CommonHelpers.cshtml"
                                                                         
         }
     }
@@ -809,21 +803,21 @@ return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 101 "..\..\App_Code\CommonHelpers.cshtml"
+#line 98 "..\..\App_Code\CommonHelpers.cshtml"
  
     
 #line default
 #line hidden
 
 
-#line 102 "..\..\App_Code\CommonHelpers.cshtml"
+#line 99 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, Title);
 
 #line default
 #line hidden
 
 
-#line 102 "..\..\App_Code\CommonHelpers.cshtml"
+#line 99 "..\..\App_Code\CommonHelpers.cshtml"
           
 
 #line default
@@ -840,7 +834,7 @@ return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 105 "..\..\App_Code\CommonHelpers.cshtml"
+#line 102 "..\..\App_Code\CommonHelpers.cshtml"
  
     for (int index = 0; index < BreadCrumbs.Count; index++)
     {
@@ -852,14 +846,14 @@ return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 #line hidden
 
 
-#line 111 "..\..\App_Code\CommonHelpers.cshtml"
+#line 108 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, new HtmlString(" > "));
 
 #line default
 #line hidden
 
 
-#line 111 "..\..\App_Code\CommonHelpers.cshtml"
+#line 108 "..\..\App_Code\CommonHelpers.cshtml"
                             
         }
     
@@ -867,14 +861,14 @@ WriteTo(@__razor_helper_writer, new HtmlString(" > "));
 #line hidden
 
 
-#line 113 "..\..\App_Code\CommonHelpers.cshtml"
+#line 110 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, breadCrumb.Item1);
 
 #line default
 #line hidden
 
 
-#line 113 "..\..\App_Code\CommonHelpers.cshtml"
+#line 110 "..\..\App_Code\CommonHelpers.cshtml"
                      
     }
 
@@ -892,21 +886,21 @@ return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 117 "..\..\App_Code\CommonHelpers.cshtml"
+#line 114 "..\..\App_Code\CommonHelpers.cshtml"
  
     
 #line default
 #line hidden
 
 
-#line 118 "..\..\App_Code\CommonHelpers.cshtml"
+#line 115 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, Title);
 
 #line default
 #line hidden
 
 
-#line 118 "..\..\App_Code\CommonHelpers.cshtml"
+#line 115 "..\..\App_Code\CommonHelpers.cshtml"
           
 
 #line default
@@ -923,7 +917,7 @@ return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 121 "..\..\App_Code\CommonHelpers.cshtml"
+#line 118 "..\..\App_Code\CommonHelpers.cshtml"
  Html.GetPageHelper().BundleDeferred("~/ClientScripts/Modules/Disco-jQueryExtensions");
 
 #line default
@@ -933,7 +927,7 @@ WriteLiteralTo(@__razor_helper_writer, "    <span id=\"");
 
 
 
-#line 122 "..\..\App_Code\CommonHelpers.cshtml"
+#line 119 "..\..\App_Code\CommonHelpers.cshtml"
 WriteTo(@__razor_helper_writer, BulkSelectContainerId);
 
 #line default
@@ -943,7 +937,7 @@ WriteLiteralTo(@__razor_helper_writer, "\" class=\"checkboxBulkSelectContainer\"
 
 
 
-#line 123 "..\..\App_Code\CommonHelpers.cshtml"
+#line 120 "..\..\App_Code\CommonHelpers.cshtml"
          if (string.IsNullOrWhiteSpace(ParentJQuerySelector))
         {
 
@@ -954,7 +948,7 @@ WriteLiteralTo(@__razor_helper_writer, "            <script type=\"text/javascri
 
 
 
-#line 125 "..\..\App_Code\CommonHelpers.cshtml"
+#line 122 "..\..\App_Code\CommonHelpers.cshtml"
                                  WriteTo(@__razor_helper_writer, BulkSelectContainerId);
 
 #line default
@@ -964,7 +958,7 @@ WriteLiteralTo(@__razor_helper_writer, "\').checkboxBulkSelect(); });</script>\r
 
 
 
-#line 126 "..\..\App_Code\CommonHelpers.cshtml"
+#line 123 "..\..\App_Code\CommonHelpers.cshtml"
         }
         else
         {
@@ -976,7 +970,7 @@ WriteLiteralTo(@__razor_helper_writer, "            <script type=\"text/javascri
 
 
 
-#line 129 "..\..\App_Code\CommonHelpers.cshtml"
+#line 126 "..\..\App_Code\CommonHelpers.cshtml"
                                  WriteTo(@__razor_helper_writer, BulkSelectContainerId);
 
 #line default
@@ -986,7 +980,7 @@ WriteLiteralTo(@__razor_helper_writer, "\').checkboxBulkSelect({ parentSelector:
 
 
 
-#line 129 "..\..\App_Code\CommonHelpers.cshtml"
+#line 126 "..\..\App_Code\CommonHelpers.cshtml"
                                                                                                   WriteTo(@__razor_helper_writer, ParentJQuerySelector);
 
 #line default
@@ -996,7 +990,7 @@ WriteLiteralTo(@__razor_helper_writer, "\' }); });</script>\r\n");
 
 
 
-#line 130 "..\..\App_Code\CommonHelpers.cshtml"
+#line 127 "..\..\App_Code\CommonHelpers.cshtml"
         }
 
 #line default
@@ -1006,7 +1000,7 @@ WriteLiteralTo(@__razor_helper_writer, "    </span>\r\n");
 
 
 
-#line 132 "..\..\App_Code\CommonHelpers.cshtml"
+#line 129 "..\..\App_Code\CommonHelpers.cshtml"
 
 #line default
 #line hidden

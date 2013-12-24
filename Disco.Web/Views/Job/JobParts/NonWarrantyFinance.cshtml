@@ -125,7 +125,7 @@
 <script>
     $(function () {
         var updateUrl = '@(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)))';
-        var jobOpenDate = '@(Model.Job.OpenedDate.ToJavascriptDateTime())';
+        var jobOpenDate = '@(Model.Job.OpenedDate.ToJavaScript())';
 
         @if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.AccountingChargeRequired))
         {<text>document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Accounting Charge Required', 'Job_JobMetaNonWarranty_AccountingChargeRequiredDate', 'Job_JobMetaNonWarranty_AccountingChargeRequiredUser', 'NonWarrantyAccountingChargeRequired', 'Not Required', jobOpenDate, false);</text>}

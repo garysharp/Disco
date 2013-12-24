@@ -6,7 +6,7 @@
 <html>
 <head>
     <title>Disco - @CommonHelpers.BreadcrumbsTitle(ViewBag.Title ?? string.Empty)</title>
-    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=20131224c" />
     <meta name="application-name" content="Disco" />
     <meta name="msapplication-starturl" content="/" />
     <meta name="msapplication-tooltip" content="Open Disco" />
@@ -16,19 +16,8 @@
 <body class="layout">
     <div class="page">
         <header>
-            <div class="clearfix">
-                <div id="heading">
-                    <a href="@Url.Action(MVC.Job.Index())">
-                        <img src="@Links.ClientSource.Style.Images.Heading_png" alt="DISCO - ICT Asset Management" /></a>
-                </div>
-                <div id="headerMenu">
-                    <span>Welcome @if (Authorization.Has(Claims.User.Show))
-                                  { @Html.ActionLink(CurrentUser.ToString(), MVC.User.Show(CurrentUser.Id))}
-                                  else
-                                  {@CurrentUser.ToString()}</span>
-                    @using (Html.BeginForm(MVC.Search.Query(), FormMethod.Get))
-                    { @Html.TextBox("term", null, new { accesskey = "s" }) }
-                </div>
+            <div id="heading">
+                <a href="@Url.Action(MVC.Job.Index())"><i title="Disco - ICT Management"></i></a>
             </div>
             <nav>
                 <ul id="menu">
@@ -94,7 +83,7 @@
                     <li>@Html.ActionLink("Devices", MVC.Device.Index(), accesskey: "2")</li>
                     <li class="sep"></li>
                     <li>@Html.ActionLink("Users", MVC.User.Index(), accesskey: "3")</li>
-                    <li class="moveRight">@Html.ActionLink("Public Reports", MVC.Public.Public.Index())</li>
+                    <li class="moveRight">@Html.ActionLink("Reports", MVC.Public.Public.Index())</li>
                     @if (Authorization.Has(Claims.Config.Show))
                     {
                         <li class="sep"></li>
@@ -102,6 +91,14 @@
                     }
                 </ul>
             </nav>
+            <div id="headerMenu">
+                <span>@if (Authorization.Has(Claims.User.Show))
+                      { @Html.ActionLink(CurrentUser.ToString(), MVC.User.Show(CurrentUser.Id))}
+                      else
+                      {@CurrentUser.ToString()}</span>
+                @using (Html.BeginForm(MVC.Search.Query(), FormMethod.Get))
+                { @Html.TextBox("term", null, new { id="SearchQuery", accesskey = "s" }) }
+            </div>
         </header>
         <div id="layout_PageHeading">@CommonHelpers.Breadcrumbs(ViewBag.Title ?? string.Empty)</div>
         <section id="layout_Page">

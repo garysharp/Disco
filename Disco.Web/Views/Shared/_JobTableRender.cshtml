@@ -15,7 +15,7 @@
                     { <th class="status">Status
                     </th> }
                     @if (Model.ShowDates)
-                    { <th class="dates">Dates
+                    { <th class="dates">When
                     </th> }
                     @if (Model.ShowType)
                     { <th class="type">Type
@@ -36,81 +36,46 @@
             </thead>
             <tbody>
                 @foreach (var item in Model.Items)
-                {
-                    <tr data-id="@(item.Id)" data-status="@(Model.ShowStatus ? item.StatusId : null)">
-                        @if (Model.ShowId)
-                        { <td class="id">
-                            @if (Authorization.Has(Claims.Job.Show))
-                            {
-                                @Html.ActionLink(item.Id.ToString(), MVC.Job.Show(item.Id))
-                            }
+                {<tr data-id="@(item.Id)" data-status="@(Model.ShowStatus ? item.StatusId : null)">
+                    @if (Model.ShowId)
+                    {<td class="id">
+                        @if (Authorization.Has(Claims.Job.Show))
+                        {@Html.ActionLink(item.Id.ToString(), MVC.Job.Show(item.Id))}
+                        else
+                        {@item.Id.ToString()}</td>}
+                    @if (Model.ShowStatus)
+                    {<td class="status"><span class="icon JobStatus@(item.StatusId)"></span>&nbsp;@item.StatusDescription</td>}
+                    @if (Model.ShowDates)
+                    {<td class="dates">@if (item.ClosedDate.HasValue) {@CommonHelpers.FriendlyDate(item.ClosedDate.Value)}else{@CommonHelpers.FriendlyDate(item.OpenedDate)}</td>}
+                    @if (Model.ShowType)
+                    {<td class="type"><span title="@item.TypeDescription">@item.TypeId</span></td>}
+                    @if (Model.ShowDevice)
+                    {<td class="device">
+                        @if (item.DeviceSerialNumber != null)
+                        {
+                            if (Authorization.Has(Claims.Device.Show))
+                            {@Html.ActionLink(item.DeviceSerialNumber, MVC.Device.Show(item.DeviceSerialNumber), new { Title = item.DeviceModelDescription })}
                             else
-                            {
-                                @item.Id.ToString()
-                            }
-                        </td> }
-                        @if (Model.ShowStatus)
-                        { <td class="status">
-                            <span class="icon JobStatus@(item.StatusId)"></span>
-                            @item.StatusDescription
-                        </td> }
-                        @if (Model.ShowDates)
-                        { <td class="dates">
-                            @CommonHelpers.FriendlyDate(item.OpenedDate)
-                            - @CommonHelpers.FriendlyDate(item.ClosedDate)
-                        </td>}
-                        @if (Model.ShowType)
-                        { <td class="type">
-                            <span title="@item.TypeDescription">@item.TypeId</span>
-                        </td>}
-                        @if (Model.ShowDevice)
-                        { <td class="device">
-                            @if (item.DeviceSerialNumber != null)
-                            {
-                                if (Authorization.Has(Claims.Device.Show))
-                                {
-                                @Html.ActionLink(item.DeviceSerialNumber, MVC.Device.Show(item.DeviceSerialNumber), new { Title = item.DeviceModelDescription })
-                                }
-                                else
-                                {
-                                <span title="@item.DeviceModelDescription">@item.DeviceSerialNumber</span>
-                                }
-                            }
+                            {<span title="@item.DeviceModelDescription">@item.DeviceSerialNumber</span>}
+                        }
+                        else
+                        {<span class="smallMessage">N/A</span>}</td>}
+                    @if (Model.ShowUser)
+                    {<td class="user">
+                        @if (item.UserId != null)
+                        {
+                            if (Authorization.Has(Claims.User.Show))
+                            {@Html.ActionLink(string.Format("{0} ({1})", item.UserDisplayName, item.UserId), MVC.User.Show(item.UserId))}
                             else
-                            { 
-                                <span class="smallMessage">N/A</span>
-                            }
-                        </td> }
-                        @if (Model.ShowUser)
-                        {<td class="user">
-                            @if (item.UserId != null)
-                            {
-                                if (Authorization.Has(Claims.User.Show))
-                                {
-                                @Html.ActionLink(string.Format("{0} ({1})", item.UserDisplayName, item.UserId), MVC.User.Show(item.UserId))
-                                }
-                                else
-                                {
-                                @(string.Format("{0} ({1})", item.UserDisplayName, item.UserId))
-                                }
-                            }
-                            else
-                            { 
-                                <span class="smallMessage">N/A</span>
-                            }
-                        </td>}
-                        @if (Model.ShowTechnician)
-                        { <td class="technician">
-                            <span title="@item.OpenedTechUserDisplayName">@item.OpenedTechUserId
-                            </span>
-                        </td>}
-                        @if (Model.ShowLocation)
-                        { <td class="technician">
-                            <span>@(item.Location ?? "Unknown")
-                            </span>
-                        </td>}
-                    </tr>
-                }
+                            {@(string.Format("{0} ({1})", item.UserDisplayName, item.UserId))}
+                        }
+                        else
+                        {<span class="smallMessage">N/A</span>}</td>}
+                    @if (Model.ShowTechnician)
+                    {<td class="technician"><span title="@item.OpenedTechUserDisplayName">@item.OpenedTechUserId</span></td>}
+                    @if (Model.ShowLocation)
+                    {<td class="technician"><span>@(item.Location ?? "Unknown")</span></td>}
+                </tr>}
             </tbody>
         </table>
     }

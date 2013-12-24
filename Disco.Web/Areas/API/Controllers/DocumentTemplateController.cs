@@ -274,7 +274,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 Id = System.IO.Path.GetFileNameWithoutExtension(f.Name),
                 Timestamp = f.CreationTime.ToString(),
-                TimestampFuzzy = f.CreationTime.ToFuzzy()
+                TimestampFuzzy = f.CreationTime.FromNow()
             }).ToArray();
 
             return Json(m);

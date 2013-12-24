@@ -26,6 +26,7 @@ namespace Disco.Web.Views.Job.JobParts
     using System.Web.Security;
     using System.Web.UI;
     using System.Web.WebPages;
+    using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
     using Disco.Services.Authorization;
@@ -206,7 +207,7 @@ WriteLiteral(">");
 
             
             #line 33 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                                                                                                                    Write(jl.Timestamp.ToFuzzy());
+                                                                                                                                                                                    Write(jl.Timestamp.FromNow());
 
             
             #line default
@@ -498,7 +499,7 @@ WriteLiteral(">");
 
             
             #line 62 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                                                                                                                           Write(ja.Timestamp.ToFuzzy());
+                                                                                                                                                                                           Write(ja.Timestamp.FromNow());
 
             
             #line default

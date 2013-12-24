@@ -1,4 +1,5 @@
 ﻿@* Generator: WebPagesHelper *@
+@using Disco;
 @using Disco.BI.Extensions;
 @using Disco.Models.Repository;
 @using Disco.Web;
@@ -6,13 +7,9 @@
 @using System.Web.Mvc.Html;
 @using Disco.Services.Web;
 @helper FriendlyDate(DateTime d, string ElementId = null)
-{
-    <span @(ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId)))title="@d.ToFullDateTime()" data-discodatetime="@d.ToSortableDateTime()" data-datetimeformatted="@d.ToJavascriptDateTime()" class="date nowrap">@d.ToFuzzy()</span>
-}
-@helper FriendlyDate(DateTime? d, string NullValue = "N/A", string ElementId = null)
-{
-    <span @(ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId)))title="@d.ToFullDateTime(NullValue)" data-discodatetime="@d.ToSortableDateTime()" data-datetimeformatted="@d.ToJavascriptDateTime()" class="date nowrap">@d.ToFuzzy(NullValue)</span>
-}
+{<span @(ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId)))title="@d.ToFullDateTime()" data-discodatetime="@d.ToSortable()" data-datetimeformatted="@d.ToJavaScript()" class="date nowrap">@d.FromNow()</span>}
+@helper FriendlyDate(DateTime? d, string NullValue = "n/a", string ElementId = null)
+{<span @(ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId)))title="@d.ToFullDateTime(NullValue)" data-discodatetime="@d.ToSortable()" data-datetimeformatted="@d.ToJavaScript()" class="date nowrap">@d.FromNow(NullValue)</span>}
 @helper RadioButtonList(string id, List<System.Web.Mvc.SelectListItem> items, int columns = 1)
 {
     @ItemList("radio", id, items, columns)
@@ -49,7 +46,7 @@
         </tr>
     </table>
 }
-@helper FriendlyDateAndUser(DateTime? d, User u, string DateNullValue = "N/A")
+@helper FriendlyDateAndUser(DateTime? d, User u, string DateNullValue = "n/a")
 {
     @FriendlyDate(d, DateNullValue);
     @FriendlyUser(u, null, "by");
@@ -59,13 +56,13 @@
     @FriendlyDate(d);
     @FriendlyUser(u, null, "by");
 }
-@helper FriendlyDateAndTitleUser(DateTime? d, User u, string DateNullValue = "N/A")
+@helper FriendlyDateAndTitleUser(DateTime? d, User u, string DateNullValue = "n/a")
 {
-    <span title="@d.ToFullDateTime(DateNullValue) by @u" data-discodatetime="@d.ToSortableDateTime()" class="date nowrap">@d.ToFuzzy(DateNullValue)</span>
+    <span title="@d.ToFullDateTime(DateNullValue) by @u" data-discodatetime="@d.ToSortable()" class="date nowrap">@d.FromNow(DateNullValue)</span>
 }
 @helper FriendlyDateAndTitleUser(DateTime d, User u)
 {
-    <span title="@d.ToFullDateTime() by @u" data-discodatetime="@d.ToSortableDateTime()" class="date nowrap">@d.ToFuzzy()</span>
+    <span title="@d.ToFullDateTime() by @u" data-discodatetime="@d.ToSortable()" class="date nowrap">@d.FromNow()</span>
 }
 @helper FriendlyUser(User u, string nullValue = null, string prepend = null)
 {

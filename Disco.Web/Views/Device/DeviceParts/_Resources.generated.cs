@@ -26,6 +26,7 @@ namespace Disco.Web.Views.Device.DeviceParts
     using System.Web.Security;
     using System.Web.UI;
     using System.Web.WebPages;
+    using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
     using Disco.Services.Authorization;
@@ -279,7 +280,7 @@ WriteLiteral(">");
 
             
             #line 35 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-                                                                                                                                                                                           Write(da.Timestamp.ToFuzzy());
+                                                                                                                                                                                           Write(da.Timestamp.FromNow());
 
             
             #line default

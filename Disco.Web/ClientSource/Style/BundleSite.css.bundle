@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bundle minify="true" runOnBuild="true">
+  <file>/ClientSource/Style/normalize.css</file>
   <file>/ClientSource/Style/jQueryUI/jquery-ui.css</file>
   <file>/ClientSource/Style/Site.css</file>
+  <file>/ClientSource/Style/jQueryUIExtensions.css</file>
 </bundle>

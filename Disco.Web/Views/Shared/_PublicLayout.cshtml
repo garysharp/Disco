@@ -14,19 +14,14 @@
 <body class="layout">
     <div class="page">
         <header>
-            <div class="clearfix">
-                <div id="heading">
-                    <a href="@Url.Action(MVC.Public.Public.Index())">
-                        <img src="@Links.ClientSource.Style.Images.Heading_png" alt="DISCO - ICT Asset Management" /></a>
-                </div>
-                <div id="headerMenu">
-                </div>
+            <div id="heading">
+                <a href="@Url.Action(MVC.Job.Index())"><i title="Disco - ICT Management"></i></a>
             </div>
             <nav>
                 <ul id="menu">
                     <li>@Html.ActionLink("Public Reports", MVC.Public.Public.Index())</li>
                     <li class="sep"></li>
-                    <li style="margin-left: 10px;">@Html.ActionLink("Disco Administration", MVC.Job.Index(), accesskey: "1")</li>
+                    <li>@Html.ActionLink("Disco Administration", MVC.Job.Index(), accesskey: "1")</li>
                 </ul>
             </nav>
         </header>

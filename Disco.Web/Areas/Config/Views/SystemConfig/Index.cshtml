@@ -16,7 +16,7 @@
                     <code>@Model.DiscoVersion.ToString(4)</code>
                 </div>
                 <div class="smallMessage" title="@Model.DiscoVersionBuilt.ToFullDateTime()">
-                    Built @Model.DiscoVersionBuilt.ToFuzzy("Unknown")
+                    Built @CommonHelpers.FriendlyDate(Model.DiscoVersionBuilt, "Unknown")
                 </div>
             </td>
         </tr>
@@ -53,8 +53,6 @@
             </th>
             <td>
                 <span class="code">@Model.DataStoreLocation</span>
-                @*                    @Html.EditorFor(m => m.DataStoreLocation)<br />
-                    @Html.ValidationMessageFor(m => m.DataStoreLocation)*@
             </td>
         </tr>
     </table>

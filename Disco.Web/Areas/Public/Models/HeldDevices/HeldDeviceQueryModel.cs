@@ -43,16 +43,16 @@ namespace Disco.Web.Areas.Public.Models.HeldDevices
             var n = DateTime.Now;
             if (!this.ReadyForReturn && this.EstimatedReturnTime.HasValue && this.EstimatedReturnTime.Value > n)
             {
-                uhdm.EstimatedReturnTime = this.EstimatedReturnTime.ToFuzzy();
+                uhdm.EstimatedReturnTime = this.EstimatedReturnTime.FromNow();
             }
             if (this.ReadyForReturn)
             {
-                uhdm.ReadyForReturnSince = this.ReadyForReturnSince.ToFuzzy();
+                uhdm.ReadyForReturnSince = this.ReadyForReturnSince.FromNow();
                 uhdm.IsAlert = (this.ReadyForReturnSince.Value < DateTime.Now.AddDays(-3));
             }
             if (this.WaitingForUserAction)
             {
-                uhdm.WaitingForUserActionSince = this.WaitingForUserActionSince.ToFuzzy();
+                uhdm.WaitingForUserActionSince = this.WaitingForUserActionSince.FromNow();
                 uhdm.IsAlert = (this.WaitingForUserActionSince.Value < n.AddDays(-6));
             }
             return uhdm;
