@@ -88,20 +88,32 @@ WriteLiteral(">\r\n                    <h2>Hosting</h2>\r\n");
             #line 13 "..\..\Areas\Config\Views\Config\Index.cshtml"
                      if (Authorization.Has(Claims.Config.System.Show))
                     {
-                        
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <i");
+
+WriteLiteral(" class=\"fa fa-cog\"");
+
+WriteLiteral("></i>");
+
+            
+            #line 15 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                 
             
             #line default
             #line hidden
             
             #line 15 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                   Write(Html.ActionLinkClass("System", MVC.Config.SystemConfig.Index(), "config"));
+                                            Write(Html.ActionLinkClass("System", MVC.Config.SystemConfig.Index(), "config"));
 
             
             #line default
             #line hidden
             
             #line 15 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                                                                                  
+                                                                                                                           
 
             
             #line default
@@ -126,20 +138,32 @@ WriteLiteral("                    ");
             #line 20 "..\..\Areas\Config\Views\Config\Index.cshtml"
                      if (Authorization.Has(Claims.Config.Organisation.Show))
                     {
-                        
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <i");
+
+WriteLiteral(" class=\"fa fa-cog\"");
+
+WriteLiteral("></i>");
+
+            
+            #line 22 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                 
             
             #line default
             #line hidden
             
             #line 22 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                   Write(Html.ActionLinkClass("Organisation Details", MVC.Config.Organisation.Index(), "config"));
+                                            Write(Html.ActionLinkClass("Organisation Details", MVC.Config.Organisation.Index(), "config"));
 
             
             #line default
             #line hidden
             
             #line 22 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                                                                                                
+                                                                                                                                         
 
             
             #line default
@@ -164,20 +188,32 @@ WriteLiteral("                    ");
             #line 27 "..\..\Areas\Config\Views\Config\Index.cshtml"
                      if (Authorization.Has(Claims.DiscoAdminAccount))
                     {
-                        
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <i");
+
+WriteLiteral(" class=\"fa fa-cog\"");
+
+WriteLiteral("></i>");
+
+            
+            #line 29 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                 
             
             #line default
             #line hidden
             
             #line 29 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                   Write(Html.ActionLinkClass("Authorization Roles", MVC.Config.AuthorizationRole.Index(), "config"));
+                                            Write(Html.ActionLinkClass("Authorization Roles", MVC.Config.AuthorizationRole.Index(), "config"));
 
             
             #line default
             #line hidden
             
             #line 29 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                                                                                                    
+                                                                                                                                             
 
             
             #line default
@@ -202,20 +238,32 @@ WriteLiteral("                    ");
             #line 34 "..\..\Areas\Config\Views\Config\Index.cshtml"
                      if (Authorization.Has(Claims.Config.Logging.Show))
                     {
-                        
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <i");
+
+WriteLiteral(" class=\"fa fa-cog\"");
+
+WriteLiteral("></i>");
+
+            
+            #line 36 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                 
             
             #line default
             #line hidden
             
             #line 36 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                   Write(Html.ActionLinkClass("Logging", MVC.Config.Logging.Index(), "config"));
+                                            Write(Html.ActionLinkClass("Logging", MVC.Config.Logging.Index(), "config"));
 
             
             #line default
             #line hidden
             
             #line 36 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                                                                              
+                                                                                                                       
 
             
             #line default
@@ -269,20 +317,32 @@ WriteLiteral(">\r\n                    <h2>Devices</h2>\r\n");
             #line 49 "..\..\Areas\Config\Views\Config\Index.cshtml"
                      if (Authorization.Has(Claims.Config.DeviceModel.Show))
                     {
-                        
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <i");
+
+WriteLiteral(" class=\"fa fa-cog\"");
+
+WriteLiteral("></i>");
+
+            
+            #line 51 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                 
             
             #line default
             #line hidden
             
             #line 51 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                   Write(Html.ActionLinkClass("Models", MVC.Config.DeviceModel.Index(), "config"));
+                                            Write(Html.ActionLinkClass("Models", MVC.Config.DeviceModel.Index(), "config"));
 
             
             #line default
             #line hidden
             
             #line 51 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                                                                                 
+                                                                                                                          
 
             
             #line default
@@ -307,20 +367,32 @@ WriteLiteral("                    ");
             #line 56 "..\..\Areas\Config\Views\Config\Index.cshtml"
                      if (Authorization.Has(Claims.Config.DeviceBatch.Show))
                     {
-                        
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <i");
+
+WriteLiteral(" class=\"fa fa-cog\"");
+
+WriteLiteral("></i>");
+
+            
+            #line 58 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                 
             
             #line default
             #line hidden
             
             #line 58 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                   Write(Html.ActionLinkClass("Batches", MVC.Config.DeviceBatch.Index(), "config"));
+                                            Write(Html.ActionLinkClass("Batches", MVC.Config.DeviceBatch.Index(), "config"));
 
             
             #line default
             #line hidden
             
             #line 58 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                                                                                  
+                                                                                                                           
 
             
             #line default
@@ -345,20 +417,32 @@ WriteLiteral("                    ");
             #line 63 "..\..\Areas\Config\Views\Config\Index.cshtml"
                      if (Authorization.Has(Claims.Config.DeviceProfile.Show))
                     {
-                        
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <i");
+
+WriteLiteral(" class=\"fa fa-cog\"");
+
+WriteLiteral("></i>");
+
+            
+            #line 65 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                 
             
             #line default
             #line hidden
             
             #line 65 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                   Write(Html.ActionLinkClass("Profiles", MVC.Config.DeviceProfile.Index(), "config"));
+                                            Write(Html.ActionLinkClass("Profiles", MVC.Config.DeviceProfile.Index(), "config"));
 
             
             #line default
             #line hidden
             
             #line 65 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                                                                                     
+                                                                                                                              
 
             
             #line default
@@ -384,20 +468,32 @@ WriteLiteral("                    ");
             #line 71 "..\..\Areas\Config\Views\Config\Index.cshtml"
                      if (Authorization.Has(Claims.Config.Enrolment.Show))
                     {
-                        
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <i");
+
+WriteLiteral(" class=\"fa fa-cog\"");
+
+WriteLiteral("></i>");
+
+            
+            #line 73 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                 
             
             #line default
             #line hidden
             
             #line 73 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                   Write(Html.ActionLinkClass("Enrolment", MVC.Config.Enrolment.Index(), "config"));
+                                            Write(Html.ActionLinkClass("Enrolment", MVC.Config.Enrolment.Index(), "config"));
 
             
             #line default
             #line hidden
             
             #line 73 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                                                                                  
+                                                                                                                           
 
             
             #line default
@@ -467,20 +563,32 @@ WriteLiteral(">\r\n                        <h2>Jobs</h2>\r\n");
             #line 88 "..\..\Areas\Config\Views\Config\Index.cshtml"
                          if (Authorization.Has(Claims.Config.JobPreferences.Show))
                         {
-                            
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <i");
+
+WriteLiteral(" class=\"fa fa-cog\"");
+
+WriteLiteral("></i>");
+
+            
+            #line 90 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                     
             
             #line default
             #line hidden
             
             #line 90 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                       Write(Html.ActionLinkClass("General Preferences", MVC.Config.JobPreferences.Index(), "config"));
+                                                Write(Html.ActionLinkClass("General Preferences", MVC.Config.JobPreferences.Index(), "config"));
 
             
             #line default
             #line hidden
             
             #line 90 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                                                                                                     
+                                                                                                                                              
 
             
             #line default
@@ -540,20 +648,32 @@ WriteLiteral(">\r\n                        <h2>Features</h2>\r\n");
             #line 102 "..\..\Areas\Config\Views\Config\Index.cshtml"
                          if (Authorization.Has(Claims.Config.DocumentTemplate.Show))
                         {
-                            
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <i");
+
+WriteLiteral(" class=\"fa fa-cog\"");
+
+WriteLiteral("></i>");
+
+            
+            #line 104 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                     
             
             #line default
             #line hidden
             
             #line 104 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                       Write(Html.ActionLinkClass("Document Templates", MVC.Config.DocumentTemplate.Index(), "config"));
+                                                Write(Html.ActionLinkClass("Document Templates", MVC.Config.DocumentTemplate.Index(), "config"));
 
             
             #line default
             #line hidden
             
             #line 104 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                                                                                                      
+                                                                                                                                               
 
             
             #line default
@@ -579,20 +699,32 @@ WriteLiteral("                        ");
             #line 110 "..\..\Areas\Config\Views\Config\Index.cshtml"
                          if (Authorization.Has(Claims.Config.Plugin.Show))
                         {
-                            
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <i");
+
+WriteLiteral(" class=\"fa fa-cog\"");
+
+WriteLiteral("></i>");
+
+            
+            #line 112 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                     
             
             #line default
             #line hidden
             
             #line 112 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                       Write(Html.ActionLinkClass("Plugins", MVC.Config.Plugins.Index(), "config"));
+                                                Write(Html.ActionLinkClass("Plugins", MVC.Config.Plugins.Index(), "config"));
 
             
             #line default
             #line hidden
             
             #line 112 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                                                                                  
+                                                                                                                           
 
             
             #line default
@@ -646,14 +778,14 @@ WriteLiteral(" id=\"updateAvailableContainer\"");
 
 WriteLiteral(">\r\n        <div>An updated version of Disco is available</div>\r\n        <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 6326), Tuple.Create("\"", 6362)
+WriteAttribute("href", Tuple.Create(" href=\"", 6601), Tuple.Create("\"", 6637)
             
             #line 128 "..\..\Areas\Config\Views\Config\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 6333), Tuple.Create<System.Object, System.Int32>(Model.UpdateResponse.UrlLink
+, Tuple.Create(Tuple.Create("", 6608), Tuple.Create<System.Object, System.Int32>(Model.UpdateResponse.UrlLink
             
             #line default
             #line hidden
-, 6333), false)
+, 6608), false)
 );
 
 WriteLiteral(" target=\"_blank\"");

@@ -473,12 +473,12 @@ WriteLiteral(" id=\"mainFooter\"");
 
 WriteLiteral(">\r\n        <img");
 
-WriteLiteral(" style=\"width: 32px; height: 32px; margin-top: -5px; margin-bottom: -15px;\"");
+WriteLiteral(" style=\"width: 34px; height: 34px; margin-top: -5px; margin-bottom: -12px;\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 22642), Tuple.Create("\"", 22691)
+WriteAttribute("src", Tuple.Create(" src=\"", 22642), Tuple.Create("\"", 22692)
             
             #line 475 "..\..\Areas\Public\Views\UserHeldDevices\Noticeboard.cshtml"
-            , Tuple.Create(Tuple.Create("", 22648), Tuple.Create<System.Object, System.Int32>(Links.ClientSource.Style.Images.Icon32_png
+            , Tuple.Create(Tuple.Create("", 22648), Tuple.Create<System.Object, System.Int32>(Links.ClientSource.Style.Images.Heading_png
             
             #line default
             #line hidden

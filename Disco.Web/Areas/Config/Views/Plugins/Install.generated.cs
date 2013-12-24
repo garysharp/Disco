@@ -177,11 +177,15 @@ WriteLiteral(">\r\n                                <h2");
 
 WriteLiteral(" class=\"pluginName\"");
 
-WriteLiteral(">");
+WriteLiteral("><i");
+
+WriteLiteral(" class=\"fa fa-cogs\"");
+
+WriteLiteral("></i>");
 
             
             #line 37 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
-                                                  Write(plugin.Name);
+                                                                            Write(plugin.Name);
 
             
             #line default
@@ -206,14 +210,14 @@ WriteLiteral("                                        <a");
 
 WriteLiteral(" class=\"pluginInstallLink button\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 1941), Tuple.Create("\"", 1996)
+WriteAttribute("href", Tuple.Create(" href=\"", 1967), Tuple.Create("\"", 2022)
             
             #line 40 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
-   , Tuple.Create(Tuple.Create("", 1948), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Plugin.Install(plugin.Id))
+   , Tuple.Create(Tuple.Create("", 1974), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Plugin.Install(plugin.Id))
             
             #line default
             #line hidden
-, 1948), false)
+, 1974), false)
 );
 
 WriteLiteral(">Install</a>\r\n");
@@ -233,14 +237,14 @@ WriteLiteral("                                        <a");
 
 WriteLiteral(" class=\"pluginUpdateLink button\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 2356), Tuple.Create("\"", 2410)
+WriteAttribute("href", Tuple.Create(" href=\"", 2382), Tuple.Create("\"", 2436)
             
             #line 46 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
-  , Tuple.Create(Tuple.Create("", 2363), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Plugin.Update(plugin.Id))
+  , Tuple.Create(Tuple.Create("", 2389), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Plugin.Update(plugin.Id))
             
             #line default
             #line hidden
-, 2363), false)
+, 2389), false)
 );
 
 WriteLiteral(">Update</a>    \r\n");
@@ -324,20 +328,26 @@ WriteLiteral("</span> | ");
             #line hidden
 WriteLiteral(" | <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 3117), Tuple.Create("\"", 3135)
+WriteAttribute("href", Tuple.Create(" href=\"", 3143), Tuple.Create("\"", 3161)
             
             #line 56 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
-                                                                                       , Tuple.Create(Tuple.Create("", 3124), Tuple.Create<System.Object, System.Int32>(plugin.Url
+                                                                                       , Tuple.Create(Tuple.Create("", 3150), Tuple.Create<System.Object, System.Int32>(plugin.Url
             
             #line default
             #line hidden
-, 3124), false)
+, 3150), false)
 );
+
+WriteLiteral(" title=\"More Information\"");
 
 WriteLiteral(" target=\"_blank\"");
 
-WriteLiteral(">More Information</a>\r\n                                </div>\r\n                  " +
-"          </div>\r\n");
+WriteLiteral("><i");
+
+WriteLiteral(" class=\"fa fa-external-link\"");
+
+WriteLiteral("></i></a>\r\n                                </div>\r\n                            </" +
+"div>\r\n");
 
             
             #line 59 "..\..\Areas\Config\Views\Plugins\Install.cshtml"

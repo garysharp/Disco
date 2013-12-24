@@ -1171,7 +1171,6 @@
     <Content Include="ClientSource\Style\ExpressionEditor.min.css">
       <DependentUpon>ExpressionEditor.css</DependentUpon>
     </Content>
-    <None Include="ClientSource\Style\Images\Actions\attach.png" />
     <None Include="ClientSource\Style\Images\Actions\dataTableFirst.png" />
     <None Include="ClientSource\Style\Images\Actions\dataTableFirstDisabled.png" />
     <None Include="ClientSource\Style\Images\Actions\dataTableLast.png" />
@@ -1187,16 +1186,6 @@
     <None Include="ClientSource\Style\Images\Actions\list.png" />
     <None Include="ClientSource\Style\Images\Actions\listAlert.png" />
     <None Include="ClientSource\Style\Images\Actions\locked.png" />
-    <None Include="ClientSource\Style\Images\Actions\pageMenuConfigIcon.png" />
-    <None Include="ClientSource\Style\Images\Actions\pageMenuConfigIconHover.png" />
-    <None Include="ClientSource\Style\Images\Actions\pageMenuIcon.png" />
-    <None Include="ClientSource\Style\Images\Actions\pageMenuIconHover.png" />
-    <None Include="ClientSource\Style\Images\Actions\pageMenuNoticeboardIcon.png" />
-    <None Include="ClientSource\Style\Images\Actions\pageMenuNoticeboardIconHover.png" />
-    <None Include="ClientSource\Style\Images\Actions\pageMenuReportIcon.png" />
-    <None Include="ClientSource\Style\Images\Actions\pageMenuReportIconHover.png" />
-    <None Include="ClientSource\Style\Images\Actions\photo.png" />
-    <None Include="ClientSource\Style\Images\Actions\post.png" />
     <None Include="ClientSource\Style\Images\Actions\remove.png" />
     <None Include="ClientSource\Style\Images\Actions\removeSubtle.png" />
     <None Include="ClientSource\Style\Images\Actions\unlocked.png" />
@@ -1207,8 +1196,6 @@
     <Content Include="ClientSource\Style\Fancytree\ui.fancytree.min.css">
       <DependentUpon>ui.fancytree.css</DependentUpon>
     </Content>
-    <None Include="ClientSource\Style\Images\Actions\pluginDownloadIcon16.png" />
-    <None Include="ClientSource\Style\Images\Actions\pluginDownloadIconHover16.png" />
     <None Include="ClientSource\Style\Images\Actions\user16.png" />
     <None Include="ClientSource\Style\Images\Actions\userGroup16.png" />
     <Content Include="ClientSource\Style\Images\AttachmentTypes\document.png" />
@@ -1229,7 +1216,6 @@
     <Content Include="ClientSource\Style\Images\DeviceTypes\Unknown.png" />
     <Content Include="ClientSource\Style\Images\DeviceTypes\Workstation.png" />
     <Content Include="ClientSource\Style\Images\Heading.png" />
-    <Content Include="ClientSource\Style\Images\Icon32.png" />
     <None Include="ClientSource\Style\Images\Status\error.png" />
     <None Include="ClientSource\Style\Images\Status\fail32.png" />
     <None Include="ClientSource\Style\Images\Status\fileBroken256.png" />
@@ -1247,7 +1233,6 @@
     <None Include="ClientSource\Style\Images\Status\updateAvailable.png" />
     <None Include="ClientSource\Style\Images\Status\warning.png" />
     <None Include="ClientSource\Style\Images\Status\warning32.png" />
-    <None Include="ClientSource\Style\Images\SubMenuBackground.png" />
     <None Include="ClientSource\Style\Images\SubSubMenuIcon.png" />
     <None Include="ClientSource\Style\InitialConfig.css">
       <DependentUpon>InitialConfig.less</DependentUpon>
@@ -1401,7 +1386,9 @@
       <DependentUpon>User.less</DependentUpon>
     </Content>
     <None Include="ClientSource\Style\jQueryUI\old_jquery-ui.css" />
+    <Content Include="ClientSource\Style\FontAwesome\font-awesome.css" />
     <Content Include="favicon.ico" />
+    <Content Include="ClientSource\Style\FontAwesome\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
     <None Include="ClientSource\Style\InitialConfig.less" />
     <None Include="ClientSource\Style\Dialog.less" />
@@ -1432,6 +1419,10 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="ClientSource\Style\Timeline.css.bundle" />
+    <Content Include="ClientSource\Style\FontAwesome\fontawesome-webfont.woff" />
+    <Content Include="ClientSource\Style\FontAwesome\fontawesome-webfont.ttf" />
+    <Content Include="ClientSource\Style\FontAwesome\fontawesome-webfont.eot" />
+    <Content Include="ClientSource\Style\FontAwesome\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\Debug Installer.pubxml" />
     <None Include="Properties\PublishProfiles\Installer.pubxml" />
     <None Include="App_Code\AjaxHelpers.cshtml">
@@ -1939,6 +1930,7 @@
   <ItemGroup>
     <Folder Include="Areas\API\Models\WirelessCertificate\" />
     <Folder Include="Areas\Services\Models\" />
+    <Folder Include="Content\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

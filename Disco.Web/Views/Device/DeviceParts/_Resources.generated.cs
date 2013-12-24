@@ -252,13 +252,13 @@ WriteLiteral("</span>");
             #line hidden
 WriteLiteral("<span");
 
-WriteLiteral(" class=\"remove\"");
+WriteLiteral(" class=\"remove fa fa-times-circle\"");
 
 WriteLiteral("></span>");
 
             
             #line 35 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-                                                                                                                                }
+                                                                                                                                                   }
             
             #line default
             #line hidden
@@ -266,21 +266,21 @@ WriteLiteral("<span");
 
 WriteLiteral(" class=\"timestamp\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2125), Tuple.Create("\"", 2163)
+WriteAttribute("title", Tuple.Create(" title=\"", 2144), Tuple.Create("\"", 2182)
             
             #line 35 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-                                                                                , Tuple.Create(Tuple.Create("", 2133), Tuple.Create<System.Object, System.Int32>(da.Timestamp.ToFullDateTime()
+                                                                                                   , Tuple.Create(Tuple.Create("", 2152), Tuple.Create<System.Object, System.Int32>(da.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 2133), false)
+, 2152), false)
 );
 
 WriteLiteral(">");
 
             
             #line 35 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-                                                                                                                                                                                           Write(da.Timestamp.FromNow());
+                                                                                                                                                                                                              Write(da.Timestamp.FromNow());
 
             
             #line default
@@ -317,11 +317,15 @@ WriteLiteral(" class=\"attachmentInput clearfix\"");
 
 WriteLiteral(">\r\n                        <span");
 
-WriteLiteral(" class=\"action upload\"");
+WriteLiteral(" class=\"action upload fa fa-upload\"");
+
+WriteLiteral(" title=\"Attach File\"");
 
 WriteLiteral("></span><span");
 
-WriteLiteral(" class=\"action photo\"");
+WriteLiteral(" class=\"action photo fa fa-camera\"");
+
+WriteLiteral(" title=\"Capture Image\"");
 
 WriteLiteral("></span>\r\n                    </div>\r\n");
 
@@ -551,7 +555,7 @@ WriteLiteral(" class=\"author\"");
 WriteLiteral("></span>\';\r\n                            if (canRemove)\r\n                         " +
 "       t += \'<span");
 
-WriteLiteral(" class=\"remove\"");
+WriteLiteral(" class=\"remove fa fa-times-circle\"");
 
 WriteLiteral("></span>\';\r\n                            t += \'<span");
 

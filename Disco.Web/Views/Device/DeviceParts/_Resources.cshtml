@@ -32,7 +32,7 @@
                                   else
                                   { @da.Comments }}
                             </span><span class="author">@da.TechUser.ToString()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && da.TechUserId == CurrentUser.Id))
-                                                                                      {<text><span class="remove"></span></text>}<span class="timestamp" title="@da.Timestamp.ToFullDateTime()">@da.Timestamp.FromNow()</span>
+                                                                                      {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" title="@da.Timestamp.ToFullDateTime()">@da.Timestamp.FromNow()</span>
                         </a>   
                         }
                     }
@@ -40,7 +40,7 @@
                 @if (canAddAttachments)
                 {
                     <div class="attachmentInput clearfix">
-                        <span class="action upload"></span><span class="action photo"></span>
+                        <span class="action upload fa fa-upload" title="Attach File"></span><span class="action photo fa fa-camera" title="Capture Image"></span>
                     </div>
                 }
                 <script type="text/javascript">
@@ -144,7 +144,7 @@
                         function buildAttachment(a, canRemove, quick) {
                             var t = '<a><span class="icon"><img alt="Attachment Thumbnail" /></span><span class="comments"></span><span class="author"></span>';
                             if (canRemove)
-                                t += '<span class="remove"></span>';
+                                t += '<span class="remove fa fa-times-circle"></span>';
                             t += '<span class="timestamp"></span></a>';
 
                             var e = $(t);

@@ -34,7 +34,7 @@
                 <input type="text" class="cost" value="@jc.Cost.ToString("C")" />
             </td>
             <td>
-                <span class="remove"></span>
+                <span class="remove fa fa-times-circle"></span>
             </td>
         </tr>
         }
@@ -90,7 +90,7 @@
             $jobComponents.on('click', 'span.remove', removeComponent);
 
             $('#jobComponentsAdd').click(function () {
-                var jc = $('<tr><td><input type="text" class="description" /></td><td><input type="text" class="cost" /></td><td><span class="remove"></span></td></tr>');
+                var jc = $('<tr><td><input type="text" class="description" /></td><td><input type="text" class="cost" /></td><td><span class="remove fa fa-times-circle"></span></td></tr>');
                 jc.find('input').focus(function () { $(this).select() })
                 jc.insertBefore($jobComponents.find('tr').last());
                 jc.find('input.description').focus();

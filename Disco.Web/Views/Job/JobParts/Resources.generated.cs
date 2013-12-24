@@ -179,13 +179,13 @@ WriteLiteral("</span>");
             #line hidden
 WriteLiteral("<span");
 
-WriteLiteral(" class=\"remove\"");
+WriteLiteral(" class=\"remove fa fa-times-circle\"");
 
 WriteLiteral("></span>");
 
             
             #line 33 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                                                         }
+                                                                                                                                            }
             
             #line default
             #line hidden
@@ -193,21 +193,21 @@ WriteLiteral("<span");
 
 WriteLiteral(" class=\"timestamp\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 1812), Tuple.Create("\"", 1850)
+WriteAttribute("title", Tuple.Create(" title=\"", 1831), Tuple.Create("\"", 1869)
             
             #line 33 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                         , Tuple.Create(Tuple.Create("", 1820), Tuple.Create<System.Object, System.Int32>(jl.Timestamp.ToFullDateTime()
+                                                                                            , Tuple.Create(Tuple.Create("", 1839), Tuple.Create<System.Object, System.Int32>(jl.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 1820), false)
+, 1839), false)
 );
 
 WriteLiteral(">");
 
             
             #line 33 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                                                                                                                    Write(jl.Timestamp.FromNow());
+                                                                                                                                                                                                       Write(jl.Timestamp.FromNow());
 
             
             #line default
@@ -262,7 +262,7 @@ WriteLiteral(" accesskey=\"l\"");
 
 WriteLiteral("></textarea>\r\n                        <span");
 
-WriteLiteral(" class=\"action post commentInputPost\"");
+WriteLiteral(" class=\"action post commentInputPost fa fa-comment\"");
 
 WriteLiteral(" title=\"Post Comment\"");
 
@@ -298,14 +298,14 @@ WriteLiteral("            <td");
 
 WriteLiteral(" id=\"Attachments\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2503), Tuple.Create("\"", 2578)
+WriteAttribute("class", Tuple.Create(" class=\"", 2536), Tuple.Create("\"", 2611)
             
             #line 49 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 2511), Tuple.Create<System.Object, System.Int32>(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments"
+, Tuple.Create(Tuple.Create("", 2544), Tuple.Create<System.Object, System.Int32>(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments"
             
             #line default
             #line hidden
-, 2511), false)
+, 2544), false)
 );
 
 WriteLiteral(">\r\n                <div");
@@ -330,14 +330,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                        <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 2746), Tuple.Create("\"", 2803)
+WriteAttribute("href", Tuple.Create(" href=\"", 2779), Tuple.Create("\"", 2836)
             
             #line 53 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 2753), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
+, Tuple.Create(Tuple.Create("", 2786), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
             
             #line default
             #line hidden
-, 2753), false)
+, 2786), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
@@ -366,42 +366,42 @@ WriteLiteral(">\r\n                            <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2909), Tuple.Create("\"", 2929)
+WriteAttribute("title", Tuple.Create(" title=\"", 2942), Tuple.Create("\"", 2962)
             
             #line 54 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 2917), Tuple.Create<System.Object, System.Int32>(ja.Filename
+, Tuple.Create(Tuple.Create("", 2950), Tuple.Create<System.Object, System.Int32>(ja.Filename
             
             #line default
             #line hidden
-, 2917), false)
+, 2950), false)
 );
 
 WriteLiteral(">\r\n                                <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 2996), Tuple.Create("\"", 3055)
+WriteAttribute("src", Tuple.Create(" src=\"", 3029), Tuple.Create("\"", 3088)
             
             #line 55 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3002), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
+, Tuple.Create(Tuple.Create("", 3035), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
             
             #line default
             #line hidden
-, 3002), false)
+, 3035), false)
 );
 
 WriteLiteral(" /></span>\r\n                            <span");
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3118), Tuple.Create("\"", 3138)
+WriteAttribute("title", Tuple.Create(" title=\"", 3151), Tuple.Create("\"", 3171)
             
             #line 56 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3126), Tuple.Create<System.Object, System.Int32>(ja.Comments
+, Tuple.Create(Tuple.Create("", 3159), Tuple.Create<System.Object, System.Int32>(ja.Comments
             
             #line default
             #line hidden
-, 3126), false)
+, 3159), false)
 );
 
 WriteLiteral(">\r\n");
@@ -471,13 +471,13 @@ WriteLiteral("</span>");
             #line hidden
 WriteLiteral("<span");
 
-WriteLiteral(" class=\"remove\"");
+WriteLiteral(" class=\"remove fa fa-times-circle\"");
 
 WriteLiteral("></span>");
 
             
             #line 62 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                                                                }
+                                                                                                                                                   }
             
             #line default
             #line hidden
@@ -485,21 +485,21 @@ WriteLiteral("<span");
 
 WriteLiteral(" class=\"timestamp\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3724), Tuple.Create("\"", 3762)
+WriteAttribute("title", Tuple.Create(" title=\"", 3776), Tuple.Create("\"", 3814)
             
             #line 62 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                , Tuple.Create(Tuple.Create("", 3732), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
+                                                                                                   , Tuple.Create(Tuple.Create("", 3784), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 3732), false)
+, 3784), false)
 );
 
 WriteLiteral(">");
 
             
             #line 62 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                                                                                                                           Write(ja.Timestamp.FromNow());
+                                                                                                                                                                                                              Write(ja.Timestamp.FromNow());
 
             
             #line default
@@ -535,13 +535,13 @@ WriteLiteral(" class=\"attachmentInput clearfix\"");
 
 WriteLiteral(">\r\n                        <span");
 
-WriteLiteral(" class=\"action upload\"");
+WriteLiteral(" class=\"action upload fa fa-upload\"");
 
 WriteLiteral(" title=\"Attach File\"");
 
 WriteLiteral("></span><span");
 
-WriteLiteral(" class=\"action photo\"");
+WriteLiteral(" class=\"action photo fa fa-camera\"");
 
 WriteLiteral(" title=\"Capture Image\"");
 
@@ -927,7 +927,7 @@ WriteLiteral(@"
             function addComment(c, quick, canRemove) {
                 var t = '<div><span class=""author"" />';
                 if (canRemove)
-                    t += '<span class=""remove"" />';
+                    t += '<span class=""remove fa fa-times-circle"" />';
                 t += '<span class=""timestamp"" /><span class=""comment"" /></div>';
 
                 var e = $(t);
@@ -1281,7 +1281,7 @@ WriteLiteral(@"                            } else {
                 if (parseInt(a.ParentId) == jobId) {
                     var t = '<a><span class=""icon""><img alt=""Attachment Thumbnail"" /></span><span class=""comments""></span><span class=""author""></span>';
                     if (canRemove)
-                        t += '<span class=""remove""></span>';
+                        t += '<span class=""remove fa fa-times-circle""></span>';
                     t += '<span class=""timestamp""></span></a>';
 
                     var e = $(t);

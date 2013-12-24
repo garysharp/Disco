@@ -62,13 +62,16 @@ WriteLiteral(">\r\n            <div");
 
 WriteLiteral(" class=\"pageMenuArea\"");
 
-WriteLiteral(">\r\n                <h2>Technician Held Devices for Users</h2>\r\n");
+WriteLiteral(">\r\n                <h2>Technician Held Devices for Users</h2>\r\n                <i" +
+"");
 
-WriteLiteral("                ");
+WriteLiteral(" class=\"fa fa-book\"");
+
+WriteLiteral("></i>");
 
             
             #line 9 "..\..\Areas\Public\Views\Public\Index.cshtml"
-           Write(Html.ActionLinkClass("Report", MVC.Public.UserHeldDevices.Index(), "report"));
+                                     Write(Html.ActionLinkClass("Report", MVC.Public.UserHeldDevices.Index(), "report"));
 
             
             #line default
@@ -82,13 +85,15 @@ WriteLiteral(@">
                     Also displays users which should report to the technicians to collect their device
                     which is ready to be returned to them.
                 </div>
-");
+                <i");
 
-WriteLiteral("                ");
+WriteLiteral(" class=\"fa fa-desktop\"");
+
+WriteLiteral("></i>");
 
             
             #line 15 "..\..\Areas\Public\Views\Public\Index.cshtml"
-           Write(Html.ActionLinkClass("Noticeboard", MVC.Public.UserHeldDevices.Noticeboard(), "noticeboard"));
+                                        Write(Html.ActionLinkClass("Noticeboard", MVC.Public.UserHeldDevices.Noticeboard(), "noticeboard"));
 
             
             #line default
@@ -113,13 +118,15 @@ WriteLiteral(">\r\n            <div");
 
 WriteLiteral(" class=\"pageMenuArea\"");
 
-WriteLiteral(">\r\n                <h2>Technician Held Devices</h2>\r\n");
+WriteLiteral(">\r\n                <h2>Technician Held Devices</h2>\r\n                <i");
 
-WriteLiteral("                ");
+WriteLiteral(" class=\"fa fa-book\"");
+
+WriteLiteral("></i>");
 
             
             #line 27 "..\..\Areas\Public\Views\Public\Index.cshtml"
-           Write(Html.ActionLinkClass("Report", MVC.Public.HeldDevices.Index(), "report"));
+                                     Write(Html.ActionLinkClass("Report", MVC.Public.HeldDevices.Index(), "report"));
 
             
             #line default
@@ -130,13 +137,15 @@ WriteLiteral(" class=\"pageMenuBlurb\"");
 
 WriteLiteral(">\r\n                    Display devices involved in current jobs where the device " +
 "is held by the technicians.\r\n                    Also displays devices which are" +
-" ready to be collected.\r\n                </div>\r\n");
+" ready to be collected.\r\n                </div>\r\n                <i");
 
-WriteLiteral("                ");
+WriteLiteral(" class=\"fa fa-desktop\"");
+
+WriteLiteral("></i>");
 
             
             #line 32 "..\..\Areas\Public\Views\Public\Index.cshtml"
-           Write(Html.ActionLinkClass("Noticeboard", MVC.Public.HeldDevices.Noticeboard(), "noticeboard"));
+                                        Write(Html.ActionLinkClass("Noticeboard", MVC.Public.HeldDevices.Noticeboard(), "noticeboard"));
 
             
             #line default

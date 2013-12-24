@@ -130,6 +130,13 @@ internal partial class T4MVC_System_Web_Mvc_ActionResult : System.Web.Mvc.Action
 namespace Links
 {
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+    public static class Content {
+        private const string URLPATH = "~/Content";
+        public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+        public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+    }
+
+    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
     public static class ClientSource {
         private const string URLPATH = "~/ClientSource";
         public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
@@ -145,6 +152,7 @@ namespace Links
                 public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                 public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
                 public static readonly string disco_dataTables_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.dataTables.extensions.min.js") ? Url("disco.dataTables.extensions.min.js") : Url("disco.dataTables.extensions.js");
+                public static readonly string disco_moment_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.moment.extensions.min.js") ? Url("disco.moment.extensions.min.js") : Url("disco.moment.extensions.js");
                 public static readonly string disco_uicore_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.uicore.min.js") ? Url("disco.uicore.min.js") : Url("disco.uicore.js");
                 public static readonly string disco_unobtrusiveValidation_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.unobtrusiveValidation.extensions.min.js") ? Url("disco.unobtrusiveValidation.extensions.min.js") : Url("disco.unobtrusiveValidation.extensions.js");
                 public static readonly string jquery_2_0_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-2.0.3.min.js") ? Url("jquery-2.0.3.min.js") : Url("jquery-2.0.3.js");
@@ -154,6 +162,8 @@ namespace Links
                 public static readonly string jquery_validate_unobtrusive_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate.unobtrusive.min.js") ? Url("jquery.validate.unobtrusive.min.js") : Url("jquery.validate.unobtrusive.js");
                 public static readonly string jquery_watermark_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.watermark.min.js") ? Url("jquery.watermark.min.js") : Url("jquery.watermark.js");
                 public static readonly string modernizr_2_6_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/modernizr-2.6.2.min.js") ? Url("modernizr-2.6.2.min.js") : Url("modernizr-2.6.2.js");
+                public static readonly string moment_en_au_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/moment.en-au.min.js") ? Url("moment.en-au.min.js") : Url("moment.en-au.js");
+                public static readonly string moment_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/moment.min.js") ? Url("moment.min.js") : Url("moment.js");
             }
         
             public static readonly string Core_js_bundle = Url("Core.js.bundle");
@@ -537,6 +547,20 @@ namespace Links
             }
         
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+            public static class FontAwesome {
+                private const string URLPATH = "~/ClientSource/Style/FontAwesome";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public static readonly string font_awesome_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/font-awesome.min.css") ? Url("font-awesome.min.css") : Url("font-awesome.css");
+                     
+                public static readonly string fontawesome_webfont_eot = Url("fontawesome-webfont.eot");
+                public static readonly string fontawesome_webfont_svg = Url("fontawesome-webfont.svg");
+                public static readonly string fontawesome_webfont_ttf = Url("fontawesome-webfont.ttf");
+                public static readonly string fontawesome_webfont_woff = Url("fontawesome-webfont.woff");
+                public static readonly string FontAwesome_otf = Url("FontAwesome.otf");
+            }
+        
+            [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public static class Images {
                 private const string URLPATH = "~/ClientSource/Style/Images";
                 public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
@@ -546,7 +570,6 @@ namespace Links
                     private const string URLPATH = "~/ClientSource/Style/Images/Actions";
                     public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                     public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string attach_png = Url("attach.png");
                     public static readonly string dataTableFirst_png = Url("dataTableFirst.png");
                     public static readonly string dataTableFirstDisabled_png = Url("dataTableFirstDisabled.png");
                     public static readonly string dataTableLast_png = Url("dataTableLast.png");
@@ -562,18 +585,6 @@ namespace Links
                     public static readonly string list_png = Url("list.png");
                     public static readonly string listAlert_png = Url("listAlert.png");
                     public static readonly string locked_png = Url("locked.png");
-                    public static readonly string pageMenuConfigIcon_png = Url("pageMenuConfigIcon.png");
-                    public static readonly string pageMenuConfigIconHover_png = Url("pageMenuConfigIconHover.png");
-                    public static readonly string pageMenuIcon_png = Url("pageMenuIcon.png");
-                    public static readonly string pageMenuIconHover_png = Url("pageMenuIconHover.png");
-                    public static readonly string pageMenuNoticeboardIcon_png = Url("pageMenuNoticeboardIcon.png");
-                    public static readonly string pageMenuNoticeboardIconHover_png = Url("pageMenuNoticeboardIconHover.png");
-                    public static readonly string pageMenuReportIcon_png = Url("pageMenuReportIcon.png");
-                    public static readonly string pageMenuReportIconHover_png = Url("pageMenuReportIconHover.png");
-                    public static readonly string photo_png = Url("photo.png");
-                    public static readonly string pluginDownloadIcon16_png = Url("pluginDownloadIcon16.png");
-                    public static readonly string pluginDownloadIconHover16_png = Url("pluginDownloadIconHover16.png");
-                    public static readonly string post_png = Url("post.png");
                     public static readonly string remove_png = Url("remove.png");
                     public static readonly string removeSubtle_png = Url("removeSubtle.png");
                     public static readonly string unlocked_png = Url("unlocked.png");
@@ -613,7 +624,6 @@ namespace Links
                 }
             
                 public static readonly string Heading_png = Url("Heading.png");
-                public static readonly string Icon32_png = Url("Icon32.png");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Status {
                     private const string URLPATH = "~/ClientSource/Style/Images/Status";
@@ -638,7 +648,6 @@ namespace Links
                     public static readonly string warning32_png = Url("warning32.png");
                 }
             
-                public static readonly string SubMenuBackground_png = Url("SubMenuBackground.png");
                 public static readonly string SubSubMenuIcon_png = Url("SubSubMenuIcon.png");
             }
         
@@ -676,23 +685,24 @@ namespace Links
                     public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                     public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
                     public static readonly string animated_overlay_gif = Url("animated-overlay.gif");
-                    public static readonly string ui_bg_diagonals_thick_18_b81900_40x40_png = Url("ui-bg_diagonals-thick_18_b81900_40x40.png");
-                    public static readonly string ui_bg_diagonals_thick_20_666666_40x40_png = Url("ui-bg_diagonals-thick_20_666666_40x40.png");
-                    public static readonly string ui_bg_flat_10_000000_40x100_png = Url("ui-bg_flat_10_000000_40x100.png");
-                    public static readonly string ui_bg_glass_100_f6f6f6_1x400_png = Url("ui-bg_glass_100_f6f6f6_1x400.png");
-                    public static readonly string ui_bg_glass_100_fdf5ce_1x400_png = Url("ui-bg_glass_100_fdf5ce_1x400.png");
+                    public static readonly string ui_bg_flat_0_aaaaaa_40x100_png = Url("ui-bg_flat_0_aaaaaa_40x100.png");
+                    public static readonly string ui_bg_flat_75_ffffff_40x100_png = Url("ui-bg_flat_75_ffffff_40x100.png");
+                    public static readonly string ui_bg_glass_55_fbf9ee_1x400_png = Url("ui-bg_glass_55_fbf9ee_1x400.png");
                     public static readonly string ui_bg_glass_65_ffffff_1x400_png = Url("ui-bg_glass_65_ffffff_1x400.png");
-                    public static readonly string ui_bg_gloss_wave_35_f6a828_500x100_png = Url("ui-bg_gloss-wave_35_f6a828_500x100.png");
-                    public static readonly string ui_bg_highlight_soft_100_eeeeee_1x100_png = Url("ui-bg_highlight-soft_100_eeeeee_1x100.png");
-                    public static readonly string ui_bg_highlight_soft_75_ffe45c_1x100_png = Url("ui-bg_highlight-soft_75_ffe45c_1x100.png");
+                    public static readonly string ui_bg_glass_75_dadada_1x400_png = Url("ui-bg_glass_75_dadada_1x400.png");
+                    public static readonly string ui_bg_glass_75_e6e6e6_1x400_png = Url("ui-bg_glass_75_e6e6e6_1x400.png");
+                    public static readonly string ui_bg_glass_95_fef1ec_1x400_png = Url("ui-bg_glass_95_fef1ec_1x400.png");
+                    public static readonly string ui_bg_highlight_soft_75_cccccc_1x100_png = Url("ui-bg_highlight-soft_75_cccccc_1x100.png");
                     public static readonly string ui_icons_222222_256x240_png = Url("ui-icons_222222_256x240.png");
-                    public static readonly string ui_icons_228ef1_256x240_png = Url("ui-icons_228ef1_256x240.png");
-                    public static readonly string ui_icons_ef8c08_256x240_png = Url("ui-icons_ef8c08_256x240.png");
-                    public static readonly string ui_icons_ffd27a_256x240_png = Url("ui-icons_ffd27a_256x240.png");
-                    public static readonly string ui_icons_ffffff_256x240_png = Url("ui-icons_ffffff_256x240.png");
+                    public static readonly string ui_icons_2e83ff_256x240_png = Url("ui-icons_2e83ff_256x240.png");
+                    public static readonly string ui_icons_454545_256x240_png = Url("ui-icons_454545_256x240.png");
+                    public static readonly string ui_icons_888888_256x240_png = Url("ui-icons_888888_256x240.png");
+                    public static readonly string ui_icons_cd0a0a_256x240_png = Url("ui-icons_cd0a0a_256x240.png");
                 }
             
                 public static readonly string jquery_ui_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui.min.css") ? Url("jquery-ui.min.css") : Url("jquery-ui.css");
+                     
+                public static readonly string old_jquery_ui_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/old_jquery-ui.min.css") ? Url("old_jquery-ui.min.css") : Url("old_jquery-ui.css");
                      
             }
         

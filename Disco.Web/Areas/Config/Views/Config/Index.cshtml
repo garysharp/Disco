@@ -12,28 +12,28 @@
                     <h2>Hosting</h2>
                     @if (Authorization.Has(Claims.Config.System.Show))
                     {
-                        @Html.ActionLinkClass("System", MVC.Config.SystemConfig.Index(), "config")
+                        <i class="fa fa-cog"></i>@Html.ActionLinkClass("System", MVC.Config.SystemConfig.Index(), "config")
                         <div class="pageMenuBlurb">
                             Update system configuration, such as the Data Storage Location and Proxy settings.
                         </div>
                     }
                     @if (Authorization.Has(Claims.Config.Organisation.Show))
                     {
-                        @Html.ActionLinkClass("Organisation Details", MVC.Config.Organisation.Index(), "config")
+                        <i class="fa fa-cog"></i>@Html.ActionLinkClass("Organisation Details", MVC.Config.Organisation.Index(), "config")
                         <div class="pageMenuBlurb">
                             Update the Organisation Name, Logo and Addresses associated with this organisation.
                         </div>
                     }
                     @if (Authorization.Has(Claims.DiscoAdminAccount))
                     {
-                        @Html.ActionLinkClass("Authorization Roles", MVC.Config.AuthorizationRole.Index(), "config")
+                        <i class="fa fa-cog"></i>@Html.ActionLinkClass("Authorization Roles", MVC.Config.AuthorizationRole.Index(), "config")
                         <div class="pageMenuBlurb">
                             Configure roles and permissions for users.
                         </div>
                     }
                     @if (Authorization.Has(Claims.Config.Logging.Show))
                     {
-                        @Html.ActionLinkClass("Logging", MVC.Config.Logging.Index(), "config")
+                        <i class="fa fa-cog"></i>@Html.ActionLinkClass("Logging", MVC.Config.Logging.Index(), "config")
                         <div class="pageMenuBlurb">
                             Export Log files from various Disco Modules and view Live Logging.
                         </div>
@@ -48,21 +48,21 @@
                     <h2>Devices</h2>
                     @if (Authorization.Has(Claims.Config.DeviceModel.Show))
                     {
-                        @Html.ActionLinkClass("Models", MVC.Config.DeviceModel.Index(), "config")
+                        <i class="fa fa-cog"></i>@Html.ActionLinkClass("Models", MVC.Config.DeviceModel.Index(), "config")
                         <div class="pageMenuBlurb">
                             Configure Components, Product Images and default settings for Device Models.
                         </div>
                     }
                     @if (Authorization.Has(Claims.Config.DeviceBatch.Show))
                     {
-                        @Html.ActionLinkClass("Batches", MVC.Config.DeviceBatch.Index(), "config")
+                        <i class="fa fa-cog"></i>@Html.ActionLinkClass("Batches", MVC.Config.DeviceBatch.Index(), "config")
                         <div class="pageMenuBlurb">
                             Create and Configure Device Batches.
                         </div>
                     }
                     @if (Authorization.Has(Claims.Config.DeviceProfile.Show))
                     {
-                        @Html.ActionLinkClass("Profiles", MVC.Config.DeviceProfile.Index(), "config")
+                        <i class="fa fa-cog"></i>@Html.ActionLinkClass("Profiles", MVC.Config.DeviceProfile.Index(), "config")
                         <div class="pageMenuBlurb">
                             Configure Device Profiles including computer name generation, distribution and Active
                     Directory OU layout.
@@ -70,7 +70,7 @@
                     }
                     @if (Authorization.Has(Claims.Config.Enrolment.Show))
                     {
-                        @Html.ActionLinkClass("Enrolment", MVC.Config.Enrolment.Index(), "config")
+                        <i class="fa fa-cog"></i>@Html.ActionLinkClass("Enrolment", MVC.Config.Enrolment.Index(), "config")
                         <div class="pageMenuBlurb">
                             Configure Enrolment settings including secure credentials.
                         </div>
@@ -87,7 +87,7 @@
                         <h2>Jobs</h2>
                         @if (Authorization.Has(Claims.Config.JobPreferences.Show))
                         {
-                            @Html.ActionLinkClass("General Preferences", MVC.Config.JobPreferences.Index(), "config")
+                            <i class="fa fa-cog"></i>@Html.ActionLinkClass("General Preferences", MVC.Config.JobPreferences.Index(), "config")
                             <div class="pageMenuBlurb">
                                 Configure general preferences related to jobs.
                             </div>
@@ -101,7 +101,7 @@
                         <h2>Features</h2>
                         @if (Authorization.Has(Claims.Config.DocumentTemplate.Show))
                         {
-                            @Html.ActionLinkClass("Document Templates", MVC.Config.DocumentTemplate.Index(), "config")
+                            <i class="fa fa-cog"></i>@Html.ActionLinkClass("Document Templates", MVC.Config.DocumentTemplate.Index(), "config")
                             <div class="pageMenuBlurb">
                                 Create, Update and Bulk Generate documents based on PDF Templates for Jobs, Devices
                     and Users.
@@ -109,7 +109,7 @@
                         }
                         @if (Authorization.Has(Claims.Config.Plugin.Show))
                         {
-                            @Html.ActionLinkClass("Plugins", MVC.Config.Plugins.Index(), "config")
+                            <i class="fa fa-cog"></i>@Html.ActionLinkClass("Plugins", MVC.Config.Plugins.Index(), "config")
                             <div class="pageMenuBlurb">
                                 Manage extensions to the Disco platform.
                             </div>

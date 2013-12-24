@@ -158,7 +158,7 @@ WriteAttribute("value", Tuple.Create(" value=\"", 966), Tuple.Create("\"", 996)
 
 WriteLiteral(" />\r\n            </td>\r\n            <td>\r\n                <span");
 
-WriteLiteral(" class=\"remove\"");
+WriteLiteral(" class=\"remove fa fa-times-circle\"");
 
 WriteLiteral("></span>\r\n            </td>\r\n        </tr>\r\n");
 
@@ -256,14 +256,14 @@ WriteLiteral(">Add Component</a>\r\n");
             #line hidden
 WriteLiteral("            &nbsp;\r\n        </td>\r\n        <td");
 
-WriteAttribute("colspan", Tuple.Create(" colspan=\"", 1708), Tuple.Create("\"", 1736)
+WriteAttribute("colspan", Tuple.Create(" colspan=\"", 1727), Tuple.Create("\"", 1755)
             
             #line 65 "..\..\Views\Job\JobParts\Components.cshtml"
-, Tuple.Create(Tuple.Create("", 1718), Tuple.Create<System.Object, System.Int32>(hasEdit ? 2 : 1
+, Tuple.Create(Tuple.Create("", 1737), Tuple.Create<System.Object, System.Int32>(hasEdit ? 2 : 1
             
             #line default
             #line hidden
-, 1718), false)
+, 1737), false)
 );
 
 WriteLiteral(" class=\"totalCost\"");
@@ -337,22 +337,22 @@ WriteLiteral(">\r\n        $(function () {\r\n            var $jobComponents = $
 "            $jobComponents.on(\'click\', \'span.remove\', removeComponent);\r\n\r\n     " +
 "       $(\'#jobComponentsAdd\').click(function () {\r\n                var jc = $(\'<" +
 "tr><td><input type=\"text\" class=\"description\" /></td><td><input type=\"text\" clas" +
-"s=\"cost\" /></td><td><span class=\"remove\"></span></td></tr>\');\r\n                j" +
-"c.find(\'input\').focus(function () { $(this).select() })\r\n                jc.inse" +
-"rtBefore($jobComponents.find(\'tr\').last());\r\n                jc.find(\'input.desc" +
-"ription\').focus();\r\n                return false;\r\n            });\r\n\r\n          " +
-"  $(\'#dialogRemoveComponent\').dialog({\r\n                resizable: false,\r\n     " +
-"           height: 140,\r\n                modal: true,\r\n                autoOpen:" +
-" false\r\n            });\r\n\r\n            function removeComponent() {\r\n           " +
-"     var componentRow = $(this).closest(\'tr\');\r\n                var id = compone" +
-"ntRow.attr(\'data-jobcomponentid\');\r\n                if (id) {\r\n                 " +
-"   var data = { id: id };\r\n\r\n                    var $dialogRemoveComponent = $(" +
-"\'#dialogRemoveComponent\');\r\n                    $dialogRemoveComponent.dialog(\"e" +
-"nable\");\r\n                    $dialogRemoveComponent.dialog(\'option\', \'buttons\'," +
-" {\r\n                        \"Remove\": function () {\r\n                           " +
-" $dialogRemoveComponent.dialog(\"disable\");\r\n                            $dialogR" +
-"emoveComponent.dialog(\"option\", \"buttons\", null);\r\n                            $" +
-".ajax({\r\n                                url: \'");
+"s=\"cost\" /></td><td><span class=\"remove fa fa-times-circle\"></span></td></tr>\');" +
+"\r\n                jc.find(\'input\').focus(function () { $(this).select() })\r\n    " +
+"            jc.insertBefore($jobComponents.find(\'tr\').last());\r\n                " +
+"jc.find(\'input.description\').focus();\r\n                return false;\r\n          " +
+"  });\r\n\r\n            $(\'#dialogRemoveComponent\').dialog({\r\n                resiz" +
+"able: false,\r\n                height: 140,\r\n                modal: true,\r\n      " +
+"          autoOpen: false\r\n            });\r\n\r\n            function removeCompone" +
+"nt() {\r\n                var componentRow = $(this).closest(\'tr\');\r\n             " +
+"   var id = componentRow.attr(\'data-jobcomponentid\');\r\n                if (id) {" +
+"\r\n                    var data = { id: id };\r\n\r\n                    var $dialogR" +
+"emoveComponent = $(\'#dialogRemoveComponent\');\r\n                    $dialogRemove" +
+"Component.dialog(\"enable\");\r\n                    $dialogRemoveComponent.dialog(\'" +
+"option\', \'buttons\', {\r\n                        \"Remove\": function () {\r\n        " +
+"                    $dialogRemoveComponent.dialog(\"disable\");\r\n                 " +
+"           $dialogRemoveComponent.dialog(\"option\", \"buttons\", null);\r\n          " +
+"                  $.ajax({\r\n                                url: \'");
 
             
             #line 120 "..\..\Views\Job\JobParts\Components.cshtml"

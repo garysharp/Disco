@@ -30,7 +30,7 @@
                     {
                         <div data-logid="@jl.Id">
                             <span class="author">@jl.TechUser.ToString()</span>@if (canRemoveAnyLogs || (canRemoveOwnLogs && jl.TechUserId == CurrentUser.Id))
-                                                                               {<text><span class="remove"></span></text>}<span class="timestamp" title="@jl.Timestamp.ToFullDateTime()">@jl.Timestamp.FromNow()</span>
+                                                                               {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" title="@jl.Timestamp.ToFullDateTime()">@jl.Timestamp.FromNow()</span>
                             <span class="comment">@jl.Comments.ToMultilineJobRefString()</span>
                         </div>
                     }
@@ -39,7 +39,7 @@
                 {
                     <div class="commentInput clearfix">
                         <textarea class="commentInput" accesskey="l"></textarea>
-                        <span class="action post commentInputPost" title="Post Comment"></span>
+                        <span class="action post commentInputPost fa fa-comment" title="Post Comment"></span>
                     </div>
                 }
             </td>
@@ -59,14 +59,14 @@
                                   else
                                   { @ja.Comments }}
                             </span><span class="author">@ja.TechUser.ToString()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ja.TechUserId == CurrentUser.Id))
-                                                                                      {<text><span class="remove"></span></text>}<span class="timestamp" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.FromNow()</span>
+                                                                                      {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.FromNow()</span>
                         </a>   
                     }
                 </div>
                 @if (canAddAttachments)
                 {
                     <div class="attachmentInput clearfix">
-                        <span class="action upload" title="Attach File"></span><span class="action photo" title="Capture Image"></span>
+                        <span class="action upload fa fa-upload" title="Attach File"></span><span class="action photo fa fa-camera" title="Capture Image"></span>
                     </div>
                 }
             </td>
@@ -252,7 +252,7 @@
             function addComment(c, quick, canRemove) {
                 var t = '<div><span class="author" />';
                 if (canRemove)
-                    t += '<span class="remove" />';
+                    t += '<span class="remove fa fa-times-circle" />';
                 t += '<span class="timestamp" /><span class="comment" /></div>';
 
                 var e = $(t);
@@ -465,7 +465,7 @@
                 if (parseInt(a.ParentId) == jobId) {
                     var t = '<a><span class="icon"><img alt="Attachment Thumbnail" /></span><span class="comments"></span><span class="author"></span>';
                     if (canRemove)
-                        t += '<span class="remove"></span>';
+                        t += '<span class="remove fa fa-times-circle"></span>';
                     t += '<span class="timestamp"></span></a>';
 
                     var e = $(t);

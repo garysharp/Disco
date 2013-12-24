@@ -43,6 +43,7 @@
                                     if (canConfig)
                                     {
                                     <a href="@Url.Action(MVC.Config.Plugins.Configure(pluginDefinition.Id))">
+                                        <i class="fa fa-cogs"></i>
                                         <h3>@pluginDefinition.Name</h3>
                                     </a>
                                     }
@@ -51,7 +52,7 @@
                                     <h3>@pluginDefinition.Name</h3>
                                     }
                                     <div class="pageMenuBlurb">
-                                        <span class="pluginVersion">v@(pluginDefinition.VersionFormatted)</span> | @pluginDefinition.Author | <a href="@pluginDefinition.Url" target="_blank">More Information</a>
+                                        <span class="pluginVersion">v@(pluginDefinition.VersionFormatted)</span> | @pluginDefinition.Author | <a href="@pluginDefinition.Url" title="More Information" target="_blank"><i class="fa fa-external-link"></i></a>
                                     </div>
                                 }
                             </div>

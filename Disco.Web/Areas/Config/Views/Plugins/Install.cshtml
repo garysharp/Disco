@@ -34,7 +34,7 @@
                         itemNextId++;
                         var installedPlugin = Plugins.PluginInstalled(plugin.Id) ? Plugins.GetPlugin(plugin.Id) : null;
                             <div class="pageMenuArea pluginItem@(installedPlugin != null ? " pluginInstalled" : string.Empty)">
-                                <h2 class="pluginName">@plugin.Name
+                                <h2 class="pluginName"><i class="fa fa-cogs"></i>@plugin.Name
                                     @if (installedPlugin == null)
                                     {
                                         <a class="pluginInstallLink button" href="@(Url.Action(MVC.API.Plugin.Install(plugin.Id)))">Install</a>
@@ -53,7 +53,7 @@
                                 </h2>
                                 <div class="pluginItemBlurb">@(new HtmlString(plugin.Blurb))</div>
                                 <div class="pageMenuBlurb">
-                                    <span class="pluginId">@plugin.Id</span> | <span class="pluginVersion">v@(plugin.LatestVersion)</span> | @plugin.Author | <a href="@plugin.Url" target="_blank">More Information</a>
+                                    <span class="pluginId">@plugin.Id</span> | <span class="pluginVersion">v@(plugin.LatestVersion)</span> | @plugin.Author | <a href="@plugin.Url" title="More Information" target="_blank"><i class="fa fa-external-link"></i></a>
                                 </div>
                             </div>
                     }
