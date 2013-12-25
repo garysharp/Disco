@@ -7930,6 +7930,14 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
 
+        static readonly ActionParamsClass_UpdateLibraryCatalogue s_params_UpdateLibraryCatalogue = new ActionParamsClass_UpdateLibraryCatalogue();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateLibraryCatalogue UpdateLibraryCatalogueParams { get { return s_params_UpdateLibraryCatalogue; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateLibraryCatalogue
+        {
+            public readonly string TryWaitingForCompletion = "TryWaitingForCompletion";
+        }
         static readonly ActionParamsClass_Update s_params_Update = new ActionParamsClass_Update();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Update UpdateParams { get { return s_params_Update; } }
@@ -7991,12 +7999,13 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_PluginController() : base(Dummy.Instance) { }
 
-        partial void UpdateLibraryCatalogueOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void UpdateLibraryCatalogueOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool TryWaitingForCompletion);
 
-        public override System.Web.Mvc.ActionResult UpdateLibraryCatalogue()
+        public override System.Web.Mvc.ActionResult UpdateLibraryCatalogue(bool TryWaitingForCompletion)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLibraryCatalogue);
-            UpdateLibraryCatalogueOverride(callInfo);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "TryWaitingForCompletion", TryWaitingForCompletion);
+            UpdateLibraryCatalogueOverride(callInfo, TryWaitingForCompletion);
             return callInfo;
         }
 

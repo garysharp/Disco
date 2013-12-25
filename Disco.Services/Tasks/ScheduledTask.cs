@@ -90,6 +90,8 @@ namespace Disco.Services.Tasks
                 if (!this.Status.FinishedTimestamp.HasValue) // Scheduled Task Didn't Trigger 'Finished'
                     this.Status.Finished();
 
+                this.Status.Finally();
+
                 var nextTriggerTime = context.NextFireTimeUtc;
                 if (nextTriggerTime.HasValue)
                 { // Continuous Task

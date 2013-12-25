@@ -15,13 +15,20 @@ namespace Disco.Web.Areas.API.Controllers
     public partial class PluginController : AuthorizedDatabaseController
     {
         [DiscoAuthorize(Claims.Config.Plugin.Install)]
-        public virtual ActionResult UpdateLibraryCatalogue()
+        public virtual ActionResult UpdateLibraryCatalogue(bool TryWaitingForCompletion = false)
         {
             var status = PluginLibraryUpdateTask.ScheduleNow();
 
-            status.SetFinishedUrl(Url.Action(MVC.Config.Plugins.Install()));
-
-            return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
+            // If upload takes <= 2 seconds, return back to Plugin Install (rather than Task Status)
+            if (TryWaitingForCompletion && status.WaitUntilFinished(TimeSpan.FromSeconds(3)) && status.TaskException == null)
+            {
+                return RedirectToAction(MVC.Config.Plugins.Install());
+            }
+            else
+            {
+                status.SetFinishedUrl(Url.Action(MVC.Config.Plugins.Install()));
+                return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
+            }
         }
 
         [DiscoAuthorize(Claims.Config.Plugin.Install)]

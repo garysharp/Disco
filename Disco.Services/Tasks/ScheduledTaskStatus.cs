@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Quartz;
 using System.Web.Script.Serialization;
+using System.Threading;
 
 namespace Disco.Services.Tasks
 {
@@ -15,6 +16,7 @@ namespace Disco.Services.Tasks
         private string _triggerKey;
         private string _taskName;
         private Type _taskType;
+        private EventWaitHandle _waitHandle;
         private bool _isSilent;
 
         private byte _progress;
@@ -85,6 +87,7 @@ namespace Disco.Services.Tasks
         {
             this._taskName = Task.TaskName;
             this._taskType = Task.GetType();
+            this._waitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
 
             this._sessionId = SessionId;
             this._triggerKey = TriggerKey;
@@ -285,8 +288,14 @@ namespace Disco.Services.Tasks
             }
             UpdateTriggered(changedProperties.ToArray());
         }
+        internal void Finally()
+        {
+            this._waitHandle.Set();
+        }
         public void Reset(DateTime? NextScheduledTimestamp)
         {
+            this._waitHandle.Reset();
+
             List<string> changedProperties = new List<string>();
 
             if (this._nextScheduledTimestamp != NextScheduledTimestamp)
@@ -336,6 +345,10 @@ namespace Disco.Services.Tasks
                 changedProperties.Add("IsCanceling");
             }
             UpdateTriggered(changedProperties.ToArray());
+        }
+        public bool WaitUntilFinished(TimeSpan Timeout)
+        {
+            return this._waitHandle.WaitOne(Timeout);
         }
         #endregion
 

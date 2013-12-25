@@ -75,7 +75,7 @@ namespace Disco.Web.Areas.Config.Controllers
             if (catalogue == null || catalogue.ResponseTimestamp < DateTime.Now.AddHours(-1))
             {
                 // Need to Update Catalogue (over 1 hour old)
-                return RedirectToAction(MVC.API.Plugin.UpdateLibraryCatalogue());
+                return RedirectToAction(MVC.API.Plugin.UpdateLibraryCatalogue(true));
             }
             else
             {
