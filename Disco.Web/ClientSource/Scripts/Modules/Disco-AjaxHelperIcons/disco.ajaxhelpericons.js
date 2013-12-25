@@ -1,3 +1,3 @@
 ﻿$(function () {
-    $('.ajaxHelperIcon:not(.ajaxShowInitially)').hide();
+    $('.ajaxLoading:not(.showInitially)').hide();
 })

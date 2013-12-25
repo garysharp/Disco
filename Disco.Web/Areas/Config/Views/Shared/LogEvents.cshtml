@@ -29,8 +29,7 @@
         <table class="logEventsViewport" data-bind="visible: EventLogs().length > 0" style="display: none">
             <tbody data-bind="foreach: EventLogs">
                 <tr>
-                    <td class="icon" data-bind="css: {information: EventTypeSeverity == 0, warning: EventTypeSeverity == 1, error: EventTypeSeverity == 2}">&nbsp;
-                    </td>
+                    <td class="icon"><i class="fa" data-bind="css: {'fa-info-circle': EventTypeSeverity == 0, 'fa-exclamation-triangle': EventTypeSeverity == 1, 'fa-exclamation-circle': EventTypeSeverity == 2}"></i></td>
                     <td class="timestamp" data-bind="text: FormattedTimestamp"></td>
                     <td class="eventType" data-bind="text: EventTypeName, attr: {title: ModuleDescription}"></td>
                     <td class="message" data-bind="text: FormattedMessage, attr: {title: $parent.LogArguments($data)}"></td>

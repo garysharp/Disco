@@ -504,13 +504,11 @@ WriteLiteral(" style=\"padding: 0.7em 0.7em; margin-top: 20px;\"");
 
 WriteLiteral(" class=\"ui-state-highlight ui-corner-all\"");
 
-WriteLiteral(">\r\n                        <span");
+WriteLiteral(">\r\n                        <i");
 
-WriteLiteral(" style=\"margin-right: 0.3em; float: left;\"");
+WriteLiteral(" class=\"fa fa-info-circle information\"");
 
-WriteLiteral(" class=\"ui-icon ui-icon-alert\"");
-
-WriteLiteral("></span>\r\n");
+WriteLiteral("></i>\r\n");
 
 WriteLiteral("                        ");
 

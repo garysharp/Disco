@@ -379,14 +379,15 @@ WriteLiteral(">\r\n                                <div");
 
 WriteLiteral(" class=\"clearfix\"");
 
-WriteLiteral(">\r\n                                    <span");
+WriteLiteral(">\r\n                                    <i");
 
-WriteLiteral(" class=\"ui-icon ui-icon-info\"");
+WriteLiteral(" class=\"fa fa-info-circle information\"");
 
-WriteLiteral(" style=\"float: left; margin: 0 7px 20px 0;\"");
-
-WriteLiteral(@"></span>
-                                    Multiple devices are assigned to this user. Which device should be associated with this job?
+WriteLiteral(@"></i>&nbsp;Multiple devices are assigned to this user.
+                                    <br />
+                                    <strong>
+                                        Which device should be associated with this job?
+                                    </strong>
                                 </div>
                                 <div>
                                     <ul");
@@ -398,13 +399,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 98 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 101 "..\..\Views\User\UserParts\_Subject.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 98 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 101 "..\..\Views\User\UserParts\_Subject.cshtml"
                                          foreach (var assignment in currentDeviceAssignments)
                                         {
 
@@ -418,7 +419,7 @@ WriteLiteral(" class=\"CreateJob_Assignment clearfix\"");
 WriteLiteral(" data-createjoburl=\"");
 
             
-            #line 100 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 103 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                     Write(Url.Action(MVC.Job.Create(assignment.DeviceSerialNumber, Model.User.Id)));
 
             
@@ -432,14 +433,14 @@ WriteLiteral(" class=\"CreateJob_Assignment_Image\"");
 
 WriteLiteral(" alt=\"Model Image\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 6191), Tuple.Create("\"", 6312)
+WriteAttribute("src", Tuple.Create(" src=\"", 6297), Tuple.Create("\"", 6418)
             
-            #line 101 "..\..\Views\User\UserParts\_Subject.cshtml"
-                               , Tuple.Create(Tuple.Create("", 6197), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
+            #line 104 "..\..\Views\User\UserParts\_Subject.cshtml"
+                               , Tuple.Create(Tuple.Create("", 6303), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
             
             #line default
             #line hidden
-, 6197), false)
+, 6303), false)
 );
 
 WriteLiteral(" />\r\n                                                <div");
@@ -459,7 +460,7 @@ WriteLiteral(@">
                                                                     <span>");
 
             
-            #line 109 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 112 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                      Write(assignment.Device.SerialNumber);
 
             
@@ -468,7 +469,7 @@ WriteLiteral(@">
 WriteLiteral("</span> (<span>");
 
             
-            #line 109 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 112 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                                    Write(assignment.Device.ComputerName);
 
             
@@ -484,7 +485,7 @@ WriteLiteral(@"</span>)
                                                                     <span>");
 
             
-            #line 116 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 119 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                      Write(assignment.Device.DeviceModel.ToString());
 
             
@@ -499,13 +500,13 @@ WriteLiteral(@"</span>
 ");
 
             
-            #line 122 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 125 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                     
             
             #line default
             #line hidden
             
-            #line 122 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 125 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                      if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
                                                                     {
 
@@ -515,7 +516,7 @@ WriteLiteral(@"</span>
 WriteLiteral("                                                                        <span>");
 
             
-            #line 124 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 127 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                          Write(assignment.Device.AssetNumber);
 
             
@@ -524,7 +525,7 @@ WriteLiteral("                                                                  
 WriteLiteral("</span>\r\n");
 
             
-            #line 125 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 128 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                     }
                                                                     else
                                                                     {
@@ -539,7 +540,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">Unknown</span>\r\n");
 
             
-            #line 129 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 132 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                     }
 
             
@@ -553,7 +554,7 @@ WriteLiteral(@"                                                                <
                                                                     <span>");
 
             
-            #line 135 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 138 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                      Write(CommonHelpers.FriendlyDate(assignment.AssignedDate));
 
             
@@ -569,7 +570,7 @@ WriteLiteral(@"</span>
 ");
 
             
-            #line 142 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 145 "..\..\Views\User\UserParts\_Subject.cshtml"
                                         }
 
             
@@ -606,7 +607,7 @@ WriteLiteral("                            <script>\r\n                          
 "ipt>\r\n");
 
             
-            #line 182 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 185 "..\..\Views\User\UserParts\_Subject.cshtml"
                             }
                             else
                             {
@@ -629,7 +630,7 @@ WriteLiteral(@"                            <script>
 ");
 
             
-            #line 197 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 200 "..\..\Views\User\UserParts\_Subject.cshtml"
                             }
                         }
 
@@ -648,13 +649,13 @@ WriteLiteral(" id=\"User_Show_AssignedDevices_Active\"");
 WriteLiteral(">\r\n                        <h3>Current Device Assignments</h3>\r\n");
 
             
-            #line 206 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 209 "..\..\Views\User\UserParts\_Subject.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 206 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 209 "..\..\Views\User\UserParts\_Subject.cshtml"
                          if (currentDeviceAssignments.Count > 0)
                         {
                             foreach (var assignment in currentDeviceAssignments)
@@ -670,7 +671,7 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment clearfix\"");
 WriteLiteral(" data-deviceserialnumber=\"");
 
             
-            #line 210 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 213 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                                   Write(assignment.DeviceSerialNumber);
 
             
@@ -681,13 +682,13 @@ WriteLiteral("\"");
 WriteLiteral(">\r\n");
 
             
-            #line 211 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 214 "..\..\Views\User\UserParts\_Subject.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 211 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 214 "..\..\Views\User\UserParts\_Subject.cshtml"
                                  if (Authorization.Has(Claims.Device.Show))
                                 {
 
@@ -696,14 +697,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                    <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 13184), Tuple.Create("\"", 13251)
+WriteAttribute("href", Tuple.Create(" href=\"", 13290), Tuple.Create("\"", 13357)
             
-            #line 213 "..\..\Views\User\UserParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 13191), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Device.Show(assignment.Device.SerialNumber))
+            #line 216 "..\..\Views\User\UserParts\_Subject.cshtml"
+, Tuple.Create(Tuple.Create("", 13297), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Device.Show(assignment.Device.SerialNumber))
             
             #line default
             #line hidden
-, 13191), false)
+, 13297), false)
 );
 
 WriteLiteral(">\r\n                                        <img");
@@ -712,20 +713,20 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Image\"");
 
 WriteLiteral(" alt=\"Model Image\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 13375), Tuple.Create("\"", 13496)
+WriteAttribute("src", Tuple.Create(" src=\"", 13481), Tuple.Create("\"", 13602)
             
-            #line 214 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                             , Tuple.Create(Tuple.Create("", 13381), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
+            #line 217 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                             , Tuple.Create(Tuple.Create("", 13487), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
             
             #line default
             #line hidden
-, 13381), false)
+, 13487), false)
 );
 
 WriteLiteral(" />\r\n                                    </a>\r\n");
 
             
-            #line 216 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 219 "..\..\Views\User\UserParts\_Subject.cshtml"
                                 }
                                 else
                                 {
@@ -739,20 +740,20 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Image\"");
 
 WriteLiteral(" alt=\"Model Image\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 13768), Tuple.Create("\"", 13889)
+WriteAttribute("src", Tuple.Create(" src=\"", 13874), Tuple.Create("\"", 13995)
             
-            #line 219 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                         , Tuple.Create(Tuple.Create("", 13774), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
+            #line 222 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                         , Tuple.Create(Tuple.Create("", 13880), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
             
             #line default
             #line hidden
-, 13774), false)
+, 13880), false)
 );
 
 WriteLiteral(" />\r\n");
 
             
-            #line 220 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 223 "..\..\Views\User\UserParts\_Subject.cshtml"
                                 }
 
             
@@ -779,13 +780,13 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_SerialNumber\
 WriteLiteral(">\r\n");
 
             
-            #line 229 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 232 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                         
             
             #line default
             #line hidden
             
-            #line 229 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 232 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                          if (Authorization.Has(Claims.Device.Show))
                                                         {
                                                             
@@ -793,14 +794,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 231 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 234 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                        Write(Html.ActionLink(assignment.Device.SerialNumber, MVC.Device.Show(assignment.Device.SerialNumber)));
 
             
             #line default
             #line hidden
             
-            #line 231 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 234 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                                                                              
                                                         }
                                                         else
@@ -810,14 +811,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 235 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 238 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                        Write(assignment.Device.SerialNumber);
 
             
             #line default
             #line hidden
             
-            #line 235 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 238 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                            
                                                         }
 
@@ -827,7 +828,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                                                    </span>(<span>");
 
             
-            #line 237 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 240 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                              Write(assignment.Device.ComputerName);
 
             
@@ -847,7 +848,7 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Model\"");
 WriteLiteral(">");
 
             
-            #line 244 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 247 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                                Write(assignment.Device.DeviceModel.ToString());
 
             
@@ -862,13 +863,13 @@ WriteLiteral(@"</span>
 ");
 
             
-            #line 250 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 253 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                     
             
             #line default
             #line hidden
             
-            #line 250 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 253 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                      if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
                                                     {
 
@@ -882,7 +883,7 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Asset\"");
 WriteLiteral(">");
 
             
-            #line 252 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 255 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                                    Write(assignment.Device.AssetNumber);
 
             
@@ -891,7 +892,7 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n");
 
             
-            #line 253 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 256 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                     }
                                                     else
                                                     {
@@ -906,7 +907,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">Unknown</span>\r\n");
 
             
-            #line 257 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 260 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                     }
 
             
@@ -924,7 +925,7 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Assigned\"");
 WriteLiteral(">");
 
             
-            #line 263 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 266 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                                   Write(CommonHelpers.FriendlyDate(assignment.AssignedDate));
 
             
@@ -940,7 +941,7 @@ WriteLiteral(@"</span>
 ");
 
             
-            #line 270 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 273 "..\..\Views\User\UserParts\_Subject.cshtml"
                             }
                         }
                         else
@@ -956,7 +957,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">No Current Device Assignments</span>\r\n");
 
             
-            #line 275 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 278 "..\..\Views\User\UserParts\_Subject.cshtml"
                         }
 
             

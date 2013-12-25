@@ -71,20 +71,20 @@ WriteLiteral(" class=\"form\"");
 WriteLiteral(" style=\"width: 650px\"");
 
 WriteLiteral(">\r\n        <h2>Verification Results</h2>\r\n        <table>\r\n            <tr>\r\n    " +
-"            <td>\r\n                    <h3><span");
+"            <td>\r\n                    <h3><i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 412), Tuple.Create("\"", 486)
-, Tuple.Create(Tuple.Create("", 420), Tuple.Create("icon", 420), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 409), Tuple.Create("\"", 519)
+, Tuple.Create(Tuple.Create("", 417), Tuple.Create("fa", 417), true)
             
             #line 12 "..\..\Views\InitialConfig\Complete.cshtml"
-, Tuple.Create(Tuple.Create(" ", 424), Tuple.Create<System.Object, System.Int32>(Model.RegistryDatabaseResult == null ? "success" : "error"
+, Tuple.Create(Tuple.Create(" ", 419), Tuple.Create<System.Object, System.Int32>(Model.RegistryDatabaseResult == null ? "fa-check-square success" : "fa-exclamation-circle error"
             
             #line default
             #line hidden
-, 425), false)
+, 420), false)
 );
 
-WriteLiteral("></span>Database</h3>\r\n                    <div");
+WriteLiteral("></i>&nbsp;Database</h3>\r\n                    <div");
 
 WriteLiteral(" class=\"testResult\"");
 
@@ -196,20 +196,20 @@ WriteLiteral("\r\n                            </div>\r\n");
             #line default
             #line hidden
 WriteLiteral("\r\n                    </div>\r\n                </td>\r\n            </tr>\r\n         " +
-"   <tr>\r\n                <td>\r\n                    <h3><span");
+"   <tr>\r\n                <td>\r\n                    <h3><i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2040), Tuple.Create("\"", 2118)
-, Tuple.Create(Tuple.Create("", 2048), Tuple.Create("icon", 2048), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 2073), Tuple.Create("\"", 2185)
+, Tuple.Create(Tuple.Create("", 2081), Tuple.Create("fa", 2081), true)
             
             #line 45 "..\..\Views\InitialConfig\Complete.cshtml"
-, Tuple.Create(Tuple.Create(" ", 2052), Tuple.Create<System.Object, System.Int32>(Model.DiscoDnsTestResult.Item2 == null ? "success" : "warning"
+, Tuple.Create(Tuple.Create(" ", 2083), Tuple.Create<System.Object, System.Int32>(Model.DiscoDnsTestResult.Item2 == null ? "fa-check-square success" : "fa-exclamation-circle error"
             
             #line default
             #line hidden
-, 2053), false)
+, 2084), false)
 );
 
-WriteLiteral("></span>Disco DNS Entry</h3>\r\n                    <div");
+WriteLiteral("></i>&nbsp;Disco DNS Entry</h3>\r\n                    <div");
 
 WriteLiteral(" class=\"testResult\"");
 
@@ -441,20 +441,20 @@ WriteLiteral("\r\n                            </div>\r\n");
             #line default
             #line hidden
 WriteLiteral("\r\n                    </div>\r\n                </td>\r\n            </tr>\r\n         " +
-"   <tr>\r\n                <td>\r\n                    <h3><span");
+"   <tr>\r\n                <td>\r\n                    <h3><i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4945), Tuple.Create("\"", 5021)
-, Tuple.Create(Tuple.Create("", 4953), Tuple.Create("icon", 4953), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 5012), Tuple.Create("\"", 5122)
+, Tuple.Create(Tuple.Create("", 5020), Tuple.Create("fa", 5020), true)
             
             #line 108 "..\..\Views\InitialConfig\Complete.cshtml"
-, Tuple.Create(Tuple.Create(" ", 4957), Tuple.Create<System.Object, System.Int32>(Model.DiscoIctComAuWebResult == null ? "success" : "warning"
+, Tuple.Create(Tuple.Create(" ", 5022), Tuple.Create<System.Object, System.Int32>(Model.DiscoIctComAuWebResult == null ? "fa-check-square success" : "fa-exclamation-circle error"
             
             #line default
             #line hidden
-, 4958), false)
+, 5023), false)
 );
 
-WriteLiteral("></span>Connectivity to <a");
+WriteLiteral("></i>&nbsp;Connectivity to <a");
 
 WriteLiteral(" href=\"https://discoict.com.au\"");
 
@@ -585,11 +585,12 @@ WriteLiteral("\r\n                            </div>\r\n");
             #line default
             #line hidden
 WriteLiteral("\r\n                    </div>\r\n                </td>\r\n            </tr>\r\n         " +
-"   <tr>\r\n                <td>\r\n                    <h3><span");
+"   <tr>\r\n                <td>\r\n                    <h3><i");
 
-WriteLiteral(" class=\"icon information\"");
+WriteLiteral(" class=\"fa fa-info-circle information\"");
 
-WriteLiteral("></span>Unblock ICMP (Ping) for the Disco server</h3>\r\n                    <div");
+WriteLiteral("></i>&nbsp;Unblock ICMP (Ping) for the Disco server</h3>\r\n                    <di" +
+"v");
 
 WriteLiteral(" class=\"testResult\"");
 
@@ -600,11 +601,11 @@ WriteLiteral(@">
             </tr>
             <tr>
                 <td>
-                    <h3><span");
+                    <h3><i");
 
-WriteLiteral(" class=\"icon information\"");
+WriteLiteral(" class=\"fa fa-info-circle information\"");
 
-WriteLiteral("></span>Configure a regularly scheduled Backup</h3>\r\n                    <div");
+WriteLiteral("></i>&nbsp;Configure a regularly scheduled Backup</h3>\r\n                    <div");
 
 WriteLiteral(" class=\"testResult\"");
 
@@ -633,14 +634,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 7797), Tuple.Create("\"", 7852)
+WriteAttribute("href", Tuple.Create(" href=\"", 7927), Tuple.Create("\"", 7982)
             
             #line 161 "..\..\Views\InitialConfig\Complete.cshtml"
-, Tuple.Create(Tuple.Create("", 7804), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.InitialConfig.RestartWebApp())
+, Tuple.Create(Tuple.Create("", 7934), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.InitialConfig.RestartWebApp())
             
             #line default
             #line hidden
-, 7804), false)
+, 7934), false)
 );
 
 WriteLiteral(" class=\"button\"");
@@ -660,14 +661,14 @@ WriteLiteral("            <a");
 
 WriteLiteral(" id=\"tryAgain\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 7962), Tuple.Create("\"", 8012)
+WriteAttribute("href", Tuple.Create(" href=\"", 8092), Tuple.Create("\"", 8142)
             
             #line 165 "..\..\Views\InitialConfig\Complete.cshtml"
-, Tuple.Create(Tuple.Create("", 7969), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.InitialConfig.Complete())
+, Tuple.Create(Tuple.Create("", 8099), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.InitialConfig.Complete())
             
             #line default
             #line hidden
-, 7969), false)
+, 8099), false)
 );
 
 WriteLiteral(" class=\"button\"");

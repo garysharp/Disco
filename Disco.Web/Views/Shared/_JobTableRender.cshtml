@@ -44,7 +44,7 @@
                         else
                         {@item.Id.ToString()}</td>}
                     @if (Model.ShowStatus)
-                    {<td class="status"><span class="icon JobStatus@(item.StatusId)"></span>&nbsp;@item.StatusDescription</td>}
+                    {<td class="status"><i class="fa fa-square jobStatus @(item.StatusId)"></i>&nbsp;@item.StatusDescription</td>}
                     @if (Model.ShowDates)
                     {<td class="dates">@if (item.ClosedDate.HasValue) {@CommonHelpers.FriendlyDate(item.ClosedDate.Value)}else{@CommonHelpers.FriendlyDate(item.OpenedDate)}</td>}
                     @if (Model.ShowType)

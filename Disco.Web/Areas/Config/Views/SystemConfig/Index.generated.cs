@@ -236,13 +236,11 @@ WriteLiteral(">Last Check:\r\n                </th>\r\n                <td>\r\n 
 
 WriteLiteral(" class=\"error\"");
 
-WriteLiteral("><span");
+WriteLiteral("><i");
 
-WriteLiteral(" class=\"icon error\"");
+WriteLiteral(" class=\"fa fa-exclamation-circle fa-lg\"");
 
-WriteLiteral(" style=\"margin-right: 6px;\"");
-
-WriteLiteral("></span>Never</div>\r\n                </td>\r\n            </tr>\r\n");
+WriteLiteral("></i>&nbsp;Never</div>\r\n                </td>\r\n            </tr>\r\n");
 
             
             #line 73 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
@@ -282,17 +280,15 @@ WriteLiteral("            <tr>\r\n                <th");
 WriteLiteral(" style=\"width: 135px\"");
 
 WriteLiteral(">Update Available:\r\n                </th>\r\n                <td>\r\n                " +
-"    <div>\r\n                        <span");
+"    <div>\r\n                        <i");
 
-WriteLiteral(" class=\"icon warning\"");
+WriteLiteral(" class=\"fa fa-info-circle fa-lg information\"");
 
-WriteLiteral(" style=\"margin-right: 6px;\"");
-
-WriteLiteral("></span>Version ");
+WriteLiteral("></i>&nbsp;Version ");
 
             
             #line 90 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                                                         Write(Model.UpdateLatestResponse.Version);
+                                                                                     Write(Model.UpdateLatestResponse.Version);
 
             
             #line default
@@ -325,14 +321,14 @@ WriteLiteral(">");
             #line hidden
 WriteLiteral("</div>\r\n                    <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 3670), Tuple.Create("\"", 3714)
+WriteAttribute("href", Tuple.Create(" href=\"", 3659), Tuple.Create("\"", 3703)
             
             #line 96 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 3677), Tuple.Create<System.Object, System.Int32>(Model.UpdateLatestResponse.UrlLink
+, Tuple.Create(Tuple.Create("", 3666), Tuple.Create<System.Object, System.Int32>(Model.UpdateLatestResponse.UrlLink
             
             #line default
             #line hidden
-, 3677), false)
+, 3666), false)
 );
 
 WriteLiteral(" target=\"_blank\"");
@@ -352,14 +348,12 @@ WriteLiteral("            <tr>\r\n                <th");
 
 WriteLiteral(" style=\"width: 135px\"");
 
-WriteLiteral(">Status:\r\n                </th>\r\n                <td>\r\n                    <span");
+WriteLiteral(">Status:\r\n                </th>\r\n                <td>\r\n                    <i");
 
-WriteLiteral(" class=\"icon success\"");
+WriteLiteral(" class=\"fa fa-check-square fa-lg success\"");
 
-WriteLiteral(" style=\"margin-right: 6px;\"");
-
-WriteLiteral("></span><span>The latest version is installed</span>\r\n                </td>\r\n    " +
-"        </tr>\r\n");
+WriteLiteral("></i>&nbsp;<span>The latest version is installed</span>\r\n                </td>\r\n " +
+"           </tr>\r\n");
 
             
             #line 109 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
@@ -373,46 +367,16 @@ WriteLiteral("\r\n        <tr>\r\n            <th");
 
 WriteLiteral(" style=\"width: 135px\"");
 
-WriteLiteral(">Check for Update:");
+WriteLiteral(">Check for Update:</th>\r\n            <td>\r\n");
 
             
-            #line 113 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                        
-                if (Model.UpdateBetaDeployment)
-                {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                <div");
-
-WriteLiteral(" class=\"alert\"");
-
-WriteLiteral("><span");
-
-WriteLiteral(" class=\"icon warning\"");
-
-WriteLiteral(" style=\"margin-right: 6px;\"");
-
-WriteLiteral("></span>Beta Deployment</div>\r\n");
-
-            
-            #line 117 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                }
-            
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n            </th>\r\n            <td>\r\n");
-
-            
-            #line 121 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 115 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 121 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 115 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                   
                     if (Model.UpdateRunningStatus == null)
                     {
@@ -420,19 +384,34 @@ WriteLiteral("\r\n            </th>\r\n            <td>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("                    <div>");
+WriteLiteral("                    <span>");
 
             
-            #line 124 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                    Write(Html.ActionLink("Check Now", MVC.API.System.UpdateCheck()));
+            #line 118 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+                     Write(Html.ActionLinkSmallButton("Check Now", MVC.API.System.UpdateCheck()));
 
             
             #line default
             #line hidden
-WriteLiteral("</div>\r\n");
+WriteLiteral("</span>\r\n");
+
+WriteLiteral("                    <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">[Will run automatically <strong>");
 
             
-            #line 125 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 119 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+                                                                          Write(CommonHelpers.FriendlyDate(Model.UpdateNextScheduled, "Unknown"));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</strong>]</span>\r\n");
+
+            
+            #line 120 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                     }
                     else
                     {
@@ -440,42 +419,69 @@ WriteLiteral("</div>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("                    <div>Running now - ");
+WriteLiteral("                    <span>");
 
             
-            #line 128 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                  Write(Html.ActionLink("Check Status", MVC.Config.Logging.TaskStatus(Model.UpdateRunningStatus.SessionId)));
+            #line 123 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+                     Write(Html.ActionLink("View Status", MVC.Config.Logging.TaskStatus(Model.UpdateRunningStatus.SessionId)));
 
             
             #line default
             #line hidden
-WriteLiteral("</div>\r\n");
+WriteLiteral("</span>\r\n");
+
+WriteLiteral("                    <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">[Running Now]</span>\r\n");
 
             
-            #line 129 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 125 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                     }
                 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <div");
-
-WriteLiteral(" class=\"smallMessage\"");
-
-WriteLiteral(">\r\n                    Next Scheduled: ");
+WriteLiteral("\r\n");
 
             
-            #line 132 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                               Write(CommonHelpers.FriendlyDate(Model.UpdateNextScheduled, "Unknown"));
+            #line 127 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 127 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+                 if (Model.UpdateBetaDeployment)
+                {
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                </div>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r" +
-"\n");
+WriteLiteral("                    <hr />\r\n");
+
+WriteLiteral("                    <span");
+
+WriteLiteral(" class=\"alert\"");
+
+WriteLiteral("><i");
+
+WriteLiteral(" class=\"fa fa-info-circle fa-lg\"");
+
+WriteLiteral("></i>&nbsp;Beta Deployment</span>\r\n");
 
             
-            #line 138 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 131 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n");
+
+            
+            #line 136 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
  if (canConfigProxy)
 {
     using (Html.BeginForm())
@@ -500,7 +506,7 @@ WriteLiteral(">Address:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 149 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 147 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.EditorFor(m => m.ProxyAddress));
 
             
@@ -511,7 +517,7 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 150 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 148 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.ValidationMessageFor(m => m.ProxyAddress));
 
             
@@ -527,7 +533,7 @@ WriteLiteral(">Port:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 157 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 155 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.EditorFor(m => m.ProxyPort));
 
             
@@ -538,7 +544,7 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 158 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 156 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.ValidationMessageFor(m => m.ProxyPort));
 
             
@@ -554,7 +560,7 @@ WriteLiteral(">Username:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 165 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 163 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.EditorFor(m => m.ProxyUsername));
 
             
@@ -565,7 +571,7 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 166 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 164 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.ValidationMessageFor(m => m.ProxyUsername));
 
             
@@ -581,7 +587,7 @@ WriteLiteral(">Password:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 173 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 171 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.EditorFor(m => m.ProxyPassword));
 
             
@@ -592,7 +598,7 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 174 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 172 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.ValidationMessageFor(m => m.ProxyPassword));
 
             
@@ -614,7 +620,7 @@ WriteLiteral(" value=\"Save Proxy Settings\"");
 WriteLiteral(" />\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </div>\r\n");
 
             
-            #line 186 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 184 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
     }
 }
 else
@@ -639,7 +645,7 @@ WriteLiteral(">Address:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 197 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 195 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.ProxyAddress));
 
             
@@ -655,7 +661,7 @@ WriteLiteral(">Port:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 204 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 202 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.ProxyPort));
 
             
@@ -671,7 +677,7 @@ WriteLiteral(">Username:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 211 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 209 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.ProxyUsername));
 
             
@@ -686,7 +692,7 @@ WriteLiteral(">Password:\r\n                </th>\r\n                <td>*******
 "</td>\r\n            </tr>\r\n        </table>\r\n    </div>\r\n");
 
             
-            #line 222 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 220 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
 }
 
             
@@ -701,7 +707,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 224 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 222 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
 Write(Html.ActionLinkButton("Update Device Last Network Logons", MVC.API.System.UpdateLastNetworkLogonDates()));
 
             

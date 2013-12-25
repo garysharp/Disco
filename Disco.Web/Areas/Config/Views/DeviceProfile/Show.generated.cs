@@ -1950,14 +1950,12 @@ WriteLiteral(" id=\"dialogConfirmDelete\"");
 
 WriteLiteral(" title=\"Delete this Device Profile?\"");
 
-WriteLiteral(">\r\n        <p>\r\n            <span");
+WriteLiteral(">\r\n        <p>\r\n            <i");
 
-WriteLiteral(" class=\"ui-icon ui-icon-alert\"");
+WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg warning\"");
 
-WriteLiteral(" style=\"float: left; margin: 0 7px 20px 0;\"");
-
-WriteLiteral("></span>\r\n            This item will be permanently deleted and cannot be recover" +
-"ed. Are you sure?\r\n        </p>\r\n    </div>\r\n");
+WriteLiteral("></i>\r\n            This item will be permanently deleted and cannot be recovered." +
+" Are you sure?\r\n        </p>\r\n    </div>\r\n");
 
 WriteLiteral("    <script");
 

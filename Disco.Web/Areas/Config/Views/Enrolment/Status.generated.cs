@@ -262,19 +262,23 @@ WriteLiteral(">\r\n                            <tr>\r\n                         
 
 WriteLiteral(" class=\"icon\"");
 
-WriteLiteral(" data-bind=\"attr: {title: FormattedTimestamp}, css: {information: EventTypeSeveri" +
-"ty == 0, warning: EventTypeSeverity == 1, error: EventTypeSeverity == 2}\"");
+WriteLiteral("><i");
 
-WriteLiteral(">\r\n                                    &nbsp;\r\n                                </" +
-"td>\r\n                                <td");
+WriteLiteral(" class=\"fa\"");
+
+WriteLiteral(" data-bind=\"css: { \'fa-info-circle\': EventTypeSeverity == 0, \'fa-exclamation-tria" +
+"ngle\': EventTypeSeverity == 1, \'fa-exclamation-circle\': EventTypeSeverity == 2 }" +
+"\"");
+
+WriteLiteral("></i></td>\r\n                                <td");
 
 WriteLiteral(" class=\"message\"");
 
 WriteLiteral(" data-bind=\"text: FormattedMessage, attr: {title: EventTypeName}\"");
 
-WriteLiteral(">\r\n                                </td>\r\n                            </tr>\r\n    " +
-"                    </tbody>\r\n                    </table>\r\n                </di" +
-"v>\r\n            </div>\r\n            <div");
+WriteLiteral("></td>\r\n                            </tr>\r\n                        </tbody>\r\n    " +
+"                </table>\r\n                </div>\r\n            </div>\r\n          " +
+"  <div");
 
 WriteLiteral(" class=\"sessionInfoConsole\"");
 
@@ -318,7 +322,7 @@ WriteLiteral(@">
         var deviceBaseUrl = '");
 
             
-            #line 143 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 140 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                          Write(Url.Action(MVC.Device.Show()));
 
             
@@ -327,7 +331,7 @@ WriteLiteral(@">
 WriteLiteral("/\'\r\n        var deviceModelImageUrl = \'");
 
             
-            #line 144 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 141 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                Write(Url.Action(MVC.API.DeviceModel.Image()));
 
             
@@ -336,7 +340,7 @@ WriteLiteral("/\'\r\n        var deviceModelImageUrl = \'");
 WriteLiteral("/\'\r\n        var iconWarningUrl = \'url(");
 
             
-            #line 145 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 142 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                               Write(Links.ClientSource.Style.Images.Status.warning32_png);
 
             
@@ -345,7 +349,7 @@ WriteLiteral("/\'\r\n        var iconWarningUrl = \'url(");
 WriteLiteral(")\';\r\n        var iconErrorUrl = \'url(");
 
             
-            #line 146 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 143 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                             Write(Links.ClientSource.Style.Images.Status.fail32_png);
 
             
@@ -448,7 +452,7 @@ WriteLiteral(")\';\r\n\r\n        function pageViewModel() {\r\n            var 
 " vm = new pageViewModel();\r\n            $.ajax({\r\n                url: \'");
 
             
-            #line 310 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 307 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                   Write(Url.Action(MVC.API.DeviceModel.Index()));
 
             
@@ -482,7 +486,7 @@ WriteLiteral(@"',
                 url: '");
 
             
-            #line 335 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 332 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                   Write(Url.Action(MVC.API.Logging.RetrieveEvents()));
 
             
@@ -518,7 +522,7 @@ WriteLiteral(@"',
             liveConnection = $.connection('");
 
             
-            #line 362 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 359 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                        Write(Url.Content("~/API/Logging/Notifications"));
 
             
@@ -527,7 +531,7 @@ WriteLiteral(@"',
 WriteLiteral("\', { addToGroups: \'");
 
             
-            #line 362 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 359 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                                                                                        Write(Disco.BI.DeviceBI.EnrolmentLog.Current.LiveLogGroupName);
 
             

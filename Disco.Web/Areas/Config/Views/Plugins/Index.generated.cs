@@ -350,14 +350,12 @@ WriteLiteral(" style=\"display: none; padding: 0.7em 0.7em; margin-top: 8px;\"")
 
 WriteLiteral(" class=\"ui-state-error ui-corner-all\"");
 
-WriteLiteral(">\r\n                    <span");
+WriteLiteral(">\r\n                    <i");
 
-WriteLiteral(" style=\"margin-right: 0.3em; float: left;\"");
+WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
 
-WriteLiteral(" class=\"ui-icon ui-icon-alert\"");
-
-WriteLiteral("></span>NOTE: Data will be permanently deleted\r\n                </div>\r\n         " +
-"   </div>\r\n        </div>\r\n");
+WriteLiteral("></i>&nbsp;NOTE: Data will be permanently deleted\r\n                </div>\r\n      " +
+"      </div>\r\n        </div>\r\n");
 
 WriteLiteral("        <div");
 
@@ -371,13 +369,11 @@ WriteLiteral(" style=\"padding: 0.7em 0.7em; margin-top: 8px;\"");
 
 WriteLiteral(" class=\"ui-state-highlight ui-corner-all\"");
 
-WriteLiteral(">\r\n                <span");
+WriteLiteral(">\r\n                <i");
 
-WriteLiteral(" style=\"margin-right: 0.3em; float: left;\"");
+WriteLiteral(" class=\"fa fa-info-circle information\"");
 
-WriteLiteral(" class=\"ui-icon ui-icon-help\"");
-
-WriteLiteral("></span>Are you sure you want to uninstall this plugin?\r\n            <h4");
+WriteLiteral("></i>&nbsp;Are you sure you want to uninstall this plugin?\r\n            <h4");
 
 WriteLiteral(" id=\"uninstallPluginConfirm\"");
 
@@ -389,14 +385,12 @@ WriteLiteral(" style=\"display: none; padding: 0.7em 0.7em; margin-top: 8px;\"")
 
 WriteLiteral(" class=\"ui-state-error ui-corner-all\"");
 
-WriteLiteral(">\r\n                <span");
+WriteLiteral(">\r\n                <i");
 
-WriteLiteral(" style=\"margin-right: 0.3em; float: left;\"");
+WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
 
-WriteLiteral(" class=\"ui-icon ui-icon-alert\"");
-
-WriteLiteral("></span>NOTE: Data will be permanently deleted\r\n            </div>\r\n        </div" +
-">\r\n");
+WriteLiteral("></i>&nbsp;NOTE: Data will be permanently deleted\r\n            </div>\r\n        </" +
+"div>\r\n");
 
 WriteLiteral("        <script>\r\n            $(function () {\r\n                // Uninstall\r\n    " +
 "            var uninstallUrl = \'");
@@ -460,10 +454,14 @@ WriteLiteral("        <div");
 
 WriteLiteral(" id=\"updateAvailableContainer\"");
 
-WriteLiteral(">\r\n            <div>");
+WriteLiteral(">\r\n            <i");
+
+WriteLiteral(" class=\"fa fa-cloud-download\"");
+
+WriteLiteral("></i>\r\n            <div>");
 
             
-            #line 174 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 175 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
              Write(Model.PluginUpdates.Count);
 
             
@@ -472,7 +470,7 @@ WriteLiteral(">\r\n            <div>");
 WriteLiteral(" plugin update");
 
             
-            #line 174 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 175 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                                                        Write(Model.PluginUpdates.Count == 1 ? " is" : "s are");
 
             
@@ -481,13 +479,13 @@ WriteLiteral(" plugin update");
 WriteLiteral(" available</div>\r\n");
 
             
-            #line 175 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 176 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 175 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 176 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
              if (canInstall)
             {
                 
@@ -495,15 +493,15 @@ WriteLiteral(" available</div>\r\n");
             #line default
             #line hidden
             
-            #line 177 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
-           Write(Html.ActionLinkButton("Update Now", MVC.API.Plugin.UpdateAll()));
+            #line 178 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+           Write(Html.ActionLinkSmallButton("Update Now", MVC.API.Plugin.UpdateAll(), null, "alert"));
 
             
             #line default
             #line hidden
             
-            #line 177 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
-                                                                                
+            #line 178 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+                                                                                                    
             }
             else
             {
@@ -518,7 +516,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">You do not have sufficient permission to install these updates.</div>\r\n");
 
             
-            #line 182 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 183 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
             }
 
             
@@ -538,7 +536,7 @@ WriteLiteral(@"        <script>
 ");
 
             
-            #line 193 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 194 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                 }
         }
     
@@ -552,13 +550,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 198 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 199 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 198 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 199 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
      if (canUninstall && Model.PluginManifests.Count > 0)
     { 
         
@@ -566,14 +564,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 200 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 201 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
    Write(Html.ActionLinkButton("Uninstall Plugins", MVC.Config.Plugins.Index(), "buttonUninstall"));
 
             
             #line default
             #line hidden
             
-            #line 200 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 201 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                                                                                                   
     }
 
@@ -583,7 +581,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 202 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 203 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
      if (canInstall)
     {
         
@@ -591,14 +589,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 204 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 205 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
    Write(Html.ActionLinkButton("Install Plugins", MVC.Config.Plugins.Install()));
 
             
             #line default
             #line hidden
             
-            #line 204 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 205 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                                                                                
     }
 

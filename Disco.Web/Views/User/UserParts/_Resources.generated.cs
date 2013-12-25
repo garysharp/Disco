@@ -737,16 +737,14 @@ WriteLiteral(" id=\"dialogRemoveAttachment\"");
 
 WriteLiteral(" title=\"Remove this Attachment?\"");
 
-WriteLiteral(">\r\n            <p>\r\n                <span");
+WriteLiteral(">\r\n            <p>\r\n                <i");
 
-WriteLiteral(" class=\"ui-icon ui-icon-alert\"");
+WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
 
-WriteLiteral(" style=\"float: left; margin: 0 7px 20px 0;\"");
-
-WriteLiteral("></span>\r\n                Are you sure?\r\n            </p>\r\n        </div>\r\n");
+WriteLiteral("></i>&nbsp;Are you sure?\r\n            </p>\r\n        </div>\r\n");
 
             
-            #line 250 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 249 "..\..\Views\User\UserParts\_Resources.cshtml"
     }
 
             
@@ -756,7 +754,7 @@ WriteLiteral("    <script>\r\n        $(\'#UserDetailTabItems\').append(\'<li><a
 "b-Resources\" id=\"UserDetailTab-ResourcesLink\">Attachments [");
 
             
-            #line 252 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 251 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                                                                           Write(Model.User.UserAttachments == null ? 0 : Model.User.UserAttachments.Count);
 
             

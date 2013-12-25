@@ -11,7 +11,7 @@
 @ButtonBorderColour: darken(@ButtonColour, 5%);
 @ButtonHoverColour: #9e9e9e;
 @ButtonBorderHoverColour: darken(@ButtonHoverColour, 20%);
-@ButtonAlertColour: #e90000;
+@ButtonAlertColour: #e51400;
 @ButtonBorderAlertColour: #990000;
 
 @MenuHoverColour: lighten(@HyperLinkHoverColour, 30%);
@@ -36,6 +36,23 @@
 @FontFamilyMono: Consolas, "Courier New", monospace;
 @FontWeightHeading: lighter;
 @FontStretchHeading: condensed;
+@FontSizeDefault: 12px;
+
+// Status
+@StatusUnknown: @HeaderBackgroundColour;
+@StatusSuccess: #60a917;
+@StatusInformation: @ButtonColour;
+@StatusWarning: #f0a30a;
+@StatusAlert: #fa6800;
+@StatusError: @ButtonAlertColour;
+@StatusRemove: @ButtonAlertColour;
+
+// Status: Job & Device
+@StatusOpen: @StatusSuccess;
+@StatusClosed: darken(@BackgroundColour, 20%);
+@StatusAwaitingRepair: @ButtonColour;
+@StatusAwaitingUser: @StatusWarning;
+@StatusAwaitingProcessing: #6a00ff;
 
 // Border Radius Mixins
 .border-radius(@radius: 5px) {

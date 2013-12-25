@@ -538,6 +538,7 @@ namespace Links
                 private const string URLPATH = "~/ClientSource/Style/Fancytree";
                 public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                 public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public static readonly string icons_disco_shrunk_png = Url("icons-disco-shrunk.png");
                 public static readonly string icons_DiscoMod_png = Url("icons-DiscoMod.png");
                 public static readonly string icons_gif = Url("icons.gif");
                 public static readonly string loading_gif = Url("loading.gif");
@@ -579,17 +580,10 @@ namespace Links
                     public static readonly string dataTablePrev_png = Url("dataTablePrev.png");
                     public static readonly string dataTablePrevDisabled_png = Url("dataTablePrevDisabled.png");
                     public static readonly string dataTableSort_png = Url("dataTableSort.png");
-                    public static readonly string editForm_png = Url("editForm.png");
                     public static readonly string expressionBrowser_png = Url("expressionBrowser.png");
                     public static readonly string expressionBrowser256_png = Url("expressionBrowser256.png");
-                    public static readonly string list_png = Url("list.png");
-                    public static readonly string listAlert_png = Url("listAlert.png");
                     public static readonly string locked_png = Url("locked.png");
-                    public static readonly string remove_png = Url("remove.png");
-                    public static readonly string removeSubtle_png = Url("removeSubtle.png");
                     public static readonly string unlocked_png = Url("unlocked.png");
-                    public static readonly string user16_png = Url("user16.png");
-                    public static readonly string userGroup16_png = Url("userGroup16.png");
                 }
             
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -629,26 +623,13 @@ namespace Links
                     private const string URLPATH = "~/ClientSource/Style/Images/Status";
                     public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                     public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string error_png = Url("error.png");
                     public static readonly string fail32_png = Url("fail32.png");
                     public static readonly string fileBroken256_png = Url("fileBroken256.png");
-                    public static readonly string information_png = Url("information.png");
-                    public static readonly string jobStatus_Closed_png = Url("jobStatus-Closed.png");
-                    public static readonly string jobStatus_Insurance_png = Url("jobStatus-Insurance.png");
-                    public static readonly string jobStatus_Open_png = Url("jobStatus-Open.png");
-                    public static readonly string jobStatus_Repairs_png = Url("jobStatus-Repairs.png");
-                    public static readonly string jobStatus_User_png = Url("jobStatus-User.png");
                     public static readonly string loading_gif = Url("loading.gif");
-                    public static readonly string ok_png = Url("ok.png");
-                    public static readonly string pbar_ani_gif = Url("pbar-ani.gif");
-                    public static readonly string save_png = Url("save.png");
-                    public static readonly string success_png = Url("success.png");
-                    public static readonly string updateAvailable_png = Url("updateAvailable.png");
-                    public static readonly string warning_png = Url("warning.png");
+                    public static readonly string progressBar_png = Url("progressBar.png");
                     public static readonly string warning32_png = Url("warning32.png");
                 }
             
-                public static readonly string SubSubMenuIcon_png = Url("SubSubMenuIcon.png");
             }
         
             public static readonly string InitialConfig_less = Url("InitialConfig.less");

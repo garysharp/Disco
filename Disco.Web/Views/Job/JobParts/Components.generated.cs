@@ -319,13 +319,11 @@ WriteLiteral(" id=\"dialogRemoveComponent\"");
 
 WriteLiteral(" title=\"Remove this Component?\"");
 
-WriteLiteral(">\r\n        <p>\r\n            <span");
+WriteLiteral(">\r\n        <p>\r\n            <i");
 
-WriteLiteral(" class=\"ui-icon ui-icon-alert\"");
+WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
 
-WriteLiteral(" style=\"float: left; margin: 0 7px 20px 0;\"");
-
-WriteLiteral("></span>\r\n            Are you sure?\r\n        </p>\r\n    </div>\r\n");
+WriteLiteral("></i>&nbsp;Are you sure?\r\n        </p>\r\n    </div>\r\n");
 
 WriteLiteral("    <script");
 
@@ -355,7 +353,7 @@ WriteLiteral(">\r\n        $(function () {\r\n            var $jobComponents = $
 "                  $.ajax({\r\n                                url: \'");
 
             
-            #line 120 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 119 "..\..\Views\Job\JobParts\Components.cshtml"
                                  Write(Url.Action(MVC.API.Job.ComponentRemove()));
 
             
@@ -396,7 +394,7 @@ WriteLiteral("\',\r\n                                dataType: \'json\',\r\n    
 "      url: \'");
 
             
-            #line 177 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 176 "..\..\Views\Job\JobParts\Components.cshtml"
                          Write(Url.Action(MVC.API.Job.ComponentUpdate()));
 
             
@@ -429,7 +427,7 @@ WriteLiteral(@"',
                         url: '");
 
             
-            #line 201 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 200 "..\..\Views\Job\JobParts\Components.cshtml"
                          Write(Url.Action(MVC.API.Job.ComponentAdd(Model.Job.Id, null, null)));
 
             
@@ -462,7 +460,7 @@ WriteLiteral(@"',
 ");
 
             
-            #line 225 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 224 "..\..\Views\Job\JobParts\Components.cshtml"
 }
             
             #line default

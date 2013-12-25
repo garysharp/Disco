@@ -982,13 +982,11 @@ WriteLiteral(" id=\"dialogConfirmDelete\"");
 
 WriteLiteral(" title=\"Delete this Document Template?\"");
 
-WriteLiteral(">\r\n    <p>\r\n        <span");
+WriteLiteral(">\r\n    <p>\r\n        <i");
 
-WriteLiteral(" class=\"ui-icon ui-icon-alert\"");
+WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg warning\"");
 
-WriteLiteral(" style=\"float: left; margin: 0 7px 100px 0;\"");
-
-WriteLiteral(@"></span>This item will be permanently deleted and cannot be recovered.<br />
+WriteLiteral(@"></i>This item will be permanently deleted and cannot be recovered.<br />
         <em>This <strong>will not delete attachments</strong> which have already been imported,
             but any generated documents will no longer be automatically imported.</em><br />
         Are you sure?
@@ -1088,16 +1086,16 @@ WriteLiteral(" id=\"dialogBulkGenerate\"");
 
 WriteLiteral(" class=\"hiddenDialog\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 20958), Tuple.Create("\"", 21009)
-, Tuple.Create(Tuple.Create("", 20966), Tuple.Create("Bulk", 20966), true)
-, Tuple.Create(Tuple.Create(" ", 20970), Tuple.Create("Generate:", 20971), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 20927), Tuple.Create("\"", 20978)
+, Tuple.Create(Tuple.Create("", 20935), Tuple.Create("Bulk", 20935), true)
+, Tuple.Create(Tuple.Create(" ", 20939), Tuple.Create("Generate:", 20940), true)
             
             #line 435 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-, Tuple.Create(Tuple.Create(" ", 20980), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
+, Tuple.Create(Tuple.Create(" ", 20949), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
             
             #line default
             #line hidden
-, 20981), false)
+, 20950), false)
 );
 
 WriteLiteral(">\r\n            <div");

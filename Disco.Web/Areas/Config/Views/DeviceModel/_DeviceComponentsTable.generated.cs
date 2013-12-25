@@ -149,25 +149,36 @@ WriteAttribute("value", Tuple.Create(" value=\"", 1010), Tuple.Create("\"", 1042
 
 WriteLiteral(" />\r\n                </td>\r\n                <td>\r\n                    <span");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1118), Tuple.Create("\"", 1189)
-, Tuple.Create(Tuple.Create("", 1126), Tuple.Create("edit", 1126), true)
+WriteLiteral(" class=\"fa-stack edit\"");
+
+WriteLiteral(">\r\n                        <i");
+
+WriteLiteral(" class=\"fa fa-list-alt fa-stack-2x\"");
+
+WriteLiteral("></i>\r\n                        <i");
+
+WriteAttribute("class", Tuple.Create(" class=\"", 1237), Tuple.Create("\"", 1328)
+, Tuple.Create(Tuple.Create("", 1245), Tuple.Create("fa", 1245), true)
+, Tuple.Create(Tuple.Create(" ", 1247), Tuple.Create("fa-asterisk", 1248), true)
+, Tuple.Create(Tuple.Create(" ", 1259), Tuple.Create("fa-stack-1x", 1260), true)
             
-            #line 32 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
-, Tuple.Create(Tuple.Create("", 1130), Tuple.Create<System.Object, System.Int32>(item.JobSubTypes.Count > 0 ? " editAlert" : string.Empty
+            #line 34 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+, Tuple.Create(Tuple.Create("", 1271), Tuple.Create<System.Object, System.Int32>(item.JobSubTypes.Count == 0 ? " hidden" : string.Empty
             
             #line default
             #line hidden
-, 1130), false)
+, 1271), false)
 );
 
-WriteLiteral("></span>\r\n                </td>\r\n                <td>\r\n                    <span");
+WriteLiteral("></i>\r\n                    </span>\r\n                </td>\r\n                <td>\r\n" +
+"                    <i");
 
-WriteLiteral(" class=\"remove\"");
+WriteLiteral(" class=\"fa fa-times-circle remove\"");
 
-WriteLiteral("></span>\r\n                </td>\r\n            </tr>\r\n");
+WriteLiteral("></i>\r\n                </td>\r\n            </tr>\r\n");
 
             
-            #line 38 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 41 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
         }
 
             
@@ -194,7 +205,7 @@ WriteLiteral(@">
             var $deviceComponents = $('#deviceComponents');
 
             $('#addDeviceComponent').click(function () {
-                var dc = $('<tr><td><input type=""text"" class=""description"" /></td><td><input type=""text"" class=""cost"" /></td><td><span class=""edit""></span></td><td><span class=""remove""></span></td></tr>');
+                var dc = $('<tr><td><input type=""text"" class=""description"" /></td><td><input type=""text"" class=""cost"" /></td><td><span class=""fa-stack edit""><i class=""fa fa-list-alt fa-stack-2x""></i><i class=""fa fa-asterisk fa-stack-1x hidden""></i></span></td><td><i class=""fa fa-times-circle remove""></i></td></tr>');
                 dc.find('input').focus(function () { $(this).select() })
                 dc.insertBefore($deviceComponents.find('tr').last());
                 dc.find('input.description').focus();
@@ -204,8 +215,8 @@ WriteLiteral(@">
             $deviceComponents.on('change', 'input', updateComponent);
             $deviceComponents.on('focus', 'input', function () { $(this).select(); });
 
-            $deviceComponents.on('click', 'span.remove', removeComponent);
-            $deviceComponents.on('click', 'span.edit', editComponentJobTypes);
+            $deviceComponents.on('click', '.remove', removeComponent);
+            $deviceComponents.on('click', '.edit', editComponentJobTypes);
 
             function removeComponentConfirmed(id, row) {
                 var data = { id: id };
@@ -213,7 +224,7 @@ WriteLiteral(@">
                     url: '");
 
             
-            #line 66 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 69 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
                      Write(Url.Action(MVC.API.DeviceModel.ComponentRemove()));
 
             
@@ -245,7 +256,7 @@ WriteLiteral("\',\r\n                    dataType: \'json\',\r\n                
 "          };\r\n                    $.ajax({\r\n                        url: \'");
 
             
-            #line 108 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 111 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
                          Write(Url.Action(MVC.API.DeviceModel.ComponentUpdate()));
 
             
@@ -280,7 +291,7 @@ WriteLiteral(@"',
                         url: '");
 
             
-            #line 134 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 137 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
                          Write(Url.Action(MVC.API.DeviceModel.ComponentAdd(null, null, null)));
 
             
@@ -320,7 +331,7 @@ WriteLiteral(@"',
                         url: '");
 
             
-            #line 165 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 168 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
                          Write(Url.Action(MVC.API.DeviceModel.Component()));
 
             
@@ -349,7 +360,7 @@ WriteLiteral("\',\r\n                        dataType: \'json\',\r\n            
 "      $.ajax({\r\n                                        url: \'");
 
             
-            #line 189 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 192 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
                                          Write(Url.Action(MVC.API.DeviceModel.ComponentUpdateJobSubTypes()));
 
             
@@ -361,40 +372,41 @@ WriteLiteral("\',\r\n                                        dataType: \'json\',
 "                              success: function (d) {\r\n                         " +
 "                   if (d.Result == \'OK\') {\r\n                                    " +
 "            if (d.Component.JobSubTypes.length > 0) {\r\n                         " +
-"                           edit$this.addClass(\'editAlert\');\r\n                   " +
-"                             } else {\r\n                                         " +
-"           edit$this.removeClass(\'editAlert\');\r\n                                " +
-"                }\r\n                                                $dialogUpdate" +
-"JobTypes.dialog(\"enable\");\r\n                                                $dia" +
-"logUpdateJobTypes.dialog(\"close\");\r\n                                            " +
-"} else {\r\n                                                alert(\'Unable to updat" +
-"e component sub types: \' + d.Result);\r\n                                         " +
-"   }\r\n                                        },\r\n                              " +
-"          error: function (jqXHR, textStatus, errorThrown) {\r\n                  " +
-"                          alert(\'Unable to update component sub types: \' + textS" +
-"tatus);\r\n                                        }\r\n                            " +
-"        });\r\n                                };\r\n                               " +
-" var buttons = $dialogUpdateJobTypes.dialog(\"option\", \"buttons\", buttons);\r\n    " +
-"                            $dialogUpdateJobTypes.dialog(\'open\');\r\n             " +
-"               } else {\r\n                                alert(\'Unable to load c" +
-"omponent: \' + d.Result);\r\n                            }\r\n                       " +
-" },\r\n                        error: function (jqXHR, textStatus, errorThrown) {\r" +
-"\n                            alert(\'Unable to load component: \' + textStatus);\r\n" +
-"                        }\r\n                    });\r\n                }\r\n\r\n       " +
-"     }\r\n\r\n            $(\"#dialogConfirmRemove\").dialog({\r\n                resiza" +
-"ble: false,\r\n                height: 140,\r\n                modal: true,\r\n       " +
-"         autoOpen: false,\r\n                buttons: {\r\n                    \"Remo" +
-"ve\": function () {\r\n                        $(this).dialog(\"close\");\r\n          " +
-"          },\r\n                    Cancel: function () {\r\n                       " +
-" $(this).dialog(\"close\");\r\n                    }\r\n                }\r\n           " +
-" });\r\n\r\n            $(\'#dialogUpdateJobTypes\').dialog({\r\n                resizab" +
-"le: false,\r\n                modal: true,\r\n                autoOpen: false,\r\n    " +
-"            width: 550,\r\n                buttons: {\r\n                    \"Save\":" +
-" function () {\r\n                        $(this).dialog(\"close\");\r\n              " +
-"      },\r\n                    Cancel: function () {\r\n                        $(t" +
-"his).dialog(\"close\");\r\n                    }\r\n                }\r\n            });" +
-"\r\n\r\n            $(\'#CheckboxBulkSelect_dialogUpdateJobTypes\').checkboxBulkSelect" +
-"({ parentSelector: \'div\' });\r\n        });\r\n    </script>\r\n");
+"                           edit$this.find(\'.fa-asterisk\').removeClass(\'hidden\');" +
+"\r\n                                                } else {\r\n                    " +
+"                                edit$this.find(\'.fa-asterisk\').addClass(\'hidden\'" +
+");\r\n                                                }\r\n                         " +
+"                       $dialogUpdateJobTypes.dialog(\"enable\");\r\n                " +
+"                                $dialogUpdateJobTypes.dialog(\"close\");\r\n        " +
+"                                    } else {\r\n                                  " +
+"              alert(\'Unable to update component sub types: \' + d.Result);\r\n     " +
+"                                       }\r\n                                      " +
+"  },\r\n                                        error: function (jqXHR, textStatus" +
+", errorThrown) {\r\n                                            alert(\'Unable to u" +
+"pdate component sub types: \' + textStatus);\r\n                                   " +
+"     }\r\n                                    });\r\n                               " +
+" };\r\n                                var buttons = $dialogUpdateJobTypes.dialog(" +
+"\"option\", \"buttons\", buttons);\r\n                                $dialogUpdateJob" +
+"Types.dialog(\'open\');\r\n                            } else {\r\n                   " +
+"             alert(\'Unable to load component: \' + d.Result);\r\n                  " +
+"          }\r\n                        },\r\n                        error: function" +
+" (jqXHR, textStatus, errorThrown) {\r\n                            alert(\'Unable t" +
+"o load component: \' + textStatus);\r\n                        }\r\n                 " +
+"   });\r\n                }\r\n\r\n            }\r\n\r\n            $(\"#dialogConfirmRemov" +
+"e\").dialog({\r\n                resizable: false,\r\n                height: 140,\r\n " +
+"               modal: true,\r\n                autoOpen: false,\r\n                b" +
+"uttons: {\r\n                    \"Remove\": function () {\r\n                        " +
+"$(this).dialog(\"close\");\r\n                    },\r\n                    Cancel: fu" +
+"nction () {\r\n                        $(this).dialog(\"close\");\r\n                 " +
+"   }\r\n                }\r\n            });\r\n\r\n            $(\'#dialogUpdateJobTypes" +
+"\').dialog({\r\n                resizable: false,\r\n                modal: true,\r\n  " +
+"              autoOpen: false,\r\n                width: 550,\r\n                but" +
+"tons: {\r\n                    \"Save\": function () {\r\n                        $(th" +
+"is).dialog(\"close\");\r\n                    },\r\n                    Cancel: functi" +
+"on () {\r\n                        $(this).dialog(\"close\");\r\n                    }" +
+"\r\n                }\r\n            });\r\n\r\n            $(\'#CheckboxBulkSelect_dialo" +
+"gUpdateJobTypes\').checkboxBulkSelect({ parentSelector: \'div\' });\r\n        });\r\n " +
+"   </script>\r\n");
 
 WriteLiteral("    <div");
 
@@ -407,7 +419,7 @@ WriteLiteral(">\r\n        <div>\r\n            <h2>Hardware Non-Warranty Job Ty
 WriteLiteral("            ");
 
             
-            #line 262 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 265 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
        Write(CommonHelpers.CheckBoxList("SubTypes", Model.JobSubTypes.ToSelectListItems(), 2));
 
             
@@ -427,17 +439,15 @@ WriteLiteral(" id=\"dialogConfirmRemove\"");
 
 WriteLiteral(" title=\"Delete this Component?\"");
 
-WriteLiteral(">\r\n        <p>\r\n            <span");
+WriteLiteral(">\r\n        <p>\r\n            <i");
 
-WriteLiteral(" class=\"ui-icon ui-icon-alert\"");
+WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg warning\"");
 
-WriteLiteral(" style=\"float: left; margin: 0 7px 20px 0;\"");
-
-WriteLiteral("></span>\r\n            This item will be permanently deleted and cannot be recover" +
-"ed. Are you sure?\r\n        </p>\r\n    </div>\r\n");
+WriteLiteral("></i>\r\n            This item will be permanently deleted and cannot be recovered." +
+" Are you sure?\r\n        </p>\r\n    </div>\r\n");
 
             
-            #line 273 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 276 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
 }
 else
 {
@@ -452,7 +462,7 @@ WriteLiteral(" id=\"deviceComponents\"");
 WriteLiteral(" data-devicemodelid=\"");
 
             
-            #line 276 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 279 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
                                                  Write(Model.DeviceModelId.HasValue ? Model.DeviceModelId.Value.ToString() : string.Empty);
 
             
@@ -465,13 +475,13 @@ WriteLiteral(">\r\n        <tr>\r\n            <th>Description\r\n            </
 "/tr>\r\n");
 
             
-            #line 285 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 288 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 285 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 288 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
          foreach (var item in Model.DeviceComponents)
         {
 
@@ -483,7 +493,7 @@ WriteLiteral("            <tr");
 WriteLiteral(" data-devicecomponentid=\"");
 
             
-            #line 287 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 290 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
                                    Write(item.Id);
 
             
@@ -496,7 +506,7 @@ WriteLiteral(">\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 289 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 292 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
                Write(item.Description);
 
             
@@ -507,7 +517,7 @@ WriteLiteral("\r\n                </td>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 292 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 295 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
                Write(item.Cost.ToString("C"));
 
             
@@ -516,13 +526,13 @@ WriteLiteral("                    ");
 WriteLiteral("\r\n                </td>\r\n                <td>\r\n");
 
             
-            #line 295 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 298 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 295 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 298 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
                      if (item.JobSubTypes.Count > 0)
                     {
 
@@ -532,13 +542,13 @@ WriteLiteral("\r\n                </td>\r\n                <td>\r\n");
 WriteLiteral("                        <ul>\r\n");
 
             
-            #line 298 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 301 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 298 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 301 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
                              foreach (var jst in item.JobSubTypes)
                             {
 
@@ -548,7 +558,7 @@ WriteLiteral("                        <ul>\r\n");
 WriteLiteral("                                <li>");
 
             
-            #line 300 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 303 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
                                Write(jst.Description);
 
             
@@ -557,7 +567,7 @@ WriteLiteral("                                <li>");
 WriteLiteral("</li>\r\n");
 
             
-            #line 301 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 304 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
                             }
 
             
@@ -566,7 +576,7 @@ WriteLiteral("</li>\r\n");
 WriteLiteral("                        </ul>\r\n");
 
             
-            #line 303 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 306 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
                     }
                     else
                     {
@@ -581,7 +591,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
 
             
-            #line 307 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 310 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
                     }
 
             
@@ -590,7 +600,7 @@ WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
 WriteLiteral("                </td>\r\n            </tr>\r\n");
 
             
-            #line 310 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 313 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
         }
 
             
@@ -599,7 +609,7 @@ WriteLiteral("                </td>\r\n            </tr>\r\n");
 WriteLiteral("    </table>\r\n");
 
             
-            #line 312 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
+            #line 315 "..\..\Areas\Config\Views\DeviceModel\_DeviceComponentsTable.cshtml"
 }
             
             #line default

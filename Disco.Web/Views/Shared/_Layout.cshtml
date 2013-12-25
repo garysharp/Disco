@@ -39,7 +39,7 @@
                             {
                                 if (Authorization.HasAny(Claims.Job.Lists.AwaitingFinanceCharge, Claims.Job.Lists.AwaitingFinancePayment, Claims.Job.Lists.AwaitingFinanceAgreementBreach, Claims.Job.Lists.AwaitingFinanceInsuranceProcessing))
                                 {
-                                <li class="hasSubMenu">@Html.ActionLink("Awaiting Finance", MVC.Job.AwaitingFinance())
+                                <li class="hasSubMenu"><i class="fa fa-caret-right"></i>@Html.ActionLink("Awaiting Finance", MVC.Job.AwaitingFinance())
                                     <ul class="subMenu">
                                         @if (Authorization.Has(Claims.Job.Lists.AwaitingFinanceCharge))
                                         {

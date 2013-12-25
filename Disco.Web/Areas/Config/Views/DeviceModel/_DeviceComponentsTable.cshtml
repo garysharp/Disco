@@ -29,10 +29,13 @@
                     <input type="text" class="cost" value="@item.Cost.ToString("C")" />
                 </td>
                 <td>
-                    <span class="edit@(item.JobSubTypes.Count > 0 ? " editAlert" : string.Empty)"></span>
+                    <span class="fa-stack edit">
+                        <i class="fa fa-list-alt fa-stack-2x"></i>
+                        <i class="fa fa-asterisk fa-stack-1x@(item.JobSubTypes.Count == 0 ? " hidden" : string.Empty)"></i>
+                    </span>
                 </td>
                 <td>
-                    <span class="remove"></span>
+                    <i class="fa fa-times-circle remove"></i>
                 </td>
             </tr>
         }
@@ -47,7 +50,7 @@
             var $deviceComponents = $('#deviceComponents');
 
             $('#addDeviceComponent').click(function () {
-                var dc = $('<tr><td><input type="text" class="description" /></td><td><input type="text" class="cost" /></td><td><span class="edit"></span></td><td><span class="remove"></span></td></tr>');
+                var dc = $('<tr><td><input type="text" class="description" /></td><td><input type="text" class="cost" /></td><td><span class="fa-stack edit"><i class="fa fa-list-alt fa-stack-2x"></i><i class="fa fa-asterisk fa-stack-1x hidden"></i></span></td><td><i class="fa fa-times-circle remove"></i></td></tr>');
                 dc.find('input').focus(function () { $(this).select() })
                 dc.insertBefore($deviceComponents.find('tr').last());
                 dc.find('input.description').focus();
@@ -57,8 +60,8 @@
             $deviceComponents.on('change', 'input', updateComponent);
             $deviceComponents.on('focus', 'input', function () { $(this).select(); });
 
-            $deviceComponents.on('click', 'span.remove', removeComponent);
-            $deviceComponents.on('click', 'span.edit', editComponentJobTypes);
+            $deviceComponents.on('click', '.remove', removeComponent);
+            $deviceComponents.on('click', '.edit', editComponentJobTypes);
 
             function removeComponentConfirmed(id, row) {
                 var data = { id: id };
@@ -194,9 +197,9 @@
                                         success: function (d) {
                                             if (d.Result == 'OK') {
                                                 if (d.Component.JobSubTypes.length > 0) {
-                                                    edit$this.addClass('editAlert');
+                                                    edit$this.find('.fa-asterisk').removeClass('hidden');
                                                 } else {
-                                                    edit$this.removeClass('editAlert');
+                                                    edit$this.find('.fa-asterisk').addClass('hidden');
                                                 }
                                                 $dialogUpdateJobTypes.dialog("enable");
                                                 $dialogUpdateJobTypes.dialog("close");
@@ -266,7 +269,7 @@
     </div>
     <div id="dialogConfirmRemove" title="Delete this Component?">
         <p>
-            <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+            <i class="fa fa-exclamation-triangle fa-lg warning"></i>
             This item will be permanently deleted and cannot be recovered. Are you sure?
         </p>
     </div>

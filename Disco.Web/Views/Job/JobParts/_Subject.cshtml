@@ -383,8 +383,7 @@
                     @using (Html.BeginForm(MVC.API.Job.ForceClose(Model.Job.Id, null, true)))
                     {
                         <p>
-                            <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-                            Are you sure?
+                            <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?
                         </p>
                         <h3>Reason:</h3>
                         <p>
@@ -430,8 +429,7 @@
                 @Html.ActionLinkSmallButton("Close Job", MVC.API.Job.Close(Model.Job.Id, true), "Job_Show_Job_Actions_Close_Button")
                 <div id="Job_Show_Job_Actions_Close_Dialog" class="dialog" title="Close this Job?">
                     <p>
-                        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-                        Are you sure?
+                        <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?
                     </p>
                 </div>
                 <script type="text/javascript">
@@ -471,8 +469,7 @@
                 @Html.ActionLinkSmallButton("Reopen Job", MVC.API.Job.Reopen(Model.Job.Id, true), "Job_Show_Job_Actions_Reopen_Button")
                 <div id="Job_Show_Job_Actions_Reopen_Dialog" class="dialog" title="Reopen this Job?">
                     <p>
-                        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-                        Are you sure?
+                        <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?
                     </p>
                 </div>
                 <script type="text/javascript">
@@ -513,8 +510,7 @@
                 @Html.ActionLinkSmallButton("Delete Job", MVC.API.Job.Delete(Model.Job.Id, true), "Job_Show_Job_Actions_Delete_Button")
                 <div id="Job_Show_Job_Actions_Delete_Dialog" class="dialog" title="Delete this Job?">
                     <p>
-                        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-                        This item will be permanently deleted and cannot be recovered. Are you sure?
+                        <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;This item will be permanently deleted and cannot be recovered. Are you sure?
                     </p>
                 </div>
                 <script type="text/javascript">
@@ -624,8 +620,7 @@
                 @Html.ActionLinkSmallButton("Convert to Non-Warranty", MVC.API.Job.ConvertHWarToHNWar(Model.Job.Id, true), "Job_Show_Job_Actions_ConvertToHNWar_Button")
                 <div id="Job_Show_Job_Actions_ConvertToHNWar_Dialog" class="dialog" title="Convert this Job?">
                     <p>
-                        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-                        This process is not reversible.<br />
+                        <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;This process is not reversible.<br />
                         Are you sure?
                     </p>
                 </div>

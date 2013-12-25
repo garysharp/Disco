@@ -77,8 +77,7 @@
                 @if (Model.OrganisationAddresses.Count > 1)
                 {
                     <div id="messageMultiSiteMode" style="padding: 0.7em 0.7em; margin-top: 20px;" class="ui-state-highlight ui-corner-all">
-                        <span style="margin-right: 0.3em; float: left;" class="ui-icon ui-icon-info"></span>
-                        Multi-Site mode is recommended where multiple addresses are configured.
+                        <i class="fa fa-info-circle information"></i>&nbsp;Multi-Site mode is recommended where multiple addresses are configured.
                     </div>
                 }
             </td>
@@ -119,7 +118,7 @@
                                 <td>
                                     @if (canConfigAddresses)
                                     {
-                                        <span class="edit" title="Edit Address"></span><span class="delete" title="Delete Address"></span>
+                                        <i class="fa fa-edit information edit" title="Edit Address"></i> <i class="fa fa-times-circle warning delete" title="Delete Address"></i>
                                     }
                                 </td>
                             </tr>
@@ -205,8 +204,11 @@
 {
     <div id="dialogConfirmRemove" title="Delete this Address?">
         <p>
-            <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-            This item will be permanently deleted and cannot be recovered. Are you sure?
+            <i class="fa fa-exclamation-triangle fa-lg warning"></i>
+            This item will be permanently deleted and cannot be recovered.
+        </p>
+        <p>
+            <strong>Are you sure?</strong>
         </p>
     </div>
     <div id="dialogEdit" title="Edit/Create Address">
@@ -291,7 +293,7 @@
                     }
                 }
             });
-            $('#organisationAddresses').find('span.delete').click(function () {
+            $('#organisationAddresses').find('i.delete').click(function () {
                 var componentRow = $(this).closest('tr');
                 var id = componentRow.attr('data-addressid');
                 if (id) {
@@ -336,7 +338,7 @@
             dialog.dialog('open');
         }
 
-        $('#organisationAddresses').find('span.edit').click(function () {
+        $('#organisationAddresses').find('i.edit').click(function () {
             var componentRow = $(this).closest('tr');
             editAddress(componentRow);
         });

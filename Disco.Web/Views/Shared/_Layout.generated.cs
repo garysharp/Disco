@@ -264,11 +264,15 @@ WriteLiteral("                                <li");
 
 WriteLiteral(" class=\"hasSubMenu\"");
 
-WriteLiteral(">");
+WriteLiteral("><i");
+
+WriteLiteral(" class=\"fa fa-caret-right\"");
+
+WriteLiteral("></i>");
 
             
             #line 42 "..\..\Views\Shared\_Layout.cshtml"
-                                                  Write(Html.ActionLink("Awaiting Finance", MVC.Job.AwaitingFinance()));
+                                                                                   Write(Html.ActionLink("Awaiting Finance", MVC.Job.AwaitingFinance()));
 
             
             #line default

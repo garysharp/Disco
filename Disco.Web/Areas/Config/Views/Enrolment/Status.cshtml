@@ -101,11 +101,8 @@
                     <table class="logEventsViewport" data-bind="visible: messages().length > 0" style="display: none">
                         <tbody data-bind="foreach: messages">
                             <tr>
-                                <td class="icon" data-bind="attr: {title: FormattedTimestamp}, css: {information: EventTypeSeverity == 0, warning: EventTypeSeverity == 1, error: EventTypeSeverity == 2}">
-                                    &nbsp;
-                                </td>
-                                <td class="message" data-bind="text: FormattedMessage, attr: {title: EventTypeName}">
-                                </td>
+                                <td class="icon"><i class="fa" data-bind="css: { 'fa-info-circle': EventTypeSeverity == 0, 'fa-exclamation-triangle': EventTypeSeverity == 1, 'fa-exclamation-circle': EventTypeSeverity == 2 }"></i></td>
+                                <td class="message" data-bind="text: FormattedMessage, attr: {title: EventTypeName}"></td>
                             </tr>
                         </tbody>
                     </table>

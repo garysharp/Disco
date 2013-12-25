@@ -67,7 +67,7 @@
                 <th style="width: 135px">Last Check:
                 </th>
                 <td>
-                    <div class="error"><span class="icon error" style="margin-right: 6px;"></span>Never</div>
+                    <div class="error"><i class="fa fa-exclamation-circle fa-lg"></i>&nbsp;Never</div>
                 </td>
             </tr>
             }
@@ -87,7 +87,7 @@
                 </th>
                 <td>
                     <div>
-                        <span class="icon warning" style="margin-right: 6px;"></span>Version @(Model.UpdateLatestResponse.Version) is available
+                        <i class="fa fa-info-circle fa-lg information"></i>&nbsp;Version @(Model.UpdateLatestResponse.Version) is available
                     </div>
                     <div class="smallMessage">
                         [Released @(CommonHelpers.FriendlyDate(Model.UpdateLatestResponse.VersionReleasedTimestamp))]
@@ -103,34 +103,32 @@
                 <th style="width: 135px">Status:
                 </th>
                 <td>
-                    <span class="icon success" style="margin-right: 6px;"></span><span>The latest version is installed</span>
+                    <i class="fa fa-check-square fa-lg success"></i>&nbsp;<span>The latest version is installed</span>
                 </td>
             </tr>
                 }
             }
         }
         <tr>
-            <th style="width: 135px">Check for Update:@{
-                if (Model.UpdateBetaDeployment)
-                {
-                <div class="alert"><span class="icon warning" style="margin-right: 6px;"></span>Beta Deployment</div>
-                }
-            }
-            </th>
+            <th style="width: 135px">Check for Update:</th>
             <td>
                 @{
                     if (Model.UpdateRunningStatus == null)
                     {
-                    <div>@Html.ActionLink("Check Now", MVC.API.System.UpdateCheck())</div>
+                    <span>@Html.ActionLinkSmallButton("Check Now", MVC.API.System.UpdateCheck())</span>
+                    <span class="smallMessage">[Will run automatically <strong>@CommonHelpers.FriendlyDate(Model.UpdateNextScheduled, "Unknown")</strong>]</span>
                     }
                     else
                     {
-                    <div>Running now - @Html.ActionLink("Check Status", MVC.Config.Logging.TaskStatus(Model.UpdateRunningStatus.SessionId))</div>
+                    <span>@Html.ActionLink("View Status", MVC.Config.Logging.TaskStatus(Model.UpdateRunningStatus.SessionId))</span>
+                    <span class="smallMessage">[Running Now]</span>
                     }
                 }
-                <div class="smallMessage">
-                    Next Scheduled: @CommonHelpers.FriendlyDate(Model.UpdateNextScheduled, "Unknown")
-                </div>
+                @if (Model.UpdateBetaDeployment)
+                {
+                    <hr />
+                    <span class="alert"><i class="fa fa-info-circle fa-lg"></i>&nbsp;Beta Deployment</span>
+                }
             </td>
         </tr>
     </table>

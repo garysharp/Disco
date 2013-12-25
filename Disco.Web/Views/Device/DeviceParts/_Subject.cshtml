@@ -135,10 +135,9 @@
                                         var spanProgress = null;
 
                                         $.getJSON('@(Url.Action(MVC.API.Device.LastNetworkLogonDate(Model.Device.SerialNumber)))', function (response, result) {
-
                                             updated = true;
                                             if (spanProgress)
-                                                spanProgress.hide();
+                                                spanProgress.remove();
 
                                             if (result != 'success') {
                                                 alert('Unable to retrieve latest network logon date:\n' + response);
@@ -149,7 +148,7 @@
                                         });
                                         window.setTimeout(function () {
                                             if (!updated) {
-                                                spanProgress = $('<span>').addClass('ajaxHelperIcon ajaxLoading ajaxShowInitially').attr('title', 'Loading...').appendTo(span);
+                                                spanProgress = $('<i>').addClass('ajaxLoading showInitially').attr('title', 'Loading...').appendTo(span);
                                             }
                                         }, 250);
                                     });
@@ -197,15 +196,15 @@
                         <script type="text/javascript">
                             $(function () {
                                 var generatePdfUrl = '@Url.Action(MVC.API.Device.GeneratePdf(Model.Device.SerialNumber.ToString(), null))?DocumentTemplateId=';
-                            var $documentTemplates = $('#Device_Show_GenerateDocument');
-                            $documentTemplates.change(function () {
-                                var v = $documentTemplates.val();
-                                if (v) {
-                                    window.location.href = generatePdfUrl + v;
-                                    $documentTemplates.val('').blur();
-                                }
+                                var $documentTemplates = $('#Device_Show_GenerateDocument');
+                                $documentTemplates.change(function () {
+                                    var v = $documentTemplates.val();
+                                    if (v) {
+                                        window.location.href = generatePdfUrl + v;
+                                        $documentTemplates.val('').blur();
+                                    }
+                                });
                             });
-                        });
                         </script>
                     </div>
                 }
@@ -451,11 +450,9 @@
             {
                 @Html.ActionLinkSmallButton("Update Assignment", MVC.API.Device.UpdateAssignedUserId(Model.Device.SerialNumber, null, true), "Device_Show_User_Actions_Assign_Button")
                 <div id="Device_Show_User_Actions_Assign_Dialog" class="dialog" title="Assign this Device?">
-                    <p>
-                        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-                        Assign to User:
-                                            <input id="Device_Show_User_Actions_Assign_UserId" type="text" />
-                    </p>
+                    <h4><i class="fa fa-info-circle information"></i>&nbsp;Assign to User:</h4>
+                    <br />
+                    <input id="Device_Show_User_Actions_Assign_UserId" type="text" />
                 </div>
                 <script type="text/javascript">
                     $(function () {
@@ -498,7 +495,7 @@
                                 buttonDialog = $('#Device_Show_User_Actions_Assign_Dialog')
                                                     .dialog({
                                                         resizable: false,
-                                                        height: 160,
+                                                        height: 180,
                                                         modal: true,
                                                         autoOpen: false,
                                                         buttons: dialogButtons
@@ -535,7 +532,7 @@
                     <div class="ui-widget">
                         <div class="ui-state-highlight ui-corner-all" style="padding: 6px;">
                             <div style="padding-bottom: 6px;">
-                                <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+                                <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;
                                 This action will allow a device <em>claiming</em> to have the Serial Number '@(Model.Device.SerialNumber)' to be enrolled without authentication.
                             </div>
                             <strong>Are you sure you want to allow an unauthenticated enrolment?</strong>
@@ -581,8 +578,7 @@
                 @Html.ActionLinkSmallButton("Untrust Enrol", MVC.API.Device.UpdateAllowUnauthenticatedEnrol(Model.Device.SerialNumber, false.ToString(), true), "Device_Show_Device_Actions_UntrustEnrol_Button")
                 <div id="Device_Show_Device_Actions_UntrustEnrol_Dialog" title="Untrust this Device?">
                     <div style="padding-bottom: 6px;">
-                        <span class="ui-icon ui-icon-info" style="float: left; margin: 0 7px 20px 0;"></span>
-                        This action will require the device to enrol with authentication (for example: domain joined).
+                        <i class="fa fa-info-circle information"></i>&nbsp;This action will require the device to enrol with authentication (for example: domain joined).
                     </div>
                     <strong>Are you sure you want to require an authenticated enrolment?</strong>
                 </div>
@@ -621,8 +617,7 @@
                 @Html.ActionLinkSmallButton("Decommission", MVC.API.Device.Decommission(), "Device_Show_Device_Actions_Decommission_Button")
                 <div id="Device_Show_Device_Actions_Decommission_Dialog" class="dialog" title="Device Decommissioning">
                     <div class="clearfix" style="margin-bottom: 10px;">
-                        <span class="ui-icon ui-icon-info" style="float: left; margin: 0 7px 0 0;"></span>
-                        Why was this Device Decommissioned?
+                        <i class="fa fa-question-circle fa-lg information"></i>&nbsp;Why was this Device Decommissioned?
                     </div>
                     <div>
                         <ul class="none">
@@ -683,8 +678,7 @@
                 @Html.ActionLinkSmallButton("Recommission", MVC.API.Device.Recommission(Model.Device.SerialNumber, true), "Device_Show_Device_Actions_Recommission_Button")
                 <div id="Device_Show_Device_Actions_Recommission_Dialog" title="Recommission this Device?">
                     <p>
-                        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-                        Are you sure?
+                        <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?
                     </p>
                 </div>
                 <script type="text/javascript">
@@ -722,7 +716,7 @@
                 @Html.ActionLinkSmallButton("Delete Device", MVC.API.Device.Delete(Model.Device.SerialNumber, true), "Device_Show_Device_Actions_Delete_Button")
                 <div id="Device_Show_Device_Actions_Delete_Dialog" title="Delete this Device?">
                     <p>
-                        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+                        <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;
                         This item will be permanently deleted and cannot be recovered.<br />
                         Jobs linked to this Device (but not to a User) will be deleted also.<br />
                         Are you sure?

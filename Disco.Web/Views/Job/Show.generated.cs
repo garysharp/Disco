@@ -82,25 +82,26 @@ WriteLiteral(">\r\n");
             
             #line default
             #line hidden
-WriteLiteral("\r\n        <span");
+WriteLiteral("\r\n        <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 552), Tuple.Create("\"", 596)
-, Tuple.Create(Tuple.Create("", 560), Tuple.Create("icon", 560), true)
-, Tuple.Create(Tuple.Create(" ", 564), Tuple.Create("JobStatus", 565), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 549), Tuple.Create("\"", 602)
+, Tuple.Create(Tuple.Create("", 557), Tuple.Create("fa", 557), true)
+, Tuple.Create(Tuple.Create(" ", 559), Tuple.Create("fa-square", 560), true)
+, Tuple.Create(Tuple.Create(" ", 569), Tuple.Create("jobStatus", 570), true)
             
             #line 17 "..\..\Views\Job\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 574), Tuple.Create<System.Object, System.Int32>(jobStatusInfo.Item1
+, Tuple.Create(Tuple.Create(" ", 579), Tuple.Create<System.Object, System.Int32>(jobStatusInfo.Item1
             
             #line default
             #line hidden
-, 574), false)
+, 580), false)
 );
 
-WriteLiteral("></span>");
+WriteLiteral("></i>&nbsp;");
 
             
             #line 17 "..\..\Views\Job\Show.cshtml"
-                                                             Write(jobStatusInfo.Item2);
+                                                                      Write(jobStatusInfo.Item2);
 
             
             #line default
@@ -109,7 +110,7 @@ WriteLiteral(" ");
 
             
             #line 17 "..\..\Views\Job\Show.cshtml"
-                                                                                        if (Model.LongRunning.HasValue)
+                                                                                                 if (Model.LongRunning.HasValue)
                                                                                        {
             
             #line default

@@ -136,10 +136,14 @@ WriteLiteral(">\r\n                <tr>\r\n                    <td");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteLiteral(" data-bind=\"css: {information: EventTypeSeverity == 0, warning: EventTypeSeverity" +
-" == 1, error: EventTypeSeverity == 2}\"");
+WriteLiteral("><i");
 
-WriteLiteral(">&nbsp;\r\n                    </td>\r\n                    <td");
+WriteLiteral(" class=\"fa\"");
+
+WriteLiteral(" data-bind=\"css: {\'fa-info-circle\': EventTypeSeverity == 0, \'fa-exclamation-trian" +
+"gle\': EventTypeSeverity == 1, \'fa-exclamation-circle\': EventTypeSeverity == 2}\"");
+
+WriteLiteral("></i></td>\r\n                    <td");
 
 WriteLiteral(" class=\"timestamp\"");
 
@@ -161,13 +165,13 @@ WriteLiteral("></td>\r\n                </tr>\r\n            </tbody>\r\n       
 "\r\n");
 
             
-            #line 41 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 40 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 41 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 40 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
       
         var eventTypesFilterJson = (Model.EventTypesFilter != null) ? Newtonsoft.Json.JsonConvert.SerializeObject(Model.EventTypesFilter.Select(et => et.Id).ToArray()) : "null";
     
@@ -181,7 +185,7 @@ WriteLiteral(" type=\"text/javascript\"");
 WriteLiteral(">\r\n        $(function () {\r\n            var logEventsHost = $(\'LogEvents_");
 
             
-            #line 46 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 45 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                                          Write(uniqueId);
 
             
@@ -190,7 +194,7 @@ WriteLiteral(">\r\n        $(function () {\r\n            var logEventsHost = $(
 WriteLiteral("\');\r\n            var logModuleId = \'");
 
             
-            #line 47 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 46 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                            Write(Model.ModuleFilter != null ? Model.ModuleFilter.ModuleId.ToString() : null);
 
             
@@ -199,7 +203,7 @@ WriteLiteral("\');\r\n            var logModuleId = \'");
 WriteLiteral("\';\r\n            var logModuleLiveGroupName = \'");
 
             
-            #line 48 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 47 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                                       Write(Model.ModuleFilter != null ? Model.ModuleFilter.LiveLogGroupName : Disco.BI.Interop.SignalRHandlers.LogNotifications.AllNotifications);
 
             
@@ -208,7 +212,7 @@ WriteLiteral("\';\r\n            var logModuleLiveGroupName = \'");
 WriteLiteral("\';\r\n            var logEventTypeFiltered = ");
 
             
-            #line 49 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 48 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                                    Write(eventTypesFilterJson);
 
             
@@ -217,7 +221,7 @@ WriteLiteral("\';\r\n            var logEventTypeFiltered = ");
 WriteLiteral(";\r\n            var logStartFiler = ");
 
             
-            #line 50 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 49 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                             Write(AjaxHelpers.JsonDate(Model.StartFilter));
 
             
@@ -226,7 +230,7 @@ WriteLiteral(";\r\n            var logStartFiler = ");
 WriteLiteral(";\r\n            var logEndFiler = ");
 
             
-            #line 51 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 50 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                           Write(AjaxHelpers.JsonDate(Model.EndFilter));
 
             
@@ -235,7 +239,7 @@ WriteLiteral(";\r\n            var logEndFiler = ");
 WriteLiteral(";\r\n            var logTakeFiler = \'");
 
             
-            #line 52 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 51 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                             Write(Model.TakeFilter);
 
             
@@ -245,7 +249,7 @@ WriteLiteral("\';\r\n            var liveConnection = null;\r\n            var l
 "tion = \'");
 
             
-            #line 54 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 53 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                                          Write(Model.JavascriptLiveEventFunctionName);
 
             
@@ -254,7 +258,7 @@ WriteLiteral("\';\r\n            var liveConnection = null;\r\n            var l
 WriteLiteral("\';\r\n            var useLive = (\'True\'===\'");
 
             
-            #line 55 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 54 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                                  Write(Model.IsLive);
 
             
@@ -297,7 +301,7 @@ WriteLiteral(@"');
                     url: '");
 
             
-            #line 89 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 88 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                       Write(Url.Action(MVC.API.Logging.RetrieveEvents()));
 
             
@@ -334,7 +338,7 @@ WriteLiteral(@"',
                     liveConnection = $.connection('");
 
             
-            #line 117 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 116 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                                                Write(Url.Content("~/API/Logging/Notifications"));
 
             

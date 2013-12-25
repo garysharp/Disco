@@ -159,13 +159,11 @@ WriteLiteral(" id=\"dialogRemove\"");
 
 WriteLiteral(" title=\"Delete this Page?\"");
 
-WriteLiteral(">\r\n    <p>\r\n        <span");
+WriteLiteral(">\r\n    <p>\r\n        <i");
 
-WriteLiteral(" class=\"ui-icon ui-icon-alert\"");
+WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg warning\"");
 
-WriteLiteral(" style=\"float: left; margin: 0 7px 20px 0;\"");
-
-WriteLiteral("></span>\r\n        Are you sure?\r\n    </p>\r\n</div>\r\n<script");
+WriteLiteral("></i>\r\n        Are you sure?\r\n    </p>\r\n</div>\r\n<script");
 
 WriteLiteral(" type=\"text/javascript\"");
 

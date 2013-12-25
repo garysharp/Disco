@@ -394,15 +394,13 @@ WriteLiteral(" style=\"padding: 0.7em 0.7em; margin-top: 8px;\"");
 
 WriteLiteral(" class=\"ui-state-highlight ui-corner-all\"");
 
-WriteLiteral(">\r\n        <span");
+WriteLiteral(">\r\n        <i");
 
-WriteLiteral(" style=\"margin-right: 0.3em; margin-bottom: 2em; float: left;\"");
+WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg information\"");
 
-WriteLiteral(" class=\"ui-icon ui-icon-alert\"");
-
-WriteLiteral("></span>Warning: All plugins run with the same level of network privileges as the" +
-" Disco Web App.<br />\r\n        <strong>Only Install plugins from a trusted sourc" +
-"e.</strong>\r\n    </div>\r\n</div>\r\n");
+WriteLiteral("></i>&nbsp;Warning: All plugins run with the same level of network privileges as " +
+"the Disco Web App.<br />\r\n        <strong>Only Install plugins from a trusted so" +
+"urce.</strong>\r\n    </div>\r\n</div>\r\n");
 
             
             #line 76 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
@@ -467,15 +465,13 @@ WriteLiteral(" style=\"padding: 0.7em 0.7em; margin-top: 8px;\"");
 
 WriteLiteral(" class=\"ui-state-error ui-corner-all\"");
 
-WriteLiteral(">\r\n            <span");
+WriteLiteral(">\r\n            <i");
 
-WriteLiteral(" style=\"margin-right: 0.3em; margin-bottom: 2em; float: left;\"");
+WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
 
-WriteLiteral(" class=\"ui-icon ui-icon-alert\"");
-
-WriteLiteral("></span>Warning: All plugins run with the same level of network privileges as the" +
-" Disco Web App.<br />\r\n            <strong>Only install plugins from a trusted s" +
-"ource.</strong>\r\n        </div>\r\n    </div>\r\n");
+WriteLiteral("></i>&nbsp;Warning: All plugins run with the same level of network privileges as " +
+"the Disco Web App.<br />\r\n            <strong>Only install plugins from a truste" +
+"d source.</strong>\r\n        </div>\r\n    </div>\r\n");
 
             
             #line 91 "..\..\Areas\Config\Views\Plugins\Install.cshtml"

@@ -47,47 +47,47 @@ namespace Disco.Web
     {
 
 public static System.Web.WebPages.HelperResult AjaxLoader(string id = null)
-    {
+{
 return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
 #line 6 "..\..\App_Code\AjaxHelpers.cshtml"
-     
-        Html.GetPageHelper().BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
+ 
+    Html.GetPageHelper().BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
 
 #line default
 #line hidden
 
-WriteLiteralTo(@__razor_helper_writer, "    <span ");
+WriteLiteralTo(@__razor_helper_writer, "    <i ");
 
 
 
 #line 8 "..\..\App_Code\AjaxHelpers.cshtml"
-WriteTo(@__razor_helper_writer, id!=null ? new HtmlString(string.Format("id=\"{0}_loading\"", id)) : new HtmlString(string.Empty));
+WriteTo(@__razor_helper_writer, id != null ? new HtmlString(string.Format("id=\"{0}_loading\"", id)) : new HtmlString(string.Empty));
 
 #line default
 #line hidden
 
-WriteLiteralTo(@__razor_helper_writer, " class=\"ajaxHelperIcon ajaxLoading\" title=\"Loading...\"></span>");
+WriteLiteralTo(@__razor_helper_writer, " class=\"ajaxLoading\" title=\"Loading...\"></i>");
 
 
 
-WriteLiteralTo(@__razor_helper_writer, "<span ");
+WriteLiteralTo(@__razor_helper_writer, "<i ");
 
 
 
 #line 8 "..\..\App_Code\AjaxHelpers.cshtml"
-                                                                                                                                                    WriteTo(@__razor_helper_writer, id != null ? new HtmlString(string.Format("id=\"{0}_ok\"", id)) : new HtmlString(string.Empty));
+                                                                                                                              WriteTo(@__razor_helper_writer, id != null ? new HtmlString(string.Format("id=\"{0}_ok\"", id)) : null);
 
 #line default
 #line hidden
 
-WriteLiteralTo(@__razor_helper_writer, " class=\"ajaxHelperIcon ajaxOk\"\r\n        title=\"Ok\"></span>\r\n");
+WriteLiteralTo(@__razor_helper_writer, " class=\"fa fa-check fa-lg hidden ajaxOk\" title=\"Ok\"></i>\r\n");
 
 
 
-#line 10 "..\..\App_Code\AjaxHelpers.cshtml"
+#line 9 "..\..\App_Code\AjaxHelpers.cshtml"
 
 #line default
 #line hidden
@@ -98,23 +98,23 @@ WriteLiteralTo(@__razor_helper_writer, " class=\"ajaxHelperIcon ajaxOk\"\r\n    
 
 
 public static System.Web.WebPages.HelperResult AjaxSave()
-    {
+{
 return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 12 "..\..\App_Code\AjaxHelpers.cshtml"
-     
-        Html.GetPageHelper().BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
+#line 11 "..\..\App_Code\AjaxHelpers.cshtml"
+ 
 
 #line default
 #line hidden
 
-WriteLiteralTo(@__razor_helper_writer, "    <span class=\"ajaxHelperIcon ajaxSave\" title=\"Save Changes\"></span>\r\n");
+WriteLiteralTo(@__razor_helper_writer, "    <i class=\"fa fa-check-square fa-lg hidden ajaxSave\" title=\"Save Changes\"></i>" +
+"\r\n");
 
 
 
-#line 15 "..\..\App_Code\AjaxHelpers.cshtml"
+#line 13 "..\..\App_Code\AjaxHelpers.cshtml"
 
 #line default
 #line hidden
@@ -125,23 +125,22 @@ WriteLiteralTo(@__razor_helper_writer, "    <span class=\"ajaxHelperIcon ajaxSav
 
 
 public static System.Web.WebPages.HelperResult AjaxRemove()
-    {
+{
 return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 17 "..\..\App_Code\AjaxHelpers.cshtml"
-     
-        Html.GetPageHelper().BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
+#line 15 "..\..\App_Code\AjaxHelpers.cshtml"
+ 
 
 #line default
 #line hidden
 
-WriteLiteralTo(@__razor_helper_writer, "    <span class=\"ajaxHelperIcon ajaxRemove\" title=\"Remove\"></span>\r\n");
+WriteLiteralTo(@__razor_helper_writer, "    <i class=\"fa fa-times-circle fa-lg hidden ajaxRemove\" title=\"Remove\"></i>\r\n");
 
 
 
-#line 20 "..\..\App_Code\AjaxHelpers.cshtml"
+#line 17 "..\..\App_Code\AjaxHelpers.cshtml"
 
 #line default
 #line hidden
@@ -152,48 +151,48 @@ WriteLiteralTo(@__razor_helper_writer, "    <span class=\"ajaxHelperIcon ajaxRem
 
 
 public static System.Web.WebPages.HelperResult JsonDate(DateTime? date)
-    {
+{
 return new System.Web.WebPages.HelperResult(__razor_helper_writer => {
 
 
 
-#line 22 "..\..\App_Code\AjaxHelpers.cshtml"
-     
-        if (date.HasValue)
-        {
-            var d = date.Value;
+#line 19 "..\..\App_Code\AjaxHelpers.cshtml"
+ 
+    if (date.HasValue)
+    {
+        var d = date.Value;
     
 #line default
 #line hidden
 
 
-#line 26 "..\..\App_Code\AjaxHelpers.cshtml"
+#line 23 "..\..\App_Code\AjaxHelpers.cshtml"
 WriteTo(@__razor_helper_writer, new HtmlString(string.Format("new Date({0}, {1}, {2}, {3}, {4}, {5})", d.Year, d.Month - 1, d.Day, d.Hour, d.Minute, d.Second)));
 
 #line default
 #line hidden
 
 
-#line 26 "..\..\App_Code\AjaxHelpers.cshtml"
+#line 23 "..\..\App_Code\AjaxHelpers.cshtml"
                                                                                                                                       
-        }
-        else
-        { 
+    }
+    else
+    { 
     
 #line default
 #line hidden
 
 
-#line 30 "..\..\App_Code\AjaxHelpers.cshtml"
+#line 27 "..\..\App_Code\AjaxHelpers.cshtml"
 WriteTo(@__razor_helper_writer, new HtmlString("null"));
 
 #line default
 #line hidden
 
 
-#line 30 "..\..\App_Code\AjaxHelpers.cshtml"
+#line 27 "..\..\App_Code\AjaxHelpers.cshtml"
                              
-        }
+    }
 
 #line default
 #line hidden

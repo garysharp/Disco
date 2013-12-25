@@ -705,18 +705,16 @@ WriteLiteral(" id=\"dialogRemoveAttachment\"");
 
 WriteLiteral(" title=\"Remove this Attachment?\"");
 
-WriteLiteral(">\r\n        <p>\r\n            <span");
+WriteLiteral(">\r\n        <p>\r\n            <i");
 
-WriteLiteral(" class=\"ui-icon ui-icon-alert\"");
+WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
 
-WriteLiteral(" style=\"float: left; margin: 0 7px 20px 0;\"");
-
-WriteLiteral("></span>\r\n            Are you sure?\r\n        </p>\r\n    </div>\r\n    <script>\r\n    " +
-"    $(\'#DeviceDetailTabItems\').append(\'<li><a href=\"#DeviceDetailTab-Resources\" " +
-"id=\"DeviceDetailTab-ResourcesLink\">Attachments [");
+WriteLiteral("></i>&nbsp;Are you sure?\r\n        </p>\r\n    </div>\r\n    <script>\r\n        $(\'#Dev" +
+"iceDetailTabItems\').append(\'<li><a href=\"#DeviceDetailTab-Resources\" id=\"DeviceD" +
+"etailTab-ResourcesLink\">Attachments [");
 
             
-            #line 248 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 247 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                                                                                 Write(Model.Device.DeviceAttachments == null ? 0 : Model.Device.DeviceAttachments.Count);
 
             

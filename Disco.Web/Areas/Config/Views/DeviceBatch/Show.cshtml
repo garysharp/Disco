@@ -134,7 +134,7 @@
                 {
                     var missingCount = Model.DeviceBatch.UnitQuantity.Value - Model.DeviceCount;
                     <div style="padding: 0.7em 0.7em; margin-top: 20px;" class="ui-state-highlight ui-corner-all">
-                        <span style="margin-right: 0.3em; float: left;" class="ui-icon ui-icon-alert"></span>
+                        <i class="fa fa-info-circle information"></i>
                         @Model.DeviceCount.ToString("n0") of @(Model.DeviceBatch.UnitQuantity.Value.ToString("n0")) purchased devices are managed by Disco. <strong>@missingCount.ToString("n0") @(missingCount == 1 ? "is" : "are") not managed</strong>.
                     </div>
                 }

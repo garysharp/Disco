@@ -776,25 +776,31 @@ WriteLiteral("    <div");
 
 WriteLiteral(" id=\"updateAvailableContainer\"");
 
-WriteLiteral(">\r\n        <div>An updated version of Disco is available</div>\r\n        <a");
+WriteLiteral(">\r\n        <i");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 6601), Tuple.Create("\"", 6637)
+WriteLiteral(" class=\"fa fa-cloud-download info\"");
+
+WriteLiteral("></i>\r\n        <div>An updated version of Disco is available</div>\r\n        <a");
+
+WriteAttribute("href", Tuple.Create(" href=\"", 6652), Tuple.Create("\"", 6688)
             
-            #line 128 "..\..\Areas\Config\Views\Config\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 6608), Tuple.Create<System.Object, System.Int32>(Model.UpdateResponse.UrlLink
+            #line 129 "..\..\Areas\Config\Views\Config\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 6659), Tuple.Create<System.Object, System.Int32>(Model.UpdateResponse.UrlLink
             
             #line default
             #line hidden
-, 6608), false)
+, 6659), false)
 );
+
+WriteLiteral(" class=\"button small alert\"");
 
 WriteLiteral(" target=\"_blank\"");
 
-WriteLiteral(">Download Disco v");
+WriteLiteral(">Download v");
 
             
-            #line 128 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                                                            Write(Model.UpdateResponse.Version);
+            #line 129 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                                                                 Write(Model.UpdateResponse.Version);
 
             
             #line default
@@ -810,15 +816,15 @@ WriteLiteral(@"    <script>
 ");
 
             
-            #line 136 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 137 "..\..\Areas\Config\Views\Config\Index.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 136 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 137 "..\..\Areas\Config\Views\Config\Index.cshtml"
                   
-        if (Model.UpdateResponse.VersionReleasedTimestamp < DateTime.Now.AddDays(-7))
+        if (Model.UpdateResponse.VersionReleasedTimestamp < DateTime.Now.AddDays(-14))
         {
 
             
@@ -826,13 +832,13 @@ WriteLiteral(@"    <script>
             #line hidden
 WriteLiteral("                    ");
 
-WriteLiteral("\r\n                updateAvailableContainer.effect(\"shake\", { times: 3 }, 100);\r\n " +
+WriteLiteral("\r\n                updateAvailableContainer.effect(\"shake\", { times: 3 }, 500);\r\n " +
 "               ");
 
 WriteLiteral("\r\n");
 
             
-            #line 142 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 143 "..\..\Areas\Config\Views\Config\Index.cshtml"
         }
                 
             
@@ -841,7 +847,7 @@ WriteLiteral("\r\n");
 WriteLiteral("\r\n            });\r\n        })();\r\n    </script>\r\n");
 
             
-            #line 147 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 148 "..\..\Areas\Config\Views\Config\Index.cshtml"
     }
 
             

@@ -3,30 +3,27 @@
 @using Disco.Web;
 @using Disco.Services.Web;
 @helper AjaxLoader(string id = null)
-    {
-        Html.GetPageHelper().BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
-    <span @(id!=null ? new HtmlString(string.Format("id=\"{0}_loading\"", id)) : new HtmlString(string.Empty)) class="ajaxHelperIcon ajaxLoading" title="Loading..."></span><span @(id != null ? new HtmlString(string.Format("id=\"{0}_ok\"", id)) : new HtmlString(string.Empty)) class="ajaxHelperIcon ajaxOk"
-        title="Ok"></span>
+{
+    Html.GetPageHelper().BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
+    <i @(id != null ? new HtmlString(string.Format("id=\"{0}_loading\"", id)) : new HtmlString(string.Empty)) class="ajaxLoading" title="Loading..."></i><i @(id != null ? new HtmlString(string.Format("id=\"{0}_ok\"", id)) : null) class="fa fa-check fa-lg hidden ajaxOk" title="Ok"></i>
 }
 @helper AjaxSave()
-    {
-        Html.GetPageHelper().BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
-    <span class="ajaxHelperIcon ajaxSave" title="Save Changes"></span>
+{
+    <i class="fa fa-check-square fa-lg hidden ajaxSave" title="Save Changes"></i>
 }
 @helper AjaxRemove()
-    {
-        Html.GetPageHelper().BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
-    <span class="ajaxHelperIcon ajaxRemove" title="Remove"></span>
+{
+    <i class="fa fa-times-circle fa-lg hidden ajaxRemove" title="Remove"></i>
 }
 @helper JsonDate(DateTime? date)
+{
+    if (date.HasValue)
     {
-        if (date.HasValue)
-        {
-            var d = date.Value;
+        var d = date.Value;
     @(new HtmlString(string.Format("new Date({0}, {1}, {2}, {3}, {4}, {5})", d.Year, d.Month - 1, d.Day, d.Hour, d.Minute, d.Second)))
-        }
-        else
-        { 
+    }
+    else
+    { 
     @(new HtmlString("null"))
-        }
+    }
 }

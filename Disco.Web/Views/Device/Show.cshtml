@@ -1,12 +1,10 @@
 ﻿@model Disco.Web.Models.Device.ShowModel
 @{
     ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), string.Format("Device: {0}", Model.Device.SerialNumber));
-
-    var deviceStatus = Model.Device.Status();
 }
 <div id="Device_Show">
     <div id="Device_Show_Status">
-        <span class="icon DeviceStatus@(deviceStatus.Replace(" ", string.Empty))"></span>@deviceStatus
+        <i class="fa fa-square deviceStatus @(Model.Device.StatusCode())"></i>&nbsp;@Model.Device.Status()
         <script type="text/javascript">
             $(function () {
                 $('#Device_Show_Status').appendTo('#layout_PageHeading')

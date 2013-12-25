@@ -9,7 +9,7 @@
         <table>
             <tr>
                 <td>
-                    <h3><span class="icon @(Model.RegistryDatabaseResult == null ? "success" : "error")"></span>Database</h3>
+                    <h3><i class="fa @(Model.RegistryDatabaseResult == null ? "fa-check-square success" : "fa-exclamation-circle error")"></i>&nbsp;Database</h3>
                     <div class="testResult">
                         @{
                             if (Model.RegistryDatabaseResult == null)
@@ -42,7 +42,7 @@
             </tr>
             <tr>
                 <td>
-                    <h3><span class="icon @(Model.DiscoDnsTestResult.Item2 == null ? "success" : "warning")"></span>Disco DNS Entry</h3>
+                    <h3><i class="fa @(Model.DiscoDnsTestResult.Item2 == null ? "fa-check-square success" : "fa-exclamation-circle error")"></i>&nbsp;Disco DNS Entry</h3>
                     <div class="testResult">
                         @{
                             if (Model.DiscoDnsTestResult.Item1 != null)
@@ -105,7 +105,7 @@
             </tr>
             <tr>
                 <td>
-                    <h3><span class="icon @(Model.DiscoIctComAuWebResult == null ? "success" : "warning")"></span>Connectivity to <a href="https://discoict.com.au" target="_blank">https://discoict.com.au</a></h3>
+                    <h3><i class="fa @(Model.DiscoIctComAuWebResult == null ? "fa-check-square success" : "fa-exclamation-circle error")"></i>&nbsp;Connectivity to <a href="https://discoict.com.au" target="_blank">https://discoict.com.au</a></h3>
                     <div class="testResult">
                         @{
                             if (Model.DiscoIctComAuWebResult == null)
@@ -138,7 +138,7 @@
             </tr>
             <tr>
                 <td>
-                    <h3><span class="icon information"></span>Unblock ICMP (Ping) for the Disco server</h3>
+                    <h3><i class="fa fa-info-circle information"></i>&nbsp;Unblock ICMP (Ping) for the Disco server</h3>
                     <div class="testResult">
                         The Disco Client Bootstrapper requires the Disco server to respond to ICMP Echo requests (Ping) to function correctly. Please insure any firewall rules are updated accordingly.
                     </div>
@@ -146,7 +146,7 @@
             </tr>
             <tr>
                 <td>
-                    <h3><span class="icon information"></span>Configure a regularly scheduled Backup</h3>
+                    <h3><i class="fa fa-info-circle information"></i>&nbsp;Configure a regularly scheduled Backup</h3>
                     <div class="testResult">
                         Please ensure both the SQL Database and File Store are backed up regularly.
                     </div>

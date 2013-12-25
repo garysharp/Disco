@@ -213,14 +213,38 @@
 #UserDetailTab-Authorization .fancytree-container {
   border: none;
 }
-#UserDetailTab-Authorization span.fancytree-ico-c > span.fancytree-icon {
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACgklEQVQ4y5XSXUhTYRgH8OkItViSri676CIIupC6kIjIrQTNtLbhMEOLmjGsi1CiJoULZmEpW4l5RDehkR/owJNF+3DLliMd6GDWcrFNyNEceAarZZuc7d8xSNQzgx54Lt6v3/vxvBwAnI3Z0NDAJQiifWJiImgwGOIkScasVuuMWq2u3Dp3LTc15HJ5Zk9PzzhFURh79fpTr7avv4voHns/ORkJh8NQqVTX/wmIxWLZW5sNBNGt3tgvrareYzQavVqt9nt5eXnetkCTosk4OkrGWh485G7dqfXR4yvMlSCVSs9sC3z2frFOTU0vp7ur2TJe4XA4oNFoKrcFZl0us9lsodIBk44PpSaTCXa7vSwtoNPpAsxqOJ1OBAIBOhKJ0PF4nE6lUjQzTq+srKR8Ph/m5uaSS0tLLSygsbFx1ev1IhgMwuPxIBQKIRaLIZlM4m+4XC4olUp0dna+YwEKhSLh9/uxuLgIt9v9B4pGo6Bpeh1YOx1TSuj1+nEWcPfe/cSsy4fgtzB8vgX4F34wADbF/Pw81JoOGEgbG3jeVppY9jVD2XwbN+ol+BURwdBfC1ldPaL+ywi5ZTgvuYibshJQ5nNsQFxWmHCTRzHWvR88XjaeKrmgPnJw8AAPFcKdzANkQCrIQn4+H3fEWWyg4MixuOD4IdDTeWiTZyB3Nw+Wrkx4BjOxj5+LW1XZwDAHJw/vAjdnr5kNFBSsSipr0asqwcKbQlyqLkH91bOgZk6DaKlgfuAFzOpOwN5xCnw+37kOFBcX7ygqKrpWU1P7kylPqrXtGdqf6DAwMIjhkZcYGrHAZLbBYrGhT0/ixdBoSiQSfRUKhRKBQJDDSffr/id/A3fSz48XbZuBAAAAAElFTkSuQmCC') /*Images/Actions/locked.png*/;
+#UserDetailTab-Authorization span.fancytree-node {
+  padding: 1px;
+  border: none;
 }
-#UserDetailTab-Authorization span.fancytree-ico-c.fancytree-selected > span.fancytree-icon {
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACWUlEQVQ4y6XRXWiSURgHcJsXa4WNNuuyiy6CoAupixERoXXhmljuxaJiFrVA1i72cVFCOSMt8rNt2YfGO5g5Z1NstWW+c4ZBq4QpqMkEbZDSCObAMprjdf90sIjxsgUdODd/zvmd5zwPCwDrf/aGB7q6utgmk8ngdruzVqt10eVyTWu1Wuk/AXK5vMpoNPpjsRgGbU8/9fbdH/J4PAuRSARKpfLKhoBYLG595nTCaDSZVjPp6TPbHQ5H0mAwfBeJRHXrAp0dna9JcqCguX2H/Xd+S625aLFYQBDE8XWBd+8/TI6Njc+vzcfGX4nLX4FOp5OuC0wGAlS53NzaPPAm2Gi32+H3+5tYJEl+pigKoVAIPp+PnpqaosPhMF1uHB2Px2mv14vya6VgMKhhHGN3d/dSMplENptFIpHA3NwcCoUCSqUSKqvScZVKBbPZHGQEFApFMZ1OI5PJIBqNrkD5fB40Ta8AlcrUajVsNpufEbh+42YxHEkh+/UbUqlZpGd/lAH8WTMzMzDd64d7NMAMDOobi/OpHqh6rqK9jcCvBQncQzK0Xm5DPn0BJ4lz6GgVIkedYAaamxqK0dEDePl4FziczehTsZGLs7BnNwdiwRac4lejvp6La83VzABv/8FF/qG9oD/WQS/fhNptHEw8rEJiuAo7ubXACAtH9m0Fu2YHxQzweEuEVIYnaiFmvQ04f1aItksi5KaP4ZFGjDB5GG/7j4LL5YYYgZYW2c/yiJbv6h/A0EvC4RjGiOsFnK4J+KgABmyjsDufL0skki8CgYCoXOLz+TWrwG+kXMkgQ6yv+QAAAABJRU5ErkJggg==') /*Images/Actions/unlocked.png*/;
+#UserDetailTab-Authorization span.fancytree-node > span.fancytree-icon {
+  background: none;
+  display: inline-block;
+  font-family: FontAwesome;
+  font-size: 1.2em;
+  width: 14px;
+}
+#UserDetailTab-Authorization span.fancytree-ico-ef > span.fancytree-icon:before {
+  color: #9e9e9e;
+  font-size: 1em;
+  content: "\f07c";
+}
+#UserDetailTab-Authorization span.fancytree-ico-cf > span.fancytree-icon:before {
+  color: #9e9e9e;
+  font-size: 1em;
+  content: "\f07b";
+}
+#UserDetailTab-Authorization span.fancytree-ico-c > span.fancytree-icon:before {
+  color: #e51400;
+  content: "\f023";
+}
+#UserDetailTab-Authorization span.fancytree-ico-c.fancytree-selected > span.fancytree-icon:before {
+  color: #60a917;
+  content: "\f09c";
 }
 #UserDetailTab-Authorization span.fancytree-node.fancytree-selected {
   font-style: normal;
+  background: none;
 }
 #UserDetailTab-Authorization span.fancytree-checkbox {
   margin-left: 3px;
@@ -318,7 +342,7 @@
 }
 #userShowResources #Attachments div.attachmentOutput > a span.remove {
   font-size: 1.4em;
-  color: #e90000;
+  color: #e51400;
   margin-left: 6px;
   cursor: pointer;
   opacity: 0;

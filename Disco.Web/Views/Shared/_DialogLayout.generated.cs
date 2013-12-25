@@ -66,7 +66,9 @@ WriteLiteral("</title>\r\n    <link");
 
 WriteLiteral(" rel=\"shortcut icon\"");
 
-WriteLiteral(" href=\"/favicon.ico\"");
+WriteLiteral(" type=\"image/x-icon\"");
+
+WriteLiteral(" href=\"/favicon.ico?v=20131224c\"");
 
 WriteLiteral(" />\r\n    <meta");
 

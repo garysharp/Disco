@@ -118,12 +118,13 @@
         </tr>
         @if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ProviderDetails))
         {
+            Html.BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
             <tr id="jobWarrantyProviderDetailContainer" style="display: none">
                 <th style="width: 200px;">Provider Details
                 </th>
                 <td>
                     <div id="jobWarrantyProviderDetailLoading">
-                        <span class="ajaxHelperIcon ajaxLoading" title="Loading..."></span>Loading...
+                        <span class="ajaxLoading" title="Loading..."></span>Loading...
                     </div>
                     <div id="jobWarrantyProviderDetailHost" class="clearfix" style="display: none">
                     </div>

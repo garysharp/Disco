@@ -71,17 +71,17 @@
             <div>
                 <input id="uninstallPluginData" type="checkbox" /><label for="uninstallPluginData"> Uninstall Plugin Data</label>
                 <div id="uninstallPluginDataAlert" style="display: none; padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-error ui-corner-all">
-                    <span style="margin-right: 0.3em; float: left;" class="ui-icon ui-icon-alert"></span>NOTE: Data will be permanently deleted
+                    <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;NOTE: Data will be permanently deleted
                 </div>
             </div>
         </div>
         <div id="dialogUninstallPluginConfirm" title="Confirm Plugin Uninstall">
             <div style="padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-highlight ui-corner-all">
-                <span style="margin-right: 0.3em; float: left;" class="ui-icon ui-icon-help"></span>Are you sure you want to uninstall this plugin?
+                <i class="fa fa-info-circle information"></i>&nbsp;Are you sure you want to uninstall this plugin?
             <h4 id="uninstallPluginConfirm"></h4>
             </div>
             <div id="uninstallPluginDataConfirm" style="display: none; padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-error ui-corner-all">
-                <span style="margin-right: 0.3em; float: left;" class="ui-icon ui-icon-alert"></span>NOTE: Data will be permanently deleted
+                <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;NOTE: Data will be permanently deleted
             </div>
         </div>
         <script>
@@ -171,10 +171,11 @@
                 if (Model.PluginUpdates.Count > 0)
                 {
         <div id="updateAvailableContainer">
+            <i class="fa fa-cloud-download"></i>
             <div>@(Model.PluginUpdates.Count) plugin update@(Model.PluginUpdates.Count == 1 ? " is" : "s are") available</div>
             @if (canInstall)
             {
-                @Html.ActionLinkButton("Update Now", MVC.API.Plugin.UpdateAll())
+                @Html.ActionLinkSmallButton("Update Now", MVC.API.Plugin.UpdateAll(), null, "alert")
             }
             else
             {

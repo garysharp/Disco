@@ -113,7 +113,7 @@ WriteLiteral(@";
                         $(function(){
                             var tree = $('#UserDetailTab-Authorization_ClaimsTree').fancytree({
                                 source: claimNodes,
-                                checkbox: true,
+                                checkbox: false,
                                 selectMode: 3,
                                 keyboard: false
                             });

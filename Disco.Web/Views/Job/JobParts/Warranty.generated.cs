@@ -515,6 +515,7 @@ WriteLiteral("            </td>\r\n        </tr>\r\n");
             #line 119 "..\..\Views\Job\JobParts\Warranty.cshtml"
          if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ProviderDetails))
         {
+            Html.BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
 
             
             #line default
@@ -536,7 +537,7 @@ WriteLiteral(" id=\"jobWarrantyProviderDetailLoading\"");
 
 WriteLiteral(">\r\n                        <span");
 
-WriteLiteral(" class=\"ajaxHelperIcon ajaxLoading\"");
+WriteLiteral(" class=\"ajaxLoading\"");
 
 WriteLiteral(" title=\"Loading...\"");
 
@@ -551,7 +552,7 @@ WriteLiteral(" style=\"display: none\"");
 WriteLiteral(">\r\n                    </div>\r\n                </td>\r\n            </tr>\r\n");
 
             
-            #line 132 "..\..\Views\Job\JobParts\Warranty.cshtml"
+            #line 133 "..\..\Views\Job\JobParts\Warranty.cshtml"
         }
 
             
@@ -565,13 +566,13 @@ WriteLiteral(">\r\n    $(\'#jobDetailTabItems\').append(\'<li><a href=\"#jobDeta
 "nty</a></li>\');\r\n");
 
             
-            #line 137 "..\..\Views\Job\JobParts\Warranty.cshtml"
+            #line 138 "..\..\Views\Job\JobParts\Warranty.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 137 "..\..\Views\Job\JobParts\Warranty.cshtml"
+            #line 138 "..\..\Views\Job\JobParts\Warranty.cshtml"
      if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ProviderDetails))
     {
             
@@ -598,7 +599,7 @@ WriteLiteral(@"
                                 '");
 
             
-            #line 156 "..\..\Views\Job\JobParts\Warranty.cshtml"
+            #line 157 "..\..\Views\Job\JobParts\Warranty.cshtml"
                              Write(Url.Action(MVC.Job.WarrantyProviderJobDetails()));
 
             
@@ -607,7 +608,7 @@ WriteLiteral(@"
 WriteLiteral("\',\r\n                                { id: \'");
 
             
-            #line 157 "..\..\Views\Job\JobParts\Warranty.cshtml"
+            #line 158 "..\..\Views\Job\JobParts\Warranty.cshtml"
                                    Write(Model.Job.Id);
 
             
@@ -630,7 +631,7 @@ WriteLiteral(@"' },
     ");
 
             
-            #line 171 "..\..\Views\Job\JobParts\Warranty.cshtml"
+            #line 172 "..\..\Views\Job\JobParts\Warranty.cshtml"
            }
 
             

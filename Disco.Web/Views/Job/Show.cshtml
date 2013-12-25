@@ -14,7 +14,7 @@
 <div id="Job_Show">
     <div id="Job_Show_Status">
         @{ var jobStatusInfo = Model.Job.Status();}
-        <span class="icon JobStatus@(jobStatusInfo.Item1)"></span>@jobStatusInfo.Item2 @if (Model.LongRunning.HasValue)
+        <i class="fa fa-square jobStatus @(jobStatusInfo.Item1)"></i>&nbsp;@jobStatusInfo.Item2 @if (Model.LongRunning.HasValue)
                                                                                        {<span class="smallMessage">(Long Running: @Model.LongRunning.Value.Humanize(false))</span>}
         <script type="text/javascript">
             $(function () {

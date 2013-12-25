@@ -223,6 +223,17 @@ namespace Disco.BI.Extensions
             return r.Value.ReasonMessage();
         }
 
+        public static string StatusCode(this Device Device)
+        {
+            if (Device.DecommissionedDate.HasValue)
+                return "Decommissioned";
+
+            if (!Device.EnrolledDate.HasValue)
+                return "NotEnrolled";
+
+            return "Active";
+        }
+
         public static string Status(this Device Device)
         {
             if (Device.DecommissionedDate.HasValue)

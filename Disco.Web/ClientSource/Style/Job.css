@@ -275,7 +275,7 @@
 }
 #jobShowResources #Comments div.commentOutput > div span.remove {
   font-size: 1.2em;
-  color: #e90000;
+  color: #e51400;
   margin-left: 6px;
   cursor: pointer;
   opacity: 0;
@@ -379,7 +379,7 @@
 }
 #jobShowResources #Attachments div.attachmentOutput > a span.remove {
   font-size: 1.2em;
-  color: #e90000;
+  color: #e51400;
   margin-left: 2px;
   cursor: pointer;
   opacity: 0;
@@ -434,7 +434,7 @@
 }
 #jobComponents tr span.remove {
   font-size: 1.5em;
-  color: #e90000;
+  color: #e51400;
   cursor: pointer;
   opacity: .5;
 }

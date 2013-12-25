@@ -50,11 +50,11 @@
                             var displayName = sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id);
                             <li class="@(sg.IsGroup ? "group" : "user")">@if (sg.IsGroup)
                                                                          {
-                                                                             @displayName
+                                                                             <i class="fa fa-users fa-lg"></i>@displayName
                                                                          }
                                                                          else
                                                                          {
-                                                                             <a href="@(Url.Action(MVC.User.Show(sg.Id)))#UserDetailTab-Authorization">@displayName</a>
+                                                                             <a href="@(Url.Action(MVC.User.Show(sg.Id)))#UserDetailTab-Authorization"><i class="fa fa-user fa-lg"></i>@displayName</a>
                                                                          }</li>
                         }
                     </ul>
@@ -67,7 +67,15 @@
                             <ul id="Config_AuthRoles_Subjects_Update_Dialog_List" class="none">
                                 @foreach (var sg in Model.Subjects)
                                 {
-                                    <li class="@(sg.IsGroup ? "group" : "user")" data-subjectid="@sg.Id">@(sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id)) <span class="remove"></span></li>
+                                    var displayName = sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id);
+                                    <li class="@(sg.IsGroup ? "group" : "user")" data-subjectid="@sg.Id">@if (sg.IsGroup)
+                                                                         {
+                                                                             <i class="fa fa-users fa-lg"></i>@displayName
+                                                                         }
+                                                                         else
+                                                                         {
+                                                                             <i class="fa fa-user fa-lg"></i>@displayName
+                                                                         }<i class="fa fa-times-circle remove"></i></li>
                                 }
                             </ul>
                         </div>
@@ -168,9 +176,17 @@
                                 }).done(function(response){
                                     if (response){
                                         if (list.find('li[data-subjectid="'+response.Id+'"]').length == 0){
+                                            
+                                            var liIcon = $('<i>').addClass('fa fa-lg');
+                                            if (response.Type === 'user')
+                                                liIcon.addClass('fa-user');
+                                            else
+                                                liIcon.addClass('fa-users');
+
                                             var li = $('<li>')
+                                                .append(liIcon)
                                                 .append($('<span>').text(response.Id == response.Name ?  response.Id : response.Name + ' [' + response.Id + ']'))
-                                                .append($('<span>').addClass('remove'))
+                                                .append($('<i>').addClass('fa fa-times-circle remove'))
                                                 .addClass(response.Type)
                                                 .attr('data-subjectid', response.Id)
                                                 .attr('data-subjectstatus', 'new');
@@ -292,7 +308,7 @@
     @Html.ActionLinkButton("Delete", MVC.API.AuthorizationRole.Delete(Model.Token.Role.Id, true), "Config_AuthRoles_Actions_Delete_Button")
     <div id="Config_AuthRoles_Actions_Delete_Dialog" title="Delete this Authorization Role?">
         <p>
-            <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+            <i class="fa fa-exclamation-triangle fa-lg warning"></i>
             This item will be permanently deleted and cannot be recovered.<br />
             <br />
             Are you sure?
