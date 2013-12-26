@@ -79,14 +79,11 @@
                             }
                         </ul>
                     </li>
-                    <li class="sep"></li>
                     <li>@Html.ActionLink("Devices", MVC.Device.Index(), accesskey: "2")</li>
-                    <li class="sep"></li>
                     <li>@Html.ActionLink("Users", MVC.User.Index(), accesskey: "3")</li>
                     <li class="moveRight">@Html.ActionLink("Reports", MVC.Public.Public.Index())</li>
                     @if (Authorization.Has(Claims.Config.Show))
                     {
-                        <li class="sep"></li>
                         <li>@Html.ActionLink("Configuration", MVC.Config.Config.Index(), accesskey: "0")</li>
                     }
                 </ul>

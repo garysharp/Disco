@@ -258,6 +258,8 @@ WriteLiteral(">\r\n                        <textarea");
 
 WriteLiteral(" class=\"commentInput\"");
 
+WriteLiteral(" placeholder=\"write comment...\"");
+
 WriteLiteral(" accesskey=\"l\"");
 
 WriteLiteral("></textarea>\r\n                        <span");
@@ -298,14 +300,14 @@ WriteLiteral("            <td");
 
 WriteLiteral(" id=\"Attachments\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2536), Tuple.Create("\"", 2611)
+WriteAttribute("class", Tuple.Create(" class=\"", 2567), Tuple.Create("\"", 2642)
             
             #line 49 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 2544), Tuple.Create<System.Object, System.Int32>(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments"
+, Tuple.Create(Tuple.Create("", 2575), Tuple.Create<System.Object, System.Int32>(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments"
             
             #line default
             #line hidden
-, 2544), false)
+, 2575), false)
 );
 
 WriteLiteral(">\r\n                <div");
@@ -330,14 +332,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                        <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 2779), Tuple.Create("\"", 2836)
+WriteAttribute("href", Tuple.Create(" href=\"", 2810), Tuple.Create("\"", 2867)
             
             #line 53 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 2786), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
+, Tuple.Create(Tuple.Create("", 2817), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
             
             #line default
             #line hidden
-, 2786), false)
+, 2817), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
@@ -366,42 +368,42 @@ WriteLiteral(">\r\n                            <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2942), Tuple.Create("\"", 2962)
+WriteAttribute("title", Tuple.Create(" title=\"", 2973), Tuple.Create("\"", 2993)
             
             #line 54 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 2950), Tuple.Create<System.Object, System.Int32>(ja.Filename
+, Tuple.Create(Tuple.Create("", 2981), Tuple.Create<System.Object, System.Int32>(ja.Filename
             
             #line default
             #line hidden
-, 2950), false)
+, 2981), false)
 );
 
 WriteLiteral(">\r\n                                <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 3029), Tuple.Create("\"", 3088)
+WriteAttribute("src", Tuple.Create(" src=\"", 3060), Tuple.Create("\"", 3119)
             
             #line 55 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3035), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
+, Tuple.Create(Tuple.Create("", 3066), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
             
             #line default
             #line hidden
-, 3035), false)
+, 3066), false)
 );
 
 WriteLiteral(" /></span>\r\n                            <span");
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3151), Tuple.Create("\"", 3171)
+WriteAttribute("title", Tuple.Create(" title=\"", 3182), Tuple.Create("\"", 3202)
             
             #line 56 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3159), Tuple.Create<System.Object, System.Int32>(ja.Comments
+, Tuple.Create(Tuple.Create("", 3190), Tuple.Create<System.Object, System.Int32>(ja.Comments
             
             #line default
             #line hidden
-, 3159), false)
+, 3190), false)
 );
 
 WriteLiteral(">\r\n");
@@ -485,14 +487,14 @@ WriteLiteral("<span");
 
 WriteLiteral(" class=\"timestamp\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3776), Tuple.Create("\"", 3814)
+WriteAttribute("title", Tuple.Create(" title=\"", 3807), Tuple.Create("\"", 3845)
             
             #line 62 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                                   , Tuple.Create(Tuple.Create("", 3784), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
+                                                                                                   , Tuple.Create(Tuple.Create("", 3815), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 3784), false)
+, 3815), false)
 );
 
 WriteLiteral(">");

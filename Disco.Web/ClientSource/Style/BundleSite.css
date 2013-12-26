@@ -3058,12 +3058,6 @@ header nav ul#menu > li,
   display: inline-block;
   z-index: 100000;
 }
-header nav ul#menu > li.sep:after,
-#header nav ul#menu > li.sep:after {
-  padding: 4px 0;
-  color: #ffffff;
-  content: '\007C';
-}
 header nav ul#menu > li.moveRight,
 #header nav ul#menu > li.moveRight {
   margin-left: 40px;
