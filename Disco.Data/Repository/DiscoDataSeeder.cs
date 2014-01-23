@@ -66,7 +66,7 @@ namespace Disco.Data.Repository
                         ShortName = "WS",
                         Name = "Default",
                         Description = "Initial Default Workstation Profile",
-                        ComputerNameTemplate = "DeviceProfile.ShortName + ''-'' + SerialNumber",
+                        ComputerNameTemplate = DeviceProfile.DefaultComputerNameTemplate,
                         DistributionType = DeviceProfile.DistributionTypes.OneToMany
                     });
             }

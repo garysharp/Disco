@@ -63,6 +63,8 @@ namespace Disco.Models.Repository
         [StringLength(64)]
         public string CertificateProviderId { get; set; }
 
+        public const string DefaultComputerNameTemplate = "DeviceProfile.ShortName + '-' + SerialNumber";
+
         public enum DistributionTypes : int
         {
             OneToMany = 0,

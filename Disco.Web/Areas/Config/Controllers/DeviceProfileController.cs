@@ -73,7 +73,7 @@ namespace Disco.Web.Areas.Config.Controllers
             {
                 DeviceProfile = new DeviceProfile()
                 {
-                    ComputerNameTemplate = "DeviceProfile.ShortName + '-' + SerialNumber",
+                    ComputerNameTemplate = DeviceProfile.DefaultComputerNameTemplate,
                     ProvisionADAccount = true,
                     DistributionType = DeviceProfile.DistributionTypes.OneToMany
                 }
