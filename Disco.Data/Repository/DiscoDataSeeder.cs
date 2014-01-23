@@ -70,6 +70,13 @@ namespace Disco.Data.Repository
                         DistributionType = DeviceProfile.DistributionTypes.OneToMany
                     });
             }
+            else
+            {
+                // Bug Fix - correct invalid Computer Name Templates
+                var invalidProfiles = Database.DeviceProfiles.Where(dp => dp.ComputerNameTemplate == "DeviceProfile.ShortName + ''-'' + SerialNumber");
+                foreach (var p in invalidProfiles)
+                    p.ComputerNameTemplate = DeviceProfile.DefaultComputerNameTemplate;
+            }
         }
         public static void SeedJobSubTypes(this DiscoDataContext Database)
         {
