@@ -33,7 +33,7 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DocumentT
         [ClaimDetails("Bulk Generate Document Templates", "Can bulk generate document templates")]
         public bool BulkGenerate { get; set; }
 
-        [ClaimDetails("Undetected Pages", "Can show and assign imported documents which were not undetected")]
+        [ClaimDetails("Process Undetected Pages", "Can show and assign imported documents which were not undetected")]
         public bool UndetectedPages { get; set; }
     }
 }
