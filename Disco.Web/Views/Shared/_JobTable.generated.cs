@@ -29,6 +29,7 @@ namespace Disco.Web.Views.Shared
     using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
     using Disco.Web;
@@ -36,7 +37,7 @@ namespace Disco.Web.Views.Shared
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Shared/_JobTable.cshtml")]
-    public partial class JobTable : Disco.Services.Web.WebViewPage<Disco.Models.BI.Job.JobTableModel>
+    public partial class JobTable : Disco.Services.Web.WebViewPage<Disco.Models.Services.Jobs.JobLists.JobTableModel>
     {
         public JobTable()
         {
@@ -47,7 +48,7 @@ namespace Disco.Web.Views.Shared
             #line 2 "..\..\Views\Shared\_JobTable.cshtml"
  if (DiscoApplication.MultiSiteMode)
 {
-    if (Model == null || Model.Items == null || Model.Items.Count == 0)
+    if (Model == null || Model.Items == null || Model.Items.Count() == 0)
     { 
 
             
@@ -64,7 +65,7 @@ WriteLiteral(">No Jobs Found</span>\r\n");
     }
     else
     {
-        var multiSiteModels = Model.MultiCampusModels;
+        var multiSiteModels = Model.MultiCampusModels();
 
         foreach (var multiSiteModel in multiSiteModels)
         {

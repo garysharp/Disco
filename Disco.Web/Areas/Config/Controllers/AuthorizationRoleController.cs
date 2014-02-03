@@ -1,4 +1,4 @@
-﻿using Disco.Models.Authorization;
+﻿using Disco.Models.Services.Authorization;
 using Disco.Models.UI.Config.AuthorizationRole;
 using Disco.Services.Authorization;
 using Disco.Services.Authorization.Roles;
@@ -92,7 +92,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("Name", "Am Authorization Role with this name already exists.");
+                    ModelState.AddModelError("Name", "An Authorization Role with this name already exists.");
                 }
             }
 

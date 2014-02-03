@@ -8,6 +8,7 @@ using Disco.BI.Extensions;
 using Disco.Models.UI.Device;
 using Disco.Web.Extensions;
 using Disco.Services.Plugins;
+using Disco.Models.Services.Jobs.JobLists;
 
 namespace Disco.Web.Models.Device
 {
@@ -20,7 +21,7 @@ namespace Disco.Web.Models.Device
         public PluginFeatureManifest DeviceProfileCertificateProvider { get; set; }
 
         public List<Disco.Models.Repository.DeviceBatch> DeviceBatches { get; set; }
-        public Disco.Models.BI.Job.JobTableModel Jobs { get; set; }
+        public JobTableModel Jobs { get; set; }
         public List<Disco.Models.Repository.DeviceCertificate> Certificates { get; set; }
 
         public string OrganisationUnit { get; set; }

@@ -1,8 +1,5 @@
-﻿using System;
+﻿using Disco.Models.Services.Jobs.JobLists;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Models.UI.Device
 {
@@ -15,7 +12,7 @@ namespace Disco.Models.UI.Device
 
         List<Disco.Models.Repository.DeviceBatch> DeviceBatches { get; set; }
 
-        Disco.Models.BI.Job.JobTableModel Jobs { get; set; }
+        JobTableModel Jobs { get; set; }
 
         List<Disco.Models.Repository.DeviceCertificate> Certificates { get; set; }
 

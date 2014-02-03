@@ -2,8 +2,25 @@
 
 // Watermark
 .watermark {
-    color: #888 !important;
+    color: @PlaceholderColour !important;
 }
+
+::-webkit-input-placeholder {
+    color: @PlaceholderColour;
+}
+
+::-moz-placeholder {
+    color: @PlaceholderColour;
+}
+/* firefox 19+ */
+:-ms-input-placeholder {
+    color: @PlaceholderColour;
+}
+/* ie */
+input:-moz-placeholder {
+    color: @PlaceholderColour;
+}
+
 // Autocomplete
 .ui-autocomplete-loading {
     background: white url(data:image/gif;base64,R0lGODlhEAALAPQAAP///zNah+Hm7dng6O7x9DddiTNah1d3nJqtw3+Xs8fS3k5vlm6JqaGzx4KatcrU4FFymDZciHGMq+ru8t/l7Pb3+V9+oeLo7vT2+MTP3LLB0dTc5fHz9gAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA) /*Images/Status/loading.gif*/ right center no-repeat;
@@ -23,13 +40,8 @@
 * html .ui-autocomplete {
     height: 150px;
 }
+
 // timepicker
-// .ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
-// .ui-timepicker-div dl{ text-align: left; }
-// .ui-timepicker-div dl dt{ height: 25px; }
-// .ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
-// .ui-timepicker-div td { font-size: 90%; }
-// New Timepicker CSS (2012-09-11)
 .ui-timepicker-div .ui-widget-header {
     margin-bottom: 8px;
 }
@@ -39,12 +51,13 @@
 }
 
     .ui-timepicker-div dl dt {
-        height: 25px;
-        margin-bottom: -25px;
+        float: left;
+        clear: left;
+        padding: 0 0 0 5px;
     }
 
     .ui-timepicker-div dl dd {
-        margin: 0 10px 10px 65px;
+        margin: 0 10px 10px 45%;
     }
 
 .ui-timepicker-div td {
@@ -57,6 +70,24 @@
     margin: 0;
     padding: 0;
 }
+
+.ui-timepicker-rtl {
+    direction: rtl;
+}
+
+    .ui-timepicker-rtl dl {
+        text-align: right;
+        padding: 0 5px 0 0;
+    }
+
+        .ui-timepicker-rtl dl dt {
+            float: right;
+            clear: right;
+        }
+
+        .ui-timepicker-rtl dl dd {
+            margin: 0 45% 10px 10px;
+        }
 
 
 // Progress Bar
@@ -89,6 +120,7 @@
         background-position-x: 47px;
     }
 }
+
 .ui-progressbar-value {
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAYCAYAAAC8/X7cAAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QwYAwcRFZ4/TAAAAmtJREFUWMO1l+lu2kAQx/+WlqMYCGmMzRGwcUhoVbWq1Ifq2+RF+hJ9hVRpohLuCB9AwAaqfqiPfjBEhtrcO5/wrGf2N4eXWeb223cXlCSeyUHIJGi5hzqagPny9ZZKAOfyZ9TyaWrw940u5noXJB4lJ3eeqXzCtUAP/qHZgzXpIx4lILFIcACuCzBM+HOY7kz6iGs+uRHABcAcCP/YUWAZCpbcJBZWgaDGYjbs7gJp8QOqC/igBACezr+2/nv5TtBavavCmvQ9+IWexMhqAMsNwiQICgDSpRpknl7bPPU0WIYCf8u77qYK7CHp4g2kbIoafLM/hGWqCGIl8chxAaQKVZQ5evBtdQTbUBDGeVQFkvkrlC9YavAdbQw7JPOvAUQPrADLlVDm6WW+q49hmRq28R3UQgmuiEvujBr882ACZzrALmx7t9Cb8xyK2Qw1+P7QgDMfYlcu0lZfdm+brAg5EoNm/DnZH5NfWsoLfg+7e9kQy3Z2g+dFiLm3sB06s19LHWOut/e22ykAlhch5S9gu3Tgm8oYc611kO3WAJKCBLnAwaGV+cEMZr9xsP3GAJK5CuQCR61tmoMZzN7jUT6I7QQHwAoVXBWzsCldd5r6FGbv4Wg/gRVgs2VUL3lqmW9o5kngvQrYzsoxmOBF3IgF2I77Oj2HTdOuTxc6va6tP+kzTDv3/9mE7YUtvlcqwAoSagt4GlLXZzDbP07qk/y1be+D5UXUpAK1o7KuTTFp3Z3cL7FsBylBwju5dNRRuV5+v+6XOoXRvltcQlwwDBNwhfX029b9z94wx5Xw/kj4jRfw5xHM3k9qs9M/9mQP+uNoCX0AAAAASUVORK5CYII=) /*Images\Status\progressBar.png*/;
     background-position: 0px 0;
@@ -120,6 +152,12 @@
 {
     font-weight: bold;
 }*/
+
+// Initially hide dialogs
+
+.page .dialog {
+    display: none;
+}
 
 .ui-dialog {
     padding: 0;

@@ -47,6 +47,7 @@ namespace Disco.Web.Views.Device
             #line 1 "..\..\Views\Device\_ViewStart.cshtml"
   
     Html.BundleDeferred("~/Style/Device");
+    ViewContext.ViewData["MenuArea"] = MVC.Device.Name;
 
             
             #line default

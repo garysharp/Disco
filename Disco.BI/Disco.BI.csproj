@@ -155,7 +155,7 @@
     <Compile Include="BI\Extensions\JobActionExtensions.cs" />
     <Compile Include="BI\Extensions\JobExtensions.cs" />
     <Compile Include="BI\Extensions\JobFlagExtensions.cs" />
-    <Compile Include="BI\Extensions\JobTableExtensions.cs" />
+    <Compile Include="BI\Extensions\JobQueueActionExtensions.cs" />
     <Compile Include="BI\Extensions\UserExtensions.cs" />
     <Compile Include="BI\Extensions\WirelessCertificateExtensions.cs" />
     <Compile Include="BI\Extensions\DeviceExtensions.cs" />
@@ -196,7 +196,6 @@
     <Compile Include="BI\Interop\SignalRHandlers\ScheduledTasksStatusNotifications.cs" />
     <Compile Include="BI\Interop\SignalRHandlers\SignalRAuthenticationWorkaround.cs" />
     <Compile Include="BI\Interop\SignalRHandlers\UserHeldDeviceNotifications.cs" />
-    <Compile Include="BI\JobBI\ManagedJobList.cs" />
     <Compile Include="BI\JobBI\Searching.cs" />
     <Compile Include="BI\JobBI\Statistics\DailyOpenedClosed.cs" />
     <Compile Include="BI\JobBI\Utilities.cs" />

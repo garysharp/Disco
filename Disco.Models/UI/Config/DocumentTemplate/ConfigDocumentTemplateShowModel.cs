@@ -11,11 +11,7 @@ namespace Disco.Models.UI.Config.DocumentTemplate
         Disco.Models.Repository.DocumentTemplate DocumentTemplate { get; set; }
         int StoredInstanceCount { get; set; }
 
-        List<string> Types { get; set; }
-        List<string> SubTypes { get; set; }
-
         List<Disco.Models.Repository.JobType> JobTypes { get; set; }
-        List<Disco.Models.Repository.JobSubType> JobSubTypes { get; set; }
 
         List<string> Scopes { get; }
     }

@@ -15,7 +15,10 @@
   border: solid 1px #f4f4f4;
 }
 .tableData > tbody > tr:hover > td {
-  background-color: #f4f4f4;
+  background-color: #fefefe;
+}
+.tableData > tbody > tr:hover:nth-child(odd) > td {
+  background-color: #fafafa;
 }
 .tableData > tfoot > tr > th,
 .tableData > tfoot > tr > td {
@@ -30,7 +33,7 @@
   background-color: #ffffff;
 }
 .tableDataDark th {
-  background-color: #d8d8d8;
+  background-color: #eeeeee;
   border: solid 1px #d8d8d8;
 }
 .tableDataContainer {
@@ -144,7 +147,10 @@ table.expressionsTable > tbody > tr > th {
   border: solid 1px #f4f4f4;
 }
 table.expressionsTable > tbody > tr:hover > td {
-  background-color: #f4f4f4;
+  background-color: #fefefe;
+}
+table.expressionsTable > tbody > tr:hover:nth-child(odd) > td {
+  background-color: #fafafa;
 }
 table.expressionsTable > tfoot > tr > th,
 table.expressionsTable > tfoot > tr > td {
@@ -173,7 +179,10 @@ table.expressionsTable td.parseError {
   border: solid 1px #f4f4f4;
 }
 #deviceComponents > tbody > tr:hover > td {
-  background-color: #f4f4f4;
+  background-color: #fefefe;
+}
+#deviceComponents > tbody > tr:hover:nth-child(odd) > td {
+  background-color: #fafafa;
 }
 #deviceComponents > tfoot > tr > th,
 #deviceComponents > tfoot > tr > td {
@@ -550,6 +559,33 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
   padding: 2px;
   height: 430px;
 }
+#Config_DocumentTemplates_JobSubTypes {
+  border: 1px dashed #d8d8d8;
+  background-color: #ffffff;
+  padding: 4px;
+  margin-top: 6px;
+}
+#Config_DocumentTemplates_JobSubTypes > h4 {
+  margin-bottom: 4px;
+}
+#Config_DocumentTemplates_JobSubTypes #Config_DocumentTemplates_JobSubTypes_Update {
+  margin-top: 4px;
+}
+#Config_DocumentTemplates_JobSubTypes_Update_Dialog #Config_DocumentTemplates_JobSubTypes_Update_Dialog_Types {
+  margin: 0 0 8px 0;
+}
+#Config_DocumentTemplates_JobSubTypes_Update_Dialog .jobTypes {
+  padding: 6px 0;
+}
+#Config_DocumentTemplates_JobSubTypes_Update_Dialog .jobTypes .jobSubTypes {
+  background-color: #f2f2f2;
+  border-left: 4px solid #d8d8d8;
+  padding: 4px 0 4px 8px;
+  margin: 4px 0 0 6px;
+}
+#Config_DocumentTemplates_JobSubTypes_Update_Dialog .checkboxBulkSelectContainer {
+  font-size: .8em;
+}
 #dialogBulkGenerate .brief {
   margin: 0 0 8px 0;
 }
@@ -786,7 +822,7 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
 }
 #plugins #pageMenu td .pageMenuArea > a,
 #plugins #pageMenu td .pageMenuArea > h3 {
-  color: #515151;
+  color: #333333;
 }
 #plugins #pageMenu td .pageMenuArea > a:hover,
 #plugins #pageMenu td .pageMenuArea > h3:hover {
@@ -814,7 +850,7 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
 #pluginCatalog .pluginItem > h2:first-child i {
   font-size: .9em;
   padding-right: 4px;
-  color: #515151;
+  color: #333333;
 }
 #pluginCatalog .pluginItem > h2:first-child a {
   float: right;
@@ -866,9 +902,6 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
 #Config_AuthRoles_Subjects_Update_Dialog {
   display: none;
 }
-#Config_AuthRoles_Subjects_Update_Dialog #Config_AuthRoles_Subjects_Update_Dialog_None {
-  display: none;
-}
 #Config_AuthRoles_Subjects_Update_Dialog #Config_AuthRoles_Subjects_Update_Dialog_ListContainer {
   height: 280px;
   overflow-y: auto;
@@ -903,5 +936,122 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
   font-size: 1.3em;
 }
 #Config_AuthRoles_Subjects_Update_Dialog #Config_AuthRoles_Subjects_Update_Dialog_List li .remove:hover {
+  opacity: 1;
+}
+#Config_JobQueues_Index i {
+  width: 1.2857142857142858em;
+  text-align: center;
+}
+#Config_JobQueues_Icon {
+  display: block;
+  margin: 0 0 10px 10px;
+}
+#Config_JobQueues_Icon_Update_Dialog {
+  display: none;
+}
+#Config_JobQueues_Icon_Update_Dialog div.colours {
+  text-align: center;
+  font-size: 30px;
+}
+#Config_JobQueues_Icon_Update_Dialog div.colours i {
+  cursor: pointer;
+  padding: 1px;
+  opacity: .9;
+}
+#Config_JobQueues_Icon_Update_Dialog div.colours i:hover {
+  opacity: 1;
+}
+#Config_JobQueues_Icon_Update_Dialog div.colours i.selected {
+  opacity: 1;
+}
+#Config_JobQueues_Icon_Update_Dialog div.icons {
+  text-align: center;
+  font-size: 34px;
+  background-color: #ffffff;
+  border: 1px solid #d1d1d1;
+  margin: 6px 0 14px 0;
+}
+#Config_JobQueues_Icon_Update_Dialog div.icons i {
+  width: 1.2857142857142858em;
+  text-align: center;
+  cursor: pointer;
+  padding: 6px 0px;
+  color: #333333;
+  opacity: .6;
+}
+#Config_JobQueues_Icon_Update_Dialog div.icons i:hover {
+  opacity: .9;
+  color: inherit;
+}
+#Config_JobQueues_Icon_Update_Dialog div.icons i.selected {
+  opacity: 1;
+  color: inherit;
+}
+#Config_JobQueues_JobSubTypes_Update {
+  margin: 8px 0;
+}
+#Config_JobQueues_JobSubTypes_Update_Dialog #Config_JobQueues_JobSubTypes_Update_Dialog_Types {
+  margin: 0 0 8px 0;
+}
+#Config_JobQueues_JobSubTypes_Update_Dialog .jobTypes {
+  padding: 6px 0;
+}
+#Config_JobQueues_JobSubTypes_Update_Dialog .jobTypes .jobSubTypes {
+  background-color: #f2f2f2;
+  border-left: 4px solid #d8d8d8;
+  padding: 4px 0 4px 8px;
+  margin: 4px 0 0 6px;
+}
+#Config_JobQueues_JobSubTypes_Update_Dialog .checkboxBulkSelectContainer {
+  font-size: .8em;
+}
+#Config_JobQueues_Subjects li,
+#Config_JobQueues_Subjects_Update_Dialog_List li {
+  padding: 4px 0 4px 4px;
+}
+#Config_JobQueues_Subjects li i.fa-user,
+#Config_JobQueues_Subjects_Update_Dialog_List li i.fa-user,
+#Config_JobQueues_Subjects li i.fa-users,
+#Config_JobQueues_Subjects_Update_Dialog_List li i.fa-users {
+  width: 1.2857142857142858em;
+  text-align: center;
+}
+#Config_JobQueues_Subjects_Update_Dialog {
+  display: none;
+}
+#Config_JobQueues_Subjects_Update_Dialog #Config_JobQueues_Subjects_Update_Dialog_ListContainer {
+  height: 280px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  border: 1px solid #d8d8d8;
+}
+#Config_JobQueues_Subjects_Update_Dialog #Config_JobQueues_Subjects_Update_Dialog_None {
+  padding-top: 15px;
+  display: block;
+  text-align: center;
+}
+#Config_JobQueues_Subjects_Update_Dialog #Config_JobQueues_Subjects_Update_Dialog_AddContainer {
+  padding-top: 10px;
+  padding-left: 10px;
+}
+#Config_JobQueues_Subjects_Update_Dialog #Config_JobQueues_Subjects_Update_Dialog_List li {
+  cursor: pointer;
+}
+#Config_JobQueues_Subjects_Update_Dialog #Config_JobQueues_Subjects_Update_Dialog_List li:hover {
+  background-color: #f4f4f4;
+}
+#Config_JobQueues_Subjects_Update_Dialog #Config_JobQueues_Subjects_Update_Dialog_List li:hover .remove {
+  opacity: .8;
+}
+#Config_JobQueues_Subjects_Update_Dialog #Config_JobQueues_Subjects_Update_Dialog_List li .remove {
+  margin-top: 2px;
+  padding-right: 6px;
+  float: right;
+  cursor: pointer;
+  opacity: 0;
+  color: #e51400;
+  font-size: 1.3em;
+}
+#Config_JobQueues_Subjects_Update_Dialog #Config_JobQueues_Subjects_Update_Dialog_List li .remove:hover {
   opacity: 1;
 }

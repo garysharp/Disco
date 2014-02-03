@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DeviceBatch
 {
-    [ClaimDetails("Device Batch", "Permissions related to Device Batches")]
+    [ClaimDetails("Device Batches", "Permissions related to Device Batches")]
     public class DeviceBatchClaims : BaseRoleClaimGroup
     {
         [ClaimDetails("Configure Device Batches", "Can configure device batches")]

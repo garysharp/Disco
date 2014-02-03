@@ -37,13 +37,11 @@ namespace Disco.Web.Models.Job
         public Disco.Models.Repository.Device Device { get; set; }
         public Disco.Models.Repository.User User { get; set; }
         public List<Disco.Models.Repository.JobType> JobTypes { get; set; }
-        public List<Disco.Models.Repository.JobSubType> JobSubTypes { get; set; }
+
         public void UpdateModel(DiscoDataContext Database)
         {
             if (this.JobTypes == null)
-                JobTypes = Database.JobTypes.ToList();
-            if (this.JobSubTypes == null)
-                JobSubTypes = Database.JobSubTypes.ToList();
+                JobTypes = Database.JobTypes.Include("JobSubTypes.JobQueues").ToList();
 
             if (!string.IsNullOrEmpty(DeviceSerialNumber))
             {
@@ -68,7 +66,6 @@ namespace Disco.Web.Models.Job
                         {
                             case Disco.Models.Repository.JobType.JobTypeIds.UMgmt:
                                 JobTypes.Remove(jobType);
-                                JobSubTypes.RemoveAll(jst => jst.JobType == jobType);
                                 break;
                             default:
                                 break;
@@ -88,7 +85,6 @@ namespace Disco.Web.Models.Job
                         case Disco.Models.Repository.JobType.JobTypeIds.HWar:
                         case Disco.Models.Repository.JobType.JobTypeIds.SImg:
                             JobTypes.Remove(jobType);
-                            JobSubTypes.RemoveAll(jst => jst.JobType == jobType);
                             break;
                         default:
                             break;
@@ -134,7 +130,7 @@ namespace Disco.Web.Models.Job
                 if (SubTypes != null)
                 {
                     var subTypes = this.SubTypes;
-                    return this.JobSubTypes.Where(m => subTypes.Contains(String.Format("{0}_{1}", m.JobTypeId, m.Id))).ToList();
+                    return this.JobTypes.SelectMany(jt => jt.JobSubTypes).Where(m => subTypes.Contains(String.Format("{0}_{1}", m.JobTypeId, m.Id))).ToList();
                 }
                 return null;
             }

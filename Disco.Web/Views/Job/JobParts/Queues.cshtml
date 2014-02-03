@@ -1,0 +1,394 @@
+﻿@model Disco.Web.Models.Job.ShowModel
+@using Disco.Services.Jobs.JobQueues;
+@{
+    Authorization.Require(Claims.Job.ShowJobsQueues);
+
+    var hasAddOwn = Authorization.Has(Claims.Job.Actions.AddOwnQueues);
+    var hasAddAny = Authorization.Has(Claims.Job.Actions.AddAnyQueues);
+    var hasRemoveOwn = Authorization.Has(Claims.Job.Actions.RemoveOwnQueues);
+    var hasRemoveAny = Authorization.Has(Claims.Job.Actions.RemoveAnyQueues);
+
+    var hasJobQueueShow = Authorization.Has(Claims.Config.JobQueue.Show);
+
+    var queues = JobQueueService.GetQueues();
+    var queueHistory = Model.Job.JobQueues.Select(jq => new Tuple<JobQueueJob, JobQueueToken>(jq, queues.First(q => q.JobQueue.Id == jq.JobQueueId))).OrderBy(jq => jq.Item1.AddedDate).ToList();
+}
+@if (queueHistory.Count > 0)
+{
+    <table id="jobQueues">
+        <tr>
+            <th class="name">Name</th>
+            <th class="added">Added</th>
+            <th class="removed">Removed</th>
+            <th class="sla">SLA</th>
+        </tr>
+        @foreach (var jq in queueHistory.OrderByDescending(jqj => jqj.Item1.AddedDate))
+        {
+            bool overdue = (jq.Item1.SLAExpiresDate.HasValue && jq.Item1.SLAExpiresDate.Value < (jq.Item1.RemovedDate.HasValue ? jq.Item1.RemovedDate : DateTime.Now));
+            <tr data-jobqueuejobid="@jq.Item1.Id" data-jobqueuejobaddeddate="@(jq.Item1.AddedDate.ToString("s"))" class="@(!jq.Item1.RemovedDate.HasValue ? "added" : "removed")">
+                <td class="name">
+                    <i class="fa fa-@(jq.Item2.JobQueue.Icon) fa-fw fa-lg d-@(jq.Item2.JobQueue.IconColour)"></i>
+                    @if (hasJobQueueShow)
+                    {
+                        @Html.ActionLink(jq.Item2.JobQueue.Name, MVC.Config.JobQueue.Index(jq.Item2.JobQueue.Id))
+                    }
+                    else
+                    {
+                        @jq.Item2.JobQueue.Name
+                    }
+                    @if (jq.Item2.JobQueue.Priority != JobQueuePriority.Normal)
+                    {
+                        <i class="fa d-priority-@(jq.Item2.JobQueue.Priority.ToString().ToLower())" title="@(jq.Item2.JobQueue.Priority.ToString()) Queue Priority"></i>
+                    }
+                </td>
+                <td class="added">
+                    @if (jq.Item1.CanEditAddedComment())
+                    {
+                        <i class="fa fa-fw fa-edit" title="Edit Comment"></i>
+                    }
+                    @if (jq.Item1.AddedComment == null)
+                    {
+                        <div class="comments smallMessage">[no comment]</div>
+                    }
+                    else
+                    {
+                        <div class="comments">@jq.Item1.AddedComment</div>
+                    }
+                    <div class="when">@CommonHelpers.FriendlyDateAndUser(jq.Item1.AddedDate, jq.Item1.AddedUser)</div>
+                </td>
+                <td class="removed@(!jq.Item1.RemovedDate.HasValue ? " na" : null)">
+                    @if (jq.Item1.RemovedDate.HasValue)
+                    {
+                        if (jq.Item1.CanEditRemovedComment())
+                        {
+                        <i class="fa fa-fw fa-edit" title="Edit Comment"></i>
+                        }
+                        if (jq.Item1.RemovedComment == null)
+                        {
+                        <div class="comments smallMessage">[no comment]</div>
+                        }
+                        else
+                        {
+                        <div class="comments">@jq.Item1.RemovedComment</div>
+                        }
+                        <div class="when">@CommonHelpers.FriendlyDateAndUser(jq.Item1.RemovedDate.Value, jq.Item1.RemovedUser)</div>
+                    }
+                    else if (jq.Item1.CanRemove())
+                    {
+                        @Html.ActionLinkSmallButton("Remove", MVC.API.JobQueueJob.RemoveJob(jq.Item1.Id, null), null, (jq.Item1.CanCloseJobNormallyAfterRemoved() ? "remove canCloseNormally" : "remove"))
+                    }
+                    else
+                    {
+                        <span class="smallMessage">In Progress</span>
+                    }
+                </td>
+                <td class="sla @(overdue ? "overdue" : null) @(jq.Item1.CanEditSla() ? "canEditSLA" : null) @(jq.Item1.CanEditPriority() ? "canEditPriority" : null)" data-priority="@(jq.Item1.Priority.ToString())" data-sla="@(jq.Item1.SLAExpiresDate.HasValue ? jq.Item1.SLAExpiresDate.Value.ToString("s") : null)">
+                    @if (jq.Item1.CanEditSla() || jq.Item1.CanEditPriority())
+                    {
+                        <i class="fa fa-fw fa-edit" title="Edit SLA"></i>
+                    }
+                    <i class="fa d-priority-@(jq.Item1.Priority.ToString().ToLower())" title="@(jq.Item1.Priority.ToString()) Job Priority"></i>
+                    @if (jq.Item1.SLAExpiresDate.HasValue)
+                    {
+                        if (jq.Item1.RemovedDate.HasValue)
+                        {
+                        @CommonHelpers.FriendlyDate(jq.Item1.SLAExpiresDate.Value, WithoutSuffix: true)
+                            if (jq.Item1.RemovedDate.Value <= jq.Item1.SLAExpiresDate.Value)
+                            {
+                        <span>early</span>
+                            }
+                            else
+                            {
+                        <span>late</span>
+                            }
+                        }
+                        else
+                        {
+                        <span>due </span>@CommonHelpers.FriendlyDate(jq.Item1.SLAExpiresDate.Value)
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+    <div id="Job_Show_Queues_Actions_Remove_Dialog" class="dialog" title="Remove this Job from the queue?">
+        @using (Html.BeginForm(MVC.API.JobQueueJob.RemoveJob()))
+        {
+            <input id="Job_Show_Queues_Actions_Remove_Dialog_Id" type="hidden" name="id" value="" />
+            <p>
+                <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?
+            </p>
+            <h3>Comment:</h3>
+            <p>
+                <textarea name="Comment" class="block"></textarea>
+            </p>
+            <div id="Job_Show_Queues_Actions_Remove_Dialog_CloseJob_Container">
+                <input id="Job_Show_Queues_Actions_Remove_Dialog_CloseJob" type="checkbox" name="CloseJob" value="true" />
+                <label for="Job_Show_Queues_Actions_Remove_Dialog_CloseJob">Close the Job</label>
+            </div>
+        }
+    </div>
+    <div id="Job_Show_Queues_Actions_EditAddedComment_Dialog" class="dialog" title="Edit the Added Comment">
+        @using (Html.BeginForm(MVC.API.JobQueueJob.UpdateAddedComment()))
+        {
+            <input id="Job_Show_Queues_Actions_EditAddedComment_Dialog_Id" type="hidden" name="id" value="" />
+            <input type="hidden" name="redirect" value="true" />
+            <h4>Comment:</h4>
+            <p>
+                <textarea id="Job_Show_Queues_Actions_EditAddedComment_Dialog_Comment" name="AddedComment" class="block"></textarea>
+            </p>
+        }
+    </div>
+    <div id="Job_Show_Queues_Actions_EditRemovedComment_Dialog" class="dialog" title="Edit the Removed Comment">
+        @using (Html.BeginForm(MVC.API.JobQueueJob.UpdateRemovedComment()))
+        {
+            <input id="Job_Show_Queues_Actions_EditRemovedComment_Dialog_Id" type="hidden" name="id" value="" />
+            <input type="hidden" name="redirect" value="true" />
+            <h4>Comment:</h4>
+            <p>
+                <textarea id="Job_Show_Queues_Actions_EditRemovedComment_Dialog_Comment" name="RemovedComment" class="block"></textarea>
+            </p>
+        }
+    </div>
+    <div id="Job_Show_Queues_Actions_EditSla_Dialog" class="dialog" title="Edit the SLA">
+        @using (Html.BeginForm(MVC.API.JobQueueJob.UpdateSlaAndPriority()))
+        {
+            <input id="Job_Show_Queues_Actions_EditSla_Dialog_Id" type="hidden" name="id" value="" />
+            <input type="hidden" name="redirect" value="true" />
+            <div class="priority">
+                <h4>Job Priority:</h4>
+                <p>
+                    <i class="fa"></i>
+                    <select id="Job_Show_Queues_Actions_EditSla_Dialog_Priority" name="Priority" autofocus="autofocus">
+                        @foreach (var priorityItem in Enum.GetNames(typeof(JobQueuePriority)))
+                        {
+                            <option value="@(priorityItem)">@(priorityItem)</option>
+                        }
+                    </select>
+                </p>
+            </div>
+            <div class="sla">
+                <h4>SLA Target:</h4>
+                <p>
+                    <input id="Job_Show_Queues_Actions_EditSla_Dialog_Sla" name="Sla" type="text" placeholder="None" />
+                </p>
+            </div>
+        }
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            var jobQueues = $('#jobQueues');
+
+            var dialog = null;
+            var dialogEditAddedComment = null;
+            var dialogEditRemovedComment = null;
+            var dialogEditSla = null;
+            var dialogEditSla_BothUrl = '@(Url.Action(MVC.API.JobQueueJob.UpdateSlaAndPriority()))';
+            var dialogEditSla_SlaUrl = '@(Url.Action(MVC.API.JobQueueJob.UpdateSla()))';
+            var dialogEditSla_PriorityUrl = '@(Url.Action(MVC.API.JobQueueJob.UpdatePriority()))';
+
+            jobQueues.on('click', 'a.remove', function (e) {
+                var $this = $(this);
+                var jobQueueJobId = $this.closest('tr').attr('data-jobqueuejobid');
+
+                if (!dialog) {
+                    dialog = $('#Job_Show_Queues_Actions_Remove_Dialog');
+                    dialog.dialog({
+                        resizable: false,
+                        modal: true,
+                        autoOpen: false,
+                        buttons: {
+                            "Remove Job": function () {
+                                var $this = $(this);
+                                $this.dialog("disable");
+                                $this.dialog("option", "buttons", null);
+                                $this.find('form').submit();
+                            },
+                            Cancel: function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                }
+
+                if ($this.hasClass('canCloseNormally')) {
+                    $('#Job_Show_Queues_Actions_Remove_Dialog_CloseJob_Container').show();
+                } else {
+                    $('#Job_Show_Queues_Actions_Remove_Dialog_CloseJob_Container').hide();
+                }
+                $('#Job_Show_Queues_Actions_Remove_Dialog_CloseJob').prop('checked', false);
+
+                $('#Job_Show_Queues_Actions_Remove_Dialog_Id').val(jobQueueJobId);
+                dialog.dialog('open');
+
+                e.preventDefault();
+                return false;
+            });
+
+            jobQueues.on('click', 'td.added i.fa-edit', function (e) {
+                var $this = $(this);
+                var jobQueueJobId = $this.closest('tr').attr('data-jobqueuejobid');
+
+                if (!dialogEditAddedComment) {
+                    dialogEditAddedComment = $('#Job_Show_Queues_Actions_EditAddedComment_Dialog');
+                    dialogEditAddedComment.dialog({
+                        resizable: false,
+                        modal: true,
+                        width: 320,
+                        autoOpen: false,
+                        buttons: {
+                            "Save Changes": function () {
+                                var $this = $(this);
+                                $this.dialog("disable");
+                                $this.dialog("option", "buttons", null);
+                                $this.find('form').submit();
+                            },
+                            Cancel: function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                }
+
+                var $comments = $this.closest('td').find('.comments');
+                if ($comments.hasClass('smallMessage')) {
+                    $('#Job_Show_Queues_Actions_EditAddedComment_Dialog_Comment').val('');
+                } else {
+                    $('#Job_Show_Queues_Actions_EditAddedComment_Dialog_Comment').val($comments.text());
+                }
+
+                $('#Job_Show_Queues_Actions_EditAddedComment_Dialog_Id').val(jobQueueJobId);
+                dialogEditAddedComment.dialog('open');
+                e.preventDefault();
+                return false;
+            });
+
+            jobQueues.on('click', 'td.removed i.fa-edit', function (e) {
+                var $this = $(this);
+                var jobQueueJobId = $this.closest('tr').attr('data-jobqueuejobid');
+
+                if (!dialogEditRemovedComment) {
+                    dialogEditRemovedComment = $('#Job_Show_Queues_Actions_EditRemovedComment_Dialog');
+                    dialogEditRemovedComment.dialog({
+                        resizable: false,
+                        modal: true,
+                        width: 320,
+                        autoOpen: false,
+                        buttons: {
+                            "Save Changes": function () {
+                                var $this = $(this);
+                                $this.dialog("disable");
+                                $this.dialog("option", "buttons", null);
+                                $this.find('form').submit();
+                            },
+                            Cancel: function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                }
+
+                var $comments = $this.closest('td').find('.comments');
+                if ($comments.hasClass('smallMessage')) {
+                    $('#Job_Show_Queues_Actions_EditRemovedComment_Dialog_Comment').val('');
+                } else {
+                    $('#Job_Show_Queues_Actions_EditRemovedComment_Dialog_Comment').val($comments.text());
+                }
+
+                $('#Job_Show_Queues_Actions_EditRemovedComment_Dialog_Id').val(jobQueueJobId);
+                dialogEditRemovedComment.dialog('open');
+                e.preventDefault();
+                return false;
+            });
+
+            jobQueues.on('click', 'td.sla i.fa-edit', function (e) {
+                var $this = $(this);
+                var jobQueueJobId = $this.closest('tr').attr('data-jobqueuejobid');
+
+                var priorityChange = function () {
+                    var $element = $('#Job_Show_Queues_Actions_EditSla_Dialog_Priority');
+                    var icon = dialogEditSla.find('.priority i');
+                    icon[0].className = '';
+                    icon.addClass('fa d-priority-' + $element.val().toLowerCase()).attr('title', $element.val() + ' Priority');
+                };
+
+                if (!dialogEditSla) {
+                    dialogEditSla = $('#Job_Show_Queues_Actions_EditSla_Dialog');
+                    dialogEditSla.dialog({
+                        resizable: false,
+                        modal: true,
+                        width: 320,
+                        autoOpen: false,
+                        buttons: {
+                            "Save Changes": function () {
+                                var $this = $(this);
+                                $this.dialog("disable");
+                                $this.dialog("option", "buttons", null);
+                                $this.find('form').submit();
+                            },
+                            Cancel: function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+
+                    $('#Job_Show_Queues_Actions_EditSla_Dialog_Priority').change(priorityChange);
+                }
+
+                var $td = $this.closest('td');
+                var priority = $td.attr('data-priority');
+                var sla = $td.attr('data-sla');
+                var slaStart = $this.closest('tr').attr('data-jobqueuejobaddeddate');
+
+                var canEditSla = $td.hasClass('canEditSLA');
+                var canEditPriority = $td.hasClass('canEditPriority');
+
+                if (canEditPriority) {
+                    $('#Job_Show_Queues_Actions_EditSla_Dialog_Priority').val(priority);
+                    priorityChange();
+                    dialogEditSla.find('div.priority').show();
+                } else {
+                    dialogEditSla.find('div.priority').hide();
+                }
+
+                if (canEditSla) {
+                    var $sla = $('#Job_Show_Queues_Actions_EditSla_Dialog_Sla');
+
+                    $sla.datetimepicker('destroy').datetimepicker({
+                        defaultDate: new Date(),
+                        ampm: true,
+                        changeYear: true,
+                        changeMonth: true,
+                        minDate: moment(slaStart).add('m', 1).toDate(),
+                        dateFormat: 'yy/mm/dd'
+                    });
+
+                    if (sla) {
+                        $sla.datetimepicker('setDate', moment(sla).toDate());
+                    } else {
+                        $sla.val('');
+                    }
+                    dialogEditSla.find('div.sla').show();
+                } else {
+                    dialogEditSla.find('div.sla').hide();
+                }
+
+                if (canEditPriority && canEditSla)
+                    dialogEditSla.find('form').attr('action', dialogEditSla_BothUrl);
+                else if (canEditPriority)
+                    dialogEditSla.find('form').attr('action', dialogEditSla_PriorityUrl);
+                else if (canEditSla)
+                    dialogEditSla.find('form').attr('action', dialogEditSla_SlaUrl);
+
+                $('#Job_Show_Queues_Actions_EditSla_Dialog_Id').val(jobQueueJobId);
+                dialogEditSla.dialog('open');
+                e.preventDefault();
+                return false;
+            });
+        });
+    </script>
+}
+else
+{
+    <div class="none">This job has no associated queue history</div>
+}

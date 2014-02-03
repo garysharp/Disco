@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Disco.Models.BI.Search;
+using Disco.Models.Services.Jobs.JobLists;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,7 +20,7 @@ namespace Disco.Web.Areas.API.Models.DocumentTemplate
                 label = string.Format("{0} - {1} - {2}", item.SerialNumber, item.ComputerName, item.DeviceModelDescription)
             };
         }
-        public static ImporterUndetectedDataIdLookupModel FromSearchResultItem(Disco.Models.BI.Job.JobTableModel.JobTableItemModel item)
+        public static ImporterUndetectedDataIdLookupModel FromSearchResultItem(JobTableItemModel item)
         {
             return new ImporterUndetectedDataIdLookupModel
             {
@@ -26,7 +28,7 @@ namespace Disco.Web.Areas.API.Models.DocumentTemplate
                 label = string.Format("{0} ({1}; {2})", item.Id, item.DeviceSerialNumber, item.UserDisplayName)
             };
         }
-        public static ImporterUndetectedDataIdLookupModel FromSearchResultItem(Disco.Models.BI.Search.UserSearchResultItem item)
+        public static ImporterUndetectedDataIdLookupModel FromSearchResultItem(UserSearchResultItem item)
         {
             return new ImporterUndetectedDataIdLookupModel
             {

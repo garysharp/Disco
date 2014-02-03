@@ -1,5 +1,7 @@
 ﻿using Disco.BI.Extensions;
+using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.User;
+using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Authorization.Roles;
 using Disco.Services.Plugins.Features.UIExtension;
@@ -53,7 +55,7 @@ namespace Disco.Web.Controllers
 
             if (Authorization.Has(Claims.User.ShowJobs))
             {
-                m.Jobs = new Disco.Models.BI.Job.JobTableModel()
+                m.Jobs = new JobTableModel()
                 {
                     ShowStatus = true,
                     ShowDevice = true,

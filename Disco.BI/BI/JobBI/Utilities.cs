@@ -40,6 +40,34 @@ namespace Disco.BI.JobBI
 
             Database.Jobs.Add(j);
 
+            // Job Queues
+            var queues = from st in subTypes
+                         from jq in st.JobQueues
+                         group st by jq into g
+                         select new { queue = g.Key, subTypes = g };
+            foreach (var queue in queues)
+            {
+                var commentBuilder = new StringBuilder("Automatically added by:");
+                foreach (var subType in queue.subTypes)
+                {
+                    commentBuilder.AppendLine();
+                    commentBuilder.Append(subType.Description);
+                }
+
+                var jqj = new JobQueueJob()
+                {
+                    JobQueueId = queue.queue.Id,
+                    Job = j,
+                    AddedDate = DateTime.Now,
+                    AddedUserId = initialTech.Id,
+                    AddedComment = commentBuilder.ToString(),
+                    SLAExpiresDate = queue.queue.DefaultSLAExpiry.HasValue ? (DateTime?)DateTime.Now.AddMinutes(queue.queue.DefaultSLAExpiry.Value) : null,
+                    Priority = JobQueuePriority.Normal
+                };
+
+                Database.JobQueueJobs.Add(jqj);
+            }
+
             switch (type.Id)
             {
                 case JobType.JobTypeIds.HWar:
@@ -89,83 +117,5 @@ namespace Disco.BI.JobBI
 
             return j;
         }
-
-        public static string JobStatusDescription(string StatusId, Job j = null)
-        {
-            switch (StatusId)
-            {
-                case Job.JobStatusIds.Open:
-                    return "Open";
-                case Job.JobStatusIds.Closed:
-                    return "Closed";
-                case Job.JobStatusIds.AwaitingWarrantyRepair:
-                    if (j == null)
-                        return "Awaiting Warranty Repair";
-                    else
-                        if (j.DeviceHeld.HasValue)
-                            return string.Format("Awaiting Warranty Repair ({0})", j.JobMetaWarranty.ExternalName);
-                        else
-                            return string.Format("Awaiting Warranty Repair - Not Held ({0})", j.JobMetaWarranty.ExternalName);
-                case Job.JobStatusIds.AwaitingRepairs:
-                    if (j == null)
-                        return "Awaiting Repairs";
-                    else
-                        if (j.DeviceHeld.HasValue)
-                            return string.Format("Awaiting Repairs ({0})", j.JobMetaNonWarranty.RepairerName);
-                        else
-                            return string.Format("Awaiting Repairs - Not Held ({0})", j.JobMetaNonWarranty.RepairerName);
-                case Job.JobStatusIds.AwaitingDeviceReturn:
-                    return "Awaiting Device Return";
-                case Job.JobStatusIds.AwaitingUserAction:
-                    return "Awaiting User Action";
-                case Job.JobStatusIds.AwaitingAccountingPayment:
-                    return "Awaiting Accounting Payment";
-                case Job.JobStatusIds.AwaitingAccountingCharge:
-                    return "Awaiting Accounting Charge";
-                case Job.JobStatusIds.AwaitingInsuranceProcessing:
-                    return "Awaiting Insurance Processing";
-                default:
-                    return "Unknown";
-            }
-        }
-        public static string JobStatusDescription(string StatusId, JobTableModel.JobTableItemModelIncludeStatus j = null)
-        {
-            switch (StatusId)
-            {
-                case Job.JobStatusIds.Open:
-                    return "Open";
-                case Job.JobStatusIds.Closed:
-                    return "Closed";
-                case Job.JobStatusIds.AwaitingWarrantyRepair:
-                    if (j == null)
-                        return "Awaiting Warranty Repair";
-                    else
-                        if (j.DeviceHeld.HasValue)
-                            return string.Format("Awaiting Warranty Repair ({0})", j.JobMetaWarranty_ExternalName);
-                        else
-                            return string.Format("Awaiting Warranty Repair - Not Held ({0})", j.JobMetaWarranty_ExternalName);
-                case Job.JobStatusIds.AwaitingRepairs:
-                    if (j == null)
-                        return "Awaiting Repairs";
-                    else
-                        if (j.DeviceHeld.HasValue)
-                            return string.Format("Awaiting Repairs ({0})", j.JobMetaNonWarranty_RepairerName);
-                        else
-                            return string.Format("Awaiting Repairs - Not Held ({0})", j.JobMetaNonWarranty_RepairerName);
-                case Job.JobStatusIds.AwaitingDeviceReturn:
-                    return "Awaiting Device Return";
-                case Job.JobStatusIds.AwaitingUserAction:
-                    return "Awaiting User Action";
-                case Job.JobStatusIds.AwaitingAccountingPayment:
-                    return "Awaiting Accounting Payment";
-                case Job.JobStatusIds.AwaitingAccountingCharge:
-                    return "Awaiting Accounting Charge";
-                case Job.JobStatusIds.AwaitingInsuranceProcessing:
-                    return "Awaiting Insurance Processing";
-                default:
-                    return "Unknown";
-            }
-        }
-
     }
 }

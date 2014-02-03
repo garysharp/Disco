@@ -18,6 +18,7 @@ namespace Disco.Models.Repository
 
         public virtual IList<DocumentTemplate> AttachmentTypes { get; set; }
         public virtual IList<DeviceComponent> DeviceComponents { get; set; }
+        public virtual IList<JobQueue> JobQueues { get; set; }
 
         [ForeignKey("JobTypeId")]
         public virtual JobType JobType { get; set; }

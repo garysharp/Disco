@@ -1,13 +1,13 @@
-﻿@model Disco.Models.BI.Job.JobTableModel
+﻿@model Disco.Models.Services.Jobs.JobLists.JobTableModel
 @if (DiscoApplication.MultiSiteMode)
 {
-    if (Model == null || Model.Items == null || Model.Items.Count == 0)
+    if (Model == null || Model.Items == null || Model.Items.Count() == 0)
     { 
     <span class="smallMessage">No Jobs Found</span>
     }
     else
     {
-        var multiSiteModels = Model.MultiCampusModels;
+        var multiSiteModels = Model.MultiCampusModels();
 
         foreach (var multiSiteModel in multiSiteModels)
         {

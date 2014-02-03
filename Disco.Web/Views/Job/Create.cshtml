@@ -27,7 +27,7 @@
                 {
                     <div id="createJob_SubType_@(jt.Id)" class="createJob_SubType">
                         <div class="createJob_SubTypes">
-                            @CommonHelpers.CheckBoxList("SubTypes", Model.JobSubTypes.Where(jst => jst.JobTypeId == jt.Id).ToList().ToSelectListItems(Model.SubTypes), 3)
+                            @CommonHelpers.CheckBoxList("SubTypes", jt.JobSubTypes.ToSelectListItems(Model.SubTypes, true), 3, true, null, false)
                         </div>
                     </div>   
                 }
@@ -64,12 +64,10 @@
         </div>
         <div id="createJob_QuickLogContainer" class="createJob_Component">
             <div id="createJob_QuickLogAutoCloseContainer">
-                <h3>Quick Log</h3>
                 <input id="createJob_QuickLog" name="QuickLog" type="checkbox" value="true" /><label for="createJob_QuickLog">Automatically close this job</label>
             </div>
             <div id="createJob_QuickLogTaskTimeContainer">
-                <h3>Task Time</h3>
-                @Html.ValidationMessageFor(m => m.QuickLogTaskTimeMinutes)
+                <h4>Task Time:</h4>
                 <input type="radio" id="createJob_TaskTime10" name="QuickLogTaskTimeMinutes" value="10" /><label for="createJob_TaskTime10"> 10 Minutes</label>
                 <input type="radio" id="createJob_TaskTime30" name="QuickLogTaskTimeMinutes" value="30" /><label for="createJob_TaskTime30"> 30 Minutes</label>
                 <input type="radio" id="createJob_TaskTime60" name="QuickLogTaskTimeMinutes" value="60" /><label for="createJob_TaskTime60"> 1 Hour</label>
@@ -79,6 +77,7 @@
                     <input type="number" id="createJob_TaskTimeOtherMinutes" name="QuickLogTaskTimeMinutesOther" value="" disabled="disabled" />
                     Minutes
                 </span>
+                @Html.ValidationMessageFor(m => m.QuickLogTaskTimeMinutes)
             </div>
         </div>
     }

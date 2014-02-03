@@ -29,6 +29,7 @@ namespace Disco.Web.Views.Device.DeviceParts
     using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
     using Disco.Web;
@@ -77,7 +78,7 @@ WriteLiteral("\r\n    </div>\r\n    <script>\r\n        $(\'#DeviceDetailTabItem
 
             
             #line 10 "..\..\Views\Device\DeviceParts\_Jobs.cshtml"
-                                                                                 Write(Model.Jobs.Items.Count);
+                                                                                 Write(Model.Jobs.Items.Count());
 
             
             #line default

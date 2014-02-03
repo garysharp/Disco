@@ -27,7 +27,7 @@ namespace Disco.Web.Extensions
                 return jobTypes.Select(jt => new SelectListItem { Value = jt.Id, Text = jt.Description, Selected = (SelectedId == jt.Id) }).ToList();
         }
 
-        public static List<SelectListItem> ToSelectListItems(this IEnumerable<JobType> jobTypes, List<JobType> SelectedItems)
+        public static List<SelectListItem> ToSelectListItems(this IEnumerable<JobType> jobTypes, IEnumerable<JobType> SelectedItems)
         {
             List<string> selectedIds = default(List<string>);
 

@@ -20,6 +20,15 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.Job
         [ClaimDetails("Delete Jobs", "Can delete jobs")]
         public bool Delete { get; set; }
 
+        [ClaimDetails("Add to Own Queues", "Can add to own job queues")]
+        public bool AddOwnQueues { get; set; }
+        [ClaimDetails("Add to Any Queues", "Can add to any job queues")]
+        public bool AddAnyQueues { get; set; }
+        [ClaimDetails("Remove from Own Queues", "Can remove from own job queues")]
+        public bool RemoveOwnQueues { get; set; }
+        [ClaimDetails("Remove from Any Queues", "Can remove from any job queues")]
+        public bool RemoveAnyQueues { get; set; }
+
         [ClaimDetails("Log Warranty", "Can log warranty for jobs")]
         public bool LogWarranty { get; set; }
         [ClaimDetails("Log Repair", "Can log repair for non-warranty jobs")]

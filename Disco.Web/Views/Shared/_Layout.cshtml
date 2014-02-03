@@ -21,8 +21,27 @@
             </div>
             <nav>
                 <ul id="menu">
-                    <li class="hasSubMenu">@Html.ActionLink("Jobs", MVC.Job.Index(), accesskey: "1")
-                        <ul class="subMenu">
+                    <li class="d-sm@((string)ViewContext.ViewData["MenuArea"] == MVC.Job.Name ? " active" : null)">@Html.ActionLink("Jobs", MVC.Job.Index(), accesskey: "1")
+                        <ul>
+                            @if (Authorization.Has(Claims.Job.Lists.JobQueueLists))
+                            {
+                                var queues = Disco.Services.Jobs.JobQueues.JobQueueService.GetQueues();
+                                if (queues.Count > 0)
+                                {
+                                    <li class="d-sm"><i class="fa fa-caret-right"></i><a>Queues</a>
+                                        <ul>
+                                            @foreach (var queueToken in queues)
+                                            {
+                                                <li><a href="@Url.Action(MVC.Job.Queue(queueToken.JobQueue.Id))"><i class="fa fa-@(queueToken.JobQueue.Icon) fa-fw d-@(queueToken.JobQueue.IconColour)"></i> @(queueToken.JobQueue.Name)</a></li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            }
+                            @if (Authorization.Has(Claims.Job.Lists.AwaitingTechnicianAction))
+                            {
+                                <li>@Html.ActionLink("Awaiting Technician Action", MVC.Job.AwaitingTechnicianAction())</li>
+                            }
                             @if (Authorization.Has(Claims.Job.Lists.DevicesReadyForReturn))
                             {
                                 <li>@Html.ActionLink("Devices Ready for Return", MVC.Job.DevicesReadyForReturn())</li>
@@ -39,8 +58,8 @@
                             {
                                 if (Authorization.HasAny(Claims.Job.Lists.AwaitingFinanceCharge, Claims.Job.Lists.AwaitingFinancePayment, Claims.Job.Lists.AwaitingFinanceAgreementBreach, Claims.Job.Lists.AwaitingFinanceInsuranceProcessing))
                                 {
-                                <li class="hasSubMenu"><i class="fa fa-caret-right"></i>@Html.ActionLink("Awaiting Finance", MVC.Job.AwaitingFinance())
-                                    <ul class="subMenu">
+                                <li class="d-sm"><i class="fa fa-caret-right"></i>@Html.ActionLink("Awaiting Finance", MVC.Job.AwaitingFinance())
+                                    <ul>
                                         @if (Authorization.Has(Claims.Job.Lists.AwaitingFinanceCharge))
                                         {
                                             <li>@Html.ActionLink("Accounting Charge", MVC.Job.AwaitingFinanceCharge())</li>
@@ -79,12 +98,12 @@
                             }
                         </ul>
                     </li>
-                    <li>@Html.ActionLink("Devices", MVC.Device.Index(), accesskey: "2")</li>
-                    <li>@Html.ActionLink("Users", MVC.User.Index(), accesskey: "3")</li>
-                    <li class="moveRight">@Html.ActionLink("Reports", MVC.Public.Public.Index())</li>
+                    <li class="@((string)ViewContext.ViewData["MenuArea"] == MVC.Device.Name ? "active" : null)">@Html.ActionLink("Devices", MVC.Device.Index(), accesskey: "2")</li>
+                    <li class="@((string)ViewContext.ViewData["MenuArea"] == MVC.User.Name ? "active" : null)">@Html.ActionLink("Users", MVC.User.Index(), accesskey: "3")</li>
+                    <li class="moveRight@((string)ViewContext.ViewData["MenuArea"] == MVC.Public.Name ? " active" : null)">@Html.ActionLink("Reports", MVC.Public.Public.Index())</li>
                     @if (Authorization.Has(Claims.Config.Show))
                     {
-                        <li>@Html.ActionLink("Configuration", MVC.Config.Config.Index(), accesskey: "0")</li>
+                        <li class="@((string)ViewContext.ViewData["MenuArea"] == MVC.Config.Name ? "active" : null)">@Html.ActionLink("Configuration", MVC.Config.Config.Index(), accesskey: "0")</li>
                     }
                 </ul>
             </nav>
@@ -94,7 +113,7 @@
                       else
                       {@CurrentUser.ToString()}</span>
                 @using (Html.BeginForm(MVC.Search.Query(), FormMethod.Get))
-                { @Html.TextBox("term", null, new { id="SearchQuery", accesskey = "s" }) }
+                { @Html.TextBox("term", null, new { id="SearchQuery", accesskey = "s", placeholder="Search" }) }
             </div>
         </header>
         <div id="layout_PageHeading">@CommonHelpers.Breadcrumbs(ViewBag.Title ?? string.Empty)</div>

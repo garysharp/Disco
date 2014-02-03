@@ -338,20 +338,53 @@ namespace Disco.BI.Extensions
         #endregion
 
         #region Close
-        public static bool CanClose(this Job j)
+        public static void OnCloseNormally(this Job j, User Technician)
+        {
+            if (!j.CanCloseNormally())
+                throw new InvalidOperationException("Close was Denied");
+
+            j.ClosedDate = DateTime.Now;
+            j.ClosedTechUserId = Technician.Id;
+        }
+
+        private static bool CanCloseNever(this Job j, JobQueueJob IgnoreJobQueueJob = null)
         {
             if (!UserService.CurrentAuthorization.Has(Claims.Job.Actions.Close))
                 return false;
 
             if (j.ClosedDate.HasValue)
-                return false; // Job already Closed
+                return true; // Job already Closed
 
             if (j.DeviceHeld.HasValue && !j.DeviceReturnedDate.HasValue)
-                return false; // Device not returned to User
+                return true; // Device not returned to User
 
             if (j.WaitingForUserAction.HasValue)
-                return false; // Job waiting on User Action
+                return true; // Job waiting on User Action
 
+            if (IgnoreJobQueueJob == null)
+            {
+                if (j.JobQueues.Any(jqj => !jqj.RemovedDate.HasValue))
+                    return true; // Job associated with a Job Queue
+            }
+            else
+            {
+                if (j.JobQueues.Any(jqj => jqj.Id != IgnoreJobQueueJob.Id && !jqj.RemovedDate.HasValue))
+                    return true; // Job associated with a Job Queue
+            }
+
+            return false;
+        }
+        
+        public static bool CanCloseNormally(this Job j)
+        {
+            if (j.CanCloseNever())
+                return false;
+
+            return j.CanCloseNormallyInternal();
+        }
+
+        private static bool CanCloseNormallyInternal(this Job j)
+        {
             switch (j.JobTypeId)
             {
                 case JobType.JobTypeIds.HWar:
@@ -374,36 +407,27 @@ namespace Disco.BI.Extensions
 
             return true;
         }
-        public static void OnClose(this Job j, User Technician)
-        {
-            if (!j.CanClose())
-                throw new InvalidOperationException("Close was Denied");
 
-            j.ClosedDate = DateTime.Now;
-            j.ClosedTechUserId = Technician.Id;
+        public static bool CanCloseJobNormallyAfterRemoved(this JobQueueJob jqj)
+        {
+            if (jqj.Job.CanCloseNever(jqj))
+                return false;
+
+            return jqj.Job.CanCloseNormallyInternal();
         }
         #endregion
 
         #region Force Close
-        public static bool CanForceClose(this Job j)
+        public static bool CanCloseForced(this Job j)
         {
             if (!UserService.CurrentAuthorization.Has(Claims.Job.Actions.ForceClose))
                 return false;
 
-            var canCloseNormally = j.CanClose();
-
-            if (canCloseNormally)
+            if (j.CanCloseNever())
                 return false;
 
-            // Check for Override
-            if (j.ClosedDate.HasValue)
-                return false; // Job already Closed
-
-            if (j.DeviceHeld.HasValue && !j.DeviceReturnedDate.HasValue)
-                return false; // Device not returned to User
-
-            if (j.WaitingForUserAction.HasValue)
-                return false; // Job waiting on User Action
+            if (j.CanCloseNormally())
+                return false;
 
             switch (j.JobTypeId)
             {
@@ -427,9 +451,9 @@ namespace Disco.BI.Extensions
 
             return false;
         }
-        public static void OnForceClose(this Job j, DiscoDataContext Database, User Technician, string Reason)
+        public static void OnCloseForced(this Job j, DiscoDataContext Database, User Technician, string Reason)
         {
-            if (!j.CanForceClose())
+            if (!j.CanCloseForced())
                 throw new InvalidOperationException("Force Close was Denied");
 
             // Write Log

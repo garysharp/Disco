@@ -78,10 +78,10 @@
                 </div>
             </td>
         }
-        @if (Authorization.HasAny(Claims.Config.JobPreferences.Show, Claims.Config.DocumentTemplate.Show, Claims.Config.Plugin.Show))
+        @if (Authorization.HasAny(Claims.Config.JobPreferences.Show, Claims.Config.JobQueue.Show, Claims.Config.DocumentTemplate.Show, Claims.Config.Plugin.Show))
         {
             <td>
-                @if (Authorization.HasAny(Claims.Config.JobPreferences.Show))
+                @if (Authorization.HasAny(Claims.Config.JobPreferences.Show, Claims.Config.JobQueue.Show))
                 {
                     <div class="pageMenuArea noSeperator">
                         <h2>Jobs</h2>
@@ -90,6 +90,13 @@
                             <i class="fa fa-cog"></i>@Html.ActionLinkClass("General Preferences", MVC.Config.JobPreferences.Index(), "config")
                             <div class="pageMenuBlurb">
                                 Configure general preferences related to jobs.
+                            </div>
+                        }
+                        @if (Authorization.Has(Claims.Config.JobQueue.Show))
+                        {
+                            <i class="fa fa-cog"></i>@Html.ActionLinkClass("Job Queues", MVC.Config.JobQueue.Index(), "config")
+                            <div class="pageMenuBlurb">
+                                Create and manage job queues including priorities and queue members.
                             </div>
                         }
                     </div>

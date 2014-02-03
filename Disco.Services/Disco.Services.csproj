@@ -75,6 +75,21 @@
     </Reference>
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Reactive.Core, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Core.2.1.30214.0\lib\Net45\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Interfaces.2.1.30214.0\lib\Net45\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Linq.2.1.30214.0\lib\Net45\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\packages\Rx-PlatformServices.2.1.30214.0\lib\Net45\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -130,6 +145,7 @@
     <Compile Include="Authorization\Roles\ClaimGroups\Configuration\DocumentTemplate\DocumentTemplateClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Configuration\Enrolment\EnrolmentClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Configuration\JobPreferences\JobPreferencesClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Configuration\JobQueue\JobQueueClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Configuration\Logging\LoggingClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Configuration\Origanisation\OrganisationClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Configuration\Plugin\PluginClaims.cs" />
@@ -142,6 +158,7 @@
     <Compile Include="Authorization\Roles\ClaimGroups\Job\JobNonWarrantyPropertiesClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Job\JobClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Job\JobPropertiesClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Job\JobQueuePropertiesClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Job\JobTypesClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Job\JobWarrantyPropertiesClaims.cs" />
     <Compile Include="Authorization\Claims.cs">
@@ -156,6 +173,13 @@
     <Compile Include="Authorization\Roles\RoleClaims.cs" />
     <Compile Include="Authorization\Roles\RoleToken.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Jobs\JobExtensions.cs" />
+    <Compile Include="Jobs\JobLists\JobTableExtensions.cs" />
+    <Compile Include="Jobs\JobQueues\Cache.cs" />
+    <Compile Include="Jobs\JobQueues\JobQueueDeleteTask.cs" />
+    <Compile Include="Jobs\JobQueues\JobQueueService.cs" />
+    <Compile Include="Jobs\JobQueues\JobQueueToken.cs" />
+    <Compile Include="Jobs\JobLists\ManagedJobList.cs" />
     <Compile Include="Logging\LogBase.cs" />
     <Compile Include="Logging\LogContext.cs" />
     <Compile Include="Logging\LogReInitalizeJob.cs" />

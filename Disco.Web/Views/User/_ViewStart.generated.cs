@@ -47,6 +47,7 @@ namespace Disco.Web.Views.User
             #line 1 "..\..\Views\User\_ViewStart.cshtml"
   
     Html.BundleDeferred("~/Style/User");
+    ViewContext.ViewData["MenuArea"] = MVC.User.Name;
 
             
             #line default

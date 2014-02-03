@@ -15,7 +15,10 @@
   border: solid 1px #f4f4f4;
 }
 .tableData > tbody > tr:hover > td {
-  background-color: #f4f4f4;
+  background-color: #fefefe;
+}
+.tableData > tbody > tr:hover:nth-child(odd) > td {
+  background-color: #fafafa;
 }
 .tableData > tfoot > tr > th,
 .tableData > tfoot > tr > td {
@@ -30,7 +33,7 @@
   background-color: #ffffff;
 }
 .tableDataDark th {
-  background-color: #d8d8d8;
+  background-color: #eeeeee;
   border: solid 1px #d8d8d8;
 }
 .tableDataContainer {
@@ -96,7 +99,7 @@ body.layout {
 header,
 #header {
   position: relative;
-  background-color: #515151;
+  background-color: #333333;
   margin: 0;
   padding: 0;
   height: 34px;
@@ -119,20 +122,23 @@ header nav,
   height: 34px;
   padding: 0;
   margin: 0;
-  font-size: 1.1em;
 }
 header nav ul#menu,
 #header nav ul#menu {
-  height: 30px;
-  padding: 2px 2px;
-  margin: 0;
+  height: 26px;
+  padding: 0;
+  margin: 8px 0 0 8px;
   list-style: none;
   z-index: 100000;
+  font-size: 0;
+  line-height: 0;
 }
 header nav ul#menu > li,
 #header nav ul#menu > li {
   display: inline-block;
   z-index: 100000;
+  font-size: 13.200000000000001px;
+  line-height: 19.200000000000003px;
 }
 header nav ul#menu > li.moveRight,
 #header nav ul#menu > li.moveRight {
@@ -141,8 +147,8 @@ header nav ul#menu > li.moveRight,
 header nav ul#menu > li > a,
 #header nav ul#menu > li > a {
   display: inline-block;
-  padding: 5px 10px 3px 10px;
-  height: 22px;
+  padding: 2px 10px 4px 10px;
+  height: 20px;
   color: #ffffff;
   font-weight: 400;
   text-transform: uppercase;
@@ -150,12 +156,15 @@ header nav ul#menu > li > a,
 }
 header nav ul#menu > li > a:active,
 #header nav ul#menu > li > a:active {
-  color: #cddbec;
   text-decoration: none;
+}
+header nav ul#menu > li.active > a,
+#header nav ul#menu > li.active > a {
+  background-color: #222222;
 }
 header nav ul#menu > li:hover > a,
 #header nav ul#menu > li:hover > a {
-  color: #cddbec;
+  background-color: #111111;
   text-decoration: none;
 }
 header nav ul#menu > li > ul,
@@ -164,7 +173,7 @@ header nav ul#menu > li > ul,
   display: none;
   list-style: none;
   position: absolute;
-  margin: 2px 0 0 0;
+  margin: 0;
   border-left: 1px solid #d1d1d1;
   border-bottom: 1px solid #d1d1d1;
   border-right: 1px solid #d1d1d1;
@@ -178,18 +187,16 @@ header nav ul#menu > li > ul li,
   position: relative;
   background-position: top;
   background-repeat: repeat-x;
-}
-header nav ul#menu > li > ul li:not(:first-child),
-#header nav ul#menu > li > ul li:not(:first-child) {
   border-top: 1px solid #e6e6e6;
+}
+header nav ul#menu > li > ul li:first-child,
+#header nav ul#menu > li > ul li:first-child {
+  border-top: 1px solid #d1d1d1;
 }
 header nav ul#menu > li > ul li:hover,
 #header nav ul#menu > li > ul li:hover {
-  background-color: #e6e6e6;
-}
-header nav ul#menu > li > ul li:hover:not(:first-child),
-#header nav ul#menu > li > ul li:hover:not(:first-child) {
   border-top: 1px solid #d9d9d9;
+  background-color: #e6e6e6;
 }
 header nav ul#menu > li > ul li a,
 #header nav ul#menu > li > ul li a {
@@ -207,19 +214,19 @@ header nav ul#menu > li > ul li a:active,
 #header nav ul#menu > li > ul li a:active {
   text-decoration: none;
 }
-header nav ul#menu > li > ul li i.fa,
-#header nav ul#menu > li > ul li i.fa {
+header nav ul#menu > li > ul li i.fa-caret-right,
+#header nav ul#menu > li > ul li i.fa-caret-right {
   cursor: pointer;
-  color: #848484;
+  color: #666666;
   font-size: 16px;
   position: absolute;
   display: block;
   right: 12px;
   top: 7px;
 }
-header nav ul#menu > li > ul li:hover i.fa,
-#header nav ul#menu > li > ul li:hover i.fa {
-  color: #515151;
+header nav ul#menu > li > ul li:hover i.fa-caret-right,
+#header nav ul#menu > li > ul li:hover i.fa-caret-right {
+  color: #333333;
 }
 header nav ul#menu > li > ul ul,
 #header nav ul#menu > li > ul ul {
@@ -229,7 +236,9 @@ header nav ul#menu > li > ul ul,
   top: -1px;
   left: 180px;
   background-color: #f2f2f2;
-  border: 1px solid #d1d1d1;
+  border-left: 1px solid #d1d1d1;
+  border-right: 1px solid #d1d1d1;
+  border-bottom: 1px solid #d1d1d1;
   padding: 0;
   min-width: 180px;
   box-shadow: 2px 2px 5px rgba(209, 209, 209, 0.5);
@@ -361,13 +370,14 @@ footer a:hover,
   color: #5e8cc2;
   text-decoration: none;
 }
-p,
-ul {
+p {
   margin: 0 0 20px 0;
   line-height: 1.6em;
 }
 ul {
   margin: 0;
+  padding: 0 0 0 25px;
+  list-style: square;
   line-height: 1.6em;
 }
 header,
@@ -554,7 +564,10 @@ table.genericData > tbody > tr > th {
   border: solid 1px #f4f4f4;
 }
 table.genericData > tbody > tr:hover > td {
-  background-color: #f4f4f4;
+  background-color: #fefefe;
+}
+table.genericData > tbody > tr:hover:nth-child(odd) > td {
+  background-color: #fafafa;
 }
 table.genericData > tfoot > tr > th,
 table.genericData > tfoot > tr > td {
@@ -717,7 +730,7 @@ table.genericData td.id a {
   background-image: none;
 }
 .jobStatus {
-  color: #515151;
+  color: #333333;
 }
 .jobStatus.Closed {
   color: #9e9e9e;
@@ -739,7 +752,7 @@ table.genericData td.id a {
   color: #6a00ff;
 }
 .deviceStatus {
-  color: #515151;
+  color: #333333;
 }
 .deviceStatus.Decommissioned {
   color: #9e9e9e;
@@ -771,7 +784,10 @@ table.jobTable > tbody > tr > th {
   border: solid 1px #f4f4f4;
 }
 table.jobTable > tbody > tr:hover > td {
-  background-color: #f4f4f4;
+  background-color: #fefefe;
+}
+table.jobTable > tbody > tr:hover:nth-child(odd) > td {
+  background-color: #fafafa;
 }
 table.jobTable > tfoot > tr > th,
 table.jobTable > tfoot > tr > td {
@@ -788,6 +804,34 @@ table.jobTable th.id {
 table.jobTable td.id a,
 table.jobTable th.id a {
   padding: 0 6px;
+}
+table.jobTable tr.statusSlaWarning td {
+  background-color: #fdeed1;
+}
+table.jobTable tr.statusSlaWarning td:not(:last-child) {
+  border-right: 1px solid #f8e9cb;
+}
+table.jobTable tr.statusSlaExpired td {
+  background-color: #ffd7d3;
+}
+table.jobTable tr.statusSlaExpired td:not(:last-child) {
+  border-right: 1px solid #fad2ce;
+}
+table.jobTable tr:nth-child(odd).statusSlaWarning td {
+  background-color: #fcedcf !important;
+}
+table.jobTable tr:nth-child(odd).statusSlaExpired td {
+  background-color: #fed6d2 !important;
+}
+table.jobTable tr:hover.statusSlaWarning td {
+  background-color: #fbebca !important;
+}
+table.jobTable tr:hover.statusSlaExpired td {
+  background-color: #fed1cd !important;
+}
+table.jobTable div.queues {
+  display: inline-block;
+  float: right;
 }
 table.jobTable td.dates,
 table.jobTable th.dates {
@@ -817,9 +861,13 @@ table.deviceTable tr.decommissioned {
   background-color: #ededed;
 }
 textarea {
-  min-height: 75px;
+  font-size: 12px;
   font-family: "Segoe UI", Arial, Verdana, Tahoma, sans-serif;
   border: 1px solid #ccc;
+  min-height: 75px;
+  padding: 2px;
+  color: #444;
+  width: 200px;
 }
 input[type="text"],
 input[type="password"],
@@ -995,6 +1043,99 @@ div.form > table table.sub > tbody > tr > th.name {
 #pageMenu td:last-child {
   border-right: none;
   padding-right: 0;
+}
+.d-priority-high {
+  color: #fa6800;
+  width: 1.2857142857142858em;
+  text-align: center;
+}
+.d-priority-high:before {
+  content: "\f12a";
+}
+.d-priority-normal {
+  color: #60a917;
+  width: 1.2857142857142858em;
+  text-align: center;
+}
+.d-priority-normal:before {
+  content: "\f068";
+}
+.d-priority-low {
+  color: #1e6dab;
+  width: 1.2857142857142858em;
+  text-align: center;
+}
+.d-priority-low:before {
+  content: "\f063";
+}
+.fa-stack .d-priority-high,
+.fa-stack .d-priority-normal,
+.fa-stack .d-priority-low {
+  width: 100%;
+  font-size: .8em;
+  margin-left: .5em;
+  margin-top: .4em;
+  opacity: .6;
+}
+.d-lime {
+  color: #a4c400;
+}
+.d-green {
+  color: #60a917;
+}
+.d-emerald {
+  color: #008a00;
+}
+.d-teal {
+  color: #00aba9;
+}
+.d-cyan {
+  color: #1ba1e2;
+}
+.d-cobalt {
+  color: #0050ef;
+}
+.d-indigo {
+  color: #6a00ff;
+}
+.d-violet {
+  color: #aa00ff;
+}
+.d-pink {
+  color: #f472d0;
+}
+.d-magenta {
+  color: #d80073;
+}
+.d-crimson {
+  color: #a20025;
+}
+.d-red {
+  color: #e51400;
+}
+.d-orange {
+  color: #fa6800;
+}
+.d-amber {
+  color: #f0a30a;
+}
+.d-yellow {
+  color: #e3c800;
+}
+.d-brown {
+  color: #825a2c;
+}
+.d-olive {
+  color: #6d8764;
+}
+.d-steel {
+  color: #647689;
+}
+.d-mauve {
+  color: #76608a;
+}
+.d-sienna {
+  color: #a0522d;
 }
 table.subtleHighlight {
   border: 1px solid #cccccc;

@@ -70,6 +70,8 @@ namespace Disco.Models.Repository
         public virtual IList<JobComponent> JobComponents { get; set; }
         public virtual IList<JobLog> JobLogs { get; set; }
 
+        public virtual IList<JobQueueJob> JobQueues { get; set; }
+
         public virtual JobMetaInsurance JobMetaInsurance { get; set; }
         public virtual JobMetaWarranty JobMetaWarranty { get; set; }
         public virtual JobMetaNonWarranty JobMetaNonWarranty { get; set; }

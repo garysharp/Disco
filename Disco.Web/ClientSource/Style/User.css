@@ -15,7 +15,10 @@
   border: solid 1px #f4f4f4;
 }
 .tableData > tbody > tr:hover > td {
-  background-color: #f4f4f4;
+  background-color: #fefefe;
+}
+.tableData > tbody > tr:hover:nth-child(odd) > td {
+  background-color: #fafafa;
 }
 .tableData > tfoot > tr > th,
 .tableData > tfoot > tr > td {
@@ -30,7 +33,7 @@
   background-color: #ffffff;
 }
 .tableDataDark th {
-  background-color: #d8d8d8;
+  background-color: #eeeeee;
   border: solid 1px #d8d8d8;
 }
 .tableDataContainer {
@@ -95,9 +98,6 @@
 }
 #User_Show #User_Show_Subjects > tbody > tr > td:not(:last-child) {
   border-right: 1px dashed #aaa;
-}
-#User_Show #User_Show_Subjects .dialog {
-  display: none;
 }
 #User_Show #User_Show_Subjects #User_Show_Details {
   width: 330px;
@@ -360,7 +360,7 @@
   padding: 3px;
 }
 #userShowResources #Attachments div.attachmentInput span.action {
-  color: #515151;
+  color: #333333;
   display: block;
   margin: 0 4px 0 0;
   font-size: 1.5em;

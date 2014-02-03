@@ -17,6 +17,7 @@ namespace Disco.Web.Models.Job
 
         public List<Disco.Models.Repository.DocumentTemplate> AvailableDocumentTemplates { get; set; }
         public List<Disco.Models.Repository.JobSubType> UpdatableJobSubTypes { get; set; }
+        public List<Disco.Models.Repository.JobQueue> AvailableQueues { get; set; }
 
         public List<SelectListItem> DocumentTemplatesSelectListItems
         {

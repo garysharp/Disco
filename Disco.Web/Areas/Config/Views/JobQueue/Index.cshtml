@@ -1,0 +1,50 @@
+﻿@model Disco.Web.Areas.Config.Models.JobQueue.IndexModel
+@{
+    Authorization.RequireAll(Claims.Config.JobQueue.Create, Claims.Config.JobQueue.Configure);
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Job Queues", MVC.Config.JobQueue.Index(null));
+}
+<div id="Config_JobQueues_Index">
+    @if (Model.Tokens.Count == 0)
+    {
+        <div class="form" style="width: 450px; padding: 100px 0;">
+            <h2>No job queues are configured</h2>
+        </div>  
+    }
+    else
+    {
+        <table class="tableData">
+            <tr>
+                <th>Name</th>
+                <th>Priority</th>
+                <th>Linked Groups/Users</th>
+            </tr>
+            @foreach (var item in Model.Tokens)
+            {
+                <tr>
+                    <td>
+                        <a href="@Url.Action(MVC.Config.JobQueue.Index(item.JobQueue.Id))">
+                            <i class="fa fa-@(item.JobQueue.Icon) fa-lg d-@(item.JobQueue.IconColour)"></i>
+                            @item.JobQueue.Name
+                        </a>
+                    </td>
+                    <td>
+                        <i class="fa d-priority-@(item.JobQueue.Priority.ToString().ToLower())" title="@(item.JobQueue.Priority.ToString()) Priority"></i>
+                    </td>
+                    <td>
+                        @if (item.SubjectIds.Count == 0)
+                        {
+                            <span class="smallMessage">&lt;None&gt;</span>
+                        }
+                        else
+                        {
+                            @(string.Join(", ", item.SubjectIds.OrderBy(i => i)))
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    <div class="actionBar">
+        @Html.ActionLinkButton("Create Job Queue", MVC.Config.JobQueue.Create())
+    </div>
+</div>

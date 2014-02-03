@@ -31,6 +31,9 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.Job
         [ClaimDetails("Show Attachments", "Can show job attachments")]
         public bool ShowAttachments { get; set; }
 
+        [ClaimDetails("Show Jobs Queues", "Can show jobs queues")]
+        public bool ShowJobsQueues { get; set; }
+
         [ClaimDetails("Show Non-Warranty Components", "Can show non-warranty job components")]
         public bool ShowNonWarrantyComponents { get; set; }
         [ClaimDetails("Show Non-Warranty Finance", "Can show non-warranty job finance")]

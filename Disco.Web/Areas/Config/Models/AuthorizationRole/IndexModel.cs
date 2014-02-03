@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using Disco.Data.Repository;
 using Disco.Models.UI.Config.AuthorizationRole;
-using Disco.Models.Authorization;
+using Disco.Models.Services.Authorization;
 
 namespace Disco.Web.Areas.Config.Models.AuthorizationRole
 {

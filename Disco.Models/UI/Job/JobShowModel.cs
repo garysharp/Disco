@@ -12,5 +12,6 @@ namespace Disco.Models.UI.Job
         TimeSpan? LongRunning { get; set; }
         List<Repository.DocumentTemplate> AvailableDocumentTemplates { get; set; }
         List<Repository.JobSubType> UpdatableJobSubTypes { get; set; }
+        List<Repository.JobQueue> AvailableQueues { get; set; }
     }
 }

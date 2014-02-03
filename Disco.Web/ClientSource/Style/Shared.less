@@ -19,8 +19,13 @@
         border: solid 1px @TableDataBorderColour;
     }
 
-    & > tbody > tr:hover > td {
-        background-color: @TableDataBorderColour;
+    & > tbody > tr:hover {
+        & > td {
+            background-color: darken(@white, 0.5%);
+        }
+        &:nth-child(odd) > td {
+            background-color: darken(@TableDataRowBackgroundColor, 1%);
+        }
     }
 
     & > tfoot > tr > th, & > tfoot > tr > td {
@@ -41,7 +46,7 @@
 
     th
     {
-        background-color: @TableDataDarkBorderColour;
+        background-color: @TableDataDarkBackgroundColour;
         border: solid 1px @TableDataDarkBorderColour;
     }
 }

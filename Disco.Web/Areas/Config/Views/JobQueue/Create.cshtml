@@ -1,0 +1,39 @@
+﻿@model Disco.Web.Areas.Config.Models.JobQueue.CreateModel
+@{
+    Authorization.RequireAll(Claims.Config.JobQueue.Create, Claims.Config.JobQueue.Configure);
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Job Queues", MVC.Config.JobQueue.Index(null), "Create");
+}
+@using (Html.BeginForm())
+{ 
+    @Html.HiddenFor(m => m.JobQueue.Icon)
+    @Html.HiddenFor(m => m.JobQueue.IconColour)
+    @Html.HiddenFor(m => m.JobQueue.Priority)
+    <div class="form" style="width: 450px">
+        <table>
+            <tr>
+                <th>
+                    Name:
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.JobQueue.Name)<br />@Html.ValidationMessageFor(model => model.JobQueue.Name)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Description:
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.JobQueue.Description)<br />@Html.ValidationMessageFor(model => model.JobQueue.Description)
+                </td>
+            </tr>
+        </table>
+        <p class="actions">
+            <input type="submit" class="button" value="Create" />
+        </p>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $('#JobQueue_Name').focus().select();
+        });
+    </script>
+}

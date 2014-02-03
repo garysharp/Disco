@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DeviceProfile
 {
-    [ClaimDetails("Device Profile", "Permissions related to Device Profiles")]
+    [ClaimDetails("Device Profiles", "Permissions related to Device Profiles")]
     public class DeviceProfileClaims : BaseRoleClaimGroup
     {
         [ClaimDetails("Configure Device Profiles", "Can configure device profiles")]

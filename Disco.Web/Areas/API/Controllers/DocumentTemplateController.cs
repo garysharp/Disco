@@ -138,7 +138,7 @@ namespace Disco.Web.Areas.API.Controllers
             return Update(id, pScope, Scope, redirect);
         }
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
-        public virtual ActionResult UpdateSubTypes(string id, List<string> SubTypes = null)
+        public virtual ActionResult UpdateJobSubTypes(string id, List<string> JobSubTypes = null, bool redirect = false)
         {
             try
             {
@@ -146,13 +146,19 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new ArgumentNullException("id");
                 var documentTemplate = Database.DocumentTemplates.Find(id);
 
-                UpdateSubTypes(documentTemplate, SubTypes);
+                UpdateJobSubTypes(documentTemplate, JobSubTypes);
 
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                if (redirect)
+                    return RedirectToAction(MVC.Config.DocumentTemplate.Index(documentTemplate.Id));
+                else
+                    return Json("OK", JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                if (redirect)
+                    throw;
+                else
+                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
             }
 
         }
@@ -224,7 +230,7 @@ namespace Disco.Web.Areas.API.Controllers
 
             Database.SaveChanges();
         }
-        private void UpdateSubTypes(Disco.Models.Repository.DocumentTemplate documentTemplate, List<string> SubTypes)
+        private void UpdateJobSubTypes(Disco.Models.Repository.DocumentTemplate documentTemplate, List<string> JobSubTypes)
         {
             Database.Configuration.LazyLoadingEnabled = true;
 
@@ -236,10 +242,10 @@ namespace Disco.Web.Areas.API.Controllers
             }
 
             // Add New
-            if (SubTypes != null && SubTypes.Count > 0)
+            if (JobSubTypes != null && JobSubTypes.Count > 0)
             {
                 var subTypes = new List<Disco.Models.Repository.JobSubType>();
-                foreach (var stId in SubTypes)
+                foreach (var stId in JobSubTypes)
                 {
                     var typeId = stId.Substring(0, stId.IndexOf("_"));
                     var subTypeId = stId.Substring(stId.IndexOf("_") + 1);

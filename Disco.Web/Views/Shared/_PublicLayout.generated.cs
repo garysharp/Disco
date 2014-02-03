@@ -125,11 +125,15 @@ WriteLiteral("></i></a>\r\n            </div>\r\n            <nav>\r\n          
 
 WriteLiteral(" id=\"menu\"");
 
-WriteLiteral(">\r\n                    <li>");
+WriteLiteral(">\r\n                    <li");
+
+WriteLiteral(" class=\"active\"");
+
+WriteLiteral(">");
 
             
             #line 22 "..\..\Views\Shared\_PublicLayout.cshtml"
-                   Write(Html.ActionLink("Reports", MVC.Public.Public.Index()));
+                                  Write(Html.ActionLink("Reports", MVC.Public.Public.Index()));
 
             
             #line default

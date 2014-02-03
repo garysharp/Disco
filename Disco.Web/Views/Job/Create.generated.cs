@@ -29,6 +29,7 @@ namespace Disco.Web.Views.Job
     using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
     using Disco.Web;
@@ -232,7 +233,7 @@ WriteLiteral("                            ");
 
             
             #line 30 "..\..\Views\Job\Create.cshtml"
-                       Write(CommonHelpers.CheckBoxList("SubTypes", Model.JobSubTypes.Where(jst => jst.JobTypeId == jt.Id).ToList().ToSelectListItems(Model.SubTypes), 3));
+                       Write(CommonHelpers.CheckBoxList("SubTypes", jt.JobSubTypes.ToSelectListItems(Model.SubTypes, true), 3, true, null, false));
 
             
             #line default
@@ -342,7 +343,7 @@ WriteLiteral(">\r\n            <div");
 
 WriteLiteral(" id=\"createJob_QuickLogAutoCloseContainer\"");
 
-WriteLiteral(">\r\n                <h3>Quick Log</h3>\r\n                <input");
+WriteLiteral(">\r\n                <input");
 
 WriteLiteral(" id=\"createJob_QuickLog\"");
 
@@ -360,18 +361,7 @@ WriteLiteral(">Automatically close this job</label>\r\n            </div>\r\n   
 
 WriteLiteral(" id=\"createJob_QuickLogTaskTimeContainer\"");
 
-WriteLiteral(">\r\n                <h3>Task Time</h3>\r\n");
-
-WriteLiteral("                ");
-
-            
-            #line 72 "..\..\Views\Job\Create.cshtml"
-           Write(Html.ValidationMessageFor(m => m.QuickLogTaskTimeMinutes));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n                <input");
+WriteLiteral(">\r\n                <h4>Task Time:</h4>\r\n                <input");
 
 WriteLiteral(" type=\"radio\"");
 
@@ -457,11 +447,21 @@ WriteLiteral(" value=\"\"");
 
 WriteLiteral(" disabled=\"disabled\"");
 
-WriteLiteral(" />\r\n                    Minutes\r\n                </span>\r\n            </div>\r\n  " +
-"      </div>\r\n");
+WriteLiteral(" />\r\n                    Minutes\r\n                </span>\r\n");
+
+WriteLiteral("                ");
 
             
-            #line 84 "..\..\Views\Job\Create.cshtml"
+            #line 80 "..\..\Views\Job\Create.cshtml"
+           Write(Html.ValidationMessageFor(m => m.QuickLogTaskTimeMinutes));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n            </div>\r\n        </div>\r\n");
+
+            
+            #line 83 "..\..\Views\Job\Create.cshtml"
     }
 
             

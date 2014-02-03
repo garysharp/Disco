@@ -1,17 +1,59 @@
-﻿using System;
+﻿using Disco.Data.Repository;
+using Disco.Models.Repository;
+using Disco.Models.Services.Jobs.JobLists;
+using Disco.Services.Authorization;
+using Disco.Services.Users;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Disco.Models.BI.Job;
-using Disco.Models.Repository;
-using Disco.Data.Repository;
-using Disco.Services.Users;
-using Disco.Services.Authorization;
+using System.Threading.Tasks;
 
-namespace Disco.BI.Extensions
+namespace Disco.Services
 {
     public static class JobTableExtensions
     {
+        private static JobTableModel CloneEmptyJobTableModel(JobTableModel Model)
+        {
+            return new JobTableModel()
+            {
+                ShowId = Model.ShowId,
+                ShowDeviceAddress = Model.ShowDeviceAddress,
+                ShowDates = Model.ShowDates,
+                ShowType = Model.ShowType,
+                ShowDevice = Model.ShowDevice,
+                ShowUser = Model.ShowUser,
+                ShowTechnician = Model.ShowTechnician,
+                ShowLocation = Model.ShowLocation,
+                ShowStatus = Model.ShowStatus,
+                IsSmallTable = Model.IsSmallTable,
+                HideClosedJobs = Model.HideClosedJobs,
+                EnablePaging = Model.EnablePaging,
+                EnableFilter = Model.EnableFilter
+            };
+        }
+
+        public static IDictionary<string, JobTableModel> MultiCampusModels(this JobTableModel Model)
+        {
+            var items = Model.Items;
+            if (items == null || items.Count() > 0)
+            {
+                return items.OrderBy(i => i.DeviceAddress).GroupBy(i => i.DeviceAddress).ToDictionary(
+                    ig => ig.Key ?? string.Empty,
+                    ig =>
+                    {
+                        var jtm = CloneEmptyJobTableModel(Model);
+                        jtm.Items = ig.ToList();
+                        return jtm;
+                    }
+                );
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         private static List<string> FilterAllowedTypes(AuthorizationToken Authorization)
         {
             if (!Authorization.HasAll(Claims.Job.Types.ShowHMisc, Claims.Job.Types.ShowHNWar, Claims.Job.Types.ShowHWar, Claims.Job.Types.ShowSApp, Claims.Job.Types.ShowSImg, Claims.Job.Types.ShowSOS, Claims.Job.Types.ShowUMgmt))
@@ -50,24 +92,24 @@ namespace Disco.BI.Extensions
             return Jobs;
         }
 
-        public static List<JobTableModel.JobTableItemModel> PermissionsFiltered(this List<JobTableModel.JobTableItemModel> Items, AuthorizationToken Authorization)
+        public static IEnumerable<JobTableItemModel> PermissionsFiltered(this IEnumerable<JobTableItemModel> Items, AuthorizationToken Authorization)
         {
-            if (Items != null && Items.Count > 0)
+            if (Items != null && Items.Count() > 0)
             {
                 var allowedTypes = FilterAllowedTypes(Authorization);
 
                 if (allowedTypes != null)
                 {
-                    return Items.Where(j => allowedTypes.Contains(j.TypeId)).ToList();
+                    return Items.Where(j => allowedTypes.Contains(j.JobTypeId)).ToList();
                 }
             }
 
             return Items;
         }
 
-        public static List<JobTableModel.JobTableItemModel> DetermineItems(this JobTableModel model, DiscoDataContext Database, IQueryable<Job> Jobs)
+        public static IEnumerable<JobTableItemModel> DetermineItems(this JobTableModel model, DiscoDataContext Database, IQueryable<Job> Jobs)
         {
-            List<JobTableModel.JobTableItemModel> items;
+            List<JobTableItemModel> items;
 
             // Permissions
             var auth = UserService.CurrentAuthorization;
@@ -96,13 +138,13 @@ namespace Disco.BI.Extensions
             if (model.ShowStatus)
             {
 
-                var jobItems = Jobs.Select(j => new JobTableModel.JobTableItemModelIncludeStatus()
+                var jobItems = Jobs.Select(j => new JobTableStatusItemModel()
                 {
                     Id = j.Id,
                     OpenedDate = j.OpenedDate,
                     ClosedDate = j.ClosedDate,
-                    TypeId = j.JobTypeId,
-                    TypeDescription = j.JobType.Description,
+                    JobTypeId = j.JobTypeId,
+                    JobTypeDescription = j.JobType.Description,
                     DeviceSerialNumber = j.Device.SerialNumber,
                     DeviceProfileId = j.Device.DeviceProfileId,
                     DeviceModelId = j.Device.DeviceModelId,
@@ -112,9 +154,11 @@ namespace Disco.BI.Extensions
                     UserDisplayName = j.User.DisplayName,
                     OpenedTechUserId = j.OpenedTechUserId,
                     OpenedTechUserDisplayName = j.OpenedTechUser.DisplayName,
-                    Location = j.DeviceHeldLocation,
+                    DeviceHeldLocation = j.DeviceHeldLocation,
+                    Flags = j.Flags,
 
                     JobMetaWarranty_ExternalReference = j.JobMetaWarranty.ExternalReference,
+                    JobMetaWarranty_ExternalLoggedDate = j.JobMetaWarranty.ExternalLoggedDate,
                     JobMetaWarranty_ExternalCompletedDate = j.JobMetaWarranty.ExternalCompletedDate,
                     JobMetaNonWarranty_RepairerLoggedDate = j.JobMetaNonWarranty.RepairerLoggedDate,
                     JobMetaNonWarranty_RepairerCompletedDate = j.JobMetaNonWarranty.RepairerCompletedDate,
@@ -129,27 +173,35 @@ namespace Disco.BI.Extensions
                     DeviceHeld = j.DeviceHeld,
                     DeviceReturnedDate = j.DeviceReturnedDate,
                     JobMetaWarranty_ExternalName = j.JobMetaWarranty.ExternalName,
-                    JobMetaNonWarranty_RepairerName = j.JobMetaNonWarranty.RepairerName
+                    JobMetaNonWarranty_RepairerName = j.JobMetaNonWarranty.RepairerName,
+                    ActiveJobQueues = j.JobQueues.Where(jq => !jq.RemovedDate.HasValue).Select(jq => new JobTableStatusQueueItemModel()
+                    {
+                        Id = jq.Id,
+                        QueueId = jq.JobQueueId,
+                        AddedDate = jq.AddedDate,
+                        SLAExpiresDate = jq.SLAExpiresDate,
+                        Priority = jq.Priority
+                    })
                 });
 
-                items = new List<JobTableModel.JobTableItemModel>();
+                items = new List<JobTableItemModel>();
                 foreach (var j in jobItems)
                 {
                     j.StatusId = j.CalculateStatusId();
-                    j.StatusDescription = JobBI.Utilities.JobStatusDescription(j.StatusId, j);
+                    j.StatusDescription = JobExtensions.JobStatusDescription(j.StatusId, j);
 
                     items.Add(j);
                 }
             }
             else
             {
-                items = Jobs.Select(j => new JobTableModel.JobTableItemModel()
+                items = Jobs.Select(j => new JobTableItemModel()
                 {
                     Id = j.Id,
                     OpenedDate = j.OpenedDate,
                     ClosedDate = j.ClosedDate,
-                    TypeId = j.JobTypeId,
-                    TypeDescription = j.JobType.Description,
+                    JobTypeId = j.JobTypeId,
+                    JobTypeDescription = j.JobType.Description,
                     DeviceSerialNumber = j.Device.SerialNumber,
                     DeviceProfileId = j.Device.DeviceProfileId,
                     DeviceModelId = j.Device.DeviceModelId,
@@ -159,7 +211,8 @@ namespace Disco.BI.Extensions
                     UserDisplayName = j.User.DisplayName,
                     OpenedTechUserId = j.OpenedTechUserId,
                     OpenedTechUserDisplayName = j.OpenedTechUser.DisplayName,
-                    Location = j.DeviceHeldLocation
+                    DeviceHeldLocation = j.DeviceHeldLocation,
+                    Flags = j.Flags
                 }).ToList();
             }
 
@@ -176,6 +229,22 @@ namespace Disco.BI.Extensions
         public static void Fill(this JobTableModel model, DiscoDataContext Database, IQueryable<Job> Jobs)
         {
             model.Items = model.DetermineItems(Database, Jobs);
+        }
+
+        public static double? SlaPrecentageRemaining(this IEnumerable<JobTableStatusQueueItemModel> queueItems)
+        {
+            return queueItems.Where(i => i.SLAExpiresDate.HasValue).Min<JobTableStatusQueueItemModel, double?>(i =>
+            {
+                var total = (i.SLAExpiresDate.Value - i.AddedDate).Ticks;
+                var remaining = (i.SLAExpiresDate.Value - DateTime.Now).Ticks;
+                return ((double)remaining / total);
+            });
+        }
+
+        public static IEnumerable<JobTableStatusQueueItemModel> UsersQueueItems(this IEnumerable<JobTableStatusQueueItemModel> queueItems, AuthorizationToken Authorization)
+        {
+            var usersQueues = Jobs.JobQueues.JobQueueService.UsersQueues(Authorization).ToDictionary(q => q.JobQueue.Id);
+            return queueItems.Where(qi => usersQueues.ContainsKey(qi.QueueId));
         }
     }
 }

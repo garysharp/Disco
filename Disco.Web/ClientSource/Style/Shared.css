@@ -15,7 +15,10 @@
   border: solid 1px #f4f4f4;
 }
 .tableData > tbody > tr:hover > td {
-  background-color: #f4f4f4;
+  background-color: #fefefe;
+}
+.tableData > tbody > tr:hover:nth-child(odd) > td {
+  background-color: #fafafa;
 }
 .tableData > tfoot > tr > th,
 .tableData > tfoot > tr > td {
@@ -30,7 +33,7 @@
   background-color: #ffffff;
 }
 .tableDataDark th {
-  background-color: #d8d8d8;
+  background-color: #eeeeee;
   border: solid 1px #d8d8d8;
 }
 .tableDataContainer {

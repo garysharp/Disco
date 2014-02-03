@@ -28,13 +28,13 @@ namespace Disco.Web.Areas.Config.Views.AuthorizationRole
     using System.Web.WebPages;
     using Disco;
     using Disco.BI.Extensions;
+    using Disco.Models.Repository;
     
     #line 2 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-    using Disco.Models.Authorization;
+    using Disco.Models.Services.Authorization;
     
     #line default
     #line hidden
-    using Disco.Models.Repository;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
     using Disco.Web;
@@ -190,14 +190,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                            <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2187), Tuple.Create("\"", 2227)
+WriteAttribute("class", Tuple.Create(" class=\"", 2196), Tuple.Create("\"", 2236)
             
             #line 51 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 2195), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
+, Tuple.Create(Tuple.Create("", 2204), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
             
             #line default
             #line hidden
-, 2195), false)
+, 2204), false)
 );
 
 WriteLiteral(">");
@@ -241,15 +241,15 @@ WriteLiteral("></i>");
             #line hidden
 WriteLiteral("                                                                             <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 2757), Tuple.Create("\"", 2827)
+WriteAttribute("href", Tuple.Create(" href=\"", 2766), Tuple.Create("\"", 2836)
             
             #line 57 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-       , Tuple.Create(Tuple.Create("", 2764), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.User.Show(sg.Id))
+       , Tuple.Create(Tuple.Create("", 2773), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.User.Show(sg.Id))
             
             #line default
             #line hidden
-, 2764), false)
-, Tuple.Create(Tuple.Create("", 2799), Tuple.Create("#UserDetailTab-Authorization", 2799), true)
+, 2773), false)
+, Tuple.Create(Tuple.Create("", 2808), Tuple.Create("#UserDetailTab-Authorization", 2808), true)
 );
 
 WriteLiteral("><i");
@@ -342,14 +342,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                    <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 3878), Tuple.Create("\"", 3918)
+WriteAttribute("class", Tuple.Create(" class=\"", 3887), Tuple.Create("\"", 3927)
             
             #line 71 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 3886), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
+, Tuple.Create(Tuple.Create("", 3895), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
             
             #line default
             #line hidden
-, 3886), false)
+, 3895), false)
 );
 
 WriteLiteral(" data-subjectid=\"");
@@ -464,14 +464,14 @@ WriteLiteral(">Add</a>\r\n                        </div>\r\n                    
 
 WriteLiteral(" id=\"Config_AuthRoles_Subjects_Update_Dialog_Form\"");
 
-WriteAttribute("action", Tuple.Create(" action=\"", 5163), Tuple.Create("\"", 5260)
+WriteAttribute("action", Tuple.Create(" action=\"", 5172), Tuple.Create("\"", 5269)
             
             #line 86 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-         , Tuple.Create(Tuple.Create("", 5172), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.AuthorizationRole.UpdateSubjects(Model.Token.Role.Id, null, true))
+         , Tuple.Create(Tuple.Create("", 5181), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.AuthorizationRole.UpdateSubjects(Model.Token.Role.Id, null, true))
             
             #line default
             #line hidden
-, 5172), false)
+, 5181), false)
 );
 
 WriteLiteral(" method=\"post\"");

@@ -1690,9 +1690,9 @@ namespace Disco.Web.Areas.API.Controllers
             Database.Configuration.LazyLoadingEnabled = true;
             if (j != null)
             {
-                if (j.CanForceClose())
+                if (j.CanCloseForced())
                 {
-                    j.OnForceClose(Database, CurrentUser, Reason);
+                    j.OnCloseForced(Database, CurrentUser, Reason);
 
                     Database.SaveChanges();
                     if (redirect.HasValue && redirect.Value)
@@ -1715,9 +1715,9 @@ namespace Disco.Web.Areas.API.Controllers
             Database.Configuration.LazyLoadingEnabled = true;
             if (j != null)
             {
-                if (j.CanClose())
+                if (j.CanCloseNormally())
                 {
-                    j.OnClose(CurrentUser);
+                    j.OnCloseNormally(CurrentUser);
 
                     Database.SaveChanges();
                     if (redirect)

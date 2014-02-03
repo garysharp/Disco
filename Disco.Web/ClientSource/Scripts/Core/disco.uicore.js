@@ -20,7 +20,7 @@
 
             function subMenuShow() {
                 var $this = $(this);
-                var $subMenu = $this.children('ul.subMenu');
+                var $subMenu = $this.children('ul');
                 var hideToken = $this.data('menuHideToken');
 
                 if (hideToken)
@@ -31,7 +31,7 @@
             }
             function subMenuHide() {
                 var $this = $(this);
-                var $subMenu = $this.children('ul.subMenu');
+                var $subMenu = $this.children('ul');
 
                 var hideToken = window.setTimeout(function () {
                     $subMenu.hide();
@@ -42,7 +42,7 @@
             function subMenuTouchDown(e, preventClick) {
                 var $this = $(this);
                 var $link = $this.children('a');
-                var $subMenu = $this.children('ul.subMenu');
+                var $subMenu = $this.children('ul');
 
                 if (!$subMenu.is(':visible')) {
 
@@ -66,17 +66,17 @@
             if (Modernizr.hasEvent('pointerdown')) {
                 // Pointer Events
                 $menu
-                    .on('pointerover', 'li.hasSubMenu', function (e) {
+                    .on('pointerover', 'li.d-sm', function (e) {
                         if (e.originalEvent.pointerType !== 'touch') {
                             subMenuShow.call(this);
                         }
                     })
-                    .on('pointerout', 'li.hasSubMenu', function (e) {
+                    .on('pointerout', 'li.d-sm', function (e) {
                         if (e.originalEvent.pointerType !== 'touch') {
                             subMenuHide.call(this);
                         }
                     })
-                    .on('pointerdown', 'li.hasSubMenu', function (e) {
+                    .on('pointerdown', 'li.d-sm', function (e) {
                         if (e.originalEvent.pointerType === 'touch') {
                             return subMenuTouchDown.call(this, e, true);
                         }
@@ -84,23 +84,23 @@
                 $(document).on('pointerdown', function (e) {
                     if (e.originalEvent.pointerType === 'touch') {
                         if ($(e.target).closest('#menu').length == 0)
-                            $menu.find('li.hasSubMenu>ul.subMenu:visible').hide();
+                            $menu.find('li.d-sm>ul.subMenu:visible').hide();
                     }
                 });
             } else if (Modernizr.hasEvent('mspointerdown')) {
                 // MS Pointer Events
                 $menu
-                    .on('MSPointerOver', 'li.hasSubMenu', function (e) {
+                    .on('MSPointerOver', 'li.d-sm', function (e) {
                         if (e.originalEvent.pointerType !== e.originalEvent.MSPOINTER_TYPE_TOUCH) {
                             subMenuShow.call(this);
                         }
                     })
-                    .on('MSPointerOut', 'li.hasSubMenu', function (e) {
+                    .on('MSPointerOut', 'li.d-sm', function (e) {
                         if (e.originalEvent.pointerType !== e.originalEvent.MSPOINTER_TYPE_TOUCH) {
                             subMenuHide.call(this);
                         }
                     })
-                    .on('MSPointerDown', 'li.hasSubMenu', function (e) {
+                    .on('MSPointerDown', 'li.d-sm', function (e) {
                         if (e.originalEvent.pointerType === e.originalEvent.MSPOINTER_TYPE_TOUCH) {
                             return subMenuTouchDown.call(this, e, true);
                         }
@@ -108,22 +108,22 @@
                 $(document).on('MSPointerDown', function (e) {
                     if (e.originalEvent.pointerType === e.originalEvent.MSPOINTER_TYPE_TOUCH) {
                         if ($(e.target).closest('#menu').length == 0)
-                            $menu.find('li.hasSubMenu>ul.subMenu:visible').hide();
+                            $menu.find('li.d-sm>ul.subMenu:visible').hide();
                     }
                 });
             } else if (Modernizr.touch) {
                 // Touch Events
                 $menu
-                    .on('mouseover', 'li.hasSubMenu', subMenuShow)
-                    .on('mouseout', 'li.hasSubMenu', subMenuHide)
-                    .on('touchstart', 'li.hasSubMenu', function (e) {
+                    .on('mouseover', 'li.d-sm', subMenuShow)
+                    .on('mouseout', 'li.d-sm', subMenuHide)
+                    .on('touchstart', 'li.d-sm', function (e) {
                         return subMenuTouchDown.call(this, e, false);
                     });
             } else {
                 // Mouse Events
                 $menu
-                    .on('mouseover', 'li.hasSubMenu', subMenuShow)
-                    .on('mouseout', 'li.hasSubMenu', subMenuHide);
+                    .on('mouseover', 'li.d-sm', subMenuShow)
+                    .on('mouseout', 'li.d-sm', subMenuHide);
             }
         }
 

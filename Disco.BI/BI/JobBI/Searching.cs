@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Disco.Models.BI.Job;
-using Disco.Data.Repository;
+﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
-using Disco.BI.Extensions;
+using Disco.Models.Services.Jobs.JobLists;
+using Disco.Services;
+using System.Linq;
 
 namespace Disco.BI.JobBI
 {

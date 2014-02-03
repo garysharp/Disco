@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Disco.Models.BI.Search;
+using Disco.Models.Services.Jobs.JobLists;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Models.UI.Search
 {
@@ -12,8 +10,8 @@ namespace Disco.Models.UI.Search
         string Term { get; set; }
         bool Success { get; set; }
         string ErrorMessage { get; set; }
-        List<Disco.Models.BI.Search.DeviceSearchResultItem> Devices { get; set; }
-        Disco.Models.BI.Job.JobTableModel Jobs { get; set; }
-        List<Disco.Models.BI.Search.UserSearchResultItem> Users { get; set; }
+        List<DeviceSearchResultItem> Devices { get; set; }
+        JobTableModel Jobs { get; set; }
+        List<UserSearchResultItem> Users { get; set; }
     }
 }

@@ -29,6 +29,7 @@ namespace Disco.Web.Views.Job
     using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
     using Disco.Web;
@@ -111,7 +112,7 @@ WriteLiteral(" ");
             
             #line 17 "..\..\Views\Job\Show.cshtml"
                                                                                                  if (Model.LongRunning.HasValue)
-                                                                                       {
+                                                                                                {
             
             #line default
             #line hidden
@@ -123,7 +124,7 @@ WriteLiteral(">(Long Running: ");
 
             
             #line 18 "..\..\Views\Job\Show.cshtml"
-                                                                                                                             Write(Model.LongRunning.Value.Humanize(false));
+                                                                                                                                      Write(Model.LongRunning.Value.Humanize(false));
 
             
             #line default
@@ -132,22 +133,86 @@ WriteLiteral(")</span>");
 
             
             #line 18 "..\..\Views\Job\Show.cshtml"
-                                                                                                                                                                                  }
+                                                                                                                                                                                           }
 
             
             #line default
             #line hidden
-WriteLiteral("        <script");
+WriteLiteral("    </div>\r\n    <div");
+
+WriteLiteral(" id=\"Job_Show_QueueStatus\"");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 21 "..\..\Views\Job\Show.cshtml"
+        
+            
+            #line default
+            #line hidden
+            
+            #line 21 "..\..\Views\Job\Show.cshtml"
+         foreach (var jq in Model.Job.JobQueues.Where(q => !q.RemovedDate.HasValue).Select(q => Disco.Services.Jobs.JobQueues.JobQueueService.GetQueue(q.JobQueueId)))
+        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <i");
+
+WriteAttribute("class", Tuple.Create(" class=\"", 1101), Tuple.Create("\"", 1174)
+, Tuple.Create(Tuple.Create("", 1109), Tuple.Create("fa", 1109), true)
+, Tuple.Create(Tuple.Create(" ", 1111), Tuple.Create("fa-", 1112), true)
+            
+            #line 23 "..\..\Views\Job\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 1115), Tuple.Create<System.Object, System.Int32>(jq.JobQueue.Icon
+            
+            #line default
+            #line hidden
+, 1115), false)
+, Tuple.Create(Tuple.Create(" ", 1134), Tuple.Create("fa-fw", 1135), true)
+, Tuple.Create(Tuple.Create(" ", 1140), Tuple.Create("fa-lg", 1141), true)
+, Tuple.Create(Tuple.Create(" ", 1146), Tuple.Create("d-", 1147), true)
+            
+            #line 23 "..\..\Views\Job\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 1149), Tuple.Create<System.Object, System.Int32>(jq.JobQueue.IconColour
+            
+            #line default
+            #line hidden
+, 1149), false)
+);
+
+WriteAttribute("title", Tuple.Create(" title=\"", 1175), Tuple.Create("\"", 1202)
+            
+            #line 23 "..\..\Views\Job\Show.cshtml"
+                 , Tuple.Create(Tuple.Create("", 1183), Tuple.Create<System.Object, System.Int32>(jq.JobQueue.Name
+            
+            #line default
+            #line hidden
+, 1183), false)
+);
+
+WriteLiteral("></i>\r\n");
+
+            
+            #line 24 "..\..\Views\Job\Show.cshtml"
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    </div>\r\n    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(">\r\n            $(function () {\r\n                $(\'#Job_Show_Status\').appendTo(\'#" +
-"layout_PageHeading\')\r\n            });\r\n        </script>\r\n    </div>\r\n");
+WriteLiteral(">\r\n        $(function () {\r\n            $(\'#Job_Show_Status\').appendTo(\'#layout_P" +
+"ageHeading\')\r\n            $(\'#Job_Show_QueueStatus\').appendTo(\'#layout_PageHeadi" +
+"ng\')\r\n        });\r\n    </script>\r\n");
 
 WriteLiteral("    ");
 
             
-            #line 25 "..\..\Views\Job\Show.cshtml"
+            #line 32 "..\..\Views\Job\Show.cshtml"
 Write(Html.Partial(MVC.Job.Views.JobParts._Subject, Model));
 
             
@@ -187,13 +252,13 @@ WriteLiteral(" id=\"jobDetailTabItems\"");
 WriteLiteral(">\r\n");
 
             
-            #line 61 "..\..\Views\Job\Show.cshtml"
+            #line 68 "..\..\Views\Job\Show.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 61 "..\..\Views\Job\Show.cshtml"
+            #line 68 "..\..\Views\Job\Show.cshtml"
              if (Authorization.HasAll(Claims.Job.ShowLogs, Claims.Job.ShowAttachments))
             {
 
@@ -207,7 +272,7 @@ WriteLiteral(" href=\"#jobDetailTab-Resources\"");
 WriteLiteral(">Log and Attachments</a></li>\r\n");
 
             
-            #line 64 "..\..\Views\Job\Show.cshtml"
+            #line 71 "..\..\Views\Job\Show.cshtml"
             }
             else if (Authorization.Has(Claims.Job.ShowLogs))
             {
@@ -222,7 +287,7 @@ WriteLiteral(" href=\"#jobDetailTab-Resources\"");
 WriteLiteral(">Log</a></li>\r\n");
 
             
-            #line 68 "..\..\Views\Job\Show.cshtml"
+            #line 75 "..\..\Views\Job\Show.cshtml"
             }
             else if (Authorization.Has(Claims.Job.ShowLogs))
             {
@@ -237,7 +302,30 @@ WriteLiteral(" href=\"#jobDetailTab-Resources\"");
 WriteLiteral(">Attachments</a></li>\r\n");
 
             
-            #line 72 "..\..\Views\Job\Show.cshtml"
+            #line 79 "..\..\Views\Job\Show.cshtml"
+            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            ");
+
+            
+            #line 80 "..\..\Views\Job\Show.cshtml"
+             if (Authorization.Has(Claims.Job.ShowJobsQueues))
+            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <li><a");
+
+WriteLiteral(" href=\"#jobDetailTab-Queues\"");
+
+WriteLiteral(">Queues</a></li>\r\n");
+
+            
+            #line 83 "..\..\Views\Job\Show.cshtml"
             }
 
             
@@ -246,13 +334,13 @@ WriteLiteral(">Attachments</a></li>\r\n");
 WriteLiteral("        </ul>\r\n");
 
             
-            #line 74 "..\..\Views\Job\Show.cshtml"
+            #line 85 "..\..\Views\Job\Show.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 74 "..\..\Views\Job\Show.cshtml"
+            #line 85 "..\..\Views\Job\Show.cshtml"
          if (Authorization.HasAny(Claims.Job.ShowLogs, Claims.Job.ShowAttachments))
         {
 
@@ -270,7 +358,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                ");
 
             
-            #line 77 "..\..\Views\Job\Show.cshtml"
+            #line 88 "..\..\Views\Job\Show.cshtml"
            Write(Html.Partial(MVC.Job.Views.JobParts.Resources, Model));
 
             
@@ -279,7 +367,7 @@ WriteLiteral("                ");
 WriteLiteral("\r\n            </div>\r\n");
 
             
-            #line 79 "..\..\Views\Job\Show.cshtml"
+            #line 90 "..\..\Views\Job\Show.cshtml"
         }
 
             
@@ -288,7 +376,43 @@ WriteLiteral("\r\n            </div>\r\n");
 WriteLiteral("        ");
 
             
-            #line 80 "..\..\Views\Job\Show.cshtml"
+            #line 91 "..\..\Views\Job\Show.cshtml"
+         if (Authorization.Has(Claims.Job.ShowJobsQueues))
+        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <div");
+
+WriteLiteral(" id=\"jobDetailTab-Queues\"");
+
+WriteLiteral(" class=\"jobPart\"");
+
+WriteLiteral(">\r\n");
+
+WriteLiteral("                ");
+
+            
+            #line 94 "..\..\Views\Job\Show.cshtml"
+           Write(Html.Partial(MVC.Job.Views.JobParts.Queues, Model));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n            </div>\r\n");
+
+            
+            #line 96 "..\..\Views\Job\Show.cshtml"
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        ");
+
+            
+            #line 97 "..\..\Views\Job\Show.cshtml"
    Write(Html.Partial(MVC.Job.Views.JobParts.JobMetaAdditions, Model));
 
             

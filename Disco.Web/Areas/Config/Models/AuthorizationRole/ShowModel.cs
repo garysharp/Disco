@@ -1,4 +1,4 @@
-﻿using Disco.Models.Authorization;
+﻿using Disco.Models.Services.Authorization;
 using Disco.Models.Interop.ActiveDirectory;
 using Disco.Models.UI.Config.AuthorizationRole;
 using Disco.Web.Models.Shared;

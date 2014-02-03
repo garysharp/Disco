@@ -15,7 +15,10 @@
   border: solid 1px #f4f4f4;
 }
 .tableData > tbody > tr:hover > td {
-  background-color: #f4f4f4;
+  background-color: #fefefe;
+}
+.tableData > tbody > tr:hover:nth-child(odd) > td {
+  background-color: #fafafa;
 }
 .tableData > tfoot > tr > th,
 .tableData > tfoot > tr > td {
@@ -30,7 +33,7 @@
   background-color: #ffffff;
 }
 .tableDataDark th {
-  background-color: #d8d8d8;
+  background-color: #eeeeee;
   border: solid 1px #d8d8d8;
 }
 .tableDataContainer {
@@ -76,7 +79,21 @@
   opacity: 1;
 }
 .watermark {
-  color: #888 !important;
+  color: #888888 !important;
+}
+::-webkit-input-placeholder {
+  color: #888888;
+}
+::-moz-placeholder {
+  color: #888888;
+}
+/* firefox 19+ */
+:-ms-input-placeholder {
+  color: #888888;
+}
+/* ie */
+input:-moz-placeholder {
+  color: #888888;
 }
 .ui-autocomplete-loading {
   background: #ffffff url(data:image/gif;base64,R0lGODlhEAALAPQAAP///zNah+Hm7dng6O7x9DddiTNah1d3nJqtw3+Xs8fS3k5vlm6JqaGzx4KatcrU4FFymDZciHGMq+ru8t/l7Pb3+V9+oeLo7vT2+MTP3LLB0dTc5fHz9gAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA) /*Images/Status/loading.gif*/ right center no-repeat;
@@ -104,11 +121,12 @@
   text-align: left;
 }
 .ui-timepicker-div dl dt {
-  height: 25px;
-  margin-bottom: -25px;
+  float: left;
+  clear: left;
+  padding: 0 0 0 5px;
 }
 .ui-timepicker-div dl dd {
-  margin: 0 10px 10px 65px;
+  margin: 0 10px 10px 45%;
 }
 .ui-timepicker-div td {
   font-size: 90%;
@@ -118,6 +136,20 @@
   border: none;
   margin: 0;
   padding: 0;
+}
+.ui-timepicker-rtl {
+  direction: rtl;
+}
+.ui-timepicker-rtl dl {
+  text-align: right;
+  padding: 0 5px 0 0;
+}
+.ui-timepicker-rtl dl dt {
+  float: right;
+  clear: right;
+}
+.ui-timepicker-rtl dl dd {
+  margin: 0 45% 10px 10px;
 }
 @-moz-keyframes progressBarKeyframes {
   from {
@@ -171,9 +203,12 @@
 {
     font-weight: bold;
 }*/
+.page .dialog {
+  display: none;
+}
 .ui-dialog {
   padding: 0;
-  border-color: #515151;
+  border-color: #333333;
   background: #fcfcfc;
   box-shadow: rgba(20, 20, 20, 0.7) 0px 0px 50px;
 }
@@ -182,7 +217,7 @@
   border-left: none;
   border-right: none;
   border-bottom-color: #d1d1d1;
-  background: #515151;
+  background: #333333;
   color: #fff;
   font-size: 1.1em;
   font-weight: normal;

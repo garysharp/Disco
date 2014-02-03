@@ -16,17 +16,7 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
 
         public List<Disco.BI.Expressions.Expression> TemplateExpressions { get; set; }
 
-        public List<string> Types { get; set; }
-        public List<string> SubTypes { get; set; }
-
         public List<Disco.Models.Repository.JobType> JobTypes { get; set; }
-        public List<Disco.Models.Repository.JobSubType> JobSubTypes { get; set; }
-
-        public ShowModel()
-        {
-            this.Types = new List<string>();
-            this.SubTypes = new List<string>();
-        }
 
         public List<string> Scopes
         {
@@ -53,23 +43,7 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
             }
 
             if (this.JobTypes == null)
-                JobTypes = Database.JobTypes.ToList();
-            if (this.JobSubTypes == null)
-                JobSubTypes = Database.JobSubTypes.ToList();
-
-            if (DocumentTemplate != null)
-            {
-                if (DocumentTemplate.JobSubTypes != null)
-                {
-                    foreach (var jst in DocumentTemplate.JobSubTypes)
-                    {
-                        if (!Types.Contains(jst.JobTypeId))
-                            Types.Add(jst.JobTypeId);
-                        SubTypes.Add(string.Format("{0}_{1}", jst.JobTypeId, jst.Id));
-                    }
-                }
-            }
-
+                JobTypes = Database.JobTypes.Include("JobSubTypes").ToList();
         }
     }
 }

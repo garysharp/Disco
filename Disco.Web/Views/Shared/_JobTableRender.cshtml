@@ -1,4 +1,5 @@
-﻿@model Disco.Models.BI.Job.JobTableModel
+﻿@model Disco.Models.Services.Jobs.JobLists.JobTableModel
+@using Disco.Models.Services.Jobs.JobLists;
 @{
     Html.BundleDeferred("~/ClientScripts/Modules/Disco-DataTableHelpers");
 }
@@ -36,7 +37,25 @@
             </thead>
             <tbody>
                 @foreach (var item in Model.Items)
-                {<tr data-id="@(item.Id)" data-status="@(Model.ShowStatus ? item.StatusId : null)">
+                {
+                    string statusSlaClass = null;
+                    if (Model.ShowStatus)
+                    {
+                        var statusItem = (JobTableStatusItemModel)item;
+                        if (statusItem.ActiveJobQueues != null)
+                        {
+                            var slaRemaining = statusItem.ActiveJobQueues.UsersQueueItems(Authorization).SlaPrecentageRemaining();
+                            if (slaRemaining.HasValue && (slaRemaining <= 0))
+                            {
+                                statusSlaClass = "statusSlaExpired";
+                            }
+                            else if (slaRemaining.HasValue && (slaRemaining < .3))
+                            {
+                                statusSlaClass = "statusSlaWarning";
+                            }
+                        }
+                    }
+                    <tr data-id="@(item.Id)" data-status="@(Model.ShowStatus ? item.StatusId : null)" class="@(statusSlaClass)">
                     @if (Model.ShowId)
                     {<td class="id">
                         @if (Authorization.Has(Claims.Job.Show))
@@ -44,11 +63,21 @@
                         else
                         {@item.Id.ToString()}</td>}
                     @if (Model.ShowStatus)
-                    {<td class="status"><i class="fa fa-square jobStatus @(item.StatusId)"></i>&nbsp;@item.StatusDescription</td>}
+                    {
+                        var statusItem = (JobTableStatusItemModel)item;
+                        <td class="status"><i class="fa fa-square jobStatus @(item.StatusId)"></i>&nbsp;@item.StatusDescription
+                        @if (statusItem.ActiveJobQueues != null)
+                        {<div class="queues">
+                            @foreach (var jqToken in ((JobTableStatusItemModel)item).ActiveJobQueues.Select(jqj => new Tuple<JobTableStatusQueueItemModel, Disco.Services.Jobs.JobQueues.JobQueueToken>(jqj, Disco.Services.Jobs.JobQueues.JobQueueService.GetQueue(jqj.QueueId))))
+                            {
+                                <i class="fa fa-@(jqToken.Item2.JobQueue.Icon) fa-fw d-@(jqToken.Item2.JobQueue.IconColour)" title="@(jqToken.Item2.JobQueue.Name) [@(jqToken.Item1.Priority)]"></i>
+                            }
+                        </div>}
+                     </td>}
                     @if (Model.ShowDates)
                     {<td class="dates">@if (item.ClosedDate.HasValue) {@CommonHelpers.FriendlyDate(item.ClosedDate.Value)}else{@CommonHelpers.FriendlyDate(item.OpenedDate)}</td>}
                     @if (Model.ShowType)
-                    {<td class="type"><span title="@item.TypeDescription">@item.TypeId</span></td>}
+                    {<td class="type"><span title="@item.JobTypeDescription">@item.JobTypeId</span></td>}
                     @if (Model.ShowDevice)
                     {<td class="device">
                         @if (item.DeviceSerialNumber != null)
@@ -74,7 +103,7 @@
                     @if (Model.ShowTechnician)
                     {<td class="technician"><span title="@item.OpenedTechUserDisplayName">@item.OpenedTechUserId</span></td>}
                     @if (Model.ShowLocation)
-                    {<td class="technician"><span>@(item.Location ?? "Unknown")</span></td>}
+                    {<td class="technician"><span>@(item.DeviceHeldLocation ?? "Unknown")</span></td>}
                 </tr>}
             </tbody>
         </table>

@@ -264,6 +264,10 @@ namespace Disco.Services.Tasks
         {
             Finished(this._finishedMessage, this._finishedUrl);
         }
+        public void Finished(string FinishedMessage)
+        {
+            Finished(FinishedMessage, this._finishedUrl);
+        }
         public void Finished(string FinishedMessage, string FinishedUrl)
         {
             List<string> changedProperties = new List<string>() { "IsRunning", "FinishedTimestamp" };

@@ -166,125 +166,143 @@
                             });
                         });
 
-                        var $trJobTypes = $('#trJobTypes');
-                        var $trJobTypeActions = $('#trJobTypeActions');
-                        var $jobTypes = $trJobTypes.find('input[type="checkbox"]');
-                        $jobTypes.change(jobTypesChange);
+                        var $JobSubTypes = $('#Config_DocumentTemplates_JobSubTypes');
 
                         function scopeChange() {
                             if ($scope.val() == 'Job') {
-                                $trJobTypes.show();
-                                $trJobTypeActions.show();
-                                jobTypesChange();
+                                $JobSubTypes.slideDown('fast');
                             } else {
-                                $trJobTypes.hide();
-                                $trJobTypeActions.hide();
-                                $jobTypes.filter(':checked').each(function () {
-                                    $(this).prop('checked', false);
-                                });
-                                $('.jobSubTypes').hide().find('input[type="checkbox"]:checked').each(function () {
-                                    $(this).prop('checked', false);
-                                });
+                                $JobSubTypes.slideUp('fast');
                             }
                         }
-
-                        function jobTypesChange() {
-                            $('.jobSubTypes').hide();
-                            $jobTypes.filter(':checked').each(function () {
-                                $('#trJobSubType' + $(this).val()).show();
-                            });
-                        }
-
-                        $('#TypeAction_Save').click(function () {
-                            var data = { SubTypes: [] };
-                            var $ajaxLoading = $('#TypeAction_Save').next('.ajaxLoading').show();
-
-                            $jobTypes.filter(':checked').each(function () {
-                                var $this = $(this);
-                                $('#trJobSubType' + $this.val()).find('input[type="checkbox"]:checked').each(function () {
-                                    data.SubTypes.push($(this).val());
-                                });
-                            });
-
-                            $.ajax({
-                                url: '@Url.Action(MVC.API.DocumentTemplate.UpdateSubTypes(Model.DocumentTemplate.Id))',
-                                dataType: 'json',
-                                type: 'POST',
-                                traditional: true,
-                                data: data,
-                                success: function (d) {
-                                    if (d == 'OK') {
-                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                        scopeChange();
-                                    } else {
-                                        $ajaxLoading.hide();
-                                        alert('Unable to update job types: ' + d);
-                                    }
-                                },
-                                error: function (jqXHR, textStatus, errorThrown) {
-                                    alert('Unable to update job types: ' + textStatus);
-                                    $ajaxLoading.hide();
-                                }
-                            });
-                            return false;
-                        });
-
-                        scopeChange();
                     });
                 </script>
                 }
                 else
                 {
-                @Model.DocumentTemplate.Scope
+                <div>@Model.DocumentTemplate.Scope</div>
+                }
+                @if (canConfig || (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.Job))
+                {
+                    <div id="Config_DocumentTemplates_JobSubTypes" @(Model.DocumentTemplate.Scope != DocumentTemplate.DocumentTemplateScopes.Job ? "style=\"display: none;\" " : null)>
+                        <h4>Filter:</h4>
+                        <div>
+                            @if (Model.DocumentTemplate.JobSubTypes.Count > 0)
+                            {
+                                <ul>
+                                    @foreach (var jobType in Model.DocumentTemplate.JobSubTypes.GroupBy(jst => jst.JobType).OrderBy(jtg => jtg.Key.Description))
+                                    {
+                                        <li>
+                                            @jobType.Key.Description
+                                            <ul>
+                                                @if (jobType.Count() == Model.JobTypes.FirstOrDefault(jt => jt.Id == jobType.Key.Id).JobSubTypes.Count)
+                                                {
+                                                    <li><span class="smallMessage">[All Sub Types]</span></li>
+                                                }
+                                                else
+                                                {
+                                                    foreach (var jobSubType in jobType)
+                                                    {
+                                                    <li>@jobSubType.Description</li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <span class="smallMessage">&lt;No Filter&gt;</span>
+                            }
+                        </div>
+                        @if (canConfig)
+                        {
+                            <a id="Config_DocumentTemplates_JobSubTypes_Update" href="#" class="button small">Update</a>
+                            <div id="Config_DocumentTemplates_JobSubTypes_Update_Dialog" class="dialog" title="Job Type Filter">
+                                @using (Html.BeginForm(MVC.API.DocumentTemplate.UpdateJobSubTypes(Model.DocumentTemplate.Id, null, true)))
+                                {
+                                    var selectedTypes = Model.DocumentTemplate.JobSubTypes.Select(jst => jst.JobType).Distinct().ToList();
+                                    foreach (var jt in Model.JobTypes)
+                                    {
+                                    <div class="jobTypes">
+                                        <h4>
+                                            <input id="Types_@(jt.Id)" class="jobType" type="checkbox" value="@(jt.Id)" @(selectedTypes.Contains(jt) ? "checked=\"checked\"" : null) /><label for="Types_@(jt.Id)">@jt.Description</label></h4>
+                                        <div id="SubTypes_@(jt.Id)" class="jobSubTypes">
+                                            @CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id), "div")
+                                            @CommonHelpers.CheckBoxList("JobSubTypes", jt.JobSubTypes.OrderBy(jst => jst.Description).ToSelectListItems(Model.DocumentTemplate.JobSubTypes), 2)
+                                        </div>
+                                    </div>   
+                                    }
+                                }
+                            </div>
+                            <script>
+                                (function () {
+                                    var dialog;
+
+                                    function showDialog() {
+                                        if (!dialog) {
+                                            dialog = $('#Config_DocumentTemplates_JobSubTypes_Update_Dialog').dialog({
+                                                resizable: false,
+                                                modal: true,
+                                                autoOpen: false,
+                                                width: 750,
+                                                height: 620,
+                                                buttons: {
+                                                    "Save Changes": saveChanges,
+                                                    Cancel: cancel
+                                                }
+                                            });
+
+                                            dialog.find('.jobSubTypes').hide();
+                                            dialog.on('change', 'input.jobType', function () {
+                                                var $this = $(this);
+                                                if ($this.is(':checked'))
+                                                    $('#SubTypes_' + $this.val()).slideDown('fast');
+                                                else
+                                                    $('#SubTypes_' + $this.val()).slideUp('fast');
+                                            }).find('input.jobType:checked').each(function () {
+                                                $('#SubTypes_' + $(this).val()).show();
+                                            });
+                                        }
+
+                                        dialog.dialog('open');
+
+                                        return false;
+                                    }
+
+                                    function cancel() {
+                                        dialog.dialog("disable");
+                                        dialog.dialog("option", "buttons", null);
+
+                                        // Refresh Page
+                                        window.location.href = window.location.href;
+                                    }
+
+                                    function saveChanges() {
+                                        var form = dialog.find('form');
+
+                                        $('input.jobType:unchecked').each(function () {
+                                            $('#SubTypes_' + $(this).val()).find('input').prop('checked', false);
+                                        });
+
+                                        form.submit();
+
+                                        dialog.dialog("disable");
+                                        dialog.dialog("option", "buttons", null);
+                                    }
+
+                                    $(function () {
+                                        $('#Config_DocumentTemplates_JobSubTypes_Update').click(showDialog);
+                                    });
+
+                                })();
+                            </script>
+                        }
+                    </div>
                 }
             </td>
         </tr>
-        @if (canConfig || (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.Job))
-        {
-            <tr id="trJobTypes">
-                <th class="name">Types:
-                </th>
-                <td class="value">
-                    @CommonHelpers.CheckBoxList("Types", Model.JobTypes.ToSelectListItems(Model.Types), 2)
-                </td>
-            </tr>
-            foreach (var jt in Model.JobTypes)
-            {
-            <tr id="trJobSubType@(jt.Id)" class="jobSubTypes">
-                <th class="name">
-                    @jt.Description<br />
-                    Sub Types<br />
-                    @if (canConfig)
-                    {
-                        @CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id))
-                    }
-                </th>
-                <td class="value">
-                    @CommonHelpers.CheckBoxList("SubTypes", Model.JobSubTypes.Where(jst => jst.JobTypeId == jt.Id).ToList().ToSelectListItems(Model.SubTypes), 2)
-                </td>
-            </tr>   
-            }
-            if (canConfig)
-            {
-            <tr id="trJobTypeActions">
-                <th class="name"></th>
-                <td class="value">
-                    <a id="TypeAction_Save" href="#" class="button">Save Job Types</a>@AjaxHelpers.AjaxLoader()
-                </td>
-            </tr>
-            }
-            else if (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.Job)
-            {
-            <script>
-                $(function () {
-                    $('.jobSubTypes').hide().find('input[type="checkbox"]').prop('disabled', true);
-                    $('#trJobTypes').find('input[type="checkbox"]').prop('disabled', true).filter(':checked').each(function () {
-                        $('#trJobSubType' + $(this).val()).show();
-                    });
-                });
-            </script>
-            }
-        }
         <tr>
             <th>Template PDF
             </th>

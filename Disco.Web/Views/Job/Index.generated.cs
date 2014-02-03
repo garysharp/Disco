@@ -29,6 +29,7 @@ namespace Disco.Web.Views.Job
     using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
     using Disco.Web;
@@ -219,17 +220,17 @@ WriteLiteral("</div>\r\n");
 
             
             #line 127 "..\..\Views\Job\Index.cshtml"
- if (Authorization.Has(Claims.Job.Lists.AwaitingTechnicianAction))
+ if (Authorization.Has(Claims.Job.Lists.MyJobs))
 {
 
             
             #line default
             #line hidden
-WriteLiteral("    <h2>Open Jobs Awaiting Technician Action (");
+WriteLiteral("    <h2>My Jobs (");
 
             
             #line 129 "..\..\Views\Job\Index.cshtml"
-                                         Write(Model.OpenJobs.Items.Count);
+            Write(Model.MyJobs.Items.Count());
 
             
             #line default
@@ -244,14 +245,14 @@ WriteLiteral(")</h2>\r\n");
             #line hidden
             
             #line 130 "..\..\Views\Job\Index.cshtml"
-Write(Html.Partial(MVC.Shared.Views._JobTable, Model.OpenJobs, new ViewDataDictionary()));
+Write(Html.Partial(MVC.Shared.Views._JobTable, Model.MyJobs, new ViewDataDictionary()));
 
             
             #line default
             #line hidden
             
             #line 130 "..\..\Views\Job\Index.cshtml"
-                                                                                       
+                                                                                     
 }
 
             
@@ -269,7 +270,7 @@ WriteLiteral("    <h2>Long Running Jobs (");
 
             
             #line 134 "..\..\Views\Job\Index.cshtml"
-                      Write(Model.LongRunningJobs.Items.Count);
+                      Write(Model.LongRunningJobs.Items.Count());
 
             
             #line default

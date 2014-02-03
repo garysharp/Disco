@@ -570,6 +570,41 @@ div.logEventsViewport {
 }
 
 // Document Templates
+#Config_DocumentTemplates_JobSubTypes {
+    border: 1px dashed @TableDataDarkBorderColour;
+    background-color: @white;
+    padding: 4px;
+    margin-top: 6px;
+
+    & > h4 {
+        margin-bottom: 4px;
+    }
+    #Config_DocumentTemplates_JobSubTypes_Update {
+        margin-top: 4px;
+    }
+}
+
+#Config_DocumentTemplates_JobSubTypes_Update_Dialog {
+    #Config_DocumentTemplates_JobSubTypes_Update_Dialog_Types {
+        margin: 0 0 8px 0;
+    }
+
+    .jobTypes {
+        padding: 6px 0;
+
+        .jobSubTypes {
+            background-color: @FormBackgroundOddColour;
+            border-left: 4px solid @TableDataDarkBorderColour;
+            padding: 4px 0 4px 8px;
+            margin: 4px 0 0 6px;
+        }
+    }
+
+    .checkboxBulkSelectContainer {
+        font-size: .8em;
+    }
+}
+
 #dialogBulkGenerate {
     .brief {
         margin: 0 0 8px 0;
@@ -984,10 +1019,6 @@ div.logEventsViewport {
 #Config_AuthRoles_Subjects_Update_Dialog {
     display: none;
 
-    #Config_AuthRoles_Subjects_Update_Dialog_None {
-        display: none;
-    }
-
     #Config_AuthRoles_Subjects_Update_Dialog_ListContainer {
         height: 280px;
         overflow-y: auto;
@@ -1007,6 +1038,154 @@ div.logEventsViewport {
     }
 
     #Config_AuthRoles_Subjects_Update_Dialog_List {
+        li {
+            cursor: pointer;
+
+            &:hover {
+                background-color: @TableDataBorderColour;
+
+                .remove {
+                    opacity: .8;
+                }
+            }
+
+            .remove {
+                margin-top: 2px;
+                padding-right: 6px;
+                float: right;
+                cursor: pointer;
+                opacity: 0;
+                color: @StatusRemove;
+                font-size: 1.3em;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+
+#Config_JobQueues_Index {
+    i {
+        width: 1.2857142857142858em;
+        text-align: center;
+    }
+}
+
+#Config_JobQueues_Icon {
+    display: block;
+    margin: 0 0 10px 10px;
+}
+
+#Config_JobQueues_Icon_Update_Dialog {
+    display: none;
+
+    div.colours {
+        text-align: center;
+        font-size: 30px;
+
+        i {
+            cursor: pointer;
+            padding: 1px;
+            opacity: .9;
+
+            &:hover {
+                opacity: 1;
+            }
+
+            &.selected {
+                opacity: 1;
+            }
+        }
+    }
+
+    div.icons {
+        text-align: center;
+        font-size: 34px;
+        background-color: @white;
+        border: 1px solid @BackgroundColour;
+        margin: 6px 0 14px 0;
+
+        i {
+            width: 1.2857142857142858em;
+            text-align: center;
+            cursor: pointer;
+            padding: 6px 0px;
+            color: @HeaderBackgroundColour;
+            opacity: .6;
+
+            &:hover {
+                opacity: .9;
+                color: inherit;
+            }
+
+            &.selected {
+                opacity: 1;
+                color: inherit;
+            }
+        }
+    }
+}
+
+#Config_JobQueues_JobSubTypes_Update {
+    margin: 8px 0;
+}
+
+#Config_JobQueues_JobSubTypes_Update_Dialog {
+    #Config_JobQueues_JobSubTypes_Update_Dialog_Types {
+        margin: 0 0 8px 0;
+    }
+
+    .jobTypes {
+        padding: 6px 0;
+
+        .jobSubTypes {
+            background-color: @FormBackgroundOddColour;
+            border-left: 4px solid @TableDataDarkBorderColour;
+            padding: 4px 0 4px 8px;
+            margin: 4px 0 0 6px;
+        }
+    }
+
+    .checkboxBulkSelectContainer {
+        font-size: .8em;
+    }
+}
+
+#Config_JobQueues_Subjects, #Config_JobQueues_Subjects_Update_Dialog_List {
+    li {
+        padding: 4px 0 4px 4px;
+
+        i.fa-user, i.fa-users {
+            width: 1.2857142857142858em;
+            text-align: center;
+        }
+    }
+}
+
+#Config_JobQueues_Subjects_Update_Dialog {
+    display: none;
+
+    #Config_JobQueues_Subjects_Update_Dialog_ListContainer {
+        height: 280px;
+        overflow-y: auto;
+        background-color: @white;
+        border: 1px solid @TableDataDarkBorderColour;
+    }
+
+    #Config_JobQueues_Subjects_Update_Dialog_None {
+        padding-top: 15px;
+        display: block;
+        text-align: center;
+    }
+
+    #Config_JobQueues_Subjects_Update_Dialog_AddContainer {
+        padding-top: 10px;
+        padding-left: 10px;
+    }
+
+    #Config_JobQueues_Subjects_Update_Dialog_List {
         li {
             cursor: pointer;
 

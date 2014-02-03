@@ -1,5 +1,5 @@
 ﻿using Disco.Data.Repository;
-using Disco.Models.Authorization;
+using Disco.Models.Services.Authorization;
 using Disco.Models.Repository;
 using System;
 using System.Collections.Concurrent;

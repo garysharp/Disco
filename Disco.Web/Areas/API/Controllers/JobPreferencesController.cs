@@ -18,8 +18,6 @@ namespace Disco.Web.Areas.API.Controllers
             Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold = LongRunningJobDaysThreshold;
             Database.SaveChanges();
 
-            Disco.Web.Controllers.JobController.ReInitializeLongRunningJobList(Database);
-
             if (redirect)
                 return RedirectToAction(MVC.Config.JobPreferences.Index());
             else

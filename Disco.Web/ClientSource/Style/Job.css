@@ -15,7 +15,10 @@
   border: solid 1px #f4f4f4;
 }
 .tableData > tbody > tr:hover > td {
-  background-color: #f4f4f4;
+  background-color: #fefefe;
+}
+.tableData > tbody > tr:hover:nth-child(odd) > td {
+  background-color: #fafafa;
 }
 .tableData > tfoot > tr > th,
 .tableData > tfoot > tr > td {
@@ -30,7 +33,7 @@
   background-color: #ffffff;
 }
 .tableDataDark th {
-  background-color: #d8d8d8;
+  background-color: #eeeeee;
   border: solid 1px #d8d8d8;
 }
 .tableDataContainer {
@@ -92,6 +95,12 @@
 #layout_PageHeading #Job_Show_Status span.icon {
   margin-right: 6px;
 }
+#layout_PageHeading #Job_Show_QueueStatus {
+  display: inline-block;
+  float: right;
+  height: 50px;
+  font-size: 0.6em;
+}
 #Job_Show #Job_Show_Subjects {
   table-layout: fixed;
 }
@@ -112,9 +121,6 @@
 }
 #Job_Show #Job_Show_Subjects > tbody > tr > td:not(:last-child) {
   border-right: 1px dashed #aaa;
-}
-#Job_Show #Job_Show_Subjects .dialog {
-  display: none;
 }
 #Job_Show #Job_Show_Subjects #Job_Show_Job #Job_Show_Job_Type > table {
   table-layout: fixed;
@@ -306,7 +312,7 @@
   resize: none;
 }
 #jobShowResources #Comments div.commentInput span.action {
-  color: #515151;
+  color: #333333;
   font-size: 1.5em;
   display: block;
   margin: 0;
@@ -397,7 +403,7 @@
   padding: 5px;
 }
 #jobShowResources #Attachments div.attachmentInput span.action {
-  color: #515151;
+  color: #333333;
   display: block;
   margin: 0 4px 0 0;
   font-size: 1.5em;
@@ -411,6 +417,129 @@
   background-color: #ededed;
   border: 1px solid #cccccc;
 }
+#Job_Show_Job_Actions_AddQueue_Dialog {
+  height: 400px;
+}
+#Job_Show_Job_Actions_AddQueue_Dialog .queuePicker {
+  position: absolute;
+  width: 250px;
+  height: 300px;
+  overflow-y: auto;
+  background-color: #fcfcfc;
+  border: 1px solid #ccc;
+}
+#Job_Show_Job_Actions_AddQueue_Dialog .queuePicker > div {
+  background-color: #ffffff;
+  border-bottom: 1px solid #ddd;
+  padding: 6px 0 6px 6px;
+  cursor: pointer;
+}
+#Job_Show_Job_Actions_AddQueue_Dialog .queuePicker > div:hover {
+  background-color: #f4f4f4;
+}
+#Job_Show_Job_Actions_AddQueue_Dialog .queuePicker > div.selected,
+#Job_Show_Job_Actions_AddQueue_Dialog .queuePicker > div.selected:hover {
+  background-color: #eeeeee;
+}
+#Job_Show_Job_Actions_AddQueue_Dialog .details {
+  display: none;
+  position: absolute;
+  left: 280px;
+  top: 40px;
+}
+#Job_Show_Job_Actions_AddQueue_Dialog .details h4 {
+  margin-bottom: 4px;
+}
+#Job_Show_Job_Actions_AddQueue_Dialog .details #Priority {
+  margin-bottom: 10px;
+  min-width: 200px;
+}
+#Job_Show_Job_Actions_AddQueue_Dialog .details #SLAExpiresMinutes {
+  margin-bottom: 10px;
+  min-width: 200px;
+}
+#Job_Show_Job_Actions_AddQueue_Dialog .details #Comment {
+  min-width: 280px;
+}
+#jobDetailTab-Queues #jobQueues {
+  border: solid 1px #d8d8d8;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+#jobDetailTab-Queues #jobQueues td {
+  border: solid 1px #d8d8d8;
+  background-color: #ffffff;
+}
+#jobDetailTab-Queues #jobQueues th {
+  background-color: #eeeeee;
+  border: solid 1px #d8d8d8;
+}
+#jobDetailTab-Queues #jobQueues i.fa-edit {
+  float: right;
+  margin-top: 4px;
+  font-size: 1.1em;
+  cursor: pointer;
+  display: none;
+  color: #335a87;
+}
+#jobDetailTab-Queues #jobQueues i.fa-edit:hover {
+  color: #5e8cc2;
+}
+#jobDetailTab-Queues #jobQueues td:hover i.fa-edit {
+  display: inline-block;
+}
+#jobDetailTab-Queues #jobQueues th.name {
+  width: 200px;
+}
+#jobDetailTab-Queues #jobQueues th.sla {
+  width: 130px;
+}
+#jobDetailTab-Queues #jobQueues tr.removed td {
+  background-color: #f4f4f4;
+}
+#jobDetailTab-Queues #jobQueues td.name {
+  vertical-align: middle;
+}
+#jobDetailTab-Queues #jobQueues td.name .fa-stack {
+  line-height: 1.6em;
+}
+#jobDetailTab-Queues #jobQueues td.added .when,
+#jobDetailTab-Queues #jobQueues td.removed .when {
+  font-style: italic;
+  margin-top: 4px;
+  font-size: .9em;
+}
+#jobDetailTab-Queues #jobQueues td.added .comments,
+#jobDetailTab-Queues #jobQueues td.removed .comments {
+  white-space: pre-line;
+}
+#jobDetailTab-Queues #jobQueues td.removed.na {
+  vertical-align: middle;
+  text-align: center;
+}
+#jobDetailTab-Queues #jobQueues td.sla {
+  vertical-align: middle;
+}
+#jobDetailTab-Queues #jobQueues td.sla.overdue {
+  color: #e51400;
+}
+#jobDetailTab-Queues > .none {
+  text-align: center;
+  padding: 30px 0;
+  font-style: italic;
+  background-color: #ffffff;
+}
+#Job_Show_Queues_Actions_EditAddedComment_Dialog h4,
+#Job_Show_Queues_Actions_EditRemovedComment_Dialog h4,
+#Job_Show_Queues_Actions_EditSla_Dialog h4 {
+  margin-bottom: 4px;
+}
+#Job_Show_Queues_Actions_EditAddedComment_Dialog_Comment {
+  width: 280px;
+}
+#Job_Show_Queues_Actions_EditRemovedComment_Dialog_Comment {
+  width: 280px;
+}
 #jobComponents {
   border: solid 1px #d8d8d8;
   border-collapse: collapse;
@@ -420,7 +549,7 @@
   background-color: #ffffff;
 }
 #jobComponents th {
-  background-color: #d8d8d8;
+  background-color: #eeeeee;
   border: solid 1px #d8d8d8;
 }
 #jobComponents tr th.actions {
@@ -458,7 +587,7 @@
   background-color: #ffffff;
 }
 #jobNonWarrantyFinance th {
-  background-color: #d8d8d8;
+  background-color: #eeeeee;
   border: solid 1px #d8d8d8;
 }
 #jobNonWarrantyFinance tr th {
@@ -474,7 +603,7 @@
   background-color: #ffffff;
 }
 #jobNonWarrantyRepairs th {
-  background-color: #d8d8d8;
+  background-color: #eeeeee;
   border: solid 1px #d8d8d8;
 }
 #jobNonWarrantyRepairs tr th {
@@ -490,7 +619,7 @@
   background-color: #ffffff;
 }
 #jobNonWarrantyInsurance th {
-  background-color: #d8d8d8;
+  background-color: #eeeeee;
   border: solid 1px #d8d8d8;
 }
 #jobNonWarrantyInsurance tr th {
@@ -509,7 +638,7 @@
   background-color: #ffffff;
 }
 #jobFlags th {
-  background-color: #d8d8d8;
+  background-color: #eeeeee;
   border: solid 1px #d8d8d8;
 }
 #jobFlags tr th {
@@ -534,6 +663,9 @@
   width: 600px;
   height: 250px;
 }
+#createJob_Container {
+  margin: 0 -20px;
+}
 #createJob_Container img.modelImage {
   width: 64px;
   height: 64px;
@@ -552,7 +684,7 @@
   padding: 2px 4px;
 }
 #createJob_Container #createJob_SubTypes {
-  margin: -1px 0 0 35px;
+  margin: -1px 0 0 20px;
   border: 1px solid #ccc;
   border-top: none;
   padding: 2px 4px;
@@ -563,8 +695,18 @@
 }
 #createJob_Container #createJob_Type li,
 #createJob_Container #createJob_SubTypes li {
-  margin: 2px 8px 2px 0;
+  margin: 2px 0;
   padding: 0 0 0 4px;
+}
+#createJob_Container #createJob_Type li i,
+#createJob_Container #createJob_SubTypes li i {
+  display: none;
+  cursor: default;
+  font-weight: normal;
+}
+#createJob_Container #createJob_Type li:hover i,
+#createJob_Container #createJob_SubTypes li:hover i {
+  display: inline-block;
 }
 #createJob_Container #createJob_Type li.highlight,
 #createJob_Container #createJob_SubTypes li.highlight {
@@ -572,31 +714,30 @@
   font-weight: 600;
   color: #000000;
 }
+#createJob_Container #createJob_Type li.highlight i,
+#createJob_Container #createJob_SubTypes li.highlight i {
+  display: inline-block;
+}
 #createJob_Container #createJob_CommentsContainer #Comments {
   width: 100%;
   min-width: 500px;
-}
-#createJob_Container #createJob_QuickLogAutoCloseContainer {
-  border: 1px solid #ccc;
-  background-color: #f2f2f2;
-  padding: 2px 4px;
 }
 #createJob_Container #createJob_QuickLogAutoCloseContainer h3 {
   margin-bottom: 4px;
 }
 #createJob_Container #createJob_QuickLogAutoCloseContainer input {
-  margin-left: 4px;
+  margin-left: 6px;
 }
 #createJob_Container #createJob_QuickLogTaskTimeContainer {
   display: none;
-  margin: -1px 0 0 35px;
-  border: 1px solid #ccc;
-  border-top: none;
-  padding: 2px 4px;
+  margin: 4px 0 0 25px;
+  padding: 4px 4px;
   background-color: #f2f2f2;
+  border-left: 4px solid #d8d8d8;
 }
-#createJob_Container #createJob_QuickLogTaskTimeContainer h3 {
-  margin-bottom: 4px;
+#createJob_Container #createJob_QuickLogTaskTimeContainer h4 {
+  display: inline-block;
+  padding-right: 10px;
 }
 #createJob_Container #createJob_QuickLogTaskTimeContainer label {
   margin-right: 20px;

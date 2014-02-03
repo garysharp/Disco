@@ -28,6 +28,5 @@ namespace Disco.Models.UI.Job
         Disco.Models.Repository.Device Device { get; set; }
         Disco.Models.Repository.User User { get; set; }
         List<Disco.Models.Repository.JobType> JobTypes { get; set; }
-        List<Disco.Models.Repository.JobSubType> JobSubTypes { get; set; }
     }
 }

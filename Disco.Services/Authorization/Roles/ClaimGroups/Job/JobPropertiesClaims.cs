@@ -13,10 +13,12 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.Job
         {
             this.WarrantyProperties = new JobWarrantyPropertiesClaims();
             this.NonWarrantyProperties = new JobNonWarrantyPropertiesClaims();
+            this.JobQueueProperties = new JobQueuePropertiesClaims();
         }
 
         public JobWarrantyPropertiesClaims WarrantyProperties { get; set; }
         public JobNonWarrantyPropertiesClaims NonWarrantyProperties { get; set; }
+        public JobQueuePropertiesClaims JobQueueProperties { get; set; }
 
         [ClaimDetails("Device Held Property", "Can update property")]
         public bool DeviceHeld { get; set; }

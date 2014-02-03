@@ -28,7 +28,7 @@ namespace Disco.Web.Areas.Config.Controllers
             {
                 var m = new Models.DocumentTemplate.ShowModel()
                 {
-                    DocumentTemplate = Database.DocumentTemplates.Include("JobSubTypes").Where(at => at.Id == id).FirstOrDefault()
+                    DocumentTemplate = Database.DocumentTemplates.Include("JobSubTypes").FirstOrDefault(at => at.Id == id)
                 };
                 m.TemplateExpressions = m.DocumentTemplate.ExtractPdfExpressions(Database);
                 m.UpdateModel(Database);

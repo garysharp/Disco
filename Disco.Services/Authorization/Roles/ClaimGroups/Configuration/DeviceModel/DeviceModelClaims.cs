@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DeviceModel
 {
-    [ClaimDetails("Device Model", "Permissions related to Device Models")]
+    [ClaimDetails("Device Models", "Permissions related to Device Models")]
     public class DeviceModelClaims : BaseRoleClaimGroup
     {
         [ClaimDetails("Configure Device Models", "Can configure device models")]

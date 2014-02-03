@@ -56,7 +56,10 @@ namespace Disco.Web
             // Initialize Expressions
             BI.Expressions.Expression.InitializeExpressions();
 
-            // Initialize Warranty Providers Plugins
+            // Initialize Job Queues
+            Disco.Services.Jobs.JobQueues.JobQueueService.Initialize(Database);
+
+            // Initialize Plugins
             Disco.Services.Plugins.Plugins.InitalizePlugins(Database);
 
             // Initialize Scheduled Tasks

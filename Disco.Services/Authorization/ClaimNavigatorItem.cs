@@ -1,4 +1,4 @@
-﻿using Disco.Models.Authorization;
+﻿using Disco.Models.Services.Authorization;
 using Disco.Services.Authorization.Roles;
 using System;
 using System.Collections.Generic;

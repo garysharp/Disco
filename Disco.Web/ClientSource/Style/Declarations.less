@@ -2,7 +2,7 @@
 @BackgroundColour: #D1D1D1;
 @BackgroundColourGradient: #f2f2f2;
 @BackgroundColourLight: #fafafa;
-@HeaderBackgroundColour: #515151;
+@HeaderBackgroundColour: #333;
 
 @HyperLinkColour: #335A87;
 @HyperLinkHoverColour: lighten(@HyperLinkColour, 20%);
@@ -15,14 +15,18 @@
 @ButtonBorderAlertColour: #990000;
 
 @MenuHoverColour: lighten(@HyperLinkHoverColour, 30%);
+@MenuHoverBackgroundColour: #111;
+@MenuActiveBackgroundColour: #222;
 @ActionBarBorder: @BackgroundColour;
 @ActionBarBackgound: @BackgroundColourGradient;
 
 @FormBorderColour: @ButtonColour;
 @FormBackgroundOddColour: @BackgroundColourGradient;
 @FormBackgroundEvenColour: @white;
+@PlaceholderColour: #888;
 @TableDataBorderColour: #f4f4f4;
 @TableDataDarkBorderColour: #d8d8d8;
+@TableDataDarkBackgroundColour: #eee;
 @TableDataRowBackgroundColor: hsl(hue(@TableDataBorderColour), saturation(@TableDataBorderColour), 99%);
 
 @SubtleColour: #ededed;
@@ -53,6 +57,35 @@
 @StatusAwaitingRepair: @ButtonColour;
 @StatusAwaitingUser: @StatusWarning;
 @StatusAwaitingProcessing: #6a00ff;
+@StatusSlaWarning: @StatusWarning;
+@StatusSlaExpired: @StatusError;
+
+// Priority
+@PriorityHigh: @StatusAlert;
+@PriorityNormal: @StatusSuccess;
+@PriorityLow: @ButtonColour;
+
+// Theme Colours
+@ThemeLime: #A4C400;
+@ThemeGreen: #60A917;
+@ThemeEmerald: #008A00;
+@ThemeTeal: #00ABA9;
+@ThemeCyan: #1BA1E2;
+@ThemeCobalt: #0050EF;
+@ThemeIndigo: #6A00FF;
+@ThemeViolet: #AA00FF;
+@ThemePink: #F472D0;
+@ThemeMagenta: #D80073;
+@ThemeCrimson: #A20025;
+@ThemeRed: #E51400;
+@ThemeOrange: #FA6800;
+@ThemeAmber: #F0A30A;
+@ThemeYellow: #E3C800;
+@ThemeBrown: #825A2C;
+@ThemeOlive: #6D8764;
+@ThemeSteel: #647689;
+@ThemeMauve: #76608A;
+@ThemeSienna: #A0522D;
 
 // Border Radius Mixins
 .border-radius(@radius: 5px) {

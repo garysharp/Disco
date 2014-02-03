@@ -47,6 +47,7 @@ namespace Disco.Web.Views.Job
             #line 1 "..\..\Views\Job\_ViewStart.cshtml"
   
     Html.BundleDeferred("~/Style/Job");
+    ViewContext.ViewData["MenuArea"] = MVC.Job.Name;
 
             
             #line default

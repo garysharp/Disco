@@ -15,13 +15,20 @@
     <div id="Job_Show_Status">
         @{ var jobStatusInfo = Model.Job.Status();}
         <i class="fa fa-square jobStatus @(jobStatusInfo.Item1)"></i>&nbsp;@jobStatusInfo.Item2 @if (Model.LongRunning.HasValue)
-                                                                                       {<span class="smallMessage">(Long Running: @Model.LongRunning.Value.Humanize(false))</span>}
-        <script type="text/javascript">
-            $(function () {
-                $('#Job_Show_Status').appendTo('#layout_PageHeading')
-            });
-        </script>
+                                                                                                {<span class="smallMessage">(Long Running: @Model.LongRunning.Value.Humanize(false))</span>}
     </div>
+    <div id="Job_Show_QueueStatus">
+        @foreach (var jq in Model.Job.JobQueues.Where(q => !q.RemovedDate.HasValue).Select(q => Disco.Services.Jobs.JobQueues.JobQueueService.GetQueue(q.JobQueueId)))
+        {
+            <i class="fa fa-@(jq.JobQueue.Icon) fa-fw fa-lg d-@(jq.JobQueue.IconColour)" title="@(jq.JobQueue.Name)"></i>
+        }
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $('#Job_Show_Status').appendTo('#layout_PageHeading')
+            $('#Job_Show_QueueStatus').appendTo('#layout_PageHeading')
+        });
+    </script>
     @Html.Partial(MVC.Job.Views.JobParts._Subject, Model)
     <script type="text/javascript">
         $(function () {
@@ -70,11 +77,21 @@
             {
                 <li><a href="#jobDetailTab-Resources">Attachments</a></li>
             }
+            @if (Authorization.Has(Claims.Job.ShowJobsQueues))
+            {
+                <li><a href="#jobDetailTab-Queues">Queues</a></li>
+            }
         </ul>
         @if (Authorization.HasAny(Claims.Job.ShowLogs, Claims.Job.ShowAttachments))
         {
             <div id="jobDetailTab-Resources" class="jobPart">
                 @Html.Partial(MVC.Job.Views.JobParts.Resources, Model)
+            </div>
+        }
+        @if (Authorization.Has(Claims.Job.ShowJobsQueues))
+        {
+            <div id="jobDetailTab-Queues" class="jobPart">
+                @Html.Partial(MVC.Job.Views.JobParts.Queues, Model)
             </div>
         }
         @Html.Partial(MVC.Job.Views.JobParts.JobMetaAdditions, Model)

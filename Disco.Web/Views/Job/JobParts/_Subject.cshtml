@@ -376,9 +376,9 @@
     </tr>
     <tr id="Job_Show_Subjects_Actions">
         <td id="Job_Show_Job_Actions">
-            @if (Model.Job.CanForceClose())
+            @if (Model.Job.CanCloseForced())
             { 
-                @Html.ActionLinkSmallButton("Forcibly Close Job", MVC.API.Job.Close(Model.Job.Id, true), "Job_Show_Job_Actions_ForceClose_Button")
+                @Html.ActionLinkSmallButton("Forcibly Close", MVC.API.Job.Close(Model.Job.Id, true), "Job_Show_Job_Actions_ForceClose_Button")
                 <div id="Job_Show_Job_Actions_ForceClose_Dialog" class="dialog" title="Forcibly Close this Job?">
                     @using (Html.BeginForm(MVC.API.Job.ForceClose(Model.Job.Id, null, true)))
                     {
@@ -424,9 +424,9 @@
                 </script>
             }
 
-            @if (Model.Job.CanClose())
+            @if (Model.Job.CanCloseNormally())
             { 
-                @Html.ActionLinkSmallButton("Close Job", MVC.API.Job.Close(Model.Job.Id, true), "Job_Show_Job_Actions_Close_Button")
+                @Html.ActionLinkSmallButton("Close", MVC.API.Job.Close(Model.Job.Id, true), "Job_Show_Job_Actions_Close_Button")
                 <div id="Job_Show_Job_Actions_Close_Dialog" class="dialog" title="Close this Job?">
                     <p>
                         <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?
@@ -507,7 +507,7 @@
             }
             @if (Model.Job.CanDelete())
             { 
-                @Html.ActionLinkSmallButton("Delete Job", MVC.API.Job.Delete(Model.Job.Id, true), "Job_Show_Job_Actions_Delete_Button")
+                @Html.ActionLinkSmallButton("Delete", MVC.API.Job.Delete(Model.Job.Id, true), "Job_Show_Job_Actions_Delete_Button")
                 <div id="Job_Show_Job_Actions_Delete_Dialog" class="dialog" title="Delete this Job?">
                     <p>
                         <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;This item will be permanently deleted and cannot be recovered. Are you sure?
@@ -538,6 +538,112 @@
                                         }
                                     }
                                 });
+                            }
+
+                            buttonDialog.dialog('open');
+                            return false;
+                        });
+                    });
+                </script>
+            }
+            @if (Model.Job.CanAddQueues() && Model.AvailableQueues != null && Model.AvailableQueues.Count > 0)
+            {
+
+                var priorityValue = JobQueuePriority.Normal.ToString();
+                var priorityItems = Enum.GetNames(typeof(JobQueuePriority)).Select(i => new SelectListItem() { Text = i, Value = i, Selected = (i == priorityValue) }).ToList();
+
+                var slaOptions = Disco.Services.Jobs.JobQueues.JobQueueService.SlaOptions.Select(o => new SelectListItem() { Text = o.Value, Value = o.Key.ToString() }).ToList();
+                
+                @Html.ActionLinkSmallButton("Add to Queue", MVC.API.JobQueueJob.AddJob(), "Job_Show_Job_Actions_AddQueue_Button")
+                <div id="Job_Show_Job_Actions_AddQueue_Dialog" class="dialog" title="Add Job to Queue">
+                    @using (Html.BeginForm(MVC.API.JobQueueJob.AddJob())){
+                    <input id="Job_Show_Job_Actions_AddQueue_Dialog_Id" type="hidden" name="id" />
+                    <input id="Job_Show_Job_Actions_AddQueue_Dialog_JobId" type="hidden" name="JobId" value="@Model.Job.Id" />
+                    <div class="queuePicker">
+                        @foreach (var jobQueue in Model.AvailableQueues.OrderBy(jq => jq.Name))
+                        {
+                            <div class="queue" data-queueid="@(jobQueue.Id)" data-queuesla="@(jobQueue.DefaultSLAExpiry.HasValue ? jobQueue.DefaultSLAExpiry.Value.ToString() : null)" data-queuepriority="@(jobQueue.Priority.ToString())">
+                                <i class="fa fa-@(jobQueue.Icon) fa-fw fa-lg d-@(jobQueue.IconColour)"></i>@jobQueue.Name
+                            </div>
+                        }
+                    </div>
+                    <div class="details">
+                        <div>
+                            <h4>Job Priority</h4>
+                            @Html.DropDownList("Priority", priorityItems) <i class="fa d-priority-@(priorityValue.ToLower())" title="@(priorityValue) Priority"></i>
+                        </div>
+                        <div>
+                            <h4>SLA Target</h4>
+                            @Html.DropDownList("SLAExpiresMinutes", slaOptions)
+                        </div>
+                        <div>
+                            <h4>Comment</h4>
+                            @Html.TextArea("Comment")
+                        </div>
+                    </div>
+                    }
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var button = $('#Job_Show_Job_Actions_AddQueue_Button');
+                        var buttonDialog = null;
+                        var buttonLink = button.attr('href');
+                        
+                        var queuePicker = null;
+                        var details = null;
+
+                        function queueSelected(){
+                            var queue = $(this);
+
+                            queuePicker.children().removeClass('selected');
+                            queue.addClass('selected');
+
+                            $('#Job_Show_Job_Actions_AddQueue_Dialog_Id').val(queue.attr('data-queueid'));
+
+                            var queueSLA = queue.attr('data-queuesla');
+
+                            details.find('#Priority').val('Normal');
+                            details.find('#SLAExpiresMinutes').val(queueSLA);
+                            details.find('#Comment').val('');
+
+                            details.show();
+                        }
+                        
+                        button.attr('href', '#').click(function (e) {
+                            e.preventDefault();
+
+                            if (!buttonDialog){
+                                buttonDialog = $('#Job_Show_Job_Actions_AddQueue_Dialog');
+                                buttonDialog.dialog({
+                                    width: 600,
+                                    height: 410,
+                                    resizable: false,
+                                    modal: true,
+                                    autoOpen: false,
+                                    buttons: {
+                                        Cancel: function () {
+                                            $(this).dialog("close");
+                                        },
+                                        "Add to Queue": function () {
+                                            var $this = $(this);
+                                            $this.dialog("disable");
+                                            $this.dialog("option", "buttons", null);
+                                            buttonDialog.find('form').submit();
+                                        }
+                                    }
+                                });
+
+                                queuePicker = buttonDialog.find('.queuePicker');
+                                details = buttonDialog.find('.details');
+
+                                var priorityList = buttonDialog.find('#Priority');
+                                priorityList.change(function () {
+                                    var icon = priorityList.closest('div').find('i').first();
+                                    icon[0].className = '';
+                                    icon.addClass('fa d-priority-' + priorityList.val().toLowerCase()).attr('title', priorityList.val() + ' Priority');
+                                });
+
+                                queuePicker.on('click', 'div.queue', queueSelected);
                             }
 
                             buttonDialog.dialog('open');
@@ -664,15 +770,15 @@
             <td id="Job_Show_Device_Actions">
                 @if (Model.Job.CanDeviceHeld())
                 { 
-                    @Html.ActionLinkSmallButton("Held", MVC.API.Job.DeviceHeld(Model.Job.Id, true), "Job_Show_Device_Actions_Held_Button")
+                    @Html.ActionLinkSmallButton("Device Held", MVC.API.Job.DeviceHeld(Model.Job.Id, true), "Job_Show_Device_Actions_Held_Button")
                 }
                 @if (Model.Job.CanDeviceReadyForReturn())
                 { 
-                    @Html.ActionLinkSmallButton("Ready For Return", MVC.API.Job.DeviceReadyForReturn(Model.Job.Id, true), "Job_Show_Device_Actions_DeviceReadyForReturn_Button", "alert")
+                    @Html.ActionLinkSmallButton("Device Ready For Return", MVC.API.Job.DeviceReadyForReturn(Model.Job.Id, true), "Job_Show_Device_Actions_DeviceReadyForReturn_Button", "alert")
                 }
                 @if (Model.Job.CanDeviceReturned())
                 { 
-                    @Html.ActionLinkSmallButton("Returned", MVC.API.Job.DeviceReturned(Model.Job.Id, true), "Job_Show_Device_Actions_DeviceReturned_Button", Model.Job.CanDeviceReadyForReturn() ? null : "alert")
+                    @Html.ActionLinkSmallButton("Device Returned", MVC.API.Job.DeviceReturned(Model.Job.Id, true), "Job_Show_Device_Actions_DeviceReturned_Button", Model.Job.CanDeviceReadyForReturn() ? null : "alert")
                 }
             </td>
         }
@@ -683,7 +789,7 @@
 
                 @if (Model.Job.CanWaitingForUserAction())
                 { 
-                    <a id="Job_Show_User_Actions_WaitingForUserAction_Button" href="#" class="button small">Awaiting Action</a>
+                    <a id="Job_Show_User_Actions_WaitingForUserAction_Button" href="#" class="button small">Awaiting User Action</a>
                     <div id="Job_Show_User_Actions_WaitingForUserAction_Dialog" class="dialog" title="Waiting for User Action">
                         @using (Html.BeginForm(MVC.API.Job.WaitingForUserAction(Model.Job.Id, null, true)))
                         {
@@ -727,7 +833,7 @@
                 }
                 @if (Model.Job.CanNotWaitingForUserAction())
                 { 
-                    <a id="Job_Show_User_Actions_NotWaitingForUserAction_Button" href="#" class="button alert small">Action Resolved</a>
+                    <a id="Job_Show_User_Actions_NotWaitingForUserAction_Button" href="#" class="button alert small">User Action Resolved</a>
                     <div id="Job_Show_User_Actions_NotWaitingForUserAction_Dialog" class="dialog" title="Not Waiting for User Action">
                         @using (Html.BeginForm(MVC.API.Job.NotWaitingForUserAction(Model.Job.Id, null, true)))
                         {

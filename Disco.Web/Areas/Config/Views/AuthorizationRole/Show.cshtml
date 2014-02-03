@@ -1,5 +1,5 @@
 ﻿@model Disco.Web.Areas.Config.Models.AuthorizationRole.ShowModel
-@using Disco.Models.Authorization;
+@using Disco.Models.Services.Authorization;
 @{
     Authorization.Require(Claims.DiscoAdminAccount);
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Authorization Roles", MVC.Config.AuthorizationRole.Index(null), Model.Token.Role.Name);

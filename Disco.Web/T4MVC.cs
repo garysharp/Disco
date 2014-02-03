@@ -59,6 +59,8 @@ namespace T4MVC
         public Disco.Web.Areas.API.Controllers.ExpressionsController Expressions = new Disco.Web.Areas.API.Controllers.T4MVC_ExpressionsController();
         public Disco.Web.Areas.API.Controllers.JobController Job = new Disco.Web.Areas.API.Controllers.T4MVC_JobController();
         public Disco.Web.Areas.API.Controllers.JobPreferencesController JobPreferences = new Disco.Web.Areas.API.Controllers.T4MVC_JobPreferencesController();
+        public Disco.Web.Areas.API.Controllers.JobQueueController JobQueue = new Disco.Web.Areas.API.Controllers.T4MVC_JobQueueController();
+        public Disco.Web.Areas.API.Controllers.JobQueueJobController JobQueueJob = new Disco.Web.Areas.API.Controllers.T4MVC_JobQueueJobController();
         public Disco.Web.Areas.API.Controllers.LoggingController Logging = new Disco.Web.Areas.API.Controllers.T4MVC_LoggingController();
         public Disco.Web.Areas.API.Controllers.PluginController Plugin = new Disco.Web.Areas.API.Controllers.T4MVC_PluginController();
         public Disco.Web.Areas.API.Controllers.SystemController System = new Disco.Web.Areas.API.Controllers.T4MVC_SystemController();
@@ -77,6 +79,7 @@ namespace T4MVC
         public Disco.Web.Areas.Config.Controllers.EnrolmentController Enrolment = new Disco.Web.Areas.Config.Controllers.T4MVC_EnrolmentController();
         public Disco.Web.Areas.Config.Controllers.ExpressionsController Expressions = new Disco.Web.Areas.Config.Controllers.T4MVC_ExpressionsController();
         public Disco.Web.Areas.Config.Controllers.JobPreferencesController JobPreferences = new Disco.Web.Areas.Config.Controllers.T4MVC_JobPreferencesController();
+        public Disco.Web.Areas.Config.Controllers.JobQueueController JobQueue = new Disco.Web.Areas.Config.Controllers.T4MVC_JobQueueController();
         public Disco.Web.Areas.Config.Controllers.LoggingController Logging = new Disco.Web.Areas.Config.Controllers.T4MVC_LoggingController();
         public Disco.Web.Areas.Config.Controllers.OrganisationController Organisation = new Disco.Web.Areas.Config.Controllers.T4MVC_OrganisationController();
         public Disco.Web.Areas.Config.Controllers.PluginsController Plugins = new Disco.Web.Areas.Config.Controllers.T4MVC_PluginsController();
@@ -130,13 +133,6 @@ internal partial class T4MVC_System_Web_Mvc_ActionResult : System.Web.Mvc.Action
 namespace Links
 {
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public static class Content {
-        private const string URLPATH = "~/Content";
-        public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-        public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-    }
-
-    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
     public static class ClientSource {
         private const string URLPATH = "~/ClientSource";
         public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
@@ -151,6 +147,7 @@ namespace Links
                 private const string URLPATH = "~/ClientSource/Scripts/Core";
                 public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                 public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public static readonly string _references_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/_references.min.js") ? Url("_references.min.js") : Url("_references.js");
                 public static readonly string disco_dataTables_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.dataTables.extensions.min.js") ? Url("disco.dataTables.extensions.min.js") : Url("disco.dataTables.extensions.js");
                 public static readonly string disco_moment_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.moment.extensions.min.js") ? Url("disco.moment.extensions.min.js") : Url("disco.moment.extensions.js");
                 public static readonly string disco_uicore_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.uicore.min.js") ? Url("disco.uicore.min.js") : Url("disco.uicore.js");
@@ -1321,6 +1318,12 @@ namespace Disco.Web.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Queue()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Queue);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Show()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Show);
@@ -1360,7 +1363,9 @@ namespace Disco.Web.Controllers
         public class ActionNamesClass
         {
             public readonly string Index = "Index";
+            public readonly string Queue = "Queue";
             public readonly string AllOpen = "AllOpen";
+            public readonly string AwaitingTechnicianAction = "AwaitingTechnicianAction";
             public readonly string DevicesReadyForReturn = "DevicesReadyForReturn";
             public readonly string DevicesAwaitingRepair = "DevicesAwaitingRepair";
             public readonly string AwaitingFinance = "AwaitingFinance";
@@ -1381,7 +1386,9 @@ namespace Disco.Web.Controllers
         public class ActionNameConstants
         {
             public const string Index = "Index";
+            public const string Queue = "Queue";
             public const string AllOpen = "AllOpen";
+            public const string AwaitingTechnicianAction = "AwaitingTechnicianAction";
             public const string DevicesReadyForReturn = "DevicesReadyForReturn";
             public const string DevicesAwaitingRepair = "DevicesAwaitingRepair";
             public const string AwaitingFinance = "AwaitingFinance";
@@ -1399,6 +1406,14 @@ namespace Disco.Web.Controllers
         }
 
 
+        static readonly ActionParamsClass_Queue s_params_Queue = new ActionParamsClass_Queue();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Queue QueueParams { get { return s_params_Queue; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Queue
+        {
+            public readonly string id = "id";
+        }
         static readonly ActionParamsClass_Show s_params_Show = new ActionParamsClass_Show();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Show ShowParams { get { return s_params_Show; } }
@@ -1486,6 +1501,7 @@ namespace Disco.Web.Controllers
                     public readonly string JobMetaAdditions = "JobMetaAdditions";
                     public readonly string NonWarranty = "NonWarranty";
                     public readonly string NonWarrantyFinance = "NonWarrantyFinance";
+                    public readonly string Queues = "Queues";
                     public readonly string Repairs = "Repairs";
                     public readonly string Resources = "Resources";
                     public readonly string Warranty = "Warranty";
@@ -1497,6 +1513,7 @@ namespace Disco.Web.Controllers
                 public readonly string JobMetaAdditions = "~/Views/Job/JobParts/JobMetaAdditions.cshtml";
                 public readonly string NonWarranty = "~/Views/Job/JobParts/NonWarranty.cshtml";
                 public readonly string NonWarrantyFinance = "~/Views/Job/JobParts/NonWarrantyFinance.cshtml";
+                public readonly string Queues = "~/Views/Job/JobParts/Queues.cshtml";
                 public readonly string Repairs = "~/Views/Job/JobParts/Repairs.cshtml";
                 public readonly string Resources = "~/Views/Job/JobParts/Resources.cshtml";
                 public readonly string Warranty = "~/Views/Job/JobParts/Warranty.cshtml";
@@ -1518,12 +1535,31 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        partial void QueueOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        public override System.Web.Mvc.ActionResult Queue(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Queue);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            QueueOverride(callInfo, id);
+            return callInfo;
+        }
+
         partial void AllOpenOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
         public override System.Web.Mvc.ActionResult AllOpen()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AllOpen);
             AllOpenOverride(callInfo);
+            return callInfo;
+        }
+
+        partial void AwaitingTechnicianActionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        public override System.Web.Mvc.ActionResult AwaitingTechnicianAction()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AwaitingTechnicianAction);
+            AwaitingTechnicianActionOverride(callInfo);
             return callInfo;
         }
 
@@ -5079,9 +5115,9 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult UpdateSubTypes()
+        public virtual System.Web.Mvc.ActionResult UpdateJobSubTypes()
         {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateSubTypes);
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateJobSubTypes);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -5147,7 +5183,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateFilterExpression = "UpdateFilterExpression";
             public readonly string UpdateFlattenForm = "UpdateFlattenForm";
             public readonly string UpdateScope = "UpdateScope";
-            public readonly string UpdateSubTypes = "UpdateSubTypes";
+            public readonly string UpdateJobSubTypes = "UpdateJobSubTypes";
             public readonly string ImporterThumbnail = "ImporterThumbnail";
             public readonly string ImporterUndetectedFiles = "ImporterUndetectedFiles";
             public readonly string ImporterUndetectedDataIdLookup = "ImporterUndetectedDataIdLookup";
@@ -5167,7 +5203,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateFilterExpression = "UpdateFilterExpression";
             public const string UpdateFlattenForm = "UpdateFlattenForm";
             public const string UpdateScope = "UpdateScope";
-            public const string UpdateSubTypes = "UpdateSubTypes";
+            public const string UpdateJobSubTypes = "UpdateJobSubTypes";
             public const string ImporterThumbnail = "ImporterThumbnail";
             public const string ImporterUndetectedFiles = "ImporterUndetectedFiles";
             public const string ImporterUndetectedDataIdLookup = "ImporterUndetectedDataIdLookup";
@@ -5240,14 +5276,15 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string Scope = "Scope";
             public readonly string redirect = "redirect";
         }
-        static readonly ActionParamsClass_UpdateSubTypes s_params_UpdateSubTypes = new ActionParamsClass_UpdateSubTypes();
+        static readonly ActionParamsClass_UpdateJobSubTypes s_params_UpdateJobSubTypes = new ActionParamsClass_UpdateJobSubTypes();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_UpdateSubTypes UpdateSubTypesParams { get { return s_params_UpdateSubTypes; } }
+        public ActionParamsClass_UpdateJobSubTypes UpdateJobSubTypesParams { get { return s_params_UpdateJobSubTypes; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_UpdateSubTypes
+        public class ActionParamsClass_UpdateJobSubTypes
         {
             public readonly string id = "id";
-            public readonly string SubTypes = "SubTypes";
+            public readonly string JobSubTypes = "JobSubTypes";
+            public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_ImporterThumbnail s_params_ImporterThumbnail = new ActionParamsClass_ImporterThumbnail();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -5416,14 +5453,15 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
-        partial void UpdateSubTypesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, System.Collections.Generic.List<string> SubTypes);
+        partial void UpdateJobSubTypesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, System.Collections.Generic.List<string> JobSubTypes, bool redirect);
 
-        public override System.Web.Mvc.ActionResult UpdateSubTypes(string id, System.Collections.Generic.List<string> SubTypes)
+        public override System.Web.Mvc.ActionResult UpdateJobSubTypes(string id, System.Collections.Generic.List<string> JobSubTypes, bool redirect)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateSubTypes);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateJobSubTypes);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "SubTypes", SubTypes);
-            UpdateSubTypesOverride(callInfo, id, SubTypes);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "JobSubTypes", JobSubTypes);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateJobSubTypesOverride(callInfo, id, JobSubTypes, redirect);
             return callInfo;
         }
 
@@ -7697,6 +7735,778 @@ namespace Disco.Web.Areas.API.Controllers
 
 namespace Disco.Web.Areas.API.Controllers
 {
+    public partial class JobQueueController
+    {
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public JobQueueController() { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected JobQueueController(Dummy d) { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoute(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Update()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateName()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateName);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateDescription()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDescription);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdatePriority()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdatePriority);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateDefaultSLAExpiry()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDefaultSLAExpiry);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateIcon()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateIcon);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateIconColour()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateIconColour);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateIconAndColour()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateIconAndColour);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateSubjects()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateSubjects);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateJobSubTypes()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateJobSubTypes);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Delete()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SearchSubjects()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchSubjects);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Subject()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Subject);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public JobQueueController Actions { get { return MVC.API.JobQueue; } }
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Area = "API";
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Name = "JobQueue";
+        [GeneratedCode("T4MVC", "2.0")]
+        public const string NameConst = "JobQueue";
+
+        static readonly ActionNamesClass s_actions = new ActionNamesClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionNamesClass ActionNames { get { return s_actions; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNamesClass
+        {
+            public readonly string Update = "Update";
+            public readonly string UpdateName = "UpdateName";
+            public readonly string UpdateDescription = "UpdateDescription";
+            public readonly string UpdatePriority = "UpdatePriority";
+            public readonly string UpdateDefaultSLAExpiry = "UpdateDefaultSLAExpiry";
+            public readonly string UpdateIcon = "UpdateIcon";
+            public readonly string UpdateIconColour = "UpdateIconColour";
+            public readonly string UpdateIconAndColour = "UpdateIconAndColour";
+            public readonly string UpdateSubjects = "UpdateSubjects";
+            public readonly string UpdateJobSubTypes = "UpdateJobSubTypes";
+            public readonly string Delete = "Delete";
+            public readonly string SearchSubjects = "SearchSubjects";
+            public readonly string Subject = "Subject";
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNameConstants
+        {
+            public const string Update = "Update";
+            public const string UpdateName = "UpdateName";
+            public const string UpdateDescription = "UpdateDescription";
+            public const string UpdatePriority = "UpdatePriority";
+            public const string UpdateDefaultSLAExpiry = "UpdateDefaultSLAExpiry";
+            public const string UpdateIcon = "UpdateIcon";
+            public const string UpdateIconColour = "UpdateIconColour";
+            public const string UpdateIconAndColour = "UpdateIconAndColour";
+            public const string UpdateSubjects = "UpdateSubjects";
+            public const string UpdateJobSubTypes = "UpdateJobSubTypes";
+            public const string Delete = "Delete";
+            public const string SearchSubjects = "SearchSubjects";
+            public const string Subject = "Subject";
+        }
+
+
+        static readonly ActionParamsClass_Update s_params_Update = new ActionParamsClass_Update();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Update UpdateParams { get { return s_params_Update; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Update
+        {
+            public readonly string id = "id";
+            public readonly string key = "key";
+            public readonly string value = "value";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateName s_params_UpdateName = new ActionParamsClass_UpdateName();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateName UpdateNameParams { get { return s_params_UpdateName; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateName
+        {
+            public readonly string id = "id";
+            public readonly string QueueName = "QueueName";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateDescription s_params_UpdateDescription = new ActionParamsClass_UpdateDescription();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateDescription UpdateDescriptionParams { get { return s_params_UpdateDescription; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateDescription
+        {
+            public readonly string id = "id";
+            public readonly string Description = "Description";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdatePriority s_params_UpdatePriority = new ActionParamsClass_UpdatePriority();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdatePriority UpdatePriorityParams { get { return s_params_UpdatePriority; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdatePriority
+        {
+            public readonly string id = "id";
+            public readonly string Priority = "Priority";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateDefaultSLAExpiry s_params_UpdateDefaultSLAExpiry = new ActionParamsClass_UpdateDefaultSLAExpiry();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateDefaultSLAExpiry UpdateDefaultSLAExpiryParams { get { return s_params_UpdateDefaultSLAExpiry; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateDefaultSLAExpiry
+        {
+            public readonly string id = "id";
+            public readonly string DefaultSLAExpiry = "DefaultSLAExpiry";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateIcon s_params_UpdateIcon = new ActionParamsClass_UpdateIcon();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateIcon UpdateIconParams { get { return s_params_UpdateIcon; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateIcon
+        {
+            public readonly string id = "id";
+            public readonly string Icon = "Icon";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateIconColour s_params_UpdateIconColour = new ActionParamsClass_UpdateIconColour();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateIconColour UpdateIconColourParams { get { return s_params_UpdateIconColour; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateIconColour
+        {
+            public readonly string id = "id";
+            public readonly string IconColour = "IconColour";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateIconAndColour s_params_UpdateIconAndColour = new ActionParamsClass_UpdateIconAndColour();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateIconAndColour UpdateIconAndColourParams { get { return s_params_UpdateIconAndColour; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateIconAndColour
+        {
+            public readonly string id = "id";
+            public readonly string Icon = "Icon";
+            public readonly string IconColour = "IconColour";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateSubjects s_params_UpdateSubjects = new ActionParamsClass_UpdateSubjects();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateSubjects UpdateSubjectsParams { get { return s_params_UpdateSubjects; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateSubjects
+        {
+            public readonly string id = "id";
+            public readonly string Subjects = "Subjects";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateJobSubTypes s_params_UpdateJobSubTypes = new ActionParamsClass_UpdateJobSubTypes();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateJobSubTypes UpdateJobSubTypesParams { get { return s_params_UpdateJobSubTypes; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateJobSubTypes
+        {
+            public readonly string id = "id";
+            public readonly string JobSubTypes = "JobSubTypes";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Delete DeleteParams { get { return s_params_Delete; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Delete
+        {
+            public readonly string id = "id";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_SearchSubjects s_params_SearchSubjects = new ActionParamsClass_SearchSubjects();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SearchSubjects SearchSubjectsParams { get { return s_params_SearchSubjects; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SearchSubjects
+        {
+            public readonly string term = "term";
+        }
+        static readonly ActionParamsClass_Subject s_params_Subject = new ActionParamsClass_Subject();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Subject SubjectParams { get { return s_params_Subject; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Subject
+        {
+            public readonly string Id = "Id";
+        }
+        static readonly ViewsClass s_views = new ViewsClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ViewsClass Views { get { return s_views; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ViewsClass
+        {
+            static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
+            public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
+            public class _ViewNamesClass
+            {
+            }
+        }
+    }
+
+    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+    public partial class T4MVC_JobQueueController : Disco.Web.Areas.API.Controllers.JobQueueController
+    {
+        public T4MVC_JobQueueController() : base(Dummy.Instance) { }
+
+        partial void UpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string key, string value, bool? redirect);
+
+        public override System.Web.Mvc.ActionResult Update(int id, string key, string value, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "key", key);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "value", value);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateOverride(callInfo, id, key, value, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateNameOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string QueueName, bool? redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateName(int id, string QueueName, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateName);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "QueueName", QueueName);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateNameOverride(callInfo, id, QueueName, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateDescriptionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Description, bool? redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateDescription(int id, string Description, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDescription);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Description", Description);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateDescriptionOverride(callInfo, id, Description, redirect);
+            return callInfo;
+        }
+
+        partial void UpdatePriorityOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Priority, bool? redirect);
+
+        public override System.Web.Mvc.ActionResult UpdatePriority(int id, string Priority, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdatePriority);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Priority", Priority);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdatePriorityOverride(callInfo, id, Priority, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateDefaultSLAExpiryOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string DefaultSLAExpiry, bool? redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateDefaultSLAExpiry(int id, string DefaultSLAExpiry, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDefaultSLAExpiry);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DefaultSLAExpiry", DefaultSLAExpiry);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateDefaultSLAExpiryOverride(callInfo, id, DefaultSLAExpiry, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateIconOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Icon, bool? redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateIcon(int id, string Icon, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateIcon);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Icon", Icon);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateIconOverride(callInfo, id, Icon, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateIconColourOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string IconColour, bool? redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateIconColour(int id, string IconColour, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateIconColour);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "IconColour", IconColour);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateIconColourOverride(callInfo, id, IconColour, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateIconAndColourOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Icon, string IconColour, bool redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateIconAndColour(int id, string Icon, string IconColour, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateIconAndColour);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Icon", Icon);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "IconColour", IconColour);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateIconAndColourOverride(callInfo, id, Icon, IconColour, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateSubjectsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string[] Subjects, bool redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateSubjects(int id, string[] Subjects, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateSubjects);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Subjects", Subjects);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateSubjectsOverride(callInfo, id, Subjects, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateJobSubTypesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, System.Collections.Generic.List<string> JobSubTypes, bool redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateJobSubTypes(int id, System.Collections.Generic.List<string> JobSubTypes, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateJobSubTypes);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "JobSubTypes", JobSubTypes);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateJobSubTypesOverride(callInfo, id, JobSubTypes, redirect);
+            return callInfo;
+        }
+
+        partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool? redirect);
+
+        public override System.Web.Mvc.ActionResult Delete(int id, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            DeleteOverride(callInfo, id, redirect);
+            return callInfo;
+        }
+
+        partial void SearchSubjectsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string term);
+
+        public override System.Web.Mvc.ActionResult SearchSubjects(string term)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchSubjects);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "term", term);
+            SearchSubjectsOverride(callInfo, term);
+            return callInfo;
+        }
+
+        partial void SubjectOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
+
+        public override System.Web.Mvc.ActionResult Subject(string Id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Subject);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
+            SubjectOverride(callInfo, Id);
+            return callInfo;
+        }
+
+    }
+}
+
+namespace Disco.Web.Areas.API.Controllers
+{
+    public partial class JobQueueJobController
+    {
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public JobQueueJobController() { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected JobQueueJobController(Dummy d) { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoute(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Update()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateAddedComment()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAddedComment);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateRemovedComment()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateRemovedComment);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateSla()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateSla);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdatePriority()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdatePriority);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateSlaAndPriority()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateSlaAndPriority);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AddJob()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddJob);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult RemoveJob()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RemoveJob);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public JobQueueJobController Actions { get { return MVC.API.JobQueueJob; } }
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Area = "API";
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Name = "JobQueueJob";
+        [GeneratedCode("T4MVC", "2.0")]
+        public const string NameConst = "JobQueueJob";
+
+        static readonly ActionNamesClass s_actions = new ActionNamesClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionNamesClass ActionNames { get { return s_actions; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNamesClass
+        {
+            public readonly string Update = "Update";
+            public readonly string UpdateAddedComment = "UpdateAddedComment";
+            public readonly string UpdateRemovedComment = "UpdateRemovedComment";
+            public readonly string UpdateSla = "UpdateSla";
+            public readonly string UpdatePriority = "UpdatePriority";
+            public readonly string UpdateSlaAndPriority = "UpdateSlaAndPriority";
+            public readonly string AddJob = "AddJob";
+            public readonly string RemoveJob = "RemoveJob";
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNameConstants
+        {
+            public const string Update = "Update";
+            public const string UpdateAddedComment = "UpdateAddedComment";
+            public const string UpdateRemovedComment = "UpdateRemovedComment";
+            public const string UpdateSla = "UpdateSla";
+            public const string UpdatePriority = "UpdatePriority";
+            public const string UpdateSlaAndPriority = "UpdateSlaAndPriority";
+            public const string AddJob = "AddJob";
+            public const string RemoveJob = "RemoveJob";
+        }
+
+
+        static readonly ActionParamsClass_Update s_params_Update = new ActionParamsClass_Update();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Update UpdateParams { get { return s_params_Update; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Update
+        {
+            public readonly string id = "id";
+            public readonly string key = "key";
+            public readonly string value = "value";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateAddedComment s_params_UpdateAddedComment = new ActionParamsClass_UpdateAddedComment();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateAddedComment UpdateAddedCommentParams { get { return s_params_UpdateAddedComment; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateAddedComment
+        {
+            public readonly string id = "id";
+            public readonly string AddedComment = "AddedComment";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateRemovedComment s_params_UpdateRemovedComment = new ActionParamsClass_UpdateRemovedComment();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateRemovedComment UpdateRemovedCommentParams { get { return s_params_UpdateRemovedComment; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateRemovedComment
+        {
+            public readonly string id = "id";
+            public readonly string RemovedComment = "RemovedComment";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateSla s_params_UpdateSla = new ActionParamsClass_UpdateSla();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateSla UpdateSlaParams { get { return s_params_UpdateSla; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateSla
+        {
+            public readonly string id = "id";
+            public readonly string SLA = "SLA";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdatePriority s_params_UpdatePriority = new ActionParamsClass_UpdatePriority();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdatePriority UpdatePriorityParams { get { return s_params_UpdatePriority; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdatePriority
+        {
+            public readonly string id = "id";
+            public readonly string Priority = "Priority";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateSlaAndPriority s_params_UpdateSlaAndPriority = new ActionParamsClass_UpdateSlaAndPriority();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateSlaAndPriority UpdateSlaAndPriorityParams { get { return s_params_UpdateSlaAndPriority; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateSlaAndPriority
+        {
+            public readonly string id = "id";
+            public readonly string Sla = "Sla";
+            public readonly string Priority = "Priority";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_AddJob s_params_AddJob = new ActionParamsClass_AddJob();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AddJob AddJobParams { get { return s_params_AddJob; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AddJob
+        {
+            public readonly string id = "id";
+            public readonly string JobId = "JobId";
+            public readonly string Comment = "Comment";
+            public readonly string SLAExpiresMinutes = "SLAExpiresMinutes";
+            public readonly string Priority = "Priority";
+        }
+        static readonly ActionParamsClass_RemoveJob s_params_RemoveJob = new ActionParamsClass_RemoveJob();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_RemoveJob RemoveJobParams { get { return s_params_RemoveJob; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_RemoveJob
+        {
+            public readonly string id = "id";
+            public readonly string Comment = "Comment";
+            public readonly string CloseJob = "CloseJob";
+        }
+        static readonly ViewsClass s_views = new ViewsClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ViewsClass Views { get { return s_views; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ViewsClass
+        {
+            static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
+            public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
+            public class _ViewNamesClass
+            {
+            }
+        }
+    }
+
+    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+    public partial class T4MVC_JobQueueJobController : Disco.Web.Areas.API.Controllers.JobQueueJobController
+    {
+        public T4MVC_JobQueueJobController() : base(Dummy.Instance) { }
+
+        partial void UpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string key, string value, bool? redirect);
+
+        public override System.Web.Mvc.ActionResult Update(int id, string key, string value, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "key", key);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "value", value);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateOverride(callInfo, id, key, value, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateAddedCommentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string AddedComment, bool? redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateAddedComment(int id, string AddedComment, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAddedComment);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "AddedComment", AddedComment);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateAddedCommentOverride(callInfo, id, AddedComment, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateRemovedCommentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string RemovedComment, bool? redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateRemovedComment(int id, string RemovedComment, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateRemovedComment);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "RemovedComment", RemovedComment);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateRemovedCommentOverride(callInfo, id, RemovedComment, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateSlaOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string SLA, bool? redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateSla(int id, string SLA, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateSla);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "SLA", SLA);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateSlaOverride(callInfo, id, SLA, redirect);
+            return callInfo;
+        }
+
+        partial void UpdatePriorityOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Priority, bool? redirect);
+
+        public override System.Web.Mvc.ActionResult UpdatePriority(int id, string Priority, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdatePriority);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Priority", Priority);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdatePriorityOverride(callInfo, id, Priority, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateSlaAndPriorityOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Sla, string Priority, bool? redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateSlaAndPriority(int id, string Sla, string Priority, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateSlaAndPriority);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Sla", Sla);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Priority", Priority);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateSlaAndPriorityOverride(callInfo, id, Sla, Priority, redirect);
+            return callInfo;
+        }
+
+        partial void AddJobOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, int JobId, string Comment, int? SLAExpiresMinutes, Disco.Models.Repository.JobQueuePriority Priority);
+
+        public override System.Web.Mvc.ActionResult AddJob(int id, int JobId, string Comment, int? SLAExpiresMinutes, Disco.Models.Repository.JobQueuePriority Priority)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddJob);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "JobId", JobId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Comment", Comment);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "SLAExpiresMinutes", SLAExpiresMinutes);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Priority", Priority);
+            AddJobOverride(callInfo, id, JobId, Comment, SLAExpiresMinutes, Priority);
+            return callInfo;
+        }
+
+        partial void RemoveJobOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Comment, bool? CloseJob);
+
+        public override System.Web.Mvc.ActionResult RemoveJob(int id, string Comment, bool? CloseJob)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RemoveJob);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Comment", Comment);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "CloseJob", CloseJob);
+            RemoveJobOverride(callInfo, id, Comment, CloseJob);
+            return callInfo;
+        }
+
+    }
+}
+
+namespace Disco.Web.Areas.API.Controllers
+{
     public partial class LoggingController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -9675,6 +10485,137 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
             IndexOverride(callInfo);
+            return callInfo;
+        }
+
+    }
+}
+
+namespace Disco.Web.Areas.Config.Controllers
+{
+    public partial class JobQueueController
+    {
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public JobQueueController() { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected JobQueueController(Dummy d) { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoute(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Index()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public JobQueueController Actions { get { return MVC.Config.JobQueue; } }
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Area = "Config";
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Name = "JobQueue";
+        [GeneratedCode("T4MVC", "2.0")]
+        public const string NameConst = "JobQueue";
+
+        static readonly ActionNamesClass s_actions = new ActionNamesClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionNamesClass ActionNames { get { return s_actions; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNamesClass
+        {
+            public readonly string Index = "Index";
+            public readonly string Create = "Create";
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNameConstants
+        {
+            public const string Index = "Index";
+            public const string Create = "Create";
+        }
+
+
+        static readonly ActionParamsClass_Index s_params_Index = new ActionParamsClass_Index();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Index IndexParams { get { return s_params_Index; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Index
+        {
+            public readonly string id = "id";
+        }
+        static readonly ActionParamsClass_Create s_params_Create = new ActionParamsClass_Create();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Create CreateParams { get { return s_params_Create; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Create
+        {
+            public readonly string model = "model";
+        }
+        static readonly ViewsClass s_views = new ViewsClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ViewsClass Views { get { return s_views; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ViewsClass
+        {
+            static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
+            public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
+            public class _ViewNamesClass
+            {
+                public readonly string Create = "Create";
+                public readonly string Index = "Index";
+                public readonly string Show = "Show";
+            }
+            public readonly string Create = "~/Areas/Config/Views/JobQueue/Create.cshtml";
+            public readonly string Index = "~/Areas/Config/Views/JobQueue/Index.cshtml";
+            public readonly string Show = "~/Areas/Config/Views/JobQueue/Show.cshtml";
+        }
+    }
+
+    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+    public partial class T4MVC_JobQueueController : Disco.Web.Areas.Config.Controllers.JobQueueController
+    {
+        public T4MVC_JobQueueController() : base(Dummy.Instance) { }
+
+        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id);
+
+        public override System.Web.Mvc.ActionResult Index(int? id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            IndexOverride(callInfo, id);
+            return callInfo;
+        }
+
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        public override System.Web.Mvc.ActionResult Create()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
+            CreateOverride(callInfo);
+            return callInfo;
+        }
+
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Areas.Config.Models.JobQueue.CreateModel model);
+
+        public override System.Web.Mvc.ActionResult Create(Disco.Web.Areas.Config.Models.JobQueue.CreateModel model)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            CreateOverride(callInfo, model);
             return callInfo;
         }
 

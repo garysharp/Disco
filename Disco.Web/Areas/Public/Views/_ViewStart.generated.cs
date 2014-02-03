@@ -46,6 +46,7 @@ namespace Disco.Web.Areas.Public.Views
             #line 1 "..\..\Areas\Public\Views\_ViewStart.cshtml"
   
     Layout = MVC.Shared.Views._PublicLayout;
+    ViewContext.ViewData["MenuArea"] = MVC.Public.Name;
 
             
             #line default

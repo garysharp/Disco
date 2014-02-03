@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DeviceCertificate
 {
-    [ClaimDetails("Device Certificate", "Permissions related to Device Certificates")]
+    [ClaimDetails("Device Certificates", "Permissions related to Device Certificates")]
     public class DeviceCertificateClaims : BaseRoleClaimGroup
     {
         [ClaimDetails("Download Certificates", "Can download certificates")]

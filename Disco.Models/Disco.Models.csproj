@@ -45,9 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authorization\IAuthorizationToken.cs" />
-    <Compile Include="Authorization\IClaimNavigatorItem.cs" />
-    <Compile Include="Authorization\IRoleToken.cs" />
+    <Compile Include="Services\Authorization\IAuthorizationToken.cs" />
+    <Compile Include="Services\Authorization\IClaimNavigatorItem.cs" />
+    <Compile Include="Services\Authorization\IRoleToken.cs" />
     <Compile Include="BI\Config\OrganisationAddress.cs" />
     <Compile Include="BI\Device\ImportDevice.cs" />
     <Compile Include="BI\Device\ImportDeviceSession.cs" />
@@ -62,7 +62,6 @@
     <Compile Include="BI\Interop\Community\UpdateRequestBase.cs" />
     <Compile Include="BI\Interop\Community\UpdateRequestV1.cs" />
     <Compile Include="BI\Interop\Community\UpdateResponse.cs" />
-    <Compile Include="BI\Job\JobTableModel.cs" />
     <Compile Include="BI\Job\Statistics\DailyOpenedClosedItem.cs" />
     <Compile Include="BI\Search\DeviceSearchResultItem.cs" />
     <Compile Include="BI\Search\UserSearchResultItem.cs" />
@@ -100,10 +99,18 @@
     <Compile Include="Repository\Job\JobMeta\JobMetaWarranty.cs" />
     <Compile Include="Repository\Job\JobSubType.cs" />
     <Compile Include="Repository\Job\JobType.cs" />
+    <Compile Include="Repository\Job\Queue\JobQueue.cs" />
+    <Compile Include="Repository\Job\Queue\JobQueueJob.cs" />
+    <Compile Include="Repository\Job\Queue\JobQueuePriority.cs" />
     <Compile Include="Repository\User\User.cs" />
     <Compile Include="Repository\User\UserAttachment.cs" />
     <Compile Include="Repository\User\UserDetail.cs" />
     <Compile Include="Repository\User\AuthorizationRole.cs" />
+    <Compile Include="Services\Jobs\JobLists\JobTableItemModel.cs" />
+    <Compile Include="Services\Jobs\JobLists\JobTableModel.cs" />
+    <Compile Include="Services\Jobs\JobLists\JobTableStatusItemModel.cs" />
+    <Compile Include="Services\Jobs\JobLists\JobTableStatusQueueItemModel.cs" />
+    <Compile Include="Services\Jobs\JobQueues\IJobQueueToken.cs" />
     <Compile Include="UI\BaseUIModel.cs" />
     <Compile Include="UI\Config\AuthorizationRole\ConfigAuthorizationRoleCreateModel.cs" />
     <Compile Include="UI\Config\AuthorizationRole\ConfigAuthorizationRoleIndexModel.cs" />
@@ -132,6 +139,9 @@
     <Compile Include="UI\Config\Enrolment\ConfigEnrolmentIndexModel.cs" />
     <Compile Include="UI\Config\Enrolment\ConfigEnrolmentStatusModel.cs" />
     <Compile Include="UI\Config\JobPreferences\ConfigJobPreferencesIndexModel.cs" />
+    <Compile Include="UI\Config\JobQueue\ConfigJobQueueCreateModel.cs" />
+    <Compile Include="UI\Config\JobQueue\ConfigJobQueueIndexModel.cs" />
+    <Compile Include="UI\Config\JobQueue\ConfigJobQueueShowModel.cs" />
     <Compile Include="UI\Config\Logging\ConfigLoggingIndexModel.cs" />
     <Compile Include="UI\Config\Logging\ConfigLoggingTaskStatusModel.cs" />
     <Compile Include="UI\Config\Organisation\ConfigOrganisationIndexModel.cs" />

@@ -189,10 +189,14 @@
     </Compile>
     <Compile Include="Areas\API\Controllers\AuthorizationRoleController.cs" />
     <Compile Include="Areas\API\Controllers\JobPreferencesController.cs" />
+    <Compile Include="Areas\API\Controllers\JobQueueController.cs" />
+    <Compile Include="Areas\API\Controllers\JobQueueJobController.cs" />
     <Compile Include="Areas\API\Controllers\PluginController.cs" />
     <Compile Include="Areas\API\Models\AuthorizationRole\SubjectItem.cs" />
+    <Compile Include="Areas\API\Models\JobQueue\SubjectItem.cs" />
     <Compile Include="Areas\Config\Controllers\AuthorizationRoleController.cs" />
     <Compile Include="Areas\Config\Controllers\JobPreferencesController.cs" />
+    <Compile Include="Areas\Config\Controllers\JobQueueController.cs" />
     <Compile Include="Areas\Config\Models\AuthorizationRole\CreateModel.cs" />
     <Compile Include="Areas\Config\Models\AuthorizationRole\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\AuthorizationRole\ShowModel.cs" />
@@ -204,6 +208,9 @@
     <Compile Include="Areas\Config\Models\DocumentTemplate\ImportStatusModel.cs" />
     <Compile Include="Areas\Config\Models\Enrolment\StatusModel.cs" />
     <Compile Include="Areas\Config\Models\JobPreferences\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\JobQueue\CreateModel.cs" />
+    <Compile Include="Areas\Config\Models\JobQueue\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\JobQueue\ShowModel.cs" />
     <Compile Include="Areas\Config\Models\Plugins\InstallModel.cs" />
     <Compile Include="Areas\Config\Views\AuthorizationRole\Create.generated.cs">
       <DependentUpon>Create.cshtml</DependentUpon>
@@ -224,6 +231,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Index.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Config\Views\JobQueue\Create.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Create.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Config\Views\JobQueue\Index.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Index.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Config\Views\JobQueue\Show.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Show.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Areas\Config\Views\Plugins\Install.generated.cs">
       <AutoGen>True</AutoGen>
@@ -508,6 +530,11 @@
       <DependentUpon>Licence.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\JobParts\Queues.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Queues.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Views\Shared\DisplayTemplates\AccessDeniedException.generated.cs">
       <DependentUpon>AccessDeniedException.cshtml</DependentUpon>
@@ -896,6 +923,18 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
     </None>
+    <None Include="Areas\Config\Views\JobQueue\Show.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Show.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\JobQueue\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\JobQueue\Create.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Create.generated.cs</LastGenOutput>
+    </None>
     <None Include="Areas\Config\Views\Plugins\Install.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Install.generated.cs</LastGenOutput>
@@ -933,6 +972,7 @@
     <None Include="ClientSource\Scripts\Core\disco.uicore.js" />
     <None Include="ClientSource\Scripts\Core\moment.en-au.js" />
     <None Include="ClientSource\Scripts\Core\moment.js" />
+    <None Include="ClientSource\Scripts\Core\_references.js" />
     <Content Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.min.js">
       <DependentUpon>Disco-AjaxHelperIcons.js.bundle</DependentUpon>
     </Content>
@@ -1108,16 +1148,17 @@
     <Content Include="ClientSource\Scripts\Modules\tinymce.min.js">
       <DependentUpon>tinymce.js.bundle</DependentUpon>
     </Content>
-    <None Include="ClientSource\Style\BundleSite.css">
-      <DependentUpon>BundleSite.css.bundle</DependentUpon>
-    </None>
     <None Include="ClientSource\Scripts\Modules\tinymce\themes\simple\theme.js" />
-    <Content Include="ClientSource\Style\BundleSite.min.css">
-      <DependentUpon>BundleSite.css.bundle</DependentUpon>
-    </Content>
+    <None Include="ClientSource\Style\BundleSite.css">
+      <DependentUpon>BundleSite.less</DependentUpon>
+    </None>
+    <None Include="ClientSource\Style\BundleSite.less" />
     <None Include="ClientSource\Style\Config.css">
       <DependentUpon>Config.less</DependentUpon>
     </None>
+    <Content Include="ClientSource\Style\BundleSite.min.css">
+      <DependentUpon>BundleSite.less</DependentUpon>
+    </Content>
     <Content Include="ClientSource\Style\Config.min.css">
       <DependentUpon>Config.less</DependentUpon>
     </Content>
@@ -1231,15 +1272,15 @@
     <Content Include="ClientSource\Style\Job.min.css">
       <DependentUpon>Job.less</DependentUpon>
     </Content>
-    <None Include="ClientSource\Style\jQueryUIExtensions.css">
-      <DependentUpon>jQueryUIExtensions.less</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Style\jQueryUIExtensions.min.css">
-      <DependentUpon>jQueryUIExtensions.less</DependentUpon>
-    </Content>
     <None Include="ClientSource\Style\jQueryUI\dynatree\icons.gif" />
     <None Include="ClientSource\Style\jQueryUI\dynatree\loading.gif" />
     <None Include="ClientSource\Style\jQueryUI\dynatree\ui.dynatree.css" />
+    <None Include="ClientSource\Style\jQueryUIExtensions.css">
+      <DependentUpon>jQueryUIExtensions.less</DependentUpon>
+    </None>
+    <None Include="ClientSource\Style\jQueryUIExtensions.min.css">
+      <DependentUpon>jQueryUIExtensions.less</DependentUpon>
+    </None>
     <Content Include="ClientSource\Style\jQueryUI\dynatree\ui.dynatree.min.css">
       <DependentUpon>ui.dynatree.css</DependentUpon>
     </Content>
@@ -1257,7 +1298,14 @@
     <None Include="ClientSource\Style\jQueryUI\images\ui-icons_454545_256x240.png" />
     <None Include="ClientSource\Style\jQueryUI\images\ui-icons_888888_256x240.png" />
     <None Include="ClientSource\Style\jQueryUI\images\ui-icons_cd0a0a_256x240.png" />
-    <None Include="ClientSource\Style\jQueryUI\jquery-ui.css" />
+    <None Include="ClientSource\Style\jQueryUI\jquery-ui.less" />
+    <None Include="ClientSource\Style\normalize.less" />
+    <None Include="ClientSource\Style\normalize.css">
+      <DependentUpon>normalize.less</DependentUpon>
+    </None>
+    <None Include="ClientSource\Style\normalize.min.css">
+      <DependentUpon>normalize.less</DependentUpon>
+    </None>
     <Content Include="ClientSource\Style\Public\HeldDevices.css">
       <DependentUpon>HeldDevices.less</DependentUpon>
     </Content>
@@ -1290,18 +1338,6 @@
     <None Include="ClientSource\Style\Shadowbox\shadowbox.min.css">
       <DependentUpon>shadowbox.css</DependentUpon>
     </None>
-    <None Include="ClientSource\Style\Shared.css">
-      <DependentUpon>Shared.less</DependentUpon>
-    </None>
-    <None Include="ClientSource\Style\Shared.min.css">
-      <DependentUpon>Shared.less</DependentUpon>
-    </None>
-    <None Include="ClientSource\Style\Site.css">
-      <DependentUpon>Site.less</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Style\Site.min.css">
-      <DependentUpon>Site.less</DependentUpon>
-    </Content>
     <None Include="ClientSource\Style\Timeline\disco.timelineextensions.css">
       <DependentUpon>disco.timelineextensions.less</DependentUpon>
     </None>
@@ -1311,6 +1347,18 @@
     <None Include="ClientSource\Style\Timeline\graphics.css" />
     <None Include="ClientSource\Style\Timeline\graphics.min.css">
       <DependentUpon>graphics.css</DependentUpon>
+    </None>
+    <None Include="ClientSource\Style\Shared.css">
+      <DependentUpon>Shared.less</DependentUpon>
+    </None>
+    <None Include="ClientSource\Style\Shared.min.css">
+      <DependentUpon>Shared.less</DependentUpon>
+    </None>
+    <None Include="ClientSource\Style\Site.css">
+      <DependentUpon>Site.less</DependentUpon>
+    </None>
+    <None Include="ClientSource\Style\Site.min.css">
+      <DependentUpon>Site.less</DependentUpon>
     </None>
     <Content Include="ClientSource\Style\Timeline\images\blue-circle.png" />
     <None Include="ClientSource\Style\Timeline\images\bubble-arrow-point-down.png" />
@@ -1366,8 +1414,7 @@
     <Content Include="ClientSource\Style\User.min.css">
       <DependentUpon>User.less</DependentUpon>
     </Content>
-    <None Include="ClientSource\Style\jQueryUI\old_jquery-ui.css" />
-    <Content Include="ClientSource\Style\FontAwesome\font-awesome.css" />
+    <None Include="ClientSource\Style\FontAwesome\font-awesome.less" />
     <Content Include="favicon.ico" />
     <Content Include="ClientSource\Style\FontAwesome\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
@@ -1395,9 +1442,6 @@
     <None Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.js.bundle" />
     <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.min.js.map">
       <DependentUpon>Disco-AjaxHelperIcons.js.bundle</DependentUpon>
-    </None>
-    <None Include="ClientSource\Style\BundleSite.css.bundle">
-      <SubType>Designer</SubType>
     </None>
     <None Include="ClientSource\Style\Timeline.css.bundle" />
     <Content Include="ClientSource\Style\FontAwesome\fontawesome-webfont.woff" />
@@ -1523,6 +1567,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create_Redirect.generated.cs</LastGenOutput>
     </None>
+    <Content Include="Views\Job\JobParts\Queues.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Queues.generated.cs</LastGenOutput>
+    </Content>
     <None Include="Views\Job\JobParts\_Subject.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Subject.generated.cs</LastGenOutput>

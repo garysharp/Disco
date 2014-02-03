@@ -268,7 +268,9 @@
 
                 if (!quick) {
                     e.animate({ backgroundColor: '#ffff99' }, 500, function () {
-                        e.animate({ backgroundColor: '#f4f4f4' }, 500);
+                        e.animate({ backgroundColor: '#fafafa' }, 500, function () {
+                            e.css('background-color', '');
+                        });
                     });
                     $CommentOutput.animate({ scrollTop: $CommentOutput[0].scrollHeight }, 250)
                 }

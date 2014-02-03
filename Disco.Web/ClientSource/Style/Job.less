@@ -1,9 +1,7 @@
 @import "Shared";
 
-#layout_PageHeading
-{
-    #Job_Show_Status
-    {
+#layout_PageHeading {
+    #Job_Show_Status {
         /*position: absolute;
         right: 20px;
         top: 6px;*/
@@ -16,121 +14,100 @@
         font-size: 0.7em;
         text-transform: uppercase;
 
-        span.icon
-        {
+        span.icon {
             margin-right: 6px;
         }
     }
+
+    #Job_Show_QueueStatus {
+        display: inline-block;
+        float: right;
+        height: 50px;
+        font-size: 0.6em;
+    }
 }
 
-#Job_Show
-{
-    #Job_Show_Subjects
-    {
+#Job_Show {
+    #Job_Show_Subjects {
         table-layout: fixed;
 
-        &>tbody > tr > td
-        {
+        & > tbody > tr > td {
             padding-top: 0;
             height: 100%;
 
-            &>div /* Extra DIV added for FireFox TD relative position incompatibility */
-            {
+            & > div /* Extra DIV added for FireFox TD relative position incompatibility */ {
                 position: relative;
 
-                div.status
-                {
+                div.status {
                     margin-top: 2px;
                     padding-top: 2px;
                     border-top: 1px dashed #ddd;
                 }
 
-                input.discreet
-                {
+                input.discreet {
                     margin-left: -2px;
                 }
             }
         }
 
-            &>tbody > tr > td:not(:last-child)
-            {
+            & > tbody > tr > td:not(:last-child) {
                 border-right: 1px dashed #aaa;
             }
 
-        .dialog
-        {
-            display: none;
-        }
-
-        #Job_Show_Job
-        {
-            #Job_Show_Job_Type
-            {
-                &>table
-                {
+        #Job_Show_Job {
+            #Job_Show_Job_Type {
+                & > table {
                     table-layout: fixed;
                 }
             }
 
-            #Job_Show_Job_SubTypes_1, #Job_Show_Job_SubTypes_2
-            {
+            #Job_Show_Job_SubTypes_1, #Job_Show_Job_SubTypes_2 {
                 padding-left: 16px;
                 font-weight: bold;
             }
 
-            #Job_Show_Job_SubTypes_Update
-            {
+            #Job_Show_Job_SubTypes_Update {
                 margin-left: 16px;
                 font-size: 0.9em;
             }
 
-            #Job_Show_Job_SubTypes_Update_Dialog
-            {
+            #Job_Show_Job_SubTypes_Update_Dialog {
                 display: none;
             }
 
-            #Job_Show_Job_Dates
-            {
+            #Job_Show_Job_Dates {
                 padding-bottom: 6px;
 
-                table
-                {
+                table {
                     table-layout: fixed;
 
-                    &>tbody > tr > td
-                    {
+                    & > tbody > tr > td {
                         vertical-align: middle;
                     }
 
-                        &>tbody > tr > td:first-child
-                        {
+                        & > tbody > tr > td:first-child {
                             font-weight: bold;
                             width: 60px;
                         }
                 }
             }
 
-            #Job_Show_GenerateDocument_Container
-            {
+            #Job_Show_GenerateDocument_Container {
                 padding-top: 4px;
 
-                #Job_Show_GenerateDocument
-                {
-					padding: 0;
+                #Job_Show_GenerateDocument {
+                    padding: 0;
                 }
             }
         }
 
-        #Job_Show_Device
-        {
-            &>div
-            {
+        #Job_Show_Device {
+            & > div {
                 padding-left: 102px;
                 min-height: 100px;
             }
 
-            #Job_Show_Device_Model_Image
-            {
+            #Job_Show_Device_Model_Image {
                 position: absolute;
                 left: 0;
                 top: 0;
@@ -138,47 +115,38 @@
                 width: 96px;
             }
 
-            #Job_Show_Device_Details
-            {
+            #Job_Show_Device_Details {
                 float: left;
             }
 
-            #Job_Show_Device_Details_HWar, #Job_Show_Device_Details_HNWar
-            {
+            #Job_Show_Device_Details_HWar, #Job_Show_Device_Details_HNWar {
                 float: right;
                 border-left: 1px dashed #ddd;
                 padding-left: 4px;
                 margin-right: 2px;
             }
 
-            #Job_Show_Device_Details_HWar_Details_Button, #Job_Show_Device_Details_HNWar_Details_Button
-            {
+            #Job_Show_Device_Details_HWar_Details_Button, #Job_Show_Device_Details_HNWar_Details_Button {
                 font-size: .9em;
             }
 
-            #Job_Show_Device_DeviceHeld
-            {
-                table
-                {
+            #Job_Show_Device_DeviceHeld {
+                table {
                     table-layout: fixed;
 
-                    &>tbody > tr > td:first-child
-                    {
+                    & > tbody > tr > td:first-child {
                         width: 62px;
                     }
                 }
             }
         }
 
-        #Job_Show_Subjects_Actions
-        {
-            &>td
-            {
+        #Job_Show_Subjects_Actions {
+            & > td {
                 padding-top: 4px;
             }
 
-            #Job_Show_Device_Actions
-            {
+            #Job_Show_Device_Actions {
                 padding-left: 111px;
             }
         }
@@ -187,83 +155,77 @@
 
 
 
-#jobDetailTabs
-{
+#jobDetailTabs {
     margin-top: 10px;
-
     /*.jobPart
     {
         height: 305px;
         overflow: auto;
     }*/
+    /*jQuery Tab Extensions*/
+    border-radius: 0;
+    background-image: none;
+    background-color: @white;
+    border: none;
+    padding: 0;
 
-	/*jQuery Tab Extensions*/
-	border-radius: 0;
-	background-image: none;
-	background-color: @white;
-	border: none;
-	padding: 0;
+    #jobDetailTabItems {
+        border-radius: 0;
+        border-top: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+        border-bottom: none;
+        padding: 2px 0 0 4px;
+        background-image: none;
+        background-color: #eee;
+        display: table;
 
-	#jobDetailTabItems {
-		border-radius: 0;
-		border-top: 1px solid #ddd;
-		border-right: 1px solid #ddd;
-		border-left: 1px solid #ddd;
-		border-bottom: none;
-		padding: 2px 0 0 4px;
-		background-image: none;
-		background-color: #eee;
-		display: table;
+        & > li {
+            top: 0;
+            border-radius: 0;
+            margin: 0 5px 0 0;
+            padding: 0;
+            line-height: normal;
+            margin-right: 4px;
 
-		&>li {
-			top: 0;
-			border-radius: 0;
-			margin: 0 5px 0 0;
-			padding: 0;
-			line-height: normal;
-			margin-right: 4px;
-			&>a {
-				padding: 5px 8px;
-			}
-		}
-	}
-	div.ui-tabs-panel {
-		border-radius: 0;
-		padding: 4px;
-		border-right: 1px solid #ddd;
-		border-bottom: 1px solid #ddd;
-		border-left: 1px solid #ddd;
-		border-top: none;
-		background-color: #eee;
-	}
+            & > a {
+                padding: 5px 8px;
+            }
+        }
+    }
+
+    div.ui-tabs-panel {
+        border-radius: 0;
+        padding: 4px;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+        border-top: none;
+        background-color: #eee;
+    }
 }
 
 
-#jobShowResources
-{
-    #Comments
-    {
+#jobShowResources {
+    #Comments {
         width: 375px;
         height: 300px;
         padding: 0;
         border: 1px solid @SubtleBorderColour;
         background-color: @white;
 
-        div.commentOutput
-        {
+        div.commentOutput {
             height: 249px;
             overflow: auto;
             background-color: @BackgroundColourLight;
             color: @black;
 
-            &>div
-            {
+            & > div {
                 padding: 3px;
                 margin: 4px 6px;
                 border-bottom: 1px solid @SubtleBorderColour;
 
-                span.author
-                {
+                span.author {
                     color: #444;
                     display: block;
                     font-weight: bold;
@@ -271,45 +233,38 @@
                     float: left;
                 }
 
-                span.timestamp
-                {
+                span.timestamp {
                     display: block;
                     float: right;
                     font-size: 0.90em;
                     font-style: italic;
                 }
 
-                span.comment
-                {
+                span.comment {
                     clear: both;
                     display: block;
                     margin-left: 4px;
                 }
 
-                &:hover
-                {
-                    span.remove
-                    {
+                &:hover {
+                    span.remove {
                         opacity: .5;
                     }
                 }
 
-                span.remove
-                {
+                span.remove {
                     font-size: 1.2em;
                     color: @StatusRemove;
                     margin-left: 6px;
                     cursor: pointer;
                     opacity: 0;
 
-                    &:hover
-                    {
+                    &:hover {
                         opacity: 1;
                     }
                 }
 
-                &:last-child
-                {
+                &:last-child {
                     border-bottom: none;
                 }
             }
@@ -319,14 +274,12 @@
             height: 300px;
         }
 
-        div.commentInput
-        {
+        div.commentInput {
             border-top: 1px solid @SubtleBorderColour;
             height: 40px;
             padding: 5px;
 
-            textarea.commentInput
-            {
+            textarea.commentInput {
                 border: 0;
                 padding: 0;
                 margin: 0;
@@ -338,8 +291,7 @@
                 resize: none;
             }
 
-            span.action
-            {
+            span.action {
                 color: @HeaderBackgroundColour;
                 font-size: 1.5em;
                 display: block;
@@ -349,8 +301,7 @@
                 border: 1px solid @white;
                 padding: .5em;
 
-                &:hover
-                {
+                &:hover {
                     color: @HyperLinkColour;
                     background-color: @SubtleColour;
                     border: 1px solid @SubtleBorderColour;
@@ -359,20 +310,17 @@
         }
     }
 
-    #Attachments
-    {
+    #Attachments {
         height: 300px;
         padding: 0;
         border: 1px solid @SubtleBorderColour;
         background-color: @white;
 
-        div.attachmentOutput
-        {
+        div.attachmentOutput {
             height: 249px;
             overflow: auto;
 
-            &>a
-            {
+            & > a {
                 display: block;
                 float: left;
                 height: 48px;
@@ -384,8 +332,7 @@
                 color: @black;
                 text-decoration: none;
 
-                span.comments, span.author, span.timestamp
-                {
+                span.comments, span.author, span.timestamp {
                     display: block;
                     float: left;
                     width: 168px;
@@ -393,54 +340,46 @@
                     height: 16px;
                 }
 
-                span.author
-                {
+                span.author {
                     color: #888;
                     width: 150px;
                 }
 
-                span.timestamp
-                {
+                span.timestamp {
                     color: #888;
                     font-style: italic;
                 }
 
-                span.icon
-                {
+                span.icon {
                     display: block;
                     float: left;
                     height: 48px;
                     width: 48px;
                     margin-right: 2px;
 
-                    img
-                    {
+                    img {
                         height: 48px;
                         width: 48px;
                     }
                 }
 
-                &:hover
-                {
+                &:hover {
                     background-color: @SubtleColour;
                     border: 1px solid @SubtleBorderColour;
 
-                    span.remove
-                    {
+                    span.remove {
                         opacity: .5;
                     }
                 }
 
-                span.remove
-                {
+                span.remove {
                     font-size: 1.2em;
                     color: @StatusRemove;
                     margin-left: 2px;
                     cursor: pointer;
                     opacity: 0;
 
-                    &:hover
-                    {
+                    &:hover {
                         opacity: 1;
                     }
                 }
@@ -451,15 +390,13 @@
             height: 300px;
         }
 
-        div.attachmentInput
-        {
+        div.attachmentInput {
             border-top: 1px solid @SubtleBorderColour;
             height: 40px;
             background-color: @white;
             padding: 5px;
 
-            span.action
-            {
+            span.action {
                 color: @HeaderBackgroundColour;
                 display: block;
                 margin: 0 4px 0 0;
@@ -469,8 +406,7 @@
                 border: 1px solid @white;
                 padding: .5em;
 
-                &:hover
-                {
+                &:hover {
                     color: @HyperLinkColour;
                     background-color: @SubtleColour;
                     border: 1px solid @SubtleBorderColour;
@@ -480,29 +416,172 @@
     }
 }
 
-#jobComponents
-{
+#Job_Show_Job_Actions_AddQueue_Dialog {
+    height: 400px;
+
+    .queuePicker {
+        position: absolute;
+        width: 250px;
+        height: 300px;
+        overflow-y: auto;
+        background-color: #fcfcfc;
+        border: 1px solid #ccc;
+
+        & > div {
+            background-color: @white;
+            border-bottom: 1px solid #ddd;
+            padding: 6px 0 6px 6px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: @TableDataBorderColour;
+            }
+
+            &.selected, &.selected:hover {
+                background-color: @TableDataDarkBackgroundColour;
+            }
+        }
+    }
+
+    .details {
+        display: none;
+        position: absolute;
+        left: 280px;
+        top: 40px;
+
+        h4 {
+            margin-bottom: 4px;
+        }
+
+        #Priority {
+            margin-bottom: 10px;
+            min-width: 200px;
+        }
+
+        #SLAExpiresMinutes {
+            margin-bottom: 10px;
+            min-width: 200px;
+        }
+
+        #Comment {
+            min-width: 280px;
+        }
+    }
+}
+
+
+#jobDetailTab-Queues {
+    #jobQueues {
+        .tableDataDark;
+        table-layout: fixed;
+
+        i.fa-edit {
+            float: right;
+            margin-top: 4px;
+            font-size: 1.1em;
+            cursor: pointer;
+            display: none;
+            color: @HyperLinkColour;
+
+            &:hover {
+                color: @HyperLinkHoverColour;
+            }
+        }
+
+        td:hover i.fa-edit {
+            display: inline-block;
+        }
+
+        th.name {
+            width: 200px;
+        }
+
+        th.added {
+        }
+
+        th.removed {
+        }
+
+        th.sla {
+            width: 130px;
+        }
+
+        tr.removed td {
+            background-color: @TableDataBorderColour;
+        }
+
+        td.name {
+            vertical-align: middle;
+
+            .fa-stack {
+                line-height: 1.6em;
+            }
+        }
+
+        td.added, td.removed {
+            .when {
+                font-style: italic;
+                margin-top: 4px;
+                font-size: .9em;
+            }
+
+            .comments {
+                white-space: pre-line;
+            }
+        }
+
+        td.removed {
+            &.na {
+                vertical-align: middle;
+                text-align: center;
+            }
+        }
+
+        td.sla {
+            vertical-align: middle;
+
+            &.overdue {
+                color: @ButtonAlertColour;
+            }
+        }
+    }
+
+    & > .none {
+        text-align: center;
+        padding: 30px 0;
+        font-style: italic;
+        background-color: @white;
+    }
+}
+#Job_Show_Queues_Actions_EditAddedComment_Dialog, #Job_Show_Queues_Actions_EditRemovedComment_Dialog, #Job_Show_Queues_Actions_EditSla_Dialog {
+    h4 {
+        margin-bottom: 4px;
+    }
+}
+#Job_Show_Queues_Actions_EditAddedComment_Dialog_Comment {
+    width: 280px;
+}
+#Job_Show_Queues_Actions_EditRemovedComment_Dialog_Comment {
+    width: 280px;
+}
+
+#jobComponents {
     .tableDataDark;
 
-    tr
-    {
-        th.actions
-        {
+    tr {
+        th.actions {
             width: 18px;
         }
 
-        input.description
-        {
+        input.description {
             width: 400px;
         }
 
-        input.cost
-        {
+        input.cost {
             width: 150px;
         }
 
-        span.remove
-        {
+        span.remove {
             font-size: 1.5em;
             color: @StatusRemove;
             cursor: pointer;
@@ -513,229 +592,199 @@
             }
         }
 
-        input.updating
-        {
+        input.updating {
             background-position: right center;
             background-repeat: no-repeat;
             background-image: url(data:image/gif;base64,R0lGODlhEAALAPQAAP///zNah+Hm7dng6O7x9DddiTNah1d3nJqtw3+Xs8fS3k5vlm6JqaGzx4KatcrU4FFymDZciHGMq+ru8t/l7Pb3+V9+oeLo7vT2+MTP3LLB0dTc5fHz9gAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA) /*Images/Status/loading.gif*/;
         }
 
-        .totalCost
-        {
+        .totalCost {
             font-weight: bold;
         }
     }
 }
 
-#jobNonWarrantyFinance
-{
+#jobNonWarrantyFinance {
     .tableDataDark;
 
-    tr
-    {
-        th
-        {
+    tr {
+        th {
             width: 200px;
             text-align: right;
         }
     }
 }
 
-#jobNonWarrantyRepairs
-{
+#jobNonWarrantyRepairs {
     .tableDataDark;
 
-    tr
-    {
-        th
-        {
+    tr {
+        th {
             width: 200px;
             text-align: right;
         }
     }
 }
 
-#jobNonWarrantyInsurance
-{
+#jobNonWarrantyInsurance {
     .tableDataDark;
 
-    tr
-    {
-        th
-        {
+    tr {
+        th {
             width: 200px;
             text-align: right;
         }
 
-        td
-        {
-            textarea
-            {
+        td {
+            textarea {
                 width: 400px;
             }
         }
     }
 }
 
-#jobFlags
-{
+#jobFlags {
     .tableDataDark;
 
-    tr
-    {
-        th
-        {
+    tr {
+        th {
             width: 200px;
             text-align: right;
         }
     }
 }
 
-#warrantyJobForm
-{
-    #warrantyDisclosedInformation
-    {
-        table
-        {
+#warrantyJobForm {
+    #warrantyDisclosedInformation {
+        table {
             font-size: 0.9em;
 
-            tr:not(:last-child)
-            {
+            tr:not(:last-child) {
                 border-bottom: 1px dashed #aaa;
             }
 
-            th
-            {
+            th {
                 padding: 2px;
                 font-weight: bold;
                 width: 200px;
             }
 
-            td
-            {
+            td {
                 padding: 2px;
             }
         }
     }
 }
 
-#warrantyJobFaultDescription
-{
-    #FaultDescription
-    {
+#warrantyJobFaultDescription {
+    #FaultDescription {
         width: 600px;
         height: 250px;
     }
 }
 
-#createJob_Container
-{
-    img.modelImage
-    {
+#createJob_Container {
+    margin: 0 -20px;
+
+    img.modelImage {
         width: 64px;
         height: 64px;
     }
 
-    .createJob_Component
-    {
+    .createJob_Component {
         margin: 0 10px;
         padding: 5px 0;
         border-bottom: 1px dashed #ccc;
     }
 
-        .createJob_Component:last-child
-        {
+        .createJob_Component:last-child {
             border-bottom: none;
         }
 
 
-    #createJob_Type
-    {
+    #createJob_Type {
         border: 1px solid #ccc;
         background-color: @BackgroundColourGradient;
         padding: 2px 4px;
     }
 
-    #createJob_SubTypes
-    {
-        margin: -1px 0 0 35px;
+    #createJob_SubTypes {
+        margin: -1px 0 0 20px;
         border: 1px solid #ccc;
         border-top: none;
         padding: 2px 4px;
         background-color: @BackgroundColourGradient;
 
-        .createJob_SubType
-        {
+        .createJob_SubType {
             display: none;
         }
     }
 
-        #createJob_Type li, #createJob_SubTypes li
-        {
-            margin: 2px 8px 2px 0;
+        #createJob_Type li, #createJob_SubTypes li {
+            margin: 2px 0;
             padding: 0 0 0 4px;
-        }
 
-            #createJob_Type li.highlight, #createJob_SubTypes li.highlight
-            {
+            i {
+                display: none;
+                cursor: default;
+                font-weight: normal;
+            }
+
+            &:hover i {
+                display: inline-block;
+            }
+
+            &.highlight {
                 background-color: @HighlightColour;
                 font-weight: 600;
                 color: @black;
+
+                i {
+                    display: inline-block;
+                }
             }
+        }
 
 
-    #createJob_CommentsContainer
-    {
-        #Comments
-        {
+    #createJob_CommentsContainer {
+        #Comments {
             width: 100%;
             min-width: 500px;
         }
     }
 
-    #createJob_QuickLogAutoCloseContainer
-    {
-        border: 1px solid #ccc;
-        background-color: @BackgroundColourGradient;
-        padding: 2px 4px;
+    #createJob_QuickLogAutoCloseContainer {
 
-        h3
-        {
+        h3 {
             margin-bottom: 4px;
         }
 
-        input
-        {
-            margin-left: 4px;
+        input {
+            margin-left: 6px;
         }
     }
 
-    #createJob_QuickLogTaskTimeContainer
-    {
+    #createJob_QuickLogTaskTimeContainer {
         display: none;
-        margin: -1px 0 0 35px;
-        border: 1px solid #ccc;
-        border-top: none;
-        padding: 2px 4px;
-        background-color: @BackgroundColourGradient;
+        margin: 4px 0 0 25px;
+        padding: 4px 4px;
+        background-color: @FormBackgroundOddColour;
+        border-left: 4px solid @TableDataDarkBorderColour;
 
-        h3
-        {
-            margin-bottom: 4px;
+        h4 {
+            display: inline-block;
+            padding-right: 10px;
         }
 
-        label
-        {
+        label {
             margin-right: 20px;
         }
 
-        #createJob_TaskTimeOtherMinutesContainer
-        {
+        #createJob_TaskTimeOtherMinutesContainer {
             display: none;
         }
 
-        #createJob_TaskTimeOtherMinutes
-        {
+        #createJob_TaskTimeOtherMinutes {
             width: 50px;
         }
     }

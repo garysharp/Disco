@@ -1,9 +1,12 @@
 ﻿using Disco.BI.Extensions;
-using Disco.BI.JobBI;
 using Disco.Data.Repository;
 using Disco.Models.Repository;
+using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Job;
+using Disco.Services;
 using Disco.Services.Authorization;
+using Disco.Services.Jobs.JobLists;
+using Disco.Services.Jobs.JobQueues;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Plugins.Features.WarrantyProvider;
 using Disco.Services.Users;
@@ -21,84 +24,18 @@ namespace Disco.Web.Controllers
 
         #region Index
 
-
-        #region Managed Job Lists
-        private static object jobListCreationLock = new object();
-
-        private static ManagedJobList jobList_OpenJobs;
-        private static ManagedJobList jobList_LongRunning;
-
-        internal static ManagedJobList ReInitializeLongRunningJobList(DiscoDataContext Database)
-        {
-            if (jobList_LongRunning == null)
-                return InitializeLongRunningJobList(Database);
-            else
-            {
-                var longRunningThreshold = DateTime.Today.AddDays(Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold * -1);
-
-                return jobList_LongRunning.ReInitialize(Database, q => q.Where(j => j.ClosedDate == null && j.OpenedDate < longRunningThreshold));
-            }
-        }
-        internal static ManagedJobList InitializeLongRunningJobList(DiscoDataContext Database)
-        {
-            if (jobList_LongRunning == null)
-            {
-                lock (jobListCreationLock)
-                {
-                    if (jobList_LongRunning == null)
-                    {
-                        var longRunningThreshold = DateTime.Today.AddDays(Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold * -1);
-
-                        jobList_LongRunning = new ManagedJobList()
-                        {
-                            Name = "Long Running Jobs",
-                            FilterFunction = q => q.Where(j => j.ClosedDate == null && j.OpenedDate < longRunningThreshold),
-                            SortFunction = q => q.OrderBy(j => j.Id),
-                            ShowStatus = true
-                        }.Initialize(Database);
-                    }
-                }
-            }
-            return jobList_LongRunning;
-        }
-        internal static ManagedJobList InitializeOpenJobList(DiscoDataContext Database)
-        {
-            if (jobList_OpenJobs == null)
-            {
-                lock (jobListCreationLock)
-                {
-                    if (jobList_OpenJobs == null)
-                    {
-                        jobList_OpenJobs = new ManagedJobList()
-                        {
-                            Name = "Open Jobs Awaiting Technician Action",
-                            FilterFunction = q => q.Where(j => j.ClosedDate == null && !j.WaitingForUserAction.HasValue
-                                && !(j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.RepairerLoggedDate.HasValue && j.JobMetaNonWarranty.IsInsuranceClaim && !j.JobMetaInsurance.ClaimFormSentDate.HasValue))
-                                && !(j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.RepairerLoggedDate.HasValue && !j.JobMetaNonWarranty.RepairerCompletedDate.HasValue))
-                                && !(j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.RepairerLoggedDate.HasValue && j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue))
-                                && !(j.JobTypeId == JobType.JobTypeIds.HWar && (j.JobMetaWarranty.ExternalLoggedDate.HasValue && !j.JobMetaWarranty.ExternalCompletedDate.HasValue))
-                                && (j.DeviceHeld == null || j.DeviceReturnedDate != null || j.DeviceReadyForReturn == null)),
-                            SortFunction = q => q.OrderBy(j => j.Id),
-                            ShowStatus = true
-                        }.Initialize(Database);
-                    }
-                }
-            }
-            return jobList_OpenJobs;
-        }
-        #endregion
-
         public virtual ActionResult Index()
         {
             var m = new Models.Job.IndexModel();
 
-            InitializeOpenJobList(Database);
-            InitializeLongRunningJobList(Database);
+            if (Authorization.Has(Claims.Job.Lists.MyJobs))
+                m.MyJobs = ManagedJobList.MyJobsTable(Authorization);
 
-            if (Authorization.Has(Claims.Job.Lists.AwaitingTechnicianAction))
-                m.OpenJobs = jobList_OpenJobs;
             if (Authorization.Has(Claims.Job.Lists.LongRunningJobs))
-                m.LongRunningJobs = jobList_LongRunning;
+            {
+                var longRunningThreshold = DateTime.Today.AddDays(Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold * -1);
+                m.LongRunningJobs = ManagedJobList.OpenJobsTable(q => q.Where(j => j.OpenedDate < longRunningThreshold).OrderBy(j => j.Id));
+            }
             if (Authorization.Has(Claims.Job.ShowDailyChart))
                 m.DailyOpenedClosedStatistics = Disco.BI.JobBI.Statistics.DailyOpenedClosed.Data(Database, true);
 
@@ -110,13 +47,41 @@ namespace Disco.Web.Controllers
         #endregion
 
         #region Lists
+        [DiscoAuthorize(Claims.Job.Lists.JobQueueLists)]
+        public virtual ActionResult Queue(int id)
+        {
+            var queueToken = JobQueueService.GetQueue(id);
+
+            if (queueToken == null)
+                throw new ArgumentException("Invalid Job Queue Id", "id");
+
+            var m = new Models.Job.ListModel() { Title = string.Format("Queue: {0}", queueToken.JobQueue.Name) };
+            m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j => j.ActiveJobQueues.Any(jqj => jqj.QueueId == queueToken.JobQueue.Id)));
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+
+            return View(Views.List, m);
+        }
+
         [DiscoAuthorize(Claims.Job.Lists.AllOpen)]
         public virtual ActionResult AllOpen()
         {
-            Database.Configuration.LazyLoadingEnabled = true;
             var m = new Models.Job.ListModel() { Title = "All Open Jobs" };
-            m.JobTable = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true };
-            m.JobTable.Fill(Database, BI.JobBI.Searching.BuildJobTableModel(Database).Where(j => j.ClosedDate == null).OrderBy(j => j.Id));
+            m.JobTable = ManagedJobList.OpenJobsTable(q => q.OrderBy(j => j.Id));
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+
+            return View(Views.List, m);
+        }
+
+        [DiscoAuthorize(Claims.Job.Lists.AwaitingTechnicianAction)]
+        public virtual ActionResult AwaitingTechnicianAction()
+        {
+            var m = new Models.Job.ListModel() { Title = "Jobs Awaiting Technician Action" };
+            
+            m.JobTable = ManagedJobList.OpenJobsTable(ManagedJobList.AwaitingTechnicianActionFilter);
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
@@ -127,13 +92,12 @@ namespace Disco.Web.Controllers
         [DiscoAuthorize(Claims.Job.Lists.DevicesReadyForReturn)]
         public virtual ActionResult DevicesReadyForReturn()
         {
-            Database.Configuration.LazyLoadingEnabled = true;
             var m = new Models.Job.ListModel() { Title = "Jobs with Devices Ready for Return" };
-            m.JobTable = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true };
-            m.JobTable.Fill(Database, BI.JobBI.Searching.BuildJobTableModel(Database).Where(j => !j.WaitingForUserAction.HasValue
+
+            m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j => !j.WaitingForUserAction.HasValue
                 && j.DeviceHeld != null && j.DeviceReturnedDate == null && j.DeviceReadyForReturn != null &&
-                ((!j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue && !j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue) || j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue)
-                && j.ClosedDate == null).OrderBy(j => j.Id));
+                ((!j.JobMetaNonWarranty_AccountingChargeRequiredDate.HasValue && !j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue) || j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue))
+                .OrderBy(j => j.Id));
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
@@ -144,14 +108,12 @@ namespace Disco.Web.Controllers
         [DiscoAuthorize(Claims.Job.Lists.DevicesAwaitingRepair)]
         public virtual ActionResult DevicesAwaitingRepair()
         {
-            Database.Configuration.LazyLoadingEnabled = true;
             var m = new Models.Job.ListModel() { Title = "Jobs with Devices Awaiting Repair" };
-            m.JobTable = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true };
-            m.JobTable.Fill(Database, BI.JobBI.Searching.BuildJobTableModel(Database).Where(j => j.ClosedDate == null &&
-                (
-                (j.JobMetaNonWarranty.RepairerLoggedDate != null && j.JobMetaNonWarranty.RepairerCompletedDate == null) ||
-                (j.JobMetaWarranty.ExternalLoggedDate != null && j.JobMetaWarranty.ExternalCompletedDate == null)
-                )).OrderBy(j => j.Id));
+
+            m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j => 
+                (j.JobMetaNonWarranty_RepairerLoggedDate != null && j.JobMetaNonWarranty_RepairerCompletedDate == null) ||
+                (j.JobMetaWarranty_ExternalLoggedDate != null && j.JobMetaWarranty_ExternalCompletedDate == null)
+                ).OrderBy(j => j.Id));
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
@@ -163,16 +125,13 @@ namespace Disco.Web.Controllers
         [DiscoAuthorize(Claims.Job.Lists.AwaitingFinance)]
         public virtual ActionResult AwaitingFinance()
         {
-            Database.Configuration.LazyLoadingEnabled = true;
             var m = new Models.Job.ListModel() { Title = "Jobs Awaiting Finance" };
-            m.JobTable = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true };
-            m.JobTable.Fill(Database, BI.JobBI.Searching.BuildJobTableModel(Database).Where(j => j.ClosedDate == null &&
-                (
-                (j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.IsInsuranceClaim && !j.JobMetaInsurance.ClaimFormSentDate.HasValue)) ||
-                (j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue && (!j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue))) ||
-                (j.JobTypeId == JobType.JobTypeIds.HNWar && (!j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue || !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue)) ||
+            m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j => 
+                (j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty_IsInsuranceClaim.Value && !j.JobMetaInsurance_ClaimFormSentDate.HasValue)) ||
+                (j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty_AccountingChargeRequiredDate.HasValue && (!j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue))) ||
+                (j.JobTypeId == JobType.JobTypeIds.HNWar && (!j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue || !j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue)) ||
                 (j.JobTypeId == JobType.JobTypeIds.UMgmt && Job.UserManagementFlags.Infringement_BreachFinancialAgreement == (j.Flags & Job.UserManagementFlags.Infringement_BreachFinancialAgreement))
-                )));
+                ));
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
@@ -183,13 +142,11 @@ namespace Disco.Web.Controllers
         [DiscoAuthorizeAll(Claims.Job.Lists.AwaitingFinance, Claims.Job.Lists.AwaitingFinanceCharge)]
         public virtual ActionResult AwaitingFinanceCharge()
         {
-            Database.Configuration.LazyLoadingEnabled = true;
             var m = new Models.Job.ListModel() { Title = "Jobs Awaiting Finance - Accounting Charge" };
-            m.JobTable = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true };
-            m.JobTable.Fill(Database, BI.JobBI.Searching.BuildJobTableModel(Database).Where(j => j.ClosedDate == null &&
-                (j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue && (!j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue)))
+            m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j =>
+                j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty_AccountingChargeRequiredDate.HasValue && (!j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue))
                 ).OrderBy(j => j.Id));
-
+            
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
 
@@ -199,11 +156,9 @@ namespace Disco.Web.Controllers
         [DiscoAuthorizeAll(Claims.Job.Lists.AwaitingFinance, Claims.Job.Lists.AwaitingFinancePayment)]
         public virtual ActionResult AwaitingFinancePayment()
         {
-            Database.Configuration.LazyLoadingEnabled = true;
             var m = new Models.Job.ListModel() { Title = "Jobs Awaiting Finance - Accounting Payment" };
-            m.JobTable = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true };
-            m.JobTable.Fill(Database, BI.JobBI.Searching.BuildJobTableModel(Database).Where(j => j.ClosedDate == null &&
-                (j.JobTypeId == JobType.JobTypeIds.HNWar && (!j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue || !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue))
+            m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j =>
+                j.JobTypeId == JobType.JobTypeIds.HNWar && (!j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue || !j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue)
                 ).OrderBy(j => j.Id));
 
             // UI Extensions
@@ -215,11 +170,9 @@ namespace Disco.Web.Controllers
         [DiscoAuthorizeAll(Claims.Job.Lists.AwaitingFinance, Claims.Job.Lists.AwaitingFinanceInsuranceProcessing)]
         public virtual ActionResult AwaitingFinanceInsuranceProcessing()
         {
-            Database.Configuration.LazyLoadingEnabled = true;
             var m = new Models.Job.ListModel() { Title = "Jobs Awaiting Finance - Insurance Processing" };
-            m.JobTable = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true };
-            m.JobTable.Fill(Database, BI.JobBI.Searching.BuildJobTableModel(Database).Where(j => j.ClosedDate == null &&
-                (j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty.IsInsuranceClaim && !j.JobMetaInsurance.ClaimFormSentDate.HasValue))
+            m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j =>
+                j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty_IsInsuranceClaim.Value && !j.JobMetaInsurance_ClaimFormSentDate.HasValue)
                 ).OrderBy(j => j.Id));
 
             // UI Extensions
@@ -231,11 +184,9 @@ namespace Disco.Web.Controllers
         [DiscoAuthorizeAll(Claims.Job.Lists.AwaitingFinance, Claims.Job.Lists.AwaitingFinanceAgreementBreach)]
         public virtual ActionResult AwaitingFinanceAgreementBreach()
         {
-            Database.Configuration.LazyLoadingEnabled = true;
             var m = new Models.Job.ListModel() { Title = "Jobs Awaiting Finance - Agreement Breach" };
-            m.JobTable = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true };
-            m.JobTable.Fill(Database, BI.JobBI.Searching.BuildJobTableModel(Database).Where(j => j.ClosedDate == null &&
-                (j.JobTypeId == JobType.JobTypeIds.UMgmt && Job.UserManagementFlags.Infringement_BreachFinancialAgreement == (j.Flags & Job.UserManagementFlags.Infringement_BreachFinancialAgreement))
+            m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j =>
+                j.JobTypeId == JobType.JobTypeIds.UMgmt && Job.UserManagementFlags.Infringement_BreachFinancialAgreement == (j.Flags & Job.UserManagementFlags.Infringement_BreachFinancialAgreement)
                 ).OrderBy(j => j.Id));
 
             // UI Extensions
@@ -248,11 +199,12 @@ namespace Disco.Web.Controllers
         [DiscoAuthorize(Claims.Job.Lists.AwaitingUserAction)]
         public virtual ActionResult AwaitingUserAction()
         {
-            Database.Configuration.LazyLoadingEnabled = true;
             var m = new Models.Job.ListModel() { Title = "Jobs Awaiting User Action" };
-            m.JobTable = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true };
-            m.JobTable.Fill(Database, BI.JobBI.Searching.BuildJobTableModel(Database).Where(j => (j.WaitingForUserAction.HasValue || (j.JobMetaNonWarranty.AccountingChargeAddedDate != null && j.JobMetaNonWarranty.AccountingChargePaidDate == null))
-                                                                          && j.ClosedDate == null).OrderBy(j => j.Id));
+            m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j =>
+                j.WaitingForUserAction.HasValue ||
+                (j.JobMetaNonWarranty_AccountingChargeAddedDate != null && j.JobMetaNonWarranty_AccountingChargePaidDate == null) ||
+                (j.JobMetaNonWarranty_AccountingChargeRequiredDate != null && j.JobMetaNonWarranty_AccountingChargePaidDate == null)
+                ).OrderBy(j => j.Id));
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
@@ -263,9 +215,8 @@ namespace Disco.Web.Controllers
         [DiscoAuthorize(Claims.Job.Lists.RecentlyClosed)]
         public virtual ActionResult RecentlyClosed()
         {
-            Database.Configuration.LazyLoadingEnabled = true;
             var m = new Models.Job.ListModel() { Title = "Recently Closed Jobs" };
-            m.JobTable = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true };
+            m.JobTable = new JobTableModel() { ShowStatus = true };
 
             var dateTimeNow = DateTime.Now;
             var closedThreshold = dateTimeNow.AddDays(-2);
@@ -284,10 +235,12 @@ namespace Disco.Web.Controllers
         [DiscoAuthorize(Claims.Job.Lists.Locations)]
         public virtual ActionResult Locations()
         {
-            Database.Configuration.LazyLoadingEnabled = true;
             var m = new Models.Job.ListModel() { Title = "Held Device Locations" };
-            m.JobTable = new Disco.Models.BI.Job.JobTableModel() { ShowStatus = true, ShowLocation = true, ShowTechnician = false, ShowType = false };
-            m.JobTable.Fill(Database, BI.JobBI.Searching.BuildJobTableModel(Database).Where(j => j.ClosedDate == null && j.DeviceHeld.HasValue && !j.DeviceReturnedDate.HasValue).OrderBy(j => j.DeviceHeldLocation));
+
+            m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j => j.DeviceHeld.HasValue && !j.DeviceReturnedDate.HasValue).OrderBy(j => j.DeviceHeldLocation));
+            m.JobTable.ShowLocation = true;
+            m.JobTable.ShowTechnician = false;
+            m.JobTable.ShowType = false;
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
@@ -345,7 +298,8 @@ namespace Disco.Web.Controllers
             }
 
             if ((!m.Job.ClosedDate.HasValue && m.Job.OpenedDate < DateTime.Today.AddDays(Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold * -1)) ||
-                (m.Job.ClosedDate.HasValue && m.Job.OpenedDate.AddDays(Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold) < m.Job.ClosedDate.Value)){
+                (m.Job.ClosedDate.HasValue && m.Job.OpenedDate.AddDays(Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold) < m.Job.ClosedDate.Value))
+            {
                 m.LongRunning = m.Job.ClosedDate.HasValue ? m.Job.ClosedDate.Value - m.Job.OpenedDate : DateTime.Now - m.Job.OpenedDate;
             }
 
@@ -354,6 +308,14 @@ namespace Disco.Web.Controllers
 
             if (Authorization.Has(Claims.Job.Actions.GenerateDocuments))
                 m.AvailableDocumentTemplates = m.Job.AvailableDocumentTemplates(Database, UserService.CurrentUser, DateTime.Now);
+
+            // Available Job Queues
+            IEnumerable<JobQueueToken> jobQueues = null;
+            if (Authorization.Has(Claims.Job.Actions.AddAnyQueues))
+                jobQueues = JobQueueService.GetQueues();
+            else if (Authorization.Has(Claims.Job.Actions.AddOwnQueues))
+                jobQueues = JobQueueService.UsersQueues(CurrentUser);
+            m.AvailableQueues = jobQueues == null ? null : jobQueues.Select(qt => qt.JobQueue).Where(q => m.Job.CanAddQueue(q)).ToList();
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobShowModel>(this.ControllerContext, m);
@@ -409,7 +371,7 @@ namespace Disco.Web.Controllers
                         // Set Opened Date in the past
                         j.OpenedDate = DateTime.Now.AddMinutes(-1 * m.QuickLogTaskTimeMinutes.Value);
                         // Close Job
-                        j.OnClose(currentUser);
+                        j.OnCloseNormally(currentUser);
                     }
                     else
                     {

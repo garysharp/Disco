@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DocumentTemplate
 {
-    [ClaimDetails("Document Template", "Permissions related to Document Templates")]
+    [ClaimDetails("Document Templates", "Permissions related to Document Templates")]
     public class DocumentTemplateClaims : BaseRoleClaimGroup
     {
         [ClaimDetails("Configure Document Templates", "Can configure document templates")]

@@ -48,6 +48,7 @@ namespace Disco.Web.Areas.Config.Views
   
     Layout = MVC.Shared.Views._Layout;
     Html.BundleDeferred("~/Style/Config");
+    ViewContext.ViewData["MenuArea"] = MVC.Config.Name;
 
             
             #line default

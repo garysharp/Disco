@@ -7,6 +7,6 @@
         @Html.Partial(MVC.Shared.Views._JobTable, Model.Jobs)
     </div>
     <script>
-        $('#DeviceDetailTabItems').append('<li><a href="#DeviceDetailTab-Jobs">Jobs [@(Model.Jobs.Items.Count)]</a></li>');
+        $('#DeviceDetailTabItems').append('<li><a href="#DeviceDetailTab-Jobs">Jobs [@(Model.Jobs.Items.Count())]</a></li>');
     </script>
 </div>
