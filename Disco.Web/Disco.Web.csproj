@@ -1567,10 +1567,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create_Redirect.generated.cs</LastGenOutput>
     </None>
-    <Content Include="Views\Job\JobParts\Queues.cshtml">
+    <None Include="Views\Job\JobParts\Queues.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Queues.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Views\Job\JobParts\_Subject.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Subject.generated.cs</LastGenOutput>

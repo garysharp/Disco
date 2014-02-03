@@ -64,7 +64,14 @@
                 else
                 {
                 <pre>
+                    @if (string.IsNullOrEmpty(Model.Token.JobQueue.Description))
+                    {
+                    <text>&lt;None&gt;</text>
+                    }
+                    else
+                    {
                         @Model.Token.JobQueue.Description
+                    }
                     </pre>
                 }
             </td>

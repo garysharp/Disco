@@ -11,7 +11,7 @@ namespace Disco.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201401270857381_DBv12"; }
+            get { return "201402032322432_DBv12"; }
         }
         
         string IMigrationMetadata.Source

@@ -39,7 +39,7 @@ namespace Disco.Data.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 100),
-                        Description = c.String(nullable: false, maxLength: 500),
+                        Description = c.String(maxLength: 500),
                         Icon = c.String(nullable: false, maxLength: 25),
                         IconColour = c.String(nullable: false, maxLength: 10),
                         DefaultSLAExpiry = c.Int(),

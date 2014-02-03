@@ -126,9 +126,9 @@
     <Compile Include="Migrations\201310282325491_DBv11.Designer.cs">
       <DependentUpon>201310282325491_DBv11.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201401270857381_DBv12.cs" />
-    <Compile Include="Migrations\201401270857381_DBv12.Designer.cs">
-      <DependentUpon>201401270857381_DBv12.cs</DependentUpon>
+    <Compile Include="Migrations\201402032322432_DBv12.cs" />
+    <Compile Include="Migrations\201402032322432_DBv12.Designer.cs">
+      <DependentUpon>201402032322432_DBv12.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DiscoDataMigrator.cs" />
@@ -178,8 +178,8 @@
     <EmbeddedResource Include="Migrations\201310282325491_DBv11.resx">
       <DependentUpon>201310282325491_DBv11.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201401270857381_DBv12.resx">
-      <DependentUpon>201401270857381_DBv12.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201402032322432_DBv12.resx">
+      <DependentUpon>201402032322432_DBv12.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -194,7 +194,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

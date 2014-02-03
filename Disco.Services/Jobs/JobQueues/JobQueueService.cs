@@ -36,8 +36,6 @@ namespace Disco.Services.Jobs.JobQueues
             // Verify
             if (string.IsNullOrWhiteSpace(JobQueue.Name))
                 throw new ArgumentException("The Job Queue Name is required");
-            if (string.IsNullOrWhiteSpace(JobQueue.Description))
-                throw new ArgumentException("The Job Queue Description is required");
 
             // Name Unique
             if (_cache.GetQueues().Count(q => q.JobQueue.Name == JobQueue.Name) > 0)
@@ -65,8 +63,6 @@ namespace Disco.Services.Jobs.JobQueues
             // Verify
             if (string.IsNullOrWhiteSpace(JobQueue.Name))
                 throw new ArgumentException("The Job Queue Name is required");
-            if (string.IsNullOrWhiteSpace(JobQueue.Description))
-                throw new ArgumentException("The Job Queue Description is required");
 
             // Name Unique
             if (_cache.GetQueues().Count(q => q.JobQueue.Id != JobQueue.Id && q.JobQueue.Name == JobQueue.Name) > 0)

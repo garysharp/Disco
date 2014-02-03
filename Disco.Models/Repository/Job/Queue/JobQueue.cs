@@ -13,7 +13,7 @@ namespace Disco.Models.Repository
         public int Id { get; set; }
         [Required, StringLength(100)]
         public string Name { get; set; }
-        [Required, StringLength(500), DataType(DataType.MultilineText)]
+        [StringLength(500), DataType(DataType.MultilineText)]
         public string Description { get; set; }
         [Required, StringLength(25)]
         public string Icon { get; set; }
