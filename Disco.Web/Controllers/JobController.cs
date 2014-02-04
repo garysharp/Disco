@@ -158,7 +158,7 @@ namespace Disco.Web.Controllers
         {
             var m = new Models.Job.ListModel() { Title = "Jobs Awaiting Finance - Accounting Payment" };
             m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j =>
-                j.JobTypeId == JobType.JobTypeIds.HNWar && (!j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue || !j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue)
+                j.JobTypeId == JobType.JobTypeIds.HNWar && ((j.JobMetaNonWarranty_AccountingChargeRequiredDate.HasValue || j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue) && !j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue)
                 ).OrderBy(j => j.Id));
 
             // UI Extensions
