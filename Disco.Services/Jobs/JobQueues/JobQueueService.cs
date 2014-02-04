@@ -77,7 +77,7 @@ namespace Disco.Services.Jobs.JobQueues
             JobQueue queue = Database.JobQueues.Find(JobQueueId);
 
             // Validate: Current Jobs?
-            int currentJobCount = Database.JobQueueJobs.Count(jqj => jqj.JobQueueId == queue.Id && jqj.RemovedDate.HasValue);
+            int currentJobCount = Database.JobQueueJobs.Count(jqj => jqj.JobQueueId == queue.Id && !jqj.RemovedDate.HasValue);
             if (currentJobCount > 0)
                 throw new InvalidOperationException("The Job Queue cannot be deleted because it contains jobs");
 
