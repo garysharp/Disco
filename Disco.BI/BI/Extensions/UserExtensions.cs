@@ -61,5 +61,13 @@ namespace Disco.BI.Extensions
         {
             return Interop.ActiveDirectory.ActiveDirectory.GetUserAccount(User.Id, AdditionalProperties);
         }
+
+        public static bool CanCreateJob(this User u)
+        {
+            if (!JobActionExtensions.CanCreate())
+                return false;
+
+            return true;
+        }
     }
 }

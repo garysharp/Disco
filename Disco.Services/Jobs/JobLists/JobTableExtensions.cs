@@ -107,33 +107,13 @@ namespace Disco.Services
             return Items;
         }
 
-        public static IEnumerable<JobTableItemModel> DetermineItems(this JobTableModel model, DiscoDataContext Database, IQueryable<Job> Jobs)
+        public static IEnumerable<JobTableItemModel> DetermineItems(this JobTableModel model, DiscoDataContext Database, IQueryable<Job> Jobs, bool FilterAuthorization)
         {
             List<JobTableItemModel> items;
 
             // Permissions
-            var auth = UserService.CurrentAuthorization;
-            if (!auth.HasAll(Claims.Job.Types.ShowHMisc, Claims.Job.Types.ShowHNWar, Claims.Job.Types.ShowHWar, Claims.Job.Types.ShowSApp, Claims.Job.Types.ShowSImg, Claims.Job.Types.ShowSOS, Claims.Job.Types.ShowUMgmt))
-            {
-                // Must Filter
-                List<string> allowedTypes = new List<string>(6);
-                if (auth.Has(Claims.Job.Types.ShowHMisc))
-                    allowedTypes.Add(JobType.JobTypeIds.HMisc);
-                if (auth.Has(Claims.Job.Types.ShowHNWar))
-                    allowedTypes.Add(JobType.JobTypeIds.HNWar);
-                if (auth.Has(Claims.Job.Types.ShowHWar))
-                    allowedTypes.Add(JobType.JobTypeIds.HWar);
-                if (auth.Has(Claims.Job.Types.ShowSApp))
-                    allowedTypes.Add(JobType.JobTypeIds.SApp);
-                if (auth.Has(Claims.Job.Types.ShowSImg))
-                    allowedTypes.Add(JobType.JobTypeIds.SImg);
-                if (auth.Has(Claims.Job.Types.ShowSOS))
-                    allowedTypes.Add(JobType.JobTypeIds.SOS);
-                if (auth.Has(Claims.Job.Types.ShowUMgmt))
-                    allowedTypes.Add(JobType.JobTypeIds.UMgmt);
-
-                Jobs = Jobs.Where(j => allowedTypes.Contains(j.JobTypeId));
-            }
+            if (FilterAuthorization)
+                Jobs = model.FilterPermissions(Jobs, UserService.CurrentAuthorization);
 
             if (model.ShowStatus)
             {
@@ -226,9 +206,9 @@ namespace Disco.Services
             return items;
         }
 
-        public static void Fill(this JobTableModel model, DiscoDataContext Database, IQueryable<Job> Jobs)
+        public static void Fill(this JobTableModel model, DiscoDataContext Database, IQueryable<Job> Jobs, bool FilterAuthorization)
         {
-            model.Items = model.DetermineItems(Database, Jobs);
+            model.Items = model.DetermineItems(Database, Jobs, FilterAuthorization);
         }
 
         public static double? SlaPrecentageRemaining(this IEnumerable<JobTableStatusQueueItemModel> queueItems)

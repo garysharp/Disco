@@ -175,7 +175,6 @@ header nav ul#menu > li > ul,
   position: absolute;
   margin: 0;
   border-left: 1px solid #d1d1d1;
-  border-bottom: 1px solid #d1d1d1;
   border-right: 1px solid #d1d1d1;
   background-color: #f2f2f2;
   padding: 0;
@@ -192,6 +191,10 @@ header nav ul#menu > li > ul li,
 header nav ul#menu > li > ul li:first-child,
 #header nav ul#menu > li > ul li:first-child {
   border-top: 1px solid #d1d1d1;
+}
+header nav ul#menu > li > ul li:last-child,
+#header nav ul#menu > li > ul li:last-child {
+  border-bottom: 1px solid #d1d1d1;
 }
 header nav ul#menu > li > ul li:hover,
 #header nav ul#menu > li > ul li:hover {
@@ -238,7 +241,6 @@ header nav ul#menu > li > ul ul,
   background-color: #f2f2f2;
   border-left: 1px solid #d1d1d1;
   border-right: 1px solid #d1d1d1;
-  border-bottom: 1px solid #d1d1d1;
   padding: 0;
   min-width: 180px;
   box-shadow: 2px 2px 5px rgba(209, 209, 209, 0.5);

@@ -19,7 +19,7 @@ namespace Disco.BI.Extensions
 
         public static bool CanCreateJob(this Device d)
         {
-            if (!UserService.CurrentAuthorization.Has(Claims.Job.Actions.Create))
+            if (!JobActionExtensions.CanCreate())
                 return false;
 
             return !d.IsDecommissioned();

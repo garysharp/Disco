@@ -97,7 +97,6 @@ header, #header {
                     position: absolute;
                     margin: 0;
                     border-left: 1px solid @BackgroundColour;
-                    border-bottom: 1px solid @BackgroundColour;
                     border-right: 1px solid @BackgroundColour;
                     background-color: hsla(hue(@BackgroundColour), saturation(@BackgroundColour), 95%, 1);
                     padding: 0;
@@ -112,6 +111,9 @@ header, #header {
 
                         &:first-child {
                             border-top: 1px solid @BackgroundColour;
+                        }
+                        &:last-child {
+                            border-bottom: 1px solid @BackgroundColour;
                         }
 
                         &:hover {
@@ -159,7 +161,6 @@ header, #header {
                         background-color: hsla(hue(@BackgroundColour), saturation(@BackgroundColour), 95%, 1);
                         border-left: 1px solid @BackgroundColour;
                         border-right: 1px solid @BackgroundColour;
-                        border-bottom: 1px solid @BackgroundColour;
                         padding: 0;
                         min-width: 180px;
                         box-shadow: 2px 2px 5px fade(@BackgroundColour, 50%);

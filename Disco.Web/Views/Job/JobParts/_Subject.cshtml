@@ -359,10 +359,13 @@
                                                                             {@Model.Job.User.DisplayName}
                     </h2>
                     <div id="Job_Show_User_Id" title="Id">@Model.Job.UserId</div>
-                    @if (!string.IsNullOrWhiteSpace(Model.Job.User.PhoneNumber))
+                    @if (Authorization.Has(Claims.User.ShowDetails))
+                    {
+                    if (!string.IsNullOrWhiteSpace(Model.Job.User.PhoneNumber))
                     {<div id="Job_Show_User_PhoneNumber" title="Phone Number">Phone: @Model.Job.User.PhoneNumber</div>}
-                    @if (!string.IsNullOrWhiteSpace(Model.Job.User.EmailAddress))
+                    if (!string.IsNullOrWhiteSpace(Model.Job.User.EmailAddress))
                     {<div id="Job_Show_User_EmailAddress" title="Email Address">Email: <a href="mailto:@(Model.Job.User.EmailAddress)">@Model.Job.User.EmailAddress</a></div>}
+                    }
                     @if (Model.Job.WaitingForUserAction.HasValue)
                     {
                         <div id="Job_Show_User_WaitingForUserAction" class="status">

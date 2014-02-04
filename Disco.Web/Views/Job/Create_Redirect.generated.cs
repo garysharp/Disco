@@ -29,6 +29,7 @@ namespace Disco.Web.Views.Job
     using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
     using Disco.Web;
@@ -47,33 +48,59 @@ namespace Disco.Web.Views.Job
             #line 2 "..\..\Views\Job\Create_Redirect.cshtml"
   
     Authorization.Require(Claims.Job.Actions.Create);
-    
-    Layout = null;
+
+    Layout = MVC.Shared.Views._DialogLayout;
     ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), "Create - Redirecting...");
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n<a");
+WriteLiteral("\r\n<div");
+
+WriteLiteral(" id=\"createJobRedirect\"");
+
+WriteLiteral(">\r\n    <h1>Job Created Successfully</h1>\r\n\r\n    <div>\r\n        <i");
+
+WriteLiteral(" class=\"ajaxLoading\"");
+
+WriteLiteral(" title=\"Loading...\"");
+
+WriteLiteral("></i><a");
 
 WriteLiteral(" id=\"redirectLink\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 249), Tuple.Create("\"", 275)
+WriteAttribute("href", Tuple.Create(" href=\"", 407), Tuple.Create("\"", 433)
             
-            #line 8 "..\..\Views\Job\Create_Redirect.cshtml"
-, Tuple.Create(Tuple.Create("", 256), Tuple.Create<System.Object, System.Int32>(Model.RedirectLink
+            #line 12 "..\..\Views\Job\Create_Redirect.cshtml"
+  , Tuple.Create(Tuple.Create("", 414), Tuple.Create<System.Object, System.Int32>(Model.RedirectLink
             
             #line default
             #line hidden
-, 256), false)
+, 414), false)
 );
 
-WriteLiteral(@">Redirecting...</a>
-<script>
-    var redirectLink = document.getElementById('redirectLink').getAttribute('href');
+WriteLiteral(">Redirecting...</a>\r\n    </div>\r\n</div>\r\n<script>\r\n    var redirectLink = \'");
+
+            
+            #line 16 "..\..\Views\Job\Create_Redirect.cshtml"
+                    Write(Model.RedirectLink);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\';\r\n    var redirectDelay = parseInt(");
+
+            
+            #line 17 "..\..\Views\Job\Create_Redirect.cshtml"
+                             Write(Model.RedirectDelay.HasValue ? Model.RedirectDelay.Value.TotalMilliseconds : 0);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@");
 
     //#region Parent Dialog
-    if (window.parent) {
+    function parentRedirect() {
         window.parent.window.location.href = redirectLink;
 
         var parentDialog = window.parent.document.getElementById('createJobDialog');
@@ -81,6 +108,13 @@ WriteLiteral(@">Redirecting...</a>
             var discoDialogMethods = parentDialog.discoDialogMethods;
             discoDialogMethods.close();
         }
+    }
+
+    if (window.parent) {
+        if (redirectDelay)
+            window.setTimeout(parentRedirect, redirectDelay);
+        else
+            parentRedirect();
     }
     //#endregion
 </script>

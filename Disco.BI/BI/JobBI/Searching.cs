@@ -76,7 +76,7 @@ namespace Disco.BI.JobBI
                 query = query.Take(LimitCount.Value);
 
             JobTableModel model = new JobTableModel() { ShowStatus = IncludeJobStatus };
-            model.Fill(Database, query);
+            model.Fill(Database, query, true);
 
             return model;
         }

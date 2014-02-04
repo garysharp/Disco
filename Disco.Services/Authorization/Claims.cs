@@ -145,6 +145,13 @@ namespace Disco.Services.Authorization
 				{ "Job.Properties.Flags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.Flags, (c, v) => c.Job.Properties.Flags = v, "Flags Property", "Can update property", false) },
 				{ "Job.Properties.NotWaitingForUserAction", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NotWaitingForUserAction, (c, v) => c.Job.Properties.NotWaitingForUserAction = v, "Not Waiting For User Action Property", "Can update property", false) },
 				{ "Job.Properties.WaitingForUserAction", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.WaitingForUserAction, (c, v) => c.Job.Properties.WaitingForUserAction = v, "Waiting For User Action Property", "Can update property", false) },
+				{ "Job.Types.CreateHMisc", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateHMisc, (c, v) => c.Job.Types.CreateHMisc = v, "Create Hardware - Miscellaneous Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
+				{ "Job.Types.CreateHNWar", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateHNWar, (c, v) => c.Job.Types.CreateHNWar = v, "Create Hardware - Non-Warranty Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
+				{ "Job.Types.CreateHWar", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateHWar, (c, v) => c.Job.Types.CreateHWar = v, "Create Hardware - Warranty Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
+				{ "Job.Types.CreateSApp", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateSApp, (c, v) => c.Job.Types.CreateSApp = v, "Create Software - Application Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
+				{ "Job.Types.CreateSOS", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateSOS, (c, v) => c.Job.Types.CreateSOS = v, "Create Software - Operating System Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
+				{ "Job.Types.CreateSImg", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateSImg, (c, v) => c.Job.Types.CreateSImg = v, "Create Software - Reimage Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
+				{ "Job.Types.CreateUMgmt", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateUMgmt, (c, v) => c.Job.Types.CreateUMgmt = v, "Create User Management Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
 				{ "Job.Types.ShowHMisc", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.ShowHMisc, (c, v) => c.Job.Types.ShowHMisc = v, "Show Hardware - Miscellaneous Jobs", "Can show jobs of this type", false) },
 				{ "Job.Types.ShowHNWar", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.ShowHNWar, (c, v) => c.Job.Types.ShowHNWar = v, "Show Hardware - Non-Warranty Jobs", "Can show jobs of this type", false) },
 				{ "Job.Types.ShowHWar", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.ShowHWar, (c, v) => c.Job.Types.ShowHWar = v, "Show Hardware - Warranty Jobs", "Can show jobs of this type", false) },
@@ -195,8 +202,10 @@ namespace Disco.Services.Authorization
 				{ "User.Search", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Search, (c, v) => c.User.Search = v, "Search Users", "Can search users", false) },
 				{ "User.ShowAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAttachments, (c, v) => c.User.ShowAttachments = v, "Show Attachments", "Can show user attachments", false) },
 				{ "User.ShowAssignmentHistory", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAssignmentHistory, (c, v) => c.User.ShowAssignmentHistory = v, "Show Device Assignment History", "Can show the device assignment history for users", false) },
+				{ "User.ShowAssignments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAssignments, (c, v) => c.User.ShowAssignments = v, "Show Device Assignments", "Can show the current device assignments users", false) },
 				{ "User.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Show, (c, v) => c.User.Show = v, "Show Users", "Can show users", false) },
 				{ "User.ShowAuthorization", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAuthorization, (c, v) => c.User.ShowAuthorization = v, "Show Users Authorization", "Can show authorization permissions associated with users", false) },
+				{ "User.ShowDetails", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowDetails, (c, v) => c.User.ShowDetails = v, "Show Users Details", "Can show users contact and personal details", false) },
 				{ "User.ShowJobs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowJobs, (c, v) => c.User.ShowJobs = v, "Show Users Jobs", "Can show jobs associated with users", false) },
 				{ "ComputerAccount", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.ComputerAccount, (c, v) => c.ComputerAccount = v, "Computer Account", "Represents a computer account", true) },
 				{ "DiscoAdminAccount", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.DiscoAdminAccount, (c, v) => c.DiscoAdminAccount = v, "Disco Administrator Account", "Represents a Disco Administrator account", true) }
@@ -275,11 +284,11 @@ namespace Disco.Services.Authorization
 				            new ClaimNavigatorItem("Config.Plugin.Show", false),
 				            new ClaimNavigatorItem("Config.Plugin.Uninstall", false)
 				        }),
-				        new ClaimNavigatorItem("Config.Show", false),
 				        new ClaimNavigatorItem("Config.System", "System", "Permissions related to System Configuration", false, new List<IClaimNavigatorItem>() {
 				            new ClaimNavigatorItem("Config.System.ConfigureProxy", false),
 				            new ClaimNavigatorItem("Config.System.Show", false)
-				        })
+				        }),
+				        new ClaimNavigatorItem("Config.Show", false)
 				    }),
 				    new ClaimNavigatorItem("Job", "Job", "Permissions related to Jobs", false, new List<IClaimNavigatorItem>() {
 				        new ClaimNavigatorItem("Job.Actions", "Actions", "Permissions related to Job Actions", false, new List<IClaimNavigatorItem>() {
@@ -305,12 +314,6 @@ namespace Disco.Services.Authorization
 				            new ClaimNavigatorItem("Job.Actions.UpdateSubTypes", false)
 				        }),
 				        new ClaimNavigatorItem("Job.Properties", "Job Properties", "Permissions related to Job Properties", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Job.Properties.DeviceHeldLocation", false),
-				            new ClaimNavigatorItem("Job.Properties.DeviceHeld", false),
-				            new ClaimNavigatorItem("Job.Properties.DeviceReadyForReturn", false),
-				            new ClaimNavigatorItem("Job.Properties.DeviceReturned", false),
-				            new ClaimNavigatorItem("Job.Properties.ExpectedClosedDate", false),
-				            new ClaimNavigatorItem("Job.Properties.Flags", false),
 				            new ClaimNavigatorItem("Job.Properties.JobQueueProperties", "Job Queue Properties", "Permissions related to Job Queue Job Properties", false, new List<IClaimNavigatorItem>() {
 				                new ClaimNavigatorItem("Job.Properties.JobQueueProperties.EditAnyComments", false),
 				                new ClaimNavigatorItem("Job.Properties.JobQueueProperties.EditAnyPriority", false),
@@ -337,8 +340,6 @@ namespace Disco.Services.Authorization
 				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.RepairerName", false),
 				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.RepairerReference", false)
 				            }),
-				            new ClaimNavigatorItem("Job.Properties.NotWaitingForUserAction", false),
-				            new ClaimNavigatorItem("Job.Properties.WaitingForUserAction", false),
 				            new ClaimNavigatorItem("Job.Properties.WarrantyProperties", "Warranty Properties", "Permissions related to Warranty Job Properties", false, new List<IClaimNavigatorItem>() {
 				                new ClaimNavigatorItem("Job.Properties.WarrantyProperties.ExternalCompletedDate", false),
 				                new ClaimNavigatorItem("Job.Properties.WarrantyProperties.ExternalLoggedDate", false),
@@ -346,7 +347,15 @@ namespace Disco.Services.Authorization
 				                new ClaimNavigatorItem("Job.Properties.WarrantyProperties.ExternalReference", false),
 				                new ClaimNavigatorItem("Job.Properties.WarrantyProperties.ProviderDetails", false),
 				                new ClaimNavigatorItem("Job.Properties.WarrantyProperties.WarrantyCompleted", false)
-				            })
+				            }),
+				            new ClaimNavigatorItem("Job.Properties.DeviceHeldLocation", false),
+				            new ClaimNavigatorItem("Job.Properties.DeviceHeld", false),
+				            new ClaimNavigatorItem("Job.Properties.DeviceReadyForReturn", false),
+				            new ClaimNavigatorItem("Job.Properties.DeviceReturned", false),
+				            new ClaimNavigatorItem("Job.Properties.ExpectedClosedDate", false),
+				            new ClaimNavigatorItem("Job.Properties.Flags", false),
+				            new ClaimNavigatorItem("Job.Properties.NotWaitingForUserAction", false),
+				            new ClaimNavigatorItem("Job.Properties.WaitingForUserAction", false)
 				        }),
 				        new ClaimNavigatorItem("Job.Lists", "Lists", "Permissions related to Job Lists", false, new List<IClaimNavigatorItem>() {
 				            new ClaimNavigatorItem("Job.Lists.AllOpen", false),
@@ -366,6 +375,22 @@ namespace Disco.Services.Authorization
 				            new ClaimNavigatorItem("Job.Lists.MyJobsOrphaned", false),
 				            new ClaimNavigatorItem("Job.Lists.RecentlyClosed", false)
 				        }),
+				        new ClaimNavigatorItem("Job.Types", "Types", "Permissions related to Job Types", false, new List<IClaimNavigatorItem>() {
+				            new ClaimNavigatorItem("Job.Types.CreateHMisc", false),
+				            new ClaimNavigatorItem("Job.Types.CreateHNWar", false),
+				            new ClaimNavigatorItem("Job.Types.CreateHWar", false),
+				            new ClaimNavigatorItem("Job.Types.CreateSApp", false),
+				            new ClaimNavigatorItem("Job.Types.CreateSOS", false),
+				            new ClaimNavigatorItem("Job.Types.CreateSImg", false),
+				            new ClaimNavigatorItem("Job.Types.CreateUMgmt", false),
+				            new ClaimNavigatorItem("Job.Types.ShowHMisc", false),
+				            new ClaimNavigatorItem("Job.Types.ShowHNWar", false),
+				            new ClaimNavigatorItem("Job.Types.ShowHWar", false),
+				            new ClaimNavigatorItem("Job.Types.ShowSApp", false),
+				            new ClaimNavigatorItem("Job.Types.ShowSOS", false),
+				            new ClaimNavigatorItem("Job.Types.ShowSImg", false),
+				            new ClaimNavigatorItem("Job.Types.ShowUMgmt", false)
+				        }),
 				        new ClaimNavigatorItem("Job.Search", false),
 				        new ClaimNavigatorItem("Job.ShowAttachments", false),
 				        new ClaimNavigatorItem("Job.ShowDailyChart", false),
@@ -377,16 +402,7 @@ namespace Disco.Services.Authorization
 				        new ClaimNavigatorItem("Job.ShowNonWarrantyFinance", false),
 				        new ClaimNavigatorItem("Job.ShowNonWarrantyInsurance", false),
 				        new ClaimNavigatorItem("Job.ShowNonWarrantyRepairs", false),
-				        new ClaimNavigatorItem("Job.ShowWarranty", false),
-				        new ClaimNavigatorItem("Job.Types", "Types", "Permissions related to Job Types", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Job.Types.ShowHMisc", false),
-				            new ClaimNavigatorItem("Job.Types.ShowHNWar", false),
-				            new ClaimNavigatorItem("Job.Types.ShowHWar", false),
-				            new ClaimNavigatorItem("Job.Types.ShowSApp", false),
-				            new ClaimNavigatorItem("Job.Types.ShowSOS", false),
-				            new ClaimNavigatorItem("Job.Types.ShowSImg", false),
-				            new ClaimNavigatorItem("Job.Types.ShowUMgmt", false)
-				        })
+				        new ClaimNavigatorItem("Job.ShowWarranty", false)
 				    }),
 				    new ClaimNavigatorItem("Device", "Device", "Permissions related to Devices", false, new List<IClaimNavigatorItem>() {
 				        new ClaimNavigatorItem("Device.Actions", "Actions", "Permissions related to Device Actions", false, new List<IClaimNavigatorItem>() {
@@ -428,8 +444,10 @@ namespace Disco.Services.Authorization
 				        new ClaimNavigatorItem("User.Search", false),
 				        new ClaimNavigatorItem("User.ShowAttachments", false),
 				        new ClaimNavigatorItem("User.ShowAssignmentHistory", false),
+				        new ClaimNavigatorItem("User.ShowAssignments", false),
 				        new ClaimNavigatorItem("User.Show", false),
 				        new ClaimNavigatorItem("User.ShowAuthorization", false),
+				        new ClaimNavigatorItem("User.ShowDetails", false),
 				        new ClaimNavigatorItem("User.ShowJobs", false)
 				    }),
 				    new ClaimNavigatorItem("ComputerAccount", true),
@@ -617,6 +635,13 @@ namespace Disco.Services.Authorization
 			c.Job.Properties.Flags = true;
 			c.Job.Properties.NotWaitingForUserAction = true;
 			c.Job.Properties.WaitingForUserAction = true;
+			c.Job.Types.CreateHMisc = true;
+			c.Job.Types.CreateHNWar = true;
+			c.Job.Types.CreateHWar = true;
+			c.Job.Types.CreateSApp = true;
+			c.Job.Types.CreateSOS = true;
+			c.Job.Types.CreateSImg = true;
+			c.Job.Types.CreateUMgmt = true;
 			c.Job.Types.ShowHMisc = true;
 			c.Job.Types.ShowHNWar = true;
 			c.Job.Types.ShowHWar = true;
@@ -667,8 +692,10 @@ namespace Disco.Services.Authorization
 			c.User.Search = true;
 			c.User.ShowAttachments = true;
 			c.User.ShowAssignmentHistory = true;
+			c.User.ShowAssignments = true;
 			c.User.Show = true;
 			c.User.ShowAuthorization = true;
+			c.User.ShowDetails = true;
 			c.User.ShowJobs = true;
 			c.DiscoAdminAccount = true;
 #endregion
@@ -1433,6 +1460,41 @@ namespace Disco.Services.Authorization
             public static class Types
             {
 
+                /// <summary>Create Hardware - Miscellaneous Jobs
+                /// <para>Can create jobs of this type (Requires: Create Jobs)</para>
+                /// </summary>
+                public const string CreateHMisc = "Job.Types.CreateHMisc";
+
+                /// <summary>Create Hardware - Non-Warranty Jobs
+                /// <para>Can create jobs of this type (Requires: Create Jobs)</para>
+                /// </summary>
+                public const string CreateHNWar = "Job.Types.CreateHNWar";
+
+                /// <summary>Create Hardware - Warranty Jobs
+                /// <para>Can create jobs of this type (Requires: Create Jobs)</para>
+                /// </summary>
+                public const string CreateHWar = "Job.Types.CreateHWar";
+
+                /// <summary>Create Software - Application Jobs
+                /// <para>Can create jobs of this type (Requires: Create Jobs)</para>
+                /// </summary>
+                public const string CreateSApp = "Job.Types.CreateSApp";
+
+                /// <summary>Create Software - Operating System Jobs
+                /// <para>Can create jobs of this type (Requires: Create Jobs)</para>
+                /// </summary>
+                public const string CreateSOS = "Job.Types.CreateSOS";
+
+                /// <summary>Create Software - Reimage Jobs
+                /// <para>Can create jobs of this type (Requires: Create Jobs)</para>
+                /// </summary>
+                public const string CreateSImg = "Job.Types.CreateSImg";
+
+                /// <summary>Create User Management Jobs
+                /// <para>Can create jobs of this type (Requires: Create Jobs)</para>
+                /// </summary>
+                public const string CreateUMgmt = "Job.Types.CreateUMgmt";
+
                 /// <summary>Show Hardware - Miscellaneous Jobs
                 /// <para>Can show jobs of this type</para>
                 /// </summary>
@@ -1719,6 +1781,11 @@ namespace Disco.Services.Authorization
             /// </summary>
             public const string ShowAssignmentHistory = "User.ShowAssignmentHistory";
 
+            /// <summary>Show Device Assignments
+            /// <para>Can show the current device assignments users</para>
+            /// </summary>
+            public const string ShowAssignments = "User.ShowAssignments";
+
             /// <summary>Show Users
             /// <para>Can show users</para>
             /// </summary>
@@ -1728,6 +1795,11 @@ namespace Disco.Services.Authorization
             /// <para>Can show authorization permissions associated with users</para>
             /// </summary>
             public const string ShowAuthorization = "User.ShowAuthorization";
+
+            /// <summary>Show Users Details
+            /// <para>Can show users contact and personal details</para>
+            /// </summary>
+            public const string ShowDetails = "User.ShowDetails";
 
             /// <summary>Show Users Jobs
             /// <para>Can show jobs associated with users</para>

@@ -98,8 +98,12 @@
                             }
                         </ul>
                     </li>
+                    @if (Authorization.HasAny(Claims.Device.Search, Claims.Device.Actions.Import, Claims.Device.Actions.Export, Claims.Device.Actions.EnrolDevices)){
                     <li class="@((string)ViewContext.ViewData["MenuArea"] == MVC.Device.Name ? "active" : null)">@Html.ActionLink("Devices", MVC.Device.Index(), accesskey: "2")</li>
+                    }
+                    @if (Authorization.HasAny(Claims.User.Search)){
                     <li class="@((string)ViewContext.ViewData["MenuArea"] == MVC.User.Name ? "active" : null)">@Html.ActionLink("Users", MVC.User.Index(), accesskey: "3")</li>
+                    }
                     <li class="moveRight@((string)ViewContext.ViewData["MenuArea"] == MVC.Public.Name ? " active" : null)">@Html.ActionLink("Reports", MVC.Public.Public.Index())</li>
                     @if (Authorization.Has(Claims.Config.Show))
                     {
@@ -112,8 +116,9 @@
                       { @Html.ActionLink(CurrentUser.ToString(), MVC.User.Show(CurrentUser.Id))}
                       else
                       {@CurrentUser.ToString()}</span>
-                @using (Html.BeginForm(MVC.Search.Query(), FormMethod.Get))
-                { @Html.TextBox("term", null, new { id="SearchQuery", accesskey = "s", placeholder="Search" }) }
+                @if (Authorization.HasAny(Claims.Job.Search, Claims.Device.Search, Claims.User.Search)){
+                using (Html.BeginForm(MVC.Search.Query(), FormMethod.Get))
+                { @Html.TextBox("term", null, new { id="SearchQuery", accesskey = "s", placeholder="Search" }) }}
             </div>
         </header>
         <div id="layout_PageHeading">@CommonHelpers.Breadcrumbs(ViewBag.Title ?? string.Empty)</div>

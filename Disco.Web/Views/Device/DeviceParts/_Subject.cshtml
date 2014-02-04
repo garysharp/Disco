@@ -171,13 +171,16 @@
                                     <div id="Device_Show_User">
                                         <div id="Device_Show_User_DisplayName" title="Display Name">@Html.ActionLink(assignedUser.DisplayName, MVC.User.Show(assignedUser.Id))</div>
                                         <div id="Device_Show_User_Id" title="Id">@assignedUser.Id</div>
-                                        @if (!string.IsNullOrWhiteSpace(assignedUser.PhoneNumber))
+                                        @if (Authorization.Has(Claims.User.ShowDetails))
                                         {
+                                            if (!string.IsNullOrWhiteSpace(assignedUser.PhoneNumber))
+                                            {
                                             <div id="Device_Show_User_PhoneNumber" title="Phone Number">@assignedUser.PhoneNumber</div>
-                                        }
-                                        @if (!string.IsNullOrWhiteSpace(assignedUser.EmailAddress))
-                                        {
+                                            }
+                                            if (!string.IsNullOrWhiteSpace(assignedUser.EmailAddress))
+                                            {
                                             <div id="Device_Show_User_EmailAddress" title="Email Address"><a href="mailto:@(Model.Device.AssignedUser.EmailAddress)">@assignedUser.EmailAddress</a></div>
+                                            }
                                         }
                                     </div>
                                 }

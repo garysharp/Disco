@@ -32,36 +32,39 @@
                             </tr>
                         </table>
                     </div>
-                    <div id="User_Show_Details_Attributes" class="status">
-                        <table class="none verticalHeadings">
-                            <tr>
-                                <td>Email:</td>
-                                <td>
-                                    @if (!string.IsNullOrEmpty(Model.User.EmailAddress))
-                                    {
-                                        <span id="User_Show_Details_Attributes_Email" title="Email Address [Update in Active Directory]">@Model.User.EmailAddress</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="smallMessage">Unknown</span>
-                                    }
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Phone:</td>
-                                <td>
-                                    @if (!string.IsNullOrEmpty(Model.User.PhoneNumber))
-                                    {
-                                        <span id="User_Show_Details_Attributes_Phone" title="Phone Number [Update in Active Directory]">@Model.User.PhoneNumber</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="smallMessage">Unknown</span>
-                                    }
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                    @if (Authorization.Has(Claims.User.ShowDetails))
+                    {
+                        <div id="User_Show_Details_Attributes" class="status">
+                            <table class="none verticalHeadings">
+                                <tr>
+                                    <td>Email:</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(Model.User.EmailAddress))
+                                        {
+                                            <span id="User_Show_Details_Attributes_Email" title="Email Address [Update in Active Directory]">@Model.User.EmailAddress</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="smallMessage">Unknown</span>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Phone:</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(Model.User.PhoneNumber))
+                                        {
+                                            <span id="User_Show_Details_Attributes_Phone" title="Phone Number [Update in Active Directory]">@Model.User.PhoneNumber</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="smallMessage">Unknown</span>
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    }
                     @if (Authorization.Has(Claims.User.Actions.GenerateDocuments))
                     {
                         <div id="User_Show_GenerateDocument_Container" class="status">
@@ -82,7 +85,7 @@
                         </div>
                     }
                     <div id="User_Show_Details_Actions">
-                        @if (Authorization.Has(Claims.Job.Actions.Create))
+                        @if (Model.User.CanCreateJob())
                         {
                             Html.BundleDeferred("~/ClientScripts/Modules/Disco-CreateJob");
                             @Html.ActionLinkSmallButton("Create Job", MVC.Job.Create(Model.PrimaryDeviceSerialNumber, Model.User.Id), "User_Show_Details_Actions_CreateJob_Button")
@@ -92,8 +95,7 @@
                                 <div class="clearfix">
                                     <i class="fa fa-info-circle information"></i>&nbsp;Multiple devices are assigned to this user.
                                     <br />
-                                    <strong>
-                                        Which device should be associated with this job?
+                                    <strong>Which device should be associated with this job?
                                     </strong>
                                 </div>
                                 <div>
@@ -202,83 +204,86 @@
                     </div>
                 </div>
             </td>
-            <td id="User_Show_AssignedDevices">
-                <div>
-                    <div id="User_Show_AssignedDevices_Active">
-                        <h3>Current Device Assignments</h3>
-                        @if (currentDeviceAssignments.Count > 0)
-                        {
-                            foreach (var assignment in currentDeviceAssignments)
+            @if (Authorization.Has(Claims.User.ShowAssignments))
+            {
+                <td id="User_Show_AssignedDevices">
+                    <div>
+                        <div id="User_Show_AssignedDevices_Active">
+                            <h3>Current Device Assignments</h3>
+                            @if (currentDeviceAssignments.Count > 0)
                             {
-                            <div class="User_Show_AssignedDevices_CurrentAssignment clearfix" data-deviceserialnumber="@assignment.DeviceSerialNumber">
-                                @if (Authorization.Has(Claims.Device.Show))
+                                foreach (var assignment in currentDeviceAssignments)
                                 {
-                                    <a href="@Url.Action(MVC.Device.Show(assignment.Device.SerialNumber))">
+                                <div class="User_Show_AssignedDevices_CurrentAssignment clearfix" data-deviceserialnumber="@assignment.DeviceSerialNumber">
+                                    @if (Authorization.Has(Claims.Device.Show))
+                                    {
+                                        <a href="@Url.Action(MVC.Device.Show(assignment.Device.SerialNumber))">
+                                            <img class="User_Show_AssignedDevices_CurrentAssignment_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))" />
+                                        </a>
+                                    }
+                                    else
+                                    {
                                         <img class="User_Show_AssignedDevices_CurrentAssignment_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))" />
-                                    </a>
-                                }
-                                else
-                                {
-                                    <img class="User_Show_AssignedDevices_CurrentAssignment_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))" />
-                                }
-                                <div class="User_Show_AssignedDevices_CurrentAssignment_Details">
-                                    <table class="none">
-                                        <tbody>
-                                            <tr>
-                                                <td>Serial Number:
-                                                </td>
-                                                <td>
-                                                    <span class="User_Show_AssignedDevices_CurrentAssignment_SerialNumber">
-                                                        @if (Authorization.Has(Claims.Device.Show))
+                                    }
+                                    <div class="User_Show_AssignedDevices_CurrentAssignment_Details">
+                                        <table class="none">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Serial Number:
+                                                    </td>
+                                                    <td>
+                                                        <span class="User_Show_AssignedDevices_CurrentAssignment_SerialNumber">
+                                                            @if (Authorization.Has(Claims.Device.Show))
+                                                            {
+                                                                @Html.ActionLink(assignment.Device.SerialNumber, MVC.Device.Show(assignment.Device.SerialNumber))
+                                                            }
+                                                            else
+                                                            {
+                                                                @assignment.Device.SerialNumber
+                                                            }
+                                                        </span>(<span>@assignment.Device.ComputerName</span>)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Model:
+                                                    </td>
+                                                    <td>
+                                                        <span class="User_Show_AssignedDevices_CurrentAssignment_Model">@assignment.Device.DeviceModel.ToString()</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Asset:</td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
                                                         {
-                                                            @Html.ActionLink(assignment.Device.SerialNumber, MVC.Device.Show(assignment.Device.SerialNumber))
+                                                            <span class="User_Show_AssignedDevices_CurrentAssignment_Asset">@assignment.Device.AssetNumber</span>
                                                         }
                                                         else
                                                         {
-                                                            @assignment.Device.SerialNumber
+                                                            <span class="smallMessage">Unknown</span>
                                                         }
-                                                    </span>(<span>@assignment.Device.ComputerName</span>)
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Model:
-                                                </td>
-                                                <td>
-                                                    <span class="User_Show_AssignedDevices_CurrentAssignment_Model">@assignment.Device.DeviceModel.ToString()</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Asset:</td>
-                                                <td>
-                                                    @if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
-                                                    {
-                                                        <span class="User_Show_AssignedDevices_CurrentAssignment_Asset">@assignment.Device.AssetNumber</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="smallMessage">Unknown</span>
-                                                    }
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Assigned:</td>
-                                                <td>
-                                                    <span class="User_Show_AssignedDevices_CurrentAssignment_Assigned">@CommonHelpers.FriendlyDate(assignment.AssignedDate)</span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>   
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Assigned:</td>
+                                                    <td>
+                                                        <span class="User_Show_AssignedDevices_CurrentAssignment_Assigned">@CommonHelpers.FriendlyDate(assignment.AssignedDate)</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>   
+                                }
                             }
-                        }
-                        else
-                        {
-                            <span class="smallMessage">No Current Device Assignments</span>
-                        }
+                            else
+                            {
+                                <span class="smallMessage">No Current Device Assignments</span>
+                            }
+                        </div>
                     </div>
-                </div>
-            </td>
+                </td>
+            }
         </tr>
     </tbody>
 </table>

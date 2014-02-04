@@ -10,7 +10,7 @@
     {
         @Html.HiddenFor(m => m.DeviceSerialNumber)
         @Html.HiddenFor(m => m.UserId)
-        @Html.HiddenFor(m => m.QuickLogDestinationUrl)
+        @Html.HiddenFor(m => m.SourceUrl)
     
         @Html.Partial(MVC.Job.Views._CreateSubject, Model)
         @Html.ValidationSummary(true)
@@ -62,6 +62,7 @@
                 </tr>
             </table>
         </div>
+        if (Authorization.Has(Claims.Job.Actions.Close)){
         <div id="createJob_QuickLogContainer" class="createJob_Component">
             <div id="createJob_QuickLogAutoCloseContainer">
                 <input id="createJob_QuickLog" name="QuickLog" type="checkbox" value="true" /><label for="createJob_QuickLog">Automatically close this job</label>
@@ -80,6 +81,7 @@
                 @Html.ValidationMessageFor(m => m.QuickLogTaskTimeMinutes)
             </div>
         </div>
+        }
     }
     <script type="text/javascript">
         $(function () {
@@ -87,7 +89,7 @@
             var init = true;
             //#region Parent Dialog
             if (window.parent && window.parent.document) {
-                $('#QuickLogDestinationUrl').val(window.parent.window.location.href);
+                $('#SourceUrl').val(window.parent.window.location.href);
 
                 var parentDialog = $('#createJobDialog', window.parent.document);
                 if (parentDialog.length > 0) {
@@ -165,6 +167,8 @@
                     isValid = false;
                 }
 
+                @if (Authorization.Has(Claims.Job.Actions.Close)){
+                <text>
                 // Validate QuickLog Task Time
                 if ($quickLog.is(':checked')) {
                     var selectedTime = $quickLogTaskTimes.filter(':checked');
@@ -185,6 +189,8 @@
                     }
                 } else {
                     $quickLogTaskTimeValidationMessage.removeClass('field-validation-valid').addClass('field-validation-error');
+                }
+                </text>
                 }
 
                 return isValid;
@@ -233,6 +239,8 @@
             }
             //#endregion
 
+            @if (Authorization.Has(Claims.Job.Actions.Close)){
+                <text>
             //#region QuickLog
             var $quickLog = $('#createJob_QuickLog');
             var $quickLogContainer = $('#createJob_QuickLogContainer');
@@ -295,6 +303,8 @@
                 }
             });
             //#endregion
+            </text>
+            }
 
             init = false;
         });

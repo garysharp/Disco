@@ -1,16 +1,23 @@
 ﻿@model Disco.Web.Models.Job.CreateRedirectModel
 @{
     Authorization.Require(Claims.Job.Actions.Create);
-    
-    Layout = null;
+
+    Layout = MVC.Shared.Views._DialogLayout;
     ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), "Create - Redirecting...");
 }
-<a id="redirectLink" href="@Model.RedirectLink">Redirecting...</a>
+<div id="createJobRedirect">
+    <h1>Job Created Successfully</h1>
+
+    <div>
+        <i class="ajaxLoading" title="Loading..."></i><a id="redirectLink" href="@Model.RedirectLink">Redirecting...</a>
+    </div>
+</div>
 <script>
-    var redirectLink = document.getElementById('redirectLink').getAttribute('href');
+    var redirectLink = '@(Model.RedirectLink)';
+    var redirectDelay = parseInt(@(Model.RedirectDelay.HasValue ? Model.RedirectDelay.Value.TotalMilliseconds : 0));
 
     //#region Parent Dialog
-    if (window.parent) {
+    function parentRedirect() {
         window.parent.window.location.href = redirectLink;
 
         var parentDialog = window.parent.document.getElementById('createJobDialog');
@@ -18,6 +25,13 @@
             var discoDialogMethods = parentDialog.discoDialogMethods;
             discoDialogMethods.close();
         }
+    }
+
+    if (window.parent) {
+        if (redirectDelay)
+            window.setTimeout(parentRedirect, redirectDelay);
+        else
+            parentRedirect();
     }
     //#endregion
 </script>

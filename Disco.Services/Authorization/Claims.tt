@@ -213,7 +213,7 @@ void WriteNavigator_Recurse(Permission p, string Prefix){
 		var groupPrefix = string.Concat(key, ".");
 		WriteLine("new ClaimNavigatorItem(\"{0}{1}\", \"{2}\", \"{3}\", {4}, new List<IClaimNavigatorItem>() {{", Prefix, p.Name, p.FriendlyName, p.Description, p.Hidden ? "true" : "false");
 		PushIndent("    ");
-		var children = p.Children.OrderBy(c => c.FriendlyName).ToList();
+		var children = p.Children.OrderBy(c => !c.IsGroup).ThenBy(c => c.FriendlyName).ToList();
 		for (int childIndex = 0; childIndex < children.Count; childIndex++)
 		{
 			WriteNavigator_Recurse(children[childIndex], groupPrefix);

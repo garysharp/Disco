@@ -8,6 +8,7 @@ using System.IO;
 using Disco.Models.BI.DocumentTemplates;
 using Disco.Services.Plugins;
 using Disco.Models.BI.Job;
+using Disco.Services.Authorization;
 
 namespace Disco.BI.Extensions
 {
@@ -190,5 +191,42 @@ namespace Disco.BI.Extensions
             }
         }
 
+        private static List<string> FilterCreatableTypePermissions(AuthorizationToken Authorization)
+        {
+            if (!Authorization.HasAll(Claims.Job.Types.CreateHMisc, Claims.Job.Types.CreateHNWar, Claims.Job.Types.CreateHWar, Claims.Job.Types.CreateSApp, Claims.Job.Types.CreateSImg, Claims.Job.Types.CreateSOS, Claims.Job.Types.CreateUMgmt))
+            {
+                // Must Filter
+                List<string> allowedTypes = new List<string>(6);
+                if (Authorization.Has(Claims.Job.Types.CreateHMisc))
+                    allowedTypes.Add(JobType.JobTypeIds.HMisc);
+                if (Authorization.Has(Claims.Job.Types.CreateHNWar))
+                    allowedTypes.Add(JobType.JobTypeIds.HNWar);
+                if (Authorization.Has(Claims.Job.Types.CreateHWar))
+                    allowedTypes.Add(JobType.JobTypeIds.HWar);
+                if (Authorization.Has(Claims.Job.Types.CreateSApp))
+                    allowedTypes.Add(JobType.JobTypeIds.SApp);
+                if (Authorization.Has(Claims.Job.Types.CreateSImg))
+                    allowedTypes.Add(JobType.JobTypeIds.SImg);
+                if (Authorization.Has(Claims.Job.Types.CreateSOS))
+                    allowedTypes.Add(JobType.JobTypeIds.SOS);
+                if (Authorization.Has(Claims.Job.Types.CreateUMgmt))
+                    allowedTypes.Add(JobType.JobTypeIds.UMgmt);
+
+                return allowedTypes;
+            }
+            return null;
+        }
+
+        public static IQueryable<JobType> FilterCreatableTypePermissions(this IQueryable<JobType> JobTypes, AuthorizationToken Authorization)
+        {
+            var allowedTypes = FilterCreatableTypePermissions(Authorization);
+
+            if (allowedTypes != null)
+            {
+                return JobTypes.Where(jt => allowedTypes.Contains(jt.Id));
+            }
+
+            return JobTypes;
+        }
     }
 }

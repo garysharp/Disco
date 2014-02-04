@@ -19,7 +19,7 @@ namespace Disco.Models.UI.Job
 
         bool? DeviceHeld { get; set; }
 
-        string QuickLogDestinationUrl { get; set; }
+        string SourceUrl { get; set; }
 
         bool? QuickLog { get; set; }
         int? QuickLogTaskTimeMinutes { get; set; }

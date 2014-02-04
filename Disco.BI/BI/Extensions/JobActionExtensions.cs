@@ -13,6 +13,18 @@ namespace Disco.BI.Extensions
 {
     public static class JobActionExtensions
     {
+        #region Create
+        public static bool CanCreate()
+        {
+            if (!UserService.CurrentAuthorization.Has(Claims.Job.Actions.Create))
+                return false;
+
+            if (!UserService.CurrentAuthorization.HasAny(Claims.Job.Types.CreateHMisc, Claims.Job.Types.CreateHNWar, Claims.Job.Types.CreateHWar, Claims.Job.Types.CreateSApp, Claims.Job.Types.CreateSImg, Claims.Job.Types.CreateSOS, Claims.Job.Types.CreateUMgmt))
+                return false;
+
+            return true;
+        }
+        #endregion
 
         #region Device Held
         public static bool CanDeviceHeld(this Job j)
@@ -350,7 +362,7 @@ namespace Disco.BI.Extensions
         private static bool CanCloseNever(this Job j, JobQueueJob IgnoreJobQueueJob = null)
         {
             if (!UserService.CurrentAuthorization.Has(Claims.Job.Actions.Close))
-                return false;
+                return true;
 
             if (j.ClosedDate.HasValue)
                 return true; // Job already Closed

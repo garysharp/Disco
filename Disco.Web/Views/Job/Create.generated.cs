@@ -105,14 +105,14 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 13 "..\..\Views\Job\Create.cshtml"
-   Write(Html.HiddenFor(m => m.QuickLogDestinationUrl));
+   Write(Html.HiddenFor(m => m.SourceUrl));
 
             
             #line default
             #line hidden
             
             #line 13 "..\..\Views\Job\Create.cshtml"
-                                                      
+                                         
     
         
             
@@ -210,15 +210,15 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                    <div");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 1091), Tuple.Create("\"", 1122)
-, Tuple.Create(Tuple.Create("", 1096), Tuple.Create("createJob_SubType_", 1096), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 1078), Tuple.Create("\"", 1109)
+, Tuple.Create(Tuple.Create("", 1083), Tuple.Create("createJob_SubType_", 1083), true)
             
             #line 28 "..\..\Views\Job\Create.cshtml"
-, Tuple.Create(Tuple.Create("", 1114), Tuple.Create<System.Object, System.Int32>(jt.Id
+, Tuple.Create(Tuple.Create("", 1101), Tuple.Create<System.Object, System.Int32>(jt.Id
             
             #line default
             #line hidden
-, 1114), false)
+, 1101), false)
 );
 
 WriteLiteral(" class=\"createJob_SubType\"");
@@ -333,6 +333,13 @@ WriteLiteral("                        ");
 WriteLiteral("\r\n                    </td>\r\n                </tr>\r\n            </table>\r\n       " +
 " </div>\r\n");
 
+            
+            #line 65 "..\..\Views\Job\Create.cshtml"
+        if (Authorization.Has(Claims.Job.Actions.Close)){
+
+            
+            #line default
+            #line hidden
 WriteLiteral("        <div");
 
 WriteLiteral(" id=\"createJob_QuickLogContainer\"");
@@ -452,7 +459,7 @@ WriteLiteral(" />\r\n                    Minutes\r\n                </span>\r\n"
 WriteLiteral("                ");
 
             
-            #line 80 "..\..\Views\Job\Create.cshtml"
+            #line 81 "..\..\Views\Job\Create.cshtml"
            Write(Html.ValidationMessageFor(m => m.QuickLogTaskTimeMinutes));
 
             
@@ -461,7 +468,8 @@ WriteLiteral("                ");
 WriteLiteral("\r\n            </div>\r\n        </div>\r\n");
 
             
-            #line 83 "..\..\Views\Job\Create.cshtml"
+            #line 84 "..\..\Views\Job\Create.cshtml"
+        }
     }
 
             
@@ -473,129 +481,187 @@ WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(">\r\n        $(function () {\r\n            var discoDialogMethods;\r\n            var " +
 "init = true;\r\n            //#region Parent Dialog\r\n            if (window.parent" +
-" && window.parent.document) {\r\n                $(\'#QuickLogDestinationUrl\').val(" +
-"window.parent.window.location.href);\r\n\r\n                var parentDialog = $(\'#c" +
-"reateJobDialog\', window.parent.document);\r\n                if (parentDialog.leng" +
-"th > 0) {\r\n                    discoDialogMethods = parentDialog[0].discoDialogM" +
-"ethods;\r\n                    var buttons = {\r\n                        \"Create Jo" +
-"b\": function () {\r\n                            createJobForm.submit()\r\n         " +
-"               },\r\n                        Cancel: function () {\r\n              " +
-"              discoDialogMethods.close();\r\n                        }\r\n          " +
-"          }\r\n\r\n                    discoDialogMethods.setButtons(buttons);\r\n    " +
-"            }\r\n            }\r\n            //#endregion\r\n\r\n\r\n            var crea" +
-"teJobForm = $(\'form\');\r\n            var validator = createJobForm.data(\'validato" +
-"r\');\r\n            var unobtrusiveValidation = createJobForm.data(\'unobtrusiveVal" +
-"idation\');\r\n\r\n            // Validate all Fields\r\n            validator.settings" +
-".ignore = \'\';\r\n\r\n            //#region Job Type/SubTypes\r\n            var $jobTy" +
-"peContainer = $(\'#createJob_Type\');\r\n            var $typeValidationMessage = $(" +
-"\'[data-valmsg-for=\"Type\"]\', $jobTypeContainer)\r\n            var $subTypesValidat" +
-"ionMessage = $(\'[data-valmsg-for=\"SubTypes\"]\', $jobTypeContainer)\r\n            v" +
-"ar $jobTypes = $jobTypeContainer.find(\'input[type=\"radio\"]\').change(jobTypeChang" +
-"e);\r\n            $(\'#createJob_SubTypes\').find(\'input[type=\"checkbox\"]\').change(" +
-"jobSubTypeHighlight).each(jobSubTypeHighlight);\r\n            jobTypeChange();\r\n " +
-"           function jobSubTypeHighlight() {\r\n                var $this = $(this)" +
-";\r\n                if ($this.is(\':checked\'))\r\n                    $this.closest(" +
-"\'li\').addClass(\'highlight\');\r\n                else\r\n                    $this.cl" +
-"osest(\'li\').removeClass(\'highlight\');\r\n            }\r\n            function jobTy" +
-"peChange() {\r\n                var $checkedItem = $jobTypes.filter(\':checked\');\r\n" +
-"\r\n                $jobTypes.closest(\'li\').removeClass(\'highlight\');\r\n\r\n         " +
-"       $checkedItem.closest(\'li\').addClass(\'highlight\');\r\n\r\n                if (" +
-"init) {\r\n                    var jobType = $checkedItem.val();\r\n                " +
-"    $(\'#createJob_SubType_\' + jobType).show();\r\n                } else {\r\n      " +
-"              $(\'#createJob_SubTypes\').find(\'.createJob_SubType:visible\').slideU" +
-"p();\r\n                    var jobType = $checkedItem.val();\r\n                   " +
-" $(\'#createJob_SubType_\' + jobType).slideDown();\r\n                }\r\n           " +
-" }\r\n\r\n\r\n            var additionalValidation = function (form) {\r\n              " +
-"  var isValid = true;\r\n\r\n                // Validate Type\r\n                var t" +
-"ypeValue = $jobTypes.filter(\':checked\').val();\r\n                if (typeValue) {" +
-"\r\n                    $typeValidationMessage.removeClass(\'field-validation-error" +
-"\').addClass(\'field-validation-valid\');\r\n                    // Validate SubTypes" +
-"\r\n                    if ($(\'#createJob_SubType_\' + typeValue).find(\'input:check" +
-"ed\').length > 0) {\r\n                        $subTypesValidationMessage.removeCla" +
-"ss(\'field-validation-error\').addClass(\'field-validation-valid\');\r\n              " +
-"      } else {\r\n                        $subTypesValidationMessage.text(\'At leas" +
-"t one Job Sub Type is required\').removeClass(\'field-validation-valid\').addClass(" +
-"\'field-validation-error\');\r\n                        isValid = false;\r\n          " +
-"          }\r\n                } else {\r\n                    $typeValidationMessag" +
-"e.text(\'A Job Type is required\').removeClass(\'field-validation-valid\').addClass(" +
-"\'field-validation-error\');\r\n                    isValid = false;\r\n              " +
-"  }\r\n\r\n                // Validate QuickLog Task Time\r\n                if ($quic" +
-"kLog.is(\':checked\')) {\r\n                    var selectedTime = $quickLogTaskTime" +
-"s.filter(\':checked\');\r\n                    if (selectedTime.length > 0) {\r\n     " +
-"                   if (selectedTime.val() === \'\') {\r\n                           " +
-" // Handle \'Other\'\r\n                            var otherTime = parseInt($quickL" +
-"ogTaskTimeOtherMinutes.val());\r\n                            if (!otherTime || ot" +
-"herTime <= 0) {\r\n                                $quickLogTaskTimeValidationMess" +
-"age.text(\'A Task Time is required\').removeClass(\'field-validation-valid\').addCla" +
-"ss(\'field-validation-error\');\r\n                                isValid = false;\r" +
-"\n                            }\r\n                        } else {\r\n              " +
-"              $quickLogTaskTimeValidationMessage.removeClass(\'field-validation-v" +
-"alid\').addClass(\'field-validation-error\');\r\n                        }\r\n         " +
-"           } else {\r\n                        $quickLogTaskTimeValidationMessage." +
-"text(\'A Task Time is required\').removeClass(\'field-validation-valid\').addClass(\'" +
-"field-validation-error\');\r\n                        isValid = false;\r\n           " +
-"         }\r\n                } else {\r\n                    $quickLogTaskTimeValid" +
-"ationMessage.removeClass(\'field-validation-valid\').addClass(\'field-validation-er" +
-"ror\');\r\n                }\r\n\r\n                return isValid;\r\n            }\r\n\r\n " +
-"           validator.settings.submitHandler = function (form) {\r\n               " +
-" if (additionalValidation()) {\r\n                    discoDialogMethods.setButton" +
-"s({});\r\n                    form.submit();\r\n                }\r\n            }\r\n  " +
-"          //#endregion\r\n\r\n            //#region DeviceHeld\r\n            var $dev" +
-"iceHeld = $(\'#DeviceHeld\');\r\n\r\n            if ($(\'#DeviceSerialNumber\').val()) {" +
-"\r\n                switch ($deviceHeld.val()) {\r\n                    case \'True\':" +
-"\r\n                        $(\'#createJob_DeviceHeld\').prop(\'checked\', true);\r\n   " +
-"                     $(\'#createJob_DeviceNotHeld\').prop(\'checked\', false);\r\n    " +
-"                    break;\r\n                    case \'False\':\r\n                 " +
-"       $(\'#createJob_DeviceHeld\').prop(\'checked\', false);\r\n                     " +
-"   $(\'#createJob_DeviceNotHeld\').prop(\'checked\', true);\r\n                       " +
-" break;\r\n                    default:\r\n                        $(\'#createJob_Dev" +
-"iceHeld\').prop(\'checked\', false);\r\n                        $(\'#createJob_DeviceN" +
-"otHeld\').prop(\'checked\', false);\r\n                        break;\r\n              " +
-"  }\r\n                $(\'#createJob_DeviceHeldContainer\').find(\'input[type=\"radio" +
-"\"]\').change(function () {\r\n                    // Update Hidden Field with Boole" +
-"an Value\r\n                    // Set DeviceHeld\r\n                    var deviceH" +
-"eldValue = \'\';\r\n                    if ($(\'#createJob_DeviceHeld\').is(\':checked\'" +
-"))\r\n                        deviceHeldValue = \'True\';\r\n                    if ($" +
-"(\'#createJob_DeviceNotHeld\').is(\':checked\'))\r\n                        deviceHeld" +
-"Value = \'False\';\r\n                    $deviceHeld.val(deviceHeldValue).change();" +
-"\r\n                });\r\n            } else {\r\n                // No Device Associ" +
-"ated\r\n                $deviceHeld.val(\'False\');\r\n                $(\'#createJob_D" +
-"eviceHeldContainer\').hide();\r\n            }\r\n            //#endregion\r\n\r\n       " +
-"     //#region QuickLog\r\n            var $quickLog = $(\'#createJob_QuickLog\');\r\n" +
-"            var $quickLogContainer = $(\'#createJob_QuickLogContainer\');\r\n       " +
-"     var $quickLogTaskTimeContainer = $(\'#createJob_QuickLogTaskTimeContainer\');" +
-"\r\n            var $quickLogTaskTimes = $quickLogTaskTimeContainer.find(\'input[ty" +
-"pe=\"radio\"]\');\r\n            var $quickLogTaskTimeOtherMinutes = $(\'#createJob_Ta" +
-"skTimeOtherMinutes\');\r\n            var $quickLogTaskTimeValidationMessage = $qui" +
-"ckLogTaskTimeContainer.find(\'[data-valmsg-for=\"QuickLogTaskTimeMinutes\"]\');\r\n\r\n " +
-"           $deviceHeld.change(validateQuickLog);\r\n            $jobTypes.change(v" +
-"alidateQuickLog);\r\n            validateQuickLog();\r\n\r\n            function valid" +
-"ateQuickLog() {\r\n                var quickLogAllowed = false;\r\n\r\n               " +
-" if ($deviceHeld.val() === \'True\') {\r\n                    quickLogAllowed = fals" +
-"e;\r\n                } else {\r\n                    var selectedType = $jobTypes.f" +
-"ilter(\':checked\').val();\r\n                    switch (selectedType) {\r\n         " +
-"               case \'HMisc\':\r\n                        case \'SApp\':\r\n            " +
-"            case \'SImg\':\r\n                        case \'SOS\':\r\n                 " +
-"       case \'UMgmt\':\r\n                            quickLogAllowed = true;\r\n     " +
-"                       break;\r\n                        default:\r\n               " +
-"             quickLogAllowed = false;\r\n                            break;\r\n     " +
-"               }\r\n                }\r\n\r\n                if (quickLogAllowed) {\r\n " +
-"                   $quickLogContainer.slideDown();\r\n                } else {\r\n  " +
-"                  if (init)\r\n                        $quickLogContainer.hide();\r" +
-"\n                    else\r\n                        $quickLogContainer.slideUp();" +
-"\r\n                    $quickLog.prop(\'checked\', false).change();\r\n              " +
-"  }\r\n            }\r\n\r\n            $quickLog.change(function () {\r\n              " +
-"  if ($(this).is(\':checked\')) {\r\n                    $quickLogTaskTimeContainer." +
-"slideDown();\r\n                } else {\r\n                    $quickLogTaskTimeCon" +
-"tainer.slideUp();\r\n                }\r\n            });\r\n\r\n            $quickLogTa" +
-"skTimes.change(function () {\r\n                if ($quickLogTaskTimes.filter(\':ch" +
-"ecked\').val() === \"\") {\r\n                    $(\'#createJob_TaskTimeOtherMinutesC" +
-"ontainer\').show();\r\n                    $quickLogTaskTimeOtherMinutes.attr(\'disa" +
-"bled\', null).focus().select();\r\n                } else {\r\n                    $(" +
-"\'#createJob_TaskTimeOtherMinutesContainer\').hide();\r\n                    $quickL" +
-"ogTaskTimeOtherMinutes.attr(\'disabled\', \'disabled\');\r\n                }\r\n       " +
-"     });\r\n            //#endregion\r\n\r\n            init = false;\r\n        });\r\n  " +
-"  </script>\r\n</div>\r\n");
+" && window.parent.document) {\r\n                $(\'#SourceUrl\').val(window.parent" +
+".window.location.href);\r\n\r\n                var parentDialog = $(\'#createJobDialo" +
+"g\', window.parent.document);\r\n                if (parentDialog.length > 0) {\r\n  " +
+"                  discoDialogMethods = parentDialog[0].discoDialogMethods;\r\n    " +
+"                var buttons = {\r\n                        \"Create Job\": function " +
+"() {\r\n                            createJobForm.submit()\r\n                      " +
+"  },\r\n                        Cancel: function () {\r\n                           " +
+" discoDialogMethods.close();\r\n                        }\r\n                    }\r\n" +
+"\r\n                    discoDialogMethods.setButtons(buttons);\r\n                }" +
+"\r\n            }\r\n            //#endregion\r\n\r\n\r\n            var createJobForm = $" +
+"(\'form\');\r\n            var validator = createJobForm.data(\'validator\');\r\n       " +
+"     var unobtrusiveValidation = createJobForm.data(\'unobtrusiveValidation\');\r\n\r" +
+"\n            // Validate all Fields\r\n            validator.settings.ignore = \'\';" +
+"\r\n\r\n            //#region Job Type/SubTypes\r\n            var $jobTypeContainer =" +
+" $(\'#createJob_Type\');\r\n            var $typeValidationMessage = $(\'[data-valmsg" +
+"-for=\"Type\"]\', $jobTypeContainer)\r\n            var $subTypesValidationMessage = " +
+"$(\'[data-valmsg-for=\"SubTypes\"]\', $jobTypeContainer)\r\n            var $jobTypes " +
+"= $jobTypeContainer.find(\'input[type=\"radio\"]\').change(jobTypeChange);\r\n        " +
+"    $(\'#createJob_SubTypes\').find(\'input[type=\"checkbox\"]\').change(jobSubTypeHig" +
+"hlight).each(jobSubTypeHighlight);\r\n            jobTypeChange();\r\n            fu" +
+"nction jobSubTypeHighlight() {\r\n                var $this = $(this);\r\n          " +
+"      if ($this.is(\':checked\'))\r\n                    $this.closest(\'li\').addClas" +
+"s(\'highlight\');\r\n                else\r\n                    $this.closest(\'li\').r" +
+"emoveClass(\'highlight\');\r\n            }\r\n            function jobTypeChange() {\r" +
+"\n                var $checkedItem = $jobTypes.filter(\':checked\');\r\n\r\n           " +
+"     $jobTypes.closest(\'li\').removeClass(\'highlight\');\r\n\r\n                $check" +
+"edItem.closest(\'li\').addClass(\'highlight\');\r\n\r\n                if (init) {\r\n    " +
+"                var jobType = $checkedItem.val();\r\n                    $(\'#creat" +
+"eJob_SubType_\' + jobType).show();\r\n                } else {\r\n                   " +
+" $(\'#createJob_SubTypes\').find(\'.createJob_SubType:visible\').slideUp();\r\n       " +
+"             var jobType = $checkedItem.val();\r\n                    $(\'#createJo" +
+"b_SubType_\' + jobType).slideDown();\r\n                }\r\n            }\r\n\r\n\r\n     " +
+"       var additionalValidation = function (form) {\r\n                var isValid" +
+" = true;\r\n\r\n                // Validate Type\r\n                var typeValue = $j" +
+"obTypes.filter(\':checked\').val();\r\n                if (typeValue) {\r\n           " +
+"         $typeValidationMessage.removeClass(\'field-validation-error\').addClass(\'" +
+"field-validation-valid\');\r\n                    // Validate SubTypes\r\n           " +
+"         if ($(\'#createJob_SubType_\' + typeValue).find(\'input:checked\').length >" +
+" 0) {\r\n                        $subTypesValidationMessage.removeClass(\'field-val" +
+"idation-error\').addClass(\'field-validation-valid\');\r\n                    } else " +
+"{\r\n                        $subTypesValidationMessage.text(\'At least one Job Sub" +
+" Type is required\').removeClass(\'field-validation-valid\').addClass(\'field-valida" +
+"tion-error\');\r\n                        isValid = false;\r\n                    }\r\n" +
+"                } else {\r\n                    $typeValidationMessage.text(\'A Job" +
+" Type is required\').removeClass(\'field-validation-valid\').addClass(\'field-valida" +
+"tion-error\');\r\n                    isValid = false;\r\n                }\r\n\r\n");
+
+            
+            #line 170 "..\..\Views\Job\Create.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 170 "..\..\Views\Job\Create.cshtml"
+                 if (Authorization.Has(Claims.Job.Actions.Close)){
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                ");
+
+WriteLiteral(@"
+                // Validate QuickLog Task Time
+                if ($quickLog.is(':checked')) {
+                    var selectedTime = $quickLogTaskTimes.filter(':checked');
+                    if (selectedTime.length > 0) {
+                        if (selectedTime.val() === '') {
+                            // Handle 'Other'
+                            var otherTime = parseInt($quickLogTaskTimeOtherMinutes.val());
+                            if (!otherTime || otherTime <= 0) {
+                                $quickLogTaskTimeValidationMessage.text('A Task Time is required').removeClass('field-validation-valid').addClass('field-validation-error');
+                                isValid = false;
+                            }
+                        } else {
+                            $quickLogTaskTimeValidationMessage.removeClass('field-validation-valid').addClass('field-validation-error');
+                        }
+                    } else {
+                        $quickLogTaskTimeValidationMessage.text('A Task Time is required').removeClass('field-validation-valid').addClass('field-validation-error');
+                        isValid = false;
+                    }
+                } else {
+                    $quickLogTaskTimeValidationMessage.removeClass('field-validation-valid').addClass('field-validation-error');
+                }
+                ");
+
+WriteLiteral("\r\n");
+
+            
+            #line 194 "..\..\Views\Job\Create.cshtml"
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                return isValid;\r\n            }\r\n\r\n            validator.setting" +
+"s.submitHandler = function (form) {\r\n                if (additionalValidation())" +
+" {\r\n                    discoDialogMethods.setButtons({});\r\n                    " +
+"form.submit();\r\n                }\r\n            }\r\n            //#endregion\r\n\r\n  " +
+"          //#region DeviceHeld\r\n            var $deviceHeld = $(\'#DeviceHeld\');\r" +
+"\n\r\n            if ($(\'#DeviceSerialNumber\').val()) {\r\n                switch ($d" +
+"eviceHeld.val()) {\r\n                    case \'True\':\r\n                        $(" +
+"\'#createJob_DeviceHeld\').prop(\'checked\', true);\r\n                        $(\'#cre" +
+"ateJob_DeviceNotHeld\').prop(\'checked\', false);\r\n                        break;\r\n" +
+"                    case \'False\':\r\n                        $(\'#createJob_DeviceH" +
+"eld\').prop(\'checked\', false);\r\n                        $(\'#createJob_DeviceNotHe" +
+"ld\').prop(\'checked\', true);\r\n                        break;\r\n                   " +
+" default:\r\n                        $(\'#createJob_DeviceHeld\').prop(\'checked\', fa" +
+"lse);\r\n                        $(\'#createJob_DeviceNotHeld\').prop(\'checked\', fal" +
+"se);\r\n                        break;\r\n                }\r\n                $(\'#cre" +
+"ateJob_DeviceHeldContainer\').find(\'input[type=\"radio\"]\').change(function () {\r\n " +
+"                   // Update Hidden Field with Boolean Value\r\n                  " +
+"  // Set DeviceHeld\r\n                    var deviceHeldValue = \'\';\r\n            " +
+"        if ($(\'#createJob_DeviceHeld\').is(\':checked\'))\r\n                        " +
+"deviceHeldValue = \'True\';\r\n                    if ($(\'#createJob_DeviceNotHeld\')" +
+".is(\':checked\'))\r\n                        deviceHeldValue = \'False\';\r\n          " +
+"          $deviceHeld.val(deviceHeldValue).change();\r\n                });\r\n     " +
+"       } else {\r\n                // No Device Associated\r\n                $devic" +
+"eHeld.val(\'False\');\r\n                $(\'#createJob_DeviceHeldContainer\').hide();" +
+"\r\n            }\r\n            //#endregion\r\n\r\n");
+
+            
+            #line 242 "..\..\Views\Job\Create.cshtml"
+            
+            
+            #line default
+            #line hidden
+            
+            #line 242 "..\..\Views\Job\Create.cshtml"
+             if (Authorization.Has(Claims.Job.Actions.Close)){
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                ");
+
+WriteLiteral("\r\n            //#region QuickLog\r\n            var $quickLog = $(\'#createJob_Quick" +
+"Log\');\r\n            var $quickLogContainer = $(\'#createJob_QuickLogContainer\');\r" +
+"\n            var $quickLogTaskTimeContainer = $(\'#createJob_QuickLogTaskTimeCont" +
+"ainer\');\r\n            var $quickLogTaskTimes = $quickLogTaskTimeContainer.find(\'" +
+"input[type=\"radio\"]\');\r\n            var $quickLogTaskTimeOtherMinutes = $(\'#crea" +
+"teJob_TaskTimeOtherMinutes\');\r\n            var $quickLogTaskTimeValidationMessag" +
+"e = $quickLogTaskTimeContainer.find(\'[data-valmsg-for=\"QuickLogTaskTimeMinutes\"]" +
+"\');\r\n\r\n            $deviceHeld.change(validateQuickLog);\r\n            $jobTypes." +
+"change(validateQuickLog);\r\n            validateQuickLog();\r\n\r\n            functi" +
+"on validateQuickLog() {\r\n                var quickLogAllowed = false;\r\n\r\n       " +
+"         if ($deviceHeld.val() === \'True\') {\r\n                    quickLogAllowe" +
+"d = false;\r\n                } else {\r\n                    var selectedType = $jo" +
+"bTypes.filter(\':checked\').val();\r\n                    switch (selectedType) {\r\n " +
+"                       case \'HMisc\':\r\n                        case \'SApp\':\r\n    " +
+"                    case \'SImg\':\r\n                        case \'SOS\':\r\n         " +
+"               case \'UMgmt\':\r\n                            quickLogAllowed = true" +
+";\r\n                            break;\r\n                        default:\r\n       " +
+"                     quickLogAllowed = false;\r\n                            break" +
+";\r\n                    }\r\n                }\r\n\r\n                if (quickLogAllow" +
+"ed) {\r\n                    $quickLogContainer.slideDown();\r\n                } el" +
+"se {\r\n                    if (init)\r\n                        $quickLogContainer." +
+"hide();\r\n                    else\r\n                        $quickLogContainer.sl" +
+"ideUp();\r\n                    $quickLog.prop(\'checked\', false).change();\r\n      " +
+"          }\r\n            }\r\n\r\n            $quickLog.change(function () {\r\n      " +
+"          if ($(this).is(\':checked\')) {\r\n                    $quickLogTaskTimeCo" +
+"ntainer.slideDown();\r\n                } else {\r\n                    $quickLogTas" +
+"kTimeContainer.slideUp();\r\n                }\r\n            });\r\n\r\n            $qu" +
+"ickLogTaskTimes.change(function () {\r\n                if ($quickLogTaskTimes.fil" +
+"ter(\':checked\').val() === \"\") {\r\n                    $(\'#createJob_TaskTimeOther" +
+"MinutesContainer\').show();\r\n                    $quickLogTaskTimeOtherMinutes.at" +
+"tr(\'disabled\', null).focus().select();\r\n                } else {\r\n              " +
+"      $(\'#createJob_TaskTimeOtherMinutesContainer\').hide();\r\n                   " +
+" $quickLogTaskTimeOtherMinutes.attr(\'disabled\', \'disabled\');\r\n                }\r" +
+"\n            });\r\n            //#endregion\r\n            ");
+
+WriteLiteral("\r\n");
+
+            
+            #line 307 "..\..\Views\Job\Create.cshtml"
+            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n            init = false;\r\n        });\r\n    </script>\r\n</div>\r\n");
 
         }
     }

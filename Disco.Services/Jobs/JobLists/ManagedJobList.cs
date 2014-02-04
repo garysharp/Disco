@@ -47,7 +47,7 @@ using Disco.Services.Authorization;
                     ShowDeviceAddress = true,
                     ShowLocation = true,
                     ShowStatus = true
-                }.Initialize(Database);
+                }.Initialize(Database, false);
             }
         }
 
@@ -56,25 +56,25 @@ using Disco.Services.Authorization;
             return new JobTableModel()
             {
                 ShowStatus = true,
-                Items = FilterFunction(openJobs.Items.Cast<JobTableStatusItemModel>())
+                Items = FilterFunction(openJobs.Items.Cast<JobTableStatusItemModel>()).PermissionsFiltered(UserService.CurrentAuthorization)
             };
         }
 
         public static JobTableModel MyJobsTable(AuthorizationToken AuthToken)
         {
+            var openJobs = ManagedJobList.openJobs.Items.PermissionsFiltered(AuthToken).Cast<JobTableStatusItemModel>();
             IEnumerable<Tuple<JobTableStatusItemModel, byte, byte, DateTime?>> allJobs = null;
 
             if (AuthToken.Has(Claims.Job.Lists.MyJobsOrphaned))
             {
                 allJobs = AwaitingTechnicianActionFilter(
-                    openJobs.Items.Cast<JobTableStatusItemModel>()
-                        .Where(i => i.ActiveJobQueues == null || i.ActiveJobQueues.Count() == 0)
+                    openJobs.Where(i => i.ActiveJobQueues == null || i.ActiveJobQueues.Count() == 0)
                     ).Select(i => new Tuple<JobTableStatusItemModel, byte, byte, DateTime?>(i, (byte)JobQueuePriority.Normal, (byte)JobQueuePriority.Normal, null));
             }
 
             var usersQueues = JobQueueService.UsersQueues(AuthToken).ToDictionary(q => q.JobQueue.Id);
 
-            var queueJobs = openJobs.Items.Cast<JobTableStatusItemModel>()
+            var queueJobs = openJobs
                 .Where(i => i.ActiveJobQueues != null && i.ActiveJobQueues.Any(jqj => usersQueues.ContainsKey(jqj.QueueId)))
                 .Select(i => new Tuple<JobTableStatusItemModel, byte, byte, DateTime?>(
                     i,
@@ -117,11 +117,11 @@ using Disco.Services.Authorization;
             this.SortFunction = SortFunction;
         }
 
-        public ManagedJobList Initialize(DiscoDataContext Database)
+        public ManagedJobList Initialize(DiscoDataContext Database, bool FilterAuthorization)
         {
             // Can only Initialize once
             if (base.Items != null)
-                return ReInitialize(Database);
+                return ReInitialize(Database, FilterAuthorization);
 
             lock (updateLock)
             {
@@ -144,20 +144,20 @@ using Disco.Services.Authorization;
                     .Subscribe(JobNotification, NotificationError);
 
                 // Initially fill table
-                base.Items = this.SortFunction(this.DetermineItems(Database, this.FilterFunction(Database.Jobs))).ToList();
+                base.Items = this.SortFunction(this.DetermineItems(Database, this.FilterFunction(Database.Jobs), FilterAuthorization)).ToList();
             }
             return this;
         }
 
-        public ManagedJobList ReInitialize(DiscoDataContext Database)
+        public ManagedJobList ReInitialize(DiscoDataContext Database, bool FilterAuthorization)
         {
-            return ReInitialize(Database, null, null);
+            return ReInitialize(Database, null, null, FilterAuthorization);
         }
-        public ManagedJobList ReInitialize(DiscoDataContext Database, FilterFunc FilterFunction)
+        public ManagedJobList ReInitialize(DiscoDataContext Database, FilterFunc FilterFunction, bool FilterAuthorization)
         {
-            return ReInitialize(Database, FilterFunction, null);
+            return ReInitialize(Database, FilterFunction, null, FilterAuthorization);
         }
-        public ManagedJobList ReInitialize(DiscoDataContext Database, FilterFunc FilterFunction, SortFunc SortFunction)
+        public ManagedJobList ReInitialize(DiscoDataContext Database, FilterFunc FilterFunction, SortFunc SortFunction, bool FilterAuthorization)
         {
             if (Database == null)
                 throw new ArgumentNullException("Database");
@@ -169,7 +169,7 @@ using Disco.Services.Authorization;
                 if (SortFunction != null)
                     this.SortFunction = SortFunction;
 
-                base.Items = this.SortFunction(this.DetermineItems(Database, this.FilterFunction(Database.Jobs))).ToList();
+                base.Items = this.SortFunction(this.DetermineItems(Database, this.FilterFunction(Database.Jobs), FilterAuthorization)).ToList();
             }
             return this;
         }
@@ -234,7 +234,7 @@ using Disco.Services.Authorization;
                 if (existingItems == null)
                     existingItems = base.Items.Where(i => jobIds.Contains(i.Id)).ToArray();
 
-                var updatedItems = this.DetermineItems(Database, this.FilterFunction(Database.Jobs.Where(j => jobIds.Contains(j.Id))));
+                var updatedItems = this.DetermineItems(Database, this.FilterFunction(Database.Jobs.Where(j => jobIds.Contains(j.Id))), false);
 
                 var refreshedList = base.Items.ToList();
 

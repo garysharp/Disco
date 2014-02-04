@@ -748,3 +748,13 @@
 #createJob_Container #createJob_QuickLogTaskTimeContainer #createJob_TaskTimeOtherMinutes {
   width: 50px;
 }
+#createJobRedirect h1 {
+  margin-top: 60px !important;
+  margin-bottom: 60px;
+}
+#createJobRedirect > div {
+  text-align: right;
+}
+#createJobRedirect > div i {
+  margin-right: 10px;
+}

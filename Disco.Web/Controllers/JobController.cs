@@ -80,7 +80,7 @@ namespace Disco.Web.Controllers
         public virtual ActionResult AwaitingTechnicianAction()
         {
             var m = new Models.Job.ListModel() { Title = "Jobs Awaiting Technician Action" };
-            
+
             m.JobTable = ManagedJobList.OpenJobsTable(ManagedJobList.AwaitingTechnicianActionFilter);
 
             // UI Extensions
@@ -110,7 +110,7 @@ namespace Disco.Web.Controllers
         {
             var m = new Models.Job.ListModel() { Title = "Jobs with Devices Awaiting Repair" };
 
-            m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j => 
+            m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j =>
                 (j.JobMetaNonWarranty_RepairerLoggedDate != null && j.JobMetaNonWarranty_RepairerCompletedDate == null) ||
                 (j.JobMetaWarranty_ExternalLoggedDate != null && j.JobMetaWarranty_ExternalCompletedDate == null)
                 ).OrderBy(j => j.Id));
@@ -126,7 +126,7 @@ namespace Disco.Web.Controllers
         public virtual ActionResult AwaitingFinance()
         {
             var m = new Models.Job.ListModel() { Title = "Jobs Awaiting Finance" };
-            m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j => 
+            m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j =>
                 (j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty_IsInsuranceClaim.Value && !j.JobMetaInsurance_ClaimFormSentDate.HasValue)) ||
                 (j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty_AccountingChargeRequiredDate.HasValue && (!j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue))) ||
                 (j.JobTypeId == JobType.JobTypeIds.HNWar && (!j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue || !j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue)) ||
@@ -146,7 +146,7 @@ namespace Disco.Web.Controllers
             m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j =>
                 j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty_AccountingChargeRequiredDate.HasValue && (!j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue))
                 ).OrderBy(j => j.Id));
-            
+
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
 
@@ -224,7 +224,7 @@ namespace Disco.Web.Controllers
                 closedThreshold = closedThreshold.AddDays(-2);
             if (dateTimeNow.DayOfWeek == DayOfWeek.Tuesday)
                 closedThreshold = closedThreshold.AddDays(-1);
-            m.JobTable.Fill(Database, BI.JobBI.Searching.BuildJobTableModel(Database).Where(j => j.ClosedDate > closedThreshold).OrderBy(j => j.Id));
+            m.JobTable.Fill(Database, BI.JobBI.Searching.BuildJobTableModel(Database).Where(j => j.ClosedDate > closedThreshold).OrderBy(j => j.Id), true);
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
@@ -333,7 +333,7 @@ namespace Disco.Web.Controllers
                 DeviceSerialNumber = DeviceSerialNumber,
                 UserId = UserId
             };
-            m.UpdateModel(Database);
+            m.UpdateModel(Database, Authorization);
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobCreateModel>(this.ControllerContext, m);
@@ -343,7 +343,7 @@ namespace Disco.Web.Controllers
         [HttpPost, DiscoAuthorize(Claims.Job.Actions.Create)]
         public virtual ActionResult Create(Models.Job.CreateModel m)
         {
-            m.UpdateModel(Database);
+            m.UpdateModel(Database, Authorization);
 
             if (!ModelState.IsValid)
             {
@@ -365,7 +365,7 @@ namespace Disco.Web.Controllers
                 }
                 else
                 {
-                    if (m.QuickLog.HasValue && m.QuickLog.Value && m.QuickLogTaskTimeMinutes.HasValue && m.QuickLogTaskTimeMinutes.Value > 0)
+                    if (Authorization.Has(Claims.Job.Actions.Close) && m.QuickLog.HasValue && m.QuickLog.Value && m.QuickLogTaskTimeMinutes.HasValue && m.QuickLogTaskTimeMinutes.Value > 0)
                     {
                         // Quick Log
                         // Set Opened Date in the past
@@ -396,10 +396,19 @@ namespace Disco.Web.Controllers
 
                 // Return Dialog Redirect
                 var redirectModel = new Models.Job.CreateRedirectModel();
-                if (m.QuickLog.HasValue && m.QuickLog.Value && !string.IsNullOrWhiteSpace(m.QuickLogDestinationUrl))
-                    redirectModel.RedirectLink = m.QuickLogDestinationUrl;
+                redirectModel.RedirectDelay = TimeSpan.FromSeconds(2);
+                if (m.QuickLog.HasValue && m.QuickLog.Value && !string.IsNullOrWhiteSpace(m.SourceUrl))
+                    redirectModel.RedirectLink = m.SourceUrl;
+                else if (!Authorization.Has(Claims.Job.Show))
+                    if (!string.IsNullOrWhiteSpace(m.SourceUrl))
+                        redirectModel.RedirectLink = m.SourceUrl;
+                    else
+                        redirectModel.RedirectLink = Url.Action(MVC.Job.Index());
                 else
+                {
                     redirectModel.RedirectLink = Url.Action(MVC.Job.Show(j.Id));
+                    redirectModel.RedirectDelay = null;
+                }
 
                 return View(Views.Create_Redirect, redirectModel);
             }
