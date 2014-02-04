@@ -92,7 +92,7 @@ body.layout {
 }
 .page {
   max-width: 1232px;
-  min-width: 752px;
+  min-width: 768px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -127,7 +127,7 @@ header nav ul#menu,
 #header nav ul#menu {
   height: 26px;
   padding: 0;
-  margin: 8px 0 0 8px;
+  margin: 8px 0 0 4px;
   list-style: none;
   z-index: 100000;
   font-size: 0;
@@ -142,7 +142,7 @@ header nav ul#menu > li,
 }
 header nav ul#menu > li.moveRight,
 #header nav ul#menu > li.moveRight {
-  margin-left: 40px;
+  margin-left: 20px;
 }
 header nav ul#menu > li > a,
 #header nav ul#menu > li > a {
@@ -249,7 +249,7 @@ header #headerMenu,
   height: 24px;
   padding: 5px 8px;
   font-size: .9em;
-  line-height: 22px;
+  line-height: 24px;
   text-align: right;
   color: #ffffff;
 }
@@ -283,7 +283,7 @@ header #SearchQuery:hover,
 header #SearchQuery:focus,
 #header #SearchQuery:focus {
   background-color: #ffffff;
-  width: 200px;
+  width: 190px;
 }
 header .watermark,
 #header .watermark {
