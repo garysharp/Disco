@@ -183,6 +183,14 @@
   margin: -1px;
   border: 1px solid #ddd;
 }
+#UserDetailTab-JobsContainer div.jobTable > h3,
+#UserDetailTab-JobsContainer div.jobTable > div.allClosed_container {
+  margin: 50px 20px !important;
+}
+#UserDetailTab-JobsContainer div.jobTable > h3 a.button,
+#UserDetailTab-JobsContainer div.jobTable > div.allClosed_container a.button {
+  margin-top: 10px;
+}
 #UserDetailTab-JobsContainer .dataTables_wrapper .dataTables_filter {
   margin-top: -24px;
   -moz-opacity: 1;

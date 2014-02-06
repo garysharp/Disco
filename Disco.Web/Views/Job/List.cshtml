@@ -2,4 +2,6 @@
 @{
     ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), Model.PageTitle);
 }
-@Html.Partial(MVC.Shared.Views._JobTable, Model.JobTable, new ViewDataDictionary())
+<div id="Job_List">
+    @Html.Partial(MVC.Shared.Views._JobTable, Model.JobTable, new ViewDataDictionary())
+</div>

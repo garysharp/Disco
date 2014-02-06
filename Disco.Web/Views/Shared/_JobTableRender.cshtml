@@ -56,60 +56,70 @@
                         }
                     }
                     <tr data-id="@(item.Id)" data-status="@(Model.ShowStatus ? item.StatusId : null)" class="@(statusSlaClass)">
-                    @if (Model.ShowId)
-                    {<td class="id">
-                        @if (Authorization.Has(Claims.Job.Show))
-                        {@Html.ActionLink(item.Id.ToString(), MVC.Job.Show(item.Id))}
-                        else
-                        {@item.Id.ToString()}</td>}
-                    @if (Model.ShowStatus)
-                    {
-                        var statusItem = (JobTableStatusItemModel)item;
-                        <td class="status"><i class="fa fa-square jobStatus @(item.StatusId)"></i>&nbsp;@item.StatusDescription
-                        @if (statusItem.ActiveJobQueues != null)
-                        {<div class="queues">
-                            @foreach (var jqToken in ((JobTableStatusItemModel)item).ActiveJobQueues.Select(jqj => new Tuple<JobTableStatusQueueItemModel, Disco.Services.Jobs.JobQueues.JobQueueToken>(jqj, Disco.Services.Jobs.JobQueues.JobQueueService.GetQueue(jqj.QueueId))))
+                        @if (Model.ShowId)
+                        {<td class="id">
+                            @if (Authorization.Has(Claims.Job.Show))
+                            {@Html.ActionLink(item.Id.ToString(), MVC.Job.Show(item.Id))}
+                            else
+                            {@item.Id.ToString()}</td>}
+                        @if (Model.ShowStatus)
+                        {
+                            var statusItem = (JobTableStatusItemModel)item;
+                            <td class="status"><i class="fa fa-square jobStatus @(item.StatusId)"></i>&nbsp;@item.StatusDescription
+                                @if (statusItem.ActiveJobQueues != null)
+                                {<div class="queues">
+                                    @foreach (var jqToken in ((JobTableStatusItemModel)item).ActiveJobQueues.Select(jqj => new Tuple<JobTableStatusQueueItemModel, Disco.Services.Jobs.JobQueues.JobQueueToken>(jqj, Disco.Services.Jobs.JobQueues.JobQueueService.GetQueue(jqj.QueueId))))
+                                    {
+                                        <i class="fa fa-@(jqToken.Item2.JobQueue.Icon) fa-fw d-@(jqToken.Item2.JobQueue.IconColour)" title="@(jqToken.Item2.JobQueue.Name) [@(jqToken.Item1.Priority)]"></i>
+                                    }
+                                </div>}
+                            </td>}
+                        @if (Model.ShowDates)
+                        {<td class="dates">@if (item.ClosedDate.HasValue)
+                                           {@CommonHelpers.FriendlyDate(item.ClosedDate.Value)}
+                                           else
+                                           {@CommonHelpers.FriendlyDate(item.OpenedDate)}</td>}
+                        @if (Model.ShowType)
+                        {<td class="type"><span title="@item.JobTypeDescription">@item.JobTypeId</span></td>}
+                        @if (Model.ShowDevice)
+                        {<td class="device">
+                            @if (item.DeviceSerialNumber != null)
                             {
-                                <i class="fa fa-@(jqToken.Item2.JobQueue.Icon) fa-fw d-@(jqToken.Item2.JobQueue.IconColour)" title="@(jqToken.Item2.JobQueue.Name) [@(jqToken.Item1.Priority)]"></i>
+                                if (Authorization.Has(Claims.Device.Show))
+                                {@Html.ActionLink(item.DeviceSerialNumber, MVC.Device.Show(item.DeviceSerialNumber), new { Title = item.DeviceModelDescription })}
+                                else
+                                {<span title="@item.DeviceModelDescription">@item.DeviceSerialNumber</span>}
                             }
-                        </div>}
-                     </td>}
-                    @if (Model.ShowDates)
-                    {<td class="dates">@if (item.ClosedDate.HasValue) {@CommonHelpers.FriendlyDate(item.ClosedDate.Value)}else{@CommonHelpers.FriendlyDate(item.OpenedDate)}</td>}
-                    @if (Model.ShowType)
-                    {<td class="type"><span title="@item.JobTypeDescription">@item.JobTypeId</span></td>}
-                    @if (Model.ShowDevice)
-                    {<td class="device">
-                        @if (item.DeviceSerialNumber != null)
-                        {
-                            if (Authorization.Has(Claims.Device.Show))
-                            {@Html.ActionLink(item.DeviceSerialNumber, MVC.Device.Show(item.DeviceSerialNumber), new { Title = item.DeviceModelDescription })}
                             else
-                            {<span title="@item.DeviceModelDescription">@item.DeviceSerialNumber</span>}
-                        }
-                        else
-                        {<span class="smallMessage">N/A</span>}</td>}
-                    @if (Model.ShowUser)
-                    {<td class="user">
-                        @if (item.UserId != null)
-                        {
-                            if (Authorization.Has(Claims.User.Show))
-                            {@Html.ActionLink(string.Format("{0} ({1})", item.UserDisplayName, item.UserId), MVC.User.Show(item.UserId))}
+                            {<span class="smallMessage">N/A</span>}</td>}
+                        @if (Model.ShowUser)
+                        {<td class="user">
+                            @if (item.UserId != null)
+                            {
+                                if (Authorization.Has(Claims.User.Show))
+                                {@Html.ActionLink(string.Format("{0} ({1})", item.UserDisplayName, item.UserId), MVC.User.Show(item.UserId))}
+                                else
+                                {@(string.Format("{0} ({1})", item.UserDisplayName, item.UserId))}
+                            }
                             else
-                            {@(string.Format("{0} ({1})", item.UserDisplayName, item.UserId))}
-                        }
-                        else
-                        {<span class="smallMessage">N/A</span>}</td>}
-                    @if (Model.ShowTechnician)
-                    {<td class="technician"><span title="@item.OpenedTechUserDisplayName">@item.OpenedTechUserId</span></td>}
-                    @if (Model.ShowLocation)
-                    {<td class="technician"><span>@(item.DeviceHeldLocation ?? "Unknown")</span></td>}
-                </tr>}
+                            {<span class="smallMessage">N/A</span>}</td>}
+                        @if (Model.ShowTechnician)
+                        {<td class="technician"><span title="@item.OpenedTechUserDisplayName">@item.OpenedTechUserId</span></td>}
+                        @if (Model.ShowLocation)
+                        {<td class="technician"><span>@(item.DeviceHeldLocation ?? "Unknown")</span></td>}
+                    </tr>}
             </tbody>
         </table>
+                if (Model.HideClosedJobs && Model.Items.All(j => j.ClosedDate.HasValue))
+                {
+        <div class="allClosed_container">
+            <h3>No open jobs</h3>
+            <a href="#" class="dataTables_showStatusClosed button small">Show Closed Jobs (@(Model.Items.Count()))</a>
+        </div>
+                }
     }
     else
     { 
-        <span class="smallMessage">No Jobs Found</span>
+        <h3>No jobs to display</h3>
     }
 </div>

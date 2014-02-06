@@ -170,6 +170,14 @@
     div.jobTable {
         margin: -1px;
         border: 1px solid #ddd;
+
+        & > h3, & > div.allClosed_container {
+            margin: 50px 20px !important;
+
+            a.button {
+                margin-top: 10px;
+            }
+        }
     }
 
     .dataTables_wrapper {
@@ -279,8 +287,7 @@
                     cursor: pointer;
                     opacity: 0;
 
-                    &:hover
-                    {
+                    &:hover {
                         opacity: 1;
                     }
                 }
@@ -293,8 +300,7 @@
             background-color: @white;
             padding: 3px;
 
-            span.action
-            {
+            span.action {
                 color: @HeaderBackgroundColour;
                 display: block;
                 margin: 0 4px 0 0;
@@ -304,8 +310,7 @@
                 border: 1px solid @white;
                 padding: .5em;
 
-                &:hover
-                {
+                &:hover {
                     color: @HyperLinkColour;
                     background-color: @SubtleColour;
                     border: 1px solid @SubtleBorderColour;

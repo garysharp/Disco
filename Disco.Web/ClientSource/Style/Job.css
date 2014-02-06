@@ -101,6 +101,12 @@
   height: 50px;
   font-size: 0.6em;
 }
+#Job_List {
+  padding-top: 20px;
+}
+#Job_List > .jobTable > h3 {
+  margin: 30px 0 50px 20px !important;
+}
 #Job_Show #Job_Show_Subjects {
   table-layout: fixed;
 }

@@ -3966,9 +3966,6 @@ table.genericData td.id a {
 .deviceStatus.NotEnrolled {
   color: #f0a30a;
 }
-#layout_Page > div.jobTable:first-child {
-  padding-top: 30px;
-}
 table.jobTable {
   border: solid 1px #f4f4f4;
   border-collapse: collapse;

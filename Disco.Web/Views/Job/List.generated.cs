@@ -29,6 +29,7 @@ namespace Disco.Web.Views.Job
     using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
     using Disco.Web;
@@ -51,15 +52,23 @@ namespace Disco.Web.Views.Job
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
+WriteLiteral("\r\n<div");
+
+WriteLiteral(" id=\"Job_List\"");
+
+WriteLiteral(">\r\n");
+
+WriteLiteral("    ");
 
             
-            #line 5 "..\..\Views\Job\List.cshtml"
+            #line 6 "..\..\Views\Job\List.cshtml"
 Write(Html.Partial(MVC.Shared.Views._JobTable, Model.JobTable, new ViewDataDictionary()));
 
             
             #line default
             #line hidden
+WriteLiteral("\r\n</div>\r\n");
+
         }
     }
 }

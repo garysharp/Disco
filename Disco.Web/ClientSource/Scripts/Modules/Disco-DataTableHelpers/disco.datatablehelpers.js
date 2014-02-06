@@ -57,8 +57,11 @@
 
                     var showClosedAnchor = $('<a class="dataTables_showStatusClosed" href="#">').text('Show Closed (' + $closedJobs.length + ')');
                     wrapper.prepend(showClosedAnchor);
-                    showClosedAnchor.click(function () {
+                    wrapperContext.on('click', 'a.dataTables_showStatusClosed', function () {
+                        $table.show();
+                        wrapper.find('.dataTables_filter').show();
                         $table.removeClass('hideStatusClosed');
+                        allClosedContainer.remove();
                         showClosedAnchor.remove();
                         if (wrapperPrev)
                             wrapperPrev.html(wrapperPrev.data('dataTable_originalContent'));
@@ -67,6 +70,13 @@
 
                         return false;
                     });
+
+                    var allClosedContainer = wrapperContext.find('div.allClosed_container');
+                    if (allClosedContainer.length > 0) {
+                        $table.hide();
+                        wrapper.find('.dataTables_filter').hide();
+                        showClosedAnchor.css('right', '4px')
+                    }
                 }
             }
 
