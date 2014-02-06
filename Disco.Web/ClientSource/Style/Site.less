@@ -229,6 +229,7 @@ header, #header {
 
         & > a {
             padding: 2px;
+
             & > i {
                 margin-right: 2px;
             }
@@ -569,15 +570,6 @@ table {
         opacity: 0.3;
     }
 
-    .dataTables_showStatusClosed {
-        display: block;
-        position: absolute;
-        height: 20px;
-        margin-top: -20px;
-        right: 320px;
-        font-weight: bold;
-    }
-
     .dataTables_paginate {
         text-align: right;
         background-color: @TableDataBorderColour;
@@ -832,6 +824,21 @@ table.jobTable {
         width: 200px;
     }
 }
+
+div.jobTable {
+    & > a.dataTables_showStatusClosed {
+        margin: 10px 5px;
+    }
+
+    & > h3, & > div.allClosed_container {
+        margin: 50px 20px !important;
+
+        a.button {
+            margin-top: 10px;
+        }
+    }
+}
+
 
 table.deviceTable {
     tr.decommissioned {

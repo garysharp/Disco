@@ -208,14 +208,6 @@
   margin: -1px;
   border: 1px solid #ddd;
 }
-#DeviceDetailTab-JobsContainer div.jobTable > h3,
-#DeviceDetailTab-JobsContainer div.jobTable > div.allClosed_container {
-  margin: 50px 20px !important;
-}
-#DeviceDetailTab-JobsContainer div.jobTable > h3 a.button,
-#DeviceDetailTab-JobsContainer div.jobTable > div.allClosed_container a.button {
-  margin-top: 10px;
-}
 #DeviceDetailTab-JobsContainer .dataTables_wrapper .dataTables_filter {
   margin-top: -24px;
   -moz-opacity: 1;

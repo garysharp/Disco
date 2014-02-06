@@ -3838,14 +3838,6 @@ table.genericData td.id a {
   padding: 0;
   height: 1.4em;
 }
-.dataTables_wrapper .dataTables_showStatusClosed {
-  display: block;
-  position: absolute;
-  height: 20px;
-  margin-top: -20px;
-  right: 320px;
-  font-weight: bold;
-}
 .dataTables_wrapper .dataTables_paginate {
   text-align: right;
   background-color: #f4f4f4;
@@ -4075,6 +4067,17 @@ table.jobTable th.technician {
 table.jobTable td.location,
 table.jobTable th.location {
   width: 200px;
+}
+div.jobTable > a.dataTables_showStatusClosed {
+  margin: 10px 5px;
+}
+div.jobTable > h3,
+div.jobTable > div.allClosed_container {
+  margin: 50px 20px !important;
+}
+div.jobTable > h3 a.button,
+div.jobTable > div.allClosed_container a.button {
+  margin-top: 10px;
 }
 table.deviceTable tr.decommissioned {
   background-color: #ededed;

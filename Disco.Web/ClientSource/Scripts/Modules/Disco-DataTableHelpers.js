@@ -56,14 +56,20 @@
                         wrapperPrev = null;
                     }
 
-                    var showClosedAnchor = $('<a class="dataTables_showStatusClosed" href="#">').text('Show Closed (' + $closedJobs.length + ')');
-                    wrapper.prepend(showClosedAnchor);
+                    var allClosedContainer = wrapperContext.find('div.allClosed_container');
+                    if (allClosedContainer.length > 0) {
+                        $table.hide();
+                        wrapper.find('.dataTables_filter').hide();
+                    } else {
+                        $('<a class="dataTables_showStatusClosed button small" href="#">').text('Show Closed Jobs (' + $closedJobs.length + ')').appendTo(wrapperContext);
+                    }
                     wrapperContext.on('click', 'a.dataTables_showStatusClosed', function () {
                         $table.show();
                         wrapper.find('.dataTables_filter').show();
                         $table.removeClass('hideStatusClosed');
                         allClosedContainer.remove();
-                        showClosedAnchor.remove();
+                        $(this).remove();
+
                         if (wrapperPrev)
                             wrapperPrev.html(wrapperPrev.data('dataTable_originalContent'));
 
@@ -71,17 +77,8 @@
 
                         return false;
                     });
-
-                    var allClosedContainer = wrapperContext.find('div.allClosed_container');
-                    if (allClosedContainer.length > 0) {
-                        $table.hide();
-                        wrapper.find('.dataTables_filter').hide();
-                        showClosedAnchor.css('right', '4px')
-                    }
                 }
             }
-
-                
 
             dataTables.push(this);
         });
