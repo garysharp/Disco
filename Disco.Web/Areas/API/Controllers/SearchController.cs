@@ -24,25 +24,32 @@ namespace Disco.Web.Areas.API.Controllers
 
             IEnumerable<ISearchResultItem> results = Enumerable.Empty<ISearchResultItem>();
 
-            if (Authorization.Has(Claims.Job.Search))
+            switch (Term[0])
             {
-                var jobMatches = Search.SearchJobs(Database, Term, Limit);
-                results = results.Concat(jobMatches);
+                case '!': // Device Only
+                    if (Authorization.Has(Claims.Device.Search))
+                        results = results.Concat(Search.SearchDevices(Database, Term.Substring(1), Limit));
+                    break;
+                case '#': // Job Only
+                    if (Authorization.Has(Claims.Job.Search))
+                        results = results.Concat(Search.SearchJobs(Database, Term.Substring(1), Limit));
+                    break;
+                case '@': // User Only
+                    if (Authorization.Has(Claims.User.Search))
+                        results = results.Concat(Search.SearchUsers(Database, Term.Substring(1), Limit));
+                    break;
+                default: // Search All
+                    if (Authorization.Has(Claims.Job.Search))
+                        results = results.Concat(Search.SearchJobs(Database, Term, Limit));
+                    if (Authorization.Has(Claims.User.Search))
+                        results = results.Concat(Search.SearchUsers(Database, Term, Limit));
+                    if (Authorization.Has(Claims.Device.Search))
+                        results = results.Concat(Search.SearchDevices(Database, Term, Limit));
+
+                    break;
             }
 
-            if (Authorization.Has(Claims.User.Search))
-            {
-                var userMatches = Search.SearchUsers(Database, Term, Limit);
-                results = results.Concat(userMatches);
-            }
-
-            if (Authorization.Has(Claims.Device.Search))
-            {
-                var deviceMatches = Search.SearchDevices(Database, Term, Limit);
-                results = results.Concat(deviceMatches);
-            }
-
-            results = results.OrderByDescending(i => i.ScoreValue.Score(Term, .5)).Take(Limit);
+            results = results.OrderByDescending(i => i.ScoreValue.Score(Term)).Take(Limit);
 
             return Json(results, JsonRequestBehavior.AllowGet);
         }
