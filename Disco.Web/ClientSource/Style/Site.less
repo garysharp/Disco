@@ -112,6 +112,7 @@ header, #header {
                         &:first-child {
                             border-top: 1px solid @BackgroundColour;
                         }
+
                         &:last-child {
                             border-bottom: 1px solid @BackgroundColour;
                         }
@@ -212,6 +213,31 @@ header, #header {
 
     .watermark {
         background-color: #888;
+    }
+}
+
+#QuickSearchMenu {
+    max-height: 400px;
+    font-size: .9em;
+    background: none;
+    background-color: @BackgroundColourLight;
+
+    li {
+        &:not(:last-child) {
+            border-bottom: 1px solid @TableDataDarkBorderColour;
+        }
+
+        & > a {
+            padding: 2px;
+            & > i {
+                margin-right: 2px;
+            }
+
+            & > div {
+                padding-left: 1.2857142857142858em;
+                margin-left: 2px;
+            }
+        }
     }
 }
 

@@ -173,6 +173,7 @@
     <Compile Include="Authorization\Roles\RoleClaims.cs" />
     <Compile Include="Authorization\Roles\RoleToken.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Jobs\JobExtensions.cs" />
     <Compile Include="Jobs\JobLists\JobTableExtensions.cs" />
     <Compile Include="Jobs\JobQueues\Cache.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="Plugins\PluginWebViewPage.cs" />
     <Compile Include="Plugins\WebPageHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Searching\Search.cs" />
     <Compile Include="Tasks\ScheduledTask.cs" />
     <Compile Include="Tasks\ScheduledTasks.cs" />
     <Compile Include="Tasks\ScheduledTasksLog.cs" />
@@ -278,7 +280,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" />
+      <UserProperties BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

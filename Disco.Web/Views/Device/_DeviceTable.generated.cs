@@ -29,6 +29,7 @@ namespace Disco.Web.Views.Device
     using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
     using Disco.Web;
@@ -36,7 +37,7 @@ namespace Disco.Web.Views.Device
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/_DeviceTable.cshtml")]
-    public partial class DeviceTable : Disco.Services.Web.WebViewPage<IEnumerable<Disco.Models.BI.Search.DeviceSearchResultItem>>
+    public partial class DeviceTable : Disco.Services.Web.WebViewPage<IEnumerable<Disco.Models.Services.Searching.DeviceSearchResultItem>>
     {
         public DeviceTable()
         {
@@ -113,14 +114,14 @@ WriteLiteral(@">
             #line hidden
 WriteLiteral("                    <tr");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 895), Tuple.Create("\"", 972)
+WriteAttribute("class", Tuple.Create(" class=\"", 904), Tuple.Create("\"", 981)
             
             #line 30 "..\..\Views\Device\_DeviceTable.cshtml"
-, Tuple.Create(Tuple.Create("", 903), Tuple.Create<System.Object, System.Int32>(item.DecommissionedDate.HasValue ? "decommissioned" : string.Empty
+, Tuple.Create(Tuple.Create("", 912), Tuple.Create<System.Object, System.Int32>(item.DecommissionedDate.HasValue ? "decommissioned" : string.Empty
             
             #line default
             #line hidden
-, 903), false)
+, 912), false)
 );
 
 WriteLiteral(">\r\n                        <td>\r\n");
@@ -140,14 +141,14 @@ WriteLiteral(">\r\n                        <td>\r\n");
             #line hidden
             
             #line 33 "..\..\Views\Device\_DeviceTable.cshtml"
-                        Write(Html.ActionLink(item.SerialNumber, MVC.Device.Show(item.SerialNumber)));
+                        Write(Html.ActionLink(item.Id, MVC.Device.Show(item.Id)));
 
             
             #line default
             #line hidden
             
             #line 33 "..\..\Views\Device\_DeviceTable.cshtml"
-                                                                                                    }
+                                                                                }
                             else
                             {
             
@@ -155,14 +156,14 @@ WriteLiteral(">\r\n                        <td>\r\n");
             #line hidden
             
             #line 35 "..\..\Views\Device\_DeviceTable.cshtml"
-                        Write(item.SerialNumber);
+                        Write(item.Id);
 
             
             #line default
             #line hidden
             
             #line 35 "..\..\Views\Device\_DeviceTable.cshtml"
-                                               }
+                                     }
 
             
             #line default

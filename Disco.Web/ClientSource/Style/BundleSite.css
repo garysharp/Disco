@@ -3492,6 +3492,25 @@ header .watermark,
 #header .watermark {
   background-color: #888;
 }
+#QuickSearchMenu {
+  max-height: 400px;
+  font-size: .9em;
+  background: none;
+  background-color: #fafafa;
+}
+#QuickSearchMenu li:not(:last-child) {
+  border-bottom: 1px solid #d8d8d8;
+}
+#QuickSearchMenu li > a {
+  padding: 2px;
+}
+#QuickSearchMenu li > a > i {
+  margin-right: 2px;
+}
+#QuickSearchMenu li > a > div {
+  padding-left: 1.2857142857142858em;
+  margin-left: 2px;
+}
 #layout_PageHeading {
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAA8CAYAAABfESsNAAAAOUlEQVRIx+2SuREAIAzDFELL/uOSFVLx3Mm1C8nnABaNDJq5WJzAVkZGZXyPMg7+jUwCIeNZmdcZC2pxCZOpoRNgAAAAAElFTkSuQmCC) /*Images/BackgroundPage.png*/ left top repeat-x #ffffff;
   background: linear-gradient(to bottom, #f2f2f2 0px, #ffffff 50px) #ffffff;
@@ -4509,7 +4528,6 @@ input:-moz-placeholder {
   overflow-x: hidden;
   /* add padding to account for vertical scrollbar */
 
-  padding-right: 20px;
 }
 /* IE 6 doesn't support max-height
 * we use height instead, but this forces the menu to always be this tall

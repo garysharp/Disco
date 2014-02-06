@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Disco.Models.BI.Search.DeviceSearchResultItem>
+﻿@model IEnumerable<Disco.Models.Services.Searching.DeviceSearchResultItem>
 @{
     var canShowDevices = Authorization.Has(Claims.Device.Show);
 }
@@ -30,9 +30,9 @@
                     <tr class="@(item.DecommissionedDate.HasValue ? "decommissioned" : string.Empty)">
                         <td>
                             @if (canShowDevices)
-                            {@Html.ActionLink(item.SerialNumber, MVC.Device.Show(item.SerialNumber))}
+                            {@Html.ActionLink(item.Id, MVC.Device.Show(item.Id))}
                             else
-                            {@item.SerialNumber}
+                            {@item.Id}
                         </td>
                         <td>
                             @item.AssetNumber

@@ -29,6 +29,7 @@ namespace Disco.Web.Views.User
     using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
     using Disco.Web;
@@ -36,7 +37,7 @@ namespace Disco.Web.Views.User
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/User/_UserTable.cshtml")]
-    public partial class UserTable : Disco.Services.Web.WebViewPage<IEnumerable<Disco.Models.BI.Search.UserSearchResultItem>>
+    public partial class UserTable : Disco.Services.Web.WebViewPage<IEnumerable<Disco.Models.Services.Searching.UserSearchResultItem>>
     {
         public UserTable()
         {

@@ -1,5 +1,5 @@
-﻿using Disco.Models.BI.Search;
-using Disco.Models.Services.Jobs.JobLists;
+﻿using Disco.Models.Services.Jobs.JobLists;
+using Disco.Models.Services.Searching;
 using System.Collections.Generic;
 
 namespace Disco.Models.UI.Search

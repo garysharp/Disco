@@ -14,7 +14,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.User.Search)]
         public virtual ActionResult UpstreamUsers(string term)
         {
-            return Json(BI.UserBI.Searching.SearchUpstream(term), JsonRequestBehavior.AllowGet);
+            return Json(Disco.Services.Searching.Search.SearchUsersUpstream(term), JsonRequestBehavior.AllowGet);
         }
 
         #region User Attachements

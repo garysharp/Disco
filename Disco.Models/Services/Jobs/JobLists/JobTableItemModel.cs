@@ -1,22 +1,34 @@
-﻿using System;
+﻿using Disco.Models.Services.Searching;
+using System;
 
 namespace Disco.Models.Services.Jobs.JobLists
 {
-    public class JobTableItemModel
+    public class JobTableItemModel : JobSearchResultItem
     {
-        public int Id { get; set; }
+        public int JobId { get; set; }
+        
+        [Obsolete("Use [int] JobId instead")]
+        public override string Id
+        {
+            get
+            {
+                return this.JobId.ToString();
+            }
+            set
+            {
+                base.Id = value;
+                this.JobId = int.Parse(value);
+            }
+        }
         public DateTime OpenedDate { get; set; }
         public DateTime? ClosedDate { get; set; }
         public string JobTypeId { get; set; }
         public string JobTypeDescription { get; set; }
-        public string DeviceSerialNumber { get; set; }
         public int? DeviceModelId { get; set; }
         public string DeviceModelDescription { get; set; }
         public int? DeviceProfileId { get; set; }
         public int? DeviceAddressId { get; set; }
         public string DeviceAddress { get; set; }
-        public string UserId { get; set; }
-        public string UserDisplayName { get; set; }
         public string OpenedTechUserId { get; set; }
         public string OpenedTechUserDisplayName { get; set; }
         public string StatusDescription { get; set; }

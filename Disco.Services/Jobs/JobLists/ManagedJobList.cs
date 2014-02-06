@@ -217,7 +217,7 @@ using Disco.Services.Authorization;
                 if (existingItems == null)
                     throw new InvalidOperationException("Notification algorithm didn't indicate any Jobs for update");
                 else
-                    jobIds = existingItems.Select(i => i.Id).ToList();
+                    jobIds = existingItems.Select(i => i.JobId).ToList();
             }
 
             if (jobIds.Count == 0)
@@ -232,7 +232,7 @@ using Disco.Services.Authorization;
             {
                 // Check for existing items, if not handed them
                 if (existingItems == null)
-                    existingItems = base.Items.Where(i => jobIds.Contains(i.Id)).ToArray();
+                    existingItems = base.Items.Where(i => jobIds.Contains(i.JobId)).ToArray();
 
                 var updatedItems = this.DetermineItems(Database, this.FilterFunction(Database.Jobs.Where(j => jobIds.Contains(j.Id))), false);
 

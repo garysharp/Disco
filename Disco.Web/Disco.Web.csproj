@@ -192,6 +192,7 @@
     <Compile Include="Areas\API\Controllers\JobQueueController.cs" />
     <Compile Include="Areas\API\Controllers\JobQueueJobController.cs" />
     <Compile Include="Areas\API\Controllers\PluginController.cs" />
+    <Compile Include="Areas\API\Controllers\SearchController.cs" />
     <Compile Include="Areas\API\Models\AuthorizationRole\SubjectItem.cs" />
     <Compile Include="Areas\API\Models\JobQueue\SubjectItem.cs" />
     <Compile Include="Areas\Config\Controllers\AuthorizationRoleController.cs" />
@@ -1957,6 +1958,7 @@
     <None Include="_bin_deployableAssemblies\x86\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\API\Models\Search\" />
     <Folder Include="Areas\API\Models\WirelessCertificate\" />
     <Folder Include="Areas\Services\Models\" />
   </ItemGroup>

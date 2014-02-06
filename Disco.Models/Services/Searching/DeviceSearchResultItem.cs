@@ -1,9 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Disco.Models.BI.Search
+namespace Disco.Models.Services.Searching
 {
-    public class DeviceSearchResultItem
+    public class DeviceSearchResultItem : ISearchResultItem
     {
+        private const string type = "Device";
+
+        public string Id { get; set; }
+        public string Type { get { return type; } }
+        public string Description { get { return string.Format("{0} ({1})", this.Id, this.ComputerName); } }
+        public string ScoreValue { get { return string.Format("{0} {1} {2} {3}", this.Id, this.AssignedUserId, this.AssignedUserDisplayName, this.AssetNumber); } }
+
         public string AssetNumber { get; set; }
         public string AssignedUserDescription
         {
@@ -26,6 +37,5 @@ namespace Disco.Models.BI.Search
         public string DeviceProfileDescription { get; set; }
         public int JobCount { get; set; }
         public DateTime? DecommissionedDate { get; set; }
-        public string SerialNumber { get; set; }
     }
 }

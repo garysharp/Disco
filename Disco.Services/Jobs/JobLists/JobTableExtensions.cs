@@ -120,7 +120,7 @@ namespace Disco.Services
 
                 var jobItems = Jobs.Select(j => new JobTableStatusItemModel()
                 {
-                    Id = j.Id,
+                    JobId = j.Id,
                     OpenedDate = j.OpenedDate,
                     ClosedDate = j.ClosedDate,
                     JobTypeId = j.JobTypeId,
@@ -177,7 +177,7 @@ namespace Disco.Services
             {
                 items = Jobs.Select(j => new JobTableItemModel()
                 {
-                    Id = j.Id,
+                    JobId = j.Id,
                     OpenedDate = j.OpenedDate,
                     ClosedDate = j.ClosedDate,
                     JobTypeId = j.JobTypeId,

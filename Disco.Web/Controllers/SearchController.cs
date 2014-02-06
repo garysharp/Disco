@@ -62,13 +62,13 @@ namespace Disco.Web.Controllers
                     return View(m);
                 }
                 if (Authorization.Has(Claims.Job.Search))
-                    m.Jobs = BI.JobBI.Searching.Search(Database, term, null, true, searchDetails);
+                    m.Jobs = Services.Searching.Search.SearchJobsTable(Database, term, null, true, searchDetails);
 
                 if (Authorization.Has(Claims.Device.Search))
-                    m.Devices = BI.DeviceBI.Searching.Search(Database, term, null, searchDetails);
+                    m.Devices = Services.Searching.Search.SearchDevices(Database, term, null, searchDetails);
 
                 if (Authorization.Has(Claims.User.Search))
-                    m.Users = BI.UserBI.Searching.Search(Database, term);
+                    m.Users = Services.Searching.Search.SearchUsers(Database, term);
             }
             else
             {
@@ -83,7 +83,7 @@ namespace Disco.Web.Controllers
                             if (vm != null)
                             {
                                 m.FriendlyTerm = string.Format("Device Model: {0}", vm.ToString());
-                                m.Devices = BI.DeviceBI.Searching.SearchDeviceModel(Database, vm.Id);
+                                m.Devices = Services.Searching.Search.SearchDeviceModel(Database, vm.Id);
                                 break;
                             }
                         }
@@ -100,7 +100,7 @@ namespace Disco.Web.Controllers
                             if (dp != null)
                             {
                                 m.FriendlyTerm = string.Format("Device Profile: {0}", dp.ToString());
-                                m.Devices = BI.DeviceBI.Searching.SearchDeviceProfile(Database, dp.Id);
+                                m.Devices = Services.Searching.Search.SearchDeviceProfile(Database, dp.Id);
                                 break;
                             }
                         }
@@ -117,7 +117,7 @@ namespace Disco.Web.Controllers
                             if (db != null)
                             {
                                 m.FriendlyTerm = string.Format("Device Batch: {0}", db.ToString());
-                                m.Devices = BI.DeviceBI.Searching.SearchDeviceBatch(Database, db.Id);
+                                m.Devices = Services.Searching.Search.SearchDeviceBatch(Database, db.Id);
                                 break;
                             }
                         }
@@ -133,10 +133,10 @@ namespace Disco.Web.Controllers
                             m.ErrorMessage = "A search term of at least two characters is required";
                             return View(m);
                         }
-                        m.Devices = BI.DeviceBI.Searching.Search(Database, term, null, searchDetails);
+                        m.Devices = Services.Searching.Search.SearchDevices(Database, term, null, searchDetails);
                         if (m.Devices.Count == 1)
                         {
-                            return RedirectToAction(MVC.Device.Show(m.Devices[0].SerialNumber));
+                            return RedirectToAction(MVC.Device.Show(m.Devices[0].Id));
                         }
                         break;
                     case "jobs":
@@ -154,7 +154,7 @@ namespace Disco.Web.Controllers
                                 return RedirectToAction(MVC.Job.Show(termInt));
                             }
                         }
-                        m.Jobs = BI.JobBI.Searching.Search(Database, term, null, true, searchDetails);
+                        m.Jobs = Services.Searching.Search.SearchJobsTable(Database, term, null, true, searchDetails);
                         break;
                     case "users":
                         Authorization.Require(Claims.User.Search);
@@ -164,7 +164,7 @@ namespace Disco.Web.Controllers
                             m.ErrorMessage = "A search term of at least two characters is required";
                             return View(m);
                         }
-                        m.Users = BI.UserBI.Searching.Search(Database, term);
+                        m.Users = Services.Searching.Search.SearchUsers(Database, term);
                         if (m.Users.Count == 1)
                         {
                             return RedirectToAction(MVC.User.Show(m.Users[0].Id));

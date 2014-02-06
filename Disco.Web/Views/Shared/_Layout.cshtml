@@ -28,14 +28,14 @@
                                 var queues = Disco.Services.Jobs.JobQueues.JobQueueService.GetQueues();
                                 if (queues.Count > 0)
                                 {
-                                    <li class="d-sm"><i class="fa fa-caret-right"></i><a>Queues</a>
-                                        <ul>
-                                            @foreach (var queueToken in queues)
-                                            {
-                                                <li><a href="@Url.Action(MVC.Job.Queue(queueToken.JobQueue.Id))"><i class="fa fa-@(queueToken.JobQueue.Icon) fa-fw d-@(queueToken.JobQueue.IconColour)"></i> @(queueToken.JobQueue.Name)</a></li>
-                                            }
-                                        </ul>
-                                    </li>
+                                <li class="d-sm"><i class="fa fa-caret-right"></i><a>Queues</a>
+                                    <ul>
+                                        @foreach (var queueToken in queues)
+                                        {
+                                            <li><a href="@Url.Action(MVC.Job.Queue(queueToken.JobQueue.Id))"><i class="fa fa-@(queueToken.JobQueue.Icon) fa-fw d-@(queueToken.JobQueue.IconColour)"></i>@(queueToken.JobQueue.Name)</a></li>
+                                        }
+                                    </ul>
+                                </li>
                                 }
                             }
                             @if (Authorization.Has(Claims.Job.Lists.AwaitingTechnicianAction))
@@ -98,11 +98,13 @@
                             }
                         </ul>
                     </li>
-                    @if (Authorization.HasAny(Claims.Device.Search, Claims.Device.Actions.Import, Claims.Device.Actions.Export, Claims.Device.Actions.EnrolDevices)){
-                    <li class="@((string)ViewContext.ViewData["MenuArea"] == MVC.Device.Name ? "active" : null)">@Html.ActionLink("Devices", MVC.Device.Index(), accesskey: "2")</li>
+                    @if (Authorization.HasAny(Claims.Device.Search, Claims.Device.Actions.Import, Claims.Device.Actions.Export, Claims.Device.Actions.EnrolDevices))
+                    {
+                        <li class="@((string)ViewContext.ViewData["MenuArea"] == MVC.Device.Name ? "active" : null)">@Html.ActionLink("Devices", MVC.Device.Index(), accesskey: "2")</li>
                     }
-                    @if (Authorization.HasAny(Claims.User.Search)){
-                    <li class="@((string)ViewContext.ViewData["MenuArea"] == MVC.User.Name ? "active" : null)">@Html.ActionLink("Users", MVC.User.Index(), accesskey: "3")</li>
+                    @if (Authorization.HasAny(Claims.User.Search))
+                    {
+                        <li class="@((string)ViewContext.ViewData["MenuArea"] == MVC.User.Name ? "active" : null)">@Html.ActionLink("Users", MVC.User.Index(), accesskey: "3")</li>
                     }
                     <li class="moveRight@((string)ViewContext.ViewData["MenuArea"] == MVC.Public.Name ? " active" : null)">@Html.ActionLink("Reports", MVC.Public.Public.Index())</li>
                     @if (Authorization.Has(Claims.Config.Show))
@@ -116,9 +118,11 @@
                       { @Html.ActionLink(CurrentUser.ToString(), MVC.User.Show(CurrentUser.Id))}
                       else
                       {@CurrentUser.ToString()}</span>
-                @if (Authorization.HasAny(Claims.Job.Search, Claims.Device.Search, Claims.User.Search)){
-                using (Html.BeginForm(MVC.Search.Query(), FormMethod.Get))
-                { @Html.TextBox("term", null, new { id="SearchQuery", accesskey = "s", placeholder="Search" }) }}
+                @if (Authorization.HasAny(Claims.Job.Search, Claims.Device.Search, Claims.User.Search))
+                {
+                    using (Html.BeginForm(MVC.Search.Query(), FormMethod.Get))
+                    { @Html.TextBox("term", null, new { id = "SearchQuery", accesskey = "s", placeholder = "Search", data_quicksearchurl = Url.Action(MVC.API.Search.QuickQuery()) }) }
+                }
             </div>
         </header>
         <div id="layout_PageHeading">@CommonHelpers.Breadcrumbs(ViewBag.Title ?? string.Empty)</div>

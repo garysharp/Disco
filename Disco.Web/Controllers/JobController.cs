@@ -34,7 +34,7 @@ namespace Disco.Web.Controllers
             if (Authorization.Has(Claims.Job.Lists.LongRunningJobs))
             {
                 var longRunningThreshold = DateTime.Today.AddDays(Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold * -1);
-                m.LongRunningJobs = ManagedJobList.OpenJobsTable(q => q.Where(j => j.OpenedDate < longRunningThreshold).OrderBy(j => j.Id));
+                m.LongRunningJobs = ManagedJobList.OpenJobsTable(q => q.Where(j => j.OpenedDate < longRunningThreshold).OrderBy(j => j.JobId));
             }
             if (Authorization.Has(Claims.Job.ShowDailyChart))
                 m.DailyOpenedClosedStatistics = Disco.BI.JobBI.Statistics.DailyOpenedClosed.Data(Database, true);
@@ -68,7 +68,7 @@ namespace Disco.Web.Controllers
         public virtual ActionResult AllOpen()
         {
             var m = new Models.Job.ListModel() { Title = "All Open Jobs" };
-            m.JobTable = ManagedJobList.OpenJobsTable(q => q.OrderBy(j => j.Id));
+            m.JobTable = ManagedJobList.OpenJobsTable(q => q.OrderBy(j => j.JobId));
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
@@ -97,7 +97,7 @@ namespace Disco.Web.Controllers
             m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j => !j.WaitingForUserAction.HasValue
                 && j.DeviceHeld != null && j.DeviceReturnedDate == null && j.DeviceReadyForReturn != null &&
                 ((!j.JobMetaNonWarranty_AccountingChargeRequiredDate.HasValue && !j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue) || j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue))
-                .OrderBy(j => j.Id));
+                .OrderBy(j => j.JobId));
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
@@ -113,7 +113,7 @@ namespace Disco.Web.Controllers
             m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j =>
                 (j.JobMetaNonWarranty_RepairerLoggedDate != null && j.JobMetaNonWarranty_RepairerCompletedDate == null) ||
                 (j.JobMetaWarranty_ExternalLoggedDate != null && j.JobMetaWarranty_ExternalCompletedDate == null)
-                ).OrderBy(j => j.Id));
+                ).OrderBy(j => j.JobId));
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
@@ -145,7 +145,7 @@ namespace Disco.Web.Controllers
             var m = new Models.Job.ListModel() { Title = "Jobs Awaiting Finance - Accounting Charge" };
             m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j =>
                 j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty_AccountingChargeRequiredDate.HasValue && (!j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue))
-                ).OrderBy(j => j.Id));
+                ).OrderBy(j => j.JobId));
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
@@ -159,7 +159,7 @@ namespace Disco.Web.Controllers
             var m = new Models.Job.ListModel() { Title = "Jobs Awaiting Finance - Accounting Payment" };
             m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j =>
                 j.JobTypeId == JobType.JobTypeIds.HNWar && ((j.JobMetaNonWarranty_AccountingChargeRequiredDate.HasValue || j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue) && !j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue)
-                ).OrderBy(j => j.Id));
+                ).OrderBy(j => j.JobId));
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
@@ -173,7 +173,7 @@ namespace Disco.Web.Controllers
             var m = new Models.Job.ListModel() { Title = "Jobs Awaiting Finance - Insurance Processing" };
             m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j =>
                 j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty_IsInsuranceClaim.Value && !j.JobMetaInsurance_ClaimFormSentDate.HasValue)
-                ).OrderBy(j => j.Id));
+                ).OrderBy(j => j.JobId));
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
@@ -187,7 +187,7 @@ namespace Disco.Web.Controllers
             var m = new Models.Job.ListModel() { Title = "Jobs Awaiting Finance - Agreement Breach" };
             m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j =>
                 j.JobTypeId == JobType.JobTypeIds.UMgmt && Job.UserManagementFlags.Infringement_BreachFinancialAgreement == (j.Flags & Job.UserManagementFlags.Infringement_BreachFinancialAgreement)
-                ).OrderBy(j => j.Id));
+                ).OrderBy(j => j.JobId));
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
@@ -204,7 +204,7 @@ namespace Disco.Web.Controllers
                 j.WaitingForUserAction.HasValue ||
                 (j.JobMetaNonWarranty_AccountingChargeAddedDate != null && j.JobMetaNonWarranty_AccountingChargePaidDate == null) ||
                 (j.JobMetaNonWarranty_AccountingChargeRequiredDate != null && j.JobMetaNonWarranty_AccountingChargePaidDate == null)
-                ).OrderBy(j => j.Id));
+                ).OrderBy(j => j.JobId));
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
@@ -224,7 +224,7 @@ namespace Disco.Web.Controllers
                 closedThreshold = closedThreshold.AddDays(-2);
             if (dateTimeNow.DayOfWeek == DayOfWeek.Tuesday)
                 closedThreshold = closedThreshold.AddDays(-1);
-            m.JobTable.Fill(Database, BI.JobBI.Searching.BuildJobTableModel(Database).Where(j => j.ClosedDate > closedThreshold).OrderBy(j => j.Id), true);
+            m.JobTable.Fill(Database, Disco.Services.Searching.Search.BuildJobTableModel(Database).Where(j => j.ClosedDate > closedThreshold).OrderBy(j => j.Id), true);
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);

@@ -35,7 +35,8 @@ namespace Disco.Web.Areas.API
             context.MapRoute(
                 "API_default",
                 "API/{controller}/{action}/{id}",
-                new { id = UrlParameter.Optional }
+                new { id = UrlParameter.Optional },
+                new string[] { "Disco.Web.Areas.API.Controllers" }
             );
         }
     }

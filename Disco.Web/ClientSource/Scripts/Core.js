@@ -41936,13 +41936,76 @@ jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, -1], [10, 20, 50, "All"
     $(function () {
 
         // Search Functionality
+        var quickSearchInited = false;
         $('#SearchQuery').watermark('Search').keypress(function (e) {
             if (e.keyCode == 13) {
                 $(this).closest('form').submit();
                 return false;
             }
         }).focus(function () {
-            $(this).select();
+            $this = $(this);
+            $this.select();
+
+            if (!quickSearchInited) {
+                var quickSearchUrl = $this.attr('data-quicksearchurl');
+                if (quickSearchUrl) {
+                    $this.autocomplete({
+                        source: quickSearchUrl,
+                        minLength: 2,
+                        select: function (e, ui) {
+                            $this.val(ui.item.tag);
+                            $this.closest('form').submit();
+                        },
+                        response: function (e, ui) {
+                            for (var i = 0; i < ui.content.length; i++) {
+                                var item = ui.content[i];
+                                switch (item.Type) {
+                                    case 'Device':
+                                        item.tag = '!' + item.Id;
+                                        break;
+                                    case 'Job':
+                                        item.tag = '#' + item.Id;
+                                        break;
+                                    case 'User':
+                                        item.tag = '@' + item.Id;
+                                        break;
+                                }
+                            }
+                        }
+                    }).autocomplete("widget").attr('id', 'QuickSearchMenu');
+
+                    $this.data('ui-autocomplete')._renderItem = function (ul, item) {
+                        var template;
+
+                        //"<a><strong>" + item.DisplayName + "</strong><br>" + item.Id + " (" + item.Type + ")</a>"
+
+                        switch (item.Type) {
+                            case 'Device':
+                                template = $('<a>').append('<i class="fa fa-desktop fa-fw">').append($('<strong>').text('Device ' + item.Id)).append($('<div>').text(item.ComputerName + '; ' + item.DeviceModelDescription))
+                                break;
+                            case 'Job':
+                                if (item.DeviceSerialNumber && item.UserId) {
+                                    template = $('<a>').append('<i class="fa fa-question-circle fa-fw">').append($('<strong>').text('Job ' + item.Id)).append($('<div>').text(item.UserId + '; ' + item.DeviceSerialNumber))
+                                } else if (item.DeviceSerialNumber) {
+                                    template = $('<a>').append('<i class="fa fa-question-circle fa-fw">').append($('<strong>').text('Job ' + item.Id)).append($('<div>').text(item.DeviceSerialNumber))
+                                } else if (item.UserId) {
+                                    template = $('<a>').append('<i class="fa fa-question-circle fa-fw">').append($('<strong>').text('Job ' + item.Id)).append($('<div>').text(item.UserId))
+                                }
+                                break;
+                            case 'User':
+                                template = $('<a>').append('<i class="fa fa-user fa-fw">').append($('<strong>').text(item.DisplayName)).append($('<div>').text(item.Id))
+                                break;
+                        }
+
+                        return $("<li>")
+                            .data("item.autocomplete", item)
+                            .append(template)
+                            .appendTo(ul);
+                    };
+                    
+                }
+                quickSearchInited = true;
+            }
         });
 
         // Menu Functionality

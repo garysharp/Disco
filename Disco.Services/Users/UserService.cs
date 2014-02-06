@@ -22,13 +22,16 @@ namespace Disco.Services.Users
         private const string _cacheHttpRequestKey = "Disco_CurrentUserToken";
         private static Func<string, string[], ActiveDirectoryUserAccount> _GetActiveDirectoryUserAccount;
         private static Func<string, string[], ActiveDirectoryMachineAccount> _GetActiveDirectoryMachineAccount;
+        private static Func<string, List<ActiveDirectoryUserAccount>> _SearchActiveDirectoryUsers;
 
         public static void Initialize(DiscoDataContext Database,
             Func<string, string[], ActiveDirectoryUserAccount> GetActiveDirectoryUserAccount,
-            Func<string, string[], ActiveDirectoryMachineAccount> GetActiveDirectoryMachineAccount)
+            Func<string, string[], ActiveDirectoryMachineAccount> GetActiveDirectoryMachineAccount,
+            Func<string, List<ActiveDirectoryUserAccount>> SearchActiveDirectoryUsers)
         {
             _GetActiveDirectoryUserAccount = GetActiveDirectoryUserAccount;
             _GetActiveDirectoryMachineAccount = GetActiveDirectoryMachineAccount;
+            _SearchActiveDirectoryUsers = SearchActiveDirectoryUsers;
 
             Authorization.Roles.RoleCache.Initialize(Database);
         }
@@ -199,6 +202,27 @@ namespace Disco.Services.Users
 
             // Flush User Cache
             Cache.FlushCache();
+        }
+
+        internal static List<ActiveDirectoryUserAccount> SearchUsers(string Term)
+        {
+            return _SearchActiveDirectoryUsers(Term);
+        }
+
+        internal static List<ActiveDirectoryUserAccount> SearchUsers(DiscoDataContext Database, string Term)
+        {
+            var adImportedUsers = SearchUsers(Term);
+            foreach (var adU in adImportedUsers.Select(adU => adU.ToRepositoryUser()))
+            {
+                var existingUser = Database.Users.Find(adU.Id);
+                if (existingUser != null)
+                    existingUser.UpdateSelf(adU);
+                else
+                    Database.Users.Add(adU);
+                Database.SaveChanges();
+                UserService.InvalidateCachedUser(adU.Id);
+            }
+            return adImportedUsers;
         }
 
         internal static Tuple<User, AuthorizationToken> ImportUser(DiscoDataContext Database, string UserId)

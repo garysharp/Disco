@@ -183,7 +183,7 @@ WriteLiteral("\r\n                        <ul>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("                                    <li");
+WriteLiteral("                                <li");
 
 WriteLiteral(" class=\"d-sm\"");
 
@@ -191,62 +191,62 @@ WriteLiteral("><i");
 
 WriteLiteral(" class=\"fa fa-caret-right\"");
 
-WriteLiteral("></i><a>Queues</a>\r\n                                        <ul>\r\n");
+WriteLiteral("></i><a>Queues</a>\r\n                                    <ul>\r\n");
 
             
             #line 33 "..\..\Views\Shared\_Layout.cshtml"
-                                            
+                                        
             
             #line default
             #line hidden
             
             #line 33 "..\..\Views\Shared\_Layout.cshtml"
-                                             foreach (var queueToken in queues)
-                                            {
+                                         foreach (var queueToken in queues)
+                                        {
 
             
             #line default
             #line hidden
-WriteLiteral("                                                <li><a");
+WriteLiteral("                                            <li><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 1672), Tuple.Create("\"", 1729)
+WriteAttribute("href", Tuple.Create(" href=\"", 1652), Tuple.Create("\"", 1709)
             
             #line 35 "..\..\Views\Shared\_Layout.cshtml"
-, Tuple.Create(Tuple.Create("", 1679), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Job.Queue(queueToken.JobQueue.Id))
+, Tuple.Create(Tuple.Create("", 1659), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Job.Queue(queueToken.JobQueue.Id))
             
             #line default
             #line hidden
-, 1679), false)
+, 1659), false)
 );
 
 WriteLiteral("><i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1733), Tuple.Create("\"", 1816)
-, Tuple.Create(Tuple.Create("", 1741), Tuple.Create("fa", 1741), true)
-, Tuple.Create(Tuple.Create(" ", 1743), Tuple.Create("fa-", 1744), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1713), Tuple.Create("\"", 1796)
+, Tuple.Create(Tuple.Create("", 1721), Tuple.Create("fa", 1721), true)
+, Tuple.Create(Tuple.Create(" ", 1723), Tuple.Create("fa-", 1724), true)
             
             #line 35 "..\..\Views\Shared\_Layout.cshtml"
-                                                  , Tuple.Create(Tuple.Create("", 1747), Tuple.Create<System.Object, System.Int32>(queueToken.JobQueue.Icon
+                                              , Tuple.Create(Tuple.Create("", 1727), Tuple.Create<System.Object, System.Int32>(queueToken.JobQueue.Icon
             
             #line default
             #line hidden
-, 1747), false)
-, Tuple.Create(Tuple.Create(" ", 1774), Tuple.Create("fa-fw", 1775), true)
-, Tuple.Create(Tuple.Create(" ", 1780), Tuple.Create("d-", 1781), true)
+, 1727), false)
+, Tuple.Create(Tuple.Create(" ", 1754), Tuple.Create("fa-fw", 1755), true)
+, Tuple.Create(Tuple.Create(" ", 1760), Tuple.Create("d-", 1761), true)
             
             #line 35 "..\..\Views\Shared\_Layout.cshtml"
-                                                                                      , Tuple.Create(Tuple.Create("", 1783), Tuple.Create<System.Object, System.Int32>(queueToken.JobQueue.IconColour
+                                                                                  , Tuple.Create(Tuple.Create("", 1763), Tuple.Create<System.Object, System.Int32>(queueToken.JobQueue.IconColour
             
             #line default
             #line hidden
-, 1783), false)
+, 1763), false)
 );
 
-WriteLiteral("></i> ");
+WriteLiteral("></i>");
 
             
             #line 35 "..\..\Views\Shared\_Layout.cshtml"
-                                                                                                                                                                                                         Write(queueToken.JobQueue.Name);
+                                                                                                                                                                                                    Write(queueToken.JobQueue.Name);
 
             
             #line default
@@ -255,13 +255,13 @@ WriteLiteral("</a></li>\r\n");
 
             
             #line 36 "..\..\Views\Shared\_Layout.cshtml"
-                                            }
+                                        }
 
             
             #line default
             #line hidden
-WriteLiteral("                                        </ul>\r\n                                  " +
-"  </li>\r\n");
+WriteLiteral("                                    </ul>\r\n                                </li>\r" +
+"\n");
 
             
             #line 39 "..\..\Views\Shared\_Layout.cshtml"
@@ -655,28 +655,29 @@ WriteLiteral("                        </ul>\r\n                    </li>\r\n");
             #line hidden
             
             #line 101 "..\..\Views\Shared\_Layout.cshtml"
-                     if (Authorization.HasAny(Claims.Device.Search, Claims.Device.Actions.Import, Claims.Device.Actions.Export, Claims.Device.Actions.EnrolDevices)){
+                     if (Authorization.HasAny(Claims.Device.Search, Claims.Device.Actions.Import, Claims.Device.Actions.Export, Claims.Device.Actions.EnrolDevices))
+                    {
 
             
             #line default
             #line hidden
-WriteLiteral("                    <li");
+WriteLiteral("                        <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 6398), Tuple.Create("\"", 6486)
+WriteAttribute("class", Tuple.Create(" class=\"", 6391), Tuple.Create("\"", 6479)
             
-            #line 102 "..\..\Views\Shared\_Layout.cshtml"
-, Tuple.Create(Tuple.Create("", 6406), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Device.Name ? "active" : null
+            #line 103 "..\..\Views\Shared\_Layout.cshtml"
+, Tuple.Create(Tuple.Create("", 6399), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Device.Name ? "active" : null
             
             #line default
             #line hidden
-, 6406), false)
+, 6399), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 102 "..\..\Views\Shared\_Layout.cshtml"
-                                                                                                            Write(Html.ActionLink("Devices", MVC.Device.Index(), accesskey: "2"));
+            #line 103 "..\..\Views\Shared\_Layout.cshtml"
+                                                                                                                Write(Html.ActionLink("Devices", MVC.Device.Index(), accesskey: "2"));
 
             
             #line default
@@ -684,7 +685,7 @@ WriteLiteral(">");
 WriteLiteral("</li>\r\n");
 
             
-            #line 103 "..\..\Views\Shared\_Layout.cshtml"
+            #line 104 "..\..\Views\Shared\_Layout.cshtml"
                     }
 
             
@@ -693,29 +694,30 @@ WriteLiteral("</li>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 104 "..\..\Views\Shared\_Layout.cshtml"
-                     if (Authorization.HasAny(Claims.User.Search)){
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                    <li");
-
-WriteAttribute("class", Tuple.Create(" class=\"", 6673), Tuple.Create("\"", 6759)
-            
             #line 105 "..\..\Views\Shared\_Layout.cshtml"
-, Tuple.Create(Tuple.Create("", 6681), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.User.Name ? "active" : null
+                     if (Authorization.HasAny(Claims.User.Search))
+                    {
+
             
             #line default
             #line hidden
-, 6681), false)
+WriteLiteral("                        <li");
+
+WriteAttribute("class", Tuple.Create(" class=\"", 6692), Tuple.Create("\"", 6778)
+            
+            #line 107 "..\..\Views\Shared\_Layout.cshtml"
+, Tuple.Create(Tuple.Create("", 6700), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.User.Name ? "active" : null
+            
+            #line default
+            #line hidden
+, 6700), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 105 "..\..\Views\Shared\_Layout.cshtml"
-                                                                                                          Write(Html.ActionLink("Users", MVC.User.Index(), accesskey: "3"));
+            #line 107 "..\..\Views\Shared\_Layout.cshtml"
+                                                                                                              Write(Html.ActionLink("Users", MVC.User.Index(), accesskey: "3"));
 
             
             #line default
@@ -723,7 +725,7 @@ WriteLiteral(">");
 WriteLiteral("</li>\r\n");
 
             
-            #line 106 "..\..\Views\Shared\_Layout.cshtml"
+            #line 108 "..\..\Views\Shared\_Layout.cshtml"
                     }
 
             
@@ -731,21 +733,21 @@ WriteLiteral("</li>\r\n");
             #line hidden
 WriteLiteral("                    <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 6873), Tuple.Create("\"", 6971)
-, Tuple.Create(Tuple.Create("", 6881), Tuple.Create("moveRight", 6881), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 6892), Tuple.Create("\"", 6990)
+, Tuple.Create(Tuple.Create("", 6900), Tuple.Create("moveRight", 6900), true)
             
-            #line 107 "..\..\Views\Shared\_Layout.cshtml"
-, Tuple.Create(Tuple.Create("", 6890), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Public.Name ? " active" : null
+            #line 109 "..\..\Views\Shared\_Layout.cshtml"
+, Tuple.Create(Tuple.Create("", 6909), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Public.Name ? " active" : null
             
             #line default
             #line hidden
-, 6890), false)
+, 6909), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 107 "..\..\Views\Shared\_Layout.cshtml"
+            #line 109 "..\..\Views\Shared\_Layout.cshtml"
                                                                                                                       Write(Html.ActionLink("Reports", MVC.Public.Public.Index()));
 
             
@@ -754,13 +756,13 @@ WriteLiteral(">");
 WriteLiteral("</li>\r\n");
 
             
-            #line 108 "..\..\Views\Shared\_Layout.cshtml"
+            #line 110 "..\..\Views\Shared\_Layout.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 108 "..\..\Views\Shared\_Layout.cshtml"
+            #line 110 "..\..\Views\Shared\_Layout.cshtml"
                      if (Authorization.Has(Claims.Config.Show))
                     {
 
@@ -769,20 +771,20 @@ WriteLiteral("</li>\r\n");
             #line hidden
 WriteLiteral("                        <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 7149), Tuple.Create("\"", 7237)
+WriteAttribute("class", Tuple.Create(" class=\"", 7168), Tuple.Create("\"", 7256)
             
-            #line 110 "..\..\Views\Shared\_Layout.cshtml"
-, Tuple.Create(Tuple.Create("", 7157), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Config.Name ? "active" : null
+            #line 112 "..\..\Views\Shared\_Layout.cshtml"
+, Tuple.Create(Tuple.Create("", 7176), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Config.Name ? "active" : null
             
             #line default
             #line hidden
-, 7157), false)
+, 7176), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 110 "..\..\Views\Shared\_Layout.cshtml"
+            #line 112 "..\..\Views\Shared\_Layout.cshtml"
                                                                                                                 Write(Html.ActionLink("Configuration", MVC.Config.Config.Index(), accesskey: "0"));
 
             
@@ -791,7 +793,7 @@ WriteLiteral(">");
 WriteLiteral("</li>\r\n");
 
             
-            #line 111 "..\..\Views\Shared\_Layout.cshtml"
+            #line 113 "..\..\Views\Shared\_Layout.cshtml"
                     }
 
             
@@ -804,21 +806,21 @@ WriteLiteral(" id=\"headerMenu\"");
 WriteLiteral(">\r\n                <span>");
 
             
-            #line 115 "..\..\Views\Shared\_Layout.cshtml"
+            #line 117 "..\..\Views\Shared\_Layout.cshtml"
                        if (Authorization.Has(Claims.User.Show))
                       { 
             
             #line default
             #line hidden
             
-            #line 116 "..\..\Views\Shared\_Layout.cshtml"
+            #line 118 "..\..\Views\Shared\_Layout.cshtml"
                    Write(Html.ActionLink(CurrentUser.ToString(), MVC.User.Show(CurrentUser.Id)));
 
             
             #line default
             #line hidden
             
-            #line 116 "..\..\Views\Shared\_Layout.cshtml"
+            #line 118 "..\..\Views\Shared\_Layout.cshtml"
                                                                                                }
                       else
                       {
@@ -826,14 +828,14 @@ WriteLiteral(">\r\n                <span>");
             #line default
             #line hidden
             
-            #line 118 "..\..\Views\Shared\_Layout.cshtml"
+            #line 120 "..\..\Views\Shared\_Layout.cshtml"
                   Write(CurrentUser.ToString());
 
             
             #line default
             #line hidden
             
-            #line 118 "..\..\Views\Shared\_Layout.cshtml"
+            #line 120 "..\..\Views\Shared\_Layout.cshtml"
                                               }
             
             #line default
@@ -841,29 +843,31 @@ WriteLiteral(">\r\n                <span>");
 WriteLiteral("</span>\r\n");
 
             
-            #line 119 "..\..\Views\Shared\_Layout.cshtml"
+            #line 121 "..\..\Views\Shared\_Layout.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 119 "..\..\Views\Shared\_Layout.cshtml"
-                 if (Authorization.HasAny(Claims.Job.Search, Claims.Device.Search, Claims.User.Search)){
-                using (Html.BeginForm(MVC.Search.Query(), FormMethod.Get))
-                { 
+            #line 121 "..\..\Views\Shared\_Layout.cshtml"
+                 if (Authorization.HasAny(Claims.Job.Search, Claims.Device.Search, Claims.User.Search))
+                {
+                    using (Html.BeginForm(MVC.Search.Query(), FormMethod.Get))
+                    { 
             
             #line default
             #line hidden
             
-            #line 121 "..\..\Views\Shared\_Layout.cshtml"
-             Write(Html.TextBox("term", null, new { id="SearchQuery", accesskey = "s", placeholder="Search" }));
+            #line 124 "..\..\Views\Shared\_Layout.cshtml"
+                 Write(Html.TextBox("term", null, new { id = "SearchQuery", accesskey = "s", placeholder = "Search", data_quicksearchurl = Url.Action(MVC.API.Search.QuickQuery()) }));
 
             
             #line default
             #line hidden
             
-            #line 121 "..\..\Views\Shared\_Layout.cshtml"
-                                                                                                               }}
+            #line 124 "..\..\Views\Shared\_Layout.cshtml"
+                                                                                                                                                                                      }
+                }
 
             
             #line default
@@ -875,7 +879,7 @@ WriteLiteral(" id=\"layout_PageHeading\"");
 WriteLiteral(">");
 
             
-            #line 124 "..\..\Views\Shared\_Layout.cshtml"
+            #line 128 "..\..\Views\Shared\_Layout.cshtml"
                                 Write(CommonHelpers.Breadcrumbs(ViewBag.Title ?? string.Empty));
 
             
@@ -890,7 +894,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("            ");
 
             
-            #line 126 "..\..\Views\Shared\_Layout.cshtml"
+            #line 130 "..\..\Views\Shared\_Layout.cshtml"
        Write(RenderBody());
 
             
@@ -899,7 +903,7 @@ WriteLiteral("            ");
 WriteLiteral("\r\n        </section>\r\n        <footer>\r\n            Disco v");
 
             
-            #line 129 "..\..\Views\Shared\_Layout.cshtml"
+            #line 133 "..\..\Views\Shared\_Layout.cshtml"
                Write(Disco.Web.DiscoApplication.Version);
 
             
@@ -910,7 +914,7 @@ WriteLiteral(" ");
 WriteLiteral("@ ");
 
             
-            #line 129 "..\..\Views\Shared\_Layout.cshtml"
+            #line 133 "..\..\Views\Shared\_Layout.cshtml"
                                                         Write(Disco.Web.DiscoApplication.OrganisationName);
 
             
@@ -920,7 +924,7 @@ WriteLiteral(" | <a\r\n                href=\"https://discoict.com.au/\" target=
 "om.au</a> | ");
 
             
-            #line 130 "..\..\Views\Shared\_Layout.cshtml"
+            #line 134 "..\..\Views\Shared\_Layout.cshtml"
                                                                                  Write(Html.ActionLink("Credits", MVC.Public.Public.Credits()));
 
             
@@ -929,7 +933,7 @@ WriteLiteral(" | <a\r\n                href=\"https://discoict.com.au/\" target=
 WriteLiteral(" | ");
 
             
-            #line 130 "..\..\Views\Shared\_Layout.cshtml"
+            #line 134 "..\..\Views\Shared\_Layout.cshtml"
                                                                                                                                             Write(Html.ActionLink("Licence", MVC.Public.Public.Licence()));
 
             
@@ -938,13 +942,13 @@ WriteLiteral(" | ");
 WriteLiteral("\r\n        </footer>\r\n    </div>\r\n");
 
             
-            #line 133 "..\..\Views\Shared\_Layout.cshtml"
+            #line 137 "..\..\Views\Shared\_Layout.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 133 "..\..\Views\Shared\_Layout.cshtml"
+            #line 137 "..\..\Views\Shared\_Layout.cshtml"
        Disco.Services.Plugins.Features.UIExtension.UIExtensions.ExecuteExtensionResult(this); 
             
             #line default

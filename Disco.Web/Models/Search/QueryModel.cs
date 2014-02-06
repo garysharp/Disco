@@ -1,4 +1,4 @@
-﻿using Disco.Models.BI.Search;
+﻿using Disco.Models.Services.Searching;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Search;
 using System.Collections.Generic;

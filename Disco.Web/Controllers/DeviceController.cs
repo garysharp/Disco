@@ -160,7 +160,7 @@ namespace Disco.Web.Controllers
                     HideClosedJobs = true,
                     EnablePaging = false
                 };
-                m.Jobs.Fill(Database, BI.JobBI.Searching.BuildJobTableModel(Database).Where(j => j.DeviceSerialNumber == m.Device.SerialNumber).OrderByDescending(j => j.Id), true);
+                m.Jobs.Fill(Database, Disco.Services.Searching.Search.BuildJobTableModel(Database).Where(j => j.DeviceSerialNumber == m.Device.SerialNumber).OrderByDescending(j => j.Id), true);
             }
 
             if (Authorization.Has(Claims.Device.ShowCertificates))

@@ -45,7 +45,8 @@ namespace Disco.Web
             // Initialize User Service Interop
             Disco.Services.Users.UserService.Initialize(Database,
                 (UserId, AdditionalProperties) => Disco.BI.Interop.ActiveDirectory.ActiveDirectory.GetUserAccount(UserId, AdditionalProperties),
-                (UserId, AdditionalProperties) => Disco.BI.Interop.ActiveDirectory.ActiveDirectory.GetMachineAccount(UserId, null, null, AdditionalProperties));
+                (UserId, AdditionalProperties) => Disco.BI.Interop.ActiveDirectory.ActiveDirectory.GetMachineAccount(UserId, null, null, AdditionalProperties),
+                (Term) => Disco.BI.Interop.ActiveDirectory.ActiveDirectory.SearchUsers(Term));
 
         }
 

@@ -59,9 +59,9 @@
                         @if (Model.ShowId)
                         {<td class="id">
                             @if (Authorization.Has(Claims.Job.Show))
-                            {@Html.ActionLink(item.Id.ToString(), MVC.Job.Show(item.Id))}
+                            {@Html.ActionLink(item.JobId.ToString(), MVC.Job.Show(item.JobId))}
                             else
-                            {@item.Id.ToString()}</td>}
+                            {@item.JobId.ToString()}</td>}
                         @if (Model.ShowStatus)
                         {
                             var statusItem = (JobTableStatusItemModel)item;

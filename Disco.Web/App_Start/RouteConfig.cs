@@ -37,7 +37,8 @@ namespace Disco.Web
             routes.MapRoute(
                 name: "SearchQuery",
                 url: "Search/Query/{SearchQuery}",
-                defaults: new { controller = "Search", action = "Query", SearchQuery = UrlParameter.Optional }
+                defaults: new { controller = "Search", action = "Query", SearchQuery = UrlParameter.Optional },
+                namespaces: new string[] { "Disco.Web.Controllers" } // Controllers Namespace Only
             );
             // User Route
             routes.MapRoute(

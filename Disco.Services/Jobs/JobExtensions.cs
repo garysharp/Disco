@@ -14,7 +14,7 @@ namespace Disco.Services
         {
             var i = new JobTableStatusItemModel()
             {
-                Id = j.Id,
+                JobId = j.Id,
                 OpenedDate = j.OpenedDate,
                 ClosedDate = j.ClosedDate,
                 JobTypeId = j.JobTypeId,

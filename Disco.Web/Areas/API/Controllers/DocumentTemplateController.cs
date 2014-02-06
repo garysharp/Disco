@@ -324,13 +324,13 @@ namespace Disco.Web.Areas.API.Controllers
                     switch (searchScope)
                     {
                         case DocumentTemplate.DocumentTemplateScopes.Device:
-                            results = BI.DeviceBI.Searching.Search(Database, term, limitCount).Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
+                            results = Disco.Services.Searching.Search.SearchDevices(Database, term, limitCount).Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
                             break;
                         case DocumentTemplate.DocumentTemplateScopes.Job:
-                            results = BI.JobBI.Searching.Search(Database, term, limitCount, false).Items.Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
+                            results = Disco.Services.Searching.Search.SearchJobsTable(Database, term, limitCount, false).Items.Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
                             break;
                         case DocumentTemplate.DocumentTemplateScopes.User:
-                            results = BI.UserBI.Searching.Search(Database, term, limitCount).Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
+                            results = Disco.Services.Searching.Search.SearchUsers(Database, term, limitCount).Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
                             break;
                         default:
                             results = null;

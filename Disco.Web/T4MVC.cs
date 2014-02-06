@@ -63,6 +63,7 @@ namespace T4MVC
         public Disco.Web.Areas.API.Controllers.JobQueueJobController JobQueueJob = new Disco.Web.Areas.API.Controllers.T4MVC_JobQueueJobController();
         public Disco.Web.Areas.API.Controllers.LoggingController Logging = new Disco.Web.Areas.API.Controllers.T4MVC_LoggingController();
         public Disco.Web.Areas.API.Controllers.PluginController Plugin = new Disco.Web.Areas.API.Controllers.T4MVC_PluginController();
+        public Disco.Web.Areas.API.Controllers.SearchController Search = new Disco.Web.Areas.API.Controllers.T4MVC_SearchController();
         public Disco.Web.Areas.API.Controllers.SystemController System = new Disco.Web.Areas.API.Controllers.T4MVC_SystemController();
         public Disco.Web.Areas.API.Controllers.UserController User = new Disco.Web.Areas.API.Controllers.T4MVC_UserController();
     }
@@ -474,7 +475,7 @@ namespace Links
             private const string URLPATH = "~/ClientSource/Style";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-            public static readonly string BundleSite_css_bundle = Url("BundleSite.css.bundle");
+            public static readonly string BundleSite_less = Url("BundleSite.less");
             public static readonly string BundleSite_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/BundleSite.min.css") ? Url("BundleSite.min.css") : Url("BundleSite.css");
                  
             public static readonly string BundleSite_min_css = Url("BundleSite.min.css");
@@ -549,8 +550,7 @@ namespace Links
                 private const string URLPATH = "~/ClientSource/Style/FontAwesome";
                 public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                 public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                public static readonly string font_awesome_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/font-awesome.min.css") ? Url("font-awesome.min.css") : Url("font-awesome.css");
-                     
+                public static readonly string font_awesome_less = Url("font-awesome.less");
                 public static readonly string fontawesome_webfont_eot = Url("fontawesome-webfont.eot");
                 public static readonly string fontawesome_webfont_svg = Url("fontawesome-webfont.svg");
                 public static readonly string fontawesome_webfont_ttf = Url("fontawesome-webfont.ttf");
@@ -678,16 +678,17 @@ namespace Links
                     public static readonly string ui_icons_cd0a0a_256x240_png = Url("ui-icons_cd0a0a_256x240.png");
                 }
             
-                public static readonly string jquery_ui_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui.min.css") ? Url("jquery-ui.min.css") : Url("jquery-ui.css");
-                     
-                public static readonly string old_jquery_ui_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/old_jquery-ui.min.css") ? Url("old_jquery-ui.min.css") : Url("old_jquery-ui.css");
-                     
+                public static readonly string jquery_ui_less = Url("jquery-ui.less");
             }
         
             public static readonly string jQueryUIExtensions_less = Url("jQueryUIExtensions.less");
             public static readonly string jQueryUIExtensions_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jQueryUIExtensions.min.css") ? Url("jQueryUIExtensions.min.css") : Url("jQueryUIExtensions.css");
                  
             public static readonly string jQueryUIExtensions_min_css = Url("jQueryUIExtensions.min.css");
+            public static readonly string normalize_less = Url("normalize.less");
+            public static readonly string normalize_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/normalize.min.css") ? Url("normalize.min.css") : Url("normalize.css");
+                 
+            public static readonly string normalize_min_css = Url("normalize.min.css");
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public static class Public {
                 private const string URLPATH = "~/ClientSource/Style/Public";
@@ -8877,6 +8878,104 @@ namespace Disco.Web.Areas.API.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InstallLocal);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Plugin", Plugin);
             InstallLocalOverride(callInfo, Plugin);
+            return callInfo;
+        }
+
+    }
+}
+
+namespace Disco.Web.Areas.API.Controllers
+{
+    public partial class SearchController
+    {
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public SearchController() { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected SearchController(Dummy d) { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoute(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
+        {
+            var callInfo = result.GetT4MVCResult();
+            return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult QuickQuery()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.QuickQuery);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public SearchController Actions { get { return MVC.API.Search; } }
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Area = "API";
+        [GeneratedCode("T4MVC", "2.0")]
+        public readonly string Name = "Search";
+        [GeneratedCode("T4MVC", "2.0")]
+        public const string NameConst = "Search";
+
+        static readonly ActionNamesClass s_actions = new ActionNamesClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionNamesClass ActionNames { get { return s_actions; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNamesClass
+        {
+            public readonly string QuickQuery = "QuickQuery";
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionNameConstants
+        {
+            public const string QuickQuery = "QuickQuery";
+        }
+
+
+        static readonly ActionParamsClass_QuickQuery s_params_QuickQuery = new ActionParamsClass_QuickQuery();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_QuickQuery QuickQueryParams { get { return s_params_QuickQuery; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_QuickQuery
+        {
+            public readonly string Term = "Term";
+            public readonly string Limit = "Limit";
+        }
+        static readonly ViewsClass s_views = new ViewsClass();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ViewsClass Views { get { return s_views; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ViewsClass
+        {
+            static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
+            public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
+            public class _ViewNamesClass
+            {
+            }
+        }
+    }
+
+    [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+    public partial class T4MVC_SearchController : Disco.Web.Areas.API.Controllers.SearchController
+    {
+        public T4MVC_SearchController() : base(Dummy.Instance) { }
+
+        partial void QuickQueryOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Term, int Limit);
+
+        public override System.Web.Mvc.ActionResult QuickQuery(string Term, int Limit)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.QuickQuery);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Term", Term);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Limit", Limit);
+            QuickQueryOverride(callInfo, Term, Limit);
             return callInfo;
         }
 

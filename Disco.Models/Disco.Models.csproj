@@ -63,8 +63,6 @@
     <Compile Include="BI\Interop\Community\UpdateRequestV1.cs" />
     <Compile Include="BI\Interop\Community\UpdateResponse.cs" />
     <Compile Include="BI\Job\Statistics\DailyOpenedClosedItem.cs" />
-    <Compile Include="BI\Search\DeviceSearchResultItem.cs" />
-    <Compile Include="BI\Search\UserSearchResultItem.cs" />
     <Compile Include="ClientServices\EnrolResponse.cs" />
     <Compile Include="ClientServices\MacEnrol.cs" />
     <Compile Include="ClientServices\MacEnrolResponse.cs" />
@@ -111,6 +109,10 @@
     <Compile Include="Services\Jobs\JobLists\JobTableStatusItemModel.cs" />
     <Compile Include="Services\Jobs\JobLists\JobTableStatusQueueItemModel.cs" />
     <Compile Include="Services\Jobs\JobQueues\IJobQueueToken.cs" />
+    <Compile Include="Services\Searching\DeviceSearchResultItem.cs" />
+    <Compile Include="Services\Searching\ISearchResultItem.cs" />
+    <Compile Include="Services\Searching\JobSearchResultItem.cs" />
+    <Compile Include="Services\Searching\UserSearchResultItem.cs" />
     <Compile Include="UI\BaseUIModel.cs" />
     <Compile Include="UI\Config\AuthorizationRole\ConfigAuthorizationRoleCreateModel.cs" />
     <Compile Include="UI\Config\AuthorizationRole\ConfigAuthorizationRoleIndexModel.cs" />
@@ -165,7 +167,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" />
+      <UserProperties BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
