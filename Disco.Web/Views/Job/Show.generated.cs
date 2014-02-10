@@ -269,7 +269,16 @@ WriteLiteral("                <li><a");
 
 WriteLiteral(" href=\"#jobDetailTab-Resources\"");
 
-WriteLiteral(">Log and Attachments</a></li>\r\n");
+WriteLiteral(">Log and Attachments [");
+
+            
+            #line 70 "..\..\Views\Job\Show.cshtml"
+                                                                       Write(Model.Job.JobAttachments.Count);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("]</a></li>\r\n");
 
             
             #line 71 "..\..\Views\Job\Show.cshtml"
@@ -299,7 +308,16 @@ WriteLiteral("                <li><a");
 
 WriteLiteral(" href=\"#jobDetailTab-Resources\"");
 
-WriteLiteral(">Attachments</a></li>\r\n");
+WriteLiteral(">Attachments [");
+
+            
+            #line 78 "..\..\Views\Job\Show.cshtml"
+                                                               Write(Model.Job.JobAttachments.Count);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("]</a></li>\r\n");
 
             
             #line 79 "..\..\Views\Job\Show.cshtml"
@@ -322,7 +340,16 @@ WriteLiteral("                <li><a");
 
 WriteLiteral(" href=\"#jobDetailTab-Queues\"");
 
-WriteLiteral(">Queues</a></li>\r\n");
+WriteLiteral(">Queues [");
+
+            
+            #line 82 "..\..\Views\Job\Show.cshtml"
+                                                       Write(Model.Job.JobQueues.Count(jq => !jq.RemovedDate.HasValue));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("]</a></li>\r\n");
 
             
             #line 83 "..\..\Views\Job\Show.cshtml"

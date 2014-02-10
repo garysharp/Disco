@@ -29,6 +29,7 @@ namespace Disco.Web.Views.Job.JobParts
     using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
     using Disco.Web;
@@ -219,11 +220,20 @@ WriteLiteral("addTabItems += \'<li><a");
 
 WriteLiteral(" href=\"#jobDetailTab-Components\"");
 
-WriteLiteral(">Components</a></li>\';");
+WriteLiteral(">Components [");
 
             
             #line 33 "..\..\Views\Job\JobParts\NonWarranty.cshtml"
-                                                                                                                                                               }
+                                                                                                                                           Write(Model.Job.JobComponents.Count);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("]</a></li>\';");
+
+            
+            #line 33 "..\..\Views\Job\JobParts\NonWarranty.cshtml"
+                                                                                                                                                                                                  }
 
             
             #line default

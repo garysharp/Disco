@@ -580,7 +580,7 @@
                             @Html.DropDownList("SLAExpiresMinutes", slaOptions)
                         </div>
                         <div>
-                            <h4>Comment</h4>
+                            <h4>Tasks/Comment</h4>
                             @Html.TextArea("Comment")
                         </div>
                     </div>
@@ -604,10 +604,11 @@
                             $('#Job_Show_Job_Actions_AddQueue_Dialog_Id').val(queue.attr('data-queueid'));
 
                             var queueSLA = queue.attr('data-queuesla');
+                            if (!queueSLA)
+                                queueSLA = 0;
 
                             details.find('#Priority').val('Normal');
                             details.find('#SLAExpiresMinutes').val(queueSLA);
-                            details.find('#Comment').val('');
 
                             details.show();
                         }

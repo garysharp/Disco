@@ -30,7 +30,7 @@
 {
     <script type="text/javascript">
         var addTabItems = '';
-        @if (Authorization.Has(Claims.Job.ShowNonWarrantyComponents)){<text>addTabItems += '<li><a href="#jobDetailTab-Components">Components</a></li>';</text>}
+        @if (Authorization.Has(Claims.Job.ShowNonWarrantyComponents)){<text>addTabItems += '<li><a href="#jobDetailTab-Components">Components [@(Model.Job.JobComponents.Count)]</a></li>';</text>}
         @if (Authorization.Has(Claims.Job.ShowNonWarrantyFinance)){<text>addTabItems += '<li><a href="#jobDetailTab-NonWarrantyFinance">Finance</a></li>';</text>}
         @if (Authorization.Has(Claims.Job.ShowNonWarrantyRepairs)){<text>addTabItems += '<li><a href="#jobDetailTab-NonWarrantyRepairs">Repairs</a></li>';</text>}
         @if (Authorization.Has(Claims.Job.ShowNonWarrantyInsurance)){<text>addTabItems += '<li><a href="#jobDetailTab-NonWarrantyInsurance">Insurance</a></li>';</text>}

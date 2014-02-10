@@ -38,7 +38,7 @@
             }
         </div>
         <script type="text/javascript">
-            $('#jobDetailTabItems').append('<li><a href="#jobDetailTab-Flags">Flags</a></li>');
+            $('#jobDetailTabItems').append('<li><a href="#jobDetailTab-Flags">Flags [@(validFlags.SelectMany(g => g.Value).Count(f => f.Item3))]</a></li>');
             $(function () {
                 var $flagCheckboxes = $('#jobFlags').find('input[type="checkbox"]');
                 var $dialogFlagsAction = $('#dialogFlagsAction');
@@ -95,7 +95,7 @@
     }else
     {
         <script>
-            $('#jobDetailTabItems').append('<li><a href="#jobDetailTab-Flags">Flags</a></li>');
+            $('#jobDetailTabItems').append('<li><a href="#jobDetailTab-Flags">Flags [@(validFlags.SelectMany(g => g.Value).Count(f => f.Item3))]</a></li>');
         </script>
     }
 </div>

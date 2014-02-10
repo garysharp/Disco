@@ -2144,7 +2144,7 @@ WriteLiteral("                            ");
             #line default
             #line hidden
 WriteLiteral("\r\n                        </div>\r\n                        <div>\r\n                " +
-"            <h4>Comment</h4>\r\n");
+"            <h4>Tasks/Comment</h4>\r\n");
 
 WriteLiteral("                            ");
 
@@ -2179,42 +2179,43 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "       queuePicker.children().removeClass(\'selected\');\r\n                        " +
 "    queue.addClass(\'selected\');\r\n\r\n                            $(\'#Job_Show_Job_" +
 "Actions_AddQueue_Dialog_Id\').val(queue.attr(\'data-queueid\'));\r\n\r\n               " +
-"             var queueSLA = queue.attr(\'data-queuesla\');\r\n\r\n                    " +
-"        details.find(\'#Priority\').val(\'Normal\');\r\n                            de" +
-"tails.find(\'#SLAExpiresMinutes\').val(queueSLA);\r\n                            det" +
-"ails.find(\'#Comment\').val(\'\');\r\n\r\n                            details.show();\r\n " +
-"                       }\r\n                        \r\n                        butt" +
-"on.attr(\'href\', \'#\').click(function (e) {\r\n                            e.prevent" +
-"Default();\r\n\r\n                            if (!buttonDialog){\r\n                 " +
-"               buttonDialog = $(\'#Job_Show_Job_Actions_AddQueue_Dialog\');\r\n     " +
-"                           buttonDialog.dialog({\r\n                              " +
-"      width: 600,\r\n                                    height: 410,\r\n           " +
-"                         resizable: false,\r\n                                    " +
-"modal: true,\r\n                                    autoOpen: false,\r\n            " +
-"                        buttons: {\r\n                                        Canc" +
-"el: function () {\r\n                                            $(this).dialog(\"c" +
-"lose\");\r\n                                        },\r\n                           " +
-"             \"Add to Queue\": function () {\r\n                                    " +
-"        var $this = $(this);\r\n                                            $this." +
-"dialog(\"disable\");\r\n                                            $this.dialog(\"op" +
-"tion\", \"buttons\", null);\r\n                                            buttonDial" +
-"og.find(\'form\').submit();\r\n                                        }\r\n          " +
-"                          }\r\n                                });\r\n\r\n            " +
-"                    queuePicker = buttonDialog.find(\'.queuePicker\');\r\n          " +
-"                      details = buttonDialog.find(\'.details\');\r\n\r\n              " +
-"                  var priorityList = buttonDialog.find(\'#Priority\');\r\n          " +
-"                      priorityList.change(function () {\r\n                       " +
-"             var icon = priorityList.closest(\'div\').find(\'i\').first();\r\n        " +
-"                            icon[0].className = \'\';\r\n                           " +
-"         icon.addClass(\'fa d-priority-\' + priorityList.val().toLowerCase()).attr" +
-"(\'title\', priorityList.val() + \' Priority\');\r\n                                })" +
-";\r\n\r\n                                queuePicker.on(\'click\', \'div.queue\', queueS" +
-"elected);\r\n                            }\r\n\r\n                            buttonDi" +
-"alog.dialog(\'open\');\r\n                            return false;\r\n               " +
-"         });\r\n                    });\r\n                </script>\r\n");
+"             var queueSLA = queue.attr(\'data-queuesla\');\r\n                      " +
+"      if (!queueSLA)\r\n                                queueSLA = 0;\r\n\r\n         " +
+"                   details.find(\'#Priority\').val(\'Normal\');\r\n                   " +
+"         details.find(\'#SLAExpiresMinutes\').val(queueSLA);\r\n\r\n                  " +
+"          details.show();\r\n                        }\r\n                        \r\n" +
+"                        button.attr(\'href\', \'#\').click(function (e) {\r\n         " +
+"                   e.preventDefault();\r\n\r\n                            if (!butto" +
+"nDialog){\r\n                                buttonDialog = $(\'#Job_Show_Job_Actio" +
+"ns_AddQueue_Dialog\');\r\n                                buttonDialog.dialog({\r\n  " +
+"                                  width: 600,\r\n                                 " +
+"   height: 410,\r\n                                    resizable: false,\r\n        " +
+"                            modal: true,\r\n                                    au" +
+"toOpen: false,\r\n                                    buttons: {\r\n                " +
+"                        Cancel: function () {\r\n                                 " +
+"           $(this).dialog(\"close\");\r\n                                        },\r" +
+"\n                                        \"Add to Queue\": function () {\r\n        " +
+"                                    var $this = $(this);\r\n                      " +
+"                      $this.dialog(\"disable\");\r\n                                " +
+"            $this.dialog(\"option\", \"buttons\", null);\r\n                          " +
+"                  buttonDialog.find(\'form\').submit();\r\n                         " +
+"               }\r\n                                    }\r\n                       " +
+"         });\r\n\r\n                                queuePicker = buttonDialog.find(" +
+"\'.queuePicker\');\r\n                                details = buttonDialog.find(\'." +
+"details\');\r\n\r\n                                var priorityList = buttonDialog.fi" +
+"nd(\'#Priority\');\r\n                                priorityList.change(function (" +
+") {\r\n                                    var icon = priorityList.closest(\'div\')." +
+"find(\'i\').first();\r\n                                    icon[0].className = \'\';\r" +
+"\n                                    icon.addClass(\'fa d-priority-\' + priorityLi" +
+"st.val().toLowerCase()).attr(\'title\', priorityList.val() + \' Priority\');\r\n      " +
+"                          });\r\n\r\n                                queuePicker.on(" +
+"\'click\', \'div.queue\', queueSelected);\r\n                            }\r\n\r\n        " +
+"                    buttonDialog.dialog(\'open\');\r\n                            re" +
+"turn false;\r\n                        });\r\n                    });\r\n             " +
+"   </script>\r\n");
 
             
-            #line 657 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 658 "..\..\Views\Job\JobParts\_Subject.cshtml"
             }
 
             
@@ -2223,7 +2224,7 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 WriteLiteral("            ");
 
             
-            #line 658 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 659 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanLogWarranty())
             { 
                 
@@ -2231,14 +2232,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 660 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 661 "..\..\Views\Job\JobParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Log Warranty", MVC.Job.LogWarranty(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogWarranty_Button"));
 
             
             #line default
             #line hidden
             
-            #line 660 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 661 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                      
             }
 
@@ -2248,7 +2249,7 @@ WriteLiteral("            ");
 WriteLiteral("            ");
 
             
-            #line 662 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 663 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanWarrantyCompleted())
             { 
                 
@@ -2256,14 +2257,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 664 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 665 "..\..\Views\Job\JobParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Warranty Complete", MVC.API.Job.UpdateWarrantyExternalCompletedDate(Model.Job.Id, "Now", true), "Job_Show_Job_Actions_WarrantyComplete_Button", "alert"));
 
             
             #line default
             #line hidden
             
-            #line 664 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 665 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                                                      
             }
 
@@ -2273,7 +2274,7 @@ WriteLiteral("            ");
 WriteLiteral("            ");
 
             
-            #line 666 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 667 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanInsuranceClaimFormSent())
             { 
                 
@@ -2281,14 +2282,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 668 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 669 "..\..\Views\Job\JobParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Insurance Claim Sent", MVC.API.Job.UpdateInsuranceClaimFormSentDate(Model.Job.Id, "Now", true), "Job_Show_Job_Actions_InsuranceClaimSent_Button", "alert"));
 
             
             #line default
             #line hidden
             
-            #line 668 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 669 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                                                        
             }
 
@@ -2298,7 +2299,7 @@ WriteLiteral("            ");
 WriteLiteral("            ");
 
             
-            #line 670 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 671 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanLogRepair())
             { 
                 
@@ -2306,14 +2307,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 672 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 673 "..\..\Views\Job\JobParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Repairs Logged", MVC.API.Job.LogRepair(Model.Job.Id, null, null, true), "Job_Show_Job_Actions_LogRepair_Button"));
 
             
             #line default
             #line hidden
             
-            #line 672 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 673 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                              
 
             
@@ -2330,13 +2331,13 @@ WriteLiteral(" title=\"Repairs Logged\"");
 WriteLiteral(">\r\n");
 
             
-            #line 674 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 675 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 674 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 675 "..\..\Views\Job\JobParts\_Subject.cshtml"
                      using (Html.BeginForm(MVC.API.Job.LogRepair(Model.Job.Id, null, null, true)))
                     {
 
@@ -2368,7 +2369,7 @@ WriteLiteral(" name=\"RepairerReference\"");
 WriteLiteral(" />\r\n                        </p>\r\n");
 
             
-            #line 684 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 685 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     }
 
             
@@ -2406,7 +2407,7 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "           });\r\n                    });\r\n                </script>\r\n");
 
             
-            #line 722 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 723 "..\..\Views\Job\JobParts\_Subject.cshtml"
             }
 
             
@@ -2415,7 +2416,7 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 WriteLiteral("            ");
 
             
-            #line 723 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 724 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanRepairComplete())
             { 
                 
@@ -2423,14 +2424,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 725 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 726 "..\..\Views\Job\JobParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Repairs Complete", MVC.API.Job.UpdateNonWarrantyRepairerCompletedDate(Model.Job.Id, "Now", true), "Job_Show_Job_Actions_RepairComplete_Button", "alert"));
 
             
             #line default
             #line hidden
             
-            #line 725 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 726 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                                                      
             }
 
@@ -2440,7 +2441,7 @@ WriteLiteral("            ");
 WriteLiteral("            ");
 
             
-            #line 727 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 728 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanConvertHWarToHNWar())
             { 
                 
@@ -2448,14 +2449,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 729 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 730 "..\..\Views\Job\JobParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Convert to Non-Warranty", MVC.API.Job.ConvertHWarToHNWar(Model.Job.Id, true), "Job_Show_Job_Actions_ConvertToHNWar_Button"));
 
             
             #line default
             #line hidden
             
-            #line 729 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 730 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                         
 
             
@@ -2503,7 +2504,7 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "   \r\n                    });\r\n                </script>\r\n");
 
             
-            #line 769 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 770 "..\..\Views\Job\JobParts\_Subject.cshtml"
             }
 
             
@@ -2512,13 +2513,13 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 WriteLiteral("        </td>\r\n");
 
             
-            #line 771 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 772 "..\..\Views\Job\JobParts\_Subject.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 771 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 772 "..\..\Views\Job\JobParts\_Subject.cshtml"
          if (Model.Job.Device != null)
         {
 
@@ -2532,13 +2533,13 @@ WriteLiteral(" id=\"Job_Show_Device_Actions\"");
 WriteLiteral(">\r\n");
 
             
-            #line 774 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 775 "..\..\Views\Job\JobParts\_Subject.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 774 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 775 "..\..\Views\Job\JobParts\_Subject.cshtml"
                  if (Model.Job.CanDeviceHeld())
                 { 
                     
@@ -2546,14 +2547,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 776 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 777 "..\..\Views\Job\JobParts\_Subject.cshtml"
                Write(Html.ActionLinkSmallButton("Device Held", MVC.API.Job.DeviceHeld(Model.Job.Id, true), "Job_Show_Device_Actions_Held_Button"));
 
             
             #line default
             #line hidden
             
-            #line 776 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 777 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                  
                 }
 
@@ -2563,7 +2564,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                ");
 
             
-            #line 778 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 779 "..\..\Views\Job\JobParts\_Subject.cshtml"
                  if (Model.Job.CanDeviceReadyForReturn())
                 { 
                     
@@ -2571,14 +2572,14 @@ WriteLiteral("                ");
             #line default
             #line hidden
             
-            #line 780 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 781 "..\..\Views\Job\JobParts\_Subject.cshtml"
                Write(Html.ActionLinkSmallButton("Device Ready For Return", MVC.API.Job.DeviceReadyForReturn(Model.Job.Id, true), "Job_Show_Device_Actions_DeviceReadyForReturn_Button", "alert"));
 
             
             #line default
             #line hidden
             
-            #line 780 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 781 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                                                 
                 }
 
@@ -2588,7 +2589,7 @@ WriteLiteral("                ");
 WriteLiteral("                ");
 
             
-            #line 782 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 783 "..\..\Views\Job\JobParts\_Subject.cshtml"
                  if (Model.Job.CanDeviceReturned())
                 { 
                     
@@ -2596,14 +2597,14 @@ WriteLiteral("                ");
             #line default
             #line hidden
             
-            #line 784 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 785 "..\..\Views\Job\JobParts\_Subject.cshtml"
                Write(Html.ActionLinkSmallButton("Device Returned", MVC.API.Job.DeviceReturned(Model.Job.Id, true), "Job_Show_Device_Actions_DeviceReturned_Button", Model.Job.CanDeviceReadyForReturn() ? null : "alert"));
 
             
             #line default
             #line hidden
             
-            #line 784 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 785 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                                                                          
                 }
 
@@ -2613,7 +2614,7 @@ WriteLiteral("                ");
 WriteLiteral("            </td>\r\n");
 
             
-            #line 787 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 788 "..\..\Views\Job\JobParts\_Subject.cshtml"
         }
 
             
@@ -2622,7 +2623,7 @@ WriteLiteral("            </td>\r\n");
 WriteLiteral("        ");
 
             
-            #line 788 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 789 "..\..\Views\Job\JobParts\_Subject.cshtml"
          if (Model.Job.User != null)
         {
 
@@ -2636,13 +2637,13 @@ WriteLiteral(" id=\"Job_Show_User_Actions\"");
 WriteLiteral(">\r\n\r\n\r\n");
 
             
-            #line 793 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 794 "..\..\Views\Job\JobParts\_Subject.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 793 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 794 "..\..\Views\Job\JobParts\_Subject.cshtml"
                  if (Model.Job.CanWaitingForUserAction())
                 { 
 
@@ -2670,13 +2671,13 @@ WriteLiteral(" title=\"Waiting for User Action\"");
 WriteLiteral(">\r\n");
 
             
-            #line 797 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 798 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 797 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 798 "..\..\Views\Job\JobParts\_Subject.cshtml"
                          using (Html.BeginForm(MVC.API.Job.WaitingForUserAction(Model.Job.Id, null, true)))
                         {
 
@@ -2694,7 +2695,7 @@ WriteLiteral(" class=\"block\"");
 WriteLiteral("></textarea>\r\n                            </p>\r\n");
 
             
-            #line 803 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 804 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         }
 
             
@@ -2729,7 +2730,7 @@ WriteLiteral(">\r\n                        $(function () {\r\n                  
 "                    });\r\n                    </script>\r\n");
 
             
-            #line 836 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 837 "..\..\Views\Job\JobParts\_Subject.cshtml"
                 }
 
             
@@ -2738,7 +2739,7 @@ WriteLiteral(">\r\n                        $(function () {\r\n                  
 WriteLiteral("                ");
 
             
-            #line 837 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 838 "..\..\Views\Job\JobParts\_Subject.cshtml"
                  if (Model.Job.CanNotWaitingForUserAction())
                 { 
 
@@ -2766,13 +2767,13 @@ WriteLiteral(" title=\"Not Waiting for User Action\"");
 WriteLiteral(">\r\n");
 
             
-            #line 841 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 842 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 841 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 842 "..\..\Views\Job\JobParts\_Subject.cshtml"
                          using (Html.BeginForm(MVC.API.Job.NotWaitingForUserAction(Model.Job.Id, null, true)))
                         {
 
@@ -2790,7 +2791,7 @@ WriteLiteral(" class=\"block\"");
 WriteLiteral("></textarea>\r\n                            </p>\r\n");
 
             
-            #line 847 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 848 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         }
 
             
@@ -2826,7 +2827,7 @@ WriteLiteral(">\r\n                        $(function () {\r\n                  
 "    });\r\n                    </script>\r\n");
 
             
-            #line 881 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 882 "..\..\Views\Job\JobParts\_Subject.cshtml"
                 }
 
             
@@ -2835,7 +2836,7 @@ WriteLiteral(">\r\n                        $(function () {\r\n                  
 WriteLiteral("\r\n            </td>\r\n");
 
             
-            #line 884 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 885 "..\..\Views\Job\JobParts\_Subject.cshtml"
         }
 
             

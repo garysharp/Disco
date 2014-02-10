@@ -7,6 +7,7 @@
 
     var canConfig = Authorization.Has(Claims.Config.JobQueue.Configure);
     var canDelete = (Authorization.Has(Claims.Config.JobQueue.Delete) && Model.CanDelete);
+    var canShowJobs = Model.OpenJobCount > 0 && Authorization.Has(Claims.Job.Lists.JobQueueLists);
 
     Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
 }
@@ -620,7 +621,7 @@
         </tr>
     </table>
 </div>
-@if (canDelete)
+@if (canDelete || canShowJobs)
 {
     <div class="actionBar">
         @Html.ActionLinkButton("Delete", MVC.API.JobQueue.Delete(Model.Token.JobQueue.Id, true), "Config_JobQueues_Actions_Delete_Button")
@@ -660,5 +661,6 @@
                 });
             });
         </script>
+        @Html.ActionLinkButton(string.Format("Show {0} job{1}", Model.OpenJobCount, (Model.OpenJobCount == 1 ? null : "s")), MVC.Job.Queue(Model.Token.JobQueue.Id), "Config_JobQueues_Actions_ShowJobs_Button")
     </div>
 }

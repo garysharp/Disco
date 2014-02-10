@@ -29,6 +29,7 @@ namespace Disco.Web.Views.Job.JobParts
     using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
     using Disco.Web;
@@ -287,8 +288,17 @@ WriteLiteral("        <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(@">
-            $('#jobDetailTabItems').append('<li><a href=""#jobDetailTab-Flags"">Flags</a></li>');
+WriteLiteral(">\r\n            $(\'#jobDetailTabItems\').append(\'<li><a href=\"#jobDetailTab-Flags\">" +
+"Flags [");
+
+            
+            #line 41 "..\..\Views\Job\JobParts\Flags.cshtml"
+                                                                                 Write(validFlags.SelectMany(g => g.Value).Count(f => f.Item3));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"]</a></li>');
             $(function () {
                 var $flagCheckboxes = $('#jobFlags').find('input[type=""checkbox""]');
                 var $dialogFlagsAction = $('#dialogFlagsAction');
@@ -362,7 +372,16 @@ WriteLiteral(@"', { Flag: '-' + flagValue }, function (response, result) {
             #line default
             #line hidden
 WriteLiteral("        <script>\r\n            $(\'#jobDetailTabItems\').append(\'<li><a href=\"#jobDe" +
-"tailTab-Flags\">Flags</a></li>\');\r\n        </script>\r\n");
+"tailTab-Flags\">Flags [");
+
+            
+            #line 98 "..\..\Views\Job\JobParts\Flags.cshtml"
+                                                                                 Write(validFlags.SelectMany(g => g.Value).Count(f => f.Item3));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("]</a></li>\');\r\n        </script>\r\n");
 
             
             #line 100 "..\..\Views\Job\JobParts\Flags.cshtml"
