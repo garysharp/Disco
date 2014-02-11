@@ -21,7 +21,7 @@
                                 </td>
                                 <td>@if (Authorization.Has(Claims.Job.Properties.ExpectedClosedDate))
                                     {
-                                    @Html.TextBoxFor(m => m.Job.ExpectedClosedDate, new { @class = "small discreet" }) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
+                                    @Html.TextBoxFor(m => m.Job.ExpectedClosedDate, "{0:yyyy/MM/dd hh:mm tt}", new { @class = "small discreet" }) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
                                     <script type="text/javascript">
                                         $(function () {
                                             var $ajaxSave = $('#Job_ExpectedClosedDate').next('.ajaxSave');

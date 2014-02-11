@@ -21,7 +21,6 @@ namespace Disco.Models.Repository
         public string OpenedTechUserId { get; set; }
 
         public DateTime OpenedDate { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:yyyy/MM/dd hh:mm tt}", HtmlEncode = false)]
         public DateTime? ExpectedClosedDate { get; set; }
         public string ClosedTechUserId { get; set; }
         public DateTime? ClosedDate { get; set; }
