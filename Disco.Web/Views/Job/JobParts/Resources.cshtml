@@ -30,7 +30,7 @@
                     {
                         <div data-logid="@jl.Id">
                             <span class="author">@jl.TechUser.ToString()</span>@if (canRemoveAnyLogs || (canRemoveOwnLogs && jl.TechUserId == CurrentUser.Id))
-                                                                               {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" title="@jl.Timestamp.ToFullDateTime()">@jl.Timestamp.FromNow()</span>
+                                                                               {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(jl.Timestamp.ToUnixEpoc())" title="@jl.Timestamp.ToFullDateTime()">@jl.Timestamp.ToFullDateTime()</span>
                             <span class="comment">@jl.Comments.ToMultilineJobRefString()</span>
                         </div>
                     }
@@ -59,7 +59,7 @@
                                   else
                                   { @ja.Comments }}
                             </span><span class="author">@ja.TechUser.ToString()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ja.TechUserId == CurrentUser.Id))
-                                                                                      {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.FromNow()</span>
+                                                                                      {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(ja.Timestamp.ToUnixEpoc())" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.ToFullDateTime()</span>
                         </a>   
                     }
                 </div>
@@ -244,7 +244,9 @@
             }
             function liveRemoveComment(key) {
                 $CommentOutput.children('div[data-logid="' + key + '"]').slideUp(300).delay(300).queue(function () {
-                    $(this).remove();
+                    var $this = $(this);
+                    $this.find('.timestamp').livestamp('destroy');
+                    $this.remove();
                 });
             }
             function addComment(c, quick, canRemove) {
@@ -256,7 +258,7 @@
                 var e = $(t);
                 e.attr('data-logid', c.Id);
                 e.find('.author').text(c.Author);
-                e.find('.timestamp').text(c.TimestampFuzzy).attr('title', c.TimestampFull);
+                e.find('.timestamp').text(c.TimestampFull).attr('title', c.TimestampFull).livestamp(c.TimestampUnixEpoc);
                 if (canRemove)
                     e.find('.remove').click(removePost);
                 var eComment = e.find('.comment').text(c.Comments);
@@ -474,7 +476,7 @@
                     e.find('.icon img').attr('src', '@(Url.Action(MVC.API.Job.AttachmentThumbnail()))/' + a.Id);
                     e.find('.comments').text(a.Comments);
                     e.find('.author').text(a.Author);
-                    e.find('.timestamp').text(a.TimestampFuzzy).attr('title', a.TimestampFull);
+                    e.find('.timestamp').text(a.TimestampFull).attr('title', a.TimestampFull).livestamp(a.TimestampUnixEpoc);
                     if (canRemove)
                         e.find('.remove').click(removeLocalAttachment);
                     if (!quick)

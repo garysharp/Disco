@@ -8,7 +8,6 @@ namespace Disco
 {
     public static class DateTimeExtensions
     {
-
         public static string From(this DateTime moment, DateTime to, bool withoutSuffix)
         {
             var duration = to - moment;
@@ -62,7 +61,6 @@ namespace Disco
         {
             return moment.FromNow("n/a");
         }
-
         public static string Humanize(this TimeSpan duration, bool withSuffix)
         {
             string output = RelativeTime(duration.Ticks > 0 ? duration : duration.Negate(), true);
@@ -123,25 +121,30 @@ namespace Disco
             else
                 return NullValue;
         }
-        public static long ToSortable(this DateTime? d)
+
+        private const long unixEpocOffset = 621355968000000000;
+        public static long ToUnixEpoc(this DateTime d)
+        {
+            var epoc = new DateTime(unixEpocOffset, DateTimeKind.Utc);
+            var offset = d.ToUniversalTime() - epoc;
+            return offset.Ticks / 10000;
+        }
+        public static long? ToUnixEpoc(this DateTime? d)
         {
             if (d.HasValue)
-                return d.Value.ToBinary();
+                return d.Value.ToUnixEpoc();
             else
-                return -1;
+                return null;
         }
-        public static long ToSortable(this DateTime d)
+
+        public static string ToISO8601(this DateTime d)
         {
-            return d.ToBinary();
+            return d.ToString("yyyy-MM-ddTHH\\:mm\\:sszzz");
         }
-        public static string ToJavaScript(this DateTime d)
-        {
-            return d.ToString("yyyy/MM/dd hh:mm tt");
-        }
-        public static string ToJavaScript(this DateTime? d)
+        public static string ToISO8601(this DateTime? d)
         {
             if (d.HasValue)
-                return d.Value.ToString("yyyy/MM/dd hh:mm tt");
+                return d.Value.ToISO8601();
             else
                 return null;
         }

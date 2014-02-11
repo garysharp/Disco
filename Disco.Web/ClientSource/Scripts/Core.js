@@ -41888,6 +41888,150 @@ if ( $.watermark.runOnce ) {
 
 ///#source 1 1 /ClientSource/Scripts/Core/disco.moment.extensions.js
 moment.lang('en-au');
+///#source 1 1 /ClientSource/Scripts/Core/livestamp.js
+// Livestamp.js / v1.1.2 / (c) 2012 Matt Bradley / MIT License
+(function (plugin) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery', 'moment'], plugin);
+    } else {
+        // Browser globals
+        plugin(jQuery, moment);
+    }
+}(function ($, moment) {
+    // DISCO: Update Interval = 30 seconds (not 1 second)
+    var updateInterval = 30e3,
+        paused = false,
+        $livestamps = $([]),
+
+    init = function () {
+        livestampGlobal.resume();
+    },
+
+    prep = function ($el, timestamp) {
+        var oldData = $el.data('livestampdata');
+        // DISCO: Use milliseconds, not seconds
+        //if (typeof timestamp == 'number')
+        //    timestamp *= 1e3;
+
+        $el.removeAttr('data-livestamp')
+          .removeData('livestamp');
+
+        timestamp = moment(timestamp);
+        if (moment.isMoment(timestamp) && !isNaN(+timestamp)) {
+            var newData = $.extend({}, { 'original': $el.contents() }, oldData);
+            newData.moment = moment(timestamp);
+            // DISCO: Add 'WithoutSuffix' support
+            newData.fromNowWithoutSuffix = $el.hasClass('noMomentSuffix');
+
+            $el.data('livestampdata', newData).empty();
+            $livestamps.push($el[0]);
+        }
+    },
+
+    run = function () {
+        if (paused) return;
+        livestampGlobal.update();
+        setTimeout(run, updateInterval);
+    },
+
+    livestampGlobal = {
+        update: function () {
+            $('[data-livestamp]').each(function () {
+                var $this = $(this);
+                prep($this, $this.data('livestamp'));
+            });
+
+            var toRemove = [];
+            $livestamps.each(function () {
+                var $this = $(this),
+                    data = $this.data('livestampdata');
+
+                if (data === undefined)
+                    toRemove.push(this);
+                else if (moment.isMoment(data.moment)) {
+                    var from = $this.html(),
+                        to = data.moment.fromNow(data.fromNowWithoutSuffix); // DISCO: Implement 'WithoutSuffix' support
+
+                    if (from != to) {
+                        var e = $.Event('change.livestamp');
+                        $this.trigger(e, [from, to]);
+                        if (!e.isDefaultPrevented())
+                            $this.html(to);
+                    }
+                }
+            });
+
+            $livestamps = $livestamps.not(toRemove);
+            delete $livestamps.prevObject
+        },
+
+        pause: function () {
+            paused = true;
+        },
+
+        resume: function () {
+            paused = false;
+            run();
+        },
+
+        interval: function (interval) {
+            if (interval === undefined)
+                return updateInterval;
+            updateInterval = interval;
+        }
+    },
+
+    livestampLocal = {
+        add: function ($el, timestamp) {
+            // DISCO: Use milliseconds, not seconds
+            //if (typeof timestamp == 'number')
+            //    timestamp *= 1e3;
+            timestamp = moment(timestamp);
+
+            if (moment.isMoment(timestamp) && !isNaN(+timestamp)) {
+                $el.each(function () {
+                    prep($(this), timestamp);
+                });
+                livestampGlobal.update();
+            }
+
+            return $el;
+        },
+
+        destroy: function ($el) {
+            $livestamps = $livestamps.not($el);
+            $el.each(function () {
+                var $this = $(this),
+                    data = $this.data('livestampdata');
+
+                if (data === undefined)
+                    return $el;
+
+                $this
+                  .html(data.original ? data.original : '')
+                  .removeData('livestampdata');
+            });
+
+            return $el;
+        },
+
+        isLivestamp: function ($el) {
+            return $el.data('livestampdata') !== undefined;
+        }
+    };
+
+    $.livestamp = livestampGlobal;
+    $(init);
+    $.fn.livestamp = function (method, options) {
+        if (!livestampLocal[method]) {
+            options = method;
+            method = 'add';
+        }
+
+        return livestampLocal[method](this, options);
+    };
+}));
 ///#source 1 1 /ClientSource/Scripts/Core/disco.dataTables.extensions.js
 jQuery.fn.dataTableExt.afnSortData['text'] = function (oSettings, iColumn) {
     var aData = [];
@@ -41899,9 +42043,15 @@ jQuery.fn.dataTableExt.afnSortData['text'] = function (oSettings, iColumn) {
 jQuery.fn.dataTableExt.afnSortData['disco_datetime'] = function (oSettings, iColumn) {
     var aData = [];
     $('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
-        var d = $(this).children('span.date[data-discodatetime]');
+        var d = $(this).children('span.date');
         if (d.length > 0)
-            aData.push((d.attr('data-discodatetime')) * 1);
+            if (d.is('[data-livestamp]')){
+                aData.push((d.attr('data-livestamp')) * 1);
+            } else if (d.data('livestampdata') !== undefined) {
+                aData.push(d.data('livestampdata').moment.valueOf());
+            }else{
+                aData.push(-1);
+            }            
         else
             aData.push(-1);
     });

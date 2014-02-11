@@ -279,8 +279,8 @@ namespace Disco.Web.Areas.API.Controllers
             var m = undetectedDirectory.GetFiles("*.pdf").Select(f => new Models.DocumentTemplate.ImporterUndetectedFilesModel()
             {
                 Id = System.IO.Path.GetFileNameWithoutExtension(f.Name),
-                Timestamp = f.CreationTime.ToString(),
-                TimestampFuzzy = f.CreationTime.FromNow()
+                Timestamp = f.CreationTime.ToFullDateTime(),
+                TimestampUnixEpoc = f.CreationTime.ToUnixEpoc()
             }).ToArray();
 
             return Json(m);

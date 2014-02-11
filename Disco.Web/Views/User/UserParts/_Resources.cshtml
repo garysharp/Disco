@@ -32,7 +32,7 @@
                                   else
                                   { @ua.Comments }}
                             </span><span class="author">@ua.TechUser.ToString()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ua.TechUserId == CurrentUser.Id))
-                                                                                      {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" title="@ua.Timestamp.ToFullDateTime()">@ua.Timestamp.FromNow()</span>
+                                                                                      {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(ua.Timestamp.ToUnixEpoc())" title="@ua.Timestamp.ToFullDateTime()">@ua.Timestamp.ToFullDateTime()</span>
                         </a>   
                         }
                     }
@@ -149,7 +149,7 @@
                             e.find('.icon img').attr('src', '@(Url.Action(MVC.API.User.AttachmentThumbnail()))/' + a.Id);
                             e.find('.comments').text(a.Comments);
                             e.find('.author').text(a.Author);
-                            e.find('.timestamp').text(a.TimestampFuzzy).attr('title', a.TimestampFull);
+                            e.find('.timestamp').text(a.TimestampFull).attr('title', a.TimestampFull).livestamp(a.TimestampUnixEpoc);
                             if (canRemove)
                                 e.find('.remove').click(removeAttachment);
                             if (!quick)
@@ -196,6 +196,7 @@
                                                     var $this = $(this);
                                                     if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
                                                         Shadowbox.removeCache(this);
+                                                    $this.find('.timestamp').livestamp('destroy');
                                                     $this.remove();
                                                 });
                                             } else {

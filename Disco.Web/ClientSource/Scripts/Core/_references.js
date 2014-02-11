@@ -9,5 +9,6 @@
 /// <reference path="moment.js" />
 /// <reference path="moment.en-au.js" />
 /// <reference path="disco.moment.extensions.js" />
+/// <reference path="livestamp.js" />
 /// <reference path="disco.dataTables.extensions.js" />
 /// <reference path="disco.uicore.js" />

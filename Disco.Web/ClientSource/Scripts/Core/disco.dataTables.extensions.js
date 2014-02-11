@@ -8,9 +8,15 @@
 jQuery.fn.dataTableExt.afnSortData['disco_datetime'] = function (oSettings, iColumn) {
     var aData = [];
     $('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
-        var d = $(this).children('span.date[data-discodatetime]');
+        var d = $(this).children('span.date');
         if (d.length > 0)
-            aData.push((d.attr('data-discodatetime')) * 1);
+            if (d.is('[data-livestamp]')){
+                aData.push((d.attr('data-livestamp')) * 1);
+            } else if (d.data('livestampdata') !== undefined) {
+                aData.push(d.data('livestampdata').moment.valueOf());
+            }else{
+                aData.push(-1);
+            }            
         else
             aData.push(-1);
     });

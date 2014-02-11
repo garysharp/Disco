@@ -29,6 +29,7 @@ namespace Disco.Web.Views.Device.DeviceParts
     using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
     using Disco.Web;
@@ -276,11 +277,22 @@ WriteAttribute("title", Tuple.Create(" title=\"", 2144), Tuple.Create("\"", 2182
 , 2152), false)
 );
 
+WriteLiteral(" data-livestamp=\"");
+
+            
+            #line 35 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+                                                                                                                                                                                                                              Write(da.Timestamp.ToUnixEpoc());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
 WriteLiteral(">");
 
             
             #line 35 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-                                                                                                                                                                                                              Write(da.Timestamp.FromNow());
+                                                                                                                                                                                                                                                          Write(da.Timestamp.ToFullDateTime());
 
             
             #line default
@@ -584,7 +596,7 @@ WriteLiteral("/\' + a.Id);\r\n                            e.find(\'.icon img\').
 WriteLiteral(@"/' + a.Id);
                             e.find('.comments').text(a.Comments);
                             e.find('.author').text(a.Author);
-                            e.find('.timestamp').text(a.TimestampFuzzy).attr('title', a.TimestampFull);
+                            e.find('.timestamp').text(a.TimestampFull).attr('title', a.TimestampFull).livestamp(a.TimestampUnixEpoc);
                             if (canRemove)
                                 e.find('.remove').click(removeAttachment);
                             if (!quick)
@@ -654,25 +666,26 @@ WriteLiteral("\',\r\n                                        dataType: \'json\',
 "= $(this);\r\n                                                    if ($this.attr(\'" +
 "data-mimetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n                         " +
 "                               Shadowbox.removeCache(this);\r\n                   " +
-"                                 $this.remove();\r\n                              " +
-"                  });\r\n                                            } else {\r\n   " +
-"                                             alert(\'Unable to remove attachment:" +
-" \' + d);\r\n                                            }\r\n                       " +
-"                     $dialogRemoveAttachment.dialog(\"close\");\r\n                 " +
-"                       },\r\n                                        error: functi" +
-"on (jqXHR, textStatus, errorThrown) {\r\n                                         " +
-"   alert(\'Unable to remove attachment: \' + textStatus);\r\n                       " +
-"                     $dialogRemoveAttachment.dialog(\"close\");\r\n                 " +
-"                       }\r\n                                    });\r\n             " +
-"                   },\r\n                                \"Cancel\": function () {\r\n" +
-"                                    $dialogRemoveAttachment.dialog(\"close\");\r\n  " +
-"                              }\r\n                            });\r\n\r\n            " +
-"                $dialogRemoveAttachment.dialog(\'open\');\r\n\r\n                     " +
-"       return false;\r\n                        }\r\n                        //#endr" +
-"egion\r\n                        ");
+"                                 $this.find(\'.timestamp\').livestamp(\'destroy\');\r" +
+"\n                                                    $this.remove();\r\n          " +
+"                                      });\r\n                                     " +
+"       } else {\r\n                                                alert(\'Unable t" +
+"o remove attachment: \' + d);\r\n                                            }\r\n   " +
+"                                         $dialogRemoveAttachment.dialog(\"close\")" +
+";\r\n                                        },\r\n                                 " +
+"       error: function (jqXHR, textStatus, errorThrown) {\r\n                     " +
+"                       alert(\'Unable to remove attachment: \' + textStatus);\r\n   " +
+"                                         $dialogRemoveAttachment.dialog(\"close\")" +
+";\r\n                                        }\r\n                                  " +
+"  });\r\n                                },\r\n                                \"Canc" +
+"el\": function () {\r\n                                    $dialogRemoveAttachment." +
+"dialog(\"close\");\r\n                                }\r\n                           " +
+" });\r\n\r\n                            $dialogRemoveAttachment.dialog(\'open\');\r\n\r\n " +
+"                           return false;\r\n                        }\r\n           " +
+"             //#endregion\r\n                        ");
 
             
-            #line 225 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 226 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                }
 
             
@@ -714,7 +727,7 @@ WriteLiteral("></i>&nbsp;Are you sure?\r\n        </p>\r\n    </div>\r\n    <scr
 "etailTab-ResourcesLink\">Attachments [");
 
             
-            #line 247 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 248 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                                                                                 Write(Model.Device.DeviceAttachments == null ? 0 : Model.Device.DeviceAttachments.Count);
 
             

@@ -29,6 +29,7 @@ namespace Disco.Web.Views.User.UserParts
     using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
     using Disco.Web;
@@ -266,21 +267,32 @@ WriteLiteral("<span");
 
 WriteLiteral(" class=\"timestamp\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2114), Tuple.Create("\"", 2152)
+WriteLiteral(" data-livestamp=\"");
+
             
             #line 35 "..\..\Views\User\UserParts\_Resources.cshtml"
-                                                                                                   , Tuple.Create(Tuple.Create("", 2122), Tuple.Create<System.Object, System.Int32>(ua.Timestamp.ToFullDateTime()
+                                                                                                                                                                                        Write(ua.Timestamp.ToUnixEpoc());
+
             
             #line default
             #line hidden
-, 2122), false)
+WriteLiteral("\"");
+
+WriteAttribute("title", Tuple.Create(" title=\"", 2160), Tuple.Create("\"", 2198)
+            
+            #line 35 "..\..\Views\User\UserParts\_Resources.cshtml"
+                                                                                                                                                 , Tuple.Create(Tuple.Create("", 2168), Tuple.Create<System.Object, System.Int32>(ua.Timestamp.ToFullDateTime()
+            
+            #line default
+            #line hidden
+, 2168), false)
 );
 
 WriteLiteral(">");
 
             
             #line 35 "..\..\Views\User\UserParts\_Resources.cshtml"
-                                                                                                                                                                                                              Write(ua.Timestamp.FromNow());
+                                                                                                                                                                                                                                                            Write(ua.Timestamp.ToFullDateTime());
 
             
             #line default
@@ -580,7 +592,7 @@ WriteLiteral("/\' + a.Id);\r\n                            e.find(\'.icon img\').
 WriteLiteral(@"/' + a.Id);
                             e.find('.comments').text(a.Comments);
                             e.find('.author').text(a.Author);
-                            e.find('.timestamp').text(a.TimestampFuzzy).attr('title', a.TimestampFull);
+                            e.find('.timestamp').text(a.TimestampFull).attr('title', a.TimestampFull).livestamp(a.TimestampUnixEpoc);
                             if (canRemove)
                                 e.find('.remove').click(removeAttachment);
                             if (!quick)
@@ -651,25 +663,26 @@ WriteLiteral("\',\r\n                                        dataType: \'json\',
 "= $(this);\r\n                                                    if ($this.attr(\'" +
 "data-mimetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n                         " +
 "                               Shadowbox.removeCache(this);\r\n                   " +
-"                                 $this.remove();\r\n                              " +
-"                  });\r\n                                            } else {\r\n   " +
-"                                             alert(\'Unable to remove attachment:" +
-" \' + d);\r\n                                            }\r\n                       " +
-"                     $dialogRemoveAttachment.dialog(\"close\");\r\n                 " +
-"                       },\r\n                                        error: functi" +
-"on (jqXHR, textStatus, errorThrown) {\r\n                                         " +
-"   alert(\'Unable to remove attachment: \' + textStatus);\r\n                       " +
-"                     $dialogRemoveAttachment.dialog(\"close\");\r\n                 " +
-"                       }\r\n                                    });\r\n             " +
-"                   },\r\n                                Cancel: function () {\r\n  " +
-"                                  $dialogRemoveAttachment.dialog(\"close\");\r\n    " +
-"                            }\r\n                            });\r\n\r\n              " +
-"              $dialogRemoveAttachment.dialog(\'open\');\r\n\r\n                       " +
-"     return false;\r\n                        }\r\n\r\n                        //#endr" +
-"egion\r\n                        ");
+"                                 $this.find(\'.timestamp\').livestamp(\'destroy\');\r" +
+"\n                                                    $this.remove();\r\n          " +
+"                                      });\r\n                                     " +
+"       } else {\r\n                                                alert(\'Unable t" +
+"o remove attachment: \' + d);\r\n                                            }\r\n   " +
+"                                         $dialogRemoveAttachment.dialog(\"close\")" +
+";\r\n                                        },\r\n                                 " +
+"       error: function (jqXHR, textStatus, errorThrown) {\r\n                     " +
+"                       alert(\'Unable to remove attachment: \' + textStatus);\r\n   " +
+"                                         $dialogRemoveAttachment.dialog(\"close\")" +
+";\r\n                                        }\r\n                                  " +
+"  });\r\n                                },\r\n                                Cance" +
+"l: function () {\r\n                                    $dialogRemoveAttachment.di" +
+"alog(\"close\");\r\n                                }\r\n                            }" +
+");\r\n\r\n                            $dialogRemoveAttachment.dialog(\'open\');\r\n\r\n   " +
+"                         return false;\r\n                        }\r\n\r\n           " +
+"             //#endregion\r\n                        ");
 
             
-            #line 223 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 224 "..\..\Views\User\UserParts\_Resources.cshtml"
                                }
 
             
@@ -689,13 +702,13 @@ WriteLiteral(@"
 ");
 
             
-            #line 235 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 236 "..\..\Views\User\UserParts\_Resources.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 235 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 236 "..\..\Views\User\UserParts\_Resources.cshtml"
      if (canAddAttachments)
     {
 
@@ -715,7 +728,7 @@ WriteLiteral(" id=\"silverlightHostUploadAttachment\"");
 WriteLiteral(">\r\n            </div>\r\n        </div>\r\n");
 
             
-            #line 241 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 242 "..\..\Views\User\UserParts\_Resources.cshtml"
     }
 
             
@@ -724,7 +737,7 @@ WriteLiteral(">\r\n            </div>\r\n        </div>\r\n");
 WriteLiteral("    ");
 
             
-            #line 242 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 243 "..\..\Views\User\UserParts\_Resources.cshtml"
      if (canRemoveAnyAttachments || canRemoveOwnAttachments)
     {
 
@@ -744,7 +757,7 @@ WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
 WriteLiteral("></i>&nbsp;Are you sure?\r\n            </p>\r\n        </div>\r\n");
 
             
-            #line 249 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 250 "..\..\Views\User\UserParts\_Resources.cshtml"
     }
 
             
@@ -754,7 +767,7 @@ WriteLiteral("    <script>\r\n        $(\'#UserDetailTabItems\').append(\'<li><a
 "b-Resources\" id=\"UserDetailTab-ResourcesLink\">Attachments [");
 
             
-            #line 251 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 252 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                                                                           Write(Model.User.UserAttachments == null ? 0 : Model.User.UserAttachments.Count);
 
             

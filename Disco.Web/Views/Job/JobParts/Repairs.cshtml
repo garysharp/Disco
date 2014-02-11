@@ -81,7 +81,7 @@
 <script>
     $(function () {
         var updateUrl = '@(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)))';
-        var jobOpenDate = '@(Model.Job.OpenedDate.ToJavaScript())';
+        var jobOpenDate = '@(Model.Job.OpenedDate.ToISO8601())';
 
         @if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerLoggedDate))
         {<text>document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Repairer Name', 'Job_JobMetaNonWarranty_RepairerLoggedDate', null, 'NonWarrantyRepairerLoggedDate', 'Not Logged', jobOpenDate, false);</text>}

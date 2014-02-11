@@ -1,4 +1,4 @@
-﻿///#source 1 1 /ClientSource/Scripts/Modules/Disco-PropertyChangeHelpers/disco.propertychangehelpers.js
+///#source 1 1 /ClientSource/Scripts/Modules/Disco-PropertyChangeHelpers/disco.propertychangehelpers.js
 if (!document.DiscoFunctions) {
     document.DiscoFunctions = {};
 }
@@ -260,13 +260,13 @@ if (!document.DiscoFunctions.DateDialogCreateUpdater)
                     $ajaxLoading.hide();
                 } else {
                     if (response.DateTimeFull) {
-                        $dateField.attr('data-datetimeformatted', response.DateTimeJavascript)
-                            .attr('data-discodatetime', response.DateTimeSortable)
+                        $dateField.attr('data-isodate', response.DateTimeISO8601)
+                            .attr('data-livestamp', response.DateTimeUnixEpoc)
                             .attr('title', response.DateTimeFull)
                             .text(response.DateTimeFriendly);
                     } else {
-                        $dateField.attr('data-datetimeformatted', '')
-                            .attr('data-discodatetime', '-1')
+                        $dateField.attr('data-isodate', '')
+                            .attr('data-livestamp', '-1')
                             .attr('title', notSetDisplay)
                             .text(notSetDisplay);
                     }
@@ -301,7 +301,7 @@ if (!document.DiscoFunctions.DateDialogCreateUpdater)
         d.dialog('option', 'title', friendlyName);
         dialogHeader.text(friendlyName + ' Date');
 
-        var dfVal = $('#' + DateField).attr('data-datetimeformatted');
+        var dfVal = $('#' + DateField).attr('data-isodate');
 
         if (dfVal)
             dialogDateBox.datetimepicker('setDate', new Date(dfVal));

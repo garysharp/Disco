@@ -15,28 +15,8 @@ namespace Disco.Web.Areas.API.Models.Job
         public string Author { get; set; }
         public DateTime Timestamp { get; set; }
         public string Comments { get; set; }
-        public string TimestampFuzzy
-        {
-            get
-            {
-                return Timestamp.FromNow();
-            }
-            set
-            {
-                // Ignore
-            }
-        }
-        public string TimestampFull
-        {
-            get
-            {
-                return Timestamp.ToFullDateTime();
-            }
-            set
-            {
-                // Ignore
-            }
-        }
+        public long TimestampUnixEpoc { get { return this.Timestamp.ToUnixEpoc(); } }
+        public string TimestampFull { get { return Timestamp.ToFullDateTime(); } }
 
         public static _CommentModel FromJobLog(Disco.Models.Repository.JobLog jl)
         {

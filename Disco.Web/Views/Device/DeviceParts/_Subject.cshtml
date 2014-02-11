@@ -143,7 +143,13 @@
                                                 alert('Unable to retrieve latest network logon date:\n' + response);
                                                 $('<span>').addClass('smallMessage').text('[may not be current]').appendTo(span);
                                             } else {
-                                                span.attr('title', response.Formatted).text(response.Friendly);
+                                                var spanClasses = '',
+                                                    diff = moment().valueOf() - response.UnixEpoc;
+                                                if (diff > 2592000000) // 30 Days
+                                                    spanClasses = 'error';
+                                                else if (diff > 604800000) // 7 Days
+                                                    spanClasses = 'alert';
+                                                span.removeClass('alert error').addClass(spanClasses).attr('title', response.Formatted).text(response.Formatted).livestamp(response.UnixEpoc);
                                             }
                                         });
                                         window.setTimeout(function () {
@@ -372,7 +378,7 @@
                                     @foreach (var db in Model.DeviceBatches.OrderBy(i => i.Name))
                                     {
                                         <li>
-                                            <input type="radio" data-devicebatchid="@db.Id" name="DeviceBatch" id="DeviceBatch_@(db.Id)" /><label for="DeviceBatch_@(db.Id)" title="Purchased: @(db.PurchaseDate.FromNow())">@db.Name</label></li>   
+                                            <input type="radio" data-devicebatchid="@db.Id" name="DeviceBatch" id="DeviceBatch_@(db.Id)" /><label for="DeviceBatch_@(db.Id)" title="Purchased: @(db.PurchaseDate.ToLongDateString())">@db.Name</label></li>   
                                     }
                                 </ul>
                             </div>

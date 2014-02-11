@@ -29,6 +29,7 @@ namespace Disco.Web.Views.Job.JobParts
     using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
     using Disco.Web;
@@ -1674,7 +1675,7 @@ WriteLiteral("\';\r\n                        var jobOpenDate = \'");
 
             
             #line 529 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                       Write(Model.Job.OpenedDate.ToJavaScript());
+                                       Write(Model.Job.OpenedDate.ToISO8601());
 
             
             #line default

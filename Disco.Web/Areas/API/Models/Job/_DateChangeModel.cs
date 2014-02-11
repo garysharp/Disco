@@ -13,14 +13,14 @@ namespace Disco.Web.Areas.API.Models.Job
         public string UserDescription { get; set; }
         public string DateTimeFull { get; set; }
         public string DateTimeFriendly { get; set; }
-        public string DateTimeJavascript { get; set; }
-        public long DateTimeSortable { get; set; }
+        public string DateTimeISO8601 { get; set; }
+        public long DateTimeUnixEpoc { get; set; }
 
         public _DateChangeModel SetDateTime(DateTime? date)
         {
             this.DateTimeFriendly = date.FromNow(null);
-            this.DateTimeJavascript = date.ToJavaScript();
-            this.DateTimeSortable = date.ToSortable();
+            this.DateTimeISO8601 = date.ToISO8601();
+            this.DateTimeUnixEpoc = date.ToUnixEpoc() ?? -1;
             this.DateTimeFull = date.ToFullDateTime(null);
 
             return this;

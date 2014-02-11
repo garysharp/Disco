@@ -202,7 +202,7 @@
                             {
                             <div id="Job_Show_Device_Details_HWar">
                                 <div>DEVICE WARRANTY</div>
-                                <div>Until: <span id="Job_Show_Device_Details_HWar_ValidUntil">@Model.Job.Device.DeviceBatch.WarrantyValidUntil.FromNow("Unknown")</span></div>
+                                <div>Until: <span id="Job_Show_Device_Details_HWar_ValidUntil" data-livestamp="@Model.Job.Device.DeviceBatch.WarrantyValidUntil.ToUnixEpoc()">@Model.Job.Device.DeviceBatch.WarrantyValidUntil.ToFullDateTime("Unknown")</span></div>
                                 @if (!string.IsNullOrWhiteSpace(Model.Job.Device.DeviceBatch.WarrantyDetails))
                                 {
                                     <a id="Job_Show_Device_Details_HWar_Details_Button" href="#">Show Details</a>
@@ -232,7 +232,7 @@
                             <div id="Job_Show_Device_Details_HNWar">
                                 <div>INSURANCE</div>
                                 <div id="Job_Show_Device_Details_HNWar_InsuranceSupplier">@Model.Job.Device.DeviceBatch.InsuranceSupplier</div>
-                                <div>Until: <span id="Job_Show_Device_Details_HNWar_ValidUntil">@Model.Job.Device.DeviceBatch.InsuredUntil.FromNow("Unknown")</span></div>
+                                <div>Until: <span id="Job_Show_Device_Details_HNWar_ValidUntil" data-livestamp="@Model.Job.Device.DeviceBatch.InsuredUntil.ToUnixEpoc()">@Model.Job.Device.DeviceBatch.InsuredUntil.ToFullDateTime("Unknown")</span></div>
                                 @if (!string.IsNullOrWhiteSpace(Model.Job.Device.DeviceBatch.InsuranceDetails))
                                 {
                                     <a id="Job_Show_Device_Details_HNWar_Details_Button" href="#">Show Details</a>
@@ -370,7 +370,7 @@
                     {
                         <div id="Job_Show_User_WaitingForUserAction" class="status">
                             <h4>Awaiting Action</h4>
-                            Since: @Model.Job.WaitingForUserAction.FromNow()
+                            Since: <span data-livestamp="@Model.Job.WaitingForUserAction.ToUnixEpoc()">@Model.Job.WaitingForUserAction.ToFullDateTime()</span>
                         </div>
                     }
                 </div>

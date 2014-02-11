@@ -11,6 +11,7 @@
 	<file>/ClientSource/Scripts/Core/moment.js</file>
 	<file>/ClientSource/Scripts/Core/moment.en-au.js</file>
 	<file>/ClientSource/Scripts/Core/disco.moment.extensions.js</file>
+  <file>/ClientSource/Scripts/Core/livestamp.js</file>
   <file>/ClientSource/Scripts/Core/disco.dataTables.extensions.js</file>
   <file>/ClientSource/Scripts/Core/disco.uicore.js</file>
 </bundle>

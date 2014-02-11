@@ -17,28 +17,8 @@ namespace Disco.Web.Areas.API.Models.Attachment
         public string Comments { get; set; }
         public string Filename { get; set; }
         public string MimeType { get; set; }
-        public string TimestampFuzzy
-        {
-            get
-            {
-                return Timestamp.FromNow();
-            }
-            set
-            {
-                // Ignore
-            }
-        }
-        public string TimestampFull
-        {
-            get
-            {
-                return Timestamp.ToFullDateTime();
-            }
-            set
-            {
-                // Ignore
-            }
-        }
+        public long TimestampUnixEpoc { get { return Timestamp.ToUnixEpoc(); } }
+        public string TimestampFull { get { return Timestamp.ToFullDateTime(); } }
 
         public static _AttachmentModel FromAttachment(Disco.Models.Repository.UserAttachment ua)
         {

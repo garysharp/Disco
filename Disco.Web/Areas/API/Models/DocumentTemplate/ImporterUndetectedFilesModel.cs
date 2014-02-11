@@ -9,6 +9,6 @@ namespace Disco.Web.Areas.API.Models.DocumentTemplate
     {
         public string Id { get; set; }
         public string Timestamp { get; set; }
-        public string TimestampFuzzy { get; set; }
+        public long TimestampUnixEpoc { get; set; }
     }
 }

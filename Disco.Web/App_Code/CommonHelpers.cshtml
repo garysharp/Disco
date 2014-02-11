@@ -6,10 +6,43 @@
 @using System.Web.Mvc
 @using System.Web.Mvc.Html;
 @using Disco.Services.Web;
+
+
 @helper FriendlyDate(DateTime d, string ElementId = null, bool WithoutSuffix = false)
-{<span @(ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId)))title="@d.ToFullDateTime()" data-discodatetime="@d.ToSortable()" data-datetimeformatted="@d.ToJavaScript()" class="date nowrap">@d.FromNow(WithoutSuffix)</span>}
+{<span @(ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId)))title="@d.ToFullDateTime()" data-livestamp="@d.ToUnixEpoc()" data-isodate="@d.ToISO8601()" class="date nowrap@(WithoutSuffix ? " noMomentSuffix" : null)">@d.ToFullDateTime()</span>}
 @helper FriendlyDate(DateTime? d, string NullValue = "n/a", string ElementId = null, bool WithoutSuffix = false)
-{<span @(ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId)))title="@d.ToFullDateTime(NullValue)" data-discodatetime="@d.ToSortable()" data-datetimeformatted="@d.ToJavaScript()" class="date nowrap">@d.FromNow(WithoutSuffix, NullValue)</span>}
+{<span @(ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId)))title="@d.ToFullDateTime(NullValue)" data-livestamp="@d.ToUnixEpoc()" data-isodate="@d.ToISO8601()" class="date nowrap@(WithoutSuffix ? " noMomentSuffix" : null)">@d.ToFullDateTime(NullValue)</span>}
+@helper FriendlyDateAndUser(DateTime? d, User u, string DateNullValue = "n/a", bool WithoutSuffix = false)
+{
+    @FriendlyDate(d, DateNullValue, WithoutSuffix: WithoutSuffix);
+    @FriendlyUser(u, null, " by");
+}
+@helper FriendlyDateAndUser(DateTime d, User u, bool WithoutSuffix = false)
+{
+    @FriendlyDate(d, WithoutSuffix: WithoutSuffix);
+    @FriendlyUser(u, null, " by");
+}
+@helper FriendlyDateAndTitleUser(DateTime? d, User u, string DateNullValue = "n/a", bool WithoutSuffix = false)
+{
+    <span title="@d.ToFullDateTime(DateNullValue) by @u" data-livestamp="@d.ToUnixEpoc()" class="date nowrap@(WithoutSuffix ? " noMomentSuffix" : null)">@d.ToFullDateTime(DateNullValue)</span>
+}
+@helper FriendlyDateAndTitleUser(DateTime d, User u, bool WithoutSuffix = false)
+{
+    <span title="@d.ToFullDateTime() by @u" data-livestamp="@d.ToUnixEpoc()" class="date nowrap@(WithoutSuffix ? " noMomentSuffix" : null)">@d.ToFullDateTime()</span>
+}
+@helper FriendlyUser(User u, string nullValue = null, string prepend = null)
+{
+    if (u != null)
+    { 
+    @prepend <span title="@u">@u.Id</span>
+    }
+    else
+    { 
+    <span>@nullValue</span>
+    }
+}
+
+
 @helper RadioButtonList(string id, List<System.Web.Mvc.SelectListItem> items, int columns = 1)
 {
     @ItemList("radio", id, items, columns)
@@ -17,6 +50,19 @@
 @helper CheckBoxList(string id, List<System.Web.Mvc.SelectListItem> items, int columns = 1, bool alignEven = true, int? forceUniqueIds = null, bool htmlEncodeText = true)
 {
     @ItemList("checkbox", id, items, columns, alignEven, forceUniqueIds, htmlEncodeText)
+}
+@helper CheckboxBulkSelect(string BulkSelectContainerId, string ParentJQuerySelector = null)
+{Html.GetPageHelper().BundleDeferred("~/ClientScripts/Modules/Disco-jQueryExtensions");
+    <span id="@BulkSelectContainerId" class="checkboxBulkSelectContainer">
+        @if (string.IsNullOrWhiteSpace(ParentJQuerySelector))
+        {
+            <script type="text/javascript">$(function () { $('#@(BulkSelectContainerId)').checkboxBulkSelect(); });</script>
+        }
+        else
+        {
+            <script type="text/javascript">$(function () { $('#@(BulkSelectContainerId)').checkboxBulkSelect({ parentSelector: '@(ParentJQuerySelector)' }); });</script>
+        }
+    </span>
 }
 @helper ItemList(string inputType, string id, List<System.Web.Mvc.SelectListItem> items, int columns = 1, bool alignEven = true, int? forceUniqueIds = null, bool htmlEncodeText = true)
 {
@@ -49,35 +95,8 @@
         </tr>
     </table>
 }
-@helper FriendlyDateAndUser(DateTime? d, User u, string DateNullValue = "n/a", bool WithoutSuffix = false)
-{
-    @FriendlyDate(d, DateNullValue, WithoutSuffix: WithoutSuffix);
-    @FriendlyUser(u, null, " by");
-}
-@helper FriendlyDateAndUser(DateTime d, User u, bool WithoutSuffix = false)
-{
-    @FriendlyDate(d, WithoutSuffix: WithoutSuffix);
-    @FriendlyUser(u, null, " by");
-}
-@helper FriendlyDateAndTitleUser(DateTime? d, User u, string DateNullValue = "n/a", bool WithoutSuffix = false)
-{
-    <span title="@d.ToFullDateTime(DateNullValue) by @u" data-discodatetime="@d.ToSortable()" class="date nowrap">@d.FromNow(WithoutSuffix, DateNullValue)</span>
-}
-@helper FriendlyDateAndTitleUser(DateTime d, User u, bool WithoutSuffix = false)
-{
-    <span title="@d.ToFullDateTime() by @u" data-discodatetime="@d.ToSortable()" class="date nowrap">@d.FromNow(WithoutSuffix)</span>
-}
-@helper FriendlyUser(User u, string nullValue = null, string prepend = null)
-{
-    if (u != null)
-    { 
-    @prepend <span title="@u">@u.Id</span>
-    }
-    else
-    { 
-    <span>@nullValue</span>
-    }
-}
+
+
 @helper Breadcrumbs(List<Tuple<string, ActionResult>> BreadCrumbs)
 {
     for (int index = 0; index < BreadCrumbs.Count; index++)
@@ -116,17 +135,4 @@
 @helper BreadcrumbsTitle(string Title)
 {
     @Title
-}
-@helper CheckboxBulkSelect(string BulkSelectContainerId, string ParentJQuerySelector = null)
-{Html.GetPageHelper().BundleDeferred("~/ClientScripts/Modules/Disco-jQueryExtensions");
-    <span id="@BulkSelectContainerId" class="checkboxBulkSelectContainer">
-        @if (string.IsNullOrWhiteSpace(ParentJQuerySelector))
-        {
-            <script type="text/javascript">$(function () { $('#@(BulkSelectContainerId)').checkboxBulkSelect(); });</script>
-        }
-        else
-        {
-            <script type="text/javascript">$(function () { $('#@(BulkSelectContainerId)').checkboxBulkSelect({ parentSelector: '@(ParentJQuerySelector)' }); });</script>
-        }
-    </span>
 }
