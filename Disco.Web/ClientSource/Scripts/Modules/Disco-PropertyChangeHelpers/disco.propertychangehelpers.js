@@ -100,7 +100,7 @@ if (!document.DiscoFunctions.DateChangeUserHelper) {
         if (dateOnly) {
             DateField.datepicker({
                 defaultDate: new Date(),
-                minDate: minDate,
+                minDate: moment(minDate).toDate(),
                 changeYear: true,
                 changeMonth: true,
                 dateFormat: 'yy/mm/dd',
@@ -115,7 +115,7 @@ if (!document.DiscoFunctions.DateChangeUserHelper) {
             DateField.datetimepicker({
                 defaultDate: new Date(),
                 ampm: true,
-                minDate: minDate,
+                minDate: moment(minDate).toDate(),
                 changeYear: true,
                 changeMonth: true,
                 dateFormat: 'yy/mm/dd',
@@ -165,7 +165,7 @@ if (!document.DiscoFunctions.DateChangeHelper) {
         if (dateOnly) {
             DateField.datepicker({
                 defaultDate: new Date(),
-                minDate: minDate,
+                minDate: moment(minDate).toDate(),
                 changeYear: true,
                 changeMonth: true,
                 dateFormat: 'yy/mm/dd',
@@ -180,7 +180,7 @@ if (!document.DiscoFunctions.DateChangeHelper) {
             DateField.datetimepicker({
                 defaultDate: new Date(),
                 ampm: true,
-                minDate: minDate,
+                minDate: moment(minDate).toDate(),
                 changeYear: true,
                 changeMonth: true,
                 dateFormat: 'yy/mm/dd',
@@ -308,7 +308,7 @@ if (!document.DiscoFunctions.DateDialogCreateUpdater)
             dialogDateBox.datetimepicker('setDate', new Date());
 
         if (MinDate)
-            dialogDateBox.datetimepicker('option', 'minDate', MinDate);
+            dialogDateBox.datetimepicker('option', 'minDate', moment(minDate).toDate());
         else
             dialogDateBox.datetimepicker('option', 'minDate', null);
 
