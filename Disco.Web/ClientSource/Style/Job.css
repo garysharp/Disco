@@ -732,7 +732,7 @@
   margin-bottom: 4px;
 }
 #createJob_Container #createJob_QuickLogAutoCloseContainer input {
-  margin-left: 6px;
+  margin-left: 4px;
 }
 #createJob_Container #createJob_QuickLogTaskTimeContainer {
   display: none;
@@ -746,7 +746,7 @@
   padding-right: 10px;
 }
 #createJob_Container #createJob_QuickLogTaskTimeContainer label {
-  margin-right: 20px;
+  margin-right: 15px;
 }
 #createJob_Container #createJob_QuickLogTaskTimeContainer #createJob_TaskTimeOtherMinutesContainer {
   display: none;

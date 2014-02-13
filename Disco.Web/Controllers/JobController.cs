@@ -397,7 +397,11 @@ namespace Disco.Web.Controllers
                 }
                 else
                 {
-                    if (Authorization.Has(Claims.Job.Actions.Close) && m.QuickLog.HasValue && m.QuickLog.Value && m.QuickLogTaskTimeMinutes.HasValue && m.QuickLogTaskTimeMinutes.Value > 0)
+                    if (Authorization.Has(Claims.Job.Actions.Close)
+                        && m.QuickLog.HasValue && m.QuickLog.Value
+                        && m.QuickLogTaskTimeMinutes.HasValue && m.QuickLogTaskTimeMinutes.Value > 0
+                        && (j.JobQueues == null || j.JobQueues.All(jqj => jqj.RemovedDate.HasValue))
+                        )
                     {
                         // Quick Log
                         // Set Opened Date in the past

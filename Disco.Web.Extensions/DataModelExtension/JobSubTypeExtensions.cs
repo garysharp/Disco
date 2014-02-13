@@ -34,7 +34,7 @@ namespace Disco.Web.Extensions
                 var sb = new System.Text.StringBuilder(System.Web.HttpUtility.HtmlEncode(jst.Description));
 
                 foreach (var jq in jst.JobQueues)
-                    sb.AppendFormat("&nbsp;<i class=\"fa fa-{0} fa-fw d-{1}\" title=\"{2}\"></i>", jq.Icon, jq.IconColour, jq.Name);
+                    sb.AppendFormat("&nbsp;<i class=\"queue fa fa-{0} fa-fw d-{1}\" title=\"{2}\"></i>", jq.Icon, jq.IconColour, jq.Name);
 
                 return sb.ToString();
             }

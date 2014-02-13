@@ -33,6 +33,7 @@
                 }
             </div>
         </div>
+        if (Authorization.Has(Claims.Job.Properties.DeviceHeld)){
         <div id="createJob_DeviceHeldContainer" class="createJob_Component">
             @Html.ValidationMessageFor(m => m.DeviceHeld)
             @Html.HiddenFor(m => m.DeviceHeld)
@@ -50,6 +51,9 @@
                 </tr>
             </table>
         </div>
+        }else{
+            @Html.Hidden("DeviceHeld", false)
+        }
         <div id="createJob_CommentsContainer" class="createJob_Component">
             <table>
                 <tr>
@@ -69,11 +73,12 @@
             </div>
             <div id="createJob_QuickLogTaskTimeContainer">
                 <h4>Task Time:</h4>
-                <input type="radio" id="createJob_TaskTime10" name="QuickLogTaskTimeMinutes" value="10" /><label for="createJob_TaskTime10"> 10 Minutes</label>
-                <input type="radio" id="createJob_TaskTime30" name="QuickLogTaskTimeMinutes" value="30" /><label for="createJob_TaskTime30"> 30 Minutes</label>
-                <input type="radio" id="createJob_TaskTime60" name="QuickLogTaskTimeMinutes" value="60" /><label for="createJob_TaskTime60"> 1 Hour</label>
-                <input type="radio" id="createJob_TaskTime120" name="QuickLogTaskTimeMinutes" value="120" /><label for="createJob_TaskTime120"> 2 Hours</label>
-                <input type="radio" id="createJob_TaskTimeOther" name="QuickLogTaskTimeMinutes" value="" /><label for="createJob_TaskTimeOther"> Other</label>
+                <input type="radio" id="createJob_TaskTime5" name="QuickLogTaskTimeMinutes" value="5" /><label for="createJob_TaskTime5">5 Minutes</label>
+                <input type="radio" id="createJob_TaskTime10" name="QuickLogTaskTimeMinutes" value="10" /><label for="createJob_TaskTime10">10 Minutes</label>
+                <input type="radio" id="createJob_TaskTime30" name="QuickLogTaskTimeMinutes" value="30" /><label for="createJob_TaskTime30">30 Minutes</label>
+                <input type="radio" id="createJob_TaskTime60" name="QuickLogTaskTimeMinutes" value="60" /><label for="createJob_TaskTime60">1 Hour</label>
+                <input type="radio" id="createJob_TaskTime120" name="QuickLogTaskTimeMinutes" value="120" /><label for="createJob_TaskTime120">2 Hours</label>
+                <input type="radio" id="createJob_TaskTimeOther" name="QuickLogTaskTimeMinutes" value="" /><label for="createJob_TaskTimeOther">Other</label>
                 <span id="createJob_TaskTimeOtherMinutesContainer">
                     <input type="number" id="createJob_TaskTimeOtherMinutes" name="QuickLogTaskTimeMinutesOther" value="" disabled="disabled" />
                     Minutes
@@ -207,6 +212,7 @@
             //#region DeviceHeld
             var $deviceHeld = $('#DeviceHeld');
 
+            @if (Authorization.Has(Claims.Job.Properties.DeviceHeld)){<text>
             if ($('#DeviceSerialNumber').val()) {
                 switch ($deviceHeld.val()) {
                     case 'True':
@@ -237,6 +243,7 @@
                 $deviceHeld.val('False');
                 $('#createJob_DeviceHeldContainer').hide();
             }
+            </text>}
             //#endregion
 
             @if (Authorization.Has(Claims.Job.Actions.Close)){
@@ -251,6 +258,7 @@
 
             $deviceHeld.change(validateQuickLog);
             $jobTypes.change(validateQuickLog);
+            $('#createJob_SubTypes').on('change', 'input', validateQuickLog);
             validateQuickLog();
 
             function validateQuickLog() {
@@ -259,6 +267,7 @@
                 if ($deviceHeld.val() === 'True') {
                     quickLogAllowed = false;
                 } else {
+                    // Allow Quick-Log only for certain Job Types
                     var selectedType = $jobTypes.filter(':checked').val();
                     switch (selectedType) {
                         case 'HMisc':
@@ -266,7 +275,11 @@
                         case 'SImg':
                         case 'SOS':
                         case 'UMgmt':
-                            quickLogAllowed = true;
+                            // If Job-Queues are configured for a Sub-Type, don't allow quick-log.
+                            if ($('#createJob_SubType_' + $jobTypes.filter(':checked').val()).find('input:checked').closest('li').has('i.queue').length == 0)
+                                quickLogAllowed = true;
+                            else
+                                quickLogAllowed = false;
                             break;
                         default:
                             quickLogAllowed = false;
