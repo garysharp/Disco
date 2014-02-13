@@ -29,6 +29,7 @@ namespace Disco.Web.Views.Device.DeviceParts
     using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
     using Disco.Web;
@@ -73,21 +74,29 @@ WriteLiteral(">\r\n        <table");
 WriteLiteral(" class=\"tableData\"");
 
 WriteLiteral(">\r\n            <tbody>\r\n                <tr>\r\n                    <th>LAN MAC Add" +
-"ress</th>\r\n                    <td>");
+"ress</th>\r\n                    <td");
+
+WriteLiteral(" class=\"code\"");
+
+WriteLiteral(">");
 
             
             #line 18 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                    Write(Model.Device.DeviceDetails.LanMacAddress() ?? "Unknown");
+                                 Write(Model.Device.DeviceDetails.LanMacAddress() ?? "Unknown");
 
             
             #line default
             #line hidden
 WriteLiteral("</td>\r\n                </tr>\r\n                <tr>\r\n                    <th>WLAN " +
-"MAC Address</th>\r\n                    <td>");
+"MAC Address</th>\r\n                    <td");
+
+WriteLiteral(" class=\"code\"");
+
+WriteLiteral(">");
 
             
             #line 22 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                    Write(Model.Device.DeviceDetails.WLanMacAddress() ?? "Unknown");
+                                 Write(Model.Device.DeviceDetails.WLanMacAddress() ?? "Unknown");
 
             
             #line default

@@ -15,11 +15,11 @@
             <tbody>
                 <tr>
                     <th>LAN MAC Address</th>
-                    <td>@(Model.Device.DeviceDetails.LanMacAddress() ?? "Unknown")</td>
+                    <td class="code">@(Model.Device.DeviceDetails.LanMacAddress() ?? "Unknown")</td>
                 </tr>
                 <tr>
                     <th>WLAN MAC Address</th>
-                    <td>@(Model.Device.DeviceDetails.WLanMacAddress() ?? "Unknown")</td>
+                    <td class="code">@(Model.Device.DeviceDetails.WLanMacAddress() ?? "Unknown")</td>
                 </tr>
                 <tr>
                     <th>AC Adapter</th>

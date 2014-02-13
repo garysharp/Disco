@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<Disco.Models.Services.Searching.DeviceSearchResultItem>
 @{
     var canShowDevices = Authorization.Has(Claims.Device.Show);
+    var canShowUsers = Authorization.Has(Claims.User.Show);
 }
 <div class="genericData deviceTable">
     @if (Model != null && Model.Count() > 0)
@@ -70,7 +71,15 @@
                             }
                             else
                             { 
-                                <span>@item.AssignedUserDescription</span>
+                                <span>@if (canShowUsers)
+                                      {
+                                    @Html.ActionLink(item.AssignedUserDescription, MVC.User.Show(item.AssignedUserId))
+                                      }
+                                      else
+                                      {
+                                    @item.AssignedUserDescription
+                                      }
+                                </span>
                             }
                         </td>
                         <td>

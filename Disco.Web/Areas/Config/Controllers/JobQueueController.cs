@@ -58,7 +58,7 @@ namespace Disco.Web.Areas.Config.Controllers
             else
             {
                 // List Index
-                var jqs = Database.JobQueues.ToList()
+                var jqs = Database.JobQueues.OrderBy(jq => jq.Name).ToList()
                     .Select(jq => JobQueueToken.FromJobQueue(jq)).Cast<IJobQueueToken>().ToList();
 
                 var m = new Models.JobQueue.IndexModel()

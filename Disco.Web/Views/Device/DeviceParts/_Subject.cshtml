@@ -32,7 +32,7 @@
                                 }
                                 else
                                 {
-                                    <span class="small discreet">@Model.Device.AssetNumber</span>
+                                    <span class="small discreet">@(Model.Device.AssetNumber ?? "Unknown")</span>
                                 }
                             </td>
                         </tr>
@@ -45,7 +45,7 @@
                                 }
                                 else
                                 {
-                                    <span class="small discreet">@Model.Device.Location</span>
+                                    <span class="small discreet">@(Model.Device.Location ?? "Unknown")</span>
                                 }
                             </td>
                         </tr>
@@ -175,7 +175,16 @@
                                 @if (assignedUser != null)
                                 {
                                     <div id="Device_Show_User">
-                                        <div id="Device_Show_User_DisplayName" title="Display Name">@Html.ActionLink(assignedUser.DisplayName, MVC.User.Show(assignedUser.Id))</div>
+                                        <div id="Device_Show_User_DisplayName" title="Display Name">
+                                            @if (Authorization.Has(Claims.User.Show))
+                                            {
+                                                @Html.ActionLink(assignedUser.DisplayName, MVC.User.Show(assignedUser.Id))
+                                            }
+                                            else
+                                            {
+                                                @assignedUser.DisplayName
+                                            }
+                                        </div>
                                         <div id="Device_Show_User_Id" title="Id">@assignedUser.Id</div>
                                         @if (Authorization.Has(Claims.User.ShowDetails))
                                         {
@@ -222,7 +231,14 @@
         <td id="Device_Show_Policies" rowspan="2">
             <div>
                 <div id="Device_Show_Policies_Profile">
-                    <h2 title="Device Profile">@Html.ActionLink(Model.Device.DeviceProfile.Name, MVC.Config.DeviceProfile.Index(Model.Device.DeviceProfileId))</h2>
+                    <h2 title="Device Profile">@if (Authorization.Has(Claims.Config.DeviceProfile.Show))
+                                               {
+                        @Html.ActionLink(Model.Device.DeviceProfile.Name, MVC.Config.DeviceProfile.Index(Model.Device.DeviceProfileId))
+                                               }
+                                               else
+                                               {
+                        @Model.Device.DeviceProfile.Name          
+                                               }</h2>
                     <table class="none verticalHeadings">
                         <tr>
                             <td><span title="Distribution Type">Distribution:</span>
@@ -330,7 +346,14 @@
                 <div id="Device_Show_Policies_Batch" class="status">
                     @if (Model.Device.DeviceBatchId.HasValue)
                     {
-                        <h2 title="Device Batch">@Html.ActionLink(Model.Device.DeviceBatch.Name, MVC.Config.DeviceBatch.Index(Model.Device.DeviceBatchId.Value))</h2>
+                        <h2 title="Device Batch">@if (Authorization.Has(Claims.Config.DeviceBatch.Show))
+                                                 {
+                            @Html.ActionLink(Model.Device.DeviceBatch.Name, MVC.Config.DeviceBatch.Index(Model.Device.DeviceBatchId.Value))
+                                                 }
+                                                 else
+                                                 {
+                            @Model.Device.DeviceBatch.Name
+                                                 }</h2>
                         <table class="none verticalHeadings">
                             <tr>
                                 <td><span title="Purchased Date">Purchased:</span>
@@ -442,7 +465,14 @@
         <td id="Device_Show_Aspects" rowspan="2">
             <div>
                 <div id="Device_Show_Aspects_Model" class="clearfix">
-                    <h2 id="Device_Show_Aspects_Model_Description" title="Model Description">@Html.ActionLink(Model.Device.DeviceModel.ToString(), MVC.Config.DeviceModel.Index(Model.Device.DeviceModelId))</h2>
+                    <h2 id="Device_Show_Aspects_Model_Description" title="Model Description">@if (Authorization.Has(Claims.Config.DeviceModel.Show))
+                                                                                             {
+                        @Html.ActionLink(Model.Device.DeviceModel.ToString(), MVC.Config.DeviceModel.Index(Model.Device.DeviceModelId))
+                                                                                             }
+                                                                                             else
+                                                                                             {
+                        @Model.Device.DeviceModel.ToString()
+                                                                                             }</h2>
                     <img id="Device_Show_Aspects_Model_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(Model.Device.DeviceModelId, Model.Device.DeviceModel.ImageHash()))" />
                 </div>
             </div>

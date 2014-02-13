@@ -706,6 +706,8 @@ WriteLiteral(@"
 
 WriteLiteral(" id=\"dialogUpload\"");
 
+WriteLiteral(" class=\"dialog\"");
+
 WriteLiteral(" title=\"Upload Attachment\"");
 
 WriteLiteral(">\r\n        <div");
@@ -715,6 +717,8 @@ WriteLiteral(" id=\"silverlightHostUploadAttachment\"");
 WriteLiteral(">\r\n        </div>\r\n    </div>\r\n    <div");
 
 WriteLiteral(" id=\"dialogRemoveAttachment\"");
+
+WriteLiteral(" class=\"dialog\"");
 
 WriteLiteral(" title=\"Remove this Attachment?\"");
 
