@@ -89,6 +89,7 @@ namespace Disco.Services.Authorization
 				{ "Job.Lists.MyJobs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.MyJobs, (c, v) => c.Job.Lists.MyJobs = v, "My Jobs List", "Can show list", false) },
 				{ "Job.Lists.MyJobsOrphaned", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.MyJobsOrphaned, (c, v) => c.Job.Lists.MyJobsOrphaned = v, "My Jobs List (Includes No Queue)", "Can show list", false) },
 				{ "Job.Lists.RecentlyClosed", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.RecentlyClosed, (c, v) => c.Job.Lists.RecentlyClosed = v, "Recently Closed List", "Can show list", false) },
+				{ "Job.Lists.StaleJobs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.StaleJobs, (c, v) => c.Job.Lists.StaleJobs = v, "Stale Jobs List", "Can show list", false) },
 				{ "Job.Actions.AddAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.AddAttachments, (c, v) => c.Job.Actions.AddAttachments = v, "Add Attachments", "Can add attachments to jobs", false) },
 				{ "Job.Actions.AddLogs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.AddLogs, (c, v) => c.Job.Actions.AddLogs = v, "Add Logs", "Can add job logs", false) },
 				{ "Job.Actions.AddAnyQueues", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.AddAnyQueues, (c, v) => c.Job.Actions.AddAnyQueues = v, "Add to Any Queues", "Can add to any job queues", false) },
@@ -373,7 +374,8 @@ namespace Disco.Services.Authorization
 				            new ClaimNavigatorItem("Job.Lists.LongRunningJobs", false),
 				            new ClaimNavigatorItem("Job.Lists.MyJobs", false),
 				            new ClaimNavigatorItem("Job.Lists.MyJobsOrphaned", false),
-				            new ClaimNavigatorItem("Job.Lists.RecentlyClosed", false)
+				            new ClaimNavigatorItem("Job.Lists.RecentlyClosed", false),
+				            new ClaimNavigatorItem("Job.Lists.StaleJobs", false)
 				        }),
 				        new ClaimNavigatorItem("Job.Types", "Types", "Permissions related to Job Types", false, new List<IClaimNavigatorItem>() {
 				            new ClaimNavigatorItem("Job.Types.CreateHMisc", false),
@@ -579,6 +581,7 @@ namespace Disco.Services.Authorization
 			c.Job.Lists.MyJobs = true;
 			c.Job.Lists.MyJobsOrphaned = true;
 			c.Job.Lists.RecentlyClosed = true;
+			c.Job.Lists.StaleJobs = true;
 			c.Job.Actions.AddAttachments = true;
 			c.Job.Actions.AddLogs = true;
 			c.Job.Actions.AddAnyQueues = true;
@@ -1137,6 +1140,11 @@ namespace Disco.Services.Authorization
                 /// <para>Can show list</para>
                 /// </summary>
                 public const string RecentlyClosed = "Job.Lists.RecentlyClosed";
+
+                /// <summary>Stale Jobs List
+                /// <para>Can show list</para>
+                /// </summary>
+                public const string StaleJobs = "Job.Lists.StaleJobs";
             }
 
             /// <summary>Actions

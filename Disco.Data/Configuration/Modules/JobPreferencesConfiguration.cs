@@ -27,5 +27,20 @@ namespace Disco.Data.Configuration.Modules
                 Set(value);
             }
         }
+
+        /// <summary>
+        /// Number of minutes since the last recorded action is performed on a job before it is considered 'Stale'
+        /// </summary>
+        public int StaleJobMinutesThreshold
+        {
+            get { return Get<int>(60 * 24 * 2); } // Default to 48 Hours (2 days)
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException("value", "The Stale Job Minutes Threshold cannot be less than zero");
+
+                Set(value);
+            }
+        }
     }
 }

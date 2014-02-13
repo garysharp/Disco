@@ -303,7 +303,7 @@ WriteLiteral("                            ");
 
             
             #line 45 "..\..\Views\Shared\_Layout.cshtml"
-                             if (Authorization.Has(Claims.Job.Lists.DevicesReadyForReturn))
+                             if (Authorization.Has(Claims.Job.Lists.LongRunningJobs))
                             {
 
             
@@ -313,7 +313,7 @@ WriteLiteral("                                <li>");
 
             
             #line 47 "..\..\Views\Shared\_Layout.cshtml"
-                               Write(Html.ActionLink("Devices Ready for Return", MVC.Job.DevicesReadyForReturn()));
+                               Write(Html.ActionLink("Long Running Jobs", MVC.Job.LongRunning()));
 
             
             #line default
@@ -331,7 +331,7 @@ WriteLiteral("                            ");
 
             
             #line 49 "..\..\Views\Shared\_Layout.cshtml"
-                             if (Authorization.Has(Claims.Job.Lists.Locations))
+                             if (Authorization.Has(Claims.Job.Lists.StaleJobs))
                             {
 
             
@@ -341,7 +341,7 @@ WriteLiteral("                                <li>");
 
             
             #line 51 "..\..\Views\Shared\_Layout.cshtml"
-                               Write(Html.ActionLink("Device Held Locations", MVC.Job.Locations()));
+                               Write(Html.ActionLink("Stale Jobs", MVC.Job.Stale()));
 
             
             #line default
@@ -359,7 +359,7 @@ WriteLiteral("                            ");
 
             
             #line 53 "..\..\Views\Shared\_Layout.cshtml"
-                             if (Authorization.Has(Claims.Job.Lists.AwaitingUserAction))
+                             if (Authorization.Has(Claims.Job.Lists.DevicesReadyForReturn))
                             {
 
             
@@ -369,7 +369,7 @@ WriteLiteral("                                <li>");
 
             
             #line 55 "..\..\Views\Shared\_Layout.cshtml"
-                               Write(Html.ActionLink("Awaiting User Action", MVC.Job.AwaitingUserAction()));
+                               Write(Html.ActionLink("Devices Ready for Return", MVC.Job.DevicesReadyForReturn()));
 
             
             #line default
@@ -387,6 +387,62 @@ WriteLiteral("                            ");
 
             
             #line 57 "..\..\Views\Shared\_Layout.cshtml"
+                             if (Authorization.Has(Claims.Job.Lists.Locations))
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <li>");
+
+            
+            #line 59 "..\..\Views\Shared\_Layout.cshtml"
+                               Write(Html.ActionLink("Device Held Locations", MVC.Job.Locations()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</li>\r\n");
+
+            
+            #line 60 "..\..\Views\Shared\_Layout.cshtml"
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            ");
+
+            
+            #line 61 "..\..\Views\Shared\_Layout.cshtml"
+                             if (Authorization.Has(Claims.Job.Lists.AwaitingUserAction))
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <li>");
+
+            
+            #line 63 "..\..\Views\Shared\_Layout.cshtml"
+                               Write(Html.ActionLink("Awaiting User Action", MVC.Job.AwaitingUserAction()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</li>\r\n");
+
+            
+            #line 64 "..\..\Views\Shared\_Layout.cshtml"
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            ");
+
+            
+            #line 65 "..\..\Views\Shared\_Layout.cshtml"
                              if (Authorization.Has(Claims.Job.Lists.AwaitingFinance))
                             {
                                 if (Authorization.HasAny(Claims.Job.Lists.AwaitingFinanceCharge, Claims.Job.Lists.AwaitingFinancePayment, Claims.Job.Lists.AwaitingFinanceAgreementBreach, Claims.Job.Lists.AwaitingFinanceInsuranceProcessing))
@@ -406,7 +462,7 @@ WriteLiteral(" class=\"fa fa-caret-right\"");
 WriteLiteral("></i>");
 
             
-            #line 61 "..\..\Views\Shared\_Layout.cshtml"
+            #line 69 "..\..\Views\Shared\_Layout.cshtml"
                                                                              Write(Html.ActionLink("Awaiting Finance", MVC.Job.AwaitingFinance()));
 
             
@@ -415,13 +471,13 @@ WriteLiteral("></i>");
 WriteLiteral("\r\n                                    <ul>\r\n");
 
             
-            #line 63 "..\..\Views\Shared\_Layout.cshtml"
+            #line 71 "..\..\Views\Shared\_Layout.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 63 "..\..\Views\Shared\_Layout.cshtml"
+            #line 71 "..\..\Views\Shared\_Layout.cshtml"
                                          if (Authorization.Has(Claims.Job.Lists.AwaitingFinanceCharge))
                                         {
 
@@ -431,64 +487,8 @@ WriteLiteral("\r\n                                    <ul>\r\n");
 WriteLiteral("                                            <li>");
 
             
-            #line 65 "..\..\Views\Shared\_Layout.cshtml"
-                                           Write(Html.ActionLink("Accounting Charge", MVC.Job.AwaitingFinanceCharge()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</li>\r\n");
-
-            
-            #line 66 "..\..\Views\Shared\_Layout.cshtml"
-                                        }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                        ");
-
-            
-            #line 67 "..\..\Views\Shared\_Layout.cshtml"
-                                         if (Authorization.Has(Claims.Job.Lists.AwaitingFinancePayment))
-                                        {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                            <li>");
-
-            
-            #line 69 "..\..\Views\Shared\_Layout.cshtml"
-                                           Write(Html.ActionLink("Accounting Payment", MVC.Job.AwaitingFinancePayment()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</li>\r\n");
-
-            
-            #line 70 "..\..\Views\Shared\_Layout.cshtml"
-                                        }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                        ");
-
-            
-            #line 71 "..\..\Views\Shared\_Layout.cshtml"
-                                         if (Authorization.Has(Claims.Job.Lists.AwaitingFinanceAgreementBreach))
-                                        {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                            <li>");
-
-            
             #line 73 "..\..\Views\Shared\_Layout.cshtml"
-                                           Write(Html.ActionLink("Agreement Breach", MVC.Job.AwaitingFinanceAgreementBreach()));
+                                           Write(Html.ActionLink("Accounting Charge", MVC.Job.AwaitingFinanceCharge()));
 
             
             #line default
@@ -506,7 +506,7 @@ WriteLiteral("                                        ");
 
             
             #line 75 "..\..\Views\Shared\_Layout.cshtml"
-                                         if (Authorization.Has(Claims.Job.Lists.AwaitingFinanceInsuranceProcessing))
+                                         if (Authorization.Has(Claims.Job.Lists.AwaitingFinancePayment))
                                         {
 
             
@@ -516,7 +516,7 @@ WriteLiteral("                                            <li>");
 
             
             #line 77 "..\..\Views\Shared\_Layout.cshtml"
-                                           Write(Html.ActionLink("Insurance Processing", MVC.Job.AwaitingFinanceInsuranceProcessing()));
+                                           Write(Html.ActionLink("Accounting Payment", MVC.Job.AwaitingFinancePayment()));
 
             
             #line default
@@ -530,11 +530,67 @@ WriteLiteral("</li>\r\n");
             
             #line default
             #line hidden
+WriteLiteral("                                        ");
+
+            
+            #line 79 "..\..\Views\Shared\_Layout.cshtml"
+                                         if (Authorization.Has(Claims.Job.Lists.AwaitingFinanceAgreementBreach))
+                                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                            <li>");
+
+            
+            #line 81 "..\..\Views\Shared\_Layout.cshtml"
+                                           Write(Html.ActionLink("Agreement Breach", MVC.Job.AwaitingFinanceAgreementBreach()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</li>\r\n");
+
+            
+            #line 82 "..\..\Views\Shared\_Layout.cshtml"
+                                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                        ");
+
+            
+            #line 83 "..\..\Views\Shared\_Layout.cshtml"
+                                         if (Authorization.Has(Claims.Job.Lists.AwaitingFinanceInsuranceProcessing))
+                                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                            <li>");
+
+            
+            #line 85 "..\..\Views\Shared\_Layout.cshtml"
+                                           Write(Html.ActionLink("Insurance Processing", MVC.Job.AwaitingFinanceInsuranceProcessing()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</li>\r\n");
+
+            
+            #line 86 "..\..\Views\Shared\_Layout.cshtml"
+                                        }
+
+            
+            #line default
+            #line hidden
 WriteLiteral("                                    </ul>\r\n                                </li>\r" +
 "\n");
 
             
-            #line 81 "..\..\Views\Shared\_Layout.cshtml"
+            #line 89 "..\..\Views\Shared\_Layout.cshtml"
                                 }
                                 else
                                 {
@@ -545,7 +601,7 @@ WriteLiteral("                                    </ul>\r\n                     
 WriteLiteral("                                <li>");
 
             
-            #line 84 "..\..\Views\Shared\_Layout.cshtml"
+            #line 92 "..\..\Views\Shared\_Layout.cshtml"
                                Write(Html.ActionLink("Awaiting Finance", MVC.Job.AwaitingFinance()));
 
             
@@ -554,7 +610,7 @@ WriteLiteral("                                <li>");
 WriteLiteral("</li>\r\n");
 
             
-            #line 85 "..\..\Views\Shared\_Layout.cshtml"
+            #line 93 "..\..\Views\Shared\_Layout.cshtml"
                                 }
                             }
 
@@ -564,7 +620,7 @@ WriteLiteral("</li>\r\n");
 WriteLiteral("                            ");
 
             
-            #line 87 "..\..\Views\Shared\_Layout.cshtml"
+            #line 95 "..\..\Views\Shared\_Layout.cshtml"
                              if (Authorization.Has(Claims.Job.Lists.DevicesAwaitingRepair))
                             {
 
@@ -574,64 +630,8 @@ WriteLiteral("                            ");
 WriteLiteral("                                <li>");
 
             
-            #line 89 "..\..\Views\Shared\_Layout.cshtml"
-                               Write(Html.ActionLink("Awaiting Device Repair", MVC.Job.DevicesAwaitingRepair()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</li>\r\n");
-
-            
-            #line 90 "..\..\Views\Shared\_Layout.cshtml"
-                            }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                            ");
-
-            
-            #line 91 "..\..\Views\Shared\_Layout.cshtml"
-                             if (Authorization.Has(Claims.Job.Lists.AllOpen))
-                            {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                <li>");
-
-            
-            #line 93 "..\..\Views\Shared\_Layout.cshtml"
-                               Write(Html.ActionLink("All Open", MVC.Job.AllOpen()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</li>\r\n");
-
-            
-            #line 94 "..\..\Views\Shared\_Layout.cshtml"
-                            }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                            ");
-
-            
-            #line 95 "..\..\Views\Shared\_Layout.cshtml"
-                             if (Authorization.Has(Claims.Job.Lists.RecentlyClosed))
-                            {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                <li>");
-
-            
             #line 97 "..\..\Views\Shared\_Layout.cshtml"
-                               Write(Html.ActionLink("Recently Closed", MVC.Job.RecentlyClosed()));
+                               Write(Html.ActionLink("Awaiting Device Repair", MVC.Job.DevicesAwaitingRepair()));
 
             
             #line default
@@ -645,16 +645,72 @@ WriteLiteral("</li>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("                        </ul>\r\n                    </li>\r\n");
+WriteLiteral("                            ");
+
+            
+            #line 99 "..\..\Views\Shared\_Layout.cshtml"
+                             if (Authorization.Has(Claims.Job.Lists.AllOpen))
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <li>");
 
             
             #line 101 "..\..\Views\Shared\_Layout.cshtml"
+                               Write(Html.ActionLink("All Open", MVC.Job.AllOpen()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</li>\r\n");
+
+            
+            #line 102 "..\..\Views\Shared\_Layout.cshtml"
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            ");
+
+            
+            #line 103 "..\..\Views\Shared\_Layout.cshtml"
+                             if (Authorization.Has(Claims.Job.Lists.RecentlyClosed))
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <li>");
+
+            
+            #line 105 "..\..\Views\Shared\_Layout.cshtml"
+                               Write(Html.ActionLink("Recently Closed", MVC.Job.RecentlyClosed()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</li>\r\n");
+
+            
+            #line 106 "..\..\Views\Shared\_Layout.cshtml"
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        </ul>\r\n                    </li>\r\n");
+
+            
+            #line 109 "..\..\Views\Shared\_Layout.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 101 "..\..\Views\Shared\_Layout.cshtml"
+            #line 109 "..\..\Views\Shared\_Layout.cshtml"
                      if (Authorization.HasAny(Claims.Device.Search, Claims.Device.Actions.Import, Claims.Device.Actions.Export, Claims.Device.Actions.EnrolDevices))
                     {
 
@@ -663,20 +719,20 @@ WriteLiteral("                        </ul>\r\n                    </li>\r\n");
             #line hidden
 WriteLiteral("                        <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 6391), Tuple.Create("\"", 6479)
+WriteAttribute("class", Tuple.Create(" class=\"", 6876), Tuple.Create("\"", 6964)
             
-            #line 103 "..\..\Views\Shared\_Layout.cshtml"
-, Tuple.Create(Tuple.Create("", 6399), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Device.Name ? "active" : null
+            #line 111 "..\..\Views\Shared\_Layout.cshtml"
+, Tuple.Create(Tuple.Create("", 6884), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Device.Name ? "active" : null
             
             #line default
             #line hidden
-, 6399), false)
+, 6884), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 103 "..\..\Views\Shared\_Layout.cshtml"
+            #line 111 "..\..\Views\Shared\_Layout.cshtml"
                                                                                                                 Write(Html.ActionLink("Devices", MVC.Device.Index(), accesskey: "2"));
 
             
@@ -685,7 +741,7 @@ WriteLiteral(">");
 WriteLiteral("</li>\r\n");
 
             
-            #line 104 "..\..\Views\Shared\_Layout.cshtml"
+            #line 112 "..\..\Views\Shared\_Layout.cshtml"
                     }
 
             
@@ -694,7 +750,7 @@ WriteLiteral("</li>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 105 "..\..\Views\Shared\_Layout.cshtml"
+            #line 113 "..\..\Views\Shared\_Layout.cshtml"
                      if (Authorization.HasAny(Claims.User.Search))
                     {
 
@@ -703,20 +759,20 @@ WriteLiteral("                    ");
             #line hidden
 WriteLiteral("                        <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 6692), Tuple.Create("\"", 6778)
+WriteAttribute("class", Tuple.Create(" class=\"", 7177), Tuple.Create("\"", 7263)
             
-            #line 107 "..\..\Views\Shared\_Layout.cshtml"
-, Tuple.Create(Tuple.Create("", 6700), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.User.Name ? "active" : null
+            #line 115 "..\..\Views\Shared\_Layout.cshtml"
+, Tuple.Create(Tuple.Create("", 7185), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.User.Name ? "active" : null
             
             #line default
             #line hidden
-, 6700), false)
+, 7185), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 107 "..\..\Views\Shared\_Layout.cshtml"
+            #line 115 "..\..\Views\Shared\_Layout.cshtml"
                                                                                                               Write(Html.ActionLink("Users", MVC.User.Index(), accesskey: "3"));
 
             
@@ -725,7 +781,7 @@ WriteLiteral(">");
 WriteLiteral("</li>\r\n");
 
             
-            #line 108 "..\..\Views\Shared\_Layout.cshtml"
+            #line 116 "..\..\Views\Shared\_Layout.cshtml"
                     }
 
             
@@ -733,21 +789,21 @@ WriteLiteral("</li>\r\n");
             #line hidden
 WriteLiteral("                    <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 6892), Tuple.Create("\"", 6990)
-, Tuple.Create(Tuple.Create("", 6900), Tuple.Create("moveRight", 6900), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 7377), Tuple.Create("\"", 7475)
+, Tuple.Create(Tuple.Create("", 7385), Tuple.Create("moveRight", 7385), true)
             
-            #line 109 "..\..\Views\Shared\_Layout.cshtml"
-, Tuple.Create(Tuple.Create("", 6909), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Public.Name ? " active" : null
+            #line 117 "..\..\Views\Shared\_Layout.cshtml"
+, Tuple.Create(Tuple.Create("", 7394), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Public.Name ? " active" : null
             
             #line default
             #line hidden
-, 6909), false)
+, 7394), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 109 "..\..\Views\Shared\_Layout.cshtml"
+            #line 117 "..\..\Views\Shared\_Layout.cshtml"
                                                                                                                       Write(Html.ActionLink("Reports", MVC.Public.Public.Index()));
 
             
@@ -756,13 +812,13 @@ WriteLiteral(">");
 WriteLiteral("</li>\r\n");
 
             
-            #line 110 "..\..\Views\Shared\_Layout.cshtml"
+            #line 118 "..\..\Views\Shared\_Layout.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 110 "..\..\Views\Shared\_Layout.cshtml"
+            #line 118 "..\..\Views\Shared\_Layout.cshtml"
                      if (Authorization.Has(Claims.Config.Show))
                     {
 
@@ -771,20 +827,20 @@ WriteLiteral("</li>\r\n");
             #line hidden
 WriteLiteral("                        <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 7168), Tuple.Create("\"", 7256)
+WriteAttribute("class", Tuple.Create(" class=\"", 7653), Tuple.Create("\"", 7741)
             
-            #line 112 "..\..\Views\Shared\_Layout.cshtml"
-, Tuple.Create(Tuple.Create("", 7176), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Config.Name ? "active" : null
+            #line 120 "..\..\Views\Shared\_Layout.cshtml"
+, Tuple.Create(Tuple.Create("", 7661), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Config.Name ? "active" : null
             
             #line default
             #line hidden
-, 7176), false)
+, 7661), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 112 "..\..\Views\Shared\_Layout.cshtml"
+            #line 120 "..\..\Views\Shared\_Layout.cshtml"
                                                                                                                 Write(Html.ActionLink("Configuration", MVC.Config.Config.Index(), accesskey: "0"));
 
             
@@ -793,7 +849,7 @@ WriteLiteral(">");
 WriteLiteral("</li>\r\n");
 
             
-            #line 113 "..\..\Views\Shared\_Layout.cshtml"
+            #line 121 "..\..\Views\Shared\_Layout.cshtml"
                     }
 
             
@@ -806,21 +862,21 @@ WriteLiteral(" id=\"headerMenu\"");
 WriteLiteral(">\r\n                <span>");
 
             
-            #line 117 "..\..\Views\Shared\_Layout.cshtml"
+            #line 125 "..\..\Views\Shared\_Layout.cshtml"
                        if (Authorization.Has(Claims.User.Show))
                       { 
             
             #line default
             #line hidden
             
-            #line 118 "..\..\Views\Shared\_Layout.cshtml"
+            #line 126 "..\..\Views\Shared\_Layout.cshtml"
                    Write(Html.ActionLink(CurrentUser.ToString(), MVC.User.Show(CurrentUser.Id)));
 
             
             #line default
             #line hidden
             
-            #line 118 "..\..\Views\Shared\_Layout.cshtml"
+            #line 126 "..\..\Views\Shared\_Layout.cshtml"
                                                                                                }
                       else
                       {
@@ -828,14 +884,14 @@ WriteLiteral(">\r\n                <span>");
             #line default
             #line hidden
             
-            #line 120 "..\..\Views\Shared\_Layout.cshtml"
+            #line 128 "..\..\Views\Shared\_Layout.cshtml"
                   Write(CurrentUser.ToString());
 
             
             #line default
             #line hidden
             
-            #line 120 "..\..\Views\Shared\_Layout.cshtml"
+            #line 128 "..\..\Views\Shared\_Layout.cshtml"
                                               }
             
             #line default
@@ -843,13 +899,13 @@ WriteLiteral(">\r\n                <span>");
 WriteLiteral("</span>\r\n");
 
             
-            #line 121 "..\..\Views\Shared\_Layout.cshtml"
+            #line 129 "..\..\Views\Shared\_Layout.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 121 "..\..\Views\Shared\_Layout.cshtml"
+            #line 129 "..\..\Views\Shared\_Layout.cshtml"
                  if (Authorization.HasAny(Claims.Job.Search, Claims.Device.Search, Claims.User.Search))
                 {
                     using (Html.BeginForm(MVC.Search.Query(), FormMethod.Get))
@@ -858,14 +914,14 @@ WriteLiteral("</span>\r\n");
             #line default
             #line hidden
             
-            #line 124 "..\..\Views\Shared\_Layout.cshtml"
+            #line 132 "..\..\Views\Shared\_Layout.cshtml"
                  Write(Html.TextBox("term", null, new { id = "SearchQuery", accesskey = "s", placeholder = "Search", data_quicksearchurl = Url.Action(MVC.API.Search.QuickQuery()) }));
 
             
             #line default
             #line hidden
             
-            #line 124 "..\..\Views\Shared\_Layout.cshtml"
+            #line 132 "..\..\Views\Shared\_Layout.cshtml"
                                                                                                                                                                                       }
                 }
 
@@ -879,7 +935,7 @@ WriteLiteral(" id=\"layout_PageHeading\"");
 WriteLiteral(">");
 
             
-            #line 128 "..\..\Views\Shared\_Layout.cshtml"
+            #line 136 "..\..\Views\Shared\_Layout.cshtml"
                                 Write(CommonHelpers.Breadcrumbs(ViewBag.Title ?? string.Empty));
 
             
@@ -894,7 +950,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("            ");
 
             
-            #line 130 "..\..\Views\Shared\_Layout.cshtml"
+            #line 138 "..\..\Views\Shared\_Layout.cshtml"
        Write(RenderBody());
 
             
@@ -903,7 +959,7 @@ WriteLiteral("            ");
 WriteLiteral("\r\n        </section>\r\n        <footer>\r\n            Disco v");
 
             
-            #line 133 "..\..\Views\Shared\_Layout.cshtml"
+            #line 141 "..\..\Views\Shared\_Layout.cshtml"
                Write(Disco.Web.DiscoApplication.Version);
 
             
@@ -914,7 +970,7 @@ WriteLiteral(" ");
 WriteLiteral("@ ");
 
             
-            #line 133 "..\..\Views\Shared\_Layout.cshtml"
+            #line 141 "..\..\Views\Shared\_Layout.cshtml"
                                                         Write(Disco.Web.DiscoApplication.OrganisationName);
 
             
@@ -924,7 +980,7 @@ WriteLiteral(" | <a\r\n                href=\"https://discoict.com.au/\" target=
 "om.au</a> | ");
 
             
-            #line 134 "..\..\Views\Shared\_Layout.cshtml"
+            #line 142 "..\..\Views\Shared\_Layout.cshtml"
                                                                                  Write(Html.ActionLink("Credits", MVC.Public.Public.Credits()));
 
             
@@ -933,7 +989,7 @@ WriteLiteral(" | <a\r\n                href=\"https://discoict.com.au/\" target=
 WriteLiteral(" | ");
 
             
-            #line 134 "..\..\Views\Shared\_Layout.cshtml"
+            #line 142 "..\..\Views\Shared\_Layout.cshtml"
                                                                                                                                             Write(Html.ActionLink("Licence", MVC.Public.Public.Licence()));
 
             
@@ -942,13 +998,13 @@ WriteLiteral(" | ");
 WriteLiteral("\r\n        </footer>\r\n    </div>\r\n");
 
             
-            #line 137 "..\..\Views\Shared\_Layout.cshtml"
+            #line 145 "..\..\Views\Shared\_Layout.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 137 "..\..\Views\Shared\_Layout.cshtml"
+            #line 145 "..\..\Views\Shared\_Layout.cshtml"
        Disco.Services.Plugins.Features.UIExtension.UIExtensions.ExecuteExtensionResult(this); 
             
             #line default

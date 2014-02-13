@@ -26,6 +26,7 @@ namespace Disco.Services
                 ShowTechnician = Model.ShowTechnician,
                 ShowLocation = Model.ShowLocation,
                 ShowStatus = Model.ShowStatus,
+                ShowLastActivityDate = Model.ShowLastActivityDate,
                 IsSmallTable = Model.IsSmallTable,
                 HideClosedJobs = Model.HideClosedJobs,
                 EnablePaging = Model.EnablePaging,
@@ -115,7 +116,7 @@ namespace Disco.Services
             if (FilterAuthorization)
                 Jobs = model.FilterPermissions(Jobs, UserService.CurrentAuthorization);
 
-            if (model.ShowStatus)
+            if (model.ShowStatus || model.ShowLastActivityDate)
             {
 
                 var jobItems = Jobs.Select(j => new JobTableStatusItemModel()
@@ -147,6 +148,12 @@ namespace Disco.Services
                     JobMetaNonWarranty_AccountingChargeRequiredDate = j.JobMetaNonWarranty.AccountingChargeRequiredDate,
                     JobMetaNonWarranty_IsInsuranceClaim = j.JobMetaNonWarranty.IsInsuranceClaim,
                     JobMetaInsurance_ClaimFormSentDate = j.JobMetaInsurance.ClaimFormSentDate,
+                    JobMetaNonWarranty_InvoiceReceivedDate = j.JobMetaNonWarranty.InvoiceReceivedDate,
+                    JobMetaNonWarranty_PurchaseOrderRaisedDate = j.JobMetaNonWarranty.PurchaseOrderRaisedDate,
+                    JobMetaNonWarranty_PurchaseOrderSentDate = j.JobMetaNonWarranty.PurchaseOrderSentDate,
+
+                    RecentAttachmentDate = j.JobAttachments.Max(ja => ja.Timestamp),
+                    RecentLogDate = j.JobLogs.Max(jl => jl.Timestamp),
 
                     WaitingForUserAction = j.WaitingForUserAction,
                     DeviceReadyForReturn = j.DeviceReadyForReturn,
@@ -169,6 +176,31 @@ namespace Disco.Services
                 {
                     j.StatusId = j.CalculateStatusId();
                     j.StatusDescription = JobExtensions.JobStatusDescription(j.StatusId, j);
+
+                    var activityDates = new DateTime?[] {
+                        j.ActiveJobQueues.Max<JobTableStatusQueueItemModel, DateTime?>(jq => jq.AddedDate),
+                        j.ClosedDate,
+                        j.DeviceHeld,
+                        j.DeviceReadyForReturn,
+                        j.DeviceReturnedDate,
+                        j.JobMetaInsurance_ClaimFormSentDate,
+                        j.JobMetaNonWarranty_AccountingChargeAddedDate,
+                        j.JobMetaNonWarranty_AccountingChargePaidDate,
+                        j.JobMetaNonWarranty_AccountingChargeRequiredDate,
+                        j.JobMetaNonWarranty_InvoiceReceivedDate,
+                        j.JobMetaNonWarranty_PurchaseOrderRaisedDate,
+                        j.JobMetaNonWarranty_PurchaseOrderSentDate,
+                        j.JobMetaNonWarranty_RepairerCompletedDate,
+                        j.JobMetaNonWarranty_RepairerLoggedDate,
+                        j.JobMetaWarranty_ExternalCompletedDate,
+                        j.JobMetaWarranty_ExternalLoggedDate,
+                        j.OpenedDate,
+                        j.RecentAttachmentDate,
+                        j.RecentLogDate,
+                        j.WaitingForUserAction
+                    };
+
+                    j.LastActivityDate = activityDates.Max().Value;
 
                     items.Add(j);
                 }

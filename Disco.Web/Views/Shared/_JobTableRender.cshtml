@@ -15,6 +15,9 @@
                     @if (Model.ShowStatus)
                     { <th class="status">Status
                     </th> }
+                    @if (Model.ShowLastActivityDate)
+                    { <th class="lastActive">Last Active
+                    </th> }
                     @if (Model.ShowDates)
                     { <th class="dates">When
                     </th> }
@@ -74,6 +77,8 @@
                                     }
                                 </div>}
                             </td>}
+                        @if (Model.ShowLastActivityDate)
+                        {<td class="lastActive">@CommonHelpers.FriendlyDate(item.LastActivityDate)</td>}
                         @if (Model.ShowDates)
                         {<td class="dates">@if (item.ClosedDate.HasValue)
                                            {@CommonHelpers.FriendlyDate(item.ClosedDate.Value)}
@@ -106,7 +111,7 @@
                         @if (Model.ShowTechnician)
                         {<td class="technician"><span title="@item.OpenedTechUserDisplayName">@item.OpenedTechUserId</span></td>}
                         @if (Model.ShowLocation)
-                        {<td class="technician"><span>@(item.DeviceHeldLocation ?? "Unknown")</span></td>}
+                        {<td class="location"><span>@(item.DeviceHeldLocation ?? "Unknown")</span></td>}
                     </tr>}
             </tbody>
         </table>

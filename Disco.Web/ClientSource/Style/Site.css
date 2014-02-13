@@ -843,6 +843,10 @@ table.jobTable div.queues {
   display: inline-block;
   float: right;
 }
+table.jobTable td.lastActive,
+table.jobTable th.lastActive {
+  width: 130px;
+}
 table.jobTable td.dates,
 table.jobTable th.dates {
   width: 130px;

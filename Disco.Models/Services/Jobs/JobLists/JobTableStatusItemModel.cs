@@ -14,6 +14,9 @@ namespace Disco.Models.Services.Jobs.JobLists
         public DateTime? JobMetaNonWarranty_AccountingChargeAddedDate { get; set; }
         public DateTime? JobMetaNonWarranty_AccountingChargePaidDate { get; set; }
         public DateTime? JobMetaNonWarranty_AccountingChargeRequiredDate { get; set; }
+        public DateTime? JobMetaNonWarranty_PurchaseOrderRaisedDate { get; set; }
+        public DateTime? JobMetaNonWarranty_PurchaseOrderSentDate { get; set; }
+        public DateTime? JobMetaNonWarranty_InvoiceReceivedDate { get; set; }
         public bool? JobMetaNonWarranty_IsInsuranceClaim { get; set; }
         public DateTime? JobMetaInsurance_ClaimFormSentDate { get; set; }
 
@@ -25,5 +28,8 @@ namespace Disco.Models.Services.Jobs.JobLists
         public string JobMetaNonWarranty_RepairerName { get; set; }
 
         public IEnumerable<JobTableStatusQueueItemModel> ActiveJobQueues { get; set; }
+
+        public DateTime? RecentLogDate { get; set; }
+        public DateTime? RecentAttachmentDate { get; set; }
     }
 }

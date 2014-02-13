@@ -373,15 +373,18 @@ namespace Disco.BI.Extensions
             if (j.WaitingForUserAction.HasValue)
                 return true; // Job waiting on User Action
 
-            if (IgnoreJobQueueJob == null)
+            if (j.JobQueues != null)
             {
-                if (j.JobQueues.Any(jqj => !jqj.RemovedDate.HasValue))
-                    return true; // Job associated with a Job Queue
-            }
-            else
-            {
-                if (j.JobQueues.Any(jqj => jqj.Id != IgnoreJobQueueJob.Id && !jqj.RemovedDate.HasValue))
-                    return true; // Job associated with a Job Queue
+                if (IgnoreJobQueueJob == null)
+                {
+                    if (j.JobQueues.Any(jqj => !jqj.RemovedDate.HasValue))
+                        return true; // Job associated with a Job Queue
+                }
+                else
+                {
+                    if (j.JobQueues.Any(jqj => jqj.Id != IgnoreJobQueueJob.Id && !jqj.RemovedDate.HasValue))
+                        return true; // Job associated with a Job Queue
+                }
             }
 
             return false;

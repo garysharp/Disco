@@ -10,6 +10,7 @@ namespace Disco.Web.Areas.Config.Models.JobPreferences
     public class IndexModel : ConfigJobPreferencesIndexModel
     {
         public int LongRunningJobDaysThreshold { get; set; }
+        public int StaleJobMinutesThreshold { get; set; }
 
         public List<KeyValuePair<int, string>> LongRunningJobDaysThresholdOptions()
         {
@@ -34,6 +35,42 @@ namespace Disco.Web.Areas.Config.Models.JobPreferences
             if (!options.Any(o => o.Key == current))
             {
                 options.Add(new KeyValuePair<int, string>(current, string.Format("{0} Days", current)));
+                options = options.OrderBy(o => o.Key).ToList();
+            }
+
+            return options;
+        }
+
+        public List<KeyValuePair<int, string>> StaleJobMinutesThresholdOptions()
+        {
+            var options = new List<KeyValuePair<int, string>>() {
+                new KeyValuePair<int, string>(0, "<None>"),
+                new KeyValuePair<int, string>(15, "15 minutes"),
+                new KeyValuePair<int, string>(30, "30 minutes"),
+                new KeyValuePair<int, string>(60, "1 hour"),
+                new KeyValuePair<int, string>(60 * 2, "2 hours"),
+                new KeyValuePair<int, string>(60 * 4, "4 hours"),
+                new KeyValuePair<int, string>(60 * 8, "8 hours"),
+                new KeyValuePair<int, string>(60 * 24, "1 day"),
+                new KeyValuePair<int, string>(60 * 24 * 2, "2 days"),
+                new KeyValuePair<int, string>(60 * 24 * 3, "3 days"),
+                new KeyValuePair<int, string>(60 * 24 * 4, "4 days"),
+                new KeyValuePair<int, string>(60 * 24 * 5, "5 days"),
+                new KeyValuePair<int, string>(60 * 24 * 6, "6 days"),
+                new KeyValuePair<int, string>(60 * 24 * 7, "1 week"),
+                new KeyValuePair<int, string>(60 * 24 * 7 * 2, "2 weeks"),
+                new KeyValuePair<int, string>(60 * 24 * 7 * 3, "3 weeks"),
+                new KeyValuePair<int, string>(60 * 24 * 7 * 4, "4 weeks"),
+                new KeyValuePair<int, string>(60 * 24 * 7 * 5, "5 weeks"),
+                new KeyValuePair<int, string>(60 * 24 * 7 * 6, "6 weeks"),
+                new KeyValuePair<int, string>(60 * 24 * 7 * 7, "7 weeks"),
+                new KeyValuePair<int, string>(60 * 24 * 7 * 8, "8 weeks")
+            };
+
+            var current = this.StaleJobMinutesThreshold;
+            if (!options.Any(o => o.Key == current))
+            {
+                options.Add(new KeyValuePair<int, string>(current, string.Format("{0} Minutes", current)));
                 options = options.OrderBy(o => o.Key).ToList();
             }
 

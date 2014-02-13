@@ -159,6 +159,7 @@ namespace Links
                 public static readonly string jquery_validate_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate.min.js") ? Url("jquery.validate.min.js") : Url("jquery.validate.js");
                 public static readonly string jquery_validate_unobtrusive_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate.unobtrusive.min.js") ? Url("jquery.validate.unobtrusive.min.js") : Url("jquery.validate.unobtrusive.js");
                 public static readonly string jquery_watermark_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.watermark.min.js") ? Url("jquery.watermark.min.js") : Url("jquery.watermark.js");
+                public static readonly string livestamp_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/livestamp.min.js") ? Url("livestamp.min.js") : Url("livestamp.js");
                 public static readonly string modernizr_2_6_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/modernizr-2.6.2.min.js") ? Url("modernizr-2.6.2.min.js") : Url("modernizr-2.6.2.js");
                 public static readonly string moment_en_au_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/moment.en-au.min.js") ? Url("moment.en-au.min.js") : Url("moment.en-au.js");
                 public static readonly string moment_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/moment.min.js") ? Url("moment.min.js") : Url("moment.js");
@@ -1377,6 +1378,8 @@ namespace Disco.Web.Controllers
             public readonly string AwaitingUserAction = "AwaitingUserAction";
             public readonly string RecentlyClosed = "RecentlyClosed";
             public readonly string Locations = "Locations";
+            public readonly string LongRunning = "LongRunning";
+            public readonly string Stale = "Stale";
             public readonly string Show = "Show";
             public readonly string Create = "Create";
             public readonly string LogWarranty = "LogWarranty";
@@ -1400,6 +1403,8 @@ namespace Disco.Web.Controllers
             public const string AwaitingUserAction = "AwaitingUserAction";
             public const string RecentlyClosed = "RecentlyClosed";
             public const string Locations = "Locations";
+            public const string LongRunning = "LongRunning";
+            public const string Stale = "Stale";
             public const string Show = "Show";
             public const string Create = "Create";
             public const string LogWarranty = "LogWarranty";
@@ -1651,6 +1656,24 @@ namespace Disco.Web.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Locations);
             LocationsOverride(callInfo);
+            return callInfo;
+        }
+
+        partial void LongRunningOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        public override System.Web.Mvc.ActionResult LongRunning()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LongRunning);
+            LongRunningOverride(callInfo);
+            return callInfo;
+        }
+
+        partial void StaleOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        public override System.Web.Mvc.ActionResult Stale()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Stale);
+            StaleOverride(callInfo);
             return callInfo;
         }
 
@@ -7666,6 +7689,12 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLongRunningJobDaysThreshold);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateStaleJobMinutesThreshold()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateStaleJobMinutesThreshold);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public JobPreferencesController Actions { get { return MVC.API.JobPreferences; } }
@@ -7683,12 +7712,14 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionNamesClass
         {
             public readonly string UpdateLongRunningJobDaysThreshold = "UpdateLongRunningJobDaysThreshold";
+            public readonly string UpdateStaleJobMinutesThreshold = "UpdateStaleJobMinutesThreshold";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
             public const string UpdateLongRunningJobDaysThreshold = "UpdateLongRunningJobDaysThreshold";
+            public const string UpdateStaleJobMinutesThreshold = "UpdateStaleJobMinutesThreshold";
         }
 
 
@@ -7699,6 +7730,15 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateLongRunningJobDaysThreshold
         {
             public readonly string LongRunningJobDaysThreshold = "LongRunningJobDaysThreshold";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateStaleJobMinutesThreshold s_params_UpdateStaleJobMinutesThreshold = new ActionParamsClass_UpdateStaleJobMinutesThreshold();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateStaleJobMinutesThreshold UpdateStaleJobMinutesThresholdParams { get { return s_params_UpdateStaleJobMinutesThreshold; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateStaleJobMinutesThreshold
+        {
+            public readonly string StaleJobMinutesThreshold = "StaleJobMinutesThreshold";
             public readonly string redirect = "redirect";
         }
         static readonly ViewsClass s_views = new ViewsClass();
@@ -7728,6 +7768,17 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "LongRunningJobDaysThreshold", LongRunningJobDaysThreshold);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateLongRunningJobDaysThresholdOverride(callInfo, LongRunningJobDaysThreshold, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateStaleJobMinutesThresholdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int StaleJobMinutesThreshold, bool redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateStaleJobMinutesThreshold(int StaleJobMinutesThreshold, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateStaleJobMinutesThreshold);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "StaleJobMinutesThreshold", StaleJobMinutesThreshold);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateStaleJobMinutesThresholdOverride(callInfo, StaleJobMinutesThreshold, redirect);
             return callInfo;
         }
 

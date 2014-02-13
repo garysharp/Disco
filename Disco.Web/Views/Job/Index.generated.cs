@@ -266,11 +266,11 @@ Write(Html.Partial(MVC.Shared.Views._JobTable, Model.MyJobs, new ViewDataDiction
             
             #line default
             #line hidden
-WriteLiteral("    <h2>Long Running Jobs (");
+WriteLiteral("    <h2>Stale Jobs (");
 
             
             #line 134 "..\..\Views\Job\Index.cshtml"
-                      Write(Model.LongRunningJobs.Items.Count());
+               Write(Model.StaleJobs.Items.Count());
 
             
             #line default
@@ -285,14 +285,14 @@ WriteLiteral(")</h2>\r\n");
             #line hidden
             
             #line 135 "..\..\Views\Job\Index.cshtml"
-Write(Html.Partial(MVC.Shared.Views._JobTable, Model.LongRunningJobs, new ViewDataDictionary()));
+Write(Html.Partial(MVC.Shared.Views._JobTable, Model.StaleJobs, new ViewDataDictionary()));
 
             
             #line default
             #line hidden
             
             #line 135 "..\..\Views\Job\Index.cshtml"
-                                                                                              
+                                                                                        
 }
             
             #line default

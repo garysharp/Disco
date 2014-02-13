@@ -13,7 +13,8 @@ namespace Disco.Models.Services.Jobs.JobLists
         public bool ShowTechnician { get; set; }
         public bool ShowLocation { get; set; }
         public bool ShowStatus { get; set; }
-        
+        public bool ShowLastActivityDate { get; set; }
+
         public bool IsSmallTable { get; set; }
         public bool HideClosedJobs { get; set; }
         public bool EnablePaging { get; set; }

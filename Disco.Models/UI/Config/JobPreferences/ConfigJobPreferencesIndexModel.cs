@@ -9,7 +9,9 @@ namespace Disco.Models.UI.Config.JobPreferences
     public interface ConfigJobPreferencesIndexModel : BaseUIModel
     {
         int LongRunningJobDaysThreshold { get; set; }
+        int StaleJobMinutesThreshold { get; set; }
 
         List<KeyValuePair<int, string>> LongRunningJobDaysThresholdOptions();
+        List<KeyValuePair<int, string>> StaleJobMinutesThresholdOptions();
     }
 }

@@ -42,6 +42,14 @@
                             {
                                 <li>@Html.ActionLink("Awaiting Technician Action", MVC.Job.AwaitingTechnicianAction())</li>
                             }
+                            @if (Authorization.Has(Claims.Job.Lists.LongRunningJobs))
+                            {
+                                <li>@Html.ActionLink("Long Running Jobs", MVC.Job.LongRunning())</li>
+                            }
+                            @if (Authorization.Has(Claims.Job.Lists.StaleJobs))
+                            {
+                                <li>@Html.ActionLink("Stale Jobs", MVC.Job.Stale())</li>
+                            }
                             @if (Authorization.Has(Claims.Job.Lists.DevicesReadyForReturn))
                             {
                                 <li>@Html.ActionLink("Devices Ready for Return", MVC.Job.DevicesReadyForReturn())</li>

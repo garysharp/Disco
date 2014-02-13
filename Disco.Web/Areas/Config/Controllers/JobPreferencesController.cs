@@ -17,7 +17,8 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             var m = new Models.JobPreferences.IndexModel()
             {
-                LongRunningJobDaysThreshold = Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold
+                LongRunningJobDaysThreshold = Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold,
+                StaleJobMinutesThreshold = Database.DiscoConfiguration.JobPreferences.StaleJobMinutesThreshold
             };
 
             // UI Extensions

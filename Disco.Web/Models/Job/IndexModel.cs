@@ -10,7 +10,7 @@ namespace Disco.Web.Models.Job
     public class IndexModel : JobIndexModel
     {
         public JobTableModel MyJobs { get; set; }
-        public JobTableModel LongRunningJobs { get; set; }
+        public JobTableModel StaleJobs { get; set; }
 
         public List<Disco.Models.BI.Job.Statistics.DailyOpenedClosedItem> DailyOpenedClosedStatistics { get; set; }
     }

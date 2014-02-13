@@ -29,6 +29,7 @@ namespace Disco.Web.Areas.Config.Views.JobPreferences
     using Disco;
     using Disco.BI.Extensions;
     using Disco.Models.Repository;
+    using Disco.Services;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
     using Disco.Web;
@@ -171,8 +172,167 @@ WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">\r\n                    Jobs which have been open for longer than the threshold ar" +
 "e considered \'long-running\' and will appear in the <code>Long Running Jobs</code" +
-"> list.\r\n                </div>\r\n            </td>\r\n        </tr>\r\n    </table>\r" +
-"\n</div>\r\n");
+"> list.\r\n                </div>\r\n");
+
+            
+            #line 43 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 43 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+                 if (Authorization.Has(Claims.Job.Lists.LongRunningJobs)) { 
+            
+            #line default
+            #line hidden
+            
+            #line 43 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+                                                                       Write(Html.ActionLinkSmallButton("Show Long Running Jobs", MVC.Job.LongRunning()));
+
+            
+            #line default
+            #line hidden
+            
+            #line 43 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+                                                                                                                                                         }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th");
+
+WriteLiteral(" style=\"width: 200px\"");
+
+WriteLiteral(">Stale Threshold:\r\n            </th>\r\n            <td>");
+
+            
+            #line 49 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+                 if (canConfig)
+                {
+                
+            
+            #line default
+            #line hidden
+            
+            #line 51 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+           Write(Html.DropDownListFor(model => model.StaleJobMinutesThreshold, Model.StaleJobMinutesThresholdOptions().Select(o => new SelectListItem() { Value = o.Key.ToString(), Text = o.Value })));
+
+            
+            #line default
+            #line hidden
+            
+            #line 51 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+                                                                                                                                                                                                      
+                
+            
+            #line default
+            #line hidden
+            
+            #line 52 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+           Write(AjaxHelpers.AjaxSave());
+
+            
+            #line default
+            #line hidden
+            
+            #line 52 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+                                       
+                
+            
+            #line default
+            #line hidden
+            
+            #line 53 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+           Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+            
+            #line 53 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+                                         
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(">\r\n                    $(function () {\r\n                        document.DiscoFun" +
+"ctions.PropertyChangeHelper(\r\n                            $(\'#StaleJobMinutesThr" +
+"eshold\'),\r\n                            null,\r\n                            \'");
+
+            
+            #line 59 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+                         Write(Url.Action(MVC.API.JobPreferences.UpdateStaleJobMinutesThreshold()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\',\r\n                            \'StaleJobMinutesThreshold\');\r\n                   " +
+" });\r\n                </script>\r\n");
+
+            
+            #line 63 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+                }
+                else
+                {
+                
+            
+            #line default
+            #line hidden
+            
+            #line 66 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+           Write(Model.StaleJobMinutesThresholdOptions().First(o => o.Key == Model.StaleJobMinutesThreshold).Value);
+
+            
+            #line default
+            #line hidden
+            
+            #line 66 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+                                                                                                                  
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <div");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">\r\n                    Jobs which have no recoded action for longer than the thre" +
+"shold are considered \'stale\' and will appear in the <code>Stale Jobs</code> list" +
+".\r\n                </div>\r\n");
+
+            
+            #line 71 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 71 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+                 if (Authorization.Has(Claims.Job.Lists.LongRunningJobs)) { 
+            
+            #line default
+            #line hidden
+            
+            #line 71 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+                                                                       Write(Html.ActionLinkSmallButton("Show Stale Jobs", MVC.Job.Stale()));
+
+            
+            #line default
+            #line hidden
+            
+            #line 71 "..\..\Areas\Config\Views\JobPreferences\Index.cshtml"
+                                                                                                                                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n");
 
         }
     }

@@ -10,8 +10,6 @@ namespace Disco.Web.Areas.API.Controllers
 {
     public partial class JobPreferencesController : AuthorizedDatabaseController
     {
-        const string pLongRunningJobDaysThreshold = "longrunningjobdaysthreshold";
-
         [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
         public virtual ActionResult UpdateLongRunningJobDaysThreshold(int LongRunningJobDaysThreshold, bool redirect = false)
         {
@@ -24,5 +22,16 @@ namespace Disco.Web.Areas.API.Controllers
                 return Json("OK", JsonRequestBehavior.AllowGet);
         }
 
+        [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        public virtual ActionResult UpdateStaleJobMinutesThreshold(int StaleJobMinutesThreshold, bool redirect = false)
+        {
+            Database.DiscoConfiguration.JobPreferences.StaleJobMinutesThreshold = StaleJobMinutesThreshold;
+            Database.SaveChanges();
+
+            if (redirect)
+                return RedirectToAction(MVC.Config.JobPreferences.Index());
+            else
+                return Json("OK", JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -21,6 +21,8 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.Job
         public bool AwaitingTechnicianAction { get; set; }
         [ClaimDetails("Long Running Jobs List", "Can show list")]
         public bool LongRunningJobs { get; set; }
+        [ClaimDetails("Stale Jobs List", "Can show list")]
+        public bool StaleJobs { get; set; }
 
         [ClaimDetails("All Open List", "Can show list")]
         public bool AllOpen { get; set; }

@@ -132,6 +132,8 @@ using Disco.Services.Authorization;
                 // - Device's Profile or Model Changes
                 unsubscribeToken = RepositoryMonitor.StreamAfterCommit
                     .Where(n => n.EntityType == typeof(Job) ||
+                        n.EntityType == typeof(JobLog) ||
+                        n.EntityType == typeof(JobAttachment) ||
                         n.EntityType == typeof(JobQueueJob) ||
                         n.EntityType == typeof(JobMetaWarranty) ||
                         n.EntityType == typeof(JobMetaNonWarranty) ||
@@ -186,6 +188,32 @@ using Disco.Services.Authorization;
 
             if (e.EntityType == typeof(Job))
                 jobIds = new List<int>() { ((Job)e.Entity).Id };
+            else if (e.EntityType == typeof(JobLog))
+            {
+                if (e.EventType == RepositoryMonitorEventType.Added)
+                {
+                    var jobLog = ((JobLog)e.Entity);
+                    var job = base.Items.FirstOrDefault(i => i.JobId == jobLog.JobId);
+                    if (job != null && job.LastActivityDate < jobLog.Timestamp)
+                        job.LastActivityDate = jobLog.Timestamp;
+                    return;
+                }
+                else
+                    jobIds = new List<int>() { ((JobLog)e.Entity).JobId };
+            }
+            else if (e.EntityType == typeof(JobAttachment))
+            {
+                if (e.EventType == RepositoryMonitorEventType.Added)
+                {
+                    var jobAttachment = ((JobAttachment)e.Entity);
+                    var job = base.Items.FirstOrDefault(i => i.JobId == jobAttachment.JobId);
+                    if (job != null && job.LastActivityDate < jobAttachment.Timestamp)
+                        job.LastActivityDate = jobAttachment.Timestamp;
+                    return;
+                }
+                else
+                    jobIds = new List<int>() { ((JobAttachment)e.Entity).JobId };
+            }
             else if (e.EntityType == typeof(JobQueueJob))
                 jobIds = new List<int>() { ((JobQueueJob)e.Entity).JobId };
             else if (e.EntityType == typeof(JobMetaWarranty))

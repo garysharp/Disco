@@ -31,10 +31,12 @@ namespace Disco.Web.Controllers
             if (Authorization.Has(Claims.Job.Lists.MyJobs))
                 m.MyJobs = ManagedJobList.MyJobsTable(Authorization);
 
-            if (Authorization.Has(Claims.Job.Lists.LongRunningJobs))
+            if (Authorization.Has(Claims.Job.Lists.StaleJobs))
             {
-                var longRunningThreshold = DateTime.Today.AddDays(Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold * -1);
-                m.LongRunningJobs = ManagedJobList.OpenJobsTable(q => q.Where(j => j.OpenedDate < longRunningThreshold).OrderBy(j => j.JobId));
+                var staleThreshold = DateTime.Today.AddMinutes(Database.DiscoConfiguration.JobPreferences.StaleJobMinutesThreshold * -1);
+                m.StaleJobs = ManagedJobList.OpenJobsTable(q => q.Where(j => j.LastActivityDate < staleThreshold).OrderBy(j => j.LastActivityDate));
+                m.StaleJobs.ShowLastActivityDate = true;
+                m.StaleJobs.ShowDates = false;
             }
             if (Authorization.Has(Claims.Job.ShowDailyChart))
                 m.DailyOpenedClosedStatistics = Disco.BI.JobBI.Statistics.DailyOpenedClosed.Data(Database, true);
@@ -241,6 +243,36 @@ namespace Disco.Web.Controllers
             m.JobTable.ShowLocation = true;
             m.JobTable.ShowTechnician = false;
             m.JobTable.ShowType = false;
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+
+            return View(Views.List, m);
+        }
+
+        [DiscoAuthorize(Claims.Job.Lists.LongRunningJobs)]
+        public virtual ActionResult LongRunning()
+        {
+            var m = new Models.Job.ListModel() { Title = "Long Running Jobs" };
+
+            var longRunningThreshold = DateTime.Today.AddDays(Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold * -1);
+            m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j => j.OpenedDate < longRunningThreshold).OrderBy(j => j.JobId));
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+
+            return View(Views.List, m);
+        }
+
+        [DiscoAuthorize(Claims.Job.Lists.StaleJobs)]
+        public virtual ActionResult Stale()
+        {
+            var m = new Models.Job.ListModel() { Title = "Stale Jobs" };
+
+            var staleThreshold = DateTime.Today.AddMinutes(Database.DiscoConfiguration.JobPreferences.StaleJobMinutesThreshold * -1);
+            m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j => j.LastActivityDate < staleThreshold).OrderBy(j => j.LastActivityDate));
+            m.JobTable.ShowLastActivityDate = true;
+            m.JobTable.ShowDates = false;
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);

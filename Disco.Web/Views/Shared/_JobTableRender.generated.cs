@@ -166,16 +166,16 @@ WriteLiteral("                    ");
 
             
             #line 18 "..\..\Views\Shared\_JobTableRender.cshtml"
-                     if (Model.ShowDates)
+                     if (Model.ShowLastActivityDate)
                     {
             
             #line default
             #line hidden
 WriteLiteral(" <th");
 
-WriteLiteral(" class=\"dates\"");
+WriteLiteral(" class=\"lastActive\"");
 
-WriteLiteral(">When\r\n                    </th> ");
+WriteLiteral(">Last Active\r\n                    </th> ");
 
             
             #line 20 "..\..\Views\Shared\_JobTableRender.cshtml"
@@ -188,16 +188,16 @@ WriteLiteral("                    ");
 
             
             #line 21 "..\..\Views\Shared\_JobTableRender.cshtml"
-                     if (Model.ShowType)
+                     if (Model.ShowDates)
                     {
             
             #line default
             #line hidden
 WriteLiteral(" <th");
 
-WriteLiteral(" class=\"type\"");
+WriteLiteral(" class=\"dates\"");
 
-WriteLiteral(">Type\r\n                    </th> ");
+WriteLiteral(">When\r\n                    </th> ");
 
             
             #line 23 "..\..\Views\Shared\_JobTableRender.cshtml"
@@ -210,16 +210,16 @@ WriteLiteral("                    ");
 
             
             #line 24 "..\..\Views\Shared\_JobTableRender.cshtml"
-                     if (Model.ShowDevice)
+                     if (Model.ShowType)
                     {
             
             #line default
             #line hidden
-WriteLiteral("<th");
+WriteLiteral(" <th");
 
-WriteLiteral(" class=\"device\"");
+WriteLiteral(" class=\"type\"");
 
-WriteLiteral(">Device\r\n                    </th> ");
+WriteLiteral(">Type\r\n                    </th> ");
 
             
             #line 26 "..\..\Views\Shared\_JobTableRender.cshtml"
@@ -232,16 +232,16 @@ WriteLiteral("                    ");
 
             
             #line 27 "..\..\Views\Shared\_JobTableRender.cshtml"
-                     if (Model.ShowUser)
+                     if (Model.ShowDevice)
                     {
             
             #line default
             #line hidden
-WriteLiteral(" <th");
+WriteLiteral("<th");
 
-WriteLiteral(" class=\"user\"");
+WriteLiteral(" class=\"device\"");
 
-WriteLiteral(">User\r\n                    </th> ");
+WriteLiteral(">Device\r\n                    </th> ");
 
             
             #line 29 "..\..\Views\Shared\_JobTableRender.cshtml"
@@ -254,16 +254,16 @@ WriteLiteral("                    ");
 
             
             #line 30 "..\..\Views\Shared\_JobTableRender.cshtml"
-                     if (Model.ShowTechnician)
+                     if (Model.ShowUser)
                     {
             
             #line default
             #line hidden
 WriteLiteral(" <th");
 
-WriteLiteral(" class=\"technician\"");
+WriteLiteral(" class=\"user\"");
 
-WriteLiteral(">Technician\r\n                    </th> ");
+WriteLiteral(">User\r\n                    </th> ");
 
             
             #line 32 "..\..\Views\Shared\_JobTableRender.cshtml"
@@ -276,6 +276,28 @@ WriteLiteral("                    ");
 
             
             #line 33 "..\..\Views\Shared\_JobTableRender.cshtml"
+                     if (Model.ShowTechnician)
+                    {
+            
+            #line default
+            #line hidden
+WriteLiteral(" <th");
+
+WriteLiteral(" class=\"technician\"");
+
+WriteLiteral(">Technician\r\n                    </th> ");
+
+            
+            #line 35 "..\..\Views\Shared\_JobTableRender.cshtml"
+                          }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    ");
+
+            
+            #line 36 "..\..\Views\Shared\_JobTableRender.cshtml"
                      if (Model.ShowLocation)
                     {
             
@@ -288,7 +310,7 @@ WriteLiteral(" class=\"location\"");
 WriteLiteral(">Location\r\n                    </th> ");
 
             
-            #line 35 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 38 "..\..\Views\Shared\_JobTableRender.cshtml"
                           }
 
             
@@ -297,13 +319,13 @@ WriteLiteral(">Location\r\n                    </th> ");
 WriteLiteral("                </tr>\r\n            </thead>\r\n            <tbody>\r\n");
 
             
-            #line 39 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 42 "..\..\Views\Shared\_JobTableRender.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 39 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 42 "..\..\Views\Shared\_JobTableRender.cshtml"
                  foreach (var item in Model.Items)
                 {
                     string statusSlaClass = null;
@@ -332,7 +354,7 @@ WriteLiteral("                    <tr");
 WriteLiteral(" data-id=\"");
 
             
-            #line 58 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 61 "..\..\Views\Shared\_JobTableRender.cshtml"
                              Write(item.Id);
 
             
@@ -343,7 +365,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-status=\"");
 
             
-            #line 58 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 61 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                       Write(Model.ShowStatus ? item.StatusId : null);
 
             
@@ -351,26 +373,26 @@ WriteLiteral(" data-status=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2662), Tuple.Create("\"", 2687)
+WriteAttribute("class", Tuple.Create(" class=\"", 2803), Tuple.Create("\"", 2828)
             
-            #line 58 "..\..\Views\Shared\_JobTableRender.cshtml"
-                              , Tuple.Create(Tuple.Create("", 2670), Tuple.Create<System.Object, System.Int32>(statusSlaClass
+            #line 61 "..\..\Views\Shared\_JobTableRender.cshtml"
+                              , Tuple.Create(Tuple.Create("", 2811), Tuple.Create<System.Object, System.Int32>(statusSlaClass
             
             #line default
             #line hidden
-, 2670), false)
+, 2811), false)
 );
 
 WriteLiteral(">\r\n");
 
             
-            #line 59 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 62 "..\..\Views\Shared\_JobTableRender.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 59 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 62 "..\..\Views\Shared\_JobTableRender.cshtml"
                          if (Model.ShowId)
                         {
             
@@ -383,27 +405,27 @@ WriteLiteral(" class=\"id\"");
 WriteLiteral(">\r\n");
 
             
-            #line 61 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 64 "..\..\Views\Shared\_JobTableRender.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 61 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 64 "..\..\Views\Shared\_JobTableRender.cshtml"
                              if (Authorization.Has(Claims.Job.Show))
                             {
             
             #line default
             #line hidden
             
-            #line 62 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 65 "..\..\Views\Shared\_JobTableRender.cshtml"
                         Write(Html.ActionLink(item.JobId.ToString(), MVC.Job.Show(item.JobId)));
 
             
             #line default
             #line hidden
             
-            #line 62 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 65 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                                               }
                             else
                             {
@@ -411,14 +433,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 64 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 67 "..\..\Views\Shared\_JobTableRender.cshtml"
                         Write(item.JobId.ToString());
 
             
             #line default
             #line hidden
             
-            #line 64 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 67 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                    }
             
             #line default
@@ -426,7 +448,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("</td>");
 
             
-            #line 64 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 67 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                          }
 
             
@@ -435,7 +457,7 @@ WriteLiteral("</td>");
 WriteLiteral("                        ");
 
             
-            #line 65 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 68 "..\..\Views\Shared\_JobTableRender.cshtml"
                          if (Model.ShowStatus)
                         {
                             var statusItem = (JobTableStatusItemModel)item;
@@ -449,23 +471,23 @@ WriteLiteral(" class=\"status\"");
 
 WriteLiteral("><i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 3239), Tuple.Create("\"", 3286)
-, Tuple.Create(Tuple.Create("", 3247), Tuple.Create("fa", 3247), true)
-, Tuple.Create(Tuple.Create(" ", 3249), Tuple.Create("fa-square", 3250), true)
-, Tuple.Create(Tuple.Create(" ", 3259), Tuple.Create("jobStatus", 3260), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 3380), Tuple.Create("\"", 3427)
+, Tuple.Create(Tuple.Create("", 3388), Tuple.Create("fa", 3388), true)
+, Tuple.Create(Tuple.Create(" ", 3390), Tuple.Create("fa-square", 3391), true)
+, Tuple.Create(Tuple.Create(" ", 3400), Tuple.Create("jobStatus", 3401), true)
             
-            #line 68 "..\..\Views\Shared\_JobTableRender.cshtml"
-, Tuple.Create(Tuple.Create(" ", 3269), Tuple.Create<System.Object, System.Int32>(item.StatusId
+            #line 71 "..\..\Views\Shared\_JobTableRender.cshtml"
+, Tuple.Create(Tuple.Create(" ", 3410), Tuple.Create<System.Object, System.Int32>(item.StatusId
             
             #line default
             #line hidden
-, 3270), false)
+, 3411), false)
 );
 
 WriteLiteral("></i>&nbsp;");
 
             
-            #line 68 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 71 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                                                        Write(item.StatusDescription);
 
             
@@ -474,13 +496,13 @@ WriteLiteral("></i>&nbsp;");
 WriteLiteral("\r\n");
 
             
-            #line 69 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 72 "..\..\Views\Shared\_JobTableRender.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 69 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 72 "..\..\Views\Shared\_JobTableRender.cshtml"
                                  if (statusItem.ActiveJobQueues != null)
                                 {
             
@@ -493,13 +515,13 @@ WriteLiteral(" class=\"queues\"");
 WriteLiteral(">\r\n");
 
             
-            #line 71 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 74 "..\..\Views\Shared\_JobTableRender.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 71 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 74 "..\..\Views\Shared\_JobTableRender.cshtml"
                                      foreach (var jqToken in ((JobTableStatusItemModel)item).ActiveJobQueues.Select(jqj => new Tuple<JobTableStatusQueueItemModel, Disco.Services.Jobs.JobQueues.JobQueueToken>(jqj, Disco.Services.Jobs.JobQueues.JobQueueService.GetQueue(jqj.QueueId))))
                                     {
 
@@ -508,50 +530,50 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                        <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 3818), Tuple.Create("\"", 3907)
-, Tuple.Create(Tuple.Create("", 3826), Tuple.Create("fa", 3826), true)
-, Tuple.Create(Tuple.Create(" ", 3828), Tuple.Create("fa-", 3829), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 3959), Tuple.Create("\"", 4048)
+, Tuple.Create(Tuple.Create("", 3967), Tuple.Create("fa", 3967), true)
+, Tuple.Create(Tuple.Create(" ", 3969), Tuple.Create("fa-", 3970), true)
             
-            #line 73 "..\..\Views\Shared\_JobTableRender.cshtml"
-, Tuple.Create(Tuple.Create("", 3832), Tuple.Create<System.Object, System.Int32>(jqToken.Item2.JobQueue.Icon
-            
-            #line default
-            #line hidden
-, 3832), false)
-, Tuple.Create(Tuple.Create(" ", 3862), Tuple.Create("fa-fw", 3863), true)
-, Tuple.Create(Tuple.Create(" ", 3868), Tuple.Create("d-", 3869), true)
-            
-            #line 73 "..\..\Views\Shared\_JobTableRender.cshtml"
-                , Tuple.Create(Tuple.Create("", 3871), Tuple.Create<System.Object, System.Int32>(jqToken.Item2.JobQueue.IconColour
+            #line 76 "..\..\Views\Shared\_JobTableRender.cshtml"
+, Tuple.Create(Tuple.Create("", 3973), Tuple.Create<System.Object, System.Int32>(jqToken.Item2.JobQueue.Icon
             
             #line default
             #line hidden
-, 3871), false)
+, 3973), false)
+, Tuple.Create(Tuple.Create(" ", 4003), Tuple.Create("fa-fw", 4004), true)
+, Tuple.Create(Tuple.Create(" ", 4009), Tuple.Create("d-", 4010), true)
+            
+            #line 76 "..\..\Views\Shared\_JobTableRender.cshtml"
+                , Tuple.Create(Tuple.Create("", 4012), Tuple.Create<System.Object, System.Int32>(jqToken.Item2.JobQueue.IconColour
+            
+            #line default
+            #line hidden
+, 4012), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3908), Tuple.Create("\"", 3974)
+WriteAttribute("title", Tuple.Create(" title=\"", 4049), Tuple.Create("\"", 4115)
             
-            #line 73 "..\..\Views\Shared\_JobTableRender.cshtml"
-                                                             , Tuple.Create(Tuple.Create("", 3916), Tuple.Create<System.Object, System.Int32>(jqToken.Item2.JobQueue.Name
-            
-            #line default
-            #line hidden
-, 3916), false)
-, Tuple.Create(Tuple.Create(" ", 3946), Tuple.Create("[", 3947), true)
-            
-            #line 73 "..\..\Views\Shared\_JobTableRender.cshtml"
-                                                                                             , Tuple.Create(Tuple.Create("", 3948), Tuple.Create<System.Object, System.Int32>(jqToken.Item1.Priority
+            #line 76 "..\..\Views\Shared\_JobTableRender.cshtml"
+                                                             , Tuple.Create(Tuple.Create("", 4057), Tuple.Create<System.Object, System.Int32>(jqToken.Item2.JobQueue.Name
             
             #line default
             #line hidden
-, 3948), false)
-, Tuple.Create(Tuple.Create("", 3973), Tuple.Create("]", 3973), true)
+, 4057), false)
+, Tuple.Create(Tuple.Create(" ", 4087), Tuple.Create("[", 4088), true)
+            
+            #line 76 "..\..\Views\Shared\_JobTableRender.cshtml"
+                                                                                             , Tuple.Create(Tuple.Create("", 4089), Tuple.Create<System.Object, System.Int32>(jqToken.Item1.Priority
+            
+            #line default
+            #line hidden
+, 4089), false)
+, Tuple.Create(Tuple.Create("", 4114), Tuple.Create("]", 4114), true)
 );
 
 WriteLiteral("></i>\r\n");
 
             
-            #line 74 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 77 "..\..\Views\Shared\_JobTableRender.cshtml"
                                     }
 
             
@@ -560,7 +582,7 @@ WriteLiteral("></i>\r\n");
 WriteLiteral("                                </div>");
 
             
-            #line 75 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 78 "..\..\Views\Shared\_JobTableRender.cshtml"
                                       }
 
             
@@ -569,7 +591,7 @@ WriteLiteral("                                </div>");
 WriteLiteral("                            </td>");
 
             
-            #line 76 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 79 "..\..\Views\Shared\_JobTableRender.cshtml"
                                  }
 
             
@@ -578,7 +600,38 @@ WriteLiteral("                            </td>");
 WriteLiteral("                        ");
 
             
-            #line 77 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 80 "..\..\Views\Shared\_JobTableRender.cshtml"
+                         if (Model.ShowLastActivityDate)
+                        {
+            
+            #line default
+            #line hidden
+WriteLiteral("<td");
+
+WriteLiteral(" class=\"lastActive\"");
+
+WriteLiteral(">");
+
+            
+            #line 81 "..\..\Views\Shared\_JobTableRender.cshtml"
+                                           Write(CommonHelpers.FriendlyDate(item.LastActivityDate));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</td>");
+
+            
+            #line 81 "..\..\Views\Shared\_JobTableRender.cshtml"
+                                                                                                       }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        ");
+
+            
+            #line 82 "..\..\Views\Shared\_JobTableRender.cshtml"
                          if (Model.ShowDates)
                         {
             
@@ -591,21 +644,21 @@ WriteLiteral(" class=\"dates\"");
 WriteLiteral(">");
 
             
-            #line 78 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 83 "..\..\Views\Shared\_JobTableRender.cshtml"
                                             if (item.ClosedDate.HasValue)
                                            {
             
             #line default
             #line hidden
             
-            #line 79 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 84 "..\..\Views\Shared\_JobTableRender.cshtml"
                                        Write(CommonHelpers.FriendlyDate(item.ClosedDate.Value));
 
             
             #line default
             #line hidden
             
-            #line 79 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 84 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                                               }
                                            else
                                            {
@@ -613,14 +666,14 @@ WriteLiteral(">");
             #line default
             #line hidden
             
-            #line 81 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 86 "..\..\Views\Shared\_JobTableRender.cshtml"
                                        Write(CommonHelpers.FriendlyDate(item.OpenedDate));
 
             
             #line default
             #line hidden
             
-            #line 81 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 86 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                                         }
             
             #line default
@@ -628,7 +681,7 @@ WriteLiteral(">");
 WriteLiteral("</td>");
 
             
-            #line 81 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 86 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                                               }
 
             
@@ -637,7 +690,7 @@ WriteLiteral("</td>");
 WriteLiteral("                        ");
 
             
-            #line 82 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 87 "..\..\Views\Shared\_JobTableRender.cshtml"
                          if (Model.ShowType)
                         {
             
@@ -649,20 +702,20 @@ WriteLiteral(" class=\"type\"");
 
 WriteLiteral("><span");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4556), Tuple.Create("\"", 4588)
+WriteAttribute("title", Tuple.Create(" title=\"", 4861), Tuple.Create("\"", 4893)
             
-            #line 83 "..\..\Views\Shared\_JobTableRender.cshtml"
-, Tuple.Create(Tuple.Create("", 4564), Tuple.Create<System.Object, System.Int32>(item.JobTypeDescription
+            #line 88 "..\..\Views\Shared\_JobTableRender.cshtml"
+, Tuple.Create(Tuple.Create("", 4869), Tuple.Create<System.Object, System.Int32>(item.JobTypeDescription
             
             #line default
             #line hidden
-, 4564), false)
+, 4869), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 83 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 88 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                             Write(item.JobTypeId);
 
             
@@ -671,7 +724,7 @@ WriteLiteral(">");
 WriteLiteral("</span></td>");
 
             
-            #line 83 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 88 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                                                             }
 
             
@@ -680,7 +733,7 @@ WriteLiteral("</span></td>");
 WriteLiteral("                        ");
 
             
-            #line 84 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 89 "..\..\Views\Shared\_JobTableRender.cshtml"
                          if (Model.ShowDevice)
                         {
             
@@ -693,13 +746,13 @@ WriteLiteral(" class=\"device\"");
 WriteLiteral(">\r\n");
 
             
-            #line 86 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 91 "..\..\Views\Shared\_JobTableRender.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 86 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 91 "..\..\Views\Shared\_JobTableRender.cshtml"
                              if (item.DeviceSerialNumber != null)
                             {
                                 if (Authorization.Has(Claims.Device.Show))
@@ -708,14 +761,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 89 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 94 "..\..\Views\Shared\_JobTableRender.cshtml"
                             Write(Html.ActionLink(item.DeviceSerialNumber, MVC.Device.Show(item.DeviceSerialNumber), new { Title = item.DeviceModelDescription }));
 
             
             #line default
             #line hidden
             
-            #line 89 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 94 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                                                                                                                  }
                                 else
                                 {
@@ -724,20 +777,20 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("<span");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 5128), Tuple.Create("\"", 5164)
+WriteAttribute("title", Tuple.Create(" title=\"", 5433), Tuple.Create("\"", 5469)
             
-            #line 91 "..\..\Views\Shared\_JobTableRender.cshtml"
-, Tuple.Create(Tuple.Create("", 5136), Tuple.Create<System.Object, System.Int32>(item.DeviceModelDescription
+            #line 96 "..\..\Views\Shared\_JobTableRender.cshtml"
+, Tuple.Create(Tuple.Create("", 5441), Tuple.Create<System.Object, System.Int32>(item.DeviceModelDescription
             
             #line default
             #line hidden
-, 5136), false)
+, 5441), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 91 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 96 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                        Write(item.DeviceSerialNumber);
 
             
@@ -746,7 +799,7 @@ WriteLiteral(">");
 WriteLiteral("</span>");
 
             
-            #line 91 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 96 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                                                            }
                             }
                             else
@@ -761,7 +814,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">N/A</span>");
 
             
-            #line 94 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 99 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                   }
             
             #line default
@@ -769,7 +822,7 @@ WriteLiteral(">N/A</span>");
 WriteLiteral("</td>");
 
             
-            #line 94 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 99 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                         }
 
             
@@ -778,7 +831,7 @@ WriteLiteral("</td>");
 WriteLiteral("                        ");
 
             
-            #line 95 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 100 "..\..\Views\Shared\_JobTableRender.cshtml"
                          if (Model.ShowUser)
                         {
             
@@ -791,13 +844,13 @@ WriteLiteral(" class=\"user\"");
 WriteLiteral(">\r\n");
 
             
-            #line 97 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 102 "..\..\Views\Shared\_JobTableRender.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 97 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 102 "..\..\Views\Shared\_JobTableRender.cshtml"
                              if (item.UserId != null)
                             {
                                 if (Authorization.Has(Claims.User.Show))
@@ -806,14 +859,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 100 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 105 "..\..\Views\Shared\_JobTableRender.cshtml"
                             Write(Html.ActionLink(string.Format("{0} ({1})", item.UserDisplayName, item.UserId), MVC.User.Show(item.UserId)));
 
             
             #line default
             #line hidden
             
-            #line 100 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 105 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                                                                                             }
                                 else
                                 {
@@ -821,14 +874,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 102 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 107 "..\..\Views\Shared\_JobTableRender.cshtml"
                              Write(string.Format("{0} ({1})", item.UserDisplayName, item.UserId));
 
             
             #line default
             #line hidden
             
-            #line 102 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 107 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                                                  }
                             }
                             else
@@ -843,7 +896,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">N/A</span>");
 
             
-            #line 105 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 110 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                   }
             
             #line default
@@ -851,7 +904,7 @@ WriteLiteral(">N/A</span>");
 WriteLiteral("</td>");
 
             
-            #line 105 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 110 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                         }
 
             
@@ -860,7 +913,7 @@ WriteLiteral("</td>");
 WriteLiteral("                        ");
 
             
-            #line 106 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 111 "..\..\Views\Shared\_JobTableRender.cshtml"
                          if (Model.ShowTechnician)
                         {
             
@@ -872,20 +925,20 @@ WriteLiteral(" class=\"technician\"");
 
 WriteLiteral("><span");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 6116), Tuple.Create("\"", 6155)
+WriteAttribute("title", Tuple.Create(" title=\"", 6421), Tuple.Create("\"", 6460)
             
-            #line 107 "..\..\Views\Shared\_JobTableRender.cshtml"
-, Tuple.Create(Tuple.Create("", 6124), Tuple.Create<System.Object, System.Int32>(item.OpenedTechUserDisplayName
+            #line 112 "..\..\Views\Shared\_JobTableRender.cshtml"
+, Tuple.Create(Tuple.Create("", 6429), Tuple.Create<System.Object, System.Int32>(item.OpenedTechUserDisplayName
             
             #line default
             #line hidden
-, 6124), false)
+, 6429), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 107 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 112 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                                          Write(item.OpenedTechUserId);
 
             
@@ -894,7 +947,7 @@ WriteLiteral(">");
 WriteLiteral("</span></td>");
 
             
-            #line 107 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 112 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                                                                                 }
 
             
@@ -903,7 +956,7 @@ WriteLiteral("</span></td>");
 WriteLiteral("                        ");
 
             
-            #line 108 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 113 "..\..\Views\Shared\_JobTableRender.cshtml"
                          if (Model.ShowLocation)
                         {
             
@@ -911,13 +964,13 @@ WriteLiteral("                        ");
             #line hidden
 WriteLiteral("<td");
 
-WriteLiteral(" class=\"technician\"");
+WriteLiteral(" class=\"location\"");
 
 WriteLiteral("><span>");
 
             
-            #line 109 "..\..\Views\Shared\_JobTableRender.cshtml"
-                                                  Write(item.DeviceHeldLocation ?? "Unknown");
+            #line 114 "..\..\Views\Shared\_JobTableRender.cshtml"
+                                                Write(item.DeviceHeldLocation ?? "Unknown");
 
             
             #line default
@@ -925,8 +978,8 @@ WriteLiteral("><span>");
 WriteLiteral("</span></td>");
 
             
-            #line 109 "..\..\Views\Shared\_JobTableRender.cshtml"
-                                                                                                         }
+            #line 114 "..\..\Views\Shared\_JobTableRender.cshtml"
+                                                                                                       }
 
             
             #line default
@@ -934,7 +987,7 @@ WriteLiteral("</span></td>");
 WriteLiteral("                    </tr>");
 
             
-            #line 110 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 115 "..\..\Views\Shared\_JobTableRender.cshtml"
                          }
 
             
@@ -943,7 +996,7 @@ WriteLiteral("                    </tr>");
 WriteLiteral("            </tbody>\r\n        </table>\r\n");
 
             
-            #line 113 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 118 "..\..\Views\Shared\_JobTableRender.cshtml"
                 if (Model.HideClosedJobs && Model.Items.All(j => j.ClosedDate.HasValue))
                 {
 
@@ -963,7 +1016,7 @@ WriteLiteral(" class=\"dataTables_showStatusClosed button small\"");
 WriteLiteral(">Show Closed Jobs (");
 
             
-            #line 117 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 122 "..\..\Views\Shared\_JobTableRender.cshtml"
                                                                                        Write(Model.Items.Count());
 
             
@@ -972,7 +1025,7 @@ WriteLiteral(">Show Closed Jobs (");
 WriteLiteral(")</a>\r\n        </div>\r\n");
 
             
-            #line 119 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 124 "..\..\Views\Shared\_JobTableRender.cshtml"
                 }
     }
     else
@@ -984,7 +1037,7 @@ WriteLiteral(")</a>\r\n        </div>\r\n");
 WriteLiteral("        <h3>No jobs to display</h3>\r\n");
 
             
-            #line 124 "..\..\Views\Shared\_JobTableRender.cshtml"
+            #line 129 "..\..\Views\Shared\_JobTableRender.cshtml"
     }
 
             
