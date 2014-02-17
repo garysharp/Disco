@@ -1,5 +1,6 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Data.Repository;
+using Disco.Models.BI.Job;
 using Disco.Models.Repository;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Job;
@@ -348,6 +349,13 @@ namespace Disco.Web.Controllers
             else if (Authorization.Has(Claims.Job.Actions.AddOwnQueues))
                 jobQueues = JobQueueService.UsersQueues(CurrentUser);
             m.AvailableQueues = jobQueues == null ? null : jobQueues.Select(qt => qt.JobQueue).Where(q => m.Job.CanAddQueue(q)).ToList();
+
+            if (Authorization.Has(Claims.Job.Properties.DeviceHeldLocation))
+            {
+                m.LocationMode = Database.DiscoConfiguration.JobPreferences.LocationMode;
+                if (m.LocationMode == LocationModes.RestrictedList)
+                    m.LocationOptions = ManagedJobList.OpenJobsTable(j => j).Items.JobLocationReferences(Database.DiscoConfiguration.JobPreferences.LocationList).ToList();
+            }
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobShowModel>(this.ControllerContext, m);

@@ -86,5 +86,22 @@ namespace Disco.Data.Configuration
                 return JsonConvert.DeserializeObject<ValueType>(jsonValue);
         }
 
+        protected void SetAsEnum<EnumType>(EnumType Value, [CallerMemberName] string Key = null)
+        {
+            if (Value == null)
+                this.Set<string>(null, Key);
+            else
+                this.Set(Value.ToString(), Key);
+        }
+        protected EnumType GetFromEnum<EnumType>(EnumType Default, [CallerMemberName] string Key = null)
+        {
+            var stringValue = this.Get<string>(null, Key);
+
+            if (stringValue == null)
+                return Default;
+            else
+                return (EnumType)Enum.Parse(typeof(EnumType), stringValue);
+        }
+
     }
 }

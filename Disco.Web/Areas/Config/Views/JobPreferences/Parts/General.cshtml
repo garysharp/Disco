@@ -1,0 +1,67 @@
+﻿@model Disco.Web.Areas.Config.Models.JobPreferences.IndexModel
+@{
+    Authorization.Require(Claims.Config.JobPreferences.Show);
+
+    var canConfig = Authorization.Has(Claims.Config.JobPreferences.Configure);
+}
+<div class="form" style="width: 530px;">
+    <h2>General Preferences</h2>
+    <table>
+        <tr>
+            <th style="width: 200px">Long Running Threshold:
+            </th>
+            <td>@if (canConfig)
+                {
+                @Html.DropDownListFor(model => model.LongRunningJobDaysThreshold, Model.LongRunningJobDaysThresholdOptions().Select(o => new SelectListItem() { Value = o.Key.ToString(), Text = o.Value }))
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#LongRunningJobDaysThreshold'),
+                            null,
+                            '@(Url.Action(MVC.API.JobPreferences.UpdateLongRunningJobDaysThreshold()))',
+                            'LongRunningJobDaysThreshold');
+                    });
+                </script>
+                }
+                else
+                {
+                @Model.LongRunningJobDaysThresholdOptions().First(o => o.Key == Model.LongRunningJobDaysThreshold).Value
+                }
+                <div class="smallMessage">
+                    Jobs which have been open for longer than the threshold are considered 'long-running' and will appear in the <code>Long Running Jobs</code> list.
+                </div>
+                @if (Authorization.Has(Claims.Job.Lists.LongRunningJobs)) { @Html.ActionLinkSmallButton("Show Long Running Jobs", MVC.Job.LongRunning()) }
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px">Stale Threshold:
+            </th>
+            <td>@if (canConfig)
+                {
+                @Html.DropDownListFor(model => model.StaleJobMinutesThreshold, Model.StaleJobMinutesThresholdOptions().Select(o => new SelectListItem() { Value = o.Key.ToString(), Text = o.Value }))
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#StaleJobMinutesThreshold'),
+                            null,
+                            '@(Url.Action(MVC.API.JobPreferences.UpdateStaleJobMinutesThreshold()))',
+                            'StaleJobMinutesThreshold');
+                    });
+                </script>
+                }
+                else
+                {
+                @Model.StaleJobMinutesThresholdOptions().First(o => o.Key == Model.StaleJobMinutesThreshold).Value
+                }
+                <div class="smallMessage">
+                    Jobs which have no recoded action for longer than the threshold are considered 'stale' and will appear in the <code>Stale Jobs</code> list.
+                </div>
+                @if (Authorization.Has(Claims.Job.Lists.LongRunningJobs)) { @Html.ActionLinkSmallButton("Show Stale Jobs", MVC.Job.Stale()) }
+            </td>
+        </tr>
+    </table>
+</div>

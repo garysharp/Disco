@@ -1,0 +1,233 @@
+﻿@model Disco.Web.Areas.Config.Models.JobPreferences.IndexModel
+@{
+    Authorization.Require(Claims.Config.JobPreferences.Show);
+
+    var canConfig = Authorization.Has(Claims.Config.JobPreferences.Configure);
+}
+<div id="Config_Location" class="form" style="width: 530px;">
+    <h2>Job Locations</h2>
+    <table>
+        <tr>
+            <th style="width: 200px">Mode:
+            </th>
+            <td>@if (canConfig)
+                {
+                @Html.DropDownListFor(model => model.LocationMode, Model.LocationModeOptions().Select(o => new SelectListItem() { Value = o.Key.ToString(), Text = o.Value }))
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <div id="Config_Location_Unrestricted">
+                    <div style="padding: 0.7em 0.7em;" class="ui-state-highlight ui-corner-all">
+                        <i class="fa fa-info-circle information"></i>&nbsp;Technicians will be able to specify <em>any</em> value when entering a location. A selection of locations used historically will be offered.
+                    </div>
+                </div>
+                <div id="Config_Location_List">
+                    <a id="Config_Location_List_Button" href="#" class="button small">Update List</a>
+                    <div id="Config_Location_List_Dialog" class="dialog" title="Locations">
+                        <div id="Config_Location_List_Dialog_ListContainer">
+                            <span id="Config_Location_List_Dialog_None" class="smallMessage">The List is Empty</span>
+                            <ul id="Config_Location_List_Dialog_List" class="none">
+                                @foreach (var loc in Model.LocationList)
+                                {
+                                    <li data-location="@loc">@loc<i class="fa fa-times-circle remove"></i></li>
+                                }
+                            </ul>
+                        </div>
+                        <div id="Config_Location_List_Dialog_AddContainer">
+                            <input type="text" id="Config_Location_List_Dialog_TextAdd" />
+                            <a id="Config_Location_List_Dialog_Add" href="#" class="button small">Add</a>
+                        </div>
+                        <form id="Config_Location_List_Dialog_Form" action="@(Url.Action(MVC.API.JobPreferences.UpdateLocationList(null, redirect: true)))" method="post"></form>
+                    </div>
+                </div>
+                <div id="Config_Location_Optional">
+                    <div style="padding: 0.7em 0.7em;" class="ui-state-highlight ui-corner-all">
+                        <i class="fa fa-info-circle information"></i>&nbsp;Technicians will be able to specify <em>any</em> value when entering a location. A defined list of location options is suggested.
+                    </div>
+                </div>
+                <div id="Config_Location_Restricted">
+                    <div style="padding: 0.7em 0.7em;" class="ui-state-highlight ui-corner-all">
+                        <i class="fa fa-info-circle information"></i>&nbsp;Technicians are restricted to select a location from the defined list.
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#LocationMode'),
+                            null,
+                            '@(Url.Action(MVC.API.JobPreferences.UpdateLocationMode()))',
+                            'LocationMode');
+
+                        var $locationMode = $('#LocationMode');
+
+                        function update() {
+                            var $Config_Location_List = $('#Config_Location_List');
+
+                            var $Config_Location_Unrestricted = $('#Config_Location_Unrestricted');
+                            var $Config_Location_Optional = $('#Config_Location_Optional');
+                            var $Config_Location_Restricted = $('#Config_Location_Restricted');
+
+
+                            switch ($locationMode.val()) {
+                                case 'Unrestricted':
+                                    $Config_Location_List.hide();
+                                    $Config_Location_Optional.hide();
+                                    $Config_Location_Restricted.hide();
+
+                                    $Config_Location_Unrestricted.show();
+                                    break;
+                                case 'OptionalList':
+                                    $Config_Location_Unrestricted.hide();
+                                    $Config_Location_Restricted.hide();
+
+                                    $Config_Location_List.show();
+                                    $Config_Location_Optional.show();
+                                    break;
+                                case 'RestrictedList':
+                                    $Config_Location_Unrestricted.hide();
+                                    $Config_Location_Optional.hide();
+
+                                    $Config_Location_List.show();
+                                    $Config_Location_Restricted.show();
+                                    break;
+                            }
+                        }
+                        update();
+                        $locationMode.change(update);
+
+                        var dialog, textAdd, list, noList, form;
+
+                        $('#Config_Location_List_Button').click(showDialog);
+
+                        function showDialog() {
+                            if (!dialog) {
+                                dialog = $('#Config_Location_List_Dialog').dialog({
+                                    resizable: false,
+                                    modal: true,
+                                    autoOpen: false,
+                                    width: 350,
+                                    height: 420,
+                                    buttons: {
+                                        "Save Changes": saveChanges,
+                                        Cancel: cancel
+                                    }
+                                });
+
+                                dialog.on('click', '.remove', remove);
+
+                                list = $('#Config_Location_List_Dialog_List');
+                                noList = $('#Config_Location_List_Dialog_None');
+
+                                textAdd = $('#Config_Location_List_Dialog_TextAdd');
+
+                                textAdd.watermark('Location');
+                                textAdd.keydown(function (e) {
+                                    if (e.keyCode == 13)
+                                        add();
+                                });
+
+                                $('#Config_Location_List_Dialog_Add').click(add);
+                            }
+
+                            dialog.dialog('open');
+
+                            updateNoList();
+                            return false;
+                        }
+
+                        function cancel() {
+                            $(this).dialog("close");
+
+                            list.find('li').each(function () {
+                                $this = $(this);
+                                if ($this.is('[data-status="new"]')) {
+                                    $this.remove();
+                                } else {
+                                    if ($this.is('[data-status="removed"]')) {
+                                        $this.show();
+                                        $this.attr('data-status', '')
+                                    }
+                                }
+                            });
+                        }
+
+                        function remove() {
+                            $this = $(this).closest('li');
+
+                            if ($this.is('[data-status="new"]')) {
+                                $this.remove();
+                            } else {
+                                $this.attr('data-status', 'removed').hide();
+                            }
+
+                            updateNoList();
+                        }
+
+                        function add() {
+
+                            var value = textAdd.val();
+
+                            // Trim
+                            value = jQuery.trim(value);
+
+                            if (!value) {
+                                alert('Enter a location to be added');
+                                return;
+                            }
+
+                            // Already Exists
+                            var existingValues = list.find('li[data-location]').filter('[data-status!="removed"]').map(function () { return $(this).attr('data-location') }).get();
+                            if (jQuery.inArray(value, existingValues) >= 0) {
+                                alert('That item already exists in the list');
+                                return;
+                            }
+
+                            // Add Item
+                            var li = $('<li>')
+                                .append($('<span>').text(value))
+                                .append($('<i>').addClass('fa fa-times-circle remove'))
+                                .attr('data-location', value)
+                                .attr('data-status', 'new');
+
+                            list.append(li);
+
+                            textAdd.focus();
+
+                            updateNoList();
+                        }
+
+                        function updateNoList() {
+                            if (list.find('li:visible').length > 0)
+                                noList.hide();
+                            else
+                                noList.show();
+                        }
+
+                        function saveChanges() {
+                            var form = $('#Config_Location_List_Dialog_Form').empty();
+
+                            list.find('li[data-status!="removed"]').each(function () {
+                                var location = $(this).attr('data-location');
+
+                                form.append($('<input>').attr({
+                                    'name': 'LocationList',
+                                    'type': 'hidden'
+                                }).val(location));
+
+                            }).get();
+
+                            form.submit();
+
+                            dialog.dialog("disable");
+                            dialog.dialog("option", "buttons", null);
+                        }
+                    });
+                </script>
+                }
+                else
+                {
+                @Model.LocationModeOptions().First(o => o.Key == Model.LocationMode.ToString()).Value
+                }
+            </td>
+        </tr>
+    </table>
+</div>

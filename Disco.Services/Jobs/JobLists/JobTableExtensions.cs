@@ -258,5 +258,28 @@ namespace Disco.Services
             var usersQueues = Jobs.JobQueues.JobQueueService.UsersQueues(Authorization).ToDictionary(q => q.JobQueue.Id);
             return queueItems.Where(qi => usersQueues.ContainsKey(qi.QueueId));
         }
+
+        public static IEnumerable<JobLocationReference> JobLocationReferences(this IEnumerable<JobTableItemModel> Items, IEnumerable<string> IncludeLocations)
+        {
+            var innerItems = Items.Where(i => !string.IsNullOrWhiteSpace(i.DeviceHeldLocation));
+
+            return IncludeLocations.GroupJoin(innerItems, o => o, i => i.DeviceHeldLocation,
+                (i, o) => new JobLocationReference
+                {
+                    Location = i,
+                    References = o.ToList()
+                },
+                StringComparer.InvariantCultureIgnoreCase);
+        }
+        public static IEnumerable<JobLocationReference> JobLocationReferences(this IEnumerable<JobTableItemModel> Items)
+        {
+            return Items.Where(i => !string.IsNullOrWhiteSpace(i.DeviceHeldLocation))
+                .GroupBy(i => i.DeviceHeldLocation, StringComparer.InvariantCultureIgnoreCase)
+                .Select(i => new JobLocationReference()
+                {
+                    Location = i.Key,
+                    References = i.ToList()
+                });
+        }
     }
 }

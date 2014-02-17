@@ -1066,6 +1066,66 @@ div.logEventsViewport {
     }
 }
 
+#Config_Location {
+    margin-top: 10px;
+
+    #Config_Location_Unrestricted, #Config_Location_List, #Config_Location_Optional, #Config_Location_Restricted {
+        display: none;
+        margin-top: 6px;
+    }
+}
+
+#Config_Location_List_Dialog {
+    display: none;
+
+    #Config_Location_List_Dialog_ListContainer {
+        height: 280px;
+        overflow-y: auto;
+        background-color: @white;
+        border: 1px solid @TableDataDarkBorderColour;
+    }
+
+    #Config_Location_List_Dialog_None {
+        padding-top: 15px;
+        display: block;
+        text-align: center;
+    }
+
+    #Config_Location_List_Dialog_AddContainer {
+        padding-top: 10px;
+        padding-left: 10px;
+    }
+
+    #Config_Location_List_Dialog_List {
+        li {
+            padding: 2px 0 2px 4px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: @TableDataBorderColour;
+
+                .remove {
+                    opacity: .8;
+                }
+            }
+
+            .remove {
+                margin-top: 2px;
+                padding-right: 6px;
+                float: right;
+                cursor: pointer;
+                opacity: 0;
+                color: @StatusRemove;
+                font-size: 1.3em;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+
 #Config_JobQueues_Index {
     i {
         width: 1.2857142857142858em;

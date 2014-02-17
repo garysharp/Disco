@@ -405,6 +405,7 @@
                                         } else {
                                             if ($this.is('[data-subjectstatus="removed"]')) {
                                                 $this.show();
+                                                $this.attr('data-status', '')
                                             }
                                         }
                                     });
@@ -432,7 +433,7 @@
                                         data: { Id: id }
                                     }).done(function (response) {
                                         if (response) {
-                                            if (list.find('li[data-subjectid="' + response.Id + '"]').length == 0) {
+                                            if (list.find('li[data-subjectid="' + response.Id + '"]').filter('[data-status!="removed"]').length == 0) {
 
                                                 var liIcon = $('<i>').addClass('fa fa-lg');
                                                 if (response.Type === 'user')

@@ -195,6 +195,7 @@
     <Compile Include="Areas\API\Controllers\SearchController.cs" />
     <Compile Include="Areas\API\Models\AuthorizationRole\SubjectItem.cs" />
     <Compile Include="Areas\API\Models\JobQueue\SubjectItem.cs" />
+    <Compile Include="Areas\API\Models\Job\DeviceHeldLocationModel.cs" />
     <Compile Include="Areas\Config\Controllers\AuthorizationRoleController.cs" />
     <Compile Include="Areas\Config\Controllers\JobPreferencesController.cs" />
     <Compile Include="Areas\Config\Controllers\JobQueueController.cs" />
@@ -232,6 +233,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Index.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Config\Views\JobPreferences\Parts\General.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>General.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Config\Views\JobPreferences\Parts\Locations.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Locations.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Areas\Config\Views\JobQueue\Create.generated.cs">
       <AutoGen>True</AutoGen>
@@ -923,6 +934,14 @@
     <None Include="Areas\Config\Views\JobPreferences\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\JobPreferences\Parts\General.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>General.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\JobPreferences\Parts\Locations.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Locations.generated.cs</LastGenOutput>
     </None>
     <None Include="Areas\Config\Views\JobQueue\Show.cshtml">
       <Generator>RazorGenerator</Generator>
@@ -2014,7 +2033,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
+      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

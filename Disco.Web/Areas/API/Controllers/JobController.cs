@@ -1,6 +1,9 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Models.Repository;
+using Disco.Models.Services.Jobs.JobLists;
+using Disco.Services;
 using Disco.Services.Authorization;
+using Disco.Services.Jobs.JobLists;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using Disco.Web.Extensions;
@@ -522,10 +525,20 @@ namespace Disco.Web.Areas.API.Controllers
         }
         private void UpdateDeviceHeldLocation(Job job, string DeviceHeldLocation)
         {
+            if (!string.IsNullOrWhiteSpace(DeviceHeldLocation) &&
+                Database.DiscoConfiguration.JobPreferences.LocationMode == Disco.Models.BI.Job.LocationModes.RestrictedList)
+            {
+                // Enforce Restricted List Mode
+                var value = DeviceHeldLocation.Trim();
+
+                if (!Database.DiscoConfiguration.JobPreferences.LocationList.Contains(value, StringComparer.InvariantCultureIgnoreCase))
+                    throw new ArgumentException("The location was not found in the list (Mode: Restricted List)");
+            }
+
             if (string.IsNullOrWhiteSpace(DeviceHeldLocation))
                 job.DeviceHeldLocation = null;
             else
-                job.DeviceHeldLocation = DeviceHeldLocation;
+                job.DeviceHeldLocation = DeviceHeldLocation.Trim();
 
             Database.SaveChanges();
         }
@@ -1382,7 +1395,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             Database.SaveChanges();
         }
-        
+
         private void UpdateWarrantyExternalCompletedDate(Job job, string ExternalCompletedDate)
         {
             // Validate Is Warranty Job
@@ -1856,7 +1869,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json(new Models.Job.CommentPostModel() { Result = "Invalid Job Number" }, JsonRequestBehavior.AllowGet);
         }
-        
+
         [DiscoAuthorizeAny(Claims.Job.Actions.RemoveAnyLogs, Claims.Job.Actions.RemoveOwnLogs)]
         public virtual ActionResult CommentRemove(int id)
         {
@@ -1897,7 +1910,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return HttpNotFound("Invalid Attachment Number");
         }
-        
+
         [DiscoAuthorize(Claims.Job.ShowAttachments), OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
         public virtual ActionResult AttachmentThumbnail(int id)
         {
@@ -1975,7 +1988,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return Json(new Models.Attachment.AttachmentModel() { Result = "Invalid Attachment Number" }, JsonRequestBehavior.AllowGet);
         }
-        
+
         [DiscoAuthorize(Claims.Job.ShowAttachments)]
         public virtual ActionResult Attachments(int id)
         {
@@ -2003,7 +2016,7 @@ namespace Disco.Web.Areas.API.Controllers
                     Authorization.RequireAny(Claims.Job.Actions.RemoveAnyAttachments, Claims.Job.Actions.RemoveOwnAttachments);
                 else
                     Authorization.Require(Claims.Job.Actions.RemoveAnyAttachments);
-                
+
                 ja.OnDelete(Database);
                 Database.SaveChanges();
                 return Json("OK", JsonRequestBehavior.AllowGet);
@@ -2124,6 +2137,48 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 throw new ArgumentException("Invalid Job Id", "id");
             }
+        }
+
+        [DiscoAuthorize(Claims.Job.Properties.DeviceHeldLocation)]
+        public virtual ActionResult DeviceHeldLocations()
+        {
+            List<string> locations;
+
+            switch (Database.DiscoConfiguration.JobPreferences.LocationMode)
+            {
+                case Disco.Models.BI.Job.LocationModes.Unrestricted:
+                    var jobDateThreshold = DateTime.Now.AddYears(-1);
+                    locations = Database.Jobs.Where(j => (j.OpenedDate > jobDateThreshold || !j.ClosedDate.HasValue) && j.DeviceHeldLocation != null).Select(j => j.DeviceHeldLocation).Distinct().OrderBy(l => l).ToList().Where(l => !string.IsNullOrWhiteSpace(l)).Select(l => l.Trim()).Distinct(StringComparer.InvariantCultureIgnoreCase).OrderBy(l => l).ToList();
+                    break;
+                case Disco.Models.BI.Job.LocationModes.OptionalList:
+                case Disco.Models.BI.Job.LocationModes.RestrictedList:
+                    locations = Database.DiscoConfiguration.JobPreferences.LocationList;
+                    break;
+                default:
+                    throw new InvalidOperationException("Unknown Location Mode Configured");
+            }
+
+            var locationReferences = ManagedJobList.OpenJobsTable(j => j).Items.JobLocationReferences().ToDictionary(lr => lr.Location);
+
+            var results = locations.Select(location =>
+            {
+                JobLocationReference reference;
+
+                if (locationReferences.TryGetValue(location, out reference))
+                {
+                    return new Models.Job.DeviceHeldLocationModel()
+                    {
+                        Location = location,
+                        References = (reference.References.Count == 1 ? string.Format("Job {0}", reference.References.First().JobId) : string.Format("{0} jobs", reference.References.Count))
+                    };
+                }
+                else
+                {
+                    return new Models.Job.DeviceHeldLocationModel() { Location = location };
+                }
+            }).ToList();
+
+            return Json(results, JsonRequestBehavior.AllowGet);
         }
     }
 }

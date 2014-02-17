@@ -4140,6 +4140,11 @@ select {
   border: 1px solid #ccc;
   padding: 2px;
   color: #444;
+  min-width: 200px;
+}
+select.small {
+  padding: 0;
+  min-width: 150px;
 }
 input[type="submit"],
 button {

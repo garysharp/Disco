@@ -1,6 +1,8 @@
-﻿using Disco.Models.UI.Config.JobPreferences;
+﻿using Disco.Models.BI.Job;
+using Disco.Models.UI.Config.JobPreferences;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,6 +13,8 @@ namespace Disco.Web.Areas.Config.Models.JobPreferences
     {
         public int LongRunningJobDaysThreshold { get; set; }
         public int StaleJobMinutesThreshold { get; set; }
+        public LocationModes LocationMode { get; set; }
+        public List<string> LocationList { get; set; }
 
         public List<KeyValuePair<int, string>> LongRunningJobDaysThresholdOptions()
         {
@@ -75,6 +79,21 @@ namespace Disco.Web.Areas.Config.Models.JobPreferences
             }
 
             return options;
+        }
+
+        public List<KeyValuePair<string, string>> LocationModeOptions()
+        {
+            var type = typeof(LocationModes);
+            var names = Enum.GetNames(type);
+
+            return names.Select(n =>
+            {
+                var at = type.GetMember(n)[0].GetCustomAttributes(typeof(DisplayAttribute), false);
+                if (at != null && at.Length > 0)
+                    return new KeyValuePair<string, string>(n, ((DisplayAttribute)at[0]).Name);
+                else
+                    return new KeyValuePair<string, string>(n, n);
+            }).OrderBy(i => i.Key).ToList();
         }
     }
 }

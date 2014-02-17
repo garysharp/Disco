@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BI\Job\LocationModes.cs" />
     <Compile Include="Services\Authorization\IAuthorizationToken.cs" />
     <Compile Include="Services\Authorization\IClaimNavigatorItem.cs" />
     <Compile Include="Services\Authorization\IRoleToken.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Repository\User\UserAttachment.cs" />
     <Compile Include="Repository\User\UserDetail.cs" />
     <Compile Include="Repository\User\AuthorizationRole.cs" />
+    <Compile Include="Services\Jobs\JobLists\JobLocationReference.cs" />
     <Compile Include="Services\Jobs\JobLists\JobTableItemModel.cs" />
     <Compile Include="Services\Jobs\JobLists\JobTableModel.cs" />
     <Compile Include="Services\Jobs\JobLists\JobTableStatusItemModel.cs" />
@@ -166,7 +168,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" />
+      <UserProperties BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

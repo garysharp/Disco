@@ -261,15 +261,32 @@
                     </div>
                     @if (Model.Job.DeviceHeld.HasValue)
                     {
+                        var canEditLocation = Authorization.Has(Claims.Job.Properties.DeviceHeldLocation);
                         <div id="Job_Show_Device_DeviceHeld" class="status">
                             <table class="none">
                                 <tr>
                                     <td>Location:</td>
                                     <td>
                                         <span id="Job_Show_Device_DeviceHeld_Location">
-                                            @if (Authorization.Has(Claims.Job.Properties.DeviceHeldLocation))
+                                            @if (canEditLocation)
                                             {
-                                                @Html.TextBoxFor(m => m.Job.DeviceHeldLocation, new { @class = "small discreet" }) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
+                                                switch (Model.LocationMode)
+                                                {
+                                                    case Disco.Models.BI.Job.LocationModes.Unrestricted:
+                                                    case Disco.Models.BI.Job.LocationModes.OptionalList:
+                                                @Html.TextBoxFor(m => m.Job.DeviceHeldLocation, new { @class = "small discreet" })
+                                                        break;
+                                                    case Disco.Models.BI.Job.LocationModes.RestrictedList:
+                                                        List<SelectListItem> listOptions = new List<SelectListItem>() { new SelectListItem() { Value = "", Text = "<Unknown>" } };
+                                                        if (!string.IsNullOrWhiteSpace(Model.Job.DeviceHeldLocation) && !Model.LocationOptions.Any(l => l.Location.Equals(Model.Job.DeviceHeldLocation)))
+                                                        {
+                                                            listOptions.Add(new SelectListItem() { Value = Model.Job.DeviceHeldLocation, Text = string.Format("Custom: {0}", Model.Job.DeviceHeldLocation) });
+                                                        }
+                                                        listOptions.AddRange(Model.LocationOptions.Select(l => new SelectListItem() { Value = l.Location, Text = (l.References.Count == 0 ? l.Location : (l.References.Count == 1 ? string.Format("{0} [Job {1}]", l.Location, l.References[0].JobId) : string.Format("{0} [{1} jobs]", l.Location, l.References.Count))) }));
+                                                @Html.DropDownListFor(m => m.Job.DeviceHeldLocation, listOptions, new { @class = "small discreet" });
+                                                                                                                                                    break;
+                                                }
+                                                @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
                                             }
                                             else if (string.IsNullOrEmpty(Model.Job.DeviceHeldLocation))
                                             {
@@ -301,16 +318,65 @@
                                     </tr>
                                 }
                             </table>
-                            @if (Authorization.Has(Claims.Job.Properties.DeviceHeldLocation))
+                            @if (canEditLocation)
                             {
                                 <script type="text/javascript">
                                     $(function () {
+                                        @switch (Model.LocationMode)
+                                        {
+                                            case Disco.Models.BI.Job.LocationModes.Unrestricted:
+                                            case Disco.Models.BI.Job.LocationModes.OptionalList:
+                                                <text>
                                         var $deviceHeldLocation = $('#Job_DeviceHeldLocation');
                                         var $ajaxSave = $deviceHeldLocation.next('.ajaxSave');
+                                        var autocompleteLoaded = false;
 
                                         $deviceHeldLocation
                                             .watermark('Unknown')
-                                            .focus(function () { $deviceHeldLocation.select() })
+                                            .focus(function () {
+                                                $deviceHeldLocation.select();
+
+                                                // Load AutoComplete
+                                                if (!autocompleteLoaded){
+                                                    $.ajax({
+                                                        url: '@(Url.Action(MVC.API.Job.DeviceHeldLocations()))',
+                                                        dataType: 'json',
+                                                        success: function (d) {
+
+                                                            $.each(d, function(){
+                                                                this.value = this.Location;
+                                                                this.label = this.Location;
+                                                            });
+
+                                                            $deviceHeldLocation.autocomplete({
+                                                                source: d,
+                                                                minLength: 0,
+                                                                focus: function(e, ui){
+                                                                    return false;
+                                                                },
+                                                                select: function (e, ui) {
+                                                                    $deviceHeldLocation.val(ui.item.Location).blur().change();
+                                                                    return false;
+                                                                }
+                                                            }).data('ui-autocomplete')._renderItem = function (ul, item) {
+                                                                var anchor = $('<a>').append($('<strong>').text(item.Location));
+                                                                if (item.References){
+                                                                    anchor.append(document.createTextNode(' ['+item.References+']'));
+                                                                }
+                                                                var item = $("<li></li>")
+                                                                    .data("item.autocomplete", item)
+                                                                    .append(anchor);
+                                                                return item.appendTo(ul);
+                                                            };
+                                                                
+                                                            $deviceHeldLocation.autocomplete('search', '');
+                                                        }
+                                                    });
+                                                    autocompleteLoaded = true;
+                                                }else{
+                                                    $deviceHeldLocation.autocomplete('search', '');
+                                                }
+                                            })
                                             .keydown(function (e) {
                                                 $ajaxSave.show();
                                                 if (e.which == 13) {
@@ -341,6 +407,20 @@
                                                     }
                                                 });
                                             });
+                                        </text>
+                                                break;
+                                            case Disco.Models.BI.Job.LocationModes.RestrictedList:
+                                                        <text>
+                                        document.DiscoFunctions.PropertyChangeHelper(
+                                            $('#Job_DeviceHeldLocation'),
+                                            null,
+                                            '@Url.Action(MVC.API.Job.UpdateDeviceHeldLocation(Model.Job.Id, null))',
+                                            'DeviceHeldLocation');
+                                        </text>
+                                                break;
+                                        }
+
+                                        
                                     });
                                 </script>
                             }
@@ -361,10 +441,10 @@
                     <div id="Job_Show_User_Id" title="Id">@Model.Job.UserId</div>
                     @if (Authorization.Has(Claims.User.ShowDetails))
                     {
-                    if (!string.IsNullOrWhiteSpace(Model.Job.User.PhoneNumber))
-                    {<div id="Job_Show_User_PhoneNumber" title="Phone Number">Phone: @Model.Job.User.PhoneNumber</div>}
-                    if (!string.IsNullOrWhiteSpace(Model.Job.User.EmailAddress))
-                    {<div id="Job_Show_User_EmailAddress" title="Email Address">Email: <a href="mailto:@(Model.Job.User.EmailAddress)">@Model.Job.User.EmailAddress</a></div>}
+                        if (!string.IsNullOrWhiteSpace(Model.Job.User.PhoneNumber))
+                        {<div id="Job_Show_User_PhoneNumber" title="Phone Number">Phone: @Model.Job.User.PhoneNumber</div>}
+                        if (!string.IsNullOrWhiteSpace(Model.Job.User.EmailAddress))
+                        {<div id="Job_Show_User_EmailAddress" title="Email Address">Email: <a href="mailto:@(Model.Job.User.EmailAddress)">@Model.Job.User.EmailAddress</a></div>}
                     }
                     @if (Model.Job.WaitingForUserAction.HasValue)
                     {
@@ -559,31 +639,32 @@
                 
                 @Html.ActionLinkSmallButton("Add to Queue", MVC.API.JobQueueJob.AddJob(), "Job_Show_Job_Actions_AddQueue_Button")
                 <div id="Job_Show_Job_Actions_AddQueue_Dialog" class="dialog" title="Add Job to Queue">
-                    @using (Html.BeginForm(MVC.API.JobQueueJob.AddJob())){
-                    <input id="Job_Show_Job_Actions_AddQueue_Dialog_Id" type="hidden" name="id" />
-                    <input id="Job_Show_Job_Actions_AddQueue_Dialog_JobId" type="hidden" name="JobId" value="@Model.Job.Id" />
-                    <div class="queuePicker">
-                        @foreach (var jobQueue in Model.AvailableQueues.OrderBy(jq => jq.Name))
-                        {
-                            <div class="queue" data-queueid="@(jobQueue.Id)" data-queuesla="@(jobQueue.DefaultSLAExpiry.HasValue ? jobQueue.DefaultSLAExpiry.Value.ToString() : null)" data-queuepriority="@(jobQueue.Priority.ToString())">
-                                <i class="fa fa-@(jobQueue.Icon) fa-fw fa-lg d-@(jobQueue.IconColour)"></i>@jobQueue.Name
+                    @using (Html.BeginForm(MVC.API.JobQueueJob.AddJob()))
+                    {
+                        <input id="Job_Show_Job_Actions_AddQueue_Dialog_Id" type="hidden" name="id" />
+                        <input id="Job_Show_Job_Actions_AddQueue_Dialog_JobId" type="hidden" name="JobId" value="@Model.Job.Id" />
+                        <div class="queuePicker">
+                            @foreach (var jobQueue in Model.AvailableQueues.OrderBy(jq => jq.Name))
+                            {
+                                <div class="queue" data-queueid="@(jobQueue.Id)" data-queuesla="@(jobQueue.DefaultSLAExpiry.HasValue ? jobQueue.DefaultSLAExpiry.Value.ToString() : null)" data-queuepriority="@(jobQueue.Priority.ToString())">
+                                    <i class="fa fa-@(jobQueue.Icon) fa-fw fa-lg d-@(jobQueue.IconColour)"></i>@jobQueue.Name
+                                </div>
+                            }
+                        </div>
+                        <div class="details">
+                            <div>
+                                <h4>Job Priority</h4>
+                                @Html.DropDownList("Priority", priorityItems) <i class="fa d-priority-@(priorityValue.ToLower())" title="@(priorityValue) Priority"></i>
                             </div>
-                        }
-                    </div>
-                    <div class="details">
-                        <div>
-                            <h4>Job Priority</h4>
-                            @Html.DropDownList("Priority", priorityItems) <i class="fa d-priority-@(priorityValue.ToLower())" title="@(priorityValue) Priority"></i>
+                            <div>
+                                <h4>SLA Target</h4>
+                                @Html.DropDownList("SLAExpiresMinutes", slaOptions)
+                            </div>
+                            <div>
+                                <h4>Tasks/Comment</h4>
+                                @Html.TextArea("Comment")
+                            </div>
                         </div>
-                        <div>
-                            <h4>SLA Target</h4>
-                            @Html.DropDownList("SLAExpiresMinutes", slaOptions)
-                        </div>
-                        <div>
-                            <h4>Tasks/Comment</h4>
-                            @Html.TextArea("Comment")
-                        </div>
-                    </div>
                     }
                 </div>
                 <script type="text/javascript">

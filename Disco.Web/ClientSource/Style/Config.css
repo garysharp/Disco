@@ -938,6 +938,56 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
 #Config_AuthRoles_Subjects_Update_Dialog #Config_AuthRoles_Subjects_Update_Dialog_List li .remove:hover {
   opacity: 1;
 }
+#Config_Location {
+  margin-top: 10px;
+}
+#Config_Location #Config_Location_Unrestricted,
+#Config_Location #Config_Location_List,
+#Config_Location #Config_Location_Optional,
+#Config_Location #Config_Location_Restricted {
+  display: none;
+  margin-top: 6px;
+}
+#Config_Location_List_Dialog {
+  display: none;
+}
+#Config_Location_List_Dialog #Config_Location_List_Dialog_ListContainer {
+  height: 280px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  border: 1px solid #d8d8d8;
+}
+#Config_Location_List_Dialog #Config_Location_List_Dialog_None {
+  padding-top: 15px;
+  display: block;
+  text-align: center;
+}
+#Config_Location_List_Dialog #Config_Location_List_Dialog_AddContainer {
+  padding-top: 10px;
+  padding-left: 10px;
+}
+#Config_Location_List_Dialog #Config_Location_List_Dialog_List li {
+  padding: 2px 0 2px 4px;
+  cursor: pointer;
+}
+#Config_Location_List_Dialog #Config_Location_List_Dialog_List li:hover {
+  background-color: #f4f4f4;
+}
+#Config_Location_List_Dialog #Config_Location_List_Dialog_List li:hover .remove {
+  opacity: .8;
+}
+#Config_Location_List_Dialog #Config_Location_List_Dialog_List li .remove {
+  margin-top: 2px;
+  padding-right: 6px;
+  float: right;
+  cursor: pointer;
+  opacity: 0;
+  color: #e51400;
+  font-size: 1.3em;
+}
+#Config_Location_List_Dialog #Config_Location_List_Dialog_List li .remove:hover {
+  opacity: 1;
+}
 #Config_JobQueues_Index i {
   width: 1.2857142857142858em;
   text-align: center;

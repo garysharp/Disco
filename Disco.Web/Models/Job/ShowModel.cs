@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Disco.BI.Extensions;
+﻿using Disco.Models.BI.Job;
+using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Job;
 using Disco.Web.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace Disco.Web.Models.Job
 {
@@ -29,5 +28,9 @@ namespace Disco.Web.Models.Job
                 return list;
             }
         }
+
+
+        public LocationModes LocationMode { get; set; }
+        public List<JobLocationReference> LocationOptions { get; set; }
     }
 }

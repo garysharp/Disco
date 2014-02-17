@@ -6172,6 +6172,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string ComponentRemove = "ComponentRemove";
             public readonly string StatisticsDailyOpenedClosed = "StatisticsDailyOpenedClosed";
             public readonly string GeneratePdf = "GeneratePdf";
+            public readonly string DeviceHeldLocations = "DeviceHeldLocations";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -6243,6 +6244,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string ComponentRemove = "ComponentRemove";
             public const string StatisticsDailyOpenedClosed = "StatisticsDailyOpenedClosed";
             public const string GeneratePdf = "GeneratePdf";
+            public const string DeviceHeldLocations = "DeviceHeldLocations";
         }
 
 
@@ -7656,6 +7658,15 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        partial void DeviceHeldLocationsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        public override System.Web.Mvc.ActionResult DeviceHeldLocations()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeviceHeldLocations);
+            DeviceHeldLocationsOverride(callInfo);
+            return callInfo;
+        }
+
     }
 }
 
@@ -7695,6 +7706,18 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateStaleJobMinutesThreshold);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateLocationMode()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLocationMode);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateLocationList()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLocationList);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public JobPreferencesController Actions { get { return MVC.API.JobPreferences; } }
@@ -7713,6 +7736,8 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string UpdateLongRunningJobDaysThreshold = "UpdateLongRunningJobDaysThreshold";
             public readonly string UpdateStaleJobMinutesThreshold = "UpdateStaleJobMinutesThreshold";
+            public readonly string UpdateLocationMode = "UpdateLocationMode";
+            public readonly string UpdateLocationList = "UpdateLocationList";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -7720,6 +7745,8 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public const string UpdateLongRunningJobDaysThreshold = "UpdateLongRunningJobDaysThreshold";
             public const string UpdateStaleJobMinutesThreshold = "UpdateStaleJobMinutesThreshold";
+            public const string UpdateLocationMode = "UpdateLocationMode";
+            public const string UpdateLocationList = "UpdateLocationList";
         }
 
 
@@ -7739,6 +7766,24 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateStaleJobMinutesThreshold
         {
             public readonly string StaleJobMinutesThreshold = "StaleJobMinutesThreshold";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateLocationMode s_params_UpdateLocationMode = new ActionParamsClass_UpdateLocationMode();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateLocationMode UpdateLocationModeParams { get { return s_params_UpdateLocationMode; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateLocationMode
+        {
+            public readonly string LocationMode = "LocationMode";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateLocationList s_params_UpdateLocationList = new ActionParamsClass_UpdateLocationList();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateLocationList UpdateLocationListParams { get { return s_params_UpdateLocationList; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateLocationList
+        {
+            public readonly string LocationList = "LocationList";
             public readonly string redirect = "redirect";
         }
         static readonly ViewsClass s_views = new ViewsClass();
@@ -7779,6 +7824,28 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "StaleJobMinutesThreshold", StaleJobMinutesThreshold);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateStaleJobMinutesThresholdOverride(callInfo, StaleJobMinutesThreshold, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateLocationModeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Models.BI.Job.LocationModes LocationMode, bool redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateLocationMode(Disco.Models.BI.Job.LocationModes LocationMode, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLocationMode);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "LocationMode", LocationMode);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateLocationModeOverride(callInfo, LocationMode, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateLocationListOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string[] LocationList, bool redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateLocationList(string[] LocationList, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLocationList);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "LocationList", LocationList);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateLocationListOverride(callInfo, LocationList, redirect);
             return callInfo;
         }
 
@@ -10621,6 +10688,21 @@ namespace Disco.Web.Areas.Config.Controllers
                 public readonly string Index = "Index";
             }
             public readonly string Index = "~/Areas/Config/Views/JobPreferences/Index.cshtml";
+            static readonly _PartsClass s_Parts = new _PartsClass();
+            public _PartsClass Parts { get { return s_Parts; } }
+            [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+            public partial class _PartsClass
+            {
+                static readonly _ViewNamesClass s_ViewNames = new _ViewNamesClass();
+                public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
+                public class _ViewNamesClass
+                {
+                    public readonly string General = "General";
+                    public readonly string Locations = "Locations";
+                }
+                public readonly string General = "~/Areas/Config/Views/JobPreferences/Parts/General.cshtml";
+                public readonly string Locations = "~/Areas/Config/Views/JobPreferences/Parts/Locations.cshtml";
+            }
         }
     }
 

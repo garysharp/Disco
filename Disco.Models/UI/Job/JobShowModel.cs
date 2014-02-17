@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Disco.Models.BI.Job;
+using Disco.Models.Services.Jobs.JobLists;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Models.UI.Job
 {
@@ -13,5 +12,8 @@ namespace Disco.Models.UI.Job
         List<Repository.DocumentTemplate> AvailableDocumentTemplates { get; set; }
         List<Repository.JobSubType> UpdatableJobSubTypes { get; set; }
         List<Repository.JobQueue> AvailableQueues { get; set; }
+
+        LocationModes LocationMode { get; set; }
+        List<JobLocationReference> LocationOptions { get; set; }
     }
 }

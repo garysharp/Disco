@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Disco.Models.BI.Job;
 
 namespace Disco.Data.Configuration.Modules
 {
@@ -41,6 +42,18 @@ namespace Disco.Data.Configuration.Modules
 
                 Set(value);
             }
+        }
+
+        public LocationModes LocationMode
+        {
+            get { return GetFromEnum<LocationModes>(LocationModes.Unrestricted); }
+            set { SetAsEnum(value); }
+        }
+
+        public List<string> LocationList
+        {
+            get { return GetFromJson<List<string>>(new List<string>()); }
+            set { SetAsJson(value); }
         }
     }
 }
