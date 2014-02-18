@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div id="Config_Location_List">
-                    <a id="Config_Location_List_Button" href="#" class="button small">Update List</a>
+                    <a id="Config_Location_List_Button" href="#" class="button small">Update List</a> <a id="Config_Location_List_ImportButton" href="#" class="button small">Import List</a>
                     <div id="Config_Location_List_Dialog" class="dialog" title="Locations">
                         <div id="Config_Location_List_Dialog_ListContainer">
                             <span id="Config_Location_List_Dialog_None" class="smallMessage">The List is Empty</span>
@@ -37,6 +37,18 @@
                             <a id="Config_Location_List_Dialog_Add" href="#" class="button small">Add</a>
                         </div>
                         <form id="Config_Location_List_Dialog_Form" action="@(Url.Action(MVC.API.JobPreferences.UpdateLocationList(null, redirect: true)))" method="post"></form>
+                    </div>
+                    <div id="Config_Location_ListImport_Dialog" class="dialog" title="Import Locations">
+                        <form id="Config_Location_ListImport_Dialog_Form" action="@(Url.Action(MVC.API.JobPreferences.ImportLocationList(null, redirect: true)))" method="post">
+                            <input type="hidden" id="Config_Location_ListImport_Dialog_AutomaticList" name="AutomaticList" value="False" />
+                            <div id="Config_Location_ListImport_Dialog_Overwrite_Container">
+                                <input type="checkbox" id="Config_Location_ListImport_Dialog_Overwrite" name="Override" value="True" /><label for="Config_Location_ListImport_Dialog_Overwrite">Override Existing List</label>
+                            </div>
+                            <textarea id="Config_Location_ListImport_Dialog_LocationList" name="LocationList"></textarea>
+                            <div style="padding: 0.7em 0.7em; margin-top: 10px;" class="ui-state-highlight ui-corner-all">
+                                <i class="fa fa-info-circle information"></i>&nbsp;Enter multiple locations separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div id="Config_Location_Optional">
@@ -220,6 +232,43 @@
                             dialog.dialog("disable");
                             dialog.dialog("option", "buttons", null);
                         }
+
+                        // Import
+                        var dialogImport, formImport;
+
+                        $('#Config_Location_List_ImportButton').click(showDialogImport);
+
+                        function showDialogImport() {
+                            if (!dialogImport) {
+                                dialogImport = $('#Config_Location_ListImport_Dialog').dialog({
+                                    resizable: false,
+                                    modal: true,
+                                    autoOpen: false,
+                                    width: 350,
+                                    height: 420,
+                                    buttons: {
+                                        "Build Automatic List": function () {
+                                            $('#Config_Location_ListImport_Dialog_AutomaticList').val('True').closest('form').submit();
+                                            dialogImport.dialog("disable");
+                                            dialogImport.dialog("option", "buttons", null);
+                                        },
+                                        "Import List": function () {
+                                            $('#Config_Location_ListImport_Dialog_LocationList').closest('form').submit();
+                                            dialogImport.dialog("disable");
+                                            dialogImport.dialog("option", "buttons", null);
+                                        },
+                                        Cancel: function () {
+                                            dialogImport.dialog("close");
+                                        }
+                                    }
+                                });
+                            }
+
+                            dialogImport.dialog('open');
+
+                            return false;
+                        }
+
                     });
                 </script>
                 }

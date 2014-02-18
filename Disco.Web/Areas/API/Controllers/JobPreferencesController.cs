@@ -50,7 +50,53 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
         public virtual ActionResult UpdateLocationList(string[] LocationList, bool redirect = false)
         {
-            Database.DiscoConfiguration.JobPreferences.LocationList = LocationList.Where(i => !string.IsNullOrWhiteSpace(i)).Select(i => i.Trim()).OrderBy(i => i).ToList();
+            var list = LocationList
+                .Where(i => !string.IsNullOrWhiteSpace(i))
+                .Select(i => i.Trim())
+                .Distinct(StringComparer.InvariantCultureIgnoreCase)
+                .OrderBy(i => i);
+
+            Database.DiscoConfiguration.JobPreferences.LocationList = list.ToList();
+            Database.SaveChanges();
+
+            if (redirect)
+                return RedirectToAction(MVC.Config.JobPreferences.Index());
+            else
+                return Json("OK", JsonRequestBehavior.AllowGet);
+        }
+
+        [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        public virtual ActionResult ImportLocationList(string LocationList, bool AutomaticList = false, bool Override = false, bool redirect = false)
+        {
+            IEnumerable<string> list;
+
+            if (AutomaticList == true)
+            {
+                var jobDateThreshold = DateTime.Now.AddYears(-1);
+                list = Database.Jobs
+                    .Where(j => (j.OpenedDate > jobDateThreshold || !j.ClosedDate.HasValue) && j.DeviceHeldLocation != null)
+                    .Select(j => j.DeviceHeldLocation).Distinct().ToList();
+            }
+            else
+            {
+                list = LocationList
+                    .Split(new string[] { Environment.NewLine, ",", ";" }, StringSplitOptions.RemoveEmptyEntries);
+            }
+
+            if (!Override)
+            {
+                // Incorporate existing list
+                list = list.Concat(Database.DiscoConfiguration.JobPreferences.LocationList);
+            }
+
+            // Remove duplicates & Order
+            list = list
+                .Where(l => !string.IsNullOrWhiteSpace(l))
+                .Select(l => l.Trim())
+                .Distinct(StringComparer.InvariantCultureIgnoreCase)
+                .OrderBy(i => i);
+
+            Database.DiscoConfiguration.JobPreferences.LocationList = list.ToList();
             Database.SaveChanges();
 
             if (redirect)

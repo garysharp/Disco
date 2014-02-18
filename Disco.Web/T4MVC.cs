@@ -7718,6 +7718,12 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLocationList);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ImportLocationList()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportLocationList);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public JobPreferencesController Actions { get { return MVC.API.JobPreferences; } }
@@ -7738,6 +7744,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateStaleJobMinutesThreshold = "UpdateStaleJobMinutesThreshold";
             public readonly string UpdateLocationMode = "UpdateLocationMode";
             public readonly string UpdateLocationList = "UpdateLocationList";
+            public readonly string ImportLocationList = "ImportLocationList";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -7747,6 +7754,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateStaleJobMinutesThreshold = "UpdateStaleJobMinutesThreshold";
             public const string UpdateLocationMode = "UpdateLocationMode";
             public const string UpdateLocationList = "UpdateLocationList";
+            public const string ImportLocationList = "ImportLocationList";
         }
 
 
@@ -7784,6 +7792,17 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateLocationList
         {
             public readonly string LocationList = "LocationList";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_ImportLocationList s_params_ImportLocationList = new ActionParamsClass_ImportLocationList();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ImportLocationList ImportLocationListParams { get { return s_params_ImportLocationList; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ImportLocationList
+        {
+            public readonly string LocationList = "LocationList";
+            public readonly string AutomaticList = "AutomaticList";
+            public readonly string Override = "Override";
             public readonly string redirect = "redirect";
         }
         static readonly ViewsClass s_views = new ViewsClass();
@@ -7846,6 +7865,19 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "LocationList", LocationList);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateLocationListOverride(callInfo, LocationList, redirect);
+            return callInfo;
+        }
+
+        partial void ImportLocationListOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string LocationList, bool AutomaticList, bool Override, bool redirect);
+
+        public override System.Web.Mvc.ActionResult ImportLocationList(string LocationList, bool AutomaticList, bool Override, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportLocationList);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "LocationList", LocationList);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "AutomaticList", AutomaticList);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Override", Override);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            ImportLocationListOverride(callInfo, LocationList, AutomaticList, Override, redirect);
             return callInfo;
         }
 

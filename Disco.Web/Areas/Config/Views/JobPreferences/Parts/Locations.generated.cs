@@ -148,7 +148,15 @@ WriteLiteral(" href=\"#\"");
 
 WriteLiteral(" class=\"button small\"");
 
-WriteLiteral(">Update List</a>\r\n                    <div");
+WriteLiteral(">Update List</a> <a");
+
+WriteLiteral(" id=\"Config_Location_List_ImportButton\"");
+
+WriteLiteral(" href=\"#\"");
+
+WriteLiteral(" class=\"button small\"");
+
+WriteLiteral(">Import List</a>\r\n                    <div");
 
 WriteLiteral(" id=\"Config_Location_List_Dialog\"");
 
@@ -246,19 +254,93 @@ WriteLiteral(">Add</a>\r\n                        </div>\r\n                    
 
 WriteLiteral(" id=\"Config_Location_List_Dialog_Form\"");
 
-WriteAttribute("action", Tuple.Create(" action=\"", 2359), Tuple.Create("\"", 2446)
+WriteAttribute("action", Tuple.Create(" action=\"", 2447), Tuple.Create("\"", 2534)
             
             #line 39 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
-, Tuple.Create(Tuple.Create("", 2368), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.JobPreferences.UpdateLocationList(null, redirect: true))
+, Tuple.Create(Tuple.Create("", 2456), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.JobPreferences.UpdateLocationList(null, redirect: true))
             
             #line default
             #line hidden
-, 2368), false)
+, 2456), false)
 );
 
 WriteLiteral(" method=\"post\"");
 
-WriteLiteral("></form>\r\n                    </div>\r\n                </div>\r\n");
+WriteLiteral("></form>\r\n                    </div>\r\n                    <div");
+
+WriteLiteral(" id=\"Config_Location_ListImport_Dialog\"");
+
+WriteLiteral(" class=\"dialog\"");
+
+WriteLiteral(" title=\"Import Locations\"");
+
+WriteLiteral(">\r\n                        <form");
+
+WriteLiteral(" id=\"Config_Location_ListImport_Dialog_Form\"");
+
+WriteAttribute("action", Tuple.Create(" action=\"", 2766), Tuple.Create("\"", 2853)
+            
+            #line 42 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+   , Tuple.Create(Tuple.Create("", 2775), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.JobPreferences.ImportLocationList(null, redirect: true))
+            
+            #line default
+            #line hidden
+, 2775), false)
+);
+
+WriteLiteral(" method=\"post\"");
+
+WriteLiteral(">\r\n                            <input");
+
+WriteLiteral(" type=\"hidden\"");
+
+WriteLiteral(" id=\"Config_Location_ListImport_Dialog_AutomaticList\"");
+
+WriteLiteral(" name=\"AutomaticList\"");
+
+WriteLiteral(" value=\"False\"");
+
+WriteLiteral(" />\r\n                            <div");
+
+WriteLiteral(" id=\"Config_Location_ListImport_Dialog_Overwrite_Container\"");
+
+WriteLiteral(">\r\n                                <input");
+
+WriteLiteral(" type=\"checkbox\"");
+
+WriteLiteral(" id=\"Config_Location_ListImport_Dialog_Overwrite\"");
+
+WriteLiteral(" name=\"Override\"");
+
+WriteLiteral(" value=\"True\"");
+
+WriteLiteral(" /><label");
+
+WriteLiteral(" for=\"Config_Location_ListImport_Dialog_Overwrite\"");
+
+WriteLiteral(">Override Existing List</label>\r\n                            </div>\r\n            " +
+"                <textarea");
+
+WriteLiteral(" id=\"Config_Location_ListImport_Dialog_LocationList\"");
+
+WriteLiteral(" name=\"LocationList\"");
+
+WriteLiteral("></textarea>\r\n                            <div");
+
+WriteLiteral(" style=\"padding: 0.7em 0.7em; margin-top: 10px;\"");
+
+WriteLiteral(" class=\"ui-state-highlight ui-corner-all\"");
+
+WriteLiteral(">\r\n                                <i");
+
+WriteLiteral(" class=\"fa fa-info-circle information\"");
+
+WriteLiteral(@"></i>&nbsp;Enter multiple locations separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                            </div>
+                        </form>
+                    </div>
+                </div>
+");
 
 WriteLiteral("                <div");
 
@@ -304,7 +386,7 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "                           null,\r\n                            \'");
 
             
-            #line 57 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+            #line 69 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
                          Write(Url.Action(MVC.API.JobPreferences.UpdateLocationMode()));
 
             
@@ -400,11 +482,35 @@ WriteLiteral("\',\r\n                            \'LocationMode\');\r\n\r\n     
 "en\'\r\n                                }).val(location));\r\n\r\n                     " +
 "       }).get();\r\n\r\n                            form.submit();\r\n\r\n              " +
 "              dialog.dialog(\"disable\");\r\n                            dialog.dial" +
-"og(\"option\", \"buttons\", null);\r\n                        }\r\n                    }" +
-");\r\n                </script>\r\n");
+"og(\"option\", \"buttons\", null);\r\n                        }\r\n\r\n                   " +
+"     // Import\r\n                        var dialogImport, formImport;\r\n\r\n       " +
+"                 $(\'#Config_Location_List_ImportButton\').click(showDialogImport)" +
+";\r\n\r\n                        function showDialogImport() {\r\n                    " +
+"        if (!dialogImport) {\r\n                                dialogImport = $(\'" +
+"#Config_Location_ListImport_Dialog\').dialog({\r\n                                 " +
+"   resizable: false,\r\n                                    modal: true,\r\n        " +
+"                            autoOpen: false,\r\n                                  " +
+"  width: 350,\r\n                                    height: 420,\r\n               " +
+"                     buttons: {\r\n                                        \"Build " +
+"Automatic List\": function () {\r\n                                            $(\'#" +
+"Config_Location_ListImport_Dialog_AutomaticList\').val(\'True\').closest(\'form\').su" +
+"bmit();\r\n                                            dialogImport.dialog(\"disabl" +
+"e\");\r\n                                            dialogImport.dialog(\"option\", " +
+"\"buttons\", null);\r\n                                        },\r\n                 " +
+"                       \"Import List\": function () {\r\n                           " +
+"                 $(\'#Config_Location_ListImport_Dialog_LocationList\').closest(\'f" +
+"orm\').submit();\r\n                                            dialogImport.dialog" +
+"(\"disable\");\r\n                                            dialogImport.dialog(\"o" +
+"ption\", \"buttons\", null);\r\n                                        },\r\n         " +
+"                               Cancel: function () {\r\n                          " +
+"                  dialogImport.dialog(\"close\");\r\n                               " +
+"         }\r\n                                    }\r\n                             " +
+"   });\r\n                            }\r\n\r\n                            dialogImpor" +
+"t.dialog(\'open\');\r\n\r\n                            return false;\r\n                " +
+"        }\r\n\r\n                    });\r\n                </script>\r\n");
 
             
-            #line 225 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+            #line 274 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
                 }
                 else
                 {
@@ -413,14 +519,14 @@ WriteLiteral("\',\r\n                            \'LocationMode\');\r\n\r\n     
             #line default
             #line hidden
             
-            #line 228 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+            #line 277 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
            Write(Model.LocationModeOptions().First(o => o.Key == Model.LocationMode.ToString()).Value);
 
             
             #line default
             #line hidden
             
-            #line 228 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+            #line 277 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
                                                                                                      
                 }
 

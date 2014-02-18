@@ -988,6 +988,17 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
 #Config_Location_List_Dialog #Config_Location_List_Dialog_List li .remove:hover {
   opacity: 1;
 }
+#Config_Location_ListImport_Dialog {
+  display: none;
+}
+#Config_Location_ListImport_Dialog #Config_Location_ListImport_Dialog_Overwrite_Container {
+  margin: 6px 0;
+}
+#Config_Location_ListImport_Dialog #Config_Location_ListImport_Dialog_LocationList {
+  width: 100%;
+  height: 200px;
+  margin: 0 auto;
+}
 #Config_JobQueues_Index i {
   width: 1.2857142857142858em;
   text-align: center;

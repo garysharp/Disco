@@ -2158,24 +2158,25 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new InvalidOperationException("Unknown Location Mode Configured");
             }
 
-            var locationReferences = ManagedJobList.OpenJobsTable(j => j).Items.JobLocationReferences().ToDictionary(lr => lr.Location);
+            var locationReferences = ManagedJobList.OpenJobsTable(j => j).Items.JobLocationReferences(locations);
 
-            var results = locations.Select(location =>
+            var results = locationReferences.Select(locRef =>
             {
-                JobLocationReference reference;
+                string reference = null;
 
-                if (locationReferences.TryGetValue(location, out reference))
+                if (locRef.References == null && locRef.References.Count > 0)
                 {
-                    return new Models.Job.DeviceHeldLocationModel()
-                    {
-                        Location = location,
-                        References = (reference.References.Count == 1 ? string.Format("Job {0}", reference.References.First().JobId) : string.Format("{0} jobs", reference.References.Count))
-                    };
+                    if (locRef.References.Count == 1)
+                        reference = string.Format("Job {0}", locRef.References[0].JobId);
+                    else
+                        reference = string.Format("{0} jobs", locRef.References.Count);
                 }
-                else
+
+                return new Models.Job.DeviceHeldLocationModel()
                 {
-                    return new Models.Job.DeviceHeldLocationModel() { Location = location };
-                }
+                    Location = locRef.Location,
+                    References = reference
+                };
             }).ToList();
 
             return Json(results, JsonRequestBehavior.AllowGet);
