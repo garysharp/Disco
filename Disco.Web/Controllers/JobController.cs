@@ -354,7 +354,7 @@ namespace Disco.Web.Controllers
             {
                 m.LocationMode = Database.DiscoConfiguration.JobPreferences.LocationMode;
                 if (m.LocationMode == LocationModes.RestrictedList)
-                    m.LocationOptions = ManagedJobList.OpenJobsTable(j => j).Items.JobLocationReferences(Database.DiscoConfiguration.JobPreferences.LocationList).ToList();
+                    m.LocationOptions = ManagedJobList.OpenJobsTable(j => j).Items.Cast<JobTableStatusItemModel>().JobLocationReferences(Database.DiscoConfiguration.JobPreferences.LocationList).ToList();
             }
 
             // UI Extensions

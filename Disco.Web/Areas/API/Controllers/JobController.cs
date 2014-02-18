@@ -2158,13 +2158,13 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new InvalidOperationException("Unknown Location Mode Configured");
             }
 
-            var locationReferences = ManagedJobList.OpenJobsTable(j => j).Items.JobLocationReferences(locations);
+            var locationReferences = ManagedJobList.OpenJobsTable(j => j).Items.Cast<JobTableStatusItemModel>().JobLocationReferences(locations);
 
             var results = locationReferences.Select(locRef =>
             {
                 string reference = null;
 
-                if (locRef.References == null && locRef.References.Count > 0)
+                if (locRef.References != null && locRef.References.Count > 0)
                 {
                     if (locRef.References.Count == 1)
                         reference = string.Format("Job {0}", locRef.References[0].JobId);

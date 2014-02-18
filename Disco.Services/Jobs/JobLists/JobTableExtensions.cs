@@ -259,9 +259,9 @@ namespace Disco.Services
             return queueItems.Where(qi => usersQueues.ContainsKey(qi.QueueId));
         }
 
-        public static IEnumerable<JobLocationReference> JobLocationReferences(this IEnumerable<JobTableItemModel> Items, IEnumerable<string> IncludeLocations)
+        public static IEnumerable<JobLocationReference> JobLocationReferences(this IEnumerable<JobTableStatusItemModel> Items, IEnumerable<string> IncludeLocations)
         {
-            var innerItems = Items.Where(i => !string.IsNullOrWhiteSpace(i.DeviceHeldLocation));
+            var innerItems = Items.Where(i => !string.IsNullOrWhiteSpace(i.DeviceHeldLocation) && i.DeviceHeld.HasValue && !i.DeviceReturnedDate.HasValue);
 
             return IncludeLocations.GroupJoin(innerItems, o => o, i => i.DeviceHeldLocation,
                 (i, o) => new JobLocationReference
@@ -271,9 +271,9 @@ namespace Disco.Services
                 },
                 StringComparer.InvariantCultureIgnoreCase);
         }
-        public static IEnumerable<JobLocationReference> JobLocationReferences(this IEnumerable<JobTableItemModel> Items)
+        public static IEnumerable<JobLocationReference> JobLocationReferences(this IEnumerable<JobTableStatusItemModel> Items)
         {
-            return Items.Where(i => !string.IsNullOrWhiteSpace(i.DeviceHeldLocation))
+            return Items.Where(i => !string.IsNullOrWhiteSpace(i.DeviceHeldLocation) && i.DeviceHeld.HasValue && !i.DeviceReturnedDate.HasValue)
                 .GroupBy(i => i.DeviceHeldLocation, StringComparer.InvariantCultureIgnoreCase)
                 .Select(i => new JobLocationReference()
                 {
