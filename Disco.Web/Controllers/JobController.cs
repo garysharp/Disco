@@ -396,7 +396,13 @@ namespace Disco.Web.Controllers
             {
                 // Create New Job
                 var currentUser = Database.Users.Find(UserService.CurrentUserId);
-                var j = BI.JobBI.Utilities.Create(Database, m.Device, m.User, m.GetJobType, m.GetJobSubTypes, currentUser);
+                
+                // Try QuickLog?
+                bool addAutoQueues = !(Authorization.Has(Claims.Job.Actions.Close)
+                    && m.QuickLog.HasValue && m.QuickLog.Value
+                    && m.QuickLogTaskTimeMinutes.HasValue && m.QuickLogTaskTimeMinutes.Value > 0);
+
+                var j = BI.JobBI.Utilities.Create(Database, m.Device, m.User, m.GetJobType, m.GetJobSubTypes, currentUser, addAutoQueues);
 
                 if (m.DeviceHeld.Value)
                 {

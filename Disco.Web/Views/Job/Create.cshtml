@@ -258,7 +258,6 @@
 
             $deviceHeld.change(validateQuickLog);
             $jobTypes.change(validateQuickLog);
-            $('#createJob_SubTypes').on('change', 'input', validateQuickLog);
             validateQuickLog();
 
             function validateQuickLog() {
@@ -275,11 +274,7 @@
                         case 'SImg':
                         case 'SOS':
                         case 'UMgmt':
-                            // If Job-Queues are configured for a Sub-Type, don't allow quick-log.
-                            if ($('#createJob_SubType_' + $jobTypes.filter(':checked').val()).find('input:checked').closest('li').has('i.queue').length == 0)
-                                quickLogAllowed = true;
-                            else
-                                quickLogAllowed = false;
+                            quickLogAllowed = true;
                             break;
                         default:
                             quickLogAllowed = false;
@@ -301,8 +296,10 @@
             $quickLog.change(function () {
                 if ($(this).is(':checked')) {
                     $quickLogTaskTimeContainer.slideDown();
+                    $('#createJob_SubTypes').addClass('isQuickLog');
                 } else {
                     $quickLogTaskTimeContainer.slideUp();
+                    $('#createJob_SubTypes').removeClass('isQuickLog');
                 }
             });
 

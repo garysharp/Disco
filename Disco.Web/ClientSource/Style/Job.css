@@ -724,6 +724,9 @@
 #createJob_Container #createJob_SubTypes li.highlight i {
   display: inline-block;
 }
+#createJob_Container #createJob_SubTypes.isQuickLog li i {
+  display: none;
+}
 #createJob_Container #createJob_CommentsContainer #Comments {
   width: 100%;
   min-width: 500px;

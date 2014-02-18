@@ -10,7 +10,7 @@ namespace Disco.BI.JobBI
 {
     public static class Utilities
     {
-        public static Job Create(DiscoDataContext Database, Device device, User user, JobType type, List<JobSubType> subTypes, User initialTech)
+        public static Job Create(DiscoDataContext Database, Device device, User user, JobType type, List<JobSubType> subTypes, User initialTech, bool addAutoQueues = true)
         {
             Job j = new Job()
             {
@@ -41,31 +41,34 @@ namespace Disco.BI.JobBI
             Database.Jobs.Add(j);
 
             // Job Queues
-            var queues = from st in subTypes
-                         from jq in st.JobQueues
-                         group st by jq into g
-                         select new { queue = g.Key, subTypes = g };
-            foreach (var queue in queues)
+            if (addAutoQueues)
             {
-                var commentBuilder = new StringBuilder("Automatically added by:");
-                foreach (var subType in queue.subTypes)
+                var queues = from st in subTypes
+                             from jq in st.JobQueues
+                             group st by jq into g
+                             select new { queue = g.Key, subTypes = g };
+                foreach (var queue in queues)
                 {
-                    commentBuilder.AppendLine();
-                    commentBuilder.Append(subType.Description);
+                    var commentBuilder = new StringBuilder("Automatically added by:");
+                    foreach (var subType in queue.subTypes)
+                    {
+                        commentBuilder.AppendLine();
+                        commentBuilder.Append(subType.Description);
+                    }
+
+                    var jqj = new JobQueueJob()
+                    {
+                        JobQueueId = queue.queue.Id,
+                        Job = j,
+                        AddedDate = DateTime.Now,
+                        AddedUserId = initialTech.Id,
+                        AddedComment = commentBuilder.ToString(),
+                        SLAExpiresDate = queue.queue.DefaultSLAExpiry.HasValue ? (DateTime?)DateTime.Now.AddMinutes(queue.queue.DefaultSLAExpiry.Value) : null,
+                        Priority = JobQueuePriority.Normal
+                    };
+
+                    Database.JobQueueJobs.Add(jqj);
                 }
-
-                var jqj = new JobQueueJob()
-                {
-                    JobQueueId = queue.queue.Id,
-                    Job = j,
-                    AddedDate = DateTime.Now,
-                    AddedUserId = initialTech.Id,
-                    AddedComment = commentBuilder.ToString(),
-                    SLAExpiresDate = queue.queue.DefaultSLAExpiry.HasValue ? (DateTime?)DateTime.Now.AddMinutes(queue.queue.DefaultSLAExpiry.Value) : null,
-                    Priority = JobQueuePriority.Normal
-                };
-
-                Database.JobQueueJobs.Add(jqj);
             }
 
             switch (type.Id)
