@@ -527,6 +527,11 @@ namespace Disco.BI.Extensions
                 Database.JobComponents.Remove(jc);
             j.JobComponents.Clear();
 
+            // Job Queue Jobs
+            foreach (var jqj in j.JobQueues.ToArray())
+                Database.JobQueueJobs.Remove(jqj);
+            j.JobQueues.Clear();
+
             // Job Logs
             foreach (var jl in j.JobLogs.ToArray())
                 Database.JobLogs.Remove(jl);
