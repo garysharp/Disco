@@ -137,8 +137,8 @@ header nav ul#menu > li,
 #header nav ul#menu > li {
   display: inline-block;
   z-index: 100000;
-  font-size: 13.200000000000001px;
-  line-height: 19.200000000000003px;
+  font-size: 13.2px;
+  line-height: 19.2px;
 }
 header nav ul#menu > li.moveRight,
 #header nav ul#menu > li.moveRight {

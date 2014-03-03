@@ -54,13 +54,10 @@ template {
 html {
   font-family: sans-serif;
   /* 1 */
-
   -ms-text-size-adjust: 100%;
   /* 2 */
-
   -webkit-text-size-adjust: 100%;
   /* 2 */
-
 }
 /**
  * Remove default margin.
@@ -221,10 +218,8 @@ fieldset {
 legend {
   border: 0;
   /* 1 */
-
   padding: 0;
   /* 2 */
-
 }
 /**
  * 1. Correct font family not being inherited in all browsers.
@@ -237,13 +232,10 @@ select,
 textarea {
   font-family: inherit;
   /* 1 */
-
   font-size: 100%;
   /* 2 */
-
   margin: 0;
   /* 3 */
-
 }
 /**
  * Address Firefox 4+ setting `line-height` on `input` using `!important` in
@@ -276,10 +268,8 @@ input[type="reset"],
 input[type="submit"] {
   -webkit-appearance: button;
   /* 2 */
-
   cursor: pointer;
   /* 3 */
-
 }
 /**
  * Re-set default cursor for disabled elements.
@@ -296,10 +286,8 @@ input[type="checkbox"],
 input[type="radio"] {
   box-sizing: border-box;
   /* 1 */
-
   padding: 0;
   /* 2 */
-
 }
 /**
  * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.
@@ -309,11 +297,9 @@ input[type="radio"] {
 input[type="search"] {
   -webkit-appearance: textfield;
   /* 1 */
-
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   /* 2 */
-
   box-sizing: content-box;
 }
 /**
@@ -339,10 +325,8 @@ input::-moz-focus-inner {
 textarea {
   overflow: auto;
   /* 1 */
-
   vertical-align: top;
   /* 2 */
-
 }
 /* ==========================================================================
    Tables
@@ -396,7 +380,6 @@ table {
 .ui-helper-clearfix {
   min-height: 0;
   /* support: IE7 */
-
 }
 .ui-helper-zfix {
   width: 100%;
@@ -515,7 +498,6 @@ table {
   padding: .5em .5em .5em .7em;
   min-height: 0;
   /* support: IE7 */
-
 }
 .ui-accordion .ui-accordion-icons {
   padding-left: 2.2em;
@@ -554,7 +536,6 @@ table {
   text-align: center;
   overflow: visible;
   /* removes extra width in IE */
-
 }
 .ui-button,
 .ui-button:link,
@@ -886,7 +867,6 @@ button.ui-button::-moz-focus-inner {
   padding: 0;
   width: 100%;
   /* support: IE10, see #8844 */
-
   list-style-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);
 }
 .ui-menu .ui-menu-divider {
@@ -903,7 +883,6 @@ button.ui-button::-moz-focus-inner {
   line-height: 1.5;
   min-height: 0;
   /* support: IE7 */
-
   font-weight: normal;
 }
 .ui-menu .ui-menu-item a.ui-state-focus,
@@ -1068,13 +1047,11 @@ button.ui-button::-moz-focus-inner {
 /* TR overrides */
 .ui-spinner .ui-icon-triangle-1-s {
   /* need to fix icons sprite */
-
   background-position: -65px -16px;
 }
 .ui-tabs {
   position: relative;
   /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
-
   padding: .2em;
 }
 .ui-tabs .ui-tabs-nav {
@@ -1260,7 +1237,6 @@ body .ui-tooltip {
 .ui-state-disabled .ui-icon {
   filter: alpha(opacity=35);
   /* For IE8 - See #6059 */
-
 }
 /* Icons
 ----------------------------------*/
@@ -1915,13 +1891,13 @@ body .ui-tooltip {
 }
 .fa-li {
   position: absolute;
-  left: -2.142857142857143em;
+  left: -2.14285714em;
   width: 2.142857142857143em;
   top: 0.14285714285714285em;
   text-align: center;
 }
 .fa-li.fa-lg {
-  left: -1.8571428571428572em;
+  left: -1.85714286em;
 }
 .fa-border {
   padding: .2em .25em .15em;
@@ -3338,8 +3314,8 @@ header nav ul#menu > li,
 #header nav ul#menu > li {
   display: inline-block;
   z-index: 100000;
-  font-size: 13.200000000000001px;
-  line-height: 19.200000000000003px;
+  font-size: 13.2px;
+  line-height: 19.2px;
 }
 header nav ul#menu > li.moveRight,
 #header nav ul#menu > li.moveRight {
@@ -4536,10 +4512,8 @@ input:-moz-placeholder {
   max-height: 150px;
   overflow-y: auto;
   /* prevent horizontal scrollbar */
-
   overflow-x: hidden;
   /* add padding to account for vertical scrollbar */
-
 }
 /* IE 6 doesn't support max-height
 * we use height instead, but this forces the menu to always be this tall

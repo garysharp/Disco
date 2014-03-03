@@ -102,10 +102,8 @@ input:-moz-placeholder {
   max-height: 150px;
   overflow-y: auto;
   /* prevent horizontal scrollbar */
-
   overflow-x: hidden;
   /* add padding to account for vertical scrollbar */
-
 }
 /* IE 6 doesn't support max-height
 * we use height instead, but this forces the menu to always be this tall
