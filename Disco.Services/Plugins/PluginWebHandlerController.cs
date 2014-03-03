@@ -32,7 +32,7 @@ namespace Disco.Services.Plugins
                     if (CurrentUser != null)
                         AuthorizationLog.LogAccessDenied(CurrentUser.Id, resource, message);
 
-                    return new HttpUnauthorizedResult(message);
+                    return new HttpUnauthorizedResult();
                 }
             }
 

@@ -32,7 +32,7 @@ namespace Disco.Web.Controllers
                     if (UserService.CurrentUserId != null)
                         AuthorizationLog.LogAccessDenied(UserService.CurrentUserId, string.Format("{0} [{1}]", accessDeniedException.Resource, Request.RawUrl), accessDeniedException.Message);
 
-                    return new HttpUnauthorizedResult(accessDeniedException.Message);
+                    return new HttpUnauthorizedResult();
                 }
             }
 
