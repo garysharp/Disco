@@ -161,7 +161,7 @@ namespace Disco.Services
 
             if (j.JobTypeId == JobType.JobTypeIds.HWar)
             {
-                if (!string.IsNullOrEmpty(j.JobMetaWarranty_ExternalReference) && !j.JobMetaWarranty_ExternalCompletedDate.HasValue)
+                if (j.JobMetaWarranty_ExternalLoggedDate.HasValue && !j.JobMetaWarranty_ExternalCompletedDate.HasValue)
                     return Job.JobStatusIds.AwaitingWarrantyRepair; // Job Logged - but not marked as completed
             }
 

@@ -150,7 +150,7 @@ namespace Disco.BI.Extensions
             return !j.ClosedDate.HasValue &&
                 (j.DeviceSerialNumber != null) &&
                 j.JobTypeId == JobType.JobTypeIds.HWar &&
-                string.IsNullOrEmpty(j.JobMetaWarranty.ExternalReference);
+                !j.JobMetaWarranty.ExternalLoggedDate.HasValue;
         }
         public static void OnLogWarranty(this Job j, DiscoDataContext Database, string FaultDescription, PluginFeatureManifest WarrantyProviderDefinition, OrganisationAddress Address, User TechUser, Dictionary<string, string> WarrantyProviderProperties)
         {
