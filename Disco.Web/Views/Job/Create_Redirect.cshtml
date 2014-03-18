@@ -6,7 +6,7 @@
     ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), "Create - Redirecting...");
 }
 <div id="createJobRedirect">
-    <h1>Job Created Successfully</h1>
+    <h1>Job #@(Model.JobId) Created Successfully</h1>
 
     <div>
         <i class="ajaxLoading" title="Loading..."></i><a id="redirectLink" href="@Model.RedirectLink">Redirecting...</a>

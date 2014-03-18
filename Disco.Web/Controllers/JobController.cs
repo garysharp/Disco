@@ -445,7 +445,10 @@ namespace Disco.Web.Controllers
                 Database.SaveChanges();
 
                 // Return Dialog Redirect
-                var redirectModel = new Models.Job.CreateRedirectModel();
+                var redirectModel = new Models.Job.CreateRedirectModel()
+                {
+                    JobId = j.Id
+                };
                 redirectModel.RedirectDelay = TimeSpan.FromSeconds(2);
                 if (m.QuickLog.HasValue && m.QuickLog.Value && !string.IsNullOrWhiteSpace(m.SourceUrl))
                     redirectModel.RedirectLink = m.SourceUrl;
