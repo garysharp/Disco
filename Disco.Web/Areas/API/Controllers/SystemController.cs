@@ -1,8 +1,11 @@
 ﻿using Disco.BI.Extensions;
-using Disco.BI.Interop.ActiveDirectory;
+using Disco.Data.Configuration;
+using Disco.Models.Interop.ActiveDirectory;
 using Disco.Services.Authorization;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Web;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -17,7 +20,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Config.System.Show)]
         public virtual ActionResult UpdateLastNetworkLogonDates()
         {
-            var taskStatus = ActiveDirectoryUpdateLastNetworkLogonDateJob.ScheduleImmediately();
+            var taskStatus = Disco.Services.Interop.ActiveDirectory.Internal.ADUpdateLastNetworkLogonDateJob.ScheduleImmediately();
 
             return RedirectToAction(MVC.Config.Logging.TaskStatus(taskStatus.SessionId));
         }
@@ -216,6 +219,98 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         #endregion
+
+        #endregion
+
+        #region Active Directory
+
+        [DiscoAuthorize(Claims.Config.System.ConfigureActiveDirectory)]
+        public virtual ActionResult UpdateActiveDirectorySearchScope(List<string> Containers, bool redirect = false)
+        {
+            ActiveDirectory.UpdateSearchContainers(Database, Containers);
+            Database.SaveChanges();
+
+            if (redirect)
+                return RedirectToAction(MVC.Config.SystemConfig.Index());
+            else
+                return Json("OK", JsonRequestBehavior.AllowGet);
+        }
+
+        [DiscoAuthorize(Claims.Config.System.ConfigureActiveDirectory)]
+        public virtual ActionResult UpdateActiveDirectorySearchEntireForest(bool SearchEntireForest, bool redirect = false)
+        {
+            try
+            {
+                var result = ActiveDirectory.UpdateSearchEntireForest(Database, SearchEntireForest);
+                
+                Database.SaveChanges();
+
+                if (!result)
+                {
+                    var forestServers = ActiveDirectory.LoadForestServers();
+                    if (forestServers.Count > ActiveDirectory.MaxForestServerSearch)
+                        throw new InvalidOperationException(string.Format("This forest contains more than the Max Forest Server Search restriction ({0})", ActiveDirectory.MaxForestServerSearch));
+                    else
+                        throw new InvalidOperationException("Unable to change the 'SearchEntireForest' property for an unknown reason, please report this bug");
+                }
+
+                if (redirect)
+                    return RedirectToAction(MVC.Config.SystemConfig.Index());
+                else
+                    return Json("OK", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                if (redirect)
+                    throw;
+                else
+                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [DiscoAuthorizeAny(Claims.Config.System.ConfigureActiveDirectory, Claims.Config.DeviceProfile.Configure)]
+        public virtual ActionResult DomainOrganisationalUnits()
+        {
+            var domainOUs = ActiveDirectory.Domains
+                .Select(d => new Models.System.DomainOrganisationalUnitsModel() { Domain = d, OrganisationalUnits = ActiveDirectory.RetrieveOrganisationalUnitStructure(d) })
+                .Select(ous => ous.ToFancyTreeNode()).ToList();
+
+            return Json(domainOUs, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
+        #region Proxy Settings
+
+        [DiscoAuthorize(Claims.Config.System.ConfigureProxy)]
+        public virtual ActionResult UpdateProxySettings(string ProxyAddress, int? ProxyPort, string ProxyUsername, string ProxyPassword, bool redirect = false)
+        {
+            // Default Proxy Port
+            if (!ProxyPort.HasValue)
+                ProxyPort = 8080;
+
+            SystemConfiguration config = Database.DiscoConfiguration;
+            //config.DataStoreLocation = DataStoreLocation;
+            config.ProxyAddress = ProxyAddress;
+            config.ProxyPort = ProxyPort.Value;
+            config.ProxyUsername = ProxyUsername;
+            config.ProxyPassword = ProxyPassword;
+            DiscoApplication.SetGlobalProxy(ProxyAddress, ProxyPort.Value, ProxyUsername, ProxyPassword);
+
+            Database.SaveChanges();
+
+            // Try and check for updates if needed - After Proxy Changed
+            if (Database.DiscoConfiguration.UpdateLastCheck == null
+                || Database.DiscoConfiguration.UpdateLastCheck.ResponseTimestamp < DateTime.Now.AddDays(-1))
+            {
+                Disco.BI.Interop.Community.UpdateCheckTask.ScheduleNow();
+            }
+
+            if (redirect)
+                return RedirectToAction(MVC.Config.SystemConfig.Index());
+            else
+                return Json("OK", JsonRequestBehavior.AllowGet);
+        }
 
         #endregion
 

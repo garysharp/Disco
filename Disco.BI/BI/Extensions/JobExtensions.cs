@@ -22,7 +22,7 @@ namespace Disco.BI.Extensions
             JobAttachment ja = new JobAttachment()
             {
                 JobId = Job.Id,
-                TechUserId = CreatorUser.Id,
+                TechUserId = CreatorUser.UserId,
                 Filename = Filename,
                 MimeType = MimeType,
                 Timestamp = DateTime.Now,
@@ -148,7 +148,7 @@ namespace Disco.BI.Extensions
                 Database.JobLogs.Add(new JobLog()
                 {
                     JobId = j.Id,
-                    TechUserId = TechUser.Id,
+                    TechUserId = TechUser.UserId,
                     Timestamp = DateTime.Now,
                     Comments = logBuilder.ToString()
                 });
@@ -182,7 +182,7 @@ namespace Disco.BI.Extensions
                         Database.JobComponents.Add(new JobComponent()
                         {
                             Job = j,
-                            TechUserId = TechUser.Id,
+                            TechUserId = TechUser.UserId,
                             Cost = c.Cost,
                             Description = c.Description
                         });

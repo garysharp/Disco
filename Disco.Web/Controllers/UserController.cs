@@ -4,6 +4,7 @@ using Disco.Models.UI.User;
 using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Authorization.Roles;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Users;
 using Disco.Services.Web;
@@ -29,8 +30,16 @@ namespace Disco.Web.Controllers
 
         #region Show
         [DiscoAuthorize(Claims.User.Show)]
-        public virtual ActionResult Show(string id)
+        public virtual ActionResult Show(string id, string Domain)
         {
+            if (string.IsNullOrWhiteSpace(id))
+                throw new ArgumentNullException("id", "The User Id must be provided");
+
+            if (string.IsNullOrEmpty(Domain))
+                id = ActiveDirectory.PrimaryDomain.NetBiosName + @"\" + id;
+            else
+                id = Domain + @"\" + id;
+
             var m = new Models.User.ShowModel();
 
             Database.Configuration.LazyLoadingEnabled = true;
@@ -48,7 +57,7 @@ namespace Disco.Web.Controllers
 
             m.User = Database.Users
                 .Include("DeviceUserAssignments.Device.DeviceModel").Include("UserAttachments")
-                .FirstOrDefault(um => um.Id == id);
+                .FirstOrDefault(um => um.UserId == id);
 
             if (m.User == null)
                 throw new ArgumentException("Unknown User Id", "id");

@@ -2,7 +2,7 @@
 @{
     Authorization.Require(Claims.User.Show);
 
-    ViewBag.Title = Html.ToBreadcrumb("Users", MVC.User.Index(), string.Format("User: {0} ({1})", Model.User.DisplayName, Model.User.Id));
+    ViewBag.Title = Html.ToBreadcrumb("Users", MVC.User.Index(), string.Format("User: {0} ({1})", Model.User.DisplayName, Model.User.FriendlyId()));
 }
 <div id="User_Show">
     @Html.Partial(MVC.User.Views.UserParts._Subject, Model)

@@ -20,7 +20,7 @@ namespace Disco.Web.Areas.Public.Controllers
                 {
                     JobId = j.Id,
                     DeviceSerialNumber = j.DeviceSerialNumber,
-                    DeviceComputerName = j.Device.ComputerName,
+                    DeviceComputerName = j.Device.DeviceDomainId,
                     DeviceLocation = j.Device.Location,
                     DeviceProfileId = j.Device.DeviceProfileId,
                     DeviceAddressId = j.Device.DeviceProfile.DefaultOrganisationAddress,

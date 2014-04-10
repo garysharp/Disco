@@ -174,6 +174,12 @@
     <Compile Include="Authorization\Roles\RoleToken.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Interop\ActiveDirectory\ActiveDirectory.cs" />
+    <Compile Include="Interop\ActiveDirectory\ActiveDirectoryExtensions.cs" />
+    <Compile Include="Interop\ActiveDirectory\Internal\ADDiscoverForestServers.cs" />
+    <Compile Include="Interop\ActiveDirectory\Internal\ADGroupCache.cs" />
+    <Compile Include="Interop\ActiveDirectory\Internal\ADInterop.cs" />
+    <Compile Include="Interop\ActiveDirectory\Internal\ADUpdateLastNetworkLogonDateJob.cs" />
     <Compile Include="Jobs\JobExtensions.cs" />
     <Compile Include="Jobs\JobLists\JobTableExtensions.cs" />
     <Compile Include="Jobs\JobQueues\Cache.cs" />
@@ -240,7 +246,7 @@
     <Compile Include="Plugins\Features\UIExtension\UIExtensions.cs" />
     <Compile Include="Users\Cache.cs" />
     <Compile Include="Users\CacheCleanTask.cs" />
-    <Compile Include="Users\Searching.cs" />
+    <Compile Include="Users\UserExtensions.cs" />
     <Compile Include="Users\UserService.cs" />
     <Compile Include="Web\AuthorizedController.cs" />
     <Compile Include="Web\AuthorizedDatabaseController.cs" />

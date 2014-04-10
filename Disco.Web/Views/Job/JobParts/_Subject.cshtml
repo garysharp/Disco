@@ -438,7 +438,7 @@
                                                                             else
                                                                             {@Model.Job.User.DisplayName}
                     </h2>
-                    <div id="Job_Show_User_Id" title="Id">@Model.Job.UserId</div>
+                    <div id="Job_Show_User_Id" title="Id">@Model.Job.User.FriendlyId()</div>
                     @if (Authorization.Has(Claims.User.ShowDetails))
                     {
                         if (!string.IsNullOrWhiteSpace(Model.Job.User.PhoneNumber))

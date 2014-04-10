@@ -2,11 +2,11 @@
 @using Disco;
 @using Disco.BI.Extensions;
 @using Disco.Models.Repository;
+@using Disco.Services;
+@using Disco.Services.Web;
 @using Disco.Web;
 @using System.Web.Mvc
 @using System.Web.Mvc.Html;
-@using Disco.Services.Web;
-
 
 @helper FriendlyDate(DateTime d, string ElementId = null, bool WithoutSuffix = false)
 {<span @(ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId)))title="@d.ToFullDateTime()" data-livestamp="@d.ToUnixEpoc()" data-isodate="@d.ToISO8601()" class="date nowrap@(WithoutSuffix ? " noMomentSuffix" : null)">@d.ToFullDateTime()</span>}
@@ -34,7 +34,7 @@
 {
     if (u != null)
     { 
-    @prepend <span title="@u">@u.Id</span>
+    @prepend <span title="@u">@u.FriendlyId()</span>
     }
     else
     { 

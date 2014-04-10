@@ -15,6 +15,7 @@ namespace Disco.Models.ClientServices
         public string DeviceSerialNumber { get; set; }
         public string DeviceUUID { get; set; }
 
+        public string DeviceDNSDomainName { get; set; }
         public string DeviceComputerName { get; set; }
         public bool DeviceIsPartOfDomain { get; set; }
         

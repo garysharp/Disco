@@ -1,13 +1,14 @@
 using Disco.BI.Extensions;
-using Disco.BI.Interop.ActiveDirectory;
 using Disco.Data.Repository;
 using Disco.Models.ClientServices;
 using Disco.Models.Interop.ActiveDirectory;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Tamir.SharpSsh;
@@ -242,7 +243,7 @@ namespace Disco.BI.DeviceBI
                     EnrolmentLog.LogSessionTaskAddedDevice(sessionId, Request.DeviceSerialNumber);
                     DeviceProfile deviceProfile = Database.DeviceProfiles.Find(Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId);
 
-                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModel.Trim());
+                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModelType.Trim());
                     DeviceModel deviceModel = deviceModelResult.Item1;
                     if (deviceModelResult.Item2)
                         EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
@@ -252,7 +253,7 @@ namespace Disco.BI.DeviceBI
                     RepoDevice = new Device
                     {
                         SerialNumber = Request.DeviceSerialNumber,
-                        ComputerName = Request.DeviceComputerName,
+                        DeviceDomainId = Request.DeviceComputerName,
                         DeviceProfile = deviceProfile,
                         DeviceModel = deviceModel,
                         AllowUnauthenticatedEnrol = false,
@@ -267,7 +268,7 @@ namespace Disco.BI.DeviceBI
                     EnrolmentLog.LogSessionTaskUpdatingDevice(sessionId, Request.DeviceSerialNumber);
                     if (!RepoDevice.DeviceModelId.HasValue || RepoDevice.DeviceModelId.Value == 1)
                     {
-                        var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModel.Trim());
+                        var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModelType.Trim());
                         DeviceModel deviceModel = deviceModelResult.Item1;
                         if (deviceModelResult.Item2)
                             EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
@@ -280,7 +281,7 @@ namespace Disco.BI.DeviceBI
                     {
                         EnrolmentLog.LogSessionDevice(sessionId, Request.DeviceSerialNumber, RepoDevice.DeviceModelId);
                     }
-                    RepoDevice.ComputerName = Request.DeviceComputerName;
+                    RepoDevice.DeviceDomainId = Request.DeviceComputerName;
                     if (!RepoDevice.EnrolledDate.HasValue)
                     {
                         RepoDevice.EnrolledDate = DateTime.Now;
@@ -294,14 +295,14 @@ namespace Disco.BI.DeviceBI
                 //if (RepoDeviceProfileContext.DistributionType == DeviceProfileConfiguration.DeviceProfileDistributionTypes.OneToOne && RepoDevice.AssignedUser != null)
                 if (RepoDevice.DeviceProfile.DistributionType == DeviceProfile.DistributionTypes.OneToOne && RepoDevice.AssignedUser != null)
                 {
-                    ActiveDirectoryUserAccount AssignedUserInfo = ActiveDirectory.GetUserAccount(RepoDevice.AssignedUser.Id);
+                    ActiveDirectoryUserAccount AssignedUserInfo = Disco.Services.Interop.ActiveDirectory.ActiveDirectory.RetrieveUserAccount(RepoDevice.AssignedUser.UserId);
                     EnrolmentLog.LogSessionTaskAssigningUser(sessionId, RepoDevice.SerialNumber, AssignedUserInfo.DisplayName, AssignedUserInfo.SamAccountName, AssignedUserInfo.Domain, AssignedUserInfo.SecurityIdentifier);
                     response.DeviceAssignedUserUsername = AssignedUserInfo.SamAccountName;
                     response.DeviceAssignedUserDomain = AssignedUserInfo.Domain;
                     response.DeviceAssignedUserName = AssignedUserInfo.DisplayName;
                     response.DeviceAssignedUserSID = AssignedUserInfo.SecurityIdentifier;
                 }
-                response.DeviceComputerName = RepoDevice.ComputerName;
+                response.DeviceComputerName = RepoDevice.DeviceDomainId;
                 EnrolmentLog.LogSessionProgress(sessionId, 100, "Completed Successfully");
             }
             catch (EnrolSafeException ex)
@@ -323,14 +324,26 @@ namespace Disco.BI.DeviceBI
         }
         public static EnrolResponse Enrol(DiscoDataContext Database, string Username, Models.ClientServices.Enrol Request)
         {
-            ActiveDirectoryMachineAccount MachineInfo = null;
+            ActiveDirectoryMachineAccount adMachineAccount = null;
+            
             EnrolResponse response = new EnrolResponse();
+            
             AuthorizationToken authenticatedToken = null;
             bool isAuthenticated = false;
+
+            ActiveDirectoryDomain domain = null;
+            Lazy<DomainController> domainController = new Lazy<DomainController>(() => {
+                if (domain == null)
+                    throw new InvalidOperationException("The [domain] variable must be initialized first");
+                return domain.RetrieveWritableDomainController();
+            });
+
             string sessionId = System.Guid.NewGuid().ToString("B");
             response.SessionId = sessionId;
+            
             EnrolmentLog.LogSessionStarting(sessionId, Request.DeviceSerialNumber, EnrolmentTypes.Normal);
             EnrolmentLog.LogSessionDeviceInfo(sessionId, Request);
+
             try
             {
                 EnrolmentLog.LogSessionProgress(sessionId, 10, "Loading User Data");
@@ -348,9 +361,9 @@ namespace Disco.BI.DeviceBI
                     if (!authenticatedToken.Has(Claims.Device.Actions.EnrolDevices))
                     {
                         if (!authenticatedToken.Has(Claims.ComputerAccount))
-                            throw new EnrolSafeException(string.Format("Connection not correctly authenticated (SN: {0}; Auth User: {1})", Request.DeviceSerialNumber, authenticatedToken.User.Id));
-                        if (!authenticatedToken.User.Id.Equals(string.Format("{0}$", Request.DeviceComputerName), System.StringComparison.InvariantCultureIgnoreCase))
-                            throw new EnrolSafeException(string.Format("Connection not correctly authenticated (SN: {0}; Auth User: {1})", Request.DeviceSerialNumber, authenticatedToken.User.Id));
+                            throw new EnrolSafeException(string.Format("Connection not correctly authenticated (SN: {0}; Auth User: {1})", Request.DeviceSerialNumber, authenticatedToken.User.UserId));
+                        if (!authenticatedToken.User.UserId.Equals(string.Format("{0}$", Request.DeviceComputerName), System.StringComparison.InvariantCultureIgnoreCase))
+                            throw new EnrolSafeException(string.Format("Connection not correctly authenticated (SN: {0}; Auth User: {1})", Request.DeviceSerialNumber, authenticatedToken.User.UserId));
                     }
                 }
                 else
@@ -380,10 +393,16 @@ namespace Disco.BI.DeviceBI
                     System.Guid? uuidGuid = null;
                     System.Guid? macAddressGuid = null;
                     if (!string.IsNullOrEmpty(Request.DeviceUUID))
-                        uuidGuid = ActiveDirectoryMachineAccountExtensions.NetbootGUIDFromUUID(Request.DeviceUUID);
+                        uuidGuid = ActiveDirectoryExtensions.NetbootGUIDFromUUID(Request.DeviceUUID);
                     if (!string.IsNullOrEmpty(Request.DeviceLanMacAddress))
-                        macAddressGuid = ActiveDirectoryMachineAccountExtensions.NetbootGUIDFromMACAddress(Request.DeviceLanMacAddress);
-                    MachineInfo = ActiveDirectory.GetMachineAccount(Request.DeviceComputerName, uuidGuid, macAddressGuid);
+                        macAddressGuid = ActiveDirectoryExtensions.NetbootGUIDFromMACAddress(Request.DeviceLanMacAddress);
+                    
+                    if (domain == null)
+                        domain = ActiveDirectory.GetDomainByDnsName(Request.DeviceDNSDomainName);
+
+                    var requestDeviceId = string.Format(@"{0}\{1}", domain.NetBiosName, Request.DeviceComputerName);
+
+                    adMachineAccount = ActiveDirectory.RetrieveMachineAccount(domainController.Value, requestDeviceId, uuidGuid, macAddressGuid);
                 }
                 if (RepoDevice == null)
                 {
@@ -392,7 +411,7 @@ namespace Disco.BI.DeviceBI
                     DeviceProfile deviceProfile = Database.DeviceProfiles.Find(Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId);
 
 
-                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModel.Trim());
+                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModelType.Trim());
                     DeviceModel deviceModel = deviceModelResult.Item1;
                     if (deviceModelResult.Item2)
                         EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
@@ -402,7 +421,7 @@ namespace Disco.BI.DeviceBI
                     RepoDevice = new Device
                     {
                         SerialNumber = Request.DeviceSerialNumber,
-                        ComputerName = Request.DeviceComputerName,
+                        DeviceDomainId = Request.DeviceComputerName,
                         DeviceProfile = deviceProfile,
                         DeviceModel = deviceModel,
                         AllowUnauthenticatedEnrol = false,
@@ -423,7 +442,7 @@ namespace Disco.BI.DeviceBI
                     EnrolmentLog.LogSessionProgress(sessionId, 30, "Existing Device, Updating Disco Instance");
                     EnrolmentLog.LogSessionTaskUpdatingDevice(sessionId, Request.DeviceSerialNumber);
 
-                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModel.Trim());
+                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModelType.Trim());
                     DeviceModel deviceModel = deviceModelResult.Item1;
                     if (deviceModelResult.Item2)
                         EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
@@ -442,88 +461,120 @@ namespace Disco.BI.DeviceBI
                     RepoDevice.LastEnrolDate = DateTime.Now;
                 }
 
-                if (MachineInfo == null)
+                if (adMachineAccount == null)
                 {
                     if (isAuthenticated || RepoDevice.AllowUnauthenticatedEnrol)
                     {
                         if (RepoDevice.DeviceProfile.ProvisionADAccount)
                         {
                             EnrolmentLog.LogSessionProgress(sessionId, 50, "Provisioning an Active Directory Computer Account");
-                            if (string.IsNullOrEmpty(RepoDevice.ComputerName) || RepoDevice.DeviceProfile.EnforceComputerNameConvention)
-                                RepoDevice.ComputerName = RepoDevice.ComputerNameRender(Database);
-                            EnrolmentLog.LogSessionTaskProvisioningADAccount(sessionId, RepoDevice.SerialNumber, RepoDevice.ComputerName);
-                            MachineInfo = ActiveDirectory.GetMachineAccount(RepoDevice.ComputerName);
-                            response.OfflineDomainJoin = ActiveDirectory.OfflineDomainJoinProvision(ref MachineInfo, RepoDevice.ComputerName, RepoDevice.DeviceProfile.OrganisationalUnit, sessionId);
+                            
+                            if (string.IsNullOrWhiteSpace(RepoDevice.DeviceProfile.OrganisationalUnit))
+                                throw new InvalidOperationException("No Organisational Unit has been set in the device profile");
+                            if (domain == null)
+                                domain = ActiveDirectory.GetDomainByDistinguishedName(RepoDevice.DeviceProfile.OrganisationalUnit);
+
+                            if (string.IsNullOrEmpty(RepoDevice.DeviceDomainId) || RepoDevice.DeviceProfile.EnforceComputerNameConvention)
+                                RepoDevice.DeviceDomainId = RepoDevice.ComputerNameRender(Database, domain);
+
+                            string offlineProvisionDiagnosicInfo;
+                            EnrolmentLog.LogSessionTaskProvisioningADAccount(sessionId, RepoDevice.SerialNumber, RepoDevice.DeviceDomainId);
+                            adMachineAccount = ActiveDirectory.RetrieveMachineAccount(domainController.Value, RepoDevice.DeviceDomainId);
+                            
+                            response.OfflineDomainJoin = ActiveDirectory.OfflineDomainJoinProvision(domain, domainController.Value, RepoDevice.DeviceDomainId, RepoDevice.DeviceProfile.OrganisationalUnit, ref adMachineAccount, out offlineProvisionDiagnosicInfo);
+
+                            EnrolmentLog.LogSessionDiagnosticInformation(sessionId, offlineProvisionDiagnosicInfo);
+
                             response.RequireReboot = true;
                         }
-                        if (MachineInfo != null)
+                        if (adMachineAccount != null)
                         {
-                            response.DeviceComputerName = MachineInfo.Name;
-                            response.DeviceDomainName = MachineInfo.Domain;
+                            response.DeviceComputerName = adMachineAccount.Name;
+                            response.DeviceDomainName = adMachineAccount.Domain;
                         }
                         else
                         {
-                            response.DeviceComputerName = RepoDevice.ComputerName;
-                            response.DeviceDomainName = RepoDevice.ComputerName;
+                            var computerId = Disco.Services.UserExtensions.SplitUserId(RepoDevice.DeviceDomainId);
+                            response.DeviceDomainName = computerId.Item1;
+                            response.DeviceComputerName = computerId.Item2;
                         }
                     }
                     else
                     {
-                        RepoDevice.ComputerName = Request.DeviceComputerName;
                         response.DeviceComputerName = Request.DeviceComputerName;
-                        response.DeviceDomainName = RepoDevice.ComputerName;
+                        response.DeviceDomainName = Request.DeviceDNSDomainName;
                     }
                 }
                 else
                 {
-                    RepoDevice.ComputerName = MachineInfo.Name;
-                    response.DeviceComputerName = MachineInfo.Name;
-                    response.DeviceDomainName = MachineInfo.Domain;
+                    RepoDevice.DeviceDomainId = adMachineAccount.Name;
+                    response.DeviceComputerName = adMachineAccount.Name;
+                    response.DeviceDomainName = adMachineAccount.Domain;
 
                     // Enforce Computer Name Convention
-                    if (!MachineInfo.IsCriticalSystemObject && RepoDevice.DeviceProfile.EnforceComputerNameConvention)
+                    if (!adMachineAccount.IsCriticalSystemObject && RepoDevice.DeviceProfile.EnforceComputerNameConvention)
                     {
-                        var calculatedComputerName = RepoDevice.ComputerNameRender(Database);
-                        if (!Request.DeviceComputerName.Equals(calculatedComputerName, StringComparison.InvariantCultureIgnoreCase))
+                        if (string.IsNullOrWhiteSpace(RepoDevice.DeviceProfile.OrganisationalUnit))
+                            throw new InvalidOperationException("No Organisational Unit has been set in the device profile");
+                        if (domain == null)
+                            domain = ActiveDirectory.GetDomainByDistinguishedName(RepoDevice.DeviceProfile.OrganisationalUnit);
+
+                        var calculatedComputerName = RepoDevice.ComputerNameRender(Database, domain);
+                        var computerNameSplit = Disco.Services.UserExtensions.SplitUserId(calculatedComputerName);
+
+                        if (!Request.DeviceComputerName.Equals(computerNameSplit.Item2, StringComparison.InvariantCultureIgnoreCase))
                         {
                             EnrolmentLog.LogSessionProgress(sessionId, 50, string.Format("Renaming Device: {0} -> {1}", Request.DeviceComputerName, calculatedComputerName));
                             EnrolmentLog.LogSessionTaskRenamingDevice(sessionId, Request.DeviceComputerName, calculatedComputerName);
 
-                            RepoDevice.ComputerName = calculatedComputerName;
-                            response.DeviceComputerName = calculatedComputerName;
+                            RepoDevice.DeviceDomainId = calculatedComputerName;
+                            response.DeviceDomainName = computerNameSplit.Item1;
+                            response.DeviceComputerName = computerNameSplit.Item2;
 
                             // Create New Account
-                            response.OfflineDomainJoin = ActiveDirectory.OfflineDomainJoinProvision(ref MachineInfo, RepoDevice.ComputerName, RepoDevice.DeviceProfile.OrganisationalUnit, sessionId);
+                            string offlineProvisionDiagnosicInfo;
+                            
+                            response.OfflineDomainJoin = ActiveDirectory.OfflineDomainJoinProvision(domain, domainController.Value, RepoDevice.DeviceDomainId, RepoDevice.DeviceProfile.OrganisationalUnit, ref adMachineAccount, out offlineProvisionDiagnosicInfo);
+                            
+                            EnrolmentLog.LogSessionDiagnosticInformation(sessionId, offlineProvisionDiagnosicInfo);
+
                             response.RequireReboot = true;
                         }
                     }
 
-                    // Enforce Organisation Unit
-                    if (!MachineInfo.IsCriticalSystemObject && response.OfflineDomainJoin == null && RepoDevice.DeviceProfile.EnforceOrganisationalUnit)
+                    // Enforce Organisational Unit
+                    if (!adMachineAccount.IsCriticalSystemObject && response.OfflineDomainJoin == null && RepoDevice.DeviceProfile.EnforceOrganisationalUnit)
                     {
-                        var parentDistinguishedName = MachineInfo.ParentDistinguishedName();
+                        var parentDistinguishedName = adMachineAccount.ParentDistinguishedName();
+                        if (string.IsNullOrWhiteSpace(RepoDevice.DeviceProfile.OrganisationalUnit))
+                            throw new InvalidOperationException(string.Format("The Organisational Unit for the Device Profile '{0}' [{1}] is not set.", RepoDevice.DeviceProfile.Name, RepoDevice.DeviceProfile.Id));
 
-                        if ((RepoDevice.DeviceProfile.OrganisationalUnit == null && parentDistinguishedName != null
-                            && parentDistinguishedName.Equals("CN=Computers", StringComparison.InvariantCultureIgnoreCase)) // Null (Default) OU
-                            || !parentDistinguishedName.Equals(RepoDevice.DeviceProfile.OrganisationalUnit, StringComparison.InvariantCultureIgnoreCase)) // Custom OU
+                        if (!parentDistinguishedName.Equals(RepoDevice.DeviceProfile.OrganisationalUnit, StringComparison.InvariantCultureIgnoreCase)) // Custom OU
                         {
-                            string newOU = RepoDevice.DeviceProfile.OrganisationalUnit ?? "CN=Computers";
+                            var proposedDomain = ActiveDirectory.GetDomainByDistinguishedName(RepoDevice.DeviceProfile.OrganisationalUnit);
+                            var currentDomain = ActiveDirectory.GetDomainByDistinguishedName(parentDistinguishedName);
+                            if (currentDomain != proposedDomain)
+                                throw new NotSupportedException("Unable to move the devices organisational unit when the source and destination domains are different.");
+                            if (domain == null)
+                                domain = proposedDomain;
+                            else if (domain != proposedDomain)
+                                throw new NotSupportedException("To many domains involved in this enrolment, contact support regarding your scenario.");
 
-                            EnrolmentLog.LogSessionProgress(sessionId, 65, string.Format("Moving Device Organisation Unit: {0} -> {1}", parentDistinguishedName, newOU));
-                            EnrolmentLog.LogSessionTaskMovingDeviceOrganisationUnit(sessionId, parentDistinguishedName, newOU);
-                            MachineInfo.MoveOrganisationUnit(RepoDevice.DeviceProfile.OrganisationalUnit);
-                            MachineInfo = ActiveDirectory.GetMachineAccount(MachineInfo.SamAccountName);
+                            EnrolmentLog.LogSessionProgress(sessionId, 65, string.Format("Moving Device Organisational Unit: {0} -> {1}", parentDistinguishedName, RepoDevice.DeviceProfile.OrganisationalUnit));
+                            EnrolmentLog.LogSessionTaskMovingDeviceOrganisationUnit(sessionId, parentDistinguishedName, RepoDevice.DeviceProfile.OrganisationalUnit);
+                            adMachineAccount.MoveOrganisationalUnit(domainController.Value, RepoDevice.DeviceProfile.OrganisationalUnit);
+                            adMachineAccount = ActiveDirectory.RetrieveMachineAccount(domainController.Value, adMachineAccount.NetBiosId);
                             response.RequireReboot = true;
                         }
                     }
 
                 }
-                if (MachineInfo != null && !MachineInfo.IsCriticalSystemObject)
+                if (adMachineAccount != null && !adMachineAccount.IsCriticalSystemObject)
                 {
                     EnrolmentLog.LogSessionProgress(sessionId, 75, "Updating Active Directory Computer Account Properties");
-                    MachineInfo.UpdateNetbootGUID(Request.DeviceUUID, Request.DeviceLanMacAddress);
+                    adMachineAccount.UpdateNetbootGUID(Request.DeviceUUID, Request.DeviceLanMacAddress);
                     if (RepoDevice.AssignedUser != null)
-                        MachineInfo.SetDescription(RepoDevice);
+                        adMachineAccount.SetDescription(RepoDevice);
                 }
                 if (RepoDevice.DeviceProfile.DistributionType == DeviceProfile.DistributionTypes.OneToOne)
                 {
@@ -534,7 +585,7 @@ namespace Disco.BI.DeviceBI
                     else
                     {
                         EnrolmentLog.LogSessionProgress(sessionId, 80, "Retrieving Active Directory Assigned User Account");
-                        ActiveDirectoryUserAccount AssignedUserInfo = ActiveDirectory.GetUserAccount(RepoDevice.AssignedUser.Id);
+                        ActiveDirectoryUserAccount AssignedUserInfo = Services.Interop.ActiveDirectory.ActiveDirectory.RetrieveUserAccount(RepoDevice.AssignedUser.UserId);
                         EnrolmentLog.LogSessionTaskAssigningUser(sessionId, RepoDevice.SerialNumber, AssignedUserInfo.DisplayName, AssignedUserInfo.SamAccountName, AssignedUserInfo.Domain, AssignedUserInfo.SecurityIdentifier);
                         response.AllowBootstrapperUninstall = true;
                         response.DeviceAssignedUserIsLocalAdmin = RepoDevice.DeviceProfile.AssignedUserLocalAdmin;

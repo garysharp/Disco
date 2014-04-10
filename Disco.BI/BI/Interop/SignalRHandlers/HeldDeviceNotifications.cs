@@ -61,7 +61,7 @@ namespace Disco.BI.Interop.SignalRHandlers
         {
             User u = (User)e.Entity;
 
-            var userDevices = e.Database.Devices.Where(d => d.AssignedUserId == u.Id);
+            var userDevices = e.Database.Devices.Where(d => d.AssignedUserId == u.UserId);
 
             foreach (var userDevice in userDevices)
             {

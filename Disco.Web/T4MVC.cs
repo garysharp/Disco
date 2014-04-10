@@ -2122,6 +2122,7 @@ namespace Disco.Web.Controllers
         public class ActionParamsClass_Show
         {
             public readonly string id = "id";
+            public readonly string Domain = "Domain";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -2180,13 +2181,14 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
-        partial void ShowOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
+        partial void ShowOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Domain);
 
-        public override System.Web.Mvc.ActionResult Show(string id)
+        public override System.Web.Mvc.ActionResult Show(string id, string Domain)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Show);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ShowOverride(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Domain", Domain);
+            ShowOverride(callInfo, id, Domain);
             return callInfo;
         }
 
@@ -4626,7 +4628,6 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateProvisionADAccount = "UpdateProvisionADAccount";
             public readonly string UpdateAssignedUserLocalAdmin = "UpdateAssignedUserLocalAdmin";
             public readonly string UpdateAllowUntrustedReimageJobEnrolment = "UpdateAllowUntrustedReimageJobEnrolment";
-            public readonly string OrganisationalUnits = "OrganisationalUnits";
             public readonly string Delete = "Delete";
             public readonly string Default = "Default";
             public readonly string DefaultAddDeviceOffline = "DefaultAddDeviceOffline";
@@ -4650,7 +4651,6 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateProvisionADAccount = "UpdateProvisionADAccount";
             public const string UpdateAssignedUserLocalAdmin = "UpdateAssignedUserLocalAdmin";
             public const string UpdateAllowUntrustedReimageJobEnrolment = "UpdateAllowUntrustedReimageJobEnrolment";
-            public const string OrganisationalUnits = "OrganisationalUnits";
             public const string Delete = "Delete";
             public const string Default = "Default";
             public const string DefaultAddDeviceOffline = "DefaultAddDeviceOffline";
@@ -5019,15 +5019,6 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "AllowUntrustedReimageJobEnrolment", AllowUntrustedReimageJobEnrolment);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateAllowUntrustedReimageJobEnrolmentOverride(callInfo, id, AllowUntrustedReimageJobEnrolment, redirect);
-            return callInfo;
-        }
-
-        partial void OrganisationalUnitsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        public override System.Web.Mvc.ActionResult OrganisationalUnits()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OrganisationalUnits);
-            OrganisationalUnitsOverride(callInfo);
             return callInfo;
         }
 
@@ -9180,6 +9171,24 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateMultiSiteMode);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateActiveDirectorySearchScope()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateActiveDirectorySearchScope);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateActiveDirectorySearchEntireForest()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateActiveDirectorySearchEntireForest);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateProxySettings()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateProxySettings);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public SystemController Actions { get { return MVC.API.System; } }
@@ -9204,6 +9213,10 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateOrganisationAddress = "UpdateOrganisationAddress";
             public readonly string DeleteOrganisationAddress = "DeleteOrganisationAddress";
             public readonly string UpdateMultiSiteMode = "UpdateMultiSiteMode";
+            public readonly string UpdateActiveDirectorySearchScope = "UpdateActiveDirectorySearchScope";
+            public readonly string UpdateActiveDirectorySearchEntireForest = "UpdateActiveDirectorySearchEntireForest";
+            public readonly string DomainOrganisationalUnits = "DomainOrganisationalUnits";
+            public readonly string UpdateProxySettings = "UpdateProxySettings";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -9217,6 +9230,10 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateOrganisationAddress = "UpdateOrganisationAddress";
             public const string DeleteOrganisationAddress = "DeleteOrganisationAddress";
             public const string UpdateMultiSiteMode = "UpdateMultiSiteMode";
+            public const string UpdateActiveDirectorySearchScope = "UpdateActiveDirectorySearchScope";
+            public const string UpdateActiveDirectorySearchEntireForest = "UpdateActiveDirectorySearchEntireForest";
+            public const string DomainOrganisationalUnits = "DomainOrganisationalUnits";
+            public const string UpdateProxySettings = "UpdateProxySettings";
         }
 
 
@@ -9267,6 +9284,36 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateMultiSiteMode
         {
             public readonly string MultiSiteMode = "MultiSiteMode";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateActiveDirectorySearchScope s_params_UpdateActiveDirectorySearchScope = new ActionParamsClass_UpdateActiveDirectorySearchScope();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateActiveDirectorySearchScope UpdateActiveDirectorySearchScopeParams { get { return s_params_UpdateActiveDirectorySearchScope; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateActiveDirectorySearchScope
+        {
+            public readonly string Containers = "Containers";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateActiveDirectorySearchEntireForest s_params_UpdateActiveDirectorySearchEntireForest = new ActionParamsClass_UpdateActiveDirectorySearchEntireForest();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateActiveDirectorySearchEntireForest UpdateActiveDirectorySearchEntireForestParams { get { return s_params_UpdateActiveDirectorySearchEntireForest; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateActiveDirectorySearchEntireForest
+        {
+            public readonly string SearchEntireForest = "SearchEntireForest";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateProxySettings s_params_UpdateProxySettings = new ActionParamsClass_UpdateProxySettings();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateProxySettings UpdateProxySettingsParams { get { return s_params_UpdateProxySettings; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateProxySettings
+        {
+            public readonly string ProxyAddress = "ProxyAddress";
+            public readonly string ProxyPort = "ProxyPort";
+            public readonly string ProxyUsername = "ProxyUsername";
+            public readonly string ProxyPassword = "ProxyPassword";
             public readonly string redirect = "redirect";
         }
         static readonly ViewsClass s_views = new ViewsClass();
@@ -9380,6 +9427,51 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "MultiSiteMode", MultiSiteMode);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateMultiSiteModeOverride(callInfo, MultiSiteMode, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateActiveDirectorySearchScopeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Collections.Generic.List<string> Containers, bool redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateActiveDirectorySearchScope(System.Collections.Generic.List<string> Containers, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateActiveDirectorySearchScope);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Containers", Containers);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateActiveDirectorySearchScopeOverride(callInfo, Containers, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateActiveDirectorySearchEntireForestOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool SearchEntireForest, bool redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateActiveDirectorySearchEntireForest(bool SearchEntireForest, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateActiveDirectorySearchEntireForest);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "SearchEntireForest", SearchEntireForest);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateActiveDirectorySearchEntireForestOverride(callInfo, SearchEntireForest, redirect);
+            return callInfo;
+        }
+
+        partial void DomainOrganisationalUnitsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        public override System.Web.Mvc.ActionResult DomainOrganisationalUnits()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DomainOrganisationalUnits);
+            DomainOrganisationalUnitsOverride(callInfo);
+            return callInfo;
+        }
+
+        partial void UpdateProxySettingsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string ProxyAddress, int? ProxyPort, string ProxyUsername, string ProxyPassword, bool redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateProxySettings(string ProxyAddress, int? ProxyPort, string ProxyUsername, string ProxyPassword, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateProxySettings);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ProxyAddress", ProxyAddress);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ProxyPort", ProxyPort);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ProxyUsername", ProxyUsername);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ProxyPassword", ProxyPassword);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateProxySettingsOverride(callInfo, ProxyAddress, ProxyPort, ProxyUsername, ProxyPassword, redirect);
             return callInfo;
         }
 
@@ -9529,6 +9621,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_AttachmentUpload
         {
             public readonly string id = "id";
+            public readonly string Domain = "Domain";
             public readonly string Comments = "Comments";
         }
         static readonly ActionParamsClass_Attachment s_params_Attachment = new ActionParamsClass_Attachment();
@@ -9546,6 +9639,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_Attachments
         {
             public readonly string id = "id";
+            public readonly string Domain = "Domain";
         }
         static readonly ActionParamsClass_AttachmentRemove s_params_AttachmentRemove = new ActionParamsClass_AttachmentRemove();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -9562,6 +9656,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_GeneratePdf
         {
             public readonly string id = "id";
+            public readonly string Domain = "Domain";
             public readonly string DocumentTemplateId = "DocumentTemplateId";
         }
         static readonly ViewsClass s_views = new ViewsClass();
@@ -9613,14 +9708,15 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
-        partial void AttachmentUploadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Comments);
+        partial void AttachmentUploadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Domain, string Comments);
 
-        public override System.Web.Mvc.ActionResult AttachmentUpload(string id, string Comments)
+        public override System.Web.Mvc.ActionResult AttachmentUpload(string id, string Domain, string Comments)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentUpload);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Domain", Domain);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Comments", Comments);
-            AttachmentUploadOverride(callInfo, id, Comments);
+            AttachmentUploadOverride(callInfo, id, Domain, Comments);
             return callInfo;
         }
 
@@ -9634,13 +9730,14 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
-        partial void AttachmentsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
+        partial void AttachmentsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Domain);
 
-        public override System.Web.Mvc.ActionResult Attachments(string id)
+        public override System.Web.Mvc.ActionResult Attachments(string id, string Domain)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Attachments);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            AttachmentsOverride(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Domain", Domain);
+            AttachmentsOverride(callInfo, id, Domain);
             return callInfo;
         }
 
@@ -9654,14 +9751,15 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
-        partial void GeneratePdfOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DocumentTemplateId);
+        partial void GeneratePdfOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Domain, string DocumentTemplateId);
 
-        public override System.Web.Mvc.ActionResult GeneratePdf(string id, string DocumentTemplateId)
+        public override System.Web.Mvc.ActionResult GeneratePdf(string id, string Domain, string DocumentTemplateId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdf);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Domain", Domain);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DocumentTemplateId", DocumentTemplateId);
-            GeneratePdfOverride(callInfo, id, DocumentTemplateId);
+            GeneratePdfOverride(callInfo, id, Domain, DocumentTemplateId);
             return callInfo;
         }
 
@@ -11266,14 +11364,6 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
 
-        static readonly ActionParamsClass_Index s_params_Index = new ActionParamsClass_Index();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Index IndexParams { get { return s_params_Index; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Index
-        {
-            public readonly string config = "config";
-        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -11301,16 +11391,6 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
             IndexOverride(callInfo);
-            return callInfo;
-        }
-
-        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Areas.Config.Models.SystemConfig.IndexModel config);
-
-        public override System.Web.Mvc.ActionResult Index(Disco.Web.Areas.Config.Models.SystemConfig.IndexModel config)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "config", config);
-            IndexOverride(callInfo, config);
             return callInfo;
         }
 

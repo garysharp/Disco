@@ -26,6 +26,7 @@ namespace Disco.Client.Extensions
             enrol.DeviceModelType = Interop.SystemAudit.DeviceType;
 
             enrol.DeviceIsPartOfDomain = Interop.SystemAudit.DeviceIsPartOfDomain;
+            enrol.DeviceDNSDomainName = Interop.SystemAudit.DeviceDNSDomainName;
 
             // LAN
             enrol.DeviceLanMacAddress = Interop.Network.PrimaryLanMacAddress;

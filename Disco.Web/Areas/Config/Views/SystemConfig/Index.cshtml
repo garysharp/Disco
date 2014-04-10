@@ -3,8 +3,16 @@
     Authorization.Require(Claims.Config.System.Show);
 
     var canConfigProxy = Authorization.Has(Claims.Config.System.ConfigureProxy);
+    var canConfigAD = Authorization.Has(Claims.Config.System.ConfigureActiveDirectory);
 
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "System");
+
+    if (canConfigAD)
+    {
+        Html.BundleDeferred("~/Style/Fancytree");
+        Html.BundleDeferred("~/ClientScripts/Modules/jQuery-Fancytree");
+        Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
+    }
 }
 <div class="form" style="width: 450px">
     <table>
@@ -133,9 +141,296 @@
         </tr>
     </table>
 </div>
+<div class="form" style="width: 450px; margin-top: 15px;">
+    <h2>Active Directory</h2>
+    <table>
+        <tr>
+            <th style="width: 135px">Primary Domain:
+            </th>
+            <td>
+                <code><strong>@Model.ADPrimaryDomain.DnsName</strong> <span>[@Model.ADPrimaryDomain.NetBiosName]</span></code>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 135px">Additional Domains:
+            </th>
+            <td>
+                @if (Model.ADAdditionalDomains.Count > 0)
+                {
+                    var adDomainFirst = Model.ADAdditionalDomains.First();
+                    <code>@adDomainFirst.DnsName <span>[@adDomainFirst.NetBiosName]</span></code>
+                    foreach (var adDomain in Model.ADAdditionalDomains.Skip(1))
+                    {
+                    <hr />
+                    <div>
+                        <code>@adDomain.DnsName <span>[@adDomain.NetBiosName]</span></code>
+                    </div>
+                    }
+                }
+                else
+                {
+                    <span class="smallMessage">&lt;None&gt;</span>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 135px">Site:
+            </th>
+            <td>
+                <code><strong>@Model.ADSite.Name</strong></code>
+                <hr />
+                <div>
+                    @if (Model.ADSiteServers.Count > 0)
+                    {
+                        <span>Servers:</span>
+                        <ul class="none">
+                            @foreach (var siteServer in Model.ADSiteServers)
+                            {
+                                var server = siteServer.Item1;
+                                var reachable = siteServer.Item2;
+                                <li>
+                                    <i class="fa @(reachable ? "fa-check success" : "fa-exclamation warning") fa-fw fa-lg" title="@(reachable ? "Reachable" : "Unavailable")"></i>&nbsp;<code>@(server.Name)</code>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <div class="error">
+                            <i class="fa fa-exclamation-circle fa-lg"></i>&nbsp;<span>None Found</span>
+                        </div>
+                    }
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 135px">Forest:
+            </th>
+            <td>
+                @if (Model.ADForestServers == null)
+                {
+                    <div>
+                        @Html.CheckBoxFor(m => m.ADSearchEntireForest, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchEntireForest)
+                    </div>
+                    <div style="padding: 0.7em 0.7em;" class="ui-state-highlight ui-corner-all">
+                        <i class="fa fa-info-circle information"></i>&nbsp;Forest servers are being retrieved, try refreshing this page in a moment.
+                    </div>
+                }
+                else
+                {
+                    if (canConfigAD)
+                    {
+                        var canSearchEntireForest = (Model.ADForestServers.Count <= Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxForestServerSearch);
+                    <div>
+                        @if (!canSearchEntireForest)
+                        {
+                            @Html.CheckBoxFor(m => m.ADSearchEntireForest, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchEntireForest)
+                            <div style="padding: 0.7em 0.7em;" class="ui-state-highlight ui-corner-all">
+                                <i class="fa fa-exclamation-circle warning"></i>&nbsp;Disco will not search entire forests which consist of more than @(Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxForestServerSearch) servers. Only servers within this site will be searched.
+                            </div>
+                        }
+                        else
+                        {
+                            @Html.CheckBoxFor(m => m.ADSearchEntireForest) @Html.LabelFor(m => m.ADSearchEntireForest) @AjaxHelpers.AjaxLoader()
+                            <div class="smallMessage">
+                                If this setting is enabled, Disco will search all servers within the forest rather than only servers within this site.
+                            </div>
+                            <script>
+                                $(function () {
+                                    document.DiscoFunctions.PropertyChangeHelper($('#ADSearchEntireForest'), null, '@(Url.Action(MVC.API.System.UpdateActiveDirectorySearchEntireForest()))', 'SearchEntireForest');
+                                });
+                            </script>
+                        }
+                    </div>
+                    }
+                    else
+                    {
+                    <div>
+                        @Html.CheckBoxFor(m => m.ADSearchEntireForest, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchEntireForest)
+                        <div class="smallMessage">
+                            If this setting is enabled, Disco will search all servers within the forest rather than only servers within this site.
+                        </div>
+                    </div>
+                    }
+                    <div>
+                        <hr />
+                        <span>Servers:</span>
+                        <ul id="Config_System_AD_ForestServers">
+                            @foreach (var server in Model.ADForestServers.OrderBy(s => s))
+                            {
+                                <li><code>@server</code> @(Model.ADSiteServers.Count(ss => ss.Item1.Name.Equals(server, StringComparison.InvariantCultureIgnoreCase)) > 0 ? "[Site Server]" : null)</li>
+                            }
+                        </ul>
+                        <script>
+                            $(function () {
+                                var toManyServers = 5;
+                                var ul = $('#Config_System_AD_ForestServers');
+                                var ulLi = ul.find('li');
+                                if (ulLi.length > toManyServers) {
+                                    var liMore = $('<li>').append(
+                                        $('<a>').attr('href', '#')
+                                        .text('Show All Servers (' + (ulLi.length - toManyServers) + ' more)')
+                                        .click(function () {
+                                            $(this).closest('li').remove();
+                                            ul.find('li').show();
+                                            return false;
+                                        }))
+                                    .insertAfter(ulLi[(toManyServers - 1)]);
+                                    ulLi.each(function (i) {
+                                        if (i > (toManyServers - 1))
+                                            $(this).hide();
+                                    });
+                                }
+                            });
+                        </script>
+                    </div>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 135px">Search Scope:
+            </th>
+            <td>
+                @if (Model.ADSearchContainers != null && Model.ADSearchContainers.Count > 0)
+                {
+                    <div>Searching is restricted to the following Organisational&nbsp;Unit containers</div>
+                    <ul id="Config_System_AD_SearchScope_DistinguishedNames">
+                        @foreach (var adContainer in Model.ADSearchContainers)
+                        {
+                            <li data-distinguishedname="@adContainer.Item1"><code>@adContainer.Item3</code></li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <div>No restrictions are in effect.</div>
+                    <div class="smallMessage">When searching, the entire domain will be queried. This is suitable for most single-domain deployments.</div>
+                }
+                @if (canConfigAD)
+                {
+                    <div>
+                        <hr />
+                        <a id="Config_System_AD_SearchScope_Update" href="#" class="button small">Update</a>
+                    </div>
+                    <div id="Config_System_AD_SearchScope_Dialog" class="dialog" title="Search Scope">
+                        <div id="Config_System_AD_SearchScope_Tree" class="organisationalUnitTree">
+                        </div>
+                        @using (Html.BeginForm(MVC.API.System.UpdateActiveDirectorySearchScope(null, redirect: true)))
+                        {
+                        }
+                    </div>
+                    <script>
+                        $(function () {
+                            var $dialog, $tree, tree, distinguishedNames;
+
+                            function expandNodeTree(node) {
+                                var parent = node.parent;
+                                if (parent) {
+                                    expandNodeTree(parent);
+                                    if (!parent.isExpanded())
+                                        parent.setExpanded(true, { noAnimation: true, noEvents: false });
+                                }
+                            }
+                            function selectDistinguishedNames() {
+                                if (!distinguishedNames) {
+                                    distinguishedNames = $('#Config_System_AD_SearchScope_DistinguishedNames')
+                                        .find('li')
+                                        .map(function () { return $(this).attr('data-distinguishedname'); }).get();
+                                }
+
+                                if (tree) {
+                                    tree.visit(function (node) {
+                                        if ($.inArray(node.key, distinguishedNames) >= 0) {
+                                            node.setSelected(true);
+                                            expandNodeTree(node);
+                                        } else if (node.isSelected()) {
+                                            node.setSelected(false);
+                                        }
+                                    });
+                                }
+                            }
+
+                            function update() {
+
+                                if (!$dialog) {
+                                    $dialog = $('#Config_System_AD_SearchScope_Dialog').dialog({
+                                        autoOpen: false,
+                                        buttons: null,
+                                        draggable: false,
+                                        modal: true,
+                                        resizable: false,
+                                        width: 500,
+                                        height: 500
+                                    });
+                                    $tree = $('#Config_System_AD_SearchScope_Tree');
+                                    $dialog.css('overflow', 'visible');
+                                    $tree.css('height', '100%');
+
+                                    $.getJSON('@(Url.Action(MVC.API.System.DomainOrganisationalUnits()))', null, function (data) {
+
+
+                                        tree = $tree.fancytree({
+                                            source: data,
+                                            checkbox: true,
+                                            selectMode: 2,
+                                            keyboard: false,
+                                            fx: null
+                                        }).fancytree('getTree');
+
+                                        tree.$container.css('position', 'relative');
+
+                                        // Set Buttons
+                                        $dialog.dialog('option', 'buttons', {
+                                            'Search Entire Forest': function () {
+                                                var $this = $(this);
+                                                $this.css('overflow', 'hidden');
+                                                $this.dialog("disable");
+                                                $this.dialog("option", "buttons", null);
+
+                                                var $form = $dialog.find('form');
+                                                $form.submit();
+                                            },
+                                            'Save': function () {
+                                                var $this = $(this);
+                                                $this.css('overflow', 'hidden');
+                                                $this.dialog("disable");
+                                                $this.dialog("option", "buttons", null);
+
+                                                var nodes = tree.getSelectedNodes();
+                                                var $form = $dialog.find('form');
+                                                $.each(nodes, function (i, node) {
+                                                    $('<input>').attr({ 'type': 'hidden', 'name': 'Containers', 'value': node.key }).appendTo($form);
+                                                });
+                                                $form.submit();
+                                            }
+                                        });
+
+                                        // Select & Expand
+                                        selectDistinguishedNames();
+
+                                        tree.options.fx = { height: "toggle", duration: 200 };
+                                    });
+
+                                }
+
+                                selectDistinguishedNames();
+
+                                $dialog.dialog('open');
+
+                                return false;
+                            }
+
+                            $('#Config_System_AD_SearchScope_Update').click(update);
+                        });
+                    </script>
+                }
+            </td>
+        </tr>
+    </table>
+</div>
 @if (canConfigProxy)
 {
-    using (Html.BeginForm())
+    using (Html.BeginForm(MVC.API.System.UpdateProxySettings()))
     { 
     <div class="form" style="width: 450px; margin-top: 15px;">
         <h2>Proxy Settings</h2>

@@ -98,7 +98,7 @@ namespace Disco.Services.Authorization.Roles
         }
         internal static List<IRoleToken> GetRoleTokens(IEnumerable<string> SecurityGroup, User User)
         {
-            var subjectIds = (new string[] { User.Id }).Concat(SecurityGroup).Select(sg => sg.ToLower());
+            var subjectIds = (new string[] { User.UserId }).Concat(SecurityGroup).Select(sg => sg.ToLower());
 
             return _Cache.Where(t => subjectIds.Any(sg => t.SubjectIdHashes.Contains(sg))).Cast<IRoleToken>().ToList();
         }

@@ -22,8 +22,8 @@ namespace Disco.Models.Repository
         public int DeviceProfileId { get; set; }
         public int? DeviceBatchId { get; set; }
 
-        [StringLength(24)]
-        public string ComputerName { get; set; }
+        [StringLength(50), Column("ComputerName")]
+        public string DeviceDomainId { get; set; }
         public string AssignedUserId { get; set; }
         public DateTime? LastNetworkLogonDate { get; set; }
 
@@ -65,6 +65,26 @@ namespace Disco.Models.Repository
                 return string.Format("{0} - {1}", this.DeviceModel, this.SerialNumber);
             else
                 return this.SerialNumber;
+        }
+
+        [NotMapped]
+        public string ComputerName
+        {
+            get
+            {
+                var index = DeviceDomainId.IndexOf('\\');
+                return index < 0 ? DeviceDomainId : DeviceDomainId.Substring(index + 1);
+            }
+        }
+
+        [NotMapped]
+        public string ComputerDomainName
+        {
+            get
+            {
+                var index = DeviceDomainId.IndexOf('\\');
+                return index < 0 ? null : DeviceDomainId.Substring(0, index);
+            }
         }
 
         public enum DecommissionReasons

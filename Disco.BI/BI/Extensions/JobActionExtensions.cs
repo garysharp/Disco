@@ -41,7 +41,7 @@ namespace Disco.BI.Extensions
                 throw new InvalidOperationException("Holding Device was Denied");
 
             j.DeviceHeld = DateTime.Now;
-            j.DeviceHeldTechUserId = Technician.Id;
+            j.DeviceHeldTechUserId = Technician.UserId;
             j.DeviceReadyForReturn = null;
             j.DeviceReadyForReturnTechUserId = null;
             j.DeviceReturnedDate = null;
@@ -64,7 +64,7 @@ namespace Disco.BI.Extensions
                 throw new InvalidOperationException("Device Ready for Return was Denied");
 
             j.DeviceReadyForReturn = DateTime.Now;
-            j.DeviceReadyForReturnTechUserId = Technician.Id;
+            j.DeviceReadyForReturnTechUserId = Technician.UserId;
         }
         #endregion
 
@@ -83,7 +83,7 @@ namespace Disco.BI.Extensions
                 throw new InvalidOperationException("Device Return was Denied");
 
             j.DeviceReturnedDate = DateTime.Now;
-            j.DeviceReturnedTechUserId = Technician.Id;
+            j.DeviceReturnedTechUserId = Technician.UserId;
         }
         #endregion
 
@@ -106,7 +106,7 @@ namespace Disco.BI.Extensions
             JobLog jobLog = new JobLog()
             {
                 JobId = j.Id,
-                TechUserId = Technician.Id,
+                TechUserId = Technician.UserId,
                 Timestamp = DateTime.Now,
                 Comments = string.Format("Waiting on User Action{0}Reason: {1}", Environment.NewLine, Reason)
             };
@@ -133,7 +133,7 @@ namespace Disco.BI.Extensions
             JobLog jobLog = new JobLog()
             {
                 JobId = j.Id,
-                TechUserId = Technician.Id,
+                TechUserId = Technician.UserId,
                 Timestamp = DateTime.Now,
                 Comments = string.Format("User Action Resolved{0}Resolution: {1}", Environment.NewLine, Resolution)
             };
@@ -178,7 +178,7 @@ namespace Disco.BI.Extensions
                 JobLog jobLog = new JobLog()
                 {
                     JobId = j.Id,
-                    TechUserId = TechUser.Id,
+                    TechUserId = TechUser.UserId,
                     Timestamp = DateTime.Now,
                     Comments = string.Format("Warranty Claim Submitted{0}{0}Provider: {1}{0}Repair Address: {2}{0}Provider Reference: {3}{0}{0}{4}", Environment.NewLine, WarrantyProvider.Manifest.Name, Address.Name, providerRef, FaultDescription)
                 };
@@ -248,7 +248,7 @@ namespace Disco.BI.Extensions
                 Database.JobComponents.Add(new JobComponent()
                 {
                     Job = j,
-                    TechUserId = techUser.Id,
+                    TechUserId = techUser.UserId,
                     Cost = component.Cost,
                     Description = component.Description
                 });
@@ -258,7 +258,7 @@ namespace Disco.BI.Extensions
             JobLog jobLog = new JobLog()
             {
                 JobId = j.Id,
-                TechUserId = techUser.Id,
+                TechUserId = techUser.UserId,
                 Timestamp = DateTime.Now,
                 Comments = string.Format("Job Type Converted{0}From: {1}{0}To: {2}", Environment.NewLine, Database.JobTypes.Find(JobType.JobTypeIds.HWar), Database.JobTypes.Find(JobType.JobTypeIds.HNWar))
             };
@@ -302,7 +302,7 @@ namespace Disco.BI.Extensions
             var techUser = UserService.CurrentUser;
 
             j.JobMetaInsurance.ClaimFormSentDate = DateTime.Now;
-            j.JobMetaInsurance.ClaimFormSentUserId = techUser.Id;
+            j.JobMetaInsurance.ClaimFormSentUserId = techUser.UserId;
         }
         #endregion
 
@@ -356,7 +356,7 @@ namespace Disco.BI.Extensions
                 throw new InvalidOperationException("Close was Denied");
 
             j.ClosedDate = DateTime.Now;
-            j.ClosedTechUserId = Technician.Id;
+            j.ClosedTechUserId = Technician.UserId;
         }
 
         private static bool CanCloseNever(this Job j, JobQueueJob IgnoreJobQueueJob = null)
@@ -475,14 +475,14 @@ namespace Disco.BI.Extensions
             JobLog jobLog = new JobLog()
             {
                 JobId = j.Id,
-                TechUserId = Technician.Id,
+                TechUserId = Technician.UserId,
                 Timestamp = DateTime.Now,
                 Comments = string.Format("Job Forcibly Closed{0}Reason: {1}", Environment.NewLine, Reason)
             };
             Database.JobLogs.Add(jobLog);
 
             j.ClosedDate = DateTime.Now;
-            j.ClosedTechUserId = Technician.Id;
+            j.ClosedTechUserId = Technician.UserId;
         }
         #endregion
 

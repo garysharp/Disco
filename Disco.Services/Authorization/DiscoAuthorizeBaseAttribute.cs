@@ -39,7 +39,7 @@ namespace Disco.Services.Authorization
 
             // Log Access Denied
             if (Token != null) // Don't log anonymous
-                AuthorizationLog.LogAccessDenied(Token.User.Id, resultResource, resultMessage);
+                AuthorizationLog.LogAccessDenied(Token.User.UserId, resultResource, resultMessage);
 
             // Build Response View
             var ex = new AccessDeniedException(resultMessage, resultResource);

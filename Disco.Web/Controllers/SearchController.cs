@@ -203,7 +203,7 @@ namespace Disco.Web.Controllers
                         }
                     case "userid":
                         Authorization.Require(Claims.User.Search);
-                        var user = Database.Users.FirstOrDefault(u => u.Id == term);
+                        var user = Database.Users.FirstOrDefault(u => u.UserId == term);
                         if (user != null)
                             return RedirectToAction(MVC.User.Show(term));
                         else

@@ -76,7 +76,7 @@ namespace Disco.BI.Interop.SignalRHandlers
         {
             User u = (User)e.Entity;
 
-            notificationContext.Connection.Broadcast(u.Id);
+            notificationContext.Connection.Broadcast(u.UserId);
         }
     }
 }

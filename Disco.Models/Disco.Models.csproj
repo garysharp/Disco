@@ -38,6 +38,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BI\Job\LocationModes.cs" />
+    <Compile Include="Interop\ActiveDirectory\ActiveDirectoryDomain.cs" />
+    <Compile Include="Interop\ActiveDirectory\ActiveDirectoryOrganisationalUnit.cs" />
+    <Compile Include="Interop\ActiveDirectory\ActiveDirectorySearchResult.cs" />
     <Compile Include="Services\Authorization\IAuthorizationToken.cs" />
     <Compile Include="Services\Authorization\IClaimNavigatorItem.cs" />
     <Compile Include="Services\Authorization\IRoleToken.cs" />
@@ -168,7 +172,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

@@ -9,8 +9,8 @@ namespace Disco.Models.Repository
 {
     public class User
     {
-        [StringLength(50), Key]
-        public string Id { get; set; }
+        [StringLength(50), Key, Column("Id")]
+        public string UserId { get; set; }
 
         [StringLength(200)]
         public string DisplayName { get; set; }
@@ -30,14 +30,34 @@ namespace Disco.Models.Repository
         [InverseProperty("UserId")]
         public virtual IList<Job> Jobs { get; set; }
 
+        [NotMapped, Obsolete("Should be using Combined Domain\\User format - UserId")]
+        public string Id
+        {
+            get
+            {
+                var index = UserId.IndexOf('\\');
+                return index < 0 ? UserId : UserId.Substring(index + 1);
+            }
+        }
+
+        [NotMapped]
+        public string Domain
+        {
+            get
+            {
+                var index = UserId.IndexOf('\\');
+                return index < 0 ? null : UserId.Substring(0, index);
+            }
+        }
+
         public override string ToString()
         {
-            return string.Format("{0} ({1})", this.DisplayName, this.Id);
+            return string.Format("{0} ({1})", this.DisplayName, this.UserId);
         }
 
         public void UpdateSelf(User u)
         {
-            if (!this.Id.Equals(u.Id, StringComparison.InvariantCultureIgnoreCase))
+            if (!this.UserId.Equals(u.UserId, StringComparison.InvariantCultureIgnoreCase))
                 throw new ArgumentException("User Id's do not match", "u");
 
             if (this.Surname != u.Surname)

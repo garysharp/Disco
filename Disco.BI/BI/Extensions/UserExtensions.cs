@@ -19,8 +19,8 @@ namespace Disco.BI.Extensions
 
             UserAttachment ua = new UserAttachment()
             {
-                UserId = User.Id,
-                TechUserId = CreatorUser.Id,
+                UserId = User.UserId,
+                TechUserId = CreatorUser.UserId,
                 Filename = Filename,
                 MimeType = MimeType,
                 Timestamp = DateTime.Now,
@@ -59,7 +59,7 @@ namespace Disco.BI.Extensions
         }
         public static ActiveDirectoryUserAccount ActiveDirectoryAccount(this User User, params string[] AdditionalProperties)
         {
-            return Interop.ActiveDirectory.ActiveDirectory.GetUserAccount(User.Id, AdditionalProperties);
+            return Disco.Services.Interop.ActiveDirectory.ActiveDirectory.RetrieveUserAccount(User.UserId, AdditionalProperties);
         }
 
         public static bool CanCreateJob(this User u)

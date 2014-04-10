@@ -1,5 +1,6 @@
 ﻿using Disco.Models.Repository;
 using Disco.Models.Services.Jobs.JobLists;
+using Disco.Services.Interop.ActiveDirectory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,10 +62,13 @@ namespace Disco.Services
             {
                 i.UserId = j.UserId;
                 i.UserDisplayName = j.User.DisplayName;
+
+                i.UserFriendlyId = UserExtensions.FriendlyUserId(j.UserId);
             }
             if (j.OpenedTechUser != null)
             {
                 i.OpenedTechUserId = j.OpenedTechUserId;
+                i.OpenedTechUserFriendlyId = UserExtensions.FriendlyUserId(j.OpenedTechUserId);
                 i.OpenedTechUserDisplayName = j.OpenedTechUser.DisplayName;
             }
 

@@ -65,6 +65,10 @@ namespace Disco.BI.Interop.Pdf
                     DataObjects = new object[DataObjectsIds.Length];
                     for (int idIndex = 0; idIndex < DataObjectsIds.Length; idIndex++)
                     {
+                        string dataObjectId = DataObjectsIds[idIndex];
+                        if (!dataObjectId.Contains('\\'))
+                            dataObjectId = Disco.Services.Interop.ActiveDirectory.ActiveDirectory.PrimaryDomain.NetBiosName + @"\" + dataObjectId;
+
                         DataObjects[idIndex] = UserService.GetUser(DataObjectsIds[idIndex], Database, true);
                         if (DataObjects[idIndex] == null)
                             throw new Exception(string.Format("Unknown Username specified: {0}", DataObjectsIds[idIndex]));
@@ -122,7 +126,7 @@ namespace Disco.BI.Interop.Pdf
                 if (pdfFieldKey.Equals("DiscoAttachmentId", StringComparison.InvariantCultureIgnoreCase))
                 {
                     AcroFields.Item fields = pdfStamper.AcroFields.Fields[pdfFieldKey];
-                    string fieldValue = dt.UniqueIdentifier(Data, CreatorUser.Id, TimeStamp);
+                    string fieldValue = dt.UniqueIdentifier(Data, CreatorUser.UserId, TimeStamp);
                     if (FlattenFields)
                         pdfStamper.AcroFields.SetField(pdfFieldKey, String.Empty);
                     else
@@ -132,7 +136,7 @@ namespace Disco.BI.Interop.Pdf
                     for (int pdfFieldOrdinal = 0; pdfFieldOrdinal < fields.Size; pdfFieldOrdinal++)
                     {
                         AcroFields.FieldPosition pdfFieldPosition = pdfFieldPositions[pdfFieldOrdinal];
-                        string pdfBarcodeContent = dt.UniquePageIdentifier(Data, CreatorUser.Id, TimeStamp, pdfFieldPosition.page);
+                        string pdfBarcodeContent = dt.UniquePageIdentifier(Data, CreatorUser.UserId, TimeStamp, pdfFieldPosition.page);
                         BarcodeQRCode pdfBarcode = new BarcodeQRCode(pdfBarcodeContent, (int)pdfFieldPosition.position.Width, (int)pdfFieldPosition.position.Height, null);
                         iTextSharp.text.Image pdfBarcodeImage = pdfBarcode.GetImage();
                         pdfBarcodeImage.SetAbsolutePosition(pdfFieldPosition.position.Left, pdfFieldPosition.position.Bottom);
@@ -237,7 +241,7 @@ namespace Disco.BI.Interop.Pdf
                 JobLog jl = new JobLog()
                 {
                     JobId = j.Id,
-                    TechUserId = CreatorUser.Id,
+                    TechUserId = CreatorUser.UserId,
                     Timestamp = DateTime.Now
                 };
                 jl.Comments = string.Format("Document Generated{0}{1} [{2}]", Environment.NewLine, dt.Description, dt.Id);

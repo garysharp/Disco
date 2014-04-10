@@ -14,5 +14,8 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.System
 
         [ClaimDetails("Configure Proxy Settings", "Can configure the proxy settings")]
         public bool ConfigureProxy { get; set; }
+
+        [ClaimDetails("Configure Active Directory Settings", "Can configure the Active Directory interoperability settings")]
+        public bool ConfigureActiveDirectory { get; set; }
     }
 }

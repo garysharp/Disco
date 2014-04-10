@@ -48,7 +48,7 @@ namespace Disco.BI.Extensions
 
                 WhoAmIResponse response = new WhoAmIResponse()
                 {
-                    Username = token.User.Id,
+                    Username = token.User.UserId,
                     DisplayName = token.User.DisplayName,
                     Type = token.Has(Claims.ComputerAccount) ? "Computer Account" : "User Account"
                 };

@@ -149,7 +149,7 @@ namespace Disco.BI.Extensions
                 throw new InvalidOperationException("Removing job from queue is Denied");
 
             jqj.RemovedDate = DateTime.Now;
-            jqj.RemovedUserId = Technician.Id;
+            jqj.RemovedUserId = Technician.UserId;
             jqj.RemovedComment = string.IsNullOrWhiteSpace(Comment) ? null : Comment.Trim();
         }
         #endregion
@@ -201,7 +201,7 @@ namespace Disco.BI.Extensions
                 JobQueueId = jq.Id,
                 JobId = j.Id,
                 AddedDate = DateTime.Now,
-                AddedUserId = Technician.Id,
+                AddedUserId = Technician.UserId,
                 AddedComment = string.IsNullOrWhiteSpace(Comment) ? null : Comment.Trim(),
                 SLAExpiresDate = SLAExpires,
                 Priority = Priority

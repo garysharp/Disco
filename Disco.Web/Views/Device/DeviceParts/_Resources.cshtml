@@ -31,7 +31,7 @@
                                   { @da.DocumentTemplate.Description}
                                   else
                                   { @da.Comments }}
-                            </span><span class="author">@da.TechUser.ToString()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && da.TechUserId == CurrentUser.Id))
+                            </span><span class="author">@da.TechUser.ToString()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && da.TechUserId == CurrentUser.UserId))
                                                                                       {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" title="@da.Timestamp.ToFullDateTime()" data-livestamp="@da.Timestamp.ToUnixEpoc()">@da.Timestamp.ToFullDateTime()</span>
                         </a>   
                         }
@@ -125,7 +125,7 @@
                                         }
                                         else if (canRemoveOwnAttachments)
                                         {
-                                        <text>buildAttachment(a, (a.AuthorId === '@(CurrentUser.Id)'), quick);</text>
+                                        <text>buildAttachment(a, (a.AuthorId === '@(CurrentUser.UserId)'), quick);</text>
                                         }
                                         else
                                         {

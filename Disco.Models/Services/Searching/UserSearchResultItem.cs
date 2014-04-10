@@ -13,7 +13,7 @@ namespace Disco.Models.Services.Searching
         public string Id { get; set; }
         public string Type { get { return type; } }
         public string Description { get { return string.Format("{0} ({1})", this.DisplayName, this.Id); } }
-        public string ScoreValue { get { return string.Format("{0} {1}", this.Id, this.DisplayName); } }
+        public string ScoreValue { get { return string.Format("{0} {1} {2}", this.Id.Substring(0, this.Id.IndexOf('\\')), this.Id, this.DisplayName); } }
 
         public int AssignedDevicesCount { get; set; }
         public string DisplayName { get; set; }

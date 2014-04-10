@@ -38,7 +38,7 @@
         {
             <div id="UserDetailTab-Authorization_NoAccess">
                 <h3>User Not Authorized</h3>
-                <p>The user (<span class="code">@(Model.User.Id)</span>) is not authorized to access any authenticated components.</p>
+                <p>The user (<span class="code">@(Model.User.UserId)</span>) is not authorized to access any authenticated components.</p>
                 @if (isDiscoAdmin)
                 {
                     @Html.ActionLinkButton("Configure Authorization Roles", MVC.Config.AuthorizationRole.Index(null), null, "small")

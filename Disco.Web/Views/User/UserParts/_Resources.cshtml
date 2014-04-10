@@ -31,7 +31,7 @@
                                   { @ua.DocumentTemplate.Description}
                                   else
                                   { @ua.Comments }}
-                            </span><span class="author">@ua.TechUser.ToString()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ua.TechUserId == CurrentUser.Id))
+                            </span><span class="author">@ua.TechUser.ToString()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ua.TechUserId == CurrentUser.UserId))
                                                                                       {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(ua.Timestamp.ToUnixEpoc())" title="@ua.Timestamp.ToFullDateTime()">@ua.Timestamp.ToFullDateTime()</span>
                         </a>   
                         }
@@ -87,7 +87,7 @@
                                     }
                                 }
                             },
-                            'UploadUrl=@(Url.Action(MVC.API.User.AttachmentUpload(Model.User.Id, null)))'
+                            'UploadUrl=@(Url.Action(MVC.API.User.AttachmentUpload(Model.User.UserId, null)))'
                         );
 
                         $attachmentInput = $Attachments.find('.attachmentInput');
@@ -122,7 +122,7 @@
                                         }
                                         else if (canRemoveOwnAttachments)
                                         {
-                                        <text>buildAttachment(a, (a.AuthorId === '@(CurrentUser.Id)'), quick);</text>
+                                        <text>buildAttachment(a, (a.AuthorId === '@(CurrentUser.UserId)'), quick);</text>
                                         }
                                         else
                                         {

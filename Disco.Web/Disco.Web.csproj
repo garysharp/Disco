@@ -196,6 +196,7 @@
     <Compile Include="Areas\API\Models\AuthorizationRole\SubjectItem.cs" />
     <Compile Include="Areas\API\Models\JobQueue\SubjectItem.cs" />
     <Compile Include="Areas\API\Models\Job\DeviceHeldLocationModel.cs" />
+    <Compile Include="Areas\API\Models\System\DomainOrganisationalUnitsModel.cs" />
     <Compile Include="Areas\Config\Controllers\AuthorizationRoleController.cs" />
     <Compile Include="Areas\Config\Controllers\JobPreferencesController.cs" />
     <Compile Include="Areas\Config\Controllers\JobQueueController.cs" />
@@ -543,6 +544,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Extensions\T4MVCExtensions.cs" />
     <Compile Include="Views\Job\JobParts\Queues.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

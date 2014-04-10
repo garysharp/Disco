@@ -663,7 +663,7 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Date Format");
                 }
             }
-            job.JobMetaNonWarranty.AccountingChargeRequiredUserId = CurrentUser.Id;
+            job.JobMetaNonWarranty.AccountingChargeRequiredUserId = CurrentUser.UserId;
             Database.SaveChanges();
             return new Models.Job._DateChangeModel()
             {
@@ -697,7 +697,7 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Date Format");
                 }
             }
-            job.JobMetaNonWarranty.AccountingChargeAddedUserId = CurrentUser.Id;
+            job.JobMetaNonWarranty.AccountingChargeAddedUserId = CurrentUser.UserId;
             Database.SaveChanges();
             return new Models.Job._DateChangeModel()
             {
@@ -731,7 +731,7 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Date Format");
                 }
             }
-            job.JobMetaNonWarranty.AccountingChargePaidUserId = CurrentUser.Id;
+            job.JobMetaNonWarranty.AccountingChargePaidUserId = CurrentUser.UserId;
             Database.SaveChanges();
             return new Models.Job._DateChangeModel()
             {
@@ -765,7 +765,7 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Date Format");
                 }
             }
-            job.JobMetaNonWarranty.PurchaseOrderRaisedUserId = CurrentUser.Id;
+            job.JobMetaNonWarranty.PurchaseOrderRaisedUserId = CurrentUser.UserId;
             Database.SaveChanges();
             return new Models.Job._DateChangeModel()
             {
@@ -808,7 +808,7 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Date Format");
                 }
             }
-            job.JobMetaNonWarranty.PurchaseOrderSentUserId = CurrentUser.Id;
+            job.JobMetaNonWarranty.PurchaseOrderSentUserId = CurrentUser.UserId;
             Database.SaveChanges();
             return new Models.Job._DateChangeModel()
             {
@@ -842,7 +842,7 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Date Format");
                 }
             }
-            job.JobMetaNonWarranty.InvoiceReceivedUserId = CurrentUser.Id;
+            job.JobMetaNonWarranty.InvoiceReceivedUserId = CurrentUser.UserId;
             Database.SaveChanges();
             return new Models.Job._DateChangeModel()
             {
@@ -991,7 +991,7 @@ namespace Disco.Web.Areas.API.Controllers
                     }
                 }
             }
-            job.JobMetaInsurance.ClaimFormSentUserId = CurrentUser.Id;
+            job.JobMetaInsurance.ClaimFormSentUserId = CurrentUser.UserId;
             Database.SaveChanges();
             return new Models.Job._DateChangeModel()
             {
@@ -1508,7 +1508,7 @@ namespace Disco.Web.Areas.API.Controllers
                         JobLog jobLog = new JobLog()
                         {
                             JobId = job.Id,
-                            TechUserId = CurrentUser.Id,
+                            TechUserId = CurrentUser.UserId,
                             Timestamp = DateTime.Now,
                             Comments = string.Format("Added Flag: {0}{1}Reason: {2}", flagStatus.Item1, Environment.NewLine, Reason)
                         };
@@ -1857,7 +1857,7 @@ namespace Disco.Web.Areas.API.Controllers
                 var jl = new Disco.Models.Repository.JobLog()
                 {
                     JobId = j.Id,
-                    TechUserId = CurrentUser.Id,
+                    TechUserId = CurrentUser.UserId,
                     Timestamp = DateTime.Now,
                     Comments = comment
                 };
@@ -1876,7 +1876,7 @@ namespace Disco.Web.Areas.API.Controllers
             var jl = Database.JobLogs.Find(id);
             if (jl != null)
             {
-                if (jl.TechUserId.Equals(CurrentUser.Id, StringComparison.InvariantCultureIgnoreCase))
+                if (jl.TechUserId.Equals(CurrentUser.UserId, StringComparison.InvariantCultureIgnoreCase))
                     Authorization.RequireAny(Claims.Job.Actions.RemoveAnyLogs, Claims.Job.Actions.RemoveOwnLogs);
                 else
                     Authorization.Require(Claims.Job.Actions.RemoveAnyLogs);
@@ -1950,7 +1950,7 @@ namespace Disco.Web.Areas.API.Controllers
                         var ja = new Disco.Models.Repository.JobAttachment()
                         {
                             JobId = j.Id,
-                            TechUserId = CurrentUser.Id,
+                            TechUserId = CurrentUser.UserId,
                             Filename = file.FileName,
                             MimeType = contentType,
                             Timestamp = DateTime.Now,
@@ -2012,7 +2012,7 @@ namespace Disco.Web.Areas.API.Controllers
             var ja = Database.JobAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (ja != null)
             {
-                if (ja.TechUserId.Equals(CurrentUser.Id, StringComparison.InvariantCultureIgnoreCase))
+                if (ja.TechUserId.Equals(CurrentUser.UserId, StringComparison.InvariantCultureIgnoreCase))
                     Authorization.RequireAny(Claims.Job.Actions.RemoveAnyAttachments, Claims.Job.Actions.RemoveOwnAttachments);
                 else
                     Authorization.Require(Claims.Job.Actions.RemoveAnyAttachments);
@@ -2046,7 +2046,7 @@ namespace Disco.Web.Areas.API.Controllers
                     JobId = j.Id,
                     Description = Description,
                     Cost = cost,
-                    TechUserId = CurrentUser.Id
+                    TechUserId = CurrentUser.UserId
                 };
                 Database.JobComponents.Add(jc);
                 Database.SaveChanges();

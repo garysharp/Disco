@@ -2,6 +2,7 @@
 using Disco.Models.Repository;
 using Disco.Models.UI.Config.DeviceProfile;
 using Disco.Services.Authorization;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins;
 using Disco.Services.Plugins.Features.CertificateProvider;
 using Disco.Services.Plugins.Features.UIExtension;
@@ -75,7 +76,8 @@ namespace Disco.Web.Areas.Config.Controllers
                 {
                     ComputerNameTemplate = DeviceProfile.DefaultComputerNameTemplate,
                     ProvisionADAccount = true,
-                    DistributionType = DeviceProfile.DistributionTypes.OneToMany
+                    DistributionType = DeviceProfile.DistributionTypes.OneToMany,
+                    OrganisationalUnit = ActiveDirectory.PrimaryDomain.GetDefaultComputerContainer()
                 }
             };
 

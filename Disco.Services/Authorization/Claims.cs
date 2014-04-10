@@ -59,6 +59,7 @@ namespace Disco.Services.Authorization
 				{ "Config.Plugin.Install", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Plugin.Install, (c, v) => c.Config.Plugin.Install = v, "Install/Update Plugins", "Can install and update plugins", false) },
 				{ "Config.Plugin.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Plugin.Show, (c, v) => c.Config.Plugin.Show = v, "Show Plugins", "Can show plugins", false) },
 				{ "Config.Plugin.Uninstall", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Plugin.Uninstall, (c, v) => c.Config.Plugin.Uninstall = v, "Uninstall Plugins", "Can uninstall plugins", false) },
+				{ "Config.System.ConfigureActiveDirectory", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.System.ConfigureActiveDirectory, (c, v) => c.Config.System.ConfigureActiveDirectory = v, "Configure Active Directory Settings", "Can configure the Active Directory interoperability settings", false) },
 				{ "Config.System.ConfigureProxy", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.System.ConfigureProxy, (c, v) => c.Config.System.ConfigureProxy = v, "Configure Proxy Settings", "Can configure the proxy settings", false) },
 				{ "Config.System.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.System.Show, (c, v) => c.Config.System.Show = v, "Show System Configuration", "Can show the system configuration", false) },
 				{ "Config.Organisation.ConfigureAddresses", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Organisation.ConfigureAddresses, (c, v) => c.Config.Organisation.ConfigureAddresses = v, "Configure Addresses", "Can configure organisation addresses", false) },
@@ -286,6 +287,7 @@ namespace Disco.Services.Authorization
 				            new ClaimNavigatorItem("Config.Plugin.Uninstall", false)
 				        }),
 				        new ClaimNavigatorItem("Config.System", "System", "Permissions related to System Configuration", false, new List<IClaimNavigatorItem>() {
+				            new ClaimNavigatorItem("Config.System.ConfigureActiveDirectory", false),
 				            new ClaimNavigatorItem("Config.System.ConfigureProxy", false),
 				            new ClaimNavigatorItem("Config.System.Show", false)
 				        }),
@@ -551,6 +553,7 @@ namespace Disco.Services.Authorization
 			c.Config.Plugin.Install = true;
 			c.Config.Plugin.Show = true;
 			c.Config.Plugin.Uninstall = true;
+			c.Config.System.ConfigureActiveDirectory = true;
 			c.Config.System.ConfigureProxy = true;
 			c.Config.System.Show = true;
 			c.Config.Organisation.ConfigureAddresses = true;
@@ -955,6 +958,11 @@ namespace Disco.Services.Authorization
             /// </summary>
             public static class System
             {
+
+                /// <summary>Configure Active Directory Settings
+                /// <para>Can configure the Active Directory interoperability settings</para>
+                /// </summary>
+                public const string ConfigureActiveDirectory = "Config.System.ConfigureActiveDirectory";
 
                 /// <summary>Configure Proxy Settings
                 /// <para>Can configure the proxy settings</para>

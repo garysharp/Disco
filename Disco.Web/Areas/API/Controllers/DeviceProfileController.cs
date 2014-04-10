@@ -1,6 +1,7 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Web;
 using System;
 using System.Linq;
@@ -90,7 +91,7 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Device Profile Number");
                 }
                 if (redirect.HasValue && redirect.Value)
-                    return RedirectToAction(MVC.Config.DeviceModel.Index(deviceProfile.Id));
+                    return RedirectToAction(MVC.Config.DeviceProfile.Index(deviceProfile.Id));
                 else
                     return Json("OK", JsonRequestBehavior.AllowGet);
             }
@@ -245,11 +246,13 @@ namespace Disco.Web.Areas.API.Controllers
         private void UpdateOrganisationalUnit(Disco.Models.Repository.DeviceProfile deviceProfile, string OrganisationalUnit)
         {
             if (string.IsNullOrWhiteSpace(OrganisationalUnit))
-                OrganisationalUnit = null;
+                OrganisationalUnit = ActiveDirectory.PrimaryDomain.GetDefaultComputerContainer();
 
-            deviceProfile.OrganisationalUnit = OrganisationalUnit;
-
-            Database.SaveChanges();
+            if (OrganisationalUnit != deviceProfile.OrganisationalUnit)
+            {
+                deviceProfile.OrganisationalUnit = OrganisationalUnit;
+                Database.SaveChanges();
+            }
         }
 
         private void UpdateComputerNameTemplate(Disco.Models.Repository.DeviceProfile deviceProfile, string ComputerNameTemplate)
@@ -363,13 +366,6 @@ namespace Disco.Web.Areas.API.Controllers
             throw new Exception("Invalid Boolean Value");
         }
         #endregion
-
-        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult OrganisationalUnits()
-        {
-            var OUs = BI.Interop.ActiveDirectory.ActiveDirectory.GetOrganisationalUnitStructure();
-            return Json(OUs, JsonRequestBehavior.AllowGet);
-        }
 
         #region Actions
 

@@ -3,6 +3,7 @@ using Disco.Models.Interop.ActiveDirectory;
 using Disco.Models.Repository;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.Services.Searching;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace Disco.Services.Searching
                         j.Id == termInt ||
                         j.Device.SerialNumber.Contains(Term) ||
                         j.Device.AssetNumber.Contains(Term) ||
-                        j.User.Id == Term ||
+                        j.User.UserId == Term ||
                         j.User.DisplayName.Contains(Term));
             }
             else
@@ -37,7 +38,7 @@ namespace Disco.Services.Searching
                 query = Database.Jobs.Where(j =>
                         j.Device.SerialNumber.Contains(Term) ||
                         j.Device.AssetNumber.Contains(Term) ||
-                        j.User.Id == Term ||
+                        j.User.UserId == Term ||
                         j.User.DisplayName.Contains(Term));
             }
 
@@ -75,7 +76,7 @@ namespace Disco.Services.Searching
                         j.DeviceHeldLocation.Contains(Term) ||
                         j.Device.SerialNumber.Contains(Term) ||
                         j.Device.AssetNumber.Contains(Term) ||
-                        j.User.Id == Term ||
+                        j.User.UserId == Term ||
                         j.User.Surname.Contains(Term) ||
                         j.User.GivenName.Contains(Term) ||
                         j.User.DisplayName.Contains(Term) ||
@@ -89,7 +90,7 @@ namespace Disco.Services.Searching
                         j.DeviceHeldLocation.Contains(Term) ||
                         j.Device.SerialNumber.Contains(Term) ||
                         j.Device.AssetNumber.Contains(Term) ||
-                        j.User.Id == Term ||
+                        j.User.UserId == Term ||
                         j.User.Surname.Contains(Term) ||
                         j.User.GivenName.Contains(Term) ||
                         j.User.DisplayName.Contains(Term));
@@ -103,7 +104,7 @@ namespace Disco.Services.Searching
                         j.DeviceHeldLocation.Contains(Term) ||
                         j.Device.SerialNumber.Contains(Term) ||
                         j.Device.AssetNumber.Contains(Term) ||
-                        j.User.Id == Term ||
+                        j.User.UserId == Term ||
                         j.User.Surname.Contains(Term) ||
                         j.User.GivenName.Contains(Term) ||
                         j.User.DisplayName.Contains(Term) ||
@@ -116,7 +117,7 @@ namespace Disco.Services.Searching
                         j.DeviceHeldLocation.Contains(Term) ||
                         j.Device.SerialNumber.Contains(Term) ||
                         j.Device.AssetNumber.Contains(Term) ||
-                        j.User.Id == Term ||
+                        j.User.UserId == Term ||
                         j.User.Surname.Contains(Term) ||
                         j.User.GivenName.Contains(Term) ||
                         j.User.DisplayName.Contains(Term));
@@ -148,7 +149,7 @@ namespace Disco.Services.Searching
             UserService.SearchUsers(Database, Term);
 
             var matches = Database.Users.Where(u =>
-                u.Id.Contains(Term) ||
+                u.UserId.Contains(Term) ||
                 u.Surname.Contains(Term) ||
                 u.GivenName.Contains(Term) ||
                 u.DisplayName.Contains(Term)
@@ -159,7 +160,7 @@ namespace Disco.Services.Searching
 
             return matches.Select(u => new UserSearchResultItem()
             {
-                Id = u.Id,
+                Id = u.UserId,
                 Surname = u.Surname,
                 GivenName = u.GivenName,
                 DisplayName = u.DisplayName,
@@ -170,7 +171,7 @@ namespace Disco.Services.Searching
 
         public static List<User> SearchUsersUpstream(string Term, int? LimitCount = null)
         {
-            IEnumerable<ActiveDirectoryUserAccount> matches = UserService.SearchUsers(Term);
+            IEnumerable<ActiveDirectoryUserAccount> matches = ActiveDirectory.SearchUserAccounts(Term);
 
             if (LimitCount.HasValue)
                 matches = matches.Take(LimitCount.Value);
@@ -190,7 +191,7 @@ namespace Disco.Services.Searching
             {
                 query = Database.Devices.Where(d =>
                     d.AssetNumber.Contains(Term) ||
-                    d.ComputerName.Contains(Term) ||
+                    d.DeviceDomainId.Contains(Term) ||
                     d.SerialNumber.Contains(Term) ||
                     d.Location.Contains(Term) ||
                     Term.Contains(d.SerialNumber) ||
@@ -201,7 +202,7 @@ namespace Disco.Services.Searching
             {
                 query = Database.Devices.Where(d =>
                     d.AssetNumber.Contains(Term) ||
-                    d.ComputerName.Contains(Term) ||
+                    d.DeviceDomainId.Contains(Term) ||
                     d.SerialNumber.Contains(Term) ||
                     d.Location.Contains(Term) ||
                     Term.Contains(d.SerialNumber));
@@ -232,7 +233,7 @@ namespace Disco.Services.Searching
             {
                 Id = d.SerialNumber,
                 AssetNumber = d.AssetNumber,
-                ComputerName = d.ComputerName,
+                ComputerName = d.DeviceDomainId,
                 DeviceModelDescription = d.DeviceModel.Description,
                 DeviceProfileDescription = d.DeviceProfile.Description,
                 DecommissionedDate = d.DecommissionedDate,

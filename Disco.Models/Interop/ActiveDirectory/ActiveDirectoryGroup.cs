@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Disco.Models.Interop.ActiveDirectory
 {
     public class ActiveDirectoryGroup : IActiveDirectoryObject
     {
-        public string Name { get; set; }
-        public string DistinguishedName { get; set; }
+        public string Domain { get; set; }
         public string SamAccountName { get; set; }
+
+        public string DistinguishedName { get; set; }
         public string SecurityIdentifier { get; set; }
         public string CommonName { get; set; }
 
+        public string Name { get; set; }
+
         public List<string> MemberOf { get; set; }
+
+        public string NetBiosId { get { return string.Format(@"{0}\{1}", Domain, SamAccountName); } }
     }
 }

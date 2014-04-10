@@ -5,6 +5,7 @@ using System.Text;
 using Quartz;
 using System.Web.Script.Serialization;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Disco.Services.Tasks
 {
@@ -16,7 +17,7 @@ namespace Disco.Services.Tasks
         private string _triggerKey;
         private string _taskName;
         private Type _taskType;
-        private EventWaitHandle _waitHandle;
+        private TaskCompletionSource<ScheduledTaskStatus> _tcs;
         private bool _isSilent;
 
         private byte _progress;
@@ -72,6 +73,14 @@ namespace Disco.Services.Tasks
             }
         }
 
+        public Task CompletionTask
+        {
+            get
+            {
+                return _tcs.Task;
+            }
+        }
+
         #endregion
 
         #region Events
@@ -87,7 +96,7 @@ namespace Disco.Services.Tasks
         {
             this._taskName = Task.TaskName;
             this._taskType = Task.GetType();
-            this._waitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
+            this._tcs = new TaskCompletionSource<ScheduledTaskStatus>();
 
             this._sessionId = SessionId;
             this._triggerKey = TriggerKey;
@@ -294,11 +303,13 @@ namespace Disco.Services.Tasks
         }
         internal void Finally()
         {
-            this._waitHandle.Set();
+            this._tcs.SetResult(this);
         }
         public void Reset(DateTime? NextScheduledTimestamp)
         {
-            this._waitHandle.Reset();
+            if (this._tcs != null)
+                this._tcs.Task.Dispose();
+            this._tcs = new TaskCompletionSource<ScheduledTaskStatus>();
 
             List<string> changedProperties = new List<string>();
 
@@ -352,7 +363,7 @@ namespace Disco.Services.Tasks
         }
         public bool WaitUntilFinished(TimeSpan Timeout)
         {
-            return this._waitHandle.WaitOne(Timeout);
+            return this._tcs.Task.Wait(Timeout);
         }
         #endregion
 

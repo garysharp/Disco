@@ -1,5 +1,4 @@
-﻿using Disco.BI.Interop.ActiveDirectory;
-using Disco.Models.Interop.ActiveDirectory;
+﻿using Disco.Models.Interop.ActiveDirectory;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
 using Disco.Services.Jobs.JobQueues;
@@ -9,6 +8,7 @@ using System;
 using System.Linq;
 using System.Web.Mvc;
 using System.Collections.Generic;
+using Disco.Services.Interop.ActiveDirectory;
 
 namespace Disco.Web.Areas.API.Controllers
 {
@@ -288,7 +288,7 @@ namespace Disco.Web.Areas.API.Controllers
             // Validate Subjects
             if (Subjects != null && Subjects.Length > 0)
             {
-                var subjects = Subjects.Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).Select(s => new Tuple<string, IActiveDirectoryObject>(s, ActiveDirectory.GetObject(s))).ToList();
+                var subjects = Subjects.Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).Select(s => new Tuple<string, IActiveDirectoryObject>(s, ActiveDirectory.RetrieveObject(s))).ToList();
                 var invalidSubjects = subjects.Where(s => s.Item2 == null).ToList();
 
                 if (invalidSubjects.Count > 0)
@@ -370,8 +370,8 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
         public virtual ActionResult SearchSubjects(string term)
         {
-            var groupResults = BI.Interop.ActiveDirectory.ActiveDirectory.SearchGroups(term).Cast<IActiveDirectoryObject>();
-            var userResults = BI.Interop.ActiveDirectory.ActiveDirectory.SearchUsers(term).Cast<IActiveDirectoryObject>();
+            var groupResults = ActiveDirectory.SearchGroups(term).Cast<IActiveDirectoryObject>();
+            var userResults = ActiveDirectory.SearchUserAccounts(term).Cast<IActiveDirectoryObject>();
 
             var results = groupResults.Concat(userResults).OrderBy(r => r.SamAccountName)
                 .Select(r => Models.JobQueue.SubjectItem.FromActiveDirectoryObject(r)).ToList();
@@ -382,7 +382,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
         public virtual ActionResult Subject(string Id)
         {
-            var subject = ActiveDirectory.GetObject(Id);
+            var subject = ActiveDirectory.RetrieveObject(Id);
 
             if (subject == null || !(subject is ActiveDirectoryUserAccount || subject is ActiveDirectoryGroup))
                 return Json(null, JsonRequestBehavior.AllowGet);

@@ -8,6 +8,9 @@ using System.Data.SqlClient;
 using Disco.Data.Repository;
 using Disco.Models.BI.Interop.Community;
 using Disco.Services.Tasks;
+using Disco.Models.Interop.ActiveDirectory;
+using System.DirectoryServices.ActiveDirectory;
+using Disco.Services.Interop.ActiveDirectory;
 
 namespace Disco.Web.Areas.Config.Models.SystemConfig
 {
@@ -72,6 +75,20 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
         }
         #endregion
 
+        #region Active Directory
+
+        [Display(Name="Search Entire Forest")]
+        public bool ADSearchEntireForest { get; set; }
+
+        public ActiveDirectoryDomain ADPrimaryDomain { get; set; }
+        public List<ActiveDirectoryDomain> ADAdditionalDomains { get; set; }
+        public ActiveDirectorySite ADSite { get; set; }
+        public List<Tuple<DirectoryServer, bool>> ADSiteServers { get; set; }
+        public List<Tuple<string, ActiveDirectoryDomain, string>> ADSearchContainers { get; set; }
+        public List<string> ADForestServers { get; set; }
+
+        #endregion
+
         #region Proxy
         public string ProxyAddress { get; set; }
         public int ProxyPort { get; set; }
@@ -87,7 +104,7 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
 
         public static IndexModel FromConfiguration(SystemConfiguration config)
         {
-            return new IndexModel()
+            var m = new IndexModel()
             {
                 DiscoVersion = typeof(DiscoApplication).Assembly.GetName().Version,
                 DataStoreLocation = config.DataStoreLocation,
@@ -100,27 +117,33 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
                 UpdateNextScheduled = Disco.BI.Interop.Community.UpdateCheckTask.NextScheduled,
                 UpdateBetaDeployment = config.UpdateBetaDeployment
             };
-        }
 
-        public void ToConfiguration(DiscoDataContext Database)
-        {
-            SystemConfiguration config = Database.DiscoConfiguration;
-            //config.DataStoreLocation = DataStoreLocation;
-            config.ProxyAddress = ProxyAddress;
-            config.ProxyPort = ProxyPort;
-            config.ProxyUsername = ProxyUsername;
-            config.ProxyPassword = ProxyPassword;
-            DiscoApplication.SetGlobalProxy(ProxyAddress, ProxyPort, ProxyUsername, ProxyPassword);
-
-            Database.SaveChanges();
-
-            // Try and check for updates if needed - After Proxy Changed
-            if (Database.DiscoConfiguration.UpdateLastCheck == null
-                || Database.DiscoConfiguration.UpdateLastCheck.ResponseTimestamp < DateTime.Now.AddDays(-1))
+            // AD
+            m.ADPrimaryDomain = ActiveDirectory.PrimaryDomain;
+            m.ADAdditionalDomains = ActiveDirectory.Domains.Where(d => d != m.ADPrimaryDomain).ToList();
+            m.ADSite = ActiveDirectory.Site;
+            m.ADSiteServers = m.ADSite.Servers.Cast<DirectoryServer>().Select(s => Tuple.Create(s, s.Reachable())).ToList();
+            var configSearchContainers = config.ActiveDirectory.SearchContainers;
+            m.ADSearchContainers = configSearchContainers == null ? null : configSearchContainers.Select(c =>
             {
-                Disco.BI.Interop.Community.UpdateCheckTask.ScheduleNow();
-            }
-        }
+                var d = ActiveDirectory.GetDomainByDistinguishedName(c);
+                return Tuple.Create(c, d, d.GetFriendlyOrganisationalUnitName(c));
+            }).ToList();
 
+            var loadForestServersTask = ActiveDirectory.LoadForestServersAsync();
+            if (loadForestServersTask.Wait(TimeSpan.FromSeconds(3)))
+            {
+                m.ADForestServers = loadForestServersTask.Result;
+                var configValue = config.ActiveDirectory.SearchEntireForest ?? true;
+                m.ADSearchEntireForest = configValue && m.ADForestServers.Count <= ActiveDirectory.MaxForestServerSearch;
+            }
+            else
+            {
+                m.ADForestServers = null;
+                m.ADSearchEntireForest = config.ActiveDirectory.SearchEntireForest ?? true;
+            }
+
+            return m;
+        }
     }
 }

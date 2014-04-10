@@ -175,10 +175,7 @@
     <Compile Include="BI\DocumentTemplateBI\Importer\DocumentImporterCleanCacheJob.cs" />
     <Compile Include="BI\DocumentTemplateBI\Importer\DocumentImporterLog.cs" />
     <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectory.cs" />
-    <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryCachedGroups.cs" />
-    <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryGroupExtensions.cs" />
     <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryHelpers.cs" />
-    <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryMachineAccountExtensions.cs" />
     <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryOrganisationalUnit.cs" />
     <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryUpdateLastNetworkLogonDateJob.cs" />
     <Compile Include="BI\Interop\ActiveDirectory\ActiveDirectoryUserAccountExtensions.cs" />

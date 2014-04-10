@@ -136,7 +136,7 @@ namespace Disco.BI.Extensions
                         if (!(Data is User))
                             throw new ArgumentException("This Document Template is configured for Users only", "Data");
                         User d3 = (User)Data;
-                        return d3.Id;
+                        return d3.UserId;
                     default:
                         throw new InvalidOperationException("Invalid Document Template Scope");
                 }

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Disco.BI.Extensions;
 using Disco.Models.Repository;
-using Disco.BI.Extensions;
-using Disco.BI.Interop.ActiveDirectory;
+using Disco.Services.Interop.ActiveDirectory;
+using System;
 
 namespace Disco.BI.Expressions.Extensions
 {

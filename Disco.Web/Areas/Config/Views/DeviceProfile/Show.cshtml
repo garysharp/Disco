@@ -10,8 +10,8 @@
 
     if (canConfig)
     {
-        Html.BundleDeferred("~/Style/jQueryUI/dynatree");
-        Html.BundleDeferred("~/ClientScripts/Modules/jQueryUI-DynaTree");
+        Html.BundleDeferred("~/Style/Fancytree");
+        Html.BundleDeferred("~/ClientScripts/Modules/jQuery-Fancytree");
     }
 }
 <div id="configurationDeviceProfileShow" class="form" style="width: 640px">
@@ -322,7 +322,8 @@
             </td>
         </tr>
         <tr>
-            <th>Computer Name<br />Template Expression:
+            <th>Computer Name<br />
+                Template Expression:
             </th>
             <td>@if (canConfig && canConfigExpression)
                 {
@@ -517,125 +518,135 @@
             </td>
         </tr>
         <tr>
-            <th>Default Organisational Unit:
+            <th>Organisational Unit:
             </th>
             <td>@if (canConfig)
                 {
-                @Html.HiddenFor(model => model.DeviceProfile.OrganisationalUnit)
-                <div id="displayOrganisationalUnit" class="code">
+                <div id="DeviceProfile_OrganisationalUnit" class="code" data-value="@Model.DeviceProfile.OrganisationalUnit">
+                    @if (string.IsNullOrEmpty(Model.DeviceProfile.OrganisationalUnit))
+                    {
+                        <span>{Default Computers Container}</span>
+                    }
+                    else
+                    {
+                        var domain = Disco.Services.Interop.ActiveDirectory.ActiveDirectory.GetDomainByDistinguishedName(Model.DeviceProfile.OrganisationalUnit);
+                        
+                        <span>
+                            @Disco.Services.Interop.ActiveDirectory.ActiveDirectoryExtensions.GetFriendlyOrganisationalUnitName(domain, Model.DeviceProfile.OrganisationalUnit)
+                        </span>
+                    }
                 </div>
                 <a id="changeOrganisationalUnit" href="#" class="button small">Change</a>@AjaxHelpers.AjaxLoader()
-                <div id="dialogOrganisationalUnit" title="Default Organisational Unit">
-                    <div id="treeOrganisationalUnit">
+                <div id="dialogOrganisationalUnit" title="Organisational Unit" class="dialog">
+                    <div id="treeOrganisationalUnit" class="organisationalUnitTree">
                     </div>
                 </div>
                 <script type="text/javascript">
                     $(function () {
-                        var ouValue = $('#DeviceProfile_OrganisationalUnit');
-                        var ouDisplay = $('#displayOrganisationalUnit');
-                        var ouTree = $('#treeOrganisationalUnit');
-                        var ouChangeLink = $('#changeOrganisationalUnit');
-                        var ouTreeLoaded = false;
-                        var ouFriendlyName = function (ou) {
-                            return ou.replace(/ou=/gi, '').split(',').reverse().join(' > ');
-                        };
-                        var updateDisplayOrganisationalUnit = function () {
-                            var value = ouValue.val();
-                            if (value) {
-                                ouDisplay.text(ouFriendlyName(value));
-                            } else {
-                                ouDisplay.text('{Default Computers Container}');
-                            }
-                        };
+                        var ouSetUrl = '@Url.Action(MVC.API.DeviceProfile.UpdateOrganisationalUnit(Model.DeviceProfile.Id, null, true))';
+                        var ouValue = $('#DeviceProfile_OrganisationalUnit').attr('data-value');
+                        var $ouTree = null;
+                        var ouTree = null;
+                        var $dialog = null;
                         var ouSet = function (ou) {
-                            $ajaxLoading = ouChangeLink.next('.ajaxLoading').show();
-                            var data = { OrganisationalUnit: ou };
-                            $.getJSON('@Url.Action(MVC.API.DeviceProfile.UpdateOrganisationalUnit(Model.DeviceProfile.Id, null))', data, function (response, result) {
-                                if (result != 'success' || response != 'OK') {
-                                    alert('Unable to change Organisational Unit:\n' + response);
-                                    $ajaxLoading.hide();
-                                } else {
-                                    ouValue.val(ou);
-                                    updateDisplayOrganisationalUnit();
-                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                }
-                            });
+                            var url = ouSetUrl + '&' + $.param({ OrganisationalUnit: ou })
+                            window.location.href = url;
                         }
-                        var ouUpdateTree = function () {
-                            var dynaTree = ouTree.dynatree("getTree");
-                            var value = ouValue.val();
-                            if (value) {
-                                dynaTree.activateKey(value);
-                            } else {
-                                var activeNode = dynaTree.getActiveNode();
-                                if (activeNode)
-                                    activeNode.deactivate();
+                        var expandNodeTree = function (node) {
+                            var parent = node.parent;
+                            if (parent) {
+                                expandNodeTree(parent);
+                                parent.setExpanded(true, { noAnimation: true, noEvents: false });
                             }
                         }
+                        var expandAndFocusNode = function (nodeKey) {
+                            if (ouTree) {
+                                var ouNode = ouTree.getNodeByKey(ouValue);
+                                if (ouNode) {
+                                    expandNodeTree(ouNode);
+                                    ouNode.setFocus(true);
+                                    ouNode.setActive(true);
 
-                        var ouDialog = $('#dialogOrganisationalUnit').dialog({
-                            autoOpen: false,
-                            buttons: {
-                                'Use Default Container': function () {
-                                    ouSet('');
-                                    $(this).dialog("close");
-                                },
-                                'Save': function () {
-                                    var node = ouTree.dynatree("getTree").getActiveNode();
-                                    if (node) {
-                                        ouSet(node.data.key);
-                                        $(this).dialog("close");
-                                    } else {
-                                        alert('Select an Organisational Unit to Save')
-                                    }
+                                    var li = ouNode.li;
+                                    var liOffset = li.offsetParent;
+                                    if (li.offsetTop + li.offsetHeight > liOffset.offsetHeight)
+                                        $(liOffset).animate({ 'scrollTop': li.offsetTop - liOffset.offsetHeight + li.offsetHeight + 4 }, 'fast');
                                 }
-                            },
-                            draggable: false,
-                            modal: true,
-                            resizable: false,
-                            width: 400,
-                            height: 400
-                        });
-
-                        var ouChange = function () {
-                            if (!ouTreeLoaded) {
-                                $.getJSON('@(Url.Action(MVC.API.DeviceProfile.OrganisationalUnits()))', null, function (data) {
-                                var dynatreeDataTransformer = function (element) {
-                                    var child = {
-                                        title: element.Name,
-                                        key: element.Path,
-                                        isFolder: true
-                                    }
-                                    if (element.Children) {
-                                        child.children = [];
-                                        for (var i = 0; i < element.Children.length; i++) {
-                                            child.children.push(dynatreeDataTransformer(element.Children[i]));
-                                        }
-                                    }
-                                    return child;
-                                };
-                                var dynatreeData = [];
-                                for (var i = 0; i < data.length; i++) {
-                                    dynatreeData.push(dynatreeDataTransformer(data[i]));
-                                }
-
-                                ouTree.dynatree({
-                                    children: dynatreeData,
-                                    onActivate: function (node) {
-                                        //alert('node selected: ' + node.data.key);
-                                    }
-                                });
-                                ouTreeLoaded = true;
-                                ouUpdateTree();
-                            });
-                        } else {
-                            ouUpdateTree();
+                            }
                         }
-                            ouDialog.dialog('open');
+                        var ouChange = function () {
+                            if (!$dialog) {
+
+                                $dialog = $('#dialogOrganisationalUnit').dialog({
+                                    autoOpen: false,
+                                    buttons: null,
+                                    draggable: false,
+                                    modal: true,
+                                    resizable: false,
+                                    width: 500,
+                                    height: 500
+                                });
+                                $ouTree = $('#treeOrganisationalUnit');
+                                $dialog.css('overflow', 'visible');
+                                $ouTree.css('height', '100%');
+
+                                $.getJSON('@(Url.Action(MVC.API.System.DomainOrganisationalUnits()))', null, function (data) {
+
+                                    // Make 'Domains' unselectable
+                                    $.each(data, function (i, node) {
+                                        node.unselectable = true;
+                                    });
+
+                                    ouTree = $ouTree.fancytree({
+                                        source: data,
+                                        checkbox: false,
+                                        selectMode: 1,
+                                        keyboard: false,
+                                        fx: null
+                                    }).fancytree('getTree');
+
+                                    ouTree.$container.css('position', 'relative');
+
+                                    // Set Buttons
+                                    $dialog.dialog('option', 'buttons', {
+                                        'Use Default Container': function () {
+                                            var $this = $(this);
+                                            $this.css('overflow', 'hidden');
+                                            $this.dialog("disable");
+                                            $this.dialog("option", "buttons", null);
+                                            ouSet('');
+                                        },
+                                        'Save': function () {
+                                            var node = ouTree.getActiveNode();
+                                            if (node && node.key.substr(0, 3).toLowerCase() == 'ou=') {
+                                                var $this = $(this);
+                                                $this.css('overflow', 'hidden');
+                                                $this.dialog("disable");
+                                                $this.dialog("option", "buttons", null);
+                                                ouSet(node.key);
+                                            } else {
+                                                alert('Select an Organisational Unit to Save')
+                                            }
+                                        }
+                                    });
+
+                                    // Expand
+                                    expandAndFocusNode(ouValue);
+
+                                    ouTree.options.fx = { height: "toggle", duration: 200 };
+                                });
+                            }
+                            $dialog.dialog('open');
+
+                            if (ouTree) {
+                                // Expand
+                                expandAndFocusNode(ouValue);
+                            }
+
+                            return false;
                         };
 
-                        ouChangeLink.click(ouChange);
-                        updateDisplayOrganisationalUnit();
+                        $('#changeOrganisationalUnit').click(ouChange);
                     });
                 </script>
                 }
@@ -648,8 +659,10 @@
                     }
                     else
                     {
+                        var domain = Disco.Services.Interop.ActiveDirectory.ActiveDirectory.GetDomainByDistinguishedName(Model.DeviceProfile.OrganisationalUnit);
+                        
                         <span>
-                            @string.Join(" > ", Model.DeviceProfile.OrganisationalUnit.Split(',').Select(s => s.Substring(3)).Reverse())
+                            @Disco.Services.Interop.ActiveDirectory.ActiveDirectoryExtensions.GetFriendlyOrganisationalUnitName(domain, Model.DeviceProfile.OrganisationalUnit)
                         </span>
                     }
                 </div>

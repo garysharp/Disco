@@ -1,5 +1,6 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Services.Authorization;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using System;
@@ -61,8 +62,13 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.User.Actions.AddAttachments)]
-        public virtual ActionResult AttachmentUpload(string id, string Comments)
+        public virtual ActionResult AttachmentUpload(string id, string Domain, string Comments)
         {
+            if (string.IsNullOrEmpty(Domain))
+                id = ActiveDirectory.PrimaryDomain.NetBiosName + @"\" + id;
+            else
+                id = Domain + @"\" + id;
+
             var u = Database.Users.Find(id);
             if (u != null)
             {
@@ -77,7 +83,7 @@ namespace Disco.Web.Areas.API.Controllers
 
                         var ua = new Disco.Models.Repository.UserAttachment()
                         {
-                            UserId = u.Id,
+                            UserId = u.UserId,
                             TechUserId = UserService.CurrentUserId,
                             Filename = file.FileName,
                             MimeType = contentType,
@@ -118,9 +124,14 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.User.ShowAttachments)]
-        public virtual ActionResult Attachments(string id)
+        public virtual ActionResult Attachments(string id, string Domain)
         {
-            var u = Database.Users.Include("UserAttachments.TechUser").Where(m => m.Id == id).FirstOrDefault();
+            if (string.IsNullOrEmpty(Domain))
+                id = ActiveDirectory.PrimaryDomain.NetBiosName + @"\" + id;
+            else
+                id = Domain + @"\" + id;
+
+            var u = Database.Users.Include("UserAttachments.TechUser").Where(m => m.UserId == id).FirstOrDefault();
             if (u != null)
             {
                 var m = new Models.Attachment.AttachmentsModel()
@@ -140,7 +151,7 @@ namespace Disco.Web.Areas.API.Controllers
             var ua = Database.UserAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (ua != null)
             {
-                if (ua.TechUserId.Equals(CurrentUser.Id, StringComparison.InvariantCultureIgnoreCase))
+                if (ua.TechUserId.Equals(CurrentUser.UserId, StringComparison.InvariantCultureIgnoreCase))
                     Authorization.RequireAny(Claims.User.Actions.RemoveAnyAttachments, Claims.User.Actions.RemoveOwnAttachments);
                 else
                     Authorization.Require(Claims.User.Actions.RemoveAnyAttachments);
@@ -155,12 +166,18 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         [DiscoAuthorize(Claims.User.Actions.GenerateDocuments)]
-        public virtual ActionResult GeneratePdf(string id, string DocumentTemplateId)
+        public virtual ActionResult GeneratePdf(string id, string Domain, string DocumentTemplateId)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException("id");
             if (string.IsNullOrEmpty(DocumentTemplateId))
                 throw new ArgumentNullException("AttachmentTypeId");
+
+            if (string.IsNullOrEmpty(Domain))
+                id = ActiveDirectory.PrimaryDomain.NetBiosName + @"\" + id;
+            else
+                id = Domain + @"\" + id;
+
             var user = Database.Users.Find(id);
             if (user != null)
             {
@@ -174,7 +191,7 @@ namespace Disco.Web.Areas.API.Controllers
                         pdf = documentTemplate.GeneratePdf(Database, user, UserService.CurrentUser, timeStamp, generationState);
                     }
                     Database.SaveChanges();
-                    return File(pdf, "application/pdf", string.Format("{0}_{1}_{2:yyyyMMdd-HHmmss}.pdf", documentTemplate.Id, user.Id, timeStamp));
+                    return File(pdf, "application/pdf", string.Format("{0}_{1}_{2:yyyyMMdd-HHmmss}.pdf", documentTemplate.Id, user.UserId, timeStamp));
                 }
                 else
                 {

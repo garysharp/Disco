@@ -753,7 +753,7 @@ WriteLiteral(">");
 
             
             #line 192 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                                    Write(Model.Job.Device.ComputerName);
+                                                                                    Write(Model.Job.Device.DeviceDomainId);
 
             
             #line default
@@ -1601,7 +1601,7 @@ WriteLiteral(">");
 
             
             #line 441 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                     Write(Model.Job.UserId);
+                                                     Write(Model.Job.User.FriendlyId());
 
             
             #line default
@@ -1656,15 +1656,15 @@ WriteLiteral(" title=\"Email Address\"");
 
 WriteLiteral(">Email: <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 31579), Tuple.Create("\"", 31623)
-, Tuple.Create(Tuple.Create("", 31586), Tuple.Create("mailto:", 31586), true)
+WriteAttribute("href", Tuple.Create(" href=\"", 31590), Tuple.Create("\"", 31634)
+, Tuple.Create(Tuple.Create("", 31597), Tuple.Create("mailto:", 31597), true)
             
             #line 447 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                           , Tuple.Create(Tuple.Create("", 31593), Tuple.Create<System.Object, System.Int32>(Model.Job.User.EmailAddress
+                           , Tuple.Create(Tuple.Create("", 31604), Tuple.Create<System.Object, System.Int32>(Model.Job.User.EmailAddress
             
             #line default
             #line hidden
-, 31593), false)
+, 31604), false)
 );
 
 WriteLiteral(">");
@@ -2152,14 +2152,14 @@ WriteLiteral(" type=\"hidden\"");
 
 WriteLiteral(" name=\"JobId\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 42282), Tuple.Create("\"", 42303)
+WriteAttribute("value", Tuple.Create(" value=\"", 42293), Tuple.Create("\"", 42314)
             
             #line 645 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                , Tuple.Create(Tuple.Create("", 42290), Tuple.Create<System.Object, System.Int32>(Model.Job.Id
+                                , Tuple.Create(Tuple.Create("", 42301), Tuple.Create<System.Object, System.Int32>(Model.Job.Id
             
             #line default
             #line hidden
-, 42290), false)
+, 42301), false)
 );
 
 WriteLiteral(" />\r\n");
@@ -2223,26 +2223,26 @@ WriteLiteral("\"");
 
 WriteLiteral(">\r\n                                    <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 42772), Tuple.Create("\"", 42839)
-, Tuple.Create(Tuple.Create("", 42780), Tuple.Create("fa", 42780), true)
-, Tuple.Create(Tuple.Create(" ", 42782), Tuple.Create("fa-", 42783), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 42783), Tuple.Create("\"", 42850)
+, Tuple.Create(Tuple.Create("", 42791), Tuple.Create("fa", 42791), true)
+, Tuple.Create(Tuple.Create(" ", 42793), Tuple.Create("fa-", 42794), true)
             
             #line 650 "..\..\Views\Job\JobParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 42786), Tuple.Create<System.Object, System.Int32>(jobQueue.Icon
+, Tuple.Create(Tuple.Create("", 42797), Tuple.Create<System.Object, System.Int32>(jobQueue.Icon
             
             #line default
             #line hidden
-, 42786), false)
-, Tuple.Create(Tuple.Create(" ", 42802), Tuple.Create("fa-fw", 42803), true)
-, Tuple.Create(Tuple.Create(" ", 42808), Tuple.Create("fa-lg", 42809), true)
-, Tuple.Create(Tuple.Create(" ", 42814), Tuple.Create("d-", 42815), true)
+, 42797), false)
+, Tuple.Create(Tuple.Create(" ", 42813), Tuple.Create("fa-fw", 42814), true)
+, Tuple.Create(Tuple.Create(" ", 42819), Tuple.Create("fa-lg", 42820), true)
+, Tuple.Create(Tuple.Create(" ", 42825), Tuple.Create("d-", 42826), true)
             
             #line 650 "..\..\Views\Job\JobParts\_Subject.cshtml"
-   , Tuple.Create(Tuple.Create("", 42817), Tuple.Create<System.Object, System.Int32>(jobQueue.IconColour
+   , Tuple.Create(Tuple.Create("", 42828), Tuple.Create<System.Object, System.Int32>(jobQueue.IconColour
             
             #line default
             #line hidden
-, 42817), false)
+, 42828), false)
 );
 
 WriteLiteral("></i>");
@@ -2283,27 +2283,27 @@ WriteLiteral("                                ");
             #line hidden
 WriteLiteral(" <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 43181), Tuple.Create("\"", 43229)
-, Tuple.Create(Tuple.Create("", 43189), Tuple.Create("fa", 43189), true)
-, Tuple.Create(Tuple.Create(" ", 43191), Tuple.Create("d-priority-", 43192), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 43192), Tuple.Create("\"", 43240)
+, Tuple.Create(Tuple.Create("", 43200), Tuple.Create("fa", 43200), true)
+, Tuple.Create(Tuple.Create(" ", 43202), Tuple.Create("d-priority-", 43203), true)
             
             #line 657 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                      , Tuple.Create(Tuple.Create("", 43203), Tuple.Create<System.Object, System.Int32>(priorityValue.ToLower()
+                      , Tuple.Create(Tuple.Create("", 43214), Tuple.Create<System.Object, System.Int32>(priorityValue.ToLower()
             
             #line default
             #line hidden
-, 43203), false)
+, 43214), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 43230), Tuple.Create("\"", 43263)
+WriteAttribute("title", Tuple.Create(" title=\"", 43241), Tuple.Create("\"", 43274)
             
             #line 657 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                         , Tuple.Create(Tuple.Create("", 43238), Tuple.Create<System.Object, System.Int32>(priorityValue
+                                                         , Tuple.Create(Tuple.Create("", 43249), Tuple.Create<System.Object, System.Int32>(priorityValue
             
             #line default
             #line hidden
-, 43238), false)
-, Tuple.Create(Tuple.Create(" ", 43254), Tuple.Create("Priority", 43255), true)
+, 43249), false)
+, Tuple.Create(Tuple.Create(" ", 43265), Tuple.Create("Priority", 43266), true)
 );
 
 WriteLiteral("></i>\r\n                            </div>\r\n                            <div>\r\n   " +

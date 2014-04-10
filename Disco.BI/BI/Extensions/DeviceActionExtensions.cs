@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
-using Disco.Data.Repository;
-using Disco.BI.Interop.ActiveDirectory;
-using Disco.Services.Users;
 using Disco.Services.Authorization;
+using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Users;
+using System;
+using System.Linq;
 
 namespace Disco.BI.Extensions
 {
@@ -90,7 +88,7 @@ namespace Disco.BI.Extensions
             d.DecommissionReason = Reason;
 
             // Disable AD Account
-            if (d.ComputerName != null)
+            if (d.DeviceDomainId != null)
             {
                 var adAccount = d.ActiveDirectoryAccount();
                 if (adAccount != null && !adAccount.IsCriticalSystemObject)
@@ -117,7 +115,7 @@ namespace Disco.BI.Extensions
             d.DecommissionReason = null;
 
             // Enable AD Account
-            if (d.ComputerName != null)
+            if (d.DeviceDomainId != null)
             {
                 var adAccount = d.ActiveDirectoryAccount();
                 if (adAccount != null && !adAccount.IsCriticalSystemObject)
@@ -157,10 +155,10 @@ namespace Disco.BI.Extensions
                     JobLog jobLog = new JobLog()
                     {
                         JobId = j.Id,
-                        TechUserId = UserService.CurrentUser.Id,
+                        TechUserId = UserService.CurrentUser.UserId,
                         Timestamp = DateTime.Now,
                         Comments = string.Format("Device Deleted{0}{0}Serial Number: {1}{0}Computer Name: {2}{0}Model: {3}{0}Profile: {4}",
-                                                    Environment.NewLine, d.SerialNumber, d.ComputerName, d.DeviceModel, d.DeviceProfile)
+                                                    Environment.NewLine, d.SerialNumber, d.DeviceDomainId, d.DeviceModel, d.DeviceProfile)
                     };
                     Database.JobLogs.Add(jobLog);
                 }

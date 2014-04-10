@@ -30,7 +30,7 @@ namespace Disco.Services.Plugins
                     var resource = string.Format("{0} [{1}]", attributeDenied.AuthorizeResource, HostController.Request.RawUrl);
 
                     if (CurrentUser != null)
-                        AuthorizationLog.LogAccessDenied(CurrentUser.Id, resource, message);
+                        AuthorizationLog.LogAccessDenied(CurrentUser.UserId, resource, message);
 
                     return new HttpUnauthorizedResult();
                 }

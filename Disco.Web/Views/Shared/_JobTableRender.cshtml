@@ -102,14 +102,14 @@
                             @if (item.UserId != null)
                             {
                                 if (Authorization.Has(Claims.User.Show))
-                                {@Html.ActionLink(string.Format("{0} ({1})", item.UserDisplayName, item.UserId), MVC.User.Show(item.UserId))}
+                                {@Html.ActionLink(string.Format("{0} ({1})", item.UserDisplayName, item.UserFriendlyId), MVC.User.Show(item.UserId))}
                                 else
-                                {@(string.Format("{0} ({1})", item.UserDisplayName, item.UserId))}
+                                {@(string.Format("{0} ({1})", item.UserDisplayName, item.UserFriendlyId))}
                             }
                             else
                             {<span class="smallMessage">N/A</span>}</td>}
                         @if (Model.ShowTechnician)
-                        {<td class="technician"><span title="@item.OpenedTechUserDisplayName">@item.OpenedTechUserId</span></td>}
+                        {<td class="technician"><span title="@item.OpenedTechUserDisplayName">@item.OpenedTechUserFriendlyId</span></td>}
                         @if (Model.ShowLocation)
                         {<td class="location"><span>@(item.DeviceHeldLocation ?? "Unknown")</span></td>}
                     </tr>}

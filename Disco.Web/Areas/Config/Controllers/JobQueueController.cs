@@ -2,6 +2,7 @@
 using Disco.Models.Services.Jobs.JobQueues;
 using Disco.Models.UI.Config.JobQueue;
 using Disco.Services.Authorization;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Jobs.JobQueues;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Web;
@@ -28,7 +29,7 @@ namespace Disco.Web.Areas.Config.Controllers
 
                 var token = JobQueueToken.FromJobQueue(jq);
                 var subjects = token.SubjectIds == null ? new List<Models.JobQueue.ShowModel.SubjectDescriptor>() :
-                    token.SubjectIds.Select(subjectId => Disco.BI.Interop.ActiveDirectory.ActiveDirectory.GetObject(subjectId))
+                    token.SubjectIds.Select(subjectId => ActiveDirectory.RetrieveObject(subjectId))
                     .Where(item => item != null)
                     .Select(item => Models.JobQueue.ShowModel.SubjectDescriptor.FromActiveDirectoryObject(item))
                     .OrderBy(item => item.Name).ToList();

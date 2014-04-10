@@ -13,13 +13,26 @@
                         <tr>
                             <td><span title="Computer Name">Name:</span>
                             </td>
-                            <td>@if (string.IsNullOrWhiteSpace(Model.Device.ComputerName))
+                            <td>@if (string.IsNullOrWhiteSpace(Model.Device.DeviceDomainId))
                                 {
                                 <span id="Device_Show_Details_Asset_NameUnknown" title="Computer Name" class="smallMessage">&lt;Unknown/Not Allocated&gt;</span>
                                 }
                                 else
                                 {
                                 <h4 id="Device_Show_Details_Asset_Name" title="Computer Name">@Model.Device.ComputerName</h4>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span title="Domain Name">Domain:</span>
+                            </td>
+                            <td>@if (string.IsNullOrWhiteSpace(Model.Device.DeviceDomainId))
+                                {
+                                <span id="Device_Show_Details_Asset_DomainUnknown" title="Computer Domain" class="smallMessage">&lt;Unknown/Not Allocated&gt;</span>
+                                }
+                                else
+                                {
+                                <h4 id="Device_Show_Details_Asset_Domain" title="Computer Domain">@Model.Device.ComputerDomainName</h4>
                                 }
                             </td>
                         </tr>
@@ -178,14 +191,14 @@
                                         <div id="Device_Show_User_DisplayName" title="Display Name">
                                             @if (Authorization.Has(Claims.User.Show))
                                             {
-                                                @Html.ActionLink(assignedUser.DisplayName, MVC.User.Show(assignedUser.Id))
+                                                @Html.ActionLink(assignedUser.DisplayName, MVC.User.Show(assignedUser.UserId))
                                             }
                                             else
                                             {
                                                 @assignedUser.DisplayName
                                             }
                                         </div>
-                                        <div id="Device_Show_User_Id" title="Id">@assignedUser.Id</div>
+                                        <div id="Device_Show_User_Id" title="Id">@assignedUser.FriendlyId()</div>
                                         @if (Authorization.Has(Claims.User.ShowDetails))
                                         {
                                             if (!string.IsNullOrWhiteSpace(assignedUser.PhoneNumber))

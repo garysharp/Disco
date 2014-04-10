@@ -1,6 +1,6 @@
 ﻿using Disco.BI.Extensions;
-using Disco.BI.Interop.ActiveDirectory;
 using Disco.Services.Authorization;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using System;
@@ -148,9 +148,9 @@ namespace Disco.Web.Areas.API.Controllers
                         device.DeviceProfile = p;
 
                         // Update AD Account
-                        if (!string.IsNullOrEmpty(device.ComputerName) && device.ComputerName.Length <= 24)
+                        if (!string.IsNullOrEmpty(device.DeviceDomainId) && device.DeviceDomainId.Length <= 24)
                         {
-                            var adMachineAccount = ActiveDirectory.GetMachineAccount(device.ComputerName);
+                            var adMachineAccount = ActiveDirectory.RetrieveMachineAccount(device.DeviceDomainId);
                             if (adMachineAccount != null)
                                 adMachineAccount.SetDescription(device);
                         }
@@ -501,7 +501,7 @@ namespace Disco.Web.Areas.API.Controllers
             var da = Database.DeviceAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (da != null)
             {
-                if (da.TechUserId.Equals(CurrentUser.Id, StringComparison.InvariantCultureIgnoreCase))
+                if (da.TechUserId.Equals(CurrentUser.UserId, StringComparison.InvariantCultureIgnoreCase))
                     Authorization.RequireAny(Claims.Device.Actions.RemoveAnyAttachments, Claims.Device.Actions.RemoveOwnAttachments);
                 else
                     Authorization.Require(Claims.Device.Actions.RemoveAnyAttachments);

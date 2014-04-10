@@ -2,6 +2,7 @@
 using Disco.Models.UI.Config.AuthorizationRole;
 using Disco.Services.Authorization;
 using Disco.Services.Authorization.Roles;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Users;
 using Disco.Services.Web;
@@ -27,7 +28,7 @@ namespace Disco.Web.Areas.Config.Controllers
 
                 var token = RoleToken.FromAuthorizationRole(ar);
                 var subjects = token.SubjectIds == null ? new List<Models.AuthorizationRole.ShowModel.SubjectDescriptor>() :
-                    token.SubjectIds.Select(subjectId => Disco.BI.Interop.ActiveDirectory.ActiveDirectory.GetObject(subjectId))
+                    token.SubjectIds.Select(subjectId => ActiveDirectory.RetrieveObject(subjectId))
                     .Where(item => item != null)
                     .Select(item => Models.AuthorizationRole.ShowModel.SubjectDescriptor.FromActiveDirectoryObject(item))
                     .OrderBy(item => item.Name).ToList();

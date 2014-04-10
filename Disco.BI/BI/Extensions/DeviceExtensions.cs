@@ -1,5 +1,4 @@
 using System.Linq;
-using Disco.BI.Interop.ActiveDirectory;
 using Disco.Data.Configuration;
 using Disco.Data.Repository;
 using Disco.Models.BI.DocumentTemplates;
@@ -10,14 +9,18 @@ using System.IO;
 using Disco.Models.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using Disco.Services.Authorization;
+using Disco.Services.Interop.ActiveDirectory;
 
 namespace Disco.BI.Extensions
 {
     public static class DeviceExtensions
     {
 
-        public static string ComputerNameRender(this Device device, DiscoDataContext Database)
+        public static string ComputerNameRender(this Device device, DiscoDataContext Database, ActiveDirectoryDomain Domain)
         {
+            if (Domain == null)
+                throw new ArgumentNullException("Domain");
+
             DeviceProfile deviceProfile = device.DeviceProfile;
             Expressions.Expression computerNameTemplateExpression = null;
             computerNameTemplateExpression = Expressions.ExpressionCache.GetValue(DeviceProfileExtensions.ComputerNameExpressionCacheModule, deviceProfile.Id.ToString(), () =>
@@ -40,7 +43,8 @@ namespace Disco.BI.Extensions
             {
                 throw new System.InvalidOperationException("The rendered computer name would be invalid or longer than 24 characters");
             }
-            return rendered.ToString();
+
+            return string.Format(@"{0}\{1}", Domain.NetBiosName, rendered);
         }
         public static System.Collections.Generic.List<DocumentTemplate> AvailableDocumentTemplates(this Device d, DiscoDataContext Database, User User, System.DateTime TimeStamp)
         {
@@ -52,7 +56,7 @@ namespace Disco.BI.Extensions
 
         public static bool UpdateLastNetworkLogonDate(this Device Device)
         {
-            return ActiveDirectoryUpdateLastNetworkLogonDateJob.UpdateLastNetworkLogonDate(Device);
+            return Disco.Services.Interop.ActiveDirectory.Internal.ADUpdateLastNetworkLogonDateJob.UpdateLastNetworkLogonDate(Device);
         }
 
         public static DeviceAttachment CreateAttachment(this Device Device, DiscoDataContext Database, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, byte[] PdfThumbnail = null)
@@ -63,7 +67,7 @@ namespace Disco.BI.Extensions
             DeviceAttachment da = new DeviceAttachment()
             {
                 DeviceSerialNumber = Device.SerialNumber,
-                TechUserId = CreatorUser.Id,
+                TechUserId = CreatorUser.UserId,
                 Filename = Filename,
                 MimeType = MimeType,
                 Timestamp = DateTime.Now,
@@ -160,12 +164,12 @@ namespace Disco.BI.Extensions
                 newDua = new DeviceUserAssignment()
                 {
                     DeviceSerialNumber = d.SerialNumber,
-                    AssignedUserId = u.Id,
+                    AssignedUserId = u.UserId,
                     AssignedDate = DateTime.Now
                 };
                 Database.DeviceUserAssignments.Add(newDua);
 
-                d.AssignedUserId = u.Id;
+                d.AssignedUserId = u.UserId;
                 d.AssignedUser = u;
             }
             else
@@ -174,9 +178,9 @@ namespace Disco.BI.Extensions
             }
 
             // Update AD Account
-            if (!string.IsNullOrEmpty(d.ComputerName) && d.ComputerName.Length <= 24)
+            if (!string.IsNullOrEmpty(d.DeviceDomainId))
             {
-                var adMachineAccount = Interop.ActiveDirectory.ActiveDirectory.GetMachineAccount(d.ComputerName);
+                var adMachineAccount = ActiveDirectory.RetrieveMachineAccount(d.DeviceDomainId);
                 if (adMachineAccount != null)
                 {
                     adMachineAccount.SetDescription(d);
@@ -188,8 +192,8 @@ namespace Disco.BI.Extensions
 
         public static ActiveDirectoryMachineAccount ActiveDirectoryAccount(this Device Device, params string[] AdditionalProperties)
         {
-            if (!string.IsNullOrEmpty(Device.ComputerName))
-                return Interop.ActiveDirectory.ActiveDirectory.GetMachineAccount(Device.ComputerName, AdditionalProperties: AdditionalProperties);
+            if (!string.IsNullOrEmpty(Device.DeviceDomainId))
+                return ActiveDirectory.RetrieveMachineAccount(Device.DeviceDomainId, AdditionalProperties: AdditionalProperties);
             else
                 return null;
         }

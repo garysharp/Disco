@@ -15,7 +15,7 @@ namespace Disco.BI.JobBI
             Job j = new Job()
             {
                 JobType = type,
-                OpenedTechUserId = initialTech.Id,
+                OpenedTechUserId = initialTech.UserId,
                 OpenedTechUser = initialTech,
                 OpenedDate = DateTime.Now
             };
@@ -31,7 +31,7 @@ namespace Disco.BI.JobBI
             if (user != null)
             {
                 j.User = user;
-                j.UserId = user.Id;
+                j.UserId = user.UserId;
             }
 
             // Sub Types
@@ -61,7 +61,7 @@ namespace Disco.BI.JobBI
                         JobQueueId = queue.queue.Id,
                         Job = j,
                         AddedDate = DateTime.Now,
-                        AddedUserId = initialTech.Id,
+                        AddedUserId = initialTech.UserId,
                         AddedComment = commentBuilder.ToString(),
                         SLAExpiresDate = queue.queue.DefaultSLAExpiry.HasValue ? (DateTime?)DateTime.Now.AddMinutes(queue.queue.DefaultSLAExpiry.Value) : null,
                         Priority = JobQueuePriority.Normal
@@ -110,7 +110,7 @@ namespace Disco.BI.JobBI
                             Database.JobComponents.Add(new JobComponent()
                             {
                                 Job = j,
-                                TechUserId = initialTech.Id,
+                                TechUserId = initialTech.UserId,
                                 Cost = c.Cost,
                                 Description = c.Description
                             });

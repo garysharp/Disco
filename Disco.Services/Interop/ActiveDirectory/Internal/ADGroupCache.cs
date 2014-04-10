@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.DirectoryServices;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Disco.Data.Repository;
+﻿using Disco.Data.Repository;
+using Disco.Models.Interop.ActiveDirectory;
 using Disco.Services.Tasks;
 using Quartz;
-using Disco.Models.Interop.ActiveDirectory;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Disco.BI.Interop.ActiveDirectory
+namespace Disco.Services.Interop.ActiveDirectory.Internal
 {
-    public class ActiveDirectoryCachedGroups : ScheduledTask
+    public class ADGroupCache : ScheduledTask
     {
         private static ConcurrentDictionary<string, Tuple<ActiveDirectoryGroup, DateTime>> _SecurityIdentifierCache = new ConcurrentDictionary<string, Tuple<ActiveDirectoryGroup, DateTime>>();
         private static ConcurrentDictionary<string, Tuple<ActiveDirectoryGroup, DateTime>> _DistinguishedNameCache = new ConcurrentDictionary<string, Tuple<ActiveDirectoryGroup, DateTime>>();
@@ -72,7 +69,7 @@ namespace Disco.BI.Interop.ActiveDirectory
             if (groupRecord == null)
             {
                 // Load from AD
-                var group = ActiveDirectory.GetGroupFromDistinguishedName(DistinguishedName);
+                var group = ActiveDirectory.RetrieveGroupWithDistinguishedName(DistinguishedName);
                 SetValue(group);
 
                 return group;
@@ -91,7 +88,7 @@ namespace Disco.BI.Interop.ActiveDirectory
             if (groupRecord == null)
             {
                 // Load from AD
-                var group = ActiveDirectory.GetGroupFromSecurityIdentifier(SecurityIdentifier);
+                var group = ActiveDirectory.RetrieveGroupWithSecurityIdentifier(SecurityIdentifier);
                 SetValue(group);
 
                 return group;

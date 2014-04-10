@@ -232,8 +232,13 @@ namespace Disco.Services
                 model.ShowDeviceAddress = Database.DiscoConfiguration.MultiSiteMode;
 
             foreach (var j in items)
+            {
+                j.UserFriendlyId =j.UserId == null ? null : UserExtensions.FriendlyUserId(j.UserId);
+                j.OpenedTechUserFriendlyId = UserExtensions.FriendlyUserId(j.OpenedTechUserId);
+
                 if (j.DeviceAddressId.HasValue)
                     j.DeviceAddress = Database.DiscoConfiguration.OrganisationAddresses.GetAddress(j.DeviceAddressId.Value).Name;
+            }
 
             return items;
         }

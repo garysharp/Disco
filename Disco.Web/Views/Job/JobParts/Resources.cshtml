@@ -29,7 +29,7 @@
                     @foreach (var jl in Model.Job.JobLogs.OrderBy(m => m.Timestamp))
                     {
                         <div data-logid="@jl.Id">
-                            <span class="author">@jl.TechUser.ToString()</span>@if (canRemoveAnyLogs || (canRemoveOwnLogs && jl.TechUserId == CurrentUser.Id))
+                            <span class="author">@jl.TechUser.ToString()</span>@if (canRemoveAnyLogs || (canRemoveOwnLogs && jl.TechUserId == CurrentUser.UserId))
                                                                                {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(jl.Timestamp.ToUnixEpoc())" title="@jl.Timestamp.ToFullDateTime()">@jl.Timestamp.ToFullDateTime()</span>
                             <span class="comment">@jl.Comments.ToMultilineJobRefString()</span>
                         </div>
@@ -58,7 +58,7 @@
                                   { @ja.DocumentTemplate.Description}
                                   else
                                   { @ja.Comments }}
-                            </span><span class="author">@ja.TechUser.ToString()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ja.TechUserId == CurrentUser.Id))
+                            </span><span class="author">@ja.TechUser.ToString()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ja.TechUserId == CurrentUser.UserId))
                                                                                       {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(ja.Timestamp.ToUnixEpoc())" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.ToFullDateTime()</span>
                         </a>   
                     }
@@ -230,7 +230,7 @@
                                 @if (canRemoveAnyLogs)
                                 {<text>addComment(d, false, true);</text>}
                                 else if (canRemoveOwnLogs)
-                                {<text>addComment(d, false, (d.AuthorId === '@(CurrentUser.Id)'));</text>}
+                                {<text>addComment(d, false, (d.AuthorId === '@(CurrentUser.UserId)'));</text>}
                                 else
                                 {<text>addComment(d, false, false);</text>}
 
@@ -447,7 +447,7 @@
                                 }
                                 else if (canRemoveOwnAttachments)
                                 {
-                                <text>buildAttachment(a, (a.AuthorId === '@(CurrentUser.Id)'), quick);</text>
+                                <text>buildAttachment(a, (a.AuthorId === '@(CurrentUser.UserId)'), quick);</text>
                                 }
                                 else
                                 {

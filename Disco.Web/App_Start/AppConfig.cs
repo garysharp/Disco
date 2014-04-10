@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Disco.Data.Repository;
+using System;
 using System.Linq;
 using System.Web;
-using Disco.Data.Repository;
-using System.Threading;
-using System.Reflection;
 
 namespace Disco.Web
 {
@@ -32,6 +29,9 @@ namespace Disco.Web
             // Initialize Logging
             Disco.Services.Logging.LogContext.Initalize(Database, DiscoApplication.SchedulerFactory);
 
+            // Initialize Active Directory Interop
+            Disco.Services.Interop.ActiveDirectory.ActiveDirectory.Initialize(Database);
+
             // Load Organisation Name
             DiscoApplication.OrganisationName = Database.DiscoConfiguration.OrganisationName;
             DiscoApplication.MultiSiteMode = Database.DiscoConfiguration.MultiSiteMode;
@@ -43,11 +43,7 @@ namespace Disco.Web
                 Database.DiscoConfiguration.ProxyPassword);
 
             // Initialize User Service Interop
-            Disco.Services.Users.UserService.Initialize(Database,
-                (UserId, AdditionalProperties) => Disco.BI.Interop.ActiveDirectory.ActiveDirectory.GetUserAccount(UserId, AdditionalProperties),
-                (UserId, AdditionalProperties) => Disco.BI.Interop.ActiveDirectory.ActiveDirectory.GetMachineAccount(UserId, null, null, AdditionalProperties),
-                (Term) => Disco.BI.Interop.ActiveDirectory.ActiveDirectory.SearchUsers(Term));
-
+            Disco.Services.Users.UserService.Initialize(Database);
         }
 
         public static void InitalizeNormalEnvironment(DiscoDataContext Database)

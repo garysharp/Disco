@@ -17,6 +17,7 @@ namespace Disco.Client.Interop
         public static string DeviceType { get; private set; }
         public static string DeviceUUID { get; private set; }
         public static bool DeviceIsPartOfDomain { get; private set; }
+        public static string DeviceDNSDomainName { get; private set; }
 
         public static void Initialize()
         {
@@ -56,7 +57,7 @@ namespace Disco.Client.Interop
             // Get System Information
             try
             {
-                using (ManagementObjectSearcher mSearcher = new ManagementObjectSearcher("SELECT Manufacturer, Model, PartOfDomain, PCSystemType FROM Win32_ComputerSystem"))
+                using (ManagementObjectSearcher mSearcher = new ManagementObjectSearcher("SELECT Manufacturer, Model, PartOfDomain, PCSystemType, Domain FROM Win32_ComputerSystem"))
                 {
                     using (ManagementObjectCollection mResults = mSearcher.Get())
                     {
@@ -74,6 +75,8 @@ namespace Disco.Client.Interop
 
                                 DeviceIsPartOfDomain = (bool)mItem.GetPropertyValue("PartOfDomain");
                                 DeviceType = PCSystemTypeToString((UInt16)mItem.GetPropertyValue("PCSystemType"));
+
+                                DeviceDNSDomainName = DeviceIsPartOfDomain ? mItem.GetPropertyValue("Domain") as string : null;
                             }
                             else
                             {
