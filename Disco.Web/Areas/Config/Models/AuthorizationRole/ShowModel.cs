@@ -13,7 +13,7 @@ namespace Disco.Web.Areas.Config.Models.AuthorizationRole
     {
         public IRoleToken Token { get; set; }
 
-        public List<SubjectDescriptor> Subjects { get; set; }
+        public List<SubjectDescriptorModel> Subjects { get; set; }
 
         public IClaimNavigatorItem ClaimNavigator { get; set; }
 
@@ -27,27 +27,6 @@ namespace Disco.Web.Areas.Config.Models.AuthorizationRole
                 return new FancyTreeNode[] {
                     rootNode
                 };
-            }
-        }
-
-        public class SubjectDescriptor
-        {
-            public bool IsGroup { get; set; }
-            public string Name { get; set; }
-            public string Id { get; set; }
-
-            public static SubjectDescriptor FromActiveDirectoryObject(IActiveDirectoryObject ADObject)
-            {
-                var item = new SubjectDescriptor()
-                {
-                    Id = ADObject.NetBiosId,
-                    Name = ADObject.Name
-                };
-
-                if (ADObject is ActiveDirectoryGroup)
-                    item.IsGroup = true;
-
-                return item;
             }
         }
     }

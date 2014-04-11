@@ -2296,6 +2296,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateAdministratorSubjects()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAdministratorSubjects);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult SearchSubjects()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchSubjects);
@@ -2327,6 +2333,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateClaims = "UpdateClaims";
             public readonly string UpdateSubjects = "UpdateSubjects";
             public readonly string Delete = "Delete";
+            public readonly string UpdateAdministratorSubjects = "UpdateAdministratorSubjects";
             public readonly string SearchSubjects = "SearchSubjects";
             public readonly string Subject = "Subject";
         }
@@ -2339,6 +2346,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateClaims = "UpdateClaims";
             public const string UpdateSubjects = "UpdateSubjects";
             public const string Delete = "Delete";
+            public const string UpdateAdministratorSubjects = "UpdateAdministratorSubjects";
             public const string SearchSubjects = "SearchSubjects";
             public const string Subject = "Subject";
         }
@@ -2392,6 +2400,15 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_Delete
         {
             public readonly string id = "id";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateAdministratorSubjects s_params_UpdateAdministratorSubjects = new ActionParamsClass_UpdateAdministratorSubjects();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateAdministratorSubjects UpdateAdministratorSubjectsParams { get { return s_params_UpdateAdministratorSubjects; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateAdministratorSubjects
+        {
+            public readonly string Subjects = "Subjects";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_SearchSubjects s_params_SearchSubjects = new ActionParamsClass_SearchSubjects();
@@ -2486,6 +2503,17 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             DeleteOverride(callInfo, id, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateAdministratorSubjectsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string[] Subjects, bool redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateAdministratorSubjects(string[] Subjects, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAdministratorSubjects);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Subjects", Subjects);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateAdministratorSubjectsOverride(callInfo, Subjects, redirect);
             return callInfo;
         }
 

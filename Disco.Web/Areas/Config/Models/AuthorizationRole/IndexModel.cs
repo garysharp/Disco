@@ -11,5 +11,6 @@ namespace Disco.Web.Areas.Config.Models.AuthorizationRole
     public class IndexModel : ConfigAuthorizationRoleIndexModel
     {
         public List<IRoleToken> Tokens { get; set; }
+        public List<SubjectDescriptorModel> AdministratorSubjects { get; set; }
     }
 }

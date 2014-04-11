@@ -137,6 +137,16 @@ namespace Disco.Services.Authorization
             var subjects = string.Join("; ", SubjectsRemoved);
             Log(EventTypeIds.RoleConfiguredSubjectsRemoved, Role.Id, Role.Name, UserId, subjects);
         }
+        public static void LogAdministratorSubjectsAdded(string UserId, IEnumerable<string> SubjectsAdded)
+        {
+            var subjects = string.Join("; ", SubjectsAdded);
+            Log(EventTypeIds.RoleConfiguredSubjectsAdded, -1, "Disco Administrators", UserId, subjects);
+        }
+        public static void LogAdministratorSubjectsRemoved(string UserId, IEnumerable<string> SubjectsRemoved)
+        {
+            var subjects = string.Join("; ", SubjectsRemoved);
+            Log(EventTypeIds.RoleConfiguredSubjectsRemoved, -1, "Disco Administrators", UserId, subjects);
+        }
         public static void LogRoleConfiguredClaimsAdded(AuthorizationRole Role, string UserId, IEnumerable<string> ClaimsAdded)
         {
             var claims = string.Join("; ", ClaimsAdded);

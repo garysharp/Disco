@@ -137,8 +137,6 @@ namespace Disco.Services.Users
             return Cache.InvalidateRecord(UserId);
         }
 
-
-
         public static int CreateAuthorizationRole(DiscoDataContext Database, AuthorizationRole Role)
         {
             if (Role == null)
@@ -187,6 +185,22 @@ namespace Disco.Services.Users
 
             // Update Role Cache
             RoleCache.UpdateRole(Role);
+
+            // Flush User Cache
+            Cache.FlushCache();
+        }
+
+        public static IEnumerable<string> AdministratorSubjectIds
+        {
+            get
+            {
+                return RoleCache.AdministratorSubjectIds;
+            }
+        }
+        public static void UpdateAdministratorSubjectIds(DiscoDataContext Database, IEnumerable<string> SubjectIds)
+        {
+            // Update Database & In-Memory State
+            RoleCache.UpdateAdministratorSubjectIds(Database, SubjectIds);
 
             // Flush User Cache
             Cache.FlushCache();

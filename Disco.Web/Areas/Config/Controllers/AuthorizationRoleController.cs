@@ -27,10 +27,10 @@ namespace Disco.Web.Areas.Config.Controllers
                     throw new ArgumentException("Invalid Authorization Role Id");
 
                 var token = RoleToken.FromAuthorizationRole(ar);
-                var subjects = token.SubjectIds == null ? new List<Models.AuthorizationRole.ShowModel.SubjectDescriptor>() :
+                var subjects = token.SubjectIds == null ? new List<Models.AuthorizationRole.SubjectDescriptorModel>() :
                     token.SubjectIds.Select(subjectId => ActiveDirectory.RetrieveObject(subjectId))
                     .Where(item => item != null)
-                    .Select(item => Models.AuthorizationRole.ShowModel.SubjectDescriptor.FromActiveDirectoryObject(item))
+                    .Select(item => Models.AuthorizationRole.SubjectDescriptorModel.FromActiveDirectoryObject(item))
                     .OrderBy(item => item.Name).ToList();
 
                 var m = new Models.AuthorizationRole.ShowModel()
@@ -52,9 +52,16 @@ namespace Disco.Web.Areas.Config.Controllers
                 var ars = Database.AuthorizationRoles.ToList()
                     .Select(ar => RoleToken.FromAuthorizationRole(ar)).Cast<IRoleToken>().ToList();
 
+                var administratorSubjects = UserService.AdministratorSubjectIds
+                    .Select(subjectId => ActiveDirectory.RetrieveObject(subjectId))
+                    .Where(item => item != null)
+                    .Select(item => Models.AuthorizationRole.SubjectDescriptorModel.FromActiveDirectoryObject(item))
+                    .OrderBy(item => item.Name).ToList();
+
                 var m = new Models.AuthorizationRole.IndexModel()
                 {
-                    Tokens = ars
+                    Tokens = ars,
+                    AdministratorSubjects = administratorSubjects
                 };
 
                 // UI Extensions

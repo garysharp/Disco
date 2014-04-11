@@ -166,12 +166,11 @@
                             }
 
                             function add(){
-                                
                                 var id = textAdd.val();
 
                                 $.ajax({
                                     url: '@Url.Action(MVC.API.AuthorizationRole.Subject())',
-                                    method: 'get',
+                                    method: 'post',
                                     data: { Id: id }
                                 }).done(function(response){
                                     if (response){

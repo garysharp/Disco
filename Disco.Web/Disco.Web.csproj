@@ -203,6 +203,7 @@
     <Compile Include="Areas\Config\Models\AuthorizationRole\CreateModel.cs" />
     <Compile Include="Areas\Config\Models\AuthorizationRole\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\AuthorizationRole\ShowModel.cs" />
+    <Compile Include="Areas\Config\Models\AuthorizationRole\SubjectDescriptorModel.cs" />
     <Compile Include="Areas\Config\Models\Config\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceBatch\CreateModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceBatch\TimelineModel.cs" />
@@ -2035,7 +2036,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

@@ -7,6 +7,7 @@ using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -83,8 +84,8 @@ namespace Disco.Web.Areas.API.Controllers
         private void UpdateClaims(AuthorizationRole AuthorizationRole, string[] ClaimKeys)
         {
             var proposedClaims = Claims.BuildClaims(ClaimKeys);
-            
-            var currentToken = RoleToken.FromAuthorizationRole(AuthorizationRole);            
+
+            var currentToken = RoleToken.FromAuthorizationRole(AuthorizationRole);
             var currentClaimKeys = Claims.GetClaimKeys(currentToken.Claims);
             var removedClaims = currentClaimKeys.Except(ClaimKeys).ToArray();
             var addedClaims = ClaimKeys.Except(currentClaimKeys).ToArray();
@@ -113,7 +114,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (invalidSubjects.Count > 0)
                     throw new ArgumentException(string.Format("Subjects not found: {0}", string.Join(", ", invalidSubjects)), "Subjects");
 
-                var proposedSubjects = subjects.Select(s => s.Item2.SamAccountName).OrderBy(s => s).ToArray();
+                var proposedSubjects = subjects.Select(s => s.Item2.NetBiosId).OrderBy(s => s).ToArray();
                 var currentSubjects = AuthorizationRole.SubjectIds == null ? new string[0] : AuthorizationRole.SubjectIds.Split(',');
                 removedSubjects = currentSubjects.Except(proposedSubjects).ToArray();
                 addedSubjects = proposedSubjects.Except(currentSubjects).ToArray();
@@ -230,6 +231,41 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
+        [HttpPost]
+        public virtual ActionResult UpdateAdministratorSubjects(string[] Subjects, bool redirect = false)
+        {
+            string[] proposedSubjects;
+            string[] removedSubjects = null;
+            string[] addedSubjects = null;
+
+            // Validate Subjects
+            if (Subjects == null || Subjects.Length == 0)
+                throw new ArgumentNullException("Subjects", "At least one Id must be supplied");
+
+            var subjects = Subjects.Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).Select(s => new Tuple<string, IActiveDirectoryObject>(s, ActiveDirectory.RetrieveObject(s))).ToList();
+            var invalidSubjects = subjects.Where(s => s.Item2 == null).ToList();
+
+            if (invalidSubjects.Count > 0)
+                throw new ArgumentException(string.Format("Subjects not found: {0}", string.Join(", ", invalidSubjects)), "Subjects");
+
+            proposedSubjects = subjects.Select(s => s.Item2.NetBiosId).OrderBy(s => s).ToArray();
+            var currentSubjects = UserService.AdministratorSubjectIds;
+            removedSubjects = currentSubjects.Except(proposedSubjects).ToArray();
+            addedSubjects = proposedSubjects.Except(currentSubjects).ToArray();
+
+            UserService.UpdateAdministratorSubjectIds(Database, proposedSubjects);
+
+            if (removedSubjects != null && removedSubjects.Length > 0)
+                AuthorizationLog.LogAdministratorSubjectsRemoved(CurrentUser.UserId, removedSubjects);
+            if (addedSubjects != null && addedSubjects.Length > 0)
+                AuthorizationLog.LogAdministratorSubjectsAdded(CurrentUser.UserId, addedSubjects);
+
+            if (redirect)
+                return RedirectToAction(MVC.Config.AuthorizationRole.Index());
+            else
+                return Json("OK");
+        }
+
         #endregion
 
         public virtual ActionResult SearchSubjects(string term)
@@ -245,8 +281,13 @@ namespace Disco.Web.Areas.API.Controllers
 
         public virtual ActionResult Subject(string Id)
         {
+            if (string.IsNullOrWhiteSpace(Id))
+                return Json(null, JsonRequestBehavior.AllowGet);
+            else if (!Id.Contains(@"\"))
+                Id = string.Format(@"{0}\{1}", ActiveDirectory.PrimaryDomain.NetBiosName, Id);
+
             var subject = ActiveDirectory.RetrieveObject(Id);
-            
+
             if (subject == null || !(subject is ActiveDirectoryUserAccount || subject is ActiveDirectoryGroup))
                 return Json(null, JsonRequestBehavior.AllowGet);
             else

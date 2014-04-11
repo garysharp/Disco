@@ -103,6 +103,18 @@ namespace Disco.Data.Configuration
             }
         }
 
+        public string Administrators
+        {
+            get
+            {
+                return this.Get<string>("Domain Admins,Disco Admins");
+            }
+            set
+            {
+                Set(value);
+            }
+        }
+
         #region Plugin Locations
         public string PluginsLocation
         {

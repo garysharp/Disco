@@ -14,28 +14,30 @@ namespace Disco.Services.Authorization.Roles
     {
         internal const int AdministratorsTokenId = -1;
         internal const int ComputerAccountTokenId = -200;
-        internal const string AdministratorsTokenSubjectIds = "Domain Admins,Disco Admins";
         internal const string ClaimsJsonEmpty = "null";
+        internal static readonly string[] _RequiredAdministratorSubjectIds = new string[] { "Domain Admins" };
 
         private static List<RoleToken> _Cache;
+        private static RoleToken _AdministratorToken;
 
         internal static void Initialize(DiscoDataContext Database)
         {
             _Cache = Database.AuthorizationRoles.ToList().Select(ar => RoleToken.FromAuthorizationRole(ar)).ToList();
 
             // Add System Roles
-            AddSystemRoles();
+            AddSystemRoles(Database);
         }
 
-        private static void AddSystemRoles()
+        private static void AddSystemRoles(DiscoDataContext Database)
         {
             // Disco Administrators
-            _Cache.Add(RoleToken.FromAuthorizationRole(new AuthorizationRole()
+            _AdministratorToken = RoleToken.FromAuthorizationRole(new AuthorizationRole()
             {
                 Id = AdministratorsTokenId,
                 Name = "Disco Administrators",
-                SubjectIds = AdministratorsTokenSubjectIds
-            }, Claims.AdministratorClaims()));
+                SubjectIds = string.Join(",", GenerateAdministratorSubjectIds(Database))
+            }, Claims.AdministratorClaims());
+            _Cache.Add(_AdministratorToken);
 
             // Computer Accounts
             _Cache.Add(RoleToken.FromAuthorizationRole(new AuthorizationRole()
@@ -43,6 +45,52 @@ namespace Disco.Services.Authorization.Roles
                 Id = ComputerAccountTokenId,
                 Name = "Domain Computer Account"
             }, Claims.ComputerAccountClaims()));
+        }
+
+        private static IEnumerable<string> GenerateAdministratorSubjectIds(DiscoDataContext Database)
+        {
+            var domainNetBiosName = Interop.ActiveDirectory.ActiveDirectory.PrimaryDomain.NetBiosName;
+            var configuredSubjectIds = Database.DiscoConfiguration.Administrators.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Contains(@"\") ? s : string.Format(@"{0}\{1}", domainNetBiosName, s));
+
+            return RequiredAdministratorSubjectIds
+                .Concat(configuredSubjectIds)
+                .Distinct(StringComparer.InvariantCultureIgnoreCase)
+                .OrderBy(s => s);
+        }
+        public static IEnumerable<string> RequiredAdministratorSubjectIds
+        {
+            get
+            {
+                var domainNetBiosName = Interop.ActiveDirectory.ActiveDirectory.PrimaryDomain.NetBiosName;
+                return _RequiredAdministratorSubjectIds.Select(s => string.Format(@"{0}\{1}", domainNetBiosName, s));
+            }
+        }
+        public static IEnumerable<string> AdministratorSubjectIds
+        {
+            get
+            {
+                return _AdministratorToken.SubjectIds.ToList();
+            }
+        }
+
+        public static void UpdateAdministratorSubjectIds(DiscoDataContext Database, IEnumerable<string> SubjectIds)
+        {
+            // Clean
+            SubjectIds = SubjectIds
+                .Where(s => !string.IsNullOrWhiteSpace(s))
+                .Concat(RequiredAdministratorSubjectIds)
+                .Distinct(StringComparer.InvariantCultureIgnoreCase)
+                .OrderBy(s => s);
+
+            var subjectIdsString = string.Join(",", SubjectIds);
+
+            // Update Database
+            Database.DiscoConfiguration.Administrators = subjectIdsString;
+            Database.SaveChanges();
+
+            // Update State
+            _AdministratorToken.SubjectIds = SubjectIds.ToList();
+            _AdministratorToken.SubjectIdHashes = new HashSet<string>(SubjectIds.Select(i => i.ToLower()));
         }
 
         /// <summary>
