@@ -5,7 +5,7 @@ namespace Disco.Models.Services.Authorization
 {
     public interface IRoleToken
     {
-        AuthorizationRole Role { get; set; }
-        List<string> SubjectIds { get; set; }
+        AuthorizationRole Role { get; }
+        List<string> SubjectIds { get; }
     }
 }

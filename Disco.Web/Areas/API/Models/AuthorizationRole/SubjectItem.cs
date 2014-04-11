@@ -16,8 +16,8 @@ namespace Disco.Web.Areas.API.Models.AuthorizationRole
         {
             return new Models.AuthorizationRole.SubjectItem()
             {
-                Id = ADObject.SamAccountName,
-                Name = ADObject.Name,
+                Id = ADObject.NetBiosId,
+                Name = ADObject.DisplayName,
                 Type = ADObject is ActiveDirectoryGroup ? "group" : "user"
             };
         }

@@ -388,7 +388,7 @@ DELETE [Users] WHERE [Id]=@IdExisting;";
                     throw new InvalidOperationException("Unable to determine the Domains NetBIOS Name");
 
                 // MIGRATE SETTINGS
-                
+
                 // Authorization Roles
                 foreach (var authRole in Database.AuthorizationRoles.Where(ar => ar.SubjectIds != null).ToList())
                 {
@@ -412,6 +412,30 @@ DELETE [Users] WHERE [Id]=@IdExisting;";
                         deviceProfile.OrganisationalUnit = string.Format("{0},{1}", deviceProfile.OrganisationalUnit, defaultNamingContext);
                 }
                 Database.SaveChanges();
+
+                // MIGRATE Document Templates
+                var dataStoreLocation = Database.ConfigurationItems.Where(ci => ci.Scope == "System" && ci.Key == "DataStoreLocation").Select(ci => ci.Value).FirstOrDefault();
+                if (!string.IsNullOrWhiteSpace(dataStoreLocation) && System.IO.Directory.Exists(dataStoreLocation))
+                {
+                    string filePrefix = string.Format("{0}_", netBiosName);
+
+                    var userAttachmentsDirectory = System.IO.Path.Combine(dataStoreLocation, "UserAttachments");
+                    if (System.IO.Directory.Exists(userAttachmentsDirectory))
+                    {
+                        var files = System.IO.Directory.EnumerateFiles(userAttachmentsDirectory, "*.*", System.IO.SearchOption.AllDirectories)
+                            .Where(p => !p.StartsWith(filePrefix, StringComparison.InvariantCultureIgnoreCase) && (p.EndsWith("_thumb.jpg") || p.EndsWith("_file"))).ToList();
+
+                        foreach (var file in files)
+                        {
+                            try
+                            {
+                                var renameFile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(file), string.Concat(filePrefix, System.IO.Path.GetFileName(file)));
+                                System.IO.File.Move(file, renameFile);
+                            }
+                            catch (Exception) { /* Ignore Errors */ }
+                        }
+                    }
+                }
 
                 // MIGRATE DEVICES
                 foreach (var device in Database.Devices.Where(d => d.DeviceDomainId != null && !d.DeviceDomainId.Contains(@"\")).ToList())

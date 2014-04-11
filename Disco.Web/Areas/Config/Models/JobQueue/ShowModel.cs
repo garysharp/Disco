@@ -25,7 +25,7 @@ namespace Disco.Web.Areas.Config.Models.JobQueue
                 var item = new SubjectDescriptor()
                 {
                     Id = ADObject.SamAccountName,
-                    Name = ADObject.Name
+                    Name = ADObject.DisplayName
                 };
 
                 if (ADObject is ActiveDirectoryGroup)

@@ -23,7 +23,7 @@ namespace Disco.BI.Extensions
 
             if (documentTemplate == null)
             {
-                filename = string.Format("{0}_{1:yyyyMMdd-HHmmss}.pdf", UniqueIdentifier.DataId, UniqueIdentifier.TimeStamp);
+                filename = string.Format("{0}_{1:yyyyMMdd-HHmmss}.pdf", UniqueIdentifier.DataId.Replace('\\', '_'), UniqueIdentifier.TimeStamp);
                 comments = string.Format("Uploaded: {0:s}", UniqueIdentifier.TimeStamp);
             }
             else
@@ -68,7 +68,7 @@ namespace Disco.BI.Extensions
         }
         public static string RepositoryFilename(this UserAttachment ua, DiscoDataContext Database)
         {
-            return Path.Combine(DataStore.CreateLocation(Database, "UserAttachments", ua.Timestamp), string.Format("{0}_{1}_file", ua.UserId, ua.Id));
+            return Path.Combine(DataStore.CreateLocation(Database, "UserAttachments", ua.Timestamp), string.Format("{0}_{1}_file", ua.UserId.Replace('\\', '_'), ua.Id));
         }
 
         private static string RepositoryThumbnailFilenameInternal(string DirectoryPath, string Filename)
@@ -85,7 +85,7 @@ namespace Disco.BI.Extensions
         }
         public static string RepositoryThumbnailFilename(this UserAttachment ua, DiscoDataContext Database)
         {
-            return RepositoryThumbnailFilenameInternal(DataStore.CreateLocation(Database, "UserAttachments", ua.Timestamp), string.Format("{0}_{1}_thumb.jpg", ua.UserId, ua.Id));
+            return RepositoryThumbnailFilenameInternal(DataStore.CreateLocation(Database, "UserAttachments", ua.Timestamp), string.Format("{0}_{1}_thumb.jpg", ua.UserId.Replace('\\', '_'), ua.Id));
         }
 
         public static void RepositoryDelete(this DeviceAttachment da, DiscoDataContext Database)

@@ -12,6 +12,7 @@ namespace Disco.Models.Interop.ActiveDirectory
         public string CommonName { get; set; }
 
         public string Name { get; set; }
+        public string DisplayName { get { return this.Name; } }
 
         public List<string> MemberOf { get; set; }
 

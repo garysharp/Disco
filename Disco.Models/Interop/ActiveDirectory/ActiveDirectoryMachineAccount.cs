@@ -15,6 +15,7 @@ namespace Disco.Models.Interop.ActiveDirectory
         public string Path { get; set; }
 
         public string Name { get; set; }
+        public string DisplayName { get { return this.Name; } }
         public string DnsName { get; set; }
         public Guid NetbootGUID { get; set; }
 

@@ -131,7 +131,7 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
             }).ToList();
 
             var loadForestServersTask = ActiveDirectory.LoadForestServersAsync();
-            if (loadForestServersTask.Wait(TimeSpan.FromSeconds(3)))
+            if (loadForestServersTask.Wait(TimeSpan.FromSeconds(1)))
             {
                 m.ADForestServers = loadForestServersTask.Result;
                 var configValue = config.ActiveDirectory.SearchEntireForest ?? true;

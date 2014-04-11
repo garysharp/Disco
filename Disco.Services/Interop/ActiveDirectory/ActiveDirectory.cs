@@ -263,13 +263,26 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (string.IsNullOrWhiteSpace(Term))
                 throw new ArgumentNullException("Term");
 
+            // Apply Domain Restriction
+            ActiveDirectoryDomain searchDomain = null;
+            Term = ApplySearchTermDomainRestriction(Term, out searchDomain);
+
+            if (string.IsNullOrWhiteSpace(Term))
+                return Enumerable.Empty<ActiveDirectoryUserAccount>();
+
             string ldapFilter = string.Format("(&(objectCategory=Person)(objectClass=user)(|(sAMAccountName=*{0}*)(displayName=*{0}*)))", ADInterop.EscapeLdapQuery(Term));
 
             string[] loadProperites = (AdditionalProperties != null && AdditionalProperties.Length > 0)
                 ? UserLoadProperties.Concat(AdditionalProperties).ToArray()
                 : UserLoadProperties;
 
-            return ADInterop.SearchScope(ldapFilter, resultLimit, loadProperites).Select(result => result.AsUserAccount(AdditionalProperties));
+            IEnumerable<ActiveDirectorySearchResult> searchResults;
+            if (searchDomain == null)
+                searchResults = ADInterop.SearchScope(ldapFilter, resultLimit, loadProperites);
+            else
+                searchResults = ADInterop.SearchScope(searchDomain, ldapFilter, resultLimit, loadProperites);
+
+            return searchResults.Select(result => result.AsUserAccount(AdditionalProperties));
         }
 
         private static ActiveDirectoryUserAccount AsUserAccount(this ActiveDirectorySearchResult item, string[] AdditionalProperties)
@@ -380,9 +393,22 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (string.IsNullOrWhiteSpace(Term))
                 throw new ArgumentNullException("Term");
 
+            // Apply Domain Restriction
+            ActiveDirectoryDomain searchDomain = null;
+            Term = ApplySearchTermDomainRestriction(Term, out searchDomain);
+
+            if (string.IsNullOrWhiteSpace(Term))
+                return Enumerable.Empty<ActiveDirectoryGroup>();
+
             string ldapFilter = string.Format("(&(objectCategory=Group)(|(sAMAccountName=*{0}*)(name=*{0}*)(cn=*{0}*)))", ADInterop.EscapeLdapQuery(Term));
 
-            return ADInterop.SearchScope(ldapFilter, resultLimit, GroupLoadProperties).Select(result => result.AsGroup());
+            IEnumerable<ActiveDirectorySearchResult> searchResults;
+            if (searchDomain == null)
+                searchResults = ADInterop.SearchScope(ldapFilter, resultLimit, GroupLoadProperties);
+            else
+                searchResults = ADInterop.SearchScope(searchDomain, ldapFilter, resultLimit, GroupLoadProperties);
+
+            return searchResults.Select(result => result.AsGroup());
         }
 
         private static ActiveDirectoryGroup AsGroup(this ActiveDirectorySearchResult item)
@@ -396,7 +422,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             return new ActiveDirectoryGroup()
             {
-                Domain = item.Domain.DnsName,
+                Domain = item.Domain.NetBiosName,
                 Name = name,
                 DistinguishedName = distinguishedName,
                 CommonName = cn,
@@ -416,7 +442,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             return new ActiveDirectoryGroup()
             {
-                Domain = Domain.DnsName,
+                Domain = Domain.NetBiosName,
                 Name = name,
                 DistinguishedName = distinguishedName,
                 CommonName = cn,
@@ -523,6 +549,31 @@ namespace Disco.Services.Interop.ActiveDirectory
             var domains = ADInterop.GetDomainFromId(Id);
 
             return ADInterop.SearchAll(domains, ldapFilter, SingleSearchResult, LoadProperties);
+        }
+
+        private static string ApplySearchTermDomainRestriction(string Term, out ActiveDirectoryDomain Domain)
+        {
+            if (string.IsNullOrWhiteSpace(Term))
+                throw new ArgumentNullException("Term");
+
+            var domainIndex = Term.IndexOf('\\');
+            if (domainIndex >= 0)
+            {
+                var domain = Term.Substring(0, domainIndex);
+
+                if (!ADInterop.TryGetDomainByNetBiosName(domain, out Domain))
+                    return null; // Domain not found - invalid search
+
+                if (Term.Length > (domainIndex + 1))
+                    return Term.Substring(domainIndex + 1);
+                else
+                    return null; // Domain only, no Term
+            }
+            else
+            {
+                Domain = null;
+                return Term;
+            }
         }
 
         #endregion

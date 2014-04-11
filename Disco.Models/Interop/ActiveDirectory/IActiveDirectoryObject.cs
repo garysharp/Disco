@@ -11,5 +11,6 @@ namespace Disco.Models.Interop.ActiveDirectory
         string NetBiosId { get; }
 
         string Name { get; set; }
+        string DisplayName { get; }
     }
 }

@@ -24,13 +24,13 @@ namespace Disco.Services.Interop.ActiveDirectory.Internal
                     if (!groups.Contains(group))
                     {
                         groups.Add(group);
-                        yield return group.SamAccountName;
+                        yield return group.NetBiosId;
                     }
         }
         public static IEnumerable<string> GetGroups(string DistinguishedName)
         {
             foreach (var group in GetGroupsRecursive(DistinguishedName, new Stack<ActiveDirectoryGroup>()))
-                yield return group.SamAccountName;
+                yield return group.NetBiosId;
         }
         public static string GetGroupsDistinguishedNameForSecurityIdentifier(string SecurityIdentifier)
         {
