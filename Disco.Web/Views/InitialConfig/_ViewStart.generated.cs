@@ -47,7 +47,7 @@ namespace Disco.Web.Views.InitialConfig
             
             #line 1 "..\..\Views\InitialConfig\_ViewStart.cshtml"
   
-    ViewContext.ViewBag.IsInitialConfig = true;
+    ViewContext.ViewData.Add("IsInitialConfig", true);
     Layout = MVC.Shared.Views._PublicLayout;
     Html.BundleDeferred("~/Style/InitialConfig");
 

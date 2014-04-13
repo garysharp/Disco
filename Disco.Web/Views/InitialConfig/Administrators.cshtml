@@ -1,0 +1,176 @@
+﻿@model Disco.Web.Models.InitialConfig.AdministratorsModel
+@{
+    ViewBag.Title = null;
+}
+<h1>@CommonHelpers.Breadcrumbs(Html.ToBreadcrumb("Initial Configuration", MVC.InitialConfig.Index(), "Disco Administrators"))</h1>
+<div id="initialConfig_Administrators">
+    <div class="form" style="width: 450px">
+        <div>
+            Disco Administrators have access to the entire Disco application.
+            <code>Domain Admins</code> is a required member and is always included regardless of configuration.
+        </div>
+        <table>
+            <tr>
+                <td>
+                    <div id="Config_AuthRoles_Subjects_Update_Dialog_ListContainer">
+                        <span id="Config_AuthRoles_Subjects_Update_Dialog_None" class="smallMessage">None Associated</span>
+                        <ul id="Config_AuthRoles_Subjects_Update_Dialog_List" class="none">
+                            @foreach (var sg in Model.AdministratorSubjects)
+                            {
+                                var displayName = sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id);
+                                <li class="@(sg.IsGroup ? "group" : "user")" data-subjectid="@sg.Id">@if (sg.IsGroup)
+                                                                                                     {
+                                    <i class="fa fa-users fa-lg"></i>@displayName
+                                                                                                     }
+                                                                                                     else
+                                                                                                     {
+                                    <i class="fa fa-user fa-lg"></i>@displayName
+                                                                                                     }<i class="fa fa-times-circle remove"></i></li>
+                            }
+                        </ul>
+                    </div>
+                    <div id="Config_AuthRoles_Subjects_Update_Dialog_AddContainer">
+                        <input type="text" id="Config_AuthRoles_Subjects_Update_Dialog_TextAdd" />
+                        <a id="Config_AuthRoles_Subjects_Update_Dialog_Add" href="#" class="button small">Add</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="dialogWait" title="Please Wait" class="dialog">
+    <h2><span class="ajaxLoading"></span>Validating Configuration</h2>
+    <div>Please wait while the Disco configuration is validated</div>
+</div>
+@using (Html.BeginForm())
+{
+    <div class="actionBar">
+        <input id="submitForm" type="submit" class="button" value="Continue" />
+    </div>
+}
+<script>
+    (function () {
+        var container, textAdd, list, noSubjects;
+
+        function remove() {
+            $this = $(this).closest('li');
+
+            if ($this.is('[data-subjectstatus="new"]')) {
+                $this.remove();
+            } else {
+                $this.attr('data-subjectstatus', 'removed').hide();
+            }
+
+            updateNoSubjects();
+
+            return false;
+        }
+
+        function add() {
+            var id = textAdd.val();
+
+            $.ajax({
+                url: '@Url.Action(MVC.InitialConfig.AdministratorsSubject())',
+                method: 'post',
+                data: { Id: id }
+            }).done(function (response) {
+                if (response) {
+                    if (list.find('li[data-subjectid="' + response.Id.replace('\\', '\\\\') + '"]').length == 0) {
+
+                        var liIcon = $('<i>').addClass('fa fa-lg');
+                        if (response.Type === 'user')
+                            liIcon.addClass('fa-user');
+                        else
+                            liIcon.addClass('fa-users');
+
+                        var li = $('<li>')
+                            .append(liIcon)
+                            .append($('<span>').text(response.Id == response.Name ? response.Id : response.Name + ' [' + response.Id + ']'))
+                            .append($('<i>').addClass('fa fa-times-circle remove'))
+                            .addClass(response.Type)
+                            .attr('data-subjectid', response.Id)
+                            .attr('data-subjectstatus', 'new');
+
+                        list.append(li);
+
+                        updateNoSubjects();
+                    } else {
+                        alert('That subject has already been added');
+                    }
+                } else {
+                    alert('Unknown Id');
+                }
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                alert('Unable to retrieve that subject, please check the account/group and try again');
+            });
+
+                return false;
+            }
+
+        function updateNoSubjects() {
+            if (list.find('li:visible').length > 0)
+                noSubjects.hide();
+            else
+                noSubjects.show();
+        }
+
+        // Initialize Page
+
+        container = $('#initialConfig_Administrators');
+
+        container.on('click', '.remove', remove);
+
+        list = $('#Config_AuthRoles_Subjects_Update_Dialog_List');
+        noSubjects = $('#Config_AuthRoles_Subjects_Update_Dialog_None');
+
+        textAdd = $('#Config_AuthRoles_Subjects_Update_Dialog_TextAdd');
+
+        textAdd.watermark('Search Subjects')
+            .autocomplete({
+                source: '@(Url.Action(MVC.InitialConfig.AdministratorsSearch()))',
+                minLength: 2,
+                focus: function (e, ui) {
+                    textAdd.val(ui.item.Id);
+                    return false;
+                },
+                select: function (e, ui) {
+                    textAdd.val(ui.item.Id).blur();
+                    return false;
+                }
+            }).data('ui-autocomplete')._renderItem = function (ul, item) {
+                return $("<li></li>")
+                    .data("item.autocomplete", item)
+                    .append("<a><strong>" + item.Name + "</strong><br>" + item.Id + " (" + item.Type + ")</a>")
+                    .appendTo(ul);
+            };
+
+        $('#Config_AuthRoles_Subjects_Update_Dialog_Add').click(add);
+        updateNoSubjects();
+
+        $('#submitForm').closest('form').submit(function () {
+
+            var form = $(this);
+
+            list.find('li[data-subjectstatus!="removed"]').each(function () {
+                var subjectId = $(this).attr('data-subjectid');
+
+                form.append($('<input>').attr({
+                    'name': 'Subjects',
+                    'type': 'hidden'
+                }).val(subjectId));
+
+            });
+
+            $('#dialogWait').dialog({
+                autoOpen: true,
+                draggable: false,
+                modal: true,
+                resizable: false,
+                width: 400,
+                height: 150,
+                closeOnEscape: false
+            }).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();
+        });
+
+    })();
+</script>

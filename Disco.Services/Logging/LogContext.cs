@@ -243,7 +243,8 @@ namespace Disco.Services.Logging
                 .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(0, 0)) // Midnight
                 .Build();
 
-            _ReInitializeScheduler.ScheduleJob(reInitalizeJobDetail, reInitalizeTrigger);
+            if (!_ReInitializeScheduler.CheckExists(reInitalizeTrigger.Key))
+                _ReInitializeScheduler.ScheduleJob(reInitalizeJobDetail, reInitalizeTrigger);
         }
 
         private LogContext(string PersistantStorePath, string PersistantStoreConnectionString)

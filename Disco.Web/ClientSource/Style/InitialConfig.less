@@ -7,17 +7,14 @@ header, #header {
     }
 }
 
-#dialogWait
-{
+#dialogWait {
     padding-top: 30px;
 
-    .ajaxLoading
-    {
+    .ajaxLoading {
         margin-right: 15px;
     }
 
-    div
-    {
+    div {
         padding-left: 31px;
     }
 }
@@ -33,27 +30,22 @@ header, #header {
     }
 }
 
-div.actionBar
-{
+div.actionBar {
     margin-top: 70px !important;
     background-color: rgba(240, 240, 240, 0.2);
 }
 
-div.form > table
-{
+div.form > table {
     background-color: #fff;
 }
 
-
 /* Welcome */
-#initialConfig_Welcome
-{
+#initialConfig_Welcome {
     div.form {
         margin-top: 40px;
     }
 
-    #OrganisationName
-    {
+    #OrganisationName {
         font-size: 1.2em;
         padding: 6px;
         margin-top: 10px;
@@ -63,26 +55,21 @@ div.form > table
 }
 
 /* FileStore */
-#initialConfig_FileStore
-{
-    #treeFilesystem .dynatree-container
-    {
+#initialConfig_FileStore {
+    #treeFilesystem .dynatree-container {
         height: 280px;
         overflow-y: auto;
         position: relative;
     }
 
-    #treeFilesystemActions
-    {
+    #treeFilesystemActions {
         margin: 10px 0 2px 0;
         text-align: right;
     }
 }
 
-#dialogCreateDirectory
-{
-    #createDirectoryName
-    {
+#dialogCreateDirectory {
+    #createDirectoryName {
         font-size: 1.2em;
         padding: 6px;
         margin-top: 10px;
@@ -90,21 +77,81 @@ div.form > table
     }
 }
 
+/* Administrators */
+#initialConfig_Administrators {
+
+    table {
+        margin-top: 15px;
+    }
+
+    #Config_AuthRoles_Subjects, #Config_AuthRoles_Subjects_Update_Dialog_List {
+        li {
+            padding: 4px 0 4px 4px;
+
+            i.fa-user, i.fa-users {
+                min-width: 22px;
+            }
+        }
+    }
+
+    #Config_AuthRoles_Subjects_Update_Dialog_ListContainer {
+        height: 280px;
+        overflow-y: auto;
+        background-color: @white;
+        border: 1px solid @TableDataDarkBorderColour;
+    }
+
+    #Config_AuthRoles_Subjects_Update_Dialog_None {
+        padding-top: 15px;
+        display: block;
+        text-align: center;
+    }
+
+    #Config_AuthRoles_Subjects_Update_Dialog_AddContainer {
+        padding-top: 10px;
+        padding-left: 10px;
+    }
+
+    #Config_AuthRoles_Subjects_Update_Dialog_List {
+        li {
+            cursor: pointer;
+
+            &:hover {
+                background-color: @TableDataBorderColour;
+
+                .remove {
+                    opacity: .8;
+                }
+            }
+
+            .remove {
+                margin-top: 2px;
+                padding-right: 6px;
+                float: right;
+                cursor: pointer;
+                opacity: 0;
+                color: @StatusRemove;
+                font-size: 1.3em;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+
 /* Complete */
-#initialConfig_Complete
-{
-    span.icon
-    {
+#initialConfig_Complete {
+    span.icon {
         margin-right: 4px;
     }
 
-    .testResult
-    {
+    .testResult {
         padding-left: 24px;
     }
 
-    .exception
-    {
+    .exception {
         border: 1px dashed #FF9696;
         background-color: #FFD8D8;
         margin-top: 10px;

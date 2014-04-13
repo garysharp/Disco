@@ -546,6 +546,12 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Extensions\T4MVCExtensions.cs" />
+    <Compile Include="Models\InitialConfig\AdministratorsModel.cs" />
+    <Compile Include="Views\InitialConfig\Administrators.generated.cs">
+      <DependentUpon>Administrators.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Views\Job\JobParts\Queues.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1563,6 +1569,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
     </None>
+    <Content Include="Views\InitialConfig\Administrators.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Administrators.generated.cs</LastGenOutput>
+    </Content>
     <None Include="Views\InitialConfig\_ViewStart.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>

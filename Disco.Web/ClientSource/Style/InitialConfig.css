@@ -54,6 +54,56 @@ div.form > table {
   margin-top: 10px;
   margin-bottom: 4px;
 }
+/* Administrators */
+#initialConfig_Administrators table {
+  margin-top: 15px;
+}
+#initialConfig_Administrators #Config_AuthRoles_Subjects li,
+#initialConfig_Administrators #Config_AuthRoles_Subjects_Update_Dialog_List li {
+  padding: 4px 0 4px 4px;
+}
+#initialConfig_Administrators #Config_AuthRoles_Subjects li i.fa-user,
+#initialConfig_Administrators #Config_AuthRoles_Subjects_Update_Dialog_List li i.fa-user,
+#initialConfig_Administrators #Config_AuthRoles_Subjects li i.fa-users,
+#initialConfig_Administrators #Config_AuthRoles_Subjects_Update_Dialog_List li i.fa-users {
+  min-width: 22px;
+}
+#initialConfig_Administrators #Config_AuthRoles_Subjects_Update_Dialog_ListContainer {
+  height: 280px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  border: 1px solid #d8d8d8;
+}
+#initialConfig_Administrators #Config_AuthRoles_Subjects_Update_Dialog_None {
+  padding-top: 15px;
+  display: block;
+  text-align: center;
+}
+#initialConfig_Administrators #Config_AuthRoles_Subjects_Update_Dialog_AddContainer {
+  padding-top: 10px;
+  padding-left: 10px;
+}
+#initialConfig_Administrators #Config_AuthRoles_Subjects_Update_Dialog_List li {
+  cursor: pointer;
+}
+#initialConfig_Administrators #Config_AuthRoles_Subjects_Update_Dialog_List li:hover {
+  background-color: #f4f4f4;
+}
+#initialConfig_Administrators #Config_AuthRoles_Subjects_Update_Dialog_List li:hover .remove {
+  opacity: .8;
+}
+#initialConfig_Administrators #Config_AuthRoles_Subjects_Update_Dialog_List li .remove {
+  margin-top: 2px;
+  padding-right: 6px;
+  float: right;
+  cursor: pointer;
+  opacity: 0;
+  color: #e51400;
+  font-size: 1.3em;
+}
+#initialConfig_Administrators #Config_AuthRoles_Subjects_Update_Dialog_List li .remove:hover {
+  opacity: 1;
+}
 /* Complete */
 #initialConfig_Complete span.icon {
   margin-right: 4px;

@@ -5,7 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Disco@{if(ViewBag.Title != null){<text> - @CommonHelpers.BreadcrumbsTitle(ViewBag.Title)</text>}}</title>
+    <title>Disco@{if (ViewBag.Title != null)
+                  {<text> - @CommonHelpers.BreadcrumbsTitle(ViewBag.Title)</text>}}</title>
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=20131224c" />
     <meta name="application-name" content="Disco" />
     <meta name="msapplication-starturl" content="/" />
@@ -19,21 +20,24 @@
             <div id="heading">
                 <a href="@Url.Action(MVC.Job.Index())"><i title="Disco - ICT Management"></i></a>
             </div>
-            @if (ViewBag.IsInitialConfig != null){<text>
-            <nav>
-                <ul id="menu">
-                    <li class="active">@Html.ActionLink("Reports", MVC.Public.Public.Index())</li>
-                    <li>@Html.ActionLink("Administration", MVC.Job.Index(), accesskey: "1")</li>
-                </ul>
-            </nav>
-            </text>}
+            @if (!ViewContext.ViewData.ContainsKey("IsInitialConfig"))
+            {<text>
+                <nav>
+                    <ul id="menu">
+                        <li class="active">@Html.ActionLink("Reports", MVC.Public.Public.Index())</li>
+                        <li>@Html.ActionLink("Administration", MVC.Job.Index(), accesskey: "1")</li>
+                    </ul>
+                </nav>
+                </text>}
         </header>
-        @if(ViewBag.Title != null){<div id="layout_PageHeading">@CommonHelpers.Breadcrumbs(ViewBag.Title)</div>}
+        @if (ViewBag.Title != null)
+        {<div id="layout_PageHeading">@CommonHelpers.Breadcrumbs(ViewBag.Title)</div>}
         <section id="layout_Page">
             @RenderBody()
         </section>
         <footer>
-            Disco v@(Disco.Web.DiscoApplication.Version) @if (ViewBag.IsInitialConfig != null){<text>@@ @(Disco.Web.DiscoApplication.OrganisationName) | @Html.ActionLink("Credits", MVC.Public.Public.Credits()) | @Html.ActionLink("Licence", MVC.Public.Public.Licence())</text>}
+            Disco v@(Disco.Web.DiscoApplication.Version) @if (ViewBag.IsInitialConfig != null)
+                                                         {<text>@@ @(Disco.Web.DiscoApplication.OrganisationName) | @Html.ActionLink("Credits", MVC.Public.Public.Credits()) | @Html.ActionLink("Licence", MVC.Public.Public.Licence())</text>}
         </footer>
     </div>
     @{ Disco.Services.Plugins.Features.UIExtension.UIExtensions.ExecuteExtensionResult(this); }

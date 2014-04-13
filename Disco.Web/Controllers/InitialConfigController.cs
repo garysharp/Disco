@@ -10,6 +10,10 @@ using System.Text.RegularExpressions;
 using System.IO.Compression;
 using System.Management;
 using System.Web;
+using Disco.Services.Users;
+using Disco.Services.Interop.ActiveDirectory;
+using Disco.Models.Interop.ActiveDirectory;
+using Disco.Services.Authorization;
 
 namespace Disco.Web.Controllers
 {
@@ -228,9 +232,12 @@ namespace Disco.Web.Controllers
                             ModelState.AddModelError(string.Empty, string.Format("Unable to extract File Store template: [{0}] {1}", ex.GetType().Name, ex.Message));
                         }
                     }
+
+                    // Initialize Core Environment
+                    AppConfig.InitalizeCoreEnvironment(database);
                 }
 
-                return RedirectToAction(MVC.InitialConfig.Complete());
+                return RedirectToAction(MVC.InitialConfig.Administrators());
             }
 
             m.ExpandDirectoryModel();
@@ -244,6 +251,81 @@ namespace Disco.Web.Controllers
         #endregion
 
         #region Administrators
+
+        public virtual ActionResult Administrators()
+        {
+            var administratorSubjects = UserService.AdministratorSubjectIds
+                .Select(subjectId => ActiveDirectory.RetrieveObject(subjectId))
+                .Where(item => item != null)
+                .Select(item => Disco.Web.Areas.Config.Models.AuthorizationRole.SubjectDescriptorModel.FromActiveDirectoryObject(item))
+                .OrderBy(item => item.Name).ToList();
+
+            var m = new AdministratorsModel()
+            {
+                AdministratorSubjects = administratorSubjects
+            };
+
+            return View(m);
+        }
+        public virtual ActionResult AdministratorsSearch(string term)
+        {
+            var groupResults = ActiveDirectory.SearchGroups(term).Cast<IActiveDirectoryObject>();
+            var userResults = ActiveDirectory.SearchUserAccounts(term).Cast<IActiveDirectoryObject>();
+
+            var results = groupResults.Concat(userResults).OrderBy(r => r.SamAccountName)
+                .Select(r => Disco.Web.Areas.API.Models.AuthorizationRole.SubjectItem.FromActiveDirectoryObject(r)).ToList();
+
+            return Json(results, JsonRequestBehavior.AllowGet);
+        }
+        public virtual ActionResult AdministratorsSubject(string Id)
+        {
+            if (string.IsNullOrWhiteSpace(Id))
+                return Json(null, JsonRequestBehavior.AllowGet);
+            else if (!Id.Contains(@"\"))
+                Id = string.Format(@"{0}\{1}", ActiveDirectory.PrimaryDomain.NetBiosName, Id);
+
+            var subject = ActiveDirectory.RetrieveObject(Id);
+
+            if (subject == null || !(subject is ActiveDirectoryUserAccount || subject is ActiveDirectoryGroup))
+                return Json(null, JsonRequestBehavior.AllowGet);
+            else
+                return Json(Disco.Web.Areas.API.Models.AuthorizationRole.SubjectItem.FromActiveDirectoryObject(subject), JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public virtual ActionResult Administrators(string[] Subjects)
+        {
+            string[] proposedSubjects;
+            string[] removedSubjects = null;
+            string[] addedSubjects = null;
+
+            // Validate Subjects
+            if (Subjects != null || Subjects.Length > 0)
+            {
+
+                var subjects = Subjects.Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).Select(s => new Tuple<string, IActiveDirectoryObject>(s, ActiveDirectory.RetrieveObject(s))).ToList();
+                var invalidSubjects = subjects.Where(s => s.Item2 == null).ToList();
+
+                if (invalidSubjects.Count > 0)
+                    throw new ArgumentException(string.Format("Subjects not found: {0}", string.Join(", ", invalidSubjects)), "Subjects");
+
+                proposedSubjects = subjects.Select(s => s.Item2.NetBiosId).OrderBy(s => s).ToArray();
+                var currentSubjects = UserService.AdministratorSubjectIds;
+                removedSubjects = currentSubjects.Except(proposedSubjects).ToArray();
+                addedSubjects = proposedSubjects.Except(currentSubjects).ToArray();
+
+                using (DiscoDataContext database = new DiscoDataContext())
+                {
+                    UserService.UpdateAdministratorSubjectIds(database, proposedSubjects);
+                }
+
+                if (removedSubjects != null && removedSubjects.Length > 0)
+                    AuthorizationLog.LogAdministratorSubjectsRemoved("<Initial Configuration>", removedSubjects);
+                if (addedSubjects != null && addedSubjects.Length > 0)
+                    AuthorizationLog.LogAdministratorSubjectsAdded("<Initial Configuration>", addedSubjects);
+            }
+
+            return RedirectToAction(MVC.InitialConfig.Complete());
+        }
 
         #endregion
 

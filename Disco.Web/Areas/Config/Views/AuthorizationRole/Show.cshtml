@@ -50,11 +50,11 @@
                             var displayName = sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id);
                             <li class="@(sg.IsGroup ? "group" : "user")">@if (sg.IsGroup)
                                                                          {
-                                                                             <i class="fa fa-users fa-lg"></i>@displayName
+                                <i class="fa fa-users fa-lg"></i>@displayName
                                                                          }
                                                                          else
                                                                          {
-                                                                             <a href="@(Url.Action(MVC.User.Show(sg.Id)))#UserDetailTab-Authorization"><i class="fa fa-user fa-lg"></i>@displayName</a>
+                                <a href="@(Url.Action(MVC.User.Show(sg.Id)))#UserDetailTab-Authorization"><i class="fa fa-user fa-lg"></i>@displayName</a>
                                                                          }</li>
                         }
                     </ul>
@@ -69,13 +69,13 @@
                                 {
                                     var displayName = sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id);
                                     <li class="@(sg.IsGroup ? "group" : "user")" data-subjectid="@sg.Id">@if (sg.IsGroup)
-                                                                         {
-                                                                             <i class="fa fa-users fa-lg"></i>@displayName
-                                                                         }
-                                                                         else
-                                                                         {
-                                                                             <i class="fa fa-user fa-lg"></i>@displayName
-                                                                         }<i class="fa fa-times-circle remove"></i></li>
+                                                                                                         {
+                                        <i class="fa fa-users fa-lg"></i>@displayName
+                                                                                                         }
+                                                                                                         else
+                                                                                                         {
+                                        <i class="fa fa-user fa-lg"></i>@displayName
+                                                                                                         }<i class="fa fa-times-circle remove"></i></li>
                                 }
                             </ul>
                         </div>
@@ -174,7 +174,7 @@
                                     data: { Id: id }
                                 }).done(function(response){
                                     if (response){
-                                        if (list.find('li[data-subjectid="'+response.Id+'"]').length == 0){
+                                        if (list.find('li[data-subjectid="'+response.Id.replace('\\', '\\\\')+'"]').length == 0){
                                             
                                             var liIcon = $('<i>').addClass('fa fa-lg');
                                             if (response.Type === 'user')

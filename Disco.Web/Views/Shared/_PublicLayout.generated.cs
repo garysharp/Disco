@@ -57,22 +57,23 @@ WriteLiteral("\r\n<!DOCTYPE html>\r\n<html>\r\n<head>\r\n    <title>Disco");
 
             
             #line 8 "..\..\Views\Shared\_PublicLayout.cshtml"
-                  if(ViewBag.Title != null){
+                  if (ViewBag.Title != null)
+                  {
             
             #line default
             #line hidden
 WriteLiteral(" - ");
 
             
-            #line 8 "..\..\Views\Shared\_PublicLayout.cshtml"
-                                                Write(CommonHelpers.BreadcrumbsTitle(ViewBag.Title));
+            #line 9 "..\..\Views\Shared\_PublicLayout.cshtml"
+                       Write(CommonHelpers.BreadcrumbsTitle(ViewBag.Title));
 
             
             #line default
             #line hidden
             
-            #line 8 "..\..\Views\Shared\_PublicLayout.cshtml"
-                                                                                                          }
+            #line 9 "..\..\Views\Shared\_PublicLayout.cshtml"
+                                                                                 }
             
             #line default
             #line hidden
@@ -107,7 +108,7 @@ WriteLiteral(" />\r\n");
 WriteLiteral("    ");
 
             
-            #line 13 "..\..\Views\Shared\_PublicLayout.cshtml"
+            #line 14 "..\..\Views\Shared\_PublicLayout.cshtml"
 Write(Html.BundleRenderDeferred());
 
             
@@ -118,7 +119,7 @@ WriteLiteral("\r\n");
 WriteLiteral("    ");
 
             
-            #line 14 "..\..\Views\Shared\_PublicLayout.cshtml"
+            #line 15 "..\..\Views\Shared\_PublicLayout.cshtml"
 Write(RenderSection("head", false));
 
             
@@ -138,14 +139,14 @@ WriteLiteral(" id=\"heading\"");
 
 WriteLiteral(">\r\n                <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 703), Tuple.Create("\"", 738)
+WriteAttribute("href", Tuple.Create(" href=\"", 724), Tuple.Create("\"", 759)
             
-            #line 20 "..\..\Views\Shared\_PublicLayout.cshtml"
-, Tuple.Create(Tuple.Create("", 710), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Job.Index())
+            #line 21 "..\..\Views\Shared\_PublicLayout.cshtml"
+, Tuple.Create(Tuple.Create("", 731), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Job.Index())
             
             #line default
             #line hidden
-, 710), false)
+, 731), false)
 );
 
 WriteLiteral("><i");
@@ -155,48 +156,49 @@ WriteLiteral(" title=\"Disco - ICT Management\"");
 WriteLiteral("></i></a>\r\n            </div>\r\n");
 
             
-            #line 22 "..\..\Views\Shared\_PublicLayout.cshtml"
+            #line 23 "..\..\Views\Shared\_PublicLayout.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 22 "..\..\Views\Shared\_PublicLayout.cshtml"
-             if (ViewBag.IsInitialConfig != null){
+            #line 23 "..\..\Views\Shared\_PublicLayout.cshtml"
+             if (!ViewContext.ViewData.ContainsKey("IsInitialConfig"))
+            {
             
             #line default
             #line hidden
-WriteLiteral("\r\n            <nav>\r\n                <ul");
+WriteLiteral("\r\n                <nav>\r\n                    <ul");
 
 WriteLiteral(" id=\"menu\"");
 
-WriteLiteral(">\r\n                    <li");
+WriteLiteral(">\r\n                        <li");
 
 WriteLiteral(" class=\"active\"");
 
 WriteLiteral(">");
 
             
-            #line 25 "..\..\Views\Shared\_PublicLayout.cshtml"
-                                  Write(Html.ActionLink("Reports", MVC.Public.Public.Index()));
+            #line 27 "..\..\Views\Shared\_PublicLayout.cshtml"
+                                      Write(Html.ActionLink("Reports", MVC.Public.Public.Index()));
 
             
             #line default
             #line hidden
-WriteLiteral("</li>\r\n                    <li>");
+WriteLiteral("</li>\r\n                        <li>");
 
             
-            #line 26 "..\..\Views\Shared\_PublicLayout.cshtml"
-                   Write(Html.ActionLink("Administration", MVC.Job.Index(), accesskey: "1"));
+            #line 28 "..\..\Views\Shared\_PublicLayout.cshtml"
+                       Write(Html.ActionLink("Administration", MVC.Job.Index(), accesskey: "1"));
 
             
             #line default
             #line hidden
-WriteLiteral("</li>\r\n                </ul>\r\n            </nav>\r\n            ");
+WriteLiteral("</li>\r\n                    </ul>\r\n                </nav>\r\n                ");
 
             
-            #line 29 "..\..\Views\Shared\_PublicLayout.cshtml"
-                   }
+            #line 31 "..\..\Views\Shared\_PublicLayout.cshtml"
+                       }
 
             
             #line default
@@ -204,14 +206,15 @@ WriteLiteral("</li>\r\n                </ul>\r\n            </nav>\r\n          
 WriteLiteral("        </header>\r\n");
 
             
-            #line 31 "..\..\Views\Shared\_PublicLayout.cshtml"
+            #line 33 "..\..\Views\Shared\_PublicLayout.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 31 "..\..\Views\Shared\_PublicLayout.cshtml"
-         if(ViewBag.Title != null){
+            #line 33 "..\..\Views\Shared\_PublicLayout.cshtml"
+         if (ViewBag.Title != null)
+        {
             
             #line default
             #line hidden
@@ -222,8 +225,8 @@ WriteLiteral(" id=\"layout_PageHeading\"");
 WriteLiteral(">");
 
             
-            #line 31 "..\..\Views\Shared\_PublicLayout.cshtml"
-                                                           Write(CommonHelpers.Breadcrumbs(ViewBag.Title));
+            #line 34 "..\..\Views\Shared\_PublicLayout.cshtml"
+                                 Write(CommonHelpers.Breadcrumbs(ViewBag.Title));
 
             
             #line default
@@ -231,8 +234,8 @@ WriteLiteral(">");
 WriteLiteral("</div>");
 
             
-            #line 31 "..\..\Views\Shared\_PublicLayout.cshtml"
-                                                                                                               }
+            #line 34 "..\..\Views\Shared\_PublicLayout.cshtml"
+                                                                                     }
 
             
             #line default
@@ -246,7 +249,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("            ");
 
             
-            #line 33 "..\..\Views\Shared\_PublicLayout.cshtml"
+            #line 36 "..\..\Views\Shared\_PublicLayout.cshtml"
        Write(RenderBody());
 
             
@@ -255,7 +258,7 @@ WriteLiteral("            ");
 WriteLiteral("\r\n        </section>\r\n        <footer>\r\n            Disco v");
 
             
-            #line 36 "..\..\Views\Shared\_PublicLayout.cshtml"
+            #line 39 "..\..\Views\Shared\_PublicLayout.cshtml"
                Write(Disco.Web.DiscoApplication.Version);
 
             
@@ -264,16 +267,17 @@ WriteLiteral("\r\n        </section>\r\n        <footer>\r\n            Disco v"
 WriteLiteral(" ");
 
             
-            #line 36 "..\..\Views\Shared\_PublicLayout.cshtml"
-                                                          if (ViewBag.IsInitialConfig != null){
+            #line 39 "..\..\Views\Shared\_PublicLayout.cshtml"
+                                                          if (ViewBag.IsInitialConfig != null)
+                                                         {
             
             #line default
             #line hidden
 WriteLiteral("@ ");
 
             
-            #line 36 "..\..\Views\Shared\_PublicLayout.cshtml"
-                                                                                                    Write(Disco.Web.DiscoApplication.OrganisationName);
+            #line 40 "..\..\Views\Shared\_PublicLayout.cshtml"
+                                                               Write(Disco.Web.DiscoApplication.OrganisationName);
 
             
             #line default
@@ -281,8 +285,8 @@ WriteLiteral("@ ");
 WriteLiteral(" | ");
 
             
-            #line 36 "..\..\Views\Shared\_PublicLayout.cshtml"
-                                                                                                                                                    Write(Html.ActionLink("Credits", MVC.Public.Public.Credits()));
+            #line 40 "..\..\Views\Shared\_PublicLayout.cshtml"
+                                                                                                               Write(Html.ActionLink("Credits", MVC.Public.Public.Credits()));
 
             
             #line default
@@ -290,15 +294,15 @@ WriteLiteral(" | ");
 WriteLiteral(" | ");
 
             
-            #line 36 "..\..\Views\Shared\_PublicLayout.cshtml"
-                                                                                                                                                                                                               Write(Html.ActionLink("Licence", MVC.Public.Public.Licence()));
+            #line 40 "..\..\Views\Shared\_PublicLayout.cshtml"
+                                                                                                                                                                          Write(Html.ActionLink("Licence", MVC.Public.Public.Licence()));
 
             
             #line default
             #line hidden
             
-            #line 36 "..\..\Views\Shared\_PublicLayout.cshtml"
-                                                                                                                                                                                                                                                                                   }
+            #line 40 "..\..\Views\Shared\_PublicLayout.cshtml"
+                                                                                                                                                                                                                                              }
 
             
             #line default
@@ -306,13 +310,13 @@ WriteLiteral(" | ");
 WriteLiteral("        </footer>\r\n    </div>\r\n");
 
             
-            #line 39 "..\..\Views\Shared\_PublicLayout.cshtml"
+            #line 43 "..\..\Views\Shared\_PublicLayout.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 39 "..\..\Views\Shared\_PublicLayout.cshtml"
+            #line 43 "..\..\Views\Shared\_PublicLayout.cshtml"
        Disco.Services.Plugins.Features.UIExtension.UIExtensions.ExecuteExtensionResult(this); 
             
             #line default

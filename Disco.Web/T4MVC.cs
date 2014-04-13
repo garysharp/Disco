@@ -1099,6 +1099,18 @@ namespace Disco.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.FileStoreBranch);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AdministratorsSearch()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AdministratorsSearch);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AdministratorsSubject()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AdministratorsSubject);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public InitialConfigController Actions { get { return MVC.InitialConfig; } }
@@ -1120,6 +1132,9 @@ namespace Disco.Web.Controllers
             public readonly string Database = "Database";
             public readonly string FileStore = "FileStore";
             public readonly string FileStoreBranch = "FileStoreBranch";
+            public readonly string Administrators = "Administrators";
+            public readonly string AdministratorsSearch = "AdministratorsSearch";
+            public readonly string AdministratorsSubject = "AdministratorsSubject";
             public readonly string Complete = "Complete";
             public readonly string RestartWebApp = "RestartWebApp";
         }
@@ -1132,6 +1147,9 @@ namespace Disco.Web.Controllers
             public const string Database = "Database";
             public const string FileStore = "FileStore";
             public const string FileStoreBranch = "FileStoreBranch";
+            public const string Administrators = "Administrators";
+            public const string AdministratorsSearch = "AdministratorsSearch";
+            public const string AdministratorsSubject = "AdministratorsSubject";
             public const string Complete = "Complete";
             public const string RestartWebApp = "RestartWebApp";
         }
@@ -1169,6 +1187,30 @@ namespace Disco.Web.Controllers
         {
             public readonly string Path = "Path";
         }
+        static readonly ActionParamsClass_AdministratorsSearch s_params_AdministratorsSearch = new ActionParamsClass_AdministratorsSearch();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AdministratorsSearch AdministratorsSearchParams { get { return s_params_AdministratorsSearch; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AdministratorsSearch
+        {
+            public readonly string term = "term";
+        }
+        static readonly ActionParamsClass_AdministratorsSubject s_params_AdministratorsSubject = new ActionParamsClass_AdministratorsSubject();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AdministratorsSubject AdministratorsSubjectParams { get { return s_params_AdministratorsSubject; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AdministratorsSubject
+        {
+            public readonly string Id = "Id";
+        }
+        static readonly ActionParamsClass_Administrators s_params_Administrators = new ActionParamsClass_Administrators();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Administrators AdministratorsParams { get { return s_params_Administrators; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Administrators
+        {
+            public readonly string Subjects = "Subjects";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -1180,6 +1222,7 @@ namespace Disco.Web.Controllers
             public class _ViewNamesClass
             {
                 public readonly string _ViewStart = "_ViewStart";
+                public readonly string Administrators = "Administrators";
                 public readonly string Complete = "Complete";
                 public readonly string Database = "Database";
                 public readonly string FileStore = "FileStore";
@@ -1187,6 +1230,7 @@ namespace Disco.Web.Controllers
                 public readonly string Welcome = "Welcome";
             }
             public readonly string _ViewStart = "~/Views/InitialConfig/_ViewStart.cshtml";
+            public readonly string Administrators = "~/Views/InitialConfig/Administrators.cshtml";
             public readonly string Complete = "~/Views/InitialConfig/Complete.cshtml";
             public readonly string Database = "~/Views/InitialConfig/Database.cshtml";
             public readonly string FileStore = "~/Views/InitialConfig/FileStore.cshtml";
@@ -1273,6 +1317,45 @@ namespace Disco.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.FileStoreBranch);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Path", Path);
             FileStoreBranchOverride(callInfo, Path);
+            return callInfo;
+        }
+
+        partial void AdministratorsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        public override System.Web.Mvc.ActionResult Administrators()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Administrators);
+            AdministratorsOverride(callInfo);
+            return callInfo;
+        }
+
+        partial void AdministratorsSearchOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string term);
+
+        public override System.Web.Mvc.ActionResult AdministratorsSearch(string term)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AdministratorsSearch);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "term", term);
+            AdministratorsSearchOverride(callInfo, term);
+            return callInfo;
+        }
+
+        partial void AdministratorsSubjectOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
+
+        public override System.Web.Mvc.ActionResult AdministratorsSubject(string Id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AdministratorsSubject);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
+            AdministratorsSubjectOverride(callInfo, Id);
+            return callInfo;
+        }
+
+        partial void AdministratorsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string[] Subjects);
+
+        public override System.Web.Mvc.ActionResult Administrators(string[] Subjects)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Administrators);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Subjects", Subjects);
+            AdministratorsOverride(callInfo, Subjects);
             return callInfo;
         }
 

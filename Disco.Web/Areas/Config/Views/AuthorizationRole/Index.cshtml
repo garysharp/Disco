@@ -141,6 +141,7 @@ else
             }
 
             updateNoSubjects();
+            return false;
         }
 
         function add() {
@@ -152,7 +153,7 @@ else
                 data: { Id: id }
             }).done(function (response) {
                 if (response) {
-                    if (list.find('li[data-subjectid="' + response.Id + '"]').length == 0) {
+                    if (list.find('li[data-subjectid="' + response.Id.replace('\\', '\\\\') + '"]').length == 0) {
 
                         var liIcon = $('<i>').addClass('fa fa-lg');
                         if (response.Type === 'user')
@@ -180,6 +181,7 @@ else
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 alert('Error: ' + errorThrown);
             });
+                return false;
             }
 
         function updateNoSubjects() {
