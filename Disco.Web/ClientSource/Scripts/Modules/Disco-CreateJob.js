@@ -28,7 +28,7 @@
                 autoOpen: true,
                 title: 'Create Job',
                 width: 850,
-                height: $(window).height() - 50,
+                height: $(window).height() - 100,
                 close: function () {
                     createJobDialog.find('iframe').attr('src', 'about:blank');
                     createJobDialog.dialog('destroy').remove();

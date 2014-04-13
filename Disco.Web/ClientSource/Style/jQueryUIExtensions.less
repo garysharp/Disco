@@ -153,6 +153,70 @@ input:-moz-placeholder {
     font-weight: bold;
 }*/
 
+// Dialogs
+
+.ui-dialog {
+	animation-name: ui-dialog-show;
+	-webkit-animation-name: ui-dialog-show;	
+
+	animation-duration: .2s;	
+	-webkit-animation-duration: .2s;
+
+	animation-timing-function: ease-in-out;	
+	-webkit-animation-timing-function: ease-in-out;		
+}
+
+@keyframes ui-dialog-show {
+	0% {
+        transform: translateY(-30px);
+		opacity: 0.0;		
+	}
+	100% {
+		transform: translateY(0);
+		opacity: 1;	
+	}		
+}
+
+@-webkit-keyframes ui-dialog-show {
+	0% {
+		-webkit-transform: translateY(-30px);
+		opacity: 0.0;		
+	}
+	100% {
+		-webkit-transform: translateY(0);
+		opacity: 1;	
+	}		
+}
+
+.ui-widget-overlay.ui-front {
+	animation-name: ui-dialog-fadeIn;
+	-webkit-animation-name: ui-dialog-fadeIn;	
+
+	animation-duration: .2s;	
+	-webkit-animation-duration: .2s;
+
+	animation-timing-function: ease-in-out;	
+	-webkit-animation-timing-function: ease-in-out;		
+}
+
+@keyframes ui-dialog-fadeIn {
+	0% {
+		opacity: 0.0;		
+	}
+	100% {
+		opacity: 0.5;	
+	}		
+}
+
+@-webkit-keyframes ui-dialog-fadeIn {
+	0% {
+		opacity: 0.0;		
+	}
+	100% {
+		opacity: 0.5;	
+	}		
+}
+
 // Initially hide dialogs
 
 .page .dialog {
@@ -164,6 +228,7 @@ input:-moz-placeholder {
     border-color: @HeaderBackgroundColour;
     background: #fcfcfc;
     box-shadow: rgba(20,20,20,.7) 0px 0px 50px;
+    top: 50px !important;
 }
 
     .ui-dialog .ui-widget-header {
