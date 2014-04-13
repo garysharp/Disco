@@ -803,6 +803,13 @@ table.jobTable > tfoot > tr > th,
 table.jobTable > tfoot > tr > td {
   background-color: #f4f4f4;
 }
+table.jobTable td {
+  white-space: nowrap;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
 table.jobTable.hideStatusClosed tr[data-status=Closed] {
   display: none;
 }
