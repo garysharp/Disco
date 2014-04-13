@@ -4359,18 +4359,18 @@ td.subtleHighlight {
   border-radius: 3px;
 }
 .field-validation-error {
-  color: red;
+  color: #e51400 !important;
 }
 .field-validation-valid {
   display: none;
 }
 .input-validation-error {
-  border: 1px solid red;
-  background-color: #ffeeee;
+  border: 1px solid #e51400 !important;
+  background-color: #fff7f7 !important;
 }
 .validation-summary-errors {
-  font-weight: bold;
-  color: red;
+  font-weight: bold !important;
+  color: #e51400 !important;
 }
 .validation-summary-valid {
   display: none;

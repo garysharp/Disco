@@ -1,8 +1,8 @@
 ﻿@model Disco.Web.Models.InitialConfig.FileStoreModel
 @{
     ViewBag.Title = null;
-    Html.BundleDeferred("~/Style/jQueryUI/dynatree");
-    Html.BundleDeferred("~/ClientScripts/Modules/jQueryUI-DynaTree");
+    Html.BundleDeferred("~/Style/Fancytree");
+    Html.BundleDeferred("~/ClientScripts/Modules/jQuery-Fancytree");
 }
 <h1>@CommonHelpers.Breadcrumbs(Html.ToBreadcrumb("Initial Configuration", MVC.InitialConfig.Index(), "File Store"))</h1>
 <div id="initialConfig_FileStore">
@@ -37,213 +37,156 @@
         </div>
     }
 </div>
-<div id="dialogWait" title="Please Wait">
+<div id="dialogWait" title="Please Wait" class="dialog">
     <h2><span class="ajaxLoading"></span>Building and Validating File Store</h2>
     <div>Please wait while the Disco File Store is created and/or validated</div>
 </div>
-<div id="dialogCreateDirectory" title="Create Directory">
+<div id="dialogCreateDirectory" title="Create Directory" class="dialog">
     <h2>Create Directory</h2>
     <input type="text" id="createDirectoryName" />
     <div>Parent: <span id="createDirectoryParent" class="code"></span></div>
 </div>
 <script>
     (function () {
+        var tree = null;
+        var $tree = $('#treeFilesystem');
+        var $dialogCreateDirectory;
         var fileSystemBranchUrl = '@(Url.Action(MVC.InitialConfig.FileStoreBranch()))';
-        var fileSystemInitialBranches = null;
-        var fileSystemBranchSelected = null;
-        var $treeFilesystem = $('#treeFilesystem');
+        var rootNodes = processNode(@(new HtmlString(Json.Encode(Model.DirectoryModel)))).children;
 
-        var nodeDataLoaded = function (node) {
-            var addedNodes = [];
-            var previousUpdateMode = node.tree.enableUpdate(false);
-            var descriptor = node.data.fileSystemDescriptor;
-            // Sub Folders
-            if (descriptor.SubDirectories) {
-                var hasSubDirectories = false;
-                for (var k in descriptor.SubDirectories) {
-                    hasSubDirectories = true;
-                    var d = descriptor.SubDirectories[k];
-                    var n = node.addChild({ key: d.Path, title: d.IsNew ? d.Name + ' [New]' : d.Name, tooltip: d.Path, unselectable: !d.Selectable, addClass: 'directory', isLazy: true, isFolder: true, fileSystemDescriptor: d });
-                    addedNodes.push(n);
-
-                    if (d.SubDirectories) {
-                        nodeDataLoaded(n);
-                    }
-                }
-                if (!hasSubDirectories) {
-                    // Leaf
-                    node.data.isLazy = false;
-                    if (!fileSystemInitialBranches)
-                        node.render();
-                }
-            }
-            node.setLazyNodeStatus(DTNodeStatus_Ok);
-            node.tree.enableUpdate(previousUpdateMode);
-            return addedNodes;
+        function processNodes(nodes) {
+            return $.map(nodes, processNode);
         }
-        var loadNodeData = function (node) {
-            var descriptor = node.data.fileSystemDescriptor;
+        function processNode(node) {
+            var children = null;
+            if (node.SubDirectories) {
+                children = $.map(node.SubDirectories, processNode);
+            }
+            return {
+                title: node.IsNew ? node.Name + ' [New]' : node.Name,
+                key: node.Path,
+                folder: true,
+                expanded: !!children,
+                unselectable: !node.Selectable,
+                tooltip: node.Path,
+                children: children,
+                lazy: !children
+            };
+        }
 
-            if (!descriptor.SubDirectories) {
-                $.ajax({
+        tree = $tree.fancytree({
+            source: rootNodes,
+            checkbox: false,
+            selectMode: 1,
+            keyboard: false,
+            lazyload: function (e, data) {
+                var node = data.node;
+                data.result = {
                     url: fileSystemBranchUrl,
-                    dataType: 'json',
-                    data: { Path: descriptor.Path },
-                    success: function (data) {
-                        node.data.fileSystemDescriptor = data;
-                        return nodeDataLoaded(node);
-                    },
-                    error: function () {
-                        alert('Unable to access this path: ' + descriptor.Path);
-                        node.remove();
-                    }
-                })
-            } else {
-                return nodeDataLoaded(node);
-            }
-        }
-        var lazyLoadNode = function (node) {
-            if (node.data.fileSystemDescriptor) {
-                node.setLazyNodeStatus(DTNodeStatus_Loading);
-                loadNodeData(node);
-            } else {
-                node.setLazyNodeStatus(DTNodeStatus_Ok);
-            }
-        }
-        var activeNodeUpdated = function () {
-            var activeNode = $("#treeFilesystem").dynatree("getActiveNode");
+                    data: { Path: node.key },
+                    cache: false
+                }
+            },
+            postProcess: function (e, data) {
+                data.result = processNode(data.response).children;
+            },
+            activate: function (e, data) {
+                var node = data.node;
 
-            if (activeNode !== null) {
-                fileSystemBranchSelected = activeNode.data.fileSystemDescriptor;
-            } else {
-                fileSystemBranchSelected = null
-            }
-
-            if (fileSystemBranchSelected !== null) {
-                $('#locationPath').text(fileSystemBranchSelected.Path);
-                $('#createDirectory').attr('disabled', false);
-                if (fileSystemBranchSelected.Selectable) {
-                    $('#submitForm').attr('disabled', false);
-                    $('#locationPathInvalid').hide();
-                } else {
-                    $('#submitForm').attr('disabled', true);
+                if (node.unselectable) {
+                    $('#submitForm').prop('disabled', true);
                     $('#locationPathInvalid').show();
-                }
-            } else {
-                $('#createDirectory').attr('disabled', true);
-                $('#submitForm').attr('disabled', true);
-                $('#locationPath').text('<None>');
-                $('#locationPathInvalid').show();
-            }
-        }
-        var scrollToNode = function (node) {
-            var $li = $(node.li);
-            var $treeRoot = $($treeFilesystem.dynatree('getRoot').ul);
-            var ih = $li.height();
-            var th = $treeRoot.height();
-            var ts = $treeRoot.scrollTop();
-            var is = $li.position().top;
-            if ((ih + is) > th) {
-                if (ih > th) {
-                    $treeRoot.animate({ 'scrollTop': (is + ts) }, 'fast');
                 } else {
-                    $treeRoot.animate({ 'scrollTop': (ih + is + ts - th) }, 'fast');
+                    $('#submitForm').prop('disabled', false);
+                    $('#locationPathInvalid').hide();
                 }
+
+                $('#createDirectory').prop('disabled', false);
+                $('#locationPath').text(node.key);
+
+            }
+        }).fancytree('getTree');
+
+        var initalValue = $('#FileStoreLocation').val();
+        if (initalValue) {
+            var initialNode = tree.getNodeByKey(initalValue);
+            if (initialNode) {
+                initialNode.setActive(true);
             }
         }
-        var nodeExpanded = function (flag, node) {
-            if (flag)
-                window.setTimeout(function () { scrollToNode(node); }, 1);
-        }
-        var nodeDeactivated = function () {
-            activeNodeUpdated();
-        }
-        var nodeActivated = function (node) {
-            activeNodeUpdated();
-            nodeExpanded(true, node);
-        }
 
-        $(function () {
-            $('#dialogWait').dialog({
-                autoOpen: false,
-                draggable: false,
-                modal: true,
-                resizable: false,
-                width: 400,
-                height: 150,
-                closeOnEscape: false
-            }).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();
+        $('#createDirectory').click(function () {
+            if (!$(this).prop('disabled')) {
 
-            $('#dialogCreateDirectory').dialog({
-                autoOpen: false,
-                draggable: false,
-                modal: true,
-                resizable: false,
-                width: 400,
-                height: 180,
-                buttons: {
-                    'Cancel': function () {
-                        $('#dialogCreateDirectory').dialog('close');
-                    },
-                    'Create Directory': function () {
-                        var activeNode = $("#treeFilesystem").dynatree("getActiveNode");
-                        if (activeNode) {
-                            var name = $('#createDirectoryName').val();
-                            d = {
-                                Name: name,
-                                Path: fileSystemBranchSelected.Path.charAt(fileSystemBranchSelected.Path.length - 1) === '\\' ? fileSystemBranchSelected.Path + name : fileSystemBranchSelected.Path + '\\' + name,
-                                IsNew: true,
-                                Selectable: true,
-                                SubDirectories: {}
+                // Create Dialog
+                if (!$dialogCreateDirectory) {
+                    $('#dialogCreateDirectory').dialog({
+                        autoOpen: false,
+                        draggable: false,
+                        modal: true,
+                        resizable: false,
+                        width: 400,
+                        height: 200,
+                        buttons: {
+                            'Cancel': function () {
+                                $('#dialogCreateDirectory').dialog('close');
+                            },
+                            'Create Directory': function () {
+                                var dirName = $('#createDirectoryName').val();
+                                if (!!dirName) {
+                                    var activeNode = tree.getActiveNode();
+                                    if (activeNode) {
+                                        var parentPath = activeNode.key;
+                                        var path = parentPath.charAt(parentPath.length - 1) === '\\' ? parentPath + dirName : parentPath + '\\' + dirName;
+                                        node = {
+                                            title: dirName + ' [New]',
+                                            key: path,
+                                            folder: true,
+                                            expanded: false,
+                                            unselectable: false,
+                                            tooltip: path,
+                                            lazy: false
+                                        }
+                                        activeNode.addNode(node).setActive(true);
+                                    }
+                                }
+                                $('#dialogCreateDirectory').dialog('close');
                             }
-                            activeNode.addChild({ title: d.Name + ' [New]', tooltip: d.Path, unselectable: !d.Selectable, addClass: 'newDirectory', isLazy: false, isFolder: true, fileSystemDescriptor: d }).activate();
                         }
-                        $('#dialogCreateDirectory').dialog('close');
-                    }
+                    })
                 }
-            })
 
-            $('#createDirectory').click(function () {
-                if (fileSystemBranchSelected) {
+                var activeNode = tree.getActiveNode();
+                if (activeNode) {
                     $('#dialogCreateDirectory').dialog('open');
                     $('#createDirectoryName').val('').focus();
-                    $('#createDirectoryParent').text(fileSystemBranchSelected.Path);
+                    $('#createDirectoryParent').text(activeNode.key);
                 }
+
                 return false;
-            });
-
-            $('#submitForm').closest('form').submit(function () {
-                if (fileSystemBranchSelected && fileSystemBranchSelected.Selectable) {
-                    if ($(this).valid()) {
-                        $('#dialogWait').dialog('open');
-                        $('#FileStoreLocation').val(fileSystemBranchSelected.Path);
-                    }
-                    return true;
-                } else {
-                    alert('Invalid FileStore Location');
-                    return false;
-                }
-            });
-
-            $treeFilesystem.dynatree({ onLazyRead: lazyLoadNode, onActivate: nodeActivated, onDeactivate: nodeDeactivated, onExpand: nodeExpanded });
-            var rootNode = $treeFilesystem.dynatree('getRoot');
-
-            var previousUpdateMode = rootNode.tree.enableUpdate(false);
-            rootNode.data.fileSystemDescriptor = fileSystemInitialBranches[0];
-            loadNodeData(rootNode);
-            rootNode.tree.enableUpdate(previousUpdateMode);
-
-            var initialValue = $('#FileStoreLocation').val();
-            if (initialValue) {
-                var initialNode = rootNode.tree.getNodeByKey(initialValue);
-                if (initialNode)
-                    initialNode.activate();
             }
-
-            fileSystemInitialBranches = null;
         });
 
-
-        fileSystemInitialBranches = [@(new HtmlString(Json.Encode(Model.DirectoryModel)))];
+        $('#submitForm').closest('form').submit(function () {
+            var activeNode = tree.getActiveNode();
+            if (activeNode && !activeNode.unselectable) {
+                $('#FileStoreLocation').val(activeNode.key);
+                if ($(this).valid()) {
+                    $('#dialogWait').dialog({
+                        autoOpen: true,
+                        draggable: false,
+                        modal: true,
+                        resizable: false,
+                        width: 400,
+                        height: 150,
+                        closeOnEscape: false
+                    }).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();
+                }
+                return true;
+            } else {
+                alert('Invalid FileStore Location');
+                return false;
+            }
+        });
     })();
 </script>

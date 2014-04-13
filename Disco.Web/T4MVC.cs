@@ -537,12 +537,15 @@ namespace Links
                 private const string URLPATH = "~/ClientSource/Style/Fancytree";
                 public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                 public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public static readonly string disco_fancytree_less = Url("disco.fancytree.less");
+                public static readonly string disco_fancytree_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.fancytree.min.css") ? Url("disco.fancytree.min.css") : Url("disco.fancytree.css");
+                     
+                public static readonly string disco_fancytree_min_css = Url("disco.fancytree.min.css");
                 public static readonly string icons_disco_shrunk_png = Url("icons-disco-shrunk.png");
                 public static readonly string icons_DiscoMod_png = Url("icons-DiscoMod.png");
                 public static readonly string icons_gif = Url("icons.gif");
                 public static readonly string loading_gif = Url("loading.gif");
-                public static readonly string ui_fancytree_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/ui.fancytree.min.css") ? Url("ui.fancytree.min.css") : Url("ui.fancytree.css");
-                     
+                public static readonly string ui_fancytree_less = Url("ui.fancytree.less");
                 public static readonly string ui_fancytree_min_css = Url("ui.fancytree.min.css");
             }
         
@@ -598,6 +601,7 @@ namespace Links
             
                 public static readonly string BackgroundDocument_png = Url("BackgroundDocument.png");
                 public static readonly string BackgroundInitialConfig_jpg = Url("BackgroundInitialConfig.jpg");
+                public static readonly string BackgroundInitialHeading_jpg = Url("BackgroundInitialHeading.jpg");
                 public static readonly string BackgroundPage_png = Url("BackgroundPage.png");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class DeviceTypes {
@@ -616,6 +620,7 @@ namespace Links
                 }
             
                 public static readonly string Heading_png = Url("Heading.png");
+                public static readonly string Heading64_png = Url("Heading64.png");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Status {
                     private const string URLPATH = "~/ClientSource/Style/Images/Status";
@@ -1174,7 +1179,6 @@ namespace Disco.Web.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
-                public readonly string _Layout = "_Layout";
                 public readonly string _ViewStart = "_ViewStart";
                 public readonly string Complete = "Complete";
                 public readonly string Database = "Database";
@@ -1182,7 +1186,6 @@ namespace Disco.Web.Controllers
                 public readonly string RestartWebApp = "RestartWebApp";
                 public readonly string Welcome = "Welcome";
             }
-            public readonly string _Layout = "~/Views/InitialConfig/_Layout.cshtml";
             public readonly string _ViewStart = "~/Views/InitialConfig/_ViewStart.cshtml";
             public readonly string Complete = "~/Views/InitialConfig/Complete.cshtml";
             public readonly string Database = "~/Views/InitialConfig/Database.cshtml";

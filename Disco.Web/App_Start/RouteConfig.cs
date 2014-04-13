@@ -16,7 +16,7 @@ namespace Disco.Web
             // Install Route
             routes.MapRoute(
                 name: "InitialConfig", // Route name
-                url: "{controller}/{action}/{id}", // URL with parameters
+                url: "{action}/{id}", // URL with parameters
                 defaults: new { controller = "InitialConfig", action = "Index", id = UrlParameter.Optional }, // Parameter defaults
                 namespaces: new string[] { "Disco.Web.Controllers" } // Controllers Namespace Only
             );

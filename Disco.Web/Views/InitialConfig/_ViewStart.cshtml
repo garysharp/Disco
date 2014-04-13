@@ -1,4 +1,5 @@
 ﻿@{
-    Layout = MVC.InitialConfig.Views._Layout;
+    ViewContext.ViewBag.IsInitialConfig = true;
+    Layout = MVC.Shared.Views._PublicLayout;
     Html.BundleDeferred("~/Style/InitialConfig");
 }

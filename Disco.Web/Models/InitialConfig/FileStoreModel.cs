@@ -170,7 +170,11 @@ namespace Disco.Web.Models.InitialConfig
                         {
                             foreach (var subDir in dirInfo.EnumerateDirectories())
                             {
-                                this.SubDirectories.Add(subDir.Name.ToUpper(), FileStoreDirectoryModel.FromInfo(subDir));
+                                if (((subDir.Attributes & FileAttributes.System) != FileAttributes.System) &&
+                                    ((subDir.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden))
+                                {
+                                    this.SubDirectories.Add(subDir.Name.ToUpper(), FileStoreDirectoryModel.FromInfo(subDir));
+                                }
                             }
                         }
                         else

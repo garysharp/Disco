@@ -68,9 +68,6 @@ namespace Disco.Web.Controllers
             base.OnActionExecuting(filterContext);
         }
 
-        //
-        // GET: /Install/
-
         public virtual ActionResult Index()
         {
             return RedirectToAction(MVC.InitialConfig.Welcome());
@@ -204,53 +201,36 @@ namespace Disco.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Ensure Path Exists
                 using (DiscoDataContext database = new DiscoDataContext())
                 {
-                    var configItem = database.ConfigurationItems.Where(ci => ci.Scope == "System" && ci.Key == "DataStoreLocation").FirstOrDefault();
-                    if (configItem == null)
-                    { // Create Config
-                        database.ConfigurationItems.Add(new Disco.Models.Repository.ConfigurationItem()
-                        {
-                            Scope = "System",
-                            Key = "DataStoreLocation",
-                            Value = m.FileStoreLocation
-                        });
-                    }
-                    else
-                    { // Update Config
-                        configItem.Value = m.FileStoreLocation;
-                    }
+                    database.DiscoConfiguration.DataStoreLocation = m.FileStoreLocation;
                     database.SaveChanges();
+
+                    // Extract DataStore Template into FileStore
+                    var templatePath = Server.MapPath("~/ClientBin/DataStoreTemplate.zip");
+                    if (System.IO.File.Exists(templatePath))
+                    {
+                        try
+                        {
+                            using (ZipArchive templateArchive = ZipFile.Open(templatePath, ZipArchiveMode.Read))
+                            {
+                                foreach (var entry in templateArchive.Entries)
+                                {
+                                    var entryDestinationPath = Path.Combine(m.FileStoreLocation, entry.FullName);
+                                    if (System.IO.File.Exists(entryDestinationPath))
+                                        System.IO.File.Delete(entryDestinationPath);
+                                }
+                                templateArchive.ExtractToDirectory(m.FileStoreLocation);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError(string.Empty, string.Format("Unable to extract File Store template: [{0}] {1}", ex.GetType().Name, ex.Message));
+                        }
+                    }
                 }
 
-                // Extract DataStore Template into FileStore
-                var templatePath = Server.MapPath("~/ClientBin/DataStoreTemplate.zip");
-                if (System.IO.File.Exists(templatePath))
-                {
-                    try
-                    {
-                        using (ZipArchive templateArchive = ZipFile.Open(templatePath, ZipArchiveMode.Read))
-                        {
-                            foreach (var entry in templateArchive.Entries)
-                            {
-                                var entryDestinationPath = Path.Combine(m.FileStoreLocation, entry.FullName);
-                                if (System.IO.File.Exists(entryDestinationPath))
-                                    System.IO.File.Delete(entryDestinationPath);
-                            }
-                            templateArchive.ExtractToDirectory(m.FileStoreLocation);
-                        }
-                        return RedirectToAction(MVC.InitialConfig.Complete());
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError(string.Empty, string.Format("Unable to extract File Store template: [{0}] {1}", ex.GetType().Name, ex.Message));
-                    }
-                }
-                else
-                {
-                    return RedirectToAction(MVC.InitialConfig.Complete());
-                }
+                return RedirectToAction(MVC.InitialConfig.Complete());
             }
 
             m.ExpandDirectoryModel();
@@ -261,6 +241,10 @@ namespace Disco.Web.Controllers
         {
             return Json(FileStoreModel.FileStoreDirectoryModel.FromPath(Path, true), JsonRequestBehavior.AllowGet);
         }
+        #endregion
+
+        #region Administrators
+
         #endregion
 
         #region Complete

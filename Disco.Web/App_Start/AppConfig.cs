@@ -24,7 +24,7 @@ namespace Disco.Web
             return true;
         }
 
-        private static void InitalizeEnvironment(DiscoDataContext Database)
+        public static void InitalizeCoreEnvironment(DiscoDataContext Database)
         {
             // Initialize Logging
             Disco.Services.Logging.LogContext.Initalize(Database, DiscoApplication.SchedulerFactory);
@@ -48,7 +48,7 @@ namespace Disco.Web
 
         public static void InitalizeNormalEnvironment(DiscoDataContext Database)
         {
-            InitalizeEnvironment(Database);
+            InitalizeCoreEnvironment(Database);
 
             // Initialize Expressions
             BI.Expressions.Expression.InitializeExpressions();
@@ -81,7 +81,7 @@ namespace Disco.Web
 
         public static void InitializeUpdateEnvironment(DiscoDataContext Database, Version PreviousVersion)
         {
-            InitalizeEnvironment(Database);
+            InitalizeCoreEnvironment(Database);
 
             // Initialize Scheduled Tasks
             Disco.Services.Tasks.ScheduledTasks.InitalizeScheduledTasks(Database, DiscoApplication.SchedulerFactory, true);

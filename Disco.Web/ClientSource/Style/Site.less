@@ -1199,7 +1199,7 @@ td.subtleHighlight {
 }
 
 .field-validation-error {
-    color: red;
+    color: @StatusError !important;
 }
 
 .field-validation-valid {
@@ -1207,13 +1207,13 @@ td.subtleHighlight {
 }
 
 .input-validation-error {
-    border: 1px solid red;
-    background-color: #ffeeee;
+    border: 1px solid @StatusError !important;
+    background-color: #fff7f7 !important;
 }
 
 .validation-summary-errors {
-    font-weight: bold;
-    color: red;
+    font-weight: bold !important;
+    color: @StatusError !important;
 }
 
 .validation-summary-valid {

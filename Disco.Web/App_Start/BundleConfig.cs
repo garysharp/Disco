@@ -20,7 +20,7 @@ namespace Disco.Web
             BundleTable.Add(new Bundle("~/Style/Credits", Links.ClientSource.Style.Credits_min_css));
             BundleTable.Add(new Bundle("~/Style/InitialConfig", Links.ClientSource.Style.InitialConfig_min_css));
             BundleTable.Add(new Bundle("~/Style/jQueryUI/dynatree", Links.ClientSource.Style.jQueryUI.dynatree.ui_dynatree_min_css));
-            BundleTable.Add(new Bundle("~/Style/Fancytree", Links.ClientSource.Style.Fancytree.ui_fancytree_min_css));
+            BundleTable.Add(new Bundle("~/Style/Fancytree", Links.ClientSource.Style.Fancytree.disco_fancytree_min_css));
             BundleTable.Add(new Bundle("~/Style/Shadowbox", Links.ClientSource.Style.Shadowbox_min_css));
             BundleTable.Add(new Bundle("~/Style/Timeline", Links.ClientSource.Style.Timeline_min_css));
 

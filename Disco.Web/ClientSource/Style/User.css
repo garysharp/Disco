@@ -209,61 +209,6 @@
   display: block;
   text-align: right;
 }
-#UserDetailTab-Authorization .fancytree-container {
-  border: none;
-}
-#UserDetailTab-Authorization span.fancytree-node {
-  padding: 1px;
-  border: none;
-}
-#UserDetailTab-Authorization span.fancytree-node > span.fancytree-icon {
-  background: none;
-  display: inline-block;
-  font-family: FontAwesome;
-  font-size: 1.2em;
-  width: 14px;
-}
-#UserDetailTab-Authorization span.fancytree-ico-ef > span.fancytree-icon:before {
-  color: #9e9e9e;
-  font-size: 1em;
-  content: "\f07c";
-}
-#UserDetailTab-Authorization span.fancytree-ico-cf > span.fancytree-icon:before {
-  color: #9e9e9e;
-  font-size: 1em;
-  content: "\f07b";
-}
-#UserDetailTab-Authorization span.fancytree-ico-c > span.fancytree-icon:before {
-  color: #e51400;
-  content: "\f023";
-}
-#UserDetailTab-Authorization span.fancytree-ico-c.fancytree-selected > span.fancytree-icon:before {
-  color: #60a917;
-  content: "\f09c";
-}
-#UserDetailTab-Authorization span.fancytree-node.fancytree-selected {
-  font-style: normal;
-  background: none;
-}
-#UserDetailTab-Authorization span.fancytree-checkbox {
-  margin-left: 3px;
-  background-position: -96px -32px;
-}
-#UserDetailTab-Authorization span.fancytree-checkbox:hover {
-  background-position: -96px -32px;
-}
-#UserDetailTab-Authorization .fancytree-partsel span.fancytree-checkbox {
-  background-position: -128px -32px;
-}
-#UserDetailTab-Authorization .fancytree-partsel span.fancytree-checkbox:hover {
-  background-position: -128px -32px;
-}
-#UserDetailTab-Authorization .fancytree-selected span.fancytree-checkbox {
-  background-position: -112px -32px;
-}
-#UserDetailTab-Authorization .fancytree-selected span.fancytree-checkbox:hover {
-  background-position: -112px -32px;
-}
 #UserDetailTab-Authorization #UserDetailTab-Authorization_Membership {
   width: 40%;
   float: right;

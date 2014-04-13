@@ -708,11 +708,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Welcome.cshtml</DependentUpon>
     </Compile>
-    <Compile Include="Views\InitialConfig\_Layout.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>_Layout.cshtml</DependentUpon>
-    </Compile>
     <Compile Include="Views\InitialConfig\_ViewStart.generated.cs">
       <DependentUpon>_ViewStart.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1236,6 +1231,7 @@
     <Content Include="ClientSource\Style\ExpressionEditor.min.css">
       <DependentUpon>ExpressionEditor.css</DependentUpon>
     </Content>
+    <None Include="ClientSource\Style\Fancytree\disco.fancytree.less" />
     <None Include="ClientSource\Style\Images\Actions\dataTableFirst.png" />
     <None Include="ClientSource\Style\Images\Actions\dataTableFirstDisabled.png" />
     <None Include="ClientSource\Style\Images\Actions\dataTableLast.png" />
@@ -1251,11 +1247,17 @@
     <None Include="ClientSource\Style\Images\Actions\unlocked.png" />
     <None Include="ClientSource\Style\Fancytree\icons.gif" />
     <None Include="ClientSource\Style\Fancytree\loading.gif" />
-    <None Include="ClientSource\Style\Fancytree\ui.fancytree.css" />
+    <None Include="ClientSource\Style\Fancytree\ui.fancytree.less" />
     <None Include="ClientSource\Style\Fancytree\icons-DiscoMod.png" />
     <None Include="ClientSource\Style\Fancytree\icons-disco-shrunk.png" />
+    <Content Include="ClientSource\Style\Fancytree\disco.fancytree.css">
+      <DependentUpon>disco.fancytree.less</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\Fancytree\disco.fancytree.min.css">
+      <DependentUpon>disco.fancytree.less</DependentUpon>
+    </Content>
     <Content Include="ClientSource\Style\Fancytree\ui.fancytree.min.css">
-      <DependentUpon>ui.fancytree.css</DependentUpon>
+      <DependentUpon>ui.fancytree.less</DependentUpon>
     </Content>
     <Content Include="ClientSource\Style\Images\AttachmentTypes\document.png" />
     <Content Include="ClientSource\Style\Images\AttachmentTypes\expressionBrowserIcons.png" />
@@ -1265,6 +1267,7 @@
     <None Include="ClientSource\Style\Images\BackgroundDocument.png" />
     <None Include="ClientSource\Style\Images\BackgroundInitialConfig.jpg" />
     <None Include="ClientSource\Style\Images\BackgroundPage.png" />
+    <Content Include="ClientSource\Style\Images\BackgroundInitialHeading.jpg" />
     <Content Include="ClientSource\Style\Images\DeviceTypes\AppliancePC.png" />
     <Content Include="ClientSource\Style\Images\DeviceTypes\Desktop.png" />
     <Content Include="ClientSource\Style\Images\DeviceTypes\EnterpriseServer.png" />
@@ -1275,6 +1278,7 @@
     <Content Include="ClientSource\Style\Images\DeviceTypes\Unknown.png" />
     <Content Include="ClientSource\Style\Images\DeviceTypes\Workstation.png" />
     <Content Include="ClientSource\Style\Images\Heading.png" />
+    <Content Include="ClientSource\Style\Images\Heading64.png" />
     <Content Include="ClientSource\Style\Images\Status\fail32.png" />
     <None Include="ClientSource\Style\Images\Status\fileBroken256.png" />
     <None Include="ClientSource\Style\Images\Status\loading.gif" />
@@ -1558,10 +1562,6 @@
     <None Include="Views\Device\_ViewStart.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
-    </None>
-    <None Include="Views\InitialConfig\_Layout.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>_Layout.generated.cs</LastGenOutput>
     </None>
     <None Include="Views\InitialConfig\_ViewStart.cshtml">
       <Generator>RazorGenerator</Generator>
@@ -2036,7 +2036,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
+      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
