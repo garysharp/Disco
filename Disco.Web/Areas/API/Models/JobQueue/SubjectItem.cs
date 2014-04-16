@@ -16,7 +16,7 @@ namespace Disco.Web.Areas.API.Models.JobQueue
         {
             return new Models.JobQueue.SubjectItem()
             {
-                Id = ADObject.SamAccountName,
+                Id = ADObject.NetBiosId,
                 Name = ADObject.DisplayName,
                 Type = ADObject is ActiveDirectoryGroup ? "group" : "user"
             };

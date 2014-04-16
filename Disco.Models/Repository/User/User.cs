@@ -35,6 +35,15 @@ namespace Disco.Models.Repository
         {
             get
             {
+                return DomainUsername;
+            }
+        }
+        
+        [NotMapped]
+        public string DomainUsername
+        {
+            get
+            {
                 var index = UserId.IndexOf('\\');
                 return index < 0 ? UserId : UserId.Substring(index + 1);
             }

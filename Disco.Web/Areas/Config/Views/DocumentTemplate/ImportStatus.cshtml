@@ -168,13 +168,18 @@
             self.assignedDataUrl = ko.computed(function () {
                 var t = self.assignedDataType();
                 var dId = self.assignedDataId();
-                switch (t) {
-                    case 'Device':
-                        return urlDeviceShow + dId;
-                    case 'Job':
-                        return urlJobShow + dId;
-                    case 'User':
-                        return urlUserShow + dId;
+                if (dId !== undefined) {
+                    switch (t) {
+                        case 'Device':
+                            return urlDeviceShow + dId;
+                        case 'Job':
+                            return urlJobShow + dId;
+                        case 'User':
+                            if (dId.indexOf('\\') < 0)
+                                return urlUserShow + dId;
+                            else
+                                return urlUserShow + dId.substr(dId.indexOf('\\') + 1) + '?domain=' + dId.substr(0, dId.indexOf('\\'));
+                    }
                 }
                 return null;
             });

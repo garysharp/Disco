@@ -429,7 +429,7 @@
 
                                     $.ajax({
                                         url: '@Url.Action(MVC.API.JobQueue.Subject())',
-                                        method: 'get',
+                                        method: 'post',
                                         data: { Id: id }
                                     }).done(function (response) {
                                         if (response) {

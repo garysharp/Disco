@@ -1,5 +1,6 @@
 using Disco.Data.Repository;
 using Disco.Models.Repository;
+using Disco.Services.Interop.ActiveDirectory;
 using System;
 namespace Disco.BI.DocumentTemplateBI
 {
@@ -65,10 +66,14 @@ namespace Disco.BI.DocumentTemplateBI
         }
         public DocumentUniqueIdentifier(string TemplateTypeId, string DataId, string CreatorId, DateTime TimeStamp, int? Page = null, string Tag = null)
         {
+            var creatorId = (string.IsNullOrEmpty(CreatorId) || CreatorId.IndexOf('\\') > -1)
+                ? CreatorId
+                : string.Format(@"{0}\{1}", ActiveDirectory.PrimaryDomain.NetBiosName, CreatorId);
+
             this.Tag = Tag;
             this.TemplateTypeId = TemplateTypeId;
             this.DataId = DataId;
-            this.CreatorId = CreatorId;
+            this.CreatorId = creatorId;
             this.TimeStamp = TimeStamp;
             this.Page = Page ?? 0;
         }
@@ -93,7 +98,11 @@ namespace Disco.BI.DocumentTemplateBI
                 }
                 if (s.Length >= 5)
                 {
-                    this.CreatorId = s[4];
+                    var creatorId = s[4];
+                    if (!string.IsNullOrWhiteSpace(creatorId) && creatorId.IndexOf('\\') < 0)
+                        creatorId = string.Format(@"{0}\{1}", ActiveDirectory.PrimaryDomain.NetBiosName, creatorId);
+
+                    this.CreatorId = creatorId;
                 }
                 if (s.Length >= 6)
                 {
@@ -180,6 +189,12 @@ namespace Disco.BI.DocumentTemplateBI
                             }
                             break;
                         case DocumentTemplate.DocumentTemplateScopes.User:
+                            
+                            // Patch for existing documents (before DBv13 - Multi-Domain Support)
+                            // Add default domain to User Ids
+                            if (this.DataId.IndexOf('\\') < 0)
+                                this.DataId = string.Format(@"{0}\{1}", ActiveDirectory.PrimaryDomain.NetBiosName, this.DataId);
+                            
                             User u = Database.Users.Find(this.DataId);
                             if (u != null)
                             {

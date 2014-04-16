@@ -294,7 +294,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (invalidSubjects.Count > 0)
                     throw new ArgumentException(string.Format("Subjects not found: {0}", string.Join(", ", invalidSubjects)), "Subjects");
 
-                var proposedSubjects = subjects.Select(s => s.Item2.SamAccountName).OrderBy(s => s).ToArray();
+                var proposedSubjects = subjects.Select(s => s.Item2.NetBiosId).OrderBy(s => s).ToArray();
 
                 subjectIds = string.Join(",", proposedSubjects);
 

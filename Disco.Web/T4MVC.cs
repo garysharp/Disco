@@ -476,6 +476,10 @@ namespace Links
             private const string URLPATH = "~/ClientSource/Style";
             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+            public static readonly string AppMaintenance_less = Url("AppMaintenance.less");
+            public static readonly string AppMaintenance_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/AppMaintenance.min.css") ? Url("AppMaintenance.min.css") : Url("AppMaintenance.css");
+                 
+            public static readonly string AppMaintenance_min_css = Url("AppMaintenance.min.css");
             public static readonly string BundleSite_less = Url("BundleSite.less");
             public static readonly string BundleSite_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/BundleSite.min.css") ? Url("BundleSite.min.css") : Url("BundleSite.css");
                  
@@ -600,8 +604,7 @@ namespace Links
                 }
             
                 public static readonly string BackgroundDocument_png = Url("BackgroundDocument.png");
-                public static readonly string BackgroundInitialConfig_jpg = Url("BackgroundInitialConfig.jpg");
-                public static readonly string BackgroundInitialHeading_jpg = Url("BackgroundInitialHeading.jpg");
+                public static readonly string BackgroundInitial_jpg = Url("BackgroundInitial.jpg");
                 public static readonly string BackgroundPage_png = Url("BackgroundPage.png");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class DeviceTypes {
@@ -620,7 +623,6 @@ namespace Links
                 }
             
                 public static readonly string Heading_png = Url("Heading.png");
-                public static readonly string Heading64_png = Url("Heading64.png");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Status {
                     private const string URLPATH = "~/ClientSource/Style/Images/Status";
@@ -635,10 +637,6 @@ namespace Links
             
             }
         
-            public static readonly string InitialConfig_less = Url("InitialConfig.less");
-            public static readonly string InitialConfig_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/InitialConfig.min.css") ? Url("InitialConfig.min.css") : Url("InitialConfig.css");
-                 
-            public static readonly string InitialConfig_min_css = Url("InitialConfig.min.css");
             public static readonly string IsotopeStyles_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/IsotopeStyles.min.css") ? Url("IsotopeStyles.min.css") : Url("IsotopeStyles.css");
                  
             public static readonly string IsotopeStyles_min_css = Url("IsotopeStyles.min.css");
@@ -2120,8 +2118,10 @@ namespace Disco.Web.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _ViewStart = "_ViewStart";
                 public readonly string Index = "Index";
             }
+            public readonly string _ViewStart = "~/Views/Update/_ViewStart.cshtml";
             public readonly string Index = "~/Views/Update/Index.cshtml";
         }
     }

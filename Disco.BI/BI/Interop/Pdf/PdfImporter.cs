@@ -409,7 +409,7 @@ namespace Disco.BI.Interop.Pdf
                             pdfPagesAssigned.Add(PageNumber, new Tuple<DocumentUniqueIdentifier, byte[]>(docId, pageResult.AttachmentThumbnailImage.ToArray()));
 
                             docId.LoadComponents(Database);
-                            DocumentImporterLog.LogImportPageDetected(SessionId, PageNumber, docId.DocumentUniqueId, docId.DocumentTemplate.Description, docId.DocumentTemplate.Scope, docId.DataId, docId.DataDescription);
+                            DocumentImporterLog.LogImportPageDetected(SessionId, PageNumber, docId.TemplateTypeId, docId.DocumentTemplate.Description, docId.DocumentTemplate.Scope, docId.DataId, docId.DataDescription);
                         }
                         else
                         {

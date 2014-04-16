@@ -869,6 +869,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Index.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Update\_ViewStart.generated.cs">
+      <DependentUpon>_ViewStart.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Views\User\Index.generated.cs">
       <DependentUpon>Index.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1181,6 +1186,12 @@
     <None Include="ClientSource\Style\Config.css">
       <DependentUpon>Config.less</DependentUpon>
     </None>
+    <Content Include="ClientSource\Style\AppMaintenance.css">
+      <DependentUpon>AppMaintenance.less</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\AppMaintenance.min.css">
+      <DependentUpon>AppMaintenance.less</DependentUpon>
+    </Content>
     <Content Include="ClientSource\Style\BundleSite.min.css">
       <DependentUpon>BundleSite.less</DependentUpon>
     </Content>
@@ -1223,9 +1234,9 @@
     <None Include="ClientSource\Style\Dialog.css">
       <DependentUpon>Dialog.less</DependentUpon>
     </None>
-    <Content Include="ClientSource\Style\Device.css">
+    <None Include="ClientSource\Style\Device.css">
       <DependentUpon>Device.less</DependentUpon>
-    </Content>
+    </None>
     <Content Include="ClientSource\Style\Device.min.css">
       <DependentUpon>Device.less</DependentUpon>
     </Content>
@@ -1256,24 +1267,23 @@
     <None Include="ClientSource\Style\Fancytree\ui.fancytree.less" />
     <None Include="ClientSource\Style\Fancytree\icons-DiscoMod.png" />
     <None Include="ClientSource\Style\Fancytree\icons-disco-shrunk.png" />
-    <Content Include="ClientSource\Style\Fancytree\disco.fancytree.css">
+    <None Include="ClientSource\Style\Fancytree\disco.fancytree.css">
       <DependentUpon>disco.fancytree.less</DependentUpon>
-    </Content>
+    </None>
     <Content Include="ClientSource\Style\Fancytree\disco.fancytree.min.css">
       <DependentUpon>disco.fancytree.less</DependentUpon>
     </Content>
-    <Content Include="ClientSource\Style\Fancytree\ui.fancytree.min.css">
+    <None Include="ClientSource\Style\Fancytree\ui.fancytree.min.css">
       <DependentUpon>ui.fancytree.less</DependentUpon>
-    </Content>
+    </None>
     <Content Include="ClientSource\Style\Images\AttachmentTypes\document.png" />
     <Content Include="ClientSource\Style\Images\AttachmentTypes\expressionBrowserIcons.png" />
     <Content Include="ClientSource\Style\Images\AttachmentTypes\image.png" />
     <Content Include="ClientSource\Style\Images\AttachmentTypes\pdf.png" />
     <Content Include="ClientSource\Style\Images\AttachmentTypes\unknown.png" />
     <None Include="ClientSource\Style\Images\BackgroundDocument.png" />
-    <None Include="ClientSource\Style\Images\BackgroundInitialConfig.jpg" />
     <None Include="ClientSource\Style\Images\BackgroundPage.png" />
-    <Content Include="ClientSource\Style\Images\BackgroundInitialHeading.jpg" />
+    <Content Include="ClientSource\Style\Images\BackgroundInitial.jpg" />
     <Content Include="ClientSource\Style\Images\DeviceTypes\AppliancePC.png" />
     <Content Include="ClientSource\Style\Images\DeviceTypes\Desktop.png" />
     <Content Include="ClientSource\Style\Images\DeviceTypes\EnterpriseServer.png" />
@@ -1284,18 +1294,11 @@
     <Content Include="ClientSource\Style\Images\DeviceTypes\Unknown.png" />
     <Content Include="ClientSource\Style\Images\DeviceTypes\Workstation.png" />
     <Content Include="ClientSource\Style\Images\Heading.png" />
-    <Content Include="ClientSource\Style\Images\Heading64.png" />
     <Content Include="ClientSource\Style\Images\Status\fail32.png" />
     <None Include="ClientSource\Style\Images\Status\fileBroken256.png" />
     <None Include="ClientSource\Style\Images\Status\loading.gif" />
     <None Include="ClientSource\Style\Images\Status\progressBar.png" />
     <Content Include="ClientSource\Style\Images\Status\warning32.png" />
-    <None Include="ClientSource\Style\InitialConfig.css">
-      <DependentUpon>InitialConfig.less</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Style\InitialConfig.min.css">
-      <DependentUpon>InitialConfig.less</DependentUpon>
-    </Content>
     <None Include="ClientSource\Style\IsotopeStyles.css" />
     <Content Include="ClientSource\Style\IsotopeStyles.min.css">
       <DependentUpon>IsotopeStyles.css</DependentUpon>
@@ -1452,7 +1455,7 @@
     <Content Include="favicon.ico" />
     <Content Include="ClientSource\Style\FontAwesome\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
-    <None Include="ClientSource\Style\InitialConfig.less" />
+    <None Include="ClientSource\Style\AppMaintenance.less" />
     <None Include="ClientSource\Style\Dialog.less" />
     <None Include="ClientSource\Scripts\Core.js.bundle">
       <SubType>Designer</SubType>
@@ -1569,10 +1572,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
     </None>
-    <Content Include="Views\InitialConfig\Administrators.cshtml">
+    <None Include="Views\InitialConfig\Administrators.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Administrators.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Views\InitialConfig\_ViewStart.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
@@ -1895,6 +1898,10 @@
     <None Include="Views\Update\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Update\_ViewStart.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
     </None>
     <None Include="Views\User\Index.cshtml">
       <Generator>RazorGenerator</Generator>

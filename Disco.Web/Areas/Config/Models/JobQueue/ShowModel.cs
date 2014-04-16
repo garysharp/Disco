@@ -24,7 +24,7 @@ namespace Disco.Web.Areas.Config.Models.JobQueue
             {
                 var item = new SubjectDescriptor()
                 {
-                    Id = ADObject.SamAccountName,
+                    Id = ADObject.NetBiosId,
                     Name = ADObject.DisplayName
                 };
 
