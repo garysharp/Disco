@@ -1,6 +1,7 @@
 ﻿@{
     Html.BundleDeferred("~/Style/Site");
     Html.BundleDeferred("~/ClientScripts/Core");
+    bool isMaintenanceMode = ViewContext.ViewData.ContainsKey("IsMaintenanceMode");
 }
 <!DOCTYPE html>
 <html>
@@ -20,7 +21,7 @@
             <div id="heading">
                 <a href="@Url.Action(MVC.Job.Index())"><i title="Disco - ICT Management"></i></a>
             </div>
-            @if (!ViewContext.ViewData.ContainsKey("IsInitialConfig"))
+            @if (!isMaintenanceMode)
             {<text>
                 <nav>
                     <ul id="menu">
@@ -36,7 +37,7 @@
             @RenderBody()
         </section>
         <footer>
-            Disco v@(Disco.Web.DiscoApplication.Version) @if (ViewBag.IsInitialConfig != null)
+            Disco v@(Disco.Web.DiscoApplication.Version) @if (!isMaintenanceMode)
                                                          {<text>@@ @(Disco.Web.DiscoApplication.OrganisationName) | @Html.ActionLink("Credits", MVC.Public.Public.Credits()) | @Html.ActionLink("Licence", MVC.Public.Public.Licence())</text>}
         </footer>
     </div>

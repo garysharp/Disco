@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Disco.Web.Views.InitialConfig
+namespace Disco.Web.Views.Update
 {
     using System;
     using System.Collections.Generic;
@@ -36,7 +36,7 @@ namespace Disco.Web.Views.InitialConfig
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/InitialConfig/_ViewStart.cshtml")]
+    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Update/_ViewStart.cshtml")]
     public partial class ViewStart : System.Web.Mvc.ViewStartPage
     {
         public ViewStart()
@@ -45,7 +45,7 @@ namespace Disco.Web.Views.InitialConfig
         public override void Execute()
         {
             
-            #line 1 "..\..\Views\InitialConfig\_ViewStart.cshtml"
+            #line 1 "..\..\Views\Update\_ViewStart.cshtml"
   
     ViewContext.ViewData.Add("IsMaintenanceMode", true);
     Layout = MVC.Shared.Views._PublicLayout;

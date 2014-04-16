@@ -18,7 +18,7 @@ namespace Disco.Web
             BundleTable.Add(new Bundle("~/Style/Job", Links.ClientSource.Style.Job_min_css));
             BundleTable.Add(new Bundle("~/Style/User", Links.ClientSource.Style.User_min_css));
             BundleTable.Add(new Bundle("~/Style/Credits", Links.ClientSource.Style.Credits_min_css));
-            BundleTable.Add(new Bundle("~/Style/InitialConfig", Links.ClientSource.Style.InitialConfig_min_css));
+            BundleTable.Add(new Bundle("~/Style/AppMaintenance", Links.ClientSource.Style.AppMaintenance_min_css));
             BundleTable.Add(new Bundle("~/Style/jQueryUI/dynatree", Links.ClientSource.Style.jQueryUI.dynatree.ui_dynatree_min_css));
             BundleTable.Add(new Bundle("~/Style/Fancytree", Links.ClientSource.Style.Fancytree.disco_fancytree_min_css));
             BundleTable.Add(new Bundle("~/Style/Shadowbox", Links.ClientSource.Style.Shadowbox_min_css));
