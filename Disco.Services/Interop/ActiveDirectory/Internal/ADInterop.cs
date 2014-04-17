@@ -445,7 +445,19 @@ namespace Disco.Services.Interop.ActiveDirectory.Internal
 
         private static IEnumerable<ActiveDirectorySearchResult> SearchDomain(ActiveDirectoryDomain Domain, DomainController DomainController, string SearchRoot, string LdapFilter, int? ResultLimit, string[] LoadProperties)
         {
-            string ldapServer = DomainController == null ? Domain.DnsName : DomainController.Name;
+            string ldapServer;
+            if (DomainController != null)
+            {
+                ldapServer = DomainController.Name;
+            }
+            else
+            {
+                var domainDC = Site.RetrieveReachableDomainControllers(Domain).FirstOrDefault();
+                if (domainDC != null)
+                    ldapServer = domainDC.Name;
+                else
+                    ldapServer = Domain.DnsName;
+            }
             string searchRoot = SearchRoot ?? Domain.DistinguishedName;
             string ldapPath = string.Format(@"LDAP://{0}/{1}", ldapServer, searchRoot);
 
@@ -551,9 +563,15 @@ namespace Disco.Services.Interop.ActiveDirectory.Internal
             // Find Domain
             var domain = GetDomainByDistinguishedName(DistinguishedName);
 
+            if (domain == null)
+                throw new ArgumentException(string.Format("Unknown domain for DistinguishedName: {0}", DistinguishedName), "DistinguishedName");
+
+            var domainDC = Site.RetrieveReachableDomainControllers(domain).FirstOrDefault();
+            var ldapServer = domainDC != null ? domainDC.Name : domain.DnsName;
+
             Domain = domain;
 
-            return new DirectoryEntry(string.Format(@"LDAP://{0}/{1}", domain.DnsName, DistinguishedName));
+            return new DirectoryEntry(string.Format(@"LDAP://{0}/{1}", ldapServer, DistinguishedName));
         }
 
         public static DomainController RetrieveWritableDomainController(this ActiveDirectoryDomain domain)
