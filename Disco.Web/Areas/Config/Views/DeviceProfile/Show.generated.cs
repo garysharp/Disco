@@ -1688,6 +1688,22 @@ WriteLiteral(" class=\"dialog\"");
 
 WriteLiteral(">\r\n                    <div");
 
+WriteLiteral(" id=\"dialogOrganisationalUnit_Loading\"");
+
+WriteLiteral(">\r\n");
+
+WriteLiteral("                            ");
+
+            
+            #line 542 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                       Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" Loading Organisational Units\r\n                        </div>\r\n                  " +
+"  <div");
+
 WriteLiteral(" id=\"treeOrganisationalUnit\"");
 
 WriteLiteral(" class=\"organisationalUnitTree\"");
@@ -1701,7 +1717,7 @@ WriteLiteral(" type=\"text/javascript\"");
 WriteLiteral(">\r\n                    $(function () {\r\n                        var ouSetUrl = \'");
 
             
-            #line 546 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 549 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                    Write(Url.Action(MVC.API.DeviceProfile.UpdateOrganisationalUnit(Model.DeviceProfile.Id, null, true)));
 
             
@@ -1736,59 +1752,61 @@ WriteLiteral("\';\r\n                        var ouValue = $(\'#DeviceProfile_Or
 "                         modal: true,\r\n                                    resiz" +
 "able: false,\r\n                                    width: 500,\r\n                 " +
 "                   height: 500\r\n                                });\r\n           " +
-"                     $ouTree = $(\'#treeOrganisationalUnit\');\r\n                  " +
-"              $dialog.css(\'overflow\', \'visible\');\r\n                             " +
-"   $ouTree.css(\'height\', \'100%\');\r\n\r\n                                $.getJSON(\'" +
-"");
+"                     $loading = $(\'#dialogOrganisationalUnit_Loading\');\r\n       " +
+"                         $loading.find(\'i.ajaxLoading\').show();\r\n\r\n             " +
+"                   $ouTree = $(\'#treeOrganisationalUnit\');\r\n                    " +
+"            $dialog.css(\'overflow\', \'visible\');\r\n                               " +
+" $ouTree.css(\'height\', \'100%\');\r\n\r\n                                $.getJSON(\'");
 
             
-            #line 593 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 599 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                        Write(Url.Action(MVC.API.System.DomainOrganisationalUnits()));
 
             
             #line default
             #line hidden
-WriteLiteral("\', null, function (data) {\r\n\r\n                                    // Make \'Domain" +
-"s\' unselectable\r\n                                    $.each(data, function (i, n" +
-"ode) {\r\n                                        node.unselectable = true;\r\n     " +
-"                               });\r\n\r\n                                    ouTree" +
-" = $ouTree.fancytree({\r\n                                        source: data,\r\n " +
-"                                       checkbox: false,\r\n                       " +
-"                 selectMode: 1,\r\n                                        keyboar" +
-"d: false,\r\n                                        fx: null\r\n                   " +
-"                 }).fancytree(\'getTree\');\r\n\r\n                                   " +
-" ouTree.$container.css(\'position\', \'relative\');\r\n\r\n                             " +
-"       // Set Buttons\r\n                                    $dialog.dialog(\'optio" +
-"n\', \'buttons\', {\r\n                                        \'Use Default Container" +
-"\': function () {\r\n                                            var $this = $(this" +
-");\r\n                                            $this.css(\'overflow\', \'hidden\');" +
-"\r\n                                            $this.dialog(\"disable\");\r\n        " +
-"                                    $this.dialog(\"option\", \"buttons\", null);\r\n  " +
-"                                          ouSet(\'\');\r\n                          " +
-"              },\r\n                                        \'Save\': function () {\r" +
-"\n                                            var node = ouTree.getActiveNode();\r" +
-"\n                                            if (node && node.key.substr(0, 3).t" +
-"oLowerCase() == \'ou=\') {\r\n                                                var $t" +
-"his = $(this);\r\n                                                $this.css(\'overf" +
-"low\', \'hidden\');\r\n                                                $this.dialog(\"" +
-"disable\");\r\n                                                $this.dialog(\"option" +
-"\", \"buttons\", null);\r\n                                                ouSet(node" +
-".key);\r\n                                            } else {\r\n                  " +
-"                              alert(\'Select an Organisational Unit to Save\')\r\n  " +
-"                                          }\r\n                                   " +
-"     }\r\n                                    });\r\n\r\n                             " +
-"       // Expand\r\n                                    expandAndFocusNode(ouValue" +
-");\r\n\r\n                                    ouTree.options.fx = { height: \"toggle\"" +
-", duration: 200 };\r\n                                });\r\n                       " +
-"     }\r\n                            $dialog.dialog(\'open\');\r\n\r\n                 " +
-"           if (ouTree) {\r\n                                // Expand\r\n           " +
-"                     expandAndFocusNode(ouValue);\r\n                            }" +
-"\r\n\r\n                            return false;\r\n                        };\r\n\r\n   " +
-"                     $(\'#changeOrganisationalUnit\').click(ouChange);\r\n          " +
-"          });\r\n                </script>\r\n");
+WriteLiteral("\', null, function (data) {\r\n                                    $loading.hide();\r" +
+"\n\r\n                                    // Make \'Domains\' unselectable\r\n         " +
+"                           $.each(data, function (i, node) {\r\n                  " +
+"                      node.unselectable = true;\r\n                               " +
+"     });\r\n\r\n                                    ouTree = $ouTree.fancytree({\r\n  " +
+"                                      source: data,\r\n                           " +
+"             checkbox: false,\r\n                                        selectMod" +
+"e: 1,\r\n                                        keyboard: false,\r\n               " +
+"                         fx: null\r\n                                    }).fancyt" +
+"ree(\'getTree\');\r\n\r\n                                    ouTree.$container.css(\'po" +
+"sition\', \'relative\');\r\n\r\n                                    // Set Buttons\r\n   " +
+"                                 $dialog.dialog(\'option\', \'buttons\', {\r\n        " +
+"                                \'Use Default Container\': function () {\r\n        " +
+"                                    var $this = $(this);\r\n                      " +
+"                      $this.css(\'overflow\', \'hidden\');\r\n                        " +
+"                    $this.dialog(\"disable\");\r\n                                  " +
+"          $this.dialog(\"option\", \"buttons\", null);\r\n                            " +
+"                ouSet(\'\');\r\n                                        },\r\n        " +
+"                                \'Save\': function () {\r\n                         " +
+"                   var node = ouTree.getActiveNode();\r\n                         " +
+"                   if (node && node.key.substr(0, 3).toLowerCase() == \'ou=\') {\r\n" +
+"                                                var $this = $(this);\r\n          " +
+"                                      $this.css(\'overflow\', \'hidden\');\r\n        " +
+"                                        $this.dialog(\"disable\");\r\n              " +
+"                                  $this.dialog(\"option\", \"buttons\", null);\r\n    " +
+"                                            ouSet(node.key);\r\n                  " +
+"                          } else {\r\n                                            " +
+"    alert(\'Select an Organisational Unit to Save\')\r\n                            " +
+"                }\r\n                                        }\r\n                  " +
+"                  });\r\n\r\n                                    // Expand\r\n        " +
+"                            expandAndFocusNode(ouValue);\r\n\r\n                    " +
+"                ouTree.options.fx = { height: \"toggle\", duration: 200 };\r\n      " +
+"                          });\r\n                            }\r\n                  " +
+"          $dialog.dialog(\'open\');\r\n\r\n                            if (ouTree) {\r\n" +
+"                                // Expand\r\n                                expan" +
+"dAndFocusNode(ouValue);\r\n                            }\r\n\r\n                      " +
+"      return false;\r\n                        };\r\n\r\n                        $(\'#c" +
+"hangeOrganisationalUnit\').click(ouChange);\r\n                    });\r\n           " +
+"     </script>\r\n");
 
             
-            #line 652 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 659 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                 }
                 else
                 {
@@ -1805,13 +1823,13 @@ WriteLiteral(" class=\"code\"");
 WriteLiteral(">\r\n");
 
             
-            #line 656 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 663 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 656 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 663 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                      if (string.IsNullOrEmpty(Model.DeviceProfile.OrganisationalUnit))
                     {
 
@@ -1821,7 +1839,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                        <span>{Default Computers Container}</span>\r\n");
 
             
-            #line 659 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 666 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     }
                     else
                     {
@@ -1836,7 +1854,7 @@ WriteLiteral("                        <span>\r\n");
 WriteLiteral("                            ");
 
             
-            #line 665 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 672 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                        Write(Disco.Services.Interop.ActiveDirectory.ActiveDirectoryExtensions.GetFriendlyOrganisationalUnitName(domain, Model.DeviceProfile.OrganisationalUnit));
 
             
@@ -1845,7 +1863,7 @@ WriteLiteral("                            ");
 WriteLiteral("\r\n                        </span>\r\n");
 
             
-            #line 667 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 674 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     }
 
             
@@ -1854,7 +1872,7 @@ WriteLiteral("\r\n                        </span>\r\n");
 WriteLiteral("                </div>\r\n");
 
             
-            #line 669 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 676 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                 }
 
             
@@ -1867,13 +1885,13 @@ WriteLiteral(" style=\"margin-top: 8px;\"");
 WriteLiteral(">\r\n");
 
             
-            #line 671 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 678 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 671 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 678 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                      if (canConfig)
                     {
 
@@ -1889,7 +1907,7 @@ WriteLiteral(" type=\"checkbox\"");
 WriteLiteral(" ");
 
             
-            #line 673 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 680 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                         Write(Model.DeviceProfile.EnforceOrganisationalUnit ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty));
 
             
@@ -1910,7 +1928,7 @@ WriteLiteral(@">
                                     $.getJSON('");
 
             
-            #line 680 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 687 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                           Write(Url.Action(MVC.API.DeviceProfile.UpdateEnforceOrganisationalUnit(Model.DeviceProfile.Id)));
 
             
@@ -1930,7 +1948,7 @@ WriteLiteral(@"', data, function (response, result) {
 ");
 
             
-            #line 691 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 698 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     }
                     else
                     {
@@ -1947,7 +1965,7 @@ WriteLiteral(" type=\"checkbox\"");
 WriteLiteral(" ");
 
             
-            #line 694 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 701 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                         Write(Model.DeviceProfile.EnforceOrganisationalUnit ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty));
 
             
@@ -1956,7 +1974,7 @@ WriteLiteral(" ");
 WriteLiteral(" disabled=\"disabled\" />\r\n");
 
             
-            #line 695 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 702 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     }
 
             
@@ -1972,7 +1990,7 @@ WriteLiteral(">\r\n                        Enforce Organisational Unit\r\n      
 WriteLiteral("                    ");
 
             
-            #line 699 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 706 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                Write(AjaxHelpers.AjaxLoader());
 
             
@@ -1982,7 +2000,7 @@ WriteLiteral("\r\n                </div>\r\n            </td>\r\n        </tr>\r
 "\n");
 
             
-            #line 705 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 712 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
  if (canDelete)
 {
 
@@ -2037,7 +2055,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 741 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 748 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
 }
 
             
@@ -2050,13 +2068,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 743 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 750 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 743 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 750 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (canDelete)
     { 
         
@@ -2064,14 +2082,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 745 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 752 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
    Write(Html.ActionLinkButton("Delete", MVC.API.DeviceProfile.Delete(Model.DeviceProfile.Id, true), "buttonDelete"));
 
             
             #line default
             #line hidden
             
-            #line 745 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 752 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                     
     }
 
@@ -2081,7 +2099,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 747 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 754 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (Authorization.Has(Claims.Device.Actions.Export))
     {
         
@@ -2089,14 +2107,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 749 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 756 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
    Write(Html.ActionLinkButton("Export Devices", MVC.API.DeviceProfile.ExportDevices(Model.DeviceProfile.Id)));
 
             
             #line default
             #line hidden
             
-            #line 749 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 756 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                              
     }
 
@@ -2106,7 +2124,7 @@ WriteLiteral("    ");
 WriteLiteral("    ");
 
             
-            #line 751 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 758 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (Authorization.Has(Claims.Device.Search))
     {
         
@@ -2114,14 +2132,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 753 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 760 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
    Write(Html.ActionLinkButton("View Devices", MVC.Search.Query(Model.DeviceProfile.Id.ToString(), "DeviceProfile")));
 
             
             #line default
             #line hidden
             
-            #line 753 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 760 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                     
     }
 

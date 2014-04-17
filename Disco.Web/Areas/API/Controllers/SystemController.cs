@@ -275,7 +275,12 @@ namespace Disco.Web.Areas.API.Controllers
                 .Select(d => new Models.System.DomainOrganisationalUnitsModel() { Domain = d, OrganisationalUnits = ActiveDirectory.RetrieveOrganisationalUnitStructure(d) })
                 .Select(ous => ous.ToFancyTreeNode()).ToList();
 
-            return Json(domainOUs, JsonRequestBehavior.AllowGet);
+            return new JsonResult()
+            {
+                Data = domainOUs,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                MaxJsonLength = int.MaxValue
+            };
         }
 
         #endregion

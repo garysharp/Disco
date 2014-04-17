@@ -1204,6 +1204,22 @@ WriteLiteral(" title=\"Search Scope\"");
 
 WriteLiteral(">\r\n                        <div");
 
+WriteLiteral(" id=\"Config_System_AD_SearchScope_Dialog_Loading\"");
+
+WriteLiteral(">\r\n");
+
+WriteLiteral("                            ");
+
+            
+            #line 318 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+                       Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" Loading Organisational Units\r\n                        </div>\r\n                  " +
+"      <div");
+
 WriteLiteral(" id=\"Config_System_AD_SearchScope_Tree\"");
 
 WriteLiteral(" class=\"organisationalUnitTree\"");
@@ -1211,13 +1227,13 @@ WriteLiteral(" class=\"organisationalUnitTree\"");
 WriteLiteral(">\r\n                        </div>\r\n");
 
             
-            #line 319 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 322 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 319 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 322 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                          using (Html.BeginForm(MVC.API.System.UpdateActiveDirectorySearchScope(null, redirect: true)))
                         {
                         }
@@ -1256,58 +1272,61 @@ WriteLiteral("                    <script>\r\n                        $(function
 "                       modal: true,\r\n                                        res" +
 "izable: false,\r\n                                        width: 500,\r\n           " +
 "                             height: 500\r\n                                    })" +
-";\r\n                                    $tree = $(\'#Config_System_AD_SearchScope_" +
-"Tree\');\r\n                                    $dialog.css(\'overflow\', \'visible\');" +
-"\r\n                                    $tree.css(\'height\', \'100%\');\r\n\r\n          " +
-"                          $.getJSON(\'");
+";\r\n                                    $loading = $(\'#Config_System_AD_SearchSco" +
+"pe_Dialog_Loading\');\r\n                                    $loading.find(\'i.ajaxL" +
+"oading\').show();\r\n\r\n                                    $tree = $(\'#Config_Syste" +
+"m_AD_SearchScope_Tree\');\r\n                                    $dialog.css(\'overf" +
+"low\', \'visible\');\r\n                                    $tree.css(\'height\', \'100%" +
+"\');\r\n\r\n                                    $.getJSON(\'");
 
             
-            #line 370 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 376 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                            Write(Url.Action(MVC.API.System.DomainOrganisationalUnits()));
 
             
             #line default
             #line hidden
-WriteLiteral("\', null, function (data) {\r\n\r\n\r\n                                        tree = $t" +
-"ree.fancytree({\r\n                                            source: data,\r\n    " +
-"                                        checkbox: true,\r\n                       " +
-"                     selectMode: 2,\r\n                                           " +
-" keyboard: false,\r\n                                            fx: null\r\n       " +
-"                                 }).fancytree(\'getTree\');\r\n\r\n                   " +
-"                     tree.$container.css(\'position\', \'relative\');\r\n\r\n           " +
-"                             // Set Buttons\r\n                                   " +
-"     $dialog.dialog(\'option\', \'buttons\', {\r\n                                    " +
-"        \'Search Entire Forest\': function () {\r\n                                 " +
-"               var $this = $(this);\r\n                                           " +
-"     $this.css(\'overflow\', \'hidden\');\r\n                                         " +
-"       $this.dialog(\"disable\");\r\n                                               " +
-" $this.dialog(\"option\", \"buttons\", null);\r\n\r\n                                   " +
-"             var $form = $dialog.find(\'form\');\r\n                                " +
-"                $form.submit();\r\n                                            },\r" +
-"\n                                            \'Save\': function () {\r\n            " +
-"                                    var $this = $(this);\r\n                      " +
-"                          $this.css(\'overflow\', \'hidden\');\r\n                    " +
-"                            $this.dialog(\"disable\");\r\n                          " +
-"                      $this.dialog(\"option\", \"buttons\", null);\r\n\r\n              " +
-"                                  var nodes = tree.getSelectedNodes();\r\n        " +
-"                                        var $form = $dialog.find(\'form\');\r\n     " +
-"                                           $.each(nodes, function (i, node) {\r\n " +
-"                                                   $(\'<input>\').attr({ \'type\': \'" +
-"hidden\', \'name\': \'Containers\', \'value\': node.key }).appendTo($form);\r\n          " +
-"                                      });\r\n                                     " +
-"           $form.submit();\r\n                                            }\r\n     " +
-"                                   });\r\n\r\n                                      " +
-"  // Select & Expand\r\n                                        selectDistinguishe" +
-"dNames();\r\n\r\n                                        tree.options.fx = { height:" +
-" \"toggle\", duration: 200 };\r\n                                    });\r\n\r\n        " +
-"                        }\r\n\r\n                                selectDistinguished" +
-"Names();\r\n\r\n                                $dialog.dialog(\'open\');\r\n\r\n         " +
-"                       return false;\r\n                            }\r\n\r\n         " +
-"                   $(\'#Config_System_AD_SearchScope_Update\').click(update);\r\n   " +
-"                     });\r\n                    </script>\r\n");
+WriteLiteral("\', null, function (data) {\r\n                                        $loading.hide" +
+"();\r\n\r\n                                        tree = $tree.fancytree({\r\n       " +
+"                                     source: data,\r\n                            " +
+"                checkbox: true,\r\n                                            sel" +
+"ectMode: 2,\r\n                                            keyboard: false,\r\n     " +
+"                                       fx: null\r\n                               " +
+"         }).fancytree(\'getTree\');\r\n\r\n                                        tre" +
+"e.$container.css(\'position\', \'relative\');\r\n\r\n                                   " +
+"     // Set Buttons\r\n                                        $dialog.dialog(\'opt" +
+"ion\', \'buttons\', {\r\n                                            \'Search Entire F" +
+"orest\': function () {\r\n                                                var $this" +
+" = $(this);\r\n                                                $this.css(\'overflow" +
+"\', \'hidden\');\r\n                                                $this.dialog(\"dis" +
+"able\");\r\n                                                $this.dialog(\"option\", " +
+"\"buttons\", null);\r\n\r\n                                                var $form =" +
+" $dialog.find(\'form\');\r\n                                                $form.su" +
+"bmit();\r\n                                            },\r\n                       " +
+"                     \'Save\': function () {\r\n                                    " +
+"            var $this = $(this);\r\n                                              " +
+"  $this.css(\'overflow\', \'hidden\');\r\n                                            " +
+"    $this.dialog(\"disable\");\r\n                                                $t" +
+"his.dialog(\"option\", \"buttons\", null);\r\n\r\n                                      " +
+"          var nodes = tree.getSelectedNodes();\r\n                                " +
+"                var $form = $dialog.find(\'form\');\r\n                             " +
+"                   $.each(nodes, function (i, node) {\r\n                         " +
+"                           $(\'<input>\').attr({ \'type\': \'hidden\', \'name\': \'Contai" +
+"ners\', \'value\': node.key }).appendTo($form);\r\n                                  " +
+"              });\r\n                                                $form.submit(" +
+");\r\n                                            }\r\n                             " +
+"           });\r\n\r\n                                        // Select & Expand\r\n  " +
+"                                      selectDistinguishedNames();\r\n\r\n           " +
+"                             tree.options.fx = { height: \"toggle\", duration: 200" +
+" };\r\n                                    });\r\n\r\n                                " +
+"}\r\n\r\n                                selectDistinguishedNames();\r\n\r\n            " +
+"                    $dialog.dialog(\'open\');\r\n\r\n                                r" +
+"eturn false;\r\n                            }\r\n\r\n                            $(\'#C" +
+"onfig_System_AD_SearchScope_Update\').click(update);\r\n                        });" +
+"\r\n                    </script>\r\n");
 
             
-            #line 427 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 433 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                 }
 
             
@@ -1316,7 +1335,7 @@ WriteLiteral("\', null, function (data) {\r\n\r\n\r\n                           
 WriteLiteral("            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n");
 
             
-            #line 432 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 438 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
  if (canConfigProxy)
 {
     using (Html.BeginForm(MVC.API.System.UpdateProxySettings()))
@@ -1341,7 +1360,7 @@ WriteLiteral(">Address:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 443 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 449 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.EditorFor(m => m.ProxyAddress));
 
             
@@ -1352,7 +1371,7 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 444 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 450 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.ValidationMessageFor(m => m.ProxyAddress));
 
             
@@ -1368,7 +1387,7 @@ WriteLiteral(">Port:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 451 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 457 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.EditorFor(m => m.ProxyPort));
 
             
@@ -1379,7 +1398,7 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 452 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 458 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.ValidationMessageFor(m => m.ProxyPort));
 
             
@@ -1395,7 +1414,7 @@ WriteLiteral(">Username:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 459 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 465 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.EditorFor(m => m.ProxyUsername));
 
             
@@ -1406,7 +1425,7 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 460 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 466 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.ValidationMessageFor(m => m.ProxyUsername));
 
             
@@ -1422,7 +1441,7 @@ WriteLiteral(">Password:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 467 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 473 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.EditorFor(m => m.ProxyPassword));
 
             
@@ -1433,7 +1452,7 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 468 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 474 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.ValidationMessageFor(m => m.ProxyPassword));
 
             
@@ -1455,7 +1474,7 @@ WriteLiteral(" value=\"Save Proxy Settings\"");
 WriteLiteral(" />\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </div>\r\n");
 
             
-            #line 480 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 486 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
     }
 }
 else
@@ -1480,7 +1499,7 @@ WriteLiteral(">Address:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 491 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 497 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.ProxyAddress));
 
             
@@ -1496,7 +1515,7 @@ WriteLiteral(">Port:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 498 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 504 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.ProxyPort));
 
             
@@ -1512,7 +1531,7 @@ WriteLiteral(">Username:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 505 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 511 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.ProxyUsername));
 
             
@@ -1527,7 +1546,7 @@ WriteLiteral(">Password:\r\n                </th>\r\n                <td>*******
 "</td>\r\n            </tr>\r\n        </table>\r\n    </div>\r\n");
 
             
-            #line 516 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 522 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
 }
 
             
@@ -1542,7 +1561,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 518 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 524 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
 Write(Html.ActionLinkButton("Update Device Last Network Logons", MVC.API.System.UpdateLastNetworkLogonDates()));
 
             

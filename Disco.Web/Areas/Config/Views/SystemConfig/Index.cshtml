@@ -314,6 +314,9 @@
                         <a id="Config_System_AD_SearchScope_Update" href="#" class="button small">Update</a>
                     </div>
                     <div id="Config_System_AD_SearchScope_Dialog" class="dialog" title="Search Scope">
+                        <div id="Config_System_AD_SearchScope_Dialog_Loading">
+                            @AjaxHelpers.AjaxLoader() Loading Organisational Units
+                        </div>
                         <div id="Config_System_AD_SearchScope_Tree" class="organisationalUnitTree">
                         </div>
                         @using (Html.BeginForm(MVC.API.System.UpdateActiveDirectorySearchScope(null, redirect: true)))
@@ -363,12 +366,15 @@
                                         width: 500,
                                         height: 500
                                     });
+                                    $loading = $('#Config_System_AD_SearchScope_Dialog_Loading');
+                                    $loading.find('i.ajaxLoading').show();
+
                                     $tree = $('#Config_System_AD_SearchScope_Tree');
                                     $dialog.css('overflow', 'visible');
                                     $tree.css('height', '100%');
 
                                     $.getJSON('@(Url.Action(MVC.API.System.DomainOrganisationalUnits()))', null, function (data) {
-
+                                        $loading.hide();
 
                                         tree = $tree.fancytree({
                                             source: data,

@@ -538,6 +538,9 @@
                 </div>
                 <a id="changeOrganisationalUnit" href="#" class="button small">Change</a>@AjaxHelpers.AjaxLoader()
                 <div id="dialogOrganisationalUnit" title="Organisational Unit" class="dialog">
+                    <div id="dialogOrganisationalUnit_Loading">
+                            @AjaxHelpers.AjaxLoader() Loading Organisational Units
+                        </div>
                     <div id="treeOrganisationalUnit" class="organisationalUnitTree">
                     </div>
                 </div>
@@ -586,11 +589,15 @@
                                     width: 500,
                                     height: 500
                                 });
+                                $loading = $('#dialogOrganisationalUnit_Loading');
+                                $loading.find('i.ajaxLoading').show();
+
                                 $ouTree = $('#treeOrganisationalUnit');
                                 $dialog.css('overflow', 'visible');
                                 $ouTree.css('height', '100%');
 
                                 $.getJSON('@(Url.Action(MVC.API.System.DomainOrganisationalUnits()))', null, function (data) {
+                                    $loading.hide();
 
                                     // Make 'Domains' unselectable
                                     $.each(data, function (i, node) {
