@@ -288,7 +288,11 @@ namespace Disco.Web.Areas.API.Controllers
             // Validate Subjects
             if (Subjects != null && Subjects.Length > 0)
             {
-                var subjects = Subjects.Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).Select(s => new Tuple<string, IActiveDirectoryObject>(s, ActiveDirectory.RetrieveObject(s))).ToList();
+                var subjects = Subjects
+                    .Where(s => !string.IsNullOrWhiteSpace(s))
+                    .Select(s => s.Trim())
+                    .Select(s => Tuple.Create(s, ActiveDirectory.RetrieveObject(s, Quick: true)))
+                    .ToList();
                 var invalidSubjects = subjects.Where(s => s.Item2 == null).ToList();
 
                 if (invalidSubjects.Count > 0)
@@ -382,7 +386,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
         public virtual ActionResult Subject(string Id)
         {
-            var subject = ActiveDirectory.RetrieveObject(Id);
+            var subject = ActiveDirectory.RetrieveObject(Id, Quick: true);
 
             if (subject == null || !(subject is ActiveDirectoryUserAccount || subject is ActiveDirectoryGroup))
                 return Json(null, JsonRequestBehavior.AllowGet);

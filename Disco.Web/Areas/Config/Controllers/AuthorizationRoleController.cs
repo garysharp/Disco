@@ -28,7 +28,7 @@ namespace Disco.Web.Areas.Config.Controllers
 
                 var token = RoleToken.FromAuthorizationRole(ar);
                 var subjects = token.SubjectIds == null ? new List<Models.AuthorizationRole.SubjectDescriptorModel>() :
-                    token.SubjectIds.Select(subjectId => ActiveDirectory.RetrieveObject(subjectId))
+                    token.SubjectIds.Select(subjectId => ActiveDirectory.RetrieveObject(subjectId, Quick: true))
                     .Where(item => item != null)
                     .Select(item => Models.AuthorizationRole.SubjectDescriptorModel.FromActiveDirectoryObject(item))
                     .OrderBy(item => item.Name).ToList();
@@ -53,7 +53,7 @@ namespace Disco.Web.Areas.Config.Controllers
                     .Select(ar => RoleToken.FromAuthorizationRole(ar)).Cast<IRoleToken>().ToList();
 
                 var administratorSubjects = UserService.AdministratorSubjectIds
-                    .Select(subjectId => ActiveDirectory.RetrieveObject(subjectId))
+                    .Select(subjectId => ActiveDirectory.RetrieveObject(subjectId, Quick: true))
                     .Where(item => item != null)
                     .Select(item => Models.AuthorizationRole.SubjectDescriptorModel.FromActiveDirectoryObject(item))
                     .OrderBy(item => item.Name).ToList();

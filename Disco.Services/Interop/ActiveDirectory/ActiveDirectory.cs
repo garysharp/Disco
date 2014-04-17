@@ -245,6 +245,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         #region User Account
         private static readonly string[] UserLoadProperties = { "name", "distinguishedName", "sAMAccountName", "objectSid", "displayName", "sn", "givenName", "memberOf", "primaryGroupID", "mail", "telephoneNumber" };
+        private static readonly string[] UserQuickLoadProperties = { "name", "distinguishedName", "sAMAccountName", "objectSid", "displayName", "sn", "givenName", "mail", "telephoneNumber" };
 
         public static ActiveDirectoryUserAccount RetrieveUserAccount(string Id, params string[] AdditionalProperties)
         {
@@ -254,9 +255,13 @@ namespace Disco.Services.Interop.ActiveDirectory
                 ? UserLoadProperties.Concat(AdditionalProperties).ToArray()
                 : UserLoadProperties;
 
-            return SearchBySamAccountName(Id, ldapFilter, loadProperites).Select(result => result.AsUserAccount(AdditionalProperties)).FirstOrDefault();
+            return SearchBySamAccountName(Id, ldapFilter, loadProperites).Select(result => result.AsUserAccount(false, AdditionalProperties)).FirstOrDefault();
         }
         public static IEnumerable<ActiveDirectoryUserAccount> SearchUserAccounts(string Term, params string[] AdditionalProperties)
+        {
+            return SearchUserAccounts(Term, false, AdditionalProperties);
+        }
+        public static IEnumerable<ActiveDirectoryUserAccount> SearchUserAccounts(string Term, bool Quick, params string[] AdditionalProperties)
         {
             const int resultLimit = 30; // Default Search Limit
 
@@ -272,9 +277,12 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             string ldapFilter = string.Format("(&(objectCategory=Person)(objectClass=user)(|(sAMAccountName=*{0}*)(displayName=*{0}*)))", ADInterop.EscapeLdapQuery(Term));
 
-            string[] loadProperites = (AdditionalProperties != null && AdditionalProperties.Length > 0)
-                ? UserLoadProperties.Concat(AdditionalProperties).ToArray()
+            string[] loadProperites = Quick
+                ? UserQuickLoadProperties
                 : UserLoadProperties;
+
+            if (AdditionalProperties != null && AdditionalProperties.Length > 0)
+                loadProperites.Concat(AdditionalProperties).ToArray();
 
             IEnumerable<ActiveDirectorySearchResult> searchResults;
             if (searchDomain == null)
@@ -282,16 +290,17 @@ namespace Disco.Services.Interop.ActiveDirectory
             else
                 searchResults = ADInterop.SearchScope(searchDomain, ldapFilter, resultLimit, loadProperites);
 
-            return searchResults.Select(result => result.AsUserAccount(AdditionalProperties));
+            return searchResults.Select(result => result.AsUserAccount(Quick, AdditionalProperties));
         }
 
-        private static ActiveDirectoryUserAccount AsUserAccount(this ActiveDirectorySearchResult item, string[] AdditionalProperties)
+        private static ActiveDirectoryUserAccount AsUserAccount(this ActiveDirectorySearchResult item, bool Quick, string[] AdditionalProperties)
         {
             string name = item.Result.Properties["name"][0].ToString();
             string username = item.Result.Properties["sAMAccountName"][0].ToString();
             string distinguishedName = item.Result.Properties["distinguishedName"][0].ToString();
             byte[] objectSid = (byte[])item.Result.Properties["objectSid"][0];
             string objectSidSDDL = ADInterop.ConvertBytesToSDDLString(objectSid);
+            List<string> groups = null;
 
             ResultPropertyValueCollection displayNameProp = item.Result.Properties["displayName"];
             string displayName = username;
@@ -314,15 +323,19 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (phoneProp.Count > 0)
                 phone = phoneProp[0].ToString();
 
-            int primaryGroupID = (int)item.Result.Properties["primaryGroupID"][0];
-            string primaryGroupSid = ADInterop.ConvertBytesToSDDLString(ADInterop.BuildPrimaryGroupSid(objectSid, primaryGroupID));
-            var groupDistinguishedNames = item.Result.Properties["memberOf"].Cast<string>().ToList();
-            groupDistinguishedNames.Add(ADGroupCache.GetGroupsDistinguishedNameForSecurityIdentifier(primaryGroupSid));
-            List<string> groups = ADGroupCache.GetGroups(groupDistinguishedNames).ToList();
+            // Don't load Groups when doing a quick search
+            if (!Quick)
+            {
+                int primaryGroupID = (int)item.Result.Properties["primaryGroupID"][0];
+                string primaryGroupSid = ADInterop.ConvertBytesToSDDLString(ADInterop.BuildPrimaryGroupSid(objectSid, primaryGroupID));
+                var groupDistinguishedNames = item.Result.Properties["memberOf"].Cast<string>().ToList();
+                groupDistinguishedNames.Add(ADGroupCache.GetGroupsDistinguishedNameForSecurityIdentifier(primaryGroupSid));
+                groups = ADGroupCache.GetGroups(groupDistinguishedNames).ToList();
+            }
 
             // Additional Properties
             Dictionary<string, object[]> additionalProperties = new Dictionary<string, object[]>();
-            if (AdditionalProperties != null)
+            if (AdditionalProperties != null && AdditionalProperties.Length > 0)
                 foreach (string propertyName in AdditionalProperties)
                 {
                     var property = item.Result.Properties[propertyName];
@@ -457,7 +470,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         private static readonly string[] ObjectLoadProperties = { "objectCategory" };
         private static readonly string[] ObjectLoadPropertiesAll = ObjectLoadProperties.Concat(UserLoadProperties).Concat(MachineLoadProperties).Concat(GroupLoadProperties).Distinct().ToArray();
 
-        public static IActiveDirectoryObject RetrieveObject(string Id)
+        public static IActiveDirectoryObject RetrieveObject(string Id, bool Quick)
         {
             const string ldapFilter = "(&(|(objectCategory=Person)(objectCategory=Computer)(objectCategory=Group))(sAMAccountName={0}))";
 
@@ -469,7 +482,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                     switch (objectCategory)
                     {
                         case "cn=person":
-                            return result.AsUserAccount(null);
+                            return result.AsUserAccount(Quick, null);
                         case "cn=computer":
                             return result.AsMachineAccount(null);
                         case "cn=group":

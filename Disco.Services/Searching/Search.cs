@@ -171,7 +171,7 @@ namespace Disco.Services.Searching
 
         public static List<User> SearchUsersUpstream(string Term, int? LimitCount = null)
         {
-            IEnumerable<ActiveDirectoryUserAccount> matches = ActiveDirectory.SearchUserAccounts(Term);
+            IEnumerable<ActiveDirectoryUserAccount> matches = ActiveDirectory.SearchUserAccounts(Term, Quick: true);
 
             if (LimitCount.HasValue)
                 matches = matches.Take(LimitCount.Value);

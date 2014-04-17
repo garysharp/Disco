@@ -255,7 +255,7 @@ namespace Disco.Web.Controllers
         public virtual ActionResult Administrators()
         {
             var administratorSubjects = UserService.AdministratorSubjectIds
-                .Select(subjectId => ActiveDirectory.RetrieveObject(subjectId))
+                .Select(subjectId => ActiveDirectory.RetrieveObject(subjectId, Quick: true))
                 .Where(item => item != null)
                 .Select(item => Disco.Web.Areas.Config.Models.AuthorizationRole.SubjectDescriptorModel.FromActiveDirectoryObject(item))
                 .OrderBy(item => item.Name).ToList();
@@ -284,7 +284,7 @@ namespace Disco.Web.Controllers
             else if (!Id.Contains(@"\"))
                 Id = string.Format(@"{0}\{1}", ActiveDirectory.PrimaryDomain.NetBiosName, Id);
 
-            var subject = ActiveDirectory.RetrieveObject(Id);
+            var subject = ActiveDirectory.RetrieveObject(Id, Quick: true);
 
             if (subject == null || !(subject is ActiveDirectoryUserAccount || subject is ActiveDirectoryGroup))
                 return Json(null, JsonRequestBehavior.AllowGet);
@@ -302,7 +302,11 @@ namespace Disco.Web.Controllers
             if (Subjects != null || Subjects.Length > 0)
             {
 
-                var subjects = Subjects.Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).Select(s => new Tuple<string, IActiveDirectoryObject>(s, ActiveDirectory.RetrieveObject(s))).ToList();
+                var subjects = Subjects
+                    .Where(s => !string.IsNullOrWhiteSpace(s))
+                    .Select(s => s.Trim())
+                    .Select(s => Tuple.Create(s, ActiveDirectory.RetrieveObject(s, Quick: true)))
+                    .ToList();
                 var invalidSubjects = subjects.Where(s => s.Item2 == null).ToList();
 
                 if (invalidSubjects.Count > 0)

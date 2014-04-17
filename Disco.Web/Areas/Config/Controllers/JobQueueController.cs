@@ -29,7 +29,7 @@ namespace Disco.Web.Areas.Config.Controllers
 
                 var token = JobQueueToken.FromJobQueue(jq);
                 var subjects = token.SubjectIds == null ? new List<Models.JobQueue.ShowModel.SubjectDescriptor>() :
-                    token.SubjectIds.Select(subjectId => ActiveDirectory.RetrieveObject(subjectId))
+                    token.SubjectIds.Select(subjectId => ActiveDirectory.RetrieveObject(subjectId, Quick: true))
                     .Where(item => item != null)
                     .Select(item => Models.JobQueue.ShowModel.SubjectDescriptor.FromActiveDirectoryObject(item))
                     .OrderBy(item => item.Name).ToList();

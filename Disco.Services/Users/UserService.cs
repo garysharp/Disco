@@ -208,7 +208,7 @@ namespace Disco.Services.Users
 
         internal static IEnumerable<ActiveDirectoryUserAccount> SearchUsers(DiscoDataContext Database, string Term)
         {
-            var adImportedUsers = ActiveDirectory.SearchUserAccounts(Term);
+            var adImportedUsers = ActiveDirectory.SearchUserAccounts(Term, Quick: true);
             foreach (var adU in adImportedUsers.Select(adU => adU.ToRepositoryUser()))
             {
                 var existingUser = Database.Users.Find(adU.UserId);
