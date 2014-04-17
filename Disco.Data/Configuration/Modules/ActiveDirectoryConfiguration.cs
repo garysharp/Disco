@@ -16,11 +16,11 @@ namespace Disco.Data.Configuration.Modules
             get { return "ActiveDirectory"; }
         }
 
-        public List<string> SearchContainers
+        public Dictionary<string, List<string>> SearchContainers
         {
             get
             {
-                return GetFromJson<List<string>>(null);
+                return GetFromJson<Dictionary<string, List<string>>>(null);
             }
             set
             {

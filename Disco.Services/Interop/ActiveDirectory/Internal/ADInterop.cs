@@ -84,12 +84,10 @@ namespace Disco.Services.Interop.ActiveDirectory.Internal
             }
 
             // Search Containers
-            List<string> searchContainersAll = Database.DiscoConfiguration.ActiveDirectory.SearchContainers;
+            var searchContainersAll = Database.DiscoConfiguration.ActiveDirectory.SearchContainers;
             List<string> searchContainers = null;
 
-            if (searchContainersAll != null && searchContainersAll.Count > 0)
-                searchContainers = Database.DiscoConfiguration.ActiveDirectory.SearchContainers.Where(c => c.EndsWith(defaultNamingContext, StringComparison.InvariantCultureIgnoreCase)).ToList();
-            else
+            if (searchContainersAll == null || searchContainersAll.Count == 0 || !searchContainersAll.TryGetValue(d.Name.ToLower(), out searchContainers))
                 searchContainers = new List<string>() { defaultNamingContext }; // No search constraints set - search entire tree
 
             return new ActiveDirectoryDomain(d.Name, netBiosName, defaultNamingContext, searchContainers);
@@ -97,16 +95,26 @@ namespace Disco.Services.Interop.ActiveDirectory.Internal
 
         public static void UpdateSearchContainers(DiscoDataContext Database, IEnumerable<string> Containers)
         {
+            Dictionary<string, List<string>> searchContainers = null;
+
             if (Containers != null)
             {
-                var distinctContainers = Containers
+                searchContainers = Containers
                     .Where(c => !string.IsNullOrWhiteSpace(c))
-                    .Distinct().ToList();
-
-                Containers = distinctContainers.Where(c => !distinctContainers.Any(s => (c != s) && (c.EndsWith(s))));
+                    .Distinct()
+                    .Select(c =>
+                    {
+                        ActiveDirectoryDomain d;
+                        if (TryGetDomainByDistinguishedName(c, out d))
+                            return Tuple.Create(d, c);
+                        else
+                            return null;
+                    }).Where(i => i != null)
+                    .GroupBy(i => i.Item1)
+                    .ToDictionary(g => g.Key.DnsName.ToLower(), g => g.Select(i => i.Item2).ToList());
             }
 
-            if (Containers == null || Containers.Count() == 0)
+            if (searchContainers == null || searchContainers.Count == 0)
             {
                 Database.DiscoConfiguration.ActiveDirectory.SearchContainers = null;
 
@@ -115,9 +123,16 @@ namespace Disco.Services.Interop.ActiveDirectory.Internal
             }
             else
             {
-                Database.DiscoConfiguration.ActiveDirectory.SearchContainers = Containers.ToList();
+                Database.DiscoConfiguration.ActiveDirectory.SearchContainers = searchContainers;
 
-                Domains.ForEach(d => { d.UpdateSearchContainers(Containers.Where(c => c.EndsWith(d.DistinguishedName, StringComparison.InvariantCultureIgnoreCase))); });
+                Domains.ForEach(d =>
+                {
+                    List<string> domainContainers;
+                    if (searchContainers.TryGetValue(d.DnsName.ToLower(), out domainContainers))
+                        d.UpdateSearchContainers(domainContainers);
+                    else
+                        d.UpdateSearchContainers(Enumerable.Empty<string>());
+                });
             }
         }
 

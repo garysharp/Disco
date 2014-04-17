@@ -124,10 +124,10 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
             m.ADSite = ActiveDirectory.Site;
             m.ADSiteServers = m.ADSite.Servers.Cast<DirectoryServer>().Select(s => Tuple.Create(s, s.Reachable())).ToList();
             var configSearchContainers = config.ActiveDirectory.SearchContainers;
-            m.ADSearchContainers = configSearchContainers == null ? null : configSearchContainers.Select(c =>
+            m.ADSearchContainers = configSearchContainers == null ? null : configSearchContainers.SelectMany(d => d.Value, (k, c) =>
             {
-                var d = ActiveDirectory.GetDomainByDistinguishedName(c);
-                return Tuple.Create(c, d, d.GetFriendlyOrganisationalUnitName(c));
+                var domain = ActiveDirectory.GetDomainByDnsName(k.Key);
+                return Tuple.Create(c, domain, domain.GetFriendlyOrganisationalUnitName(c));
             }).ToList();
 
             var loadForestServersTask = ActiveDirectory.LoadForestServersAsync();
