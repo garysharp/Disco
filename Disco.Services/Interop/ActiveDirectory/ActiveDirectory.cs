@@ -233,7 +233,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             var ldapSamAccountName = computerId.Item2.EndsWith("$") ? computerId.Item2 : computerId.Item2 + "$";
             var ldapFilter = string.Format(ldapFilterTemplate, ldapSamAccountName);
-            var ldapResult = ADInterop.SearchDomain(Domain, DomainController, Domain.DistinguishedName, ldapFilter, 1, loadProperites).FirstOrDefault();
+            var ldapResult = ADInterop.SearchAll(Domain, DomainController, ldapFilter, 1, loadProperites).FirstOrDefault();
 
             if (ldapResult != null)
                 MachineAccount = ldapResult.AsMachineAccount(loadAdditionalProperties);

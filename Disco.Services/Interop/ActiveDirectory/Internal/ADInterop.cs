@@ -317,34 +317,56 @@ namespace Disco.Services.Interop.ActiveDirectory.Internal
         {
             return SearchAll(Domain, LdapFilter, null, LoadProperties);
         }
-        public static IEnumerable<ActiveDirectorySearchResult> SearchAll(IEnumerable<Tuple<ActiveDirectoryDomain, DomainController>> DomainsWithController, string LdapFilter, int? ResultLimit, string[] LoadProperties)
-        {
-            var query = DomainsWithController
-                .SelectMany(d => SearchAll(d.Item1, d.Item2, LdapFilter, ResultLimit, LoadProperties));
-
-            if (ResultLimit.HasValue)
-                query = query.Take(ResultLimit.Value);
-
-            return query.ToList();
-        }
         public static IEnumerable<ActiveDirectorySearchResult> SearchAll(IEnumerable<ActiveDirectoryDomain> Domains, string LdapFilter, int? ResultLimit, string[] LoadProperties)
         {
-            var query = Domains
-                .SelectMany(domain => SearchAll(domain, LdapFilter, ResultLimit, LoadProperties));
+            if (Domains == null || Domains.Count() == 0)
+                return Enumerable.Empty<ActiveDirectorySearchResult>();
+
+            var queries = Domains.Select(d => Tuple.Create(d, (DomainController)null)).ToList();
+
+            return SearchAll(queries, LdapFilter, ResultLimit, LoadProperties);
+        }
+        public static IEnumerable<ActiveDirectorySearchResult> SearchAll(IEnumerable<Tuple<ActiveDirectoryDomain, DomainController>> DomainsWithController, string LdapFilter, int? ResultLimit, string[] LoadProperties)
+        {
+            var queries = DomainsWithController.ToList();
+
+            IEnumerable<ActiveDirectorySearchResult> results;
+
+            switch (queries.Count)
+            {
+                case 0:
+                    results = Enumerable.Empty<ActiveDirectorySearchResult>();
+                    break;
+                case 1:
+                    var singleQuery = queries.First();
+                    results = SearchDomain(singleQuery.Item1, singleQuery.Item2, null, LdapFilter, ResultLimit, LoadProperties);
+                    break;
+                default:
+                    var taskFactory = new TaskFactory<IEnumerable<ActiveDirectorySearchResult>>();
+                    var tasks = queries
+                        .Select(query =>
+                            taskFactory.StartNew(() =>
+                                SearchDomain(query.Item1, query.Item2, null, LdapFilter, ResultLimit, LoadProperties))
+                            ).ToArray();
+                    Task.WaitAll(tasks);
+                    results = tasks.SelectMany(t => t.Result);
+                    break;
+            }
 
             if (ResultLimit.HasValue)
-                query = query.Take(ResultLimit.Value);
+                results = results.Take(ResultLimit.Value);
 
-            return query.ToList();
+            return results.ToList();
+        }
+        public static IEnumerable<ActiveDirectorySearchResult> SearchAll(ActiveDirectoryDomain Domain, string LdapFilter, int? ResultLimit, string[] LoadProperties)
+        {
+            return SearchAll(Domain, null, LdapFilter, ResultLimit, LoadProperties);
         }
         public static IEnumerable<ActiveDirectorySearchResult> SearchAll(ActiveDirectoryDomain Domain, DomainController DomainController, string LdapFilter, int? ResultLimit, string[] LoadProperties)
         {
             return SearchDomain(Domain, DomainController, null, LdapFilter, ResultLimit, LoadProperties);
         }
-        public static IEnumerable<ActiveDirectorySearchResult> SearchAll(ActiveDirectoryDomain Domain, string LdapFilter, int? ResultLimit, string[] LoadProperties)
-        {
-            return SearchDomain(Domain, null, LdapFilter, ResultLimit, LoadProperties);
-        }
+
         public static IEnumerable<ActiveDirectorySearchResult> SearchScope(string LdapFilter, string[] LoadProperties)
         {
             return SearchScope(Domains, LdapFilter, LoadProperties);
@@ -369,25 +391,9 @@ namespace Disco.Services.Interop.ActiveDirectory.Internal
         {
             return SearchScope(Domain, DomainController, LdapFilter, null, LoadProperties);
         }
-        public static IEnumerable<ActiveDirectorySearchResult> SearchScope(IEnumerable<Tuple<ActiveDirectoryDomain, DomainController>> DomainsWithController, string LdapFilter, int? ResultLimit, string[] LoadProperties)
-        {
-            var query = DomainsWithController
-                .SelectMany(d => SearchScope(d.Item1, d.Item2, LdapFilter, ResultLimit, LoadProperties));
-
-            if (ResultLimit.HasValue)
-                query = query.Take(ResultLimit.Value);
-
-            return query.ToList();
-        }
         public static IEnumerable<ActiveDirectorySearchResult> SearchScope(IEnumerable<ActiveDirectoryDomain> Domains, string LdapFilter, int? ResultLimit, string[] LoadProperties)
         {
-            var query = Domains
-                .SelectMany(domain => SearchScope(domain, LdapFilter, ResultLimit, LoadProperties));
-
-            if (ResultLimit.HasValue)
-                query = query.Take(ResultLimit.Value);
-
-            return query.ToList();
+            return SearchScope(Domains.Select(d => Tuple.Create(d, (DomainController)null)), LdapFilter, ResultLimit, LoadProperties);
         }
         public static IEnumerable<ActiveDirectorySearchResult> SearchScope(ActiveDirectoryDomain Domain, string LdapFilter, int? ResultLimit, string[] LoadProperties)
         {
@@ -395,23 +401,49 @@ namespace Disco.Services.Interop.ActiveDirectory.Internal
         }
         public static IEnumerable<ActiveDirectorySearchResult> SearchScope(ActiveDirectoryDomain Domain, DomainController DomainController, string LdapFilter, int? ResultLimit, string[] LoadProperties)
         {
-            if (Domain.SearchContainers == null)
+            if (Domain.SearchContainers == null || Domain.SearchContainers.Count == 0)
                 return Enumerable.Empty<ActiveDirectorySearchResult>();
 
-            var query = Domain.SearchContainers
-                .SelectMany(container => SearchDomain(Domain, DomainController, container, LdapFilter, ResultLimit, LoadProperties));
+            var query = new List<Tuple<ActiveDirectoryDomain, DomainController>>() {
+                Tuple.Create(Domain, DomainController)
+            };
+
+            return SearchScope(query, LdapFilter, ResultLimit, LoadProperties);
+        }
+        public static IEnumerable<ActiveDirectorySearchResult> SearchScope(IEnumerable<Tuple<ActiveDirectoryDomain, DomainController>> DomainsWithController, string LdapFilter, int? ResultLimit, string[] LoadProperties)
+        {
+            var queries = DomainsWithController.SelectMany(d => d.Item1.SearchContainers, (d, sc) => Tuple.Create(d.Item1, d.Item2, sc)).ToList();
+
+            IEnumerable<ActiveDirectorySearchResult> results;
+
+            switch (queries.Count)
+            {
+                case 0:
+                    results = Enumerable.Empty<ActiveDirectorySearchResult>();
+                    break;
+                case 1:
+                    var singleQuery = queries.First();
+                    results = SearchDomain(singleQuery.Item1, singleQuery.Item2, singleQuery.Item3, LdapFilter, ResultLimit, LoadProperties);
+                    break;
+                default:
+                    var taskFactory = new TaskFactory<IEnumerable<ActiveDirectorySearchResult>>();
+                    var tasks = queries
+                        .Select(query =>
+                            taskFactory.StartNew(() =>
+                                SearchDomain(query.Item1, query.Item2, query.Item3, LdapFilter, ResultLimit, LoadProperties).ToList())
+                                ).ToArray();
+                    Task.WaitAll(tasks);
+                    results = tasks.SelectMany(t => t.Result);
+                    break;
+            }
 
             if (ResultLimit.HasValue)
-                query = query.Take(ResultLimit.Value);
+                results = results.Take(ResultLimit.Value);
 
-            return query.ToList();
+            return results.ToList();
         }
 
-        public static IEnumerable<ActiveDirectorySearchResult> SearchDomain(ActiveDirectoryDomain Domain, string SearchRoot, string LdapFilter, int? ResultLimit, string[] LoadProperties)
-        {
-            return SearchDomain(Domain, null, SearchRoot, LdapFilter, ResultLimit, LoadProperties);
-        }
-        public static IEnumerable<ActiveDirectorySearchResult> SearchDomain(ActiveDirectoryDomain Domain, DomainController DomainController, string SearchRoot, string LdapFilter, int? ResultLimit, string[] LoadProperties)
+        private static IEnumerable<ActiveDirectorySearchResult> SearchDomain(ActiveDirectoryDomain Domain, DomainController DomainController, string SearchRoot, string LdapFilter, int? ResultLimit, string[] LoadProperties)
         {
             string ldapServer = DomainController == null ? Domain.DnsName : DomainController.Name;
             string searchRoot = SearchRoot ?? Domain.DistinguishedName;
