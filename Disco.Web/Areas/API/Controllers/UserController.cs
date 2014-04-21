@@ -50,7 +50,7 @@ namespace Disco.Web.Areas.API.Controllers
                 var thumbPath = ua.RepositoryThumbnailFilename(Database);
                 if (System.IO.File.Exists(thumbPath))
                 {
-                    if (thumbPath.EndsWith(".png", StringComparison.InvariantCultureIgnoreCase))
+                    if (thumbPath.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
                         return File(thumbPath, "image/png");
                     else
                         return File(thumbPath, "image/jpg");
@@ -65,7 +65,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult AttachmentUpload(string id, string Domain, string Comments)
         {
             if (string.IsNullOrEmpty(Domain))
-                id = ActiveDirectory.PrimaryDomain.NetBiosName + @"\" + id;
+                id = ActiveDirectory.Context.PrimaryDomain.NetBiosName + @"\" + id;
             else
                 id = Domain + @"\" + id;
 
@@ -78,7 +78,7 @@ namespace Disco.Web.Areas.API.Controllers
                     if (file.ContentLength > 0)
                     {
                         var contentType = file.ContentType;
-                        if (string.IsNullOrEmpty(contentType) || contentType.Equals("unknown/unknown", StringComparison.InvariantCultureIgnoreCase))
+                        if (string.IsNullOrEmpty(contentType) || contentType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
                             contentType = BI.Interop.MimeTypes.ResolveMimeType(file.FileName);
 
                         var ua = new Disco.Models.Repository.UserAttachment()
@@ -127,7 +127,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult Attachments(string id, string Domain)
         {
             if (string.IsNullOrEmpty(Domain))
-                id = ActiveDirectory.PrimaryDomain.NetBiosName + @"\" + id;
+                id = ActiveDirectory.Context.PrimaryDomain.NetBiosName + @"\" + id;
             else
                 id = Domain + @"\" + id;
 
@@ -151,7 +151,7 @@ namespace Disco.Web.Areas.API.Controllers
             var ua = Database.UserAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (ua != null)
             {
-                if (ua.TechUserId.Equals(CurrentUser.UserId, StringComparison.InvariantCultureIgnoreCase))
+                if (ua.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase))
                     Authorization.RequireAny(Claims.User.Actions.RemoveAnyAttachments, Claims.User.Actions.RemoveOwnAttachments);
                 else
                     Authorization.Require(Claims.User.Actions.RemoveAnyAttachments);
@@ -174,7 +174,7 @@ namespace Disco.Web.Areas.API.Controllers
                 throw new ArgumentNullException("AttachmentTypeId");
 
             if (string.IsNullOrEmpty(Domain))
-                id = ActiveDirectory.PrimaryDomain.NetBiosName + @"\" + id;
+                id = ActiveDirectory.Context.PrimaryDomain.NetBiosName + @"\" + id;
             else
                 id = Domain + @"\" + id;
 

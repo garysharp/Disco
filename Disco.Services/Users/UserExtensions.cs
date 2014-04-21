@@ -12,7 +12,7 @@ namespace Disco.Services
     {
         public static bool IsInPrimaryDomain(this User u)
         {
-            return u.Domain.Equals(Disco.Services.Interop.ActiveDirectory.ActiveDirectory.PrimaryDomain.NetBiosName, StringComparison.InvariantCultureIgnoreCase);
+            return u.Domain.Equals(ActiveDirectory.Context.PrimaryDomain.NetBiosName, StringComparison.OrdinalIgnoreCase);
         }
 
         public static string FriendlyId(this User u)
@@ -23,8 +23,8 @@ namespace Disco.Services
         public static string FriendlyUserId(string UserId)
         {
             var splitUserId = SplitUserId(UserId);
-            
-            if (splitUserId.Item1 != null && splitUserId.Item1.Equals(ActiveDirectory.PrimaryDomain.NetBiosName, StringComparison.InvariantCultureIgnoreCase))
+
+            if (splitUserId.Item1 != null && splitUserId.Item1.Equals(ActiveDirectory.Context.PrimaryDomain.NetBiosName, StringComparison.OrdinalIgnoreCase))
                 return splitUserId.Item2;
             else
                 return UserId;

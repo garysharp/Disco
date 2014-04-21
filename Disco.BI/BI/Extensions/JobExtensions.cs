@@ -16,7 +16,7 @@ namespace Disco.BI.Extensions
     {
         public static JobAttachment CreateAttachment(this Job Job, DiscoDataContext Database, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, byte[] PdfThumbnail = null)
         {
-            if (string.IsNullOrEmpty(MimeType) || MimeType.Equals("unknown/unknown", StringComparison.InvariantCultureIgnoreCase))
+            if (string.IsNullOrEmpty(MimeType) || MimeType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
                 MimeType = Interop.MimeTypes.ResolveMimeType(Filename);
 
             JobAttachment ja = new JobAttachment()
@@ -177,7 +177,7 @@ namespace Disco.BI.Extensions
                 }
                 foreach (var c in addedComponents)
                 {
-                    if (!j.JobComponents.Any(jc => jc.Description.Equals(c.Description, StringComparison.InvariantCultureIgnoreCase)))
+                    if (!j.JobComponents.Any(jc => jc.Description.Equals(c.Description, StringComparison.OrdinalIgnoreCase)))
                     { // Job Component with matching Description doesn't exist.
                         Database.JobComponents.Add(new JobComponent()
                         {

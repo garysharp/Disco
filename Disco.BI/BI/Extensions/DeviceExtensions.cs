@@ -6,7 +6,6 @@ using Disco.Models.Repository;
 using System.Collections.Generic;
 using System;
 using System.IO;
-using Disco.Models.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using Disco.Services.Authorization;
 using Disco.Services.Interop.ActiveDirectory;
@@ -16,7 +15,7 @@ namespace Disco.BI.Extensions
     public static class DeviceExtensions
     {
 
-        public static string ComputerNameRender(this Device device, DiscoDataContext Database, ActiveDirectoryDomain Domain)
+        public static string ComputerNameRender(this Device device, DiscoDataContext Database, ADDomain Domain)
         {
             if (Domain == null)
                 throw new ArgumentNullException("Domain");
@@ -56,12 +55,12 @@ namespace Disco.BI.Extensions
 
         public static bool UpdateLastNetworkLogonDate(this Device Device)
         {
-            return Disco.Services.Interop.ActiveDirectory.Internal.ADUpdateLastNetworkLogonDateJob.UpdateLastNetworkLogonDate(Device);
+            return Disco.Services.Interop.ActiveDirectory.ADTaskUpdateNetworkLogonDates.UpdateLastNetworkLogonDate(Device);
         }
 
         public static DeviceAttachment CreateAttachment(this Device Device, DiscoDataContext Database, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, byte[] PdfThumbnail = null)
         {
-            if (string.IsNullOrEmpty(MimeType) || MimeType.Equals("unknown/unknown", StringComparison.InvariantCultureIgnoreCase))
+            if (string.IsNullOrEmpty(MimeType) || MimeType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
                 MimeType = Interop.MimeTypes.ResolveMimeType(Filename);
 
             DeviceAttachment da = new DeviceAttachment()
@@ -180,7 +179,7 @@ namespace Disco.BI.Extensions
             // Update AD Account
             if (!string.IsNullOrEmpty(d.DeviceDomainId))
             {
-                var adMachineAccount = ActiveDirectory.RetrieveMachineAccount(d.DeviceDomainId);
+                var adMachineAccount = ActiveDirectory.RetrieveADMachineAccount(d.DeviceDomainId);
                 if (adMachineAccount != null)
                 {
                     adMachineAccount.SetDescription(d);
@@ -190,10 +189,10 @@ namespace Disco.BI.Extensions
             return newDua;
         }
 
-        public static ActiveDirectoryMachineAccount ActiveDirectoryAccount(this Device Device, params string[] AdditionalProperties)
+        public static ADMachineAccount ActiveDirectoryAccount(this Device Device, params string[] AdditionalProperties)
         {
             if (!string.IsNullOrEmpty(Device.DeviceDomainId))
-                return ActiveDirectory.RetrieveMachineAccount(Device.DeviceDomainId, AdditionalProperties: AdditionalProperties);
+                return ActiveDirectory.RetrieveADMachineAccount(Device.DeviceDomainId, AdditionalProperties: AdditionalProperties);
             else
                 return null;
         }

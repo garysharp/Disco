@@ -74,14 +74,14 @@ namespace Disco.ClientBootstrapper.Interop
                 // Only Copy Certain Files
 
                 // Copy Wireless Certificates
-                if (fileName.StartsWith("WLAN_Cert_Root_", StringComparison.InvariantCultureIgnoreCase) ||
-                    fileName.StartsWith("WLAN_Cert_Intermediate_", StringComparison.InvariantCultureIgnoreCase) ||
-                    fileName.StartsWith("WLAN_Cert_Personal_", StringComparison.InvariantCultureIgnoreCase))
+                if (fileName.StartsWith("WLAN_Cert_Root_", StringComparison.OrdinalIgnoreCase) ||
+                    fileName.StartsWith("WLAN_Cert_Intermediate_", StringComparison.OrdinalIgnoreCase) ||
+                    fileName.StartsWith("WLAN_Cert_Personal_", StringComparison.OrdinalIgnoreCase))
                     File.Copy(file, Path.Combine(InstallLocation, fileName));
 
                 // Copy Wireless Profiles
-                if (fileName.StartsWith("WLAN_Profile_", StringComparison.InvariantCultureIgnoreCase) &&
-                    fileName.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
+                if (fileName.StartsWith("WLAN_Profile_", StringComparison.OrdinalIgnoreCase) &&
+                    fileName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
                     File.Copy(file, Path.Combine(InstallLocation, fileName));
                 
             }
@@ -194,7 +194,7 @@ namespace Disco.ClientBootstrapper.Interop
             if (string.IsNullOrWhiteSpace(InstallLocation))
                 InstallLocation = Path.Combine(Path.GetPathRoot(Environment.SystemDirectory), "Disco");
 
-            if (InstallLocation.EndsWith(".wim", StringComparison.InvariantCultureIgnoreCase))
+            if (InstallLocation.EndsWith(".wim", StringComparison.OrdinalIgnoreCase))
             {
                 // Offline File System (WIM)
                 Program.Status.UpdateStatus("Installing Bootstrapper (Offline)", "Installing", string.Format("Install Location: {0}", InstallLocation));
@@ -216,7 +216,7 @@ namespace Disco.ClientBootstrapper.Interop
                             using (var wimImage = wim[i])
                                 wimImageInfo.LoadXml(wimImage.ImageInformation);
                             var wimImageInfoName = wimImageInfo.SelectSingleNode("//IMAGE/NAME");
-                            if (wimImageInfoName != null && wimImageInfoName.InnerText.Equals(WimImageId, StringComparison.InvariantCultureIgnoreCase))
+                            if (wimImageInfoName != null && wimImageInfoName.InnerText.Equals(WimImageId, StringComparison.OrdinalIgnoreCase))
                             {
                                 wimImageIndex = i + 1;
                                 Program.Status.UpdateStatus(null, "Analysing WIM", string.Format("Found Image Id '{0}' at Index {1}", WimImageId, wimImageIndex));

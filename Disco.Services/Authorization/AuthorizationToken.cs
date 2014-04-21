@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Disco.Services.Interop.ActiveDirectory;
 
 namespace Disco.Services.Authorization
 {
@@ -18,12 +19,12 @@ namespace Disco.Services.Authorization
 
         #region Token Builders
 
-        public static AuthorizationToken BuildToken(User User, List<string> GroupMembership)
+        public static AuthorizationToken BuildToken(User User, IEnumerable<string> GroupMembership)
         {
             return new AuthorizationToken()
             {
                 User = User,
-                GroupMembership = GroupMembership,
+                GroupMembership = GroupMembership.ToList(),
                 RoleTokens = RoleCache.GetRoleTokens(GroupMembership, User)
             };
         }

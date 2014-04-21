@@ -1,10 +1,7 @@
-﻿using Disco.Models.Interop.ActiveDirectory;
-using Disco.Models.Services.Jobs.JobQueues;
+﻿using Disco.Models.Services.Jobs.JobQueues;
 using Disco.Models.UI.Config.JobQueue;
-using System;
+using Disco.Web.Areas.API.Models.Shared;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Disco.Web.Areas.Config.Models.JobQueue
 {
@@ -12,28 +9,7 @@ namespace Disco.Web.Areas.Config.Models.JobQueue
     {
         public IJobQueueToken Token { get; set; }
 
-        public List<SubjectDescriptor> Subjects { get; set; }
-
-        public class SubjectDescriptor
-        {
-            public bool IsGroup { get; set; }
-            public string Name { get; set; }
-            public string Id { get; set; }
-
-            public static SubjectDescriptor FromActiveDirectoryObject(IActiveDirectoryObject ADObject)
-            {
-                var item = new SubjectDescriptor()
-                {
-                    Id = ADObject.NetBiosId,
-                    Name = ADObject.DisplayName
-                };
-
-                if (ADObject is ActiveDirectoryGroup)
-                    item.IsGroup = true;
-
-                return item;
-            }
-        }
+        public List<SubjectDescriptorModel> Subjects { get; set; }
 
         public int OpenJobCount { get; set; }
         public int TotalJobCount { get; set; }
@@ -41,6 +17,5 @@ namespace Disco.Web.Areas.Config.Models.JobQueue
         public List<Disco.Models.Repository.JobType> JobTypes { get; set; }
 
         public bool CanDelete { get; set; }
-
     }
 }

@@ -423,7 +423,7 @@ DELETE [Users] WHERE [Id]=@IdExisting;";
                     if (System.IO.Directory.Exists(userAttachmentsDirectory))
                     {
                         var files = System.IO.Directory.EnumerateFiles(userAttachmentsDirectory, "*.*", System.IO.SearchOption.AllDirectories)
-                            .Where(p => !p.StartsWith(filePrefix, StringComparison.InvariantCultureIgnoreCase) && (p.EndsWith("_thumb.jpg") || p.EndsWith("_file"))).ToList();
+                            .Where(p => !p.StartsWith(filePrefix, StringComparison.OrdinalIgnoreCase) && (p.EndsWith("_thumb.jpg") || p.EndsWith("_file"))).ToList();
 
                         foreach (var file in files)
                         {

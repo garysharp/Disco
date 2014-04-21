@@ -77,7 +77,7 @@ namespace Disco.Web.Areas.Config.Controllers
                     ComputerNameTemplate = DeviceProfile.DefaultComputerNameTemplate,
                     ProvisionADAccount = true,
                     DistributionType = DeviceProfile.DistributionTypes.OneToMany,
-                    OrganisationalUnit = ActiveDirectory.PrimaryDomain.GetDefaultComputerContainer()
+                    OrganisationalUnit = ActiveDirectory.Context.PrimaryDomain.DefaultComputerContainer
                 }
             };
 

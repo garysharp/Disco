@@ -274,12 +274,12 @@ namespace Disco.Services
                     Location = i,
                     References = o.ToList()
                 },
-                StringComparer.InvariantCultureIgnoreCase);
+                StringComparer.OrdinalIgnoreCase);
         }
         public static IEnumerable<JobLocationReference> JobLocationReferences(this IEnumerable<JobTableStatusItemModel> Items)
         {
             return Items.Where(i => !string.IsNullOrWhiteSpace(i.DeviceHeldLocation) && i.DeviceHeld.HasValue && !i.DeviceReturnedDate.HasValue)
-                .GroupBy(i => i.DeviceHeldLocation, StringComparer.InvariantCultureIgnoreCase)
+                .GroupBy(i => i.DeviceHeldLocation, StringComparer.OrdinalIgnoreCase)
                 .Select(i => new JobLocationReference()
                 {
                     Location = i.Key,

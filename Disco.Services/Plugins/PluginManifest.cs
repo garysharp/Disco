@@ -240,7 +240,7 @@ namespace Disco.Services.Plugins
 
             foreach (string referenceFilename in Directory.EnumerateFiles(pluginLocation, "*.dll", SearchOption.TopDirectoryOnly))
             {
-                if (!referenceFilename.Equals(assembly.Location, StringComparison.InvariantCultureIgnoreCase))
+                if (!referenceFilename.Equals(assembly.Location, StringComparison.OrdinalIgnoreCase))
                 {
                     // Ignore Excluded Assemblies
                     if (!PluginExcludedAssemblies.Contains(Path.GetFileNameWithoutExtension(referenceFilename)))

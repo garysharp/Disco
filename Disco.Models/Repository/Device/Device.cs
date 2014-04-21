@@ -72,6 +72,9 @@ namespace Disco.Models.Repository
         {
             get
             {
+                if (DeviceDomainId == null)
+                    return null;
+
                 var index = DeviceDomainId.IndexOf('\\');
                 return index < 0 ? DeviceDomainId : DeviceDomainId.Substring(index + 1);
             }
@@ -82,6 +85,9 @@ namespace Disco.Models.Repository
         {
             get
             {
+                if (DeviceDomainId == null)
+                    return null;
+
                 var index = DeviceDomainId.IndexOf('\\');
                 return index < 0 ? null : DeviceDomainId.Substring(0, index);
             }

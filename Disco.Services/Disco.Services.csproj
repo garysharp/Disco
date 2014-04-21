@@ -174,12 +174,29 @@
     <Compile Include="Authorization\Roles\RoleToken.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <None Include="Interop\_ActiveDirectory\ActiveDirectory.cs" />
+    <None Include="Interop\_ActiveDirectory\ActiveDirectoryExtensions.cs" />
+    <None Include="Interop\_ActiveDirectory\Internal\ADDiscoverForestServers.cs" />
+    <None Include="Interop\_ActiveDirectory\Internal\ADGroupCache.cs" />
+    <None Include="Interop\_ActiveDirectory\Internal\ADInterop.cs" />
+    <None Include="Interop\_ActiveDirectory\Internal\ADUpdateLastNetworkLogonDateJob.cs" />
     <Compile Include="Interop\ActiveDirectory\ActiveDirectory.cs" />
+    <Compile Include="Interop\ActiveDirectory\ActiveDirectoryContext.cs" />
     <Compile Include="Interop\ActiveDirectory\ActiveDirectoryExtensions.cs" />
-    <Compile Include="Interop\ActiveDirectory\Internal\ADDiscoverForestServers.cs" />
-    <Compile Include="Interop\ActiveDirectory\Internal\ADGroupCache.cs" />
-    <Compile Include="Interop\ActiveDirectory\Internal\ADInterop.cs" />
-    <Compile Include="Interop\ActiveDirectory\Internal\ADUpdateLastNetworkLogonDateJob.cs" />
+    <Compile Include="Interop\ActiveDirectory\ActiveDirectoryGroupCache.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADDirectoryEntry.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADDiscoverForestServers.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADDomain.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADDomainController.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADGroup.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADHelpers.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADMachineAccount.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADOrganisationalUnit.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADSearchResult.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADSite.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADTaskUpdateNetworkLogonDates.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADUserAccount.cs" />
+    <Compile Include="Interop\ActiveDirectory\IADObject.cs" />
     <Compile Include="Jobs\JobExtensions.cs" />
     <Compile Include="Jobs\JobLists\JobTableExtensions.cs" />
     <Compile Include="Jobs\JobQueues\Cache.cs" />
@@ -286,7 +303,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

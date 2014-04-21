@@ -127,9 +127,9 @@ namespace Disco.Client.Interop
             // Added 2012-11-22 G# - Lenovo IdeaPad Serial SHIM
             // http://www.discoict.com.au/forum/feature-requests/2012/11/serial-number-detection-on-ideapads.aspx
             if (string.IsNullOrWhiteSpace(DeviceSerialNumber) ||
-                (DeviceManufacturer.Equals("LENOVO", StringComparison.InvariantCultureIgnoreCase) &&
-                (DeviceModel.Equals("S10-3", StringComparison.InvariantCultureIgnoreCase) // S10-3
-                || DeviceModel.Equals("2957", StringComparison.InvariantCultureIgnoreCase)))) // S10-2
+                (DeviceManufacturer.Equals("LENOVO", StringComparison.OrdinalIgnoreCase) &&
+                (DeviceModel.Equals("S10-3", StringComparison.OrdinalIgnoreCase) // S10-3
+                || DeviceModel.Equals("2957", StringComparison.OrdinalIgnoreCase)))) // S10-2
             {
                 try
                 {

@@ -28,7 +28,7 @@ namespace Disco.Services.Plugins.Features.WarrantyProvider
         public static PluginFeatureManifest FindPluginFeature(string PluginIdOrWarrantyProviderId)
         {
             var defs = Plugins.GetPluginFeatures(typeof(WarrantyProviderFeature));
-            var def = defs.FirstOrDefault(d => d.PluginManifest.Id.Equals(PluginIdOrWarrantyProviderId, StringComparison.InvariantCultureIgnoreCase));
+            var def = defs.FirstOrDefault(d => d.PluginManifest.Id.Equals(PluginIdOrWarrantyProviderId, StringComparison.OrdinalIgnoreCase));
             if (def != null)
                 return def;
             else
@@ -36,7 +36,7 @@ namespace Disco.Services.Plugins.Features.WarrantyProvider
                 {
                     using (var providerInstance = d.CreateInstance<WarrantyProviderFeature>())
                     {
-                        if (providerInstance.WarrantyProviderId != null && providerInstance.WarrantyProviderId.Equals(PluginIdOrWarrantyProviderId, StringComparison.InvariantCultureIgnoreCase))
+                        if (providerInstance.WarrantyProviderId != null && providerInstance.WarrantyProviderId.Equals(PluginIdOrWarrantyProviderId, StringComparison.OrdinalIgnoreCase))
                         {
                             return d;
                         }

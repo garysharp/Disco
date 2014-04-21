@@ -5,6 +5,7 @@ using System.Web;
 using Disco.Data.Repository;
 using Disco.Models.UI.Config.AuthorizationRole;
 using Disco.Models.Services.Authorization;
+using Disco.Web.Areas.API.Models.Shared;
 
 namespace Disco.Web.Areas.Config.Models.AuthorizationRole
 {

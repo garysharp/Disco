@@ -166,7 +166,7 @@ namespace Disco.BI.Extensions
         }
         public static void SaveJpg(this Image Source, int Quality, Stream OutStream)
         {
-            ImageCodecInfo jpgCodec = ImageCodecInfo.GetImageEncoders().Where(c => c.MimeType.Equals("image/jpeg", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+            ImageCodecInfo jpgCodec = ImageCodecInfo.GetImageEncoders().Where(c => c.MimeType.Equals("image/jpeg", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
             if (jpgCodec != null)
             {
                 if (Quality < 0 || Quality > 100)

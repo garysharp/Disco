@@ -53,7 +53,7 @@ namespace Disco.Web.Areas.API.Controllers
             var list = LocationList
                 .Where(i => !string.IsNullOrWhiteSpace(i))
                 .Select(i => i.Trim())
-                .Distinct(StringComparer.InvariantCultureIgnoreCase)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
                 .OrderBy(i => i);
 
             Database.DiscoConfiguration.JobPreferences.LocationList = list.ToList();
@@ -93,7 +93,7 @@ namespace Disco.Web.Areas.API.Controllers
             list = list
                 .Where(l => !string.IsNullOrWhiteSpace(l))
                 .Select(l => l.Trim())
-                .Distinct(StringComparer.InvariantCultureIgnoreCase)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
                 .OrderBy(i => i);
 
             Database.DiscoConfiguration.JobPreferences.LocationList = list.ToList();

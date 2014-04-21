@@ -148,22 +148,23 @@
             <th style="width: 135px">Primary Domain:
             </th>
             <td>
-                <code><strong>@Model.ADPrimaryDomain.DnsName</strong> <span>[@Model.ADPrimaryDomain.NetBiosName]</span></code>
+                <code><strong>@Model.ADPrimaryDomain.Name</strong> <span>[@Model.ADPrimaryDomain.NetBiosName]</span></code>
             </td>
         </tr>
         <tr>
             <th style="width: 135px">Additional Domains:
             </th>
             <td>
-                @if (Model.ADAdditionalDomains.Count > 0)
+                @if (Model.ADDomains.Count > 1)
                 {
-                    var adDomainFirst = Model.ADAdditionalDomains.First();
-                    <code>@adDomainFirst.DnsName <span>[@adDomainFirst.NetBiosName]</span></code>
-                    foreach (var adDomain in Model.ADAdditionalDomains.Skip(1))
+                    var adAdditionalDomains = Model.ADDomains.Where(d => d != Model.ADPrimaryDomain).OrderBy(d => d.Name).ToList();
+                    var adDomainFirst = adAdditionalDomains.First();
+                    <code>@adDomainFirst.Name <span>[@adDomainFirst.NetBiosName]</span></code>
+                    foreach (var adDomain in adAdditionalDomains.Skip(1))
                     {
                     <hr />
                     <div>
-                        <code>@adDomain.DnsName <span>[@adDomain.NetBiosName]</span></code>
+                        <code>@adDomain.Name <span>[@adDomain.NetBiosName]</span></code>
                     </div>
                     }
                 }
@@ -178,18 +179,42 @@
             </th>
             <td>
                 <code><strong>@Model.ADSite.Name</strong></code>
-                <hr />
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 135px">Servers:
+            </th>
+            <td>
                 <div>
-                    @if (Model.ADSiteServers.Count > 0)
+                    @if (Model.ADServers.Count > 0)
                     {
-                        <span>Servers:</span>
                         <ul class="none">
-                            @foreach (var siteServer in Model.ADSiteServers)
+                            @foreach (var server in Model.ADServers)
                             {
-                                var server = siteServer.Item1;
-                                var reachable = siteServer.Item2;
+                                var serverDescription = string.Format("{0} [{1}]", server.Name.EndsWith(server.Domain.Name, StringComparison.OrdinalIgnoreCase) ? server.Name.Substring(0, server.Name.Length - server.Domain.Name.Length - 1) : server.Name, server.Domain.NetBiosName);
+                                var reachable = server.IsAvailable;
                                 <li>
-                                    <i class="fa @(reachable ? "fa-check success" : "fa-exclamation warning") fa-fw fa-lg" title="@(reachable ? "Reachable" : "Unavailable")"></i>&nbsp;<code>@(server.Name)</code>
+                                    @if (server.IsAvailable)
+                                    {
+                                        <i class="fa fa-check success fa-fw fa-lg" title="Available"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-exclamation warning fa-fw fa-lg" title="Unavailable, will retry at @(server.AvailableWhen.Value.ToLongTimeString())"></i>
+                                    }
+                                    <code>@(serverDescription)</code>
+                                    @if (server.IsSiteServer)
+                                    {
+                                        <i class="fa fa-building-o information fa-fw" title="Site Server"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-globe warning fa-fw" title="Not a Site Server"></i>
+                                    }
+                                    @if (server.IsWritable)
+                                    {
+                                        <i class="fa fa-pencil information fa-fw" title="Writable Domain Controller"></i>
+                                    }
                                 </li>
                             }
                         </ul>
@@ -210,11 +235,12 @@
                 @if (Model.ADForestServers == null)
                 {
                     <div>
-                        @Html.CheckBoxFor(m => m.ADSearchEntireForest, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchEntireForest)
+                        @Html.CheckBoxFor(m => m.ADSearchAllForestServers, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchAllForestServers)
                     </div>
                     <div style="padding: 0.7em 0.7em;" class="ui-state-highlight ui-corner-all">
                         <i class="fa fa-info-circle information"></i>&nbsp;Forest servers are currently being retrieved.
-                        <br />Try refreshing this page in a moment.
+                        <br />
+                        Try refreshing this page in a moment.
                     </div>
                 }
                 else
@@ -225,20 +251,20 @@
                     <div>
                         @if (!canSearchEntireForest)
                         {
-                            @Html.CheckBoxFor(m => m.ADSearchEntireForest, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchEntireForest)
+                            @Html.CheckBoxFor(m => m.ADSearchAllForestServers, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchAllForestServers)
                             <div style="padding: 0.7em 0.7em;" class="ui-state-highlight ui-corner-all">
                                 <i class="fa fa-exclamation-circle warning"></i>&nbsp;Disco will not search entire forests which consist of more than @(Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxForestServerSearch) servers. Only servers within this site will be searched.
                             </div>
                         }
                         else
                         {
-                            @Html.CheckBoxFor(m => m.ADSearchEntireForest) @Html.LabelFor(m => m.ADSearchEntireForest) @AjaxHelpers.AjaxLoader()
+                            @Html.CheckBoxFor(m => m.ADSearchAllForestServers) @Html.LabelFor(m => m.ADSearchAllForestServers) @AjaxHelpers.AjaxLoader()
                             <div class="smallMessage">
-                                If this setting is enabled, Disco will search all servers within the forest rather than only servers within this site.
+                                If this setting is enabled, Disco will query all servers within the forest rather than only servers within this site.
                             </div>
                             <script>
                                 $(function () {
-                                    document.DiscoFunctions.PropertyChangeHelper($('#ADSearchEntireForest'), null, '@(Url.Action(MVC.API.System.UpdateActiveDirectorySearchEntireForest()))', 'SearchEntireForest');
+                                    document.DiscoFunctions.PropertyChangeHelper($('#ADSearchAllForestServers'), null, '@(Url.Action(MVC.API.System.UpdateActiveDirectorySearchAllForestServers()))', 'SearchAllForestServers');
                                 });
                             </script>
                         }
@@ -247,7 +273,7 @@
                     else
                     {
                     <div>
-                        @Html.CheckBoxFor(m => m.ADSearchEntireForest, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchEntireForest)
+                        @Html.CheckBoxFor(m => m.ADSearchAllForestServers, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchAllForestServers)
                         <div class="smallMessage">
                             If this setting is enabled, Disco will search all servers within the forest rather than only servers within this site.
                         </div>
@@ -255,11 +281,25 @@
                     }
                     <div>
                         <hr />
-                        <span>Servers:</span>
-                        <ul id="Config_System_AD_ForestServers">
-                            @foreach (var server in Model.ADForestServers.OrderBy(s => s))
+                        <span>All Servers:</span>
+                        <ul id="Config_System_AD_ForestServers" class="none">
+                            @{
+                    var domainIndex = Model.ADDomains.ToDictionary(d => d.Name, StringComparer.OrdinalIgnoreCase);
+                    foreach (var server in Model.ADForestServers.OrderBy(s => s))
+                    {
+                        var isSiteServer = Model.ADServers.Any(s => s.IsSiteServer && s.Name.Equals(server, StringComparison.OrdinalIgnoreCase));
+                        var serverDescription = server;
+                        if (server.Contains('.'))
+                        {
+                            Disco.Services.Interop.ActiveDirectory.ADDomain serverDomain;
+                            if (domainIndex.TryGetValue(server.Substring(server.IndexOf('.') + 1), out serverDomain))
                             {
-                                <li><code>@server</code> @(Model.ADSiteServers.Count(ss => ss.Item1.Name.Equals(server, StringComparison.InvariantCultureIgnoreCase)) > 0 ? "[Site Server]" : null)</li>
+                                serverDescription = string.Format("{0} [{1}]", server.Substring(0, server.IndexOf('.')), serverDomain.NetBiosName);
+                            }
+                        }
+                                <li><code>@serverDescription</code>@if (isSiteServer)
+                                                                   { <i class="fa fa-building-o information fa-fw" title="Site Server"></i> }</li>
+                    }
                             }
                         </ul>
                         <script>

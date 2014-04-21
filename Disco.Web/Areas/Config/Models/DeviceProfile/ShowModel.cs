@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Disco.Services.Plugins;
 using Disco.Models.UI.Config.DeviceProfile;
+using Disco.Services.Interop.ActiveDirectory;
 
 namespace Disco.Web.Areas.Config.Models.DeviceProfile
 {
@@ -14,6 +15,23 @@ namespace Disco.Web.Areas.Config.Models.DeviceProfile
         public List<SelectListItem> DeviceProfileDistributionTypes { get; set; }
         public Disco.Models.BI.Config.OrganisationAddress DefaultOrganisationAddress { get; set; }
         public List<Disco.Models.BI.Config.OrganisationAddress> OrganisationAddresses { get; set; }
+
+        public string FriendlyOrganisationalUnitName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this.DeviceProfile.OrganisationalUnit))
+                {
+                    var domain = ActiveDirectory.Context.PrimaryDomain;
+                    return domain.FriendlyDistinguishedNamePath(domain.DefaultComputerContainer);
+                }
+                else
+                {
+                    var domain = ActiveDirectory.Context.GetDomainFromDistinguishedName(this.DeviceProfile.OrganisationalUnit);
+                    return domain.FriendlyDistinguishedNamePath(this.DeviceProfile.OrganisationalUnit);
+                }
+            }
+        }
 
         public List<PluginFeatureManifest> CertificateProviders { get; set; }
 

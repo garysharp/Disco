@@ -8,7 +8,6 @@ using System.Data.SqlClient;
 using Disco.Data.Repository;
 using Disco.Models.BI.Interop.Community;
 using Disco.Services.Tasks;
-using Disco.Models.Interop.ActiveDirectory;
 using System.DirectoryServices.ActiveDirectory;
 using Disco.Services.Interop.ActiveDirectory;
 
@@ -77,14 +76,14 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
 
         #region Active Directory
 
-        [Display(Name="Search Entire Forest")]
-        public bool ADSearchEntireForest { get; set; }
+        [Display(Name="Search All Forest Servers")]
+        public bool ADSearchAllForestServers { get; set; }
 
-        public ActiveDirectoryDomain ADPrimaryDomain { get; set; }
-        public List<ActiveDirectoryDomain> ADAdditionalDomains { get; set; }
-        public ActiveDirectorySite ADSite { get; set; }
-        public List<Tuple<DirectoryServer, bool>> ADSiteServers { get; set; }
-        public List<Tuple<string, ActiveDirectoryDomain, string>> ADSearchContainers { get; set; }
+        public List<ADDomain> ADDomains { get; set; }
+        public ADDomain ADPrimaryDomain { get; set; }
+        public ADSite ADSite { get; set; }
+        public List<ADDomainController> ADServers { get; set; }
+        public List<Tuple<string, ADDomain, string>> ADSearchContainers { get; set; }
         public List<string> ADForestServers { get; set; }
 
         #endregion
@@ -119,28 +118,28 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
             };
 
             // AD
-            m.ADPrimaryDomain = ActiveDirectory.PrimaryDomain;
-            m.ADAdditionalDomains = ActiveDirectory.Domains.Where(d => d != m.ADPrimaryDomain).ToList();
-            m.ADSite = ActiveDirectory.Site;
-            m.ADSiteServers = m.ADSite.Servers.Cast<DirectoryServer>().Select(s => Tuple.Create(s, s.Reachable())).ToList();
+            m.ADDomains = ActiveDirectory.Context.Domains.ToList();
+            m.ADPrimaryDomain = ActiveDirectory.Context.PrimaryDomain;
+            m.ADSite = ActiveDirectory.Context.Site;
+            m.ADServers = ActiveDirectory.Context.Domains.SelectMany(d => d.DomainControllers).ToList();
             var configSearchContainers = config.ActiveDirectory.SearchContainers;
             m.ADSearchContainers = configSearchContainers == null ? null : configSearchContainers.SelectMany(d => d.Value, (k, c) =>
             {
-                var domain = ActiveDirectory.GetDomainByDnsName(k.Key);
-                return Tuple.Create(c, domain, domain.GetFriendlyOrganisationalUnitName(c));
+                var domain = ActiveDirectory.Context.GetDomainByName(k.Key);
+                return Tuple.Create(c, domain, domain.FriendlyDistinguishedNamePath(c));
             }).ToList();
 
-            var loadForestServersTask = ActiveDirectory.LoadForestServersAsync();
+            var loadForestServersTask = ADDiscoverForestServers.LoadForestServersAsync();
             if (loadForestServersTask.Wait(TimeSpan.FromSeconds(1)))
             {
                 m.ADForestServers = loadForestServersTask.Result;
-                var configValue = config.ActiveDirectory.SearchEntireForest ?? true;
-                m.ADSearchEntireForest = configValue && m.ADForestServers.Count <= ActiveDirectory.MaxForestServerSearch;
+                var configValue = config.ActiveDirectory.SearchAllForestServers ?? true;
+                m.ADSearchAllForestServers = configValue && m.ADForestServers.Count <= ActiveDirectory.MaxForestServerSearch;
             }
             else
             {
                 m.ADForestServers = null;
-                m.ADSearchEntireForest = config.ActiveDirectory.SearchEntireForest ?? true;
+                m.ADSearchAllForestServers = config.ActiveDirectory.SearchAllForestServers ?? true;
             }
 
             return m;

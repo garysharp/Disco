@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Disco.Services.Interop.ActiveDirectory;
 
 namespace Disco.Services.Authorization.Roles
 {
@@ -49,19 +50,19 @@ namespace Disco.Services.Authorization.Roles
 
         private static IEnumerable<string> GenerateAdministratorSubjectIds(DiscoDataContext Database)
         {
-            var domainNetBiosName = Interop.ActiveDirectory.ActiveDirectory.PrimaryDomain.NetBiosName;
+            var domainNetBiosName = ActiveDirectory.Context.PrimaryDomain.NetBiosName;
             var configuredSubjectIds = Database.DiscoConfiguration.Administrators.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Contains(@"\") ? s : string.Format(@"{0}\{1}", domainNetBiosName, s));
 
             return RequiredAdministratorSubjectIds
                 .Concat(configuredSubjectIds)
-                .Distinct(StringComparer.InvariantCultureIgnoreCase)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
                 .OrderBy(s => s);
         }
         public static IEnumerable<string> RequiredAdministratorSubjectIds
         {
             get
             {
-                var domainNetBiosName = Interop.ActiveDirectory.ActiveDirectory.PrimaryDomain.NetBiosName;
+                var domainNetBiosName = ActiveDirectory.Context.PrimaryDomain.NetBiosName;
                 return _RequiredAdministratorSubjectIds.Select(s => string.Format(@"{0}\{1}", domainNetBiosName, s));
             }
         }
@@ -79,7 +80,7 @@ namespace Disco.Services.Authorization.Roles
             SubjectIds = SubjectIds
                 .Where(s => !string.IsNullOrWhiteSpace(s))
                 .Concat(RequiredAdministratorSubjectIds)
-                .Distinct(StringComparer.InvariantCultureIgnoreCase)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
                 .OrderBy(s => s);
 
             var subjectIdsString = string.Join(",", SubjectIds);
@@ -136,17 +137,15 @@ namespace Disco.Services.Authorization.Roles
         }
         internal static RoleToken GetRoleToken(string SecurityGroup)
         {
-            return _Cache.FirstOrDefault(t => t.SubjectIdHashes.Contains(SecurityGroup.ToLower()));
+            return _Cache.FirstOrDefault(t => t.SubjectIdHashes.Contains(SecurityGroup));
         }
         internal static List<IRoleToken> GetRoleTokens(IEnumerable<string> SecurityGroup)
         {
-            var securityGroups = SecurityGroup.Select(sg => sg.ToLower());
-
-            return _Cache.Where(t => securityGroups.Any(sg => t.SubjectIdHashes.Contains(sg))).Cast<IRoleToken>().ToList();
+            return _Cache.Where(t => SecurityGroup.Any(sg => t.SubjectIdHashes.Contains(sg))).Cast<IRoleToken>().ToList();
         }
         internal static List<IRoleToken> GetRoleTokens(IEnumerable<string> SecurityGroup, User User)
         {
-            var subjectIds = (new string[] { User.UserId }).Concat(SecurityGroup).Select(sg => sg.ToLower());
+            var subjectIds = SecurityGroup.Concat(new string[] { User.UserId });
 
             return _Cache.Where(t => subjectIds.Any(sg => t.SubjectIdHashes.Contains(sg))).Cast<IRoleToken>().ToList();
         }

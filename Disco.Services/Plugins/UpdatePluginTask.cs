@@ -235,7 +235,7 @@ namespace Disco.Services.Plugins
                 {
                     // Check for Compatibility
                     var compatibilityData = Plugins.LoadCompatibilityData(database);
-                    var pluginCompatibility = compatibilityData.Plugins.FirstOrDefault(i => i.Id.Equals(updateManifest.Id, StringComparison.InvariantCultureIgnoreCase) && updateManifest.Version == Version.Parse(i.Version));
+                    var pluginCompatibility = compatibilityData.Plugins.FirstOrDefault(i => i.Id.Equals(updateManifest.Id, StringComparison.OrdinalIgnoreCase) && updateManifest.Version == Version.Parse(i.Version));
                     if (pluginCompatibility != null && !pluginCompatibility.Compatible)
                         throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] is not compatible: {2}", updateManifest.Id, updateManifest.VersionFormatted, pluginCompatibility.Reason));
 

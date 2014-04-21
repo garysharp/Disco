@@ -1,6 +1,6 @@
 ﻿using Disco.Models.Services.Authorization;
-using Disco.Models.Interop.ActiveDirectory;
 using Disco.Models.UI.Config.AuthorizationRole;
+using Disco.Web.Areas.API.Models.Shared;
 using Disco.Web.Models.Shared;
 using System;
 using System.Collections.Generic;

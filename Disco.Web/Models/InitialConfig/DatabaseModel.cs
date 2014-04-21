@@ -55,9 +55,9 @@ namespace Disco.Web.Models.InitialConfig
             {
                 DataSource = this.Server,
                 InitialCatalog = this.DatabaseName,
-                IntegratedSecurity = (this.AuthMethod.Equals("SSPI", StringComparison.InvariantCultureIgnoreCase)),
-                UserID = (this.AuthMethod.Equals("SQL", StringComparison.InvariantCultureIgnoreCase)) ? this.Auth_SQL_Username : string.Empty,
-                Password = (this.AuthMethod.Equals("SQL", StringComparison.InvariantCultureIgnoreCase)) ? this.Auth_SQL_Password : string.Empty,
+                IntegratedSecurity = (this.AuthMethod.Equals("SSPI", StringComparison.OrdinalIgnoreCase)),
+                UserID = (this.AuthMethod.Equals("SQL", StringComparison.OrdinalIgnoreCase)) ? this.Auth_SQL_Username : string.Empty,
+                Password = (this.AuthMethod.Equals("SQL", StringComparison.OrdinalIgnoreCase)) ? this.Auth_SQL_Password : string.Empty,
                 ApplicationName = "Disco WebApp",
                 MultipleActiveResultSets = true,
                 Pooling = true
@@ -97,7 +97,7 @@ namespace Disco.Web.Models.InitialConfig
         {
             var instance = validationContext.ObjectInstance as DatabaseModel;
 
-            if (instance != null && instance.AuthMethod != null && instance.AuthMethod.Equals("SQL", StringComparison.InvariantCultureIgnoreCase))
+            if (instance != null && instance.AuthMethod != null && instance.AuthMethod.Equals("SQL", StringComparison.OrdinalIgnoreCase))
             {
                 var stringValue = value as string;
                 if (string.IsNullOrWhiteSpace(stringValue))

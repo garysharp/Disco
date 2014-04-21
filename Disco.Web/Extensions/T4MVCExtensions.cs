@@ -18,7 +18,7 @@ namespace Disco.Web.Controllers
                 throw new ArgumentException("The User Id is not in the correct format ({Domain}\\{Id})", "id");
 
             string userDomain;
-            if (splitId.Item1.Equals(ActiveDirectory.PrimaryDomain.NetBiosName, StringComparison.InvariantCultureIgnoreCase))
+            if (splitId.Item1.Equals(ActiveDirectory.Context.PrimaryDomain.NetBiosName, StringComparison.OrdinalIgnoreCase))
                 userDomain = null; // Url doesn't contain Domain if it is the default.
             else
                 userDomain = splitId.Item1;

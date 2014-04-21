@@ -1,5 +1,4 @@
 ﻿using Disco.BI.Extensions;
-using Disco.Models.Interop.ActiveDirectory;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
 using Disco.Services.Authorization.Roles;
@@ -16,7 +15,6 @@ namespace Disco.Web.Areas.API.Controllers
     [DiscoAuthorize(Claims.DiscoAdminAccount)]
     public partial class AuthorizationRoleController : AuthorizedDatabaseController
     {
-
         #region Properties
 
         const string pName = "name";
@@ -111,14 +109,15 @@ namespace Disco.Web.Areas.API.Controllers
                 var subjects = Subjects
                     .Where(s => !string.IsNullOrWhiteSpace(s))
                     .Select(s => s.Trim())
-                    .Select(s => Tuple.Create(s, ActiveDirectory.RetrieveObject(s, Quick: true)))
+                    .Select(s => Tuple.Create(s, ActiveDirectory.RetrieveADObject(s, Quick: true)))
+                    .Where(s => s.Item2 is ADUserAccount || s.Item2 is ADGroup)
                     .ToList();
                 var invalidSubjects = subjects.Where(s => s.Item2 == null).ToList();
 
                 if (invalidSubjects.Count > 0)
                     throw new ArgumentException(string.Format("Subjects not found: {0}", string.Join(", ", invalidSubjects)), "Subjects");
 
-                var proposedSubjects = subjects.Select(s => s.Item2.NetBiosId).OrderBy(s => s).ToArray();
+                var proposedSubjects = subjects.Select(s => s.Item2.Id).OrderBy(s => s).ToArray();
                 var currentSubjects = AuthorizationRole.SubjectIds == null ? new string[0] : AuthorizationRole.SubjectIds.Split(',');
                 removedSubjects = currentSubjects.Except(proposedSubjects).ToArray();
                 addedSubjects = proposedSubjects.Except(currentSubjects).ToArray();
@@ -249,14 +248,15 @@ namespace Disco.Web.Areas.API.Controllers
             var subjects = Subjects
                 .Where(s => !string.IsNullOrWhiteSpace(s))
                 .Select(s => s.Trim())
-                .Select(s => Tuple.Create(s, ActiveDirectory.RetrieveObject(s, Quick: true)))
+                .Select(s => Tuple.Create(s, ActiveDirectory.RetrieveADObject(s, Quick: true)))
+                .Where(s => s.Item2 is ADUserAccount || s.Item2 is ADGroup)
                 .ToList();
             var invalidSubjects = subjects.Where(s => s.Item2 == null).ToList();
 
             if (invalidSubjects.Count > 0)
                 throw new ArgumentException(string.Format("Subjects not found: {0}", string.Join(", ", invalidSubjects)), "Subjects");
 
-            proposedSubjects = subjects.Select(s => s.Item2.NetBiosId).OrderBy(s => s).ToArray();
+            proposedSubjects = subjects.Select(s => s.Item2.Id).OrderBy(s => s).ToArray();
             var currentSubjects = UserService.AdministratorSubjectIds;
             removedSubjects = currentSubjects.Except(proposedSubjects).ToArray();
             addedSubjects = proposedSubjects.Except(currentSubjects).ToArray();
@@ -275,31 +275,5 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         #endregion
-
-        public virtual ActionResult SearchSubjects(string term)
-        {
-            var groupResults = ActiveDirectory.SearchGroups(term).Cast<IActiveDirectoryObject>();
-            var userResults = ActiveDirectory.SearchUserAccounts(term).Cast<IActiveDirectoryObject>();
-
-            var results = groupResults.Concat(userResults).OrderBy(r => r.SamAccountName)
-                .Select(r => Models.AuthorizationRole.SubjectItem.FromActiveDirectoryObject(r)).ToList();
-
-            return Json(results, JsonRequestBehavior.AllowGet);
-        }
-
-        public virtual ActionResult Subject(string Id)
-        {
-            if (string.IsNullOrWhiteSpace(Id))
-                return Json(null, JsonRequestBehavior.AllowGet);
-            else if (!Id.Contains(@"\"))
-                Id = string.Format(@"{0}\{1}", ActiveDirectory.PrimaryDomain.NetBiosName, Id);
-
-            var subject = ActiveDirectory.RetrieveObject(Id, Quick: true);
-
-            if (subject == null || !(subject is ActiveDirectoryUserAccount || subject is ActiveDirectoryGroup))
-                return Json(null, JsonRequestBehavior.AllowGet);
-            else
-                return Json(Models.AuthorizationRole.SubjectItem.FromActiveDirectoryObject(subject), JsonRequestBehavior.AllowGet);
-        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Disco.Web.Areas.Config.Models.AuthorizationRole;
+﻿using Disco.Web.Areas.API.Models.Shared;
+using Disco.Web.Areas.Config.Models.AuthorizationRole;
 using System.Collections.Generic;
 
 namespace Disco.Web.Models.InitialConfig

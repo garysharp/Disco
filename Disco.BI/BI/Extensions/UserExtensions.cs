@@ -6,7 +6,7 @@ using Disco.Models.Repository;
 using Disco.Data.Repository;
 using System.IO;
 using Disco.Models.BI.DocumentTemplates;
-using Disco.Models.Interop.ActiveDirectory;
+using Disco.Services.Interop.ActiveDirectory;
 
 namespace Disco.BI.Extensions
 {
@@ -14,7 +14,7 @@ namespace Disco.BI.Extensions
     {
         public static UserAttachment CreateAttachment(this User User, DiscoDataContext Database, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, byte[] PdfThumbnail = null)
         {
-            if (string.IsNullOrEmpty(MimeType) || MimeType.Equals("unknown/unknown", StringComparison.InvariantCultureIgnoreCase))
+            if (string.IsNullOrEmpty(MimeType) || MimeType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
                 MimeType = Interop.MimeTypes.ResolveMimeType(Filename);
 
             UserAttachment ua = new UserAttachment()
@@ -57,9 +57,9 @@ namespace Disco.BI.Extensions
         {
             return u.DeviceUserAssignments.Where(dua => !dua.UnassignedDate.HasValue).ToList();
         }
-        public static ActiveDirectoryUserAccount ActiveDirectoryAccount(this User User, params string[] AdditionalProperties)
+        public static ADUserAccount ActiveDirectoryAccount(this User User, params string[] AdditionalProperties)
         {
-            return Disco.Services.Interop.ActiveDirectory.ActiveDirectory.RetrieveUserAccount(User.UserId, AdditionalProperties);
+            return ActiveDirectory.RetrieveADUserAccount(User.UserId, AdditionalProperties);
         }
 
         public static bool CanCreateJob(this User u)

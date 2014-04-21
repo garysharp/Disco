@@ -6,6 +6,7 @@ using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Jobs.JobQueues;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Web;
+using Disco.Web.Areas.API.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,10 +29,10 @@ namespace Disco.Web.Areas.Config.Controllers
                     throw new ArgumentException("Invalid Job Queue Id");
 
                 var token = JobQueueToken.FromJobQueue(jq);
-                var subjects = token.SubjectIds == null ? new List<Models.JobQueue.ShowModel.SubjectDescriptor>() :
-                    token.SubjectIds.Select(subjectId => ActiveDirectory.RetrieveObject(subjectId, Quick: true))
+                var subjects = token.SubjectIds == null ? new List<SubjectDescriptorModel>() :
+                    token.SubjectIds.Select(subjectId => ActiveDirectory.RetrieveADObject(subjectId, Quick: true))
                     .Where(item => item != null)
-                    .Select(item => Models.JobQueue.ShowModel.SubjectDescriptor.FromActiveDirectoryObject(item))
+                    .Select(item => SubjectDescriptorModel.FromActiveDirectoryObject(item))
                     .OrderBy(item => item.Name).ToList();
 
                 var totalJobCount = Database.JobQueueJobs.Where(jqj => jqj.JobQueueId == id.Value).Select(jqj => jqj.Job).Distinct().Count();

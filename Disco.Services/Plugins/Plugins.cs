@@ -302,7 +302,7 @@ namespace Disco.Services.Plugins
                         foreach (var serverItem in serverData.Plugins)
                         {
                             var serverItemVersion = Version.Parse(serverItem.Version);
-                            var localItem = localItems.FirstOrDefault(i => i.Id.Equals(serverItem.Id, StringComparison.InvariantCultureIgnoreCase) && serverItemVersion == localItemVersions[i]);
+                            var localItem = localItems.FirstOrDefault(i => i.Id.Equals(serverItem.Id, StringComparison.OrdinalIgnoreCase) && serverItemVersion == localItemVersions[i]);
                             if (localItem != null)
                                 joinedItems.Remove(localItem);
 
@@ -373,7 +373,7 @@ namespace Disco.Services.Plugins
                                             if (pluginManifest != null)
                                             {
                                                 // Check Version Compatibility
-                                                var pluginCompatibility = compatibilityData.Value.Plugins.FirstOrDefault(i => i.Id.Equals(pluginManifest.Id, StringComparison.InvariantCultureIgnoreCase) && pluginManifest.Version == Version.Parse(i.Version));
+                                                var pluginCompatibility = compatibilityData.Value.Plugins.FirstOrDefault(i => i.Id.Equals(pluginManifest.Id, StringComparison.OrdinalIgnoreCase) && pluginManifest.Version == Version.Parse(i.Version));
                                                 if (pluginCompatibility != null && !pluginCompatibility.Compatible)
                                                     throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] is not compatible: {2}", pluginManifest.Id, pluginManifest.VersionFormatted, pluginCompatibility.Reason));
 
@@ -496,7 +496,7 @@ namespace Disco.Services.Plugins
                     // Check Compatibility
                     if (CompatibilityData == null)
                         CompatibilityData = LoadCompatibilityData(Database);
-                    var pluginCompatibility = CompatibilityData.Plugins.FirstOrDefault(i => i.Id.Equals(packageManifest.Id, StringComparison.InvariantCultureIgnoreCase) && packageManifest.Version == Version.Parse(i.Version));
+                    var pluginCompatibility = CompatibilityData.Plugins.FirstOrDefault(i => i.Id.Equals(packageManifest.Id, StringComparison.OrdinalIgnoreCase) && packageManifest.Version == Version.Parse(i.Version));
                     if (pluginCompatibility != null && !pluginCompatibility.Compatible)
                         throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] is not compatible: {2}", packageManifest.Id, packageManifest.VersionFormatted, pluginCompatibility.Reason));
 
@@ -595,7 +595,7 @@ namespace Disco.Services.Plugins
 
         public static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            if (args.RequestingAssembly != null && args.RequestingAssembly.Location.StartsWith(PluginPath, StringComparison.InvariantCultureIgnoreCase) && _PluginManifests != null)
+            if (args.RequestingAssembly != null && args.RequestingAssembly.Location.StartsWith(PluginPath, StringComparison.OrdinalIgnoreCase) && _PluginManifests != null)
             {
                 // Try best guess first
                 PluginManifest requestingPlugin = _PluginManifests.Values.Where(p => p.Type.Assembly == args.RequestingAssembly).FirstOrDefault();

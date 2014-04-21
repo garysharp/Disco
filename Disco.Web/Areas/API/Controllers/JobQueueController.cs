@@ -1,5 +1,4 @@
-﻿using Disco.Models.Interop.ActiveDirectory;
-using Disco.Models.Repository;
+﻿using Disco.Models.Repository;
 using Disco.Services.Authorization;
 using Disco.Services.Jobs.JobQueues;
 using Disco.Services.Web;
@@ -291,14 +290,15 @@ namespace Disco.Web.Areas.API.Controllers
                 var subjects = Subjects
                     .Where(s => !string.IsNullOrWhiteSpace(s))
                     .Select(s => s.Trim())
-                    .Select(s => Tuple.Create(s, ActiveDirectory.RetrieveObject(s, Quick: true)))
+                    .Select(s => Tuple.Create(s, ActiveDirectory.RetrieveADObject(s, Quick: true)))
+                    .Where(s => s.Item2 is ADUserAccount || s.Item2 is ADGroup)
                     .ToList();
                 var invalidSubjects = subjects.Where(s => s.Item2 == null).ToList();
 
                 if (invalidSubjects.Count > 0)
                     throw new ArgumentException(string.Format("Subjects not found: {0}", string.Join(", ", invalidSubjects)), "Subjects");
 
-                var proposedSubjects = subjects.Select(s => s.Item2.NetBiosId).OrderBy(s => s).ToArray();
+                var proposedSubjects = subjects.Select(s => s.Item2.Id).OrderBy(s => s).ToArray();
 
                 subjectIds = string.Join(",", proposedSubjects);
 
@@ -370,28 +370,5 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
         #endregion
-
-        [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
-        public virtual ActionResult SearchSubjects(string term)
-        {
-            var groupResults = ActiveDirectory.SearchGroups(term).Cast<IActiveDirectoryObject>();
-            var userResults = ActiveDirectory.SearchUserAccounts(term).Cast<IActiveDirectoryObject>();
-
-            var results = groupResults.Concat(userResults).OrderBy(r => r.SamAccountName)
-                .Select(r => Models.JobQueue.SubjectItem.FromActiveDirectoryObject(r)).ToList();
-
-            return Json(results, JsonRequestBehavior.AllowGet);
-        }
-
-        [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
-        public virtual ActionResult Subject(string Id)
-        {
-            var subject = ActiveDirectory.RetrieveObject(Id, Quick: true);
-
-            if (subject == null || !(subject is ActiveDirectoryUserAccount || subject is ActiveDirectoryGroup))
-                return Json(null, JsonRequestBehavior.AllowGet);
-            else
-                return Json(Models.JobQueue.SubjectItem.FromActiveDirectoryObject(subject), JsonRequestBehavior.AllowGet);
-        }
     }
 }

@@ -2386,18 +2386,6 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAdministratorSubjects);
         }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult SearchSubjects()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchSubjects);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Subject()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Subject);
-        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public AuthorizationRoleController Actions { get { return MVC.API.AuthorizationRole; } }
@@ -2420,8 +2408,6 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateSubjects = "UpdateSubjects";
             public readonly string Delete = "Delete";
             public readonly string UpdateAdministratorSubjects = "UpdateAdministratorSubjects";
-            public readonly string SearchSubjects = "SearchSubjects";
-            public readonly string Subject = "Subject";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -2433,8 +2419,6 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateSubjects = "UpdateSubjects";
             public const string Delete = "Delete";
             public const string UpdateAdministratorSubjects = "UpdateAdministratorSubjects";
-            public const string SearchSubjects = "SearchSubjects";
-            public const string Subject = "Subject";
         }
 
 
@@ -2496,22 +2480,6 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string Subjects = "Subjects";
             public readonly string redirect = "redirect";
-        }
-        static readonly ActionParamsClass_SearchSubjects s_params_SearchSubjects = new ActionParamsClass_SearchSubjects();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_SearchSubjects SearchSubjectsParams { get { return s_params_SearchSubjects; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_SearchSubjects
-        {
-            public readonly string term = "term";
-        }
-        static readonly ActionParamsClass_Subject s_params_Subject = new ActionParamsClass_Subject();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Subject SubjectParams { get { return s_params_Subject; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Subject
-        {
-            public readonly string Id = "Id";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -2600,26 +2568,6 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Subjects", Subjects);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateAdministratorSubjectsOverride(callInfo, Subjects, redirect);
-            return callInfo;
-        }
-
-        partial void SearchSubjectsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string term);
-
-        public override System.Web.Mvc.ActionResult SearchSubjects(string term)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchSubjects);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "term", term);
-            SearchSubjectsOverride(callInfo, term);
-            return callInfo;
-        }
-
-        partial void SubjectOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
-
-        public override System.Web.Mvc.ActionResult Subject(string Id)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Subject);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
-            SubjectOverride(callInfo, Id);
             return callInfo;
         }
 
@@ -8079,18 +8027,6 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
         }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult SearchSubjects()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchSubjects);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Subject()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Subject);
-        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public JobQueueController Actions { get { return MVC.API.JobQueue; } }
@@ -8118,8 +8054,6 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateSubjects = "UpdateSubjects";
             public readonly string UpdateJobSubTypes = "UpdateJobSubTypes";
             public readonly string Delete = "Delete";
-            public readonly string SearchSubjects = "SearchSubjects";
-            public readonly string Subject = "Subject";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -8136,8 +8070,6 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateSubjects = "UpdateSubjects";
             public const string UpdateJobSubTypes = "UpdateJobSubTypes";
             public const string Delete = "Delete";
-            public const string SearchSubjects = "SearchSubjects";
-            public const string Subject = "Subject";
         }
 
 
@@ -8251,22 +8183,6 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string redirect = "redirect";
-        }
-        static readonly ActionParamsClass_SearchSubjects s_params_SearchSubjects = new ActionParamsClass_SearchSubjects();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_SearchSubjects SearchSubjectsParams { get { return s_params_SearchSubjects; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_SearchSubjects
-        {
-            public readonly string term = "term";
-        }
-        static readonly ActionParamsClass_Subject s_params_Subject = new ActionParamsClass_Subject();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Subject SubjectParams { get { return s_params_Subject; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Subject
-        {
-            public readonly string Id = "Id";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -8417,26 +8333,6 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             DeleteOverride(callInfo, id, redirect);
-            return callInfo;
-        }
-
-        partial void SearchSubjectsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string term);
-
-        public override System.Web.Mvc.ActionResult SearchSubjects(string term)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchSubjects);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "term", term);
-            SearchSubjectsOverride(callInfo, term);
-            return callInfo;
-        }
-
-        partial void SubjectOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
-
-        public override System.Web.Mvc.ActionResult Subject(string Id)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Subject);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
-            SubjectOverride(callInfo, Id);
             return callInfo;
         }
 
@@ -9293,9 +9189,21 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult UpdateActiveDirectorySearchEntireForest()
+        public virtual System.Web.Mvc.ActionResult UpdateActiveDirectorySearchAllForestServers()
         {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateActiveDirectorySearchEntireForest);
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateActiveDirectorySearchAllForestServers);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SearchSubjects()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchSubjects);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Subject()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Subject);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -9328,8 +9236,10 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string DeleteOrganisationAddress = "DeleteOrganisationAddress";
             public readonly string UpdateMultiSiteMode = "UpdateMultiSiteMode";
             public readonly string UpdateActiveDirectorySearchScope = "UpdateActiveDirectorySearchScope";
-            public readonly string UpdateActiveDirectorySearchEntireForest = "UpdateActiveDirectorySearchEntireForest";
+            public readonly string UpdateActiveDirectorySearchAllForestServers = "UpdateActiveDirectorySearchAllForestServers";
             public readonly string DomainOrganisationalUnits = "DomainOrganisationalUnits";
+            public readonly string SearchSubjects = "SearchSubjects";
+            public readonly string Subject = "Subject";
             public readonly string UpdateProxySettings = "UpdateProxySettings";
         }
 
@@ -9345,8 +9255,10 @@ namespace Disco.Web.Areas.API.Controllers
             public const string DeleteOrganisationAddress = "DeleteOrganisationAddress";
             public const string UpdateMultiSiteMode = "UpdateMultiSiteMode";
             public const string UpdateActiveDirectorySearchScope = "UpdateActiveDirectorySearchScope";
-            public const string UpdateActiveDirectorySearchEntireForest = "UpdateActiveDirectorySearchEntireForest";
+            public const string UpdateActiveDirectorySearchAllForestServers = "UpdateActiveDirectorySearchAllForestServers";
             public const string DomainOrganisationalUnits = "DomainOrganisationalUnits";
+            public const string SearchSubjects = "SearchSubjects";
+            public const string Subject = "Subject";
             public const string UpdateProxySettings = "UpdateProxySettings";
         }
 
@@ -9409,14 +9321,30 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string Containers = "Containers";
             public readonly string redirect = "redirect";
         }
-        static readonly ActionParamsClass_UpdateActiveDirectorySearchEntireForest s_params_UpdateActiveDirectorySearchEntireForest = new ActionParamsClass_UpdateActiveDirectorySearchEntireForest();
+        static readonly ActionParamsClass_UpdateActiveDirectorySearchAllForestServers s_params_UpdateActiveDirectorySearchAllForestServers = new ActionParamsClass_UpdateActiveDirectorySearchAllForestServers();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_UpdateActiveDirectorySearchEntireForest UpdateActiveDirectorySearchEntireForestParams { get { return s_params_UpdateActiveDirectorySearchEntireForest; } }
+        public ActionParamsClass_UpdateActiveDirectorySearchAllForestServers UpdateActiveDirectorySearchAllForestServersParams { get { return s_params_UpdateActiveDirectorySearchAllForestServers; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_UpdateActiveDirectorySearchEntireForest
+        public class ActionParamsClass_UpdateActiveDirectorySearchAllForestServers
         {
-            public readonly string SearchEntireForest = "SearchEntireForest";
+            public readonly string SearchAllForestServers = "SearchAllForestServers";
             public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_SearchSubjects s_params_SearchSubjects = new ActionParamsClass_SearchSubjects();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SearchSubjects SearchSubjectsParams { get { return s_params_SearchSubjects; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SearchSubjects
+        {
+            public readonly string term = "term";
+        }
+        static readonly ActionParamsClass_Subject s_params_Subject = new ActionParamsClass_Subject();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Subject SubjectParams { get { return s_params_Subject; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Subject
+        {
+            public readonly string Id = "Id";
         }
         static readonly ActionParamsClass_UpdateProxySettings s_params_UpdateProxySettings = new ActionParamsClass_UpdateProxySettings();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -9555,14 +9483,14 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
-        partial void UpdateActiveDirectorySearchEntireForestOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool SearchEntireForest, bool redirect);
+        partial void UpdateActiveDirectorySearchAllForestServersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool SearchAllForestServers, bool redirect);
 
-        public override System.Web.Mvc.ActionResult UpdateActiveDirectorySearchEntireForest(bool SearchEntireForest, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateActiveDirectorySearchAllForestServers(bool SearchAllForestServers, bool redirect)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateActiveDirectorySearchEntireForest);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "SearchEntireForest", SearchEntireForest);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateActiveDirectorySearchAllForestServers);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "SearchAllForestServers", SearchAllForestServers);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateActiveDirectorySearchEntireForestOverride(callInfo, SearchEntireForest, redirect);
+            UpdateActiveDirectorySearchAllForestServersOverride(callInfo, SearchAllForestServers, redirect);
             return callInfo;
         }
 
@@ -9572,6 +9500,26 @@ namespace Disco.Web.Areas.API.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DomainOrganisationalUnits);
             DomainOrganisationalUnitsOverride(callInfo);
+            return callInfo;
+        }
+
+        partial void SearchSubjectsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string term);
+
+        public override System.Web.Mvc.ActionResult SearchSubjects(string term)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchSubjects);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "term", term);
+            SearchSubjectsOverride(callInfo, term);
+            return callInfo;
+        }
+
+        partial void SubjectOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
+
+        public override System.Web.Mvc.ActionResult Subject(string Id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Subject);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
+            SubjectOverride(callInfo, Id);
             return callInfo;
         }
 

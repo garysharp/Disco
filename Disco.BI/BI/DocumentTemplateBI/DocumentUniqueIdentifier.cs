@@ -62,13 +62,13 @@ namespace Disco.BI.DocumentTemplateBI
         public string DataScope { get; private set; }
         public static bool IsDocumentUniqueIdentifier(string UniqueIdentifier)
         {
-            return UniqueIdentifier.StartsWith("Disco|", System.StringComparison.InvariantCultureIgnoreCase);
+            return UniqueIdentifier.StartsWith("Disco|", System.StringComparison.OrdinalIgnoreCase);
         }
         public DocumentUniqueIdentifier(string TemplateTypeId, string DataId, string CreatorId, DateTime TimeStamp, int? Page = null, string Tag = null)
         {
             var creatorId = (string.IsNullOrEmpty(CreatorId) || CreatorId.IndexOf('\\') > -1)
                 ? CreatorId
-                : string.Format(@"{0}\{1}", ActiveDirectory.PrimaryDomain.NetBiosName, CreatorId);
+                : string.Format(@"{0}\{1}", ActiveDirectory.Context.PrimaryDomain.NetBiosName, CreatorId);
 
             this.Tag = Tag;
             this.TemplateTypeId = TemplateTypeId;
@@ -100,7 +100,7 @@ namespace Disco.BI.DocumentTemplateBI
                 {
                     var creatorId = s[4];
                     if (!string.IsNullOrWhiteSpace(creatorId) && creatorId.IndexOf('\\') < 0)
-                        creatorId = string.Format(@"{0}\{1}", ActiveDirectory.PrimaryDomain.NetBiosName, creatorId);
+                        creatorId = string.Format(@"{0}\{1}", ActiveDirectory.Context.PrimaryDomain.NetBiosName, creatorId);
 
                     this.CreatorId = creatorId;
                 }
@@ -193,7 +193,7 @@ namespace Disco.BI.DocumentTemplateBI
                             // Patch for existing documents (before DBv13 - Multi-Domain Support)
                             // Add default domain to User Ids
                             if (this.DataId.IndexOf('\\') < 0)
-                                this.DataId = string.Format(@"{0}\{1}", ActiveDirectory.PrimaryDomain.NetBiosName, this.DataId);
+                                this.DataId = string.Format(@"{0}\{1}", ActiveDirectory.Context.PrimaryDomain.NetBiosName, this.DataId);
                             
                             User u = Database.Users.Find(this.DataId);
                             if (u != null)

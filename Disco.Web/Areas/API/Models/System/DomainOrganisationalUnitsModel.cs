@@ -1,16 +1,14 @@
-﻿using Disco.Models.Interop.ActiveDirectory;
+﻿using Disco.Services.Interop.ActiveDirectory;
 using Disco.Web.Models.Shared;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace Disco.Web.Areas.API.Models.System
 {
     public class DomainOrganisationalUnitsModel
     {
-        public ActiveDirectoryDomain Domain { get; set; }
-        public List<ActiveDirectoryOrganisationalUnit> OrganisationalUnits { get; set; }
+        public ADDomain Domain { get; set; }
+        public List<ADOrganisationalUnit> OrganisationalUnits { get; set; }
 
         public FancyTreeNode ToFancyTreeNode()
         {
@@ -21,13 +19,13 @@ namespace Disco.Web.Areas.API.Models.System
                 key = Domain.DistinguishedName,
                 title = Domain.NetBiosName,
                 folder = true,
-                tooltip = Domain.DnsName,
+                tooltip = Domain.Name,
                 children = children,
                 unselectable = false,
                 expanded = true
             };
         }
-        private FancyTreeNode OrganisationalUnitToFancyTreeNode(ActiveDirectoryOrganisationalUnit OrganisationalUnit)
+        private FancyTreeNode OrganisationalUnitToFancyTreeNode(ADOrganisationalUnit OrganisationalUnit)
         {
             FancyTreeNode[] children = OrganisationalUnit.Children == null
                 ? null

@@ -56,7 +56,7 @@ namespace Disco.Services.Logging
                         var appDomain = AppDomain.CurrentDomain;
 
                         var logModuleTypes = (from a in appDomain.GetAssemblies()
-                                              where !a.GlobalAssemblyCache && !a.IsDynamic && a.FullName.StartsWith("Disco.", StringComparison.InvariantCultureIgnoreCase)
+                                              where !a.GlobalAssemblyCache && !a.IsDynamic && a.FullName.StartsWith("Disco.", StringComparison.OrdinalIgnoreCase)
                                               from type in a.GetTypes()
                                               where typeof(LogBase).IsAssignableFrom(type) && !type.IsAbstract
                                               select type);

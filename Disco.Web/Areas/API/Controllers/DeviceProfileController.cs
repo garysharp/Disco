@@ -246,7 +246,7 @@ namespace Disco.Web.Areas.API.Controllers
         private void UpdateOrganisationalUnit(Disco.Models.Repository.DeviceProfile deviceProfile, string OrganisationalUnit)
         {
             if (string.IsNullOrWhiteSpace(OrganisationalUnit))
-                OrganisationalUnit = ActiveDirectory.PrimaryDomain.GetDefaultComputerContainer();
+                OrganisationalUnit = ActiveDirectory.Context.PrimaryDomain.DefaultComputerContainer;
 
             if (OrganisationalUnit != deviceProfile.OrganisationalUnit)
             {

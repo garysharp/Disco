@@ -1597,56 +1597,18 @@ WriteLiteral(" data-value=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(">\r\n");
+WriteLiteral(">\r\n                    <span>\r\n");
+
+WriteLiteral("                        ");
 
             
-            #line 526 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                    
-            
-            #line default
-            #line hidden
-            
-            #line 526 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                     if (string.IsNullOrEmpty(Model.DeviceProfile.OrganisationalUnit))
-                    {
+            #line 527 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                   Write(Model.FriendlyOrganisationalUnitName);
 
             
             #line default
             #line hidden
-WriteLiteral("                        <span>{Default Computers Container}</span>\r\n");
-
-            
-            #line 529 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                    }
-                    else
-                    {
-                        var domain = Disco.Services.Interop.ActiveDirectory.ActiveDirectory.GetDomainByDistinguishedName(Model.DeviceProfile.OrganisationalUnit);
-                        
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                        <span>\r\n");
-
-WriteLiteral("                            ");
-
-            
-            #line 535 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                       Write(Disco.Services.Interop.ActiveDirectory.ActiveDirectoryExtensions.GetFriendlyOrganisationalUnitName(domain, Model.DeviceProfile.OrganisationalUnit));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n                        </span>\r\n");
-
-            
-            #line 537 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                    }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                </div>\r\n");
+WriteLiteral("\r\n                    </span>\r\n                </div>\r\n");
 
 WriteLiteral("                <a");
 
@@ -1659,20 +1621,20 @@ WriteLiteral(" class=\"button small\"");
 WriteLiteral(">Change</a>");
 
             
-            #line 539 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 530 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                          
             
             #line default
             #line hidden
             
-            #line 539 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 530 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                     Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 539 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 530 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                   
 
             
@@ -1692,17 +1654,17 @@ WriteLiteral(" id=\"dialogOrganisationalUnit_Loading\"");
 
 WriteLiteral(">\r\n");
 
-WriteLiteral("                            ");
+WriteLiteral("                        ");
 
             
-            #line 542 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                       Write(AjaxHelpers.AjaxLoader());
+            #line 533 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                   Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral(" Loading Organisational Units\r\n                        </div>\r\n                  " +
-"  <div");
+WriteLiteral(" Loading Organisational Units\r\n                    </div>\r\n                    <d" +
+"iv");
 
 WriteLiteral(" id=\"treeOrganisationalUnit\"");
 
@@ -1717,7 +1679,7 @@ WriteLiteral(" type=\"text/javascript\"");
 WriteLiteral(">\r\n                    $(function () {\r\n                        var ouSetUrl = \'");
 
             
-            #line 549 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 540 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                    Write(Url.Action(MVC.API.DeviceProfile.UpdateOrganisationalUnit(Model.DeviceProfile.Id, null, true)));
 
             
@@ -1759,7 +1721,7 @@ WriteLiteral("\';\r\n                        var ouValue = $(\'#DeviceProfile_Or
 " $ouTree.css(\'height\', \'100%\');\r\n\r\n                                $.getJSON(\'");
 
             
-            #line 599 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 590 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                        Write(Url.Action(MVC.API.System.DomainOrganisationalUnits()));
 
             
@@ -1806,7 +1768,7 @@ WriteLiteral("\', null, function (data) {\r\n                                   
 "     </script>\r\n");
 
             
-            #line 659 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 650 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                 }
                 else
                 {
@@ -1820,59 +1782,21 @@ WriteLiteral(" id=\"displayOrganisationalUnit\"");
 
 WriteLiteral(" class=\"code\"");
 
-WriteLiteral(">\r\n");
+WriteLiteral(">\r\n                    <span>\r\n");
+
+WriteLiteral("                        ");
 
             
-            #line 663 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                    
-            
-            #line default
-            #line hidden
-            
-            #line 663 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                     if (string.IsNullOrEmpty(Model.DeviceProfile.OrganisationalUnit))
-                    {
+            #line 655 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                   Write(Model.FriendlyOrganisationalUnitName);
 
             
             #line default
             #line hidden
-WriteLiteral("                        <span>{Default Computers Container}</span>\r\n");
+WriteLiteral("\r\n                    </span>\r\n                </div>\r\n");
 
             
-            #line 666 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                    }
-                    else
-                    {
-                        var domain = Disco.Services.Interop.ActiveDirectory.ActiveDirectory.GetDomainByDistinguishedName(Model.DeviceProfile.OrganisationalUnit);
-                        
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                        <span>\r\n");
-
-WriteLiteral("                            ");
-
-            
-            #line 672 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                       Write(Disco.Services.Interop.ActiveDirectory.ActiveDirectoryExtensions.GetFriendlyOrganisationalUnitName(domain, Model.DeviceProfile.OrganisationalUnit));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n                        </span>\r\n");
-
-            
-            #line 674 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                    }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                </div>\r\n");
-
-            
-            #line 676 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 658 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                 }
 
             
@@ -1885,13 +1809,13 @@ WriteLiteral(" style=\"margin-top: 8px;\"");
 WriteLiteral(">\r\n");
 
             
-            #line 678 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 660 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 678 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 660 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                      if (canConfig)
                     {
 
@@ -1907,7 +1831,7 @@ WriteLiteral(" type=\"checkbox\"");
 WriteLiteral(" ");
 
             
-            #line 680 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 662 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                         Write(Model.DeviceProfile.EnforceOrganisationalUnit ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty));
 
             
@@ -1928,7 +1852,7 @@ WriteLiteral(@">
                                     $.getJSON('");
 
             
-            #line 687 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 669 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                           Write(Url.Action(MVC.API.DeviceProfile.UpdateEnforceOrganisationalUnit(Model.DeviceProfile.Id)));
 
             
@@ -1948,7 +1872,7 @@ WriteLiteral(@"', data, function (response, result) {
 ");
 
             
-            #line 698 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 680 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     }
                     else
                     {
@@ -1965,7 +1889,7 @@ WriteLiteral(" type=\"checkbox\"");
 WriteLiteral(" ");
 
             
-            #line 701 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 683 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                         Write(Model.DeviceProfile.EnforceOrganisationalUnit ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty));
 
             
@@ -1974,7 +1898,7 @@ WriteLiteral(" ");
 WriteLiteral(" disabled=\"disabled\" />\r\n");
 
             
-            #line 702 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 684 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     }
 
             
@@ -1990,7 +1914,7 @@ WriteLiteral(">\r\n                        Enforce Organisational Unit\r\n      
 WriteLiteral("                    ");
 
             
-            #line 706 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 688 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                Write(AjaxHelpers.AjaxLoader());
 
             
@@ -2000,7 +1924,7 @@ WriteLiteral("\r\n                </div>\r\n            </td>\r\n        </tr>\r
 "\n");
 
             
-            #line 712 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 694 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
  if (canDelete)
 {
 
@@ -2055,7 +1979,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 748 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 730 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
 }
 
             
@@ -2068,13 +1992,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 750 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 732 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 750 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 732 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (canDelete)
     { 
         
@@ -2082,14 +2006,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 752 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 734 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
    Write(Html.ActionLinkButton("Delete", MVC.API.DeviceProfile.Delete(Model.DeviceProfile.Id, true), "buttonDelete"));
 
             
             #line default
             #line hidden
             
-            #line 752 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 734 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                     
     }
 
@@ -2099,7 +2023,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 754 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 736 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (Authorization.Has(Claims.Device.Actions.Export))
     {
         
@@ -2107,14 +2031,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 756 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 738 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
    Write(Html.ActionLinkButton("Export Devices", MVC.API.DeviceProfile.ExportDevices(Model.DeviceProfile.Id)));
 
             
             #line default
             #line hidden
             
-            #line 756 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 738 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                              
     }
 
@@ -2124,7 +2048,7 @@ WriteLiteral("    ");
 WriteLiteral("    ");
 
             
-            #line 758 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 740 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (Authorization.Has(Claims.Device.Search))
     {
         
@@ -2132,14 +2056,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 760 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 742 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
    Write(Html.ActionLinkButton("View Devices", MVC.Search.Query(Model.DeviceProfile.Id.ToString(), "DeviceProfile")));
 
             
             #line default
             #line hidden
             
-            #line 760 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 742 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                     
     }
 

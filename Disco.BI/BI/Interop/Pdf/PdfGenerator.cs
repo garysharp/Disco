@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Disco.Models.Repository;
+﻿using Disco.BI.Expressions;
+using Disco.BI.Extensions;
 using Disco.Data.Repository;
 using Disco.Models.BI.DocumentTemplates;
-using System.IO;
-using iTextSharp.text.pdf;
-using System.Collections.Concurrent;
-using Disco.BI.Expressions;
-using System.Collections;
-using Disco.BI.Extensions;
 using Disco.Models.BI.Expressions;
+using Disco.Models.Repository;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
+using iTextSharp.text.pdf;
+using System;
+using System.Collections;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Disco.BI.Interop.Pdf
 {
@@ -67,7 +67,7 @@ namespace Disco.BI.Interop.Pdf
                     {
                         string dataObjectId = DataObjectsIds[idIndex];
                         if (!dataObjectId.Contains('\\'))
-                            dataObjectId = Disco.Services.Interop.ActiveDirectory.ActiveDirectory.PrimaryDomain.NetBiosName + @"\" + dataObjectId;
+                            dataObjectId = ActiveDirectory.Context.PrimaryDomain.NetBiosName + @"\" + dataObjectId;
 
                         DataObjects[idIndex] = UserService.GetUser(DataObjectsIds[idIndex], Database, true);
                         if (DataObjects[idIndex] == null)
@@ -123,7 +123,7 @@ namespace Disco.BI.Interop.Pdf
 
             foreach (string pdfFieldKey in pdfStamper.AcroFields.Fields.Keys)
             {
-                if (pdfFieldKey.Equals("DiscoAttachmentId", StringComparison.InvariantCultureIgnoreCase))
+                if (pdfFieldKey.Equals("DiscoAttachmentId", StringComparison.OrdinalIgnoreCase))
                 {
                     AcroFields.Item fields = pdfStamper.AcroFields.Fields[pdfFieldKey];
                     string fieldValue = dt.UniqueIdentifier(Data, CreatorUser.UserId, TimeStamp);

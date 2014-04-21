@@ -28,7 +28,7 @@ namespace Disco.BI.Expressions.Extensions
         }
         public static FileImageExpressionResult JobAttachmentFirstImage(Job Job, DiscoDataContext Database)
         {
-            var attachment = Job.JobAttachments.FirstOrDefault(ja => ja.MimeType.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase));
+            var attachment = Job.JobAttachments.FirstOrDefault(ja => ja.MimeType.StartsWith("image/", StringComparison.OrdinalIgnoreCase));
             if (attachment != null)
             {
                 var filename = attachment.RepositoryFilename(Database);
@@ -39,7 +39,7 @@ namespace Disco.BI.Expressions.Extensions
         }
         public static FileImageExpressionResult JobAttachmentLastImage(Job Job, DiscoDataContext Database)
         {
-            var attachment = Job.JobAttachments.LastOrDefault(ja => ja.MimeType.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase));
+            var attachment = Job.JobAttachments.LastOrDefault(ja => ja.MimeType.StartsWith("image/", StringComparison.OrdinalIgnoreCase));
             if (attachment != null)
             {
                 var filename = attachment.RepositoryFilename(Database);
@@ -52,7 +52,7 @@ namespace Disco.BI.Expressions.Extensions
         {
             if (JobAttachment == null)
                 throw new ArgumentNullException("JobAttachment");
-            if (!JobAttachment.MimeType.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase))
+            if (!JobAttachment.MimeType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
                 throw new ArgumentException("Invalid Image MimeType for Attachment");
 
             var filename = JobAttachment.RepositoryFilename(Database);
@@ -65,7 +65,7 @@ namespace Disco.BI.Expressions.Extensions
             if (Job.JobAttachments == null)
                 throw new ArgumentException("Job.JobAttachments is null", "Job");
 
-            var attachments = Job.JobAttachments.Where(a => a.MimeType.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase)).ToList();
+            var attachments = Job.JobAttachments.Where(a => a.MimeType.StartsWith("image/", StringComparison.OrdinalIgnoreCase)).ToList();
 
             if (attachments.Count > 0)
             {
@@ -81,7 +81,7 @@ namespace Disco.BI.Expressions.Extensions
             if (JobAttachments == null)
                 throw new ArgumentNullException("JobAttachments");
 
-            var attachments = JobAttachments.Cast<JobAttachment>().Where(a => a.MimeType.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase)).ToList();
+            var attachments = JobAttachments.Cast<JobAttachment>().Where(a => a.MimeType.StartsWith("image/", StringComparison.OrdinalIgnoreCase)).ToList();
 
             if (attachments.Count > 0)
             {

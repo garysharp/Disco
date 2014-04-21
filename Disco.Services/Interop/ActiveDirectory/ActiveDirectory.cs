@@ -1,595 +1,226 @@
 ﻿using Disco.Data.Repository;
-using Disco.Models.Interop.ActiveDirectory;
-using Disco.Services.Interop.ActiveDirectory.Internal;
 using System;
 using System.Collections.Generic;
-using System.DirectoryServices;
-using System.DirectoryServices.ActiveDirectory;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Principal;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Disco.Services.Interop.ActiveDirectory
 {
     public static class ActiveDirectory
     {
-        private const int SingleSearchResult = 1;
+        public const int SingleSearchResult = 1;
+        public const int DefaultSearchResultLimit = 30;
         public const int MaxForestServerSearch = 30;
+        public const int DomainControllerUnavailableMinutes = 10;
+
+        private static ActiveDirectoryContext context;
+        private static ActiveDirectoryGroupCache groupCache;
+        private static object contextInitializingLock = new object();
 
         public static void Initialize(DiscoDataContext Database)
         {
-            ADInterop.Initialize(Database);
-        }
-        public static void UpdateSearchContainers(DiscoDataContext Database, List<string> Containers)
-        {
-            ADInterop.UpdateSearchContainers(Database, Containers);
-        }
-        public static bool UpdateSearchEntireForest(DiscoDataContext Database, bool SearchEntireForest)
-        {
-            return ADInterop.UpdateSearchEntireForest(Database, SearchEntireForest);
-        }
-
-        public static ActiveDirectoryDomain PrimaryDomain
-        {
-            get
+            lock (contextInitializingLock)
             {
-                return ADInterop.PrimaryDomain;
-            }
-        }
-        public static IEnumerable<ActiveDirectoryDomain> Domains
-        {
-            get
-            {
-                return ADInterop.Domains.ToList();
+                context = new ActiveDirectoryContext(Database);
+                groupCache = new ActiveDirectoryGroupCache();
             }
         }
 
-        public static ActiveDirectorySite Site
+        public static ActiveDirectoryContext Context
         {
             get
             {
-                return ADInterop.Site;
-            }
-        }
-
-        public static ActiveDirectoryDomain GetDomainByDistinguishedName(string DistinguishedName)
-        {
-            return ADInterop.GetDomainByDistinguishedName(DistinguishedName);
-        }
-
-        public static ActiveDirectoryDomain GetDomainByNetBiosName(string NetBiosName)
-        {
-            return ADInterop.GetDomainByNetBiosName(NetBiosName);
-        }
-
-        public static ActiveDirectoryDomain GetDomainByDnsName(string DnsName)
-        {
-            return ADInterop.GetDomainByDnsName(DnsName);
-        }
-
-        public static ActiveDirectoryDomain GetDomainFromId(string Id)
-        {
-            return ADInterop.GetDomainFromId(Id);
-        }
-
-        public static List<string> LoadForestServers()
-        {
-            return ADInterop.LoadForestServers();
-        }
-
-        public static Task<List<string>> LoadForestServersAsync()
-        {
-            return ADInterop.LoadForestServersAsync();
-        }
-
-        public static bool SearchEntireForest
-        {
-            get
-            {
-                return ADInterop.SearchEntireForest;
-            }
-        }
-
-        #region Machine Account
-        private static readonly string[] MachineLoadProperties = { "name", "distinguishedName", "sAMAccountName", "objectSid", "dNSHostName", "netbootGUID", "isCriticalSystemObject" };
-
-        public static ActiveDirectoryMachineAccount RetrieveMachineAccount(DomainController DomainController, string Id, params string[] AdditionalProperties)
-        {
-            return RetrieveMachineAccount(DomainController, Id, (System.Guid?)null, (System.Guid?)null, AdditionalProperties);
-        }
-        public static ActiveDirectoryMachineAccount RetrieveMachineAccount(string Id, params string[] AdditionalProperties)
-        {
-            return RetrieveMachineAccount(Id, (System.Guid?)null, (System.Guid?)null, AdditionalProperties);
-        }
-        public static ActiveDirectoryMachineAccount RetrieveMachineAccount(DomainController DomainController, string Id, System.Guid? UUIDNetbootGUID, params string[] AdditionalProperties)
-        {
-            return RetrieveMachineAccount(DomainController, Id, UUIDNetbootGUID, (System.Guid?)null, AdditionalProperties);
-        }
-        public static ActiveDirectoryMachineAccount RetrieveMachineAccount(string Id, System.Guid? UUIDNetbootGUID, params string[] AdditionalProperties)
-        {
-            return RetrieveMachineAccount(Id, UUIDNetbootGUID, (System.Guid?)null, AdditionalProperties);
-        }
-        public static ActiveDirectoryMachineAccount RetrieveMachineAccount(string Id, System.Guid? UUIDNetbootGUID, System.Guid? MacAddressNetbootGUID, params string[] AdditionalProperties)
-        {
-            return RetrieveMachineAccount(null, Id, UUIDNetbootGUID, MacAddressNetbootGUID, AdditionalProperties);
-        }
-        public static ActiveDirectoryMachineAccount RetrieveMachineAccount(DomainController DomainController, string Id, System.Guid? UUIDNetbootGUID, System.Guid? MacAddressNetbootGUID, params string[] AdditionalProperties)
-        {
-            if (string.IsNullOrWhiteSpace(Id))
-                throw new ArgumentNullException("Id");
-
-            // Add $ identifier for machine accounts
-            if (!Id.EndsWith("$"))
-                Id += "$";
-
-            const string ldapFilterTemplate = "(&(objectCategory=computer)(sAMAccountName={0}))";
-            const string ldapNetbootGuidFilterTemplate = "(&(objectCategory=computer)(netbootGUID={0}))";
-
-            string[] loadProperites = (AdditionalProperties != null && AdditionalProperties.Length > 0)
-                ? MachineLoadProperties.Concat(AdditionalProperties).ToArray()
-                : MachineLoadProperties;
-
-            ActiveDirectorySearchResult adResult;
-
-            var splitId = UserExtensions.SplitUserId(Id);
-            var ldapSamAccountFilter = string.Format(ldapFilterTemplate, splitId.Item2);
-            var domain = ADInterop.GetDomainFromId(Id);
-
-            adResult = ADInterop.SearchAll(domain, DomainController, ldapSamAccountFilter, SingleSearchResult, loadProperites).FirstOrDefault();
-            if (adResult == null && (UUIDNetbootGUID.HasValue || MacAddressNetbootGUID.HasValue))
-            {
-
-                if (UUIDNetbootGUID.HasValue)
+                if (context == null)
                 {
-                    var ldapFilter = string.Format(ldapNetbootGuidFilterTemplate, ADInterop.FormatGuidForLdapQuery(UUIDNetbootGUID.Value));
-                    adResult = ADInterop.SearchAll(domain, DomainController, ldapFilter, SingleSearchResult, loadProperites).FirstOrDefault();
+                    lock (contextInitializingLock)
+                    {
+                        if (context == null)
+                            throw new InvalidOperationException("Active Directory interoperability hasn't been initialized");
+                    }
                 }
-                if (adResult == null && MacAddressNetbootGUID.HasValue)
-                {
-                    var ldapFilter = string.Format(ldapNetbootGuidFilterTemplate, ADInterop.FormatGuidForLdapQuery(MacAddressNetbootGUID.Value));
-                    adResult = ADInterop.SearchAll(domain, DomainController, ldapFilter, SingleSearchResult, loadProperites).FirstOrDefault();
-                }
-            }
 
-            if (adResult != null)
-                return adResult.AsMachineAccount(AdditionalProperties);
+                return context;
+            }
+        }
+        public static ActiveDirectoryGroupCache GroupCache
+        {
+            get
+            {
+                if (groupCache == null)
+                {
+                    lock (contextInitializingLock)
+                    {
+                        if (groupCache == null)
+                            throw new InvalidOperationException("Active Directory interoperability hasn't been initialized");
+                    }
+                }
+
+                return groupCache;
+            }
+        }
+
+        #region User Accounts
+
+        public static ADUserAccount RetrieveADUserAccount(string Id, params string[] AdditionalProperties)
+        {
+            var domain = Context.GetDomainFromId(Id);
+            return domain.GetAvailableDomainController().RetrieveADUserAccount(Id, AdditionalProperties);
+        }
+
+        public static IEnumerable<ADUserAccount> SearchADUserAccounts(string Term, bool Quick, int? ResultLimit = ActiveDirectory.DefaultSearchResultLimit, params string[] AdditionalProperties)
+        {
+            if (string.IsNullOrWhiteSpace(Term))
+                throw new ArgumentNullException("Term");
+
+            ADDomain searchDomain;
+            var term = RelevantSearchTerm(Term, out searchDomain);
+
+            if (string.IsNullOrWhiteSpace(term))
+                return Enumerable.Empty<ADUserAccount>();
+
+            var ldapFilter = string.Format(ADUserAccount.LdapSearchFilterTemplate, ADHelpers.EscapeLdapQuery(term));
+
+            IEnumerable<ADSearchResult> searchResults;
+            if (searchDomain != null)
+                searchResults = searchDomain.SearchScope(ldapFilter, ADGroup.LoadProperties, ResultLimit);
             else
-                return null; // Not Found
-        }
+                searchResults = Context.SearchScope(ldapFilter, ADGroup.LoadProperties, ResultLimit);
 
-        private static ActiveDirectoryMachineAccount AsMachineAccount(this ActiveDirectorySearchResult item, string[] AdditionalProperties)
-        {
-            string name = item.Result.Properties["name"][0].ToString();
-            string sAMAccountName = item.Result.Properties["sAMAccountName"][0].ToString();
-            string distinguishedName = item.Result.Properties["distinguishedName"][0].ToString();
-            string objectSid = ADInterop.ConvertBytesToSDDLString((byte[])item.Result.Properties["objectSid"][0]);
-
-            var dNSNameProperty = item.Result.Properties["dNSHostName"];
-            string dNSName = null;
-            if (dNSNameProperty.Count > 0)
-                dNSName = dNSNameProperty[0].ToString();
-            else
-                dNSName = string.Format("{0}.{1}", sAMAccountName.TrimEnd('$'), item.Domain.DnsName);
-
-            bool isCriticalSystemObject = (bool)item.Result.Properties["isCriticalSystemObject"][0];
-
-            System.Guid netbootGUIDResult = default(System.Guid);
-            ResultPropertyValueCollection netbootGUIDProp = item.Result.Properties["netbootGUID"];
-            if (netbootGUIDProp.Count > 0)
-            {
-                netbootGUIDResult = new System.Guid((byte[])netbootGUIDProp[0]);
-            }
-
-            // Additional Properties
-            Dictionary<string, object[]> additionalProperties = new Dictionary<string, object[]>();
-            if (AdditionalProperties != null)
-                foreach (string propertyName in AdditionalProperties)
-                {
-                    var property = item.Result.Properties[propertyName];
-                    var propertyValues = new List<object>();
-                    for (int index = 0; index < property.Count; index++)
-                        propertyValues.Add(property[index]);
-                    additionalProperties.Add(propertyName, propertyValues.ToArray());
-                }
-
-            return new ActiveDirectoryMachineAccount
-            {
-                Name = name,
-                DistinguishedName = distinguishedName,
-                SamAccountName = sAMAccountName,
-                SecurityIdentifier = objectSid,
-                NetbootGUID = netbootGUIDResult,
-                Path = item.Result.Path,
-                Domain = item.Domain.NetBiosName,
-                DnsName = dNSName,
-                IsCriticalSystemObject = isCriticalSystemObject,
-                LoadedProperties = additionalProperties
-            };
-        }
-
-        public static string OfflineDomainJoinProvision(ActiveDirectoryDomain Domain, DomainController DomainController, string ComputerName, string OrganisationalUnit, ref ActiveDirectoryMachineAccount MachineAccount, out string DiagnosticInformation)
-        {
-            const string ldapFilterTemplate = "(&(objectCategory=computer)(sAMAccountName={0}))";
-
-            if (MachineAccount != null && MachineAccount.IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco refuses to modify it", MachineAccount.DistinguishedName));
-
-            if (MachineAccount != null)
-                MachineAccount.DeleteAccount(DomainController);
-
-            var computerId = UserExtensions.SplitUserId(ComputerName);
-
-            var offlineJoinResult = ADInterop.OfflineDomainJoinProvision(Domain, DomainController, computerId.Item2, OrganisationalUnit, out DiagnosticInformation);
-
-            // Reload newly created Account
-            string[] loadAdditionalProperties = (MachineAccount != null && MachineAccount.LoadedProperties != null && MachineAccount.LoadedProperties.Count > 0)
-                ? MachineAccount.LoadedProperties.Keys.ToArray()
-                : null;
-
-            MachineAccount = null;
-
-            string[] loadProperites = (loadAdditionalProperties != null)
-                ? MachineLoadProperties.Concat(loadAdditionalProperties).ToArray()
-                : MachineLoadProperties;
-
-            var ldapSamAccountName = computerId.Item2.EndsWith("$") ? computerId.Item2 : computerId.Item2 + "$";
-            var ldapFilter = string.Format(ldapFilterTemplate, ldapSamAccountName);
-            var ldapResult = ADInterop.SearchAll(Domain, DomainController, ldapFilter, 1, loadProperites).FirstOrDefault();
-
-            if (ldapResult != null)
-                MachineAccount = ldapResult.AsMachineAccount(loadAdditionalProperties);
-
-            return offlineJoinResult;
+            return searchResults.Select(result => result.AsADUserAccount(Quick, AdditionalProperties));
         }
 
         #endregion
 
-        #region User Account
-        private static readonly string[] UserLoadProperties = { "name", "distinguishedName", "sAMAccountName", "objectSid", "displayName", "sn", "givenName", "memberOf", "primaryGroupID", "mail", "telephoneNumber" };
-        private static readonly string[] UserQuickLoadProperties = { "name", "distinguishedName", "sAMAccountName", "objectSid", "displayName", "sn", "givenName", "mail", "telephoneNumber" };
-
-        public static ActiveDirectoryUserAccount RetrieveUserAccount(string Id, params string[] AdditionalProperties)
+        #region Machine Accounts
+        public static ADMachineAccount RetrieveADMachineAccount(string Id, params string[] AdditionalProperties)
         {
-            const string ldapFilter = "(&(objectCategory=Person)(sAMAccountName={0}))";
-
-            string[] loadProperites = (AdditionalProperties != null && AdditionalProperties.Length > 0)
-                ? UserLoadProperties.Concat(AdditionalProperties).ToArray()
-                : UserLoadProperties;
-
-            return SearchBySamAccountName(Id, ldapFilter, loadProperites).Select(result => result.AsUserAccount(false, AdditionalProperties)).FirstOrDefault();
+            var domain = Context.GetDomainFromId(Id);
+            return domain.GetAvailableDomainController().RetrieveADMachineAccount(Id, AdditionalProperties);
         }
-        public static IEnumerable<ActiveDirectoryUserAccount> SearchUserAccounts(string Term, params string[] AdditionalProperties)
+        public static ADMachineAccount RetrieveADMachineAccount(string Id, System.Guid? NetbootGUID, params string[] AdditionalProperties)
         {
-            return SearchUserAccounts(Term, false, AdditionalProperties);
+            var domain = Context.GetDomainFromId(Id);
+            return domain.GetAvailableDomainController().RetrieveADMachineAccount(Id, NetbootGUID, AdditionalProperties);
         }
-        public static IEnumerable<ActiveDirectoryUserAccount> SearchUserAccounts(string Term, bool Quick, params string[] AdditionalProperties)
+        public static ADMachineAccount RetrieveADMachineAccount(string Id, System.Guid? UUIDNetbootGUID, System.Guid? MacAddressNetbootGUID, params string[] AdditionalProperties)
         {
-            const int resultLimit = 30; // Default Search Limit
-
-            if (string.IsNullOrWhiteSpace(Term))
-                throw new ArgumentNullException("Term");
-
-            // Apply Domain Restriction
-            ActiveDirectoryDomain searchDomain = null;
-            Term = ApplySearchTermDomainRestriction(Term, out searchDomain);
-
-            if (string.IsNullOrWhiteSpace(Term))
-                return Enumerable.Empty<ActiveDirectoryUserAccount>();
-
-            string ldapFilter = string.Format("(&(objectCategory=Person)(objectClass=user)(|(sAMAccountName=*{0}*)(displayName=*{0}*)))", ADInterop.EscapeLdapQuery(Term));
-
-            string[] loadProperites = Quick
-                ? UserQuickLoadProperties
-                : UserLoadProperties;
-
-            if (AdditionalProperties != null && AdditionalProperties.Length > 0)
-                loadProperites.Concat(AdditionalProperties).ToArray();
-
-            IEnumerable<ActiveDirectorySearchResult> searchResults;
-            if (searchDomain == null)
-                searchResults = ADInterop.SearchScope(ldapFilter, resultLimit, loadProperites);
-            else
-                searchResults = ADInterop.SearchScope(searchDomain, ldapFilter, resultLimit, loadProperites);
-
-            return searchResults.Select(result => result.AsUserAccount(Quick, AdditionalProperties));
-        }
-
-        private static ActiveDirectoryUserAccount AsUserAccount(this ActiveDirectorySearchResult item, bool Quick, string[] AdditionalProperties)
-        {
-            string name = item.Result.Properties["name"][0].ToString();
-            string username = item.Result.Properties["sAMAccountName"][0].ToString();
-            string distinguishedName = item.Result.Properties["distinguishedName"][0].ToString();
-            byte[] objectSid = (byte[])item.Result.Properties["objectSid"][0];
-            string objectSidSDDL = ADInterop.ConvertBytesToSDDLString(objectSid);
-            List<string> groups = null;
-
-            ResultPropertyValueCollection displayNameProp = item.Result.Properties["displayName"];
-            string displayName = username;
-            if (displayNameProp.Count > 0)
-                displayName = displayNameProp[0].ToString();
-            string surname = null;
-            ResultPropertyValueCollection surnameProp = item.Result.Properties["sn"];
-            if (surnameProp.Count > 0)
-                surname = surnameProp[0].ToString();
-            string givenName = null;
-            ResultPropertyValueCollection givenNameProp = item.Result.Properties["givenName"];
-            if (givenNameProp.Count > 0)
-                givenName = givenNameProp[0].ToString();
-            string email = null;
-            ResultPropertyValueCollection emailProp = item.Result.Properties["mail"];
-            if (emailProp.Count > 0)
-                email = emailProp[0].ToString();
-            string phone = null;
-            ResultPropertyValueCollection phoneProp = item.Result.Properties["telephoneNumber"];
-            if (phoneProp.Count > 0)
-                phone = phoneProp[0].ToString();
-
-            // Don't load Groups when doing a quick search
-            if (!Quick)
-            {
-                int primaryGroupID = (int)item.Result.Properties["primaryGroupID"][0];
-                string primaryGroupSid = ADInterop.ConvertBytesToSDDLString(ADInterop.BuildPrimaryGroupSid(objectSid, primaryGroupID));
-                var groupDistinguishedNames = item.Result.Properties["memberOf"].Cast<string>().ToList();
-                groupDistinguishedNames.Add(ADGroupCache.GetGroupsDistinguishedNameForSecurityIdentifier(primaryGroupSid));
-                groups = ADGroupCache.GetGroups(groupDistinguishedNames).ToList();
-            }
-
-            // Additional Properties
-            Dictionary<string, object[]> additionalProperties = new Dictionary<string, object[]>();
-            if (AdditionalProperties != null && AdditionalProperties.Length > 0)
-                foreach (string propertyName in AdditionalProperties)
-                {
-                    var property = item.Result.Properties[propertyName];
-                    var propertyValues = new List<object>();
-                    for (int index = 0; index < property.Count; index++)
-                        propertyValues.Add(property[index]);
-                    additionalProperties.Add(propertyName, propertyValues.ToArray());
-                }
-
-            return new ActiveDirectoryUserAccount
-            {
-                Domain = item.Domain.NetBiosName,
-                Name = name,
-                Surname = surname,
-                GivenName = givenName,
-                Email = email,
-                Phone = phone,
-                DistinguishedName = distinguishedName,
-                SamAccountName = username,
-                DisplayName = displayName,
-                SecurityIdentifier = objectSidSDDL,
-                Groups = groups,
-                Path = item.Result.Path,
-                LoadedProperties = additionalProperties
-            };
+            var domain = Context.GetDomainFromId(Id);
+            return domain.GetAvailableDomainController().RetrieveADMachineAccount(Id, UUIDNetbootGUID, MacAddressNetbootGUID, AdditionalProperties);
         }
         #endregion
 
         #region Groups
-        private static readonly string[] GroupLoadProperties = { "name", "distinguishedName", "cn", "sAMAccountName", "objectSid", "memberOf" };
 
-        public static ActiveDirectoryGroup RetrieveGroup(string Id)
+        public static ADGroup RetrieveADGroup(string Id)
         {
-            const string ldapFilter = "(&(objectCategory=Group)(objectSid={0}))";
-
-            return SearchBySamAccountName(Id, ldapFilter, GroupLoadProperties).Select(result => result.AsGroup()).FirstOrDefault();
+            var domain = Context.GetDomainFromId(Id);
+            return domain.GetAvailableDomainController().RetrieveADGroup(Id);
         }
-        public static ActiveDirectoryGroup RetrieveGroupWithDistinguishedName(string DistinguishedName)
+        public static ADGroup RetrieveADGroupByDistinguishedName(string DistinguishedName)
         {
-            ActiveDirectoryDomain domain;
-
-            using (var groupEntry = ADInterop.RetrieveDirectoryEntry(DistinguishedName, out domain))
-            {
-                if (groupEntry == null)
-                    return null;
-
-                return groupEntry.AsGroup(domain);
-            }
+            var domain = Context.GetDomainFromDistinguishedName(DistinguishedName);
+            return domain.GetAvailableDomainController().RetrieveADGroupByDistinguishedName(DistinguishedName);
         }
-        public static ActiveDirectoryGroup RetrieveGroupWithSecurityIdentifier(string SecurityIdentifier)
+        public static ADGroup RetrieveADGroupWithSecurityIdentifier(SecurityIdentifier SecurityIdentifier)
         {
-            const int resultLimit = 1;
-
-            if (string.IsNullOrWhiteSpace(SecurityIdentifier))
-                throw new ArgumentNullException("SecurityIdentifier");
-
-            var sidBytes = ADInterop.ConvertSDDLStringToBytes(SecurityIdentifier);
-            var sidBinaryString = ADInterop.ConvertBytesToBinarySidString(sidBytes);
-
-            string ldapFilter = string.Format("(&(objectCategory=Group)(objectSid={0}))", sidBinaryString);
-
-            return ADInterop.SearchAll(ldapFilter, resultLimit, null).Select(result => result.AsGroup()).FirstOrDefault();
+            var domain = Context.GetDomainFromSecurityIdentifier(SecurityIdentifier);
+            return domain.GetAvailableDomainController().RetrieveADGroupWithSecurityIdentifier(SecurityIdentifier);
         }
-        public static IEnumerable<ActiveDirectoryGroup> SearchGroups(string Term)
-        {
-            const int resultLimit = 30; // Default Search Limit
 
+        public static IEnumerable<ADGroup> SearchADGroups(string Term, int? ResultLimit = ActiveDirectory.DefaultSearchResultLimit)
+        {
             if (string.IsNullOrWhiteSpace(Term))
                 throw new ArgumentNullException("Term");
 
-            // Apply Domain Restriction
-            ActiveDirectoryDomain searchDomain = null;
-            Term = ApplySearchTermDomainRestriction(Term, out searchDomain);
+            ADDomain searchDomain;
+            var term = RelevantSearchTerm(Term, out searchDomain);
 
-            if (string.IsNullOrWhiteSpace(Term))
-                return Enumerable.Empty<ActiveDirectoryGroup>();
+            if (string.IsNullOrWhiteSpace(term))
+                return Enumerable.Empty<ADGroup>();
 
-            string ldapFilter = string.Format("(&(objectCategory=Group)(|(sAMAccountName=*{0}*)(name=*{0}*)(cn=*{0}*)))", ADInterop.EscapeLdapQuery(Term));
+            var ldapFilter= string.Format(ADGroup.LdapSearchFilterTemplate, ADHelpers.EscapeLdapQuery(term));
 
-            IEnumerable<ActiveDirectorySearchResult> searchResults;
-            if (searchDomain == null)
-                searchResults = ADInterop.SearchScope(ldapFilter, resultLimit, GroupLoadProperties);
+            IEnumerable<ADSearchResult> searchResults;
+            if (searchDomain != null)
+                searchResults = searchDomain.SearchScope(ldapFilter, ADGroup.LoadProperties, ResultLimit);
             else
-                searchResults = ADInterop.SearchScope(searchDomain, ldapFilter, resultLimit, GroupLoadProperties);
+                searchResults = Context.SearchScope(ldapFilter, ADGroup.LoadProperties, ResultLimit);
 
-            return searchResults.Select(result => result.AsGroup());
+            return searchResults.Select(result => result.AsADGroup());
         }
 
-        private static ActiveDirectoryGroup AsGroup(this ActiveDirectorySearchResult item)
-        {
-            var name = (string)item.Result.Properties["name"][0];
-            var distinguishedName = (string)item.Result.Properties["distinguishedName"][0];
-            var cn = (string)item.Result.Properties["cn"][0];
-            var sAMAccountName = (string)item.Result.Properties["sAMAccountName"][0];
-            var objectSid = ADInterop.ConvertBytesToSDDLString((byte[])item.Result.Properties["objectSid"][0]);
-            var memberOf = item.Result.Properties["memberOf"].Cast<string>().ToList();
+        #endregion
 
-            return new ActiveDirectoryGroup()
-            {
-                Domain = item.Domain.NetBiosName,
-                Name = name,
-                DistinguishedName = distinguishedName,
-                CommonName = cn,
-                SamAccountName = sAMAccountName,
-                SecurityIdentifier = objectSid,
-                MemberOf = memberOf
-            };
-        }
-        private static ActiveDirectoryGroup AsGroup(this DirectoryEntry item, ActiveDirectoryDomain Domain)
+        #region Organisational Units
+        public static IEnumerable<Tuple<ADDomain, List<ADOrganisationalUnit>>> RetrieveADOrganisationalUnitStructure()
         {
-            var name = (string)item.Properties["name"][0];
-            var distinguishedName = (string)item.Properties["distinguishedName"][0];
-            var cn = (string)item.Properties["cn"][0];
-            var sAMAccountName = (string)item.Properties["sAMAccountName"][0];
-            var objectSid = ADInterop.ConvertBytesToSDDLString((byte[])item.Properties["objectSid"][0]);
-            var memberOf = item.Properties["memberOf"].Cast<string>().ToList();
-
-            return new ActiveDirectoryGroup()
-            {
-                Domain = Domain.NetBiosName,
-                Name = name,
-                DistinguishedName = distinguishedName,
-                CommonName = cn,
-                SamAccountName = sAMAccountName,
-                SecurityIdentifier = objectSid,
-                MemberOf = memberOf
-            };
+            return Context.Domains
+                .Select(d => d.GetAvailableDomainController())
+                .Select(dc => Tuple.Create(dc.Domain, dc.RetrieveADOrganisationalUnitStructure()));
         }
         #endregion
 
-        #region Object
-        private static readonly string[] ObjectLoadProperties = { "objectCategory" };
-        private static readonly string[] ObjectLoadPropertiesAll = ObjectLoadProperties.Concat(UserLoadProperties).Concat(MachineLoadProperties).Concat(GroupLoadProperties).Distinct().ToArray();
-
-        public static IActiveDirectoryObject RetrieveObject(string Id, bool Quick)
+        #region Objects
+        public static IADObject RetrieveADObject(string Id, bool Quick)
         {
-            const string ldapFilter = "(&(|(objectCategory=Person)(objectCategory=Computer)(objectCategory=Group))(sAMAccountName={0}))";
-
-            return SearchBySamAccountName(Id, ldapFilter, ObjectLoadPropertiesAll)
-                .Select<ActiveDirectorySearchResult, IActiveDirectoryObject>(result =>
-                {
-                    var objectCategory = (string)result.Result.Properties["objectCategory"][0];
-                    objectCategory = objectCategory.Substring(0, objectCategory.IndexOf(',')).ToLower();
-                    switch (objectCategory)
-                    {
-                        case "cn=person":
-                            return result.AsUserAccount(Quick, null);
-                        case "cn=computer":
-                            return result.AsMachineAccount(null);
-                        case "cn=group":
-                            return result.AsGroup();
-                        default:
-                            throw new InvalidOperationException("Unexpected objectCategory");
-                    }
-                }).FirstOrDefault();
+            var domain = Context.GetDomainFromId(Id);
+            return domain.GetAvailableDomainController().RetrieveADObject(Id, Quick);
         }
         #endregion
 
-        #region Organisation Units
+        #region Actions
 
-        public static List<ActiveDirectoryOrganisationalUnit> RetrieveOrganisationalUnitStructure(ActiveDirectoryDomain Domain)
+        public static string OfflineDomainJoinProvision(string ComputerSamAccountName, string OrganisationalUnit, ref ADMachineAccount MachineAccount, out string DiagnosticInformation)
         {
-            using (DirectoryEntry domainRoot = ADInterop.RetrieveDirectoryEntry(Domain.DistinguishedName, out Domain))
-            {
-                return ActiveDirectory.RetrieveOrganisationalUnitStructureInternal(Domain, domainRoot);
-            }
-        }
-        private static List<ActiveDirectoryOrganisationalUnit> RetrieveOrganisationalUnitStructureInternal(ActiveDirectoryDomain Domain, DirectoryEntry Container)
-        {
-            Dictionary<string, List<ActiveDirectoryOrganisationalUnit>> resultTree = new Dictionary<string, List<ActiveDirectoryOrganisationalUnit>>();
+            var domain = Context.GetDomainFromDistinguishedName(OrganisationalUnit);
+            var writableDomainController = domain.GetAvailableDomainController(RequireWritable: true);
 
-            using (DirectorySearcher adSearcher = new DirectorySearcher(Container, "(objectCategory=organizationalUnit)", new string[]
-			{
-				"name", 
-				"distinguishedName"
-			}, SearchScope.Subtree))
-            {
-                adSearcher.PageSize = 500;
-
-                using (SearchResultCollection adResults = adSearcher.FindAll())
-                {
-                    resultTree = adResults.Cast<SearchResult>().Select(adResult =>
-                    {
-                        string i = adResult.Properties["name"][0].ToString();
-                        string dn = adResult.Properties["distinguishedName"][0].ToString();
-                        return new ActiveDirectoryOrganisationalUnit
-                        {
-                            Domain = Domain.NetBiosName,
-                            Name = i,
-                            DistinguishedName = dn,
-                        };
-                    }).GroupBy(ou => ou.DistinguishedName.Substring(ou.DistinguishedName.IndexOf(',') + 1)).ToDictionary(g => g.Key, g => g.ToList());
-                }
-            }
-
-            // Build Tree
-            var results = resultTree[Domain.DistinguishedName];
-            foreach (var child in results)
-                RetrieveOrganisationalUnitStructureChildrenInternal(child, resultTree);
-
-            return results;
-        }
-        private static void RetrieveOrganisationalUnitStructureChildrenInternal(ActiveDirectoryOrganisationalUnit OrganisationalUnit, Dictionary<string, List<ActiveDirectoryOrganisationalUnit>> ResultTree)
-        {
-            List<ActiveDirectoryOrganisationalUnit> children;
-
-            if (ResultTree.TryGetValue(OrganisationalUnit.DistinguishedName, out children))
-            {
-                foreach (var child in children)
-                    RetrieveOrganisationalUnitStructureChildrenInternal(child, ResultTree);
-
-                OrganisationalUnit.Children = children;
-            }
+            return writableDomainController.OfflineDomainJoinProvision(ComputerSamAccountName, OrganisationalUnit, ref MachineAccount, out DiagnosticInformation);
         }
 
         #endregion
 
         #region Helpers
 
-        private static IEnumerable<ActiveDirectorySearchResult> SearchBySamAccountName(string Id, string LdapFilterTemplate, string[] LoadProperties)
+        private static string RelevantSearchTerm(string Term, out ADDomain Domain)
         {
-            var splitId = UserExtensions.SplitUserId(Id);
-            var ldapFilter = string.Format(LdapFilterTemplate, splitId.Item2);
-            var domains = ADInterop.GetDomainFromId(Id);
+            Domain = null;
 
-            return ADInterop.SearchAll(domains, ldapFilter, SingleSearchResult, LoadProperties);
-        }
-
-        private static string ApplySearchTermDomainRestriction(string Term, out ActiveDirectoryDomain Domain)
-        {
             if (string.IsNullOrWhiteSpace(Term))
-                throw new ArgumentNullException("Term");
+                return null;
 
-            var domainIndex = Term.IndexOf('\\');
-            if (domainIndex >= 0)
+            var term = Term.Trim();
+
+            var domainSeperatorIndex = term.IndexOf('\\');
+
+            if (domainSeperatorIndex >= 0)
             {
-                var domain = Term.Substring(0, domainIndex);
+                // Domain Search Restriction
 
-                if (!ADInterop.TryGetDomainByNetBiosName(domain, out Domain))
-                    return null; // Domain not found - invalid search
-
-                if (Term.Length > (domainIndex + 1))
-                    return Term.Substring(domainIndex + 1);
+                if (term.Length > domainSeperatorIndex + 1)
+                {
+                    var netbiosName = term.Substring(0, domainSeperatorIndex);
+                    if (Context.TryGetDomainByNetBiosName(netbiosName, out Domain))
+                    {
+                        return term.Substring(domainSeperatorIndex + 1);
+                    }
+                    else
+                    {
+                        return null; // Unknown Domain
+                    }
+                }
                 else
-                    return null; // Domain only, no Term
+                {
+                    return null; // No term to search, only Domain
+                }
             }
-            else
-            {
-                Domain = null;
-                return Term;
-            }
+
+            return term;
         }
 
         #endregion
-
     }
 }

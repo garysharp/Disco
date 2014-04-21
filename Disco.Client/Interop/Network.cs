@@ -34,7 +34,7 @@ namespace Disco.Client.Interop
                 // Determine Primary Adapters
 
                 // Lan
-                PrimaryLanNetworkAdapter = NetworkAdapters.Where(n => !n.IsWLanAdapter && n.NetConnectionId.StartsWith("Local Area Connection", StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(n => n.Speed).FirstOrDefault();
+                PrimaryLanNetworkAdapter = NetworkAdapters.Where(n => !n.IsWLanAdapter && n.NetConnectionId.StartsWith("Local Area Connection", StringComparison.OrdinalIgnoreCase)).OrderByDescending(n => n.Speed).FirstOrDefault();
                 // Might be too restrictive - remove name restriction just in case.
                 if (PrimaryLanNetworkAdapter == null)
                     PrimaryLanNetworkAdapter = NetworkAdapters.Where(n => !n.IsWLanAdapter).OrderByDescending(n => n.Speed).FirstOrDefault();

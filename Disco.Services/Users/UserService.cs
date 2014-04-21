@@ -1,5 +1,4 @@
 ﻿using Disco.Data.Repository;
-using Disco.Models.Interop.ActiveDirectory;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
 using Disco.Services.Authorization.Roles;
@@ -206,9 +205,9 @@ namespace Disco.Services.Users
             Cache.FlushCache();
         }
 
-        internal static IEnumerable<ActiveDirectoryUserAccount> SearchUsers(DiscoDataContext Database, string Term)
+        internal static IEnumerable<ADUserAccount> SearchUsers(DiscoDataContext Database, string Term)
         {
-            var adImportedUsers = ActiveDirectory.SearchUserAccounts(Term, Quick: true);
+            var adImportedUsers = ActiveDirectory.SearchADUserAccounts(Term, Quick: true);
             foreach (var adU in adImportedUsers.Select(adU => adU.ToRepositoryUser()))
             {
                 var existingUser = Database.Users.Find(adU.UserId);
@@ -230,7 +229,7 @@ namespace Disco.Services.Users
             if (UserId.EndsWith("$"))
             {
                 // Machine Account
-                var adAccount = ActiveDirectory.RetrieveMachineAccount(UserId);
+                var adAccount = ActiveDirectory.RetrieveADMachineAccount(UserId);
 
                 if (adAccount == null)
                     return null;
@@ -244,10 +243,10 @@ namespace Disco.Services.Users
             {
                 // User Account
 
-                ActiveDirectoryUserAccount adAccount;
+                ADUserAccount adAccount;
                 try
                 {
-                    adAccount = ActiveDirectory.RetrieveUserAccount(UserId);
+                    adAccount = ActiveDirectory.RetrieveADUserAccount(UserId);
 
                     if (adAccount == null)
                         throw new ArgumentException(string.Format("Invalid Username: '{0}'; User not found in Active Directory", UserId), "Username");
@@ -280,7 +279,7 @@ namespace Disco.Services.Users
                 }
                 Database.SaveChanges();
 
-                var token = AuthorizationToken.BuildToken(user, adAccount.Groups);
+                var token = AuthorizationToken.BuildToken(user, adAccount.Groups.Select(g => g.Id));
 
                 return new Tuple<User, AuthorizationToken>(user, token);
             }

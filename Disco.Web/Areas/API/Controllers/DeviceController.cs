@@ -150,7 +150,7 @@ namespace Disco.Web.Areas.API.Controllers
                         // Update AD Account
                         if (!string.IsNullOrEmpty(device.DeviceDomainId) && device.DeviceDomainId.Length <= 24)
                         {
-                            var adMachineAccount = ActiveDirectory.RetrieveMachineAccount(device.DeviceDomainId);
+                            var adMachineAccount = ActiveDirectory.RetrieveADMachineAccount(device.DeviceDomainId);
                             if (adMachineAccount != null)
                                 adMachineAccount.SetDescription(device);
                         }
@@ -410,7 +410,7 @@ namespace Disco.Web.Areas.API.Controllers
                 var thumbPath = da.RepositoryThumbnailFilename(Database);
                 if (System.IO.File.Exists(thumbPath))
                 {
-                    if (thumbPath.EndsWith(".png", StringComparison.InvariantCultureIgnoreCase))
+                    if (thumbPath.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
                         return File(thumbPath, "image/png");
                     else
                         return File(thumbPath, "image/jpg");
@@ -433,7 +433,7 @@ namespace Disco.Web.Areas.API.Controllers
                     if (file.ContentLength > 0)
                     {
                         var contentType = file.ContentType;
-                        if (string.IsNullOrEmpty(contentType) || contentType.Equals("unknown/unknown", StringComparison.InvariantCultureIgnoreCase))
+                        if (string.IsNullOrEmpty(contentType) || contentType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
                             contentType = BI.Interop.MimeTypes.ResolveMimeType(file.FileName);
 
                         var da = new Disco.Models.Repository.DeviceAttachment()
@@ -501,7 +501,7 @@ namespace Disco.Web.Areas.API.Controllers
             var da = Database.DeviceAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (da != null)
             {
-                if (da.TechUserId.Equals(CurrentUser.UserId, StringComparison.InvariantCultureIgnoreCase))
+                if (da.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase))
                     Authorization.RequireAny(Claims.Device.Actions.RemoveAnyAttachments, Claims.Device.Actions.RemoveOwnAttachments);
                 else
                     Authorization.Require(Claims.Device.Actions.RemoveAnyAttachments);

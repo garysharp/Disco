@@ -12,8 +12,8 @@ using System.Management;
 using System.Web;
 using Disco.Services.Users;
 using Disco.Services.Interop.ActiveDirectory;
-using Disco.Models.Interop.ActiveDirectory;
 using Disco.Services.Authorization;
+using Disco.Web.Areas.API.Models.Shared;
 
 namespace Disco.Web.Controllers
 {
@@ -255,9 +255,9 @@ namespace Disco.Web.Controllers
         public virtual ActionResult Administrators()
         {
             var administratorSubjects = UserService.AdministratorSubjectIds
-                .Select(subjectId => ActiveDirectory.RetrieveObject(subjectId, Quick: true))
+                .Select(subjectId => ActiveDirectory.RetrieveADObject(subjectId, Quick: true))
                 .Where(item => item != null)
-                .Select(item => Disco.Web.Areas.Config.Models.AuthorizationRole.SubjectDescriptorModel.FromActiveDirectoryObject(item))
+                .Select(item => SubjectDescriptorModel.FromActiveDirectoryObject(item))
                 .OrderBy(item => item.Name).ToList();
 
             var m = new AdministratorsModel()
@@ -269,11 +269,11 @@ namespace Disco.Web.Controllers
         }
         public virtual ActionResult AdministratorsSearch(string term)
         {
-            var groupResults = ActiveDirectory.SearchGroups(term).Cast<IActiveDirectoryObject>();
-            var userResults = ActiveDirectory.SearchUserAccounts(term).Cast<IActiveDirectoryObject>();
+            var groupResults = ActiveDirectory.SearchADGroups(term).Cast<IADObject>();
+            var userResults = ActiveDirectory.SearchADUserAccounts(term, Quick: true).Cast<IADObject>();
 
             var results = groupResults.Concat(userResults).OrderBy(r => r.SamAccountName)
-                .Select(r => Disco.Web.Areas.API.Models.AuthorizationRole.SubjectItem.FromActiveDirectoryObject(r)).ToList();
+                .Select(r => SubjectDescriptorModel.FromActiveDirectoryObject(r)).ToList();
 
             return Json(results, JsonRequestBehavior.AllowGet);
         }
@@ -282,14 +282,14 @@ namespace Disco.Web.Controllers
             if (string.IsNullOrWhiteSpace(Id))
                 return Json(null, JsonRequestBehavior.AllowGet);
             else if (!Id.Contains(@"\"))
-                Id = string.Format(@"{0}\{1}", ActiveDirectory.PrimaryDomain.NetBiosName, Id);
+                Id = string.Format(@"{0}\{1}", ActiveDirectory.Context.PrimaryDomain.NetBiosName, Id);
 
-            var subject = ActiveDirectory.RetrieveObject(Id, Quick: true);
+            var subject = ActiveDirectory.RetrieveADObject(Id, Quick: true);
 
-            if (subject == null || !(subject is ActiveDirectoryUserAccount || subject is ActiveDirectoryGroup))
+            if (subject == null || !(subject is ADUserAccount || subject is ADGroup))
                 return Json(null, JsonRequestBehavior.AllowGet);
             else
-                return Json(Disco.Web.Areas.API.Models.AuthorizationRole.SubjectItem.FromActiveDirectoryObject(subject), JsonRequestBehavior.AllowGet);
+                return Json(SubjectDescriptorModel.FromActiveDirectoryObject(subject), JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public virtual ActionResult Administrators(string[] Subjects)
@@ -305,14 +305,14 @@ namespace Disco.Web.Controllers
                 var subjects = Subjects
                     .Where(s => !string.IsNullOrWhiteSpace(s))
                     .Select(s => s.Trim())
-                    .Select(s => Tuple.Create(s, ActiveDirectory.RetrieveObject(s, Quick: true)))
+                    .Select(s => Tuple.Create(s, ActiveDirectory.RetrieveADObject(s, Quick: true)))
                     .ToList();
                 var invalidSubjects = subjects.Where(s => s.Item2 == null).ToList();
 
                 if (invalidSubjects.Count > 0)
                     throw new ArgumentException(string.Format("Subjects not found: {0}", string.Join(", ", invalidSubjects)), "Subjects");
 
-                proposedSubjects = subjects.Select(s => s.Item2.NetBiosId).OrderBy(s => s).ToArray();
+                proposedSubjects = subjects.Select(s => s.Item2.Id).OrderBy(s => s).ToArray();
                 var currentSubjects = UserService.AdministratorSubjectIds;
                 removedSubjects = currentSubjects.Except(proposedSubjects).ToArray();
                 addedSubjects = proposedSubjects.Except(currentSubjects).ToArray();

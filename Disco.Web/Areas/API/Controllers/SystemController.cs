@@ -1,6 +1,5 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Data.Configuration;
-using Disco.Models.Interop.ActiveDirectory;
 using Disco.Services.Authorization;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Web;
@@ -20,7 +19,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Config.System.Show)]
         public virtual ActionResult UpdateLastNetworkLogonDates()
         {
-            var taskStatus = Disco.Services.Interop.ActiveDirectory.Internal.ADUpdateLastNetworkLogonDateJob.ScheduleImmediately();
+            var taskStatus = Disco.Services.Interop.ActiveDirectory.ADTaskUpdateNetworkLogonDates.ScheduleImmediately();
 
             return RedirectToAction(MVC.Config.Logging.TaskStatus(taskStatus.SessionId));
         }
@@ -126,7 +125,7 @@ namespace Disco.Web.Areas.API.Controllers
 
             if (Image != null && Image.ContentLength > 0)
             {
-                if (Image.ContentType.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase))
+                if (Image.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
                 {
                     Database.DiscoConfiguration.OrganisationLogo = Image.InputStream;
 
@@ -227,7 +226,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Config.System.ConfigureActiveDirectory)]
         public virtual ActionResult UpdateActiveDirectorySearchScope(List<string> Containers, bool redirect = false)
         {
-            ActiveDirectory.UpdateSearchContainers(Database, Containers);
+            ActiveDirectory.Context.UpdateSearchContainers(Database, Containers);
             Database.SaveChanges();
 
             if (redirect)
@@ -237,17 +236,17 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.System.ConfigureActiveDirectory)]
-        public virtual ActionResult UpdateActiveDirectorySearchEntireForest(bool SearchEntireForest, bool redirect = false)
+        public virtual ActionResult UpdateActiveDirectorySearchAllForestServers(bool SearchAllForestServers, bool redirect = false)
         {
             try
             {
-                var result = ActiveDirectory.UpdateSearchEntireForest(Database, SearchEntireForest);
+                var result = ActiveDirectory.Context.UpdateSearchAllForestServers(Database, SearchAllForestServers);
                 
                 Database.SaveChanges();
 
                 if (!result)
                 {
-                    var forestServers = ActiveDirectory.LoadForestServers();
+                    var forestServers = ActiveDirectory.Context.ForestServers;
                     if (forestServers.Count > ActiveDirectory.MaxForestServerSearch)
                         throw new InvalidOperationException(string.Format("This forest contains more than the Max Forest Server Search restriction ({0})", ActiveDirectory.MaxForestServerSearch));
                     else
@@ -271,8 +270,8 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorizeAny(Claims.Config.System.ConfigureActiveDirectory, Claims.Config.DeviceProfile.Configure)]
         public virtual ActionResult DomainOrganisationalUnits()
         {
-            var domainOUs = ActiveDirectory.Domains
-                .Select(d => new Models.System.DomainOrganisationalUnitsModel() { Domain = d, OrganisationalUnits = ActiveDirectory.RetrieveOrganisationalUnitStructure(d) })
+            var domainOUs = ActiveDirectory.RetrieveADOrganisationalUnitStructure()
+                .Select(d => new Models.System.DomainOrganisationalUnitsModel() { Domain = d.Item1, OrganisationalUnits = d.Item2})
                 .Select(ous => ous.ToFancyTreeNode()).ToList();
 
             return new JsonResult()
@@ -281,6 +280,29 @@ namespace Disco.Web.Areas.API.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet,
                 MaxJsonLength = int.MaxValue
             };
+        }
+
+        [DiscoAuthorizeAny(Claims.DiscoAdminAccount, Claims.Config.JobQueue.Configure)]
+        public virtual ActionResult SearchSubjects(string term)
+        {
+            var groupResults = ActiveDirectory.SearchADGroups(term).Cast<IADObject>();
+            var userResults = ActiveDirectory.SearchADUserAccounts(term, true).Cast<IADObject>();
+
+            var results = groupResults.Concat(userResults).OrderBy(r => r.SamAccountName)
+                .Select(r => Models.Shared.SubjectDescriptorModel.FromActiveDirectoryObject(r)).ToList();
+
+            return Json(results, JsonRequestBehavior.AllowGet);
+        }
+
+        [DiscoAuthorizeAny(Claims.DiscoAdminAccount, Claims.Config.JobQueue.Configure)]
+        public virtual ActionResult Subject(string Id)
+        {
+            var subject = ActiveDirectory.RetrieveADObject(Id, Quick: true);
+
+            if (subject == null)
+                return Json(null, JsonRequestBehavior.AllowGet);
+            else
+                return Json(Models.Shared.SubjectDescriptorModel.FromActiveDirectoryObject(subject), JsonRequestBehavior.AllowGet);
         }
 
         #endregion

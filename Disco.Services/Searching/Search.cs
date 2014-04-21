@@ -1,5 +1,4 @@
 ﻿using Disco.Data.Repository;
-using Disco.Models.Interop.ActiveDirectory;
 using Disco.Models.Repository;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.Services.Searching;
@@ -171,7 +170,7 @@ namespace Disco.Services.Searching
 
         public static List<User> SearchUsersUpstream(string Term, int? LimitCount = null)
         {
-            IEnumerable<ActiveDirectoryUserAccount> matches = ActiveDirectory.SearchUserAccounts(Term, Quick: true);
+            IEnumerable<ADUserAccount> matches = ActiveDirectory.SearchADUserAccounts(Term, Quick: true);
 
             if (LimitCount.HasValue)
                 matches = matches.Take(LimitCount.Value);

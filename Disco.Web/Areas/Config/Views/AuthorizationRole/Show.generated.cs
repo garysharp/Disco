@@ -500,7 +500,7 @@ WriteLiteral("></form>\r\n                    </div>\r\n                    <scr
 
             
             #line 115 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                 Write(Url.Action(MVC.API.AuthorizationRole.SearchSubjects()));
+                                                 Write(Url.Action(MVC.API.System.SearchSubjects()));
 
             
             #line default
@@ -544,7 +544,7 @@ WriteLiteral("\',\r\n                                            minLength: 2,\r
 
             
             #line 172 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                     Write(Url.Action(MVC.API.AuthorizationRole.Subject()));
+                                     Write(Url.Action(MVC.API.System.Subject()));
 
             
             #line default
@@ -552,49 +552,54 @@ WriteLiteral("\',\r\n                                            minLength: 2,\r
 WriteLiteral("\',\r\n                                    method: \'post\',\r\n                        " +
 "            data: { Id: id }\r\n                                }).done(function(r" +
 "esponse){\r\n                                    if (response){\r\n                 " +
-"                       if (list.find(\'li[data-subjectid=\"\'+response.Id.replace(\'" +
-"\\\\\', \'\\\\\\\\\')+\'\"]\').length == 0){\r\n                                            \r\n" +
-"                                            var liIcon = $(\'<i>\').addClass(\'fa f" +
-"a-lg\');\r\n                                            if (response.Type === \'user" +
-"\')\r\n                                                liIcon.addClass(\'fa-user\');\r" +
-"\n                                            else\r\n                             " +
-"                   liIcon.addClass(\'fa-users\');\r\n\r\n                             " +
-"               var li = $(\'<li>\')\r\n                                             " +
-"   .append(liIcon)\r\n                                                .append($(\'<" +
-"span>\').text(response.Id == response.Name ?  response.Id : response.Name + \' [\' " +
-"+ response.Id + \']\'))\r\n                                                .append($" +
-"(\'<i>\').addClass(\'fa fa-times-circle remove\'))\r\n                                " +
-"                .addClass(response.Type)\r\n                                      " +
-"          .attr(\'data-subjectid\', response.Id)\r\n                                " +
-"                .attr(\'data-subjectstatus\', \'new\');\r\n\r\n                         " +
-"                   list.append(li);\r\n\r\n                                         " +
-"   updateNoSubjects();                                        \r\n                " +
-"                        }else{\r\n                                            aler" +
-"t(\'That subject has already been added\');\r\n                                     " +
-"   }\r\n                                    }else{\r\n                              " +
-"          alert(\'Unknown Id\');\r\n                                    }\r\n         " +
-"                       }).fail(function(jqXHR, textStatus, errorThrown){\r\n      " +
-"                              alert(\'Error: \' + errorThrown);\r\n                 " +
-"               });\r\n                                }\r\n\r\n                       " +
-"     function updateNoSubjects(){\r\n                                if (list.find" +
-"(\'li:visible\').length > 0)\r\n                                    noSubjects.hide(" +
-");\r\n                                else\r\n                                    no" +
-"Subjects.show();\r\n                            }\r\n\r\n                            f" +
-"unction saveChanges(){\r\n                                var form = $(\'#Config_Au" +
-"thRoles_Subjects_Update_Dialog_Form\').empty();\r\n\r\n                              " +
-"  list.find(\'li[data-subjectstatus!=\"removed\"]\').each(function(){\r\n             " +
-"                       var subjectId = $(this).attr(\'data-subjectid\');\r\n        " +
-"                            \r\n                                    form.append($(" +
-"\'<input>\').attr({\r\n                                        \'name\': \'Subjects\',\r\n" +
-"                                        \'type\': \'hidden\'\r\n                      " +
-"              }).val(subjectId));\r\n\r\n                                }).get();\r\n" +
-"\r\n                                form.submit();\r\n\r\n                            " +
-"    dialog.dialog(\"disable\");\r\n                                dialog.dialog(\"op" +
-"tion\", \"buttons\", null);\r\n                            }\r\n\r\n                     " +
-"       $(function(){\r\n                                $(\'#Config_AuthRoles_Subje" +
-"cts_Update\').click(showDialog);\r\n                            });\r\n\r\n            " +
-"            })();\r\n                    </script>\r\n                </div>\r\n      " +
-"      </td>\r\n        </tr>\r\n        <tr>\r\n            <td");
+"                       if (response.IsGroup || response.IsUserAccount) {\r\n      " +
+"                                      if (list.find(\'li[data-subjectid=\"\'+respon" +
+"se.Id.replace(\'\\\\\', \'\\\\\\\\\')+\'\"]\').length == 0){\r\n                               " +
+"             \r\n                                                var liIcon = $(\'<" +
+"i>\').addClass(\'fa fa-lg\');\r\n                                                if (" +
+"response.Type === \'user\')\r\n                                                    l" +
+"iIcon.addClass(\'fa-user\');\r\n                                                else" +
+"\r\n                                                    liIcon.addClass(\'fa-users\'" +
+");\r\n\r\n                                                var li = $(\'<li>\')\r\n      " +
+"                                              .append(liIcon)\r\n                 " +
+"                                   .append($(\'<span>\').text(response.Id == respo" +
+"nse.Name ?  response.Id : response.Name + \' [\' + response.Id + \']\'))\r\n          " +
+"                                          .append($(\'<i>\').addClass(\'fa fa-times" +
+"-circle remove\'))\r\n                                                    .addClass" +
+"(response.Type)\r\n                                                    .attr(\'data" +
+"-subjectid\', response.Id)\r\n                                                    ." +
+"attr(\'data-subjectstatus\', \'new\');\r\n\r\n                                          " +
+"      list.append(li);\r\n\r\n                                                update" +
+"NoSubjects();                                        \r\n                         " +
+"                   }else{\r\n                                                alert" +
+"(\'That subject has already been added\');\r\n                                      " +
+"      }\r\n                                        }else{\r\n                       " +
+"                     alert(response.Name + \' [\'+response.Id+\'] is a \' + response" +
+".Type + \'. Only users and groups can be added.\');\r\n                             " +
+"           }\r\n                                    }else{\r\n                      " +
+"                  alert(\'Unknown Id\');\r\n                                    }\r\n " +
+"                               }).fail(function(jqXHR, textStatus, errorThrown){" +
+"\r\n                                    alert(\'Error: \' + errorThrown);\r\n         " +
+"                       });\r\n                                }\r\n\r\n               " +
+"             function updateNoSubjects(){\r\n                                if (l" +
+"ist.find(\'li:visible\').length > 0)\r\n                                    noSubjec" +
+"ts.hide();\r\n                                else\r\n                              " +
+"      noSubjects.show();\r\n                            }\r\n\r\n                     " +
+"       function saveChanges(){\r\n                                var form = $(\'#C" +
+"onfig_AuthRoles_Subjects_Update_Dialog_Form\').empty();\r\n\r\n                      " +
+"          list.find(\'li[data-subjectstatus!=\"removed\"]\').each(function(){\r\n     " +
+"                               var subjectId = $(this).attr(\'data-subjectid\');\r\n" +
+"                                    \r\n                                    form.a" +
+"ppend($(\'<input>\').attr({\r\n                                        \'name\': \'Subj" +
+"ects\',\r\n                                        \'type\': \'hidden\'\r\n              " +
+"                      }).val(subjectId));\r\n\r\n                                })." +
+"get();\r\n\r\n                                form.submit();\r\n\r\n                    " +
+"            dialog.dialog(\"disable\");\r\n                                dialog.di" +
+"alog(\"option\", \"buttons\", null);\r\n                            }\r\n\r\n             " +
+"               $(function(){\r\n                                $(\'#Config_AuthRol" +
+"es_Subjects_Update\').click(showDialog);\r\n                            });\r\n\r\n    " +
+"                    })();\r\n                    </script>\r\n                </div>" +
+"\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td");
 
 WriteLiteral(" colspan=\"2\"");
 
@@ -613,7 +618,7 @@ WriteLiteral(" class=\"button small disabled\"");
 WriteLiteral(">Save Changes</a>");
 
             
-            #line 247 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 251 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                                                                                                                   Write(AjaxHelpers.AjaxLoader());
 
             
@@ -623,7 +628,7 @@ WriteLiteral("\r\n                </div>\r\n                <script>\r\n        
 "(){\r\n                        var claimNodes = ");
 
             
-            #line 251 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 255 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                                      Write(new HtmlString(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ClaimNavigatorFancyTreeNodes)));
 
             
@@ -662,7 +667,7 @@ WriteLiteral(@";
                                         url: '");
 
             
-            #line 281 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 285 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                                          Write(Url.Action(MVC.API.AuthorizationRole.UpdateClaims(Model.Token.Role.Id)));
 
             
@@ -702,7 +707,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 307 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 311 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
 Write(Html.ActionLinkButton("Delete", MVC.API.AuthorizationRole.Delete(Model.Token.Role.Id, true), "Config_AuthRoles_Actions_Delete_Button"));
 
             

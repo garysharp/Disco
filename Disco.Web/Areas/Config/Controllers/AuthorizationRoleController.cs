@@ -6,6 +6,7 @@ using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Users;
 using Disco.Services.Web;
+using Disco.Web.Areas.API.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,10 +28,10 @@ namespace Disco.Web.Areas.Config.Controllers
                     throw new ArgumentException("Invalid Authorization Role Id");
 
                 var token = RoleToken.FromAuthorizationRole(ar);
-                var subjects = token.SubjectIds == null ? new List<Models.AuthorizationRole.SubjectDescriptorModel>() :
-                    token.SubjectIds.Select(subjectId => ActiveDirectory.RetrieveObject(subjectId, Quick: true))
+                var subjects = token.SubjectIds == null ? new List<SubjectDescriptorModel>() :
+                    token.SubjectIds.Select(subjectId => ActiveDirectory.RetrieveADObject(subjectId, Quick: true))
                     .Where(item => item != null)
-                    .Select(item => Models.AuthorizationRole.SubjectDescriptorModel.FromActiveDirectoryObject(item))
+                    .Select(item => SubjectDescriptorModel.FromActiveDirectoryObject(item))
                     .OrderBy(item => item.Name).ToList();
 
                 var m = new Models.AuthorizationRole.ShowModel()
@@ -53,9 +54,9 @@ namespace Disco.Web.Areas.Config.Controllers
                     .Select(ar => RoleToken.FromAuthorizationRole(ar)).Cast<IRoleToken>().ToList();
 
                 var administratorSubjects = UserService.AdministratorSubjectIds
-                    .Select(subjectId => ActiveDirectory.RetrieveObject(subjectId, Quick: true))
+                    .Select(subjectId => ActiveDirectory.RetrieveADObject(subjectId, Quick: true))
                     .Where(item => item != null)
-                    .Select(item => Models.AuthorizationRole.SubjectDescriptorModel.FromActiveDirectoryObject(item))
+                    .Select(item => SubjectDescriptorModel.FromActiveDirectoryObject(item))
                     .OrderBy(item => item.Name).ToList();
 
                 var m = new Models.AuthorizationRole.IndexModel()

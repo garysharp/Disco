@@ -22,7 +22,7 @@ namespace Disco.Web.ClientSource.Style.Images.AttachmentTypes
             }
 
             // Generic 'image' icon
-            if (MimeType.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase))
+            if (MimeType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
                 return Links.ClientSource.Style.Images.AttachmentTypes.image_png;
 
             // All other Attachments

@@ -66,7 +66,7 @@ namespace Disco.Models.Repository
 
         public void UpdateSelf(User u)
         {
-            if (!this.UserId.Equals(u.UserId, StringComparison.InvariantCultureIgnoreCase))
+            if (!this.UserId.Equals(u.UserId, StringComparison.OrdinalIgnoreCase))
                 throw new ArgumentException("User Id's do not match", "u");
 
             if (this.Surname != u.Surname)

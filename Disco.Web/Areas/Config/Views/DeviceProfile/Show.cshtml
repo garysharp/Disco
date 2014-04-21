@@ -523,24 +523,15 @@
             <td>@if (canConfig)
                 {
                 <div id="DeviceProfile_OrganisationalUnit" class="code" data-value="@Model.DeviceProfile.OrganisationalUnit">
-                    @if (string.IsNullOrEmpty(Model.DeviceProfile.OrganisationalUnit))
-                    {
-                        <span>{Default Computers Container}</span>
-                    }
-                    else
-                    {
-                        var domain = Disco.Services.Interop.ActiveDirectory.ActiveDirectory.GetDomainByDistinguishedName(Model.DeviceProfile.OrganisationalUnit);
-                        
-                        <span>
-                            @Disco.Services.Interop.ActiveDirectory.ActiveDirectoryExtensions.GetFriendlyOrganisationalUnitName(domain, Model.DeviceProfile.OrganisationalUnit)
-                        </span>
-                    }
+                    <span>
+                        @Model.FriendlyOrganisationalUnitName
+                    </span>
                 </div>
                 <a id="changeOrganisationalUnit" href="#" class="button small">Change</a>@AjaxHelpers.AjaxLoader()
                 <div id="dialogOrganisationalUnit" title="Organisational Unit" class="dialog">
                     <div id="dialogOrganisationalUnit_Loading">
-                            @AjaxHelpers.AjaxLoader() Loading Organisational Units
-                        </div>
+                        @AjaxHelpers.AjaxLoader() Loading Organisational Units
+                    </div>
                     <div id="treeOrganisationalUnit" class="organisationalUnitTree">
                     </div>
                 </div>
@@ -660,18 +651,9 @@
                 else
                 {
                 <div id="displayOrganisationalUnit" class="code">
-                    @if (string.IsNullOrEmpty(Model.DeviceProfile.OrganisationalUnit))
-                    {
-                        <span>{Default Computers Container}</span>
-                    }
-                    else
-                    {
-                        var domain = Disco.Services.Interop.ActiveDirectory.ActiveDirectory.GetDomainByDistinguishedName(Model.DeviceProfile.OrganisationalUnit);
-                        
-                        <span>
-                            @Disco.Services.Interop.ActiveDirectory.ActiveDirectoryExtensions.GetFriendlyOrganisationalUnitName(domain, Model.DeviceProfile.OrganisationalUnit)
-                        </span>
-                    }
+                    <span>
+                        @Model.FriendlyOrganisationalUnitName
+                    </span>
                 </div>
                 }
                 <div style="margin-top: 8px;">

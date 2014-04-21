@@ -22,8 +22,8 @@ namespace Disco.Client.Interop
                     using (DirectoryEntry member = new DirectoryEntry(memberRef))
                     {
                         var memberPath = member.Path;
-                        if (memberPath.Equals(string.Format("WinNT://{0}/{1}", UserDomain, Username), StringComparison.InvariantCultureIgnoreCase) ||
-                            memberPath.Equals(string.Format("WinNT://{0}", UserSID), StringComparison.InvariantCultureIgnoreCase))
+                        if (memberPath.Equals(string.Format("WinNT://{0}/{1}", UserDomain, Username), StringComparison.OrdinalIgnoreCase) ||
+                            memberPath.Equals(string.Format("WinNT://{0}", UserSID), StringComparison.OrdinalIgnoreCase))
                             return false;
                     }
                 }

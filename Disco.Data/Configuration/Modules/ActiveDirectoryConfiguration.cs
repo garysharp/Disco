@@ -28,7 +28,7 @@ namespace Disco.Data.Configuration.Modules
             }
         }
 
-        public bool? SearchEntireForest
+        public bool? SearchAllForestServers
         {
             get { return GetFromJson<bool?>(null); }
             set { SetAsJson(value); }

@@ -369,7 +369,7 @@
 
                                         textAdd.watermark('Search Subjects')
                                             .autocomplete({
-                                                source: '@(Url.Action(MVC.API.JobQueue.SearchSubjects()))',
+                                                source: '@(Url.Action(MVC.API.System.SearchSubjects()))',
                                                 minLength: 2,
                                                 focus: function (e, ui) {
                                                     textAdd.val(ui.item.Id);
@@ -428,32 +428,36 @@
                                     var id = textAdd.val();
 
                                     $.ajax({
-                                        url: '@Url.Action(MVC.API.JobQueue.Subject())',
+                                        url: '@Url.Action(MVC.API.System.Subject())',
                                         method: 'post',
                                         data: { Id: id }
                                     }).done(function (response) {
                                         if (response) {
-                                            if (list.find('li[data-subjectid="' + response.Id + '"]').filter('[data-status!="removed"]').length == 0) {
+                                            if (response.IsGroup || response.IsUserAccount) {
+                                                if (list.find('li[data-subjectid="' + response.Id + '"]').filter('[data-status!="removed"]').length == 0) {
 
-                                                var liIcon = $('<i>').addClass('fa fa-lg');
-                                                if (response.Type === 'user')
-                                                    liIcon.addClass('fa-user');
-                                                else
-                                                    liIcon.addClass('fa-users');
+                                                    var liIcon = $('<i>').addClass('fa fa-lg');
+                                                    if (response.Type === 'user')
+                                                        liIcon.addClass('fa-user');
+                                                    else
+                                                        liIcon.addClass('fa-users');
 
-                                                var li = $('<li>')
-                                                    .append(liIcon)
-                                                    .append($('<span>').text(response.Id == response.Name ? response.Id : response.Name + ' [' + response.Id + ']'))
-                                                    .append($('<i>').addClass('fa fa-times-circle remove'))
-                                                    .addClass(response.Type)
-                                                    .attr('data-subjectid', response.Id)
-                                                    .attr('data-subjectstatus', 'new');
+                                                    var li = $('<li>')
+                                                        .append(liIcon)
+                                                        .append($('<span>').text(response.Id == response.Name ? response.Id : response.Name + ' [' + response.Id + ']'))
+                                                        .append($('<i>').addClass('fa fa-times-circle remove'))
+                                                        .addClass(response.Type)
+                                                        .attr('data-subjectid', response.Id)
+                                                        .attr('data-subjectstatus', 'new');
 
-                                                list.append(li);
+                                                    list.append(li);
 
-                                                updateNoSubjects();
+                                                    updateNoSubjects();
+                                                } else {
+                                                    alert('That subject has already been added');
+                                                }
                                             } else {
-                                                alert('That subject has already been added');
+                                                alert(response.Name + ' [' + response.Id + '] is a ' + response.Type + '. Only users and groups can be added.');
                                             }
                                         } else {
                                             alert('Unknown Id');
