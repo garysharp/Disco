@@ -65,7 +65,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             System.DateTime? lastLogon = null;
 
-            if (!string.IsNullOrEmpty(Device.DeviceDomainId))
+            if (!string.IsNullOrEmpty(Device.DeviceDomainId) && Device.DeviceDomainId.Contains('\\'))
             {
                 var context = ActiveDirectory.Context;
                 var deviceSamAccountName = UserExtensions.SplitUserId(Device.DeviceDomainId).Item2 + "$";

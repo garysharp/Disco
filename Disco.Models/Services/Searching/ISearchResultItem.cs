@@ -11,6 +11,6 @@ namespace Disco.Models.Services.Searching
         string Id { get; set; }
         string Type { get; }
         string Description { get; }
-        string ScoreValue { get; }
+        string[] ScoreValues { get; }
     }
 }

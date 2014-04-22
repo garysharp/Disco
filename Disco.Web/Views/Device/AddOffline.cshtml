@@ -126,7 +126,7 @@
                     .watermark('Search Users')
                     .focus(function () { $AssignedUserId.select() })
                     .autocomplete({
-                        source: '@(Url.Action(MVC.API.User.UpstreamUsers()))',
+                        source: '@(Url.Action(MVC.API.Search.UsersUpstream()))',
                         minLength: 2,
                         focus: function (e, ui) {
                             $AssignedUserId.val(ui.item.DisplayName + ' (' + ui.item.Id + ')');

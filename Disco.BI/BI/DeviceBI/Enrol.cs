@@ -362,7 +362,11 @@ namespace Disco.BI.DeviceBI
                     {
                         if (!authenticatedToken.Has(Claims.ComputerAccount))
                             throw new EnrolSafeException(string.Format("Connection not correctly authenticated (SN: {0}; Auth User: {1})", Request.DeviceSerialNumber, authenticatedToken.User.UserId));
-                        if (!authenticatedToken.User.UserId.Equals(string.Format("{0}$", Request.DeviceComputerName), System.StringComparison.OrdinalIgnoreCase))
+
+                        if (domain == null)
+                            domain = ActiveDirectory.Context.GetDomainByName(Request.DeviceDNSDomainName);
+                        
+                        if (!authenticatedToken.User.UserId.Equals(string.Format(@"{0}\{1}$", domain.NetBiosName, Request.DeviceComputerName), System.StringComparison.OrdinalIgnoreCase))
                             throw new EnrolSafeException(string.Format("Connection not correctly authenticated (SN: {0}; Auth User: {1})", Request.DeviceSerialNumber, authenticatedToken.User.UserId));
                     }
                 }
@@ -418,10 +422,13 @@ namespace Disco.BI.DeviceBI
                     else
                         EnrolmentLog.LogSessionDevice(sessionId, Request.DeviceSerialNumber, deviceModel.Id);
 
+                    if (domain == null)
+                        domain = ActiveDirectory.Context.GetDomainByName(Request.DeviceDNSDomainName);
+
                     RepoDevice = new Device
                     {
                         SerialNumber = Request.DeviceSerialNumber,
-                        DeviceDomainId = Request.DeviceComputerName,
+                        DeviceDomainId = string.Format(@"{0}\{1}", domain.NetBiosName, Request.DeviceComputerName),
                         DeviceProfile = deviceProfile,
                         DeviceModel = deviceModel,
                         AllowUnauthenticatedEnrol = false,
@@ -507,7 +514,7 @@ namespace Disco.BI.DeviceBI
                 }
                 else
                 {
-                    RepoDevice.DeviceDomainId = adMachineAccount.Name;
+                    RepoDevice.DeviceDomainId = adMachineAccount.Id.Trim('$');
                     response.DeviceComputerName = adMachineAccount.Name;
                     response.DeviceDomainName = adMachineAccount.Domain.NetBiosName;
 

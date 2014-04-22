@@ -16,7 +16,7 @@ namespace Disco.Services.Searching
     {
 
         #region Jobs
-        public static List<JobSearchResultItem> SearchJobs(DiscoDataContext Database, string Term, int? LimitCount = null)
+        public static List<JobSearchResultItem> SearchJobs(DiscoDataContext Database, string Term, int? LimitCount = ActiveDirectory.DefaultSearchResultLimit)
         {
             int termInt = default(int);
 
@@ -56,10 +56,10 @@ namespace Disco.Services.Searching
                 DeviceSerialNumber = i.DeviceSerialNumber,
                 UserId = i.UserId,
                 UserDisplayName = i.UserDisplayName
-            }).ToList();
+            }).OrderByDescending(i => i.ScoreValues.Score(Term)).ToList();
         }
 
-        public static JobTableModel SearchJobsTable(DiscoDataContext Database, string Term, int? LimitCount = null, bool IncludeJobStatus = true, bool SearchDetails = false)
+        public static JobTableModel SearchJobsTable(DiscoDataContext Database, string Term, int? LimitCount = ActiveDirectory.DefaultSearchResultLimit, bool IncludeJobStatus = true, bool SearchDetails = false)
         {
             int termInt = default(int);
 
@@ -126,8 +126,9 @@ namespace Disco.Services.Searching
             if (LimitCount.HasValue)
                 query = query.Take(LimitCount.Value);
 
-            JobTableModel model = new JobTableModel() { ShowStatus = IncludeJobStatus };
-            model.Fill(Database, query, true);
+            JobTableModel model = new JobTableModel() { ShowStatus = IncludeJobStatus }
+                .Fill(Database, query, true)
+                .Score(Term);
 
             return model;
         }
@@ -139,48 +140,85 @@ namespace Disco.Services.Searching
         #endregion
 
         #region Users
-        public static List<UserSearchResultItem> SearchUsers(DiscoDataContext Database, string Term, int? LimitCount = null)
+        public static List<UserSearchResultItem> SearchUsersUpstream(DiscoDataContext Database, string Term, bool PersistResults, int? LimitCount = ActiveDirectory.DefaultSearchResultLimit)
         {
-            if (string.IsNullOrWhiteSpace(Term) || Term.Length < 2)
-                throw new ArgumentException("Search Term must contain at least two characters", "Term");
-
-            // Search Active Directory & Import Relevant Users
-            UserService.SearchUsers(Database, Term);
-
-            var matches = Database.Users.Where(u =>
-                u.UserId.Contains(Term) ||
-                u.Surname.Contains(Term) ||
-                u.GivenName.Contains(Term) ||
-                u.DisplayName.Contains(Term)
-                );
-
-            if (LimitCount.HasValue)
-                matches = matches.Take(LimitCount.Value);
-
-            return matches.Select(u => new UserSearchResultItem()
+            return UserService.SearchUsers(Database, Term, PersistResults, LimitCount).Select(u => new UserSearchResultItem()
             {
                 Id = u.UserId,
                 Surname = u.Surname,
                 GivenName = u.GivenName,
                 DisplayName = u.DisplayName,
-                AssignedDevicesCount = u.DeviceUserAssignments.Where(dua => !dua.UnassignedDate.HasValue).Count(),
-                JobCount = u.Jobs.Count()
-            }).ToList();
+                AssignedDevicesCount = 0,
+                JobCount = 0
+            }).OrderByDescending(i => i.ScoreValues.Score(Term)).ToList();
         }
 
-        public static List<User> SearchUsersUpstream(string Term, int? LimitCount = null)
+        public static List<UserSearchResultItem> SearchUsers(DiscoDataContext Database, string Term, bool PersistResults, int? LimitCount = ActiveDirectory.DefaultSearchResultLimit)
         {
-            IEnumerable<ADUserAccount> matches = ActiveDirectory.SearchADUserAccounts(Term, Quick: true);
+            if (string.IsNullOrWhiteSpace(Term) || Term.Length < 2)
+                throw new ArgumentException("Search Term must contain at least two characters", "Term");
+
+            // Search Active Directory
+            var adResults = SearchUsersUpstream(Database, Term, PersistResults, LimitCount);
+            
+            // Search Database
+            var dbResults = Database.Users.Where(u =>
+                    u.UserId.Contains(Term) ||
+                    u.Surname.Contains(Term) ||
+                    u.GivenName.Contains(Term) ||
+                    u.DisplayName.Contains(Term)
+                    ).Select(u => new UserSearchResultItem()
+                    {
+                        Id = u.UserId,
+                        Surname = u.Surname,
+                        GivenName = u.GivenName,
+                        DisplayName = u.DisplayName,
+                        AssignedDevicesCount = u.DeviceUserAssignments.Where(dua => !dua.UnassignedDate.HasValue).Count(),
+                        JobCount = u.Jobs.Count()
+                    }).ToList();
+
+
+            IEnumerable<UserSearchResultItem> results;
+            if (PersistResults)
+            {
+                // AD Search persisted the results to the database
+                results = dbResults;
+            }
+            else
+            {
+                var adResultsIndexed = adResults.ToDictionary(u => u.Id, StringComparer.OrdinalIgnoreCase);
+                var dbResultsIndexed = dbResults.ToDictionary(u => u.Id, StringComparer.OrdinalIgnoreCase);
+
+                // Update DB Results
+                dbResults.ForEach(u =>
+                {
+                    UserSearchResultItem adResult;
+                    if (adResultsIndexed.TryGetValue(u.Id, out adResult))
+                    {
+                        u.Surname = adResult.Surname;
+                        u.GivenName = adResult.GivenName;
+                        u.DisplayName = adResult.DisplayName;
+                    }
+                });
+
+                // Add AD Results
+                var adResultsAdditional = adResults.Where(u => !dbResultsIndexed.ContainsKey(u.Id));
+
+                // Join AD & DB Results
+                results = adResultsAdditional.Concat(dbResults);
+            }
+
+            results = results.OrderByDescending(i => i.ScoreValues.Score(Term));
 
             if (LimitCount.HasValue)
-                matches = matches.Take(LimitCount.Value);
+                results = results.Take(LimitCount.Value);
 
-            return matches.Select(m => m.ToRepositoryUser()).ToList();
+            return results.ToList();
         }
         #endregion
 
         #region Devices
-        public static List<DeviceSearchResultItem> SearchDevices(DiscoDataContext Database, string Term, int? LimitCount = null, bool SearchDetails = false)
+        public static List<DeviceSearchResultItem> SearchDevices(DiscoDataContext Database, string Term, int? LimitCount = ActiveDirectory.DefaultSearchResultLimit, bool SearchDetails = false)
         {
             IQueryable<Device> query;
 
@@ -207,23 +245,26 @@ namespace Disco.Services.Searching
                     Term.Contains(d.SerialNumber));
             }
 
-            return query.ToDeviceSearchResultItems(LimitCount);
+            return query
+                .ToDeviceSearchResultItems(LimitCount)
+                .OrderByDescending(i => i.ScoreValues.Score(Term))
+                .ToList();
         }
 
-        public static List<DeviceSearchResultItem> SearchDeviceModel(DiscoDataContext Database, int DeviceModelId, int? LimitCount = null)
+        public static List<DeviceSearchResultItem> SearchDeviceModel(DiscoDataContext Database, int DeviceModelId, int? LimitCount = ActiveDirectory.DefaultSearchResultLimit)
         {
             return Database.Devices.Where(d => d.DeviceModelId == DeviceModelId).ToDeviceSearchResultItems(LimitCount);
         }
-        public static List<DeviceSearchResultItem> SearchDeviceProfile(DiscoDataContext Database, int DeviceProfileId, int? LimitCount = null)
+        public static List<DeviceSearchResultItem> SearchDeviceProfile(DiscoDataContext Database, int DeviceProfileId, int? LimitCount = ActiveDirectory.DefaultSearchResultLimit)
         {
             return Database.Devices.Where(d => d.DeviceProfileId == DeviceProfileId).ToDeviceSearchResultItems(LimitCount);
         }
-        public static List<DeviceSearchResultItem> SearchDeviceBatch(DiscoDataContext Database, int DeviceBatchId, int? LimitCount = null)
+        public static List<DeviceSearchResultItem> SearchDeviceBatch(DiscoDataContext Database, int DeviceBatchId, int? LimitCount = ActiveDirectory.DefaultSearchResultLimit)
         {
             return Database.Devices.Where(d => d.DeviceBatchId == DeviceBatchId).ToDeviceSearchResultItems(LimitCount);
         }
 
-        private static List<DeviceSearchResultItem> ToDeviceSearchResultItems(this IQueryable<Device> Query, int? LimitCount = null)
+        private static List<DeviceSearchResultItem> ToDeviceSearchResultItems(this IQueryable<Device> Query, int? LimitCount = ActiveDirectory.DefaultSearchResultLimit)
         {
             if (LimitCount.HasValue)
                 Query = Query.Take(LimitCount.Value);

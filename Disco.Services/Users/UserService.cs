@@ -205,19 +205,24 @@ namespace Disco.Services.Users
             Cache.FlushCache();
         }
 
-        internal static IEnumerable<ADUserAccount> SearchUsers(DiscoDataContext Database, string Term)
+        internal static List<User> SearchUsers(DiscoDataContext Database, string Term, bool PersistResults, int? LimitCount = ActiveDirectory.DefaultSearchResultLimit)
         {
-            var adImportedUsers = ActiveDirectory.SearchADUserAccounts(Term, Quick: true);
-            foreach (var adU in adImportedUsers.Select(adU => adU.ToRepositoryUser()))
+            var adImportedUsers = ActiveDirectory.SearchADUserAccounts(Term, Quick: true, ResultLimit: LimitCount).Select(adU => adU.ToRepositoryUser()).ToList();
+
+            if (PersistResults)
             {
-                var existingUser = Database.Users.Find(adU.UserId);
-                if (existingUser != null)
-                    existingUser.UpdateSelf(adU);
-                else
-                    Database.Users.Add(adU);
-                Database.SaveChanges();
-                UserService.InvalidateCachedUser(adU.UserId);
+                foreach (var adU in adImportedUsers)
+                {
+                    var existingUser = Database.Users.Find(adU.UserId);
+                    if (existingUser != null)
+                        existingUser.UpdateSelf(adU);
+                    else
+                        Database.Users.Add(adU);
+                    Database.SaveChanges();
+                    UserService.InvalidateCachedUser(adU.UserId);
+                }
             }
+
             return adImportedUsers;
         }
 

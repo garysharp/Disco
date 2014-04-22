@@ -2,6 +2,7 @@
 using Disco.Data.Repository;
 using Disco.Models.BI.Device;
 using Disco.Models.Repository;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using System;
 using System.Collections.Generic;
@@ -207,8 +208,13 @@ namespace Disco.BI.DeviceBI.Importing
                             csvAssignedUserId = record[4];
                             if (string.IsNullOrWhiteSpace(csvAssignedUserId))
                                 csvAssignedUserId = null; // Not Assigned
-                            else if (csvAssignedUserId.Length > 50)
-                                errors.Add("AssignedUserId", "The assigned user must be less than or equal to 50 characters");
+                            else
+                            {
+                                if (csvAssignedUserId.Length > 50)
+                                    errors.Add("AssignedUserId", "The assigned user must be less than or equal to 50 characters");
+                                else if (!csvAssignedUserId.Contains('\\')) // Assume Primary Domain
+                                    csvAssignedUserId = string.Format(@"{0}\{1}", ActiveDirectory.Context.PrimaryDomain.NetBiosName, csvAssignedUserId);
+                            }
 
                             if (csvFieldCount > 5)
                             {

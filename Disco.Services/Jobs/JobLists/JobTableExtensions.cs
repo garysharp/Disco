@@ -243,9 +243,18 @@ namespace Disco.Services
             return items;
         }
 
-        public static void Fill(this JobTableModel model, DiscoDataContext Database, IQueryable<Job> Jobs, bool FilterAuthorization)
+        public static JobTableModel Fill(this JobTableModel model, DiscoDataContext Database, IQueryable<Job> Jobs, bool FilterAuthorization)
         {
             model.Items = model.DetermineItems(Database, Jobs, FilterAuthorization);
+
+            return model;
+        }
+
+        public static JobTableModel Score(this JobTableModel model, string Test, double Fuzziness = 0)
+        {
+            model.Items = model.Items.OrderByDescending(i => i.ScoreValues.Score(Test)).ToList();
+
+            return model;
         }
 
         public static double? SlaPrecentageRemaining(this IEnumerable<JobTableStatusQueueItemModel> queueItems)

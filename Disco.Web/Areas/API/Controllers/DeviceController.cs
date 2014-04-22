@@ -114,8 +114,16 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Device.Actions.AssignUser)]
-        public virtual ActionResult UpdateAssignedUserId(string id, string AssignedUserId = null, bool redirect = false)
+        public virtual ActionResult UpdateAssignedUserId(string id, string AssignedUserId = null, string AssignedUserDomain = null, bool redirect = false)
         {
+            if (AssignedUserId != null && !AssignedUserId.Contains('\\'))
+            {
+                if (string.IsNullOrWhiteSpace(AssignedUserDomain))
+                    AssignedUserId = string.Format(@"{0}\{1}", ActiveDirectory.Context.PrimaryDomain.NetBiosName, AssignedUserId);
+                else
+                    AssignedUserId = string.Format(@"{0}\{1}", AssignedUserDomain, AssignedUserId);
+            }
+
             return Update(id, pAssignedUserId, AssignedUserId, redirect);
         }
 
@@ -361,6 +369,9 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Device.Show)]
         public virtual ActionResult LastNetworkLogonDate(string id)
         {
+            if (string.IsNullOrWhiteSpace(id))
+                throw new ArgumentNullException("id", "The Device Serial Number is required");
+
             var device = Database.Devices.Find(id);
             if (device == null)
             {

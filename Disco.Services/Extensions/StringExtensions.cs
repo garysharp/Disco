@@ -103,5 +103,20 @@ namespace Disco
             return final_score;
         }
 
+        /// <summary>
+        /// A fuzzy string search algorithm.
+        /// 
+        /// Based on: ScoreSharp (https://github.com/bltavares/scoresharp)
+        /// Based on: string_score from Joshaven Potter (https://github.com/joshaven/string_score)
+        /// 
+        /// MIT License
+        /// </summary>
+        public static double Score(this IEnumerable<string> Sources, string Test, double Fuzziness = 0)
+        {
+            return Sources
+                .Where(s => s != null)
+                .Select(s => s.Score(Test, Fuzziness))
+                .Average();
+        }
     }
 }

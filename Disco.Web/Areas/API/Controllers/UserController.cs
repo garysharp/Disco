@@ -12,12 +12,6 @@ namespace Disco.Web.Areas.API.Controllers
 {
     public partial class UserController : AuthorizedDatabaseController
     {
-        [DiscoAuthorize(Claims.User.Search)]
-        public virtual ActionResult UpstreamUsers(string term)
-        {
-            return Json(Disco.Services.Searching.Search.SearchUsersUpstream(term), JsonRequestBehavior.AllowGet);
-        }
-
         #region User Attachements
 
         [DiscoAuthorize(Claims.User.ShowAttachments)]

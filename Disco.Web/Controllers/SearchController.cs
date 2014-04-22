@@ -62,13 +62,13 @@ namespace Disco.Web.Controllers
                     return View(m);
                 }
                 if (Authorization.Has(Claims.Job.Search))
-                    m.Jobs = Services.Searching.Search.SearchJobsTable(Database, term, null, true, searchDetails);
+                    m.Jobs = Services.Searching.Search.SearchJobsTable(Database, term, LimitCount: null, IncludeJobStatus: true, SearchDetails: searchDetails);
 
                 if (Authorization.Has(Claims.Device.Search))
-                    m.Devices = Services.Searching.Search.SearchDevices(Database, term, null, searchDetails);
+                    m.Devices = Services.Searching.Search.SearchDevices(Database, term, LimitCount: null, SearchDetails: searchDetails);
 
                 if (Authorization.Has(Claims.User.Search))
-                    m.Users = Services.Searching.Search.SearchUsers(Database, term);
+                    m.Users = Services.Searching.Search.SearchUsers(Database, term, true, LimitCount: null);
             }
             else
             {
@@ -83,7 +83,7 @@ namespace Disco.Web.Controllers
                             if (vm != null)
                             {
                                 m.FriendlyTerm = string.Format("Device Model: {0}", vm.ToString());
-                                m.Devices = Services.Searching.Search.SearchDeviceModel(Database, vm.Id);
+                                m.Devices = Services.Searching.Search.SearchDeviceModel(Database, vm.Id, LimitCount: null);
                                 break;
                             }
                         }
@@ -100,7 +100,7 @@ namespace Disco.Web.Controllers
                             if (dp != null)
                             {
                                 m.FriendlyTerm = string.Format("Device Profile: {0}", dp.ToString());
-                                m.Devices = Services.Searching.Search.SearchDeviceProfile(Database, dp.Id);
+                                m.Devices = Services.Searching.Search.SearchDeviceProfile(Database, dp.Id, LimitCount: null);
                                 break;
                             }
                         }
@@ -117,7 +117,7 @@ namespace Disco.Web.Controllers
                             if (db != null)
                             {
                                 m.FriendlyTerm = string.Format("Device Batch: {0}", db.ToString());
-                                m.Devices = Services.Searching.Search.SearchDeviceBatch(Database, db.Id);
+                                m.Devices = Services.Searching.Search.SearchDeviceBatch(Database, db.Id, LimitCount: null);
                                 break;
                             }
                         }
@@ -154,7 +154,7 @@ namespace Disco.Web.Controllers
                                 return RedirectToAction(MVC.Job.Show(termInt));
                             }
                         }
-                        m.Jobs = Services.Searching.Search.SearchJobsTable(Database, term, null, true, searchDetails);
+                        m.Jobs = Services.Searching.Search.SearchJobsTable(Database, term, LimitCount: null, IncludeJobStatus: true, SearchDetails: searchDetails);
                         break;
                     case "users":
                         Authorization.Require(Claims.User.Search);
@@ -164,7 +164,7 @@ namespace Disco.Web.Controllers
                             m.ErrorMessage = "A search term of at least two characters is required";
                             return View(m);
                         }
-                        m.Users = Services.Searching.Search.SearchUsers(Database, term);
+                        m.Users = Services.Searching.Search.SearchUsers(Database, term, true, LimitCount: null);
                         if (m.Users.Count == 1)
                         {
                             return RedirectToAction(MVC.User.Show(m.Users[0].Id));

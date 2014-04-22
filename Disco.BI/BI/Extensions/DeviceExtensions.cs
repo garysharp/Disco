@@ -142,6 +142,9 @@ namespace Disco.BI.Extensions
             Database.Devices.Add(d2);
             if (!string.IsNullOrEmpty(d.AssignedUserId))
             {
+                if (!d.AssignedUserId.Contains('\\'))
+                    d.AssignedUserId = string.Format(@"{0}\{1}", ActiveDirectory.Context.PrimaryDomain.NetBiosName, d.AssignedUserId);
+
                 User u = UserService.GetUser(d.AssignedUserId, Database, true);
                 d2.AssignDevice(Database, u);
             }

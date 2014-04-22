@@ -9,11 +9,17 @@ namespace Disco.Models.Services.Searching
     public class DeviceSearchResultItem : ISearchResultItem
     {
         private const string type = "Device";
+        private Lazy<string[]> LazyScoreValue;
+
+        public DeviceSearchResultItem()
+        {
+            this.LazyScoreValue = new Lazy<string[]>(BuildScoreValues, false);
+        }
 
         public string Id { get; set; }
         public string Type { get { return type; } }
         public string Description { get { return string.Format("{0} ({1})", this.Id, this.ComputerName); } }
-        public string ScoreValue { get { return string.Format("{0} {1} {2} {3} {4}", this.Id, this.AssignedUserId != null ? this.AssignedUserId.Substring(0, this.AssignedUserId.IndexOf('\\')) : null, this.AssignedUserId, this.AssignedUserDisplayName, this.AssetNumber); } }
+        public string[] ScoreValues { get { return LazyScoreValue.Value; } }
 
         public string AssetNumber { get; set; }
         public string AssignedUserDescription
@@ -37,5 +43,28 @@ namespace Disco.Models.Services.Searching
         public string DeviceProfileDescription { get; set; }
         public int JobCount { get; set; }
         public DateTime? DecommissionedDate { get; set; }
+
+        private string[] BuildScoreValues()
+        {
+            if (this.AssignedUserId == null)
+            {
+                return new string[] {
+                    this.Id,
+                    this.AssetNumber,
+                    this.ComputerName
+                };
+            }
+            else
+            {
+                return new string[] {
+                    this.Id,
+                    this.AssetNumber,
+                    this.ComputerName,
+                    this.AssignedUserId.Substring(this.AssignedUserId.IndexOf('\\') + 1),
+                    this.AssignedUserId,
+                    this.AssignedUserDisplayName
+                };
+            }
+        }
     }
 }

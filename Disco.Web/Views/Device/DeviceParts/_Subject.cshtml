@@ -500,7 +500,7 @@
             }
             @if (Model.Device.CanUpdateAssignment())
             {
-                @Html.ActionLinkSmallButton("Update Assignment", MVC.API.Device.UpdateAssignedUserId(Model.Device.SerialNumber, null, true), "Device_Show_User_Actions_Assign_Button")
+                @Html.ActionLinkSmallButton("Update Assignment", MVC.API.Device.UpdateAssignedUserId(Model.Device.SerialNumber, null, null, true), "Device_Show_User_Actions_Assign_Button")
                 <div id="Device_Show_User_Actions_Assign_Dialog" class="dialog" title="Assign this Device?">
                     <h4><i class="fa fa-info-circle information"></i>&nbsp;Assign to User:</h4>
                     <br />
@@ -555,7 +555,7 @@
                                 inputUserId = $('#Device_Show_User_Actions_Assign_UserId');
                                 inputUserId.focus(function () { inputUserId.select() })
                                     .autocomplete({
-                                        source: '@(Url.Action(MVC.API.User.UpstreamUsers()))',
+                                        source: '@(Url.Action(MVC.API.Search.UsersUpstream()))',
                                         minLength: 2,
                                         select: function (e, ui) {
                                             inputUserId.val(ui.item.Id);

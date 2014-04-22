@@ -2,6 +2,7 @@
 using Disco.BI.Extensions;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using System;
@@ -287,7 +288,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.UndetectedPages)]
-        public virtual ActionResult ImporterUndetectedDataIdLookup(string id, string term, int limitCount = 20)
+        public virtual ActionResult ImporterUndetectedDataIdLookup(string id, string term, int limitCount = ActiveDirectory.DefaultSearchResultLimit)
         {
             if (!string.IsNullOrEmpty(id) && !string.IsNullOrWhiteSpace(term))
             {
@@ -330,7 +331,7 @@ namespace Disco.Web.Areas.API.Controllers
                             results = Disco.Services.Searching.Search.SearchJobsTable(Database, term, limitCount, false).Items.Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
                             break;
                         case DocumentTemplate.DocumentTemplateScopes.User:
-                            results = Disco.Services.Searching.Search.SearchUsers(Database, term, limitCount).Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
+                            results = Disco.Services.Searching.Search.SearchUsers(Database, term, false, limitCount).Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
                             break;
                         default:
                             results = null;

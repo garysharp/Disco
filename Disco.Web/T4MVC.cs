@@ -3684,6 +3684,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string AssignedUserId = "AssignedUserId";
+            public readonly string AssignedUserDomain = "AssignedUserDomain";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateAllowUnauthenticatedEnrol s_params_UpdateAllowUnauthenticatedEnrol = new ActionParamsClass_UpdateAllowUnauthenticatedEnrol();
@@ -3896,15 +3897,16 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
-        partial void UpdateAssignedUserIdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string AssignedUserId, bool redirect);
+        partial void UpdateAssignedUserIdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string AssignedUserId, string AssignedUserDomain, bool redirect);
 
-        public override System.Web.Mvc.ActionResult UpdateAssignedUserId(string id, string AssignedUserId, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateAssignedUserId(string id, string AssignedUserId, string AssignedUserDomain, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAssignedUserId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "AssignedUserId", AssignedUserId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "AssignedUserDomain", AssignedUserDomain);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateAssignedUserIdOverride(callInfo, id, AssignedUserId, redirect);
+            UpdateAssignedUserIdOverride(callInfo, id, AssignedUserId, AssignedUserDomain, redirect);
             return callInfo;
         }
 
@@ -9065,6 +9067,12 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.QuickQuery);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UsersUpstream()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UsersUpstream);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public SearchController Actions { get { return MVC.API.Search; } }
@@ -9082,12 +9090,14 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionNamesClass
         {
             public readonly string QuickQuery = "QuickQuery";
+            public readonly string UsersUpstream = "UsersUpstream";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
             public const string QuickQuery = "QuickQuery";
+            public const string UsersUpstream = "UsersUpstream";
         }
 
 
@@ -9096,6 +9106,15 @@ namespace Disco.Web.Areas.API.Controllers
         public ActionParamsClass_QuickQuery QuickQueryParams { get { return s_params_QuickQuery; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_QuickQuery
+        {
+            public readonly string Term = "Term";
+            public readonly string Limit = "Limit";
+        }
+        static readonly ActionParamsClass_UsersUpstream s_params_UsersUpstream = new ActionParamsClass_UsersUpstream();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UsersUpstream UsersUpstreamParams { get { return s_params_UsersUpstream; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UsersUpstream
         {
             public readonly string Term = "Term";
             public readonly string Limit = "Limit";
@@ -9127,6 +9146,17 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Term", Term);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Limit", Limit);
             QuickQueryOverride(callInfo, Term, Limit);
+            return callInfo;
+        }
+
+        partial void UsersUpstreamOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Term, int Limit);
+
+        public override System.Web.Mvc.ActionResult UsersUpstream(string Term, int Limit)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UsersUpstream);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Term", Term);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Limit", Limit);
+            UsersUpstreamOverride(callInfo, Term, Limit);
             return callInfo;
         }
 
@@ -9566,12 +9596,6 @@ namespace Disco.Web.Areas.API.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult UpstreamUsers()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpstreamUsers);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult AttachmentDownload()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentDownload);
@@ -9628,7 +9652,6 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
-            public readonly string UpstreamUsers = "UpstreamUsers";
             public readonly string AttachmentDownload = "AttachmentDownload";
             public readonly string AttachmentThumbnail = "AttachmentThumbnail";
             public readonly string AttachmentUpload = "AttachmentUpload";
@@ -9641,7 +9664,6 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
-            public const string UpstreamUsers = "UpstreamUsers";
             public const string AttachmentDownload = "AttachmentDownload";
             public const string AttachmentThumbnail = "AttachmentThumbnail";
             public const string AttachmentUpload = "AttachmentUpload";
@@ -9652,14 +9674,6 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
 
-        static readonly ActionParamsClass_UpstreamUsers s_params_UpstreamUsers = new ActionParamsClass_UpstreamUsers();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_UpstreamUsers UpstreamUsersParams { get { return s_params_UpstreamUsers; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_UpstreamUsers
-        {
-            public readonly string term = "term";
-        }
         static readonly ActionParamsClass_AttachmentDownload s_params_AttachmentDownload = new ActionParamsClass_AttachmentDownload();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_AttachmentDownload AttachmentDownloadParams { get { return s_params_AttachmentDownload; } }
@@ -9739,16 +9753,6 @@ namespace Disco.Web.Areas.API.Controllers
     public partial class T4MVC_UserController : Disco.Web.Areas.API.Controllers.UserController
     {
         public T4MVC_UserController() : base(Dummy.Instance) { }
-
-        partial void UpstreamUsersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string term);
-
-        public override System.Web.Mvc.ActionResult UpstreamUsers(string term)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpstreamUsers);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "term", term);
-            UpstreamUsersOverride(callInfo, term);
-            return callInfo;
-        }
 
         partial void AttachmentDownloadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
