@@ -85,9 +85,9 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             IEnumerable<ADSearchResult> searchResults;
             if (searchDomain != null)
-                searchResults = searchDomain.SearchScope(ldapFilter, ADGroup.LoadProperties, ResultLimit);
+                searchResults = searchDomain.SearchScope(ldapFilter, ADUserAccount.LoadProperties, ResultLimit);
             else
-                searchResults = Context.SearchScope(ldapFilter, ADGroup.LoadProperties, ResultLimit);
+                searchResults = Context.SearchScope(ldapFilter, ADUserAccount.LoadProperties, ResultLimit);
 
             return searchResults.Select(result => result.AsADUserAccount(Quick, AdditionalProperties));
         }

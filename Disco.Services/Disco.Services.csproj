@@ -174,12 +174,6 @@
     <Compile Include="Authorization\Roles\RoleToken.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <None Include="Interop\_ActiveDirectory\ActiveDirectory.cs" />
-    <None Include="Interop\_ActiveDirectory\ActiveDirectoryExtensions.cs" />
-    <None Include="Interop\_ActiveDirectory\Internal\ADDiscoverForestServers.cs" />
-    <None Include="Interop\_ActiveDirectory\Internal\ADGroupCache.cs" />
-    <None Include="Interop\_ActiveDirectory\Internal\ADInterop.cs" />
-    <None Include="Interop\_ActiveDirectory\Internal\ADUpdateLastNetworkLogonDateJob.cs" />
     <Compile Include="Interop\ActiveDirectory\ActiveDirectory.cs" />
     <Compile Include="Interop\ActiveDirectory\ActiveDirectoryContext.cs" />
     <Compile Include="Interop\ActiveDirectory\ActiveDirectoryExtensions.cs" />
@@ -303,7 +297,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" />
+      <UserProperties BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
