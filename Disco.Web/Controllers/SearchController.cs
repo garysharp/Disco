@@ -1,5 +1,6 @@
 ﻿using Disco.Models.UI.Search;
 using Disco.Services.Authorization;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Users;
 using Disco.Services.Web;
@@ -203,6 +204,10 @@ namespace Disco.Web.Controllers
                         }
                     case "userid":
                         Authorization.Require(Claims.User.Search);
+
+                        if (!term.Contains('\\'))
+                            term = string.Format(@"{0}\{1}", ActiveDirectory.Context.PrimaryDomain.NetBiosName, term);
+
                         var user = Database.Users.FirstOrDefault(u => u.UserId == term);
                         if (user != null)
                             return RedirectToAction(MVC.User.Show(term));
