@@ -75,7 +75,7 @@
                     }
                     else if (jq.Item1.CanRemove())
                     {
-                        @Html.ActionLinkSmallButton("Remove", MVC.API.JobQueueJob.RemoveJob(jq.Item1.Id, null), null, (jq.Item1.CanCloseJobNormallyAfterRemoved() ? "remove canCloseNormally" : "remove"))
+                        <a href="#" class="button small remove @(jq.Item1.CanCloseJobNormallyAfterRemoved() ? "canCloseNormally" : null)">Remove</a>
                     }
                     else
                     {
