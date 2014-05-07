@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Disco.Data.Repository;
-using Disco.Models.Repository;
-using System.IO;
-using System.Security.Cryptography;
+﻿using Disco.Data.Repository;
 using Disco.Models.BI.Interop.Community;
-using Newtonsoft.Json;
+using System;
+using System.IO;
 
 namespace Disco.Data.Configuration
 {
@@ -270,11 +264,11 @@ namespace Disco.Data.Configuration
         {
             get
             {
-                return this.GetFromJson<UpdateResponse>(null);
+                return this.Get<UpdateResponse>(null);
             }
             set
             {
-                this.SetAsJson(value);
+                this.Set(value);
             }
         }
         public bool UpdateBetaDeployment

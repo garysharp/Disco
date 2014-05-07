@@ -1,9 +1,5 @@
 ﻿using Disco.Data.Repository;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Data.Configuration.Modules
 {
@@ -20,18 +16,18 @@ namespace Disco.Data.Configuration.Modules
         {
             get
             {
-                return GetFromJson<Dictionary<string, List<string>>>(null);
+                return Get<Dictionary<string, List<string>>>(null);
             }
             set
             {
-                SetAsJson(value);
+                Set(value);
             }
         }
 
         public bool? SearchAllForestServers
         {
-            get { return GetFromJson<bool?>(null); }
-            set { SetAsJson(value); }
+            get { return Get<bool?>(null); }
+            set { Set(value); }
         }
     }
 }

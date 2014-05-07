@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Disco.Models.Repository;
-using Disco.Data.Repository;
+﻿using Disco.Data.Repository;
+using System;
 
 namespace Disco.Data.Configuration.Modules
 {

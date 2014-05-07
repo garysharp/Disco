@@ -31,7 +31,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 if (m == null || m.DeviceProfile == null)
                     throw new ArgumentException("Invalid Device Profile Id", "id");
 
-                m.OrganisationAddresses = Database.DiscoConfiguration.OrganisationAddresses.Addresses;
+                m.OrganisationAddresses = Database.DiscoConfiguration.OrganisationAddresses.Addresses.OrderBy(a => a.Name).ToList();
 
                 if (m.DeviceProfile.DefaultOrganisationAddress.HasValue)
                     m.DefaultOrganisationAddress = Database.DiscoConfiguration.OrganisationAddresses.GetAddress(m.DeviceProfile.DefaultOrganisationAddress.Value);

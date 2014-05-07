@@ -1,38 +1,22 @@
-﻿using System;
+﻿using Disco.Data.Repository;
+using Disco.Models.BI.Config;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Disco.Models.BI.Config;
-using Disco.Models.Repository;
-using Newtonsoft.Json;
-using Disco.Data.Repository;
 
 namespace Disco.Data.Configuration.Modules
 {
     public class OrganisationAddressesConfiguration : ConfigurationBase
     {
+        private const string scope = "OrganisationAddresses";
+
         public OrganisationAddressesConfiguration(DiscoDataContext Database) : base(Database) { }
 
-        public override string Scope { get { return "OrganisationAddresses"; } }
+        public override string Scope { get { return scope; } }
 
         public OrganisationAddress GetAddress(int Id)
         {
-            var address = default(OrganisationAddress);
-            var addressString = this.Get<string>(null, Id.ToString());
-            if (addressString != null)
-            {
-                if (addressString.StartsWith("{"))
-                {
-                    // Assume Json
-                    address = JsonConvert.DeserializeObject<OrganisationAddress>(addressString);
-                }
-                else
-                {
-                    // Assume Old Storage Method
-                    address = OrganisationAddress.FromConfigurationEntry(Id, addressString);
-                }
-            }
-            return address;
+            return this.Get<OrganisationAddress>(null, Id.ToString());
         }
         public OrganisationAddress SetAddress(OrganisationAddress Address)
         {
@@ -41,25 +25,21 @@ namespace Disco.Data.Configuration.Modules
                 Address.Id = NextOrganisationAddressId;
             }
 
-            string addressString = JsonConvert.SerializeObject(Address);
+            this.Set(Address, Address.Id.ToString());
 
-            this.Set(addressString, Address.Id.ToString()); //Address.ToConfigurationEntry());
             return Address;
         }
         public void RemoveAddress(int Id)
         {
-            // Set Config Item to null = Remove Configuration Item
-            this.Set<string>(null, Id.ToString());
+            // Remove Configuration Item
+            this.RemoveItem(Id.ToString());
         }
 
         public List<OrganisationAddress> Addresses
         {
             get
             {
-                return this.Items.Select(ca => ca.Value.StartsWith("{") ?
-                    JsonConvert.DeserializeObject<OrganisationAddress>(ca.Value) :
-                    OrganisationAddress.FromConfigurationEntry(int.Parse(ca.Key), ca.Value)
-                    ).ToList();
+                return this.ItemKeys.Select(key => this.Get<OrganisationAddress>(null, key)).ToList();
             }
         }
 
@@ -75,6 +55,20 @@ namespace Disco.Data.Configuration.Modules
                     nextId++;
                 }
                 return nextId;
+            }
+        }
+
+        internal static void MigrateDatabase(DiscoDataContext Database)
+        {
+            // Migrate all organisation addresses to JSON
+            if (Database.ConfigurationItems.Count(i => i.Scope == scope && !i.Value.StartsWith("{")) > 0)
+            {
+                var items = Database.ConfigurationItems.Where(i => i.Scope == scope && !i.Value.StartsWith("{")).ToList();
+                items.ForEach(i =>
+                {
+                    i.Value = JsonConvert.SerializeObject(OrganisationAddress.FromConfigurationEntry(int.Parse(i.Key), i.Value));
+                });
+                Database.SaveChanges();
             }
         }
 

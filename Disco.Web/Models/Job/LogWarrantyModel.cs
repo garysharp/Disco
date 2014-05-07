@@ -96,7 +96,7 @@ namespace Disco.Web.Models.Job
             if (!string.IsNullOrEmpty(WarrantyProviderId))
                 WarrantyProvider = Plugins.GetPluginFeature(WarrantyProviderId, typeof(WarrantyProviderFeature));
 
-            this.OrganisationAddresses = Database.DiscoConfiguration.OrganisationAddresses.Addresses;
+            this.OrganisationAddresses = Database.DiscoConfiguration.OrganisationAddresses.Addresses.OrderBy(a => a.Name).ToList();
 
             if (!IsPostBack && !this.OrganisationAddressId.HasValue)
             {

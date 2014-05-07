@@ -2,6 +2,7 @@
 using Disco.Services.Authorization;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Web;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.Config.Controllers
@@ -18,7 +19,7 @@ namespace Disco.Web.Areas.Config.Controllers
 
             viewModel.OrganisationName = Database.DiscoConfiguration.OrganisationName;
             viewModel.MultiSiteMode = Database.DiscoConfiguration.MultiSiteMode;
-            viewModel.OrganisationAddresses = Database.DiscoConfiguration.OrganisationAddresses.Addresses;
+            viewModel.OrganisationAddresses = Database.DiscoConfiguration.OrganisationAddresses.Addresses.OrderBy(a => a.Name).ToList();
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<ConfigOrganisationIndexModel>(this.ControllerContext, viewModel);

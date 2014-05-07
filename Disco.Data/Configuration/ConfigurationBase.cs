@@ -1,11 +1,7 @@
 ﻿using Disco.Data.Repository;
-using Disco.Models.Repository;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Disco.Data.Configuration
 {
@@ -15,29 +11,37 @@ namespace Disco.Data.Configuration
 
         public abstract string Scope { get; }
 
+        /// <summary>
+        /// Creates a read-write configuration instance
+        /// </summary>
         public ConfigurationBase(DiscoDataContext Database)
         {
             this.Database = Database;
         }
 
-        protected List<ConfigurationItem> Items
+        /// <summary>
+        /// Creates a read-only configuration instance
+        /// </summary>
+        public ConfigurationBase() : this(null) { }
+
+        protected IEnumerable<string> ItemKeys
         {
             get
             {
-                return ConfigurationCache.GetConfigurationItems(Database, this.Scope);
+                return ConfigurationCache.GetScopeKeys(Database, this.Scope);
             }
         }
 
-        private void SetValue<ValueType>(string Key, ValueType Value)
+        private void SetValue<T>(string Key, T Value)
         {
-            ConfigurationCache.SetConfigurationValue(Database, this.Scope, Key, Value);
+            ConfigurationCache.SetValue(Database, this.Scope, Key, Value);
         }
-        private ValueType GetValue<ValueType>(string Key, ValueType Default)
+        private T GetValue<T>(string Key, T Default)
         {
-            return ConfigurationCache.GetConfigurationValue(Database, this.Scope, Key, Default);
+            return ConfigurationCache.GetValue(Database, this.Scope, Key, Default);
         }
 
-        protected void Set<ValueType>(ValueType Value, [CallerMemberName] string Key = null)
+        protected void Set<T>(T Value, [CallerMemberName] string Key = null)
         {
             if (Key == null)
                 throw new ArgumentNullException("Key");
@@ -45,7 +49,7 @@ namespace Disco.Data.Configuration
             this.SetValue(Key, Value);
         }
 
-        protected ValueType Get<ValueType>(ValueType Default, [CallerMemberName] string Key = null)
+        protected T Get<T>(T Default, [CallerMemberName] string Key = null)
         {
             if (Key == null)
                 throw new ArgumentNullException("Key");
@@ -55,7 +59,7 @@ namespace Disco.Data.Configuration
 
         protected void SetObsfucated(string Value, [CallerMemberName] string Key = null)
         {
-            this.Set(ConfigurationCache.ObsfucateValue(Value), Key);
+            this.Set(Value.Obsfucate(), Key);
         }
 
         protected string GetDeobsfucated(string Default, [CallerMemberName] string Key = null)
@@ -65,43 +69,40 @@ namespace Disco.Data.Configuration
             if (obsfucatedValue == null)
                 return Default;
             else
-                return ConfigurationCache.DeobsfucateValue(obsfucatedValue);
+                return obsfucatedValue.Deobsfucate();
         }
 
-        protected void SetAsJson<ValueType>(ValueType Value, [CallerMemberName] string Key = null)
+        protected void RemoveScope()
         {
-            if (Value == null)
-                this.Set<string>(null, Key);
-            else
-                this.Set(JsonConvert.SerializeObject(Value), Key);
+            ConfigurationCache.RemoveScope(Database, this.Scope);
         }
 
-        protected ValueType GetFromJson<ValueType>(ValueType Default, [CallerMemberName] string Key = null)
+        protected void RemoveItem(string Key)
         {
-            var jsonValue = this.Get<string>(null, Key);
-
-            if (jsonValue == null)
-                return Default;
-            else
-                return JsonConvert.DeserializeObject<ValueType>(jsonValue);
+            ConfigurationCache.RemoveScopeKey(Database, this.Scope, Key);
         }
 
-        protected void SetAsEnum<EnumType>(EnumType Value, [CallerMemberName] string Key = null)
+        [Obsolete("Types are automatically serialized/deserialized if required, use Set<T>(T Value) instead.")]
+        protected void SetAsJson<T>(T Value, [CallerMemberName] string Key = null)
         {
-            if (Value == null)
-                this.Set<string>(null, Key);
-            else
-                this.Set(Value.ToString(), Key);
+            this.Set(Value, Key);
         }
-        protected EnumType GetFromEnum<EnumType>(EnumType Default, [CallerMemberName] string Key = null)
+
+        [Obsolete("Types are automatically serialized/deserialized if required, use Get<T>(T Default) instead.")]
+        protected T GetFromJson<T>(T Default, [CallerMemberName] string Key = null)
         {
-            var stringValue = this.Get<string>(null, Key);
-
-            if (stringValue == null)
-                return Default;
-            else
-                return (EnumType)Enum.Parse(typeof(EnumType), stringValue);
+            return this.Get(Default, Key);
         }
 
+        [Obsolete("Types are automatically serialized/deserialized if required, use Set<T>(T Value) instead.")]
+        protected void SetAsEnum<T>(T Value, [CallerMemberName] string Key = null)
+        {
+            this.Set(Value, Key);
+        }
+        [Obsolete("Types are automatically serialized/deserialized if required, use Set<T>(T Value) instead.")]
+        protected T GetFromEnum<T>(T Default, [CallerMemberName] string Key = null)
+        {
+            return this.Get(Default, Key);
+        }
     }
 }
