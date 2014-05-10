@@ -1,3 +1,4 @@
+using Disco.Models.Repository;
 using Disco.Services.Logging;
 using Disco.Services.Logging.Models;
 using System;
@@ -19,7 +20,9 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
 			RetrievalCertificateWarning = 25,
 			RetrievalCertificateError,
 			Allocated = 40,
-			AllocationFailed = 50
+			AllocationFailed = 50,
+            Disabled = 100,
+            Deleted = 120
 		}
 		private const int _ModuleId = 60;
 		private static bool _IsCertificateRetrievalProcessing;
@@ -97,49 +100,36 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
 		}
 		public static void LogRetrievalCertificateStarting(string CertificateId)
 		{
-			CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.RetrievalCertificateStarting, new object[]
-			{
-				CertificateId
-			});
+			CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.RetrievalCertificateStarting, CertificateId);
 		}
 		public static void LogRetrievalCertificateFinished(string CertificateId)
 		{
-			CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.RetrievalCertificateFinished, new object[]
-			{
-				CertificateId
-			});
+			CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.RetrievalCertificateFinished, CertificateId);
 		}
 		public static void LogRetrievalCertificateWarning(string CertificateId, string Message)
 		{
-			CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.RetrievalCertificateWarning, new object[]
-			{
-				CertificateId, 
-				Message
-			});
+			CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.RetrievalCertificateWarning, CertificateId, Message);
 		}
 		public static void LogRetrievalCertificateError(string CertificateId, string Message)
 		{
-			CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.RetrievalCertificateError, new object[]
-			{
-				CertificateId, 
-				Message
-			});
+			CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.RetrievalCertificateError, CertificateId, Message);
 		}
 		public static void LogAllocated(string CertificateId, string DeviceSerialNumber)
 		{
-			CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.Allocated, new object[]
-			{
-				CertificateId, 
-				DeviceSerialNumber
-			});
+			CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.Allocated, CertificateId, DeviceSerialNumber);
 		}
 		public static void LogAllocationFailed(string DeviceSerialNumber)
 		{
-			CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.AllocationFailed, new object[]
-			{
-				DeviceSerialNumber
-			});
+			CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.AllocationFailed, DeviceSerialNumber);
 		}
+        public static void LogDisabled(DeviceCertificate Certificate, string Reason)
+        {
+            CertificateProvidersLog.Log(EventTypeIds.Disabled, Certificate.Name, Certificate.Id, Reason);
+        }
+        public static void LogDeleted(DeviceCertificate Certificate, string Reason)
+        {
+            CertificateProvidersLog.Log(EventTypeIds.Deleted, Certificate.Name, Certificate.Id, Reason);
+        }
 		public static void LogCertificateRetrievalProgress(bool? IsProcessing, int? Progress, string Status)
 		{
 			bool flag = IsProcessing.HasValue;
@@ -179,7 +169,7 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
 			{
 				new LogEventType
 				{
-					Id = 10, 
+					Id = (int)EventTypeIds.RetrievalStarting, 
 					ModuleId = 60, 
 					Name = "Retrieval Starting", 
 					Format = "Starting retrieval of {0} certificate/s ({1} to {2})", 
@@ -190,7 +180,7 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
 				}, 
 				new LogEventType
 				{
-					Id = 11, 
+					Id = (int)EventTypeIds.RetrievalProgress, 
 					ModuleId = 60, 
 					Name = "Retrieval Progress", 
 					Format = "Processing: {0}; {1}% Complete; Status: {2}", 
@@ -201,7 +191,7 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
 				}, 
 				new LogEventType
 				{
-					Id = 12, 
+					Id = (int)EventTypeIds.RetrievalFinished, 
 					ModuleId = 60, 
 					Name = "Retrieval Finished", 
 					Format = "Retrieval of Certificates Complete", 
@@ -212,7 +202,7 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
 				}, 
 				new LogEventType
 				{
-					Id = 15, 
+					Id = (int)EventTypeIds.RetrievalWarning, 
 					ModuleId = 60, 
 					Name = "Retrieval Warning", 
 					Format = "Retrieval Warning: {0}", 
@@ -223,7 +213,7 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
 				}, 
 				new LogEventType
 				{
-					Id = 16, 
+					Id = (int)EventTypeIds.RetrievalError, 
 					ModuleId = 60, 
 					Name = "Retrieval Error", 
 					Format = "Retrieval Error: {0}", 
@@ -234,7 +224,7 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
 				}, 
 				new LogEventType
 				{
-					Id = 20, 
+					Id = (int)EventTypeIds.RetrievalCertificateStarting, 
 					ModuleId = 60, 
 					Name = "Retrieval Certificate Starting", 
 					Format = "Retrieving Certificate: {0}", 
@@ -245,7 +235,7 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
 				}, 
 				new LogEventType
 				{
-					Id = 22, 
+					Id = (int)EventTypeIds.RetrievalCertificateFinished, 
 					ModuleId = 60, 
 					Name = "Retrieval Certificate Finished", 
 					Format = "Certificate Retrieved: {0}", 
@@ -256,7 +246,7 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
 				}, 
 				new LogEventType
 				{
-					Id = 25, 
+					Id = (int)EventTypeIds.RetrievalCertificateWarning, 
 					ModuleId = 60, 
 					Name = "Retrieval Certificate Warning", 
 					Format = "{0} Certificate Warning: {1}", 
@@ -267,7 +257,7 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
 				}, 
 				new LogEventType
 				{
-					Id = 26, 
+					Id = (int)EventTypeIds.RetrievalCertificateError, 
 					ModuleId = 60, 
 					Name = "Retrieval Certificate Error", 
 					Format = "{0} Certificate Error: {1}", 
@@ -278,7 +268,7 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
 				}, 
 				new LogEventType
 				{
-					Id = 40, 
+					Id = (int)EventTypeIds.Allocated, 
 					ModuleId = 60, 
 					Name = "Allocated", 
 					Format = "Certificate {0} allocated to {1}", 
@@ -289,11 +279,33 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
 				}, 
 				new LogEventType
 				{
-					Id = 50, 
+					Id = (int)EventTypeIds.AllocationFailed, 
 					ModuleId = 60, 
 					Name = "Allocation Failed", 
 					Format = "No certificates available for Device: {0}", 
 					Severity = 2, 
+					UseLive = true, 
+					UsePersist = true, 
+					UseDisplay = true
+				}, 
+				new LogEventType
+				{
+					Id = (int)EventTypeIds.Disabled, 
+					ModuleId = 60, 
+					Name = "Disabled Certificate", 
+					Format = "Certificate Disabled: {0} [{1}], Reason: {2}", 
+					Severity = 0, 
+					UseLive = true, 
+					UsePersist = true, 
+					UseDisplay = true
+				}, 
+				new LogEventType
+				{
+					Id = (int)EventTypeIds.Deleted, 
+					ModuleId = 60, 
+					Name = "Deleted Certificate", 
+					Format = "Certificate Deleted: {0} [{1}], Reason: {2}", 
+					Severity = 0, 
 					UseLive = true, 
 					UsePersist = true, 
 					UseDisplay = true
