@@ -1496,8 +1496,6 @@
       <LastGenOutput>CommonHelpers.generated.cs</LastGenOutput>
     </None>
     <None Include="Properties\PublishProfiles\HADES3.pubxml" />
-    <None Include="ClientSource\Scripts\Core\jquery.validate.js" />
-    <None Include="ClientSource\Scripts\Core\jquery.validate.unobtrusive.js" />
     <None Include="ClientSource\Scripts\Modules\Highcharts\highcharts.src.js" />
     <None Include="ClientSource\Scripts\Modules\jQuery-SignalR\jquery.signalR-1.1.2.js" />
     <None Include="ClientSource\Scripts\Core\jquery-2.0.3.js" />
@@ -1964,6 +1962,8 @@
     <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\skin.min.css" />
     <None Include="ClientSource\Scripts\Modules\tinymce\themes\modern\theme.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce\tinymce.js" />
+    <None Include="ClientSource\Scripts\Core\jquery.validate.js" />
+    <None Include="ClientSource\Scripts\Core\jquery.validate.unobtrusive.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -2053,7 +2053,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
