@@ -21,8 +21,10 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
 			RetrievalCertificateError,
 			Allocated = 40,
 			AllocationFailed = 50,
-            Disabled = 100,
-            Deleted = 120
+            DisabledCertificate = 100,
+            EnabledCertificate = 110,
+            DeletedCertificate = 120,
+            UpdatedCertificate = 130
 		}
 		private const int _ModuleId = 60;
 		private static bool _IsCertificateRetrievalProcessing;
@@ -122,14 +124,23 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
 		{
 			CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.AllocationFailed, DeviceSerialNumber);
 		}
-        public static void LogDisabled(DeviceCertificate Certificate, string Reason)
+        public static void LogDisabledCertificate(DeviceCertificate Certificate, string Reason)
         {
-            CertificateProvidersLog.Log(EventTypeIds.Disabled, Certificate.Name, Certificate.Id, Reason);
+            CertificateProvidersLog.Log(EventTypeIds.DisabledCertificate, Certificate.Name, Certificate.Id, Reason);
         }
-        public static void LogDeleted(DeviceCertificate Certificate, string Reason)
+        public static void LogEnabledCertificate(DeviceCertificate Certificate, string Reason)
         {
-            CertificateProvidersLog.Log(EventTypeIds.Deleted, Certificate.Name, Certificate.Id, Reason);
+            CertificateProvidersLog.Log(EventTypeIds.EnabledCertificate, Certificate.Name, Certificate.Id, Reason);
         }
+        public static void LogDeletedCertificate(DeviceCertificate Certificate, string Reason)
+        {
+            CertificateProvidersLog.Log(EventTypeIds.DeletedCertificate, Certificate.Name, Certificate.Id, Reason);
+        }
+        public static void LogUpdatedCertificate(DeviceCertificate Certificate, string Reason)
+        {
+            CertificateProvidersLog.Log(EventTypeIds.UpdatedCertificate, Certificate.Name, Certificate.Id, Reason);
+        }
+        
 		public static void LogCertificateRetrievalProgress(bool? IsProcessing, int? Progress, string Status)
 		{
 			bool flag = IsProcessing.HasValue;
@@ -290,7 +301,7 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
 				}, 
 				new LogEventType
 				{
-					Id = (int)EventTypeIds.Disabled, 
+					Id = (int)EventTypeIds.DisabledCertificate, 
 					ModuleId = 60, 
 					Name = "Disabled Certificate", 
 					Format = "Certificate Disabled: {0} [{1}], Reason: {2}", 
@@ -299,12 +310,34 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
 					UsePersist = true, 
 					UseDisplay = true
 				}, 
+                new LogEventType
+				{
+					Id = (int)EventTypeIds.EnabledCertificate, 
+					ModuleId = 60, 
+					Name = "Enabled Certificate", 
+					Format = "Certificate Disabled: {0} [{1}], Reason: {2}", 
+					Severity = 0, 
+					UseLive = true, 
+					UsePersist = true, 
+					UseDisplay = true
+				}, 
 				new LogEventType
 				{
-					Id = (int)EventTypeIds.Deleted, 
+					Id = (int)EventTypeIds.DeletedCertificate, 
 					ModuleId = 60, 
 					Name = "Deleted Certificate", 
 					Format = "Certificate Deleted: {0} [{1}], Reason: {2}", 
+					Severity = 0, 
+					UseLive = true, 
+					UsePersist = true, 
+					UseDisplay = true
+				}, 
+				new LogEventType
+				{
+					Id = (int)EventTypeIds.UpdatedCertificate, 
+					ModuleId = 60, 
+					Name = "Updated Certificate", 
+					Format = "Certificate Updated: {0} [{1}], Reason: {2}", 
 					Severity = 0, 
 					UseLive = true, 
 					UsePersist = true, 
