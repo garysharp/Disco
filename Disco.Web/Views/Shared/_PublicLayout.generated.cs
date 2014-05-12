@@ -54,11 +54,11 @@ namespace Disco.Web.Views.Shared
             
             #line default
             #line hidden
-WriteLiteral("\r\n<!DOCTYPE html>\r\n<html>\r\n<head>\r\n    <title>Disco");
+WriteLiteral("\r\n<!DOCTYPE html>\r\n<html>\r\n<head>\r\n    <title>Disco ICT");
 
             
             #line 9 "..\..\Views\Shared\_PublicLayout.cshtml"
-                  if (ViewBag.Title != null)
+                      if (ViewBag.Title != null)
                   {
             
             #line default
@@ -90,7 +90,7 @@ WriteLiteral(" />\r\n    <meta");
 
 WriteLiteral(" name=\"application-name\"");
 
-WriteLiteral(" content=\"Disco\"");
+WriteLiteral(" content=\"Disco ICT\"");
 
 WriteLiteral(" />\r\n    <meta");
 
@@ -102,7 +102,7 @@ WriteLiteral(" />\r\n    <meta");
 
 WriteLiteral(" name=\"msapplication-tooltip\"");
 
-WriteLiteral(" content=\"Open Disco\"");
+WriteLiteral(" content=\"Open Disco ICT\"");
 
 WriteLiteral(" />\r\n");
 
@@ -140,19 +140,19 @@ WriteLiteral(" id=\"heading\"");
 
 WriteLiteral(">\r\n                <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 809), Tuple.Create("\"", 844)
+WriteAttribute("href", Tuple.Create(" href=\"", 821), Tuple.Create("\"", 866)
             
             #line 22 "..\..\Views\Shared\_PublicLayout.cshtml"
-, Tuple.Create(Tuple.Create("", 816), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Job.Index())
+, Tuple.Create(Tuple.Create("", 828), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Public.Public.Index())
             
             #line default
             #line hidden
-, 816), false)
+, 828), false)
 );
 
 WriteLiteral("><i");
 
-WriteLiteral(" title=\"Disco - ICT Management\"");
+WriteLiteral(" title=\"Disco ICT - Public\"");
 
 WriteLiteral("></i></a>\r\n            </div>\r\n");
 
