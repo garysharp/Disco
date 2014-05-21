@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Disco.Services.Tasks
 {
-    public class ScheduledTaskStatus
+    public class ScheduledTaskStatus : IScheduledTaskBasicStatus
     {
         #region Backing Fields
 

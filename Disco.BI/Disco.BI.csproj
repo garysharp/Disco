@@ -124,7 +124,6 @@
     <Compile Include="BI\AttachmentBI\Utilities.cs" />
     <Compile Include="BI\DeviceBI\BatchUtilities.cs" />
     <Compile Include="BI\DeviceBI\DeviceModelBI.cs" />
-    <Compile Include="BI\DeviceBI\Importing\Export.cs" />
     <Compile Include="BI\DeviceBI\Importing\Import.cs" />
     <Compile Include="BI\DeviceBI\Importing\ImportParseTask.cs" />
     <Compile Include="BI\DeviceBI\Importing\ImportProcessTask.cs" />

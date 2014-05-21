@@ -735,7 +735,7 @@
     }
     @if (Authorization.Has(Claims.Device.Actions.Export))
     {
-        @Html.ActionLinkButton("Export Devices", MVC.API.DeviceProfile.ExportDevices(Model.DeviceProfile.Id))
+        @Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.Exporting.DeviceExportTypes.Profile, Model.DeviceProfile.Id))
     }
     @if (Authorization.Has(Claims.Device.Search))
     {

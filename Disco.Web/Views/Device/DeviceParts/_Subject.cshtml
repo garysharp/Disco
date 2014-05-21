@@ -673,11 +673,11 @@
                     </div>
                     <div>
                         <ul class="none">
-                            @foreach (Device.DecommissionReasons decommissionReason in Enum.GetValues(typeof(Device.DecommissionReasons)))
+                            @foreach (DecommissionReasons decommissionReason in Enum.GetValues(typeof(DecommissionReasons)))
                             {
                                 <li>
                                     <input type="radio" id="Device_Show_Device_Actions_Decommission_Reason_@((int)decommissionReason)"
-                                        name="Device_Show_Device_Actions_Decommission_Reason" value="@((int)decommissionReason)" @((decommissionReason == Device.DecommissionReasons.EndOfLife) ? "checked=\"checked\"" : string.Empty)/>
+                                        name="Device_Show_Device_Actions_Decommission_Reason" value="@((int)decommissionReason)" @((decommissionReason == DecommissionReasons.EndOfLife) ? "checked=\"checked\"" : string.Empty)/>
                                     <label for="Device_Show_Device_Actions_Decommission_Reason_@((int)decommissionReason)">@(decommissionReason.ReasonMessage())</label>
                                 </li>
                             }

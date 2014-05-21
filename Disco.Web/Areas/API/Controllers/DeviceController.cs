@@ -1,12 +1,15 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Services.Authorization;
+using Disco.Services.Devices.Export;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using Disco.Services.Web;
+using Disco.Web.Models.Device;
 using System;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Caching;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.API.Controllers
@@ -265,7 +268,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 if (d.CanDecommission())
                 {
-                    d.OnDecommission((Disco.Models.Repository.Device.DecommissionReasons)Reason);
+                    d.OnDecommission((Disco.Models.Repository.DecommissionReasons)Reason);
 
                     Database.SaveChanges();
                     if (redirect)
@@ -526,7 +529,7 @@ namespace Disco.Web.Areas.API.Controllers
 
         #endregion
 
-        #region Importing / Exporting
+        #region Importing
 
         [DiscoAuthorize(Claims.Device.Actions.Import)]
         public virtual ActionResult ImportParse(HttpPostedFileBase ImportFile)
@@ -558,18 +561,57 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }
 
+        #endregion
+
+        #region Exporting 
+        private const string ExportSessionCacheKey = "DeviceExportContext_{0}";
+
         [DiscoAuthorize(Claims.Device.Actions.Export)]
-        public virtual ActionResult ExportAllDevices()
+        public virtual ActionResult Export(ExportModel Model)
         {
-            // Non-Decommissioned Devices
-            var devices = Database.Devices.Where(d => !d.DecommissionedDate.HasValue);
+            if (Model == null || Model.Options == null)
+                throw new ArgumentNullException("Model");
 
-            var export = BI.DeviceBI.Importing.Export.GenerateExport(devices);
+            // Write Options to Configuration
+            Database.DiscoConfiguration.Devices.LastExportOptions = Model.Options;
+            Database.SaveChanges();
 
-            var filename = string.Format("DiscoDeviceExport-AllDevices-{0:yyyyMMdd-HHmmss}.csv", DateTime.Now);
+            // Start Export
+            var exportContext = DeviceExportTask.ScheduleNow(Model.Options);
+            
+            // Store Export Context in Web Cache
+            string key = string.Format(ExportSessionCacheKey, exportContext.TaskStatus.SessionId);
+            HttpRuntime.Cache.Insert(key, exportContext, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
 
-            return File(export, "text/csv", filename);
+            // Set Task Finished Url
+            var finishedActionResult = MVC.Device.Export(exportContext.TaskStatus.SessionId, null, null);
+            exportContext.TaskStatus.SetFinishedUrl(Url.Action(finishedActionResult)); 
+
+            // Try waiting for completion
+            if (exportContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(1.5)))
+                return RedirectToAction(finishedActionResult);
+            else
+                return RedirectToAction(MVC.Config.Logging.TaskStatus(exportContext.TaskStatus.SessionId));
         }
+        [DiscoAuthorize(Claims.Device.Actions.Export)]
+        public virtual ActionResult ExportRetrieve(string Id)
+        {
+            if (string.IsNullOrWhiteSpace(Id))
+                throw new ArgumentNullException("Id");
+
+            string key = string.Format(ExportSessionCacheKey, Id);
+            var context = HttpRuntime.Cache.Get(key) as DeviceExportTaskContext;
+
+            if (context == null)
+                throw new ArgumentException("The Id specified is invalid, or the export data expired (60 minutes)", "Id");
+
+            if (context.CsvResult == null)
+                throw new ArgumentException("The export session is still running, or failed to complete successfully", "Id");
+
+            var filename = string.Format("DiscoDeviceExport-{0:yyyyMMdd-HHmmss}.csv", context.TaskStatus.StartedTimestamp.Value);
+
+            return File(context.CsvResult.ToArray(), "text/csv", filename);
+        } 
 
         #endregion
 

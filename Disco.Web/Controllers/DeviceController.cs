@@ -1,5 +1,6 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Models.Repository;
+using Disco.Models.Services.Devices.Exporting;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Device;
 using Disco.Services;
@@ -9,6 +10,8 @@ using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -37,10 +40,10 @@ namespace Disco.Web.Controllers
             {
                 DefaultDeviceProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId
             };
-            
+
             if (Authorization.Has(Claims.Device.Properties.DeviceBatch))
                 m.DeviceBatches = Database.DeviceBatches.ToList();
-            
+
             if (Authorization.Has(Claims.Device.Properties.DeviceProfile))
             {
                 m.DeviceProfiles = Database.DeviceProfiles.ToList();
@@ -79,6 +82,36 @@ namespace Disco.Web.Controllers
             }
             return AddOffline();
         }
+        #endregion
+
+        #region Export
+
+        [DiscoAuthorizeAny(Claims.Device.Actions.Export), HttpGet]
+        public virtual ActionResult Export(string DownloadId, DeviceExportTypes? ExportType, int? ExportTypeTargetId)
+        {
+            var m = new Models.Device.ExportModel()
+            {
+                Options = Database.DiscoConfiguration.Devices.LastExportOptions,
+                DeviceBatches = Database.DeviceBatches.OrderBy(db => db.Name).Select(db => new { Key = db.Id, Value = db.Name }).ToList().Select(i => new KeyValuePair<int, string>(i.Key, i.Value)),
+                DeviceModels = Database.DeviceModels.OrderBy(dm => dm.Description).Select(dm => new { Key = dm.Id, Value = dm.Description }).ToList().Select(i => new KeyValuePair<int, string>(i.Key, i.Value)),
+                DeviceProfiles = Database.DeviceProfiles.OrderBy(dp => dp.Name).Select(dp => new { Key = dp.Id, Value = dp.Name }).ToList().Select(i => new KeyValuePair<int, string>(i.Key, i.Value))
+            };
+
+            if (!string.IsNullOrWhiteSpace(DownloadId))
+                m.DownloadExportSessionId = DownloadId;
+
+            if (ExportType.HasValue && ExportTypeTargetId.HasValue)
+            {
+                m.Options.ExportType = ExportType.Value;
+                m.Options.ExportTypeTargetId = ExportTypeTargetId.Value;
+            }
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<DeviceExportModel>(this.ControllerContext, m);
+
+            return View(m);
+        }
+
         #endregion
 
         #region Import/Export

@@ -26,16 +26,8 @@ namespace Disco.Models.Repository
         public string DeviceDomainId { get; set; }
         public string AssignedUserId { get; set; }
         public DateTime? LastNetworkLogonDate { get; set; }
-
-        // 2012-06-21 - Removed
-        //[StringLength(24)]
-        //public string CertificateStoreReference { get; set; }
         
         public bool AllowUnauthenticatedEnrol { get; set; }
-
-        // Removed 2013-02-21 G#: Redundant - See DecommissionedDate
-        //public bool Active { get; set; }
-        // End Removed 2013-02-21
 
         public DateTime CreatedDate { get; set; }
         public DateTime? EnrolledDate { get; set; }
@@ -55,6 +47,7 @@ namespace Disco.Models.Repository
         public virtual IList<DeviceUserAssignment> DeviceUserAssignments { get; set; }
         public virtual IList<DeviceDetail> DeviceDetails { get; set; }
         public virtual IList<DeviceAttachment> DeviceAttachments { get; set; }
+        public virtual IList<DeviceCertificate> DeviceCertificates { get; set; }
         
         [InverseProperty("DeviceSerialNumber")]
         public virtual IList<Job> Jobs { get; set; }
@@ -91,16 +84,6 @@ namespace Disco.Models.Repository
                 var index = DeviceDomainId.IndexOf('\\');
                 return index < 0 ? null : DeviceDomainId.Substring(0, index);
             }
-        }
-
-        public enum DecommissionReasons
-        {
-            EndOfLife = 0,
-            Sold = 10,
-            Stolen = 20,
-            Lost = 30,
-            Damaged = 40,
-            Donated = 50
         }
     }
 }

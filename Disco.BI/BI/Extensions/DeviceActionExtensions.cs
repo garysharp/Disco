@@ -79,7 +79,7 @@ namespace Disco.BI.Extensions
 
             return true;
         }
-        public static void OnDecommission(this Device d, Disco.Models.Repository.Device.DecommissionReasons Reason)
+        public static void OnDecommission(this Device d, Disco.Models.Repository.DecommissionReasons Reason)
         {
             if (!d.CanDecommission())
                 throw new InvalidOperationException("Decommission of Device is Denied");

@@ -190,8 +190,3 @@
     </div>
 </div>
 }
-@if (Authorization.Has(Claims.Device.Actions.Export)){
-<div class="actionBar">
-    @Html.ActionLinkButton("Export All Devices", MVC.API.Device.ExportAllDevices())
-</div>
-}

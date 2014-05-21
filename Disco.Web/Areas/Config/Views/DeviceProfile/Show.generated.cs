@@ -2032,14 +2032,14 @@ WriteLiteral("    ");
             #line hidden
             
             #line 738 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-   Write(Html.ActionLinkButton("Export Devices", MVC.API.DeviceProfile.ExportDevices(Model.DeviceProfile.Id)));
+   Write(Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.Exporting.DeviceExportTypes.Profile, Model.DeviceProfile.Id)));
 
             
             #line default
             #line hidden
             
             #line 738 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                                                                                                             
+                                                                                                                                                                    
     }
 
             

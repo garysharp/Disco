@@ -544,7 +544,13 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Extensions\T4MVCExtensions.cs" />
+    <Compile Include="Models\Device\ExportModel.cs" />
     <Compile Include="Models\InitialConfig\AdministratorsModel.cs" />
+    <Compile Include="Views\Device\Export.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Export.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="Views\InitialConfig\Administrators.generated.cs">
       <DependentUpon>Administrators.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1544,6 +1550,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Subject.generated.cs</LastGenOutput>
     </None>
+    <None Include="Views\Device\Export.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Export.generated.cs</LastGenOutput>
+    </None>
     <None Include="Views\Device\ImportExport.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>ImportExport.generated.cs</LastGenOutput>
@@ -2053,7 +2063,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
+      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

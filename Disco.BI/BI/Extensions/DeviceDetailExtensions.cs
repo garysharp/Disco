@@ -10,13 +10,6 @@ namespace Disco.BI.Extensions
 {
     public static class DeviceDetailExtensions
     {
-
-        #region Scope Declaration
-
-        public const string ScopeHardware = "Hardware";
-        
-        #endregion
-
         #region Helpers
         private static string GetDetail(this IEnumerable<DeviceDetail> details, string Scope, string Key)
         {
@@ -77,59 +70,56 @@ namespace Disco.BI.Extensions
         #endregion
 
         #region LanMacAddress
-        public const string KeyLanMacAddress = "LanMacAddress";
         /// <summary>
         /// Gets the LanMacAddress Device Detail Value
         /// </summary>
         /// <returns>The LanMacAddress or null</returns>
         public static string LanMacAddress(this IEnumerable<DeviceDetail> details)
         {
-            return details.GetDetail(ScopeHardware, KeyLanMacAddress);
+            return details.GetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyLanMacAddress);
         }
         /// <summary>
         /// Sets the LanMacAddress Device Detail Value
         /// </summary>
         public static void LanMacAddress(this IEnumerable<DeviceDetail> details, Device device, string LanMacAddress)
         {
-            device.SetDetail(ScopeHardware, KeyLanMacAddress, LanMacAddress);
+            device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyLanMacAddress, LanMacAddress);
         } 
         #endregion
 
         #region WLanMacAddress
-        public const string KeyWLanMacAddress = "WLanMacAddress";
         /// <summary>
         /// Gets the WLanMacAddress Device Detail Value
         /// </summary>
         /// <returns>The WLanMacAddress or null</returns>
         public static string WLanMacAddress(this IEnumerable<DeviceDetail> details)
         {
-            return details.GetDetail(ScopeHardware, KeyWLanMacAddress);
+            return details.GetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyWLanMacAddress);
         }
         /// <summary>
         /// Sets the WLanMacAddress Device Detail Value
         /// </summary>
         public static void WLanMacAddress(this IEnumerable<DeviceDetail> details, Device device, string WLanMacAddress)
         {
-            device.SetDetail(ScopeHardware, KeyWLanMacAddress, WLanMacAddress);
+            device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyWLanMacAddress, WLanMacAddress);
         } 
         #endregion
 
         #region ACAdapter
-        public const string KeyACAdapter = "ACAdapter";
         /// <summary>
         /// Gets the ACAdapter Device Detail Value
         /// </summary>
         /// <returns>The ACAdapter or null</returns>
         public static string ACAdapter(this IEnumerable<DeviceDetail> details)
         {
-            return details.GetDetail(ScopeHardware, KeyACAdapter);
+            return details.GetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyACAdapter);
         }
         /// <summary>
         /// Sets the ACAdapter Device Detail Value
         /// </summary>
         public static void ACAdapter(this IEnumerable<DeviceDetail> details, Device device, string ACAdapter)
         {
-            device.SetDetail(ScopeHardware, KeyACAdapter, ACAdapter);
+            device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyACAdapter, ACAdapter);
         }
         #endregion
 

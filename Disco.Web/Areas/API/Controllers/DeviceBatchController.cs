@@ -497,25 +497,5 @@ namespace Disco.Web.Areas.API.Controllers
         }
         #endregion
 
-        #region Exporting
-        
-        [DiscoAuthorizeAll(Claims.Config.DeviceBatch.Show, Claims.Device.Actions.Export)]
-        public virtual ActionResult ExportDevices(int id)
-        {
-            DeviceBatch db = Database.DeviceBatches.Find(id);
-            if (db == null)
-                throw new ArgumentNullException("id", "Invalid Device Batch Id");
-
-            var devices = Database.Devices.Where(d => !d.DecommissionedDate.HasValue && d.DeviceBatchId == db.Id);
-
-            var export = BI.DeviceBI.Importing.Export.GenerateExport(devices);
-
-            var filename = string.Format("DiscoDeviceExport-Batch_{0}-{1:yyyyMMdd-HHmmss}.csv", db.Id, DateTime.Now);
-
-            return File(export, "text/csv", filename);
-        }
-
-        #endregion
-
     }
 }

@@ -74,6 +74,7 @@
     <Compile Include="Configuration\ConfigurationBase.cs" />
     <Compile Include="Configuration\ConfigurationCache.cs" />
     <Compile Include="Configuration\Modules\ActiveDirectoryConfiguration.cs" />
+    <Compile Include="Configuration\Modules\DevicesConfiguration.cs" />
     <Compile Include="Configuration\Modules\JobPreferencesConfiguration.cs" />
     <Compile Include="Configuration\SystemConfiguration.cs" />
     <Compile Include="Configuration\Modules\BootstrapperConfiguration.cs" />

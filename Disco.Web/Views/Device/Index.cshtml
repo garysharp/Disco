@@ -9,13 +9,13 @@
 @if (Authorization.HasAny(Claims.Device.Actions.Import, Claims.Device.Actions.Export, Claims.Device.Actions.EnrolDevices))
 {
     <div class="actionBar">
-        @if (Authorization.HasAll(Claims.Device.Actions.Import, Claims.Device.Actions.Export))
+        @if (Authorization.Has(Claims.Device.Actions.Import))
         {
-            @Html.ActionLinkButton("Import/Export Devices", MVC.Device.ImportExport())
-        }else if (Authorization.Has(Claims.Device.Actions.Import)){
             @Html.ActionLinkButton("Import Devices", MVC.Device.ImportExport())
-        }else if (Authorization.Has(Claims.Device.Actions.Export)){
-            @Html.ActionLinkButton("Export All Devices", MVC.API.Device.ExportAllDevices())
+        }
+        @if (Authorization.Has(Claims.Device.Actions.Export))
+        {
+            @Html.ActionLinkButton("Export Devices", MVC.Device.Export())
         }
         @if (Authorization.Has(Claims.Device.Actions.EnrolDevices))
         {

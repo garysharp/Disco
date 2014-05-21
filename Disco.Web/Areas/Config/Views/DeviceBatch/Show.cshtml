@@ -663,7 +663,7 @@
     {
         if (Authorization.Has(Claims.Device.Actions.Export))
         {
-        @Html.ActionLinkButton("Export Devices", MVC.API.DeviceBatch.ExportDevices(Model.DeviceBatch.Id))
+        @Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.Exporting.DeviceExportTypes.Batch, Model.DeviceBatch.Id))
         }
         if (Authorization.Has(Claims.Device.Search))
         {

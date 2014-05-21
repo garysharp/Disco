@@ -341,6 +341,30 @@
   background-color: #ededed;
   border: 1px solid #cccccc;
 }
+#Devices_Export .Devices_Export_Type_Target {
+  margin-top: 10px;
+  display: none;
+}
+#Devices_Export #Devices_Export_Fields #Devices_Export_Fields_Defaults {
+  font-size: .75em;
+}
+#Devices_Export #Devices_Export_Fields th {
+  font-size: 1.05em;
+}
+#Devices_Export #Devices_Export_Fields th span {
+  margin-top: 4px;
+  font-size: .8em;
+}
+#Devices_Export_Download_Dialog {
+  padding-top: 20px;
+  text-align: center;
+}
+#Devices_Export_Download_Dialog h4 {
+  margin-bottom: 30px;
+}
+#Devices_Export_Download_Dialog a {
+  margin-bottom: 20px;
+}
 #deviceImport #ImportFile {
   width: 100%;
 }

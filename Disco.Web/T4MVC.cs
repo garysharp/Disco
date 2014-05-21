@@ -883,6 +883,12 @@ namespace Disco.Web.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Export()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult ImportReview()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportReview);
@@ -911,6 +917,7 @@ namespace Disco.Web.Controllers
         {
             public readonly string Index = "Index";
             public readonly string AddOffline = "AddOffline";
+            public readonly string Export = "Export";
             public readonly string ImportExport = "ImportExport";
             public readonly string ImportReview = "ImportReview";
             public readonly string Show = "Show";
@@ -921,6 +928,7 @@ namespace Disco.Web.Controllers
         {
             public const string Index = "Index";
             public const string AddOffline = "AddOffline";
+            public const string Export = "Export";
             public const string ImportExport = "ImportExport";
             public const string ImportReview = "ImportReview";
             public const string Show = "Show";
@@ -934,6 +942,16 @@ namespace Disco.Web.Controllers
         public class ActionParamsClass_AddOffline
         {
             public readonly string m = "m";
+        }
+        static readonly ActionParamsClass_Export s_params_Export = new ActionParamsClass_Export();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Export ExportParams { get { return s_params_Export; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Export
+        {
+            public readonly string DownloadId = "DownloadId";
+            public readonly string ExportType = "ExportType";
+            public readonly string ExportTypeTargetId = "ExportTypeTargetId";
         }
         static readonly ActionParamsClass_ImportReview s_params_ImportReview = new ActionParamsClass_ImportReview();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -964,6 +982,7 @@ namespace Disco.Web.Controllers
                 public readonly string _DeviceTable = "_DeviceTable";
                 public readonly string _ViewStart = "_ViewStart";
                 public readonly string AddOffline = "AddOffline";
+                public readonly string Export = "Export";
                 public readonly string ImportExport = "ImportExport";
                 public readonly string ImportReview = "ImportReview";
                 public readonly string Index = "Index";
@@ -972,6 +991,7 @@ namespace Disco.Web.Controllers
             public readonly string _DeviceTable = "~/Views/Device/_DeviceTable.cshtml";
             public readonly string _ViewStart = "~/Views/Device/_ViewStart.cshtml";
             public readonly string AddOffline = "~/Views/Device/AddOffline.cshtml";
+            public readonly string Export = "~/Views/Device/Export.cshtml";
             public readonly string ImportExport = "~/Views/Device/ImportExport.cshtml";
             public readonly string ImportReview = "~/Views/Device/ImportReview.cshtml";
             public readonly string Index = "~/Views/Device/Index.cshtml";
@@ -1032,6 +1052,18 @@ namespace Disco.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddOffline);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "m", m);
             AddOfflineOverride(callInfo, m);
+            return callInfo;
+        }
+
+        partial void ExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string DownloadId, Disco.Models.Services.Devices.Exporting.DeviceExportTypes? ExportType, int? ExportTypeTargetId);
+
+        public override System.Web.Mvc.ActionResult Export(string DownloadId, Disco.Models.Services.Devices.Exporting.DeviceExportTypes? ExportType, int? ExportTypeTargetId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DownloadId", DownloadId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ExportType", ExportType);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ExportTypeTargetId", ExportTypeTargetId);
+            ExportOverride(callInfo, DownloadId, ExportType, ExportTypeTargetId);
             return callInfo;
         }
 
@@ -2822,12 +2854,6 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
         }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult ExportDevices()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportDevices);
-        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public DeviceBatchController Actions { get { return MVC.API.DeviceBatch; } }
@@ -2862,7 +2888,6 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string Delete = "Delete";
             public readonly string Index = "Index";
             public readonly string Timeline = "Timeline";
-            public readonly string ExportDevices = "ExportDevices";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -2886,7 +2911,6 @@ namespace Disco.Web.Areas.API.Controllers
             public const string Delete = "Delete";
             public const string Index = "Index";
             public const string Timeline = "Timeline";
-            public const string ExportDevices = "ExportDevices";
         }
 
 
@@ -3055,14 +3079,6 @@ namespace Disco.Web.Areas.API.Controllers
         public ActionParamsClass_Index IndexParams { get { return s_params_Index; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Index
-        {
-            public readonly string id = "id";
-        }
-        static readonly ActionParamsClass_ExportDevices s_params_ExportDevices = new ActionParamsClass_ExportDevices();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_ExportDevices ExportDevicesParams { get { return s_params_ExportDevices; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_ExportDevices
         {
             public readonly string id = "id";
         }
@@ -3293,16 +3309,6 @@ namespace Disco.Web.Areas.API.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Timeline);
             TimelineOverride(callInfo);
-            return callInfo;
-        }
-
-        partial void ExportDevicesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
-
-        public override System.Web.Mvc.ActionResult ExportDevices(int id)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportDevices);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ExportDevicesOverride(callInfo, id);
             return callInfo;
         }
 
@@ -3555,6 +3561,18 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportProcess);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Export()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ExportRetrieve()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportRetrieve);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public DeviceController Actions { get { return MVC.API.Device; } }
@@ -3592,7 +3610,8 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string AttachmentRemove = "AttachmentRemove";
             public readonly string ImportParse = "ImportParse";
             public readonly string ImportProcess = "ImportProcess";
-            public readonly string ExportAllDevices = "ExportAllDevices";
+            public readonly string Export = "Export";
+            public readonly string ExportRetrieve = "ExportRetrieve";
             public readonly string MigrateDeviceMacAddressesFromLog = "MigrateDeviceMacAddressesFromLog";
         }
 
@@ -3620,7 +3639,8 @@ namespace Disco.Web.Areas.API.Controllers
             public const string AttachmentRemove = "AttachmentRemove";
             public const string ImportParse = "ImportParse";
             public const string ImportProcess = "ImportProcess";
-            public const string ExportAllDevices = "ExportAllDevices";
+            public const string Export = "Export";
+            public const string ExportRetrieve = "ExportRetrieve";
             public const string MigrateDeviceMacAddressesFromLog = "MigrateDeviceMacAddressesFromLog";
         }
 
@@ -3816,6 +3836,22 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_ImportProcess
         {
             public readonly string ParseTaskSessionKey = "ParseTaskSessionKey";
+        }
+        static readonly ActionParamsClass_Export s_params_Export = new ActionParamsClass_Export();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Export ExportParams { get { return s_params_Export; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Export
+        {
+            public readonly string Model = "Model";
+        }
+        static readonly ActionParamsClass_ExportRetrieve s_params_ExportRetrieve = new ActionParamsClass_ExportRetrieve();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ExportRetrieve ExportRetrieveParams { get { return s_params_ExportRetrieve; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ExportRetrieve
+        {
+            public readonly string Id = "Id";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -4070,12 +4106,23 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
-        partial void ExportAllDevicesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void ExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Models.Device.ExportModel Model);
 
-        public override System.Web.Mvc.ActionResult ExportAllDevices()
+        public override System.Web.Mvc.ActionResult Export(Disco.Web.Models.Device.ExportModel Model)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportAllDevices);
-            ExportAllDevicesOverride(callInfo);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Model", Model);
+            ExportOverride(callInfo, Model);
+            return callInfo;
+        }
+
+        partial void ExportRetrieveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
+
+        public override System.Web.Mvc.ActionResult ExportRetrieve(string Id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportRetrieve);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
+            ExportRetrieveOverride(callInfo, Id);
             return callInfo;
         }
 
@@ -4181,12 +4228,6 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ComponentRemove);
         }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult ExportDevices()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportDevices);
-        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public DeviceModelController Actions { get { return MVC.API.DeviceModel; } }
@@ -4215,7 +4256,6 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string ComponentUpdate = "ComponentUpdate";
             public readonly string ComponentRemove = "ComponentRemove";
             public readonly string Index = "Index";
-            public readonly string ExportDevices = "ExportDevices";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -4233,7 +4273,6 @@ namespace Disco.Web.Areas.API.Controllers
             public const string ComponentUpdate = "ComponentUpdate";
             public const string ComponentRemove = "ComponentRemove";
             public const string Index = "Index";
-            public const string ExportDevices = "ExportDevices";
         }
 
 
@@ -4340,14 +4379,6 @@ namespace Disco.Web.Areas.API.Controllers
         public ActionParamsClass_ComponentRemove ComponentRemoveParams { get { return s_params_ComponentRemove; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_ComponentRemove
-        {
-            public readonly string id = "id";
-        }
-        static readonly ActionParamsClass_ExportDevices s_params_ExportDevices = new ActionParamsClass_ExportDevices();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_ExportDevices ExportDevicesParams { get { return s_params_ExportDevices; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_ExportDevices
         {
             public readonly string id = "id";
         }
@@ -4517,16 +4548,6 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
-        partial void ExportDevicesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
-
-        public override System.Web.Mvc.ActionResult ExportDevices(int id)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportDevices);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ExportDevicesOverride(callInfo, id);
-            return callInfo;
-        }
-
     }
 }
 
@@ -4656,12 +4677,6 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DefaultAddDeviceOffline);
         }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult ExportDevices()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportDevices);
-        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public DeviceProfileController Actions { get { return MVC.API.DeviceProfile; } }
@@ -4695,7 +4710,6 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string Delete = "Delete";
             public readonly string Default = "Default";
             public readonly string DefaultAddDeviceOffline = "DefaultAddDeviceOffline";
-            public readonly string ExportDevices = "ExportDevices";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -4718,7 +4732,6 @@ namespace Disco.Web.Areas.API.Controllers
             public const string Delete = "Delete";
             public const string Default = "Default";
             public const string DefaultAddDeviceOffline = "DefaultAddDeviceOffline";
-            public const string ExportDevices = "ExportDevices";
         }
 
 
@@ -4889,14 +4902,6 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string redirect = "redirect";
-        }
-        static readonly ActionParamsClass_ExportDevices s_params_ExportDevices = new ActionParamsClass_ExportDevices();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_ExportDevices ExportDevicesParams { get { return s_params_ExportDevices; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_ExportDevices
-        {
-            public readonly string id = "id";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -5116,16 +5121,6 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             DefaultAddDeviceOfflineOverride(callInfo, id, redirect);
-            return callInfo;
-        }
-
-        partial void ExportDevicesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
-
-        public override System.Web.Mvc.ActionResult ExportDevices(int id)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportDevices);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ExportDevicesOverride(callInfo, id);
             return callInfo;
         }
 

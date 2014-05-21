@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BI\Job\LocationModes.cs" />
+    <Compile Include="Repository\Device\DeviceDecommissionReasons.cs" />
     <Compile Include="Services\Authorization\IAuthorizationToken.cs" />
     <Compile Include="Services\Authorization\IClaimNavigatorItem.cs" />
     <Compile Include="Services\Authorization\IRoleToken.cs" />
@@ -100,6 +101,9 @@
     <Compile Include="Repository\User\UserAttachment.cs" />
     <Compile Include="Repository\User\UserDetail.cs" />
     <Compile Include="Repository\User\AuthorizationRole.cs" />
+    <Compile Include="Services\Devices\Exporting\DeviceExportRecord.cs" />
+    <Compile Include="Services\Devices\Exporting\DeviceExportTypes.cs" />
+    <Compile Include="Services\Devices\Exporting\DeviceExportOptions.cs" />
     <Compile Include="Services\Jobs\JobLists\JobLocationReference.cs" />
     <Compile Include="Services\Jobs\JobLists\JobTableItemModel.cs" />
     <Compile Include="Services\Jobs\JobLists\JobTableModel.cs" />
@@ -145,6 +149,7 @@
     <Compile Include="UI\Config\Logging\ConfigLoggingTaskStatusModel.cs" />
     <Compile Include="UI\Config\Organisation\ConfigOrganisationIndexModel.cs" />
     <Compile Include="UI\Device\DeviceAddOfflineModel.cs" />
+    <Compile Include="UI\Device\DeviceExportModel.cs" />
     <Compile Include="UI\Device\DeviceImportModel.cs" />
     <Compile Include="UI\Device\DeviceImportReviewModel.cs" />
     <Compile Include="UI\Device\DeviceIndexModel.cs" />
@@ -164,7 +169,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

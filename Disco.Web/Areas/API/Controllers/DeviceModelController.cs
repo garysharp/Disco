@@ -356,23 +356,5 @@ namespace Disco.Web.Areas.API.Controllers
         }
         #endregion
 
-        #region Exporting
-        [DiscoAuthorizeAll(Claims.Config.DeviceModel.Show, Claims.Device.Actions.Export)]
-        public virtual ActionResult ExportDevices(int id)
-        {
-            DeviceModel dm = Database.DeviceModels.Find(id);
-            if (dm == null)
-                throw new ArgumentNullException("id", "Invalid Device Model Id");
-
-            var devices = Database.Devices.Where(d => !d.DecommissionedDate.HasValue && d.DeviceModelId == dm.Id);
-
-            var export = BI.DeviceBI.Importing.Export.GenerateExport(devices);
-
-            var filename = string.Format("DiscoDeviceExport-Model_{0}-{1:yyyyMMdd-HHmmss}.csv", dm.Id, DateTime.Now);
-
-            return File(export, "text/csv", filename);
-        }
-        #endregion
-
     }
 }
