@@ -43,7 +43,19 @@ namespace Disco.Services.Devices.Exporting
                 });
             }
 
-            TaskStatus.UpdateStatus(40, "Extracting records from the database");
+            // Update Last Network Logon Date
+            if (Options.DeviceLastNetworkLogon)
+            {
+                TaskStatus.UpdateStatus(40, "Updating device last network logon dates");
+                try
+                {
+                    Interop.ActiveDirectory.ADTaskUpdateNetworkLogonDates.UpdateLastNetworkLogonDates(Database, ScheduledTaskMockStatus.Create());
+                    Database.SaveChanges();
+                }
+                catch (Exception) { } // Ignore Errors
+            }
+
+            TaskStatus.UpdateStatus(60, "Extracting records from the database");
 
             var records = BuildRecords(Devices).ToList();
 
