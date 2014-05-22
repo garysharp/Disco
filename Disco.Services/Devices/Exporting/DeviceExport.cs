@@ -11,12 +11,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Disco.Services.Devices.Export
+namespace Disco.Services.Devices.Exporting
 {
     public static class DeviceExport
     {
 
-        public static MemoryStream GenerateExport(DiscoDataContext Database, IQueryable<Device> Devices, DeviceExportOptions Options, IScheduledTaskBasicStatus TaskStatus)
+        public static DeviceExportResult GenerateExport(DiscoDataContext Database, IQueryable<Device> Devices, DeviceExportOptions Options, IScheduledTaskBasicStatus TaskStatus)
         {
             TaskStatus.UpdateStatus(15, "Building metadata and database query");
             var metadata = Options.BuildMetadata();
@@ -70,14 +70,18 @@ namespace Disco.Services.Devices.Export
             }
 
             stream.Position = 0;
-            return stream;
+            return new DeviceExportResult()
+            {
+                CsvResult = stream,
+                RecordCount = records.Count
+            };
         }
-        public static MemoryStream GenerateExport(DiscoDataContext Database, IQueryable<Device> Devices, DeviceExportOptions Options)
+        public static DeviceExportResult GenerateExport(DiscoDataContext Database, IQueryable<Device> Devices, DeviceExportOptions Options)
         {
             return GenerateExport(Database, Devices, Options, ScheduledTaskMockStatus.Create());
         }
 
-        public static MemoryStream GenerateExport(DiscoDataContext Database, DeviceExportOptions Options, IScheduledTaskBasicStatus TaskStatus)
+        public static DeviceExportResult GenerateExport(DiscoDataContext Database, DeviceExportOptions Options, IScheduledTaskBasicStatus TaskStatus)
         {
             switch (Options.ExportType)
             {
@@ -93,7 +97,7 @@ namespace Disco.Services.Devices.Export
                     throw new ArgumentException(string.Format("Unknown Device Export Type", Options.ExportType.ToString()), "Options");
             }
         }
-        public static MemoryStream GenerateExport(DiscoDataContext Database, DeviceExportOptions Options)
+        public static DeviceExportResult GenerateExport(DiscoDataContext Database, DeviceExportOptions Options)
         {
             return GenerateExport(Database, Options, ScheduledTaskMockStatus.Create());
         }

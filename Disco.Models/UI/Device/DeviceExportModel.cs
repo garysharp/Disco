@@ -7,7 +7,8 @@ namespace Disco.Models.UI.Device
     {
         DeviceExportOptions Options { get; set; }
 
-        string DownloadExportSessionId { get; set; }
+        string ExportSessionId { get; set; }
+        DeviceExportResult ExportSessionResult { get; set; }
 
         IEnumerable<KeyValuePair<int, string>> DeviceBatches { get; set; }
         IEnumerable<KeyValuePair<int, string>> DeviceModels { get; set; }

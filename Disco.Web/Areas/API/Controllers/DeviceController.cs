@@ -1,6 +1,6 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Services.Authorization;
-using Disco.Services.Devices.Export;
+using Disco.Services.Devices.Exporting;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using Disco.Services.Web;
@@ -564,7 +564,7 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Exporting 
-        private const string ExportSessionCacheKey = "DeviceExportContext_{0}";
+        internal const string ExportSessionCacheKey = "DeviceExportContext_{0}";
 
         [DiscoAuthorize(Claims.Device.Actions.Export)]
         public virtual ActionResult Export(ExportModel Model)
@@ -588,7 +588,7 @@ namespace Disco.Web.Areas.API.Controllers
             exportContext.TaskStatus.SetFinishedUrl(Url.Action(finishedActionResult)); 
 
             // Try waiting for completion
-            if (exportContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(1.5)))
+            if (exportContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(2)))
                 return RedirectToAction(finishedActionResult);
             else
                 return RedirectToAction(MVC.Config.Logging.TaskStatus(exportContext.TaskStatus.SessionId));
@@ -605,12 +605,12 @@ namespace Disco.Web.Areas.API.Controllers
             if (context == null)
                 throw new ArgumentException("The Id specified is invalid, or the export data expired (60 minutes)", "Id");
 
-            if (context.CsvResult == null)
+            if (context.Result == null || context.Result.CsvResult == null)
                 throw new ArgumentException("The export session is still running, or failed to complete successfully", "Id");
 
             var filename = string.Format("DiscoDeviceExport-{0:yyyyMMdd-HHmmss}.csv", context.TaskStatus.StartedTimestamp.Value);
 
-            return File(context.CsvResult.ToArray(), "text/csv", filename);
+            return File(context.Result.CsvResult.ToArray(), "text/csv", filename);
         } 
 
         #endregion

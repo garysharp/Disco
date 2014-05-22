@@ -2,7 +2,7 @@
 using Disco.Services.Tasks;
 using System.IO;
 
-namespace Disco.Services.Devices.Export
+namespace Disco.Services.Devices.Exporting
 {
     public class DeviceExportTaskContext
     {
@@ -10,7 +10,7 @@ namespace Disco.Services.Devices.Export
 
         public ScheduledTaskStatus TaskStatus { get; set; }
 
-        public MemoryStream CsvResult { get; set; }
+        public DeviceExportResult Result { get; set; }
 
         public DeviceExportTaskContext(DeviceExportOptions Options)
         {

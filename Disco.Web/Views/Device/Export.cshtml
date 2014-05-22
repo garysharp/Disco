@@ -11,24 +11,6 @@
         .GroupBy(m => m.ShortDisplayName);
 }
 <div id="Devices_Export">
-    @if (!string.IsNullOrEmpty(Model.DownloadExportSessionId))
-    {
-        <div id="Devices_Export_Download_Dialog" class="dialog" title="Export Devices">
-            <h4>The Device Export was completed successfully.</h4>
-            <a href="@Url.Action(MVC.API.Device.ExportRetrieve(Model.DownloadExportSessionId))" class="button"><i class="fa fa-download fa-lg"></i>Download Device Export</a>
-        </div>
-        <script>
-            $(function () {
-                $('#Devices_Export_Download_Dialog')
-                    .dialog({
-                        width: 400,
-                        resizable: false,
-                        modal: true,
-                        autoOpen: true
-                    });
-            });
-        </script>
-    }
     @using (Html.BeginForm(MVC.API.Device.Export()))
     {
         <div id="Devices_Export_Type" class="form" style="width: 530px">
@@ -99,10 +81,12 @@
         </div>
         <script>
             $(function () {
-                exportDefaultFields = ['DeviceSerialNumber', 'ModelId', 'ProfileId', 'BatchId', 'AssignedUserId', 'DeviceLocation', 'DeviceAssetNumber'];
-                $exportFields = $('#Devices_Export_Fields');
-                $exportType = $('#Options_ExportType');
-                $exportTypeTargetContainers = $('#Devices_Export_Type').find('.Devices_Export_Type_Target');
+                var exportDefaultFields = ['DeviceSerialNumber', 'ModelId', 'ProfileId', 'BatchId', 'AssignedUserId', 'DeviceLocation', 'DeviceAssetNumber'];
+                var $exportFields = $('#Devices_Export_Fields');
+                var $exportType = $('#Options_ExportType');
+                var $exportTypeTargetContainers = $('#Devices_Export_Type').find('.Devices_Export_Type_Target');
+                var $form = $exportType.closest('form');
+                var $exportingDialog = null;
 
                 function exportTypeChange() {
                     $exportTypeTargetContainers.hide();
@@ -124,7 +108,7 @@
                 exportTypeChange();
 
                 $exportFields.on('click', 'a.selectAll,a.selectNone', function () {
-                    $this = $(this);
+                    var $this = $(this);
 
                     $this.closest('tr').find('input').prop('checked', $this.is('.selectAll'));
 
@@ -141,10 +125,67 @@
 
                     return false;
                 });
+
+                // Submit Validation
+                function submitHandler() {
+                    var exportFieldCount = $exportFields.find('input:checked').length;
+
+                    if (exportFieldCount > 0) {
+
+                        if ($exportingDialog == null) {
+                            $exportingDialog = $('#Devices_Export_Exporting').dialog({
+                                width: 400,
+                                height: 160,
+                                resizable: false,
+                                modal: true,
+                                autoOpen: false
+                            });
+                        }
+                        $exportingDialog.dialog('open');
+
+                        $form[0].submit();
+                    }
+                    else
+                        alert('Select at least one field to export.');
+                }
+                $.validator.unobtrusive.parse($form);
+                $form.data("validator").settings.submitHandler = submitHandler;
+
+                $('#Devices_Export_Download_Dialog').dialog({
+                    width: 400,
+                    resizable: false,
+                    modal: true,
+                    autoOpen: true
+                });
+                $('#Devices_Export_Button').click(function () {
+                    $form.submit();
+                });
             });
         </script>
-        <div class="actionBar">
-            <input type="submit" class="button" value="Export Devices" />
-        </div>
     }
+</div>
+@if (Model.ExportSessionId != null)
+{
+    <div id="Devices_Export_Download_Dialog" class="dialog" title="Export Devices">
+        <h4>@Model.ExportSessionResult.RecordCount record@(Model.ExportSessionResult.RecordCount != 1 ? "s" : null) were successfully exported.</h4>
+        <a href="@Url.Action(MVC.API.Device.ExportRetrieve(Model.ExportSessionId))" class="button"><i class="fa fa-download fa-lg"></i>Download Device Export</a>
+    </div>
+    <script>
+        $(function () {
+            $('#Devices_Export_Download_Dialog')
+                .dialog({
+                    width: 400,
+                    height: 160,
+                    resizable: false,
+                    modal: true,
+                    autoOpen: true
+                });
+        });
+    </script>
+}
+<div id="Devices_Export_Exporting" class="dialog" title="Exporting Devices...">
+    <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Device Exporting devices...</h4>
+</div>
+<div class="actionBar">
+    <a id="Devices_Export_Button" href="#" class="button">Export Devices</a>
 </div>

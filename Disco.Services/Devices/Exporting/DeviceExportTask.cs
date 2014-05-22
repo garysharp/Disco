@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using Disco.Data.Repository;
 
-namespace Disco.Services.Devices.Export
+namespace Disco.Services.Devices.Exporting
 {
     public class DeviceExportTask : ScheduledTask
     {
@@ -40,7 +40,7 @@ namespace Disco.Services.Devices.Export
 
             using (DiscoDataContext Database = new DiscoDataContext())
             {
-                context.CsvResult = DeviceExport.GenerateExport(Database, context.Options, this.Status);
+                context.Result = DeviceExport.GenerateExport(Database, context.Options, this.Status);
             }
         }
     }

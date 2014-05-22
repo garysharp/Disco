@@ -5,14 +5,15 @@ using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Device;
 using Disco.Services;
 using Disco.Services.Authorization;
+using Disco.Services.Devices.Exporting;
 using Disco.Services.Plugins;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 
@@ -98,7 +99,16 @@ namespace Disco.Web.Controllers
             };
 
             if (!string.IsNullOrWhiteSpace(DownloadId))
-                m.DownloadExportSessionId = DownloadId;
+            {
+                string key = string.Format(Areas.API.Controllers.DeviceController.ExportSessionCacheKey, DownloadId);
+                var context = HttpRuntime.Cache.Get(key) as DeviceExportTaskContext;
+
+                if (context != null)
+                {
+                    m.ExportSessionResult = context.Result;
+                    m.ExportSessionId = DownloadId;
+                }
+            }
 
             if (ExportType.HasValue && ExportTypeTargetId.HasValue)
             {

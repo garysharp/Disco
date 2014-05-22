@@ -365,6 +365,14 @@
 #Devices_Export_Download_Dialog a {
   margin-bottom: 20px;
 }
+#Devices_Export_Exporting {
+  padding-top: 50px;
+  text-align: center;
+}
+#Devices_Export_Exporting i {
+  margin-right: 10px;
+  color: #1e6dab;
+}
 #deviceImport #ImportFile {
   width: 100%;
 }
