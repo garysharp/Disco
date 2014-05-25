@@ -30,7 +30,7 @@
                                 {
                                 <li class="d-sm"><i class="fa fa-caret-right"></i><a>Queues</a>
                                     <ul>
-                                        @foreach (var queueToken in queues)
+                                        @foreach (var queueToken in queues.OrderBy(q => q.JobQueue.Name))
                                         {
                                             <li><a href="@Url.Action(MVC.Job.Queue(queueToken.JobQueue.Id))"><i class="fa fa-@(queueToken.JobQueue.Icon) fa-fw d-@(queueToken.JobQueue.IconColour)"></i>@(queueToken.JobQueue.Name)</a></li>
                                         }
