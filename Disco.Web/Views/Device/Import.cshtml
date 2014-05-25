@@ -1,0 +1,232 @@
+﻿@model Disco.Web.Models.Device.ImportModel
+@using Disco.Models.Services.Devices.Importing;
+@{
+    Authorization.Require(Claims.Device.Actions.Import);
+
+    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import Devices");
+}
+<div id="Devices_Import">
+    @using (Html.BeginForm(MVC.API.Device.ImportBegin(), FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div id="importDialog" class="form" style="width: 450px">
+            <h2>Import Devices</h2>
+            <table>
+                <tr>
+                    <th>
+                        @Html.LabelFor(m => m.ImportFile)
+                    </th>
+                    <td>
+                        <input id="ImportFile" name="ImportFile" type="file" data-val="true" data-val-required="An Import File is required." /><br />
+                        @Html.ValidationMessageFor(m => m.ImportFile)
+                        <div>
+                            @Html.CheckBoxFor(m => m.HasHeader)
+                            @Html.LabelFor(m => m.HasHeader)
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <p class="actions">
+                <input type="submit" class="button" value="Begin Import" />
+            </p>
+        </div>
+        <div id="Devices_Import_Loading_Dialog" class="dialog" title="Loading devices import...">
+            <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Loading device import...</h4>
+        </div>
+        <script>
+            $(function () {
+                var $Devices_Import_Loading_Dialog = null;
+
+                $('#ImportFile').closest('form').submit(function () {
+                    if ($Devices_Import_Loading_Dialog == null) {
+                        $Devices_Import_Loading_Dialog = $('#Devices_Import_Loading_Dialog').dialog({
+                            width: 400,
+                            height: 160,
+                            resizable: false,
+                            modal: true,
+                            autoOpen: false
+                        });
+                    }
+
+                    window.setTimeout(function () {
+                        $Devices_Import_Loading_Dialog.dialog('open');
+                    }, 200);
+                });
+            });
+        </script>
+    }
+    <div id="Devices_Import_Documentation">
+        <h3>CSV Import Specification</h3>
+        <h4>Format</h4>
+        <ul>
+            <li>The import file must be in <strong>comma-separated values format</strong> (<a href="http://en.wikipedia.org/wiki/Comma-separated_values" target="_blank">CSV Reference</a>).</li>
+            <li>Be conscious of editors removing leading zeros from serial numbers (ie: Microsoft Excel).</li>
+        </ul>
+        <h4>Fields</h4>
+        <div class="smallMessage">The following fields/columns are available for to the import file. The Device Serial Number is the only required field, all other fields are optional. Fields can appear in any order.</div>
+        <table class="tableData">
+            <thead>
+                <tr>
+                    <th style="width: 100px;">Field Name</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var field in Model.HeaderTypes)
+                {
+                    <tr>
+                        <th>@field.Item2</th>
+                        <td>
+                            @field.Item3
+                            @if (field.Item1 == DeviceImportFieldTypes.DeviceSerialNumber.ToString())
+                            {
+                                <strong>Required</strong>
+                            }
+                            else if (field.Item1 == DeviceImportFieldTypes.ModelId.ToString())
+                            {
+                                <span>(<a href="#" id="Devices_Import_Documentation_DeviceModels_Button">Show IDs</a>)</span>
+                            }
+                            else if (field.Item1 == DeviceImportFieldTypes.ProfileId.ToString())
+                            {
+                                <span>(<a href="#" id="Devices_Import_Documentation_DeviceProfiles_Button">Show IDs</a>)</span>
+                            }
+                            else if (field.Item1 == DeviceImportFieldTypes.BatchId.ToString())
+                            {
+                                <span>(<a href="#" id="Devices_Import_Documentation_DeviceBatches_Button">Show IDs</a>)</span>
+                            }
+
+                        </td>
+                    </tr>                   
+                }
+            </tbody>
+        </table>
+
+
+        <div id="Devices_Import_Documentation_DeviceModels_Dialog" class="dialog" title="Disco Device Model Ids">
+            <table class="tableData">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Description</th>
+                        <th>Manufacturer</th>
+                        <th>Model</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var dm in Model.DeviceModels)
+                    {
+                        <tr>
+                            <td>@Html.ActionLink(dm.Id.ToString(), MVC.Config.DeviceModel.Index(dm.Id))</td>
+                            <td>@dm.ToString()</td>
+                            <td>@dm.Manufacturer</td>
+                            <td>@dm.Model</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div id="Devices_Import_Documentation_DeviceProfiles_Dialog" class="dialog" title="Disco Device Profile Ids">
+            <table class="tableData">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Short Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var dp in Model.DeviceProfiles)
+                    {
+                        <tr>
+                            <td>@Html.ActionLink(dp.Id.ToString(), MVC.Config.DeviceProfile.Index(dp.Id))</td>
+                            <td>@dp.Name</td>
+                            <td>@dp.ShortName</td>
+                            <td>@dp.Description</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div id="Devices_Import_Documentation_DeviceBatches_Dialog" class="dialog" title="Disco Device Batch Ids">
+            <table class="tableData">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Purchase Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var db in Model.DeviceBatches)
+                    {
+                        <tr>
+                            <td>@Html.ActionLink(db.Id.ToString(), MVC.Config.DeviceBatch.Index(db.Id))</td>
+                            <td>@db.Name</td>
+                            <td>@CommonHelpers.FriendlyDate(db.PurchaseDate)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+            $(function () {
+                var dialogOptions = {
+                    width: 700,
+                    height: 600,
+                    resizable: false,
+                    modal: true,
+                    autoOpen: false
+                },
+                $DeviceModelsDialog = null,
+                $DeviceProfilesDialog = null,
+                $DeviceBatchesDialog = null;
+
+                $('#Devices_Import_Documentation_DeviceModels_Button').click(function (e) {
+                    e.preventDefault();
+                    if (!$DeviceModelsDialog)
+                        $DeviceModelsDialog = $('#Devices_Import_Documentation_DeviceModels_Dialog').dialog(dialogOptions);
+                    $DeviceModelsDialog.dialog('open');
+                });
+
+                $('#Devices_Import_Documentation_DeviceProfiles_Button').click(function (e) {
+                    e.preventDefault();
+                    if (!$DeviceProfilesDialog)
+                        $DeviceProfilesDialog = $('#Devices_Import_Documentation_DeviceProfiles_Dialog').dialog(dialogOptions);
+                    $DeviceProfilesDialog.dialog('open');
+                });
+                $('#Devices_Import_Documentation_DeviceBatches_Button').click(function (e) {
+                    e.preventDefault();
+                    if (!$DeviceBatchesDialog)
+                        $DeviceBatchesDialog = $('#Devices_Import_Documentation_DeviceBatches_Dialog').dialog(dialogOptions);
+                    $DeviceBatchesDialog.dialog('open');
+                });
+            });
+        </script>
+    </div>
+</div>
+@if (Model.CompletedImportSessionContext != null)
+{
+    <div id="Devices_Import_Completed_Dialog" class="dialog" title="Device Import Completed">
+        <h3><i class="fa fa-lg fa-check"></i>Successfully imported/updated @Model.CompletedImportSessionContext.AffectedRecords device@(Model.CompletedImportSessionContext.AffectedRecords != 1 ? "s" : null).</h3>
+        <div>File: <code>@Model.CompletedImportSessionContext.Filename</code></div>
+    </div>
+    <script>
+        $(function () {
+            $('#Devices_Import_Completed_Dialog')
+                .dialog({
+                    width: 500,
+                    resizable: false,
+                    modal: true,
+                    autoOpen: true,
+                    buttons: {
+                        Close: function () {
+                            $(this).dialog('destroy');
+                        }
+                    }
+                });
+        });
+    </script>
+}

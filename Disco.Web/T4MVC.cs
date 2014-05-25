@@ -558,12 +558,24 @@ namespace Links
                 private const string URLPATH = "~/ClientSource/Style/FontAwesome";
                 public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                 public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public static readonly string bordered_pulled_less = Url("bordered-pulled.less");
+                public static readonly string core_less = Url("core.less");
+                public static readonly string fixed_width_less = Url("fixed-width.less");
                 public static readonly string font_awesome_less = Url("font-awesome.less");
                 public static readonly string fontawesome_webfont_eot = Url("fontawesome-webfont.eot");
                 public static readonly string fontawesome_webfont_svg = Url("fontawesome-webfont.svg");
                 public static readonly string fontawesome_webfont_ttf = Url("fontawesome-webfont.ttf");
                 public static readonly string fontawesome_webfont_woff = Url("fontawesome-webfont.woff");
                 public static readonly string FontAwesome_otf = Url("FontAwesome.otf");
+                public static readonly string icons_less = Url("icons.less");
+                public static readonly string larger_less = Url("larger.less");
+                public static readonly string list_less = Url("list.less");
+                public static readonly string mixins_less = Url("mixins.less");
+                public static readonly string path_less = Url("path.less");
+                public static readonly string rotated_flipped_less = Url("rotated-flipped.less");
+                public static readonly string spinning_less = Url("spinning.less");
+                public static readonly string stacked_less = Url("stacked.less");
+                public static readonly string variables_less = Url("variables.less");
             }
         
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -683,6 +695,9 @@ namespace Links
                 }
             
                 public static readonly string jquery_ui_less = Url("jquery-ui.less");
+                public static readonly string jquery_ui_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui.min.css") ? Url("jquery-ui.min.css") : Url("jquery-ui.css");
+                     
+                public static readonly string jquery_ui_min_css = Url("jquery-ui.min.css");
             }
         
             public static readonly string jQueryUIExtensions_less = Url("jQueryUIExtensions.less");
@@ -889,6 +904,18 @@ namespace Disco.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Import()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Import);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ImportHeaders()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportHeaders);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult ImportReview()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportReview);
@@ -918,7 +945,8 @@ namespace Disco.Web.Controllers
             public readonly string Index = "Index";
             public readonly string AddOffline = "AddOffline";
             public readonly string Export = "Export";
-            public readonly string ImportExport = "ImportExport";
+            public readonly string Import = "Import";
+            public readonly string ImportHeaders = "ImportHeaders";
             public readonly string ImportReview = "ImportReview";
             public readonly string Show = "Show";
         }
@@ -929,7 +957,8 @@ namespace Disco.Web.Controllers
             public const string Index = "Index";
             public const string AddOffline = "AddOffline";
             public const string Export = "Export";
-            public const string ImportExport = "ImportExport";
+            public const string Import = "Import";
+            public const string ImportHeaders = "ImportHeaders";
             public const string ImportReview = "ImportReview";
             public const string Show = "Show";
         }
@@ -953,13 +982,29 @@ namespace Disco.Web.Controllers
             public readonly string ExportType = "ExportType";
             public readonly string ExportTypeTargetId = "ExportTypeTargetId";
         }
+        static readonly ActionParamsClass_Import s_params_Import = new ActionParamsClass_Import();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Import ImportParams { get { return s_params_Import; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Import
+        {
+            public readonly string Id = "Id";
+        }
+        static readonly ActionParamsClass_ImportHeaders s_params_ImportHeaders = new ActionParamsClass_ImportHeaders();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ImportHeaders ImportHeadersParams { get { return s_params_ImportHeaders; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ImportHeaders
+        {
+            public readonly string Id = "Id";
+        }
         static readonly ActionParamsClass_ImportReview s_params_ImportReview = new ActionParamsClass_ImportReview();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_ImportReview ImportReviewParams { get { return s_params_ImportReview; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_ImportReview
         {
-            public readonly string ImportParseTaskId = "ImportParseTaskId";
+            public readonly string Id = "Id";
         }
         static readonly ActionParamsClass_Show s_params_Show = new ActionParamsClass_Show();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -983,7 +1028,8 @@ namespace Disco.Web.Controllers
                 public readonly string _ViewStart = "_ViewStart";
                 public readonly string AddOffline = "AddOffline";
                 public readonly string Export = "Export";
-                public readonly string ImportExport = "ImportExport";
+                public readonly string Import = "Import";
+                public readonly string ImportHeaders = "ImportHeaders";
                 public readonly string ImportReview = "ImportReview";
                 public readonly string Index = "Index";
                 public readonly string Show = "Show";
@@ -992,7 +1038,8 @@ namespace Disco.Web.Controllers
             public readonly string _ViewStart = "~/Views/Device/_ViewStart.cshtml";
             public readonly string AddOffline = "~/Views/Device/AddOffline.cshtml";
             public readonly string Export = "~/Views/Device/Export.cshtml";
-            public readonly string ImportExport = "~/Views/Device/ImportExport.cshtml";
+            public readonly string Import = "~/Views/Device/Import.cshtml";
+            public readonly string ImportHeaders = "~/Views/Device/ImportHeaders.cshtml";
             public readonly string ImportReview = "~/Views/Device/ImportReview.cshtml";
             public readonly string Index = "~/Views/Device/Index.cshtml";
             public readonly string Show = "~/Views/Device/Show.cshtml";
@@ -1067,22 +1114,33 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
-        partial void ImportExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void ImportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
 
-        public override System.Web.Mvc.ActionResult ImportExport()
+        public override System.Web.Mvc.ActionResult Import(string Id)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportExport);
-            ImportExportOverride(callInfo);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Import);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
+            ImportOverride(callInfo, Id);
             return callInfo;
         }
 
-        partial void ImportReviewOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string ImportParseTaskId);
+        partial void ImportHeadersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
 
-        public override System.Web.Mvc.ActionResult ImportReview(string ImportParseTaskId)
+        public override System.Web.Mvc.ActionResult ImportHeaders(string Id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportHeaders);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
+            ImportHeadersOverride(callInfo, Id);
+            return callInfo;
+        }
+
+        partial void ImportReviewOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
+
+        public override System.Web.Mvc.ActionResult ImportReview(string Id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportReview);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ImportParseTaskId", ImportParseTaskId);
-            ImportReviewOverride(callInfo, ImportParseTaskId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
+            ImportReviewOverride(callInfo, Id);
             return callInfo;
         }
 
@@ -3551,15 +3609,21 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ImportBegin()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportBegin);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult ImportParse()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportParse);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult ImportProcess()
+        public virtual System.Web.Mvc.ActionResult ImportApply()
         {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportProcess);
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportApply);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -3608,8 +3672,9 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string Attachment = "Attachment";
             public readonly string Attachments = "Attachments";
             public readonly string AttachmentRemove = "AttachmentRemove";
+            public readonly string ImportBegin = "ImportBegin";
             public readonly string ImportParse = "ImportParse";
-            public readonly string ImportProcess = "ImportProcess";
+            public readonly string ImportApply = "ImportApply";
             public readonly string Export = "Export";
             public readonly string ExportRetrieve = "ExportRetrieve";
             public readonly string MigrateDeviceMacAddressesFromLog = "MigrateDeviceMacAddressesFromLog";
@@ -3637,8 +3702,9 @@ namespace Disco.Web.Areas.API.Controllers
             public const string Attachment = "Attachment";
             public const string Attachments = "Attachments";
             public const string AttachmentRemove = "AttachmentRemove";
+            public const string ImportBegin = "ImportBegin";
             public const string ImportParse = "ImportParse";
-            public const string ImportProcess = "ImportProcess";
+            public const string ImportApply = "ImportApply";
             public const string Export = "Export";
             public const string ExportRetrieve = "ExportRetrieve";
             public const string MigrateDeviceMacAddressesFromLog = "MigrateDeviceMacAddressesFromLog";
@@ -3821,21 +3887,31 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
         }
+        static readonly ActionParamsClass_ImportBegin s_params_ImportBegin = new ActionParamsClass_ImportBegin();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ImportBegin ImportBeginParams { get { return s_params_ImportBegin; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ImportBegin
+        {
+            public readonly string ImportFile = "ImportFile";
+            public readonly string HasHeader = "HasHeader";
+        }
         static readonly ActionParamsClass_ImportParse s_params_ImportParse = new ActionParamsClass_ImportParse();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_ImportParse ImportParseParams { get { return s_params_ImportParse; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_ImportParse
         {
-            public readonly string ImportFile = "ImportFile";
+            public readonly string Id = "Id";
+            public readonly string Headers = "Headers";
         }
-        static readonly ActionParamsClass_ImportProcess s_params_ImportProcess = new ActionParamsClass_ImportProcess();
+        static readonly ActionParamsClass_ImportApply s_params_ImportApply = new ActionParamsClass_ImportApply();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_ImportProcess ImportProcessParams { get { return s_params_ImportProcess; } }
+        public ActionParamsClass_ImportApply ImportApplyParams { get { return s_params_ImportApply; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_ImportProcess
+        public class ActionParamsClass_ImportApply
         {
-            public readonly string ParseTaskSessionKey = "ParseTaskSessionKey";
+            public readonly string Id = "Id";
         }
         static readonly ActionParamsClass_Export s_params_Export = new ActionParamsClass_Export();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -4086,23 +4162,35 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
-        partial void ImportParseOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Web.HttpPostedFileBase ImportFile);
+        partial void ImportBeginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Web.HttpPostedFileBase ImportFile, bool HasHeader);
 
-        public override System.Web.Mvc.ActionResult ImportParse(System.Web.HttpPostedFileBase ImportFile)
+        public override System.Web.Mvc.ActionResult ImportBegin(System.Web.HttpPostedFileBase ImportFile, bool HasHeader)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportParse);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportBegin);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ImportFile", ImportFile);
-            ImportParseOverride(callInfo, ImportFile);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "HasHeader", HasHeader);
+            ImportBeginOverride(callInfo, ImportFile, HasHeader);
             return callInfo;
         }
 
-        partial void ImportProcessOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string ParseTaskSessionKey);
+        partial void ImportParseOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id, System.Collections.Generic.List<Disco.Models.Services.Devices.Importing.DeviceImportFieldTypes> Headers);
 
-        public override System.Web.Mvc.ActionResult ImportProcess(string ParseTaskSessionKey)
+        public override System.Web.Mvc.ActionResult ImportParse(string Id, System.Collections.Generic.List<Disco.Models.Services.Devices.Importing.DeviceImportFieldTypes> Headers)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportProcess);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ParseTaskSessionKey", ParseTaskSessionKey);
-            ImportProcessOverride(callInfo, ParseTaskSessionKey);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportParse);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Headers", Headers);
+            ImportParseOverride(callInfo, Id, Headers);
+            return callInfo;
+        }
+
+        partial void ImportApplyOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
+
+        public override System.Web.Mvc.ActionResult ImportApply(string Id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportApply);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
+            ImportApplyOverride(callInfo, Id);
             return callInfo;
         }
 

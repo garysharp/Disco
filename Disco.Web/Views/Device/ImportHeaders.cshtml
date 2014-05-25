@@ -1,0 +1,183 @@
+﻿@model Disco.Web.Models.Device.ImportHeadersModel
+@{
+    Authorization.Require(Claims.Device.Actions.Import);
+
+    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import Devices", MVC.Device.Import(), string.Format("File: {0}", Model.Context.Filename));
+}
+<div id="Devices_Import_Headers">
+
+    <h2>Define Import Columns</h2>
+
+    @if (Model.Context.RawData.Count > 10)
+    {
+        <h4 class="alert">@Model.Context.RawData.Count records were loaded, only the first 10 are shown here.</h4>
+    }
+
+    <h4 id="Devices_Import_Headers_DeviceSerialNumberRequired" class="error">The Device Serial Number column must be defined.</h4>
+
+    <div id="Devices_Import_Headers_TableContainer">
+        <table class="tableData">
+            <thead>
+                <tr>
+                    @foreach (var header in Model.Context.Header.Select((h, i) => Tuple.Create(h, i)))
+                    {
+                        <th data-headerindex="@header.Item2" class="header@(header.Item1.Item2.ToString())">@header.Item1.Item1</th>
+                    }
+                </tr>
+                <tr>
+                    @foreach (var header in Model.Context.Header.Select((h, i) => Tuple.Create(h, i)))
+                    {
+                        <td data-headerindex="@header.Item2" class="header@(header.Item1.Item2.ToString())">
+                            <ul class="importHeaderType" data-headerindex="@header.Item2" data-headertype="@header.Item1.Item2.ToString()">
+                                <li><a href="#"><span class="headerTypeTitle">@(Model.HeaderTypes.FirstOrDefault(h => h.Item1 == header.Item1.Item2).Item2)</span></a>
+                                    <ul>
+                                        @foreach (var headerType in Model.HeaderTypes)
+                                        {
+                                            <li data-headertype="@headerType.Item1"><a href="#">@headerType.Item2</a></li>
+                                        }
+                                    </ul>
+                                </li>
+                            </ul>
+                        </td>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var record in Model.Context.RawData.Take(10))
+                {
+                    <tr>
+                        @foreach (var field in record.Select((h, i) => Tuple.Create(h, i)))
+                        {
+                            <td data-headerindex="@field.Item2">@field.Item1</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="actionBar">
+        @using (Html.BeginForm(MVC.API.Device.ImportParse(Model.Context.SessionId, null)))
+        {
+            <a id="Devices_Import_Headers_Submit" href="#" class="button">Parse Device Import</a>   
+        }
+    </div>
+</div>
+<div id="Devices_Import_Parsing_Dialog" class="dialog" title="Parsing devices import...">
+    <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Parsing device import...</h4>
+</div>
+<script>
+    $(function () {
+        var headerTypes = {
+            @foreach (var h in Model.HeaderTypes)
+            {
+                <text>'@(h.Item1)': '@(h.Item2)',</text>
+            }
+        };
+
+        var $Devices_Import_Headers_TableContainer = $('#Devices_Import_Headers_TableContainer');
+        var $importHeaderTypes = $Devices_Import_Headers_TableContainer.find('thead').find('ul.importHeaderType');
+        var $Devices_Import_Headers_DeviceSerialNumberRequired = $('#Devices_Import_Headers_DeviceSerialNumberRequired');
+        var $Devices_Import_Headers_Submit = $('#Devices_Import_Headers_Submit');
+        var $Devices_Import_Parsing_Dialog = null;
+
+        function getUsedHeaders() {
+            return $importHeaderTypes.map(function () { return $(this).attr('data-headertype'); }).filter(function () { return this != 'IgnoreColumn' }).get();
+        }
+
+        function updateHeaderOptions() {
+            var usedHeaders = getUsedHeaders();
+            var deviceSerialNumberPresent = (usedHeaders.indexOf('DeviceSerialNumber') >= 0);
+
+            if (deviceSerialNumberPresent) {
+                $Devices_Import_Headers_Submit.attr('disabled', null);
+                $Devices_Import_Headers_DeviceSerialNumberRequired.hide();
+            } else {
+                $Devices_Import_Headers_DeviceSerialNumberRequired.show();
+                $Devices_Import_Headers_Submit.attr('disabled', 'disabled');
+            }
+
+            $importHeaderTypes.each(function () {
+                var $header = $(this);
+                var $headerType = $header.attr('data-headertype');
+                $header.find('li[data-headertype]').each(function () {
+                    var $headerOption = $(this);
+                    var $headerOptionType = $headerOption.attr('data-headertype');
+                    if ($headerOptionType === $headerType) {
+                        $headerOption.removeClass('ui-state-disabled');
+                        $headerOption.addClass('ui-state-highlight');
+                    } else if (usedHeaders.indexOf($headerOptionType) < 0) {
+                        $headerOption.removeClass('ui-state-disabled ui-state-highlight');
+                    } else {
+                        $headerOption.removeClass('ui-state-highlight');
+                        $headerOption.addClass('ui-state-disabled');
+                    }
+                })
+            });
+        }
+
+        function updateDataStyle(index, headerType) {
+            $Devices_Import_Headers_TableContainer.find('tbody').find('td[data-headerindex="' + index + '"]').removeClass().addClass('header' + headerType);
+            $Devices_Import_Headers_TableContainer.find('thead').find('td[data-headerindex="' + index + '"], th[data-headerindex="' + index + '"]').removeClass().addClass('header' + headerType);
+        }
+
+        $Devices_Import_Headers_TableContainer.find('thead').on('menuselect', 'ul.importHeaderType', function (e, ui) {
+            var headerType = ui.item.attr('data-headertype');
+
+            if (headerType !== undefined) {
+                var $this = $(this).closest('ul.importHeaderType');
+                var headerIndex = $this.attr('data-headerindex');
+                var headerTypeName = headerTypes[headerType];
+                $this.attr('data-headertype', headerType).find('span.headerTypeTitle').text(headerTypeName);
+                updateDataStyle(headerIndex, headerType);
+                updateHeaderOptions();
+            }
+        });
+
+        // Add Type Options
+        $importHeaderTypes.each(function () {
+            var $this = $(this);
+            var thisHeaderIndex = $this.attr('data-headerindex');
+            var thisHeaderType = $this.attr('data-headertype');
+            updateDataStyle(thisHeaderIndex, thisHeaderType);
+        }).menu({ position: { my: "left top", at: "left bottom" } });
+
+        updateHeaderOptions();
+
+        $('#Devices_Import_Headers_Submit').click(function () {
+
+            // Validate Device Serial Number Present
+            var usedHeaders = getUsedHeaders();
+            var deviceSerialNumberPresent = (usedHeaders.indexOf('DeviceSerialNumber') >= 0);
+            if (!deviceSerialNumberPresent) {
+                updateHeaderOptions();
+                $Devices_Import_Headers_DeviceSerialNumberRequired.show('highlight');
+            } else {
+                var $form = $(this).closest('form');
+
+                // Build Form
+                $importHeaderTypes.each(function () {
+                    var $this = $(this);
+                    var thisHeaderIndex = $this.attr('data-headerindex');
+                    var thisHeaderType = $this.attr('data-headertype');
+
+                    $(document.createElement('input')).attr({ type: 'hidden', name: 'Headers[' + thisHeaderIndex + ']', value: thisHeaderType }).appendTo($form);
+                });
+
+                // Submit Form
+                if ($Devices_Import_Parsing_Dialog == null) {
+                    $Devices_Import_Parsing_Dialog = $('#Devices_Import_Parsing_Dialog').dialog({
+                        width: 400,
+                        height: 160,
+                        resizable: false,
+                        modal: true,
+                        autoOpen: false
+                    });
+                }
+                $Devices_Import_Parsing_Dialog.dialog('open');
+                $form.submit();
+            }
+
+            return false;
+        });
+    });
+</script>

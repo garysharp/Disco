@@ -1,16 +1,15 @@
-﻿using Disco.Models.BI.Device;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Disco.Models.Services.Devices.Importing;
 
 namespace Disco.Models.UI.Device
 {
     public interface DeviceImportReviewModel : BaseUIModel
     {
-        string ImportParseTaskId { get; set; }
-        string ImportFilename { get; set; }
-        List<ImportDevice> ImportDevices { get; set; }
+        IDeviceImportContext Context { get; set; }
+
+        int StatisticErrorRecords { get; set; }
+        int StatisticNewRecords { get; set; }
+        int StatisticModifiedRecords { get; set; }
+        int StatisticUnmodifiedRecords { get; set; }
+        int StatisticImportRecords { get; }
     }
 }

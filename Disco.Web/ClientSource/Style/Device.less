@@ -357,118 +357,250 @@
     }
 }
 
-#deviceImport {
+#Devices_Import {
     #ImportFile {
-        width: 100%;
+        width: 96%;
+        margin-bottom: 8px;
     }
 
-    #documentation {
+    #Devices_Import_Documentation {
         width: 700px;
         margin: 20px auto;
 
-        & > table {
-            & > thead > tr > th:first-child {
-                width: 100px;
+        & > table > tbody th:first-child {
+            width: 220px;
+        }
+    }
+}
+
+#Devices_Import_Completed_Dialog {
+    padding: 50px 0;
+    text-align: center;
+
+    h3 {
+        margin-bottom: 16px;
+    }
+
+    i {
+        margin-right: 10px;
+        color: @StatusSuccess;
+    }
+}
+
+#Devices_Import_Loading_Dialog {
+    padding-top: 50px;
+    text-align: center;
+
+    i {
+        margin-right: 10px;
+        color: @StatusInformation;
+    }
+}
+
+#Devices_Import_Headers {
+
+    #Devices_Import_Headers_TableContainer {
+        margin: 18px 0;
+        overflow-x: auto;
+        border: 1px solid #ccc;
+
+        table {
+            & > thead {
+                white-space: nowrap;
+
+                ul.importHeaderType {
+                    & > li > a > span:not(.ui-menu-icon) {
+                        padding-right: 16px;
+                    }
+
+                    ul {
+                        z-index: 1000;
+                    }
+                }
+
+                td.headerIgnoreColumn {
+                    background-color: @StatusAlert;
+                }
+
+                td:not(.headerIgnoreColumn) {
+                    background-color: @StatusInformation;
+                }
+            }
+
+            & > tbody {
+                td.headerDeviceSerialNumber {
+                    border-top-color: lighten(@StatusInformation, 50%);
+                    border-bottom-color: lighten(@StatusInformation, 50%);
+                    background-color: lighten(@StatusInformation, 54%);
+                }
+
+                td.headerIgnoreColumn {
+                    max-width: 150px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    -ms-text-overflow: ellipsis;
+                    -o-text-overflow: ellipsis;
+                    text-overflow: ellipsis;
+                    color: @SubtleBorderColour;
+                }
             }
         }
     }
 }
 
-#deviceImportReview {
+#Devices_Import_Parsing_Dialog {
+    padding-top: 50px;
+    text-align: center;
 
-    #errorMessage {
-        font-weight: bold;
-        color: red;
+    i {
+        margin-right: 10px;
+        color: @StatusInformation;
     }
+}
 
-    #devicesNavigation {
+// Icons used within Devices_Import_Review
+@import "FontAwesome\variables.less";
+
+#Devices_Import_Review {
+
+    #Devices_Import_Review_Navigation {
         margin-top: 15px;
         text-align: right;
 
         ul {
             display: inline-block;
-            padding: 1px;
+            padding: 0px;
             border: 1px solid #bbb;
 
             li {
                 display: inline-block;
-                padding: 1px 6px;
+                padding: 3px 10px;
                 margin: 0;
 
-                &.statusError {
-                    background-color: #ffd3d3;
+                &.actionDetached {
+                    background-color: lighten(@StatusError, 45%);
                 }
 
-                &.statusUpdate {
-                    background-color: #d3f3ff;
+                &.actionModified {
+                    background-color: lighten(@StatusInformation, 54%);
                 }
 
-                &.statusNew {
-                    background-color: #d9ffb4;
+                &.actionAdded {
+                    background-color: lighten(@StatusSuccess, 53%);
+                }
+
+                &.actionUnchanged {
+                    background-color: @TableDataRowBackgroundColor;
                 }
             }
         }
     }
 
-    #devices {
-        .tableData;
-        margin-top: 6px;
+    #Devices_Import_Review_TableContainer {
+        margin: 18px 0;
+        overflow-x: auto;
+        border: 1px solid #ccc;
 
-        & > tbody {
+        table {
+            & > thead {
+                white-space: nowrap;
 
-            td {
-                vertical-align: middle;
-                min-height: 32px;
+                tr:nth-child(2) th {
+                    padding-top: 0;
+                    font-weight: normal;
+                    font-size: 0.9em;
+                }
             }
 
-            tr.statusError td {
-                background-color: #ffd3d3;
-            }
+            & > tbody {
 
-            tr.statusUpdate td {
-                background-color: #d3f3ff;
-            }
-
-            tr.statusNew td {
-                background-color: #d9ffb4;
-            }
-
-            tr {
                 td.action {
-                    font-weight: bold;
+                    text-align: center;
                 }
 
-                td.serialNumber {
-                    font-family: @FontFamilyMono;
-                    font-weight: bold;
-                }
+                tr.actionDetached {
+                    td.action {
+                        i:before {
+                            color: @StatusError;
+                            content: @fa-var-exclamation;
+                        }
+                    }
 
-                td.model {
-                    img.modelImage {
-                        width: 32px;
-                        height: 32px;
-                        margin-right: 2px;
+                    td {
+                        background-color: lighten(@StatusError, 50%);
                     }
                 }
 
-                td.profile {
+                tr.actionUnchanged {
+                    td.action {
+                        i:before {
+                            content: @fa-var-minus;
+                        }
+                    }
+
+                    td {
+                        background-color: @TableDataRowBackgroundColor;
+                    }
+
+                        td:nth-child(n+3) {
+                            color: @SubtleBorderColour;
+                        }
                 }
 
-                td.batch {
+                tr.actionModified {
+                    td.action {
+                        i:before {
+                            color: @StatusInformation;
+                            content: @fa-var-pencil;
+                        }
+                    }
+
+                    td {
+                        background-color: lighten(@StatusInformation, 58%);
+                    }
                 }
 
-                td.assignedUser {
+                tr.actionAdded {
+                    td.action {
+                        i:before {
+                            color: @StatusSuccess;
+                            content: @fa-var-plus;
+                        }
+                    }
+
+                    td {
+                        background-color: lighten(@StatusSuccess, 53%);
+                    }
                 }
 
-                td.location {
+                tr:not(.actionUnchanged) {
+                    td.actionUnchanged:nth-child(n+3):not(.headerDeviceSerialNumber) {
+                        color: @SubtleBorderColour;
+                    }
                 }
 
-                td.assetNumber {
-                }
-            }
+                td.actionError {
+                    color: @StatusError;
+                    background-color: lighten(@StatusError, 52%);
 
-            .error {
-                font-weight: bold;
+                    span.errorMessage {
+                        display: none;
+                    }
+                }
+
+                td.actionModified {
+                    background-color: lighten(@StatusInformation, 54%) !important;
+                }
+
+                td.headerDeviceSerialNumber, td.headerDeviceDecommissionedDate, td.headerDeviceDecommissionedReason,
+                td.headerModelId, td.headerBatchId, td.headerProfileId,
+                td.headerAssignedUserId {
+                    white-space: nowrap;
+                }
+
+                span.smallMessage {
+                    color: inherit;
+                }
             }
         }
     }

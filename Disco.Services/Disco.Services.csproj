@@ -39,6 +39,9 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="LumenWorks.Framework.IO">
+      <HintPath>..\packages\LumenWorks.Framework.IO.3.8.0\lib\net20\LumenWorks.Framework.IO.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.1.1.2\lib\net40\Microsoft.AspNet.SignalR.Core.dll</HintPath>
@@ -175,6 +178,27 @@
     <Compile Include="Devices\Exporting\DeviceExport.cs" />
     <Compile Include="Devices\Exporting\DeviceExportTask.cs" />
     <Compile Include="Devices\Exporting\DeviceExportTaskContext.cs" />
+    <Compile Include="Devices\Importing\DeviceImport.cs" />
+    <Compile Include="Devices\Importing\DeviceImportApplyTask.cs" />
+    <Compile Include="Devices\Importing\DeviceImportContext.cs" />
+    <Compile Include="Devices\Importing\DeviceImportDatabaseCache.cs" />
+    <Compile Include="Devices\Importing\DeviceImportFieldBase.cs" />
+    <Compile Include="Devices\Importing\DeviceImportInMemoryCache.cs" />
+    <Compile Include="Devices\Importing\DeviceImportParseTask.cs" />
+    <Compile Include="Devices\Importing\DeviceImportRecord.cs" />
+    <Compile Include="Devices\Importing\Fields\BatchIdImportField.cs" />
+    <Compile Include="Devices\Importing\Fields\AssignedUserIdImportField.cs" />
+    <Compile Include="Devices\Importing\Fields\DeviceDecommissionedReasonImportField.cs" />
+    <Compile Include="Devices\Importing\Fields\DeviceDecommissionedDateImportField.cs" />
+    <Compile Include="Devices\Importing\Fields\ProfileIdImportField.cs" />
+    <Compile Include="Devices\Importing\Fields\DetailACAdapterImportField.cs" />
+    <Compile Include="Devices\Importing\Fields\DetailWLanMacAddressImportField.cs" />
+    <Compile Include="Devices\Importing\Fields\DetailLanMacAddressImportField.cs" />
+    <Compile Include="Devices\Importing\Fields\DeviceLocationImportField.cs" />
+    <Compile Include="Devices\Importing\Fields\DeviceAssetNumberImportField.cs" />
+    <Compile Include="Devices\Importing\Fields\DeviceSerialNumberImportField.cs" />
+    <Compile Include="Devices\Importing\Fields\ModelIdImportField.cs" />
+    <Compile Include="Devices\Importing\IDeviceImportCache.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Interop\ActiveDirectory\ActiveDirectory.cs" />
@@ -298,9 +322,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Devices\Importing\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

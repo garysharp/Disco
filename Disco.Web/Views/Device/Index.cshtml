@@ -11,7 +11,7 @@
     <div class="actionBar">
         @if (Authorization.Has(Claims.Device.Actions.Import))
         {
-            @Html.ActionLinkButton("Import Devices", MVC.Device.ImportExport())
+            @Html.ActionLinkButton("Import Devices", MVC.Device.Import())
         }
         @if (Authorization.Has(Claims.Device.Actions.Export))
         {

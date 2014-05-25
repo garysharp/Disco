@@ -373,95 +373,172 @@
   margin-right: 10px;
   color: #1e6dab;
 }
-#deviceImport #ImportFile {
-  width: 100%;
+#Devices_Import #ImportFile {
+  width: 96%;
+  margin-bottom: 8px;
 }
-#deviceImport #documentation {
+#Devices_Import #Devices_Import_Documentation {
   width: 700px;
   margin: 20px auto;
 }
-#deviceImport #documentation > table > thead > tr > th:first-child {
-  width: 100px;
+#Devices_Import #Devices_Import_Documentation > table > tbody th:first-child {
+  width: 220px;
 }
-#deviceImportReview #errorMessage {
-  font-weight: bold;
-  color: red;
+#Devices_Import_Completed_Dialog {
+  padding: 50px 0;
+  text-align: center;
 }
-#deviceImportReview #devicesNavigation {
+#Devices_Import_Completed_Dialog h3 {
+  margin-bottom: 16px;
+}
+#Devices_Import_Completed_Dialog i {
+  margin-right: 10px;
+  color: #60a917;
+}
+#Devices_Import_Loading_Dialog {
+  padding-top: 50px;
+  text-align: center;
+}
+#Devices_Import_Loading_Dialog i {
+  margin-right: 10px;
+  color: #1e6dab;
+}
+#Devices_Import_Headers #Devices_Import_Headers_TableContainer {
+  margin: 18px 0;
+  overflow-x: auto;
+  border: 1px solid #ccc;
+}
+#Devices_Import_Headers #Devices_Import_Headers_TableContainer table > thead {
+  white-space: nowrap;
+}
+#Devices_Import_Headers #Devices_Import_Headers_TableContainer table > thead ul.importHeaderType > li > a > span:not(.ui-menu-icon) {
+  padding-right: 16px;
+}
+#Devices_Import_Headers #Devices_Import_Headers_TableContainer table > thead ul.importHeaderType ul {
+  z-index: 1000;
+}
+#Devices_Import_Headers #Devices_Import_Headers_TableContainer table > thead td.headerIgnoreColumn {
+  background-color: #fa6800;
+}
+#Devices_Import_Headers #Devices_Import_Headers_TableContainer table > thead td:not(.headerIgnoreColumn) {
+  background-color: #1e6dab;
+}
+#Devices_Import_Headers #Devices_Import_Headers_TableContainer table > tbody td.headerDeviceSerialNumber {
+  border-top-color: #d1e6f7;
+  border-bottom-color: #d1e6f7;
+  background-color: #e2f0fa;
+}
+#Devices_Import_Headers #Devices_Import_Headers_TableContainer table > tbody td.headerIgnoreColumn {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  color: #cccccc;
+}
+#Devices_Import_Parsing_Dialog {
+  padding-top: 50px;
+  text-align: center;
+}
+#Devices_Import_Parsing_Dialog i {
+  margin-right: 10px;
+  color: #1e6dab;
+}
+#Devices_Import_Review #Devices_Import_Review_Navigation {
   margin-top: 15px;
   text-align: right;
 }
-#deviceImportReview #devicesNavigation ul {
+#Devices_Import_Review #Devices_Import_Review_Navigation ul {
   display: inline-block;
-  padding: 1px;
+  padding: 0px;
   border: 1px solid #bbb;
 }
-#deviceImportReview #devicesNavigation ul li {
+#Devices_Import_Review #Devices_Import_Review_Navigation ul li {
   display: inline-block;
-  padding: 1px 6px;
+  padding: 3px 10px;
   margin: 0;
 }
-#deviceImportReview #devicesNavigation ul li.statusError {
-  background-color: #ffd3d3;
+#Devices_Import_Review #Devices_Import_Review_Navigation ul li.actionDetached {
+  background-color: #ffd0cc;
 }
-#deviceImportReview #devicesNavigation ul li.statusUpdate {
-  background-color: #d3f3ff;
+#Devices_Import_Review #Devices_Import_Review_Navigation ul li.actionModified {
+  background-color: #e2f0fa;
 }
-#deviceImportReview #devicesNavigation ul li.statusNew {
-  background-color: #d9ffb4;
+#Devices_Import_Review #Devices_Import_Review_Navigation ul li.actionAdded {
+  background-color: #e7f9d5;
 }
-#deviceImportReview #devices {
-  border: solid 1px #f4f4f4;
-  border-collapse: collapse;
-  margin-top: 6px;
-}
-#deviceImportReview #devices > tbody > tr > td {
-  border: solid 1px #f4f4f4;
-  background-color: #ffffff;
-}
-#deviceImportReview #devices > tbody > tr:nth-child(odd) > td {
+#Devices_Import_Review #Devices_Import_Review_Navigation ul li.actionUnchanged {
   background-color: #fcfcfc;
 }
-#deviceImportReview #devices > thead > tr > th,
-#deviceImportReview #devices > tbody > tr > th {
-  background-color: #f4f4f4;
-  border: solid 1px #f4f4f4;
+#Devices_Import_Review #Devices_Import_Review_TableContainer {
+  margin: 18px 0;
+  overflow-x: auto;
+  border: 1px solid #ccc;
 }
-#deviceImportReview #devices > tbody > tr:hover > td {
-  background-color: #fefefe;
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > thead {
+  white-space: nowrap;
 }
-#deviceImportReview #devices > tbody > tr:hover:nth-child(odd) > td {
-  background-color: #fafafa;
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > thead tr:nth-child(2) th {
+  padding-top: 0;
+  font-weight: normal;
+  font-size: 0.9em;
 }
-#deviceImportReview #devices > tfoot > tr > th,
-#deviceImportReview #devices > tfoot > tr > td {
-  background-color: #f4f4f4;
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody td.action {
+  text-align: center;
 }
-#deviceImportReview #devices > tbody td {
-  vertical-align: middle;
-  min-height: 32px;
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr.actionDetached td.action i:before {
+  color: #e51400;
+  content: "\f12a";
 }
-#deviceImportReview #devices > tbody tr.statusError td {
-  background-color: #ffd3d3;
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr.actionDetached td {
+  background-color: #ffe7e5;
 }
-#deviceImportReview #devices > tbody tr.statusUpdate td {
-  background-color: #d3f3ff;
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr.actionUnchanged td.action i:before {
+  content: "\f068";
 }
-#deviceImportReview #devices > tbody tr.statusNew td {
-  background-color: #d9ffb4;
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr.actionUnchanged td {
+  background-color: #fcfcfc;
 }
-#deviceImportReview #devices > tbody tr td.action {
-  font-weight: bold;
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr.actionUnchanged td:nth-child(n+3) {
+  color: #cccccc;
 }
-#deviceImportReview #devices > tbody tr td.serialNumber {
-  font-family: Consolas, "Courier New", monospace;
-  font-weight: bold;
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr.actionModified td.action i:before {
+  color: #1e6dab;
+  content: "\f040";
 }
-#deviceImportReview #devices > tbody tr td.model img.modelImage {
-  width: 32px;
-  height: 32px;
-  margin-right: 2px;
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr.actionModified td {
+  background-color: #f4f9fd;
 }
-#deviceImportReview #devices > tbody .error {
-  font-weight: bold;
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr.actionAdded td.action i:before {
+  color: #60a917;
+  content: "\f067";
+}
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr.actionAdded td {
+  background-color: #e7f9d5;
+}
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr:not(.actionUnchanged) td.actionUnchanged:nth-child(n+3):not(.headerDeviceSerialNumber) {
+  color: #cccccc;
+}
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody td.actionError {
+  color: #e51400;
+  background-color: #fff1ef;
+}
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody td.actionError span.errorMessage {
+  display: none;
+}
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody td.actionModified {
+  background-color: #e2f0fa !important;
+}
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody td.headerDeviceSerialNumber,
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody td.headerDeviceDecommissionedDate,
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody td.headerDeviceDecommissionedReason,
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody td.headerModelId,
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody td.headerBatchId,
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody td.headerProfileId,
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody td.headerAssignedUserId {
+  white-space: nowrap;
+}
+#Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody span.smallMessage {
+  color: inherit;
 }

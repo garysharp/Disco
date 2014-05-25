@@ -83,19 +83,19 @@ namespace Disco.Models.Services.Devices.Exporting
         public bool ProfileShortName { get; set; }
 
         // User
-        [Display(ShortName = "Assigned User", Name = "Identifier", Description = "The identifier of the user assigned with the device")]
+        [Display(ShortName = "Assigned User", Name = "Identifier", Description = "The identifier of the user assigned to the device")]
         public bool AssignedUserId { get; set; }
         [Display(ShortName = "Assigned User", Name = "Assigned Date", Description = "The date the device was assigned to the user")]
         public bool AssignedUserDate { get; set; }
-        [Display(ShortName = "Assigned User", Name = "Display Name", Description = "The display name of the user assigned with the device")]
+        [Display(ShortName = "Assigned User", Name = "Display Name", Description = "The display name of the user assigned to the device")]
         public bool AssignedUserDisplayName { get; set; }
-        [Display(ShortName = "Assigned User", Name = "Surname", Description = "The surname of the user assigned with the device")]
+        [Display(ShortName = "Assigned User", Name = "Surname", Description = "The surname of the user assigned to the device")]
         public bool AssignedUserSurname { get; set; }
-        [Display(ShortName = "Assigned User", Name = "Given Name", Description = "The given name of the user assigned with the device")]
+        [Display(ShortName = "Assigned User", Name = "Given Name", Description = "The given name of the user assigned to the device")]
         public bool AssignedUserGivenName { get; set; }
-        [Display(ShortName = "Assigned User", Name = "Phone Number", Description = "The phone number of the user assigned with the device")]
+        [Display(ShortName = "Assigned User", Name = "Phone Number", Description = "The phone number of the user assigned to the device")]
         public bool AssignedUserPhoneNumber { get; set; }
-        [Display(ShortName = "Assigned User", Name = "Email Address", Description = "The email address of the user assigned with the device")]
+        [Display(ShortName = "Assigned User", Name = "Email Address", Description = "The email address of the user assigned to the device")]
         public bool AssignedUserEmailAddress { get; set; }
 
         // Jobs

@@ -545,7 +545,13 @@
     </Compile>
     <Compile Include="Extensions\T4MVCExtensions.cs" />
     <Compile Include="Models\Device\ExportModel.cs" />
+    <Compile Include="Models\Device\ImportHeadersModel.cs" />
     <Compile Include="Models\InitialConfig\AdministratorsModel.cs" />
+    <Compile Include="Views\Device\ImportHeaders.generated.cs">
+      <DependentUpon>ImportHeaders.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Views\Device\Export.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -663,10 +669,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>_Subject.cshtml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Device\ImportExport.generated.cs">
+    <Compile Include="Views\Device\Import.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ImportExport.cshtml</DependentUpon>
+      <DependentUpon>Import.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Views\Device\ImportReview.generated.cs">
       <AutoGen>True</AutoGen>
@@ -1253,6 +1259,18 @@
       <DependentUpon>ExpressionEditor.css</DependentUpon>
     </Content>
     <None Include="ClientSource\Style\Fancytree\disco.fancytree.less" />
+    <None Include="ClientSource\Style\FontAwesome\bordered-pulled.less" />
+    <None Include="ClientSource\Style\FontAwesome\core.less" />
+    <None Include="ClientSource\Style\FontAwesome\fixed-width.less" />
+    <None Include="ClientSource\Style\FontAwesome\icons.less" />
+    <None Include="ClientSource\Style\FontAwesome\larger.less" />
+    <None Include="ClientSource\Style\FontAwesome\list.less" />
+    <None Include="ClientSource\Style\FontAwesome\mixins.less" />
+    <None Include="ClientSource\Style\FontAwesome\path.less" />
+    <None Include="ClientSource\Style\FontAwesome\rotated-flipped.less" />
+    <None Include="ClientSource\Style\FontAwesome\spinning.less" />
+    <None Include="ClientSource\Style\FontAwesome\stacked.less" />
+    <None Include="ClientSource\Style\FontAwesome\variables.less" />
     <None Include="ClientSource\Style\Images\Actions\dataTableFirst.png" />
     <None Include="ClientSource\Style\Images\Actions\dataTableFirstDisabled.png" />
     <None Include="ClientSource\Style\Images\Actions\dataTableLast.png" />
@@ -1347,6 +1365,12 @@
     <None Include="ClientSource\Style\normalize.min.css">
       <DependentUpon>normalize.less</DependentUpon>
     </None>
+    <Content Include="ClientSource\Style\jQueryUI\jquery-ui.css">
+      <DependentUpon>jquery-ui.less</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\jQueryUI\jquery-ui.min.css">
+      <DependentUpon>jquery-ui.less</DependentUpon>
+    </Content>
     <Content Include="ClientSource\Style\Public\HeldDevices.css">
       <DependentUpon>HeldDevices.less</DependentUpon>
     </Content>
@@ -1526,6 +1550,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>AddOffline.generated.cs</LastGenOutput>
     </None>
+    <None Include="Views\Device\ImportHeaders.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>ImportHeaders.generated.cs</LastGenOutput>
+    </None>
     <None Include="Views\Device\DeviceParts\_Details.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Details.generated.cs</LastGenOutput>
@@ -1554,9 +1582,9 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Export.generated.cs</LastGenOutput>
     </None>
-    <None Include="Views\Device\ImportExport.cshtml">
+    <None Include="Views\Device\Import.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>ImportExport.generated.cs</LastGenOutput>
+      <LastGenOutput>Import.generated.cs</LastGenOutput>
     </None>
     <None Include="Views\Device\ImportReview.cshtml">
       <Generator>RazorGenerator</Generator>
@@ -2063,7 +2091,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

@@ -7,23 +7,13 @@ using System.Linq;
 
 namespace Disco.Web.Models.Device
 {
-    public class ImportReviewModel : DeviceImportReviewModel
+    public class ImportHeadersModel : DeviceImportHeadersModel
     {
         public IDeviceImportContext Context { get; set; }
 
-        public int StatisticErrorRecords { get; set; }
-        public int StatisticNewRecords { get; set; }
-        public int StatisticModifiedRecords { get; set; }
-        public int StatisticUnmodifiedRecords { get; set; }
-
-        public int StatisticImportRecords
-        {
-            get { return this.StatisticNewRecords + StatisticModifiedRecords; }
-        }
-
         public IEnumerable<Tuple<DeviceImportFieldTypes, string>> HeaderTypes { get; set; }
 
-        public ImportReviewModel()
+        public ImportHeadersModel()
         {
             HeaderTypes = typeof(DeviceImportFieldTypes)
                 .GetFields()

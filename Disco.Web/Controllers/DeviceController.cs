@@ -124,36 +124,67 @@ namespace Disco.Web.Controllers
 
         #endregion
 
-        #region Import/Export
-        [DiscoAuthorizeAny(Claims.Device.Actions.Import, Claims.Device.Actions.Export), HttpGet]
-        public virtual ActionResult ImportExport()
+        #region Import
+        [DiscoAuthorize(Claims.Device.Actions.Import), HttpGet]
+        public virtual ActionResult Import(string Id)
         {
-            Models.Device.ImportModel m = new Models.Device.ImportModel();
-
-            if (Authorization.Has(Claims.Device.Actions.Import))
+            var m = new Models.Device.ImportModel()
             {
-                m.DeviceModels = Database.DeviceModels.ToList();
-                m.DeviceProfiles = Database.DeviceProfiles.ToList();
-                m.DeviceBatches = Database.DeviceBatches.ToList();
-            }
+                DeviceModels = Database.DeviceModels.ToList(),
+                DeviceProfiles = Database.DeviceProfiles.ToList(),
+                DeviceBatches = Database.DeviceBatches.ToList()
+            };
+
+            if (!string.IsNullOrWhiteSpace(Id))
+                m.CompletedImportSessionContext = Areas.API.Controllers.DeviceController.Import_RetrieveContext(Id, Remove: true);
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<DeviceImportModel>(this.ControllerContext, m);
 
             return View(m);
         }
+
         [DiscoAuthorize(Claims.Device.Actions.Import), HttpGet]
-        public virtual ActionResult ImportReview(string ImportParseTaskId)
+        public virtual ActionResult ImportHeaders(string Id)
         {
-            if (string.IsNullOrWhiteSpace(ImportParseTaskId))
-                throw new ArgumentNullException("ImportParseTaskId");
+            if (string.IsNullOrWhiteSpace(Id))
+                throw new ArgumentNullException("Id");
 
-            var session = Disco.BI.DeviceBI.Importing.Import.GetSession(ImportParseTaskId);
+            var context = Areas.API.Controllers.DeviceController.Import_RetrieveContext(Id);
 
-            if (session == null)
-                throw new ArgumentException("The Import Parse Task Id is invalid or the session timed out (60 minutes), try importing again", "ImportParseTaskId");
+            if (context == null)
+                throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", "Id");
 
-            Models.Device.ImportReviewModel m = Models.Device.ImportReviewModel.FromImportDeviceSession(session);
+            var m = new Models.Device.ImportHeadersModel()
+            {
+                Context = context
+            };
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<DeviceImportHeadersModel>(this.ControllerContext, m);
+
+            return View(m);
+        }
+
+        [DiscoAuthorize(Claims.Device.Actions.Import), HttpGet]
+        public virtual ActionResult ImportReview(string Id)
+        {
+            if (string.IsNullOrWhiteSpace(Id))
+                throw new ArgumentNullException("Id");
+
+            var context = Areas.API.Controllers.DeviceController.Import_RetrieveContext(Id);
+
+            if (context == null)
+                throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", "Id");
+
+            var m = new Models.Device.ImportReviewModel()
+            {
+                Context = context,
+                StatisticErrorRecords = context.Records.Count(r => r.HasError),
+                StatisticNewRecords = context.Records.Count(r => r.RecordAction == System.Data.EntityState.Added),
+                StatisticModifiedRecords = context.Records.Count(r => r.RecordAction == System.Data.EntityState.Modified),
+                StatisticUnmodifiedRecords = context.Records.Count(r => r.RecordAction == System.Data.EntityState.Unchanged)
+            };
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<DeviceImportReviewModel>(this.ControllerContext, m);

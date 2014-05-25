@@ -640,7 +640,7 @@ WriteLiteral(" class=\"fa fa-lg fa-cog fa-spin\"");
 
 WriteLiteral(" title=\"Please Wait\"");
 
-WriteLiteral("></i>Device Exporting devices...</h4>\r\n</div>\r\n<div");
+WriteLiteral("></i>Exporting devices...</h4>\r\n</div>\r\n<div");
 
 WriteLiteral(" class=\"actionBar\"");
 

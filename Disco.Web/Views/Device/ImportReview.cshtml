@@ -1,15 +1,171 @@
 ﻿@model Disco.Web.Models.Device.ImportReviewModel
-@using Disco.BI.DeviceBI.Importing
+@using Disco.Models.Services.Devices.Importing;
+@using System.Data;
 @{
     Authorization.Require(Claims.Device.Actions.Import);
-    
-    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import Devices", MVC.Device.ImportExport(), string.Format("File: {0}", Model.ImportFilename));
 
-    int importDeviceOkCount = Model.ImportDevices.Count(id => id.Errors.Count == 0);
-    int importDeviceNewCount = Model.ImportDevices.Count(id => id.Errors.Count == 0 && id.Device == null);
-    int importDeviceUpdateCount = Model.ImportDevices.Count(id => id.Errors.Count == 0 && id.Device != null);
-    int importDeviceErrorCount = Model.ImportDevices.Count - importDeviceOkCount;
+    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import Devices", MVC.Device.Import(), string.Format("File: {0}", Model.Context.Filename));
 }
+<div id="Devices_Import_Review">
+
+    <h2>Review Pending Changes</h2>
+
+    <h3>Parsed @Model.Context.Records.Count Device Record@(Model.Context.Records.Count != 1 ? "s" : null)</h3>
+    <h4>
+        @Model.StatisticImportRecords of @Model.Context.Records.Count Device@(Model.Context.Records.Count != 1 ? "s" : null) are ready for import.
+    </h4>
+    @if (Model.StatisticErrorRecords > 0)
+    {
+        <h4 class="field-validation-error">
+            @(Model.StatisticErrorRecords) Record@(Model.StatisticErrorRecords != 1 ? "s" : null) will be skipped due to parse errors.
+        </h4>
+    }
+    <div id="Devices_Import_Review_Navigation">
+        <ul class="none">
+            @if (Model.StatisticErrorRecords > 0)
+            {<li class="actionDetached">
+                <input id="Devices_Import_Review_Navigation_Error" type="checkbox" checked /><label for="Devices_Import_Review_Navigation_Error">Show Errors (@(Model.StatisticErrorRecords))</label>
+            </li>}@if (Model.StatisticNewRecords > 0)
+                  {<li class="actionAdded">
+                      <input id="Devices_Import_Review_Navigation_New" type="checkbox" checked /><label for="Devices_Import_Review_Navigation_New">Show New Devices (@(Model.StatisticNewRecords))</label>
+                  </li>}@if (Model.StatisticModifiedRecords > 0)
+                        {<li class="actionModified">
+                            <input id="Devices_Import_Review_Navigation_Modified" type="checkbox" checked /><label for="Devices_Import_Review_Navigation_Modified">Show Modified Devices (@(Model.StatisticModifiedRecords))</label>
+                        </li>}@if (Model.StatisticUnmodifiedRecords > 0)
+                              {<li class="actionUnchanged">
+                                  <input id="Devices_Import_Review_Navigation_Unchanged" type="checkbox" checked /><label for="Devices_Import_Review_Navigation_Unchanged">Show Unchanged Devices (@(Model.StatisticUnmodifiedRecords))</label>
+                              </li>}
+        </ul>
+        <script>
+            $(function () {
+                $navigationContainer = $('#Devices_Import_Review_Navigation');
+                $tableBody = $('#Devices_Import_Review_TableContainer').find('tbody');
+
+                $navigationContainer.on('change', 'input', function () {
+                    $tableBody.find('tr').show();
+
+                    $navigationContainer.find('input').each(function () {
+                        var $this = $(this);
+                        var action = $this.closest('li').attr('class');
+                        var records = $tableBody.find('tr.' + action);
+                        if ($this.is(':checked')) {
+                            records.show();
+                        } else {
+                            records.hide();
+                        }
+                    });
+                });
+            });
+        </script>
+    </div>
+    <div id="Devices_Import_Review_TableContainer">
+        <table class="tableData">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Row</th>
+                    @foreach (var header in Model.Context.ParsedHeaders)
+                    {
+                        <th>@(Model.HeaderTypes.FirstOrDefault(h => h.Item1 == header.Item2).Item2)</th>
+                    }
+                </tr>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    @foreach (var header in Model.Context.ParsedHeaders)
+                    {
+                        <th>@header.Item1</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var recordEntry in Model.Context.Records.Select((r, i) => Tuple.Create(r, i)))
+                {
+                    var record = recordEntry.Item1;
+                    <tr class="action@(record.RecordAction)">
+                        <td class="action"><i class="fa fa-fw"></i></td>
+                        <td>@(recordEntry.Item2 + 1)</td>
+                        @foreach (var field in record.Fields)
+                        {
+                            var friendlyValue = field.FriendlyValue;
+                            <td class="header@(field.FieldType) action@(field.FieldAction.HasValue ? field.FieldAction.ToString() : "Error")" data-previousvalue="@(field.FieldAction.HasValue && field.FieldAction.Value == System.Data.EntityState.Modified ? field.FriendlyPreviousValue : null)">
+                                @if (!field.FieldAction.HasValue)
+                                {
+                                    <span class="errorMessage"><strong>Error:</strong> @field.ErrorMessage</span>
+                                    <i class="fa fa-exclamation-triangle fa-fw"></i>
+                                }
+                                @if (string.IsNullOrEmpty(friendlyValue))
+                                {<span class="smallMessage">&lt;None&gt;</span>}
+                                else if (field.FieldType == DeviceImportFieldTypes.DeviceSerialNumber && field.FieldAction.HasValue && field.FieldAction.Value != EntityState.Added)
+                                {
+                                    @Html.ActionLink(friendlyValue, MVC.Device.Show((string)field.RawParsedValue), new { target="_blank" })}
+                                else if (field.FieldType == DeviceImportFieldTypes.AssignedUserId && field.FieldAction.HasValue && field.FieldAction.Value != EntityState.Unchanged)
+                                {
+                                    @Html.ActionLink(friendlyValue, MVC.User.Show((string)field.RawParsedValue), new { target="_blank" })}
+                                else
+                                {@friendlyValue}
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="actionBar">
+        <a id="Devices_Import_Review_ChangeHeaders" href="@Url.Action(MVC.Device.ImportHeaders(Model.Context.SessionId))" class="button"><i class="fa fa-caret-left"></i>Change Import Columns</a>
+        @if (Model.StatisticImportRecords == 0)
+        {
+            <a id="Devices_Import_Review_Apply" href="#" class="button disabled" disabled><i class="fa fa-wrench"></i>Apply Device Import</a>
+        }
+        else
+        {
+            <a id="Devices_Import_Review_Apply" href="@Url.Action(MVC.API.Device.ImportApply(Model.Context.SessionId))" class="button"><i class="fa fa-wrench"></i>Apply Device Import</a>
+        }
+    </div>
+</div>
+<script>
+    $(function () {
+        $Devices_Import_Review_TableContainer = $('#Devices_Import_Review_TableContainer');
+
+        $Devices_Import_Review_TableContainer.find('tbody').tooltip({
+            items: 'td.action, td.actionError, td.actionModified',
+            content: function () {
+                var $this = $(this);
+
+                if ($this.hasClass('action')) {
+                    var record = $(this).closest('tr');
+
+                    if (record.hasClass('actionDetached')) {
+                        return '<strong>Error Parsing Record</strong><div>Review the record fields for details about any errors.</div><div class="smallMessage">This record will be skipped.</div>';
+                    } else if (record.hasClass('actionUnchanged')) {
+                        return '<strong>No Changes</strong><div>No changes were found while parsing this record.</div><div class="smallMessage">This record will be skipped.</div>';
+                    } else if (record.hasClass('actionModified')) {
+                        return '<strong>Pending Changes</strong><div>This record contains changes which will be applied.</div>';
+                    } else if (record.hasClass('actionAdded')) {
+                        return '<strong>New Record</strong><div>This record will be imported.</div>';
+                    }
+                } else if ($this.hasClass('actionError')) {
+                    return $(this).find('span.errorMessage').html();
+                } else if ($this.hasClass('actionModified')) {
+                    var v = $(this).attr('data-previousvalue');
+                    if (v) {
+                        return '<strong>Previous Value:</strong><br />' + v;
+                    } else {
+                        return '<strong>Previous Value:</strong><br /><em>&lt;None&gt;</em>';
+                    }
+                }
+            },
+            position: {
+                my: "left top",
+                at: "left bottom",
+                collision: "flipfit flip"
+            }
+        });
+
+    });
+</script>
+
+@*
 <div id="deviceImportReview">
     @if (Model.ImportDevices.Count > 0)
     {
@@ -248,4 +404,4 @@
     {
         <h2>No Devices were found in this file</h2>
     }
-</div>
+</div>*@

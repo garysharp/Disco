@@ -105,6 +105,10 @@
     <Compile Include="Services\Devices\Exporting\DeviceExportResult.cs" />
     <Compile Include="Services\Devices\Exporting\DeviceExportTypes.cs" />
     <Compile Include="Services\Devices\Exporting\DeviceExportOptions.cs" />
+    <Compile Include="Services\Devices\Importing\DeviceImportFieldTypes.cs" />
+    <Compile Include="Services\Devices\Importing\IDeviceImportRecord.cs" />
+    <Compile Include="Services\Devices\Importing\IDeviceImportContext.cs" />
+    <Compile Include="Services\Devices\Importing\IDeviceImportField.cs" />
     <Compile Include="Services\Jobs\JobLists\JobLocationReference.cs" />
     <Compile Include="Services\Jobs\JobLists\JobTableItemModel.cs" />
     <Compile Include="Services\Jobs\JobLists\JobTableModel.cs" />
@@ -151,6 +155,7 @@
     <Compile Include="UI\Config\Organisation\ConfigOrganisationIndexModel.cs" />
     <Compile Include="UI\Device\DeviceAddOfflineModel.cs" />
     <Compile Include="UI\Device\DeviceExportModel.cs" />
+    <Compile Include="UI\Device\DeviceImportHeadersModel.cs" />
     <Compile Include="UI\Device\DeviceImportModel.cs" />
     <Compile Include="UI\Device\DeviceImportReviewModel.cs" />
     <Compile Include="UI\Device\DeviceIndexModel.cs" />
@@ -166,9 +171,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\Devices\Importing\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

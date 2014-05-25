@@ -1,11 +1,14 @@
 ﻿using Disco.BI.Extensions;
+using Disco.Models.Services.Devices.Importing;
 using Disco.Services.Authorization;
 using Disco.Services.Devices.Exporting;
+using Disco.Services.Devices.Importing;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using Disco.Web.Models.Device;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -530,9 +533,26 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Importing
+        internal const string ImportSessionCacheKey = "DeviceImportContext_{0}";
+
+        internal static void Import_StoreContext(DeviceImportContext Context)
+        {
+            string key = string.Format(ImportSessionCacheKey, Context.SessionId);
+            HttpRuntime.Cache.Insert(key, Context, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
+        }
+        internal static DeviceImportContext Import_RetrieveContext(string SessionId, bool Remove = false)
+        {
+            string key = string.Format(ImportSessionCacheKey, SessionId);
+            DeviceImportContext context = HttpRuntime.Cache.Get(key) as DeviceImportContext;
+
+            if (Remove && context != null)
+                HttpRuntime.Cache.Remove(key);
+
+            return context;
+        }
 
         [DiscoAuthorize(Claims.Device.Actions.Import)]
-        public virtual ActionResult ImportParse(HttpPostedFileBase ImportFile)
+        public virtual ActionResult ImportBegin(HttpPostedFileBase ImportFile, bool HasHeader)
         {
             if (ImportFile == null || ImportFile.ContentLength == 0)
                 throw new ArgumentNullException("ImportFile");
@@ -541,29 +561,57 @@ namespace Disco.Web.Areas.API.Controllers
             if (fileName.Contains(@"\"))
                 fileName = fileName.Substring(fileName.LastIndexOf('\\') + 1);
 
-            var status = Disco.BI.DeviceBI.Importing.ImportParseTask.Run(ImportFile.InputStream, fileName);
+            var context = DeviceImport.BeginImport(Database, fileName, HasHeader, ImportFile.InputStream);
+            Import_StoreContext(context);
 
-            status.SetFinishedUrl(Url.Action(MVC.Device.ImportReview(status.SessionId)));
-
-            return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
+            return RedirectToAction(MVC.Device.ImportHeaders(context.SessionId));
         }
 
         [DiscoAuthorize(Claims.Device.Actions.Import)]
-        public virtual ActionResult ImportProcess(string ParseTaskSessionKey)
+        public virtual ActionResult ImportParse(string Id, List<DeviceImportFieldTypes> Headers)
         {
-            if (string.IsNullOrWhiteSpace(ParseTaskSessionKey))
-                throw new ArgumentNullException("ParseTaskSessionKey");
+            if (string.IsNullOrWhiteSpace(Id))
+                throw new ArgumentNullException("Id");
 
-            var status = Disco.BI.DeviceBI.Importing.ImportProcessTask.Run(ParseTaskSessionKey);
+            var context = Import_RetrieveContext(Id);
 
-            status.SetFinishedUrl(Url.Action(MVC.Device.Index()));
+            if (context == null)
+                throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", "Id");
+
+            context.UpdateHeaderTypes(Headers);
+
+            var status = DeviceImportParseTask.ScheduleNow(context);
+
+            var finishedUrl = MVC.Device.ImportReview(context.SessionId);
+
+            status.SetFinishedUrl(Url.Action(finishedUrl));
+
+            if (status.WaitUntilFinished(TimeSpan.FromSeconds(2)))
+                return RedirectToAction(finishedUrl);
+            else
+                return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
+        }
+
+        [DiscoAuthorize(Claims.Device.Actions.Import)]
+        public virtual ActionResult ImportApply(string Id)
+        {
+            if (string.IsNullOrWhiteSpace(Id))
+                throw new ArgumentNullException("Id");
+
+            var context = Import_RetrieveContext(Id);
+
+            if (context == null)
+                throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", "Id");
+
+            var status = DeviceImportApplyTask.ScheduleNow(context);
+            status.SetFinishedUrl(Url.Action(MVC.Device.Import(context.SessionId)));
 
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }
 
         #endregion
 
-        #region Exporting 
+        #region Exporting
         internal const string ExportSessionCacheKey = "DeviceExportContext_{0}";
 
         [DiscoAuthorize(Claims.Device.Actions.Export)]
@@ -578,14 +626,14 @@ namespace Disco.Web.Areas.API.Controllers
 
             // Start Export
             var exportContext = DeviceExportTask.ScheduleNow(Model.Options);
-            
+
             // Store Export Context in Web Cache
             string key = string.Format(ExportSessionCacheKey, exportContext.TaskStatus.SessionId);
             HttpRuntime.Cache.Insert(key, exportContext, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
 
             // Set Task Finished Url
             var finishedActionResult = MVC.Device.Export(exportContext.TaskStatus.SessionId, null, null);
-            exportContext.TaskStatus.SetFinishedUrl(Url.Action(finishedActionResult)); 
+            exportContext.TaskStatus.SetFinishedUrl(Url.Action(finishedActionResult));
 
             // Try waiting for completion
             if (exportContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(2)))
@@ -611,7 +659,7 @@ namespace Disco.Web.Areas.API.Controllers
             var filename = string.Format("DiscoDeviceExport-{0:yyyyMMdd-HHmmss}.csv", context.TaskStatus.StartedTimestamp.Value);
 
             return File(context.Result.CsvResult.ToArray(), "text/csv", filename);
-        } 
+        }
 
         #endregion
 

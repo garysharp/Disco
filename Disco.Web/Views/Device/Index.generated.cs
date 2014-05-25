@@ -115,14 +115,14 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 14 "..\..\Views\Device\Index.cshtml"
-       Write(Html.ActionLinkButton("Import Devices", MVC.Device.ImportExport()));
+       Write(Html.ActionLinkButton("Import Devices", MVC.Device.Import()));
 
             
             #line default
             #line hidden
             
             #line 14 "..\..\Views\Device\Index.cshtml"
-                                                                               
+                                                                         
         }
 
             
