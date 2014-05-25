@@ -363,7 +363,13 @@ namespace Disco.Services.Tasks
         }
         public bool WaitUntilFinished(TimeSpan Timeout)
         {
-            return this._tcs.Task.Wait(Timeout);
+            var finished = this._tcs.Task.Wait(Timeout);
+
+            // Return false if task completed, but with an error
+            if (finished)
+                return this.TaskException == null;
+            else
+                return false;
         }
         #endregion
 
