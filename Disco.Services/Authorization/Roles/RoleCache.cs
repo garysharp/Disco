@@ -91,7 +91,7 @@ namespace Disco.Services.Authorization.Roles
 
             // Update State
             _AdministratorToken.SubjectIds = SubjectIds.ToList();
-            _AdministratorToken.SubjectIdHashes = new HashSet<string>(SubjectIds.Select(i => i.ToLower()));
+            _AdministratorToken.SubjectIdHashes = new HashSet<string>(SubjectIds, StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>

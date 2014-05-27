@@ -30,7 +30,7 @@ namespace Disco.Services.Authorization.Roles
             return new RoleToken()
             {
                 Role = Role,
-                SubjectIdHashes = new HashSet<string>(sg.Select(i => i.ToLower()), StringComparer.OrdinalIgnoreCase),
+                SubjectIdHashes = new HashSet<string>(sg, StringComparer.OrdinalIgnoreCase),
                 SubjectIds = sg.ToList(),
                 Claims = Claims
             };
