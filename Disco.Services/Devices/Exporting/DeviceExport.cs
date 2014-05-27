@@ -203,6 +203,7 @@ namespace Disco.Services.Devices.Exporting
             yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceCreatedDate", r => r.Device.CreatedDate.ToString(DateTimeFormat), false);
             yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceFirstEnrolledDate", r => r.Device.EnrolledDate.HasValue ? r.Device.EnrolledDate.Value.ToString(DateTimeFormat) : null, false);
             yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceLastEnrolledDate", r => r.Device.LastEnrolDate.HasValue ? r.Device.LastEnrolDate.Value.ToString(DateTimeFormat) : null, false);
+            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceAllowUnauthenticatedEnrol", r => r.Device.AllowUnauthenticatedEnrol.ToString(), false);
             yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceDecommissionedDate", r => r.Device.DecommissionedDate.HasValue ? r.Device.DecommissionedDate.Value.ToString(DateTimeFormat) : null, false);
             yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceDecommissionedReason", r => r.Device.DecommissionReason.HasValue ? r.Device.DecommissionReason.Value.ToString() : null, true);
 

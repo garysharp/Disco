@@ -34,6 +34,8 @@ namespace Disco.Models.Services.Devices.Exporting
         public bool DeviceFirstEnrolledDate { get; set; }
         [Display(ShortName = "Device", Name = "Last Enrolled Date", Description = "The date the device was last enrolled in Disco")]
         public bool DeviceLastEnrolledDate { get; set; }
+        [Display(ShortName = "Device", Name = "Enrolment Trusted", Description = "The device is trusted to complete an unauthenticated enrolment")]
+        public bool DeviceAllowUnauthenticatedEnrol { get; set; }
         [Display(ShortName = "Device", Name = "Decommissioned Date", Description = "The date the device was decommissioned in Disco")]
         public bool DeviceDecommissionedDate { get; set; }
         [Display(ShortName = "Device", Name = "Decommissioned Reason", Description = "The reason the device was decommissioned")]

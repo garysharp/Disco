@@ -96,7 +96,7 @@ WriteLiteral(" id=\"Devices_Export_Type\"");
 
 WriteLiteral(" class=\"form\"");
 
-WriteLiteral(" style=\"width: 530px\"");
+WriteLiteral(" style=\"width: 570px\"");
 
 WriteLiteral(">\r\n            <h2>Export Type</h2>\r\n            <table>\r\n                <tr>\r\n " +
 "                   <th");
@@ -191,7 +191,7 @@ WriteLiteral(" id=\"Devices_Export_Fields\"");
 
 WriteLiteral(" class=\"form\"");
 
-WriteLiteral(" style=\"width: 530px; margin-top: 15px;\"");
+WriteLiteral(" style=\"width: 570px; margin-top: 15px;\"");
 
 WriteLiteral(">\r\n            <h2>Export Fields <a");
 

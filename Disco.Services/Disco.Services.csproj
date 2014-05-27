@@ -188,6 +188,7 @@
     <Compile Include="Devices\Importing\DeviceImportRecord.cs" />
     <Compile Include="Devices\Importing\Fields\BatchIdImportField.cs" />
     <Compile Include="Devices\Importing\Fields\AssignedUserIdImportField.cs" />
+    <Compile Include="Devices\Importing\Fields\DeviceAllowUnauthenticatedEnrolImportField.cs" />
     <Compile Include="Devices\Importing\Fields\DetailBatteryImportField.cs" />
     <Compile Include="Devices\Importing\Fields\DeviceDecommissionedReasonImportField.cs" />
     <Compile Include="Devices\Importing\Fields\DeviceDecommissionedDateImportField.cs" />
