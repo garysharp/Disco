@@ -188,6 +188,7 @@
     <Compile Include="Devices\Importing\DeviceImportRecord.cs" />
     <Compile Include="Devices\Importing\Fields\BatchIdImportField.cs" />
     <Compile Include="Devices\Importing\Fields\AssignedUserIdImportField.cs" />
+    <Compile Include="Devices\Importing\Fields\DetailBatteryImportField.cs" />
     <Compile Include="Devices\Importing\Fields\DeviceDecommissionedReasonImportField.cs" />
     <Compile Include="Devices\Importing\Fields\DeviceDecommissionedDateImportField.cs" />
     <Compile Include="Devices\Importing\Fields\ProfileIdImportField.cs" />
@@ -326,7 +327,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" />
+      <UserProperties BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

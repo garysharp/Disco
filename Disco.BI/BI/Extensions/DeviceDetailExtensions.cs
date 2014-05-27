@@ -66,7 +66,7 @@ namespace Disco.BI.Extensions
                     detail.Value = Value;
                 }
             }
-        } 
+        }
         #endregion
 
         #region LanMacAddress
@@ -84,7 +84,7 @@ namespace Disco.BI.Extensions
         public static void LanMacAddress(this IEnumerable<DeviceDetail> details, Device device, string LanMacAddress)
         {
             device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyLanMacAddress, LanMacAddress);
-        } 
+        }
         #endregion
 
         #region WLanMacAddress
@@ -102,7 +102,7 @@ namespace Disco.BI.Extensions
         public static void WLanMacAddress(this IEnumerable<DeviceDetail> details, Device device, string WLanMacAddress)
         {
             device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyWLanMacAddress, WLanMacAddress);
-        } 
+        }
         #endregion
 
         #region ACAdapter
@@ -123,5 +123,22 @@ namespace Disco.BI.Extensions
         }
         #endregion
 
+        #region Battery
+        /// <summary>
+        /// Gets the Battery Device Detail Value
+        /// </summary>
+        /// <returns>The Battery or null</returns>
+        public static string Battery(this IEnumerable<DeviceDetail> details)
+        {
+            return details.GetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyBattery);
+        }
+        /// <summary>
+        /// Sets the Battery Device Detail Value
+        /// </summary>
+        public static void Battery(this IEnumerable<DeviceDetail> details, Device device, string Battery)
+        {
+            device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyBattery, Battery);
+        }
+        #endregion
     }
 }

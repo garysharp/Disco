@@ -11,6 +11,11 @@ namespace Disco.Models.Services.Devices.Exporting
     {
         public DeviceExportTypes ExportType { get; set; }
         public int? ExportTypeTargetId { get; set; }
+        
+        /// <summary>
+        /// Adds '=' to the beginning of the string to stop Excel removing the leading zeros
+        /// </summary>
+        public bool ExcelCsvFormat { get; set; }
 
         // Device
         [Display(ShortName = "Device", Name = "Serial Number", Description = "The device serial number")]
@@ -41,6 +46,8 @@ namespace Disco.Models.Services.Devices.Exporting
         public bool DetailWLanMacAddress { get; set; }
         [Display(ShortName = "Details", Name = "AC Adapter", Description = "The AC Adapter associated with the device")]
         public bool DetailACAdapter { get; set; }
+        [Display(ShortName = "Details", Name = "Battery", Description = "The Battery associated with the device")]
+        public bool DetailBattery { get; set; }
 
         // Model
         [Display(ShortName = "Model", Name = "Identifier", Description = "The identifier of the device model associated with the device")]
@@ -124,6 +131,7 @@ namespace Disco.Models.Services.Devices.Exporting
             return new DeviceExportOptions()
             {
                 ExportType = DeviceExportTypes.All,
+                ExcelCsvFormat = true,
                 DeviceSerialNumber = true,
                 ModelId = true,
                 ProfileId = true,

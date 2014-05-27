@@ -27,6 +27,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pLocation = "location";
         const string pAllowUnauthenticatedEnrol = "allowunauthenticatedenrol";
         const string pDetailACAdapter = "detailacadapter";
+        const string pDetailBattery = "detailbattery";
 
         public virtual ActionResult Update(string id, string key, string value = null, bool redirect = false)
         {
@@ -70,6 +71,10 @@ namespace Disco.Web.Areas.API.Controllers
                         case pDetailACAdapter:
                             Authorization.Require(Claims.Device.Properties.Details);
                             UpdateDetailACAdapter(device, value);
+                            break;
+                        case pDetailBattery:
+                            Authorization.Require(Claims.Device.Properties.Details);
+                            UpdateDetailBattery(device, value);
                             break;
                         default:
                             throw new Exception("Invalid Update Key");
@@ -143,6 +148,12 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult UpdateDetailACAdapter(string id, string DetailACAdapter = null, bool redirect = false)
         {
             return Update(id, pDetailACAdapter, DetailACAdapter, redirect);
+        }
+
+        [DiscoAuthorize(Claims.Device.Properties.Details)]
+        public virtual ActionResult UpdateDetailBattery(string id, string DetailBattery = null, bool redirect = false)
+        {
+            return Update(id, pDetailBattery, DetailBattery, redirect);
         }
 
         #endregion
@@ -256,6 +267,14 @@ namespace Disco.Web.Areas.API.Controllers
                 device.DeviceDetails.ACAdapter(device, null);
             else
                 device.DeviceDetails.ACAdapter(device, ACAdapter.Trim());
+            Database.SaveChanges();
+        }
+        private void UpdateDetailBattery(Disco.Models.Repository.Device device, string Battery)
+        {
+            if (string.IsNullOrWhiteSpace(Battery))
+                device.DeviceDetails.Battery(device, null);
+            else
+                device.DeviceDetails.Battery(device, Battery.Trim());
             Database.SaveChanges();
         }
         #endregion

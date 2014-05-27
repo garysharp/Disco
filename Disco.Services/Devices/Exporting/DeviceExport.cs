@@ -39,7 +39,7 @@ namespace Disco.Services.Devices.Exporting
                     {
                         UserService.GetUser(userId, Database);
                     }
-                    catch (Exception) {} // Ignore Errors
+                    catch (Exception) { } // Ignore Errors
                 });
             }
 
@@ -74,9 +74,19 @@ namespace Disco.Services.Devices.Exporting
                 foreach (var record in records)
                 {
                     writer.WriteLine();
-                    writer.Write(string.Join(",", metadata.Select(m => {
+                    writer.Write(string.Join(",", metadata.Select(m =>
+                    {
                         var value = m.Item3(record);
-                        return (m.Item4 && value != null) ? string.Concat("\"", value, "\"") : value;
+                        var isString = m.Item4;
+
+                        if (value == null)
+                            return null;
+                        else if (!isString)
+                            return value;
+                        else if (Options.ExcelCsvFormat)
+                            return string.Concat("=\"", value, "\"");
+                        else
+                            return string.Concat("\"", value, "\"");
                     })));
                 }
             }
@@ -116,12 +126,17 @@ namespace Disco.Services.Devices.Exporting
 
         private static IEnumerable<DeviceExportRecord> BuildRecords(IQueryable<Device> Devices)
         {
-            var deviceDetailHardwareKeys = new List<string> { DeviceDetail.HardwareKeyLanMacAddress, DeviceDetail.HardwareKeyWLanMacAddress, DeviceDetail.HardwareKeyACAdapter };
+            var deviceDetailHardwareKeys = new List<string> {
+                DeviceDetail.HardwareKeyLanMacAddress,
+                DeviceDetail.HardwareKeyWLanMacAddress,
+                DeviceDetail.HardwareKeyACAdapter,
+                DeviceDetail.HardwareKeyBattery
+            };
 
             return Devices.Select(d => new DeviceExportRecord()
             {
                 Device = d,
-                
+
                 DeviceDetails = d.DeviceDetails.Where(dd => dd.Scope == DeviceDetail.ScopeHardware && deviceDetailHardwareKeys.Contains(dd.Key)),
 
                 ModelId = d.DeviceModelId,
@@ -165,7 +180,8 @@ namespace Disco.Services.Devices.Exporting
                 .Where(p => p.PropertyType == typeof(bool))
                 .Select(p => Tuple.Create(p, (DisplayAttribute)p.GetCustomAttributes(typeof(DisplayAttribute), false).FirstOrDefault()))
                 .Where(p => p.Item2 != null && (bool)p.Item1.GetValue(Options))
-                .Select(p => {
+                .Select(p =>
+                {
                     var accessor = allAssessors.First(i => i.Item1 == p.Item1.Name);
                     var columnName = (p.Item2.ShortName == "Device" || p.Item2.ShortName == "Details") ? p.Item2.Name : string.Format("{0} {1}", p.Item2.ShortName, p.Item2.Name);
                     return Tuple.Create(p.Item1.Name, columnName, accessor.Item2, accessor.Item3);
@@ -188,12 +204,13 @@ namespace Disco.Services.Devices.Exporting
             yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceFirstEnrolledDate", r => r.Device.EnrolledDate.HasValue ? r.Device.EnrolledDate.Value.ToString(DateTimeFormat) : null, false);
             yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceLastEnrolledDate", r => r.Device.LastEnrolDate.HasValue ? r.Device.LastEnrolDate.Value.ToString(DateTimeFormat) : null, false);
             yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceDecommissionedDate", r => r.Device.DecommissionedDate.HasValue ? r.Device.DecommissionedDate.Value.ToString(DateTimeFormat) : null, false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceDecommissionedReason", r => r.Device.DecommissionReason.HasValue ?  r.Device.DecommissionReason.Value.ToString() : null, true);
+            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceDecommissionedReason", r => r.Device.DecommissionReason.HasValue ? r.Device.DecommissionReason.Value.ToString() : null, true);
 
             // Details
             yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DetailLanMacAddress", r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyLanMacAddress).Select(dd => dd.Value).FirstOrDefault(), true);
             yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DetailWLanMacAddress", r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyWLanMacAddress).Select(dd => dd.Value).FirstOrDefault(), true);
             yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DetailACAdapter", r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyACAdapter).Select(dd => dd.Value).FirstOrDefault(), true);
+            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DetailBattery", r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyBattery).Select(dd => dd.Value).FirstOrDefault(), true);
 
             // Model
             yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("ModelId", r => r.ModelId.HasValue ? r.ModelId.Value.ToString() : null, false);

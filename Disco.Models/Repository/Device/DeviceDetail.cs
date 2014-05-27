@@ -14,6 +14,7 @@ namespace Disco.Models.Repository
         public const string HardwareKeyLanMacAddress = "LanMacAddress";
         public const string HardwareKeyWLanMacAddress = "WLanMacAddress";
         public const string HardwareKeyACAdapter = "ACAdapter";
+        public const string HardwareKeyBattery = "Battery";
 
         [Column(Order = 0), Key]
         public string DeviceSerialNumber { get; set; }

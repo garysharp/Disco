@@ -26,6 +26,8 @@ namespace Disco.Models.Services.Devices.Importing
         DetailWLanMacAddress,
         [Display(Name = "Device AC Adapter", Description = "The AC Adapter associated with the device")]
         DetailACAdapter,
+        [Display(Name = "Device Battery", Description = "The Battery associated with the device")]
+        DetailBattery,
 
         [Display(Name = "Model Identifier", Description = "The identifier of the device model associated with the device")]
         ModelId,

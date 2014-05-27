@@ -4,9 +4,7 @@ using Disco.Models.Services.Devices.Importing;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 
 namespace Disco.Services.Devices.Importing.Fields
 {
