@@ -899,6 +899,32 @@ div.logEventsViewport {
     }
 }
 // Device Batches
+#Config_DeviceBatches {
+    #Config_DeviceBatches_List {
+        tr.decommissioned {
+            display: none;
+
+            & > td {
+                background-color: darken(@white, 3%);
+                color: #888;
+            }
+
+            &:nth-child(odd) > td {
+                background-color: darken(@TableDataRowBackgroundColor, 4%);
+            }
+        }
+    }
+}
+
+#Config_DeviceBatches_ShowDecommissioned {
+    position: absolute;
+    right: 30px;
+    bottom: 8px;
+    font-size: 0.5em;
+    line-height: 1em;
+    text-align: right;
+}
+
 .deviceBatches {
     #DeviceBatch_PurchaseDetails_Container {
         padding: 5px 0 5px 5px;
