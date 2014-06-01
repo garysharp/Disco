@@ -279,6 +279,95 @@ WriteLiteral("\', \'DetailBattery\');\r\n                            });\r\n    
             
             #line default
             #line hidden
+WriteLiteral("                    </td>\r\n                </tr>\r\n                <tr>\r\n         " +
+"           <th>Keyboard</th>\r\n                    <td>");
+
+            
+            #line 60 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                         if (canConfig)
+                        {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 62 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                   Write(Html.TextBox("DeviceDetail_Keyboard", Model.Device.DeviceDetails.Keyboard()));
+
+            
+            #line default
+            #line hidden
+            
+            #line 62 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                                                      
+            
+            #line default
+            #line hidden
+            
+            #line 62 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                                                 Write(AjaxHelpers.AjaxSave());
+
+            
+            #line default
+            #line hidden
+            
+            #line 62 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                                                                              
+            
+            #line default
+            #line hidden
+            
+            #line 62 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                                                                         Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+            
+            #line 62 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                                                                                                       
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <script>\r\n                            $(function () {\r\n  " +
+"                              document.DiscoFunctions.PropertyChangeHelper($(\'#D" +
+"eviceDetail_Keyboard\'), \'Unknown\', \'");
+
+            
+            #line 65 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                                                                 Write(Url.Action(MVC.API.Device.UpdateDetailKeyboard(Model.Device.SerialNumber, null)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\', \'DetailKeyboard\');\r\n                            });\r\n                        <" +
+"/script>\r\n");
+
+            
+            #line 68 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                        }
+                        else
+                        {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 71 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                    Write(Model.Device.DeviceDetails.Keyboard() ?? "Unknown");
+
+            
+            #line default
+            #line hidden
+            
+            #line 71 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                             
+                        }
+
+            
+            #line default
+            #line hidden
 WriteLiteral("                    </td>\r\n                </tr>\r\n            </tbody>\r\n        <" +
 "/table>\r\n    </div>\r\n    <script>\r\n        $(\'#DeviceDetailTabItems\').append(\'<l" +
 "i><a href=\"#DeviceDetailTab-Details\">Details</a></li>\');\r\n    </script>\r\n</div>\r" +

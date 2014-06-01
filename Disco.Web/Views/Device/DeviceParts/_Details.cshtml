@@ -55,6 +55,23 @@
                         }
                     </td>
                 </tr>
+                <tr>
+                    <th>Keyboard</th>
+                    <td>@if (canConfig)
+                        {
+                        @Html.TextBox("DeviceDetail_Keyboard", Model.Device.DeviceDetails.Keyboard()) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
+                        <script>
+                            $(function () {
+                                document.DiscoFunctions.PropertyChangeHelper($('#DeviceDetail_Keyboard'), 'Unknown', '@Url.Action(MVC.API.Device.UpdateDetailKeyboard(Model.Device.SerialNumber, null))', 'DetailKeyboard');
+                            });
+                        </script>
+                        }
+                        else
+                        {
+                        @(Model.Device.DeviceDetails.Keyboard() ?? "Unknown")
+                        }
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

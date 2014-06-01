@@ -140,5 +140,23 @@ namespace Disco.BI.Extensions
             device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyBattery, Battery);
         }
         #endregion
+
+        #region Keyboard
+        /// <summary>
+        /// Gets the Keyboard Device Detail Value
+        /// </summary>
+        /// <returns>The Keyboard or null</returns>
+        public static string Keyboard(this IEnumerable<DeviceDetail> details)
+        {
+            return details.GetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyKeyboard);
+        }
+        /// <summary>
+        /// Sets the Keyboard Device Detail Value
+        /// </summary>
+        public static void Keyboard(this IEnumerable<DeviceDetail> details, Device device, string Keyboard)
+        {
+            device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyKeyboard, Keyboard);
+        }
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Disco.BI.Extensions;
+using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Importing;
 using Disco.Services.Authorization;
 using Disco.Services.Devices.Exporting;
@@ -28,6 +29,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pAllowUnauthenticatedEnrol = "allowunauthenticatedenrol";
         const string pDetailACAdapter = "detailacadapter";
         const string pDetailBattery = "detailbattery";
+        const string pDetailKeyboard = "detailkeyboard";
 
         public virtual ActionResult Update(string id, string key, string value = null, bool redirect = false)
         {
@@ -75,6 +77,10 @@ namespace Disco.Web.Areas.API.Controllers
                         case pDetailBattery:
                             Authorization.Require(Claims.Device.Properties.Details);
                             UpdateDetailBattery(device, value);
+                            break;
+                        case pDetailKeyboard:
+                            Authorization.Require(Claims.Device.Properties.Details);
+                            UpdateDetailKeyboard(device, value);
                             break;
                         default:
                             throw new Exception("Invalid Update Key");
@@ -156,10 +162,16 @@ namespace Disco.Web.Areas.API.Controllers
             return Update(id, pDetailBattery, DetailBattery, redirect);
         }
 
+        [DiscoAuthorize(Claims.Device.Properties.Details)]
+        public virtual ActionResult UpdateDetailKeyboard(string id, string DetailKeyboard = null, bool redirect = false)
+        {
+            return Update(id, pDetailKeyboard, DetailKeyboard, redirect);
+        }
+
         #endregion
 
         #region Update Properties
-        private void UpdateDeviceProfileId(Disco.Models.Repository.Device device, string DeviceProfileId)
+        private void UpdateDeviceProfileId(Device device, string DeviceProfileId)
         {
             if (!string.IsNullOrEmpty(DeviceProfileId))
             {
@@ -187,7 +199,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             throw new Exception("Invalid Device Profile Id");
         }
-        private void UpdateDeviceBatchId(Disco.Models.Repository.Device device, string DeviceBatchId)
+        private void UpdateDeviceBatchId(Device device, string DeviceBatchId)
         {
             if (!string.IsNullOrEmpty(DeviceBatchId))
             {
@@ -216,7 +228,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             throw new Exception("Invalid Device Batch Id");
         }
-        private void UpdateAssetNumber(Disco.Models.Repository.Device device, string AssetNumber)
+        private void UpdateAssetNumber(Device device, string AssetNumber)
         {
             if (string.IsNullOrWhiteSpace(AssetNumber))
                 device.AssetNumber = null;
@@ -224,7 +236,7 @@ namespace Disco.Web.Areas.API.Controllers
                 device.AssetNumber = AssetNumber.Trim();
             Database.SaveChanges();
         }
-        private void UpdateLocation(Disco.Models.Repository.Device device, string Location)
+        private void UpdateLocation(Device device, string Location)
         {
             if (string.IsNullOrWhiteSpace(Location))
                 device.Location = null;
@@ -232,10 +244,10 @@ namespace Disco.Web.Areas.API.Controllers
                 device.Location = Location.Trim();
             Database.SaveChanges();
         }
-        private void UpdateAssignedUserId(Disco.Models.Repository.Device device, string UserId)
+        private void UpdateAssignedUserId(Device device, string UserId)
         {
             var daus = Database.DeviceUserAssignments.Where(m => m.DeviceSerialNumber == device.SerialNumber && m.UnassignedDate == null);
-            Disco.Models.Repository.User u = null;
+            User u = null;
             if (!string.IsNullOrEmpty(UserId))
             {
                 u = UserService.GetUser(UserId, Database, true);
@@ -247,7 +259,7 @@ namespace Disco.Web.Areas.API.Controllers
             device.AssignDevice(Database, u);
             Database.SaveChanges();
         }
-        private void UpdateAllowUnauthenticatedEnrol(Disco.Models.Repository.Device device, string AllowUnauthenticatedEnrol)
+        private void UpdateAllowUnauthenticatedEnrol(Device device, string AllowUnauthenticatedEnrol)
         {
             bool bAllowUnauthenticatedEnrol;
             if (string.IsNullOrEmpty(AllowUnauthenticatedEnrol) || !bool.TryParse(AllowUnauthenticatedEnrol, out bAllowUnauthenticatedEnrol))
@@ -261,7 +273,7 @@ namespace Disco.Web.Areas.API.Controllers
                 Database.SaveChanges();
             }
         }
-        private void UpdateDetailACAdapter(Disco.Models.Repository.Device device, string ACAdapter)
+        private void UpdateDetailACAdapter(Device device, string ACAdapter)
         {
             if (string.IsNullOrWhiteSpace(ACAdapter))
                 device.DeviceDetails.ACAdapter(device, null);
@@ -269,12 +281,20 @@ namespace Disco.Web.Areas.API.Controllers
                 device.DeviceDetails.ACAdapter(device, ACAdapter.Trim());
             Database.SaveChanges();
         }
-        private void UpdateDetailBattery(Disco.Models.Repository.Device device, string Battery)
+        private void UpdateDetailBattery(Device device, string Battery)
         {
             if (string.IsNullOrWhiteSpace(Battery))
                 device.DeviceDetails.Battery(device, null);
             else
                 device.DeviceDetails.Battery(device, Battery.Trim());
+            Database.SaveChanges();
+        }
+        private void UpdateDetailKeyboard(Device device, string Keyboard)
+        {
+            if (string.IsNullOrWhiteSpace(Keyboard))
+                device.DeviceDetails.Keyboard(device, null);
+            else
+                device.DeviceDetails.Keyboard(device, Keyboard.Trim());
             Database.SaveChanges();
         }
         #endregion
@@ -290,7 +310,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 if (d.CanDecommission())
                 {
-                    d.OnDecommission((Disco.Models.Repository.DecommissionReasons)Reason);
+                    d.OnDecommission((DecommissionReasons)Reason);
 
                     Database.SaveChanges();
                     if (redirect)
@@ -472,7 +492,7 @@ namespace Disco.Web.Areas.API.Controllers
                         if (string.IsNullOrEmpty(contentType) || contentType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
                             contentType = BI.Interop.MimeTypes.ResolveMimeType(file.FileName);
 
-                        var da = new Disco.Models.Repository.DeviceAttachment()
+                        var da = new DeviceAttachment()
                         {
                             DeviceSerialNumber = d.SerialNumber,
                             TechUserId = UserService.CurrentUserId,

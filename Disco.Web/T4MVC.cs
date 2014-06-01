@@ -300,7 +300,8 @@ namespace Links
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/jQuery-SignalR";
                     public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                     public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string jquery_signalR_1_1_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.signalR-1.1.2.min.js") ? Url("jquery.signalR-1.1.2.min.js") : Url("jquery.signalR-1.1.2.js");
+                    public static readonly string disco_hubs_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco-hubs.min.js") ? Url("disco-hubs.min.js") : Url("disco-hubs.js");
+                    public static readonly string jquery_signalR_2_0_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.signalR-2.0.3.min.js") ? Url("jquery.signalR-2.0.3.min.js") : Url("jquery.signalR-2.0.3.js");
                 }
             
                 public static readonly string jQuery_SignalR_js_bundle = Url("jQuery-SignalR.js.bundle");
@@ -336,7 +337,7 @@ namespace Links
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/Knockout";
                     public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                     public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string knockout_2_3_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/knockout-2.3.0.min.js") ? Url("knockout-2.3.0.min.js") : Url("knockout-2.3.0.js");
+                    public static readonly string knockout_3_1_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/knockout-3.1.0.min.js") ? Url("knockout-3.1.0.min.js") : Url("knockout-3.1.0.js");
                 }
             
                 public static readonly string Knockout_js_bundle = Url("Knockout.js.bundle");
@@ -3549,6 +3550,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateDetailKeyboard()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDetailKeyboard);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Decommission()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Decommission);
@@ -3668,6 +3675,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateAllowUnauthenticatedEnrol = "UpdateAllowUnauthenticatedEnrol";
             public readonly string UpdateDetailACAdapter = "UpdateDetailACAdapter";
             public readonly string UpdateDetailBattery = "UpdateDetailBattery";
+            public readonly string UpdateDetailKeyboard = "UpdateDetailKeyboard";
             public readonly string Decommission = "Decommission";
             public readonly string Recommission = "Recommission";
             public readonly string Delete = "Delete";
@@ -3699,6 +3707,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateAllowUnauthenticatedEnrol = "UpdateAllowUnauthenticatedEnrol";
             public const string UpdateDetailACAdapter = "UpdateDetailACAdapter";
             public const string UpdateDetailBattery = "UpdateDetailBattery";
+            public const string UpdateDetailKeyboard = "UpdateDetailKeyboard";
             public const string Decommission = "Decommission";
             public const string Recommission = "Recommission";
             public const string Delete = "Delete";
@@ -3809,6 +3818,16 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string DetailBattery = "DetailBattery";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateDetailKeyboard s_params_UpdateDetailKeyboard = new ActionParamsClass_UpdateDetailKeyboard();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateDetailKeyboard UpdateDetailKeyboardParams { get { return s_params_UpdateDetailKeyboard; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateDetailKeyboard
+        {
+            public readonly string id = "id";
+            public readonly string DetailKeyboard = "DetailKeyboard";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_Decommission s_params_Decommission = new ActionParamsClass_Decommission();
@@ -4073,6 +4092,18 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DetailBattery", DetailBattery);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateDetailBatteryOverride(callInfo, id, DetailBattery, redirect);
+            return callInfo;
+        }
+
+        partial void UpdateDetailKeyboardOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DetailKeyboard, bool redirect);
+
+        public override System.Web.Mvc.ActionResult UpdateDetailKeyboard(string id, string DetailKeyboard, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDetailKeyboard);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DetailKeyboard", DetailKeyboard);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateDetailKeyboardOverride(callInfo, id, DetailKeyboard, redirect);
             return callInfo;
         }
 
@@ -11592,8 +11623,10 @@ namespace T4MVC.Config
             public class _ViewNamesClass
             {
                 public readonly string LogEvents = "LogEvents";
+                public readonly string TaskStatus = "TaskStatus";
             }
             public readonly string LogEvents = "~/Areas/Config/Views/Shared/LogEvents.cshtml";
+            public readonly string TaskStatus = "~/Areas/Config/Views/Shared/TaskStatus.cshtml";
         }
     }
 
