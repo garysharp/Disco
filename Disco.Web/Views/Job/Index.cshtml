@@ -52,7 +52,10 @@
                                 chart: {
                                     renderTo: 'chartHostJobDailyOpenedClosed',
                                     height: 175,
-                                    animation: false
+                                    animation: false,
+                                    style: {
+                                        fontFamily: '"Segoe UI", Arial, Verdana, Tahoma, sans-serif'
+                                    }
                                 },
                                 colors: ['#BBBBBB', '#005fab', '#60ab1e'],
                                 title: {
@@ -71,7 +74,11 @@
                                     verticalAlign: 'top',
                                     y: 0,
                                     floating: true,
-                                    borderWidth: 0
+                                    borderWidth: 0,
+                                    itemStyle: {
+                                        color: '#333',
+                                        fontWeight: 'normal'
+                                    }
                                 },
                                 xAxis: {
                                     type: 'datetime',

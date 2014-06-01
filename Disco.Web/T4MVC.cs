@@ -13,6 +13,7 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
@@ -22,7 +23,7 @@ using System.Web.Routing;
 using T4MVC;
 
 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-public static class MVC
+public static partial class MVC
 {
     static readonly APIClass s_API = new APIClass();
     public static APIClass API { get { return s_API; } }
@@ -153,14 +154,14 @@ namespace Links
                 public static readonly string disco_moment_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.moment.extensions.min.js") ? Url("disco.moment.extensions.min.js") : Url("disco.moment.extensions.js");
                 public static readonly string disco_uicore_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.uicore.min.js") ? Url("disco.uicore.min.js") : Url("disco.uicore.js");
                 public static readonly string disco_unobtrusiveValidation_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.unobtrusiveValidation.extensions.min.js") ? Url("disco.unobtrusiveValidation.extensions.min.js") : Url("disco.unobtrusiveValidation.extensions.js");
-                public static readonly string jquery_2_0_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-2.0.3.min.js") ? Url("jquery-2.0.3.min.js") : Url("jquery-2.0.3.js");
-                public static readonly string jquery_ui_1_10_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui-1.10.3.min.js") ? Url("jquery-ui-1.10.3.min.js") : Url("jquery-ui-1.10.3.js");
+                public static readonly string jquery_2_1_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-2.1.1.min.js") ? Url("jquery-2.1.1.min.js") : Url("jquery-2.1.1.js");
+                public static readonly string jquery_ui_1_10_4_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui-1.10.4.min.js") ? Url("jquery-ui-1.10.4.min.js") : Url("jquery-ui-1.10.4.js");
                 public static readonly string jquery_dataTables_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.dataTables.min.js") ? Url("jquery.dataTables.min.js") : Url("jquery.dataTables.js");
                 public static readonly string jquery_validate_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate.min.js") ? Url("jquery.validate.min.js") : Url("jquery.validate.js");
                 public static readonly string jquery_validate_unobtrusive_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate.unobtrusive.min.js") ? Url("jquery.validate.unobtrusive.min.js") : Url("jquery.validate.unobtrusive.js");
                 public static readonly string jquery_watermark_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.watermark.min.js") ? Url("jquery.watermark.min.js") : Url("jquery.watermark.js");
                 public static readonly string livestamp_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/livestamp.min.js") ? Url("livestamp.min.js") : Url("livestamp.js");
-                public static readonly string modernizr_2_6_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/modernizr-2.6.2.min.js") ? Url("modernizr-2.6.2.min.js") : Url("modernizr-2.6.2.js");
+                public static readonly string modernizr_2_7_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/modernizr-2.7.2.min.js") ? Url("modernizr-2.7.2.min.js") : Url("modernizr-2.7.2.js");
                 public static readonly string moment_en_au_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/moment.en-au.min.js") ? Url("moment.en-au.min.js") : Url("moment.en-au.js");
                 public static readonly string moment_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/moment.min.js") ? Url("moment.min.js") : Url("moment.js");
             }
@@ -410,11 +411,14 @@ namespace Links
                                 private const string URLPATH = "~/ClientSource/Scripts/Modules/tinymce/skins/lightgray/fonts";
                                 public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                                 public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                                public static readonly string readme_md = Url("readme.md");
                                 public static readonly string tinymce_small_eot = Url("tinymce-small.eot");
+                                public static readonly string tinymce_small_json = Url("tinymce-small.json");
                                 public static readonly string tinymce_small_svg = Url("tinymce-small.svg");
                                 public static readonly string tinymce_small_ttf = Url("tinymce-small.ttf");
                                 public static readonly string tinymce_small_woff = Url("tinymce-small.woff");
                                 public static readonly string tinymce_eot = Url("tinymce.eot");
+                                public static readonly string tinymce_json = Url("tinymce.json");
                                 public static readonly string tinymce_svg = Url("tinymce.svg");
                                 public static readonly string tinymce_ttf = Url("tinymce.ttf");
                                 public static readonly string tinymce_woff = Url("tinymce.woff");
@@ -429,7 +433,6 @@ namespace Links
                                 public static readonly string loader_gif = Url("loader.gif");
                                 public static readonly string object_gif = Url("object.gif");
                                 public static readonly string trans_gif = Url("trans.gif");
-                                public static readonly string wline_gif = Url("wline.gif");
                             }
                         
                             public static readonly string skin_ie7_min_css = Url("skin.ie7.min.css");
@@ -449,6 +452,7 @@ namespace Links
                             public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                             public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
                             public static readonly string theme_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/theme.min.js") ? Url("theme.min.js") : Url("theme.js");
+                            public static readonly string theme_min_js = Url("theme.min.js");
                         }
                     
                         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -462,6 +466,7 @@ namespace Links
                     }
                 
                     public static readonly string tinymce_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/tinymce.min.js") ? Url("tinymce.min.js") : Url("tinymce.js");
+                    public static readonly string tinymce_min_js = Url("tinymce.min.js");
                 }
             
                 public static readonly string tinymce_js_bundle = Url("tinymce.js.bundle");
@@ -891,10 +896,22 @@ namespace Disco.Web.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -1075,8 +1092,10 @@ namespace Disco.Web.Controllers
     {
         public T4MVC_DeviceController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -1084,8 +1103,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AddOfflineOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AddOffline()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddOffline);
@@ -1093,8 +1114,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AddOfflineOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Models.Device.AddOfflineModel m);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AddOffline(Disco.Web.Models.Device.AddOfflineModel m)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddOffline);
@@ -1103,8 +1126,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string DownloadId, Disco.Models.Services.Devices.Exporting.DeviceExportTypes? ExportType, int? ExportTypeTargetId);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Export(string DownloadId, Disco.Models.Services.Devices.Exporting.DeviceExportTypes? ExportType, int? ExportTypeTargetId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
@@ -1115,8 +1140,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ImportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Import(string Id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Import);
@@ -1125,8 +1152,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ImportHeadersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ImportHeaders(string Id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportHeaders);
@@ -1135,8 +1164,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ImportReviewOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ImportReview(string Id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportReview);
@@ -1145,8 +1176,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ShowOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Show(string id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Show);
@@ -1176,10 +1209,22 @@ namespace Disco.Web.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -1333,8 +1378,10 @@ namespace Disco.Web.Controllers
     {
         public T4MVC_InitialConfigController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -1342,8 +1389,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void WelcomeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Welcome()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Welcome);
@@ -1351,8 +1400,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void WelcomeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Models.InitialConfig.WelcomeModel model);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Welcome(Disco.Web.Models.InitialConfig.WelcomeModel model)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Welcome);
@@ -1361,8 +1412,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DatabaseOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Database()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Database);
@@ -1370,8 +1423,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DatabaseOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Models.InitialConfig.DatabaseModel model);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Database(Disco.Web.Models.InitialConfig.DatabaseModel model)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Database);
@@ -1380,8 +1435,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void FileStoreOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult FileStore()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.FileStore);
@@ -1389,8 +1446,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void FileStoreOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Models.InitialConfig.FileStoreModel m);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult FileStore(Disco.Web.Models.InitialConfig.FileStoreModel m)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.FileStore);
@@ -1399,8 +1458,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void FileStoreBranchOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Path);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult FileStoreBranch(string Path)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.FileStoreBranch);
@@ -1409,8 +1470,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AdministratorsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Administrators()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Administrators);
@@ -1418,8 +1481,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AdministratorsSearchOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string term);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AdministratorsSearch(string term)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AdministratorsSearch);
@@ -1428,8 +1493,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AdministratorsSubjectOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AdministratorsSubject(string Id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AdministratorsSubject);
@@ -1438,8 +1505,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AdministratorsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string[] Subjects);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Administrators(string[] Subjects)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Administrators);
@@ -1448,8 +1517,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CompleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Complete()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Complete);
@@ -1457,8 +1528,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void RestartWebAppOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult RestartWebApp()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RestartWebApp);
@@ -1487,10 +1560,22 @@ namespace Disco.Web.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -1707,8 +1792,10 @@ namespace Disco.Web.Controllers
     {
         public T4MVC_JobController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -1716,8 +1803,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void QueueOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Queue(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Queue);
@@ -1726,8 +1815,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AllOpenOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AllOpen()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AllOpen);
@@ -1735,8 +1826,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AwaitingTechnicianActionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AwaitingTechnicianAction()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AwaitingTechnicianAction);
@@ -1744,8 +1837,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DevicesReadyForReturnOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult DevicesReadyForReturn()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DevicesReadyForReturn);
@@ -1753,8 +1848,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DevicesAwaitingRepairOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult DevicesAwaitingRepair()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DevicesAwaitingRepair);
@@ -1762,8 +1859,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AwaitingFinanceOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AwaitingFinance()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AwaitingFinance);
@@ -1771,8 +1870,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AwaitingFinanceChargeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AwaitingFinanceCharge()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AwaitingFinanceCharge);
@@ -1780,8 +1881,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AwaitingFinancePaymentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AwaitingFinancePayment()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AwaitingFinancePayment);
@@ -1789,8 +1892,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AwaitingFinanceInsuranceProcessingOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AwaitingFinanceInsuranceProcessing()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AwaitingFinanceInsuranceProcessing);
@@ -1798,8 +1903,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AwaitingFinanceAgreementBreachOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AwaitingFinanceAgreementBreach()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AwaitingFinanceAgreementBreach);
@@ -1807,8 +1914,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AwaitingUserActionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AwaitingUserAction()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AwaitingUserAction);
@@ -1816,8 +1925,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void RecentlyClosedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult RecentlyClosed()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RecentlyClosed);
@@ -1825,8 +1936,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void LocationsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Locations()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Locations);
@@ -1834,8 +1947,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void LongRunningOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult LongRunning()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LongRunning);
@@ -1843,8 +1958,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void StaleOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Stale()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Stale);
@@ -1852,8 +1969,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ShowOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Show(int? id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Show);
@@ -1862,8 +1981,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string DeviceSerialNumber, string UserId);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Create(string DeviceSerialNumber, string UserId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
@@ -1873,8 +1994,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Models.Job.CreateModel m);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Create(Disco.Web.Models.Job.CreateModel m)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
@@ -1883,8 +2006,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void LogWarrantyOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string WarrantyProviderId, int? OrganisationAddressId);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult LogWarranty(int id, string WarrantyProviderId, int? OrganisationAddressId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LogWarranty);
@@ -1895,8 +2020,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void LogWarrantyOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Models.Job.LogWarrantyModel m, System.Web.Mvc.FormCollection form);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult LogWarranty(Disco.Web.Models.Job.LogWarrantyModel m, System.Web.Mvc.FormCollection form)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LogWarranty);
@@ -1906,8 +2033,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void WarrantyProviderJobDetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult WarrantyProviderJobDetails(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.WarrantyProviderJobDetails);
@@ -1937,10 +2066,22 @@ namespace Disco.Web.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -2021,8 +2162,10 @@ namespace Disco.Web.Controllers
     {
         public T4MVC_PluginWebHandlerController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string PluginId, string PluginAction);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index(string PluginId, string PluginAction)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -2032,8 +2175,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ResourceOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string PluginId, string res, bool? Download);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Resource(string PluginId, string res, bool? Download)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Resource);
@@ -2065,10 +2210,22 @@ namespace Disco.Web.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -2134,8 +2291,10 @@ namespace Disco.Web.Controllers
     {
         public T4MVC_SearchController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void QueryOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string term, string limit, bool searchDetails);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Query(string term, string limit, bool searchDetails)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Query);
@@ -2167,10 +2326,22 @@ namespace Disco.Web.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
 
@@ -2222,8 +2393,10 @@ namespace Disco.Web.Controllers
     {
         public T4MVC_UpdateController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -2252,10 +2425,22 @@ namespace Disco.Web.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -2349,8 +2534,10 @@ namespace Disco.Web.Controllers
     {
         public T4MVC_UserController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -2358,8 +2545,10 @@ namespace Disco.Web.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ShowOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Domain);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Show(string id, string Domain)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Show);
@@ -2435,10 +2624,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -2591,8 +2792,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_AuthorizationRoleController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void UpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string key, string value, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Update(int id, string key, string value, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
@@ -2604,8 +2807,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateNameOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string RoleName, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateName(int id, string RoleName, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateName);
@@ -2616,8 +2821,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateClaimsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string[] ClaimKeys, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateClaims(int id, string[] ClaimKeys, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateClaims);
@@ -2628,8 +2835,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateSubjectsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string[] Subjects, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateSubjects(int id, string[] Subjects, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateSubjects);
@@ -2640,8 +2849,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Delete(int id, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
@@ -2651,8 +2862,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateAdministratorSubjectsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string[] Subjects, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateAdministratorSubjects(string[] Subjects, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAdministratorSubjects);
@@ -2683,10 +2896,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -2764,8 +2989,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_BootstrapperController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void MacSshUsernameOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string MacSshUsername);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult MacSshUsername(string MacSshUsername)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MacSshUsername);
@@ -2774,8 +3001,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void MacSshPasswordOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string MacSshPassword);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult MacSshPassword(string MacSshPassword)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MacSshPassword);
@@ -2805,10 +3034,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -3160,8 +3401,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_DeviceBatchController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void UpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string key, string value, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Update(int id, string key, string value, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
@@ -3173,8 +3416,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateNameOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string BatchName, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateName(int id, string BatchName, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateName);
@@ -3185,8 +3430,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdatePurchaseDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string PurchaseDate, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdatePurchaseDate(int id, string PurchaseDate, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdatePurchaseDate);
@@ -3197,8 +3444,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateSupplierOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Supplier, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateSupplier(int id, string Supplier, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateSupplier);
@@ -3209,8 +3458,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdatePurchaseDetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string PurchaseDetails, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdatePurchaseDetails(int id, string PurchaseDetails, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdatePurchaseDetails);
@@ -3221,8 +3472,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateUnitCostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string UnitCost, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateUnitCost(int id, string UnitCost, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateUnitCost);
@@ -3233,8 +3486,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateUnitQuantityOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string UnitQuantity, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateUnitQuantity(int id, string UnitQuantity, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateUnitQuantity);
@@ -3245,8 +3500,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateDefaultDeviceModelIdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string DefaultDeviceModelId, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateDefaultDeviceModelId(int id, string DefaultDeviceModelId, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDefaultDeviceModelId);
@@ -3257,8 +3514,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateWarrantyValidUntilOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string WarrantyValidUntil, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateWarrantyValidUntil(int id, string WarrantyValidUntil, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateWarrantyValidUntil);
@@ -3269,8 +3528,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateWarrantyDetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string WarrantyDetails, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateWarrantyDetails(int id, string WarrantyDetails, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateWarrantyDetails);
@@ -3281,8 +3542,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsuredDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string InsuredDate, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsuredDate(int id, string InsuredDate, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuredDate);
@@ -3293,8 +3556,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsuranceSupplierOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string InsuranceSupplier, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsuranceSupplier(int id, string InsuranceSupplier, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuranceSupplier);
@@ -3305,8 +3570,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsuredUntilOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string InsuredUntil, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsuredUntil(int id, string InsuredUntil, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuredUntil);
@@ -3317,8 +3584,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsuranceDetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string InsuranceDetails, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsuranceDetails(int id, string InsuranceDetails, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuranceDetails);
@@ -3329,8 +3598,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateCommentsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Comments, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateComments(int id, string Comments, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateComments);
@@ -3341,8 +3612,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Delete(int id, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
@@ -3352,8 +3625,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index(int? id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -3362,8 +3637,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void TimelineOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Timeline()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Timeline);
@@ -3392,10 +3669,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -3457,8 +3746,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_DeviceCertificateController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void DownloadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Download(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Download);
@@ -3488,10 +3779,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -3985,8 +4288,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_DeviceController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void UpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string key, string value, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Update(string id, string key, string value, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
@@ -3998,8 +4303,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateDeviceProfileIdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DeviceProfileId, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateDeviceProfileId(string id, string DeviceProfileId, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDeviceProfileId);
@@ -4010,8 +4317,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateDeviceBatchIdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DeviceBatchId, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateDeviceBatchId(string id, string DeviceBatchId, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDeviceBatchId);
@@ -4022,8 +4331,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateAssetNumberOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string AssetNumber, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateAssetNumber(string id, string AssetNumber, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAssetNumber);
@@ -4034,8 +4345,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateLocationOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Location, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateLocation(string id, string Location, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLocation);
@@ -4046,8 +4359,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateAssignedUserIdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string AssignedUserId, string AssignedUserDomain, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateAssignedUserId(string id, string AssignedUserId, string AssignedUserDomain, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAssignedUserId);
@@ -4059,8 +4374,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateAllowUnauthenticatedEnrolOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string AllowUnauthenticatedEnrol, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateAllowUnauthenticatedEnrol(string id, string AllowUnauthenticatedEnrol, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAllowUnauthenticatedEnrol);
@@ -4071,8 +4388,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateDetailACAdapterOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DetailACAdapter, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateDetailACAdapter(string id, string DetailACAdapter, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDetailACAdapter);
@@ -4083,8 +4402,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateDetailBatteryOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DetailBattery, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateDetailBattery(string id, string DetailBattery, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDetailBattery);
@@ -4095,8 +4416,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateDetailKeyboardOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DetailKeyboard, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateDetailKeyboard(string id, string DetailKeyboard, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDetailKeyboard);
@@ -4107,8 +4430,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DecommissionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, int Reason, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Decommission(string id, int Reason, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Decommission);
@@ -4119,8 +4444,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void RecommissionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Recommission(string id, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Recommission);
@@ -4130,8 +4457,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Delete(string id, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
@@ -4141,8 +4470,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void GeneratePdfOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DocumentTemplateId);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult GeneratePdf(string id, string DocumentTemplateId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdf);
@@ -4152,8 +4483,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void LastNetworkLogonDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult LastNetworkLogonDate(string id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LastNetworkLogonDate);
@@ -4162,8 +4495,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AttachmentDownloadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AttachmentDownload(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentDownload);
@@ -4172,8 +4507,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AttachmentThumbnailOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AttachmentThumbnail(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentThumbnail);
@@ -4182,8 +4519,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AttachmentUploadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Comments);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AttachmentUpload(string id, string Comments)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentUpload);
@@ -4193,8 +4532,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AttachmentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Attachment(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Attachment);
@@ -4203,8 +4544,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AttachmentsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Attachments(string id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Attachments);
@@ -4213,8 +4556,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AttachmentRemoveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AttachmentRemove(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentRemove);
@@ -4223,8 +4568,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ImportBeginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Web.HttpPostedFileBase ImportFile, bool HasHeader);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ImportBegin(System.Web.HttpPostedFileBase ImportFile, bool HasHeader)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportBegin);
@@ -4234,8 +4581,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ImportParseOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id, System.Collections.Generic.List<Disco.Models.Services.Devices.Importing.DeviceImportFieldTypes> Headers);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ImportParse(string Id, System.Collections.Generic.List<Disco.Models.Services.Devices.Importing.DeviceImportFieldTypes> Headers)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportParse);
@@ -4245,8 +4594,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ImportApplyOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ImportApply(string Id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportApply);
@@ -4255,8 +4606,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Models.Device.ExportModel Model);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Export(Disco.Web.Models.Device.ExportModel Model)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
@@ -4265,8 +4618,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ExportRetrieveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ExportRetrieve(string Id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportRetrieve);
@@ -4275,8 +4630,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void MigrateDeviceMacAddressesFromLogOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult MigrateDeviceMacAddressesFromLog()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MigrateDeviceMacAddressesFromLog);
@@ -4305,10 +4662,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -4550,8 +4919,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_DeviceModelController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void UpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string key, string value, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Update(int id, string key, string value, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
@@ -4563,8 +4934,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateDescriptionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Description, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateDescription(int id, string Description, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDescription);
@@ -4575,8 +4948,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateDefaultPurchaseDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string DefaultPurchaseDate, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateDefaultPurchaseDate(int id, string DefaultPurchaseDate, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDefaultPurchaseDate);
@@ -4587,8 +4962,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateDefaultWarrantyProviderOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string DefaultWarrantyProvider, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateDefaultWarrantyProvider(int id, string DefaultWarrantyProvider, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDefaultWarrantyProvider);
@@ -4599,8 +4976,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ImageOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, string v);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Image(int? id, string v)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Image);
@@ -4610,8 +4989,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ImageOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool redirect, System.Web.HttpPostedFileBase Image);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Image(int id, bool redirect, System.Web.HttpPostedFileBase Image)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Image);
@@ -4622,8 +5003,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Delete(int id, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
@@ -4633,8 +5016,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ComponentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Component(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Component);
@@ -4643,8 +5028,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ComponentAddOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, string Description, string Cost);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ComponentAdd(int? id, string Description, string Cost)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ComponentAdd);
@@ -4655,8 +5042,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ComponentUpdateJobSubTypesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, System.Collections.Generic.List<string> JobSubTypes);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ComponentUpdateJobSubTypes(int id, System.Collections.Generic.List<string> JobSubTypes)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ComponentUpdateJobSubTypes);
@@ -4666,8 +5055,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ComponentUpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Description, string Cost);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ComponentUpdate(int id, string Description, string Cost)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ComponentUpdate);
@@ -4678,8 +5069,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ComponentRemoveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ComponentRemove(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ComponentRemove);
@@ -4688,8 +5081,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -4718,10 +5113,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -5071,8 +5478,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_DeviceProfileController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void UpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string key, string value, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Update(int id, string key, string value, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
@@ -5084,8 +5493,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateDescriptionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Description, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateDescription(int id, string Description, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDescription);
@@ -5096,8 +5507,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateNameOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string ProfileName, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateName(int id, string ProfileName, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateName);
@@ -5108,8 +5521,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateShortNameOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string ShortName, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateShortName(int id, string ShortName, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateShortName);
@@ -5120,8 +5535,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateDistributionTypeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string DistributionType, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateDistributionType(int id, string DistributionType, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDistributionType);
@@ -5132,8 +5549,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateCertificateProviderIdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string CertificateProviderId, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateCertificateProviderId(int id, string CertificateProviderId, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateCertificateProviderId);
@@ -5144,8 +5563,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateOrganisationalUnitOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string OrganisationalUnit, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateOrganisationalUnit(int id, string OrganisationalUnit, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateOrganisationalUnit);
@@ -5156,8 +5577,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateDefaultOrganisationAddressOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string DefaultOrganisationAddress, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateDefaultOrganisationAddress(int id, string DefaultOrganisationAddress, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDefaultOrganisationAddress);
@@ -5168,8 +5591,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateComputerNameTemplateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string ComputerNameTemplate, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateComputerNameTemplate(int id, string ComputerNameTemplate, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateComputerNameTemplate);
@@ -5180,8 +5605,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateEnforceComputerNameConventionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string EnforceComputerNameConvention, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateEnforceComputerNameConvention(int id, string EnforceComputerNameConvention, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateEnforceComputerNameConvention);
@@ -5192,8 +5619,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateEnforceOrganisationalUnitOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string EnforceOrganisationalUnit, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateEnforceOrganisationalUnit(int id, string EnforceOrganisationalUnit, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateEnforceOrganisationalUnit);
@@ -5204,8 +5633,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateProvisionADAccountOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string ProvisionADAccount, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateProvisionADAccount(int id, string ProvisionADAccount, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateProvisionADAccount);
@@ -5216,8 +5647,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateAssignedUserLocalAdminOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string AssignedUserLocalAdmin, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateAssignedUserLocalAdmin(int id, string AssignedUserLocalAdmin, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAssignedUserLocalAdmin);
@@ -5228,8 +5661,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateAllowUntrustedReimageJobEnrolmentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string AllowUntrustedReimageJobEnrolment, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateAllowUntrustedReimageJobEnrolment(int id, string AllowUntrustedReimageJobEnrolment, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAllowUntrustedReimageJobEnrolment);
@@ -5240,8 +5675,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Delete(int id, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
@@ -5251,8 +5688,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DefaultOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Default(int id, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Default);
@@ -5262,8 +5701,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DefaultAddDeviceOfflineOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult DefaultAddDeviceOffline(int id, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DefaultAddDeviceOffline);
@@ -5294,10 +5735,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -5593,8 +6046,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_DocumentTemplateController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void UpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string key, string value, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Update(string id, string key, string value, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
@@ -5606,8 +6061,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void TemplateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Template(string id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Template);
@@ -5616,8 +6073,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void TemplateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, bool redirect, System.Web.HttpPostedFileBase Template);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Template(string id, bool redirect, System.Web.HttpPostedFileBase Template)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Template);
@@ -5628,8 +6087,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateDescriptionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Description, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateDescription(string id, string Description, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDescription);
@@ -5640,8 +6101,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateFilterExpressionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string FilterExpression, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateFilterExpression(string id, string FilterExpression, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateFilterExpression);
@@ -5652,8 +6115,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateFlattenFormOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string FlattenForm, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateFlattenForm(string id, string FlattenForm, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateFlattenForm);
@@ -5664,8 +6129,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateScopeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Scope, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateScope(string id, string Scope, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateScope);
@@ -5676,8 +6143,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateJobSubTypesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, System.Collections.Generic.List<string> JobSubTypes, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateJobSubTypes(string id, System.Collections.Generic.List<string> JobSubTypes, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateJobSubTypes);
@@ -5688,8 +6157,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ImporterThumbnailOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string SessionId, int PageNumber);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ImporterThumbnail(string SessionId, int PageNumber)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImporterThumbnail);
@@ -5699,8 +6170,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ImporterUndetectedFilesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ImporterUndetectedFiles()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImporterUndetectedFiles);
@@ -5708,8 +6181,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ImporterUndetectedDataIdLookupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string term, int limitCount);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ImporterUndetectedDataIdLookup(string id, string term, int limitCount)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImporterUndetectedDataIdLookup);
@@ -5720,8 +6195,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ImporterUndetectedFileOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, bool? Source, bool? Thumbnail);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ImporterUndetectedFile(string id, bool? Source, bool? Thumbnail)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImporterUndetectedFile);
@@ -5732,8 +6209,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ImporterUndetectedAssignOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DocumentTemplateId, string DataId);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ImporterUndetectedAssign(string id, string DocumentTemplateId, string DataId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImporterUndetectedAssign);
@@ -5744,8 +6223,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ImporterUndetectedDeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ImporterUndetectedDelete(string id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImporterUndetectedDelete);
@@ -5754,8 +6235,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void BulkGenerateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DataIds);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult BulkGenerate(string id, string DataIds)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerate);
@@ -5765,8 +6248,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Delete(string id, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
@@ -5797,10 +6282,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -5862,8 +6359,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_ExpressionsController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void ValidateExpressionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Expression);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ValidateExpression(string Expression)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ValidateExpression);
@@ -5893,10 +6392,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -7092,8 +7603,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_JobController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void UpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string key, string value, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Update(int id, string key, string value, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
@@ -7105,8 +7618,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateExpectedClosedDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string ExpectedClosedDate, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateExpectedClosedDate(int id, string ExpectedClosedDate, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateExpectedClosedDate);
@@ -7117,8 +7632,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateDeviceHeldLocationOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string DeviceHeldLocation, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateDeviceHeldLocation(int id, string DeviceHeldLocation, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDeviceHeldLocation);
@@ -7129,8 +7646,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateFlagsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Flags, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateFlags(int id, string Flags, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateFlags);
@@ -7141,8 +7660,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateNonWarrantyAccountingChargeRequiredOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string AccountingChargeRequiredDate, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateNonWarrantyAccountingChargeRequired(int id, string AccountingChargeRequiredDate, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateNonWarrantyAccountingChargeRequired);
@@ -7153,8 +7674,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateNonWarrantyAccountingChargeAddedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string AccountingChargeAddedDate, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateNonWarrantyAccountingChargeAdded(int id, string AccountingChargeAddedDate, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateNonWarrantyAccountingChargeAdded);
@@ -7165,8 +7688,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateNonWarrantyAccountingChargePaidOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string AccountingChargePaidDate, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateNonWarrantyAccountingChargePaid(int id, string AccountingChargePaidDate, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateNonWarrantyAccountingChargePaid);
@@ -7177,8 +7702,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateNonWarrantyPurchaseOrderRaisedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string PurchaseOrderRaisedDate, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateNonWarrantyPurchaseOrderRaised(int id, string PurchaseOrderRaisedDate, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateNonWarrantyPurchaseOrderRaised);
@@ -7189,8 +7716,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateNonWarrantyPurchaseOrderReferenceOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string PurchaseOrderReference, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateNonWarrantyPurchaseOrderReference(int id, string PurchaseOrderReference, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateNonWarrantyPurchaseOrderReference);
@@ -7201,8 +7730,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateNonWarrantyPurchaseOrderSentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string PurchaseOrderSentDate, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateNonWarrantyPurchaseOrderSent(int id, string PurchaseOrderSentDate, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateNonWarrantyPurchaseOrderSent);
@@ -7213,8 +7744,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateNonWarrantyInvoiceReceivedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string InvoiceReceivedDate, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateNonWarrantyInvoiceReceived(int id, string InvoiceReceivedDate, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateNonWarrantyInvoiceReceived);
@@ -7225,8 +7758,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateNonWarrantyRepairerNameOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string RepairerName, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateNonWarrantyRepairerName(int id, string RepairerName, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateNonWarrantyRepairerName);
@@ -7237,8 +7772,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateNonWarrantyRepairerLoggedDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string RepairerLoggedDate, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateNonWarrantyRepairerLoggedDate(int id, string RepairerLoggedDate, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateNonWarrantyRepairerLoggedDate);
@@ -7249,8 +7786,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateNonWarrantyRepairerReferenceOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string RepairerReference, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateNonWarrantyRepairerReference(int id, string RepairerReference, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateNonWarrantyRepairerReference);
@@ -7261,8 +7800,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateNonWarrantyRepairerCompletedDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string RepairerCompletedDate, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateNonWarrantyRepairerCompletedDate(int id, string RepairerCompletedDate, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateNonWarrantyRepairerCompletedDate);
@@ -7273,8 +7814,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateNonWarrantyIsInsuranceClaimOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool IsInsuranceClaim, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateNonWarrantyIsInsuranceClaim(int id, bool IsInsuranceClaim, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateNonWarrantyIsInsuranceClaim);
@@ -7285,8 +7828,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsuranceLossOrDamageDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string LossOrDamageDate, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsuranceLossOrDamageDate(int id, string LossOrDamageDate, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuranceLossOrDamageDate);
@@ -7297,8 +7842,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsuranceEventLocationOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string EventLocation, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsuranceEventLocation(int id, string EventLocation, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuranceEventLocation);
@@ -7309,8 +7856,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsuranceDescriptionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Description, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsuranceDescription(int id, string Description, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuranceDescription);
@@ -7321,8 +7870,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsuranceThirdPartyCausedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string ThirdPartyCaused, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsuranceThirdPartyCaused(int id, string ThirdPartyCaused, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuranceThirdPartyCaused);
@@ -7333,8 +7884,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsuranceThirdPartyCausedNameOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string ThirdPartyCausedName, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsuranceThirdPartyCausedName(int id, string ThirdPartyCausedName, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuranceThirdPartyCausedName);
@@ -7345,8 +7898,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsuranceThirdPartyCausedWhyOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string ThirdPartyCausedWhy, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsuranceThirdPartyCausedWhy(int id, string ThirdPartyCausedWhy, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuranceThirdPartyCausedWhy);
@@ -7357,8 +7912,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsuranceWitnessesNamesAddressesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string WitnessesNamesAddresses, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsuranceWitnessesNamesAddresses(int id, string WitnessesNamesAddresses, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuranceWitnessesNamesAddresses);
@@ -7369,8 +7926,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsuranceBurglaryTheftMethodOfEntryOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string BurglaryTheftMethodOfEntry, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsuranceBurglaryTheftMethodOfEntry(int id, string BurglaryTheftMethodOfEntry, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuranceBurglaryTheftMethodOfEntry);
@@ -7381,8 +7940,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsurancePropertyLastSeenDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string PropertyLastSeenDate, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsurancePropertyLastSeenDate(int id, string PropertyLastSeenDate, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsurancePropertyLastSeenDate);
@@ -7393,8 +7954,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsurancePoliceNotifiedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string PoliceNotified, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsurancePoliceNotified(int id, string PoliceNotified, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsurancePoliceNotified);
@@ -7405,8 +7968,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsurancePoliceNotifiedStationOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string PoliceNotifiedStation, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsurancePoliceNotifiedStation(int id, string PoliceNotifiedStation, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsurancePoliceNotifiedStation);
@@ -7417,8 +7982,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsurancePoliceNotifiedDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string PoliceNotifiedDate, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsurancePoliceNotifiedDate(int id, string PoliceNotifiedDate, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsurancePoliceNotifiedDate);
@@ -7429,8 +7996,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsurancePoliceNotifiedCrimeReportNoOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string PoliceNotifiedCrimeReportNo, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsurancePoliceNotifiedCrimeReportNo(int id, string PoliceNotifiedCrimeReportNo, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsurancePoliceNotifiedCrimeReportNo);
@@ -7441,8 +8010,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsuranceRecoverReduceActionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string RecoverReduceAction, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsuranceRecoverReduceAction(int id, string RecoverReduceAction, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuranceRecoverReduceAction);
@@ -7453,8 +8024,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsuranceOtherInterestedPartiesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string OtherInterestedParties, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsuranceOtherInterestedParties(int id, string OtherInterestedParties, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuranceOtherInterestedParties);
@@ -7465,8 +8038,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsuranceDateOfPurchaseOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string DateOfPurchase, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsuranceDateOfPurchase(int id, string DateOfPurchase, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuranceDateOfPurchase);
@@ -7477,8 +8052,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsuranceClaimFormSentDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string ClaimFormSentDate, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsuranceClaimFormSentDate(int id, string ClaimFormSentDate, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuranceClaimFormSentDate);
@@ -7489,8 +8066,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateInsuranceClaimFormSentUserIdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string ClaimFormSentUserId, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateInsuranceClaimFormSentUserId(int id, string ClaimFormSentUserId, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuranceClaimFormSentUserId);
@@ -7501,8 +8080,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateWarrantyExternalNameOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string ExternalName, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateWarrantyExternalName(int id, string ExternalName, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateWarrantyExternalName);
@@ -7513,8 +8094,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateWarrantyExternalLoggedDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string ExternalLoggedDate, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateWarrantyExternalLoggedDate(int id, string ExternalLoggedDate, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateWarrantyExternalLoggedDate);
@@ -7525,8 +8108,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateWarrantyExternalReferenceOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string ExternalReference, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateWarrantyExternalReference(int id, string ExternalReference, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateWarrantyExternalReference);
@@ -7537,8 +8122,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateWarrantyExternalCompletedDateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string ExternalCompletedDate, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateWarrantyExternalCompletedDate(int id, string ExternalCompletedDate, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateWarrantyExternalCompletedDate);
@@ -7549,8 +8136,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateSubTypesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, System.Collections.Generic.List<string> SubTypes, bool? AddComponents, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateSubTypes(int id, System.Collections.Generic.List<string> SubTypes, bool? AddComponents, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateSubTypes);
@@ -7562,8 +8151,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateFlagOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, long? Flag, string Reason, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateFlag(int id, long? Flag, string Reason, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateFlag);
@@ -7575,8 +8166,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void WaitingForUserActionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Reason, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult WaitingForUserAction(int id, string Reason, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.WaitingForUserAction);
@@ -7587,8 +8180,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void NotWaitingForUserActionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Resolution, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult NotWaitingForUserAction(int id, string Resolution, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.NotWaitingForUserAction);
@@ -7599,8 +8194,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void LogRepairOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string RepairerName, string RepairerReference, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult LogRepair(int id, string RepairerName, string RepairerReference, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LogRepair);
@@ -7612,8 +8209,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DeviceReadyForReturnOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult DeviceReadyForReturn(int id, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeviceReadyForReturn);
@@ -7623,8 +8222,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DeviceHeldOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult DeviceHeld(int id, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeviceHeld);
@@ -7634,8 +8235,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DeviceReturnedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult DeviceReturned(int id, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeviceReturned);
@@ -7645,8 +8248,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ForceCloseOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Reason, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ForceClose(int id, string Reason, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ForceClose);
@@ -7657,8 +8262,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CloseOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Close(int id, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Close);
@@ -7668,8 +8275,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ReopenOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Reopen(int id, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Reopen);
@@ -7679,8 +8288,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Delete(int id, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
@@ -7690,8 +8301,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ConvertHWarToHNWarOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ConvertHWarToHNWar(int id, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ConvertHWarToHNWar);
@@ -7701,8 +8314,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CommentsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Comments(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Comments);
@@ -7711,8 +8326,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CommentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Comment(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Comment);
@@ -7721,8 +8338,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CommentPostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string comment);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult CommentPost(int id, string comment)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CommentPost);
@@ -7732,8 +8351,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CommentRemoveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult CommentRemove(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CommentRemove);
@@ -7742,8 +8363,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AttachmentDownloadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AttachmentDownload(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentDownload);
@@ -7752,8 +8375,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AttachmentThumbnailOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AttachmentThumbnail(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentThumbnail);
@@ -7762,8 +8387,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AttachmentUploadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Comments);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AttachmentUpload(int id, string Comments)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentUpload);
@@ -7773,8 +8400,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AttachmentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Attachment(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Attachment);
@@ -7783,8 +8412,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AttachmentsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Attachments(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Attachments);
@@ -7793,8 +8424,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AttachmentRemoveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AttachmentRemove(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentRemove);
@@ -7803,8 +8436,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ComponentAddOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Description, string Cost);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ComponentAdd(int id, string Description, string Cost)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ComponentAdd);
@@ -7815,8 +8450,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ComponentUpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Description, string Cost);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ComponentUpdate(int id, string Description, string Cost)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ComponentUpdate);
@@ -7827,8 +8464,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ComponentRemoveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ComponentRemove(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ComponentRemove);
@@ -7837,8 +8476,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void StatisticsDailyOpenedClosedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult StatisticsDailyOpenedClosed()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.StatisticsDailyOpenedClosed);
@@ -7846,8 +8487,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void GeneratePdfOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DocumentTemplateId);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult GeneratePdf(string id, string DocumentTemplateId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdf);
@@ -7857,8 +8500,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DeviceHeldLocationsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult DeviceHeldLocations()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeviceHeldLocations);
@@ -7887,10 +8532,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -8023,8 +8680,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_JobPreferencesController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void UpdateLongRunningJobDaysThresholdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int LongRunningJobDaysThreshold, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateLongRunningJobDaysThreshold(int LongRunningJobDaysThreshold, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLongRunningJobDaysThreshold);
@@ -8034,8 +8693,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateStaleJobMinutesThresholdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int StaleJobMinutesThreshold, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateStaleJobMinutesThreshold(int StaleJobMinutesThreshold, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateStaleJobMinutesThreshold);
@@ -8045,8 +8706,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateLocationModeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Models.BI.Job.LocationModes LocationMode, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateLocationMode(Disco.Models.BI.Job.LocationModes LocationMode, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLocationMode);
@@ -8056,8 +8719,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateLocationListOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string[] LocationList, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateLocationList(string[] LocationList, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLocationList);
@@ -8067,8 +8732,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ImportLocationListOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string LocationList, bool AutomaticList, bool Override, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ImportLocationList(string LocationList, bool AutomaticList, bool Override, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportLocationList);
@@ -8101,10 +8768,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -8349,8 +9028,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_JobQueueController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void UpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string key, string value, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Update(int id, string key, string value, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
@@ -8362,8 +9043,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateNameOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string QueueName, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateName(int id, string QueueName, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateName);
@@ -8374,8 +9057,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateDescriptionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Description, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateDescription(int id, string Description, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDescription);
@@ -8386,8 +9071,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdatePriorityOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Priority, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdatePriority(int id, string Priority, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdatePriority);
@@ -8398,8 +9085,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateDefaultSLAExpiryOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string DefaultSLAExpiry, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateDefaultSLAExpiry(int id, string DefaultSLAExpiry, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDefaultSLAExpiry);
@@ -8410,8 +9099,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateIconOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Icon, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateIcon(int id, string Icon, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateIcon);
@@ -8422,8 +9113,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateIconColourOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string IconColour, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateIconColour(int id, string IconColour, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateIconColour);
@@ -8434,8 +9127,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateIconAndColourOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Icon, string IconColour, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateIconAndColour(int id, string Icon, string IconColour, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateIconAndColour);
@@ -8447,8 +9142,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateSubjectsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string[] Subjects, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateSubjects(int id, string[] Subjects, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateSubjects);
@@ -8459,8 +9156,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateJobSubTypesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, System.Collections.Generic.List<string> JobSubTypes, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateJobSubTypes(int id, System.Collections.Generic.List<string> JobSubTypes, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateJobSubTypes);
@@ -8471,8 +9170,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Delete(int id, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
@@ -8503,10 +9204,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -8700,8 +9413,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_JobQueueJobController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void UpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string key, string value, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Update(int id, string key, string value, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
@@ -8713,8 +9428,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateAddedCommentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string AddedComment, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateAddedComment(int id, string AddedComment, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAddedComment);
@@ -8725,8 +9442,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateRemovedCommentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string RemovedComment, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateRemovedComment(int id, string RemovedComment, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateRemovedComment);
@@ -8737,8 +9456,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateSlaOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string SLA, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateSla(int id, string SLA, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateSla);
@@ -8749,8 +9470,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdatePriorityOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Priority, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdatePriority(int id, string Priority, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdatePriority);
@@ -8761,8 +9484,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateSlaAndPriorityOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Sla, string Priority, bool? redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateSlaAndPriority(int id, string Sla, string Priority, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateSlaAndPriority);
@@ -8774,8 +9499,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AddJobOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, int JobId, string Comment, int? SLAExpiresMinutes, Disco.Models.Repository.JobQueuePriority Priority);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AddJob(int id, int JobId, string Comment, int? SLAExpiresMinutes, Disco.Models.Repository.JobQueuePriority Priority)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddJob);
@@ -8788,8 +9515,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void RemoveJobOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Comment, bool? CloseJob);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult RemoveJob(int id, string Comment, bool? CloseJob)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RemoveJob);
@@ -8821,10 +9550,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -8909,8 +9650,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_LoggingController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void ModulesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Modules()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Modules);
@@ -8918,8 +9661,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void RetrieveEventsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Format, System.DateTime? Start, System.DateTime? End, int? ModuleId, System.Collections.Generic.List<int> EventTypeIds, int? Take);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult RetrieveEvents(string Format, System.DateTime? Start, System.DateTime? End, int? ModuleId, System.Collections.Generic.List<int> EventTypeIds, int? Take)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RetrieveEvents);
@@ -8933,8 +9678,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ScheduledTaskStatusOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ScheduledTaskStatus(string id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ScheduledTaskStatus);
@@ -8964,10 +9711,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -9107,8 +9866,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_PluginController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void UpdateLibraryCatalogueOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool TryWaitingForCompletion);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateLibraryCatalogue(bool TryWaitingForCompletion)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLibraryCatalogue);
@@ -9117,8 +9878,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateAllOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateAll()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAll);
@@ -9126,8 +9889,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string PluginId);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Update(string PluginId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
@@ -9136,8 +9901,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateLocalOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string PluginId, System.Web.HttpPostedFileBase Plugin);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateLocal(string PluginId, System.Web.HttpPostedFileBase Plugin)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLocal);
@@ -9147,8 +9914,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UninstallOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, bool UninstallData);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Uninstall(string id, bool UninstallData)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Uninstall);
@@ -9158,8 +9927,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void InstallOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string PluginId);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Install(string PluginId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Install);
@@ -9168,8 +9939,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void InstallLocalOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Web.HttpPostedFileBase Plugin);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult InstallLocal(System.Web.HttpPostedFileBase Plugin)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InstallLocal);
@@ -9199,10 +9972,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -9282,8 +10067,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_SearchController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void QuickQueryOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Term, int Limit);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult QuickQuery(string Term, int Limit)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.QuickQuery);
@@ -9293,8 +10080,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UsersUpstreamOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Term, int Limit);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UsersUpstream(string Term, int Limit)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UsersUpstream);
@@ -9325,10 +10114,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -9551,8 +10352,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_SystemController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void UpdateLastNetworkLogonDatesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateLastNetworkLogonDates()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLastNetworkLogonDates);
@@ -9560,8 +10363,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateAttachmentThumbnailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateAttachmentThumbnails()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAttachmentThumbnails);
@@ -9569,8 +10374,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateCheckOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateCheck()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateCheck);
@@ -9578,8 +10385,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateOrganisationNameOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string OrganisationName, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateOrganisationName(string OrganisationName, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateOrganisationName);
@@ -9589,8 +10398,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void OrganisationLogoOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int Width, int Height, string v);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult OrganisationLogo(int Width, int Height, string v)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OrganisationLogo);
@@ -9601,8 +10412,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void OrganisationLogoOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool redirect, System.Web.HttpPostedFileBase Image, bool? ResetLogo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult OrganisationLogo(bool redirect, System.Web.HttpPostedFileBase Image, bool? ResetLogo)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OrganisationLogo);
@@ -9613,8 +10426,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateOrganisationAddressOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Models.BI.Config.OrganisationAddress organisationAddress, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateOrganisationAddress(Disco.Models.BI.Config.OrganisationAddress organisationAddress, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateOrganisationAddress);
@@ -9624,8 +10439,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DeleteOrganisationAddressOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int Id, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult DeleteOrganisationAddress(int Id, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteOrganisationAddress);
@@ -9635,8 +10452,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateMultiSiteModeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool MultiSiteMode, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateMultiSiteMode(bool MultiSiteMode, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateMultiSiteMode);
@@ -9646,8 +10465,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateActiveDirectorySearchScopeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Collections.Generic.List<string> Containers, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateActiveDirectorySearchScope(System.Collections.Generic.List<string> Containers, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateActiveDirectorySearchScope);
@@ -9657,8 +10478,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateActiveDirectorySearchAllForestServersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool SearchAllForestServers, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateActiveDirectorySearchAllForestServers(bool SearchAllForestServers, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateActiveDirectorySearchAllForestServers);
@@ -9668,8 +10491,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DomainOrganisationalUnitsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult DomainOrganisationalUnits()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DomainOrganisationalUnits);
@@ -9677,8 +10502,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void SearchSubjectsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string term);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult SearchSubjects(string term)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchSubjects);
@@ -9687,8 +10514,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void SubjectOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Subject(string Id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Subject);
@@ -9697,8 +10526,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UpdateProxySettingsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string ProxyAddress, int? ProxyPort, string ProxyUsername, string ProxyPassword, bool redirect);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UpdateProxySettings(string ProxyAddress, int? ProxyPort, string ProxyUsername, string ProxyPassword, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateProxySettings);
@@ -9732,10 +10563,22 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -9898,8 +10741,10 @@ namespace Disco.Web.Areas.API.Controllers
     {
         public T4MVC_UserController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void AttachmentDownloadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AttachmentDownload(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentDownload);
@@ -9908,8 +10753,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AttachmentThumbnailOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AttachmentThumbnail(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentThumbnail);
@@ -9918,8 +10765,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AttachmentUploadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Domain, string Comments);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AttachmentUpload(string id, string Domain, string Comments)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentUpload);
@@ -9930,8 +10779,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AttachmentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Attachment(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Attachment);
@@ -9940,8 +10791,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AttachmentsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Domain);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Attachments(string id, string Domain)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Attachments);
@@ -9951,8 +10804,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AttachmentRemoveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult AttachmentRemove(int id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentRemove);
@@ -9961,8 +10816,10 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void GeneratePdfOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Domain, string DocumentTemplateId);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult GeneratePdf(string id, string Domain, string DocumentTemplateId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdf);
@@ -9994,10 +10851,22 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -10075,8 +10944,10 @@ namespace Disco.Web.Areas.Config.Controllers
     {
         public T4MVC_AuthorizationRoleController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index(int? id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -10085,8 +10956,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Create()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
@@ -10094,8 +10967,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Areas.Config.Models.AuthorizationRole.CreateModel model);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Create(Disco.Web.Areas.Config.Models.AuthorizationRole.CreateModel model)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
@@ -10125,10 +11000,22 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
 
@@ -10178,8 +11065,10 @@ namespace Disco.Web.Areas.Config.Controllers
     {
         public T4MVC_ConfigController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -10208,10 +11097,22 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -10293,8 +11194,10 @@ namespace Disco.Web.Areas.Config.Controllers
     {
         public T4MVC_DeviceBatchController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index(int? id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -10303,8 +11206,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Create()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
@@ -10312,8 +11217,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Areas.Config.Models.DeviceBatch.CreateModel model);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Create(Disco.Web.Areas.Config.Models.DeviceBatch.CreateModel model)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
@@ -10322,8 +11229,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void TimelineOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Timeline()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Timeline);
@@ -10352,10 +11261,22 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -10427,8 +11348,10 @@ namespace Disco.Web.Areas.Config.Controllers
     {
         public T4MVC_DeviceModelController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index(int? id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -10437,8 +11360,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void GenericComponentsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult GenericComponents()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GenericComponents);
@@ -10467,10 +11392,22 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -10556,8 +11493,10 @@ namespace Disco.Web.Areas.Config.Controllers
     {
         public T4MVC_DeviceProfileController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index(int? id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -10566,8 +11505,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Create()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
@@ -10575,8 +11516,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Areas.Config.Models.DeviceProfile.CreateModel model);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Create(Disco.Web.Areas.Config.Models.DeviceProfile.CreateModel model)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
@@ -10585,8 +11528,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void DefaultsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Defaults()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Defaults);
@@ -10615,10 +11560,22 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -10725,8 +11682,10 @@ namespace Disco.Web.Areas.Config.Controllers
     {
         public T4MVC_DocumentTemplateController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index(string id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -10735,8 +11694,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ImportStatusOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ImportStatus()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportStatus);
@@ -10744,8 +11705,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UndetectedPagesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UndetectedPages()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UndetectedPages);
@@ -10753,8 +11716,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Create()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
@@ -10762,8 +11727,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Areas.Config.Models.DocumentTemplate.CreateModel model);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Create(Disco.Web.Areas.Config.Models.DocumentTemplate.CreateModel model)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
@@ -10772,8 +11739,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ExpressionBrowserOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string type, bool StaticDeclaredMembersOnly);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ExpressionBrowser(string type, bool StaticDeclaredMembersOnly)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExpressionBrowser);
@@ -10804,10 +11773,22 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
 
@@ -10861,8 +11842,10 @@ namespace Disco.Web.Areas.Config.Controllers
     {
         public T4MVC_EnrolmentController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -10870,8 +11853,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void StatusOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Status()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Status);
@@ -10900,10 +11885,22 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
 
@@ -10953,8 +11950,10 @@ namespace Disco.Web.Areas.Config.Controllers
     {
         public T4MVC_ExpressionsController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -10983,10 +11982,22 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
 
@@ -11051,8 +12062,10 @@ namespace Disco.Web.Areas.Config.Controllers
     {
         public T4MVC_JobPreferencesController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -11081,10 +12094,22 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -11162,8 +12187,10 @@ namespace Disco.Web.Areas.Config.Controllers
     {
         public T4MVC_JobQueueController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index(int? id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -11172,8 +12199,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Create()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
@@ -11181,8 +12210,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Areas.Config.Models.JobQueue.CreateModel model);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Create(Disco.Web.Areas.Config.Models.JobQueue.CreateModel model)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
@@ -11212,10 +12243,22 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -11283,8 +12326,10 @@ namespace Disco.Web.Areas.Config.Controllers
     {
         public T4MVC_LoggingController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -11292,8 +12337,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void TaskStatusOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult TaskStatus(string id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TaskStatus);
@@ -11323,10 +12370,22 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
 
@@ -11376,8 +12435,10 @@ namespace Disco.Web.Areas.Config.Controllers
     {
         public T4MVC_OrganisationController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -11406,10 +12467,22 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -11482,8 +12555,10 @@ namespace Disco.Web.Areas.Config.Controllers
     {
         public T4MVC_PluginsController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -11491,8 +12566,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ConfigureOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string PluginId, System.Web.Mvc.FormCollection form);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Configure(string PluginId, System.Web.Mvc.FormCollection form)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Configure);
@@ -11502,8 +12579,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ConfigureOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string PluginId);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Configure(string PluginId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Configure);
@@ -11512,8 +12591,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void InstallOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Install()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Install);
@@ -11542,10 +12623,22 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
 
@@ -11595,8 +12688,10 @@ namespace Disco.Web.Areas.Config.Controllers
     {
         public T4MVC_SystemConfigController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -11650,10 +12745,22 @@ namespace Disco.Web.Areas.Public.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -11731,8 +12838,10 @@ namespace Disco.Web.Areas.Public.Controllers
     {
         public T4MVC_HeldDevicesController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -11740,8 +12849,10 @@ namespace Disco.Web.Areas.Public.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ReadyForReturnXmlOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ReadyForReturnXml()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ReadyForReturnXml);
@@ -11749,8 +12860,10 @@ namespace Disco.Web.Areas.Public.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void WaitingForUserActionXmlOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult WaitingForUserActionXml()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.WaitingForUserActionXml);
@@ -11758,8 +12871,10 @@ namespace Disco.Web.Areas.Public.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void HeldDevicesXmlOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult HeldDevicesXml()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.HeldDevicesXml);
@@ -11767,8 +12882,10 @@ namespace Disco.Web.Areas.Public.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void NoticeboardOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Noticeboard()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Noticeboard);
@@ -11776,8 +12893,10 @@ namespace Disco.Web.Areas.Public.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void HeldDeviceOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult HeldDevice(string id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.HeldDevice);
@@ -11786,8 +12905,10 @@ namespace Disco.Web.Areas.Public.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void HeldDevicesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult HeldDevices()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.HeldDevices);
@@ -11816,10 +12937,22 @@ namespace Disco.Web.Areas.Public.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
 
@@ -11877,8 +13010,10 @@ namespace Disco.Web.Areas.Public.Controllers
     {
         public T4MVC_PublicController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -11886,8 +13021,10 @@ namespace Disco.Web.Areas.Public.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void CreditsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Credits()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Credits);
@@ -11895,8 +13032,10 @@ namespace Disco.Web.Areas.Public.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void LicenceOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Licence()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Licence);
@@ -11925,10 +13064,22 @@ namespace Disco.Web.Areas.Public.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -12006,8 +13157,10 @@ namespace Disco.Web.Areas.Public.Controllers
     {
         public T4MVC_UserHeldDevicesController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Index()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
@@ -12015,8 +13168,10 @@ namespace Disco.Web.Areas.Public.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ReadyForReturnXmlOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ReadyForReturnXml()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ReadyForReturnXml);
@@ -12024,8 +13179,10 @@ namespace Disco.Web.Areas.Public.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void WaitingForUserActionXmlOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult WaitingForUserActionXml()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.WaitingForUserActionXml);
@@ -12033,8 +13190,10 @@ namespace Disco.Web.Areas.Public.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UserHeldDevicesXmlOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UserHeldDevicesXml()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UserHeldDevicesXml);
@@ -12042,8 +13201,10 @@ namespace Disco.Web.Areas.Public.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void NoticeboardOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Noticeboard()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Noticeboard);
@@ -12051,8 +13212,10 @@ namespace Disco.Web.Areas.Public.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UserHeldDeviceOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UserHeldDevice(string id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UserHeldDevice);
@@ -12061,8 +13224,10 @@ namespace Disco.Web.Areas.Public.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UserHeldDevicesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult UserHeldDevices()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UserHeldDevices);
@@ -12091,10 +13256,22 @@ namespace Disco.Web.Areas.Services.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToAction(Task<ActionResult> taskResult)
+        {
+            return RedirectToAction(taskResult.Result);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToActionPermanent(ActionResult result)
         {
             var callInfo = result.GetT4MVCResult();
             return RedirectToRoutePermanent(callInfo.RouteValueDictionary);
+        }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        protected RedirectToRouteResult RedirectToActionPermanent(Task<ActionResult> taskResult)
+        {
+            return RedirectToActionPermanent(taskResult.Result);
         }
 
         [NonAction]
@@ -12194,8 +13371,10 @@ namespace Disco.Web.Areas.Services.Controllers
     {
         public T4MVC_ClientController() : base(Dummy.Instance) { }
 
+        [NonAction]
         partial void BootstrapperOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Bootstrapper()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Bootstrapper);
@@ -12203,8 +13382,10 @@ namespace Disco.Web.Areas.Services.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void PreparationClientOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult PreparationClient()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.PreparationClient);
@@ -12212,8 +13393,10 @@ namespace Disco.Web.Areas.Services.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void UnauthenticatedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string feature);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Unauthenticated(string feature)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Unauthenticated);
@@ -12222,8 +13405,10 @@ namespace Disco.Web.Areas.Services.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void AuthenticatedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string feature);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult Authenticated(string feature)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Authenticated);
@@ -12232,8 +13417,10 @@ namespace Disco.Web.Areas.Services.Controllers
             return callInfo;
         }
 
+        [NonAction]
         partial void ClientErrorOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string SessionId, string DeviceIdentifier, string JsonException);
 
+        [NonAction]
         public override System.Web.Mvc.ActionResult ClientError(string SessionId, string DeviceIdentifier, string JsonException)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ClientError);

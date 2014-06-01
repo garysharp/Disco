@@ -62,9 +62,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Owin.Security.2.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -76,7 +75,7 @@
     </Reference>
     <Reference Include="RazorGenerator.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RazorGenerator.Mvc.2.1.2\lib\net40\RazorGenerator.Mvc.dll</HintPath>
+      <HintPath>..\packages\RazorGenerator.Mvc.2.2.3\lib\net40\RazorGenerator.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -94,25 +93,29 @@
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
     <Reference Include="System.Net.Http.Extensions">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.15\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.22\lib\net45\System.Net.Http.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.30506.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.Primitives">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.15\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.22\lib\net45\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Core">
-      <HintPath>..\packages\Rx-Core.2.1.30214.0\lib\Net45\System.Reactive.Core.dll</HintPath>
+    <Reference Include="System.Reactive.Core, Version=2.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Core.2.2.4\lib\net45\System.Reactive.Core.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\packages\Rx-Interfaces.2.1.30214.0\lib\Net45\System.Reactive.Interfaces.dll</HintPath>
+    <Reference Include="System.Reactive.Interfaces, Version=2.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Interfaces.2.2.4\lib\net45\System.Reactive.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Linq">
-      <HintPath>..\packages\Rx-Linq.2.1.30214.0\lib\Net45\System.Reactive.Linq.dll</HintPath>
+    <Reference Include="System.Reactive.Linq, Version=2.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Linq.2.2.4\lib\net45\System.Reactive.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\packages\Rx-PlatformServices.2.1.30214.0\lib\Net45\System.Reactive.PlatformServices.dll</HintPath>
+    <Reference Include="System.Reactive.PlatformServices, Version=2.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-PlatformServices.2.2.4\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -173,11 +176,11 @@
     </Reference>
     <Reference Include="T4MVCExtensions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\T4MVCExtensions.3.7.4\lib\net40\T4MVCExtensions.dll</HintPath>
+      <HintPath>..\packages\T4MVCExtensions.3.9.1\lib\net40\T4MVCExtensions.dll</HintPath>
     </Reference>
     <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\WebActivatorEx.2.0.3\lib\net40\WebActivatorEx.dll</HintPath>
+      <HintPath>..\packages\WebActivatorEx.2.0.5\lib\net40\WebActivatorEx.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -555,6 +558,11 @@
     <Compile Include="Models\Device\ExportModel.cs" />
     <Compile Include="Models\Device\ImportHeadersModel.cs" />
     <Compile Include="Models\InitialConfig\AdministratorsModel.cs" />
+    <Compile Include="T4MVC.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Views\Device\ImportHeaders.generated.cs">
       <DependentUpon>ImportHeaders.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -637,11 +645,6 @@
     <Compile Include="Models\User\IndexModel.cs" />
     <Compile Include="Models\User\ShowModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="T4MVC.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>T4MVC.tt</DependentUpon>
-    </Compile>
     <Compile Include="Views\Device\AddOffline.generated.cs">
       <DependentUpon>AddOffline.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1019,7 +1022,6 @@
     <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.js">
       <DependentUpon>Disco-AjaxHelperIcons.js.bundle</DependentUpon>
     </None>
-    <None Include="ClientSource\Scripts\Core\jquery-ui-1.10.3.js" />
     <None Include="ClientSource\Scripts\Core\disco.uicore.js" />
     <None Include="ClientSource\Scripts\Core\moment.en-au.js" />
     <None Include="ClientSource\Scripts\Core\moment.js" />
@@ -1147,7 +1149,7 @@
     <None Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.js">
       <DependentUpon>jQueryUI-DynaTree.js.bundle</DependentUpon>
     </None>
-    <Content Include="ClientSource\Scripts\Modules\jQuery-SignalR\disco-hubs.js" />
+    <None Include="ClientSource\Scripts\Modules\jQuery-SignalR\disco-hubs.js" />
     <Content Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.min.js">
       <DependentUpon>jQueryUI-DynaTree.js.bundle</DependentUpon>
     </Content>
@@ -1200,7 +1202,6 @@
     <Content Include="ClientSource\Scripts\Modules\tinymce.min.js">
       <DependentUpon>tinymce.js.bundle</DependentUpon>
     </Content>
-    <None Include="ClientSource\Scripts\Modules\tinymce\themes\simple\theme.js" />
     <None Include="ClientSource\Style\BundleSite.css">
       <DependentUpon>BundleSite.less</DependentUpon>
     </None>
@@ -1208,6 +1209,7 @@
     <None Include="ClientSource\Style\Config.css">
       <DependentUpon>Config.less</DependentUpon>
     </None>
+    <None Include="ClientSource\Scripts\Modules\tinymce\themes\simple\theme.js" />
     <Content Include="ClientSource\Style\AppMaintenance.css">
       <DependentUpon>AppMaintenance.less</DependentUpon>
     </Content>
@@ -1377,12 +1379,12 @@
     <None Include="ClientSource\Style\normalize.min.css">
       <DependentUpon>normalize.less</DependentUpon>
     </None>
-    <Content Include="ClientSource\Style\jQueryUI\jquery-ui.css">
+    <None Include="ClientSource\Style\jQueryUI\jquery-ui.css">
       <DependentUpon>jquery-ui.less</DependentUpon>
-    </Content>
-    <Content Include="ClientSource\Style\jQueryUI\jquery-ui.min.css">
+    </None>
+    <None Include="ClientSource\Style\jQueryUI\jquery-ui.min.css">
       <DependentUpon>jquery-ui.less</DependentUpon>
-    </Content>
+    </None>
     <Content Include="ClientSource\Style\Public\HeldDevices.css">
       <DependentUpon>HeldDevices.less</DependentUpon>
     </Content>
@@ -1539,19 +1541,22 @@
     </None>
     <None Include="Properties\PublishProfiles\HADES3.pubxml" />
     <None Include="ClientSource\Scripts\Modules\Highcharts\highcharts.src.js" />
-    <None Include="ClientSource\Scripts\Core\jquery-2.0.3.js" />
+    <None Include="ClientSource\Scripts\Core\jquery-2.1.1.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce\jquery.tinymce.min.js" />
-    <None Include="ClientSource\Scripts\Modules\tinymce\license.txt" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\license.txt" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\content.inline.min.css" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\content.min.css" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\fonts\tinymce-small.svg" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\fonts\tinymce-small.woff" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\fonts\tinymce-small.ttf" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\fonts\tinymce-small.json" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\fonts\tinymce-small.eot" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\fonts\tinymce.svg" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\fonts\tinymce.woff" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\fonts\tinymce.ttf" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\fonts\tinymce.json" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\fonts\tinymce.eot" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\fonts\readme.md" />
     <None Include="T4MVC.tt.hooks.t4" />
     <None Include="T4MVC.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -2000,21 +2005,23 @@
     <None Include="_bin_deployableAssemblies\amd64\sqlceca40.dll" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\README_ENU.txt" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\msvcr90.dll" />
-    <None Include="ClientSource\Scripts\Core\modernizr-2.6.2.js" />
     <None Include="T4MVC.tt.settings.xml" />
+    <None Include="ClientSource\Scripts\Core\jquery.validate.js" />
+    <None Include="ClientSource\Scripts\Core\jquery.validate.unobtrusive.js" />
+    <None Include="ClientSource\Scripts\Modules\jQuery-SignalR\jquery.signalR-2.0.3.js" />
+    <None Include="ClientSource\Scripts\Modules\Knockout\knockout-3.1.0.js" />
+    <None Include="ClientSource\Scripts\Core\modernizr-2.7.2.js" />
+    <None Include="ClientSource\Scripts\Core\jquery-ui-1.10.4.js" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\img\anchor.gif" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\img\loader.gif" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\img\object.gif" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\img\trans.gif" />
-    <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\img\wline.gif" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\skin.ie7.min.css" />
     <Content Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\skin.min.css" />
     <None Include="ClientSource\Scripts\Modules\tinymce\themes\modern\theme.js" />
+    <None Include="ClientSource\Scripts\Modules\tinymce\themes\modern\theme.min.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce\tinymce.js" />
-    <None Include="ClientSource\Scripts\Core\jquery.validate.js" />
-    <None Include="ClientSource\Scripts\Core\jquery.validate.unobtrusive.js" />
-    <Content Include="ClientSource\Scripts\Modules\jQuery-SignalR\jquery.signalR-2.0.3.js" />
-    <Content Include="ClientSource\Scripts\Modules\Knockout\knockout-3.1.0.js" />
+    <None Include="ClientSource\Scripts\Modules\tinymce\tinymce.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -2108,15 +2115,15 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" />
-  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
-    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
-  </Target>
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
