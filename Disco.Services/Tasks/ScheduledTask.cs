@@ -16,8 +16,8 @@ namespace Disco.Services.Tasks
 
         public virtual bool CancelInitiallySupported { get { return true; } }
         public virtual bool SingleInstanceTask { get { return true; } }
-        public virtual bool IsSilent { get { return false; } }
         public virtual bool LogExceptionsOnly { get { return false; } }
+
         public abstract string TaskName { get; }
         protected abstract void ExecuteTask();
 

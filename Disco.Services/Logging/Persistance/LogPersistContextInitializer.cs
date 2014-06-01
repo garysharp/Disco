@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Disco.Services.Logging.Targets
+namespace Disco.Services.Logging.Persistance
 {
     public class LogPersistContextInitializer : IDatabaseInitializer<LogPersistContext>
     {

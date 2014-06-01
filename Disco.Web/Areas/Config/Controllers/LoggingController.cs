@@ -1,4 +1,5 @@
 ﻿using Disco.Models.UI.Config.Logging;
+using Disco.Models.UI.Config.Shared;
 using Disco.Services.Authorization;
 using Disco.Services.Logging;
 using Disco.Services.Logging.Models;
@@ -42,10 +43,10 @@ namespace Disco.Web.Areas.Config.Controllers
             if (taskStatus == null)
                 return RedirectToAction(MVC.Config.Logging.Index());
 
-            var m = new Models.Logging.TaskStatusModel() { SessionId = taskStatus.SessionId };
+            var m = new Models.Shared.TaskStatusModel() { SessionId = taskStatus.SessionId };
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigLoggingTaskStatusModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigSharedTaskStatusModel>(this.ControllerContext, m);
 
             return View(m);
         }

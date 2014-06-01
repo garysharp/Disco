@@ -97,12 +97,12 @@ namespace Disco.Services.Plugins
         public static void IncludeStyleSheetResource(this HttpContextBase Context, string Resource, PluginManifest manifest)
         {
             var resourceUrl = manifest.WebResourceUrl(Resource);
-            
-            var deferredBundles = Context.Items[Bundle.UIExtensionCssKey] as List<string>;
+
+            var deferredBundles = Context.Items[BundleTable.UIExtensionCssKey] as List<string>;
             if (deferredBundles == null)
             {
                 deferredBundles = new List<string>();
-                HttpContext.Current.Items[Bundle.UIExtensionCssKey] = deferredBundles;
+                HttpContext.Current.Items[BundleTable.UIExtensionCssKey] = deferredBundles;
             }
             if (!deferredBundles.Contains(resourceUrl))
                 deferredBundles.Add(resourceUrl);
@@ -111,11 +111,11 @@ namespace Disco.Services.Plugins
         {
             var resourcePath = manifest.WebResourceUrl(Resource);
 
-            var deferredBundles = Context.Items[Bundle.UIExtensionScriptsKey] as List<string>;
+            var deferredBundles = Context.Items[BundleTable.UIExtensionScriptsKey] as List<string>;
             if (deferredBundles == null)
             {
                 deferredBundles = new List<string>();
-                HttpContext.Current.Items[Bundle.UIExtensionScriptsKey] = deferredBundles;
+                HttpContext.Current.Items[BundleTable.UIExtensionScriptsKey] = deferredBundles;
             }
             if (!deferredBundles.Contains(resourcePath))
                 deferredBundles.Add(resourcePath);
@@ -223,7 +223,9 @@ namespace Disco.Services.Plugins
             var routeValues = new RouteValueDictionary(new { PluginId = manifest.Id, PluginAction = PluginAction });
             string pluginActionUrl = UrlHelper.GenerateUrl("Plugin", null, null, routeValues, RouteTable.Routes, ViewPage.ViewContext.RequestContext, false);
 
+#pragma warning disable 618
             return ViewPage.FormHelper(pluginActionUrl, method, htmlAttributes);
+#pragma warning restore 618
         }
         [Obsolete("Inherit ViewPages from 'Disco.Services.Plugins.WebViewPage' instead.")]
         public static MvcForm DiscoPluginActionBeginForm<T>(this WebViewPage<T> ViewPage, string PluginAction, FormMethod method)
@@ -302,11 +304,11 @@ namespace Disco.Services.Plugins
 
             HtmlString pluginResourceUrlHtml = new HtmlString(pluginResourceUrl);
 
-            var deferredBundles = RequestContext.HttpContext.Items[Bundle.UIExtensionCssKey] as List<HtmlString>;
+            var deferredBundles = RequestContext.HttpContext.Items[BundleTable.UIExtensionCssKey] as List<HtmlString>;
             if (deferredBundles == null)
             {
                 deferredBundles = new List<HtmlString>();
-                HttpContext.Current.Items[Bundle.UIExtensionCssKey] = deferredBundles;
+                HttpContext.Current.Items[BundleTable.UIExtensionCssKey] = deferredBundles;
             }
             if (!deferredBundles.Contains(pluginResourceUrlHtml))
                 deferredBundles.Add(pluginResourceUrlHtml);

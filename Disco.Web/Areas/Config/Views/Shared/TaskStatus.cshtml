@@ -1,0 +1,242 @@
+﻿@model string
+@{
+    Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
+    Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
+}
+<div style="min-height: 300px;">
+    <div id="Logging_Task_Status" class="form" style="width: 520px;" data-bind="visible: Initialized">
+        <h2 data-bind="text: TaskName">&nbsp;</h2>
+        <table>
+            <tr data-bind="visible: IsRunning">
+                <th class="process" data-bind="text: CurrentProcess">&nbsp;
+                </th>
+            </tr>
+            <tr data-bind="visible: IsRunning">
+                <td class="description" data-bind="text: CurrentDescription">&nbsp;
+                </td>
+            </tr>
+            <tr data-bind="visible: IsRunning">
+                <td class="progress">
+                    <div data-bind="progressValue: Progress">
+                    </div>
+                </td>
+            </tr>
+            <tr data-bind="visible: FinishedTimestamp">
+                <td class="finishedTimestamp">
+                    <h3>Finished: <span data-bind="text: FinishedTimestampFormatted"></span>
+                    </h3>
+                </td>
+            </tr>
+            <tr data-bind="visible: FinishedTimestamp() && !TaskExceptionMessage()">
+                <td class="finishedMessage" data-bind="css: { finishedRedirect: FinishedUrl }">
+                    <span data-bind="text: FinishedMessage"></span>
+                </td>
+            </tr>
+            <tr data-bind="visible: TaskExceptionMessage">
+                <td class="exception">Last Error:
+                    <div class="code" data-bind="text: TaskExceptionMessage">
+                    </div>
+                </td>
+            </tr>
+            <tr data-bind="visible: NextScheduledTimestamp">
+                <td class="nextScheduledTimestamp">Next Scheduled: <span data-bind="text: NextScheduledTimestampFormatted"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    ko.bindingHandlers.progressValue = {
+        init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+            var $element = $(element);
+            if (!$element.is('.ui-progressbar'))
+                $element.progressbar();
+        },
+        update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+            var v = ko.utils.unwrapObservable(valueAccessor());
+            var vInt = parseInt(v);
+            if (vInt >= 0) {
+                $(element).progressbar('option', 'value', vInt);
+            }
+        }
+    };
+    //* http://webcloud.se/log/JavaScript-and-ISO-8601/
+    Date.prototype.setISO8601 = function (string) {
+        var regexp = "([0-9]{4})(-([0-9]{2})(-([0-9]{2})" +
+        "(T([0-9]{2}):([0-9]{2})(:([0-9]{2})(\.([0-9]+))?)?" +
+        "(Z|(([-+])([0-9]{2}):([0-9]{2})))?)?)?)?";
+        var d = string.match(new RegExp(regexp));
+
+        var offset = 0;
+        var date = new Date(d[1], 0, 1);
+
+        if (d[3]) { date.setMonth(d[3] - 1); }
+        if (d[5]) { date.setDate(d[5]); }
+        if (d[7]) { date.setHours(d[7]); }
+        if (d[8]) { date.setMinutes(d[8]); }
+        if (d[10]) { date.setSeconds(d[10]); }
+        if (d[12]) { date.setMilliseconds(Number("0." + d[12]) * 1000); }
+        if (d[14]) {
+            offset = (Number(d[16]) * 60) + Number(d[17]);
+            offset *= ((d[15] == '-') ? 1 : -1);
+        }
+
+        offset -= date.getTimezoneOffset();
+        time = (Number(date) + (offset * 60 * 1000));
+        this.setTime(Number(time));
+        return this;
+    }
+</script>
+<script type="text/javascript">
+    $(function () {
+        var sessionId = '@(Model)';
+
+        var view = $('#Logging_Task_Status');
+        var vm = null;
+
+        var notificationsHub = null;
+
+        var statusViewModel = function (sessionId) {
+            var self = this;
+
+            self.Initialized = ko.observable(false);
+
+            self.TimestampParse = function (timestamp) {
+                if (timestamp) {
+                    if (timestamp.indexOf("\/Date(") == 0)
+                        return new Date(parseInt(timestamp.substr(6)));
+                    else
+                        return (new Date()).setISO8601(timestamp);
+                }
+                return new Date();
+            }
+            self.TimestampFormat = function (timestamp) {
+                var addZero = function (v) { v = v + ''; if (v.length == 1) v = '0' + v; return v; }
+                return timestamp.getFullYear() + '/' + addZero((1 + timestamp.getMonth())) + '/' + addZero(timestamp.getDate()) + ' ' + addZero(timestamp.getHours()) + ':' + addZero(timestamp.getMinutes()) + ':' + addZero(timestamp.getSeconds());
+            }
+
+            self.SessionId = sessionId;
+            self.TaskName = ko.observable(null);
+
+            self.Progress = ko.observable(0);
+            self.CurrentProcess = ko.observable(null);
+            self.CurrentDescription = ko.observable(null);
+
+            self.IsRunning = ko.observable(null);
+
+            self.TaskExceptionMessage = ko.observable(null);
+
+            self.FinishedTimestamp = ko.observable(null);
+            self.NextScheduledTimestamp = ko.observable(null)
+
+            self.NextScheduledTimestampFormatted = ko.computed(function () {
+                return self.TimestampFormat(self.TimestampParse(self.NextScheduledTimestamp()));
+            });
+            self.FinishedTimestampFormatted = ko.computed(function () {
+                return self.TimestampFormat(self.TimestampParse(self.FinishedTimestamp()));
+            });
+
+            self.FinishedUrl = ko.observable(null);
+            self.FinishedMessage = ko.observable(null);
+
+            self.Finished = function () {
+                if (self.FinishedTimestamp()) {
+                    if (self.FinishedUrl() && !self.TaskExceptionMessage()) {
+                        if (self.FinishedMessage())
+                            window.setTimeout(function () { window.location.href = self.FinishedUrl(); }, 3000);
+                        else
+                            window.location.href = self.FinishedUrl();
+                    }
+                }
+            }
+
+            self.Initialize = function (taskStatus) {
+                if (!self.Initialized()) {
+                    self.TaskName(taskStatus.TaskName);
+                    self.FinishedUrl(taskStatus.FinishedUrl);
+
+                    self.Progress(taskStatus.Progress);
+                    self.CurrentProcess(taskStatus.CurrentProcess);
+                    self.CurrentDescription(taskStatus.CurrentDescription);
+
+                    self.IsRunning(taskStatus.IsRunning);
+
+                    self.TaskExceptionMessage(taskStatus.TaskExceptionMessage);
+
+                    self.FinishedTimestamp(taskStatus.FinishedTimestamp);
+                    self.NextScheduledTimestamp(taskStatus.NextScheduledTimestamp);
+
+                    self.FinishedMessage(taskStatus.FinishedMessage);
+
+                    self.Initialized(true);
+
+                    self.Finished();
+                }
+            }
+            self.Update = function (taskStatus) {
+                if (!self.Initialized())
+                    return;
+
+                if (taskStatus) {
+                    $.each(taskStatus, function (key, value) {
+                        switch (key) {
+                            case 'Progress':
+                                self.Progress(value);
+                                break;
+                            case 'CurrentProcess':
+                                self.CurrentProcess(value);
+                                break;
+                            case 'CurrentDescription':
+                                self.CurrentDescription(value);
+                                break;
+                            case 'IsRunning':
+                                self.IsRunning(value);
+                                break;
+                            case 'TaskExceptionMessage':
+                                self.TaskExceptionMessage(value);
+                                break;
+                            case 'NextScheduledTimestamp':
+                                self.NextScheduledTimestamp(value);
+                                break;
+                            case 'FinishedUrl':
+                                self.FinishedUrl(value);
+                                break;
+                            case 'FinishedMessage':
+                                self.FinishedMessage(value);
+                                break;
+                            case 'FinishedTimestamp':
+                                self.FinishedTimestamp(value);
+                                window.setTimeout(self.Finished, 1);
+                                break;
+                            default:
+                                // Ignore
+                        }
+                    });
+                }
+            }
+        }
+
+        vm = new statusViewModel(sessionId);
+        ko.applyBindings(vm, view[0]);
+
+        // Start Live Connection
+        updateWithLive();
+
+        function updateWithLive() {
+            notificationsHub = $.connection.scheduledTaskNotifications;
+            notificationsHub.client.initializeTaskStatus = vm.Initialize;
+            notificationsHub.client.updateTaskStatus = vm.Update;
+
+            $.connection.hub.qs = { TaskSessionId: sessionId };
+            $.connection.hub.error(function (error) {
+                alert('Live-Status Error: ' + error);
+            });
+
+            $.connection.hub.start()
+                .fail(function (error) {
+                    alert('Live-Status Connection Error: ' + error);
+                });
+        }
+
+    });
+</script>

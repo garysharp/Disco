@@ -102,7 +102,7 @@ namespace Disco.Services.Devices.Importing
             Context.Header = Context.Header.Zip(HeaderTypes, (h, ht) => Tuple.Create(h.Item1, ht)).ToList();
         }
 
-        public static void ParseRecords(this DeviceImportContext Context, DiscoDataContext Database, IScheduledTaskBasicStatus Status)
+        public static void ParseRecords(this DeviceImportContext Context, DiscoDataContext Database, IScheduledTaskStatus Status)
         {
             if (Context.Header == null)
                 throw new InvalidOperationException("The Import Context has not been initialized");
@@ -129,18 +129,13 @@ namespace Disco.Services.Devices.Importing
                 .Select(h => new Tuple<string, DeviceImportFieldTypes, Func<string[], string>, Type>(h.Item1, h.Item2, (f) => f[h.Item3], DeviceImport.FieldHandlers.Value[h.Item2]))
                 .ToList();
 
-            DateTime nextProgress = DateTime.Now;
             Status.UpdateStatus(0, "Parsing Import Records", "Starting...");
 
             Context.Records = Context.RawData.Select((d, recordIndex) =>
             {
                 string deviceSerialNumber = Fields.DeviceSerialNumberImportField.ParseRawDeviceSerialNumber(d[Context.HeaderDeviceSerialNumberIndex]);
 
-                if (nextProgress <= DateTime.Now)
-                {
-                    Status.UpdateStatus(((double)recordIndex / Context.RawData.Count) * 100, string.Format("Parsing: {0}", deviceSerialNumber));
-                    nextProgress = DateTime.Now.AddSeconds(.5);
-                }
+                Status.UpdateStatus(((double)recordIndex / Context.RawData.Count) * 100, string.Format("Parsing: {0}", deviceSerialNumber));
 
                 Device existingDevice = null;
                 if (Fields.DeviceSerialNumberImportField.IsDeviceSerialNumberValid(deviceSerialNumber))
@@ -170,7 +165,7 @@ namespace Disco.Services.Devices.Importing
             }).Cast<IDeviceImportRecord>().ToList();
         }
 
-        public static int ApplyRecords(this DeviceImportContext Context, DiscoDataContext Database, IScheduledTaskBasicStatus Status)
+        public static int ApplyRecords(this DeviceImportContext Context, DiscoDataContext Database, IScheduledTaskStatus Status)
         {
             if (Context.Records == null)
                 throw new InvalidOperationException("Import Records have not been parsed");
@@ -178,18 +173,13 @@ namespace Disco.Services.Devices.Importing
             if (Context.Records.Count == 0)
                 throw new InvalidOperationException("There are no records to import");
 
-            DateTime nextProgress = DateTime.Now;
             Status.UpdateStatus(0, "Applying Import Records to Database", "Starting...");
 
             int affectedRecords = 0;
 
             foreach (var record in Context.Records.Cast<DeviceImportRecord>().Select((r, i) => Tuple.Create(r, i)))
             {
-                if (nextProgress <= DateTime.Now)
-                {
-                    Status.UpdateStatus(((double)record.Item2 / Context.Records.Count) * 100, string.Format("Applying: {0}", record.Item1.DeviceSerialNumber));
-                    nextProgress = DateTime.Now.AddSeconds(.5);
-                }
+                Status.UpdateStatus(((double)record.Item2 / Context.Records.Count) * 100, string.Format("Applying: {0}", record.Item1.DeviceSerialNumber));
 
                 if (record.Item1.Apply(Database))
                     affectedRecords++;

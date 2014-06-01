@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Disco.BI;
-using Disco.BI.Extensions;
+﻿using Disco.Services;
+using System;
 
 namespace Disco.Web.Areas.API.Models.Attachment
 {
@@ -27,7 +23,7 @@ namespace Disco.Web.Areas.API.Models.Attachment
                 ParentId = ua.UserId,
                 Id = ua.Id,
                 AuthorId = ua.TechUserId,
-                Author = ua.TechUser.ToString(),
+                Author = ua.TechUser.ToStringFriendly(),
                 Timestamp = ua.Timestamp,
                 Comments = ua.Comments,
                 Filename = ua.Filename,
@@ -41,7 +37,7 @@ namespace Disco.Web.Areas.API.Models.Attachment
                 ParentId = ja.JobId.ToString(),
                 Id = ja.Id,
                 AuthorId = ja.TechUserId,
-                Author = ja.TechUser.ToString(),
+                Author = ja.TechUser.ToStringFriendly(),
                 Timestamp = ja.Timestamp,
                 Comments = ja.Comments,
                 Filename = ja.Filename,
@@ -55,7 +51,7 @@ namespace Disco.Web.Areas.API.Models.Attachment
                 ParentId = da.DeviceSerialNumber,
                 Id = da.Id,
                 AuthorId = da.TechUserId,
-                Author = da.TechUser.ToString(),
+                Author = da.TechUser.ToStringFriendly(),
                 Timestamp = da.Timestamp,
                 Comments = da.Comments,
                 Filename = da.Filename,

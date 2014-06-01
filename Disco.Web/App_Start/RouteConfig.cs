@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Microsoft.AspNet.SignalR;
-using Disco.BI.Interop.SignalRHandlers;
 
 namespace Disco.Web
 {
@@ -74,11 +73,6 @@ namespace Disco.Web
 
         public static void RegisterUpdateRoutes(RouteCollection routes)
         {
-            // Task Status SignalR Route
-            routes.MapConnection<ScheduledTasksStatusNotifications>(
-                "API_Logging_TaskStatusNotifications",
-                "API/Logging/TaskStatusNotifications", new ConnectionConfiguration(), SignalRAuthenticationWorkaround.AddMiddleware);
-
             // Task Status Ajax Route
             routes.MapRoute(
                 name: "API_Logging_ScheduledTaskStatus", // Route name

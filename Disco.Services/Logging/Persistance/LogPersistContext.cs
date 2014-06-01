@@ -5,7 +5,7 @@ using System.Text;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
-namespace Disco.Services.Logging.Targets
+namespace Disco.Services.Logging.Persistance
 {
     public class LogPersistContext : DbContext
     {

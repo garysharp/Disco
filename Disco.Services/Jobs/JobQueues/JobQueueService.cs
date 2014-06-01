@@ -72,7 +72,7 @@ namespace Disco.Services.Jobs.JobQueues
 
             return _cache.UpdateQueue(JobQueue);
         }
-        public static void DeleteJobQueue(DiscoDataContext Database, int JobQueueId, ScheduledTaskStatus Status)
+        public static void DeleteJobQueue(DiscoDataContext Database, int JobQueueId, IScheduledTaskStatus Status)
         {
             JobQueue queue = Database.JobQueues.Find(JobQueueId);
 

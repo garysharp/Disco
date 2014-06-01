@@ -76,7 +76,7 @@ namespace Disco.Web
             DiscoApplication.DocumentDropBoxMonitor.ScheduleCurrentFiles(10);
 
             // Enable SignalR-based Repository Notifications
-            Disco.BI.Interop.SignalRHandlers.RepositoryMonitorNotifications.Initialize();
+            //Disco.BI.Interop.SignalRHandlers.RepositoryMonitorNotifications.Initialize();
         }
 
         public static void InitializeUpdateEnvironment(DiscoDataContext Database, Version PreviousVersion)

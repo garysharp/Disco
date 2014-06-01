@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Disco.Web.Areas.Public.Models.HeldDevices.HeldDeviceModel>
+﻿@model IEnumerable<Disco.Models.Services.Jobs.Noticeboards.IHeldDeviceItem>
 @{
     ViewBag.Title = Html.ToBreadcrumb("Public Reports", MVC.Public.Public.Index(), "Held Devices", null);
     Html.BundleDeferred("~/Style/Public/HeldDevices");
@@ -10,16 +10,16 @@
         }
         <h2>In Process (@DevicesInProcess.Length)</h2>
         <table class="dataTable">
-            @foreach (var item in DevicesInProcess)
+            @foreach (var item in DevicesInProcess.OrderBy(i => i.DeviceComputerNameFriendly))
             {
                 <tr>
                     <td class="id">
-                        @item.DeviceComputerName
+                        @item.DeviceComputerNameFriendly
                     </td>
                     <td class="description">
                         @if (item.UserId != null)
                         {
-                            <span class="user">@item.UserDisplayName (@item.UserId)</span>
+                            <span class="user">@item.UserDisplayName (@item.UserIdFriendly)</span>
                         }
                         @if (!string.IsNullOrWhiteSpace(item.DeviceLocation))
                         {
@@ -36,9 +36,9 @@
                             @item.DeviceSerialNumber
                             }
                         }
-                        @if (!string.IsNullOrEmpty(item.EstimatedReturnTime))
+                        @if (item.EstimatedReturnTime.HasValue)
                         { 
-                            <span class="smallMessage">(Expected: @item.EstimatedReturnTime)</span>
+                            <span class="smallMessage">(Expected: @CommonHelpers.FriendlyDate(item.EstimatedReturnTime))</span>
                         }
                     </td>
                 </tr>
@@ -51,16 +51,16 @@
         }
         <h2>Waiting for User Action (@WaitingForUserActionJobs.Length)</h2>
         <table class="dataTable">
-            @foreach (var item in WaitingForUserActionJobs)
+            @foreach (var item in WaitingForUserActionJobs.OrderBy(i => i.DeviceComputerNameFriendly))
             {
                 <tr>
                     <td class="id">
-                        @item.DeviceComputerName
+                        @item.DeviceComputerNameFriendly
                     </td>
                     <td class="description">
                         @if (item.UserId != null)
                         {
-                            <span class="user">@item.UserDisplayName (@item.UserId)</span>
+                            <span class="user">@item.UserDisplayName (@item.UserIdFriendly)</span>
                         }
                         @if (!string.IsNullOrWhiteSpace(item.DeviceLocation))
                         {
@@ -78,7 +78,7 @@
                             }
                         }
                     </td>
-                    <td class="timestamp@(item.IsAlert ? " Alert" : string.Empty)">Since @item.WaitingForUserActionSince
+                    <td class="timestamp@(item.IsAlert ? " Alert" : string.Empty)">Since @CommonHelpers.FriendlyDate(item.WaitingForUserActionSince)
                     </td>
                 </tr>
             }
@@ -89,16 +89,16 @@
         }
         <h2>Ready for Return (@DevicesReadyForReturn.Length)</h2>
         <table class="dataTable">
-            @foreach (var item in DevicesReadyForReturn)
+            @foreach (var item in DevicesReadyForReturn.OrderBy(i => i.DeviceComputerNameFriendly))
             {
                 <tr>
                     <td class="id">
-                        @item.DeviceComputerName
+                        @item.DeviceComputerNameFriendly
                     </td>
                     <td class="description">
                         @if (item.UserId != null)
                         {
-                            <span class="user">@item.UserDisplayName (@item.UserId)</span>
+                            <span class="user">@item.UserDisplayName (@item.UserIdFriendly)</span>
                         }
                         @if (!string.IsNullOrWhiteSpace(item.DeviceLocation))
                         {
@@ -116,7 +116,7 @@
                             }
                         }
                     </td>
-                    <td class="timestamp@(item.IsAlert ? " Alert" : string.Empty)">Ready @item.ReadyForReturnSince
+                    <td class="timestamp@(item.IsAlert ? " Alert" : string.Empty)">Ready @CommonHelpers.FriendlyDate(item.ReadyForReturnSince)
                     </td>
                 </tr>
             }

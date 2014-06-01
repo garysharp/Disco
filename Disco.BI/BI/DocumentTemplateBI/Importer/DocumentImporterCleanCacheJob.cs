@@ -12,7 +12,8 @@ namespace Disco.BI.DocumentTemplateBI.Importer
         
         public override bool SingleInstanceTask { get { return true; } }
         public override bool CancelInitiallySupported { get { return false; } }
-
+        public override bool LogExceptionsOnly { get { return true; } }
+        
         public override void InitalizeScheduledTask(DiscoDataContext Database)
         {
             // Trigger Daily @ 12:30am

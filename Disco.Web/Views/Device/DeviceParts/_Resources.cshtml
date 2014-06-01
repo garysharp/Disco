@@ -8,8 +8,9 @@
 
     Html.BundleDeferred("~/Style/Shadowbox");
     Html.BundleDeferred("~/ClientScripts/Modules/Shadowbox");
+    Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
 
-    if (Authorization.Has(Claims.Device.Actions.AddAttachments))
+    if (canAddAttachments)
     {
         Html.BundleDeferred("~/ClientScripts/Modules/Silverlight");
     }
@@ -49,68 +50,30 @@
                         modal: true
                     });
                     $(function () {
-                        $Attachments = $('#Attachments');
-                        $attachmentOutput = $Attachments.find('.attachmentOutput');
+                        var $Attachments = $('#Attachments');
+                        var $attachmentOutput = $Attachments.find('.attachmentOutput');
 
-                        @if (canAddAttachments)
-                        {<text>
-                        //#region Add Attachments
-                        if (!document.DiscoFunctions) {
-                            document.DiscoFunctions = {};
+                        var $dialogUpload = null;
+                        var $dialogRemoveAttachment = null;
+
+                        // Connect to Hub
+                        var hub = $.connection.deviceUpdates;
+
+                        // Map Functions
+                        hub.client.addAttachment = onAddAttachment;
+                        hub.client.removeAttachment = onRemoveAttachment;
+
+                        $.connection.hub.qs = { DeviceSerialNumber: '@(Model.Device.SerialNumber)' };
+                        $.connection.hub.error(onHubError);
+
+                        // Start Connection
+                        $.connection.hub.start().fail(onHubError);
+
+                        function onHubError(error) {
+                            alert('Live-update Error: ' + error);
                         }
-                        document.DiscoFunctions.addAttachment = addAttachment;
 
-                        $('#dialogUpload').dialog({
-                            autoOpen: false,
-                            draggable: false,
-                            modal: true,
-                            resizable: false,
-                            width: 860,
-                            height: 550,
-                            close: function () {
-                                silverlightUploadAttachment.content.Navigator.Navigate('/Hidden');
-                            }
-                        });
-
-
-
-                        var onLoadNavigation = null;
-                        var isLoaded = null;
-                        Silverlight.createObject(
-                                '@(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap)',
-                                $('#silverlightHostUploadAttachment').get(0),
-                                'silverlightUploadAttachment',
-                                { width: '840px', height: '500px', background: 'white', version: '4.0.60310.0' },
-                                {
-                                    onLoad: function () {
-                                        if (onLoadNavigation) {
-                                            silverlightUploadAttachment.content.Navigator.Navigate(onLoadNavigation);
-                                            isLoaded = true;
-                                        }
-                                    }
-                                },
-                                'UploadUrl=@(Url.Action(MVC.API.Device.AttachmentUpload(Model.Device.SerialNumber, null)))'
-                        );
-
-                        $attachmentInput = $Attachments.find('.attachmentInput');
-                        $attachmentInput.find('.photo').click(function () {
-                            showDialog('/WebCam');
-                        });
-                        $attachmentInput.find('.upload').click(function () {
-                            showDialog('/File');
-                        });
-
-                        silverlightUploadAttachment = $('#silverlightUploadAttachment').get(0);
-                        function showDialog(navigationPath) {
-                            $('#dialogUpload').dialog('open');
-                            if (isLoaded) {
-                                silverlightUploadAttachment.content.Navigator.Navigate(navigationPath);
-                            } else {
-                                onLoadNavigation = navigationPath;
-                            }
-                        };
-
-                        function addAttachment(id, quick) {
+                        function onAddAttachment(id, quick) {
                             var data = { id: id };
                             $.ajax({
                                 url: '@Url.Action(MVC.API.Device.Attachment())',
@@ -135,10 +98,10 @@
                                         alert('Unable to add attachment: ' + d.Result);
                                     }
                                 },
-                                    error: function (jqXHR, textStatus, errorThrown) {
-                                        alert('Unable to add attachment: ' + textStatus);
-                                    }
-                                });
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    alert('Unable to add attachment: ' + textStatus);
+                                }
+                            });
                         }
 
                         function buildAttachment(a, canRemove, quick) {
@@ -159,11 +122,89 @@
                             if (!quick)
                                 e.hide();
                             $attachmentOutput.append(e);
+                            onUpdate();
                             if (!quick)
                                 e.show('slow');
                             if (a.MimeType.toLowerCase().indexOf('image/') == 0)
                                 e.shadowbox({ gallery: 'attachments', player: 'img', title: a.Comments });
                         }
+
+                        function onRemoveAttachment(id) {
+                            var a = $attachmentOutput.find('a[data-attachmentid=' + id + ']');
+
+                            a.hide(300).delay(300).queue(function () {
+                                var $this = $(this);
+                                if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
+                                    Shadowbox.removeCache(this);
+                                $this.find('.timestamp').livestamp('destroy');
+                                $this.remove();
+                                onUpdate();
+                            });
+                        }
+
+                        function onUpdate() {
+                            var attachmentCount = $attachmentOutput.children('a').length;
+                            var tabHeading = 'Attachments [' + attachmentCount + ']';
+                            $('#DeviceDetailTab-ResourcesLink').text(tabHeading);
+                        }
+
+                        @if (canAddAttachments)
+                        {<text>
+                        //#region Add Attachments
+                        if (!document.DiscoFunctions) {
+                            document.DiscoFunctions = {};
+                        }
+                        document.DiscoFunctions.addAttachment = function (Id) { return; /* Silverlight notification, do nothing use SignalR */ };
+
+                        var $attachmentInput = $Attachments.find('.attachmentInput');
+                        $attachmentInput.find('.photo').click(function () {
+                            showDialog('/WebCam');
+                        });
+                        $attachmentInput.find('.upload').click(function () {
+                            showDialog('/File');
+                        });
+
+                        var silverlightOnLoadNavigation = null;
+                        var silverlightIsLoaded = null;
+
+                        function showDialog(navigationPath) {
+                            if (!$dialogUpload) {
+                                $dialogUpload = $('#dialogUpload').dialog({
+                                    autoOpen: false,
+                                    draggable: false,
+                                    modal: true,
+                                    resizable: false,
+                                    width: 860,
+                                    height: 550,
+                                    close: function () {
+                                        var sl = $('#silverlightUploadAttachment').get(0);
+                                        if (sl.content)
+                                            sl.content.Navigator.Navigate('/Hidden');
+                                    }
+                                });
+
+                                Silverlight.createObject('@(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap)',
+                                    $('#silverlightHostUploadAttachment').get(0),
+                                    'silverlightUploadAttachment',
+                                    { width: '840px', height: '500px', background: 'white', version: '4.0.60310.0' },
+                                    {
+                                        onLoad: function () {
+                                            if (silverlightOnLoadNavigation) {
+                                                $('#silverlightUploadAttachment').get(0).content.Navigator.Navigate(silverlightOnLoadNavigation);
+                                                silverlightIsLoaded = true;
+                                            }
+                                        }
+                                    },
+                                    'UploadUrl=@(Url.Action(MVC.API.Device.AttachmentUpload(Model.Device.SerialNumber, null)))');
+                                }
+
+                                $dialogUpload.dialog('open');
+                                if (silverlightIsLoaded) {
+                                    $('#silverlightUploadAttachment').get(0).content.Navigator.Navigate(navigationPath);
+                                } else {
+                                    silverlightOnLoadNavigation = navigationPath;
+                                }
+                            };
 
                         //#endregion
                         </text>}
@@ -172,18 +213,20 @@
                         //#region Remove Attachments
                         $attachmentOutput.find('span.remove').click(removeAttachment);
 
-                        $('#dialogRemoveAttachment').dialog({
-                            resizable: false,
-                            height: 140,
-                            modal: true,
-                            autoOpen: false
-                        });
-
                         function removeAttachment() {
                             $this = $(this).closest('a');
 
                             var data = { id: $this.attr('data-attachmentid') };
-                            var $dialogRemoveAttachment = $('#dialogRemoveAttachment');
+
+                            if (!$dialogRemoveAttachment) {
+                                $dialogRemoveAttachment = $('#dialogRemoveAttachment').dialog({
+                                    resizable: false,
+                                    height: 140,
+                                    modal: true,
+                                    autoOpen: false
+                                });
+                            }
+
                             $dialogRemoveAttachment.dialog("enable");
                             $dialogRemoveAttachment.dialog('option', 'buttons', {
                                 "Remove": function () {
@@ -195,13 +238,7 @@
                                         data: data,
                                         success: function (d) {
                                             if (d == 'OK') {
-                                                $this.hide(300).delay(300).queue(function () {
-                                                    var $this = $(this);
-                                                    if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
-                                                        Shadowbox.removeCache(this);
-                                                    $this.find('.timestamp').livestamp('destroy');
-                                                    $this.remove();
-                                                });
+                                                // Do nothing, await SignalR notification
                                             } else {
                                                 alert('Unable to remove attachment: ' + d);
                                             }
@@ -213,7 +250,7 @@
                                         }
                                     });
                                 },
-                                "Cancel": function () {
+                                Cancel: function () {
                                     $dialogRemoveAttachment.dialog("close");
                                 }
                             });
@@ -225,12 +262,12 @@
                         //#endregion
                         </text>}
 
-                    $attachmentOutput.children('a').each(function () {
-                        $this = $(this);
-                        if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
-                            $this.shadowbox({ gallery: 'attachments', player: 'img', title: $this.find('.comments').text() });
+                        $attachmentOutput.children('a').each(function () {
+                            $this = $(this);
+                            if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
+                                $this.shadowbox({ gallery: 'attachments', player: 'img', title: $this.find('.comments').text() });
+                        });
                     });
-                });
                 </script>
             </td>
         </tr>

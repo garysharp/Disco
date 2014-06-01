@@ -29,7 +29,7 @@
                     @foreach (var jl in Model.Job.JobLogs.OrderBy(m => m.Timestamp))
                     {
                         <div data-logid="@jl.Id">
-                            <span class="author">@jl.TechUser.ToString()</span>@if (canRemoveAnyLogs || (canRemoveOwnLogs && jl.TechUserId == CurrentUser.UserId))
+                            <span class="author">@jl.TechUser.ToStringFriendly()</span>@if (canRemoveAnyLogs || (canRemoveOwnLogs && jl.TechUserId == CurrentUser.UserId))
                                                                                {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(jl.Timestamp.ToUnixEpoc())" title="@jl.Timestamp.ToFullDateTime()">@jl.Timestamp.ToFullDateTime()</span>
                             <span class="comment">@jl.Comments.ToMultilineJobRefString()</span>
                         </div>
@@ -58,7 +58,7 @@
                                   { @ja.DocumentTemplate.Description}
                                   else
                                   { @ja.Comments }}
-                            </span><span class="author">@ja.TechUser.ToString()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ja.TechUserId == CurrentUser.UserId))
+                            </span><span class="author">@ja.TechUser.ToStringFriendly()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ja.TechUserId == CurrentUser.UserId))
                                                                                       {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(ja.Timestamp.ToUnixEpoc())" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.ToFullDateTime()</span>
                         </a>   
                     }
@@ -75,7 +75,7 @@
 </table>
 @if (canShowLogs && (canRemoveAnyLogs || canRemoveOwnLogs))
 {
-    <div id="dialogRemoveLog" class="hiddenDialog" title="Remove this Comment?">
+    <div id="dialogRemoveLog" class="dialog" title="Remove this Comment?">
         <p>
             <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?
         </p>
@@ -83,14 +83,14 @@
 }
 @if (canShowAttachments && canAddAttachments)
 {
-    <div id="dialogUpload" class="hiddenDialog" title="Upload Attachment">
+    <div id="dialogUpload" class="dialog" title="Upload Attachment">
         <div id="silverlightHostUploadAttachment">
         </div>
     </div>
 }
 @if (canShowAttachments && (canRemoveAnyAttachments || canRemoveOwnAttachments))
 {
-    <div id="dialogRemoveAttachment" class="hiddenDialog" title="Remove this Attachment?">
+    <div id="dialogRemoveAttachment" class="dialog" title="Remove this Attachment?">
         <p>
             <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?
         </p>
@@ -220,11 +220,10 @@
             </text>}
 
             function loadLiveComment(key) {
-                if (key.JobId == jobId) {
-                    $.ajax({
-                        url: '@Url.Action(MVC.API.Job.Comment())',
+                $.ajax({
+                    url: '@Url.Action(MVC.API.Job.Comment())',
                         dataType: 'json',
-                        data: { id: key.Id },
+                        data: { id: key },
                         success: function (d) {
                             if (d && d.JobId == jobId) {
                                 @if (canRemoveAnyLogs)
@@ -241,7 +240,6 @@
                         }
                     });
                 }
-            }
             function liveRemoveComment(key) {
                 $CommentOutput.children('div[data-logid="' + key + '"]').slideUp(300).delay(300).queue(function () {
                     var $this = $(this);
@@ -430,17 +428,14 @@
             </text>}
 
             function addAttachment(key, quick) {
-
-                if (key.JobId == jobId) {
-                    var data = { id: key.Id };
-
-                    $.ajax({
-                        url: '@Url.Action(MVC.API.Job.Attachment())',
-                        dataType: 'json',
-                        data: data,
-                        success: function (d) {
-                            if (d.Result == 'OK') {
-                                var a = d.Attachment;
+                var data = { id: key };
+                $.ajax({
+                    url: '@Url.Action(MVC.API.Job.Attachment())',
+                    dataType: 'json',
+                    data: data,
+                    success: function (d) {
+                        if (d.Result == 'OK') {
+                            var a = d.Attachment;
                                 @if (canRemoveAnyAttachments)
                                 {
                                 <text>buildAttachment(a, true, quick);</text>
@@ -457,12 +452,11 @@
                                 alert('Unable to add attachment: ' + d.Result);
                             }
                         },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            alert('Unable to add attachment: ' + textStatus);
-                        }
-                    });
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert('Unable to add attachment: ' + textStatus);
+                    }
+                });
                 }
-            }
             function buildAttachment(a, canRemove, quick) {
                 if (parseInt(a.ParentId) == jobId) {
                     var t = '<a><span class="icon"><img alt="Attachment Thumbnail" /></span><span class="comments"></span><span class="author"></span>';
@@ -482,6 +476,7 @@
                     if (!quick)
                         e.hide();
                     $attachmentOutput.append(e);
+                    document.DiscoFunctions.liveAfterUpdate();
                     if (!quick)
                         e.show('slow');
                     if (a.MimeType.toLowerCase().indexOf('image/') == 0)
@@ -490,19 +485,16 @@
             }
 
             function removeAttachment(key) {
-                if (key.JobId == jobId) {
-                    var $element = $attachmentOutput.find('a[data-attachmentid="' + key.Id + '"]');
-                    if ($element.length > 0) {
-                        $element.hide(300).delay(300).queue(function () {
-                            if ($element.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
-                                Shadowbox.removeCache(this);
-                            $element.remove();
-                        });
-                    }
+                var $element = $attachmentOutput.find('a[data-attachmentid="' + key + '"]');
+                if ($element.length > 0) {
+                    $element.hide(300).delay(300).queue(function () {
+                        if ($element.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
+                            Shadowbox.removeCache(this);
+                        $element.remove();
+                        document.DiscoFunctions.liveAfterUpdate();
+                    });
                 }
             }
-
-
 
             $attachmentOutput.children('a').each(function () {
                 $this = $(this);
@@ -520,116 +512,46 @@
 
     </script>
 }
-@if (canShowLogs && canShowAttachments)
+@if (canShowLogs || canShowAttachments)
 {
     <script>
         $(function () {
             var jobId = parseInt('@(Model.Job.Id)');
 
             //#region LiveEvents
-            function liveMessageRecieved(d) {
-                if (d) {
-                    window.setTimeout(function () {
-                        switch (d.EntityTypeName) {
-                            case 'JobAttachment':
-                                switch (d.EventType) {
-                                    case 0: // Added
-                                        document.DiscoFunctions.liveAddAttachment(d.EntityKey, false);
-                                        break;
-                                    case 1: // Removed
-                                        document.DiscoFunctions.liveRemoveAttachment(d.EntityKey);
-                                        break;
-                                }
-                                break;
-                            case 'JobLog':
-                                switch (d.EventType) {
-                                    case 0: // Added
-                                        document.DiscoFunctions.liveLoadComment(d.EntityKey);
-                                        break;
-                                    case 1: // Removed
-                                        if (d.EntityKey.JobId == jobId) {
-                                            document.DiscoFunctions.liveRemoveComment(d.EntityKey.Id);
-                                        }
-                                        break;
-                                }
-                                break;
-                        }
-                    }, 100);
-                }
-            }
-            var liveMessagesConnection = $.connection('@(Url.Content("~/API/Repository/Notifications"))', { addToGroups: 'JobLog,JobAttachment' })
-            liveMessagesConnection.received(liveMessageRecieved);
-            liveMessagesConnection.error(function (e) {
-                if (e)
-                    alert('Error: ' + JSON.stringify(e));
-            });
-            liveMessagesConnection.start();
-            //#endregion
-        });
-    </script>
-}
-else if (canShowLogs)
-{
-    <script>
-        $(function () {
-            var jobId = parseInt('@(Model.Job.Id)');
+            var hub = $.connection.jobUpdates;
 
-            //#region LiveEvents
-            function liveMessageRecieved(d) {
-                if (d) {
-                    window.setTimeout(function () {
-                        switch (d.EventType) {
-                            case 0: // Added
-                                document.DiscoFunctions.liveLoadComment(d.EntityKey);
-                                break;
-                            case 1: // Removed
-                                if (d.EntityKey.JobId == jobId) {
-                                    document.DiscoFunctions.liveRemoveComment(d.EntityKey.Id);
-                                }
-                                break;
-                        }
-                    }, 100);
-                }
-            }
-            var liveMessagesConnection = $.connection('@(Url.Content("~/API/Repository/Notifications"))', { addToGroups: 'JobLog' })
-            liveMessagesConnection.received(liveMessageRecieved);
-            liveMessagesConnection.error(function (e) {
-                if (e)
-                    alert('Error: ' + JSON.stringify(e));
-            });
-            liveMessagesConnection.start();
-            //#endregion
-        });
-    </script>
-}
-else if (canShowAttachments)
-{
-    <script>
-        $(function () {
-            var jobId = parseInt('@(Model.Job.Id)');
+            // Map Functions
+@if (canShowLogs)
+{<text>
+            hub.client.addLog = document.DiscoFunctions.liveLoadComment;
+            hub.client.removeLog = document.DiscoFunctions.liveRemoveComment;
+            </text>}
+@if (canShowAttachments)
+{<text>
+            hub.client.addAttachment = document.DiscoFunctions.liveAddAttachment;
+            hub.client.removeAttachment = document.DiscoFunctions.liveRemoveAttachment;
 
-            //#region LiveEvents
-            function liveMessageRecieved(d) {
-                if (d) {
-                    window.setTimeout(function () {
-                        switch (d.EventType) {
-                            case 0: // Added
-                                document.DiscoFunctions.liveAddAttachment(d.EntityKey, false);
-                                break;
-                            case 1: // Removed
-                                document.DiscoFunctions.liveRemoveAttachment(d.EntityKey);
-                                break;
-                        }
-                    }, 100);
-                }
+            document.DiscoFunctions.liveAfterUpdate = function () {
+                var tabLink = $('#jobDetailTab-ResourcesLink');
+                var attachmentCount = $('#Attachments').find('.attachmentOutput').children('a').length;
+                
+                var tabHeading = tabLink.text();
+                tabHeading = tabHeading.substr(0, tabHeading.indexOf('[') + 1) + attachmentCount + ']';
+                tabLink.text(tabHeading);
             }
-            var liveMessagesConnection = $.connection('@(Url.Content("~/API/Repository/Notifications"))', { addToGroups: 'JobAttachment' })
-            liveMessagesConnection.received(liveMessageRecieved);
-            liveMessagesConnection.error(function (e) {
-                if (e)
-                    alert('Error: ' + JSON.stringify(e));
-            });
-            liveMessagesConnection.start();
+</text>}
+
+            $.connection.hub.qs = { JobId: jobId };
+            $.connection.hub.error(onHubError);
+
+            // Start Connection
+            $.connection.hub.start().fail(onHubError);
+
+            function onHubError(error) {
+                alert('Live-update Error: ' + error);
+            }
+
             //#endregion
         });
     </script>

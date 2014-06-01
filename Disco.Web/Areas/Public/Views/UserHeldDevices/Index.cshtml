@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Disco.Web.Areas.Public.Models.UserHeldDevices.UserHeldDeviceModel>
+﻿@model IEnumerable<Disco.Models.Services.Jobs.Noticeboards.IHeldDeviceItem>
 @{
     ViewBag.Title = Html.ToBreadcrumb("Public Reports", MVC.Public.Public.Index(), "Held Devices for Users", null);
     Html.BundleDeferred("~/Style/Public/HeldDevices");
@@ -8,21 +8,19 @@
         @{
             var DevicesInProcess = Model.Where(i => !i.ReadyForReturn && !i.WaitingForUserAction).ToArray();
         }
-        <h2>
-            In Process (@DevicesInProcess.Length)</h2>
+        <h2>In Process (@DevicesInProcess.Length)</h2>
         <table class="dataTable">
-            @foreach (var item in DevicesInProcess)
+            @foreach (var item in DevicesInProcess.OrderBy(i => i.UserIdFriendly))
             {
                 <tr>
                     <td class="id">
-                        @item.UserId
+                        @item.UserIdFriendly
                     </td>
                     <td class="description">
-                        @item.UserDisplayName@{
-                if (!string.IsNullOrEmpty(item.EstimatedReturnTime))
-                { 
-                            <span class="smallMessage">(Expected: @item.EstimatedReturnTime)</span>
-                }
+                        @item.UserDisplayName
+                        @if (item.EstimatedReturnTime.HasValue)
+                        { 
+                            <span class="smallMessage">(Expected: @CommonHelpers.FriendlyDate(item.EstimatedReturnTime))</span>
                         }
                     </td>
                 </tr>
@@ -33,20 +31,18 @@
         @{
             var WaitingForUserActionJobs = Model.Where(i => i.WaitingForUserAction).ToArray();
         }
-        <h2>
-            Waiting for User Action (@WaitingForUserActionJobs.Length)</h2>
+        <h2>Waiting for User Action (@WaitingForUserActionJobs.Length)</h2>
         <table class="dataTable">
-            @foreach (var item in WaitingForUserActionJobs)
+            @foreach (var item in WaitingForUserActionJobs.OrderBy(i => i.UserIdFriendly))
             {
                 <tr>
                     <td class="id">
-                        @item.UserId
+                        @item.UserIdFriendly
                     </td>
                     <td class="description">
                         @item.UserDisplayName
                     </td>
-                    <td class="timestamp@(item.IsAlert ? " Alert" : string.Empty)">
-                        Since @item.WaitingForUserActionSince
+                    <td class="timestamp@(item.IsAlert ? " Alert" : string.Empty)">Since @CommonHelpers.FriendlyDate(item.WaitingForUserActionSince)
                     </td>
                 </tr>
             }
@@ -55,20 +51,18 @@
         @{
             var DevicesReadyForReturn = Model.Where(i => i.ReadyForReturn && !i.WaitingForUserAction).ToArray();
         }
-        <h2>
-            Ready for Return (@DevicesReadyForReturn.Length)</h2>
+        <h2>Ready for Return (@DevicesReadyForReturn.Length)</h2>
         <table class="dataTable">
-            @foreach (var item in DevicesReadyForReturn)
+            @foreach (var item in DevicesReadyForReturn.OrderBy(i => i.UserIdFriendly))
             {
                 <tr>
                     <td class="id">
-                        @item.UserId
+                        @item.UserIdFriendly
                     </td>
                     <td class="description">
                         @item.UserDisplayName
                     </td>
-                    <td class="timestamp@(item.IsAlert ? " Alert" : string.Empty)">
-                        Ready @item.ReadyForReturnSince
+                    <td class="timestamp@(item.IsAlert ? " Alert" : string.Empty)">Ready @CommonHelpers.FriendlyDate(item.ReadyForReturnSince)
                     </td>
                 </tr>
             }

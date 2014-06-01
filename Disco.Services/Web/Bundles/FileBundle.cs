@@ -9,16 +9,13 @@ using System.Web;
 
 namespace Disco.Services.Web.Bundles
 {
-    public class Bundle
+    public class FileBundle : IBundle
     {
-        public const string DeferredKey = "Bundles.Deferred";
-        public const string UIExtensionScriptsKey = "Bundles.UIExtensionScripts";
-        public const string UIExtensionCssKey = "Bundles.UIExtensionCss";
-
         private DateTime? _FileLastModified { get; set; }
         private string _FileHash { get; set; }
         private string _VersionUrl { get; set; }
 
+        public bool RemapRequest { get { return true; } }
         public string Url { get; private set; }
         public string File { get; private set; }
         public string FileHash
@@ -44,7 +41,7 @@ namespace Disco.Services.Web.Bundles
             }
         }
 
-        public Bundle(string Url, string File)
+        public FileBundle(string Url, string File)
         {
             if (string.IsNullOrWhiteSpace(Url))
                 throw new ArgumentNullException("Url");
@@ -117,7 +114,7 @@ namespace Disco.Services.Web.Bundles
             this._FileHash = string.Empty;
         }
 
-        internal void ProcessRequest(HttpContext context)
+        public void ProcessRequest(HttpContext context)
         {
             // Write Content Type
             context.Response.ContentType = this.ContentType;

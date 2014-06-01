@@ -1,5 +1,6 @@
 ﻿@{
     Layout = null;
+    Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
     Html.BundleDeferred("~/ClientScripts/Core");
     Html.BundleDeferred("~/Style/Public/HeldDevicesNoticeboard");
@@ -9,468 +10,397 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Disco - Held Devices</title>
+    <title>Disco ICT - Held Devices</title>
     @Html.BundleRenderDeferred()
 </head>
-<body>
+<body class="status-connecting">
     <div id="page">
-        <header id="mainHeader">
-            Held Devices
+        <header id="header">
+            <div id="heading">Held Devices</div>
+            <div id="statusConnecting"><i class="fa fa-cog fa-spin"></i><span>connecting...</span></div>
+            <div id="statusError"><i class="fa fa-cog fa-spin"></i><span>disconnected, reconnecting...</span></div>
+            <div id="credits">
+                powered by Disco ICT <i title="Disco ICT - Jobs"></i>
+            </div>
         </header>
         <section id="mainSection">
             <div id="inProcess" class="list">
-                <h3>In Process <span id="inProcessCount"></span>
+                <h3>In Process (<span data-bind="text: inProcess().length"></span>)
                 </h3>
                 <div class="content">
-                    <ul>
-                    </ul>
+                    <!-- ko if: inProcess().length == 0 -->
+                    <div class="noContent">&lt;None&gt;</div>
+                    <!-- /ko -->
+                    <ul data-bind="template: { name: 'item-template', foreach: inProcess, afterRender: onAdd, beforeRemove: onRemove }"></ul>
                 </div>
             </div>
             <div id="readyForReturn" class="list">
-                <h3>Ready for Return <span id="readyForReturnCount"></span>
+                <h3>Ready for Return (<span data-bind="text: readyForReturn().length"></span>)
                 </h3>
                 <div class="content">
-                    <ul>
-                    </ul>
+                    <!-- ko if: readyForReturn().length == 0 -->
+                    <div class="noContent">&lt;None&gt;</div>
+                    <!-- /ko -->
+                    <ul data-bind="template: { name: 'item-template', foreach: readyForReturn, afterRender: onAdd, beforeRemove: onRemove }"></ul>
                 </div>
             </div>
             <div id="waitingForUserAction" class="list">
-                <h3>Waiting for User Action <span id="waitingForUserActionCount"></span>
+                <h3>Waiting for User Action (<span data-bind="text: waitingForUserAction().length"></span>)
                 </h3>
                 <div class="content">
-                    <ul>
-                    </ul>
+                    <!-- ko if: waitingForUserAction().length == 0 -->
+                    <div class="noContent">&lt;None&gt;</div>
+                    <!-- /ko -->
+                    <ul data-bind="template: { name: 'item-template', foreach: waitingForUserAction, afterAdd: onAdd, beforeRemove: onRemove }"></ul>
                 </div>
             </div>
+            <footer id="footer">
+            </footer>
         </section>
-        <footer>
-        </footer>
     </div>
-    <script type="text/javascript">
-        // Resizing
-        $(function () {
-            var $inProcess = $('#inProcess');
-            var $inProcessContent = $inProcess.find('.content');
-            var $inProcessHeader = $inProcess.find('.h3');
-            var $readyForReturn = $('#readyForReturn');
-            var $readyForReturnContent = $readyForReturn.find('.content');
-            var $readyForReturnHeader = $readyForReturn.find('.h3');
-            var $waitingForUserAction = $('#waitingForUserAction');
-            var $waitingForUserActionContent = $waitingForUserAction.find('.content');
-            var $waitingForUserActionHeader = $waitingForUserAction.find('.h3');
-            var $mainSection = $('#mainSection');
-            var $mainHeader = $('#mainHeader');
-            var $mainFooter = $('#mainFooter');
-
-            var onResize = function () {
-                var width = $mainSection.width();
-                var height = $(window).height() - $mainHeader.outerHeight() - $mainFooter.outerHeight() - 25;
-
-                $inProcess.height(height);
-                $inProcess.width((width * .28) - 11);
-                $inProcessContent.height(height - $inProcessHeader.outerHeight() - 56);
-
-                $readyForReturn.height(height);
-                $readyForReturn.width((width * .36) - 11);
-                $readyForReturnContent.height(height - $readyForReturnHeader.outerHeight() - 56);
-
-                $waitingForUserAction.height(height);
-                $waitingForUserAction.width((width * .36) - 11);
-                $waitingForUserActionContent.height(height - $waitingForUserActionHeader.outerHeight() - 56);
-            };
-
-            $(window).resize(onResize);
-            onResize();
-        });
+    <script type="text/html" id="item-template">
+        <li data-bind="css: { alert: IsAlert }">
+            <span data-bind="text: DeviceDescription"></span>
+            <!-- ko if: !ReadyForReturn && EstimatedReturnTimeUnixEpoc -->
+            <span class="small">(Expected <span data-bind="livestamp: EstimatedReturnTimeUnixEpoc"></span>)</span>
+            <!-- /ko -->
+            <!-- ko if: WaitingForUserAction -->
+            <span class="small">(Since <span data-bind="livestamp: WaitingForUserActionSinceUnixEpoc"></span>)</span>
+            <!-- /ko -->
+            <!-- ko if: ReadyForReturn && !WaitingForUserAction -->
+            <span class="small">(Ready <span data-bind="livestamp: ReadyForReturnSinceUnixEpoc"></span>)</span>
+            <!-- /ko -->
+        </li>
     </script>
-    <script type="text/javascript">
-        // Hide Mouse Mouse
-        $(function () {
-            var mouseVisible = true;
-            var mouseHideToken;
-            var documentBody = $('body');
+    <script>
+        ko.bindingHandlers.livestamp = {
+            init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+                var value = valueAccessor();
+                var valueUnwrapped = ko.unwrap(value);
 
-            var hideMouse = function () {
-                if (mouseVisible) {
-                    documentBody.css('cursor', 'none');
-                    mouseVisible = false;
-                }
-            };
-            var showMouse = function () {
-                if (!mouseVisible) {
-                    documentBody.css('cursor', 'auto');
-                    mouseVisible = true;
-                }
-            };
-
-            $(document).mousemove(function () {
-                showMouse();
-                if (mouseHideToken)
-                    window.clearTimeout(mouseHideToken);
-                mouseHideToken = window.setTimeout(hideMouse, 2000);
-            });
-        });
-    </script>
-    <script type="text/javascript">
-        $(function () {
-            var models = {};
-            var modelsInProcessSorted = [];
-            var modelsInProcessCount = 0;
-            var modelsReadyForReturnSorted = [];
-            var modelsReadyForReturnCount = 0;
-            var modelsWaitingForUserActionSorted = [];
-            var modelsWaitingForUserActionCount = 0;
-            var $inProcess = $('#inProcess');
-            var $inProcessContent = $inProcess.find('.content ul');
-            var $readyForReturn = $('#readyForReturn');
-            var $readyForReturnContent = $readyForReturn.find('.content ul');
-            var $waitingForUserAction = $('#waitingForUserAction');
-            var $waitingForUserActionContent = $waitingForUserAction.find('.content ul');
-            var modelsInProcessIndexOffset = 0;
-            var scrollInProcessToken = null;
-            var modelsReadyForReturnIndexOffset = 0;
-            var scrollReadyForReturnToken = null;
-            var modelsWaitingForUserActionIndexOffset = 0;
-            var scrollWaitingForUserActionToken = null;
-            var scrollSpeed = 3000;
-            var persistantConnection = null;
-            var filterDeviceAddressInclude;
-            var filterDeviceAddressExclude;
-            var filterDeviceProfileInclude;
-            var filterDeviceProfileExclude;
-
-            var getParameterByName = function (name) {
-                name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-                var regexS = "[\\?&]" + name + "=([^&#]*)";
-                var regex = new RegExp(regexS);
-                var results = regex.exec(window.location.search);
-                if (results == null)
-                    return "";
+                if (valueUnwrapped)
+                    $(element).livestamp(valueUnwrapped);
                 else
-                    return decodeURIComponent(results[1].replace(/\+/g, " "));
+                    $(element).livestamp('destroy');
             }
+        };
+    </script>
+    <script>
+        $(function () {
+            var hub;
+            var viewModel;
 
-            var buildFilters = function () {
-                var deviceAddressInclude = getParameterByName('deviceAddressInclude');
-                if (deviceAddressInclude) {
-                    filterDeviceAddressInclude = {};
-                    var split = deviceAddressInclude.split(",");
-                    for (var i = 0; i < split.length; i++) {
-                        filterDeviceAddressInclude[split[i].toLowerCase()] = true;
-                    }
-                } else {
-                    var deviceAddressExclude = getParameterByName('deviceAddressExclude');
-                    if (deviceAddressExclude) {
-                        filterDeviceAddressExclude = {};
-                        var split = deviceAddressExclude.split(",");
-                        for (var i = 0; i < split.length; i++) {
-                            filterDeviceAddressExclude[split[i].toLowerCase()] = true;
-                        }
-                    } else {
-                        var deviceProfileInclude = getParameterByName('deviceProfileInclude');
-                        if (deviceProfileInclude) {
-                            filterDeviceProfileInclude = {};
-                            var deviceProfileIncludeSplit = deviceProfileInclude.split(",");
-                            for (var i = 0; i < deviceProfileIncludeSplit.length; i++) {
-                                filterDeviceProfileInclude[parseInt(deviceProfileIncludeSplit[i])] = true;
-                            }
-                        } else {
-                            var deviceProfileExclude = getParameterByName('deviceProfileExclude');
-                            if (deviceProfileExclude) {
-                                filterDeviceProfileExclude = {};
-                                var deviceProfileExcludeSplit = deviceProfileExclude.split(",");
-                                for (var i = 0; i < deviceProfileExcludeSplit.length; i++) {
-                                    filterDeviceProfileExclude[parseInt(deviceProfileExcludeSplit[i])] = true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            var calculateFilter = function (model) {
-                if (model) {
-                    if (filterDeviceAddressInclude) {
-                        return (filterDeviceAddressInclude[model.DeviceAddress.toLowerCase()] == true)
-                    }
-                    if (filterDeviceAddressExclude) {
-                        return (!filterDeviceAddressExclude[model.DeviceAddress.toLowerCase()])
-                    }
-                    if (filterDeviceProfileInclude) {
-                        return (filterDeviceProfileInclude[model.DeviceProfileId] == true)
-                    }
-                    if (filterDeviceProfileExclude) {
-                        return (!filterDeviceProfileExclude[model.DeviceProfileId])
-                    }
-                    return true;
-                }
-                return false;
-            }
+            var rotateSpeed = 3000;
+            var itemFilters;
 
-            var sortModels = function () {
-                modelsInProcessSorted = [];
-                modelsReadyForReturnSorted = [];
-                modelsWaitingForUserActionSorted = [];
-                var modelSortFunc = function (a, b) {
-                    if (a.DeviceSerialNumber.toUpperCase() == b.DeviceSerialNumber.toUpperCase()) {
-                        return 0;
-                    } else {
-                        if (a.DeviceSerialNumber.toUpperCase() < b.DeviceSerialNumber.toUpperCase()) {
-                            return -1
-                        } else {
-                            return 1
-                        }
-                    }
-                };
-                for (var key in models) {
-                    var model = models[key];
-                    if (model) {
-                        if (model.WaitingForUserAction) {
-                            modelsWaitingForUserActionSorted.push(model);
-                        } else {
-                            if (model.ReadyForReturn) {
-                                modelsReadyForReturnSorted.push(model);
-                            } else {
-                                modelsInProcessSorted.push(model);
-                            }
-                        }
-                    }
-                }
-                modelsReadyForReturnSorted = modelsReadyForReturnSorted.sort(modelSortFunc);
-                modelsInProcessSorted = modelsInProcessSorted.sort(modelSortFunc);
-                modelsWaitingForUserActionSorted = modelsWaitingForUserActionSorted.sort(modelSortFunc);
+            var $inProcessList = $('#inProcess').find('ul');
+            var $readyForReturnList = $('#readyForReturn').find('ul');
+            var $waitingForUserActionList = $('#waitingForUserAction').find('ul');
 
-                if (modelsInProcessSorted.length != modelsInProcessCount) {
-                    modelsInProcessCount = modelsInProcessSorted.length;
-                    $('#inProcessCount').text('(' + modelsInProcessCount + ')');
-                }
-                if (modelsReadyForReturnSorted.length != modelsReadyForReturnCount) {
-                    modelsReadyForReturnCount = modelsReadyForReturnSorted.length;
-                    $('#readyForReturnCount').text('(' + modelsReadyForReturnCount + ')');
-                }
-                if (modelsWaitingForUserActionSorted.length != modelsWaitingForUserActionCount) {
-                    modelsWaitingForUserActionCount = modelsWaitingForUserActionSorted.length;
-                    $('#waitingForUserActionCount').text('(' + modelsWaitingForUserActionCount + ')');
-                }
+            function noticeboardViewModel(inProcess, readyForReturn, waitingForUserAction) {
+                var self = this;
 
-            };
+                self.initialized = false;
 
-            var scrollReadyForReturn = function () {
-                $readyForReturnContent.find('li').last().detach().prependTo($readyForReturnContent).hide().slideDown('slow');
-                modelsReadyForReturnIndexOffset++;
-                if (modelsReadyForReturnIndexOffset >= modelsReadyForReturnSorted.length) {
-                    modelsReadyForReturnIndexOffset = 0;
-                }
-                scrollReadyForReturnToken = window.setTimeout(scrollReadyForReturn, scrollSpeed);
-            };
-            var updateScrollReadyForReturn = function () {
-                var containerHeight = $readyForReturn.find('.content').height();
-                var contentHeight = $readyForReturnContent.height();
-                if (containerHeight >= contentHeight && scrollReadyForReturnToken) {
-                    window.clearTimeout(scrollReadyForReturnToken);
-                    return;
-                }
-                if (containerHeight < contentHeight && scrollReadyForReturnToken == null) {
-                    scrollReadyForReturnToken = window.setTimeout(scrollReadyForReturn, scrollSpeed);
-                }
-            };
-            var scrollInProcess = function () {
-                $inProcessContent.find('li').last().detach().prependTo($inProcessContent).hide().slideDown('slow');
-                modelsInProcessIndexOffset++;
-                if (modelsInProcessIndexOffset >= modelsInProcessSorted.length) {
-                    modelsInProcessIndexOffset = 0;
-                }
-                scrollInProcessToken = window.setTimeout(scrollInProcess, scrollSpeed);
-            };
-            var updateScrollInProcess = function () {
-                var containerHeight = $inProcess.find('.content').height();
-                var contentHeight = $inProcessContent.height();
-                if (containerHeight >= contentHeight && scrollInProcessToken) {
-                    window.clearTimeout(scrollInProcessToken);
-                    return;
-                }
-                if (containerHeight < contentHeight && scrollInProcessToken == null) {
-                    scrollInProcessToken = window.setTimeout(scrollInProcess, scrollSpeed);
-                }
-            };
-            var scrollWaitingForUserAction = function () {
-                $waitingForUserActionContent.find('li').last().detach().prependTo($waitingForUserActionContent).hide().slideDown('slow');
-                modelsInProcessIndexOffset++;
-                if (modelsWaitingForUserActionIndexOffset >= modelsWaitingForUserActionSorted.length) {
-                    modelsWaitingForUserActionIndexOffset = 0;
-                }
-                scrollWaitingForUserActionToken = window.setTimeout(scrollWaitingForUserAction, scrollSpeed);
-            };
-            var updateScrollWaitingForUserAction = function () {
-                var containerHeight = $waitingForUserAction.find('.content').height();
-                var contentHeight = $waitingForUserActionContent.height();
-                if (containerHeight >= contentHeight && scrollWaitingForUserActionToken) {
-                    window.clearTimeout(scrollWaitingForUserActionToken);
-                    return;
-                }
-                if (containerHeight < contentHeight && scrollWaitingForUserActionToken == null) {
-                    scrollWaitingForUserActionToken = window.setTimeout(scrollWaitingForUserAction, scrollSpeed);
-                }
-            };
+                self.inProcess = ko.observableArray(inProcess);
+                self.readyForReturn = ko.observableArray(readyForReturn);
+                self.waitingForUserAction = ko.observableArray(waitingForUserAction);
 
-            var modelInsertIndex = function (model) {
-                sortModels();
-                var findIndex = function (model, array, offset) {
-                    for (var i = 0; i < array.length; i++) {
-                        if (model.DeviceSerialNumber == array[i].DeviceSerialNumber) {
-                            var index = i + offset;
-                            if (index > (array.length - 1)) {
-                                index = index - (array.length - 1);
-                            }
-                            return index;
-                        }
-                    };
-                };
-                if (model.WaitingForUserAction) {
-                    return findIndex(model, modelsWaitingForUserActionSorted, modelsWaitingForUserActionIndexOffset);
-                } else {
-                    if (model.ReadyForReturn) {
-                        return findIndex(model, modelsReadyForReturnSorted, modelsReadyForReturnIndexOffset);
-                    } else {
-                        return findIndex(model, modelsInProcessSorted, modelsInProcessIndexOffset);
-                    }
-                }
-            }
-            var modelInsert = function (model) {
-                var index = modelInsertIndex(model);
-                var insertTo = function (model, host) {
-                    var hostLi = host.children('li');
-                    if (hostLi.length == 0 || hostLi.length < index) {
-                        host.append(model.htmlLi);
-                    } else {
-                        if (index == 0) {
-                            host.prepend(model.htmlLi);
-                        } else {
-                            $(hostLi.get(index - 1)).after(model.htmlLi);
-                        }
-                    }
-                }
-                if (model.WaitingForUserAction) {
-                    insertTo(model, $waitingForUserActionContent);
-                    window.setTimeout(updateScrollWaitingForUserAction, 100);
-                } else {
-                    if (model.ReadyForReturn) {
-                        insertTo(model, $readyForReturnContent);
-                        window.setTimeout(updateScrollReadyForReturn, 100);
-                    } else {
-                        insertTo(model, $inProcessContent);
-                        window.setTimeout(updateScrollInProcess, 100);
-                    }
-                }
-            }
-
-            var removeModel = function (model) {
-                if (model) {
-                    model.htmlLi.slideUp('fast', function () {
-                        model.htmlLi.remove();
+                self.onRemove = function (element, index, data) {
+                    $(element).slideUp(400, function () {
+                        $(this).remove();
                     });
                 }
-            };
-
-            var processModel = function (id, model, init) {
-                if (!calculateFilter(model)) {
-                    removeModel(models[id]);
-                    delete models[id];
-                    sortModels();
-                } else {
-                    var existing = models[id];
-                    models[id] = model;
-
-                    // Add
-                    model.htmlContent = $('<div>').text(model.DeviceDescription);
-                    if (!model.ReadyForReturn && model.EstimatedReturnTime) {
-                        model.htmlContent.append($('<span class="small">').text(' (Expected: ' + model.EstimatedReturnTime + ')'));
-                    }
-                    if (model.WaitingForUserAction) {
-                        model.htmlContent.append($('<span class="small">').text(' (Since ' + model.WaitingForUserActionSince + ')'));
-                    } else {
-                        if (model.ReadyForReturn && model.ReadyForReturnSince) {
-                            model.htmlContent.append($('<span class="small">').text(' (Ready ' + model.ReadyForReturnSince + ')'));
-                        }
-                    }
-
-                    if (existing) {
-                        if (existing.ReadyForReturn != model.ReadyForReturn || existing.WaitingForUserAction != model.WaitingForUserAction) {
-                            removeModel(existing);
-                            model.htmlLi = $('<li>').html(model.htmlContent).data('ModelId', id).hide();
-                            modelInsert(model);
-                            if (init) {
-                                model.htmlLi.fadeIn();
-                            } else {
-                                model.htmlLi.slideDown();
-                            }
-                        } else {
-                            model.htmlLi = existing.htmlLi;
-                            model.htmlLi.slideUp('fast', function () {
-                                model.htmlLi.html(model.htmlContent).slideDown();
-                            });
-                        }
-                    } else {
-                        model.htmlLi = $('<li>').html(model.htmlContent).data('ModelId', id).hide();
-                        modelInsert(model);
-                        if (init) {
-                            model.htmlLi.fadeIn();
-                        } else {
-                            model.htmlLi.slideDown('slow');
-                        }
-                    }
-                    if (model.htmlLi && model.IsAlert) {
-                        model.htmlLi.addClass('alert');
-                    }
+                self.onAdd = function (element, index, data) {
+                    if (self.initialized)
+                        $(element).hide().slideDown(400);
                 }
-            };
-
-            var updatedModel = function (id) {
-                var deviceSerialNumber = id.toString();
-
-                $.ajax({
-                    dataType: 'json',
-                    url: '@(Url.Action(MVC.Public.HeldDevices.HeldDevice()))',
-                    data: { id: deviceSerialNumber },
-                    success: function (data) {
-                        processModel(deviceSerialNumber, data, false);
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        if (textStatus == 'parsererror') // null Result
-                            processModel(deviceSerialNumber, null, false);
-                    }
-                })
-            };
-
-            var connectionError = function () {
-                if (persistantConnection) {
-                    persistantConnection.stop();
-                    persistantConnection = null;
-                    window.setTimeout(function () {
-                        window.location.href = '@(Url.Action(MVC.Public.HeldDevices.Noticeboard()))';
-                    }, 10000);
-                    }
             }
 
-            var init = function () {
-                buildFilters();
-                persistantConnection = $.connection('@(Url.Content("~/Public/HeldDevices/Notifications"))');
-                persistantConnection.received(updatedModel);
-                persistantConnection.error(connectionError);
-                persistantConnection.start(function () {
-                    $.getJSON('@(Url.Action(MVC.Public.HeldDevices.HeldDevices()))', null, function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            processModel(data[i].DeviceSerialNumber, data[i], true);
-                        }
+            function init() {
+                // Connect to Hub
+                hub = $.connection.noticeboardUpdates;
+
+                // Map Functions
+                hub.client.updateHeldDevice = updateHeldDevice;
+
+                $.connection.hub.qs = { Noticeboard: '@(Disco.Services.Jobs.Noticeboards.HeldDevices.Name)' };
+                $.connection.hub.error(connectionError);
+                $.connection.hub.disconnected(connectionError);
+                $.connection.hub.reconnected(connectionError);
+
+                // Start Connection
+                $.connection.hub.start().fail(connectionError).done(loadData);
+            }
+
+            // Called after SignalR is connected
+            function loadData() {
+                $.getJSON('@(Url.Action(MVC.Public.HeldDevices.HeldDevices()))', null, function (data) {
+
+                    var inProcess = [];
+                    var readyForReturn = [];
+                    var waitingForUserAction = [];
+
+                    data.filter(function (heldDeviceItem) {
+                        return includeItem(heldDeviceItem)
+                    }).forEach(function (heldDeviceItem) {
+                        if (isWaitingForUserAction(heldDeviceItem))
+                            waitingForUserAction.push(heldDeviceItem);
+                        else if (isReadyForReturn(heldDeviceItem))
+                            readyForReturn.push(heldDeviceItem);
+                        else if (isInProcess(heldDeviceItem))
+                            inProcess.push(heldDeviceItem);
                     });
+
+                    inProcess.sort(sortFunction);
+                    readyForReturn.sort(sortFunction);
+                    waitingForUserAction.sort(sortFunction);
+
+                    viewModel = new noticeboardViewModel(inProcess, readyForReturn, waitingForUserAction);
+
+                    ko.applyBindings(viewModel);
+                    viewModel.initialized = true;
+
+                    $('body').removeClass('status-connecting');
+
+                    window.setTimeout(scheduleRotation, rotateSpeed);
                 });
-            };
-            init();
+                buildFilters();
+            }
 
+            // Called by SignalR
+            function updateHeldDevice(updates) {
+                if (viewModel) {
+
+                    $.each(updates, function (deviceSerialNumber, heldDeviceItem) {
+                        // Remove Existing
+                        removeItem(deviceSerialNumber);
+
+                        // Add Item
+                        addItem(heldDeviceItem);
+                    });
+                }
+            }
+
+            function removeItem(deviceSerialNumber) {
+                removeItemFromArray(viewModel.inProcess, deviceSerialNumber);
+                removeItemFromArray(viewModel.readyForReturn, deviceSerialNumber);
+                removeItemFromArray(viewModel.waitingForUserAction, deviceSerialNumber);
+            }
+
+            function addItem(heldDeviceItem) {
+                if (heldDeviceItem !== null &&
+                    heldDeviceItem !== undefined &&
+                    includeItem(heldDeviceItem)) {
+
+                    var array;
+
+                    if (isWaitingForUserAction(heldDeviceItem))
+                        array = viewModel.waitingForUserAction;
+                    else if (isReadyForReturn(heldDeviceItem))
+                        array = viewModel.readyForReturn;
+                    else if (isInProcess(heldDeviceItem))
+                        array = viewModel.inProcess;
+
+                    if (array().length === 0) {
+                        array.push(heldDeviceItem);
+                    } else {
+                        var index = findSortedInsertIndex(array, heldDeviceItem);
+                        if (index === -1)
+                            array.push(heldDeviceItem);
+                        else
+                            array.splice(index, 0, heldDeviceItem);
+                    }
+                }
+            }
+
+            function rotateArrays() {
+                rotateArray(viewModel.inProcess, $inProcessList);
+                rotateArray(viewModel.readyForReturn, $readyForReturnList);
+                rotateArray(viewModel.waitingForUserAction, $waitingForUserActionList);
+            }
+
+            function scheduleRotation() {
+                rotateArrays();
+
+                window.setTimeout(scheduleRotation, rotateSpeed);
+            }
+
+            function includeItem(heldDeviceItem) {
+                if (itemFilters == null || itemFilters.length == 0)
+                    return true;
+
+                return itemFilters.reduce(function (previousValue, currentValue, index, array) {
+                    if (previousValue === false)
+                        return false;
+                    return currentValue(heldDeviceItem);
+                }, true);
+            }
+
+            function buildFilters() {
+                var filters = [];
+                var queryStringParameters = getQueryStringParameters();
+
+                if (queryStringParameters !== null) {
+                    $.each(queryStringParameters, function (key, value) {
+                        switch (key.toLowerCase()) {
+                            case 'deviceaddressinclude':
+                                var deviceAddresses = value.split(",").map(function (v) { return v.toLowerCase(); });
+                                if (deviceAddresses.length > 0) {
+                                    filters.push(function (heldDeviceItem) {
+                                        // false if DeviceAddressShortName is null
+                                        if (!heldDeviceItem.DeviceAddressShortName)
+                                            return false;
+
+                                        // true if DeviceAddressShortName is included
+                                        return $.inArray(heldDeviceItem.DeviceAddressShortName.toLowerCase(), deviceAddresses) >= 0;
+                                    });
+                                }
+                                break;
+                            case 'deviceaddressexclude':
+                                var deviceAddresses = value.split(",").map(function (v) { return v.toLowerCase(); });
+                                if (deviceAddresses.length > 0) {
+                                    filters.push(function (heldDeviceItem) {
+                                        // true if DeviceAddressShortName is null
+                                        if (!heldDeviceItem.DeviceAddressShortName)
+                                            return true;
+
+                                        // true if DeviceAddressShortName is excluded
+                                        return $.inArray(heldDeviceItem.DeviceAddressShortName.toLowerCase(), deviceAddresses) < 0;
+                                    });
+                                }
+                                break;
+                            case 'deviceprofileinclude':
+                                var deviceProfiles = value.split(",");
+                                if (deviceProfiles.length > 0) {
+                                    filters.push(function (heldDeviceItem) {
+                                        // true if DeviceProfileId is included
+                                        return $.inArray(heldDeviceItem.DeviceProfileId, deviceProfiles) >= 0;
+                                    });
+                                }
+                                break;
+                            case 'deviceprofileexclude':
+                                var deviceProfiles = value.split(",");
+                                if (deviceProfiles.length > 0) {
+                                    filters.push(function (heldDeviceItem) {
+                                        // true if DeviceProfileId is excluded
+                                        return $.inArray(heldDeviceItem.DeviceProfileId, deviceProfiles) < 0;
+                                    });
+                                }
+                                break;
+                        }
+                    });
+                }
+
+                if (filters.length > 0)
+                    itemFilters = filters;
+                else
+                    itemFilters = null;
+            }
+
+            function connectionError() {
+                try {
+                    $('body').addClass('status-error');
+                    $.connection.hub.stop();
+                } catch (e) {
+                    // Ignore
+                }
+
+                window.setTimeout(function () {
+                    window.location.href = window.location.href;
+                }, 10000);
+            }
+
+            // Helpers
+            function rotateArray(koArray, element) {
+                var items = koArray();
+
+                if (items.length <= 1)
+                    return 0;
+
+                if (element.height() < (element.parent().height() - 30)) {
+
+                    if (findUnsortedArrayTopIndex(items) !== 0)
+                        koArray.sort(sortFunction);
+
+                    // Don't rotate if small & sorted correctly
+                    return;
+                }
+
+                // Move Last Item to Top
+                var item = koArray.pop();
+                koArray.unshift(item);
+            }
+            function removeItemFromArray(koArray, deviceSerialNumber) {
+                var items = koArray();
+                for (var i = 0; i < items.length; i++) {
+                    if (items[i].DeviceSerialNumber == deviceSerialNumber) {
+                        koArray.splice(i, 1);
+                        items = koArray();
+                        i--;
+                    }
+                }
+            }
+            function findUnsortedArrayTopIndex(items) {
+                // Only one Item
+                if (items.length <= 1)
+                    return 0;
+
+                for (var i = 1; i < items.length; i++) {
+                    var s = sortFunction(items[i - 1], items[i]);
+                    if (s > 0)
+                        return i;
+                }
+
+                return 0;
+            }
+            function findSortedInsertIndex(koArray, heldDeviceItem) {
+                var items = koArray();
+                var startIndex = findUnsortedArrayTopIndex(items);
+                for (var i = startIndex; i < items.length; i++) {
+                    var s = sortFunction(heldDeviceItem, items[i]);
+                    if (s <= 0)
+                        return i;
+                }
+                if (startIndex !== 0) {
+                    for (var i = 0; i < startIndex; i++) {
+                        var s = sortFunction(heldDeviceItem, items[i]);
+                        if (s <= 0)
+                            return i;
+                    }
+                    return startIndex;
+                } else {
+                    return -1;
+                }
+            }
+            function sortFunction(l, r) {
+                return l.DeviceDescription.toLowerCase() == r.DeviceDescription.toLowerCase() ? 0 : (l.DeviceDescription.toLowerCase() < r.DeviceDescription.toLowerCase() ? -1 : 1)
+            }
+            function isInProcess(i) {
+                return !i.ReadyForReturn && !i.WaitingForUserAction;
+            }
+            function isReadyForReturn(i) {
+                return i.ReadyForReturn && !i.WaitingForUserAction;
+            }
+            function isWaitingForUserAction(i) {
+                return i.WaitingForUserAction;
+            }
+            function getQueryStringParameters() {
+
+                if (window.location.search.length === 0)
+                    return null;
+
+                var params = {};
+                window.location.search.substr(1).split("&").forEach(function (pair) {
+                    if (pair === "") return;
+                    var parts = pair.split("=");
+                    params[parts[0]] = parts[1] && decodeURIComponent(parts[1].replace(/\+/g, " "));
+                });
+                return params;
+            }
+
+            init();
         });
     </script>
-    <div id="mainFooter">
-        <img style="width: 34px; height: 34px; margin-top: -5px; margin-bottom: -12px;" src="@Links.ClientSource.Style.Images.Heading_png" alt="Disco Logo" />
-        powered by Disco
-    </div>
 </body>
 </html>

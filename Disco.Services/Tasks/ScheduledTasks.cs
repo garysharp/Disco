@@ -28,13 +28,16 @@ namespace Disco.Services.Tasks
                 // Scheduled Cleanup
                 ScheduledTaskCleanup.Schedule(_TaskScheduler);
 
+                ScheduledTaskNotificationsHub.Initialize();
+
                 if (InitiallySchedule)
                 {
                     // Discover DiscoScheduledTask
                     var appDomain = AppDomain.CurrentDomain;
+                    var scheduledTasksHostAssemblyName = typeof(ScheduledTask).Assembly.GetName().Name;
 
                     var scheduledTaskTypes = (from a in appDomain.GetAssemblies()
-                                              where !a.GlobalAssemblyCache && !a.IsDynamic
+                                              where !a.GlobalAssemblyCache && !a.IsDynamic && a.GetReferencedAssemblies().Any(ra => ra.Name == scheduledTasksHostAssemblyName)
                                               from type in a.GetTypes()
                                               where typeof(ScheduledTask).IsAssignableFrom(type) && !type.IsAbstract
                                               select type);

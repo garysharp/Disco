@@ -16,6 +16,7 @@ namespace Disco.BI.Expressions
         public override string TaskName { get { return "Expression Cache - Preload Task"; } }
         public override bool SingleInstanceTask { get { return true; } }
         public override bool CancelInitiallySupported { get { return false; } }
+        public override bool LogExceptionsOnly { get { return true; } }
 
         public override void InitalizeScheduledTask(DiscoDataContext Database)
         {

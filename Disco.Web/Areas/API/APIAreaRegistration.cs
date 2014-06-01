@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 using Microsoft.AspNet.SignalR;
-using Disco.BI.Interop.SignalRHandlers;
 
 namespace Disco.Web.Areas.API
 {
@@ -17,15 +16,6 @@ namespace Disco.Web.Areas.API
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
-            context.Routes.MapConnection<LogNotifications>(
-                "API_Logging_Notifications", "API/Logging/Notifications", new ConnectionConfiguration(), SignalRAuthenticationWorkaround.AddMiddleware);
-
-            context.Routes.MapConnection<ScheduledTasksStatusNotifications>(
-                "API_Logging_TaskStatusNotifications", "API/Logging/TaskStatusNotifications", new ConnectionConfiguration(), SignalRAuthenticationWorkaround.AddMiddleware);
-
-            context.Routes.MapConnection<RepositoryMonitorNotifications>(
-                "API_Repository_Notifications", "API/Repository/Notifications", new ConnectionConfiguration(), SignalRAuthenticationWorkaround.AddMiddleware);
-
             context.MapRoute(
                 "API_Update",
                 "API/{controller}/Update/{id}/{key}",

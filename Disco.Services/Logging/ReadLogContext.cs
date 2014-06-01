@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Disco.Services.Logging.Targets;
-using Disco.Data.Repository;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Data.SqlServerCe;
+﻿using Disco.Data.Repository;
 using Disco.Services.Logging.Models;
+using Disco.Services.Logging.Persistance;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlServerCe;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Disco.Services.Logging
 {
@@ -45,7 +44,7 @@ namespace Disco.Services.Logging
 
                 var logModules = LogContext.LogModules;
 
-                using (var context = new Targets.LogPersistContext(sqlCeCSB.ToString()))
+                using (var context = new LogPersistContext(sqlCeCSB.ToString()))
                 {
                     var query = this.BuildQuery(context, logFile.Item2, results.Count);
                     IEnumerable<LogEvent> queryResults = query; // Run the Query

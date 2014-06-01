@@ -9,14 +9,18 @@ namespace Disco.Services.Web.Bundles
 {
     public static class BundleTable
     {
-        private static Dictionary<string, Bundle> _bundles;
+        public const string DeferredKey = "Bundles.Deferred";
+        public const string UIExtensionScriptsKey = "Bundles.UIExtensionScripts";
+        public const string UIExtensionCssKey = "Bundles.UIExtensionCss";
+
+        private static Dictionary<string, IBundle> _bundles;
 
         static BundleTable()
         {
-            _bundles = new Dictionary<string, Bundle>();
+            _bundles = new Dictionary<string, IBundle>();
         }
 
-        public static void Add(Bundle Bundle)
+        public static void Add(IBundle Bundle)
         {
             _bundles[Bundle.Url] = Bundle;
         }
@@ -29,7 +33,7 @@ namespace Disco.Services.Web.Bundles
             }
         }
 
-        internal static Bundle GetBundleFor(string Url)
+        internal static IBundle GetBundleFor(string Url)
         {
             if (_bundles.ContainsKey(Url))
             {

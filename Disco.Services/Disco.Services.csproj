@@ -42,21 +42,21 @@
     <Reference Include="LumenWorks.Framework.IO">
       <HintPath>..\packages\LumenWorks.Framework.IO.3.8.0\lib\net20\LumenWorks.Framework.IO.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.1.1.2\lib\net40\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.SignalR.Core">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.0.3\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Owin, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.Owin.1.1.2\lib\net45\Microsoft.AspNet.SignalR.Owin.dll</HintPath>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.2.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.2.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -201,7 +201,9 @@
     <Compile Include="Devices\Importing\Fields\DeviceSerialNumberImportField.cs" />
     <Compile Include="Devices\Importing\Fields\ModelIdImportField.cs" />
     <Compile Include="Devices\Importing\IDeviceImportCache.cs" />
+    <Compile Include="Devices\DeviceUpdatesHub.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\RxExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Interop\ActiveDirectory\ActiveDirectory.cs" />
     <Compile Include="Interop\ActiveDirectory\ActiveDirectoryContext.cs" />
@@ -227,6 +229,11 @@
     <Compile Include="Jobs\JobQueues\JobQueueService.cs" />
     <Compile Include="Jobs\JobQueues\JobQueueToken.cs" />
     <Compile Include="Jobs\JobLists\ManagedJobList.cs" />
+    <Compile Include="Jobs\JobUpdatesHub.cs" />
+    <Compile Include="Jobs\Noticeboards\HeldDeviceItem.cs" />
+    <Compile Include="Jobs\Noticeboards\NoticeboardUpdatesHub.cs" />
+    <Compile Include="Jobs\Noticeboards\HeldDevices.cs" />
+    <Compile Include="Jobs\Noticeboards\HeldDevicesForUsers.cs" />
     <Compile Include="Logging\LogBase.cs" />
     <Compile Include="Logging\LogContext.cs" />
     <Compile Include="Logging\LogReInitalizeJob.cs" />
@@ -236,9 +243,8 @@
     <Compile Include="Logging\Models\LogModule.cs" />
     <Compile Include="Logging\ReadLogContext.cs" />
     <Compile Include="Logging\SystemLog.cs" />
-    <Compile Include="Logging\Targets\LogLiveContext.cs" />
-    <Compile Include="Logging\Targets\LogPersistContext.cs" />
-    <Compile Include="Logging\Targets\LogPersistContextInitializer.cs" />
+    <Compile Include="Logging\Persistance\LogPersistContext.cs" />
+    <Compile Include="Logging\Persistance\LogPersistContextInitializer.cs" />
     <Compile Include="Logging\Utilities.cs" />
     <Compile Include="Plugins\CommunityInterop\PluginLibraryUpdateTask.cs" />
     <Compile Include="Plugins\Features\UIExtension\Results\LiteralResult.cs" />
@@ -278,9 +284,10 @@
     <Compile Include="Plugins\WebPageHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Searching\Search.cs" />
-    <Compile Include="Tasks\IScheduledTaskBasicStatus.cs" />
+    <Compile Include="Tasks\IScheduledTaskStatus.cs" />
     <Compile Include="Tasks\ScheduledTask.cs" />
     <Compile Include="Tasks\ScheduledTaskMockStatus.cs" />
+    <Compile Include="Tasks\ScheduledTaskNotificationsHub.cs" />
     <Compile Include="Tasks\ScheduledTasks.cs" />
     <Compile Include="Tasks\ScheduledTasksLog.cs" />
     <Compile Include="Tasks\ScheduledTaskStatus.cs" />
@@ -290,17 +297,24 @@
     <Compile Include="Users\CacheCleanTask.cs" />
     <Compile Include="Users\UserExtensions.cs" />
     <Compile Include="Users\UserService.cs" />
+    <Compile Include="Users\UserUpdatesHub.cs" />
     <Compile Include="Web\AuthorizedController.cs" />
     <Compile Include="Web\AuthorizedDatabaseController.cs" />
     <Compile Include="Web\BaseController.cs" />
-    <Compile Include="Web\Bundles\Bundle.cs" />
+    <Compile Include="Web\Bundles\FileBundle.cs" />
+    <Compile Include="Web\Bundles\IBundle.cs" />
     <Compile Include="Web\Bundles\BundleExtensions.cs" />
     <Compile Include="Web\Bundles\BundleHandler.cs" />
     <Compile Include="Web\Bundles\BundleModule.cs" />
     <Compile Include="Web\Bundles\BundleTable.cs" />
+    <Compile Include="Web\Bundles\UrlBundle.cs" />
     <Compile Include="Web\DatabaseController.cs" />
     <Compile Include="Web\HandleErrorAttribute.cs" />
     <Compile Include="Web\HelperExtensions.cs" />
+    <Compile Include="Web\Signalling\DiscoHubAuthorizeAllAttribute.cs" />
+    <Compile Include="Web\Signalling\DiscoHubAuthorizeAnyAttribute.cs" />
+    <Compile Include="Web\Signalling\DiscoHubAuthorizeAttribute.cs" />
+    <Compile Include="Logging\LogNotificationsHub.cs" />
     <Compile Include="Web\WebViewPage.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -328,7 +342,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

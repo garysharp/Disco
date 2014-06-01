@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Disco.Models.UI.Config.Logging
+namespace Disco.Models.UI.Config.Shared
 {
-    public interface ConfigLoggingTaskStatusModel : BaseUIModel
+    public interface ConfigSharedTaskStatusModel : BaseUIModel
     {
         string SessionId { get; set; }
     }

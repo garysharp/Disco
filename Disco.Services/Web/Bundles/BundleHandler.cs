@@ -9,10 +9,10 @@ namespace Disco.Services.Web.Bundles
 {
     internal sealed class BundleHandler : IHttpHandler
     {
-        public Bundle RequestBundle { get; private set; }
+        public IBundle RequestBundle { get; private set; }
         public string BundleVirtualPath { get; private set; }
 
-        public BundleHandler(Bundle requestBundle, string bundleVirtualPath)
+        public BundleHandler(IBundle requestBundle, string bundleVirtualPath)
         {
             this.RequestBundle = requestBundle;
             this.BundleVirtualPath = bundleVirtualPath;

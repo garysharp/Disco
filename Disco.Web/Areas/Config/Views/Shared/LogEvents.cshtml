@@ -1,7 +1,7 @@
 ﻿@model Disco.Web.Areas.Config.Models.Shared.LogEventsModel
 @{
     Authorization.Require(Claims.Config.Logging.Show);
-    
+
     Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
     var uniqueId = Guid.NewGuid().ToString("N");
@@ -44,12 +44,12 @@
         $(function () {
             var logEventsHost = $('LogEvents_@(uniqueId)');
             var logModuleId = '@(Model.ModuleFilter != null ? Model.ModuleFilter.ModuleId.ToString() : null)';
-            var logModuleLiveGroupName = '@(Model.ModuleFilter != null ? Model.ModuleFilter.LiveLogGroupName : Disco.BI.Interop.SignalRHandlers.LogNotifications.AllNotifications)';
-            var logEventTypeFiltered = @(eventTypesFilterJson);
+            var logModuleLiveGroupName = '@(Model.ModuleFilter != null ? Model.ModuleFilter.LiveLogGroupName : Disco.Services.Logging.LogNotificationsHub.AllLoggingNotification)';
+            var logEventTypeFiltered = @(eventTypesFilterJson); 
             var logStartFiler = @(AjaxHelpers.JsonDate(Model.StartFilter));
             var logEndFiler = @(AjaxHelpers.JsonDate(Model.EndFilter));
             var logTakeFiler = '@(Model.TakeFilter)';
-            var liveConnection = null;
+            var logHub = null;
             var liveEventReceivedFunction = '@(Model.JavascriptLiveEventFunctionName)';
             var useLive = ('True'==='@(Model.IsLive)');
 
@@ -89,7 +89,7 @@
                     dataType: 'json',
                     type: 'POST',
                     data: loadData,
-                    success: function (d) {
+                    success: function (d) { 
                         initLogs(d);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
@@ -113,16 +113,21 @@
                         }
                     }
 
-                    liveConnection = $.connection('@(Url.Content("~/API/Logging/Notifications"))', {addToGroups: logModuleLiveGroupName});
-                    liveConnection.received(logReceived);
-                    liveConnection.error(function(e){if (e.status != 200) alert('Live-Log Error: '+e.statusText +': '+e.responseText);});
-                    liveConnection.start();
-                }
-            }
+                    logHub = $.connection.logNotifications;
+                    logHub.client.receiveLog = function(message){
+                        if (message.UseDisplay) logsViewModel.EventLogs.unshift(message);
+                        if (liveEventReceivedFunction) liveEventReceivedFunction(message);
+                    };
 
-            function logReceived(log){
-                if (log.UseDisplay) logsViewModel.EventLogs.unshift(log);
-                if (liveEventReceivedFunction) liveEventReceivedFunction(log);
+                    $.connection.hub.qs = {LogModules: logModuleLiveGroupName};
+                    $.connection.hub.error(function(error){
+                        alert('Live-Log Error: '+error);
+                    });
+
+                    $.connection.hub.start().fail(function(error){
+                        alert('Live-Log Connection Error: '+error);
+                    });
+                }
             }
 
             loadInitialData();

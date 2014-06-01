@@ -114,7 +114,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             return false;
         }
 
-        public static void UpdateLastNetworkLogonDates(DiscoDataContext Database, IScheduledTaskBasicStatus status)
+        public static void UpdateLastNetworkLogonDates(DiscoDataContext Database, IScheduledTaskStatus status)
         {
             var context = ActiveDirectory.Context;
             const string ldapFilter = "(objectCategory=Computer)";

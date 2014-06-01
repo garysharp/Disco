@@ -21,11 +21,11 @@ namespace Disco.Services.Plugins.Features.UIExtension.Results
             this._resource = Resource;
             this._resourceUrl = Source.PluginManifest.WebResourceUrl(Resource);
 
-            var deferredBundles = HttpContext.Current.Items[Bundle.UIExtensionCssKey] as List<string>;
+            var deferredBundles = HttpContext.Current.Items[BundleTable.UIExtensionCssKey] as List<string>;
             if (deferredBundles == null)
             {
                 deferredBundles = new List<string>();
-                HttpContext.Current.Items[Bundle.UIExtensionCssKey] = deferredBundles;
+                HttpContext.Current.Items[BundleTable.UIExtensionCssKey] = deferredBundles;
             }
             if (!deferredBundles.Contains(this._resourceUrl))
                 deferredBundles.Add(this._resourceUrl);

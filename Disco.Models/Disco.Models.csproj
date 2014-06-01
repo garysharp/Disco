@@ -115,6 +115,7 @@
     <Compile Include="Services\Jobs\JobLists\JobTableStatusItemModel.cs" />
     <Compile Include="Services\Jobs\JobLists\JobTableStatusQueueItemModel.cs" />
     <Compile Include="Services\Jobs\JobQueues\IJobQueueToken.cs" />
+    <Compile Include="Services\Jobs\Noticeboards\IHeldDeviceItem.cs" />
     <Compile Include="Services\Searching\DeviceSearchResultItem.cs" />
     <Compile Include="Services\Searching\ISearchResultItem.cs" />
     <Compile Include="Services\Searching\JobSearchResultItem.cs" />
@@ -151,7 +152,7 @@
     <Compile Include="UI\Config\JobQueue\ConfigJobQueueIndexModel.cs" />
     <Compile Include="UI\Config\JobQueue\ConfigJobQueueShowModel.cs" />
     <Compile Include="UI\Config\Logging\ConfigLoggingIndexModel.cs" />
-    <Compile Include="UI\Config\Logging\ConfigLoggingTaskStatusModel.cs" />
+    <Compile Include="UI\Config\Shared\ConfigSharedTaskStatusModel.cs" />
     <Compile Include="UI\Config\Organisation\ConfigOrganisationIndexModel.cs" />
     <Compile Include="UI\Device\DeviceAddOfflineModel.cs" />
     <Compile Include="UI\Device\DeviceExportModel.cs" />
@@ -175,7 +176,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

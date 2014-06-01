@@ -16,7 +16,7 @@ namespace Disco.Services.Devices.Exporting
     public static class DeviceExport
     {
 
-        public static DeviceExportResult GenerateExport(DiscoDataContext Database, IQueryable<Device> Devices, DeviceExportOptions Options, IScheduledTaskBasicStatus TaskStatus)
+        public static DeviceExportResult GenerateExport(DiscoDataContext Database, IQueryable<Device> Devices, DeviceExportOptions Options, IScheduledTaskStatus TaskStatus)
         {
             TaskStatus.UpdateStatus(15, "Building metadata and database query");
             var metadata = Options.BuildMetadata();
@@ -32,15 +32,17 @@ namespace Disco.Services.Devices.Exporting
                 Options.AssignedUserEmailAddress)
             {
                 TaskStatus.UpdateStatus(20, "Updating Assigned User details");
+                var users = Devices.Where(d => d.AssignedUserId != null).Select(d => d.AssignedUserId).Distinct().ToList();
 
-                Devices.Where(d => d.AssignedUserId != null).Select(d => d.AssignedUserId).Distinct().ToList().ForEach(userId =>
+                users.Select((userId, index) =>
                 {
+                    TaskStatus.UpdateStatus(20 + (((double)20 / users.Count) * index), string.Format("Updating Assigned User details: {0}", userId));
                     try
                     {
-                        UserService.GetUser(userId, Database);
+                        return UserService.GetUser(userId, Database);
                     }
-                    catch (Exception) { } // Ignore Errors
-                });
+                    catch (Exception) { return null; } // Ignore Errors
+                }).ToList();
             }
 
             // Update Last Network Logon Date
@@ -49,8 +51,16 @@ namespace Disco.Services.Devices.Exporting
                 TaskStatus.UpdateStatus(40, "Updating device last network logon dates");
                 try
                 {
-                    Interop.ActiveDirectory.ADTaskUpdateNetworkLogonDates.UpdateLastNetworkLogonDates(Database, ScheduledTaskMockStatus.Create());
+                    TaskStatus.IgnoreCurrentProcessChanges = true;
+                    TaskStatus.ProgressMultiplier = 20 / 100;
+                    TaskStatus.ProgressOffset = 40;
+
+                    Interop.ActiveDirectory.ADTaskUpdateNetworkLogonDates.UpdateLastNetworkLogonDates(Database, TaskStatus);
                     Database.SaveChanges();
+
+                    TaskStatus.IgnoreCurrentProcessChanges = false;
+                    TaskStatus.ProgressMultiplier = 1;
+                    TaskStatus.ProgressOffset = 0;
                 }
                 catch (Exception) { } // Ignore Errors
             }
@@ -103,7 +113,7 @@ namespace Disco.Services.Devices.Exporting
             return GenerateExport(Database, Devices, Options, ScheduledTaskMockStatus.Create());
         }
 
-        public static DeviceExportResult GenerateExport(DiscoDataContext Database, DeviceExportOptions Options, IScheduledTaskBasicStatus TaskStatus)
+        public static DeviceExportResult GenerateExport(DiscoDataContext Database, DeviceExportOptions Options, IScheduledTaskStatus TaskStatus)
         {
             switch (Options.ExportType)
             {

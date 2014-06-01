@@ -1,10 +1,6 @@
 ﻿using Disco.Models.Repository;
 using Disco.Services.Interop.ActiveDirectory;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Services
 {
@@ -13,6 +9,11 @@ namespace Disco.Services
         public static bool IsInPrimaryDomain(this User u)
         {
             return u.Domain.Equals(ActiveDirectory.Context.PrimaryDomain.NetBiosName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static string ToStringFriendly(this User u)
+        {
+            return string.Format("{0} ({1})", u.DisplayName, u.FriendlyId());
         }
 
         public static string FriendlyId(this User u)

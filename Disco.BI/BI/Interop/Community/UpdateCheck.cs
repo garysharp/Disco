@@ -29,16 +29,13 @@ namespace Disco.BI.Interop.Community
             return string.Format("{0}.{1}.{2:0000}.{3:0000}", v.Major, v.Minor, v.Build, v.Revision);
         }
 
-        public static UpdateResponse Check(DiscoDataContext Database, bool UseProxy, ScheduledTaskStatus status = null)
+        public static UpdateResponse Check(DiscoDataContext Database, bool UseProxy, IScheduledTaskStatus status)
         {
-            if (status != null)
-                status.UpdateStatus(10, "Building Update Request");
+            status.UpdateStatus(10, "Building Update Request");
 
             var request = BuildRequest(Database);
-            //var requestJson = JsonConvert.SerializeObject(request);
 
-            if (status != null)
-                status.UpdateStatus(40, "Sending Request");
+            status.UpdateStatus(40, "Sending Request");
 
             var DiscoBIVersion = CurrentDiscoVersionFormatted();
 
@@ -61,21 +58,18 @@ namespace Disco.BI.Interop.Community
                 XmlSerializer xml = new XmlSerializer(typeof(UpdateRequestV1));
                 xml.Serialize(wrStream, request);
             }
-            if (status != null)
-                status.UpdateStatus(50, "Waiting for Response");
+            status.UpdateStatus(50, "Waiting for Response");
             using (HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse())
             {
                 if (webResponse.StatusCode == HttpStatusCode.OK)
                 {
-                    if (status != null)
-                        status.UpdateStatus(90, "Reading Response");
+                    status.UpdateStatus(90, "Reading Response");
                     UpdateResponse result;
                     using (var wResStream = webResponse.GetResponseStream())
                     {
                         XmlSerializer xml = new XmlSerializer(typeof(UpdateResponse));
                         result = (UpdateResponse)xml.Deserialize(wResStream);
                     }
-                    //var result = JsonConvert.DeserializeObject<UpdateResponse>(responseContent);
                     Database.DiscoConfiguration.UpdateLastCheck = result;
                     Database.SaveChanges();
 
@@ -85,8 +79,7 @@ namespace Disco.BI.Interop.Community
                 }
                 else
                 {
-                    if (status != null)
-                        status.SetTaskException(new WebException(string.Format("Server responded with: [{0}] {1}", webResponse.StatusCode, webResponse.StatusDescription)));
+                    status.SetTaskException(new WebException(string.Format("Server responded with: [{0}] {1}", webResponse.StatusCode, webResponse.StatusDescription)));
                     return null;
                 }
             }
