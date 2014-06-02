@@ -1,8 +1,8 @@
 ﻿@model Disco.Web.Models.Update.IndexModel
 @{
-    ViewBag.Title = "Disco Post-Update Configuration";
     Layout = MVC.Shared.Views._PublicLayout;
     
     Html.BundleDeferred("~/Style/Config");
 }
+<h1>Disco Post-Update Configuration</h1>
 @Html.PartialCompiled(typeof(Disco.Web.Areas.Config.Views.Shared.TaskStatus), Model.SessionId)

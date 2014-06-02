@@ -47,7 +47,6 @@ namespace Disco.Web.Views.Update
             
             #line 2 "..\..\Views\Update\Index.cshtml"
   
-    ViewBag.Title = "Disco Post-Update Configuration";
     Layout = MVC.Shared.Views._PublicLayout;
     
     Html.BundleDeferred("~/Style/Config");
@@ -55,7 +54,7 @@ namespace Disco.Web.Views.Update
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
+WriteLiteral("\r\n<h1>Disco Post-Update Configuration</h1>\r\n");
 
             
             #line 8 "..\..\Views\Update\Index.cshtml"

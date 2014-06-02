@@ -42969,5 +42969,10 @@ jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, -1], [10, 20, 50, "All"
             }
         }
 
+
+        // Dialog Repositioning
+        $(window).resize(function () {
+            $('.ui-dialog-content').filter(':visible').dialog('option', 'position', 'center');
+        });
     });
 })(jQuery, window, document, Modernizr);
