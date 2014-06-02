@@ -73,10 +73,30 @@
                                 $(function () {
                                     var generatePdfUrl = '@Url.Action(MVC.API.User.GeneratePdf(Model.User.UserId, null))?DocumentTemplateId=';
                                     var $documentTemplates = $('#User_Show_GenerateDocument');
+                                    var $generationHost;
+
                                     $documentTemplates.change(function () {
                                         var v = $documentTemplates.val();
                                         if (v) {
-                                            window.location.href = generatePdfUrl + v;
+                                            var url = generatePdfUrl + v;
+
+                                            if ($.connection && $.connection.hub && $.connection.hub.transport &&
+                                                    $.connection.hub.transport.name == 'foreverFrame') {
+                                                // SignalR active with foreverFrame transport - use popup window
+                                                window.open(url, '_blank', 'height=150,width=250,location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no');
+                                            } else {
+                                                // use iFrame
+                                                if (!$generationHost) {
+                                                    $generationHost = $('<iframe>')
+                                                        .attr({ 'src': url, 'title': 'Document Generation Host' })
+                                                        .addClass('hidden')
+                                                        .appendTo('body')
+                                                        .contents();
+                                                } else {
+                                                    $generationHost[0].location.href = url;
+                                                }
+                                            }
+
                                             $documentTemplates.val('').blur();
                                         }
                                     });
