@@ -101,6 +101,9 @@
         proxies.scheduledTaskNotifications = this.createHubProxy('scheduledTaskNotifications'); 
         proxies.scheduledTaskNotifications.client = { };
         proxies.scheduledTaskNotifications.server = {
+            getStatus: function () {
+                return proxies.scheduledTaskNotifications.invoke.apply(proxies.scheduledTaskNotifications, $.merge(["GetStatus"], $.makeArray(arguments)));
+             }
         };
 
         proxies.userUpdates = this.createHubProxy('userUpdates'); 

@@ -30,6 +30,7 @@
             <tr data-bind="visible: FinishedTimestamp() && !TaskExceptionMessage()">
                 <td class="finishedMessage" data-bind="css: { finishedRedirect: FinishedUrl }">
                     <span data-bind="text: FinishedMessage"></span>
+                    <i class="fa fa-lg fa-cog fa-spin"></i>
                 </td>
             </tr>
             <tr data-bind="visible: TaskExceptionMessage">
@@ -99,6 +100,7 @@
         var statusViewModel = function (sessionId) {
             var self = this;
 
+            self.FullUpdateToken = null;
             self.Initialized = ko.observable(false);
 
             self.TimestampParse = function (timestamp) {
@@ -142,6 +144,11 @@
             self.Finished = function () {
                 if (self.FinishedTimestamp()) {
                     if (self.FinishedUrl() && !self.TaskExceptionMessage()) {
+
+                        if (self.FullUpdateToken)
+                            window.clearTimeout(self.FullUpdateToken);
+                        $.connection.hub.stop();
+
                         if (self.FinishedMessage())
                             window.setTimeout(function () { window.location.href = self.FinishedUrl(); }, 3000);
                         else
@@ -151,31 +158,32 @@
             }
 
             self.Initialize = function (taskStatus) {
-                if (!self.Initialized()) {
-                    self.TaskName(taskStatus.TaskName);
-                    self.FinishedUrl(taskStatus.FinishedUrl);
+                self.TaskName(taskStatus.TaskName);
+                self.FinishedUrl(taskStatus.FinishedUrl);
 
-                    self.Progress(taskStatus.Progress);
-                    self.CurrentProcess(taskStatus.CurrentProcess);
-                    self.CurrentDescription(taskStatus.CurrentDescription);
+                self.Progress(taskStatus.Progress);
+                self.CurrentProcess(taskStatus.CurrentProcess);
+                self.CurrentDescription(taskStatus.CurrentDescription);
 
-                    self.IsRunning(taskStatus.IsRunning);
+                self.IsRunning(taskStatus.IsRunning);
 
-                    self.TaskExceptionMessage(taskStatus.TaskExceptionMessage);
+                self.TaskExceptionMessage(taskStatus.TaskExceptionMessage);
 
-                    self.FinishedTimestamp(taskStatus.FinishedTimestamp);
-                    self.NextScheduledTimestamp(taskStatus.NextScheduledTimestamp);
+                self.FinishedTimestamp(taskStatus.FinishedTimestamp);
+                self.NextScheduledTimestamp(taskStatus.NextScheduledTimestamp);
 
-                    self.FinishedMessage(taskStatus.FinishedMessage);
+                self.FinishedMessage(taskStatus.FinishedMessage);
 
-                    self.Initialized(true);
+                self.Initialized(true);
 
-                    self.Finished();
-                }
+                self.Finished();
             }
             self.Update = function (taskStatus) {
                 if (!self.Initialized())
                     return;
+
+                if (self.FullUpdateToken)
+                    window.clearTimeout(self.FullUpdateToken);
 
                 if (taskStatus) {
                     $.each(taskStatus, function (key, value) {
@@ -213,6 +221,17 @@
                         }
                     });
                 }
+
+                if (!self.FinishedTimestamp())
+                    self.FullUpdateToken = window.setTimeout(self.FullUpdate, 2000);
+            }
+
+            self.FullUpdate = function () {
+                self.FullUpdateToken = null;
+
+                if (!self.FinishedTimestamp())
+                    notificationsHub.server.getStatus()
+                        .done(self.Initialize);
             }
         }
 

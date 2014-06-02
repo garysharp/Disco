@@ -28,8 +28,6 @@ namespace Disco.Services.Tasks
                 // Scheduled Cleanup
                 ScheduledTaskCleanup.Schedule(_TaskScheduler);
 
-                ScheduledTaskNotificationsHub.Initialize();
-
                 if (InitiallySchedule)
                 {
                     // Discover DiscoScheduledTask

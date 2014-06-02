@@ -18,20 +18,11 @@ namespace Disco.Services.Tasks
         private static Subject<Tuple<string, IEnumerable<ChangedItem>>> taskUpdatesStream = new Subject<Tuple<string, IEnumerable<ChangedItem>>>();
         private static IDisposable taskUpdatesStreamSubscription;
 
-        internal static void Initialize()
+        static ScheduledTaskNotificationsHub()
         {
-            if (taskUpdatesStreamSubscription == null)
-            {
-                lock (taskUpdatesStream)
-                {
-                    if (taskUpdatesStreamSubscription == null)
-                    {
-                        taskUpdatesStreamSubscription = taskUpdatesStream
-                            .DelayBuffer(TimeSpan.FromMilliseconds(200))
-                            .Subscribe(BroadcastBufferedEvents);
-                    }
-                }
-            }
+            taskUpdatesStreamSubscription = taskUpdatesStream
+                .DelayBuffer(TimeSpan.FromMilliseconds(200))
+                .Subscribe(BroadcastBufferedEvents);
         }
 
         internal static void PublishEvent(string TaskSessionId, IEnumerable<ChangedItem> ChangedItems)
@@ -43,16 +34,8 @@ namespace Disco.Services.Tasks
         {
             var taskSessionId = Context.QueryString["TaskSessionId"];
 
-            if (string.IsNullOrEmpty(taskSessionId))
-                throw new ArgumentNullException("TaskSessionId");
-
-            var status = ScheduledTasks.GetTaskStatus(taskSessionId);
-
-            if (status == null)
-                throw new ArgumentException("Invalid ScheduledTask SessionId", "TaskSessionId");
-
             // Send Status:
-            var currentStatus = ScheduledTaskStatusLive.FromScheduledTaskStatus(status, null);
+            var currentStatus = GetScheduledTaskLiveStatus(taskSessionId);
             Clients.Caller.initializeTaskStatus(currentStatus);
 
             // Add to Group
@@ -85,5 +68,25 @@ namespace Disco.Services.Tasks
             }
         }
 
+        private ScheduledTaskStatusLive GetScheduledTaskLiveStatus(string TaskSessionId)
+        {
+            if (string.IsNullOrEmpty(TaskSessionId))
+                throw new ArgumentNullException("TaskSessionId");
+
+            var status = ScheduledTasks.GetTaskStatus(TaskSessionId);
+
+            if (status == null)
+                throw new ArgumentException("Invalid ScheduledTask SessionId", "TaskSessionId");
+
+            // Send Status:
+            return ScheduledTaskStatusLive.FromScheduledTaskStatus(status, null);
+        }
+
+        public ScheduledTaskStatusLive GetStatus()
+        {
+            var taskSessionId = Context.QueryString["TaskSessionId"];
+
+            return GetScheduledTaskLiveStatus(taskSessionId);
+        }
     }
 }

@@ -131,7 +131,11 @@ WriteLiteral(">\r\n                    <span");
 
 WriteLiteral(" data-bind=\"text: FinishedMessage\"");
 
-WriteLiteral("></span>\r\n                </td>\r\n            </tr>\r\n            <tr");
+WriteLiteral("></span>\r\n                    <i");
+
+WriteLiteral(" class=\"fa fa-lg fa-cog fa-spin\"");
+
+WriteLiteral("></i>\r\n                </td>\r\n            </tr>\r\n            <tr");
 
 WriteLiteral(" data-bind=\"visible: TaskExceptionMessage\"");
 
@@ -190,7 +194,7 @@ WriteLiteral(" type=\"text/javascript\"");
 WriteLiteral(">\r\n    $(function () {\r\n        var sessionId = \'");
 
             
-            #line 92 "..\..\Areas\Config\Views\Shared\TaskStatus.cshtml"
+            #line 93 "..\..\Areas\Config\Views\Shared\TaskStatus.cshtml"
                      Write(Model);
 
             
@@ -198,82 +202,90 @@ WriteLiteral(">\r\n    $(function () {\r\n        var sessionId = \'");
             #line hidden
 WriteLiteral("\';\r\n\r\n        var view = $(\'#Logging_Task_Status\');\r\n        var vm = null;\r\n\r\n  " +
 "      var notificationsHub = null;\r\n\r\n        var statusViewModel = function (se" +
-"ssionId) {\r\n            var self = this;\r\n\r\n            self.Initialized = ko.ob" +
-"servable(false);\r\n\r\n            self.TimestampParse = function (timestamp) {\r\n  " +
-"              if (timestamp) {\r\n                    if (timestamp.indexOf(\"\\/Dat" +
-"e(\") == 0)\r\n                        return new Date(parseInt(timestamp.substr(6)" +
-"));\r\n                    else\r\n                        return (new Date()).setIS" +
-"O8601(timestamp);\r\n                }\r\n                return new Date();\r\n      " +
-"      }\r\n            self.TimestampFormat = function (timestamp) {\r\n            " +
-"    var addZero = function (v) { v = v + \'\'; if (v.length == 1) v = \'0\' + v; ret" +
-"urn v; }\r\n                return timestamp.getFullYear() + \'/\' + addZero((1 + ti" +
-"mestamp.getMonth())) + \'/\' + addZero(timestamp.getDate()) + \' \' + addZero(timest" +
-"amp.getHours()) + \':\' + addZero(timestamp.getMinutes()) + \':\' + addZero(timestam" +
-"p.getSeconds());\r\n            }\r\n\r\n            self.SessionId = sessionId;\r\n    " +
-"        self.TaskName = ko.observable(null);\r\n\r\n            self.Progress = ko.o" +
-"bservable(0);\r\n            self.CurrentProcess = ko.observable(null);\r\n         " +
-"   self.CurrentDescription = ko.observable(null);\r\n\r\n            self.IsRunning " +
-"= ko.observable(null);\r\n\r\n            self.TaskExceptionMessage = ko.observable(" +
-"null);\r\n\r\n            self.FinishedTimestamp = ko.observable(null);\r\n           " +
-" self.NextScheduledTimestamp = ko.observable(null)\r\n\r\n            self.NextSched" +
-"uledTimestampFormatted = ko.computed(function () {\r\n                return self." +
-"TimestampFormat(self.TimestampParse(self.NextScheduledTimestamp()));\r\n          " +
-"  });\r\n            self.FinishedTimestampFormatted = ko.computed(function () {\r\n" +
-"                return self.TimestampFormat(self.TimestampParse(self.FinishedTim" +
-"estamp()));\r\n            });\r\n\r\n            self.FinishedUrl = ko.observable(nul" +
-"l);\r\n            self.FinishedMessage = ko.observable(null);\r\n\r\n            self" +
-".Finished = function () {\r\n                if (self.FinishedTimestamp()) {\r\n    " +
-"                if (self.FinishedUrl() && !self.TaskExceptionMessage()) {\r\n     " +
-"                   if (self.FinishedMessage())\r\n                            wind" +
-"ow.setTimeout(function () { window.location.href = self.FinishedUrl(); }, 3000);" +
-"\r\n                        else\r\n                            window.location.href" +
-" = self.FinishedUrl();\r\n                    }\r\n                }\r\n            }\r" +
-"\n\r\n            self.Initialize = function (taskStatus) {\r\n                if (!s" +
-"elf.Initialized()) {\r\n                    self.TaskName(taskStatus.TaskName);\r\n " +
-"                   self.FinishedUrl(taskStatus.FinishedUrl);\r\n\r\n                " +
-"    self.Progress(taskStatus.Progress);\r\n                    self.CurrentProcess" +
-"(taskStatus.CurrentProcess);\r\n                    self.CurrentDescription(taskSt" +
-"atus.CurrentDescription);\r\n\r\n                    self.IsRunning(taskStatus.IsRun" +
-"ning);\r\n\r\n                    self.TaskExceptionMessage(taskStatus.TaskException" +
-"Message);\r\n\r\n                    self.FinishedTimestamp(taskStatus.FinishedTimes" +
-"tamp);\r\n                    self.NextScheduledTimestamp(taskStatus.NextScheduled" +
-"Timestamp);\r\n\r\n                    self.FinishedMessage(taskStatus.FinishedMessa" +
-"ge);\r\n\r\n                    self.Initialized(true);\r\n\r\n                    self." +
-"Finished();\r\n                }\r\n            }\r\n            self.Update = functio" +
-"n (taskStatus) {\r\n                if (!self.Initialized())\r\n                    " +
-"return;\r\n\r\n                if (taskStatus) {\r\n                    $.each(taskSta" +
-"tus, function (key, value) {\r\n                        switch (key) {\r\n          " +
-"                  case \'Progress\':\r\n                                self.Progres" +
-"s(value);\r\n                                break;\r\n                            c" +
-"ase \'CurrentProcess\':\r\n                                self.CurrentProcess(value" +
-");\r\n                                break;\r\n                            case \'Cu" +
-"rrentDescription\':\r\n                                self.CurrentDescription(valu" +
-"e);\r\n                                break;\r\n                            case \'I" +
-"sRunning\':\r\n                                self.IsRunning(value);\r\n            " +
-"                    break;\r\n                            case \'TaskExceptionMessa" +
-"ge\':\r\n                                self.TaskExceptionMessage(value);\r\n       " +
-"                         break;\r\n                            case \'NextScheduled" +
-"Timestamp\':\r\n                                self.NextScheduledTimestamp(value);" +
-"\r\n                                break;\r\n                            case \'Fini" +
-"shedUrl\':\r\n                                self.FinishedUrl(value);\r\n           " +
-"                     break;\r\n                            case \'FinishedMessage\':" +
-"\r\n                                self.FinishedMessage(value);\r\n                " +
-"                break;\r\n                            case \'FinishedTimestamp\':\r\n " +
-"                               self.FinishedTimestamp(value);\r\n                 " +
-"               window.setTimeout(self.Finished, 1);\r\n                           " +
-"     break;\r\n                            default:\r\n                             " +
-"   // Ignore\r\n                        }\r\n                    });\r\n              " +
-"  }\r\n            }\r\n        }\r\n\r\n        vm = new statusViewModel(sessionId);\r\n " +
-"       ko.applyBindings(vm, view[0]);\r\n\r\n        // Start Live Connection\r\n     " +
-"   updateWithLive();\r\n\r\n        function updateWithLive() {\r\n            notific" +
-"ationsHub = $.connection.scheduledTaskNotifications;\r\n            notificationsH" +
-"ub.client.initializeTaskStatus = vm.Initialize;\r\n            notificationsHub.cl" +
-"ient.updateTaskStatus = vm.Update;\r\n\r\n            $.connection.hub.qs = { TaskSe" +
-"ssionId: sessionId };\r\n            $.connection.hub.error(function (error) {\r\n  " +
-"              alert(\'Live-Status Error: \' + error);\r\n            });\r\n\r\n        " +
-"    $.connection.hub.start()\r\n                .fail(function (error) {\r\n        " +
-"            alert(\'Live-Status Connection Error: \' + error);\r\n                })" +
-";\r\n        }\r\n\r\n    });\r\n</script>\r\n");
+"ssionId) {\r\n            var self = this;\r\n\r\n            self.FullUpdateToken = n" +
+"ull;\r\n            self.Initialized = ko.observable(false);\r\n\r\n            self.T" +
+"imestampParse = function (timestamp) {\r\n                if (timestamp) {\r\n      " +
+"              if (timestamp.indexOf(\"\\/Date(\") == 0)\r\n                        re" +
+"turn new Date(parseInt(timestamp.substr(6)));\r\n                    else\r\n       " +
+"                 return (new Date()).setISO8601(timestamp);\r\n                }\r\n" +
+"                return new Date();\r\n            }\r\n            self.TimestampFor" +
+"mat = function (timestamp) {\r\n                var addZero = function (v) { v = v" +
+" + \'\'; if (v.length == 1) v = \'0\' + v; return v; }\r\n                return times" +
+"tamp.getFullYear() + \'/\' + addZero((1 + timestamp.getMonth())) + \'/\' + addZero(t" +
+"imestamp.getDate()) + \' \' + addZero(timestamp.getHours()) + \':\' + addZero(timest" +
+"amp.getMinutes()) + \':\' + addZero(timestamp.getSeconds());\r\n            }\r\n\r\n   " +
+"         self.SessionId = sessionId;\r\n            self.TaskName = ko.observable(" +
+"null);\r\n\r\n            self.Progress = ko.observable(0);\r\n            self.Curren" +
+"tProcess = ko.observable(null);\r\n            self.CurrentDescription = ko.observ" +
+"able(null);\r\n\r\n            self.IsRunning = ko.observable(null);\r\n\r\n            " +
+"self.TaskExceptionMessage = ko.observable(null);\r\n\r\n            self.FinishedTim" +
+"estamp = ko.observable(null);\r\n            self.NextScheduledTimestamp = ko.obse" +
+"rvable(null)\r\n\r\n            self.NextScheduledTimestampFormatted = ko.computed(f" +
+"unction () {\r\n                return self.TimestampFormat(self.TimestampParse(se" +
+"lf.NextScheduledTimestamp()));\r\n            });\r\n            self.FinishedTimest" +
+"ampFormatted = ko.computed(function () {\r\n                return self.TimestampF" +
+"ormat(self.TimestampParse(self.FinishedTimestamp()));\r\n            });\r\n\r\n      " +
+"      self.FinishedUrl = ko.observable(null);\r\n            self.FinishedMessage " +
+"= ko.observable(null);\r\n\r\n            self.Finished = function () {\r\n           " +
+"     if (self.FinishedTimestamp()) {\r\n                    if (self.FinishedUrl()" +
+" && !self.TaskExceptionMessage()) {\r\n\r\n                        if (self.FullUpda" +
+"teToken)\r\n                            window.clearTimeout(self.FullUpdateToken);" +
+"\r\n                        $.connection.hub.stop();\r\n\r\n                        if" +
+" (self.FinishedMessage())\r\n                            window.setTimeout(functio" +
+"n () { window.location.href = self.FinishedUrl(); }, 3000);\r\n                   " +
+"     else\r\n                            window.location.href = self.FinishedUrl()" +
+";\r\n                    }\r\n                }\r\n            }\r\n\r\n            self.I" +
+"nitialize = function (taskStatus) {\r\n                self.TaskName(taskStatus.Ta" +
+"skName);\r\n                self.FinishedUrl(taskStatus.FinishedUrl);\r\n\r\n         " +
+"       self.Progress(taskStatus.Progress);\r\n                self.CurrentProcess(" +
+"taskStatus.CurrentProcess);\r\n                self.CurrentDescription(taskStatus." +
+"CurrentDescription);\r\n\r\n                self.IsRunning(taskStatus.IsRunning);\r\n\r" +
+"\n                self.TaskExceptionMessage(taskStatus.TaskExceptionMessage);\r\n\r\n" +
+"                self.FinishedTimestamp(taskStatus.FinishedTimestamp);\r\n         " +
+"       self.NextScheduledTimestamp(taskStatus.NextScheduledTimestamp);\r\n\r\n      " +
+"          self.FinishedMessage(taskStatus.FinishedMessage);\r\n\r\n                s" +
+"elf.Initialized(true);\r\n\r\n                self.Finished();\r\n            }\r\n     " +
+"       self.Update = function (taskStatus) {\r\n                if (!self.Initiali" +
+"zed())\r\n                    return;\r\n\r\n                if (self.FullUpdateToken)" +
+"\r\n                    window.clearTimeout(self.FullUpdateToken);\r\n\r\n            " +
+"    if (taskStatus) {\r\n                    $.each(taskStatus, function (key, val" +
+"ue) {\r\n                        switch (key) {\r\n                            case " +
+"\'Progress\':\r\n                                self.Progress(value);\r\n            " +
+"                    break;\r\n                            case \'CurrentProcess\':\r\n" +
+"                                self.CurrentProcess(value);\r\n                   " +
+"             break;\r\n                            case \'CurrentDescription\':\r\n   " +
+"                             self.CurrentDescription(value);\r\n                  " +
+"              break;\r\n                            case \'IsRunning\':\r\n           " +
+"                     self.IsRunning(value);\r\n                                bre" +
+"ak;\r\n                            case \'TaskExceptionMessage\':\r\n                 " +
+"               self.TaskExceptionMessage(value);\r\n                              " +
+"  break;\r\n                            case \'NextScheduledTimestamp\':\r\n          " +
+"                      self.NextScheduledTimestamp(value);\r\n                     " +
+"           break;\r\n                            case \'FinishedUrl\':\r\n            " +
+"                    self.FinishedUrl(value);\r\n                                br" +
+"eak;\r\n                            case \'FinishedMessage\':\r\n                     " +
+"           self.FinishedMessage(value);\r\n                                break;\r" +
+"\n                            case \'FinishedTimestamp\':\r\n                        " +
+"        self.FinishedTimestamp(value);\r\n                                window.s" +
+"etTimeout(self.Finished, 1);\r\n                                break;\r\n          " +
+"                  default:\r\n                                // Ignore\r\n         " +
+"               }\r\n                    });\r\n                }\r\n\r\n                " +
+"if (!self.FinishedTimestamp())\r\n                    self.FullUpdateToken = windo" +
+"w.setTimeout(self.FullUpdate, 2000);\r\n            }\r\n\r\n            self.FullUpda" +
+"te = function () {\r\n                self.FullUpdateToken = null;\r\n\r\n            " +
+"    if (!self.FinishedTimestamp())\r\n                    notificationsHub.server." +
+"getStatus()\r\n                        .done(self.Initialize);\r\n            }\r\n   " +
+"     }\r\n\r\n        vm = new statusViewModel(sessionId);\r\n        ko.applyBindings" +
+"(vm, view[0]);\r\n\r\n        // Start Live Connection\r\n        updateWithLive();\r\n\r" +
+"\n        function updateWithLive() {\r\n            notificationsHub = $.connectio" +
+"n.scheduledTaskNotifications;\r\n            notificationsHub.client.initializeTas" +
+"kStatus = vm.Initialize;\r\n            notificationsHub.client.updateTaskStatus =" +
+" vm.Update;\r\n\r\n            $.connection.hub.qs = { TaskSessionId: sessionId };\r\n" +
+"            $.connection.hub.error(function (error) {\r\n                alert(\'Li" +
+"ve-Status Error: \' + error);\r\n            });\r\n\r\n            $.connection.hub.st" +
+"art()\r\n                .fail(function (error) {\r\n                    alert(\'Live" +
+"-Status Connection Error: \' + error);\r\n                });\r\n        }\r\n\r\n    });" +
+"\r\n</script>\r\n");
 
         }
     }
