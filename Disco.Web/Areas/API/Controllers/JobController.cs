@@ -1974,7 +1974,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Job.ShowAttachments)]
         public virtual ActionResult Attachment(int id)
         {
-            var ja = Database.JobAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var ja = Database.JobAttachments.Include("DocumentTemplate").Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (ja != null)
             {
 
@@ -1992,7 +1992,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Job.ShowAttachments)]
         public virtual ActionResult Attachments(int id)
         {
-            var j = Database.Jobs.Include("JobAttachments.TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var j = Database.Jobs.Include("JobAttachments.DocumentTemplate").Include("JobAttachments.TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (j != null)
             {
                 var m = new Models.Attachment.AttachmentsModel()

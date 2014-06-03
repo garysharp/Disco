@@ -102,7 +102,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.User.ShowAttachments)]
         public virtual ActionResult Attachment(int id)
         {
-            var ua = Database.UserAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var ua = Database.UserAttachments.Include("DocumentTemplate").Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (ua != null)
             {
 
@@ -125,7 +125,7 @@ namespace Disco.Web.Areas.API.Controllers
             else
                 id = Domain + @"\" + id;
 
-            var u = Database.Users.Include("UserAttachments.TechUser").Where(m => m.UserId == id).FirstOrDefault();
+            var u = Database.Users.Include("UserAttachments.DocumentTemplate").Include("UserAttachments.TechUser").Where(m => m.UserId == id).FirstOrDefault();
             if (u != null)
             {
                 var m = new Models.Attachment.AttachmentsModel()

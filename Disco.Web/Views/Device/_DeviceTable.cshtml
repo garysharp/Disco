@@ -19,6 +19,8 @@
                     </th>
                     <th>Profile
                     </th>
+                    <th>Batch
+                    </th>
                     <th>Assigned User
                     </th>
                     <th>Jobs
@@ -63,6 +65,16 @@
                         </td>
                         <td>
                             @item.DeviceProfileDescription
+                        </td>
+                        <td>
+                            @if (item.DeviceBatchName != null)
+                            {
+                                <span>@item.DeviceBatchName</span>
+                            }
+                            else
+                            { 
+                                <span class="smallMessage">N/A</span>                    
+                            }
                         </td>
                         <td>
                             @if (string.IsNullOrEmpty(item.AssignedUserId))

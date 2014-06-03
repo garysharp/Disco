@@ -11,6 +11,18 @@ namespace Disco.Web.Areas.API.Models.Attachment
         public string AuthorId { get; set; }
         public DateTime Timestamp { get; set; }
         public string Comments { get; set; }
+        public string DocumentTemplateId { get; set; }
+        public string DocumentTemplateDescription { get; set; }
+        public string Description
+        {
+            get
+            {
+                if (DocumentTemplateId != null && DocumentTemplateDescription != null)
+                    return DocumentTemplateDescription;
+                else
+                    return Comments;
+            }
+        }
         public string Filename { get; set; }
         public string MimeType { get; set; }
         public long TimestampUnixEpoc { get { return Timestamp.ToUnixEpoc(); } }
@@ -26,6 +38,8 @@ namespace Disco.Web.Areas.API.Models.Attachment
                 Author = ua.TechUser.ToStringFriendly(),
                 Timestamp = ua.Timestamp,
                 Comments = ua.Comments,
+                DocumentTemplateId = ua.DocumentTemplateId,
+                DocumentTemplateDescription = ua.DocumentTemplateId == null ? null : ua.DocumentTemplate.Description,
                 Filename = ua.Filename,
                 MimeType = ua.MimeType
             };
@@ -40,6 +54,8 @@ namespace Disco.Web.Areas.API.Models.Attachment
                 Author = ja.TechUser.ToStringFriendly(),
                 Timestamp = ja.Timestamp,
                 Comments = ja.Comments,
+                DocumentTemplateId = ja.DocumentTemplateId,
+                DocumentTemplateDescription = ja.DocumentTemplateId == null ? null : ja.DocumentTemplate.Description,
                 Filename = ja.Filename,
                 MimeType = ja.MimeType
             };
@@ -54,6 +70,8 @@ namespace Disco.Web.Areas.API.Models.Attachment
                 Author = da.TechUser.ToStringFriendly(),
                 Timestamp = da.Timestamp,
                 Comments = da.Comments,
+                DocumentTemplateId = da.DocumentTemplateId,
+                DocumentTemplateDescription = da.DocumentTemplateId == null ? null : da.DocumentTemplate.Description,
                 Filename = da.Filename,
                 MimeType = da.MimeType
             };

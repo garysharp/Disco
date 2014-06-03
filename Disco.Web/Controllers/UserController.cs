@@ -56,7 +56,11 @@ namespace Disco.Web.Controllers
             }
 
             m.User = Database.Users
-                .Include("DeviceUserAssignments.Device.DeviceModel").Include("UserAttachments")
+                .Include("DeviceUserAssignments.Device.DeviceModel")
+                .Include("DeviceUserAssignments.Device.DeviceProfile")
+                .Include("DeviceUserAssignments.Device.DeviceBatch")
+                .Include("UserAttachments.TechUser")
+                .Include("UserAttachments.DocumentTemplate")
                 .FirstOrDefault(um => um.UserId == id);
 
             if (m.User == null)

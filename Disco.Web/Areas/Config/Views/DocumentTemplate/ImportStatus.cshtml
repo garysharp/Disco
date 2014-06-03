@@ -1,6 +1,6 @@
 ﻿@{
     Authorization.Require(Claims.Config.DocumentTemplate.ShowStatus);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(), "Import Status");
     Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
@@ -99,7 +99,7 @@
         var vm;
         var host = $('#importStatus');
         var hostSessions = $('#sessions');
-        var liveConnection;
+        var logHub = null;
         var urlDeviceShow = '@(Url.Action(MVC.Device.Show()))/'
         var urlJobShow = '@(Url.Action(MVC.Job.Show()))/'
         var urlUserShow = '@(Url.Action(MVC.User.Show()))/'
@@ -134,10 +134,8 @@
             self.sessionPages = ko.observableArray();
             self.sessionPagesIndex = {};
             self.addSessionPage = function (sessionPage) {
-                //if (isLive) {
                 self.sessionPages.push(sessionPage);
                 self.sessionPagesIndex[sessionPage.pageNumber] = sessionPage;
-                //}
             }
         }
         function sessionPageViewModel(sessionId, pageNumber) {
@@ -305,11 +303,19 @@
             ko.applyBindings(vm);
 
             // Init Persistent Connection
-            liveConnection = $.connection('@(Url.Content("~/API/Logging/Notifications"))', { addToGroups: '@(Disco.BI.DocumentTemplateBI.Importer.DocumentImporterLog.Current.LiveLogGroupName)' });
-            liveConnection.received(parseLog);
-            liveConnection.error(function (e) { if (e.status != 200) alert('Live-Log Error: ' + e.statusText + ': ' + e.responseText); });
-            isLive = true;
-            liveConnection.start();
+            logHub = $.connection.logNotifications;
+            logHub.client.receiveLog = parseLog
+
+            $.connection.hub.qs = { LogModules: '@(Disco.BI.DocumentTemplateBI.Importer.DocumentImporterLog.Current.LiveLogGroupName)' };
+            $.connection.hub.error(function (error) {
+                alert('Live-Log Error: ' + error);
+            });
+
+            $.connection.hub.start()
+                .done(function () { isLive = true; })
+                .fail(function (error) {
+                    alert('Live-Log Connection Error: ' + error);
+                });
         }
         init();
     });

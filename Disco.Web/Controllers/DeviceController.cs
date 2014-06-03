@@ -202,7 +202,9 @@ namespace Disco.Web.Controllers
             Database.Configuration.LazyLoadingEnabled = true;
 
             m.Device = Database.Devices
-                .Include("DeviceModel").Include("DeviceDetails").Include("DeviceUserAssignments.AssignedUser").Include("DeviceAttachments")
+                .Include("DeviceModel").Include("DeviceProfile").Include("DeviceBatch").Include("DeviceDetails")
+                .Include("DeviceUserAssignments.AssignedUser").Include("AssignedUser").Include("DeviceCertificates")
+                .Include("DeviceAttachments.TechUser").Include("DeviceAttachments.DocumentTemplate")
                 .FirstOrDefault(d => d.SerialNumber == id);
 
             if (m.Device == null)

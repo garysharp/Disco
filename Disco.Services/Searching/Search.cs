@@ -276,6 +276,7 @@ namespace Disco.Services.Searching
                 ComputerName = d.DeviceDomainId,
                 DeviceModelDescription = d.DeviceModel.Description,
                 DeviceProfileDescription = d.DeviceProfile.Description,
+                DeviceBatchName = d.DeviceBatch.Name,
                 DecommissionedDate = d.DecommissionedDate,
                 AssignedUserId = d.AssignedUserId,
                 AssignedUserDisplayName = d.AssignedUser.DisplayName,

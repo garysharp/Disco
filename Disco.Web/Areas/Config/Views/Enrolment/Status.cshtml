@@ -136,7 +136,7 @@
         var hostDialogSessions = $('#dialogSession');
         //var hostDialogSessionsProgress = $('#dialogSession').find('.sessionProgress');
         var deviceModels = {};
-        var liveConnection;
+        var logHub;
         var deviceBaseUrl = '@(Url.Action(MVC.Device.Show()))/'
         var deviceModelImageUrl = '@(Url.Action(MVC.API.DeviceModel.Image()))/'
         var iconWarningUrl = 'url(@(Links.ClientSource.Style.Images.Status.warning32_png))';
@@ -356,10 +356,19 @@
             vm.isotopeInited = true;
 
             // Init Persistent Connection
-            liveConnection = $.connection('@(Url.Content("~/API/Logging/Notifications"))', { addToGroups: '@(Disco.BI.DeviceBI.EnrolmentLog.Current.LiveLogGroupName)' });
-            liveConnection.received(parseLog);
-            liveConnection.error(function (e) { if (e.status != 200) alert('Live-Log Error: ' + e.statusText + ': ' + e.responseText); });
-            liveConnection.start();
+            logHub = $.connection.logNotifications;
+            logHub.client.receiveLog = parseLog
+
+            $.connection.hub.qs = { LogModules: '@(Disco.BI.DeviceBI.EnrolmentLog.Current.LiveLogGroupName)' };
+            $.connection.hub.error(function (error) {
+                alert('Live-Log Error: ' + error);
+            });
+
+            $.connection.hub.start()
+                .done(function () { isLive = true; })
+                .fail(function (error) {
+                    alert('Live-Log Connection Error: ' + error);
+                });
         }
         init();
     });

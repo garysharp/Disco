@@ -48,7 +48,7 @@ namespace Disco.Web.Areas.Config.Views.DocumentTemplate
             #line 1 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
   
     Authorization.Require(Claims.Config.DocumentTemplate.ShowStatus);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(), "Import Status");
     Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
@@ -267,8 +267,8 @@ WriteLiteral(@">
 WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(">\r\n    $(function () {\r\n        var vm;\r\n        var host = $(\'#importStatus\');\r\n" +
-"        var hostSessions = $(\'#sessions\');\r\n        var liveConnection;\r\n       " +
-" var urlDeviceShow = \'");
+"        var hostSessions = $(\'#sessions\');\r\n        var logHub = null;\r\n        " +
+"var urlDeviceShow = \'");
 
             
             #line 103 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
@@ -334,101 +334,100 @@ WriteLiteral("\';\r\n        var isLive = false;\r\n\r\n        function pageVie
 "= ko.observable();\r\n            self.startTime = ko.observable();\r\n            s" +
 "elf.sessionEnded = ko.observable(false);\r\n\r\n            self.sessionPages = ko.o" +
 "bservableArray();\r\n            self.sessionPagesIndex = {};\r\n            self.ad" +
-"dSessionPage = function (sessionPage) {\r\n                //if (isLive) {\r\n      " +
-"          self.sessionPages.push(sessionPage);\r\n                self.sessionPage" +
-"sIndex[sessionPage.pageNumber] = sessionPage;\r\n                //}\r\n            " +
-"}\r\n        }\r\n        function sessionPageViewModel(sessionId, pageNumber) {\r\n  " +
-"          var self = this;\r\n\r\n            self.sessionId = sessionId;\r\n         " +
-"   self.pageNumber = pageNumber;\r\n            self.title = \'Page \' + pageNumber;" +
-"\r\n            self.progressStatus = ko.observable();\r\n            self.progressV" +
-"alue = ko.observable();\r\n            self.undetected = ko.observable(false);\r\n  " +
-"          self.detected = ko.observable(false);\r\n            self.documentTempla" +
-"teId = ko.observable();\r\n            self.documentTemplate = ko.observable();\r\n " +
-"           self.assignedDataType = ko.observable();\r\n            self.assignedDa" +
-"taId = ko.observable();\r\n            self.assignedData = ko.observable();\r\n     " +
-"       self.thumbnailEnabled = ko.observable(0);\r\n            self.updateThumbna" +
-"il = function () {\r\n                self.thumbnailEnabled(self.thumbnailEnabled(" +
-") + 1);\r\n            }\r\n            self.documentTemplateUrl = ko.computed(funct" +
-"ion () {\r\n                return urlDocumentTemplate + self.documentTemplateId()" +
-";\r\n            });\r\n            self.manuallyAssignUrl = ko.computed(function ()" +
-" {\r\n                return urlManuallyAssign + \'#\' + self.sessionId + \'_\' + self" +
-".pageNumber;\r\n            });\r\n            self.assignedDataUrl = ko.computed(fu" +
-"nction () {\r\n                var t = self.assignedDataType();\r\n                v" +
-"ar dId = self.assignedDataId();\r\n                if (dId !== undefined) {\r\n     " +
-"               switch (t) {\r\n                        case \'Device\':\r\n           " +
-"                 return urlDeviceShow + dId;\r\n                        case \'Job\'" +
-":\r\n                            return urlJobShow + dId;\r\n                       " +
-" case \'User\':\r\n                            if (dId.indexOf(\'\\\\\') < 0)\r\n         " +
-"                       return urlUserShow + dId;\r\n                            el" +
-"se\r\n                                return urlUserShow + dId.substr(dId.indexOf(" +
-"\'\\\\\') + 1) + \'?domain=\' + dId.substr(0, dId.indexOf(\'\\\\\'));\r\n                   " +
-" }\r\n                }\r\n                return null;\r\n            });\r\n          " +
-"  self.thumbnailUrl = ko.computed(function () {\r\n                var enabled = s" +
-"elf.thumbnailEnabled();\r\n                if (enabled > 0) {\r\n                   " +
-" return \'url(\' + urlPageThumbnail + \'?SessionId=\' + self.sessionId + \'&PageNumbe" +
-"r=\' + self.pageNumber + \'&NoCache=\' + enabled + \')\';\r\n                }\r\n       " +
-"         return null;\r\n            });\r\n        }\r\n\r\n        function parseLog(l" +
-"og) {\r\n            if (log.ModuleId === 40 && log.Arguments && log.Arguments.len" +
-"gth > 0) {\r\n                // find session\r\n                var sessionId = log" +
-".Arguments[0];\r\n                var session = vm.sessionIndex[sessionId];\r\n     " +
-"           if (!session && log.EventTypeId === 10) { // Starting Session (Ignore" +
-" \'partial\' sessions)\r\n                    session = new sessionViewModel(log.Arg" +
-"uments[1]);\r\n                    vm.sessionIndex[sessionId] = session;\r\n        " +
-"            vm.sessions.unshift(session);\r\n                    vm.noSessions(fal" +
-"se);\r\n                }\r\n                if (session) {\r\n                    swi" +
-"tch (log.EventTypeId) {\r\n                        case 10: // SessionStarting\r\n  " +
-"                          session.startTime(log.FormattedTimestamp.substring(log" +
-".FormattedTimestamp.indexOf(\' \') + 1));\r\n                            break;\r\n   " +
-"                     case 11: // SessionProgress\r\n                            se" +
-"ssion.progressValue(log.Arguments[1]);\r\n                            session.prog" +
-"ressStatus(log.Arguments[2]);\r\n                            break;\r\n             " +
-"           case 12: // SessionFinished\r\n                            session.sess" +
-"ionEnded(true);\r\n                            session.progressStatus(\'Import Fini" +
-"shed\');\r\n                            break;\r\n                        case 15: //" +
-" SessionWarning\r\n                            session.messages.unshift(log);\r\n   " +
-"                         break;\r\n                        case 16: // SessionErro" +
-"r\r\n                            session.messages.unshift(log);\r\n                 " +
-"           break;\r\n                        case 100: // ImportPageStarting\r\n    " +
-"                        session.addSessionPage(new sessionPageViewModel(sessionI" +
-"d, log.Arguments[1]));\r\n                            break;\r\n                    " +
-"    case 104: // ImportPageImageUpdate\r\n                            var p = sess" +
-"ion.sessionPagesIndex[log.Arguments[1]];\r\n                            if (p) {\r\n" +
-"                                p.updateThumbnail();\r\n                          " +
-"  }\r\n                            break;\r\n                        case 105: // Im" +
-"portPageProgress\r\n                            var p = session.sessionPagesIndex[" +
-"log.Arguments[1]];\r\n                            if (p) {\r\n                      " +
-"          p.progressValue(log.Arguments[2]);\r\n                                p." +
-"progressStatus(log.Arguments[3]);\r\n                            }\r\n              " +
-"              break;\r\n                        case 110: // ImportPageDetected\r\n " +
-"                           var p = session.sessionPagesIndex[log.Arguments[1]];\r" +
-"\n                            if (p) {\r\n                                p.documen" +
-"tTemplateId(log.Arguments[2]);\r\n                                p.documentTempla" +
-"te(log.Arguments[3]);\r\n                                p.assignedDataType(log.Ar" +
-"guments[4]);\r\n                                p.assignedDataId(log.Arguments[5])" +
-";\r\n                                p.assignedData(log.Arguments[6]);\r\n          " +
-"                      p.detected(true);\r\n                                if (!is" +
-"Live) {\r\n                                    p.updateThumbnail();\r\n             " +
-"                   }\r\n                            }\r\n                           " +
-" session.messages.unshift(log);\r\n                            break;\r\n           " +
-"             case 115: // ImportPageUndetected\r\n                            var " +
-"p = session.sessionPagesIndex[log.Arguments[1]];\r\n                            if" +
-" (p) {\r\n                                p.undetected(true);\r\n                   " +
-"             if (!isLive) {\r\n                                    p.updateThumbna" +
-"il();\r\n                                }\r\n                            }\r\n       " +
-"                     session.messages.unshift(log);\r\n                           " +
-" break;\r\n                        case 150: // Ignore: ImportPageUndetectedStored" +
-"\r\n                            break;\r\n                        default:\r\n        " +
-"                    session.messages.unshift(log);\r\n                    }\r\n     " +
-"           }\r\n            }\r\n        }\r\n        function init() {\r\n            /" +
-"/ Create View Model\r\n            vm = new pageViewModel();\r\n\r\n            // Loa" +
-"d Logs\r\n            var d = new Date();\r\n            var loadData = {\r\n         " +
-"       Format: \"json\",\r\n                Start: d.getFullYear() + \'-\' + (d.getMon" +
-"th() + 1) + \'-\' + d.getDate(),\r\n                End: null,\r\n                Modu" +
-"leId: 40,\r\n                Take: 2000\r\n            };\r\n            $.ajax({\r\n   " +
-"             url: \'");
+"dSessionPage = function (sessionPage) {\r\n                self.sessionPages.push(" +
+"sessionPage);\r\n                self.sessionPagesIndex[sessionPage.pageNumber] = " +
+"sessionPage;\r\n            }\r\n        }\r\n        function sessionPageViewModel(se" +
+"ssionId, pageNumber) {\r\n            var self = this;\r\n\r\n            self.session" +
+"Id = sessionId;\r\n            self.pageNumber = pageNumber;\r\n            self.tit" +
+"le = \'Page \' + pageNumber;\r\n            self.progressStatus = ko.observable();\r\n" +
+"            self.progressValue = ko.observable();\r\n            self.undetected =" +
+" ko.observable(false);\r\n            self.detected = ko.observable(false);\r\n     " +
+"       self.documentTemplateId = ko.observable();\r\n            self.documentTemp" +
+"late = ko.observable();\r\n            self.assignedDataType = ko.observable();\r\n " +
+"           self.assignedDataId = ko.observable();\r\n            self.assignedData" +
+" = ko.observable();\r\n            self.thumbnailEnabled = ko.observable(0);\r\n    " +
+"        self.updateThumbnail = function () {\r\n                self.thumbnailEnab" +
+"led(self.thumbnailEnabled() + 1);\r\n            }\r\n            self.documentTempl" +
+"ateUrl = ko.computed(function () {\r\n                return urlDocumentTemplate +" +
+" self.documentTemplateId();\r\n            });\r\n            self.manuallyAssignUrl" +
+" = ko.computed(function () {\r\n                return urlManuallyAssign + \'#\' + s" +
+"elf.sessionId + \'_\' + self.pageNumber;\r\n            });\r\n            self.assign" +
+"edDataUrl = ko.computed(function () {\r\n                var t = self.assignedData" +
+"Type();\r\n                var dId = self.assignedDataId();\r\n                if (d" +
+"Id !== undefined) {\r\n                    switch (t) {\r\n                        c" +
+"ase \'Device\':\r\n                            return urlDeviceShow + dId;\r\n        " +
+"                case \'Job\':\r\n                            return urlJobShow + dId" +
+";\r\n                        case \'User\':\r\n                            if (dId.ind" +
+"exOf(\'\\\\\') < 0)\r\n                                return urlUserShow + dId;\r\n    " +
+"                        else\r\n                                return urlUserShow" +
+" + dId.substr(dId.indexOf(\'\\\\\') + 1) + \'?domain=\' + dId.substr(0, dId.indexOf(\'\\" +
+"\\\'));\r\n                    }\r\n                }\r\n                return null;\r\n " +
+"           });\r\n            self.thumbnailUrl = ko.computed(function () {\r\n     " +
+"           var enabled = self.thumbnailEnabled();\r\n                if (enabled >" +
+" 0) {\r\n                    return \'url(\' + urlPageThumbnail + \'?SessionId=\' + se" +
+"lf.sessionId + \'&PageNumber=\' + self.pageNumber + \'&NoCache=\' + enabled + \')\';\r\n" +
+"                }\r\n                return null;\r\n            });\r\n        }\r\n\r\n " +
+"       function parseLog(log) {\r\n            if (log.ModuleId === 40 && log.Argu" +
+"ments && log.Arguments.length > 0) {\r\n                // find session\r\n         " +
+"       var sessionId = log.Arguments[0];\r\n                var session = vm.sessi" +
+"onIndex[sessionId];\r\n                if (!session && log.EventTypeId === 10) { /" +
+"/ Starting Session (Ignore \'partial\' sessions)\r\n                    session = ne" +
+"w sessionViewModel(log.Arguments[1]);\r\n                    vm.sessionIndex[sessi" +
+"onId] = session;\r\n                    vm.sessions.unshift(session);\r\n           " +
+"         vm.noSessions(false);\r\n                }\r\n                if (session) " +
+"{\r\n                    switch (log.EventTypeId) {\r\n                        case " +
+"10: // SessionStarting\r\n                            session.startTime(log.Format" +
+"tedTimestamp.substring(log.FormattedTimestamp.indexOf(\' \') + 1));\r\n             " +
+"               break;\r\n                        case 11: // SessionProgress\r\n    " +
+"                        session.progressValue(log.Arguments[1]);\r\n              " +
+"              session.progressStatus(log.Arguments[2]);\r\n                       " +
+"     break;\r\n                        case 12: // SessionFinished\r\n              " +
+"              session.sessionEnded(true);\r\n                            session.p" +
+"rogressStatus(\'Import Finished\');\r\n                            break;\r\n         " +
+"               case 15: // SessionWarning\r\n                            session.m" +
+"essages.unshift(log);\r\n                            break;\r\n                     " +
+"   case 16: // SessionError\r\n                            session.messages.unshif" +
+"t(log);\r\n                            break;\r\n                        case 100: /" +
+"/ ImportPageStarting\r\n                            session.addSessionPage(new ses" +
+"sionPageViewModel(sessionId, log.Arguments[1]));\r\n                            br" +
+"eak;\r\n                        case 104: // ImportPageImageUpdate\r\n              " +
+"              var p = session.sessionPagesIndex[log.Arguments[1]];\r\n            " +
+"                if (p) {\r\n                                p.updateThumbnail();\r\n" +
+"                            }\r\n                            break;\r\n             " +
+"           case 105: // ImportPageProgress\r\n                            var p = " +
+"session.sessionPagesIndex[log.Arguments[1]];\r\n                            if (p)" +
+" {\r\n                                p.progressValue(log.Arguments[2]);\r\n        " +
+"                        p.progressStatus(log.Arguments[3]);\r\n                   " +
+"         }\r\n                            break;\r\n                        case 110" +
+": // ImportPageDetected\r\n                            var p = session.sessionPage" +
+"sIndex[log.Arguments[1]];\r\n                            if (p) {\r\n               " +
+"                 p.documentTemplateId(log.Arguments[2]);\r\n                      " +
+"          p.documentTemplate(log.Arguments[3]);\r\n                               " +
+" p.assignedDataType(log.Arguments[4]);\r\n                                p.assign" +
+"edDataId(log.Arguments[5]);\r\n                                p.assignedData(log." +
+"Arguments[6]);\r\n                                p.detected(true);\r\n             " +
+"                   if (!isLive) {\r\n                                    p.updateT" +
+"humbnail();\r\n                                }\r\n                            }\r\n " +
+"                           session.messages.unshift(log);\r\n                     " +
+"       break;\r\n                        case 115: // ImportPageUndetected\r\n      " +
+"                      var p = session.sessionPagesIndex[log.Arguments[1]];\r\n    " +
+"                        if (p) {\r\n                                p.undetected(t" +
+"rue);\r\n                                if (!isLive) {\r\n                         " +
+"           p.updateThumbnail();\r\n                                }\r\n            " +
+"                }\r\n                            session.messages.unshift(log);\r\n " +
+"                           break;\r\n                        case 150: // Ignore: " +
+"ImportPageUndetectedStored\r\n                            break;\r\n                " +
+"        default:\r\n                            session.messages.unshift(log);\r\n  " +
+"                  }\r\n                }\r\n            }\r\n        }\r\n        functi" +
+"on init() {\r\n            // Create View Model\r\n            vm = new pageViewMode" +
+"l();\r\n\r\n            // Load Logs\r\n            var d = new Date();\r\n            v" +
+"ar loadData = {\r\n                Format: \"json\",\r\n                Start: d.getFu" +
+"llYear() + \'-\' + (d.getMonth() + 1) + \'-\' + d.getDate(),\r\n                End: n" +
+"ull,\r\n                ModuleId: 40,\r\n                Take: 2000\r\n            };\r" +
+"\n            $.ajax({\r\n                url: \'");
 
             
-            #line 288 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 286 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                   Write(Url.Action(MVC.API.Logging.RetrieveEvents()));
 
             
@@ -454,29 +453,28 @@ WriteLiteral(@"',
             ko.applyBindings(vm);
 
             // Init Persistent Connection
-            liveConnection = $.connection('");
+            logHub = $.connection.logNotifications;
+            logHub.client.receiveLog = parseLog
+
+            $.connection.hub.qs = { LogModules: '");
 
             
-            #line 308 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
-                                       Write(Url.Content("~/API/Logging/Notifications"));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\', { addToGroups: \'");
-
-            
-            #line 308 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
-                                                                                                       Write(Disco.BI.DocumentTemplateBI.Importer.DocumentImporterLog.Current.LiveLogGroupName);
+            #line 309 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+                                             Write(Disco.BI.DocumentTemplateBI.Importer.DocumentImporterLog.Current.LiveLogGroupName);
 
             
             #line default
             #line hidden
-WriteLiteral(@"' });
-            liveConnection.received(parseLog);
-            liveConnection.error(function (e) { if (e.status != 200) alert('Live-Log Error: ' + e.statusText + ': ' + e.responseText); });
-            isLive = true;
-            liveConnection.start();
+WriteLiteral(@"' };
+            $.connection.hub.error(function (error) {
+                alert('Live-Log Error: ' + error);
+            });
+
+            $.connection.hub.start()
+                .done(function () { isLive = true; })
+                .fail(function (error) {
+                    alert('Live-Log Connection Error: ' + error);
+                });
         }
         init();
     });

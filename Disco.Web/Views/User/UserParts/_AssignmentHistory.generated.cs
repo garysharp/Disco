@@ -86,6 +86,10 @@ WriteLiteral(@">
                 </th>
                 <th>Device Model
                 </th>
+                <th>Device Profile
+                </th>
+                <th>Device Batch
+                </th>
                 <th>Assigned
                 </th>
                 <th>Unassigned
@@ -94,13 +98,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 21 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+            #line 25 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 21 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+            #line 25 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
              foreach (var dua in Model.User.DeviceUserAssignments.OrderByDescending(m => m.AssignedDate))
             {
 
@@ -110,13 +114,13 @@ WriteLiteral(@">
 WriteLiteral("                <tr>\r\n                    <td>\r\n");
 
             
-            #line 25 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+            #line 29 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 25 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+            #line 29 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
                          if (Authorization.Has(Claims.Device.Show))
                         {
                             
@@ -124,14 +128,14 @@ WriteLiteral("                <tr>\r\n                    <td>\r\n");
             #line default
             #line hidden
             
-            #line 27 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+            #line 31 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
                        Write(Html.ActionLink(dua.Device.SerialNumber, MVC.Device.Show(dua.DeviceSerialNumber)));
 
             
             #line default
             #line hidden
             
-            #line 27 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+            #line 31 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
                                                                                                               
                         }
                         else
@@ -141,15 +145,241 @@ WriteLiteral("                <tr>\r\n                    <td>\r\n");
             #line default
             #line hidden
             
-            #line 31 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+            #line 35 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
                        Write(dua.Device.SerialNumber);
 
             
             #line default
             #line hidden
             
-            #line 31 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+            #line 35 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
                                                     
+                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    </td>\r\n                    <td>\r\n");
+
+            
+            #line 39 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 39 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                         if (!string.IsNullOrWhiteSpace(dua.Device.AssetNumber))
+                        {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 41 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                       Write(dua.Device.AssetNumber);
+
+            
+            #line default
+            #line hidden
+            
+            #line 41 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                                                   
+                        }
+                        else
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">N/A</span>\r\n");
+
+            
+            #line 46 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    </td>\r\n                    <td>\r\n");
+
+            
+            #line 49 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 49 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                         if (dua.Device.DeviceModelId.HasValue)
+                        {
+                            if (Authorization.Has(Claims.Config.DeviceModel.Show))
+                            {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 53 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                       Write(Html.ActionLink(dua.Device.DeviceModel.ToString(), MVC.Config.DeviceModel.Index(dua.Device.DeviceModelId)));
+
+            
+            #line default
+            #line hidden
+            
+            #line 53 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                                                                                                                                       
+                            }
+                            else
+                            {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 57 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                       Write(dua.Device.DeviceModel.ToString());
+
+            
+            #line default
+            #line hidden
+            
+            #line 57 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                                                              
+                            }
+                        }
+                        else
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">Unknown</span>\r\n");
+
+            
+            #line 63 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    </td>\r\n                    <td>\r\n");
+
+            
+            #line 66 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 66 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                         if (Authorization.Has(Claims.Config.DeviceProfile.Show))
+                        {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 68 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                       Write(Html.ActionLink(dua.Device.DeviceProfile.ToString(), MVC.Config.DeviceProfile.Index(dua.Device.DeviceProfileId)));
+
+            
+            #line default
+            #line hidden
+            
+            #line 68 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                                                                                                                                             
+                        }
+                        else
+                        {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 72 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                       Write(dua.Device.DeviceProfile.ToString());
+
+            
+            #line default
+            #line hidden
+            
+            #line 72 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                                                                
+                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    </td>\r\n                    <td>\r\n");
+
+            
+            #line 76 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 76 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                         if (dua.Device.DeviceBatchId.HasValue)
+                        {
+                            if (Authorization.Has(Claims.Config.DeviceBatch.Show))
+                            {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 80 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                       Write(Html.ActionLink(dua.Device.DeviceBatch.ToString(), MVC.Config.DeviceBatch.Index(dua.Device.DeviceBatchId)));
+
+            
+            #line default
+            #line hidden
+            
+            #line 80 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                                                                                                                                       
+                            }
+                            else
+                            {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 84 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                       Write(dua.Device.DeviceModel.ToString());
+
+            
+            #line default
+            #line hidden
+            
+            #line 84 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+                                                              
+                            }
+                        }
+                        else
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">None</span>\r\n");
+
+            
+            #line 90 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
                         }
 
             
@@ -160,29 +390,7 @@ WriteLiteral("                    </td>\r\n                    <td>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 35 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
-                   Write(dua.Device.AssetNumber);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n                    </td>\r\n                    <td>\r\n");
-
-WriteLiteral("                        ");
-
-            
-            #line 38 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
-                   Write(dua.Device.DeviceModel.ToString());
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n                    </td>\r\n                    <td>\r\n");
-
-WriteLiteral("                        ");
-
-            
-            #line 41 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+            #line 93 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
                    Write(CommonHelpers.FriendlyDate(dua.AssignedDate));
 
             
@@ -193,7 +401,7 @@ WriteLiteral("\r\n                    </td>\r\n                    <td>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 44 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+            #line 96 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
                    Write(CommonHelpers.FriendlyDate(dua.UnassignedDate, "Current"));
 
             
@@ -202,7 +410,7 @@ WriteLiteral("                        ");
 WriteLiteral("\r\n                    </td>\r\n                </tr>\r\n");
 
             
-            #line 47 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+            #line 99 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
             }
 
             
@@ -211,7 +419,7 @@ WriteLiteral("\r\n                    </td>\r\n                </tr>\r\n");
 WriteLiteral("        </table>\r\n");
 
             
-            #line 49 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+            #line 101 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
     }
     else
     { 
@@ -226,7 +434,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">No Assignment History Available</span>\r\n");
 
             
-            #line 53 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+            #line 105 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
     }
 
             
@@ -236,7 +444,7 @@ WriteLiteral("    <script>\r\n        $(\'#UserDetailTabItems\').append(\'<li><a
 "b-AssignmentHistory\">Assignment History [");
 
             
-            #line 55 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
+            #line 107 "..\..\Views\User\UserParts\_AssignmentHistory.cshtml"
                                                                                                         Write(Model.User.DeviceUserAssignments.Count);
 
             

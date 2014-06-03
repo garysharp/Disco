@@ -261,29 +261,49 @@
                                                             {
                                                                 @assignment.Device.SerialNumber
                                                             }
-                                                        </span>(<span>@assignment.Device.ComputerName</span>)
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Model:
-                                                    </td>
-                                                    <td>
-                                                        <span class="User_Show_AssignedDevices_CurrentAssignment_Model">@assignment.Device.DeviceModel.ToString()</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Asset:</td>
-                                                    <td>
-                                                        @if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
+                                                        </span>
+                                                        @if (!string.IsNullOrWhiteSpace(assignment.Device.ComputerName))
                                                         {
+                                                            <text>(<span class="User_Show_AssignedDevices_CurrentAssignment_ComputerName">@assignment.Device.ComputerName</span>)</text>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                                @if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
+                                                {
+                                                    <tr>
+                                                        <td>Asset:</td>
+                                                        <td>
                                                             <span class="User_Show_AssignedDevices_CurrentAssignment_Asset">@assignment.Device.AssetNumber</span>
-                                                        }
-                                                        else
-                                                        {
-                                                            <span class="smallMessage">Unknown</span>
-                                                        }
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                @if (assignment.Device.DeviceModelId.HasValue)
+                                                {
+                                                    <tr>
+                                                        <td>Model:
+                                                        </td>
+                                                        <td>
+                                                            <span class="User_Show_AssignedDevices_CurrentAssignment_Model">@assignment.Device.DeviceModel.ToString()</span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                <tr>
+                                                    <td>Profile:
+                                                    </td>
+                                                    <td>
+                                                        <span class="User_Show_AssignedDevices_CurrentAssignment_Profile">@assignment.Device.DeviceProfile.ToString()</span>
                                                     </td>
                                                 </tr>
+                                                @if (assignment.Device.DeviceBatchId.HasValue)
+                                                {
+                                                    <tr>
+                                                        <td>Batch:
+                                                        </td>
+                                                        <td>
+                                                            <span class="User_Show_AssignedDevices_CurrentAssignment_Batch">@assignment.Device.DeviceBatch.ToString()</span>
+                                                        </td>
+                                                    </tr>
+                                                }
                                                 <tr>
                                                     <td>Assigned:</td>
                                                     <td>

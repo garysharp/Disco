@@ -511,39 +511,58 @@ WriteLiteral("/\' + a.Id);\r\n                            e.find(\'.icon img\').
             
             #line default
             #line hidden
-WriteLiteral("/\' + a.Id);\r\n                            e.find(\'.comments\').text(a.Comments);\r\n " +
-"                           e.find(\'.author\').text(a.Author);\r\n                  " +
-"          e.find(\'.timestamp\').text(a.TimestampFull).attr(\'title\', a.TimestampFu" +
-"ll).livestamp(a.TimestampUnixEpoc);\r\n                            if (canRemove)\r" +
-"\n                                e.find(\'.remove\').click(removeAttachment);\r\n   " +
-"                         if (!quick)\r\n                                e.hide();\r" +
-"\n                            $attachmentOutput.append(e);\r\n                     " +
-"       onUpdate();\r\n                            if (!quick)\r\n                   " +
-"             e.show(\'slow\');\r\n                            if (a.MimeType.toLower" +
-"Case().indexOf(\'image/\') == 0)\r\n                                e.shadowbox({ ga" +
-"llery: \'attachments\', player: \'img\', title: a.Comments });\r\n                    " +
-"    }\r\n                        function onRemoveAttachment(id) {\r\n              " +
-"              var a = $attachmentOutput.find(\'a[data-attachmentid=\' + id + \']\');" +
-"\r\n\r\n                            a.hide(300).delay(300).queue(function () {\r\n    " +
-"                            var $this = $(this);\r\n                              " +
-"  if ($this.attr(\'data-mimetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n       " +
-"                             Shadowbox.removeCache(this);\r\n                     " +
-"           $this.find(\'.timestamp\').livestamp(\'destroy\');\r\n                     " +
-"           $this.remove();\r\n                                onUpdate();\r\n       " +
-"                     });\r\n                        }\r\n\r\n                        f" +
-"unction onUpdate() {\r\n                            var attachmentCount = $attachm" +
-"entOutput.children(\'a\').length;\r\n                            var tabHeading = \'A" +
-"ttachments [\' + attachmentCount + \']\';\r\n                            $(\'#UserDeta" +
-"ilTab-ResourcesLink\').text(tabHeading);\r\n                        }\r\n\r\n");
+WriteLiteral("/\' + a.Id);\r\n                            e.find(\'.comments\').text(a.Description);" +
+"\r\n                            e.find(\'.author\').text(a.Author);\r\n               " +
+"             e.find(\'.timestamp\').text(a.TimestampFull).attr(\'title\', a.Timestam" +
+"pFull).livestamp(a.TimestampUnixEpoc);\r\n                            if (canRemov" +
+"e)\r\n                                e.find(\'.remove\').click(removeAttachment);\r\n" +
+"                            if (!quick)\r\n                                e.hide(" +
+");\r\n                            $attachmentOutput.append(e);\r\n                  " +
+"          onUpdate();\r\n                            if (!quick)\r\n                " +
+"                e.show(\'slow\');\r\n                            if (a.MimeType.toLo" +
+"werCase().indexOf(\'image/\') == 0)\r\n                                e.shadowbox({" +
+" gallery: \'attachments\', player: \'img\', title: a.Description });\r\n              " +
+"              else\r\n                                e.click(onDownload);\r\n      " +
+"                  }\r\n\r\n                        function onDownload() {\r\n        " +
+"                    var $this = $(this);\r\n                            var url = " +
+"$this.attr(\'href\');\r\n\r\n                            if ($.connection && $.connect" +
+"ion.hub && $.connection.hub.transport &&\r\n                                      " +
+"          $.connection.hub.transport.name == \'foreverFrame\') {\r\n                " +
+"                // SignalR active with foreverFrame transport - use popup window" +
+"\r\n                                window.open(url, \'_blank\', \'height=150,width=2" +
+"50,location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no\');\r\n  " +
+"                          } else {\r\n                                // use iFram" +
+"e\r\n                                if (!$attachmentDownloadHost) {\r\n            " +
+"                        $attachmentDownloadHost = $(\'<iframe>\')\r\n               " +
+"                         .attr({ \'src\': url, \'title\': \'Attachment Download Host\'" +
+" })\r\n                                        .addClass(\'hidden\')\r\n              " +
+"                          .appendTo(\'body\')\r\n                                   " +
+"     .contents();\r\n                                } else {\r\n                   " +
+"                 $attachmentDownloadHost[0].location.href = url;\r\n              " +
+"                  }\r\n                            }\r\n\r\n                          " +
+"  return false;\r\n                        }\r\n\r\n                        function o" +
+"nRemoveAttachment(id) {\r\n                            var a = $attachmentOutput.f" +
+"ind(\'a[data-attachmentid=\' + id + \']\');\r\n\r\n                            a.hide(30" +
+"0).delay(300).queue(function () {\r\n                                var $this = $" +
+"(this);\r\n                                if ($this.attr(\'data-mimetype\').toLower" +
+"Case().indexOf(\'image/\') == 0)\r\n                                    Shadowbox.re" +
+"moveCache(this);\r\n                                $this.find(\'.timestamp\').lives" +
+"tamp(\'destroy\');\r\n                                $this.remove();\r\n             " +
+"                   onUpdate();\r\n                            });\r\n               " +
+"         }\r\n\r\n                        function onUpdate() {\r\n                   " +
+"         var attachmentCount = $attachmentOutput.children(\'a\').length;\r\n        " +
+"                    var tabHeading = \'Attachments [\' + attachmentCount + \']\';\r\n " +
+"                           $(\'#UserDetailTab-ResourcesLink\').text(tabHeading);\r\n" +
+"                        }\r\n\r\n");
 
             
-            #line 148 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 175 "..\..\Views\User\UserParts\_Resources.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 148 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 175 "..\..\Views\User\UserParts\_Resources.cshtml"
                          if (canAddAttachments)
                         {
             
@@ -574,7 +593,7 @@ WriteLiteral("\r\n                        //#region Add Attachments\r\n         
 "                    Silverlight.createObject(\'");
 
             
-            #line 183 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 210 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                       Write(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap);
 
             
@@ -595,7 +614,7 @@ WriteLiteral(@"',
                                     'UploadUrl=");
 
             
-            #line 195 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 222 "..\..\Views\User\UserParts\_Resources.cshtml"
                                            Write(Url.Action(MVC.API.User.AttachmentUpload(Model.User.UserId, null)));
 
             
@@ -616,7 +635,7 @@ WriteLiteral(@"');
                         ");
 
             
-            #line 207 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 234 "..\..\Views\User\UserParts\_Resources.cshtml"
                                }
 
             
@@ -625,7 +644,7 @@ WriteLiteral(@"');
 WriteLiteral("                        ");
 
             
-            #line 208 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 235 "..\..\Views\User\UserParts\_Resources.cshtml"
                          if (canRemoveAnyAttachments || canRemoveOwnAttachments)
                         {
             
@@ -659,7 +678,7 @@ WriteLiteral(@"
                                         url: '");
 
             
-            #line 234 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 261 "..\..\Views\User\UserParts\_Resources.cshtml"
                                          Write(Url.Action(MVC.API.User.AttachmentRemove()));
 
             
@@ -696,7 +715,7 @@ WriteLiteral(@"',
                         ");
 
             
-            #line 262 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 289 "..\..\Views\User\UserParts\_Resources.cshtml"
                                }
 
             
@@ -707,6 +726,8 @@ WriteLiteral(@"
                             $this = $(this);
                             if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
                                 $this.shadowbox({ gallery: 'attachments', player: 'img', title: $this.find('.comments').text() });
+                            else
+                                $this.click(onDownload);
                         });
                     });
                 </script>
@@ -717,7 +738,7 @@ WriteLiteral(@"
         $('#UserDetailTabItems').append('<li><a href=""#UserDetailTab-Resources"" id=""UserDetailTab-ResourcesLink"">Attachments [");
 
             
-            #line 275 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 304 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                                                                           Write(Model.User.UserAttachments == null ? 0 : Model.User.UserAttachments.Count);
 
             
@@ -726,7 +747,7 @@ WriteLiteral(@"
 WriteLiteral("]</a></li>\');\r\n    </script>\r\n</div>\r\n");
 
             
-            #line 278 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 307 "..\..\Views\User\UserParts\_Resources.cshtml"
  if (canAddAttachments)
 {
 
@@ -748,14 +769,14 @@ WriteLiteral(" id=\"silverlightHostUploadAttachment\"");
 WriteLiteral(">\r\n        </div>\r\n    </div>\r\n");
 
             
-            #line 284 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 313 "..\..\Views\User\UserParts\_Resources.cshtml"
 }
 
             
             #line default
             #line hidden
             
-            #line 285 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 314 "..\..\Views\User\UserParts\_Resources.cshtml"
  if (canRemoveAnyAttachments || canRemoveOwnAttachments)
 {
 
@@ -777,7 +798,7 @@ WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
 WriteLiteral("></i>&nbsp;Are you sure?\r\n        </p>\r\n    </div>\r\n");
 
             
-            #line 292 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 321 "..\..\Views\User\UserParts\_Resources.cshtml"
 }
             
             #line default

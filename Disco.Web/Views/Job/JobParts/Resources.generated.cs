@@ -1170,29 +1170,37 @@ WriteLiteral(@"
             
             #line default
             #line hidden
-WriteLiteral("\',\r\n                            dataType: \'json\',\r\n                            da" +
-"ta: data,\r\n                            success: function (d) {\r\n                " +
-"                if (d == \'OK\') {\r\n                                    // Should " +
-"be removed via Repository Notifications\r\n                                    //$" +
-"this.hide(300).delay(300).queue(function () {\r\n                                 " +
-"   //    var $this = $(this);\r\n                                    //    if ($th" +
-"is.attr(\'data-mimetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n                " +
-"                    //        Shadowbox.removeCache(this);\r\n                    " +
-"                //    $this.remove();\r\n                                    //});" +
-"\r\n                                } else {\r\n                                    " +
-"alert(\'Unable to remove attachment: \' + d);\r\n                                }\r\n" +
-"                                $dialogRemoveAttachment.dialog(\"close\");\r\n      " +
-"                      },\r\n                            error: function (jqXHR, te" +
-"xtStatus, errorThrown) {\r\n                                alert(\'Unable to remov" +
-"e attachment: \' + textStatus);\r\n                                $dialogRemoveAtt" +
-"achment.dialog(\"close\");\r\n                            }\r\n                       " +
-" });\r\n                    },\r\n                    \"Cancel\": function () {\r\n     " +
-"                   $dialogRemoveAttachment.dialog(\"close\");\r\n                   " +
-" }\r\n                }).dialog(\'open\');\r\n\r\n                return false;\r\n       " +
-"     }\r\n\r\n            //#endregion\r\n\r\n            ");
+WriteLiteral(@"',
+                            dataType: 'json',
+                            data: data,
+                            success: function (d) {
+                                if (d == 'OK') {
+                                    // Should be removed via Repository Notifications
+                                } else {
+                                    alert('Unable to remove attachment: ' + d);
+                                }
+                                $dialogRemoveAttachment.dialog(""close"");
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert('Unable to remove attachment: ' + textStatus);
+                                $dialogRemoveAttachment.dialog(""close"");
+                            }
+                        });
+                    },
+                    ""Cancel"": function () {
+                        $dialogRemoveAttachment.dialog(""close"");
+                    }
+                }).dialog('open');
+
+                return false;
+            }
+
+            //#endregion
+
+            ");
 
             
-            #line 428 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 422 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
@@ -1202,7 +1210,7 @@ WriteLiteral("\r\n            function addAttachment(key, quick) {\r\n          
 "id: key };\r\n                $.ajax({\r\n                    url: \'");
 
             
-            #line 433 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 427 "..\..\Views\Job\JobParts\Resources.cshtml"
                      Write(Url.Action(MVC.API.Job.Attachment()));
 
             
@@ -1213,13 +1221,13 @@ WriteLiteral("\',\r\n                    dataType: \'json\',\r\n                
 "\'OK\') {\r\n                            var a = d.Attachment;\r\n");
 
             
-            #line 439 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 433 "..\..\Views\Job\JobParts\Resources.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 439 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 433 "..\..\Views\Job\JobParts\Resources.cshtml"
                                  if (canRemoveAnyAttachments)
                                 {
 
@@ -1233,7 +1241,7 @@ WriteLiteral("buildAttachment(a, true, quick);");
 WriteLiteral("\r\n");
 
             
-            #line 442 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 436 "..\..\Views\Job\JobParts\Resources.cshtml"
                                 }
                                 else if (canRemoveOwnAttachments)
                                 {
@@ -1246,7 +1254,7 @@ WriteLiteral("                                ");
 WriteLiteral("buildAttachment(a, (a.AuthorId === \'");
 
             
-            #line 445 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 439 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                       Write(CurrentUser.UserId);
 
             
@@ -1257,7 +1265,7 @@ WriteLiteral("\'), quick);");
 WriteLiteral("\r\n");
 
             
-            #line 446 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 440 "..\..\Views\Job\JobParts\Resources.cshtml"
                                 }
                                 else
                                 {
@@ -1272,7 +1280,7 @@ WriteLiteral("buildAttachment(a, false, quick);");
 WriteLiteral("\r\n");
 
             
-            #line 450 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 444 "..\..\Views\Job\JobParts\Resources.cshtml"
                                 }
 
             
@@ -1299,7 +1307,7 @@ WriteLiteral(@"                            } else {
                     e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '");
 
             
-            #line 469 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 463 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                   Write(Url.Action(MVC.API.Job.AttachmentDownload()));
 
             
@@ -1308,47 +1316,63 @@ WriteLiteral(@"                            } else {
 WriteLiteral("/\' + a.Id);\r\n                    e.find(\'.icon img\').attr(\'src\', \'");
 
             
-            #line 470 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 464 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                  Write(Url.Action(MVC.API.Job.AttachmentThumbnail()));
 
             
             #line default
             #line hidden
-WriteLiteral("/\' + a.Id);\r\n                    e.find(\'.comments\').text(a.Comments);\r\n         " +
-"           e.find(\'.author\').text(a.Author);\r\n                    e.find(\'.times" +
-"tamp\').text(a.TimestampFull).attr(\'title\', a.TimestampFull).livestamp(a.Timestam" +
-"pUnixEpoc);\r\n                    if (canRemove)\r\n                        e.find(" +
-"\'.remove\').click(removeLocalAttachment);\r\n                    if (!quick)\r\n     " +
-"                   e.hide();\r\n                    $attachmentOutput.append(e);\r\n" +
-"                    document.DiscoFunctions.liveAfterUpdate();\r\n                " +
-"    if (!quick)\r\n                        e.show(\'slow\');\r\n                    if" +
-" (a.MimeType.toLowerCase().indexOf(\'image/\') == 0)\r\n                        e.sh" +
-"adowbox({ gallery: \'attachments\', player: \'img\', title: a.Comments });\r\n        " +
-"        }\r\n            }\r\n\r\n            function removeAttachment(key) {\r\n      " +
-"          var $element = $attachmentOutput.find(\'a[data-attachmentid=\"\' + key + " +
-"\'\"]\');\r\n                if ($element.length > 0) {\r\n                    $element" +
-".hide(300).delay(300).queue(function () {\r\n                        if ($element." +
-"attr(\'data-mimetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n                   " +
-"         Shadowbox.removeCache(this);\r\n                        $element.remove()" +
-";\r\n                        document.DiscoFunctions.liveAfterUpdate();\r\n         " +
-"           });\r\n                }\r\n            }\r\n\r\n            $attachmentOutpu" +
-"t.children(\'a\').each(function () {\r\n                $this = $(this);\r\n          " +
-"      if ($this.attr(\'data-mimetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n   " +
-"                 $this.shadowbox({ gallery: \'attachments\', player: \'img\', title:" +
-" $this.find(\'.comments\').text() });\r\n            });\r\n\r\n            // Add Globa" +
-"lly Available Functions\r\n            document.DiscoFunctions.liveAddAttachment =" +
-" addAttachment;\r\n            document.DiscoFunctions.liveRemoveAttachment = remo" +
-"veAttachment;\r\n\r\n            //#endregion\r\n        });\r\n\r\n\r\n    </script>\r\n");
+WriteLiteral("/\' + a.Id);\r\n                    e.find(\'.comments\').text(a.Description);\r\n      " +
+"              e.find(\'.author\').text(a.Author);\r\n                    e.find(\'.ti" +
+"mestamp\').text(a.TimestampFull).attr(\'title\', a.TimestampFull).livestamp(a.Times" +
+"tampUnixEpoc);\r\n                    if (canRemove)\r\n                        e.fi" +
+"nd(\'.remove\').click(removeLocalAttachment);\r\n                    if (!quick)\r\n  " +
+"                      e.hide();\r\n                    $attachmentOutput.append(e)" +
+";\r\n                    document.DiscoFunctions.liveAfterUpdate();\r\n             " +
+"       if (!quick)\r\n                        e.show(\'slow\');\r\n                   " +
+" if (a.MimeType.toLowerCase().indexOf(\'image/\') == 0)\r\n                        e" +
+".shadowbox({ gallery: \'attachments\', player: \'img\', title: a.Description });\r\n  " +
+"                  else\r\n                        e.click(onDownload);\r\n          " +
+"      }\r\n            }\r\n\r\n            function onDownload() {\r\n                v" +
+"ar $this = $(this);\r\n                var url = $this.attr(\'href\');\r\n\r\n          " +
+"      if ($.connection && $.connection.hub && $.connection.hub.transport &&\r\n   " +
+"                                 $.connection.hub.transport.name == \'foreverFram" +
+"e\') {\r\n                    // SignalR active with foreverFrame transport - use p" +
+"opup window\r\n                    window.open(url, \'_blank\', \'height=150,width=25" +
+"0,location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no\');\r\n   " +
+"             } else {\r\n                    // use iFrame\r\n                    if" +
+" (!$attachmentDownloadHost) {\r\n                        $attachmentDownloadHost =" +
+" $(\'<iframe>\')\r\n                            .attr({ \'src\': url, \'title\': \'Attach" +
+"ment Download Host\' })\r\n                            .addClass(\'hidden\')\r\n       " +
+"                     .appendTo(\'body\')\r\n                            .contents();" +
+"\r\n                    } else {\r\n                        $attachmentDownloadHost[" +
+"0].location.href = url;\r\n                    }\r\n                }\r\n\r\n           " +
+"     return false;\r\n            }\r\n\r\n            function removeAttachment(key) " +
+"{\r\n                var $element = $attachmentOutput.find(\'a[data-attachmentid=\"\'" +
+" + key + \'\"]\');\r\n                if ($element.length > 0) {\r\n                   " +
+" $element.hide(300).delay(300).queue(function () {\r\n                        if (" +
+"$element.attr(\'data-mimetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n          " +
+"                  Shadowbox.removeCache(this);\r\n                        $element" +
+".remove();\r\n                        document.DiscoFunctions.liveAfterUpdate();\r\n" +
+"                    });\r\n                }\r\n            }\r\n\r\n            $attach" +
+"mentOutput.children(\'a\').each(function () {\r\n                $this = $(this);\r\n " +
+"               if ($this.attr(\'data-mimetype\').toLowerCase().indexOf(\'image/\') =" +
+"= 0)\r\n                    $this.shadowbox({ gallery: \'attachments\', player: \'img" +
+"\', title: $this.find(\'.comments\').text() });\r\n                else\r\n            " +
+"        $this.click(onDownload);\r\n            });\r\n\r\n            // Add Globally" +
+" Available Functions\r\n            document.DiscoFunctions.liveAddAttachment = ad" +
+"dAttachment;\r\n            document.DiscoFunctions.liveRemoveAttachment = removeA" +
+"ttachment;\r\n\r\n            //#endregion\r\n        });\r\n\r\n\r\n    </script>\r\n");
 
             
-            #line 514 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 536 "..\..\Views\Job\JobParts\Resources.cshtml"
 }
 
             
             #line default
             #line hidden
             
-            #line 515 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 537 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowLogs || canShowAttachments)
 {
 
@@ -1358,7 +1382,7 @@ WriteLiteral("/\' + a.Id);\r\n                    e.find(\'.comments\').text(a.C
 WriteLiteral("    <script>\r\n        $(function () {\r\n            var jobId = parseInt(\'");
 
             
-            #line 519 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 541 "..\..\Views\Job\JobParts\Resources.cshtml"
                               Write(Model.Job.Id);
 
             
@@ -1368,7 +1392,7 @@ WriteLiteral("\');\r\n\r\n            //#region LiveEvents\r\n            var hu
 "dates;\r\n\r\n            // Map Functions\r\n");
 
             
-            #line 525 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 547 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowLogs)
 {
             
@@ -1379,14 +1403,14 @@ WriteLiteral("\r\n            hub.client.addLog = document.DiscoFunctions.liveLo
 "      ");
 
             
-            #line 529 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 551 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
             #line default
             #line hidden
             
-            #line 530 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 552 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowAttachments)
 {
             
@@ -1407,7 +1431,7 @@ WriteLiteral(@"
 ");
 
             
-            #line 543 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 565 "..\..\Views\Job\JobParts\Resources.cshtml"
        }
 
             
@@ -1430,7 +1454,7 @@ WriteLiteral(@"
 ");
 
             
-            #line 558 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 580 "..\..\Views\Job\JobParts\Resources.cshtml"
 }
             
             #line default

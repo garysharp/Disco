@@ -112,7 +112,7 @@
 
                             e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '@(Url.Action(MVC.API.User.AttachmentDownload()))/' + a.Id);
                             e.find('.icon img').attr('src', '@(Url.Action(MVC.API.User.AttachmentThumbnail()))/' + a.Id);
-                            e.find('.comments').text(a.Comments);
+                            e.find('.comments').text(a.Description);
                             e.find('.author').text(a.Author);
                             e.find('.timestamp').text(a.TimestampFull).attr('title', a.TimestampFull).livestamp(a.TimestampUnixEpoc);
                             if (canRemove)
@@ -124,8 +124,35 @@
                             if (!quick)
                                 e.show('slow');
                             if (a.MimeType.toLowerCase().indexOf('image/') == 0)
-                                e.shadowbox({ gallery: 'attachments', player: 'img', title: a.Comments });
+                                e.shadowbox({ gallery: 'attachments', player: 'img', title: a.Description });
+                            else
+                                e.click(onDownload);
                         }
+
+                        function onDownload() {
+                            var $this = $(this);
+                            var url = $this.attr('href');
+
+                            if ($.connection && $.connection.hub && $.connection.hub.transport &&
+                                                $.connection.hub.transport.name == 'foreverFrame') {
+                                // SignalR active with foreverFrame transport - use popup window
+                                window.open(url, '_blank', 'height=150,width=250,location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no');
+                            } else {
+                                // use iFrame
+                                if (!$attachmentDownloadHost) {
+                                    $attachmentDownloadHost = $('<iframe>')
+                                        .attr({ 'src': url, 'title': 'Attachment Download Host' })
+                                        .addClass('hidden')
+                                        .appendTo('body')
+                                        .contents();
+                                } else {
+                                    $attachmentDownloadHost[0].location.href = url;
+                                }
+                            }
+
+                            return false;
+                        }
+
                         function onRemoveAttachment(id) {
                             var a = $attachmentOutput.find('a[data-attachmentid=' + id + ']');
 
@@ -265,6 +292,8 @@
                             $this = $(this);
                             if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
                                 $this.shadowbox({ gallery: 'attachments', player: 'img', title: $this.find('.comments').text() });
+                            else
+                                $this.click(onDownload);
                         });
                     });
                 </script>

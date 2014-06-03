@@ -294,10 +294,11 @@ namespace Disco.Web.Controllers
 
             var m = new Models.Job.ShowModel();
 
-            m.Job = (from j in Database.Jobs.Include("Device.DeviceModel").Include("Device.DeviceBatch").Include("DeviceHeldTechUser").Include("DeviceReadyForReturnTechUser").Include("DeviceReturnedTechUser")
-                         .Include("OpenedTechUser").Include("ClosedTechUser").Include("JobType").Include("JobSubTypes").Include("User").Include("JobLogs.TechUser")
-                     where (j.Id == id.Value)
-                     select j).FirstOrDefault();
+            m.Job = Database.Jobs
+                .Include("Device.DeviceModel").Include("Device.DeviceBatch").Include("DeviceHeldTechUser").Include("DeviceReadyForReturnTechUser").Include("DeviceReturnedTechUser")
+                .Include("OpenedTechUser").Include("ClosedTechUser").Include("JobType").Include("JobSubTypes").Include("User").Include("JobLogs.TechUser")
+                .Include("JobAttachments.TechUser").Include("JobAttachments.DocumentTemplate")
+                .FirstOrDefault(j => j.Id == id.Value);
 
             if (m.Job == null)
                 throw new ArgumentException(string.Format("Unknown Job: [{0}]", id), "id");

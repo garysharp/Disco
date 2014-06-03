@@ -13,6 +13,10 @@
                 </th>
                 <th>Device Model
                 </th>
+                <th>Device Profile
+                </th>
+                <th>Device Batch
+                </th>
                 <th>Assigned
                 </th>
                 <th>Unassigned
@@ -32,10 +36,58 @@
                         }
                     </td>
                     <td>
-                        @dua.Device.AssetNumber
+                        @if (!string.IsNullOrWhiteSpace(dua.Device.AssetNumber))
+                        {
+                            @dua.Device.AssetNumber
+                        }
+                        else
+                        {
+                            <span class="smallMessage">N/A</span>
+                        }
                     </td>
                     <td>
-                        @dua.Device.DeviceModel.ToString()
+                        @if (dua.Device.DeviceModelId.HasValue)
+                        {
+                            if (Authorization.Has(Claims.Config.DeviceModel.Show))
+                            {
+                            @Html.ActionLink(dua.Device.DeviceModel.ToString(), MVC.Config.DeviceModel.Index(dua.Device.DeviceModelId))
+                            }
+                            else
+                            {
+                            @dua.Device.DeviceModel.ToString()
+                            }
+                        }
+                        else
+                        {
+                            <span class="smallMessage">Unknown</span>
+                        }
+                    </td>
+                    <td>
+                        @if (Authorization.Has(Claims.Config.DeviceProfile.Show))
+                        {
+                            @Html.ActionLink(dua.Device.DeviceProfile.ToString(), MVC.Config.DeviceProfile.Index(dua.Device.DeviceProfileId))
+                        }
+                        else
+                        {
+                            @dua.Device.DeviceProfile.ToString()
+                        }
+                    </td>
+                    <td>
+                        @if (dua.Device.DeviceBatchId.HasValue)
+                        {
+                            if (Authorization.Has(Claims.Config.DeviceBatch.Show))
+                            {
+                            @Html.ActionLink(dua.Device.DeviceBatch.ToString(), MVC.Config.DeviceBatch.Index(dua.Device.DeviceBatchId))
+                            }
+                            else
+                            {
+                            @dua.Device.DeviceModel.ToString()
+                            }
+                        }
+                        else
+                        {
+                            <span class="smallMessage">None</span>
+                        }
                     </td>
                     <td>
                         @CommonHelpers.FriendlyDate(dua.AssignedDate)

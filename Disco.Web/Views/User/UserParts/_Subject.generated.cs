@@ -873,107 +873,200 @@ WriteLiteral(">\r\n");
             
             #line default
             #line hidden
-WriteLiteral("                                                        </span>(<span>");
+WriteLiteral("                                                        </span>\r\n");
 
             
-            #line 264 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                 Write(assignment.Device.ComputerName);
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"</span>)
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Model:
-                                                    </td>
-                                                    <td>
-                                                        <span");
-
-WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Model\"");
-
-WriteLiteral(">");
-
-            
-            #line 271 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                                   Write(assignment.Device.DeviceModel.ToString());
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Asset:</td>
-                                                    <td>
-");
-
-            
-            #line 277 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 265 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                         
             
             #line default
             #line hidden
             
-            #line 277 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                         if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
+            #line 265 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                         if (!string.IsNullOrWhiteSpace(assignment.Device.ComputerName))
                                                         {
 
             
             #line default
             #line hidden
-WriteLiteral("                                                            <span");
+WriteLiteral("                                                            ");
+
+WriteLiteral("(<span");
+
+WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_ComputerName\"");
+
+WriteLiteral(">");
+
+            
+            #line 267 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                                                                     Write(assignment.Device.ComputerName);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span>)");
+
+WriteLiteral("\r\n");
+
+            
+            #line 268 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                                    </td>\r\n                      " +
+"                          </tr>\r\n");
+
+            
+            #line 271 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                
+            
+            #line default
+            #line hidden
+            
+            #line 271 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                 if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
+                                                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"                                                    <tr>
+                                                        <td>Asset:</td>
+                                                        <td>
+                                                            <span");
 
 WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Asset\"");
 
 WriteLiteral(">");
 
             
-            #line 279 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 276 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                                        Write(assignment.Device.AssetNumber);
 
             
             #line default
             #line hidden
-WriteLiteral("</span>\r\n");
+WriteLiteral("</span>\r\n                                                        </td>\r\n         " +
+"                                           </tr>\r\n");
+
+            
+            #line 279 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                                ");
 
             
             #line 280 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                        }
-                                                        else
-                                                        {
+                                                 if (assignment.Device.DeviceModelId.HasValue)
+                                                {
 
             
             #line default
             #line hidden
-WriteLiteral("                                                            <span");
+WriteLiteral(@"                                                    <tr>
+                                                        <td>Model:
+                                                        </td>
+                                                        <td>
+                                                            <span");
 
-WriteLiteral(" class=\"smallMessage\"");
+WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Model\"");
 
-WriteLiteral(">Unknown</span>\r\n");
+WriteLiteral(">");
 
             
-            #line 284 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                        }
+            #line 286 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                                                       Write(assignment.Device.DeviceModel.ToString());
 
             
             #line default
             #line hidden
-WriteLiteral(@"                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Assigned:</td>
+WriteLiteral("</span>\r\n                                                        </td>\r\n         " +
+"                                           </tr>\r\n");
+
+            
+            #line 289 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"                                                <tr>
+                                                    <td>Profile:
+                                                    </td>
                                                     <td>
                                                         <span");
+
+WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Profile\"");
+
+WriteLiteral(">");
+
+            
+            #line 294 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                                                     Write(assignment.Device.DeviceProfile.ToString());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span>\r\n                                                    </td>\r\n             " +
+"                                   </tr>\r\n");
+
+            
+            #line 297 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                
+            
+            #line default
+            #line hidden
+            
+            #line 297 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                 if (assignment.Device.DeviceBatchId.HasValue)
+                                                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"                                                    <tr>
+                                                        <td>Batch:
+                                                        </td>
+                                                        <td>
+                                                            <span");
+
+WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Batch\"");
+
+WriteLiteral(">");
+
+            
+            #line 303 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                                                       Write(assignment.Device.DeviceBatch.ToString());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span>\r\n                                                        </td>\r\n         " +
+"                                           </tr>\r\n");
+
+            
+            #line 306 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                                <tr>\r\n                           " +
+"                         <td>Assigned:</td>\r\n                                   " +
+"                 <td>\r\n                                                        <" +
+"span");
 
 WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Assigned\"");
 
 WriteLiteral(">");
 
             
-            #line 290 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 310 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                                       Write(CommonHelpers.FriendlyDate(assignment.AssignedDate));
 
             
@@ -989,7 +1082,7 @@ WriteLiteral(@"</span>
 ");
 
             
-            #line 297 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 317 "..\..\Views\User\UserParts\_Subject.cshtml"
                                 }
                             }
                             else
@@ -1005,7 +1098,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">No Current Device Assignments</span>\r\n");
 
             
-            #line 302 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 322 "..\..\Views\User\UserParts\_Subject.cshtml"
                             }
 
             
@@ -1015,7 +1108,7 @@ WriteLiteral("                        </div>\r\n                    </div>\r\n  
 "\r\n");
 
             
-            #line 306 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 326 "..\..\Views\User\UserParts\_Subject.cshtml"
             }
 
             

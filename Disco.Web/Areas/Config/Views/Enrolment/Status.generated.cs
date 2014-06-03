@@ -319,7 +319,7 @@ WriteLiteral(@">
         var hostDialogSessions = $('#dialogSession');
         //var hostDialogSessionsProgress = $('#dialogSession').find('.sessionProgress');
         var deviceModels = {};
-        var liveConnection;
+        var logHub;
         var deviceBaseUrl = '");
 
             
@@ -520,28 +520,28 @@ WriteLiteral(@"',
             vm.isotopeInited = true;
 
             // Init Persistent Connection
-            liveConnection = $.connection('");
+            logHub = $.connection.logNotifications;
+            logHub.client.receiveLog = parseLog
+
+            $.connection.hub.qs = { LogModules: '");
 
             
-            #line 359 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
-                                       Write(Url.Content("~/API/Logging/Notifications"));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\', { addToGroups: \'");
-
-            
-            #line 359 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
-                                                                                                       Write(Disco.BI.DeviceBI.EnrolmentLog.Current.LiveLogGroupName);
+            #line 362 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                                             Write(Disco.BI.DeviceBI.EnrolmentLog.Current.LiveLogGroupName);
 
             
             #line default
             #line hidden
-WriteLiteral(@"' });
-            liveConnection.received(parseLog);
-            liveConnection.error(function (e) { if (e.status != 200) alert('Live-Log Error: ' + e.statusText + ': ' + e.responseText); });
-            liveConnection.start();
+WriteLiteral(@"' };
+            $.connection.hub.error(function (error) {
+                alert('Live-Log Error: ' + error);
+            });
+
+            $.connection.hub.start()
+                .done(function () { isLive = true; })
+                .fail(function (error) {
+                    alert('Live-Log Connection Error: ' + error);
+                });
         }
         init();
     });

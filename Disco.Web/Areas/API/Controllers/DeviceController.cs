@@ -519,7 +519,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Device.ShowAttachments)]
         public virtual ActionResult Attachment(int id)
         {
-            var da = Database.DeviceAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var da = Database.DeviceAttachments.Include("DocumentTemplate").Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
             if (da != null)
             {
 
@@ -537,7 +537,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Device.ShowAttachments)]
         public virtual ActionResult Attachments(string id)
         {
-            var d = Database.Devices.Include("DeviceAttachments.TechUser").Where(m => m.SerialNumber == id).FirstOrDefault();
+            var d = Database.Devices.Include("DeviceAttachments.DocumentTemplate").Include("DeviceAttachments.TechUser").Where(m => m.SerialNumber == id).FirstOrDefault();
             if (d != null)
             {
                 var m = new Models.Attachment.AttachmentsModel()
