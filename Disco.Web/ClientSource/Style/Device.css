@@ -253,12 +253,16 @@
 #DeviceDetailTab-DetailsContainer > table > tbody > tr > td {
   padding: 10px 6px;
 }
-#deviceShowResources #Attachments {
+#deviceShowResources #AttachmentsContainer {
   padding: 0;
+}
+#deviceShowResources #Attachments {
+  position: relative;
   border: 1px solid #cccccc;
   background-color: #ffffff;
 }
 #deviceShowResources #Attachments div.attachmentOutput {
+  position: relative;
   height: 115px;
   overflow: auto;
   font-size: 0.95em;
@@ -302,6 +306,9 @@
 #deviceShowResources #Attachments div.attachmentOutput > a span.icon img {
   height: 48px;
   width: 48px;
+}
+#deviceShowResources #Attachments div.attachmentOutput > a span.icon img.loading {
+  display: none;
 }
 #deviceShowResources #Attachments div.attachmentOutput > a:hover {
   background-color: #ededed;

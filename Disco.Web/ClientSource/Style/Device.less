@@ -210,12 +210,17 @@
 
 
 #deviceShowResources {
-    #Attachments {
+    #AttachmentsContainer {
         padding: 0;
+    }
+
+    #Attachments {
+        position: relative;
         border: 1px solid @SubtleBorderColour;
         background-color: @white;
 
         div.attachmentOutput {
+            position: relative;
             height: 115px;
             overflow: auto;
             font-size: 0.95em;
@@ -260,6 +265,10 @@
                     img {
                         height: 48px;
                         width: 48px;
+
+                        &.loading {
+                            display: none;
+                        }
                     }
                 }
 
@@ -457,7 +466,6 @@
         color: @StatusInformation;
     }
 }
-
 // Icons used within Devices_Import_Review
 @import "FontAwesome\variables.less";
 

@@ -12,57 +12,61 @@
 
     if (canAddAttachments)
     {
-        Html.BundleDeferred("~/ClientScripts/Modules/Silverlight");
+        Html.BundleDeferred("~/ClientScripts/Modules/Disco-AttachmentUploader");
     }
 }
 <div id="UserDetailTab-Resources" class="UserPart">
     <table id="userShowResources">
         <tr>
-            <td id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments")">
-                <div class="attachmentOutput">
-                    @if (Model.User.UserAttachments != null)
-                    {
-                        foreach (var ua in Model.User.UserAttachments)
-                        {
-                        <a href="@Url.Action(MVC.API.User.AttachmentDownload(ua.Id))" data-attachmentid="@ua.Id" data-mimetype="@ua.MimeType">
-                            <span class="icon" title="@ua.Filename">
-                                <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.User.AttachmentThumbnail(ua.Id)))" /></span>
-                            <span class="comments" title="@ua.Comments">
-                                @{if (!string.IsNullOrEmpty(ua.DocumentTemplateId))
-                                  { @ua.DocumentTemplate.Description}
-                                  else
-                                  { @ua.Comments }}
-                            </span><span class="author">@ua.TechUser.ToStringFriendly()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ua.TechUserId == CurrentUser.UserId))
-                                                                                              {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(ua.Timestamp.ToUnixEpoc())" title="@ua.Timestamp.ToFullDateTime()">@ua.Timestamp.ToFullDateTime()</span>
-                        </a>   
-                        }
-                    }
-                </div>
-                @if (canAddAttachments)
-                {
-                    <div class="attachmentInput clearfix">
-                        <span class="action upload fa fa-upload" title="Attach File"></span><span class="action photo fa fa-camera" title="Capture Image"></span>
+            <td id="AttachmentsContainer">
+                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments")">
+                    <div class="disco-attachmentUpload-dropTarget">
+                        <h2>Drop Attachments Here</h2>
                     </div>
-                }
-                <script type="text/javascript">
-                    Shadowbox.init({
-                        skipSetup: true,
-                        modal: true
-                    });
-                    $(function () {
-                        var $Attachments = $('#Attachments');
-                        var $attachmentOutput = $Attachments.find('.attachmentOutput');
-                        var $dialogUpload = null;
-                        var $dialogRemoveAttachment = null;
+                    <div class="attachmentOutput">
+                        @if (Model.User.UserAttachments != null)
+                        {
+                            foreach (var ua in Model.User.UserAttachments)
+                            {
+                            <a href="@Url.Action(MVC.API.User.AttachmentDownload(ua.Id))" data-attachmentid="@ua.Id" data-mimetype="@ua.MimeType">
+                                <span class="icon" title="@ua.Filename">
+                                    <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.User.AttachmentThumbnail(ua.Id)))" /></span>
+                                <span class="comments" title="@ua.Comments">
+                                    @{if (!string.IsNullOrEmpty(ua.DocumentTemplateId))
+                                      { @ua.DocumentTemplate.Description}
+                                      else
+                                      { @ua.Comments }}
+                                </span><span class="author">@ua.TechUser.ToStringFriendly()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ua.TechUserId == CurrentUser.UserId))
+                                                                                                  {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(ua.Timestamp.ToUnixEpoc())" title="@ua.Timestamp.ToFullDateTime()">@ua.Timestamp.ToFullDateTime()</span>
+                            </a>   
+                            }
+                        }
+                    </div>
+                    @if (canAddAttachments)
+                    {
+                        <div class="disco-attachmentUpload-progress"></div>
+                        <div class="attachmentInput clearfix">
+                            <span class="action upload fa fa-upload" title="Attach File"></span><span class="action photo fa fa-camera" title="Capture Image"></span>
+                        </div>
+                    }
+                    <script type="text/javascript">
+                        Shadowbox.init({
+                            skipSetup: true,
+                            modal: true
+                        });
+                        $(function () {
+                            var $Attachments = $('#Attachments');
+                            var $attachmentOutput = $Attachments.find('.attachmentOutput');
+                            var $dialogRemoveAttachment = null;
 
-                        // Connect to Hub
-                        var hub = $.connection.userUpdates;
+                            // Connect to Hub
+                            var hub = $.connection.userUpdates;
 
-                        // Map Functions
-                        hub.client.addAttachment = onAddAttachment;
-                        hub.client.removeAttachment = onRemoveAttachment;
+                            // Map Functions
+                            hub.client.addAttachment = onAddAttachment;
+                            hub.client.removeAttachment = onRemoveAttachment;
 
-                        $.connection.hub.qs = { UserId: '@(Model.User.UserId.Replace(@"\", @"\\"))' };
+                            $.connection.hub.qs = { UserId: '@(Model.User.UserId.Replace(@"\", @"\\"))' };
                         $.connection.hub.error(onHubError);
 
                         // Start Connection
@@ -111,7 +115,6 @@
                             var e = $(t);
 
                             e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '@(Url.Action(MVC.API.User.AttachmentDownload()))/' + a.Id);
-                            e.find('.icon img').attr('src', '@(Url.Action(MVC.API.User.AttachmentThumbnail()))/' + a.Id);
                             e.find('.comments').text(a.Description);
                             e.find('.author').text(a.Author);
                             e.find('.timestamp').text(a.TimestampFull).attr('title', a.TimestampFull).livestamp(a.TimestampUnixEpoc);
@@ -127,6 +130,27 @@
                                 e.shadowbox({ gallery: 'attachments', player: 'img', title: a.Description });
                             else
                                 e.click(onDownload);
+
+                            // Add Thumbnail
+                            var buildThumbnail = function () {
+                                var retryCount = 0;
+                                var img = e.find('.icon img');
+
+                                var setThumbnailUrl = function () {
+                                    img.attr('src', '@(Url.Action(MVC.API.User.AttachmentThumbnail()))/' + a.Id + '?v=' + retryCount);
+                                };
+                                img.on('error', function () {
+                                    img.addClass('loading');
+                                    retryCount++;
+                                    if (retryCount < 6)
+                                        window.setTimeout(setThumbnailUrl, retryCount * 250);
+                                });
+                                img.on('load', function () {
+                                    img.removeClass('loading');
+                                });
+                                window.setTimeout(setThumbnailUrl, 100);
+                            };
+                            buildThumbnail();
                         }
 
                         function onDownload() {
@@ -175,61 +199,32 @@
                         @if (canAddAttachments)
                         {<text>
                         //#region Add Attachments
-                        if (!document.DiscoFunctions) {
-                            document.DiscoFunctions = {};
-                        }
-                        document.DiscoFunctions.addAttachment = function (Id) { return; /* Silverlight notification, do nothing use SignalR */ };
+                        var attachmentUploader = new document.Disco.AttachmentUploader(
+                            '@(Url.Action(MVC.API.User.AttachmentUpload(Model.User.UserId, null)))',
+                            $Attachments.find('.disco-attachmentUpload-dropTarget'),
+                            $Attachments.find('.disco-attachmentUpload-progress'));
 
                         var $attachmentInput = $Attachments.find('.attachmentInput');
                         $attachmentInput.find('.photo').click(function () {
-                            showDialog('/WebCam');
+                            attachmentUploader.uploadImage();
                         });
                         $attachmentInput.find('.upload').click(function () {
-                            showDialog('/File');
+                            attachmentUploader.uploadFiles();
                         });
 
-                        var silverlightOnLoadNavigation = null;
-                        var silverlightIsLoaded = null;
-
-                        function showDialog(navigationPath) {
-                            if (!$dialogUpload) {
-                                $dialogUpload = $('#dialogUpload').dialog({
-                                    autoOpen: false,
-                                    draggable: false,
-                                    modal: true,
-                                    resizable: false,
-                                    width: 860,
-                                    height: 550,
-                                    close: function () {
-                                        var sl = $('#silverlightUploadAttachment').get(0);
-                                        if (sl.content)
-                                            sl.content.Navigator.Navigate('/Hidden');
-                                    }
-                                });
-
-                                Silverlight.createObject('@(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap)',
-                                    $('#silverlightHostUploadAttachment').get(0),
-                                    'silverlightUploadAttachment',
-                                    { width: '840px', height: '500px', background: 'white', version: '4.0.60310.0' },
-                                    {
-                                        onLoad: function () {
-                                            if (silverlightOnLoadNavigation) {
-                                                $('#silverlightUploadAttachment').get(0).content.Navigator.Navigate(silverlightOnLoadNavigation);
-                                                silverlightIsLoaded = true;
-                                            }
-                                        }
-                                    },
-                                    'UploadUrl=@(Url.Action(MVC.API.User.AttachmentUpload(Model.User.UserId, null)))');
+                        var resourcesTab;
+                        $(document).on('dragover', function () {
+                            if (!resourcesTab) {
+                                var tabs = $Attachments.closest('.ui-tabs');
+                                resourcesTab = {
+                                    tabs: tabs,
+                                    resourcesIndex: tabs.children('ul.ui-tabs-nav').find('a[href="#UserDetailTab-Resources"]').closest('li').index()
+                                };
                             }
-
-                            $dialogUpload.dialog('open');
-                            if (silverlightIsLoaded) {
-                                $('#silverlightUploadAttachment').get(0).content.Navigator.Navigate(navigationPath);
-                            } else {
-                                silverlightOnLoadNavigation = navigationPath;
-                            }
-                        };
-
+                            var selectedIndex = resourcesTab.tabs.tabs('option', 'active');
+                            if (resourcesTab.resourcesIndex !== selectedIndex)
+                                resourcesTab.tabs.tabs('option', 'active', resourcesTab.resourcesIndex);
+                        });
                         //#endregion
                         </text>}
                         @if (canRemoveAnyAttachments || canRemoveOwnAttachments)
@@ -296,7 +291,8 @@
                                 $this.click(onDownload);
                         });
                     });
-                </script>
+                    </script>
+                </div>
             </td>
         </tr>
     </table>
@@ -304,13 +300,6 @@
         $('#UserDetailTabItems').append('<li><a href="#UserDetailTab-Resources" id="UserDetailTab-ResourcesLink">Attachments [@(Model.User.UserAttachments == null ? 0 : Model.User.UserAttachments.Count)]</a></li>');
     </script>
 </div>
-@if (canAddAttachments)
-{
-    <div id="dialogUpload" class="dialog" title="Upload Attachment">
-        <div id="silverlightHostUploadAttachment">
-        </div>
-    </div>
-}
 @if (canRemoveAnyAttachments || canRemoveOwnAttachments)
 {
     <div id="dialogRemoveAttachment" class="dialog" title="Remove this Attachment?">

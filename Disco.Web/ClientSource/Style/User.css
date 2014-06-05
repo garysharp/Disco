@@ -231,12 +231,16 @@
 #UserDetailTab-Authorization #UserDetailTab-Authorization_NoAccess h3 {
   margin-bottom: 10px;
 }
-#userShowResources #Attachments {
+#userShowResources #AttachmentsContainer {
   padding: 0;
+}
+#userShowResources #Attachments {
+  position: relative;
   border: 1px solid #cccccc;
   background-color: #ffffff;
 }
 #userShowResources #Attachments div.attachmentOutput {
+  position: relative;
   height: 115px;
   overflow: auto;
   font-size: 0.95em;
@@ -280,6 +284,9 @@
 #userShowResources #Attachments div.attachmentOutput > a span.icon img {
   height: 48px;
   width: 48px;
+}
+#userShowResources #Attachments div.attachmentOutput > a span.icon img.loading {
+  display: none;
 }
 #userShowResources #Attachments div.attachmentOutput > a:hover span.remove {
   opacity: .5;

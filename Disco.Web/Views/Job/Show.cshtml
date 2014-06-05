@@ -2,11 +2,6 @@
 @{
     ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id.ToString()));
 
-    if (Authorization.Has(Claims.Job.Actions.AddAttachments))
-    {
-        Html.BundleDeferred("~/ClientScripts/Modules/Silverlight");
-    }
-
     Html.BundleDeferred("~/ClientScripts/Modules/jQueryUI-TimePicker");
 
     Authorization.Require(Claims.Job.Show);

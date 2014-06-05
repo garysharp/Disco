@@ -18,57 +18,69 @@
         Html.BundleDeferred("~/Style/Shadowbox");
         Html.BundleDeferred("~/ClientScripts/Modules/Shadowbox");
     }
+    if (canAddAttachments)
+    {
+        Html.BundleDeferred("~/ClientScripts/Modules/Disco-AttachmentUploader");
+    }
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
 }
 <table id="jobShowResources">
     <tr class="@(canShowLogs ? "canShowLogs" : "cannotShowLogs") @(canShowAttachments ? "canShowAttachments" : "cannotShowAttachments")">
         @if (canShowLogs)
         {
-            <td id="Comments" class="@(canAddLogs ? "canAddLogs" : "cannotAddLogs")">
-                <div class="commentOutput">
-                    @foreach (var jl in Model.Job.JobLogs.OrderBy(m => m.Timestamp))
+            <td id="CommentsContainer">
+                <div id="Comments" class="@(canAddLogs ? "canAddLogs" : "cannotAddLogs")">
+                    <div class="commentOutput">
+                        @foreach (var jl in Model.Job.JobLogs.OrderBy(m => m.Timestamp))
+                        {
+                            <div data-logid="@jl.Id">
+                                <span class="author">@jl.TechUser.ToStringFriendly()</span>@if (canRemoveAnyLogs || (canRemoveOwnLogs && jl.TechUserId == CurrentUser.UserId))
+                                                                                           {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(jl.Timestamp.ToUnixEpoc())" title="@jl.Timestamp.ToFullDateTime()">@jl.Timestamp.ToFullDateTime()</span>
+                                <span class="comment">@jl.Comments.ToMultilineJobRefString()</span>
+                            </div>
+                        }
+                    </div>
+                    @if (canAddLogs)
                     {
-                        <div data-logid="@jl.Id">
-                            <span class="author">@jl.TechUser.ToStringFriendly()</span>@if (canRemoveAnyLogs || (canRemoveOwnLogs && jl.TechUserId == CurrentUser.UserId))
-                                                                               {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(jl.Timestamp.ToUnixEpoc())" title="@jl.Timestamp.ToFullDateTime()">@jl.Timestamp.ToFullDateTime()</span>
-                            <span class="comment">@jl.Comments.ToMultilineJobRefString()</span>
+                        <div class="commentInput clearfix">
+                            <textarea class="commentInput" placeholder="write comment..." accesskey="l"></textarea>
+                            <span class="action post commentInputPost fa fa-comment" title="Post Comment"></span>
                         </div>
                     }
                 </div>
-                @if (canAddLogs)
-                {
-                    <div class="commentInput clearfix">
-                        <textarea class="commentInput" placeholder="write comment..." accesskey="l"></textarea>
-                        <span class="action post commentInputPost fa fa-comment" title="Post Comment"></span>
-                    </div>
-                }
             </td>
         }
         @if (canShowAttachments)
         {
-            <td id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments")">
-                <div class="attachmentOutput">
-                    @foreach (var ja in Model.Job.JobAttachments)
+            <td id="AttachmentsContainer">
+                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments")">
+                    <div class="disco-attachmentUpload-dropTarget">
+                        <h2>Drop Attachments Here</h2>
+                    </div>
+                    <div class="attachmentOutput">
+                        @foreach (var ja in Model.Job.JobAttachments)
+                        {
+                            <a href="@Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))" data-attachmentid="@ja.Id" data-mimetype="@ja.MimeType">
+                                <span class="icon" title="@ja.Filename">
+                                    <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id)))" /></span>
+                                <span class="comments" title="@ja.Comments">
+                                    @{if (!string.IsNullOrEmpty(ja.DocumentTemplateId))
+                                      { @ja.DocumentTemplate.Description}
+                                      else
+                                      { @ja.Comments }}
+                                </span><span class="author">@ja.TechUser.ToStringFriendly()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ja.TechUserId == CurrentUser.UserId))
+                                                                                                  {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(ja.Timestamp.ToUnixEpoc())" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.ToFullDateTime()</span>
+                            </a>   
+                        }
+                    </div>
+                    @if (canAddAttachments)
                     {
-                        <a href="@Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))" data-attachmentid="@ja.Id" data-mimetype="@ja.MimeType">
-                            <span class="icon" title="@ja.Filename">
-                                <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id)))" /></span>
-                            <span class="comments" title="@ja.Comments">
-                                @{if (!string.IsNullOrEmpty(ja.DocumentTemplateId))
-                                  { @ja.DocumentTemplate.Description}
-                                  else
-                                  { @ja.Comments }}
-                            </span><span class="author">@ja.TechUser.ToStringFriendly()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ja.TechUserId == CurrentUser.UserId))
-                                                                                      {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(ja.Timestamp.ToUnixEpoc())" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.ToFullDateTime()</span>
-                        </a>   
+                        <div class="disco-attachmentUpload-progress"></div>
+                        <div class="attachmentInput clearfix">
+                            <span class="action upload fa fa-upload" title="Attach File"></span><span class="action photo fa fa-camera" title="Capture Image"></span>
+                        </div>
                     }
                 </div>
-                @if (canAddAttachments)
-                {
-                    <div class="attachmentInput clearfix">
-                        <span class="action upload fa fa-upload" title="Attach File"></span><span class="action photo fa fa-camera" title="Capture Image"></span>
-                    </div>
-                }
             </td>
         }
     </tr>
@@ -79,13 +91,6 @@
         <p>
             <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?
         </p>
-    </div>
-}
-@if (canShowAttachments && canAddAttachments)
-{
-    <div id="dialogUpload" class="dialog" title="Upload Attachment">
-        <div id="silverlightHostUploadAttachment">
-        </div>
     </div>
 }
 @if (canShowAttachments && (canRemoveAnyAttachments || canRemoveOwnAttachments))
@@ -222,10 +227,10 @@
             function loadLiveComment(key) {
                 $.ajax({
                     url: '@Url.Action(MVC.API.Job.Comment())',
-                        dataType: 'json',
-                        data: { id: key },
-                        success: function (d) {
-                            if (d && d.JobId == jobId) {
+                    dataType: 'json',
+                    data: { id: key },
+                    success: function (d) {
+                        if (d && d.JobId == jobId) {
                                 @if (canRemoveAnyLogs)
                                 {<text>addComment(d, false, true);</text>}
                                 else if (canRemoveOwnLogs)
@@ -233,13 +238,13 @@
                                 else
                                 {<text>addComment(d, false, false);</text>}
 
-                            }
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            alert('Unable to load live comment ' + id + ': ' + textStatus);
                         }
-                    });
-                }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert('Unable to load live comment ' + id + ': ' + textStatus);
+                    }
+                });
+            }
             function liveRemoveComment(key) {
                 $CommentOutput.children('div[data-logid="' + key + '"]').slideUp(300).delay(300).queue(function () {
                     var $this = $(this);
@@ -305,63 +310,32 @@
             @if (canAddAttachments)
             {<text>
             //#region Add Attachments
-
-            // For Silverlight Backwards-compatibility
-            //  - Repository notifications now handles this
-            document.DiscoFunctions.addAttachment = function () { };
-
-            var $dialogUpload;
-            var onLoadNavigation = null;
-            var isLoaded = null;
+            var attachmentUploader = new document.Disco.AttachmentUploader(
+                '@(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)))',
+                $Attachments.find('.disco-attachmentUpload-dropTarget'),
+                $Attachments.find('.disco-attachmentUpload-progress'));
 
             var $attachmentInput = $Attachments.find('.attachmentInput');
             $attachmentInput.find('.photo').click(function () {
-                showDialog('/WebCam');
+                attachmentUploader.uploadImage();
             });
             $attachmentInput.find('.upload').click(function () {
-                showDialog('/File');
+                attachmentUploader.uploadFiles();
             });
 
-            function showDialog(navigationPath) {
-                if (!$dialogUpload) {
-                    Silverlight.createObject(
-                            '@(Links.ClientBin.Disco_Silverlight_AttachmentUpload_xap)',
-                            $('#silverlightHostUploadAttachment').get(0),
-                            'silverlightUploadAttachment',
-                            { width: '840px', height: '500px', background: 'white', version: '4.0.60310.0' },
-                            {
-                                onLoad: function () {
-                                    if (onLoadNavigation) {
-                                        $('#silverlightUploadAttachment').get(0).content.Navigator.Navigate(onLoadNavigation);
-                                        isLoaded = true;
-                                    }
-                                }
-                            },
-                            'UploadUrl=@(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)))');
-
-                            $dialogUpload = $('#dialogUpload').dialog({
-                                autoOpen: false,
-                                draggable: false,
-                                modal: true,
-                                resizable: false,
-                                width: 860,
-                                height: 550,
-                                close: function () {
-                                    var sl = $('#silverlightUploadAttachment').get(0);
-                                    if (sl.content)
-                                        sl.content.Navigator.Navigate('/Hidden');
-                                }
-                            });
-
-                        }
-                        $dialogUpload.dialog('open');
-                        if (isLoaded) {
-                            $('#silverlightUploadAttachment').get(0).content.Navigator.Navigate(navigationPath);
-                        } else {
-                            onLoadNavigation = navigationPath;
-                        }
+            var resourcesTab;
+            $(document).on('dragover', function () {
+                if (!resourcesTab) {
+                    var tabs = $Attachments.closest('.ui-tabs');
+                    resourcesTab = {
+                        tabs: tabs,
+                        resourcesIndex: tabs.children('ul.ui-tabs-nav').find('a[href="#jobDetailTab-Resources"]').closest('li').index()
                     };
-
+                }
+                var selectedIndex = resourcesTab.tabs.tabs('option', 'active');
+                if (resourcesTab.resourcesIndex !== selectedIndex)
+                    resourcesTab.tabs.tabs('option', 'active', resourcesTab.resourcesIndex);
+            });
             //#endregion
             </text>}
 
@@ -442,15 +416,15 @@
                                 {
                                 <text>buildAttachment(a, false, quick);</text>
                                 }
-                            } else {
-                                alert('Unable to add attachment: ' + d.Result);
-                            }
-                        },
+                        } else {
+                            alert('Unable to add attachment: ' + d.Result);
+                        }
+                    },
                     error: function (jqXHR, textStatus, errorThrown) {
                         alert('Unable to add attachment: ' + textStatus);
                     }
                 });
-                }
+            }
             function buildAttachment(a, canRemove, quick) {
                 if (parseInt(a.ParentId) == jobId) {
                     var t = '<a><span class="icon"><img alt="Attachment Thumbnail" /></span><span class="comments"></span><span class="author"></span>';
@@ -461,7 +435,6 @@
                     var e = $(t);
 
                     e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '@(Url.Action(MVC.API.Job.AttachmentDownload()))/' + a.Id);
-                    e.find('.icon img').attr('src', '@(Url.Action(MVC.API.Job.AttachmentThumbnail()))/' + a.Id);
                     e.find('.comments').text(a.Description);
                     e.find('.author').text(a.Author);
                     e.find('.timestamp').text(a.TimestampFull).attr('title', a.TimestampFull).livestamp(a.TimestampUnixEpoc);
@@ -477,6 +450,27 @@
                         e.shadowbox({ gallery: 'attachments', player: 'img', title: a.Description });
                     else
                         e.click(onDownload);
+
+                    // Add Thumbnail
+                    var buildThumbnail = function () {
+                        var retryCount = 0;
+                        var img = e.find('.icon img');
+
+                        var setThumbnailUrl = function () {
+                            img.attr('src', '@(Url.Action(MVC.API.Job.AttachmentThumbnail()))/' + a.Id + '?v=' + retryCount);
+                        };
+                        img.on('error', function () {
+                            img.addClass('loading');
+                            retryCount++;
+                            if (retryCount < 6)
+                                window.setTimeout(setThumbnailUrl, retryCount * 250);
+                        });
+                        img.on('load', function () {
+                            img.removeClass('loading');
+                        });
+                        window.setTimeout(setThumbnailUrl, 100);
+                    };
+                    buildThumbnail();
                 }
             }
 
@@ -557,7 +551,7 @@
             document.DiscoFunctions.liveAfterUpdate = function () {
                 var tabLink = $('#jobDetailTab-ResourcesLink');
                 var attachmentCount = $('#Attachments').find('.attachmentOutput').children('a').length;
-                
+
                 var tabHeading = tabLink.text();
                 tabHeading = tabHeading.substr(0, tabHeading.indexOf('[') + 1) + attachmentCount + ']';
                 tabLink.text(tabHeading);

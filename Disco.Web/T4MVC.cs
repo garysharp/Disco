@@ -188,6 +188,20 @@ namespace Links
                 public static readonly string Disco_AjaxHelperIcons_min_js = Url("Disco-AjaxHelperIcons.min.js");
                 public static readonly string Disco_AjaxHelperIcons_min_js_map = Url("Disco-AjaxHelperIcons.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+                public static class Disco_AttachmentUploader {
+                    private const string URLPATH = "~/ClientSource/Scripts/Modules/Disco-AttachmentUploader";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                    public static readonly string disco_attachmentuploader_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco-attachmentuploader.min.js") ? Url("disco-attachmentuploader.min.js") : Url("disco-attachmentuploader.js");
+                    public static readonly string webcam_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/webcam.min.js") ? Url("webcam.min.js") : Url("webcam.js");
+                    public static readonly string webcam_swf = Url("webcam.swf");
+                }
+            
+                public static readonly string Disco_AttachmentUploader_js_bundle = Url("Disco-AttachmentUploader.js.bundle");
+                public static readonly string Disco_AttachmentUploader_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Disco-AttachmentUploader.min.js") ? Url("Disco-AttachmentUploader.min.js") : Url("Disco-AttachmentUploader.js");
+                public static readonly string Disco_AttachmentUploader_min_js = Url("Disco-AttachmentUploader.min.js");
+                public static readonly string Disco_AttachmentUploader_min_js_map = Url("Disco-AttachmentUploader.min.js.map");
+                [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Disco_CreateJob {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/Disco-CreateJob";
                     public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
@@ -357,18 +371,6 @@ namespace Links
                 public static readonly string Shadowbox_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Shadowbox.min.js") ? Url("Shadowbox.min.js") : Url("Shadowbox.js");
                 public static readonly string Shadowbox_min_js = Url("Shadowbox.min.js");
                 public static readonly string Shadowbox_min_js_map = Url("Shadowbox.min.js.map");
-                [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-                public static class Silverlight {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/Silverlight";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string Silverlight_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Silverlight.min.js") ? Url("Silverlight.min.js") : Url("Silverlight.js");
-                }
-            
-                public static readonly string Silverlight_js_bundle = Url("Silverlight.js.bundle");
-                public static readonly string Silverlight_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Silverlight.min.js") ? Url("Silverlight.min.js") : Url("Silverlight.js");
-                public static readonly string Silverlight_min_js = Url("Silverlight.min.js");
-                public static readonly string Silverlight_min_js_map = Url("Silverlight.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Timeline {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/Timeline";
@@ -838,7 +840,6 @@ namespace Links
         public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
         public static readonly string Disco_ClientBootstrapper_exe = Url("Disco.ClientBootstrapper.exe");
-        public static readonly string Disco_Silverlight_AttachmentUpload_xap = Url("Disco.Silverlight.AttachmentUpload.xap");
         public static readonly string PreparationClient_zip = Url("PreparationClient.zip");
     }
 

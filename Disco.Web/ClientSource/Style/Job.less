@@ -215,8 +215,12 @@
 
 
 #jobShowResources {
-    #Comments {
+    #CommentsContainer {
+        padding: 0;
         width: 375px;
+    }
+
+    #Comments {
         height: 300px;
         padding: 0;
         border: 1px solid @SubtleBorderColour;
@@ -318,13 +322,20 @@
         }
     }
 
-    #Attachments {
-        height: 300px;
+    #AttachmentsContainer {
         padding: 0;
-        border: 1px solid @SubtleBorderColour;
+    }
+
+    #Attachments {
+        position: relative;
+        height: 300px;
+        border-top: 1px solid @SubtleBorderColour;
+        border-right: 1px solid @SubtleBorderColour;
+        border-bottom: 1px solid @SubtleBorderColour;
         background-color: @white;
 
         div.attachmentOutput {
+            position: relative;
             height: 249px;
             overflow: auto;
 
@@ -368,6 +379,10 @@
                     img {
                         height: 48px;
                         width: 48px;
+
+                        &.loading {
+                            display: none;
+                        }
                     }
                 }
 

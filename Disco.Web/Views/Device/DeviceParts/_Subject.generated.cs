@@ -2083,6 +2083,8 @@ WriteLiteral("                <div");
 
 WriteLiteral(" id=\"Device_Show_Device_Actions_TrustEnrol_Dialog\"");
 
+WriteLiteral(" class=\"dialog\"");
+
 WriteLiteral(" title=\"Trust this Device?\"");
 
 WriteLiteral(">\r\n                    <div");
@@ -2135,39 +2137,30 @@ WriteLiteral("                <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(@">
-                    $(function () {
-                        var button = $('#Device_Show_Device_Actions_TrustEnrol_Button');
-                        var buttonDialog = $('#Device_Show_Device_Actions_TrustEnrol_Dialog');
-                        var buttonLink = button.attr('href');
-                        button.attr('href', '#');
-                        button.click(function () {
-                            buttonDialog.dialog('open');
-                            return false;
-                        });
-                        buttonDialog.dialog({
-                            resizable: false,
-                            width: 400,
-                            modal: true,
-                            autoOpen: false,
-                            buttons: {
-                                ""Trust"": function () {
-                                    var $this = $(this);
-                                    $this.dialog(""disable"");
-                                    $this.dialog(""option"", ""buttons"", null);
-                                    window.location.href = buttonLink;
-                                },
-                                Cancel: function () {
-                                    $(this).dialog(""close"");
-                                }
-                            }
-                        });
-                    });
-                </script>
-");
+WriteLiteral(">\r\n                    $(function () {\r\n                        var button = $(\'#" +
+"Device_Show_Device_Actions_TrustEnrol_Button\');\r\n                        var but" +
+"tonDialog;\r\n                        button.click(function () {\r\n                " +
+"            if (!buttonDialog) {\r\n                                var buttonLink" +
+" = button.attr(\'href\');\r\n                                button.attr(\'href\', \'#\'" +
+");\r\n                                buttonDialog = $(\'#Device_Show_Device_Action" +
+"s_TrustEnrol_Dialog\').dialog({\r\n                                    resizable: f" +
+"alse,\r\n                                    width: 400,\r\n                        " +
+"            modal: true,\r\n                                    autoOpen: false,\r\n" +
+"                                    buttons: {\r\n                                " +
+"        \"Trust\": function () {\r\n                                            var " +
+"$this = $(this);\r\n                                            $this.dialog(\"disa" +
+"ble\");\r\n                                            $this.dialog(\"option\", \"butt" +
+"ons\", null);\r\n                                            window.location.href =" +
+" buttonLink;\r\n                                        },\r\n                      " +
+"                  Cancel: function () {\r\n                                       " +
+"     $(this).dialog(\"close\");\r\n                                        }\r\n      " +
+"                              }\r\n                                });\r\n          " +
+"                  }\r\n\r\n                            buttonDialog.dialog(\'open\');\r" +
+"\n\r\n                            return false;\r\n                        });\r\n     " +
+"               });\r\n                </script>\r\n");
 
             
-            #line 647 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 651 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
             }
 
             
@@ -2176,7 +2169,7 @@ WriteLiteral(@">
 WriteLiteral("            ");
 
             
-            #line 648 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 652 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
              if (Model.Device.CanUpdateUntrustEnrol())
             {
                 
@@ -2184,14 +2177,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 650 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 654 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Untrust Enrol", MVC.API.Device.UpdateAllowUnauthenticatedEnrol(Model.Device.SerialNumber, false.ToString(), true), "Device_Show_Device_Actions_UntrustEnrol_Button"));
 
             
             #line default
             #line hidden
             
-            #line 650 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 654 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                                                                                                  
 
             
@@ -2253,7 +2246,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 686 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 690 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
             }
 
             
@@ -2262,7 +2255,7 @@ WriteLiteral(@">
 WriteLiteral("            ");
 
             
-            #line 687 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 691 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
              if (Model.Device.CanDecommission())
             { 
                 
@@ -2270,14 +2263,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 689 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 693 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Decommission", MVC.API.Device.Decommission(), "Device_Show_Device_Actions_Decommission_Button"));
 
             
             #line default
             #line hidden
             
-            #line 689 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 693 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                             
 
             
@@ -2309,13 +2302,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 696 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 700 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 696 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 700 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                              foreach (DecommissionReasons decommissionReason in Enum.GetValues(typeof(DecommissionReasons)))
                             {
 
@@ -2326,34 +2319,34 @@ WriteLiteral("                                <li>\r\n                          
 
 WriteLiteral(" type=\"radio\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 43281), Tuple.Create("\"", 43359)
-, Tuple.Create(Tuple.Create("", 43286), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 43286), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 43533), Tuple.Create("\"", 43611)
+, Tuple.Create(Tuple.Create("", 43538), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 43538), true)
             
-            #line 699 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                           , Tuple.Create(Tuple.Create("", 43333), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 703 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+                           , Tuple.Create(Tuple.Create("", 43585), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 43333), false)
+, 43585), false)
 );
 
 WriteLiteral("\r\n                                        name=\"Device_Show_Device_Actions_Decomm" +
 "ission_Reason\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 43455), Tuple.Create("\"", 43489)
+WriteAttribute("value", Tuple.Create(" value=\"", 43707), Tuple.Create("\"", 43741)
             
-            #line 700 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                     , Tuple.Create(Tuple.Create("", 43463), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 704 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+                     , Tuple.Create(Tuple.Create("", 43715), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 43463), false)
+, 43715), false)
 );
 
 WriteLiteral(" ");
 
             
-            #line 700 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 704 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                              Write((decommissionReason == DecommissionReasons.EndOfLife) ? "checked=\"checked\"" : string.Empty);
 
             
@@ -2361,21 +2354,21 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral("/>\r\n                                    <label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 43632), Tuple.Create("\"", 43711)
-, Tuple.Create(Tuple.Create("", 43638), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 43638), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 43884), Tuple.Create("\"", 43963)
+, Tuple.Create(Tuple.Create("", 43890), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 43890), true)
             
-            #line 701 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-               , Tuple.Create(Tuple.Create("", 43685), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 705 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+               , Tuple.Create(Tuple.Create("", 43937), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 43685), false)
+, 43937), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 701 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 705 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                        Write(decommissionReason.ReasonMessage());
 
             
@@ -2384,7 +2377,7 @@ WriteLiteral(">");
 WriteLiteral("</label>\r\n                                </li>\r\n");
 
             
-            #line 703 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 707 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                             }
 
             
@@ -2402,7 +2395,7 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "uttonDialog = null;\r\n                        var deviceSerialNumber = \'");
 
             
-            #line 711 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 715 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                               Write(Model.Device.SerialNumber);
 
             
@@ -2435,7 +2428,7 @@ WriteLiteral("\';\r\n\r\n                        button.click(function () {\r\n\
 "   });\r\n                </script>\r\n");
 
             
-            #line 747 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 751 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
             }
 
             
@@ -2444,7 +2437,7 @@ WriteLiteral("\';\r\n\r\n                        button.click(function () {\r\n\
 WriteLiteral("            ");
 
             
-            #line 748 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 752 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
              if (Model.Device.CanRecommission())
             { 
                 
@@ -2452,14 +2445,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 750 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 754 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Recommission", MVC.API.Device.Recommission(Model.Device.SerialNumber, true), "Device_Show_Device_Actions_Recommission_Button"));
 
             
             #line default
             #line hidden
             
-            #line 750 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 754 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                                                            
 
             
@@ -2513,7 +2506,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 785 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 789 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
             }
 
             
@@ -2522,7 +2515,7 @@ WriteLiteral(@">
 WriteLiteral("            ");
 
             
-            #line 786 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 790 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
              if (Model.Device.CanDelete())
             { 
                 
@@ -2530,14 +2523,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 788 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 792 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Delete Device", MVC.API.Device.Delete(Model.Device.SerialNumber, true), "Device_Show_Device_Actions_Delete_Button"));
 
             
             #line default
             #line hidden
             
-            #line 788 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 792 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                                                 
 
             
@@ -2597,7 +2590,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 826 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 830 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
             }
 
             

@@ -600,7 +600,7 @@
             @if (Model.Device.CanUpdateTrustEnrol())
             {
                 @Html.ActionLinkSmallButton("Trust Enrol", MVC.API.Device.UpdateAllowUnauthenticatedEnrol(Model.Device.SerialNumber, true.ToString(), true), "Device_Show_Device_Actions_TrustEnrol_Button")
-                <div id="Device_Show_Device_Actions_TrustEnrol_Dialog" title="Trust this Device?">
+                <div id="Device_Show_Device_Actions_TrustEnrol_Dialog" class="dialog" title="Trust this Device?">
                     <div class="ui-widget">
                         <div class="ui-state-highlight ui-corner-all" style="padding: 6px;">
                             <div style="padding-bottom: 6px;">
@@ -618,29 +618,33 @@
                 <script type="text/javascript">
                     $(function () {
                         var button = $('#Device_Show_Device_Actions_TrustEnrol_Button');
-                        var buttonDialog = $('#Device_Show_Device_Actions_TrustEnrol_Dialog');
-                        var buttonLink = button.attr('href');
-                        button.attr('href', '#');
+                        var buttonDialog;
                         button.click(function () {
-                            buttonDialog.dialog('open');
-                            return false;
-                        });
-                        buttonDialog.dialog({
-                            resizable: false,
-                            width: 400,
-                            modal: true,
-                            autoOpen: false,
-                            buttons: {
-                                "Trust": function () {
-                                    var $this = $(this);
-                                    $this.dialog("disable");
-                                    $this.dialog("option", "buttons", null);
-                                    window.location.href = buttonLink;
-                                },
-                                Cancel: function () {
-                                    $(this).dialog("close");
-                                }
+                            if (!buttonDialog) {
+                                var buttonLink = button.attr('href');
+                                button.attr('href', '#');
+                                buttonDialog = $('#Device_Show_Device_Actions_TrustEnrol_Dialog').dialog({
+                                    resizable: false,
+                                    width: 400,
+                                    modal: true,
+                                    autoOpen: false,
+                                    buttons: {
+                                        "Trust": function () {
+                                            var $this = $(this);
+                                            $this.dialog("disable");
+                                            $this.dialog("option", "buttons", null);
+                                            window.location.href = buttonLink;
+                                        },
+                                        Cancel: function () {
+                                            $(this).dialog("close");
+                                        }
+                                    }
+                                });
                             }
+
+                            buttonDialog.dialog('open');
+
+                            return false;
                         });
                     });
                 </script>

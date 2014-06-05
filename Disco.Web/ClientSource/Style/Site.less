@@ -907,9 +907,9 @@ select {
     color: #444;
 }
 
-select.small {
-    padding: 0;
-}
+    select.small {
+        padding: 0;
+    }
 
 input[type="submit"], button {
     font-family: @FontFamilyBody;
@@ -1073,6 +1073,100 @@ div.form {
             border-right: none;
             padding-right: 0;
         }
+}
+
+// Attachment Uploader
+div.disco-attachmentUpload-dropTarget {
+    display: none;
+
+    &.dragHighlight {
+        display: block;
+        position: absolute;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        width: calc(~"100% - 6px");
+        height: calc(~"100% - 6px");
+        background-color: fadeOut(lighten(@ThemeAmber, 30%), 50%);
+        border: 3px dashed @ThemeAmber;
+
+        h2 {
+            margin-top: 3em !important;
+            color: darken(@ThemeAmber, 40%);
+            text-align: center;
+            font-weight: bold;
+        }
+
+        &.dragHover {
+            background-color: fadeOut(lighten(@ThemeGreen, 30%), 50%);
+            border: 3px dashed @ThemeGreen;
+
+            h2 {
+                color: darken(@ThemeGreen, 40%);
+            }
+        }
+    }
+}
+
+div.disco-attachmentUpload-progress {
+    position: absolute;
+    right: 0px;
+    bottom: 48px;
+
+    & > div {
+        background-color: @BackgroundColourLight;
+        padding: 4px 8px;
+
+        i {
+            color: @StatusInformation;
+            margin-right: 4px;
+        }
+    }
+}
+
+div.disco-attachmentUpload-commentDialog {
+    padding: 0.25em 0.5em !important;
+
+    table {
+        .tableData;
+        table-layout: fixed;
+
+        th {
+            width: 80px;
+        }
+
+        td.filename {
+            font-family: @FontFamilyMono;
+            white-space: nowrap;
+            overflow: hidden;
+            -ms-text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+        }
+
+        input.comments {
+            width: calc(~"100% - 5px");
+        }
+
+        td.thumbnail {
+            display: none;
+            text-align: center;
+
+            img {
+                border: 1px solid @ButtonHoverColour;
+                max-height: 250px;
+                max-width: 374px;
+            }
+        }
+    }
+}
+
+div.disco-attachmentUpload-imageDialog {
+    background-color: @black !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    width: 720px !important;
+    height: 540px !important;
 }
 
 // Priority Colours
