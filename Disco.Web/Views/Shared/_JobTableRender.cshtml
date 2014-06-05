@@ -68,7 +68,7 @@
                         @if (Model.ShowStatus)
                         {
                             var statusItem = (JobTableStatusItemModel)item;
-                            <td class="status"><i class="fa fa-square jobStatus @(item.StatusId)"></i>&nbsp;@item.StatusDescription
+                            <td class="status">
                                 @if (statusItem.ActiveJobQueues != null)
                                 {<div class="queues">
                                     @foreach (var jqToken in ((JobTableStatusItemModel)item).ActiveJobQueues.Select(jqj => new Tuple<JobTableStatusQueueItemModel, Disco.Services.Jobs.JobQueues.JobQueueToken>(jqj, Disco.Services.Jobs.JobQueues.JobQueueService.GetQueue(jqj.QueueId))))
@@ -76,6 +76,7 @@
                                         <i class="fa fa-@(jqToken.Item2.JobQueue.Icon) fa-fw d-@(jqToken.Item2.JobQueue.IconColour)" title="@(jqToken.Item2.JobQueue.Name) [@(jqToken.Item1.Priority)]"></i>
                                     }
                                 </div>}
+                                <i class="fa fa-square jobStatus @(item.StatusId)"></i>&nbsp;@item.StatusDescription
                             </td>}
                         @if (Model.ShowLastActivityDate)
                         {<td class="lastActive">@CommonHelpers.FriendlyDate(item.LastActivityDate)</td>}
