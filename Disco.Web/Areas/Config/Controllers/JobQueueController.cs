@@ -2,6 +2,7 @@
 using Disco.Models.Services.Jobs.JobQueues;
 using Disco.Models.UI.Config.JobQueue;
 using Disco.Services.Authorization;
+using Disco.Services.Extensions;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Jobs.JobQueues;
 using Disco.Services.Plugins.Features.UIExtension;
@@ -50,6 +51,8 @@ namespace Disco.Web.Areas.Config.Controllers
                 if (Authorization.Has(Claims.Config.JobQueue.Configure))
                 {
                     m.JobTypes = Database.JobTypes.Include("JobSubTypes").ToList();
+                    m.Icons = UIHelpers.Icons;
+                    m.ThemeColours = UIHelpers.ThemeColours;
                 }
 
                 // UI Extensions
@@ -83,8 +86,8 @@ namespace Disco.Web.Areas.Config.Controllers
             {
                 JobQueue = new Disco.Models.Repository.JobQueue()
                 {
-                    Icon = JobQueueService.RandomIcon(),
-                    IconColour = JobQueueService.RandomIconColour(),
+                    Icon = JobQueueService.RandomUnusedIcon(),
+                    IconColour = JobQueueService.RandomUnusedThemeColour(),
                     Priority = JobQueuePriority.Normal
                 }
             };

@@ -1,4 +1,5 @@
 ﻿@model Disco.Web.Models.Job.ShowModel
+@using Disco.Services.Users.UserFlags;
 @{
     Authorization.Require(Claims.Job.Show);
 }
@@ -466,6 +467,46 @@
                         if (!string.IsNullOrWhiteSpace(Model.Job.User.EmailAddress))
                         {<div id="Job_Show_User_EmailAddress" title="Email Address">Email: <a href="mailto:@(Model.Job.User.EmailAddress)">@Model.Job.User.EmailAddress</a></div>}
                     }
+                    @if (Authorization.Has(Claims.User.ShowFlagAssignments))
+                    {
+                        <div id="Job_Show_User_Flags">
+                            @foreach (var flag in Model.Job.User.UserFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, UserFlagService.GetUserFlag(f.UserFlagId))))
+                            {
+                                <i class="flag fa fa-@(flag.Item2.Icon) fa-fw d-@(flag.Item2.IconColour)"><span class="details"><span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
+                                                                                                                                                                          {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span></span></i>
+                            }
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#Job_Show_User_Flags')
+                                        .tooltip({
+                                            items: 'i.flag',
+                                            content: function () {
+                                                var $this = $(this);
+                                                return $this.children('.details').html();
+                                            },
+                                            tooltipClass: 'User_FlagAssignment_Tooltip',
+                                            position: {
+                                                my: "right top",
+                                                at: "right bottom",
+                                                collision: "flipfit flip"
+                                            },
+                                            hade: {
+                                                effect: ''
+                                            },
+                                            close: function (e, ui) {
+                                                ui.tooltip.hover(
+                                                    function () {
+                                                        $(this).stop(true).fadeTo(100, 1);
+                                                    },
+                                                    function () {
+                                                        $(this).fadeOut(100, function () { $(this).remove(); });
+                                                    });
+                                            }
+                                        });
+                                });
+                            </script>
+                        </div>
+                    }
                     @if (Model.Job.WaitingForUserAction.HasValue)
                     {
                         <div id="Job_Show_User_WaitingForUserAction" class="status">
@@ -694,6 +735,7 @@
                         var buttonLink = button.attr('href');
                         
                         var queuePicker = null;
+                        var queueId = null;
                         var details = null;
 
                         function queueSelected(){
@@ -702,7 +744,7 @@
                             queuePicker.children().removeClass('selected');
                             queue.addClass('selected');
 
-                            $('#Job_Show_Job_Actions_AddQueue_Dialog_Id').val(queue.attr('data-queueid'));
+                            queueId.val(queue.attr('data-queueid'));
 
                             var queueSLA = queue.attr('data-queuesla');
                             if (!queueSLA)
@@ -730,15 +772,20 @@
                                             $(this).dialog("close");
                                         },
                                         "Add to Queue": function () {
-                                            var $this = $(this);
-                                            $this.dialog("disable");
-                                            $this.dialog("option", "buttons", null);
-                                            buttonDialog.find('form').submit();
+                                            if (!!queueId.val()){
+                                                var $this = $(this);
+                                                $this.dialog("disable");
+                                                $this.dialog("option", "buttons", null);
+                                                buttonDialog.find('form').submit();
+                                            }else{
+                                                alert('Select a Job Queue');
+                                            }
                                         }
                                     }
                                 });
 
                                 queuePicker = buttonDialog.find('.queuePicker');
+                                queueId = $('#Job_Show_Job_Actions_AddQueue_Dialog_Id');
                                 details = buttonDialog.find('.details');
 
                                 var priorityList = buttonDialog.find('#Priority');

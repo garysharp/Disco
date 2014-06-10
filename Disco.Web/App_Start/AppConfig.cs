@@ -56,6 +56,9 @@ namespace Disco.Web
             // Initialize Job Queues
             Disco.Services.Jobs.JobQueues.JobQueueService.Initialize(Database);
 
+            // Initialize User Flags
+            Disco.Services.Users.UserFlags.UserFlagService.Initialize(Database);
+
             // Initialize Plugins
             Disco.Services.Plugins.Plugins.InitalizePlugins(Database);
 
@@ -74,9 +77,6 @@ namespace Disco.Web
 
             DiscoApplication.DocumentDropBoxMonitor.StartWatching();
             DiscoApplication.DocumentDropBoxMonitor.ScheduleCurrentFiles(10);
-
-            // Enable SignalR-based Repository Notifications
-            //Disco.BI.Interop.SignalRHandlers.RepositoryMonitorNotifications.Initialize();
         }
 
         public static void InitializeUpdateEnvironment(DiscoDataContext Database, Version PreviousVersion)

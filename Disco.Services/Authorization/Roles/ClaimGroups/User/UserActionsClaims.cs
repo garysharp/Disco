@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Services.Authorization.Roles.ClaimGroups.User
+﻿namespace Disco.Services.Authorization.Roles.ClaimGroups.User
 {
     [ClaimDetails("Actions", "Permissions related to User Actions")]
     public class UserActionsClaims : BaseRoleClaimGroup
@@ -18,5 +12,12 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.User
 
         [ClaimDetails("Generate Documents", "Can generate documents for users")]
         public bool GenerateDocuments { get; set; }
+
+        [ClaimDetails("Add User Flags", "Can add user flags")]
+        public bool AddFlags { get; set; }
+        [ClaimDetails("Remove User Flags", "Can remove user flags")]
+        public bool RemoveFlags { get; set; }
+        [ClaimDetails("Edit User Flags", "Can edit user flags")]
+        public bool EditFlags { get; set; }
     }
 }

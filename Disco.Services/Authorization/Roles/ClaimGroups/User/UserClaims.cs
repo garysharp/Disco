@@ -35,6 +35,9 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.User
         [ClaimDetails("Show Users Jobs", "Can show jobs associated with users")]
         public bool ShowJobs { get; set; }
 
+        [ClaimDetails("Show Users Flag Assignments", "Can show flags associated with users")]
+        public bool ShowFlagAssignments { get; set; }
+
         [ClaimDetails("Show Users Authorization", "Can show authorization permissions associated with users")]
         public bool ShowAuthorization { get; set; }
 

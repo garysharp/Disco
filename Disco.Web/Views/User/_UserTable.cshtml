@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Disco.Models.Services.Searching.UserSearchResultItem>
+@using Disco.Services.Users.UserFlags;
 <div class="genericData userTable">
     @if (Model != null && Model.Count() > 0)
     { 
@@ -26,12 +27,20 @@
                         <td>
                             @if (Authorization.Has(Claims.User.Show))
                             {
-                                @Html.ActionLink(item.Id, MVC.User.Show(item.Id))
+                                @Html.ActionLink(item.FriendlyId, MVC.User.Show(item.Id))
                             }
                             else
                             {
-                                @item.Id
+                                @item.FriendlyId
                             }
+                            @if (item.UserFlagAssignments != null && item.UserFlagAssignments.Count > 0)
+                            {<div class="flags">
+                                @foreach (var flag in item.UserFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, UserFlagService.GetUserFlag(f.UserFlagId))))
+                                {
+                                    <i class="flag fa fa-@(flag.Item2.Icon) fa-fw d-@(flag.Item2.IconColour)"><span class="details"><span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
+                                                                                                                                                                              {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span></span></i>
+                                }
+                            </div>}
                         </td>
                         <td>
                             @item.Surname
@@ -46,12 +55,54 @@
                             @item.AssignedDevicesCount
                         </td>
                         <td>
-                            @item.JobCount
+                            @item.JobCountOpen @if (item.JobCount > item.JobCountOpen)
+                                               {
+                                <span class="smallMessage">(@(item.JobCount - item.JobCountOpen) Closed)</span>
+                                               }
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
+        <script type="text/javascript">
+            $(function () {
+                var userTable = $('table.userTable');
+
+                userTable.each(function () {
+                    var $this = $(this);
+
+                    if (!$this.data('userTable_Flags')) {
+                        $this.tooltip({
+                            items: 'i.flag',
+                            content: function () {
+                                var $this = $(this);
+                                return $this.children('.details').html();
+                            },
+                            tooltipClass: 'User_FlagAssignment_Tooltip',
+                            position: {
+                                my: "right top",
+                                at: "right bottom",
+                                collision: "flipfit flip"
+                            },
+                            hade: {
+                                effect: ''
+                            },
+                            close: function (e, ui) {
+                                ui.tooltip.hover(
+                                    function () {
+                                        $(this).stop(true).fadeTo(100, 1);
+                                    },
+                                    function () {
+                                        $(this).fadeOut(100, function () { $(this).remove(); });
+                                    });
+                            }
+                        });
+
+                        $this.data('userTable_Flags', true)
+                    }
+                });
+            });
+        </script>
     }
     else
     { 

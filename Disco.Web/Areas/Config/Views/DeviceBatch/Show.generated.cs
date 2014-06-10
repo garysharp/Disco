@@ -2025,7 +2025,7 @@ WriteLiteral("    ");
             #line 666 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                                                                                                 
         }
-        if (Authorization.Has(Claims.Device.Search))
+        if (Authorization.Has(Claims.Device.Search) && Model.DeviceCount > 0)
         {
         
             
@@ -2033,21 +2033,21 @@ WriteLiteral("    ");
             #line hidden
             
             #line 670 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-   Write(Html.ActionLinkButton("View Devices", MVC.Search.Query(Model.DeviceBatch.Id.ToString(), "DeviceBatch")));
+   Write(Html.ActionLinkButton(string.Format("View {0} Device{1}", Model.DeviceCount, (Model.DeviceCount != 1 ? "s" : null)), MVC.Search.Query(Model.DeviceBatch.Id.ToString(), "DeviceBatch")));
 
             
             #line default
             #line hidden
             
             #line 670 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-                                                                                                                
+                                                                                                                                                                                               
         }
     }
 
             
             #line default
             #line hidden
-WriteLiteral("</div>\r\n");
+WriteLiteral("</div>");
 
         }
     }

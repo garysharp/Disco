@@ -5,9 +5,9 @@
 }
 <table id="pageMenu">
     <tr>
-        @if (Authorization.HasAny(Claims.Config.System.Show, Claims.Config.Organisation.Show, Claims.DiscoAdminAccount, Claims.Config.Logging.Show))
-        {
-            <td>
+        <td>
+            @if (Authorization.HasAny(Claims.Config.System.Show, Claims.Config.Organisation.Show, Claims.DiscoAdminAccount, Claims.Config.Logging.Show, Claims.Config.Plugin.Show))
+            {
                 <div class="pageMenuArea">
                     <h2>Hosting</h2>
                     @if (Authorization.Has(Claims.Config.System.Show))
@@ -22,6 +22,13 @@
                         <i class="fa fa-cog"></i>@Html.ActionLinkClass("Organisation Details", MVC.Config.Organisation.Index(), "config")
                         <div class="pageMenuBlurb">
                             Update the Organisation Name, Logo and Addresses associated with this organisation.
+                        </div>
+                    }
+                    @if (Authorization.Has(Claims.Config.Plugin.Show))
+                    {
+                        <i class="fa fa-cog"></i>@Html.ActionLinkClass("Plugins", MVC.Config.Plugins.Index(), "config")
+                        <div class="pageMenuBlurb">
+                            Manage extensions to the Disco platform.
                         </div>
                     }
                     @if (Authorization.Has(Claims.DiscoAdminAccount))
@@ -39,8 +46,8 @@
                         </div>
                     }
                 </div>
-            </td>
-        }
+            }
+        </td>
         @if (Authorization.HasAny(Claims.Config.DeviceModel.Show, Claims.Config.DeviceBatch.Show, Claims.Config.DeviceProfile.Show, Claims.Config.Enrolment.Show))
         {
             <td>
@@ -78,7 +85,7 @@
                 </div>
             </td>
         }
-        @if (Authorization.HasAny(Claims.Config.JobPreferences.Show, Claims.Config.JobQueue.Show, Claims.Config.DocumentTemplate.Show, Claims.Config.Plugin.Show))
+        @if (Authorization.HasAny(Claims.Config.JobPreferences.Show, Claims.Config.JobQueue.Show, Claims.Config.UserFlag.Show, Claims.Config.DocumentTemplate.Show))
         {
             <td>
                 @if (Authorization.HasAny(Claims.Config.JobPreferences.Show, Claims.Config.JobQueue.Show))
@@ -101,10 +108,22 @@
                         }
                     </div>
                 }
-
-                @if (Authorization.HasAny(Claims.Config.DocumentTemplate.Show, Claims.Config.Plugin.Show))
+                @if (Authorization.HasAny(Claims.Config.UserFlag.Show))
                 {
-                    <div class="pageMenuArea">
+                    <div class="pageMenuArea noSeperator">
+                        <h2>Users</h2>
+                        @if (Authorization.Has(Claims.Config.UserFlag.Show))
+                        {
+                            <i class="fa fa-cog"></i>@Html.ActionLinkClass("User Flags", MVC.Config.UserFlag.Index(), "config")
+                            <div class="pageMenuBlurb">
+                                Create and manage user flags.
+                            </div>
+                        }
+                    </div>
+                }
+                @if (Authorization.HasAny(Claims.Config.DocumentTemplate.Show))
+                {
+                    <div class="pageMenuArea noSeperator">
                         <h2>Features</h2>
                         @if (Authorization.Has(Claims.Config.DocumentTemplate.Show))
                         {
@@ -112,13 +131,6 @@
                             <div class="pageMenuBlurb">
                                 Create, Update and Bulk Generate documents based on PDF Templates for Jobs, Devices
                     and Users.
-                            </div>
-                        }
-                        @if (Authorization.Has(Claims.Config.Plugin.Show))
-                        {
-                            <i class="fa fa-cog"></i>@Html.ActionLinkClass("Plugins", MVC.Config.Plugins.Index(), "config")
-                            <div class="pageMenuBlurb">
-                                Manage extensions to the Disco platform.
                             </div>
                         }
                     </div>

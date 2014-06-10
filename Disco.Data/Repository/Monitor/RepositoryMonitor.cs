@@ -177,6 +177,11 @@ namespace Disco.Data.Repository.Monitor
             {
                 key["UserId"] = ((UserAttachment)entryState.Entity).UserId;
             }
+            if (entryState.Entity is UserFlagAssignment)
+            {
+                key["UserFlagId"] = ((UserFlagAssignment)entryState.Entity).UserFlagId;
+                key["UserId"] = ((UserFlagAssignment)entryState.Entity).UserId;
+            }
 
             return key;
         }

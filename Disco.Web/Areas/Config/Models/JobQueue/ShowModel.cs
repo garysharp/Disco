@@ -14,6 +14,9 @@ namespace Disco.Web.Areas.Config.Models.JobQueue
         public int OpenJobCount { get; set; }
         public int TotalJobCount { get; set; }
 
+        public IEnumerable<KeyValuePair<string, string>> Icons { get; set; }
+        public IEnumerable<KeyValuePair<string, string>> ThemeColours { get; set; }
+
         public List<Disco.Models.Repository.JobType> JobTypes { get; set; }
 
         public bool CanDelete { get; set; }

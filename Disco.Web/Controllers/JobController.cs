@@ -296,7 +296,7 @@ namespace Disco.Web.Controllers
 
             m.Job = Database.Jobs
                 .Include("Device.DeviceModel").Include("Device.DeviceBatch").Include("DeviceHeldTechUser").Include("DeviceReadyForReturnTechUser").Include("DeviceReturnedTechUser")
-                .Include("OpenedTechUser").Include("ClosedTechUser").Include("JobType").Include("JobSubTypes").Include("User").Include("JobLogs.TechUser")
+                .Include("OpenedTechUser").Include("ClosedTechUser").Include("JobType").Include("JobSubTypes").Include("User.UserFlagAssignments").Include("JobLogs.TechUser")
                 .Include("JobAttachments.TechUser").Include("JobAttachments.DocumentTemplate")
                 .FirstOrDefault(j => j.Id == id.Value);
 

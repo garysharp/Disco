@@ -63,7 +63,7 @@ namespace Disco.Web.Views.Job.JobParts
     var hasJobQueueShow = Authorization.Has(Claims.Config.JobQueue.Show);
 
     var queues = JobQueueService.GetQueues();
-    var queueHistory = Model.Job.JobQueues.Select(jq => new Tuple<JobQueueJob, JobQueueToken>(jq, queues.First(q => q.JobQueue.Id == jq.JobQueueId))).OrderBy(jq => jq.Item1.AddedDate).ToList();
+    var queueHistory = Model.Job.JobQueues.Select(jq => new Tuple<JobQueueJob, JobQueueToken>(jq, queues.First(q => q.JobQueue.Id == jq.JobQueueId))).ToList();
 
             
             #line default
@@ -139,14 +139,14 @@ WriteLiteral(" data-jobqueuejobaddeddate=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1405), Tuple.Create("\"", 1468)
+WriteAttribute("class", Tuple.Create(" class=\"", 1371), Tuple.Create("\"", 1434)
             
             #line 28 "..\..\Views\Job\JobParts\Queues.cshtml"
-                                          , Tuple.Create(Tuple.Create("", 1413), Tuple.Create<System.Object, System.Int32>(!jq.Item1.RemovedDate.HasValue ? "added" : "removed"
+                                          , Tuple.Create(Tuple.Create("", 1379), Tuple.Create<System.Object, System.Int32>(!jq.Item1.RemovedDate.HasValue ? "added" : "removed"
             
             #line default
             #line hidden
-, 1413), false)
+, 1379), false)
 );
 
 WriteLiteral(">\r\n                <td");
@@ -155,26 +155,26 @@ WriteLiteral(" class=\"name\"");
 
 WriteLiteral(">\r\n                    <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1529), Tuple.Create("\"", 1614)
-, Tuple.Create(Tuple.Create("", 1537), Tuple.Create("fa", 1537), true)
-, Tuple.Create(Tuple.Create(" ", 1539), Tuple.Create("fa-", 1540), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1495), Tuple.Create("\"", 1580)
+, Tuple.Create(Tuple.Create("", 1503), Tuple.Create("fa", 1503), true)
+, Tuple.Create(Tuple.Create(" ", 1505), Tuple.Create("fa-", 1506), true)
             
             #line 30 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create("", 1543), Tuple.Create<System.Object, System.Int32>(jq.Item2.JobQueue.Icon
+, Tuple.Create(Tuple.Create("", 1509), Tuple.Create<System.Object, System.Int32>(jq.Item2.JobQueue.Icon
             
             #line default
             #line hidden
-, 1543), false)
-, Tuple.Create(Tuple.Create(" ", 1568), Tuple.Create("fa-fw", 1569), true)
-, Tuple.Create(Tuple.Create(" ", 1574), Tuple.Create("fa-lg", 1575), true)
-, Tuple.Create(Tuple.Create(" ", 1580), Tuple.Create("d-", 1581), true)
+, 1509), false)
+, Tuple.Create(Tuple.Create(" ", 1534), Tuple.Create("fa-fw", 1535), true)
+, Tuple.Create(Tuple.Create(" ", 1540), Tuple.Create("fa-lg", 1541), true)
+, Tuple.Create(Tuple.Create(" ", 1546), Tuple.Create("d-", 1547), true)
             
             #line 30 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create("", 1583), Tuple.Create<System.Object, System.Int32>(jq.Item2.JobQueue.IconColour
+, Tuple.Create(Tuple.Create("", 1549), Tuple.Create<System.Object, System.Int32>(jq.Item2.JobQueue.IconColour
             
             #line default
             #line hidden
-, 1583), false)
+, 1549), false)
 );
 
 WriteLiteral("></i>\r\n");
@@ -237,28 +237,28 @@ WriteLiteral("                    ");
             #line hidden
 WriteLiteral("                        <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2077), Tuple.Create("\"", 2149)
-, Tuple.Create(Tuple.Create("", 2085), Tuple.Create("fa", 2085), true)
-, Tuple.Create(Tuple.Create(" ", 2087), Tuple.Create("d-priority-", 2088), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 2043), Tuple.Create("\"", 2115)
+, Tuple.Create(Tuple.Create("", 2051), Tuple.Create("fa", 2051), true)
+, Tuple.Create(Tuple.Create(" ", 2053), Tuple.Create("d-priority-", 2054), true)
             
             #line 41 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create("", 2099), Tuple.Create<System.Object, System.Int32>(jq.Item2.JobQueue.Priority.ToString().ToLower()
+, Tuple.Create(Tuple.Create("", 2065), Tuple.Create<System.Object, System.Int32>(jq.Item2.JobQueue.Priority.ToString().ToLower()
             
             #line default
             #line hidden
-, 2099), false)
+, 2065), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2150), Tuple.Create("\"", 2213)
+WriteAttribute("title", Tuple.Create(" title=\"", 2116), Tuple.Create("\"", 2179)
             
             #line 41 "..\..\Views\Job\JobParts\Queues.cshtml"
-                            , Tuple.Create(Tuple.Create("", 2158), Tuple.Create<System.Object, System.Int32>(jq.Item2.JobQueue.Priority.ToString()
+                            , Tuple.Create(Tuple.Create("", 2124), Tuple.Create<System.Object, System.Int32>(jq.Item2.JobQueue.Priority.ToString()
             
             #line default
             #line hidden
-, 2158), false)
-, Tuple.Create(Tuple.Create(" ", 2198), Tuple.Create("Queue", 2199), true)
-, Tuple.Create(Tuple.Create(" ", 2204), Tuple.Create("Priority", 2205), true)
+, 2124), false)
+, Tuple.Create(Tuple.Create(" ", 2164), Tuple.Create("Queue", 2165), true)
+, Tuple.Create(Tuple.Create(" ", 2170), Tuple.Create("Priority", 2171), true)
 );
 
 WriteLiteral("></i>\r\n");
@@ -338,7 +338,22 @@ WriteLiteral(">");
 
             
             #line 55 "..\..\Views\Job\JobParts\Queues.cshtml"
-                                         Write(jq.Item1.AddedComment);
+                                         Write(jq.Item1.AddedComment.ToHtmlComment());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</div>\r\n");
+
+WriteLiteral("                        <div");
+
+WriteLiteral(" class=\"commentsRaw\"");
+
+WriteLiteral(">");
+
+            
+            #line 56 "..\..\Views\Job\JobParts\Queues.cshtml"
+                                            Write(jq.Item1.AddedComment);
 
             
             #line default
@@ -346,7 +361,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 56 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 57 "..\..\Views\Job\JobParts\Queues.cshtml"
                     }
 
             
@@ -359,7 +374,7 @@ WriteLiteral(" class=\"when\"");
 WriteLiteral(">");
 
             
-            #line 57 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 58 "..\..\Views\Job\JobParts\Queues.cshtml"
                                  Write(CommonHelpers.FriendlyDateAndUser(jq.Item1.AddedDate, jq.Item1.AddedUser));
 
             
@@ -367,27 +382,27 @@ WriteLiteral(">");
             #line hidden
 WriteLiteral("</div>\r\n                </td>\r\n                <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2978), Tuple.Create("\"", 3041)
-, Tuple.Create(Tuple.Create("", 2986), Tuple.Create("removed", 2986), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 3039), Tuple.Create("\"", 3102)
+, Tuple.Create(Tuple.Create("", 3047), Tuple.Create("removed", 3047), true)
             
-            #line 59 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create("", 2993), Tuple.Create<System.Object, System.Int32>(!jq.Item1.RemovedDate.HasValue ? " na" : null
+            #line 60 "..\..\Views\Job\JobParts\Queues.cshtml"
+, Tuple.Create(Tuple.Create("", 3054), Tuple.Create<System.Object, System.Int32>(!jq.Item1.RemovedDate.HasValue ? " na" : null
             
             #line default
             #line hidden
-, 2993), false)
+, 3054), false)
 );
 
 WriteLiteral(">\r\n");
 
             
-            #line 60 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 61 "..\..\Views\Job\JobParts\Queues.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 60 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 61 "..\..\Views\Job\JobParts\Queues.cshtml"
                      if (jq.Item1.RemovedDate.HasValue)
                     {
                         if (jq.Item1.CanEditRemovedComment())
@@ -405,7 +420,7 @@ WriteLiteral(" title=\"Edit Comment\"");
 WriteLiteral("></i>\r\n");
 
             
-            #line 65 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 66 "..\..\Views\Job\JobParts\Queues.cshtml"
                         }
                         if (jq.Item1.RemovedComment == null)
                         {
@@ -420,7 +435,7 @@ WriteLiteral(" class=\"comments smallMessage\"");
 WriteLiteral(">[no comment]</div>\r\n");
 
             
-            #line 69 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 70 "..\..\Views\Job\JobParts\Queues.cshtml"
                         }
                         else
                         {
@@ -435,8 +450,23 @@ WriteLiteral(" class=\"comments\"");
 WriteLiteral(">");
 
             
-            #line 72 "..\..\Views\Job\JobParts\Queues.cshtml"
-                                         Write(jq.Item1.RemovedComment);
+            #line 73 "..\..\Views\Job\JobParts\Queues.cshtml"
+                                         Write(jq.Item1.RemovedComment.ToHtmlComment());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</div>\r\n");
+
+WriteLiteral("                        <div");
+
+WriteLiteral(" class=\"commentsRaw\"");
+
+WriteLiteral(">");
+
+            
+            #line 74 "..\..\Views\Job\JobParts\Queues.cshtml"
+                                            Write(jq.Item1.RemovedComment);
 
             
             #line default
@@ -444,7 +474,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 73 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 75 "..\..\Views\Job\JobParts\Queues.cshtml"
                         }
 
             
@@ -457,7 +487,7 @@ WriteLiteral(" class=\"when\"");
 WriteLiteral(">");
 
             
-            #line 74 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 76 "..\..\Views\Job\JobParts\Queues.cshtml"
                                      Write(CommonHelpers.FriendlyDateAndUser(jq.Item1.RemovedDate.Value, jq.Item1.RemovedUser));
 
             
@@ -466,7 +496,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 75 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 77 "..\..\Views\Job\JobParts\Queues.cshtml"
                     }
                     else if (jq.Item1.CanRemove())
                     {
@@ -478,23 +508,23 @@ WriteLiteral("                        <a");
 
 WriteLiteral(" href=\"#\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 3945), Tuple.Create("\"", 4046)
-, Tuple.Create(Tuple.Create("", 3953), Tuple.Create("button", 3953), true)
-, Tuple.Create(Tuple.Create(" ", 3959), Tuple.Create("small", 3960), true)
-, Tuple.Create(Tuple.Create(" ", 3965), Tuple.Create("remove", 3966), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4103), Tuple.Create("\"", 4204)
+, Tuple.Create(Tuple.Create("", 4111), Tuple.Create("button", 4111), true)
+, Tuple.Create(Tuple.Create(" ", 4117), Tuple.Create("small", 4118), true)
+, Tuple.Create(Tuple.Create(" ", 4123), Tuple.Create("remove", 4124), true)
             
-            #line 78 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create(" ", 3972), Tuple.Create<System.Object, System.Int32>(jq.Item1.CanCloseJobNormallyAfterRemoved() ? "canCloseNormally" : null
+            #line 80 "..\..\Views\Job\JobParts\Queues.cshtml"
+, Tuple.Create(Tuple.Create(" ", 4130), Tuple.Create<System.Object, System.Int32>(jq.Item1.CanCloseJobNormallyAfterRemoved() ? "canCloseNormally" : null
             
             #line default
             #line hidden
-, 3973), false)
+, 4131), false)
 );
 
 WriteLiteral(">Remove</a>\r\n");
 
             
-            #line 79 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 81 "..\..\Views\Job\JobParts\Queues.cshtml"
                     }
                     else
                     {
@@ -509,7 +539,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">In Progress</span>\r\n");
 
             
-            #line 83 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 85 "..\..\Views\Job\JobParts\Queues.cshtml"
                     }
 
             
@@ -517,35 +547,35 @@ WriteLiteral(">In Progress</span>\r\n");
             #line hidden
 WriteLiteral("                </td>\r\n                <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4268), Tuple.Create("\"", 4413)
-, Tuple.Create(Tuple.Create("", 4276), Tuple.Create("sla", 4276), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4426), Tuple.Create("\"", 4571)
+, Tuple.Create(Tuple.Create("", 4434), Tuple.Create("sla", 4434), true)
             
-            #line 85 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create(" ", 4279), Tuple.Create<System.Object, System.Int32>(overdue ? "overdue" : null
-            
-            #line default
-            #line hidden
-, 4280), false)
-            
-            #line 85 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create(" ", 4309), Tuple.Create<System.Object, System.Int32>(jq.Item1.CanEditSla() ? "canEditSLA" : null
+            #line 87 "..\..\Views\Job\JobParts\Queues.cshtml"
+, Tuple.Create(Tuple.Create(" ", 4437), Tuple.Create<System.Object, System.Int32>(overdue ? "overdue" : null
             
             #line default
             #line hidden
-, 4310), false)
+, 4438), false)
             
-            #line 85 "..\..\Views\Job\JobParts\Queues.cshtml"
-                            , Tuple.Create(Tuple.Create(" ", 4356), Tuple.Create<System.Object, System.Int32>(jq.Item1.CanEditPriority() ? "canEditPriority" : null
+            #line 87 "..\..\Views\Job\JobParts\Queues.cshtml"
+, Tuple.Create(Tuple.Create(" ", 4467), Tuple.Create<System.Object, System.Int32>(jq.Item1.CanEditSla() ? "canEditSLA" : null
             
             #line default
             #line hidden
-, 4357), false)
+, 4468), false)
+            
+            #line 87 "..\..\Views\Job\JobParts\Queues.cshtml"
+                            , Tuple.Create(Tuple.Create(" ", 4514), Tuple.Create<System.Object, System.Int32>(jq.Item1.CanEditPriority() ? "canEditPriority" : null
+            
+            #line default
+            #line hidden
+, 4515), false)
 );
 
 WriteLiteral(" data-priority=\"");
 
             
-            #line 85 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 87 "..\..\Views\Job\JobParts\Queues.cshtml"
                                                                                                                                                                                  Write(jq.Item1.Priority.ToString());
 
             
@@ -556,7 +586,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-sla=\"");
 
             
-            #line 85 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 87 "..\..\Views\Job\JobParts\Queues.cshtml"
                                                                                                                                                                                                                             Write(jq.Item1.SLAExpiresDate.HasValue ? jq.Item1.SLAExpiresDate.Value.ToString("s") : null);
 
             
@@ -567,13 +597,13 @@ WriteLiteral("\"");
 WriteLiteral(">\r\n");
 
             
-            #line 86 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 88 "..\..\Views\Job\JobParts\Queues.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 86 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 88 "..\..\Views\Job\JobParts\Queues.cshtml"
                      if (jq.Item1.CanEditSla() || jq.Item1.CanEditPriority())
                     {
 
@@ -589,7 +619,7 @@ WriteLiteral(" title=\"Edit SLA\"");
 WriteLiteral("></i>\r\n");
 
             
-            #line 89 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 91 "..\..\Views\Job\JobParts\Queues.cshtml"
                     }
 
             
@@ -597,40 +627,40 @@ WriteLiteral("></i>\r\n");
             #line hidden
 WriteLiteral("                    <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4787), Tuple.Create("\"", 4850)
-, Tuple.Create(Tuple.Create("", 4795), Tuple.Create("fa", 4795), true)
-, Tuple.Create(Tuple.Create(" ", 4797), Tuple.Create("d-priority-", 4798), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4945), Tuple.Create("\"", 5008)
+, Tuple.Create(Tuple.Create("", 4953), Tuple.Create("fa", 4953), true)
+, Tuple.Create(Tuple.Create(" ", 4955), Tuple.Create("d-priority-", 4956), true)
             
-            #line 90 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create("", 4809), Tuple.Create<System.Object, System.Int32>(jq.Item1.Priority.ToString().ToLower()
+            #line 92 "..\..\Views\Job\JobParts\Queues.cshtml"
+, Tuple.Create(Tuple.Create("", 4967), Tuple.Create<System.Object, System.Int32>(jq.Item1.Priority.ToString().ToLower()
             
             #line default
             #line hidden
-, 4809), false)
+, 4967), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4851), Tuple.Create("\"", 4903)
+WriteAttribute("title", Tuple.Create(" title=\"", 5009), Tuple.Create("\"", 5061)
             
-            #line 90 "..\..\Views\Job\JobParts\Queues.cshtml"
-               , Tuple.Create(Tuple.Create("", 4859), Tuple.Create<System.Object, System.Int32>(jq.Item1.Priority.ToString()
+            #line 92 "..\..\Views\Job\JobParts\Queues.cshtml"
+               , Tuple.Create(Tuple.Create("", 5017), Tuple.Create<System.Object, System.Int32>(jq.Item1.Priority.ToString()
             
             #line default
             #line hidden
-, 4859), false)
-, Tuple.Create(Tuple.Create(" ", 4890), Tuple.Create("Job", 4891), true)
-, Tuple.Create(Tuple.Create(" ", 4894), Tuple.Create("Priority", 4895), true)
+, 5017), false)
+, Tuple.Create(Tuple.Create(" ", 5048), Tuple.Create("Job", 5049), true)
+, Tuple.Create(Tuple.Create(" ", 5052), Tuple.Create("Priority", 5053), true)
 );
 
 WriteLiteral("></i>\r\n");
 
             
-            #line 91 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 93 "..\..\Views\Job\JobParts\Queues.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 91 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 93 "..\..\Views\Job\JobParts\Queues.cshtml"
                      if (jq.Item1.SLAExpiresDate.HasValue)
                     {
                         if (jq.Item1.RemovedDate.HasValue)
@@ -640,14 +670,14 @@ WriteLiteral("></i>\r\n");
             #line default
             #line hidden
             
-            #line 95 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 97 "..\..\Views\Job\JobParts\Queues.cshtml"
                    Write(CommonHelpers.FriendlyDate(jq.Item1.SLAExpiresDate.Value, WithoutSuffix: true));
 
             
             #line default
             #line hidden
             
-            #line 95 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 97 "..\..\Views\Job\JobParts\Queues.cshtml"
                                                                                                        
                             if (jq.Item1.RemovedDate.Value <= jq.Item1.SLAExpiresDate.Value)
                             {
@@ -658,7 +688,7 @@ WriteLiteral("></i>\r\n");
 WriteLiteral("                        <span>early</span>\r\n");
 
             
-            #line 99 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 101 "..\..\Views\Job\JobParts\Queues.cshtml"
                             }
                             else
                             {
@@ -669,7 +699,7 @@ WriteLiteral("                        <span>early</span>\r\n");
 WriteLiteral("                        <span>late</span>\r\n");
 
             
-            #line 103 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 105 "..\..\Views\Job\JobParts\Queues.cshtml"
                             }
                         }
                         else
@@ -681,20 +711,20 @@ WriteLiteral("                        <span>late</span>\r\n");
 WriteLiteral("                        <span>due </span>");
 
             
-            #line 107 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 109 "..\..\Views\Job\JobParts\Queues.cshtml"
                                          
             
             #line default
             #line hidden
             
-            #line 107 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 109 "..\..\Views\Job\JobParts\Queues.cshtml"
                                     Write(CommonHelpers.FriendlyDate(jq.Item1.SLAExpiresDate.Value));
 
             
             #line default
             #line hidden
             
-            #line 107 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 109 "..\..\Views\Job\JobParts\Queues.cshtml"
                                                                                                    
                         }
                     }
@@ -705,7 +735,7 @@ WriteLiteral("                        <span>due </span>");
 WriteLiteral("                </td>\r\n            </tr>\r\n");
 
             
-            #line 112 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 114 "..\..\Views\Job\JobParts\Queues.cshtml"
         }
 
             
@@ -724,13 +754,13 @@ WriteLiteral(" title=\"Remove this Job from the queue?\"");
 WriteLiteral(">\r\n");
 
             
-            #line 115 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 117 "..\..\Views\Job\JobParts\Queues.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 115 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 117 "..\..\Views\Job\JobParts\Queues.cshtml"
          using (Html.BeginForm(MVC.API.JobQueueJob.RemoveJob()))
         {
 
@@ -786,7 +816,7 @@ WriteLiteral(" for=\"Job_Show_Queues_Actions_Remove_Dialog_CloseJob\"");
 WriteLiteral(">Close the Job</label>\r\n            </div>\r\n");
 
             
-            #line 129 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 131 "..\..\Views\Job\JobParts\Queues.cshtml"
         }
 
             
@@ -805,13 +835,13 @@ WriteLiteral(" title=\"Edit the Added Comment\"");
 WriteLiteral(">\r\n");
 
             
-            #line 132 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 134 "..\..\Views\Job\JobParts\Queues.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 132 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 134 "..\..\Views\Job\JobParts\Queues.cshtml"
          using (Html.BeginForm(MVC.API.JobQueueJob.UpdateAddedComment()))
         {
 
@@ -853,7 +883,7 @@ WriteLiteral(" class=\"block\"");
 WriteLiteral("></textarea>\r\n            </p>\r\n");
 
             
-            #line 140 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 142 "..\..\Views\Job\JobParts\Queues.cshtml"
         }
 
             
@@ -872,13 +902,13 @@ WriteLiteral(" title=\"Edit the Removed Comment\"");
 WriteLiteral(">\r\n");
 
             
-            #line 143 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 145 "..\..\Views\Job\JobParts\Queues.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 143 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 145 "..\..\Views\Job\JobParts\Queues.cshtml"
          using (Html.BeginForm(MVC.API.JobQueueJob.UpdateRemovedComment()))
         {
 
@@ -920,7 +950,7 @@ WriteLiteral(" class=\"block\"");
 WriteLiteral("></textarea>\r\n            </p>\r\n");
 
             
-            #line 151 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 153 "..\..\Views\Job\JobParts\Queues.cshtml"
         }
 
             
@@ -939,13 +969,13 @@ WriteLiteral(" title=\"Edit the SLA\"");
 WriteLiteral(">\r\n");
 
             
-            #line 154 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 156 "..\..\Views\Job\JobParts\Queues.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 154 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 156 "..\..\Views\Job\JobParts\Queues.cshtml"
          using (Html.BeginForm(MVC.API.JobQueueJob.UpdateSlaAndPriority()))
         {
 
@@ -994,13 +1024,13 @@ WriteLiteral(" autofocus=\"autofocus\"");
 WriteLiteral(">\r\n");
 
             
-            #line 163 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 165 "..\..\Views\Job\JobParts\Queues.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 163 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 165 "..\..\Views\Job\JobParts\Queues.cshtml"
                          foreach (var priorityItem in Enum.GetNames(typeof(JobQueuePriority)))
                         {
 
@@ -1009,20 +1039,20 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                            <option");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 8686), Tuple.Create("\"", 8709)
+WriteAttribute("value", Tuple.Create(" value=\"", 8844), Tuple.Create("\"", 8867)
             
-            #line 165 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create("", 8694), Tuple.Create<System.Object, System.Int32>(priorityItem
+            #line 167 "..\..\Views\Job\JobParts\Queues.cshtml"
+, Tuple.Create(Tuple.Create("", 8852), Tuple.Create<System.Object, System.Int32>(priorityItem
             
             #line default
             #line hidden
-, 8694), false)
+, 8852), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 165 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 167 "..\..\Views\Job\JobParts\Queues.cshtml"
                                                         Write(priorityItem);
 
             
@@ -1031,7 +1061,7 @@ WriteLiteral(">");
 WriteLiteral("</option>\r\n");
 
             
-            #line 166 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 168 "..\..\Views\Job\JobParts\Queues.cshtml"
                         }
 
             
@@ -1057,7 +1087,7 @@ WriteLiteral(" placeholder=\"None\"");
 WriteLiteral(" />\r\n                </p>\r\n            </div>\r\n");
 
             
-            #line 176 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 178 "..\..\Views\Job\JobParts\Queues.cshtml"
         }
 
             
@@ -1080,7 +1110,7 @@ WriteLiteral(@">
             var dialogEditSla_BothUrl = '");
 
             
-            #line 186 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 188 "..\..\Views\Job\JobParts\Queues.cshtml"
                                      Write(Url.Action(MVC.API.JobQueueJob.UpdateSlaAndPriority()));
 
             
@@ -1089,7 +1119,7 @@ WriteLiteral(@">
 WriteLiteral("\';\r\n            var dialogEditSla_SlaUrl = \'");
 
             
-            #line 187 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 189 "..\..\Views\Job\JobParts\Queues.cshtml"
                                     Write(Url.Action(MVC.API.JobQueueJob.UpdateSla()));
 
             
@@ -1098,7 +1128,7 @@ WriteLiteral("\';\r\n            var dialogEditSla_SlaUrl = \'");
 WriteLiteral("\';\r\n            var dialogEditSla_PriorityUrl = \'");
 
             
-            #line 188 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 190 "..\..\Views\Job\JobParts\Queues.cshtml"
                                          Write(Url.Action(MVC.API.JobQueueJob.UpdatePriority()));
 
             
@@ -1139,88 +1169,88 @@ WriteLiteral("\';\r\n\r\n            jobQueues.on(\'click\', \'a.remove\', funct
 "            },\r\n                            Cancel: function () {\r\n             " +
 "                   $(this).dialog(\"close\");\r\n                            }\r\n    " +
 "                    }\r\n                    });\r\n                }\r\n\r\n           " +
-"     var $comments = $this.closest(\'td\').find(\'.comments\');\r\n                if " +
-"($comments.hasClass(\'smallMessage\')) {\r\n                    $(\'#Job_Show_Queues_" +
-"Actions_EditAddedComment_Dialog_Comment\').val(\'\');\r\n                } else {\r\n  " +
-"                  $(\'#Job_Show_Queues_Actions_EditAddedComment_Dialog_Comment\')." +
-"val($comments.text());\r\n                }\r\n\r\n                $(\'#Job_Show_Queues" +
-"_Actions_EditAddedComment_Dialog_Id\').val(jobQueueJobId);\r\n                dialo" +
-"gEditAddedComment.dialog(\'open\');\r\n                e.preventDefault();\r\n        " +
-"        return false;\r\n            });\r\n\r\n            jobQueues.on(\'click\', \'td." +
-"removed i.fa-edit\', function (e) {\r\n                var $this = $(this);\r\n      " +
-"          var jobQueueJobId = $this.closest(\'tr\').attr(\'data-jobqueuejobid\');\r\n\r" +
-"\n                if (!dialogEditRemovedComment) {\r\n                    dialogEdi" +
-"tRemovedComment = $(\'#Job_Show_Queues_Actions_EditRemovedComment_Dialog\');\r\n    " +
-"                dialogEditRemovedComment.dialog({\r\n                        resiz" +
-"able: false,\r\n                        modal: true,\r\n                        widt" +
-"h: 320,\r\n                        autoOpen: false,\r\n                        butto" +
-"ns: {\r\n                            \"Save Changes\": function () {\r\n              " +
-"                  var $this = $(this);\r\n                                $this.di" +
-"alog(\"disable\");\r\n                                $this.dialog(\"option\", \"button" +
-"s\", null);\r\n                                $this.find(\'form\').submit();\r\n      " +
-"                      },\r\n                            Cancel: function () {\r\n   " +
-"                             $(this).dialog(\"close\");\r\n                         " +
-"   }\r\n                        }\r\n                    });\r\n                }\r\n\r\n " +
-"               var $comments = $this.closest(\'td\').find(\'.comments\');\r\n         " +
-"       if ($comments.hasClass(\'smallMessage\')) {\r\n                    $(\'#Job_Sh" +
-"ow_Queues_Actions_EditRemovedComment_Dialog_Comment\').val(\'\');\r\n                " +
-"} else {\r\n                    $(\'#Job_Show_Queues_Actions_EditRemovedComment_Dia" +
-"log_Comment\').val($comments.text());\r\n                }\r\n\r\n                $(\'#J" +
-"ob_Show_Queues_Actions_EditRemovedComment_Dialog_Id\').val(jobQueueJobId);\r\n     " +
-"           dialogEditRemovedComment.dialog(\'open\');\r\n                e.preventDe" +
-"fault();\r\n                return false;\r\n            });\r\n\r\n            jobQueue" +
-"s.on(\'click\', \'td.sla i.fa-edit\', function (e) {\r\n                var $this = $(" +
-"this);\r\n                var jobQueueJobId = $this.closest(\'tr\').attr(\'data-jobqu" +
-"euejobid\');\r\n\r\n                var priorityChange = function () {\r\n             " +
-"       var $element = $(\'#Job_Show_Queues_Actions_EditSla_Dialog_Priority\');\r\n  " +
-"                  var icon = dialogEditSla.find(\'.priority i\');\r\n               " +
-"     icon[0].className = \'\';\r\n                    icon.addClass(\'fa d-priority-\'" +
-" + $element.val().toLowerCase()).attr(\'title\', $element.val() + \' Priority\');\r\n " +
-"               };\r\n\r\n                if (!dialogEditSla) {\r\n                    " +
-"dialogEditSla = $(\'#Job_Show_Queues_Actions_EditSla_Dialog\');\r\n                 " +
-"   dialogEditSla.dialog({\r\n                        resizable: false,\r\n          " +
-"              modal: true,\r\n                        width: 320,\r\n               " +
-"         autoOpen: false,\r\n                        buttons: {\r\n                 " +
-"           \"Save Changes\": function () {\r\n                                var $t" +
-"his = $(this);\r\n                                $this.dialog(\"disable\");\r\n      " +
-"                          $this.dialog(\"option\", \"buttons\", null);\r\n            " +
-"                    $this.find(\'form\').submit();\r\n                            }," +
-"\r\n                            Cancel: function () {\r\n                           " +
-"     $(this).dialog(\"close\");\r\n                            }\r\n                  " +
-"      }\r\n                    });\r\n\r\n                    $(\'#Job_Show_Queues_Acti" +
-"ons_EditSla_Dialog_Priority\').change(priorityChange);\r\n                }\r\n\r\n    " +
-"            var $td = $this.closest(\'td\');\r\n                var priority = $td.a" +
-"ttr(\'data-priority\');\r\n                var sla = $td.attr(\'data-sla\');\r\n        " +
-"        var slaStart = $this.closest(\'tr\').attr(\'data-jobqueuejobaddeddate\');\r\n\r" +
-"\n                var canEditSla = $td.hasClass(\'canEditSLA\');\r\n                v" +
-"ar canEditPriority = $td.hasClass(\'canEditPriority\');\r\n\r\n                if (can" +
-"EditPriority) {\r\n                    $(\'#Job_Show_Queues_Actions_EditSla_Dialog_" +
-"Priority\').val(priority);\r\n                    priorityChange();\r\n              " +
-"      dialogEditSla.find(\'div.priority\').show();\r\n                } else {\r\n    " +
-"                dialogEditSla.find(\'div.priority\').hide();\r\n                }\r\n\r" +
-"\n                if (canEditSla) {\r\n                    var $sla = $(\'#Job_Show_" +
-"Queues_Actions_EditSla_Dialog_Sla\');\r\n\r\n                    $sla.datetimepicker(" +
-"\'destroy\').datetimepicker({\r\n                        defaultDate: new Date(),\r\n " +
-"                       ampm: true,\r\n                        changeYear: true,\r\n " +
-"                       changeMonth: true,\r\n                        minDate: mome" +
-"nt(slaStart).add(\'m\', 1).toDate(),\r\n                        dateFormat: \'yy/mm/d" +
-"d\'\r\n                    });\r\n\r\n                    if (sla) {\r\n                 " +
-"       $sla.datetimepicker(\'setDate\', moment(sla).toDate());\r\n                  " +
-"  } else {\r\n                        $sla.val(\'\');\r\n                    }\r\n      " +
-"              dialogEditSla.find(\'div.sla\').show();\r\n                } else {\r\n " +
-"                   dialogEditSla.find(\'div.sla\').hide();\r\n                }\r\n\r\n " +
-"               if (canEditPriority && canEditSla)\r\n                    dialogEdi" +
-"tSla.find(\'form\').attr(\'action\', dialogEditSla_BothUrl);\r\n                else i" +
-"f (canEditPriority)\r\n                    dialogEditSla.find(\'form\').attr(\'action" +
-"\', dialogEditSla_PriorityUrl);\r\n                else if (canEditSla)\r\n          " +
-"          dialogEditSla.find(\'form\').attr(\'action\', dialogEditSla_SlaUrl);\r\n\r\n  " +
-"              $(\'#Job_Show_Queues_Actions_EditSla_Dialog_Id\').val(jobQueueJobId)" +
-";\r\n                dialogEditSla.dialog(\'open\');\r\n                e.preventDefau" +
-"lt();\r\n                return false;\r\n            });\r\n        });\r\n    </script" +
-">\r\n");
+"     var $comments = $this.closest(\'td\').find(\'.commentsRaw\');\r\n                " +
+"if ($comments.hasClass(\'smallMessage\')) {\r\n                    $(\'#Job_Show_Queu" +
+"es_Actions_EditAddedComment_Dialog_Comment\').val(\'\');\r\n                } else {\r" +
+"\n                    $(\'#Job_Show_Queues_Actions_EditAddedComment_Dialog_Comment" +
+"\').val($comments.text());\r\n                }\r\n\r\n                $(\'#Job_Show_Que" +
+"ues_Actions_EditAddedComment_Dialog_Id\').val(jobQueueJobId);\r\n                di" +
+"alogEditAddedComment.dialog(\'open\');\r\n                e.preventDefault();\r\n     " +
+"           return false;\r\n            });\r\n\r\n            jobQueues.on(\'click\', \'" +
+"td.removed i.fa-edit\', function (e) {\r\n                var $this = $(this);\r\n   " +
+"             var jobQueueJobId = $this.closest(\'tr\').attr(\'data-jobqueuejobid\');" +
+"\r\n\r\n                if (!dialogEditRemovedComment) {\r\n                    dialog" +
+"EditRemovedComment = $(\'#Job_Show_Queues_Actions_EditRemovedComment_Dialog\');\r\n " +
+"                   dialogEditRemovedComment.dialog({\r\n                        re" +
+"sizable: false,\r\n                        modal: true,\r\n                        w" +
+"idth: 320,\r\n                        autoOpen: false,\r\n                        bu" +
+"ttons: {\r\n                            \"Save Changes\": function () {\r\n           " +
+"                     var $this = $(this);\r\n                                $this" +
+".dialog(\"disable\");\r\n                                $this.dialog(\"option\", \"but" +
+"tons\", null);\r\n                                $this.find(\'form\').submit();\r\n   " +
+"                         },\r\n                            Cancel: function () {\r\n" +
+"                                $(this).dialog(\"close\");\r\n                      " +
+"      }\r\n                        }\r\n                    });\r\n                }\r\n" +
+"\r\n                var $comments = $this.closest(\'td\').find(\'.commentsRaw\');\r\n   " +
+"             if ($comments.hasClass(\'smallMessage\')) {\r\n                    $(\'#" +
+"Job_Show_Queues_Actions_EditRemovedComment_Dialog_Comment\').val(\'\');\r\n          " +
+"      } else {\r\n                    $(\'#Job_Show_Queues_Actions_EditRemovedComme" +
+"nt_Dialog_Comment\').val($comments.text());\r\n                }\r\n\r\n               " +
+" $(\'#Job_Show_Queues_Actions_EditRemovedComment_Dialog_Id\').val(jobQueueJobId);\r" +
+"\n                dialogEditRemovedComment.dialog(\'open\');\r\n                e.pre" +
+"ventDefault();\r\n                return false;\r\n            });\r\n\r\n            jo" +
+"bQueues.on(\'click\', \'td.sla i.fa-edit\', function (e) {\r\n                var $thi" +
+"s = $(this);\r\n                var jobQueueJobId = $this.closest(\'tr\').attr(\'data" +
+"-jobqueuejobid\');\r\n\r\n                var priorityChange = function () {\r\n       " +
+"             var $element = $(\'#Job_Show_Queues_Actions_EditSla_Dialog_Priority\'" +
+");\r\n                    var icon = dialogEditSla.find(\'.priority i\');\r\n         " +
+"           icon[0].className = \'\';\r\n                    icon.addClass(\'fa d-prio" +
+"rity-\' + $element.val().toLowerCase()).attr(\'title\', $element.val() + \' Priority" +
+"\');\r\n                };\r\n\r\n                if (!dialogEditSla) {\r\n              " +
+"      dialogEditSla = $(\'#Job_Show_Queues_Actions_EditSla_Dialog\');\r\n           " +
+"         dialogEditSla.dialog({\r\n                        resizable: false,\r\n    " +
+"                    modal: true,\r\n                        width: 320,\r\n         " +
+"               autoOpen: false,\r\n                        buttons: {\r\n           " +
+"                 \"Save Changes\": function () {\r\n                                " +
+"var $this = $(this);\r\n                                $this.dialog(\"disable\");\r\n" +
+"                                $this.dialog(\"option\", \"buttons\", null);\r\n      " +
+"                          $this.find(\'form\').submit();\r\n                        " +
+"    },\r\n                            Cancel: function () {\r\n                     " +
+"           $(this).dialog(\"close\");\r\n                            }\r\n            " +
+"            }\r\n                    });\r\n\r\n                    $(\'#Job_Show_Queue" +
+"s_Actions_EditSla_Dialog_Priority\').change(priorityChange);\r\n                }\r\n" +
+"\r\n                var $td = $this.closest(\'td\');\r\n                var priority =" +
+" $td.attr(\'data-priority\');\r\n                var sla = $td.attr(\'data-sla\');\r\n  " +
+"              var slaStart = $this.closest(\'tr\').attr(\'data-jobqueuejobaddeddate" +
+"\');\r\n\r\n                var canEditSla = $td.hasClass(\'canEditSLA\');\r\n           " +
+"     var canEditPriority = $td.hasClass(\'canEditPriority\');\r\n\r\n                i" +
+"f (canEditPriority) {\r\n                    $(\'#Job_Show_Queues_Actions_EditSla_D" +
+"ialog_Priority\').val(priority);\r\n                    priorityChange();\r\n        " +
+"            dialogEditSla.find(\'div.priority\').show();\r\n                } else {" +
+"\r\n                    dialogEditSla.find(\'div.priority\').hide();\r\n              " +
+"  }\r\n\r\n                if (canEditSla) {\r\n                    var $sla = $(\'#Job" +
+"_Show_Queues_Actions_EditSla_Dialog_Sla\');\r\n\r\n                    $sla.datetimep" +
+"icker(\'destroy\').datetimepicker({\r\n                        defaultDate: new Date" +
+"(),\r\n                        ampm: true,\r\n                        changeYear: tr" +
+"ue,\r\n                        changeMonth: true,\r\n                        minDate" +
+": moment(slaStart).add(\'m\', 1).toDate(),\r\n                        dateFormat: \'y" +
+"y/mm/dd\'\r\n                    });\r\n\r\n                    if (sla) {\r\n           " +
+"             $sla.datetimepicker(\'setDate\', moment(sla).toDate());\r\n            " +
+"        } else {\r\n                        $sla.val(\'\');\r\n                    }\r\n" +
+"                    dialogEditSla.find(\'div.sla\').show();\r\n                } els" +
+"e {\r\n                    dialogEditSla.find(\'div.sla\').hide();\r\n                " +
+"}\r\n\r\n                if (canEditPriority && canEditSla)\r\n                    dia" +
+"logEditSla.find(\'form\').attr(\'action\', dialogEditSla_BothUrl);\r\n                " +
+"else if (canEditPriority)\r\n                    dialogEditSla.find(\'form\').attr(\'" +
+"action\', dialogEditSla_PriorityUrl);\r\n                else if (canEditSla)\r\n    " +
+"                dialogEditSla.find(\'form\').attr(\'action\', dialogEditSla_SlaUrl);" +
+"\r\n\r\n                $(\'#Job_Show_Queues_Actions_EditSla_Dialog_Id\').val(jobQueue" +
+"JobId);\r\n                dialogEditSla.dialog(\'open\');\r\n                e.preven" +
+"tDefault();\r\n                return false;\r\n            });\r\n        });\r\n    </" +
+"script>\r\n");
 
             
-            #line 390 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 392 "..\..\Views\Job\JobParts\Queues.cshtml"
 }
 else
 {
@@ -1235,7 +1265,7 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">This job has no associated queue history</div>\r\n");
 
             
-            #line 394 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 396 "..\..\Views\Job\JobParts\Queues.cshtml"
 }
             
             #line default

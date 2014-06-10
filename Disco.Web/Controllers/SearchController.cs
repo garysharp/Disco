@@ -84,7 +84,7 @@ namespace Disco.Web.Controllers
                             if (vm != null)
                             {
                                 m.FriendlyTerm = string.Format("Device Model: {0}", vm.ToString());
-                                m.Devices = Services.Searching.Search.SearchDeviceModel(Database, vm.Id, LimitCount: null);
+                                m.Devices = Services.Searching.Search.SearchDeviceModel(Database, vm.Id);
                                 break;
                             }
                         }
@@ -101,7 +101,7 @@ namespace Disco.Web.Controllers
                             if (dp != null)
                             {
                                 m.FriendlyTerm = string.Format("Device Profile: {0}", dp.ToString());
-                                m.Devices = Services.Searching.Search.SearchDeviceProfile(Database, dp.Id, LimitCount: null);
+                                m.Devices = Services.Searching.Search.SearchDeviceProfile(Database, dp.Id);
                                 break;
                             }
                         }
@@ -118,7 +118,7 @@ namespace Disco.Web.Controllers
                             if (db != null)
                             {
                                 m.FriendlyTerm = string.Format("Device Batch: {0}", db.ToString());
-                                m.Devices = Services.Searching.Search.SearchDeviceBatch(Database, db.Id, LimitCount: null);
+                                m.Devices = Services.Searching.Search.SearchDeviceBatch(Database, db.Id);
                                 break;
                             }
                         }
@@ -232,6 +232,23 @@ namespace Disco.Web.Controllers
                                 return View(m);
                             }
                         }
+                    case "userflag":
+                        Authorization.RequireAll(Claims.User.Search, Claims.User.ShowFlagAssignments);
+                        int flagId;
+                        if (int.TryParse(term, out flagId))
+                        {
+                            var flag = Database.UserFlags.Find(flagId);
+                            if (flag != null)
+                            {
+                                m.FriendlyTerm = string.Format("User Flag: {0}", flag.ToString());
+                                m.Users = Services.Searching.Search.SearchUserFlag(Database, flag.Id);
+                                break;
+                            }
+                        }
+                        m.FriendlyTerm = string.Format("User Flag: {0}", term);
+                        m.Success = false;
+                        m.ErrorMessage = "Invalid User Flag Id";
+                        break;
                 }
             }
 

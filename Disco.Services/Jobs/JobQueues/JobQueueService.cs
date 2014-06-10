@@ -1,6 +1,7 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
+using Disco.Services.Extensions;
 using Disco.Services.Tasks;
 using Disco.Services.Users;
 using System;
@@ -23,8 +24,6 @@ namespace Disco.Services.Jobs.JobQueues
             _cache = new Cache(Database);
         }
 
-        public static ReadOnlyCollection<KeyValuePair<string, string>> IconColours { get { return _cache.IconColours; } }
-        public static ReadOnlyCollection<KeyValuePair<string, string>> Icons { get { return _cache.Icons; } }
         public static ReadOnlyCollection<KeyValuePair<int, string>> SlaOptions { get { return _cache.SlaOptions; } }
 
         public static ReadOnlyCollection<JobQueueToken> GetQueues() { return _cache.GetQueues(); }
@@ -38,7 +37,7 @@ namespace Disco.Services.Jobs.JobQueues
                 throw new ArgumentException("The Job Queue Name is required");
 
             // Name Unique
-            if (_cache.GetQueues().Count(q => q.JobQueue.Name == JobQueue.Name) > 0)
+            if (_cache.GetQueues().Any(q => q.JobQueue.Name == JobQueue.Name))
                 throw new ArgumentException("Another Job Queue already exists with that name", "JobQueue");
 
             // Clone to break reference
@@ -65,7 +64,7 @@ namespace Disco.Services.Jobs.JobQueues
                 throw new ArgumentException("The Job Queue Name is required");
 
             // Name Unique
-            if (_cache.GetQueues().Count(q => q.JobQueue.Id != JobQueue.Id && q.JobQueue.Name == JobQueue.Name) > 0)
+            if (_cache.GetQueues().Any(q => q.JobQueue.Id != JobQueue.Id && q.JobQueue.Name == JobQueue.Name))
                 throw new ArgumentException("Another Job Queue already exists with that name", "JobQueue");
 
             Database.SaveChanges();
@@ -77,8 +76,8 @@ namespace Disco.Services.Jobs.JobQueues
             JobQueue queue = Database.JobQueues.Find(JobQueueId);
 
             // Validate: Current Jobs?
-            int currentJobCount = Database.JobQueueJobs.Count(jqj => jqj.JobQueueId == queue.Id && !jqj.RemovedDate.HasValue);
-            if (currentJobCount > 0)
+            var currentJobs = Database.JobQueueJobs.Any(jqj => jqj.JobQueueId == queue.Id && !jqj.RemovedDate.HasValue);
+            if (currentJobs)
                 throw new InvalidOperationException("The Job Queue cannot be deleted because it contains jobs");
 
             // Delete History
@@ -161,23 +160,13 @@ namespace Disco.Services.Jobs.JobQueues
             return tokens;
         }
 
-        public static string RandomIcon()
+        public static string RandomUnusedIcon()
         {
-            var rnd = new Random();
-            var unusedIcons = _cache.Icons.Select(i => i.Key).Except(_cache.GetQueues().Select(q => q.JobQueue.Icon)).ToList();
-            if (unusedIcons.Count > 0)
-                return unusedIcons[rnd.Next(unusedIcons.Count - 1)];
-            else
-                return _cache.Icons[rnd.Next(_cache.Icons.Count - 1)].Key;
+            return UIHelpers.RandomIcon(_cache.GetQueues().Select(q => q.JobQueue.Icon));
         }
-        public static string RandomIconColour()
+        public static string RandomUnusedThemeColour()
         {
-            var rnd = new Random();
-            var unusedColours = _cache.IconColours.Select(i => i.Key).Except(_cache.GetQueues().Select(q => q.JobQueue.IconColour)).ToList();
-            if (unusedColours.Count > 0)
-                return unusedColours[rnd.Next(unusedColours.Count - 1)];
-            else
-                return _cache.IconColours[rnd.Next(_cache.IconColours.Count - 1)].Key;
+            return UIHelpers.RandomThemeColour(_cache.GetQueues().Select(q => q.JobQueue.IconColour));
         }
     }
 }

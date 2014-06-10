@@ -702,6 +702,21 @@ table {
     }
 }
 
+table.userTable {
+    div.flags {
+        display: inline-block;
+        float: right;
+
+        & > i {
+            cursor: default;
+
+            & > .details {
+                display: none;
+            }
+        }
+    }
+}
+
 .jobStatus {
     color: @StatusUnknown;
 
@@ -1167,6 +1182,23 @@ div.disco-attachmentUpload-imageDialog {
     overflow: hidden !important;
     width: 720px !important;
     height: 540px !important;
+}
+
+body > .User_FlagAssignment_Tooltip {
+    span.name {
+        display: block;
+        font-weight: bold;
+    }
+
+    span.comments {
+        display: block;
+        padding: 2px 0 2px 4px;
+    }
+
+    span.added {
+        font-style: italic;
+        font-size: 0.9em;
+    }
 }
 
 // Priority Colours

@@ -47,6 +47,8 @@
   <ItemGroup>
     <Compile Include="BI\Job\LocationModes.cs" />
     <Compile Include="Repository\Device\DeviceDecommissionReasons.cs" />
+    <Compile Include="Repository\User\Flag\UserFlag.cs" />
+    <Compile Include="Repository\User\Flag\UserFlagAssignment.cs" />
     <Compile Include="Services\Authorization\IAuthorizationToken.cs" />
     <Compile Include="Services\Authorization\IClaimNavigatorItem.cs" />
     <Compile Include="Services\Authorization\IRoleToken.cs" />
@@ -154,6 +156,9 @@
     <Compile Include="UI\Config\Logging\ConfigLoggingIndexModel.cs" />
     <Compile Include="UI\Config\Shared\ConfigSharedTaskStatusModel.cs" />
     <Compile Include="UI\Config\Organisation\ConfigOrganisationIndexModel.cs" />
+    <Compile Include="UI\Config\UserFlag\ConfigUserFlagCreateModel.cs" />
+    <Compile Include="UI\Config\UserFlag\ConfigUserFlagIndexModel.cs" />
+    <Compile Include="UI\Config\UserFlag\ConfigUserFlagShowModel.cs" />
     <Compile Include="UI\Device\DeviceAddOfflineModel.cs" />
     <Compile Include="UI\Device\DeviceExportModel.cs" />
     <Compile Include="UI\Device\DeviceImportHeadersModel.cs" />
@@ -176,7 +181,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" />
+      <UserProperties BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

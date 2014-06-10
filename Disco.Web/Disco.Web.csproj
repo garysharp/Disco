@@ -196,6 +196,8 @@
     </Compile>
     <Compile Include="App_Start\OwinStartupConfig.cs" />
     <Compile Include="Areas\API\Controllers\AuthorizationRoleController.cs" />
+    <Compile Include="Areas\API\Controllers\UserFlagAssignmentController.cs" />
+    <Compile Include="Areas\API\Controllers\UserFlagController.cs" />
     <Compile Include="Areas\API\Controllers\JobPreferencesController.cs" />
     <Compile Include="Areas\API\Controllers\JobQueueController.cs" />
     <Compile Include="Areas\API\Controllers\JobQueueJobController.cs" />
@@ -205,12 +207,16 @@
     <Compile Include="Areas\API\Models\Shared\SubjectDescriptorModel.cs" />
     <Compile Include="Areas\API\Models\System\DomainOrganisationalUnitsModel.cs" />
     <Compile Include="Areas\Config\Controllers\AuthorizationRoleController.cs" />
+    <Compile Include="Areas\Config\Controllers\UserFlagController.cs" />
     <Compile Include="Areas\Config\Controllers\JobPreferencesController.cs" />
     <Compile Include="Areas\Config\Controllers\JobQueueController.cs" />
     <Compile Include="Areas\Config\Models\AuthorizationRole\CreateModel.cs" />
     <Compile Include="Areas\Config\Models\AuthorizationRole\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\AuthorizationRole\ShowModel.cs" />
     <Compile Include="Areas\Config\Models\Config\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\UserFlag\CreateModel.cs" />
+    <Compile Include="Areas\Config\Models\UserFlag\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\UserFlag\ShowModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceBatch\CreateModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceBatch\TimelineModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceBatch\_ShowModelMembership.cs" />
@@ -276,6 +282,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TaskStatus.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Config\Views\UserFlag\Create.generated.cs">
+      <DependentUpon>Create.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\UserFlag\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\UserFlag\Show.generated.cs">
+      <DependentUpon>Show.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Areas\Public\Controllers\HeldDevicesController.cs" />
     <Compile Include="Areas\Public\Views\HeldDevices\Index.generated.cs">
@@ -905,6 +926,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Show.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="Views\User\UserParts\_Flags.generated.cs">
+      <DependentUpon>_Flags.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Views\User\UserParts\_Authorization.generated.cs">
       <DependentUpon>_Authorization.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -992,6 +1018,18 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>TaskStatus.generated.cs</LastGenOutput>
     </None>
+    <Content Include="Areas\Config\Views\UserFlag\Create.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Create.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Areas\Config\Views\UserFlag\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Areas\Config\Views\UserFlag\Show.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Show.generated.cs</LastGenOutput>
+    </Content>
     <None Include="Areas\Public\Views\HeldDevices\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
@@ -1962,6 +2000,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Show.generated.cs</LastGenOutput>
     </None>
+    <Content Include="Views\User\UserParts\_Flags.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_Flags.generated.cs</LastGenOutput>
+    </Content>
     <None Include="Views\User\UserParts\_Authorization.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Authorization.generated.cs</LastGenOutput>
@@ -2112,7 +2154,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

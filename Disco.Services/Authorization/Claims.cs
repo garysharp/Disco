@@ -73,6 +73,10 @@ namespace Disco.Services.Authorization
 				{ "Config.JobQueue.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.JobQueue.Create, (c, v) => c.Config.JobQueue.Create = v, "Create Job Queues", "Can create job queues", false) },
 				{ "Config.JobQueue.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.JobQueue.Delete, (c, v) => c.Config.JobQueue.Delete = v, "Delete Job Queues", "Can delete job queues", false) },
 				{ "Config.JobQueue.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.JobQueue.Show, (c, v) => c.Config.JobQueue.Show = v, "Show Job Queues", "Can show job queues", false) },
+				{ "Config.UserFlag.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Configure, (c, v) => c.Config.UserFlag.Configure = v, "Configure User Flags", "Can configure user flags", false) },
+				{ "Config.UserFlag.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Create, (c, v) => c.Config.UserFlag.Create = v, "Create User Flags", "Can create user flags", false) },
+				{ "Config.UserFlag.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Delete, (c, v) => c.Config.UserFlag.Delete = v, "Delete User Flags", "Can delete user flags", false) },
+				{ "Config.UserFlag.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Show, (c, v) => c.Config.UserFlag.Show = v, "Show User Flags", "Can show user flags", false) },
 				{ "Config.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Show, (c, v) => c.Config.Show = v, "Show Configuration", "Can show the configuration menu", false) },
 				{ "Job.Lists.AllOpen", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AllOpen, (c, v) => c.Job.Lists.AllOpen = v, "All Open List", "Can show list", false) },
 				{ "Job.Lists.AwaitingFinanceAgreementBreach", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AwaitingFinanceAgreementBreach, (c, v) => c.Job.Lists.AwaitingFinanceAgreementBreach = v, "Awaiting Finance Agreement Breach List", "Can show list (NOTE: Requires Awaiting Finance List)", false) },
@@ -198,9 +202,12 @@ namespace Disco.Services.Authorization
 				{ "Device.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Show, (c, v) => c.Device.Show = v, "Show Devices", "Can show devices", false) },
 				{ "Device.ShowJobs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowJobs, (c, v) => c.Device.ShowJobs = v, "Show Devices Jobs", "Can show jobs associated with devices", false) },
 				{ "User.Actions.AddAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.AddAttachments, (c, v) => c.User.Actions.AddAttachments = v, "Add Attachments", "Can add attachments to users", false) },
+				{ "User.Actions.AddFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.AddFlags, (c, v) => c.User.Actions.AddFlags = v, "Add User Flags", "Can add user flags", false) },
+				{ "User.Actions.EditFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.EditFlags, (c, v) => c.User.Actions.EditFlags = v, "Edit User Flags", "Can edit user flags", false) },
 				{ "User.Actions.GenerateDocuments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.GenerateDocuments, (c, v) => c.User.Actions.GenerateDocuments = v, "Generate Documents", "Can generate documents for users", false) },
 				{ "User.Actions.RemoveAnyAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveAnyAttachments, (c, v) => c.User.Actions.RemoveAnyAttachments = v, "Remove Any Attachments", "Can remove any attachments from users", false) },
 				{ "User.Actions.RemoveOwnAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveOwnAttachments, (c, v) => c.User.Actions.RemoveOwnAttachments = v, "Remove Own Attachments", "Can remove own attachments from users", false) },
+				{ "User.Actions.RemoveFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveFlags, (c, v) => c.User.Actions.RemoveFlags = v, "Remove User Flags", "Can remove user flags", false) },
 				{ "User.Search", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Search, (c, v) => c.User.Search = v, "Search Users", "Can search users", false) },
 				{ "User.ShowAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAttachments, (c, v) => c.User.ShowAttachments = v, "Show Attachments", "Can show user attachments", false) },
 				{ "User.ShowAssignmentHistory", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAssignmentHistory, (c, v) => c.User.ShowAssignmentHistory = v, "Show Device Assignment History", "Can show the device assignment history for users", false) },
@@ -208,6 +215,7 @@ namespace Disco.Services.Authorization
 				{ "User.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Show, (c, v) => c.User.Show = v, "Show Users", "Can show users", false) },
 				{ "User.ShowAuthorization", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAuthorization, (c, v) => c.User.ShowAuthorization = v, "Show Users Authorization", "Can show authorization permissions associated with users", false) },
 				{ "User.ShowDetails", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowDetails, (c, v) => c.User.ShowDetails = v, "Show Users Details", "Can show users contact and personal details", false) },
+				{ "User.ShowFlagAssignments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowFlagAssignments, (c, v) => c.User.ShowFlagAssignments = v, "Show Users Flag Assignments", "Can show flags associated with users", false) },
 				{ "User.ShowJobs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowJobs, (c, v) => c.User.ShowJobs = v, "Show Users Jobs", "Can show jobs associated with users", false) },
 				{ "ComputerAccount", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.ComputerAccount, (c, v) => c.ComputerAccount = v, "Computer Account", "Represents a computer account", true) },
 				{ "DiscoAdminAccount", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.DiscoAdminAccount, (c, v) => c.DiscoAdminAccount = v, "Disco Administrator Account", "Represents a Disco Administrator account", true) }
@@ -290,6 +298,12 @@ namespace Disco.Services.Authorization
 				            new ClaimNavigatorItem("Config.System.ConfigureActiveDirectory", false),
 				            new ClaimNavigatorItem("Config.System.ConfigureProxy", false),
 				            new ClaimNavigatorItem("Config.System.Show", false)
+				        }),
+				        new ClaimNavigatorItem("Config.UserFlag", "User Flags", "Permissions related to User Flags", false, new List<IClaimNavigatorItem>() {
+				            new ClaimNavigatorItem("Config.UserFlag.Configure", false),
+				            new ClaimNavigatorItem("Config.UserFlag.Create", false),
+				            new ClaimNavigatorItem("Config.UserFlag.Delete", false),
+				            new ClaimNavigatorItem("Config.UserFlag.Show", false)
 				        }),
 				        new ClaimNavigatorItem("Config.Show", false)
 				    }),
@@ -441,9 +455,12 @@ namespace Disco.Services.Authorization
 				    new ClaimNavigatorItem("User", "User", "Permissions related to Users", false, new List<IClaimNavigatorItem>() {
 				        new ClaimNavigatorItem("User.Actions", "Actions", "Permissions related to User Actions", false, new List<IClaimNavigatorItem>() {
 				            new ClaimNavigatorItem("User.Actions.AddAttachments", false),
+				            new ClaimNavigatorItem("User.Actions.AddFlags", false),
+				            new ClaimNavigatorItem("User.Actions.EditFlags", false),
 				            new ClaimNavigatorItem("User.Actions.GenerateDocuments", false),
 				            new ClaimNavigatorItem("User.Actions.RemoveAnyAttachments", false),
-				            new ClaimNavigatorItem("User.Actions.RemoveOwnAttachments", false)
+				            new ClaimNavigatorItem("User.Actions.RemoveOwnAttachments", false),
+				            new ClaimNavigatorItem("User.Actions.RemoveFlags", false)
 				        }),
 				        new ClaimNavigatorItem("User.Search", false),
 				        new ClaimNavigatorItem("User.ShowAttachments", false),
@@ -452,6 +469,7 @@ namespace Disco.Services.Authorization
 				        new ClaimNavigatorItem("User.Show", false),
 				        new ClaimNavigatorItem("User.ShowAuthorization", false),
 				        new ClaimNavigatorItem("User.ShowDetails", false),
+				        new ClaimNavigatorItem("User.ShowFlagAssignments", false),
 				        new ClaimNavigatorItem("User.ShowJobs", false)
 				    }),
 				    new ClaimNavigatorItem("ComputerAccount", true),
@@ -567,6 +585,10 @@ namespace Disco.Services.Authorization
 			c.Config.JobQueue.Create = true;
 			c.Config.JobQueue.Delete = true;
 			c.Config.JobQueue.Show = true;
+			c.Config.UserFlag.Configure = true;
+			c.Config.UserFlag.Create = true;
+			c.Config.UserFlag.Delete = true;
+			c.Config.UserFlag.Show = true;
 			c.Config.Show = true;
 			c.Job.Lists.AllOpen = true;
 			c.Job.Lists.AwaitingFinanceAgreementBreach = true;
@@ -692,9 +714,12 @@ namespace Disco.Services.Authorization
 			c.Device.Show = true;
 			c.Device.ShowJobs = true;
 			c.User.Actions.AddAttachments = true;
+			c.User.Actions.AddFlags = true;
+			c.User.Actions.EditFlags = true;
 			c.User.Actions.GenerateDocuments = true;
 			c.User.Actions.RemoveAnyAttachments = true;
 			c.User.Actions.RemoveOwnAttachments = true;
+			c.User.Actions.RemoveFlags = true;
 			c.User.Search = true;
 			c.User.ShowAttachments = true;
 			c.User.ShowAssignmentHistory = true;
@@ -702,6 +727,7 @@ namespace Disco.Services.Authorization
 			c.User.Show = true;
 			c.User.ShowAuthorization = true;
 			c.User.ShowDetails = true;
+			c.User.ShowFlagAssignments = true;
 			c.User.ShowJobs = true;
 			c.DiscoAdminAccount = true;
 #endregion
@@ -1049,6 +1075,33 @@ namespace Disco.Services.Authorization
                 /// <para>Can show job queues</para>
                 /// </summary>
                 public const string Show = "Config.JobQueue.Show";
+            }
+
+            /// <summary>User Flags
+            /// <para>Permissions related to User Flags</para>
+            /// </summary>
+            public static class UserFlag
+            {
+
+                /// <summary>Configure User Flags
+                /// <para>Can configure user flags</para>
+                /// </summary>
+                public const string Configure = "Config.UserFlag.Configure";
+
+                /// <summary>Create User Flags
+                /// <para>Can create user flags</para>
+                /// </summary>
+                public const string Create = "Config.UserFlag.Create";
+
+                /// <summary>Delete User Flags
+                /// <para>Can delete user flags</para>
+                /// </summary>
+                public const string Delete = "Config.UserFlag.Delete";
+
+                /// <summary>Show User Flags
+                /// <para>Can show user flags</para>
+                /// </summary>
+                public const string Show = "Config.UserFlag.Show";
             }
 
             /// <summary>Show Configuration
@@ -1766,6 +1819,16 @@ namespace Disco.Services.Authorization
                 /// </summary>
                 public const string AddAttachments = "User.Actions.AddAttachments";
 
+                /// <summary>Add User Flags
+                /// <para>Can add user flags</para>
+                /// </summary>
+                public const string AddFlags = "User.Actions.AddFlags";
+
+                /// <summary>Edit User Flags
+                /// <para>Can edit user flags</para>
+                /// </summary>
+                public const string EditFlags = "User.Actions.EditFlags";
+
                 /// <summary>Generate Documents
                 /// <para>Can generate documents for users</para>
                 /// </summary>
@@ -1780,6 +1843,11 @@ namespace Disco.Services.Authorization
                 /// <para>Can remove own attachments from users</para>
                 /// </summary>
                 public const string RemoveOwnAttachments = "User.Actions.RemoveOwnAttachments";
+
+                /// <summary>Remove User Flags
+                /// <para>Can remove user flags</para>
+                /// </summary>
+                public const string RemoveFlags = "User.Actions.RemoveFlags";
             }
 
             /// <summary>Search Users
@@ -1816,6 +1884,11 @@ namespace Disco.Services.Authorization
             /// <para>Can show users contact and personal details</para>
             /// </summary>
             public const string ShowDetails = "User.ShowDetails";
+
+            /// <summary>Show Users Flag Assignments
+            /// <para>Can show flags associated with users</para>
+            /// </summary>
+            public const string ShowFlagAssignments = "User.ShowFlagAssignments";
 
             /// <summary>Show Users Jobs
             /// <para>Can show jobs associated with users</para>

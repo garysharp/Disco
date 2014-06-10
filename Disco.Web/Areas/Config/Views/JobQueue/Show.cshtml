@@ -97,13 +97,13 @@
                         <div id="Config_JobQueues_Icon_Update_Dialog" class="dialog" title="Job Queue Icon">
                             <div>
                                 <div class="icons">
-                                    @foreach (var icon in JobQueueService.Icons)
+                                    @foreach (var icon in Model.Icons)
                                     {
                                         <i data-icon="@(icon.Key)" class="fa fa-@(icon.Key)" title="@icon.Value"></i>
                                     }
                                 </div>
                                 <div class="colours">
-                                    @foreach (var colour in JobQueueService.IconColours)
+                                    @foreach (var colour in Model.ThemeColours)
                                     {
                                         <i data-colour="@(colour.Key)" class="fa fa-square d-@(colour.Key)" title="@colour.Value"></i>
                                     }
@@ -629,43 +629,49 @@
 @if (canDelete || canShowJobs)
 {
     <div class="actionBar">
-        @Html.ActionLinkButton("Delete", MVC.API.JobQueue.Delete(Model.Token.JobQueue.Id, true), "Config_JobQueues_Actions_Delete_Button")
-        <div id="Config_JobQueues_Actions_Delete_Dialog" title="Delete this Job Queue?">
-            <p>
-                <i class="fa fa-exclamation-triangle fa-lg warning"></i>
-                This item will be permanently deleted and cannot be recovered.<br />
-                <br />
-                Are you sure?
-            </p>
-        </div>
-        <script type="text/javascript">
-            $(function () {
-                var button = $('#Config_JobQueues_Actions_Delete_Button');
-                var buttonDialog = $('#Config_JobQueues_Actions_Delete_Dialog');
-                var buttonLink = button.attr('href');
-                button.attr('href', '#');
-                button.click(function () {
-                    buttonDialog.dialog('open');
-                    return false;
-                });
-                buttonDialog.dialog({
-                    resizable: false,
-                    modal: true,
-                    autoOpen: false,
-                    buttons: {
-                        "Delete": function () {
-                            var $this = $(this);
-                            $this.dialog("disable");
-                            $this.dialog("option", "buttons", null);
-                            window.location.href = buttonLink;
-                        },
-                        Cancel: function () {
-                            $(this).dialog("close");
+        @if (canDelete)
+        {
+            @Html.ActionLinkButton("Delete", MVC.API.JobQueue.Delete(Model.Token.JobQueue.Id, true), "Config_JobQueues_Actions_Delete_Button")
+            <div id="Config_JobQueues_Actions_Delete_Dialog" title="Delete this Job Queue?">
+                <p>
+                    <i class="fa fa-exclamation-triangle fa-lg warning"></i>
+                    This item will be permanently deleted and cannot be recovered.<br />
+                    <br />
+                    Are you sure?
+                </p>
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    var button = $('#Config_JobQueues_Actions_Delete_Button');
+                    var buttonDialog = $('#Config_JobQueues_Actions_Delete_Dialog');
+                    var buttonLink = button.attr('href');
+                    button.attr('href', '#');
+                    button.click(function () {
+                        buttonDialog.dialog('open');
+                        return false;
+                    });
+                    buttonDialog.dialog({
+                        resizable: false,
+                        modal: true,
+                        autoOpen: false,
+                        buttons: {
+                            "Delete": function () {
+                                var $this = $(this);
+                                $this.dialog("disable");
+                                $this.dialog("option", "buttons", null);
+                                window.location.href = buttonLink;
+                            },
+                            Cancel: function () {
+                                $(this).dialog("close");
+                            }
                         }
-                    }
+                    });
                 });
-            });
-        </script>
-        @Html.ActionLinkButton(string.Format("Show {0} job{1}", Model.OpenJobCount, (Model.OpenJobCount == 1 ? null : "s")), MVC.Job.Queue(Model.Token.JobQueue.Id), "Config_JobQueues_Actions_ShowJobs_Button")
+            </script>
+        }
+        @if (canShowJobs)
+        {
+            @Html.ActionLinkButton(string.Format("Show {0} job{1}", Model.OpenJobCount, (Model.OpenJobCount == 1 ? null : "s")), MVC.Job.Queue(Model.Token.JobQueue.Id), "Config_JobQueues_Actions_ShowJobs_Button")
+        }
     </div>
 }

@@ -1,0 +1,36 @@
+﻿@model Disco.Web.Areas.Config.Models.UserFlag.CreateModel
+@{
+    Authorization.RequireAll(Claims.Config.JobQueue.Create, Claims.Config.JobQueue.Configure);
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "User Flags", MVC.Config.UserFlag.Index(null), "Create");
+}
+@using (Html.BeginForm())
+{ 
+    @Html.HiddenFor(m => m.UserFlag.Icon)
+    @Html.HiddenFor(m => m.UserFlag.IconColour)
+    <div class="form" style="width: 450px">
+        <table>
+            <tr>
+                <th>Name:
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.UserFlag.Name)<br />@Html.ValidationMessageFor(model => model.UserFlag.Name)
+                </td>
+            </tr>
+            <tr>
+                <th>Description:
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.UserFlag.Description)<br />@Html.ValidationMessageFor(model => model.UserFlag.Description)
+                </td>
+            </tr>
+        </table>
+        <p class="actions">
+            <input type="submit" class="button" value="Create" />
+        </p>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $('#UserFlag_Name').focus().select();
+        });
+    </script>
+}

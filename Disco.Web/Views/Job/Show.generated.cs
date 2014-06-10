@@ -201,8 +201,8 @@ WriteLiteral("    </div>\r\n    <script");
 WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(">\r\n        $(function () {\r\n            $(\'#Job_Show_Status\').appendTo(\'#layout_P" +
-"ageHeading\')\r\n            $(\'#Job_Show_QueueStatus\').appendTo(\'#layout_PageHeadi" +
-"ng\')\r\n        });\r\n    </script>\r\n");
+"ageHeading\');\r\n            $(\'#Job_Show_QueueStatus\').appendTo(\'#layout_PageHead" +
+"ing\');\r\n        });\r\n    </script>\r\n");
 
 WriteLiteral("    ");
 

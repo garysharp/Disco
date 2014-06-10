@@ -4406,6 +4406,16 @@ table.genericData td.id a {
 .dataTables_wrapper table > thead tr > th.sorting_disabled {
   background-image: none;
 }
+table.userTable div.flags {
+  display: inline-block;
+  float: right;
+}
+table.userTable div.flags > i {
+  cursor: default;
+}
+table.userTable div.flags > i > .details {
+  display: none;
+}
 .jobStatus {
   color: #333333;
 }
@@ -4842,6 +4852,18 @@ div.disco-attachmentUpload-imageDialog {
   overflow: hidden !important;
   width: 720px !important;
   height: 540px !important;
+}
+body > .User_FlagAssignment_Tooltip span.name {
+  display: block;
+  font-weight: bold;
+}
+body > .User_FlagAssignment_Tooltip span.comments {
+  display: block;
+  padding: 2px 0 2px 4px;
+}
+body > .User_FlagAssignment_Tooltip span.added {
+  font-style: italic;
+  font-size: 0.9em;
 }
 .d-priority-high {
   color: #fa6800;

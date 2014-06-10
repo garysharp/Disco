@@ -1,0 +1,250 @@
+﻿@model Disco.Web.Areas.Config.Models.UserFlag.ShowModel
+@using Disco.Services.Users.UserFlags;
+@{
+    Authorization.Require(Claims.Config.UserFlag.Show);
+
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "User Flags", MVC.Config.UserFlag.Index(null), Model.UserFlag.ToString());
+
+    var canConfig = Authorization.Has(Claims.Config.UserFlag.Configure);
+    var canDelete = Authorization.Has(Claims.Config.UserFlag.Delete);
+    var canShowUsers = Model.CurrentAssignmentCount > 0 && Authorization.HasAll(Claims.User.Search, Claims.User.ShowFlagAssignments);
+
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
+}
+<div id="Config_UserFlags_Show" class="form" style="width: 550px">
+    <table>
+        <tr>
+            <th style="width: 150px">Id:
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.UserFlag.Id)
+            </td>
+        </tr>
+        <tr>
+            <th>Name:
+            </th>
+            <td>@if (canConfig)
+                {@Html.EditorFor(model => model.UserFlag.Name)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#UserFlag_Name'),
+                            'Invalid Name',
+                            '@(Url.Action(MVC.API.UserFlag.UpdateName(Model.UserFlag.Id)))',
+                            'FlagName'
+                        );
+                    });
+                </script>
+                }
+                else
+                {
+                @Model.UserFlag.Name
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Description:
+            </th>
+            <td>@if (canConfig)
+                {@Html.EditorFor(model => model.UserFlag.Description)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#UserFlag_Description'),
+                            'Invalid Description',
+                            '@(Url.Action(MVC.API.UserFlag.UpdateDescription(Model.UserFlag.Id)))',
+                            'Description'
+                        );
+                    });
+                </script>
+                }
+                else
+                {
+                <pre>
+                    @if (string.IsNullOrEmpty(Model.UserFlag.Description))
+                    {
+                    <text>&lt;None&gt;</text>
+                    }
+                    else
+                    {
+                        @Model.UserFlag.Description
+                    }
+                    </pre>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Statistics:
+            </th>
+            <td>
+                <div><strong>@Model.CurrentAssignmentCount user@(Model.CurrentAssignmentCount != 1 ? "s" : null) currently assigned</strong></div>
+                <div>@Model.TotalAssignmentCount total user historical assignment@(Model.TotalAssignmentCount != 1 ? "s" : null)</div>
+            </td>
+        </tr>
+        <tr>
+            <th>Icon:
+            </th>
+            <td>
+                <i id="Config_UserFlags_Icon" data-icon="@(Model.UserFlag.Icon)" data-colour="@(Model.UserFlag.IconColour)" class="fa fa-@(Model.UserFlag.Icon) fa-4x d-@(Model.UserFlag.IconColour)"></i>
+                @if (canConfig)
+                {
+                    <div>
+                        <a id="Config_UserFlags_Icon_Update" href="#" class="button small">Update</a>
+                        <div id="Config_UserFlags_Icon_Update_Dialog" class="dialog" title="User Flag Icon">
+                            <div>
+                                <div class="icons">
+                                    @foreach (var icon in Model.Icons)
+                                    {
+                                        <i data-icon="@(icon.Key)" class="fa fa-@(icon.Key)" title="@icon.Value"></i>
+                                    }
+                                </div>
+                                <div class="colours">
+                                    @foreach (var colour in Model.ThemeColours)
+                                    {
+                                        <i data-colour="@(colour.Key)" class="fa fa-square d-@(colour.Key)" title="@colour.Value"></i>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            (function () {
+                                var dialog, icon, colours, icons;
+
+                                function showDialog() {
+                                    if (!dialog) {
+                                        dialog = $('#Config_UserFlags_Icon_Update_Dialog').dialog({
+                                            resizable: false,
+                                            modal: true,
+                                            autoOpen: false,
+                                            width: 750,
+                                            height: 650,
+                                            buttons: {
+                                                "Save": save,
+                                                Cancel: cancel
+                                            }
+                                        });
+
+                                        colours = dialog.find('.colours');
+                                        icons = dialog.find('.icons');
+
+                                        colours.on('click', 'i', selectColour);
+                                        icons.on('click', 'i', selectIcon);
+                                    }
+
+                                    colours.find('i[data-colour="' + icon.attr('data-colour') + '"]').each(selectColour);
+                                    icons.find('i[data-icon="' + icon.attr('data-icon') + '"]').each(selectIcon);
+
+                                    dialog.dialog('open');
+
+                                    return false;
+                                }
+
+                                function selectColour() {
+                                    var $this = $(this),
+                                        colourCode = $this.attr('data-colour'),
+                                        previousColourCode = icons.attr('data-colour');
+
+
+                                    colours.find('i').removeClass('selected fa-check-square').addClass('fa-square');
+                                    $this.removeClass('fa-square').addClass('fa-check-square selected');
+
+                                    if (previousColourCode)
+                                        icons.removeClass('d-' + previousColourCode);
+                                    icons.attr('data-colour', colourCode)
+                                    icons.addClass('d-' + colourCode);
+                                }
+                                function selectIcon() {
+                                    var $this = $(this),
+                                        iconCode = $this.attr('data-icon');
+
+                                    icons.find('i').removeClass('selected');
+                                    $this.addClass('selected');
+                                }
+
+                                function save() {
+                                    var url = '@(Url.Action(MVC.API.UserFlag.UpdateIconAndColour(id: Model.UserFlag.Id, redirect: true)))',
+                                        data = {
+                                            Icon: icons.find('i.selected').attr('data-icon'),
+                                            IconColour: colours.find('i.selected').attr('data-colour')
+                                        };
+                                    window.location.href = url + '&' + $.param(data);
+
+                                    dialog.dialog("disable");
+                                    dialog.dialog("option", "buttons", null);
+                                }
+
+                                function cancel() {
+                                    $(this).dialog("close");
+                                }
+
+                                $(function () {
+                                    icon = $('#Config_UserFlags_Icon');
+                                    $('#Config_UserFlags_Icon_Update').click(showDialog);
+                                });
+                            }());
+                        </script>
+                    </div>
+                }
+            </td>
+        </tr>
+    </table>
+</div>
+@if (canDelete || canShowUsers)
+{
+    <div class="actionBar">
+        @if (canDelete)
+        {
+            @Html.ActionLinkButton("Delete", MVC.API.UserFlag.Delete(Model.UserFlag.Id, true), "Config_UserFlags_Actions_Delete_Button")
+            <div id="Config_UserFlags_Actions_Delete_Dialog" title="Delete this User Flag?">
+                <p>
+                    <i class="fa fa-exclamation-triangle fa-lg warning"></i>
+                    This item will be permanently deleted and cannot be recovered.<br />
+                    <br />
+                    @if (Model.CurrentAssignmentCount > 0)
+                    {
+                        <strong>@Model.CurrentAssignmentCount user@(Model.CurrentAssignmentCount != 1 ? "s are" : " is") currently assigned</strong>
+                        <br />
+                        <br />
+                    }
+                    Are you sure?
+                </p>
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    var button = $('#Config_UserFlags_Actions_Delete_Button');
+                    var buttonDialog = $('#Config_UserFlags_Actions_Delete_Dialog');
+                    var buttonLink = button.attr('href');
+                    button.attr('href', '#');
+                    button.click(function () {
+                        buttonDialog.dialog('open');
+                        return false;
+                    });
+                    buttonDialog.dialog({
+                        resizable: false,
+                        modal: true,
+                        autoOpen: false,
+                        buttons: {
+                            "Delete": function () {
+                                var $this = $(this);
+                                $this.dialog("disable");
+                                $this.dialog("option", "buttons", null);
+                                window.location.href = buttonLink;
+                            },
+                            Cancel: function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                });
+            </script>
+        }
+        @if (canShowUsers)
+        {
+            @Html.ActionLinkButton(string.Format("Show {0} user{1}", Model.CurrentAssignmentCount, (Model.CurrentAssignmentCount == 1 ? null : "s")), MVC.Search.Query(Model.UserFlag.Id.ToString(), "UserFlag"), "Config_UserFlags_Actions_ShowUsers_Button")
+        }
+    </div>
+}

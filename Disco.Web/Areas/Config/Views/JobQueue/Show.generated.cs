@@ -450,7 +450,7 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 100 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-                                     foreach (var icon in JobQueueService.Icons)
+                                     foreach (var icon in Model.Icons)
                                     {
 
             
@@ -469,26 +469,26 @@ WriteLiteral(" data-icon=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4256), Tuple.Create("\"", 4281)
-, Tuple.Create(Tuple.Create("", 4264), Tuple.Create("fa", 4264), true)
-, Tuple.Create(Tuple.Create(" ", 4266), Tuple.Create("fa-", 4267), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4246), Tuple.Create("\"", 4271)
+, Tuple.Create(Tuple.Create("", 4254), Tuple.Create("fa", 4254), true)
+, Tuple.Create(Tuple.Create(" ", 4256), Tuple.Create("fa-", 4257), true)
             
             #line 102 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
- , Tuple.Create(Tuple.Create("", 4270), Tuple.Create<System.Object, System.Int32>(icon.Key
+ , Tuple.Create(Tuple.Create("", 4260), Tuple.Create<System.Object, System.Int32>(icon.Key
             
             #line default
             #line hidden
-, 4270), false)
+, 4260), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4282), Tuple.Create("\"", 4301)
+WriteAttribute("title", Tuple.Create(" title=\"", 4272), Tuple.Create("\"", 4291)
             
             #line 102 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-                    , Tuple.Create(Tuple.Create("", 4290), Tuple.Create<System.Object, System.Int32>(icon.Value
+                    , Tuple.Create(Tuple.Create("", 4280), Tuple.Create<System.Object, System.Int32>(icon.Value
             
             #line default
             #line hidden
-, 4290), false)
+, 4280), false)
 );
 
 WriteLiteral("></i>\r\n");
@@ -514,7 +514,7 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 106 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-                                     foreach (var colour in JobQueueService.IconColours)
+                                     foreach (var colour in Model.ThemeColours)
                                     {
 
             
@@ -533,27 +533,27 @@ WriteLiteral(" data-colour=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4642), Tuple.Create("\"", 4678)
-, Tuple.Create(Tuple.Create("", 4650), Tuple.Create("fa", 4650), true)
-, Tuple.Create(Tuple.Create(" ", 4652), Tuple.Create("fa-square", 4653), true)
-, Tuple.Create(Tuple.Create(" ", 4662), Tuple.Create("d-", 4663), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4623), Tuple.Create("\"", 4659)
+, Tuple.Create(Tuple.Create("", 4631), Tuple.Create("fa", 4631), true)
+, Tuple.Create(Tuple.Create(" ", 4633), Tuple.Create("fa-square", 4634), true)
+, Tuple.Create(Tuple.Create(" ", 4643), Tuple.Create("d-", 4644), true)
             
             #line 108 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-              , Tuple.Create(Tuple.Create("", 4665), Tuple.Create<System.Object, System.Int32>(colour.Key
+              , Tuple.Create(Tuple.Create("", 4646), Tuple.Create<System.Object, System.Int32>(colour.Key
             
             #line default
             #line hidden
-, 4665), false)
+, 4646), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4679), Tuple.Create("\"", 4700)
+WriteAttribute("title", Tuple.Create(" title=\"", 4660), Tuple.Create("\"", 4681)
             
             #line 108 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-                                   , Tuple.Create(Tuple.Create("", 4687), Tuple.Create<System.Object, System.Int32>(colour.Value
+                                   , Tuple.Create(Tuple.Create("", 4668), Tuple.Create<System.Object, System.Int32>(colour.Value
             
             #line default
             #line hidden
-, 4687), false)
+, 4668), false)
 );
 
 WriteLiteral("></i>\r\n");
@@ -658,27 +658,27 @@ WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            
             #line hidden
 WriteLiteral("                <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 9454), Tuple.Create("\"", 9502)
-, Tuple.Create(Tuple.Create("", 9462), Tuple.Create("fa", 9462), true)
-, Tuple.Create(Tuple.Create(" ", 9464), Tuple.Create("d-priority-", 9465), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 9435), Tuple.Create("\"", 9483)
+, Tuple.Create(Tuple.Create("", 9443), Tuple.Create("fa", 9443), true)
+, Tuple.Create(Tuple.Create(" ", 9445), Tuple.Create("d-priority-", 9446), true)
             
             #line 201 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 9476), Tuple.Create<System.Object, System.Int32>(priorityValue.ToLower()
+, Tuple.Create(Tuple.Create("", 9457), Tuple.Create<System.Object, System.Int32>(priorityValue.ToLower()
             
             #line default
             #line hidden
-, 9476), false)
+, 9457), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 9503), Tuple.Create("\"", 9536)
+WriteAttribute("title", Tuple.Create(" title=\"", 9484), Tuple.Create("\"", 9517)
             
             #line 201 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 9511), Tuple.Create<System.Object, System.Int32>(priorityValue
+, Tuple.Create(Tuple.Create("", 9492), Tuple.Create<System.Object, System.Int32>(priorityValue
             
             #line default
             #line hidden
-, 9511), false)
-, Tuple.Create(Tuple.Create(" ", 9527), Tuple.Create("Priority", 9528), true)
+, 9492), false)
+, Tuple.Create(Tuple.Create(" ", 9508), Tuple.Create("Priority", 9509), true)
 );
 
 WriteLiteral("></i>\r\n");
@@ -1003,14 +1003,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                            <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 14510), Tuple.Create("\"", 14550)
+WriteAttribute("class", Tuple.Create(" class=\"", 14491), Tuple.Create("\"", 14531)
             
             #line 306 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 14518), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
+, Tuple.Create(Tuple.Create("", 14499), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
             
             #line default
             #line hidden
-, 14518), false)
+, 14499), false)
 );
 
 WriteLiteral(">");
@@ -1054,14 +1054,14 @@ WriteLiteral("></i>");
             #line hidden
 WriteLiteral("                                <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 14990), Tuple.Create("\"", 15032)
+WriteAttribute("href", Tuple.Create(" href=\"", 14971), Tuple.Create("\"", 15013)
             
             #line 312 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 14997), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.User.Show(sg.Id))
+, Tuple.Create(Tuple.Create("", 14978), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.User.Show(sg.Id))
             
             #line default
             #line hidden
-, 14997), false)
+, 14978), false)
 );
 
 WriteLiteral("><i");
@@ -1164,14 +1164,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                        <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 16166), Tuple.Create("\"", 16206)
+WriteAttribute("class", Tuple.Create(" class=\"", 16147), Tuple.Create("\"", 16187)
             
             #line 328 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 16174), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
+, Tuple.Create(Tuple.Create("", 16155), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
             
             #line default
             #line hidden
-, 16174), false)
+, 16155), false)
 );
 
 WriteLiteral(" data-subjectid=\"");
@@ -1286,14 +1286,14 @@ WriteLiteral(">Add</a>\r\n                            </div>\r\n                
 
 WriteLiteral(" id=\"Config_JobQueues_Subjects_Update_Dialog_Form\"");
 
-WriteAttribute("action", Tuple.Create(" action=\"", 17597), Tuple.Create("\"", 17689)
+WriteAttribute("action", Tuple.Create(" action=\"", 17578), Tuple.Create("\"", 17670)
             
             #line 343 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-            , Tuple.Create(Tuple.Create("", 17606), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.JobQueue.UpdateSubjects(Model.Token.JobQueue.Id, null, true))
+            , Tuple.Create(Tuple.Create("", 17587), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.JobQueue.UpdateSubjects(Model.Token.JobQueue.Id, null, true))
             
             #line default
             #line hidden
-, 17606), false)
+, 17587), false)
 );
 
 WriteLiteral(" method=\"post\"");
@@ -1618,15 +1618,15 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                            <div");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 28953), Tuple.Create("\"", 28975)
-, Tuple.Create(Tuple.Create("", 28958), Tuple.Create("trJobType", 28958), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 28934), Tuple.Create("\"", 28956)
+, Tuple.Create(Tuple.Create("", 28939), Tuple.Create("trJobType", 28939), true)
             
             #line 548 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 28967), Tuple.Create<System.Object, System.Int32>(jt.Id
+, Tuple.Create(Tuple.Create("", 28948), Tuple.Create<System.Object, System.Int32>(jt.Id
             
             #line default
             #line hidden
-, 28967), false)
+, 28948), false)
 );
 
 WriteLiteral(" class=\"jobTypes\"");
@@ -1634,29 +1634,29 @@ WriteLiteral(" class=\"jobTypes\"");
 WriteLiteral(">\r\n                                <h4>\r\n                                    <inp" +
 "ut");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 29076), Tuple.Create("\"", 29095)
-, Tuple.Create(Tuple.Create("", 29081), Tuple.Create("Types_", 29081), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 29057), Tuple.Create("\"", 29076)
+, Tuple.Create(Tuple.Create("", 29062), Tuple.Create("Types_", 29062), true)
             
             #line 550 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 29087), Tuple.Create<System.Object, System.Int32>(jt.Id
+, Tuple.Create(Tuple.Create("", 29068), Tuple.Create<System.Object, System.Int32>(jt.Id
             
             #line default
             #line hidden
-, 29087), false)
+, 29068), false)
 );
 
 WriteLiteral(" class=\"jobType\"");
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 29128), Tuple.Create("\"", 29144)
+WriteAttribute("value", Tuple.Create(" value=\"", 29109), Tuple.Create("\"", 29125)
             
             #line 550 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-                      , Tuple.Create(Tuple.Create("", 29136), Tuple.Create<System.Object, System.Int32>(jt.Id
+                      , Tuple.Create(Tuple.Create("", 29117), Tuple.Create<System.Object, System.Int32>(jt.Id
             
             #line default
             #line hidden
-, 29136), false)
+, 29117), false)
 );
 
 WriteLiteral(" ");
@@ -1670,15 +1670,15 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 29215), Tuple.Create("\"", 29235)
-, Tuple.Create(Tuple.Create("", 29221), Tuple.Create("Types_", 29221), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 29196), Tuple.Create("\"", 29216)
+, Tuple.Create(Tuple.Create("", 29202), Tuple.Create("Types_", 29202), true)
             
             #line 550 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-                                                                                                                 , Tuple.Create(Tuple.Create("", 29227), Tuple.Create<System.Object, System.Int32>(jt.Id
+                                                                                                                 , Tuple.Create(Tuple.Create("", 29208), Tuple.Create<System.Object, System.Int32>(jt.Id
             
             #line default
             #line hidden
-, 29227), false)
+, 29208), false)
 );
 
 WriteLiteral(">");
@@ -1692,15 +1692,15 @@ WriteLiteral(">");
             #line hidden
 WriteLiteral("</label></h4>\r\n                                <div");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 29303), Tuple.Create("\"", 29325)
-, Tuple.Create(Tuple.Create("", 29308), Tuple.Create("SubTypes_", 29308), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 29284), Tuple.Create("\"", 29306)
+, Tuple.Create(Tuple.Create("", 29289), Tuple.Create("SubTypes_", 29289), true)
             
             #line 551 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 29317), Tuple.Create<System.Object, System.Int32>(jt.Id
+, Tuple.Create(Tuple.Create("", 29298), Tuple.Create<System.Object, System.Int32>(jt.Id
             
             #line default
             #line hidden
-, 29317), false)
+, 29298), false)
 );
 
 WriteLiteral(" class=\"jobSubTypes\"");
@@ -1813,74 +1813,118 @@ WriteLiteral(" class=\"actionBar\"");
 
 WriteLiteral(">\r\n");
 
-WriteLiteral("        ");
-
             
             #line 632 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-   Write(Html.ActionLinkButton("Delete", MVC.API.JobQueue.Delete(Model.Token.JobQueue.Id, true), "Config_JobQueues_Actions_Delete_Button"));
+        
+            
+            #line default
+            #line hidden
+            
+            #line 632 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+         if (canDelete)
+        {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 634 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+       Write(Html.ActionLinkButton("Delete", MVC.API.JobQueue.Delete(Model.Token.JobQueue.Id, true), "Config_JobQueues_Actions_Delete_Button"));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n        <div");
+            
+            #line 634 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+                                                                                                                                              
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <div");
 
 WriteLiteral(" id=\"Config_JobQueues_Actions_Delete_Dialog\"");
 
 WriteLiteral(" title=\"Delete this Job Queue?\"");
 
-WriteLiteral(">\r\n            <p>\r\n                <i");
+WriteLiteral(">\r\n                <p>\r\n                    <i");
 
 WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg warning\"");
 
-WriteLiteral("></i>\r\n                This item will be permanently deleted and cannot be recove" +
-"red.<br />\r\n                <br />\r\n                Are you sure?\r\n            <" +
-"/p>\r\n        </div>\r\n        <script");
+WriteLiteral("></i>\r\n                    This item will be permanently deleted and cannot be re" +
+"covered.<br />\r\n                    <br />\r\n                    Are you sure?\r\n " +
+"               </p>\r\n            </div>\r\n");
+
+WriteLiteral("            <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
-            $(function () {
-                var button = $('#Config_JobQueues_Actions_Delete_Button');
-                var buttonDialog = $('#Config_JobQueues_Actions_Delete_Dialog');
-                var buttonLink = button.attr('href');
-                button.attr('href', '#');
-                button.click(function () {
-                    buttonDialog.dialog('open');
-                    return false;
-                });
-                buttonDialog.dialog({
-                    resizable: false,
-                    modal: true,
-                    autoOpen: false,
-                    buttons: {
-                        ""Delete"": function () {
-                            var $this = $(this);
-                            $this.dialog(""disable"");
-                            $this.dialog(""option"", ""buttons"", null);
-                            window.location.href = buttonLink;
-                        },
-                        Cancel: function () {
-                            $(this).dialog(""close"");
+                $(function () {
+                    var button = $('#Config_JobQueues_Actions_Delete_Button');
+                    var buttonDialog = $('#Config_JobQueues_Actions_Delete_Dialog');
+                    var buttonLink = button.attr('href');
+                    button.attr('href', '#');
+                    button.click(function () {
+                        buttonDialog.dialog('open');
+                        return false;
+                    });
+                    buttonDialog.dialog({
+                        resizable: false,
+                        modal: true,
+                        autoOpen: false,
+                        buttons: {
+                            ""Delete"": function () {
+                                var $this = $(this);
+                                $this.dialog(""disable"");
+                                $this.dialog(""option"", ""buttons"", null);
+                                window.location.href = buttonLink;
+                            },
+                            Cancel: function () {
+                                $(this).dialog(""close"");
+                            }
                         }
-                    }
+                    });
                 });
-            });
-        </script>
+            </script>
 ");
 
-WriteLiteral("        ");
-
             
-            #line 669 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
-   Write(Html.ActionLinkButton(string.Format("Show {0} job{1}", Model.OpenJobCount, (Model.OpenJobCount == 1 ? null : "s")), MVC.Job.Queue(Model.Token.JobQueue.Id), "Config_JobQueues_Actions_ShowJobs_Button"));
+            #line 671 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+        }
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n    </div>\r\n");
+WriteLiteral("        ");
 
             
-            #line 671 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+            #line 672 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+         if (canShowJobs)
+        {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 674 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+       Write(Html.ActionLinkButton(string.Format("Show {0} job{1}", Model.OpenJobCount, (Model.OpenJobCount == 1 ? null : "s")), MVC.Job.Queue(Model.Token.JobQueue.Id), "Config_JobQueues_Actions_ShowJobs_Button"));
+
+            
+            #line default
+            #line hidden
+            
+            #line 674 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+                                                                                                                                                                                                                    
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    </div>\r\n");
+
+            
+            #line 677 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
 }
             
             #line default

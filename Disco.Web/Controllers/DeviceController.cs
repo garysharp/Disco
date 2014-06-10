@@ -203,7 +203,7 @@ namespace Disco.Web.Controllers
 
             m.Device = Database.Devices
                 .Include("DeviceModel").Include("DeviceProfile").Include("DeviceBatch").Include("DeviceDetails")
-                .Include("DeviceUserAssignments.AssignedUser").Include("AssignedUser").Include("DeviceCertificates")
+                .Include("DeviceUserAssignments.AssignedUser.UserFlagAssignments").Include("AssignedUser.UserFlagAssignments").Include("DeviceCertificates")
                 .Include("DeviceAttachments.TechUser").Include("DeviceAttachments.DocumentTemplate")
                 .FirstOrDefault(d => d.SerialNumber == id);
 

@@ -1,4 +1,5 @@
 ﻿@model Disco.Web.Models.Device.ShowModel
+@using Disco.Services.Users.UserFlags;
 @{
     Authorization.Require(Claims.Device.Show);
 
@@ -209,6 +210,46 @@
                                             {
                                             <div id="Device_Show_User_EmailAddress" title="Email Address"><a href="mailto:@(Model.Device.AssignedUser.EmailAddress)">@assignedUser.EmailAddress</a></div>
                                             }
+                                        }
+                                        @if (Authorization.Has(Claims.User.ShowFlagAssignments))
+                                        {
+                                            <div id="Device_Show_User_Flags">
+                                                @foreach (var flag in assignedUser.UserFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, UserFlagService.GetUserFlag(f.UserFlagId))))
+                                                {
+                                                    <i class="flag fa fa-@(flag.Item2.Icon) fa-fw d-@(flag.Item2.IconColour)"><span class="details"><span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
+                                                                                                                                                                                              {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span></span></i>
+                                                }
+                                                <script type="text/javascript">
+                                                    $(function () {
+                                                        $('#Device_Show_User_Flags')
+                                                            .tooltip({
+                                                                items: 'i.flag',
+                                                                content: function () {
+                                                                    var $this = $(this);
+                                                                    return $this.children('.details').html();
+                                                                },
+                                                                tooltipClass: 'User_FlagAssignment_Tooltip',
+                                                                position: {
+                                                                    my: "right top",
+                                                                    at: "right bottom",
+                                                                    collision: "flipfit flip"
+                                                                },
+                                                                hade: {
+                                                                    effect: ''
+                                                                },
+                                                                close: function (e, ui) {
+                                                                    ui.tooltip.hover(
+                                                                        function () {
+                                                                            $(this).stop(true).fadeTo(100, 1);
+                                                                        },
+                                                                        function () {
+                                                                            $(this).fadeOut(100, function () { $(this).remove(); });
+                                                                        });
+                                                                }
+                                                            });
+                                                    });
+                                                </script>
+                                            </div>
                                         }
                                     </div>
                                 }

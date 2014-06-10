@@ -11,6 +11,8 @@ using System.Web.WebPages;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Globalization;
+using System.Text;
+using Disco.Services.Interop.ActiveDirectory;
 
 namespace Disco.Web
 {
@@ -107,13 +109,67 @@ namespace Disco.Web
             return breadCrumbs;
         }
 
-        private static Lazy<Regex> _ToMultilineJobRefString = new Lazy<Regex>(() => { return new Regex("(?<![\\&])\\#(\\d+)"); });
-        public static MvcHtmlString ToMultilineJobRefString(this string s)
+        private static Lazy<Regex> htmlCommentJobRegex = new Lazy<Regex>(() => { return new Regex(@"(#(\d+))", RegexOptions.Compiled, TimeSpan.FromSeconds(.1)); });
+        private static Lazy<Regex> htmlCommentUserRegex = new Lazy<Regex>(() => { return new Regex(@"(@([^\s\\]+\\)?([^\s\\]+[\w\d]))", RegexOptions.Compiled, TimeSpan.FromSeconds(.1)); });
+        private static Lazy<Regex> htmlCommentDeviceRegex = new Lazy<Regex>(() => { return new Regex(@"(!([\S]+[\w\d]))", RegexOptions.Compiled, TimeSpan.FromSeconds(.1)); });
+        public static MvcHtmlString ToHtmlComment(this string s)
         {
-            var multiLineString = HttpUtility.HtmlEncode(s).Replace("\n", "<br />").Replace(Environment.NewLine, "<br />");
             var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            return new MvcHtmlString(_ToMultilineJobRefString.Value.Replace(multiLineString, string.Format("<a href=\"{0}?id=$1\">#$1</a>", urlHelper.Action(MVC.Job.Show(null)))));
-        }
+            var html = HttpUtility.HtmlEncode(s);
+
+            try
+            {
+                // Job Matches
+                html = htmlCommentJobRegex.Value.Replace(html, match => {
+                    int jobId;
+                    if (int.TryParse(match.Groups[2].Value, out jobId))
+                        return string.Format("<a href=\"{2}\" title=\"Job {1}\">{0}</a>", match.Value, jobId, urlHelper.Action(MVC.Job.Show(jobId)));
+                    else
+                        return match.Value;
+                });
+
+                // User Matches
+                html = htmlCommentUserRegex.Value.Replace(html, match =>
+                {
+                    string domainId = match.Groups[2].Value;
+                    string userId = match.Groups[3].Value;
+
+                    try
+                    {
+                        if (string.IsNullOrWhiteSpace(userId))
+                            return match.Value;
+                        if (string.IsNullOrWhiteSpace(domainId))
+                            userId = string.Concat(ActiveDirectory.Context.PrimaryDomain.NetBiosName, @"\", userId);
+                        else
+                            userId = string.Concat(domainId, userId);
+
+                        return string.Format("<a href=\"{2}\" title=\"User {1}\">{0}</a>", match.Value, userId, urlHelper.Action(MVC.User.Show(userId)));
+                    }
+                    catch (Exception)
+                    {
+                        // Ignore incorrectly encoded User Ids
+                        return match.Value;
+                    }
+                });
+
+                // Device Matches
+                html = htmlCommentDeviceRegex.Value.Replace(html, match =>
+                {
+                    string deviceSerialNumber = match.Groups[2].Value;
+
+                    if (string.IsNullOrWhiteSpace(deviceSerialNumber))
+                        return match.Value;
+
+                    return string.Format("<a href=\"{2}\" title=\"Device {1}\">{0}</a>", match.Value, deviceSerialNumber, urlHelper.Action(MVC.Device.Show(deviceSerialNumber)));
+                });
+            }
+            catch (Exception)
+            {
+                // Ignore Encoding Exceptions
+            }
+
+            return new MvcHtmlString(html.Replace("\n", "<br />").Replace(Environment.NewLine, "<br />"));
+        }      
 
         public static IEnumerable<SelectListItem> ToSelectListItems(this IEnumerable<string> Items, string SelectedItem = null)
         {

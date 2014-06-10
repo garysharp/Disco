@@ -10,6 +10,7 @@ using Disco.Services.Authorization.Roles.ClaimGroups.Configuration.Logging;
 using Disco.Services.Authorization.Roles.ClaimGroups.Configuration.Origanisation;
 using Disco.Services.Authorization.Roles.ClaimGroups.Configuration.Plugin;
 using Disco.Services.Authorization.Roles.ClaimGroups.Configuration.System;
+using Disco.Services.Authorization.Roles.ClaimGroups.Configuration.UserFlag;
 
 namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration
 {
@@ -30,6 +31,7 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration
             this.Organisation = new OrganisationClaims();
             this.JobPreferences = new JobPreferencesClaims();
             this.JobQueue = new JobQueueClaims();
+            this.UserFlag = new UserFlagClaims();
         }
 
         [ClaimDetails("Show Configuration", "Can show the configuration menu")]
@@ -58,5 +60,7 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration
         public JobPreferencesClaims JobPreferences { get; set; }
 
         public JobQueueClaims JobQueue { get; set; }
+
+        public UserFlagClaims UserFlag { get; set; }
     }
 }

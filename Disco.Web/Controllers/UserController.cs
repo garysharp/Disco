@@ -7,6 +7,7 @@ using Disco.Services.Authorization.Roles;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Users;
+using Disco.Services.Users.UserFlags;
 using Disco.Services.Web;
 using System;
 using System.Linq;
@@ -61,6 +62,8 @@ namespace Disco.Web.Controllers
                 .Include("DeviceUserAssignments.Device.DeviceBatch")
                 .Include("UserAttachments.TechUser")
                 .Include("UserAttachments.DocumentTemplate")
+                .Include("UserFlagAssignments.AddedUser")
+                .Include("UserFlagAssignments.RemovedUser")
                 .FirstOrDefault(um => um.UserId == id);
 
             if (m.User == null)
@@ -78,6 +81,16 @@ namespace Disco.Web.Controllers
                     EnablePaging = false
                 };
                 m.Jobs.Fill(Database, Disco.Services.Searching.Search.BuildJobTableModel(Database).Where(j => j.UserId == id).OrderByDescending(j => j.Id), true);
+            }
+
+            if (Authorization.Has(Claims.User.ShowFlagAssignments))
+            {
+                var usedFlags = m.User.UserFlagAssignments
+                    .Where(a => !a.RemovedDate.HasValue)
+                    .Select(a => a.UserFlagId)
+                    .Distinct().ToList();
+
+                m.AvailableUserFlags = UserFlagService.GetUserFlags().Where(f => !usedFlags.Contains(f.Id)).ToList();
             }
 
             try

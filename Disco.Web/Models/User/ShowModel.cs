@@ -1,6 +1,8 @@
-﻿using Disco.Models.Services.Authorization;
+﻿using Disco.Models.Repository;
+using Disco.Models.Services.Authorization;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.User;
+using Disco.Services.Users.UserFlags;
 using Disco.Web.Extensions;
 using Disco.Web.Models.Shared;
 using System.Collections.Generic;
@@ -13,7 +15,10 @@ namespace Disco.Web.Models.User
     {
         public Disco.Models.Repository.User User { get; set; }
         public JobTableModel Jobs { get; set; }
-        public List<Disco.Models.Repository.DocumentTemplate> DocumentTemplates { get; set; }
+        public List<DocumentTemplate> DocumentTemplates { get; set; }
+
+        public List<UserFlag> AvailableUserFlags { get; set; }
+
         public IAuthorizationToken AuthorizationToken { get; set; }
         public IClaimNavigatorItem ClaimNavigator { get; set; }
 

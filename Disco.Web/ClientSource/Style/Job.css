@@ -192,6 +192,16 @@
 #Job_Show #Job_Show_Subjects #Job_Show_Device #Job_Show_Device_DeviceHeld table > tbody > tr > td:first-child {
   width: 62px;
 }
+#Job_Show #Job_Show_Subjects #Job_Show_User #Job_Show_User_Flags {
+  margin: 4px 0;
+  font-size: 16px;
+}
+#Job_Show #Job_Show_Subjects #Job_Show_User #Job_Show_User_Flags > i {
+  cursor: default;
+}
+#Job_Show #Job_Show_Subjects #Job_Show_User #Job_Show_User_Flags > i > .details {
+  display: none;
+}
 #Job_Show #Job_Show_Subjects #Job_Show_Subjects_Actions > td {
   padding-top: 4px;
 }
@@ -524,9 +534,9 @@
   margin-top: 4px;
   font-size: .9em;
 }
-#jobDetailTab-Queues #jobQueues td.added .comments,
-#jobDetailTab-Queues #jobQueues td.removed .comments {
-  white-space: pre-line;
+#jobDetailTab-Queues #jobQueues td.added .commentsRaw,
+#jobDetailTab-Queues #jobQueues td.removed .commentsRaw {
+  display: none;
 }
 #jobDetailTab-Queues #jobQueues td.removed.na {
   vertical-align: middle;

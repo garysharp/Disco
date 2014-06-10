@@ -221,6 +221,96 @@
                             </script>
                             }
                         }
+                        @if (Model.User.CanAddUserFlags() && Model.AvailableUserFlags != null && Model.AvailableUserFlags.Count > 0)
+                        {
+                            @Html.ActionLinkSmallButton("Add Flag", MVC.API.UserFlagAssignment.AddUser(), "User_Show_Details_Actions_AddFlag_Button")
+                            <div id="User_Show_Details_Actions_AddFlag_Dialog" class="dialog" title="Add User Flag">
+                                @using (Html.BeginForm(MVC.API.UserFlagAssignment.AddUser()))
+                                {
+                                    <input id="User_Show_Details_Actions_AddFlag_Dialog_Id" type="hidden" name="id" />
+                                    <input id="User_Show_Details_Actions_AddFlag_Dialog_UserId" type="hidden" name="UserId" value="@Model.User.UserId" />
+                                    <div class="flagPicker">
+                                        @foreach (var userFlag in Model.AvailableUserFlags.OrderBy(jq => jq.Name))
+                                        {
+                                            <div class="flag" data-userflagid="@(userFlag.Id)">
+                                                <i class="fa fa-@(userFlag.Icon) fa-fw fa-lg d-@(userFlag.IconColour)"></i>@userFlag.Name
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="details">
+                                        <div>
+                                            <h4>Comments</h4>
+                                            <textarea name="Comments" id="User_Show_Details_Actions_AddFlag_Dialog_Comments"></textarea>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <script type="text/javascript">
+                                $(function () {
+                                    var button = $('#User_Show_Details_Actions_AddFlag_Button');
+                                    var buttonDialog = null;
+                                    var buttonLink = button.attr('href');
+
+                                    var flagPicker = null;
+                                    var flagAddId = null;
+                                    var flagAddComments = null;
+                                    var details = null;
+
+                                    function flagSelected() {
+                                        var flag = $(this);
+
+                                        flagPicker.children().removeClass('selected');
+                                        flag.addClass('selected');
+
+                                        flagAddId.val(flag.attr('data-userflagid'));
+
+                                        details.show();
+
+                                        flagAddComments.focus().select();
+                                    }
+
+                                    button.attr('href', '#').click(function (e) {
+                                        e.preventDefault();
+
+                                        if (!buttonDialog) {
+                                            buttonDialog = $('#User_Show_Details_Actions_AddFlag_Dialog');
+                                            buttonDialog.dialog({
+                                                width: 600,
+                                                height: 410,
+                                                resizable: false,
+                                                modal: true,
+                                                autoOpen: false,
+                                                buttons: {
+                                                    Cancel: function () {
+                                                        $(this).dialog("close");
+                                                    },
+                                                    "Add Flag": function () {
+                                                        if (!!flagAddId.val()) {
+                                                            var $this = $(this);
+                                                            $this.dialog("disable");
+                                                            $this.dialog("option", "buttons", null);
+                                                            buttonDialog.find('form').submit();
+                                                        } else {
+                                                            alert('Select a User Flag');
+                                                        }
+                                                    }
+                                                }
+                                            });
+
+                                            flagAddId = $('#User_Show_Details_Actions_AddFlag_Dialog_Id');
+                                            flagAddComments = buttonDialog.find('#User_Show_Details_Actions_AddFlag_Dialog_Comments');
+                                            flagPicker = buttonDialog.find('.flagPicker');
+                                            details = buttonDialog.find('.details');
+
+                                            flagPicker.on('click', 'div.flag', flagSelected);
+                                        }
+
+                                        buttonDialog.dialog('open');
+                                        return false;
+                                    });
+                                });
+                            </script>
+                        }
                     </div>
                 </div>
             </td>

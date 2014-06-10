@@ -1,0 +1,46 @@
+﻿@model Disco.Web.Areas.Config.Models.UserFlag.IndexModel
+@{
+    Authorization.RequireAll(Claims.Config.UserFlag.Create, Claims.Config.UserFlag.Configure);
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "User Flags", MVC.Config.UserFlag.Index(null));
+}
+<div id="Config_UserFlags_Index">
+    @if (Model.UserFlags.Count == 0)
+    {
+        <div class="form" style="width: 450px; padding: 100px 0;">
+            <h2>No user flags are configured</h2>
+        </div>  
+    }
+    else
+    {
+        <table class="tableData">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+            @foreach (var item in Model.UserFlags)
+            {
+                <tr>
+                    <td>
+                        <a href="@Url.Action(MVC.Config.UserFlag.Index(item.Id))">
+                            <i class="fa fa-@(item.Icon) fa-lg d-@(item.IconColour)"></i>
+                            @item.Name
+                        </a>
+                    </td>
+                    <td>
+                        <span class="smallMessage">@if (string.IsNullOrWhiteSpace(item.Description))
+                                                   {
+                            <text>&lt;none&gt;</text>
+                                                   }
+                                                   else
+                                                   {
+                            @item.Description.ToMultilineString()
+                                                   }</span>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    <div class="actionBar">
+        @Html.ActionLinkButton("Create User Flag", MVC.Config.UserFlag.Create())
+    </div>
+</div>

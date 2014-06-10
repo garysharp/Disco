@@ -78,6 +78,18 @@
   -moz-opacity: 1;
   opacity: 1;
 }
+#layout_PageHeading #User_Show_Flags {
+  display: inline-block;
+  float: right;
+  height: 50px;
+  font-size: 0.6em;
+}
+#layout_PageHeading #User_Show_Flags > i {
+  cursor: default;
+}
+#layout_PageHeading #User_Show_Flags > i > .details {
+  display: none;
+}
 #User_Show #User_Show_Subjects {
   table-layout: fixed;
 }
@@ -195,6 +207,113 @@
 #UserDetailTab-JobsContainer .dataTables_wrapper .dataTables_showStatusClosed {
   right: 220px;
   margin-top: -24px;
+}
+#User_Show_Details_Actions_AddFlag_Dialog {
+  height: 400px;
+}
+#User_Show_Details_Actions_AddFlag_Dialog .flagPicker {
+  position: absolute;
+  width: 250px;
+  height: 300px;
+  overflow-y: auto;
+  background-color: #fcfcfc;
+  border: 1px solid #ccc;
+}
+#User_Show_Details_Actions_AddFlag_Dialog .flagPicker > div {
+  background-color: #ffffff;
+  border-bottom: 1px solid #ddd;
+  padding: 6px 0 6px 6px;
+  cursor: pointer;
+}
+#User_Show_Details_Actions_AddFlag_Dialog .flagPicker > div:hover {
+  background-color: #f4f4f4;
+}
+#User_Show_Details_Actions_AddFlag_Dialog .flagPicker > div.selected,
+#User_Show_Details_Actions_AddFlag_Dialog .flagPicker > div.selected:hover {
+  background-color: #eeeeee;
+}
+#User_Show_Details_Actions_AddFlag_Dialog .details {
+  display: none;
+  position: absolute;
+  left: 280px;
+  top: 1em;
+}
+#User_Show_Details_Actions_AddFlag_Dialog .details h4 {
+  margin-bottom: 4px;
+}
+#User_Show_Details_Actions_AddFlag_Dialog .details textarea {
+  min-width: 280px;
+  height: 200px;
+}
+#UserDetailTab-Flags #userFlags {
+  border: solid 1px #d8d8d8;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+#UserDetailTab-Flags #userFlags td {
+  border: solid 1px #d8d8d8;
+  background-color: #ffffff;
+}
+#UserDetailTab-Flags #userFlags th {
+  background-color: #eeeeee;
+  border: solid 1px #d8d8d8;
+}
+#UserDetailTab-Flags #userFlags i.fa-edit {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 4px;
+  font-size: 1.1em;
+  cursor: pointer;
+  display: none;
+  color: #335a87;
+}
+#UserDetailTab-Flags #userFlags i.fa-edit:hover {
+  color: #5e8cc2;
+}
+#UserDetailTab-Flags #userFlags td:hover i.fa-edit {
+  display: inline-block;
+}
+#UserDetailTab-Flags #userFlags th.name {
+  width: 200px;
+}
+#UserDetailTab-Flags #userFlags tr.removed td {
+  background-color: #f4f4f4;
+}
+#UserDetailTab-Flags #userFlags td.name {
+  vertical-align: middle;
+}
+#UserDetailTab-Flags #userFlags td.name .fa-stack {
+  line-height: 1.6em;
+}
+#UserDetailTab-Flags #userFlags td.added,
+#UserDetailTab-Flags #userFlags td.removed {
+  vertical-align: middle;
+}
+#UserDetailTab-Flags #userFlags td.comments {
+  vertical-align: middle;
+}
+#UserDetailTab-Flags #userFlags td.comments .editable {
+  position: relative;
+}
+#UserDetailTab-Flags #userFlags td.comments .commentsRaw {
+  display: none;
+}
+#UserDetailTab-Flags #userFlags td.removed.na {
+  vertical-align: middle;
+  text-align: center;
+}
+#UserDetailTab-Flags > .none {
+  text-align: center;
+  padding: 30px 0;
+  font-style: italic;
+  background-color: #ffffff;
+}
+#User_Show_Flags_Actions_EditComments_Dialog h4 {
+  margin-bottom: 4px;
+}
+#User_Show_Flags_Actions_EditComments_Dialog_Comments {
+  width: 280px;
 }
 #UserDetailTab-Authorization #UserDetailTab-AuthorizationContainer {
   background-color: #ffffff;

@@ -252,9 +252,9 @@
         {
         @Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.Exporting.DeviceExportTypes.Model, Model.DeviceModel.Id))
         }
-        if (Authorization.Has(Claims.Device.Search))
+        if (Authorization.Has(Claims.Device.Search) && Model.DeviceCount > 0)
         {
-        @Html.ActionLinkButton("View Devices", MVC.Search.Query(Model.DeviceModel.Id.ToString(), "DeviceModel"))
+        @Html.ActionLinkButton(string.Format("View {0} Device{1}", Model.DeviceCount, (Model.DeviceCount != 1 ? "s" : null)), MVC.Search.Query(Model.DeviceModel.Id.ToString(), "DeviceModel"))
         }
     }
 </div>

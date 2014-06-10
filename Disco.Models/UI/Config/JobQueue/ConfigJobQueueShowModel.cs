@@ -1,9 +1,5 @@
 ﻿using Disco.Models.Services.Jobs.JobQueues;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Models.UI.Config.JobQueue
 {
@@ -13,6 +9,9 @@ namespace Disco.Models.UI.Config.JobQueue
 
         int OpenJobCount { get; set; }
         int TotalJobCount { get; set; }
+
+        IEnumerable<KeyValuePair<string, string>> Icons { get; set; }
+        IEnumerable<KeyValuePair<string, string>> ThemeColours { get; set; }
 
         List<Disco.Models.Repository.JobType> JobTypes { get; set; }
 

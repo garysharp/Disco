@@ -29,6 +29,7 @@ namespace Disco.Models.Repository
         public virtual IList<DeviceUserAssignment> DeviceUserAssignments { get; set; }
         [InverseProperty("UserId")]
         public virtual IList<Job> Jobs { get; set; }
+        public virtual IList<UserFlagAssignment> UserFlagAssignments { get; set; }
 
         [NotMapped, Obsolete("Should be using Combined Domain\\User format - UserId")]
         public string Id

@@ -112,6 +112,7 @@
     <Compile Include="BI\Extensions\AttachmentExtensions.cs" />
     <Compile Include="BI\Extensions\AuthorizationRoleExtensions.cs" />
     <Compile Include="BI\Extensions\ClientServicesExtensions.cs" />
+    <Compile Include="BI\Extensions\UserFlagActionExtensions.cs" />
     <Compile Include="BI\Extensions\DeviceActionExtensions.cs" />
     <Compile Include="BI\Extensions\DeviceBatchExtensions.cs" />
     <Compile Include="BI\Extensions\DeviceCertificateExtensions.cs" />
@@ -203,7 +204,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
+      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

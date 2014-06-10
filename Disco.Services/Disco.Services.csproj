@@ -154,6 +154,7 @@
     <Compile Include="Authorization\Roles\ClaimGroups\Configuration\Origanisation\OrganisationClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Configuration\Plugin\PluginClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Configuration\System\SystemClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Configuration\UserFlag\UserFlagClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Device\DeviceActionsClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Device\DeviceClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Device\DevicePropertiesClaims.cs" />
@@ -206,6 +207,7 @@
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\RxExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\UIHelpers.cs" />
     <Compile Include="Interop\ActiveDirectory\ActiveDirectory.cs" />
     <Compile Include="Interop\ActiveDirectory\ActiveDirectoryContext.cs" />
     <Compile Include="Interop\ActiveDirectory\ActiveDirectoryExtensions.cs" />
@@ -297,6 +299,9 @@
     <Compile Include="Users\Cache.cs" />
     <Compile Include="Users\CacheCleanTask.cs" />
     <Compile Include="Users\UserExtensions.cs" />
+    <Compile Include="Users\UserFlags\Cache.cs" />
+    <Compile Include="Users\UserFlags\UserFlagsDeleteTask.cs" />
+    <Compile Include="Users\UserFlags\UserFlagService.cs" />
     <Compile Include="Users\UserService.cs" />
     <Compile Include="Users\UserUpdatesHub.cs" />
     <Compile Include="Web\AuthorizedController.cs" />
@@ -343,7 +348,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" />
+      <UserProperties BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

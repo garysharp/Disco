@@ -149,6 +149,21 @@
             }
         }
 
+        #Job_Show_User {
+            #Job_Show_User_Flags {
+                margin: 4px 0;
+                font-size: 16px;
+
+                & > i {
+                    cursor: default;
+
+                    & > .details {
+                        display: none;
+                    }
+                }
+            }
+        }
+
         #Job_Show_Subjects_Actions {
             & > td {
                 padding-top: 4px;
@@ -160,8 +175,6 @@
         }
     }
 }
-
-
 
 #jobDetailTabs {
     margin-top: 10px;
@@ -548,8 +561,8 @@
                 font-size: .9em;
             }
 
-            .comments {
-                white-space: pre-line;
+            .commentsRaw {
+                display: none;
             }
         }
 

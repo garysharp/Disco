@@ -1368,3 +1368,65 @@ div.logEventsViewport {
         }
     }
 }
+
+#Config_UserFlags_Index {
+    i {
+        width: 1.2857142857142858em;
+        text-align: center;
+    }
+}
+
+#Config_UserFlags_Icon {
+    display: block;
+    margin: 0 0 10px 10px;
+}
+
+#Config_UserFlags_Icon_Update_Dialog {
+    display: none;
+
+    div.colours {
+        text-align: center;
+        font-size: 30px;
+
+        i {
+            cursor: pointer;
+            padding: 1px;
+            opacity: .9;
+
+            &:hover {
+                opacity: 1;
+            }
+
+            &.selected {
+                opacity: 1;
+            }
+        }
+    }
+
+    div.icons {
+        text-align: center;
+        font-size: 34px;
+        background-color: @white;
+        border: 1px solid @BackgroundColour;
+        margin: 6px 0 14px 0;
+
+        i {
+            width: 1.2857142857142858em;
+            text-align: center;
+            cursor: pointer;
+            padding: 6px 0px;
+            color: @HeaderBackgroundColour;
+            opacity: .6;
+
+            &:hover {
+                opacity: .9;
+                color: inherit;
+            }
+
+            &.selected {
+                opacity: 1;
+                color: inherit;
+            }
+        }
+    }
+}

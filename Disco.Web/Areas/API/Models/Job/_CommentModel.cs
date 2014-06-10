@@ -15,6 +15,7 @@ namespace Disco.Web.Areas.API.Models.Job
         public string Author { get; set; }
         public DateTime Timestamp { get; set; }
         public string Comments { get; set; }
+        public string HtmlComments { get; set; }
         public long TimestampUnixEpoc { get { return this.Timestamp.ToUnixEpoc(); } }
         public string TimestampFull { get { return Timestamp.ToFullDateTime(); } }
 
@@ -27,7 +28,8 @@ namespace Disco.Web.Areas.API.Models.Job
                 AuthorId = jl.TechUserId,
                 Author = jl.TechUser.ToString(),
                 Timestamp = jl.Timestamp,
-                Comments = jl.Comments
+                Comments = jl.Comments,
+                HtmlComments = jl.Comments.ToHtmlComment().ToString()
             };
         }
 

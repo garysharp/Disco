@@ -36,7 +36,7 @@
                             <div data-logid="@jl.Id">
                                 <span class="author">@jl.TechUser.ToStringFriendly()</span>@if (canRemoveAnyLogs || (canRemoveOwnLogs && jl.TechUserId == CurrentUser.UserId))
                                                                                            {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(jl.Timestamp.ToUnixEpoc())" title="@jl.Timestamp.ToFullDateTime()">@jl.Timestamp.ToFullDateTime()</span>
-                                <span class="comment">@jl.Comments.ToMultilineJobRefString()</span>
+                                <span class="comment">@jl.Comments.ToHtmlComment()</span>
                             </div>
                         }
                     </div>
@@ -264,10 +264,7 @@
                 e.find('.timestamp').text(c.TimestampFull).attr('title', c.TimestampFull).livestamp(c.TimestampUnixEpoc);
                 if (canRemove)
                     e.find('.remove').click(removePost);
-                var eComment = e.find('.comment').text(c.Comments);
-                var commentHtml = eComment.text().replace(/\r\n|\r|\n/g, '<br />');
-                commentHtml = commentHtml.replace(/\#(\d+)/g, '<a href="@Url.Action(MVC.Job.Show(null))?id=$1">#$1</a>');
-                eComment.html(commentHtml);
+                var eComment = e.find('.comment').html(c.HtmlComments);
 
                 $CommentOutput.append(e);
 

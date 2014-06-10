@@ -11,7 +11,7 @@
     var hasJobQueueShow = Authorization.Has(Claims.Config.JobQueue.Show);
 
     var queues = JobQueueService.GetQueues();
-    var queueHistory = Model.Job.JobQueues.Select(jq => new Tuple<JobQueueJob, JobQueueToken>(jq, queues.First(q => q.JobQueue.Id == jq.JobQueueId))).OrderBy(jq => jq.Item1.AddedDate).ToList();
+    var queueHistory = Model.Job.JobQueues.Select(jq => new Tuple<JobQueueJob, JobQueueToken>(jq, queues.First(q => q.JobQueue.Id == jq.JobQueueId))).ToList();
 }
 @if (queueHistory.Count > 0)
 {
@@ -52,7 +52,8 @@
                     }
                     else
                     {
-                        <div class="comments">@jq.Item1.AddedComment</div>
+                        <div class="comments">@jq.Item1.AddedComment.ToHtmlComment()</div>
+                        <div class="commentsRaw">@jq.Item1.AddedComment</div>
                     }
                     <div class="when">@CommonHelpers.FriendlyDateAndUser(jq.Item1.AddedDate, jq.Item1.AddedUser)</div>
                 </td>
@@ -69,7 +70,8 @@
                         }
                         else
                         {
-                        <div class="comments">@jq.Item1.RemovedComment</div>
+                        <div class="comments">@jq.Item1.RemovedComment.ToHtmlComment()</div>
+                        <div class="commentsRaw">@jq.Item1.RemovedComment</div>
                         }
                         <div class="when">@CommonHelpers.FriendlyDateAndUser(jq.Item1.RemovedDate.Value, jq.Item1.RemovedUser)</div>
                     }
@@ -250,7 +252,7 @@
                     });
                 }
 
-                var $comments = $this.closest('td').find('.comments');
+                var $comments = $this.closest('td').find('.commentsRaw');
                 if ($comments.hasClass('smallMessage')) {
                     $('#Job_Show_Queues_Actions_EditAddedComment_Dialog_Comment').val('');
                 } else {
@@ -288,7 +290,7 @@
                     });
                 }
 
-                var $comments = $this.closest('td').find('.comments');
+                var $comments = $this.closest('td').find('.commentsRaw');
                 if ($comments.hasClass('smallMessage')) {
                     $('#Job_Show_Queues_Actions_EditRemovedComment_Dialog_Comment').val('');
                 } else {

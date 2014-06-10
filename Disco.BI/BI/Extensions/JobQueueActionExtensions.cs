@@ -4,10 +4,7 @@ using Disco.Services.Authorization;
 using Disco.Services.Jobs.JobQueues;
 using Disco.Services.Users;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.BI.Extensions
 {
@@ -146,7 +143,7 @@ namespace Disco.BI.Extensions
         public static void OnRemove(this JobQueueJob jqj, User Technician, string Comment)
         {
             if (!jqj.CanRemove())
-                throw new InvalidOperationException("Removing job from queue is Denied");
+                throw new InvalidOperationException("Removing job from queue is denied");
 
             jqj.RemovedDate = DateTime.Now;
             jqj.RemovedUserId = Technician.UserId;
@@ -173,7 +170,7 @@ namespace Disco.BI.Extensions
                 return false;
 
             // Already in Queue?
-            if (j.JobQueues.Count(jjq => !jjq.RemovedDate.HasValue && jjq.JobQueueId == jq.Id) > 0)
+            if (j.JobQueues.Any(jjq => !jjq.RemovedDate.HasValue && jjq.JobQueueId == jq.Id))
                 return false;
 
             // Can add ANY queue
@@ -191,7 +188,7 @@ namespace Disco.BI.Extensions
         public static JobQueueJob OnAddQueue(this Job j, DiscoDataContext Database, JobQueue jq, User Technician, string Comment, DateTime? SLAExpires, JobQueuePriority Priority)
         {
             if (!j.CanAddQueue(jq))
-                throw new InvalidOperationException("Adding job to queue is Denied");
+                throw new InvalidOperationException("Adding job to queue is denied");
 
             if (SLAExpires.HasValue && SLAExpires.Value < DateTime.Now)
                 throw new ArgumentException("The SLA Date must be greater than the current time", "SLAExpires");

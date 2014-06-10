@@ -22,6 +22,16 @@
     @FriendlyDate(d, WithoutSuffix: WithoutSuffix);
     @FriendlyUser(u, null, " by");
 }
+@helper FriendlyDateAndUser(DateTime? d, string UserId, string DateNullValue = "n/a", bool WithoutSuffix = false)
+{
+    @FriendlyDate(d, DateNullValue, WithoutSuffix: WithoutSuffix);
+    @FriendlyUser(UserId, null, " by");
+}
+@helper FriendlyDateAndUser(DateTime d, string UserId, bool WithoutSuffix = false)
+{
+    @FriendlyDate(d, WithoutSuffix: WithoutSuffix);
+    @FriendlyUser(UserId, null, " by");
+}
 @helper FriendlyDateAndTitleUser(DateTime? d, User u, string DateNullValue = "n/a", bool WithoutSuffix = false)
 {
     <span title="@d.ToFullDateTime(DateNullValue) by @u" data-livestamp="@d.ToUnixEpoc()" class="date nowrap@(WithoutSuffix ? " noMomentSuffix" : null)">@d.ToFullDateTime(DateNullValue)</span>
@@ -35,6 +45,17 @@
     if (u != null)
     { 
     @prepend <span title="@u">@u.FriendlyId()</span>
+    }
+    else
+    { 
+    <span>@nullValue</span>
+    }
+}
+@helper FriendlyUser(string UserId, string nullValue = null, string prepend = null)
+{
+    if (UserId != null)
+    { 
+    @prepend <span>@Disco.Services.UserExtensions.FriendlyUserId(UserId)</span>
     }
     else
     { 

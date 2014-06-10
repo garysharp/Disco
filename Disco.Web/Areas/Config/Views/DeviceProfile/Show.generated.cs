@@ -2049,7 +2049,7 @@ WriteLiteral("    ");
 
             
             #line 740 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-     if (Authorization.Has(Claims.Device.Search))
+     if (Authorization.Has(Claims.Device.Search) && Model.DeviceCount > 0)
     {
         
             
@@ -2057,14 +2057,14 @@ WriteLiteral("    ");
             #line hidden
             
             #line 742 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-   Write(Html.ActionLinkButton("View Devices", MVC.Search.Query(Model.DeviceProfile.Id.ToString(), "DeviceProfile")));
+   Write(Html.ActionLinkButton(string.Format("View {0} Device{1}", Model.DeviceCount, (Model.DeviceCount != 1 ? "s" : null)), MVC.Search.Query(Model.DeviceProfile.Id.ToString(), "DeviceProfile")));
 
             
             #line default
             #line hidden
             
             #line 742 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                                                                                                                    
+                                                                                                                                                                                                   
     }
 
             
