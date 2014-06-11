@@ -1,7 +1,6 @@
 ﻿using Disco.Data.Configuration.Modules;
 using Disco.Models.Repository;
 using Disco.Models.Services.Jobs.Noticeboards;
-using Disco.Services.Interop.ActiveDirectory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +19,7 @@ namespace Disco.Services.Jobs.Noticeboards
             {
                 return DeviceComputerName == null ? null : UserExtensions.FriendlyUserId(DeviceComputerName);
             }
+            set { } // for XML Serialization
         }
         public string DeviceComputerName { get; set; }
 
@@ -40,6 +40,7 @@ namespace Disco.Services.Jobs.Noticeboards
 
                 return sb.ToString();
             }
+            set { } // for XML Serialization
         }
 
         public int DeviceProfileId { get; set; }
@@ -58,6 +59,7 @@ namespace Disco.Services.Jobs.Noticeboards
 
                 return null;
             }
+            set { } // for XML Serialization
         }
 
         public string UserId { get; set; }
@@ -67,6 +69,7 @@ namespace Disco.Services.Jobs.Noticeboards
             {
                 return UserId == null ? null : UserExtensions.FriendlyUserId(UserId);
             }
+            set { } // for XML Serialization
         }
         public string UserDisplayName { get; set; }
 
@@ -78,6 +81,7 @@ namespace Disco.Services.Jobs.Noticeboards
             {
                 return WaitingForUserActionSince.ToUnixEpoc();
             }
+            set { } // for XML Serialization
         }
 
         public bool ReadyForReturn { get; set; }
@@ -88,6 +92,7 @@ namespace Disco.Services.Jobs.Noticeboards
             {
                 return EstimatedReturnTime.ToUnixEpoc();
             }
+            set { } // for XML Serialization
         }
 
         public DateTime? ReadyForReturnSince { get; set; }
@@ -97,6 +102,7 @@ namespace Disco.Services.Jobs.Noticeboards
             {
                 return ReadyForReturnSince.ToUnixEpoc();
             }
+            set { } // for XML Serialization
         }
 
         public bool IsAlert
@@ -111,6 +117,7 @@ namespace Disco.Services.Jobs.Noticeboards
 
                 return false;
             }
+            set { } // for XML Serialization
         }
 
         internal static IEnumerable<HeldDeviceItem> FromJobs(IQueryable<Job> jobs)

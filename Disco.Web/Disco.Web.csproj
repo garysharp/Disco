@@ -1021,18 +1021,18 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>TaskStatus.generated.cs</LastGenOutput>
     </None>
-    <Content Include="Areas\Config\Views\UserFlag\Create.cshtml">
+    <None Include="Areas\Config\Views\UserFlag\Create.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\Config\Views\UserFlag\Index.cshtml">
+    </None>
+    <None Include="Areas\Config\Views\UserFlag\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\Config\Views\UserFlag\Show.cshtml">
+    </None>
+    <None Include="Areas\Config\Views\UserFlag\Show.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Show.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Areas\Public\Views\HeldDevices\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
@@ -2003,10 +2003,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Show.generated.cs</LastGenOutput>
     </None>
-    <Content Include="Views\User\UserParts\_Flags.cshtml">
+    <None Include="Views\User\UserParts\_Flags.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Flags.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Views\User\UserParts\_Authorization.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Authorization.generated.cs</LastGenOutput>
@@ -2157,7 +2157,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
