@@ -138,7 +138,7 @@
     <div id="dialogUpdateOrganisationLogo" title="Update Organisation Logo">
         @using (Html.BeginForm(MVC.API.System.OrganisationLogo(true, null, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
-            <h3>Update Action</h3>
+            <h3>Update Organisation Logo</h3>
             <div style="margin-top: 10px; padding-bottom: 5px;">
                 <input id="updateOrganisationLogoResetLogo" type="radio" name="ResetLogo" value="true"
                     checked="checked" /><label for="updateOrganisationLogoResetLogo">Remove Logo</label>
@@ -146,7 +146,7 @@
             <div style="margin-top: 5px; border-top: 1px dashed #aaa; padding-top: 5px;">
                 <input id="updateOrganisationLogoUploadLogo" type="radio" name="ResetLogo" value="false" /><label
                     for="updateOrganisationLogoUploadLogo">Upload Logo</label>
-                <div id="updateOrganisationLogoUploadLogoContainer" style="display: none; padding-left: 10px;">
+                <div id="updateOrganisationLogoUploadLogoContainer" style="display: none; padding: 4px 0 0 14px;">
                     <input id="updateOrganisationLogoUploadLogoImage" type="file" name="Image" />
                     <span id="updateOrganisationLogoUploadLogoImageRequired" class="field-validation-valid field-validation-error">* Required</span>
                 </div>
@@ -173,7 +173,6 @@
             });
             buttonDialog.dialog({
                 resizable: false,
-                height: 200,
                 modal: true,
                 autoOpen: false,
                 buttons: {

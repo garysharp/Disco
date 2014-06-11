@@ -702,7 +702,7 @@ WriteLiteral(">\r\n");
             
             #line default
             #line hidden
-WriteLiteral("            <h3>Update Action</h3>\r\n");
+WriteLiteral("            <h3>Update Organisation Logo</h3>\r\n");
 
 WriteLiteral("            <div");
 
@@ -745,7 +745,7 @@ WriteLiteral(" /><label\r\n                    for=\"updateOrganisationLogoUploa
 
 WriteLiteral(" id=\"updateOrganisationLogoUploadLogoContainer\"");
 
-WriteLiteral(" style=\"display: none; padding-left: 10px;\"");
+WriteLiteral(" style=\"display: none; padding: 4px 0 0 14px;\"");
 
 WriteLiteral(">\r\n                    <input");
 
@@ -787,33 +787,32 @@ WriteLiteral(">\r\n        $(function () {\r\n            var button = $(\'#butt
 "         else {\r\n                    $(\'#updateOrganisationLogoUploadLogoContain" +
 "er\').slideUp();\r\n                    $(\'#updateOrganisationLogoUploadLogoImage\')" +
 ".attr(\'disabled\', \'disabled\');\r\n                }\r\n            });\r\n            " +
-"buttonDialog.dialog({\r\n                resizable: false,\r\n                height" +
-": 200,\r\n                modal: true,\r\n                autoOpen: false,\r\n        " +
-"        buttons: {\r\n                    \"Save\": function () {\r\n                 " +
-"       var $this = $(this);\r\n\r\n                        var $image = $(\'#updateOr" +
-"ganisationLogoUploadLogoImage\');\r\n                        if ($(\'#updateOrganisa" +
-"tionLogoUploadLogo\').is(\':checked\') && $image.val() == \'\') {\r\n                  " +
-"          $image.addClass(\'input-validation-error\');\r\n                          " +
-"  $(\'#updateOrganisationLogoUploadLogoImageRequired\').removeClass(\'field-validat" +
-"ion-valid\');\r\n                        } else {\r\n                            $ima" +
-"ge.removeClass(\'input-validation-error\');\r\n                            $(\'#updat" +
-"eOrganisationLogoUploadLogoImageRequired\').addClass(\'field-validation-valid\');\r\n" +
-"                            $this.dialog(\"disable\");\r\n                          " +
-"  $this.dialog(\"option\", \"buttons\", null);\r\n                            $this.fi" +
-"nd(\'form\').submit();\r\n                        }\r\n                    },\r\n       " +
-"             Cancel: function () {\r\n                        $(this).dialog(\"clos" +
-"e\");\r\n                    }\r\n                }\r\n            });\r\n        });\r\n  " +
-"  </script>\r\n");
+"buttonDialog.dialog({\r\n                resizable: false,\r\n                modal:" +
+" true,\r\n                autoOpen: false,\r\n                buttons: {\r\n          " +
+"          \"Save\": function () {\r\n                        var $this = $(this);\r\n\r" +
+"\n                        var $image = $(\'#updateOrganisationLogoUploadLogoImage\'" +
+");\r\n                        if ($(\'#updateOrganisationLogoUploadLogo\').is(\':chec" +
+"ked\') && $image.val() == \'\') {\r\n                            $image.addClass(\'inp" +
+"ut-validation-error\');\r\n                            $(\'#updateOrganisationLogoUp" +
+"loadLogoImageRequired\').removeClass(\'field-validation-valid\');\r\n                " +
+"        } else {\r\n                            $image.removeClass(\'input-validati" +
+"on-error\');\r\n                            $(\'#updateOrganisationLogoUploadLogoIma" +
+"geRequired\').addClass(\'field-validation-valid\');\r\n                            $t" +
+"his.dialog(\"disable\");\r\n                            $this.dialog(\"option\", \"butt" +
+"ons\", null);\r\n                            $this.find(\'form\').submit();\r\n        " +
+"                }\r\n                    },\r\n                    Cancel: function " +
+"() {\r\n                        $(this).dialog(\"close\");\r\n                    }\r\n " +
+"               }\r\n            });\r\n        });\r\n    </script>\r\n");
 
             
-            #line 202 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 201 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
 }
 
             
             #line default
             #line hidden
             
-            #line 203 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 202 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
  if (canConfigAddresses)
 {
 
@@ -941,7 +940,7 @@ WriteLiteral(@">
                     buttons['Delete'] = function () { $(this).dialog(""disable""); window.location.href = '");
 
             
-            #line 302 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 301 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                                                                                      Write(Url.Action(MVC.API.System.DeleteOrganisationAddress()));
 
             
@@ -984,7 +983,7 @@ WriteLiteral("\' + \'?redirect=true&id=\' + id; };\r\n                var button
 "umber\').val()\r\n            };\r\n\r\n            $.ajax({\r\n                url: \'");
 
             
-            #line 367 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 366 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                   Write(Url.Action(MVC.API.System.UpdateOrganisationAddress()));
 
             
@@ -995,7 +994,7 @@ WriteLiteral("\',\r\n                dataType: \'json\',\r\n                data
 "f (d == \'OK\') {\r\n                        window.location.href = \'");
 
             
-            #line 373 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 372 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                             Write(Url.Action(MVC.Config.Organisation.Index()));
 
             
@@ -1034,7 +1033,7 @@ WriteLiteral(@"';
 ");
 
             
-            #line 403 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 402 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
 }
             
             #line default
