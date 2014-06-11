@@ -296,14 +296,14 @@ WriteLiteral("\r\n");
             #line hidden
             
             #line 74 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
-                   Write(Model.UserFlag.Description);
+                   Write(Model.UserFlag.Description.ToHtmlComment());
 
             
             #line default
             #line hidden
             
             #line 74 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
-                                                   
+                                                                   
                     }
 
             
@@ -382,25 +382,25 @@ WriteLiteral(" data-colour=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 3604), Tuple.Create("\"", 3677)
-, Tuple.Create(Tuple.Create("", 3612), Tuple.Create("fa", 3612), true)
-, Tuple.Create(Tuple.Create(" ", 3614), Tuple.Create("fa-", 3615), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 3620), Tuple.Create("\"", 3693)
+, Tuple.Create(Tuple.Create("", 3628), Tuple.Create("fa", 3628), true)
+, Tuple.Create(Tuple.Create(" ", 3630), Tuple.Create("fa-", 3631), true)
             
             #line 92 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
-                                                          , Tuple.Create(Tuple.Create("", 3618), Tuple.Create<System.Object, System.Int32>(Model.UserFlag.Icon
+                                                          , Tuple.Create(Tuple.Create("", 3634), Tuple.Create<System.Object, System.Int32>(Model.UserFlag.Icon
             
             #line default
             #line hidden
-, 3618), false)
-, Tuple.Create(Tuple.Create(" ", 3640), Tuple.Create("fa-4x", 3641), true)
-, Tuple.Create(Tuple.Create(" ", 3646), Tuple.Create("d-", 3647), true)
+, 3634), false)
+, Tuple.Create(Tuple.Create(" ", 3656), Tuple.Create("fa-4x", 3657), true)
+, Tuple.Create(Tuple.Create(" ", 3662), Tuple.Create("d-", 3663), true)
             
             #line 92 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
-                                                                                         , Tuple.Create(Tuple.Create("", 3649), Tuple.Create<System.Object, System.Int32>(Model.UserFlag.IconColour
+                                                                                         , Tuple.Create(Tuple.Create("", 3665), Tuple.Create<System.Object, System.Int32>(Model.UserFlag.IconColour
             
             #line default
             #line hidden
-, 3649), false)
+, 3665), false)
 );
 
 WriteLiteral("></i>\r\n");
@@ -468,26 +468,26 @@ WriteLiteral(" data-icon=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4242), Tuple.Create("\"", 4267)
-, Tuple.Create(Tuple.Create("", 4250), Tuple.Create("fa", 4250), true)
-, Tuple.Create(Tuple.Create(" ", 4252), Tuple.Create("fa-", 4253), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4258), Tuple.Create("\"", 4283)
+, Tuple.Create(Tuple.Create("", 4266), Tuple.Create("fa", 4266), true)
+, Tuple.Create(Tuple.Create(" ", 4268), Tuple.Create("fa-", 4269), true)
             
             #line 102 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
- , Tuple.Create(Tuple.Create("", 4256), Tuple.Create<System.Object, System.Int32>(icon.Key
+ , Tuple.Create(Tuple.Create("", 4272), Tuple.Create<System.Object, System.Int32>(icon.Key
             
             #line default
             #line hidden
-, 4256), false)
+, 4272), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4268), Tuple.Create("\"", 4287)
+WriteAttribute("title", Tuple.Create(" title=\"", 4284), Tuple.Create("\"", 4303)
             
             #line 102 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
-                    , Tuple.Create(Tuple.Create("", 4276), Tuple.Create<System.Object, System.Int32>(icon.Value
+                    , Tuple.Create(Tuple.Create("", 4292), Tuple.Create<System.Object, System.Int32>(icon.Value
             
             #line default
             #line hidden
-, 4276), false)
+, 4292), false)
 );
 
 WriteLiteral("></i>\r\n");
@@ -532,27 +532,27 @@ WriteLiteral(" data-colour=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4619), Tuple.Create("\"", 4655)
-, Tuple.Create(Tuple.Create("", 4627), Tuple.Create("fa", 4627), true)
-, Tuple.Create(Tuple.Create(" ", 4629), Tuple.Create("fa-square", 4630), true)
-, Tuple.Create(Tuple.Create(" ", 4639), Tuple.Create("d-", 4640), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4635), Tuple.Create("\"", 4671)
+, Tuple.Create(Tuple.Create("", 4643), Tuple.Create("fa", 4643), true)
+, Tuple.Create(Tuple.Create(" ", 4645), Tuple.Create("fa-square", 4646), true)
+, Tuple.Create(Tuple.Create(" ", 4655), Tuple.Create("d-", 4656), true)
             
             #line 108 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
-              , Tuple.Create(Tuple.Create("", 4642), Tuple.Create<System.Object, System.Int32>(colour.Key
+              , Tuple.Create(Tuple.Create("", 4658), Tuple.Create<System.Object, System.Int32>(colour.Key
             
             #line default
             #line hidden
-, 4642), false)
+, 4658), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4656), Tuple.Create("\"", 4677)
+WriteAttribute("title", Tuple.Create(" title=\"", 4672), Tuple.Create("\"", 4693)
             
             #line 108 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
-                                   , Tuple.Create(Tuple.Create("", 4664), Tuple.Create<System.Object, System.Int32>(colour.Value
+                                   , Tuple.Create(Tuple.Create("", 4680), Tuple.Create<System.Object, System.Int32>(colour.Value
             
             #line default
             #line hidden
-, 4664), false)
+, 4680), false)
 );
 
 WriteLiteral("></i>\r\n");

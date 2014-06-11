@@ -158,53 +158,50 @@ WriteLiteral("                            ");
             #line default
             #line hidden
 WriteLiteral("\r\n                        </a>\r\n                    </td>\r\n                    <t" +
-"d>\r\n                        <span");
+"d>");
+
+            
+            #line 29 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+                         if (string.IsNullOrWhiteSpace(item.Description))
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
-WriteLiteral(">");
+WriteLiteral(">&lt;none&gt;</span>\r\n");
 
             
-            #line 30 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
-                                                    if (string.IsNullOrWhiteSpace(item.Description))
-                                                   {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                            ");
-
-WriteLiteral("&lt;none&gt;");
-
-WriteLiteral("\r\n");
-
-            
-            #line 33 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
-                                                   }
-                                                   else
-                                                   {
-                            
+            #line 32 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+                        }
+                        else
+                        {
+                        
             
             #line default
             #line hidden
             
-            #line 36 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
-                       Write(item.Description.ToMultilineString());
+            #line 35 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+                   Write(item.Description.ToHtmlComment());
 
             
             #line default
             #line hidden
             
-            #line 36 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
-                                                                 
-                                                   }
+            #line 35 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+                                                         
+                        }
+
             
             #line default
             #line hidden
-WriteLiteral("</span>\r\n                    </td>\r\n                </tr>\r\n");
+WriteLiteral("                    </td>\r\n                </tr>\r\n");
 
             
-            #line 40 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 39 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
             }
 
             
@@ -213,7 +210,7 @@ WriteLiteral("</span>\r\n                    </td>\r\n                </tr>\r\n"
 WriteLiteral("        </table>\r\n");
 
             
-            #line 42 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 41 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
     }
 
             
@@ -228,7 +225,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("        ");
 
             
-            #line 44 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 43 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
    Write(Html.ActionLinkButton("Create User Flag", MVC.Config.UserFlag.Create()));
 
             

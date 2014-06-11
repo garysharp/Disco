@@ -36,7 +36,7 @@
                             <div data-logid="@jl.Id">
                                 <span class="author">@jl.TechUser.ToStringFriendly()</span>@if (canRemoveAnyLogs || (canRemoveOwnLogs && jl.TechUserId == CurrentUser.UserId))
                                                                                            {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(jl.Timestamp.ToUnixEpoc())" title="@jl.Timestamp.ToFullDateTime()">@jl.Timestamp.ToFullDateTime()</span>
-                                <span class="comment">@jl.Comments.ToHtmlComment()</span>
+                                <div class="comment">@jl.Comments.ToHtmlComment()</div>
                             </div>
                         }
                     </div>
@@ -256,7 +256,7 @@
                 var t = '<div><span class="author" />';
                 if (canRemove)
                     t += '<span class="remove fa fa-times-circle" />';
-                t += '<span class="timestamp" /><span class="comment" /></div>';
+                t += '<span class="timestamp" /><div class="comment" /></div>';
 
                 var e = $(t);
                 e.attr('data-logid', c.Id);

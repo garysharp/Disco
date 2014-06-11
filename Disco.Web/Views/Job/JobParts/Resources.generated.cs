@@ -232,7 +232,7 @@ WriteLiteral(">");
             
             #line default
             #line hidden
-WriteLiteral("</span>\r\n                                <span");
+WriteLiteral("</span>\r\n                                <div");
 
 WriteLiteral(" class=\"comment\"");
 
@@ -240,12 +240,12 @@ WriteLiteral(">");
 
             
             #line 39 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                 Write(jl.Comments.ToHtmlComment());
+                                                Write(jl.Comments.ToHtmlComment());
 
             
             #line default
             #line hidden
-WriteLiteral("</span>\r\n                            </div>\r\n");
+WriteLiteral("</div>\r\n                            </div>\r\n");
 
             
             #line 41 "..\..\Views\Job\JobParts\Resources.cshtml"
@@ -324,14 +324,14 @@ WriteLiteral(">\r\n                <div");
 
 WriteLiteral(" id=\"Attachments\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2941), Tuple.Create("\"", 3016)
+WriteAttribute("class", Tuple.Create(" class=\"", 2939), Tuple.Create("\"", 3014)
             
             #line 56 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 2949), Tuple.Create<System.Object, System.Int32>(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments"
+, Tuple.Create(Tuple.Create("", 2947), Tuple.Create<System.Object, System.Int32>(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments"
             
             #line default
             #line hidden
-, 2949), false)
+, 2947), false)
 );
 
 WriteLiteral(">\r\n                    <div");
@@ -361,14 +361,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 3353), Tuple.Create("\"", 3410)
+WriteAttribute("href", Tuple.Create(" href=\"", 3351), Tuple.Create("\"", 3408)
             
             #line 63 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3360), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
+, Tuple.Create(Tuple.Create("", 3358), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
             
             #line default
             #line hidden
-, 3360), false)
+, 3358), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
@@ -397,42 +397,42 @@ WriteLiteral(">\r\n                                <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3520), Tuple.Create("\"", 3540)
+WriteAttribute("title", Tuple.Create(" title=\"", 3518), Tuple.Create("\"", 3538)
             
             #line 64 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3528), Tuple.Create<System.Object, System.Int32>(ja.Filename
+, Tuple.Create(Tuple.Create("", 3526), Tuple.Create<System.Object, System.Int32>(ja.Filename
             
             #line default
             #line hidden
-, 3528), false)
+, 3526), false)
 );
 
 WriteLiteral(">\r\n                                    <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 3611), Tuple.Create("\"", 3670)
+WriteAttribute("src", Tuple.Create(" src=\"", 3609), Tuple.Create("\"", 3668)
             
             #line 65 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3617), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
+, Tuple.Create(Tuple.Create("", 3615), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
             
             #line default
             #line hidden
-, 3617), false)
+, 3615), false)
 );
 
 WriteLiteral(" /></span>\r\n                                <span");
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3737), Tuple.Create("\"", 3757)
+WriteAttribute("title", Tuple.Create(" title=\"", 3735), Tuple.Create("\"", 3755)
             
             #line 66 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3745), Tuple.Create<System.Object, System.Int32>(ja.Comments
+, Tuple.Create(Tuple.Create("", 3743), Tuple.Create<System.Object, System.Int32>(ja.Comments
             
             #line default
             #line hidden
-, 3745), false)
+, 3743), false)
 );
 
 WriteLiteral(">\r\n");
@@ -527,14 +527,14 @@ WriteLiteral(" data-livestamp=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4452), Tuple.Create("\"", 4490)
+WriteAttribute("title", Tuple.Create(" title=\"", 4450), Tuple.Create("\"", 4488)
             
             #line 72 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                                                                                             , Tuple.Create(Tuple.Create("", 4460), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
+                                                                                                                                                             , Tuple.Create(Tuple.Create("", 4458), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 4460), false)
+, 4458), false)
 );
 
 WriteLiteral(">");
@@ -936,21 +936,21 @@ WriteLiteral("\r\n                        }\r\n                    },\r\n       
 " addComment(c, quick, canRemove) {\r\n                var t = \'<div><span class=\"a" +
 "uthor\" />\';\r\n                if (canRemove)\r\n                    t += \'<span cla" +
 "ss=\"remove fa fa-times-circle\" />\';\r\n                t += \'<span class=\"timestam" +
-"p\" /><span class=\"comment\" /></div>\';\r\n\r\n                var e = $(t);\r\n        " +
-"        e.attr(\'data-logid\', c.Id);\r\n                e.find(\'.author\').text(c.Au" +
-"thor);\r\n                e.find(\'.timestamp\').text(c.TimestampFull).attr(\'title\'," +
-" c.TimestampFull).livestamp(c.TimestampUnixEpoc);\r\n                if (canRemove" +
-")\r\n                    e.find(\'.remove\').click(removePost);\r\n                var" +
-" eComment = e.find(\'.comment\').html(c.HtmlComments);\r\n\r\n                $Comment" +
-"Output.append(e);\r\n\r\n                if (!quick) {\r\n                    e.animat" +
-"e({ backgroundColor: \'#ffff99\' }, 500, function () {\r\n                        e." +
-"animate({ backgroundColor: \'#fafafa\' }, 500, function () {\r\n                    " +
-"        e.css(\'background-color\', \'\');\r\n                        });\r\n           " +
-"         });\r\n                    $CommentOutput.animate({ scrollTop: $CommentOu" +
-"tput[0].scrollHeight }, 250)\r\n                }\r\n            }\r\n\r\n            //" +
-" Add Globally Available Functions\r\n            document.DiscoFunctions.liveLoadC" +
-"omment = loadLiveComment;\r\n            document.DiscoFunctions.liveRemoveComment" +
-" = liveRemoveComment;\r\n            //#endregion\r\n        });\r\n    </script>\r\n");
+"p\" /><div class=\"comment\" /></div>\';\r\n\r\n                var e = $(t);\r\n         " +
+"       e.attr(\'data-logid\', c.Id);\r\n                e.find(\'.author\').text(c.Aut" +
+"hor);\r\n                e.find(\'.timestamp\').text(c.TimestampFull).attr(\'title\', " +
+"c.TimestampFull).livestamp(c.TimestampUnixEpoc);\r\n                if (canRemove)" +
+"\r\n                    e.find(\'.remove\').click(removePost);\r\n                var " +
+"eComment = e.find(\'.comment\').html(c.HtmlComments);\r\n\r\n                $CommentO" +
+"utput.append(e);\r\n\r\n                if (!quick) {\r\n                    e.animate" +
+"({ backgroundColor: \'#ffff99\' }, 500, function () {\r\n                        e.a" +
+"nimate({ backgroundColor: \'#fafafa\' }, 500, function () {\r\n                     " +
+"       e.css(\'background-color\', \'\');\r\n                        });\r\n            " +
+"        });\r\n                    $CommentOutput.animate({ scrollTop: $CommentOut" +
+"put[0].scrollHeight }, 250)\r\n                }\r\n            }\r\n\r\n            // " +
+"Add Globally Available Functions\r\n            document.DiscoFunctions.liveLoadCo" +
+"mment = loadLiveComment;\r\n            document.DiscoFunctions.liveRemoveComment " +
+"= liveRemoveComment;\r\n            //#endregion\r\n        });\r\n    </script>\r\n");
 
             
             #line 287 "..\..\Views\Job\JobParts\Resources.cshtml"

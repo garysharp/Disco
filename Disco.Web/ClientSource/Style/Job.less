@@ -265,10 +265,14 @@
                     font-style: italic;
                 }
 
-                span.comment {
+                div.comment {
                     clear: both;
                     display: block;
                     margin-left: 4px;
+                    
+                    p {
+                        line-height: 1.2em;
+                    }
                 }
 
                 &:hover {
@@ -483,24 +487,22 @@
         display: none;
         position: absolute;
         left: 280px;
-        top: 40px;
+        top: 30px;
 
         h4 {
             margin-bottom: 4px;
         }
 
-        #Priority {
-            margin-bottom: 10px;
-            min-width: 200px;
+        & > div {
+            margin: 5px 0;
         }
 
-        #SLAExpiresMinutes {
-            margin-bottom: 10px;
-            min-width: 200px;
+        select {
+            min-width: 270px;
         }
-
-        #Comment {
-            min-width: 280px;
+        textarea {
+            min-width: 270px;
+            height: 100px;
         }
     }
 }

@@ -49,11 +49,10 @@ namespace Disco.BI.JobBI
                              select new { queue = g.Key, subTypes = g };
                 foreach (var queue in queues)
                 {
-                    var commentBuilder = new StringBuilder("Automatically added by:");
+                    var commentBuilder = new StringBuilder("Automatically added by:").AppendLine();
                     foreach (var subType in queue.subTypes)
                     {
-                        commentBuilder.AppendLine();
-                        commentBuilder.Append(subType.Description);
+                        commentBuilder.AppendLine().Append("* ").Append(subType.Description);
                     }
 
                     var jqj = new JobQueueJob()

@@ -13,6 +13,7 @@ using System.IO;
 using System.Globalization;
 using System.Text;
 using Disco.Services.Interop.ActiveDirectory;
+using MarkdownSharp;
 
 namespace Disco.Web
 {
@@ -109,18 +110,25 @@ namespace Disco.Web
             return breadCrumbs;
         }
 
-        private static Lazy<Regex> htmlCommentJobRegex = new Lazy<Regex>(() => { return new Regex(@"(#(\d+))", RegexOptions.Compiled, TimeSpan.FromSeconds(.1)); });
-        private static Lazy<Regex> htmlCommentUserRegex = new Lazy<Regex>(() => { return new Regex(@"(@([^\s\\]+\\)?([^\s\\]+[\w\d]))", RegexOptions.Compiled, TimeSpan.FromSeconds(.1)); });
-        private static Lazy<Regex> htmlCommentDeviceRegex = new Lazy<Regex>(() => { return new Regex(@"(!([\S]+[\w\d]))", RegexOptions.Compiled, TimeSpan.FromSeconds(.1)); });
+        private static Lazy<Regex> htmlCommentJobRegex = new Lazy<Regex>(() => { return new Regex(@"((?<!&)#(\d+))", RegexOptions.Compiled, TimeSpan.FromSeconds(.1)); });
+        private static Lazy<Regex> htmlCommentUserRegex = new Lazy<Regex>(() => { return new Regex(@"((?<!&)@([\w\d-_.]+\\)?([\w\d-_.]+[\w\d]))", RegexOptions.Compiled, TimeSpan.FromSeconds(.1)); });
+        private static Lazy<Regex> htmlCommentDeviceRegex = new Lazy<Regex>(() => { return new Regex(@"((?<!&)!([\w\d-_.]+[\w\d]))", RegexOptions.Compiled, TimeSpan.FromSeconds(.1)); });
+        private static IMarkdownOptions markdownOptions = new MarkdownOptions()
+        {
+            AutoNewLines = true
+        };
         public static MvcHtmlString ToHtmlComment(this string s)
         {
             var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
             var html = HttpUtility.HtmlEncode(s);
+            var markdownParser = new Markdown(markdownOptions);
+            var markdown = markdownParser.Transform(html);
 
             try
             {
                 // Job Matches
-                html = htmlCommentJobRegex.Value.Replace(html, match => {
+                markdown = htmlCommentJobRegex.Value.Replace(markdown, match =>
+                {
                     int jobId;
                     if (int.TryParse(match.Groups[2].Value, out jobId))
                         return string.Format("<a href=\"{2}\" title=\"Job {1}\">{0}</a>", match.Value, jobId, urlHelper.Action(MVC.Job.Show(jobId)));
@@ -129,7 +137,7 @@ namespace Disco.Web
                 });
 
                 // User Matches
-                html = htmlCommentUserRegex.Value.Replace(html, match =>
+                markdown = htmlCommentUserRegex.Value.Replace(markdown, match =>
                 {
                     string domainId = match.Groups[2].Value;
                     string userId = match.Groups[3].Value;
@@ -153,7 +161,7 @@ namespace Disco.Web
                 });
 
                 // Device Matches
-                html = htmlCommentDeviceRegex.Value.Replace(html, match =>
+                markdown = htmlCommentDeviceRegex.Value.Replace(markdown, match =>
                 {
                     string deviceSerialNumber = match.Groups[2].Value;
 
@@ -168,7 +176,7 @@ namespace Disco.Web
                 // Ignore Encoding Exceptions
             }
 
-            return new MvcHtmlString(html.Replace("\n", "<br />").Replace(Environment.NewLine, "<br />"));
+            return new MvcHtmlString(markdown);
         }      
 
         public static IEnumerable<SelectListItem> ToSelectListItems(this IEnumerable<string> Items, string SelectedItem = null)

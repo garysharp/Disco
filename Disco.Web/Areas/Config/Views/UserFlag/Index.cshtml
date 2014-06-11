@@ -26,15 +26,14 @@
                             @item.Name
                         </a>
                     </td>
-                    <td>
-                        <span class="smallMessage">@if (string.IsNullOrWhiteSpace(item.Description))
-                                                   {
-                            <text>&lt;none&gt;</text>
-                                                   }
-                                                   else
-                                                   {
-                            @item.Description.ToMultilineString()
-                                                   }</span>
+                    <td>@if (string.IsNullOrWhiteSpace(item.Description))
+                        {
+                        <span class="smallMessage">&lt;none&gt;</span>
+                        }
+                        else
+                        {
+                        @item.Description.ToHtmlComment()
+                        }
                     </td>
                 </tr>
             }

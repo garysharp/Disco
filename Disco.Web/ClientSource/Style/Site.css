@@ -392,7 +392,7 @@ footer a:hover,
   text-decoration: none;
 }
 p {
-  margin: 0 0 20px 0;
+  margin: 0 0 2px 0;
   line-height: 1.6em;
 }
 ul {
@@ -1437,6 +1437,8 @@ textarea.block {
 }
 #licence p {
   font-size: 0.9em;
+  line-height: 1.6em;
+  margin-bottom: 1em;
 }
 #licence li {
   font-size: 0.9em;

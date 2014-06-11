@@ -287,10 +287,13 @@
   font-size: 0.90em;
   font-style: italic;
 }
-#jobShowResources #Comments div.commentOutput > div span.comment {
+#jobShowResources #Comments div.commentOutput > div div.comment {
   clear: both;
   display: block;
   margin-left: 4px;
+}
+#jobShowResources #Comments div.commentOutput > div div.comment p {
+  line-height: 1.2em;
 }
 #jobShowResources #Comments div.commentOutput > div:hover span.remove {
   opacity: .5;
@@ -470,21 +473,20 @@
   display: none;
   position: absolute;
   left: 280px;
-  top: 40px;
+  top: 30px;
 }
 #Job_Show_Job_Actions_AddQueue_Dialog .details h4 {
   margin-bottom: 4px;
 }
-#Job_Show_Job_Actions_AddQueue_Dialog .details #Priority {
-  margin-bottom: 10px;
-  min-width: 200px;
+#Job_Show_Job_Actions_AddQueue_Dialog .details > div {
+  margin: 5px 0;
 }
-#Job_Show_Job_Actions_AddQueue_Dialog .details #SLAExpiresMinutes {
-  margin-bottom: 10px;
-  min-width: 200px;
+#Job_Show_Job_Actions_AddQueue_Dialog .details select {
+  min-width: 270px;
 }
-#Job_Show_Job_Actions_AddQueue_Dialog .details #Comment {
-  min-width: 280px;
+#Job_Show_Job_Actions_AddQueue_Dialog .details textarea {
+  min-width: 270px;
+  height: 100px;
 }
 #jobDetailTab-Queues #jobQueues {
   border: solid 1px #d8d8d8;

@@ -15,6 +15,7 @@
         <table class="tableData">
             <tr>
                 <th>Name</th>
+                <th>Description</th>
                 <th>Priority</th>
                 <th>Linked Groups/Users</th>
             </tr>
@@ -26,6 +27,15 @@
                             <i class="fa fa-@(item.JobQueue.Icon) fa-lg d-@(item.JobQueue.IconColour)"></i>
                             @item.JobQueue.Name
                         </a>
+                    </td>
+                    <td>@if (string.IsNullOrWhiteSpace(item.JobQueue.Description))
+                        {
+                        <span class="smallMessage">&lt;none&gt;</span>
+                        }
+                        else
+                        {
+                        @item.JobQueue.Description.ToHtmlComment()
+                        }
                     </td>
                     <td>
                         <i class="fa d-priority-@(item.JobQueue.Priority.ToString().ToLower())" title="@(item.JobQueue.Priority.ToString()) Priority"></i>

@@ -715,15 +715,15 @@
                         <div class="details">
                             <div>
                                 <h4>Job Priority</h4>
-                                @Html.DropDownList("Priority", priorityItems) <i class="fa d-priority-@(priorityValue.ToLower())" title="@(priorityValue) Priority"></i>
+                                @Html.DropDownList("Priority", priorityItems, new { id = "Job_Show_Job_Actions_AddQueue_Priority" }) <i class="fa d-priority-@(priorityValue.ToLower())" title="@(priorityValue) Priority"></i>
                             </div>
                             <div>
                                 <h4>SLA Target</h4>
-                                @Html.DropDownList("SLAExpiresMinutes", slaOptions)
+                                @Html.DropDownList("SLAExpiresMinutes", slaOptions, new { id = "Job_Show_Job_Actions_AddQueue_SLAExpiresMinutes" })
                             </div>
                             <div>
                                 <h4>Tasks/Comment</h4>
-                                @Html.TextArea("Comment")
+                                <textarea name="Comment" id="Job_Show_Job_Actions_AddQueue_Comment"></textarea>
                             </div>
                         </div>
                     }
@@ -750,10 +750,12 @@
                             if (!queueSLA)
                                 queueSLA = 0;
 
-                            details.find('#Priority').val('Normal');
-                            details.find('#SLAExpiresMinutes').val(queueSLA);
+                            $('#Job_Show_Job_Actions_AddQueue_Priority').val('Normal');
+                            $('#Job_Show_Job_Actions_AddQueue_SLAExpiresMinutes').val(queueSLA);
 
                             details.show();
+
+                            $('#Job_Show_Job_Actions_AddQueue_Comment').focus().select();
                         }
                         
                         button.attr('href', '#').click(function (e) {
@@ -788,7 +790,7 @@
                                 queueId = $('#Job_Show_Job_Actions_AddQueue_Dialog_Id');
                                 details = buttonDialog.find('.details');
 
-                                var priorityList = buttonDialog.find('#Priority');
+                                var priorityList = $('#Job_Show_Job_Actions_AddQueue_Priority');
                                 priorityList.change(function () {
                                     var icon = priorityList.closest('div').find('i').first();
                                     icon[0].className = '';
