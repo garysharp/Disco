@@ -300,6 +300,7 @@
     <Compile Include="Users\CacheCleanTask.cs" />
     <Compile Include="Users\UserExtensions.cs" />
     <Compile Include="Users\UserFlags\Cache.cs" />
+    <Compile Include="Users\UserFlags\UserFlagsBulkAssignTask.cs" />
     <Compile Include="Users\UserFlags\UserFlagsDeleteTask.cs" />
     <Compile Include="Users\UserFlags\UserFlagService.cs" />
     <Compile Include="Users\UserService.cs" />
@@ -348,7 +349,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

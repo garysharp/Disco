@@ -3,6 +3,7 @@ using Disco.Models.Repository;
 using Disco.Services.Extensions;
 using Disco.Services.Tasks;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -85,6 +86,103 @@ namespace Disco.Services.Users.UserFlags
             _cache.Remove(UserFlagId);
 
             Status.Finished(string.Format("Successfully Deleted User Flag: '{0}' [{1}]", flag.Name, flag.Id));
+        }
+        #endregion
+
+        #region Bulk Assignment
+        public static IEnumerable<UserFlagAssignment> BulkAssignAddUsers(DiscoDataContext Database, UserFlag UserFlag, User Technician, string Comments, List<User> Users, IScheduledTaskStatus Status)
+        {
+            if (Users.Count > 0)
+            {
+
+                double progressInterval;
+                string comments = string.IsNullOrWhiteSpace(Comments) ? null : Comments.Trim();
+
+                var addUsers = Users.Where(u => !u.UserFlagAssignments.Any(a => a.UserFlagId == UserFlag.Id && !a.RemovedDate.HasValue)).ToList();
+
+                progressInterval = (double)100 / addUsers.Count;
+
+                var addedUserAssignments = addUsers.Select((user, index) =>
+                {
+                    Status.UpdateStatus(index * progressInterval, string.Format("Assigning Flag: {0}", user.ToString()));
+
+                    var fa = new UserFlagAssignment()
+                    {
+                        UserFlagId = UserFlag.Id,
+                        UserId = user.UserId,
+                        AddedDate = DateTime.Now,
+                        AddedUserId = Technician.UserId,
+                        Comments = comments
+                    };
+
+                    Database.UserFlagAssignments.Add(fa);
+                    Database.SaveChanges();
+                    return fa;
+                }).Where(fa => fa != null).ToList();
+
+                Status.SetFinishedMessage(string.Format("{0} Users/s Added; {1} User/s Skipped", addUsers.Count, (Users.Count - addUsers.Count)));
+                
+                return addedUserAssignments;
+            }
+            else
+            {
+                Status.SetFinishedMessage("No changes found");
+                return Enumerable.Empty<UserFlagAssignment>();
+            }
+        }
+
+        public static IEnumerable<UserFlagAssignment> BulkAssignOverrideUsers(DiscoDataContext Database, UserFlag UserFlag, User Technician, string Comments, List<User> Users, IScheduledTaskStatus Status)
+        {
+            double progressInterval;
+            string comments = string.IsNullOrWhiteSpace(Comments) ? null : Comments.Trim();
+
+            Status.UpdateStatus(0, "Calculating assignment changes");
+
+            var currentAssignments = Database.UserFlagAssignments.Include("User").Where(a => a.UserFlagId == UserFlag.Id && !a.RemovedDate.HasValue).ToList();
+            var removeAssignments = currentAssignments.Where(ca => !Users.Any(u => u.UserId.Equals(ca.UserId, StringComparison.OrdinalIgnoreCase))).ToList();
+            var addUsers = Users.Where(u => !currentAssignments.Any(ca => ca.UserId.Equals(u.UserId, StringComparison.OrdinalIgnoreCase))).ToList();
+
+            if (removeAssignments.Count > 0 || addUsers.Count > 0)
+            {
+                progressInterval = (double)100 / (removeAssignments.Count + addUsers.Count);
+                var removedDateTime = DateTime.Now;
+
+                removeAssignments.Select((flagAssignment, index) =>
+                {
+                    Status.UpdateStatus(index * progressInterval, string.Format("Removing Flag: {0}", flagAssignment.User.ToString()));
+                    flagAssignment.RemovedDate = removedDateTime;
+                    flagAssignment.RemovedUserId = Technician.UserId;
+                    Database.SaveChanges();
+                    return flagAssignment;
+                }).ToList();
+
+                var addedUserAssignments = addUsers.Select((user, index) =>
+                {
+                    Status.UpdateStatus((removeAssignments.Count + index) * progressInterval, string.Format("Assigning Flag: {0}", user.ToString()));
+
+                    var fa = new UserFlagAssignment()
+                    {
+                        UserFlagId = UserFlag.Id,
+                        UserId = user.UserId,
+                        AddedDate = DateTime.Now,
+                        AddedUserId = Technician.UserId,
+                        Comments = comments
+                    };
+
+                    Database.UserFlagAssignments.Add(fa);
+                    Database.SaveChanges();
+                    return fa;
+                }).ToList();
+
+                Status.SetFinishedMessage(string.Format("{0} Users/s Added; {1} User/s Removed; {2} User/s Skipped", addUsers.Count, removeAssignments.Count, (Users.Count - addUsers.Count)));
+
+                return addedUserAssignments;
+            }
+            else
+            {
+                Status.SetFinishedMessage("No changes found");
+                return Enumerable.Empty<UserFlagAssignment>();
+            }
         }
         #endregion
 

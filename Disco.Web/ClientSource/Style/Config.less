@@ -685,7 +685,7 @@ div.logEventsViewport {
     }
 
     textarea {
-        width: 100%;
+        width: calc(~"100% - .5em");
         height: 200px;
         margin: 0 auto;
     }
@@ -1427,6 +1427,110 @@ div.logEventsViewport {
                 opacity: 1;
                 color: inherit;
             }
+        }
+    }
+}
+
+#Config_UserFlags_BulkAssign_ModeDialog {
+    & > div {
+        margin-top: 6px;
+        background-color: @white;
+        line-height: 1.3em;
+        border: 1px solid #ddd;
+
+        & > div {
+            display: block;
+            padding: 4px;
+            cursor: pointer;
+
+            &:not(:last-child) {
+                border-bottom: 1px dashed #ddd;
+            }
+
+            h5 {
+                font-size: 1.1em;
+                padding: 4px 0;
+            }
+
+            i {
+                margin-right: 4px;
+            }
+
+            &.add {
+                &:hover {
+                    background-color: hsv(hsvhue(@StatusSuccess), hsvsaturation(@StatusSuccess) / 6, 100%);
+                }
+
+                i {
+                    color: @StatusSuccess;
+                }
+            }
+
+            &.override {
+                &:hover {
+                    background-color: hsv(hsvhue(@StatusError), hsvsaturation(@StatusError) / 6, 100%);
+                }
+
+                i {
+                    color: @StatusError;
+                }
+            }
+        }
+    }
+}
+
+#Config_UserFlags_BulkAssign_AssignDialog {
+    .brief {
+        margin: 0 0 8px 0;
+
+        .scopeDescBulkGenerate {
+            font-weight: bold;
+        }
+
+        div.examples {
+            margin: 8px auto;
+            width: 300px;
+
+            div {
+                margin: 2px 4px 2px 0;
+                width: 150px;
+                float: left;
+
+                &.example1 {
+                    width: 100px;
+                }
+            }
+        }
+    }
+
+    div.loading {
+        display: none;
+        padding: 40px 0;
+        text-align: center;
+
+        i {
+            margin-right: 10px;
+            color: @StatusInformation;
+        }
+    }
+
+    #Config_UserFlags_BulkAssign_AssignDialog_UserIds {
+        height: 200px;
+        margin-bottom: 8px;
+    }
+
+    textarea {
+        width: calc(~"100% - .5em");
+        margin: 0;
+    }
+
+    &.loading {
+        & > div.loading {
+            display: block;
+        }
+
+        & > form {
+            display: none;
         }
     }
 }

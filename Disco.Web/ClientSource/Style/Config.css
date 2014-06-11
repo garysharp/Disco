@@ -647,7 +647,7 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
   width: 100px;
 }
 #dialogBulkGenerate textarea {
-  width: 100%;
+  width: calc(100% - .5em);
   height: 200px;
   margin: 0 auto;
 }
@@ -1224,4 +1224,78 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
 #Config_UserFlags_Icon_Update_Dialog div.icons i.selected {
   opacity: 1;
   color: inherit;
+}
+#Config_UserFlags_BulkAssign_ModeDialog > div {
+  margin-top: 6px;
+  background-color: #ffffff;
+  line-height: 1.3em;
+  border: 1px solid #ddd;
+}
+#Config_UserFlags_BulkAssign_ModeDialog > div > div {
+  display: block;
+  padding: 4px;
+  cursor: pointer;
+}
+#Config_UserFlags_BulkAssign_ModeDialog > div > div:not(:last-child) {
+  border-bottom: 1px dashed #ddd;
+}
+#Config_UserFlags_BulkAssign_ModeDialog > div > div h5 {
+  font-size: 1.1em;
+  padding: 4px 0;
+}
+#Config_UserFlags_BulkAssign_ModeDialog > div > div i {
+  margin-right: 4px;
+}
+#Config_UserFlags_BulkAssign_ModeDialog > div > div.add:hover {
+  background-color: #edffda;
+}
+#Config_UserFlags_BulkAssign_ModeDialog > div > div.add i {
+  color: #60a917;
+}
+#Config_UserFlags_BulkAssign_ModeDialog > div > div.override:hover {
+  background-color: #ffd8d4;
+}
+#Config_UserFlags_BulkAssign_ModeDialog > div > div.override i {
+  color: #e51400;
+}
+#Config_UserFlags_BulkAssign_AssignDialog .brief {
+  margin: 0 0 8px 0;
+}
+#Config_UserFlags_BulkAssign_AssignDialog .brief .scopeDescBulkGenerate {
+  font-weight: bold;
+}
+#Config_UserFlags_BulkAssign_AssignDialog .brief div.examples {
+  margin: 8px auto;
+  width: 300px;
+}
+#Config_UserFlags_BulkAssign_AssignDialog .brief div.examples div {
+  margin: 2px 4px 2px 0;
+  width: 150px;
+  float: left;
+}
+#Config_UserFlags_BulkAssign_AssignDialog .brief div.examples div.example1 {
+  width: 100px;
+}
+#Config_UserFlags_BulkAssign_AssignDialog div.loading {
+  display: none;
+  padding: 40px 0;
+  text-align: center;
+}
+#Config_UserFlags_BulkAssign_AssignDialog div.loading i {
+  margin-right: 10px;
+  color: #1e6dab;
+}
+#Config_UserFlags_BulkAssign_AssignDialog #Config_UserFlags_BulkAssign_AssignDialog_UserIds {
+  height: 200px;
+  margin-bottom: 8px;
+}
+#Config_UserFlags_BulkAssign_AssignDialog textarea {
+  width: calc(100% - .5em);
+  margin: 0;
+}
+#Config_UserFlags_BulkAssign_AssignDialog.loading > div.loading {
+  display: block;
+}
+#Config_UserFlags_BulkAssign_AssignDialog.loading > form {
+  display: none;
 }

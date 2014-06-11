@@ -1,5 +1,6 @@
 ﻿@model Disco.Web.Areas.Config.Models.UserFlag.ShowModel
 @using Disco.Services.Users.UserFlags;
+@using Disco.Services.Interop.ActiveDirectory;
 @{
     Authorization.Require(Claims.Config.UserFlag.Show);
 
@@ -7,6 +8,7 @@
 
     var canConfig = Authorization.Has(Claims.Config.UserFlag.Configure);
     var canDelete = Authorization.Has(Claims.Config.UserFlag.Delete);
+    var canBulkAssignment = Authorization.HasAll(Claims.User.Actions.AddFlags, Claims.User.Actions.RemoveFlags, Claims.User.ShowFlagAssignments);
     var canShowUsers = Model.CurrentAssignmentCount > 0 && Authorization.HasAll(Claims.User.Search, Claims.User.ShowFlagAssignments);
 
     Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
@@ -193,9 +195,148 @@
         </tr>
     </table>
 </div>
-@if (canDelete || canShowUsers)
+@if (canBulkAssignment || canDelete || canShowUsers)
 {
     <div class="actionBar">
+        @if (canBulkAssignment)
+        {
+            <a href="#" id="Config_UserFlags_BulkAssign_Button" class="button">Bulk Assign Users</a>
+            <div id="Config_UserFlags_BulkAssign_ModeDialog" class="dialog" title="Bulk Assign User Mode">
+                <p>
+                    Select the mode used to assign users:
+                </p>
+                <div>
+                    <div class="add">
+                        <h5><i class="fa fa-plus fa-fw"></i>Add</h5>
+                        <p>
+                            Specified users will have this flag <strong>added</strong>. Users who already have this flag will be skipped.
+                        </p>
+                    </div>
+                    <div class="override">
+                        <h5><i class="fa fa-repeat fa-fw"></i>Override</h5>
+                        <p>
+                            Specified users will have this flag <strong>added</strong>. Specified users which already have this flag will be skipped.
+                                    Users who already have this flag but are not specified will have the flag <strong>removed</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div id="Config_UserFlags_BulkAssign_AssignDialog" class="dialog" title="Bulk Assign Users">
+                <div class="brief">
+                    <div>
+                        Enter multiple <strong>User Ids</strong> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                    </div>
+                    <div class="examples clearfix">
+                        <h4>Examples:</h4>
+                        <div class="code example1">
+                            user6<br />
+                            smi0099<br />
+                            @(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith
+                        </div>
+                        <div class="code">user6,smi0099,@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith</div>
+                        <div class="code">user6;smi0099;@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith</div>
+                    </div>
+                </div>
+                <div class="loading">
+                    <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Loading current assignments...</h4>
+                </div>
+                <form action="#" method="post">
+                    <textarea id="Config_UserFlags_BulkAssign_AssignDialog_UserIds" name="UserIds" data-val="true"></textarea>
+                    <h4>Comments:</h4>
+                    <textarea id="Config_UserFlags_BulkAssign_AssignDialog_Comments" name="Comments"></textarea>
+                </form>
+            </div>
+            <script>
+                $(function () {
+                    var modeDialog, assignDialog, assignUserIds;
+
+                    function showModeDialog() {
+                        if (!modeDialog) {
+                            modeDialog = $('#Config_UserFlags_BulkAssign_ModeDialog').dialog({
+                                resizable: false,
+                                modal: true,
+                                autoOpen: false,
+                                width: 400,
+                                buttons: {
+                                    Cancel: function () {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+
+                            modeDialog.find('.add').click(function () {
+                                modeDialog.dialog('close');
+                                showAssignDialog('Add');
+                            });
+                            modeDialog.find('.override').click(function () {
+                                modeDialog.dialog('close');
+                                showAssignDialog('Override');
+                            });
+                        }
+                        modeDialog.dialog('open');
+                    }
+                    function showAssignDialog(mode) {
+                        if (!assignDialog) {
+                            assignDialog = $('#Config_UserFlags_BulkAssign_AssignDialog').dialog({
+                                resizable: false,
+                                modal: true,
+                                autoOpen: false,
+                                width: 460
+                            });
+
+                            assignUserIds = $('#Config_UserFlags_BulkAssign_AssignDialog_UserIds');
+                        }
+
+                        assignDialog.removeClass('loading');
+
+                        var buttons = {};
+                        buttons[mode + " User Flags"] = function () {
+                            $(this).find('form').submit();
+                            $(this).dialog("disable");
+                        }
+                        buttons['Cancel'] = function () {
+                            $(this).dialog('close');
+                        }
+                        assignDialog.dialog('option', 'buttons', buttons);
+                        assignDialog.dialog('option', 'title', 'Bulk Assign Users: ' + mode);
+
+                        if (mode == "Override") {
+                            assignUserIds.closest('form').attr('action', '@(Url.Action(MVC.API.UserFlag.BulkAssignUsers(Model.UserFlag.Id, true)))');
+
+                                    assignDialog.addClass('loading');
+                                    $.getJSON('@Url.Action(MVC.API.UserFlag.AssignedUsers(Model.UserFlag.Id))', function (response, result) {
+                                        assignDialog.removeClass('loading');
+
+                                        if (result != 'success') {
+                                            alert('Unable to load current assignments:\n' + response);
+                                            assignDialog.dialog('close');
+                                        } else {
+                                            if (!!response) {
+                                                assignUserIds.val(response.join('\n'));
+                                            } else {
+                                                assignUserIds.val('');
+                                            }
+                                        }
+                                    });
+                                }
+                                else // Assume Add
+                                {
+                                    assignUserIds.closest('form').attr('action', '@(Url.Action(MVC.API.UserFlag.BulkAssignUsers(Model.UserFlag.Id, false)))');
+                                }
+
+                                assignDialog.dialog('open');
+                            }
+
+                            $('#Config_UserFlags_BulkAssign_Button').click(function () {
+                                showModeDialog();
+                                return false;
+                            });
+                        });
+            </script>
+        }
+
+
+
         @if (canDelete)
         {
             @Html.ActionLinkButton("Delete", MVC.API.UserFlag.Delete(Model.UserFlag.Id, true), "Config_UserFlags_Actions_Delete_Button")

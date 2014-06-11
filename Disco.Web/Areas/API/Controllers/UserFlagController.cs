@@ -1,8 +1,10 @@
 ﻿using Disco.Models.Repository;
 using Disco.Services.Authorization;
+using Disco.Services.Tasks;
 using Disco.Services.Users.UserFlags;
 using Disco.Services.Web;
 using System;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.API.Controllers
@@ -164,16 +166,15 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Actions
-        [DiscoAuthorize(Claims.Config.UserFlag.Delete)]
+        [DiscoAuthorizeAll(Claims.Config.UserFlag.Configure, Claims.Config.UserFlag.Delete)]
         public virtual ActionResult Delete(int id, Nullable<bool> redirect = false)
         {
             try
             {
-                var jq = Database.UserFlags.Find(id);
-                if (jq != null)
+                var uf = Database.UserFlags.FirstOrDefault(f => f.Id == id);
+                if (uf != null)
                 {
-
-                    var status = UserFlagDeleteTask.ScheduleNow(id);
+                    var status = UserFlagDeleteTask.ScheduleNow(uf.Id);
                     status.SetFinishedUrl(Url.Action(MVC.Config.UserFlag.Index(null)));
 
                     if (redirect.HasValue && redirect.Value)
@@ -190,6 +191,35 @@ namespace Disco.Web.Areas.API.Controllers
                 else
                     return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [DiscoAuthorizeAll(Claims.Config.UserFlag.Configure, Claims.User.Actions.AddFlags, Claims.User.Actions.RemoveFlags, Claims.User.ShowFlagAssignments)]
+        public virtual ActionResult BulkAssignUsers(int id, bool Override, string UserIds = null, string Comments = null)
+        {
+            if (id < 0)
+                throw new ArgumentNullException("id");
+            var userFlag = Database.UserFlags.FirstOrDefault(f => f.Id == id);
+            if (userFlag == null)
+                throw new ArgumentException("Invalid User Flag Id", "id");
+
+            var userIds = UserIds.Split(new string[] { Environment.NewLine, ",", ";" }, StringSplitOptions.RemoveEmptyEntries).Select(d => d.Trim()).Where(d => !string.IsNullOrEmpty(d)).ToList();
+
+            var taskStatus = UserFlagBulkAssignTask.ScheduleBulkAssignUsers(userFlag, CurrentUser, Comments, userIds, Override);
+            taskStatus.SetFinishedUrl(Url.Action(MVC.Config.UserFlag.Index(userFlag.Id)));
+            return RedirectToAction(MVC.Config.Logging.TaskStatus(taskStatus.SessionId));
+        }
+        [DiscoAuthorizeAll(Claims.Config.UserFlag.Configure, Claims.User.Actions.AddFlags, Claims.User.Actions.RemoveFlags, Claims.User.ShowFlagAssignments)]
+        public virtual ActionResult AssignedUsers(int id)
+        {
+            if (id < 0)
+                throw new ArgumentNullException("id");
+            var userFlag = Database.UserFlags.FirstOrDefault(f => f.Id == id);
+            if (userFlag == null)
+                throw new ArgumentException("Invalid User Flag Id", "id");
+
+            var assignedUsers = Database.UserFlagAssignments.Where(a => a.UserFlagId == userFlag.Id && !a.RemovedDate.HasValue).OrderBy(a => a.UserId).Select(a => a.UserId).ToList();
+            
+            return Json(assignedUsers, JsonRequestBehavior.AllowGet);
         }
         #endregion
     }

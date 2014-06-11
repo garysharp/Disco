@@ -1,4 +1,5 @@
 ﻿@model Disco.Web.Areas.Config.Models.DocumentTemplate.ShowModel
+@using Disco.Services.Interop.ActiveDirectory;
 @{
     Authorization.Require(Claims.Config.DocumentTemplate.Show);
 
@@ -509,9 +510,9 @@
                             break;
                         case 'User':
                             dialog.find('.scopeDescBulkGenerate').text('User Ids');
-                            dialog.find('.example1').html('user6<br />smi0099<br />rsmith');
-                            dialog.find('.example2').text('user6,smi0099,rsmith');
-                            dialog.find('.example3').text('user6;smi0099;rsmith');
+                            dialog.find('.example1').html('user6<br />smi0099<br />@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\\rsmith');
+                            dialog.find('.example2').text('user6,smi0099,@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\\rsmith');
+                            dialog.find('.example3').text('user6;smi0099;@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\\rsmith');
                             break;
                     }
 

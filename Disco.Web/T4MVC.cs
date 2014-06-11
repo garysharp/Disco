@@ -11125,6 +11125,18 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult BulkAssignUsers()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkAssignUsers);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AssignedUsers()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AssignedUsers);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public UserFlagController Actions { get { return MVC.API.UserFlag; } }
@@ -11148,6 +11160,8 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateIconColour = "UpdateIconColour";
             public readonly string UpdateIconAndColour = "UpdateIconAndColour";
             public readonly string Delete = "Delete";
+            public readonly string BulkAssignUsers = "BulkAssignUsers";
+            public readonly string AssignedUsers = "AssignedUsers";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -11160,6 +11174,8 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateIconColour = "UpdateIconColour";
             public const string UpdateIconAndColour = "UpdateIconAndColour";
             public const string Delete = "Delete";
+            public const string BulkAssignUsers = "BulkAssignUsers";
+            public const string AssignedUsers = "AssignedUsers";
         }
 
 
@@ -11233,6 +11249,25 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_BulkAssignUsers s_params_BulkAssignUsers = new ActionParamsClass_BulkAssignUsers();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_BulkAssignUsers BulkAssignUsersParams { get { return s_params_BulkAssignUsers; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_BulkAssignUsers
+        {
+            public readonly string id = "id";
+            public readonly string Override = "Override";
+            public readonly string UserIds = "UserIds";
+            public readonly string Comments = "Comments";
+        }
+        static readonly ActionParamsClass_AssignedUsers s_params_AssignedUsers = new ActionParamsClass_AssignedUsers();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AssignedUsers AssignedUsersParams { get { return s_params_AssignedUsers; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AssignedUsers
+        {
+            public readonly string id = "id";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -11349,6 +11384,33 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             DeleteOverride(callInfo, id, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void BulkAssignUsersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool Override, string UserIds, string Comments);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult BulkAssignUsers(int id, bool Override, string UserIds, string Comments)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkAssignUsers);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Override", Override);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "UserIds", UserIds);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Comments", Comments);
+            BulkAssignUsersOverride(callInfo, id, Override, UserIds, Comments);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AssignedUsersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult AssignedUsers(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AssignedUsers);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            AssignedUsersOverride(callInfo, id);
             return callInfo;
         }
 

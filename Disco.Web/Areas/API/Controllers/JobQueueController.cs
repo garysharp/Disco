@@ -350,8 +350,7 @@ namespace Disco.Web.Areas.API.Controllers
                 var jq = Database.JobQueues.Find(id);
                 if (jq != null)
                 {
-
-                    var status = JobQueueDeleteTask.ScheduleNow(id);
+                    var status = JobQueueDeleteTask.ScheduleNow(jq.Id);
                     status.SetFinishedUrl(Url.Action(MVC.Config.JobQueue.Index(null)));
 
                     if (redirect.HasValue && redirect.Value)

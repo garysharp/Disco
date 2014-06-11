@@ -32,5 +32,10 @@ namespace Disco.Models.Repository
         public virtual User AddedUser { get; set; }
         [ForeignKey("RemovedUserId")]
         public virtual User RemovedUser { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("User Flag Id: {0}; User Id: {1}; Added: {2:s}", UserFlagId, UserId, AddedDate);
+        }
     }
 }
