@@ -69,9 +69,9 @@ namespace Disco.BI.Interop.Pdf
                         if (!dataObjectId.Contains('\\'))
                             dataObjectId = ActiveDirectory.Context.PrimaryDomain.NetBiosName + @"\" + dataObjectId;
 
-                        DataObjects[idIndex] = UserService.GetUser(DataObjectsIds[idIndex], Database, true);
+                        DataObjects[idIndex] = UserService.GetUser(dataObjectId, Database, true);
                         if (DataObjects[idIndex] == null)
-                            throw new Exception(string.Format("Unknown Username specified: {0}", DataObjectsIds[idIndex]));
+                            throw new Exception(string.Format("Unknown Username specified: {0}", dataObjectId));
                     }
                     break;
                 default:
