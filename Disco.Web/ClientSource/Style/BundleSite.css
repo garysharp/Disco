@@ -4790,10 +4790,10 @@ p.fa-p > i:first-child {
   width: 1.28em;
   margin-right: 0.2em;
 }
-div.disco-attachmentUpload-dropTarget {
+div.Disco-AttachmentUpload-DropTarget {
   display: none;
 }
-div.disco-attachmentUpload-dropTarget.dragHighlight {
+div.Disco-AttachmentUpload-DropTarget.dragHighlight {
   display: block;
   position: absolute;
   z-index: 1000;
@@ -4804,66 +4804,66 @@ div.disco-attachmentUpload-dropTarget.dragHighlight {
   background-color: rgba(251, 218, 152, 0.5);
   border: 3px dashed #f0a30a;
 }
-div.disco-attachmentUpload-dropTarget.dragHighlight h2 {
+div.Disco-AttachmentUpload-DropTarget.dragHighlight h2 {
   margin-top: 3em !important;
   color: #2c1e02;
   text-align: center;
   font-weight: bold;
 }
-div.disco-attachmentUpload-dropTarget.dragHighlight.dragHover {
+div.Disco-AttachmentUpload-DropTarget.dragHighlight.dragHover {
   background-color: rgba(173, 235, 110, 0.5);
   border: 3px dashed #60a917;
 }
-div.disco-attachmentUpload-dropTarget.dragHighlight.dragHover h2 {
+div.Disco-AttachmentUpload-DropTarget.dragHighlight.dragHover h2 {
   color: #000000;
 }
-div.disco-attachmentUpload-progress {
+div.Disco-AttachmentUpload-Progress {
   position: absolute;
   right: 0px;
   bottom: 48px;
 }
-div.disco-attachmentUpload-progress > div {
+div.Disco-AttachmentUpload-Progress > div {
   background-color: #fafafa;
   padding: 4px 8px;
 }
-div.disco-attachmentUpload-progress > div i {
+div.Disco-AttachmentUpload-Progress > div i {
   color: #1e6dab;
   margin-right: 4px;
 }
-div.disco-attachmentUpload-commentDialog {
+div.Disco-AttachmentUpload-CommentDialog {
   padding: 0.25em 0.5em !important;
 }
-div.disco-attachmentUpload-commentDialog table {
+div.Disco-AttachmentUpload-CommentDialog table {
   border: solid 1px #f4f4f4;
   border-collapse: collapse;
   table-layout: fixed;
 }
-div.disco-attachmentUpload-commentDialog table > tbody > tr > td {
+div.Disco-AttachmentUpload-CommentDialog table > tbody > tr > td {
   border: solid 1px #f4f4f4;
   background-color: #ffffff;
 }
-div.disco-attachmentUpload-commentDialog table > tbody > tr:nth-child(odd) > td {
+div.Disco-AttachmentUpload-CommentDialog table > tbody > tr:nth-child(odd) > td {
   background-color: #fcfcfc;
 }
-div.disco-attachmentUpload-commentDialog table > thead > tr > th,
-div.disco-attachmentUpload-commentDialog table > tbody > tr > th {
+div.Disco-AttachmentUpload-CommentDialog table > thead > tr > th,
+div.Disco-AttachmentUpload-CommentDialog table > tbody > tr > th {
   background-color: #f4f4f4;
   border: solid 1px #f4f4f4;
 }
-div.disco-attachmentUpload-commentDialog table > tbody > tr:hover > td {
+div.Disco-AttachmentUpload-CommentDialog table > tbody > tr:hover > td {
   background-color: #fefefe;
 }
-div.disco-attachmentUpload-commentDialog table > tbody > tr:hover:nth-child(odd) > td {
+div.Disco-AttachmentUpload-CommentDialog table > tbody > tr:hover:nth-child(odd) > td {
   background-color: #fafafa;
 }
-div.disco-attachmentUpload-commentDialog table > tfoot > tr > th,
-div.disco-attachmentUpload-commentDialog table > tfoot > tr > td {
+div.Disco-AttachmentUpload-CommentDialog table > tfoot > tr > th,
+div.Disco-AttachmentUpload-CommentDialog table > tfoot > tr > td {
   background-color: #f4f4f4;
 }
-div.disco-attachmentUpload-commentDialog table th {
+div.Disco-AttachmentUpload-CommentDialog table th {
   width: 80px;
 }
-div.disco-attachmentUpload-commentDialog table td.filename {
+div.Disco-AttachmentUpload-CommentDialog table td.filename {
   font-family: Consolas, "Courier New", monospace;
   white-space: nowrap;
   overflow: hidden;
@@ -4871,19 +4871,19 @@ div.disco-attachmentUpload-commentDialog table td.filename {
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
 }
-div.disco-attachmentUpload-commentDialog table input.comments {
+div.Disco-AttachmentUpload-CommentDialog table input.comments {
   width: calc(100% - 5px);
 }
-div.disco-attachmentUpload-commentDialog table td.thumbnail {
+div.Disco-AttachmentUpload-CommentDialog table td.thumbnail {
   display: none;
   text-align: center;
 }
-div.disco-attachmentUpload-commentDialog table td.thumbnail img {
+div.Disco-AttachmentUpload-CommentDialog table td.thumbnail img {
   border: 1px solid #9e9e9e;
   max-height: 250px;
   max-width: 374px;
 }
-div.disco-attachmentUpload-imageDialog {
+div.Disco-AttachmentUpload-ImageDialog {
   background-color: #000000 !important;
   padding: 0 !important;
   overflow: hidden !important;

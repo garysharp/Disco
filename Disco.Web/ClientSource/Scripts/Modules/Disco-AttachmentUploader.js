@@ -490,9 +490,9 @@ Webcam.init();
             // Setup Dialog
             var dialog = $('<div>')
                 .attr({
-                    id: 'disco_attachmentUpload_imageDialog',
+                    id: 'Disco_AttachmentUpload_ImageDialog',
                     title: 'Upload Image',
-                    'class': 'dialog disco-attachmentUpload-imageDialog'
+                    'class': 'dialog Disco-AttachmentUpload-ImageDialog'
                 });
             dialog.dialog({
                 autoOpen: true,
@@ -548,7 +548,7 @@ Webcam.init();
             var dialog = $('<div>')
                 .attr({
                     title: 'Upload File',
-                    'class': 'dialog disco-attachmentUpload-commentDialog'
+                    'class': 'dialog Disco-AttachmentUpload-CommentDialog'
                 });
             dialog.html('<table><tr><th>File Name:</th><td class="filename"></td></tr><tr><th>Comments:</th><td><input class="comments" type="text"></input></td></tr><tr><td class="thumbnail" colspan="2"><img /></td></tr></table>');
 
@@ -591,6 +591,10 @@ Webcam.init();
         };
 
         self._uploadImage = function (dataUri) {
+
+            if (self._hideFlashVideoOverlay())
+                $('#webcam_movie_obj, #webcam_movie_embed').css('display', 'none');
+
             var imageData = dataUri.replace(/^data\:image\/\w+\;base64\,/, '');
 
             var imageBlob = new Blob([Webcam.base64DecToArr(imageData)], { type: 'image/jpeg' });
@@ -601,6 +605,9 @@ Webcam.init();
                 img.attr('src', dataUri);
                 return true;
             }, function (result, comments) {
+                if (self._hideFlashVideoOverlay())
+                    $('#webcam_movie_obj, #webcam_movie_embed').css('display', '');
+
                 if (!result)
                     return;
 
@@ -663,6 +670,23 @@ Webcam.init();
             xhr.send(formData);
         };
         // #endregion
+
+        // Flash Video hides Dom elements (comment dialog) in <= Win7
+        self.__hideFlashVideoOverlay = null;
+        self._hideFlashVideoOverlay = function () {
+            if (self.__hideFlashVideoOverlay === null) {
+                self.__hideFlashVideoOverlay = false;
+
+                // Test for: <= Windows 7
+                try {
+                    var match = /(windows nt) ([\w.]+)/.exec(navigator.userAgent.toLowerCase());
+                    if (!!match && parseFloat(match[2]) <= 6.2) 
+                        self.__hideFlashVideoOverlay = true;
+                } catch (e) { }
+            }
+
+            return self.__hideFlashVideoOverlay;
+        }
 
         return self;
     };

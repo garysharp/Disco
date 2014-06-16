@@ -95,7 +95,7 @@ WriteAttribute("class", Tuple.Create(" class=\"", 888), Tuple.Create("\"", 963)
 
 WriteLiteral(">\r\n                    <div");
 
-WriteLiteral(" class=\"disco-attachmentUpload-dropTarget\"");
+WriteLiteral(" class=\"Disco-AttachmentUpload-DropTarget\"");
 
 WriteLiteral(">\r\n                        <h2>Drop Attachments Here</h2>\r\n                    </" +
 "div>\r\n                    <div");
@@ -335,7 +335,7 @@ WriteLiteral("                    </div>\r\n");
             #line hidden
 WriteLiteral("                        <div");
 
-WriteLiteral(" class=\"disco-attachmentUpload-progress\"");
+WriteLiteral(" class=\"Disco-AttachmentUpload-Progress\"");
 
 WriteLiteral("></div>\r\n");
 
@@ -619,9 +619,9 @@ WriteLiteral("\r\n                            //#region Add Attachments\r\n     
             
             #line default
             #line hidden
-WriteLiteral("\',\r\n                            $Attachments.find(\'.disco-attachmentUpload-dropTa" +
-"rget\'),\r\n                            $Attachments.find(\'.disco-attachmentUpload-" +
-"progress\'));\r\n\r\n                            var $attachmentInput = $Attachments." +
+WriteLiteral("\',\r\n                            $Attachments.find(\'.Disco-AttachmentUpload-DropTa" +
+"rget\'),\r\n                            $Attachments.find(\'.Disco-AttachmentUpload-" +
+"Progress\'));\r\n\r\n                            var $attachmentInput = $Attachments." +
 "find(\'.attachmentInput\');\r\n                            $attachmentInput.find(\'.p" +
 "hoto\').click(function () {\r\n                                attachmentUploader.u" +
 "ploadImage();\r\n                            });\r\n                            $att" +

@@ -54,7 +54,7 @@
         {
             <td id="AttachmentsContainer">
                 <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments")">
-                    <div class="disco-attachmentUpload-dropTarget">
+                    <div class="Disco-AttachmentUpload-DropTarget">
                         <h2>Drop Attachments Here</h2>
                     </div>
                     <div class="attachmentOutput">
@@ -75,7 +75,7 @@
                     </div>
                     @if (canAddAttachments)
                     {
-                        <div class="disco-attachmentUpload-progress"></div>
+                        <div class="Disco-AttachmentUpload-Progress"></div>
                         <div class="attachmentInput clearfix">
                             <span class="action upload fa fa-upload" title="Attach File"></span><span class="action photo fa fa-camera" title="Capture Image"></span>
                         </div>
@@ -309,8 +309,8 @@
             //#region Add Attachments
             var attachmentUploader = new document.Disco.AttachmentUploader(
                 '@(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)))',
-                $Attachments.find('.disco-attachmentUpload-dropTarget'),
-                $Attachments.find('.disco-attachmentUpload-progress'));
+                $Attachments.find('.Disco-AttachmentUpload-DropTarget'),
+                $Attachments.find('.Disco-AttachmentUpload-Progress'));
 
             var $attachmentInput = $Attachments.find('.attachmentInput');
             $attachmentInput.find('.photo').click(function () {
