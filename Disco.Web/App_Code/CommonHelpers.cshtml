@@ -55,7 +55,7 @@
 {
     if (UserId != null)
     { 
-    @prepend <span>@Disco.Services.UserExtensions.FriendlyUserId(UserId)</span>
+    @prepend <span>@Disco.Services.Interop.ActiveDirectory.ActiveDirectory.FriendlyAccountId(UserId)</span>
     }
     else
     { 

@@ -59,6 +59,10 @@ namespace Disco.Web
             // Initialize User Flags
             Disco.Services.Users.UserFlags.UserFlagService.Initialize(Database);
 
+            // Initialize Satellite Managed Groups (which don't belong to any other component)
+            Disco.Services.Devices.ManagedGroups.DeviceManagedGroups.Initialize(Database);
+            Disco.BI.DocumentTemplateBI.ManagedGroups.DocumentTemplateManagedGroups.Initialize(Database);
+
             // Initialize Plugins
             Disco.Services.Plugins.Plugins.InitalizePlugins(Database);
 

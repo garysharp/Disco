@@ -281,8 +281,8 @@ namespace Disco.Web.Controllers
         {
             if (string.IsNullOrWhiteSpace(Id))
                 return Json(null, JsonRequestBehavior.AllowGet);
-            else if (!Id.Contains(@"\"))
-                Id = string.Format(@"{0}\{1}", ActiveDirectory.Context.PrimaryDomain.NetBiosName, Id);
+
+            Id = ActiveDirectory.ParseDomainAccountId(Id);
 
             var subject = ActiveDirectory.RetrieveADObject(Id, Quick: true);
 

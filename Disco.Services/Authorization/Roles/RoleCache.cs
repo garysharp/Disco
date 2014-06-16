@@ -50,8 +50,7 @@ namespace Disco.Services.Authorization.Roles
 
         private static IEnumerable<string> GenerateAdministratorSubjectIds(DiscoDataContext Database)
         {
-            var domainNetBiosName = ActiveDirectory.Context.PrimaryDomain.NetBiosName;
-            var configuredSubjectIds = Database.DiscoConfiguration.Administrators.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Contains(@"\") ? s : string.Format(@"{0}\{1}", domainNetBiosName, s));
+            var configuredSubjectIds = Database.DiscoConfiguration.Administrators.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => ActiveDirectory.ParseDomainAccountId(s));
 
             return RequiredAdministratorSubjectIds
                 .Concat(configuredSubjectIds)
@@ -62,8 +61,7 @@ namespace Disco.Services.Authorization.Roles
         {
             get
             {
-                var domainNetBiosName = ActiveDirectory.Context.PrimaryDomain.NetBiosName;
-                return _RequiredAdministratorSubjectIds.Select(s => string.Format(@"{0}\{1}", domainNetBiosName, s));
+                return _RequiredAdministratorSubjectIds.Select(s => ActiveDirectory.ParseDomainAccountId(s));
             }
         }
         public static IEnumerable<string> AdministratorSubjectIds

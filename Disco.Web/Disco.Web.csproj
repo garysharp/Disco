@@ -217,6 +217,7 @@
     <Compile Include="Areas\Config\Models\AuthorizationRole\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\AuthorizationRole\ShowModel.cs" />
     <Compile Include="Areas\Config\Models\Config\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\Shared\LinkedGroupModel.cs" />
     <Compile Include="Areas\Config\Models\UserFlag\CreateModel.cs" />
     <Compile Include="Areas\Config\Models\UserFlag\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\UserFlag\ShowModel.cs" />
@@ -280,6 +281,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Install.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Config\Views\Shared\LinkedGroupInstance.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LinkedGroupInstance.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Config\Views\Shared\LinkedGroupShared.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LinkedGroupShared.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Areas\Config\Views\Shared\TaskStatus.generated.cs">
       <AutoGen>True</AutoGen>
@@ -1016,6 +1027,14 @@
     <None Include="Areas\Config\Views\Plugins\Install.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Install.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\Shared\LinkedGroupInstance.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>LinkedGroupInstance.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\Shared\LinkedGroupShared.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>LinkedGroupShared.generated.cs</LastGenOutput>
     </None>
     <None Include="Areas\Config\Views\Shared\TaskStatus.cshtml">
       <Generator>RazorGenerator</Generator>
@@ -2157,7 +2176,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
+      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

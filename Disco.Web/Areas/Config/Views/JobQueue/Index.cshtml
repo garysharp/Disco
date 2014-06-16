@@ -1,6 +1,6 @@
 ﻿@model Disco.Web.Areas.Config.Models.JobQueue.IndexModel
 @{
-    Authorization.RequireAll(Claims.Config.JobQueue.Create, Claims.Config.JobQueue.Configure);
+    Authorization.Require(Claims.Config.JobQueue.Show);
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Job Queues", MVC.Config.JobQueue.Index(null));
 }
 <div id="Config_JobQueues_Index">
@@ -54,7 +54,10 @@
             }
         </table>
     }
-    <div class="actionBar">
-        @Html.ActionLinkButton("Create Job Queue", MVC.Config.JobQueue.Create())
-    </div>
+    @if (Authorization.Has(Claims.Config.JobQueue.Create))
+    {
+        <div class="actionBar">
+            @Html.ActionLinkButton("Create Job Queue", MVC.Config.JobQueue.Create())
+        </div>
+    }
 </div>

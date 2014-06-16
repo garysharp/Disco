@@ -18,12 +18,15 @@ namespace Disco.Models.Repository
         public string Description { get; set; }
         [Required, StringLength(6)]
         public string Scope { get; set; }
-        [StringLength(250)]
+        [StringLength(250), DataType(DataType.MultilineText)]
         public string FilterExpression { get; set; }
 
         // Feature Request 2012-05-10 by G#: https://disco.uservoice.com/forums/159707-feedback/suggestions/2811092-document-template-option-flatten-form-on-generate
         public bool FlattenForm { get; set; }
         // End Feature Request
+
+        public string DevicesLinkedGroup { get; set; }
+        public string UsersLinkedGroup { get; set; }
 
         [InverseProperty("DocumentTemplates")]
         public virtual IList<JobSubType> JobSubTypes { get; set; }

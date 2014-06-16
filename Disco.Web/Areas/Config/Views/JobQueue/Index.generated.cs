@@ -47,7 +47,7 @@ namespace Disco.Web.Areas.Config.Views.JobQueue
             
             #line 2 "..\..\Areas\Config\Views\JobQueue\Index.cshtml"
   
-    Authorization.RequireAll(Claims.Config.JobQueue.Create, Claims.Config.JobQueue.Configure);
+    Authorization.Require(Claims.Config.JobQueue.Show);
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Job Queues", MVC.Config.JobQueue.Index(null));
 
             
@@ -114,37 +114,37 @@ WriteLiteral(">\r\n            <tr>\r\n                <th>Name</th>\r\n        
             #line hidden
 WriteLiteral("                <tr>\r\n                    <td>\r\n                        <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 890), Tuple.Create("\"", 953)
+WriteAttribute("href", Tuple.Create(" href=\"", 851), Tuple.Create("\"", 914)
             
             #line 26 "..\..\Areas\Config\Views\JobQueue\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 897), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.JobQueue.Index(item.JobQueue.Id))
+, Tuple.Create(Tuple.Create("", 858), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.JobQueue.Index(item.JobQueue.Id))
             
             #line default
             #line hidden
-, 897), false)
+, 858), false)
 );
 
 WriteLiteral(">\r\n                            <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 987), Tuple.Create("\"", 1058)
-, Tuple.Create(Tuple.Create("", 995), Tuple.Create("fa", 995), true)
-, Tuple.Create(Tuple.Create(" ", 997), Tuple.Create("fa-", 998), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 948), Tuple.Create("\"", 1019)
+, Tuple.Create(Tuple.Create("", 956), Tuple.Create("fa", 956), true)
+, Tuple.Create(Tuple.Create(" ", 958), Tuple.Create("fa-", 959), true)
             
             #line 27 "..\..\Areas\Config\Views\JobQueue\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 1001), Tuple.Create<System.Object, System.Int32>(item.JobQueue.Icon
+, Tuple.Create(Tuple.Create("", 962), Tuple.Create<System.Object, System.Int32>(item.JobQueue.Icon
             
             #line default
             #line hidden
-, 1001), false)
-, Tuple.Create(Tuple.Create(" ", 1022), Tuple.Create("fa-lg", 1023), true)
-, Tuple.Create(Tuple.Create(" ", 1028), Tuple.Create("d-", 1029), true)
+, 962), false)
+, Tuple.Create(Tuple.Create(" ", 983), Tuple.Create("fa-lg", 984), true)
+, Tuple.Create(Tuple.Create(" ", 989), Tuple.Create("d-", 990), true)
             
             #line 27 "..\..\Areas\Config\Views\JobQueue\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 1031), Tuple.Create<System.Object, System.Int32>(item.JobQueue.IconColour
+, Tuple.Create(Tuple.Create("", 992), Tuple.Create<System.Object, System.Int32>(item.JobQueue.IconColour
             
             #line default
             #line hidden
-, 1031), false)
+, 992), false)
 );
 
 WriteLiteral("></i>\r\n");
@@ -201,27 +201,27 @@ WriteLiteral(">&lt;none&gt;</span>\r\n");
             #line hidden
 WriteLiteral("                    </td>\r\n                    <td>\r\n                        <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1613), Tuple.Create("\"", 1681)
-, Tuple.Create(Tuple.Create("", 1621), Tuple.Create("fa", 1621), true)
-, Tuple.Create(Tuple.Create(" ", 1623), Tuple.Create("d-priority-", 1624), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1574), Tuple.Create("\"", 1642)
+, Tuple.Create(Tuple.Create("", 1582), Tuple.Create("fa", 1582), true)
+, Tuple.Create(Tuple.Create(" ", 1584), Tuple.Create("d-priority-", 1585), true)
             
             #line 41 "..\..\Areas\Config\Views\JobQueue\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 1635), Tuple.Create<System.Object, System.Int32>(item.JobQueue.Priority.ToString().ToLower()
+, Tuple.Create(Tuple.Create("", 1596), Tuple.Create<System.Object, System.Int32>(item.JobQueue.Priority.ToString().ToLower()
             
             #line default
             #line hidden
-, 1635), false)
+, 1596), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 1682), Tuple.Create("\"", 1735)
+WriteAttribute("title", Tuple.Create(" title=\"", 1643), Tuple.Create("\"", 1696)
             
             #line 41 "..\..\Areas\Config\Views\JobQueue\Index.cshtml"
-                        , Tuple.Create(Tuple.Create("", 1690), Tuple.Create<System.Object, System.Int32>(item.JobQueue.Priority.ToString()
+                        , Tuple.Create(Tuple.Create("", 1651), Tuple.Create<System.Object, System.Int32>(item.JobQueue.Priority.ToString()
             
             #line default
             #line hidden
-, 1690), false)
-, Tuple.Create(Tuple.Create(" ", 1726), Tuple.Create("Priority", 1727), true)
+, 1651), false)
+, Tuple.Create(Tuple.Create(" ", 1687), Tuple.Create("Priority", 1688), true)
 );
 
 WriteLiteral("></i>\r\n                    </td>\r\n                    <td>\r\n");
@@ -288,22 +288,41 @@ WriteLiteral("        </table>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("    <div");
+WriteLiteral("    ");
+
+            
+            #line 57 "..\..\Areas\Config\Views\JobQueue\Index.cshtml"
+     if (Authorization.Has(Claims.Config.JobQueue.Create))
+    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <div");
 
 WriteLiteral(" class=\"actionBar\"");
 
 WriteLiteral(">\r\n");
 
-WriteLiteral("        ");
+WriteLiteral("            ");
 
             
-            #line 58 "..\..\Areas\Config\Views\JobQueue\Index.cshtml"
-   Write(Html.ActionLinkButton("Create Job Queue", MVC.Config.JobQueue.Create()));
+            #line 60 "..\..\Areas\Config\Views\JobQueue\Index.cshtml"
+       Write(Html.ActionLinkButton("Create Job Queue", MVC.Config.JobQueue.Create()));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n    </div>\r\n</div>\r\n");
+WriteLiteral("\r\n        </div>\r\n");
+
+            
+            #line 62 "..\..\Areas\Config\Views\JobQueue\Index.cshtml"
+    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</div>\r\n");
 
         }
     }

@@ -55,7 +55,7 @@ namespace Disco.Services.Devices.Exporting
                     TaskStatus.ProgressMultiplier = 20 / 100;
                     TaskStatus.ProgressOffset = 40;
 
-                    Interop.ActiveDirectory.ADTaskUpdateNetworkLogonDates.UpdateLastNetworkLogonDates(Database, TaskStatus);
+                    Interop.ActiveDirectory.ADNetworkLogonDatesUpdateTask.UpdateLastNetworkLogonDates(Database, TaskStatus);
                     Database.SaveChanges();
 
                     TaskStatus.IgnoreCurrentProcessChanges = false;

@@ -1,0 +1,89 @@
+﻿<div id="Config_LinkedGroup_Dialog" title="Linked Group" class="dialog">
+    <h3 id="Config_LinkedGroup_Title"></h3>
+    <div class="infoBox error">
+        <p class="fa-p">
+            <i class="fa fa-exclamation-circle"></i><strong>Warning:</strong> This group will be managed by Disco ICT.<br />
+            Any <strong>existing members will be removed from the group</strong>, and it will be automatically synchronized with related members.
+        </p>
+    </div>
+    <form action="#" method="post">
+        <div class="input">
+            <label for="Config_LinkedGroup_Id">Linked Group: </label>
+            <input id="Config_LinkedGroup_Id" type="text" name="GroupId" />
+        </div>
+    </form>
+</div>
+<script>
+    $(function () {
+        var dialog;
+        var dialogGroupId;
+        var dialogTitle;
+
+        function showDialog(groupId, updateUrl, title) {
+            if (dialog == null) {
+                dialog = $('#Config_LinkedGroup_Dialog').dialog({
+                    width: 450,
+                    resizable: false,
+                    modal: true,
+                    autoOpen: false
+                });
+
+                dialogGroupId = $('#Config_LinkedGroup_Id');
+                dialogGroupId.focus(function () { $(this).select(); });
+                dialogGroupId.autocomplete({
+                    source: '@(Url.Action(MVC.API.System.SearchGroupSubjects()))',
+                    minLength: 2,
+                    select: function (e, ui) {
+                        dialogGroupId.val(ui.item.Id);
+                        return false;
+                    }
+                }).data('ui-autocomplete')._renderItem = function (ul, item) {
+                    return $("<li>")
+                        .data("item.autocomplete", item)
+                        .append("<a><strong>" + item.Name + "</strong><br>" + item.Id + " (" + item.Type + ")</a>")
+                        .appendTo(ul);
+                };
+
+                dialogTitle = $('#Config_LinkedGroup_Title');
+            }
+
+            var dialogButtons = {};
+            if (!!groupId) {
+                dialogButtons['Remove Link'] = function () {
+                    $(this).dialog('disable');
+                    dialogGroupId.val('');
+                    dialogGroupId.closest('form').attr('action', updateUrl).submit();
+                }
+            }
+            dialogButtons[(!!groupId ? 'Save Changes' : 'Link Group')] = function () {
+                if (!dialogGroupId.val()) {
+                    alert('A Linked Group must be specified');
+                    return;
+                }
+                $(this).dialog('disable');
+                dialogGroupId.closest('form').attr('action', updateUrl).submit();
+            }
+            dialogButtons['Cancel'] = function () {
+                $(this).dialog('close');
+            };
+
+            dialogGroupId.val(groupId);
+            dialogTitle.text(title);
+            dialog.dialog('option', 'buttons', dialogButtons);
+            dialog.dialog('option', 'title', 'Linked Group: ' + title);
+            dialog.dialog('open');
+        }
+
+        $(document).on('click', '.Config_LinkedGroup_LinkButton', function () {
+            $this = $(this);
+
+            var configuredGroupId = $this.attr('data-linkedgroupid');
+            var description = $this.attr('data-linkedroupdescription');
+            var updateUrl = $this.attr('data-linkedroupupdateurl');
+
+            showDialog(configuredGroupId, updateUrl, description);
+
+            return false;
+        });
+    });
+</script>

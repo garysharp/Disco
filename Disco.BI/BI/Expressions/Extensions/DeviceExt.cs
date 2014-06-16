@@ -2,6 +2,7 @@
 using Disco.Models.Repository;
 using Disco.Services.Interop.ActiveDirectory;
 using System;
+using System.Linq;
 
 namespace Disco.BI.Expressions.Extensions
 {
@@ -11,7 +12,7 @@ namespace Disco.BI.Expressions.Extensions
         {
             var adMachineAccount = Device.ActiveDirectoryAccount(PropertyName);
             if (adMachineAccount != null)
-                return adMachineAccount.GetPropertyValue(PropertyName, Index);
+                return adMachineAccount.GetPropertyValues<object>(PropertyName).Skip(Index).FirstOrDefault();
             else
                 return null;
         }

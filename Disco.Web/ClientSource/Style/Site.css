@@ -450,7 +450,7 @@ a.button {
   border: 1px solid #1a5f95;
   background: #1e6dab;
   color: #ffffff;
-  font-weight: bold;
+  font-weight: 600;
   text-transform: uppercase;
   cursor: pointer;
   white-space: nowrap;
@@ -1091,6 +1091,43 @@ div.form > table table.sub > tbody > tr > th.name {
 #pageMenu td:last-child {
   border-right: none;
   padding-right: 0;
+}
+div.infoBox {
+  margin: 0.4em 0;
+  padding: 0.4em;
+  border: 1px solid #fff397;
+  background-color: #fffef7;
+}
+div.infoBox i {
+  color: #1e6dab;
+}
+div.infoBox.alert {
+  border: 1px solid #fa6800;
+  background-color: #fff9f5;
+  color: #333333;
+}
+div.infoBox.alert i {
+  color: #fa6800;
+}
+div.infoBox.error {
+  border: 1px solid #e51400;
+  background-color: #fffaf9;
+  color: #e51400;
+}
+div.infoBox.error i {
+  color: #e51400;
+}
+div.infoBox p {
+  line-height: 1.2em;
+}
+p.fa-p {
+  text-indent: -1.48em;
+  margin-left: 1.48em;
+}
+p.fa-p > i:first-child {
+  text-indent: 0;
+  width: 1.28em;
+  margin-right: 0.2em;
 }
 div.disco-attachmentUpload-dropTarget {
   display: none;

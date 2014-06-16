@@ -39,9 +39,17 @@ namespace Disco.Data.Migrations
                         Description = c.String(maxLength: 500),
                         Icon = c.String(nullable: false, maxLength: 25),
                         IconColour = c.String(nullable: false, maxLength: 10),
+                        UsersLinkedGroup = c.String(),
+                        UserDevicesLinkedGroup = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
+            AddColumn("dbo.DocumentTemplates", "DevicesLinkedGroup", c => c.String());
+            AddColumn("dbo.DocumentTemplates", "UsersLinkedGroup", c => c.String());
+            AddColumn("dbo.DeviceProfiles", "DevicesLinkedGroup", c => c.String());
+            AddColumn("dbo.DeviceProfiles", "AssignedUsersLinkedGroup", c => c.String());
+            AddColumn("dbo.DeviceBatches", "DevicesLinkedGroup", c => c.String());
+            AddColumn("dbo.DeviceBatches", "AssignedUsersLinkedGroup", c => c.String());
         }
         
         public override void Down()
@@ -54,6 +62,12 @@ namespace Disco.Data.Migrations
             DropForeignKey("dbo.UserFlagAssignments", "AddedUserId", "dbo.Users");
             DropForeignKey("dbo.UserFlagAssignments", "UserId", "dbo.Users");
             DropForeignKey("dbo.UserFlagAssignments", "UserFlagId", "dbo.UserFlags");
+            DropColumn("dbo.DeviceBatches", "AssignedUsersLinkedGroup");
+            DropColumn("dbo.DeviceBatches", "DevicesLinkedGroup");
+            DropColumn("dbo.DeviceProfiles", "AssignedUsersLinkedGroup");
+            DropColumn("dbo.DeviceProfiles", "DevicesLinkedGroup");
+            DropColumn("dbo.DocumentTemplates", "UsersLinkedGroup");
+            DropColumn("dbo.DocumentTemplates", "DevicesLinkedGroup");
             DropTable("dbo.UserFlags");
             DropTable("dbo.UserFlagAssignments");
         }

@@ -1,8 +1,10 @@
 ﻿using Disco.BI;
+using Disco.BI.DocumentTemplateBI.ManagedGroups;
 using Disco.BI.Extensions;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
 using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Tasks;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using System;
@@ -30,7 +32,10 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new ArgumentNullException("id");
                 if (string.IsNullOrEmpty(key))
                     throw new ArgumentNullException("key");
+                
+                ScheduledTaskStatus resultTask = null;
                 var documentTemplate = Database.DocumentTemplates.Find(id);
+                
                 if (documentTemplate != null)
                 {
                     switch (key.ToLower())
@@ -39,7 +44,7 @@ namespace Disco.Web.Areas.API.Controllers
                             UpdateDescription(documentTemplate, value);
                             break;
                         case pScope:
-                            UpdateScope(documentTemplate, value);
+                            resultTask = UpdateScope(documentTemplate, value);
                             break;
                         case pFilterExpression:
                             Authorization.Require(Claims.Config.DocumentTemplate.ConfigureFilterExpression);
@@ -57,7 +62,15 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Document Template Id");
                 }
                 if (redirect)
-                    return RedirectToAction(MVC.Config.DocumentTemplate.Index(documentTemplate.Id));
+                    if (resultTask == null)
+                    {
+                        return RedirectToAction(MVC.Config.DocumentTemplate.Index(documentTemplate.Id));
+                    }
+                    else
+                    {
+                        resultTask.SetFinishedUrl(Url.Action(MVC.Config.DocumentTemplate.Index(documentTemplate.Id)));
+                        return RedirectToAction(MVC.Config.Logging.TaskStatus(resultTask.SessionId));
+                    }
                 else
                     return Json("OK", JsonRequestBehavior.AllowGet);
             }
@@ -163,6 +176,72 @@ namespace Disco.Web.Areas.API.Controllers
             }
 
         }
+
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
+        public virtual ActionResult UpdateDevicesLinkedGroup(string id, string GroupId = null, DateTime? FilterBeginDate = null, bool redirect = false)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    throw new ArgumentNullException("id");
+
+                var documentTemplate = Database.DocumentTemplates.Find(id);
+                if (documentTemplate == null)
+                    throw new ArgumentException("Invalid Document Template Id", "id");
+
+                var syncTaskStatus = UpdateDevicesLinkedGroup(documentTemplate, GroupId, FilterBeginDate);
+                if (redirect)
+                    if (syncTaskStatus == null)
+                        return RedirectToAction(MVC.Config.DocumentTemplate.Index(documentTemplate.Id));
+                    else
+                    {
+                        syncTaskStatus.SetFinishedUrl(Url.Action(MVC.Config.DocumentTemplate.Index(documentTemplate.Id)));
+                        return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
+                    }
+                else
+                    return Json("OK", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                if (redirect)
+                    throw;
+                else
+                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
+        public virtual ActionResult UpdateUsersLinkedGroup(string id, string GroupId = null, DateTime? FilterBeginDate = null, bool redirect = false)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    throw new ArgumentNullException("id");
+
+                var documentTemplate = Database.DocumentTemplates.Find(id);
+                if (documentTemplate == null)
+                    throw new ArgumentException("Invalid Document Template Id", "id");
+
+                var syncTaskStatus = UpdateUsersLinkedGroup(documentTemplate, GroupId, FilterBeginDate);
+                if (redirect)
+                    if (syncTaskStatus == null)
+                        return RedirectToAction(MVC.Config.DocumentTemplate.Index(documentTemplate.Id));
+                    else
+                    {
+                        syncTaskStatus.SetFinishedUrl(Url.Action(MVC.Config.DocumentTemplate.Index(documentTemplate.Id)));
+                        return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
+                    }
+                else
+                    return Json("OK", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                if (redirect)
+                    throw;
+                else
+                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
         #endregion
 
         #region Update Properties
@@ -176,28 +255,38 @@ namespace Disco.Web.Areas.API.Controllers
             }
             throw new Exception("Invalid Description");
         }
-        private void UpdateScope(Disco.Models.Repository.DocumentTemplate documentTemplate, string Scope)
+        private ScheduledTaskStatus UpdateScope(Disco.Models.Repository.DocumentTemplate documentTemplate, string Scope)
         {
-            if (!string.IsNullOrWhiteSpace(Scope))
+            if (string.IsNullOrWhiteSpace(Scope) || !Disco.Models.Repository.DocumentTemplate.DocumentTemplateScopes.ToList().Contains(Scope))
+                throw new ArgumentException("Invalid Scope", "Scope");
+
+            Database.Configuration.LazyLoadingEnabled = true;
+
+            if (documentTemplate.Scope != Scope)
             {
-                if (Disco.Models.Repository.DocumentTemplate.DocumentTemplateScopes.ToList().Contains(Scope))
+
+                documentTemplate.Scope = Scope;
+
+                if (documentTemplate.Scope != Disco.Models.Repository.DocumentTemplate.DocumentTemplateScopes.Job &&
+                    documentTemplate.JobSubTypes != null)
                 {
-                    Database.Configuration.LazyLoadingEnabled = true;
-
-                    documentTemplate.Scope = Scope;
-
-                    if (documentTemplate.Scope != Disco.Models.Repository.DocumentTemplate.DocumentTemplateScopes.Job &&
-                        documentTemplate.JobSubTypes != null)
-                    {
-                        foreach (var st in documentTemplate.JobSubTypes.ToArray())
-                            documentTemplate.JobSubTypes.Remove(st);
-                    }
-
-                    Database.SaveChanges();
-                    return;
+                    foreach (var st in documentTemplate.JobSubTypes.ToArray())
+                        documentTemplate.JobSubTypes.Remove(st);
                 }
+
+                Database.SaveChanges();
+
+                // Trigger Managed Group Sync
+                var managedGroups = new ADManagedGroup[] {
+                    DocumentTemplateDevicesManagedGroup.Initialize(documentTemplate),
+                    DocumentTemplateUsersManagedGroup.Initialize(documentTemplate)
+                };
+
+                if (managedGroups.Any(mg => mg != null)) // Sync Group
+                    return ADManagedGroupsSyncTask.ScheduleSync(managedGroups.Where(mg => mg != null));
             }
-            throw new Exception("Invalid Scope");
+
+            return null;
         }
         private void UpdateFilterExpression(Disco.Models.Repository.DocumentTemplate documentTemplate, string FilterExpression)
         {
@@ -256,6 +345,40 @@ namespace Disco.Web.Areas.API.Controllers
                 documentTemplate.JobSubTypes = subTypes;
             }
             Database.SaveChanges();
+        }
+
+        private ScheduledTaskStatus UpdateDevicesLinkedGroup(DocumentTemplate DocumentTemplate, string DevicesLinkedGroup, DateTime? FilterBeginDate)
+        {
+            var configJson = ADManagedGroup.ValidConfigurationToJson(DocumentTemplateDevicesManagedGroup.GetKey(DocumentTemplate), DevicesLinkedGroup, FilterBeginDate);
+
+            if (DocumentTemplate.DevicesLinkedGroup != configJson)
+            {
+                DocumentTemplate.DevicesLinkedGroup = configJson;
+                Database.SaveChanges();
+
+                var managedGroup = DocumentTemplateDevicesManagedGroup.Initialize(DocumentTemplate);
+                if (managedGroup != null) // Sync Group
+                    return ADManagedGroupsSyncTask.ScheduleSync(managedGroup);
+            }
+
+            return null;
+        }
+
+        private ScheduledTaskStatus UpdateUsersLinkedGroup(DocumentTemplate DocumentTemplate, string UsersLinkedGroup, DateTime? FilterBeginDate)
+        {
+            var configJson = ADManagedGroup.ValidConfigurationToJson(DocumentTemplateUsersManagedGroup.GetKey(DocumentTemplate), UsersLinkedGroup, FilterBeginDate);
+
+            if (DocumentTemplate.UsersLinkedGroup != configJson)
+            {
+                DocumentTemplate.UsersLinkedGroup = configJson;
+                Database.SaveChanges();
+
+                var managedGroup = DocumentTemplateUsersManagedGroup.Initialize(DocumentTemplate);
+                if (managedGroup != null) // Sync Group
+                    return ADManagedGroupsSyncTask.ScheduleSync(managedGroup);
+            }
+
+            return null;
         }
         #endregion
 
@@ -340,7 +463,7 @@ namespace Disco.Web.Areas.API.Controllers
                     if (results != null)
                         return Json(results, JsonRequestBehavior.AllowGet);
                 }
-                
+
             }
             return Json(null, JsonRequestBehavior.AllowGet);
         }

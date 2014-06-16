@@ -193,26 +193,34 @@ namespace Disco.Services.Interop.ActiveDirectory
         #endregion
 
         #region Groups
-        public ADGroup RetrieveADGroup(string Id)
+        public ADGroup RetrieveADGroup(string Id, string[] AdditionalProperties = null)
         {
-            var result = RetrieveBySamAccountName(Id, ADGroup.LdapSamAccountNameFilterTemplate, ADGroup.LoadProperties);
+            string[] loadProperites = (AdditionalProperties != null && AdditionalProperties.Length > 0)
+                ? ADGroup.LoadProperties.Concat(AdditionalProperties).ToArray()
+                : ADGroup.LoadProperties;
+
+            var result = RetrieveBySamAccountName(Id, ADGroup.LdapSamAccountNameFilterTemplate, loadProperites);
 
             if (result == null)
                 return null;
             else
-                return result.AsADGroup();
+                return result.AsADGroup(AdditionalProperties);
         }
-        public ADGroup RetrieveADGroupByDistinguishedName(string DistinguishedName)
+        public ADGroup RetrieveADGroupByDistinguishedName(string DistinguishedName, string[] AdditionalProperties = null)
         {
-            using (var groupEntry = this.RetrieveDirectoryEntry(DistinguishedName, ADGroup.LoadProperties))
+            string[] loadProperites = (AdditionalProperties != null && AdditionalProperties.Length > 0)
+                ? ADGroup.LoadProperties.Concat(AdditionalProperties).ToArray()
+                : ADGroup.LoadProperties;
+
+            using (var groupEntry = this.RetrieveDirectoryEntry(DistinguishedName, loadProperites))
             {
                 if (groupEntry == null)
                     return null;
 
-                return groupEntry.AsADGroup();
+                return groupEntry.AsADGroup(AdditionalProperties);
             }
         }
-        public ADGroup RetrieveADGroupWithSecurityIdentifier(SecurityIdentifier SecurityIdentifier)
+        public ADGroup RetrieveADGroupWithSecurityIdentifier(SecurityIdentifier SecurityIdentifier, string[] AdditionalProperties = null)
         {
             if (SecurityIdentifier == null)
                 throw new ArgumentNullException("SecurityIdentifier");
@@ -222,12 +230,15 @@ namespace Disco.Services.Interop.ActiveDirectory
             var sidBinaryString = SecurityIdentifier.ToBinaryString();
 
             string ldapFilter = string.Format(ADGroup.LdapSecurityIdentifierFilterTemplate, sidBinaryString);
+            string[] loadProperites = (AdditionalProperties != null && AdditionalProperties.Length > 0)
+                ? ADGroup.LoadProperties.Concat(AdditionalProperties).ToArray()
+                : ADGroup.LoadProperties;
 
-            var result = this.SearchEntireDomain(ldapFilter, ADGroup.LoadProperties, ActiveDirectory.SingleSearchResult).FirstOrDefault();
+            var result = this.SearchEntireDomain(ldapFilter, loadProperites, ActiveDirectory.SingleSearchResult).FirstOrDefault();
             if (result == null)
                 return null;
             else
-                return result.AsADGroup();
+                return result.AsADGroup(AdditionalProperties);
         }
         #endregion
 
@@ -236,7 +247,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         private static readonly string[] ObjectLoadProperties = { "objectCategory" };
         private static readonly string[] ObjectLoadPropertiesAll = ObjectLoadProperties.Concat(ADUserAccount.LoadProperties).Concat(ADMachineAccount.LoadProperties).Concat(ADGroup.LoadProperties).Distinct().ToArray();
 
-        public IADObject RetrieveADObject(string Id, bool Quick)
+        public IADObject RetrieveADObject(string Id, bool Quick, string[] AdditionalProperties = null)
         {
             var result = RetrieveBySamAccountName(Id, ObjectLdapSamAccountNameFilter, ObjectLoadPropertiesAll);
 
@@ -249,11 +260,11 @@ namespace Disco.Services.Interop.ActiveDirectory
                 switch (objectCategory)
                 {
                     case "cn=person":
-                        return result.AsADUserAccount(Quick, null);
+                        return result.AsADUserAccount(Quick, AdditionalProperties);
                     case "cn=computer":
-                        return result.AsADMachineAccount(null);
+                        return result.AsADMachineAccount(AdditionalProperties);
                     case "cn=group":
-                        return result.AsADGroup();
+                        return result.AsADGroup(AdditionalProperties);
                     default:
                         throw new InvalidOperationException("Unexpected objectCategory");
                 }
@@ -294,12 +305,12 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         private ADSearchResult RetrieveBySamAccountName(string Id, string LdapFilterTemplate, string[] LoadProperties)
         {
-            var splitId = UserExtensions.SplitUserId(Id);
+            var slashIndex = Id.IndexOf('\\');
 
-            if (!this.Domain.NetBiosName.Equals(splitId.Item1, StringComparison.OrdinalIgnoreCase))
+            if (!this.Domain.NetBiosName.Equals(Id.Substring(0, slashIndex), StringComparison.OrdinalIgnoreCase))
                 throw new ArgumentException(string.Format("The Id [{0}] is invalid for this domain [{1}]", Id, this.Domain.Name), "Id");
 
-            var ldapFilter = string.Format(LdapFilterTemplate, splitId.Item2);
+            var ldapFilter = string.Format(LdapFilterTemplate, Id.Substring(slashIndex + 1));
 
             return this.SearchEntireDomain(ldapFilter, LoadProperties, ActiveDirectory.SingleSearchResult).FirstOrDefault();
         }

@@ -69,21 +69,21 @@ namespace Disco.Services.Interop.ActiveDirectory
         }
 
         // Groups
-        public static ADGroup AsADGroup(this ADSearchResult SearchResult)
+        public static ADGroup AsADGroup(this ADSearchResult SearchResult, string[] AdditionalProperties)
         {
-            return ADGroup.FromSearchResult(SearchResult);
+            return ADGroup.FromSearchResult(SearchResult, AdditionalProperties);
         }
-        public static IEnumerable<ADGroup> AsADGroups(this IEnumerable<ADSearchResult> SearchResults)
+        public static IEnumerable<ADGroup> AsADGroups(this IEnumerable<ADSearchResult> SearchResults, string[] AdditionalProperties)
         {
-            return SearchResults.Select(sr => ADGroup.FromSearchResult(sr));
+            return SearchResults.Select(sr => ADGroup.FromSearchResult(sr, AdditionalProperties));
         }
-        public static ADGroup AsADGroup(this ADDirectoryEntry DirectoryEntry)
+        public static ADGroup AsADGroup(this ADDirectoryEntry DirectoryEntry, string[] AdditionalProperties)
         {
-            return ADGroup.FromDirectoryEntry(DirectoryEntry);
+            return ADGroup.FromDirectoryEntry(DirectoryEntry, AdditionalProperties);
         }
-        public static IEnumerable<ADGroup> AsADGroups(this IEnumerable<ADDirectoryEntry> DirectoryEntries)
+        public static IEnumerable<ADGroup> AsADGroups(this IEnumerable<ADDirectoryEntry> DirectoryEntries, string[] AdditionalProperties)
         {
-            return DirectoryEntries.Select(de => ADGroup.FromDirectoryEntry(de));
+            return DirectoryEntries.Select(de => ADGroup.FromDirectoryEntry(de, AdditionalProperties));
         }
 
         // Organisational Units

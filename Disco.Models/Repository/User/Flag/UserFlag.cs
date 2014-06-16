@@ -19,6 +19,9 @@ namespace Disco.Models.Repository
         [Required, StringLength(10)]
         public string IconColour { get; set; }
 
+        public string UsersLinkedGroup { get; set; }
+        public string UserDevicesLinkedGroup { get; set; }
+
         public virtual IList<UserFlagAssignment> UserFlagAssignments { get; set; }
 
         public override string ToString()

@@ -240,12 +240,31 @@ input:-moz-placeholder {
     font-weight: bold;
 }*/
 .ui-dialog {
+  position: fixed;
+  overflow: visible;
+  padding: 0;
+  border-color: #333333;
+  background: #fcfcfc;
+  box-shadow: rgba(20, 20, 20, 0.7) 0px 0px 50px;
+  top: 50px !important;
   animation-name: ui-dialog-show;
   -webkit-animation-name: ui-dialog-show;
   animation-duration: .2s;
   -webkit-animation-duration: .2s;
   animation-timing-function: ease-in-out;
   -webkit-animation-timing-function: ease-in-out;
+}
+.ui-dialog .ui-widget-header {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom-color: #d1d1d1;
+  background: #333333;
+  color: #fff;
+  font-size: 1.1em;
+  font-weight: normal;
+  text-transform: uppercase;
+  padding: .6em 1em;
 }
 @keyframes ui-dialog-show {
   0% {
@@ -293,25 +312,6 @@ input:-moz-placeholder {
 }
 .page .dialog {
   display: none;
-}
-.ui-dialog {
-  padding: 0;
-  border-color: #333333;
-  background: #fcfcfc;
-  box-shadow: rgba(20, 20, 20, 0.7) 0px 0px 50px;
-  top: 50px !important;
-}
-.ui-dialog .ui-widget-header {
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-bottom-color: #d1d1d1;
-  background: #333333;
-  color: #fff;
-  font-size: 1.1em;
-  font-weight: normal;
-  text-transform: uppercase;
-  padding: .6em 1em;
 }
 body .ui-tooltip {
   border-width: 1px;

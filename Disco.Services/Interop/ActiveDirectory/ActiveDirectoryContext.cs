@@ -15,6 +15,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public ADSite Site { get; private set; }
         public ADDomain PrimaryDomain { get; private set; }
         public List<ADDomain> Domains { get; private set; }
+        public ActiveDirectoryManagedGroups ManagedGroups { get; private set; }
 
         public List<string> ForestServers
         {
@@ -39,7 +40,12 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         #region Contructor/Initializing
 
-        internal ActiveDirectoryContext(DiscoDataContext Database)
+        private ActiveDirectoryContext()
+        {
+            ManagedGroups = new ActiveDirectoryManagedGroups();
+        }
+
+        internal ActiveDirectoryContext(DiscoDataContext Database) : this()
         {
             Initialize(Database);
         }
@@ -138,24 +144,24 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (string.IsNullOrWhiteSpace(Id))
                 throw new ArgumentNullException("Id");
 
-            var idSplit = UserExtensions.SplitUserId(Id);
+            var slashIndex = Id.IndexOf('\\');
 
-            if (string.IsNullOrWhiteSpace(idSplit.Item1))
+            if (slashIndex < 0)
                 throw new ArgumentException(string.Format("The Id must include the Domain [{0}]", Id), "Id");
 
-            return TryGetDomainByNetBiosName(idSplit.Item1, out Domain);
+            return TryGetDomainByNetBiosName(Id.Substring(0, slashIndex), out Domain);
         }
         public ADDomain GetDomainFromId(string Id)
         {
             if (string.IsNullOrWhiteSpace(Id))
                 throw new ArgumentNullException("Id");
 
-            var idSplit = UserExtensions.SplitUserId(Id);
+            var slashIndex = Id.IndexOf('\\');
 
-            if (string.IsNullOrWhiteSpace(idSplit.Item1))
+            if (slashIndex < 0)
                 throw new ArgumentException(string.Format("The Id must include the Domain [{0}]", Id), "Id");
 
-            return GetDomainByNetBiosName(idSplit.Item1);
+            return GetDomainByNetBiosName(Id.Substring(0, slashIndex));
         }
 
         #endregion

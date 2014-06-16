@@ -63,12 +63,12 @@ namespace Disco.Services
                 i.UserId = j.UserId;
                 i.UserDisplayName = j.User.DisplayName;
 
-                i.UserFriendlyId = UserExtensions.FriendlyUserId(j.UserId);
+                i.UserFriendlyId = ActiveDirectory.FriendlyAccountId(j.UserId);
             }
             if (j.OpenedTechUser != null)
             {
                 i.OpenedTechUserId = j.OpenedTechUserId;
-                i.OpenedTechUserFriendlyId = UserExtensions.FriendlyUserId(j.OpenedTechUserId);
+                i.OpenedTechUserFriendlyId = ActiveDirectory.FriendlyAccountId(j.OpenedTechUserId);
                 i.OpenedTechUserDisplayName = j.OpenedTechUser.DisplayName;
             }
 

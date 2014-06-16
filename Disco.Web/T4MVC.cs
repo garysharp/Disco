@@ -3150,6 +3150,18 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateDevicesLinkedGroup()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDevicesLinkedGroup);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateAssignedUsersLinkedGroup()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAssignedUsersLinkedGroup);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Delete()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
@@ -3191,6 +3203,8 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateInsuredUntil = "UpdateInsuredUntil";
             public readonly string UpdateInsuranceDetails = "UpdateInsuranceDetails";
             public readonly string UpdateComments = "UpdateComments";
+            public readonly string UpdateDevicesLinkedGroup = "UpdateDevicesLinkedGroup";
+            public readonly string UpdateAssignedUsersLinkedGroup = "UpdateAssignedUsersLinkedGroup";
             public readonly string Delete = "Delete";
             public readonly string Index = "Index";
             public readonly string Timeline = "Timeline";
@@ -3214,6 +3228,8 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateInsuredUntil = "UpdateInsuredUntil";
             public const string UpdateInsuranceDetails = "UpdateInsuranceDetails";
             public const string UpdateComments = "UpdateComments";
+            public const string UpdateDevicesLinkedGroup = "UpdateDevicesLinkedGroup";
+            public const string UpdateAssignedUsersLinkedGroup = "UpdateAssignedUsersLinkedGroup";
             public const string Delete = "Delete";
             public const string Index = "Index";
             public const string Timeline = "Timeline";
@@ -3369,6 +3385,26 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string Comments = "Comments";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateDevicesLinkedGroup s_params_UpdateDevicesLinkedGroup = new ActionParamsClass_UpdateDevicesLinkedGroup();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateDevicesLinkedGroup UpdateDevicesLinkedGroupParams { get { return s_params_UpdateDevicesLinkedGroup; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateDevicesLinkedGroup
+        {
+            public readonly string id = "id";
+            public readonly string GroupId = "GroupId";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateAssignedUsersLinkedGroup s_params_UpdateAssignedUsersLinkedGroup = new ActionParamsClass_UpdateAssignedUsersLinkedGroup();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateAssignedUsersLinkedGroup UpdateAssignedUsersLinkedGroupParams { get { return s_params_UpdateAssignedUsersLinkedGroup; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateAssignedUsersLinkedGroup
+        {
+            public readonly string id = "id";
+            public readonly string GroupId = "GroupId";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
@@ -3615,6 +3651,34 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Comments", Comments);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateCommentsOverride(callInfo, id, Comments, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateDevicesLinkedGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string GroupId, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateDevicesLinkedGroup(int id, string GroupId, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDevicesLinkedGroup);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "GroupId", GroupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateDevicesLinkedGroupOverride(callInfo, id, GroupId, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateAssignedUsersLinkedGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string GroupId, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateAssignedUsersLinkedGroup(int id, string GroupId, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAssignedUsersLinkedGroup);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "GroupId", GroupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateAssignedUsersLinkedGroupOverride(callInfo, id, GroupId, redirect);
             return callInfo;
         }
 
@@ -4096,7 +4160,6 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string AssignedUserId = "AssignedUserId";
-            public readonly string AssignedUserDomain = "AssignedUserDomain";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateAllowUnauthenticatedEnrol s_params_UpdateAllowUnauthenticatedEnrol = new ActionParamsClass_UpdateAllowUnauthenticatedEnrol();
@@ -4366,17 +4429,16 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdateAssignedUserIdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string AssignedUserId, string AssignedUserDomain, bool redirect);
+        partial void UpdateAssignedUserIdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string AssignedUserId, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateAssignedUserId(string id, string AssignedUserId, string AssignedUserDomain, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateAssignedUserId(string id, string AssignedUserId, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAssignedUserId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "AssignedUserId", AssignedUserId);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "AssignedUserDomain", AssignedUserDomain);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateAssignedUserIdOverride(callInfo, id, AssignedUserId, AssignedUserDomain, redirect);
+            UpdateAssignedUserIdOverride(callInfo, id, AssignedUserId, redirect);
             return callInfo;
         }
 
@@ -5223,6 +5285,18 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateDevicesLinkedGroup()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDevicesLinkedGroup);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateAssignedUsersLinkedGroup()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAssignedUsersLinkedGroup);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Delete()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
@@ -5269,6 +5343,8 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateProvisionADAccount = "UpdateProvisionADAccount";
             public readonly string UpdateAssignedUserLocalAdmin = "UpdateAssignedUserLocalAdmin";
             public readonly string UpdateAllowUntrustedReimageJobEnrolment = "UpdateAllowUntrustedReimageJobEnrolment";
+            public readonly string UpdateDevicesLinkedGroup = "UpdateDevicesLinkedGroup";
+            public readonly string UpdateAssignedUsersLinkedGroup = "UpdateAssignedUsersLinkedGroup";
             public readonly string Delete = "Delete";
             public readonly string Default = "Default";
             public readonly string DefaultAddDeviceOffline = "DefaultAddDeviceOffline";
@@ -5291,6 +5367,8 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateProvisionADAccount = "UpdateProvisionADAccount";
             public const string UpdateAssignedUserLocalAdmin = "UpdateAssignedUserLocalAdmin";
             public const string UpdateAllowUntrustedReimageJobEnrolment = "UpdateAllowUntrustedReimageJobEnrolment";
+            public const string UpdateDevicesLinkedGroup = "UpdateDevicesLinkedGroup";
+            public const string UpdateAssignedUsersLinkedGroup = "UpdateAssignedUsersLinkedGroup";
             public const string Delete = "Delete";
             public const string Default = "Default";
             public const string DefaultAddDeviceOffline = "DefaultAddDeviceOffline";
@@ -5436,6 +5514,26 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string AllowUntrustedReimageJobEnrolment = "AllowUntrustedReimageJobEnrolment";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateDevicesLinkedGroup s_params_UpdateDevicesLinkedGroup = new ActionParamsClass_UpdateDevicesLinkedGroup();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateDevicesLinkedGroup UpdateDevicesLinkedGroupParams { get { return s_params_UpdateDevicesLinkedGroup; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateDevicesLinkedGroup
+        {
+            public readonly string id = "id";
+            public readonly string GroupId = "GroupId";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateAssignedUsersLinkedGroup s_params_UpdateAssignedUsersLinkedGroup = new ActionParamsClass_UpdateAssignedUsersLinkedGroup();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateAssignedUsersLinkedGroup UpdateAssignedUsersLinkedGroupParams { get { return s_params_UpdateAssignedUsersLinkedGroup; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateAssignedUsersLinkedGroup
+        {
+            public readonly string id = "id";
+            public readonly string GroupId = "GroupId";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
@@ -5682,6 +5780,34 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
+        partial void UpdateDevicesLinkedGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string GroupId, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateDevicesLinkedGroup(int id, string GroupId, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDevicesLinkedGroup);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "GroupId", GroupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateDevicesLinkedGroupOverride(callInfo, id, GroupId, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateAssignedUsersLinkedGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string GroupId, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateAssignedUsersLinkedGroup(int id, string GroupId, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAssignedUsersLinkedGroup);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "GroupId", GroupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateAssignedUsersLinkedGroupOverride(callInfo, id, GroupId, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
         partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool? redirect);
 
         [NonAction]
@@ -5803,6 +5929,18 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateDevicesLinkedGroup()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDevicesLinkedGroup);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateUsersLinkedGroup()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateUsersLinkedGroup);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult ImporterThumbnail()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImporterThumbnail);
@@ -5866,6 +6004,8 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateFlattenForm = "UpdateFlattenForm";
             public readonly string UpdateScope = "UpdateScope";
             public readonly string UpdateJobSubTypes = "UpdateJobSubTypes";
+            public readonly string UpdateDevicesLinkedGroup = "UpdateDevicesLinkedGroup";
+            public readonly string UpdateUsersLinkedGroup = "UpdateUsersLinkedGroup";
             public readonly string ImporterThumbnail = "ImporterThumbnail";
             public readonly string ImporterUndetectedFiles = "ImporterUndetectedFiles";
             public readonly string ImporterUndetectedDataIdLookup = "ImporterUndetectedDataIdLookup";
@@ -5886,6 +6026,8 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateFlattenForm = "UpdateFlattenForm";
             public const string UpdateScope = "UpdateScope";
             public const string UpdateJobSubTypes = "UpdateJobSubTypes";
+            public const string UpdateDevicesLinkedGroup = "UpdateDevicesLinkedGroup";
+            public const string UpdateUsersLinkedGroup = "UpdateUsersLinkedGroup";
             public const string ImporterThumbnail = "ImporterThumbnail";
             public const string ImporterUndetectedFiles = "ImporterUndetectedFiles";
             public const string ImporterUndetectedDataIdLookup = "ImporterUndetectedDataIdLookup";
@@ -5966,6 +6108,28 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string JobSubTypes = "JobSubTypes";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateDevicesLinkedGroup s_params_UpdateDevicesLinkedGroup = new ActionParamsClass_UpdateDevicesLinkedGroup();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateDevicesLinkedGroup UpdateDevicesLinkedGroupParams { get { return s_params_UpdateDevicesLinkedGroup; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateDevicesLinkedGroup
+        {
+            public readonly string id = "id";
+            public readonly string GroupId = "GroupId";
+            public readonly string FilterBeginDate = "FilterBeginDate";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateUsersLinkedGroup s_params_UpdateUsersLinkedGroup = new ActionParamsClass_UpdateUsersLinkedGroup();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateUsersLinkedGroup UpdateUsersLinkedGroupParams { get { return s_params_UpdateUsersLinkedGroup; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateUsersLinkedGroup
+        {
+            public readonly string id = "id";
+            public readonly string GroupId = "GroupId";
+            public readonly string FilterBeginDate = "FilterBeginDate";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_ImporterThumbnail s_params_ImporterThumbnail = new ActionParamsClass_ImporterThumbnail();
@@ -6160,6 +6324,36 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "JobSubTypes", JobSubTypes);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateJobSubTypesOverride(callInfo, id, JobSubTypes, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateDevicesLinkedGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string GroupId, System.DateTime? FilterBeginDate, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateDevicesLinkedGroup(string id, string GroupId, System.DateTime? FilterBeginDate, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDevicesLinkedGroup);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "GroupId", GroupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "FilterBeginDate", FilterBeginDate);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateDevicesLinkedGroupOverride(callInfo, id, GroupId, FilterBeginDate, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateUsersLinkedGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string GroupId, System.DateTime? FilterBeginDate, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateUsersLinkedGroup(string id, string GroupId, System.DateTime? FilterBeginDate, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateUsersLinkedGroup);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "GroupId", GroupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "FilterBeginDate", FilterBeginDate);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateUsersLinkedGroupOverride(callInfo, id, GroupId, FilterBeginDate, redirect);
             return callInfo;
         }
 
@@ -10182,9 +10376,21 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SearchGroupSubjects()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchGroupSubjects);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Subject()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Subject);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SyncActiveDirectoryManagedGroup()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SyncActiveDirectoryManagedGroup);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -10220,7 +10426,9 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateActiveDirectorySearchAllForestServers = "UpdateActiveDirectorySearchAllForestServers";
             public readonly string DomainOrganisationalUnits = "DomainOrganisationalUnits";
             public readonly string SearchSubjects = "SearchSubjects";
+            public readonly string SearchGroupSubjects = "SearchGroupSubjects";
             public readonly string Subject = "Subject";
+            public readonly string SyncActiveDirectoryManagedGroup = "SyncActiveDirectoryManagedGroup";
             public readonly string UpdateProxySettings = "UpdateProxySettings";
         }
 
@@ -10239,7 +10447,9 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateActiveDirectorySearchAllForestServers = "UpdateActiveDirectorySearchAllForestServers";
             public const string DomainOrganisationalUnits = "DomainOrganisationalUnits";
             public const string SearchSubjects = "SearchSubjects";
+            public const string SearchGroupSubjects = "SearchGroupSubjects";
             public const string Subject = "Subject";
+            public const string SyncActiveDirectoryManagedGroup = "SyncActiveDirectoryManagedGroup";
             public const string UpdateProxySettings = "UpdateProxySettings";
         }
 
@@ -10319,6 +10529,14 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string term = "term";
         }
+        static readonly ActionParamsClass_SearchGroupSubjects s_params_SearchGroupSubjects = new ActionParamsClass_SearchGroupSubjects();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SearchGroupSubjects SearchGroupSubjectsParams { get { return s_params_SearchGroupSubjects; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SearchGroupSubjects
+        {
+            public readonly string term = "term";
+        }
         static readonly ActionParamsClass_Subject s_params_Subject = new ActionParamsClass_Subject();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Subject SubjectParams { get { return s_params_Subject; } }
@@ -10326,6 +10544,15 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_Subject
         {
             public readonly string Id = "Id";
+        }
+        static readonly ActionParamsClass_SyncActiveDirectoryManagedGroup s_params_SyncActiveDirectoryManagedGroup = new ActionParamsClass_SyncActiveDirectoryManagedGroup();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SyncActiveDirectoryManagedGroup SyncActiveDirectoryManagedGroupParams { get { return s_params_SyncActiveDirectoryManagedGroup; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SyncActiveDirectoryManagedGroup
+        {
+            public readonly string id = "id";
+            public readonly string redirectUrl = "redirectUrl";
         }
         static readonly ActionParamsClass_UpdateProxySettings s_params_UpdateProxySettings = new ActionParamsClass_UpdateProxySettings();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -10521,6 +10748,18 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
+        partial void SearchGroupSubjectsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string term);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SearchGroupSubjects(string term)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchGroupSubjects);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "term", term);
+            SearchGroupSubjectsOverride(callInfo, term);
+            return callInfo;
+        }
+
+        [NonAction]
         partial void SubjectOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
 
         [NonAction]
@@ -10529,6 +10768,19 @@ namespace Disco.Web.Areas.API.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Subject);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
             SubjectOverride(callInfo, Id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SyncActiveDirectoryManagedGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string redirectUrl);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SyncActiveDirectoryManagedGroup(string id, string redirectUrl)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SyncActiveDirectoryManagedGroup);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirectUrl", redirectUrl);
+            SyncActiveDirectoryManagedGroupOverride(callInfo, id, redirectUrl);
             return callInfo;
         }
 
@@ -11121,6 +11373,18 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateAssignedUsersLinkedGroup()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAssignedUsersLinkedGroup);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateAssignedUserDevicesLinkedGroup()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAssignedUserDevicesLinkedGroup);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Delete()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
@@ -11159,6 +11423,8 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateIcon = "UpdateIcon";
             public readonly string UpdateIconColour = "UpdateIconColour";
             public readonly string UpdateIconAndColour = "UpdateIconAndColour";
+            public readonly string UpdateAssignedUsersLinkedGroup = "UpdateAssignedUsersLinkedGroup";
+            public readonly string UpdateAssignedUserDevicesLinkedGroup = "UpdateAssignedUserDevicesLinkedGroup";
             public readonly string Delete = "Delete";
             public readonly string BulkAssignUsers = "BulkAssignUsers";
             public readonly string AssignedUsers = "AssignedUsers";
@@ -11173,6 +11439,8 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateIcon = "UpdateIcon";
             public const string UpdateIconColour = "UpdateIconColour";
             public const string UpdateIconAndColour = "UpdateIconAndColour";
+            public const string UpdateAssignedUsersLinkedGroup = "UpdateAssignedUsersLinkedGroup";
+            public const string UpdateAssignedUserDevicesLinkedGroup = "UpdateAssignedUserDevicesLinkedGroup";
             public const string Delete = "Delete";
             public const string BulkAssignUsers = "BulkAssignUsers";
             public const string AssignedUsers = "AssignedUsers";
@@ -11239,6 +11507,26 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string id = "id";
             public readonly string Icon = "Icon";
             public readonly string IconColour = "IconColour";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateAssignedUsersLinkedGroup s_params_UpdateAssignedUsersLinkedGroup = new ActionParamsClass_UpdateAssignedUsersLinkedGroup();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateAssignedUsersLinkedGroup UpdateAssignedUsersLinkedGroupParams { get { return s_params_UpdateAssignedUsersLinkedGroup; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateAssignedUsersLinkedGroup
+        {
+            public readonly string id = "id";
+            public readonly string GroupId = "GroupId";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateAssignedUserDevicesLinkedGroup s_params_UpdateAssignedUserDevicesLinkedGroup = new ActionParamsClass_UpdateAssignedUserDevicesLinkedGroup();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateAssignedUserDevicesLinkedGroup UpdateAssignedUserDevicesLinkedGroupParams { get { return s_params_UpdateAssignedUserDevicesLinkedGroup; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateAssignedUserDevicesLinkedGroup
+        {
+            public readonly string id = "id";
+            public readonly string GroupId = "GroupId";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
@@ -11371,6 +11659,34 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "IconColour", IconColour);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateIconAndColourOverride(callInfo, id, Icon, IconColour, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateAssignedUsersLinkedGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string GroupId, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateAssignedUsersLinkedGroup(int id, string GroupId, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAssignedUsersLinkedGroup);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "GroupId", GroupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateAssignedUsersLinkedGroupOverride(callInfo, id, GroupId, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateAssignedUserDevicesLinkedGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string GroupId, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateAssignedUserDevicesLinkedGroup(int id, string GroupId, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAssignedUserDevicesLinkedGroup);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "GroupId", GroupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateAssignedUserDevicesLinkedGroupOverride(callInfo, id, GroupId, redirect);
             return callInfo;
         }
 
@@ -13450,9 +13766,13 @@ namespace T4MVC.Config
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string LinkedGroupInstance = "LinkedGroupInstance";
+                public readonly string LinkedGroupShared = "LinkedGroupShared";
                 public readonly string LogEvents = "LogEvents";
                 public readonly string TaskStatus = "TaskStatus";
             }
+            public readonly string LinkedGroupInstance = "~/Areas/Config/Views/Shared/LinkedGroupInstance.cshtml";
+            public readonly string LinkedGroupShared = "~/Areas/Config/Views/Shared/LinkedGroupShared.cshtml";
             public readonly string LogEvents = "~/Areas/Config/Views/Shared/LogEvents.cshtml";
             public readonly string TaskStatus = "~/Areas/Config/Views/Shared/TaskStatus.cshtml";
         }

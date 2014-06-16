@@ -5,6 +5,7 @@ using System.Web;
 using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.UI.Config.DocumentTemplate;
+using Disco.BI.DocumentTemplateBI.ManagedGroups;
 
 namespace Disco.Web.Areas.Config.Models.DocumentTemplate
 {
@@ -25,6 +26,9 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
                 return Disco.Models.Repository.DocumentTemplate.DocumentTemplateScopes.ToList();
             }
         }
+
+        public DocumentTemplateDevicesManagedGroup DevicesLinkedGroup { get; set; }
+        public DocumentTemplateUsersManagedGroup UsersLinkedGroup { get; set; }
 
         public void UpdateModel(DiscoDataContext Database)
         {

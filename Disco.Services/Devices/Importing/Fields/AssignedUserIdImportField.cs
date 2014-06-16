@@ -1,6 +1,7 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Importing;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using System;
 using System.Collections.Generic;
@@ -34,8 +35,7 @@ namespace Disco.Services.Devices.Importing.Fields
             {
                 parsedValue = Value.Trim();
 
-                if (!parsedValue.Contains('\\'))
-                    parsedValue = string.Format(@"{0}\{1}", Interop.ActiveDirectory.ActiveDirectory.Context.PrimaryDomain.NetBiosName, parsedValue);
+                parsedValue = ActiveDirectory.ParseDomainAccountId(parsedValue);
 
                 friendlyValue = parsedValue;
 

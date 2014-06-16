@@ -1,17 +1,17 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
+using Disco.Services.Devices.ManagedGroups;
 using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Tasks;
 using Disco.Services.Web;
 using System;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.API.Controllers
 {
     public partial class DeviceProfileController : AuthorizedDatabaseController
     {
-
         const string pDescription = "description";
         const string pName = "name";
         const string pShortName = "shortname";
@@ -25,6 +25,8 @@ namespace Disco.Web.Areas.API.Controllers
         const string pProvisionADAccount = "provisionadaccount";
         const string pAssignedUserLocalAdmin = "assigneduserlocaladmin";
         const string pAllowUntrustedReimageJobEnrolment = "allowuntrustedreimagejobrnrolment";
+        const string pDevicesLinkedGroup = "deviceslinkedgroup";
+        const string pAssignedUsersLinkedGroup = "assigneduserslinkedgroup";
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         public virtual ActionResult Update(int id, string key, string value = null, Nullable<bool> redirect = null)
@@ -81,6 +83,12 @@ namespace Disco.Web.Areas.API.Controllers
                             break;
                         case pAllowUntrustedReimageJobEnrolment:
                             UpdateAllowUntrustedReimageJobEnrolment(deviceProfile, value);
+                            break;
+                        case pDevicesLinkedGroup:
+                            UpdateDevicesLinkedGroup(deviceProfile, value);
+                            break;
+                        case pAssignedUsersLinkedGroup:
+                            UpdateAssignedUsersLinkedGroup(deviceProfile, value);
                             break;
                         default:
                             throw new Exception("Invalid Update Key");
@@ -182,6 +190,71 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult UpdateAllowUntrustedReimageJobEnrolment(int id, string AllowUntrustedReimageJobEnrolment = null, Nullable<bool> redirect = null)
         {
             return Update(id, pAllowUntrustedReimageJobEnrolment, AllowUntrustedReimageJobEnrolment, redirect);
+        }
+
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        public virtual ActionResult UpdateDevicesLinkedGroup(int id, string GroupId = null, bool redirect = false)
+        {
+            try
+            {
+                if (id < 0)
+                    throw new ArgumentOutOfRangeException("id");
+
+                var deviceProfile = Database.DeviceProfiles.Find(id);
+                if (deviceProfile == null)
+                    throw new ArgumentException("Invalid Device Profile Id", "id");
+
+                var syncTaskStatus = UpdateDevicesLinkedGroup(deviceProfile, GroupId);
+                if (redirect)
+                    if (syncTaskStatus == null)
+                        return RedirectToAction(MVC.Config.DeviceProfile.Index(deviceProfile.Id));
+                    else
+                    {
+                        syncTaskStatus.SetFinishedUrl(Url.Action(MVC.Config.DeviceProfile.Index(deviceProfile.Id)));
+                        return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
+                    }
+                else
+                    return Json("OK", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                if (redirect)
+                    throw;
+                else
+                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        public virtual ActionResult UpdateAssignedUsersLinkedGroup(int id, string GroupId = null, bool redirect = false)
+        {
+            try
+            {
+                if (id < 0)
+                    throw new ArgumentOutOfRangeException("id");
+
+                var deviceProfile = Database.DeviceProfiles.Find(id);
+                if (deviceProfile == null)
+                    throw new ArgumentException("Invalid Device Profile Id", "id");
+
+                var syncTaskStatus = UpdateAssignedUsersLinkedGroup(deviceProfile, GroupId);
+                if (redirect)
+                    if (syncTaskStatus == null)
+                        return RedirectToAction(MVC.Config.DeviceProfile.Index(deviceProfile.Id));
+                    else
+                    {
+                        syncTaskStatus.SetFinishedUrl(Url.Action(MVC.Config.DeviceProfile.Index(deviceProfile.Id)));
+                        return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
+                    }
+                else
+                    return Json("OK", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                if (redirect)
+                    throw;
+                else
+                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+            }
         }
         #endregion
 
@@ -364,6 +437,40 @@ namespace Disco.Web.Areas.API.Controllers
                 return;
             }
             throw new Exception("Invalid Boolean Value");
+        }
+
+        private ScheduledTaskStatus UpdateDevicesLinkedGroup(DeviceProfile DeviceProfile, string DevicesLinkedGroup)
+        {
+            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceProfileDevicesManagedGroup.GetKey(DeviceProfile), DevicesLinkedGroup, null);
+
+            if (DeviceProfile.DevicesLinkedGroup != configJson)
+            {
+                DeviceProfile.DevicesLinkedGroup = configJson;
+                Database.SaveChanges();
+
+                var managedGroup = DeviceProfileDevicesManagedGroup.Initialize(DeviceProfile);
+                if (managedGroup != null) // Sync Group
+                    return ADManagedGroupsSyncTask.ScheduleSync(managedGroup);
+            }
+
+            return null;
+        }
+
+        private ScheduledTaskStatus UpdateAssignedUsersLinkedGroup(DeviceProfile DeviceProfile, string AssignedUsersLinkedGroup)
+        {
+            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceProfileAssignedUsersManagedGroup.GetKey(DeviceProfile), AssignedUsersLinkedGroup, null);
+
+            if (DeviceProfile.AssignedUsersLinkedGroup != configJson)
+            {
+                DeviceProfile.AssignedUsersLinkedGroup = configJson;
+                Database.SaveChanges();
+
+                var managedGroup = DeviceProfileAssignedUsersManagedGroup.Initialize(DeviceProfile);
+                if (managedGroup != null) // Sync Group
+                    return ADManagedGroupsSyncTask.ScheduleSync(managedGroup);
+            }
+
+            return null;
         }
         #endregion
 

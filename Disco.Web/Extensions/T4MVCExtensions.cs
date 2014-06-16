@@ -12,18 +12,16 @@ namespace Disco.Web.Controllers
     {
         internal static void T4MVCAddUserIdRouteValues(T4MVC_System_Web_Mvc_ActionResult callInfo, string UserId)
         {
-            var splitId = UserExtensions.SplitUserId(UserId);
+            var slashIndex = UserId.IndexOf('\\');
 
-            if (splitId.Item1 == null)
+            if (slashIndex < 0)
                 throw new ArgumentException("The User Id is not in the correct format ({Domain}\\{Id})", "id");
 
-            string userDomain;
-            if (splitId.Item1.Equals(ActiveDirectory.Context.PrimaryDomain.NetBiosName, StringComparison.OrdinalIgnoreCase))
+            string userDomain = UserId.Substring(0, slashIndex);
+            if (userDomain.Equals(ActiveDirectory.Context.PrimaryDomain.NetBiosName, StringComparison.OrdinalIgnoreCase))
                 userDomain = null; // Url doesn't contain Domain if it is the default.
-            else
-                userDomain = splitId.Item1;
 
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", splitId.Item2);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", UserId.Substring(slashIndex + 1));
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Domain", userDomain);
         }
 
@@ -53,6 +51,7 @@ namespace Disco.Web.Areas.API.Controllers
 
             return callInfo;
         }
+
 
         [NonAction]
         public virtual ActionResult Attachments(string id)

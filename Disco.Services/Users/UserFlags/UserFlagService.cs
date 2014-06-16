@@ -1,4 +1,5 @@
 ﻿using Disco.Data.Repository;
+using Disco.Data.Repository.Monitor;
 using Disco.Models.Repository;
 using Disco.Services.Extensions;
 using Disco.Services.Tasks;
@@ -9,16 +10,39 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reactive.Linq;
 
 namespace Disco.Services.Users.UserFlags
 {
     public static class UserFlagService
     {
         private static Cache _cache;
+        internal static Lazy<IObservable<RepositoryMonitorEvent>> UserFlagAssignmentRepositoryEvents;
+
+        static UserFlagService()
+        {
+            // Statically defined (lazy) Assignment Repository Definition
+            // Used by UserFlagAssignedUsersManagedGroup & UserFlagAssignedUserDevicesManagedGroup
+            UserFlagAssignmentRepositoryEvents =
+                new Lazy<IObservable<RepositoryMonitorEvent>>(() =>
+                    RepositoryMonitor.StreamAfterCommit.Where(e =>
+                        e.EntityType == typeof(UserFlagAssignment) &&
+                        (e.EventType != RepositoryMonitorEventType.Modified ||
+                        e.ModifiedProperties.Contains("RemovedDate"))
+                        )
+                    );
+        }
 
         public static void Initialize(DiscoDataContext Database)
         {
             _cache = new Cache(Database);
+
+            // Initialize Managed Groups (if configured)
+            _cache.GetUserFlags().ForEach(uf =>
+            {
+                UserFlagUsersManagedGroup.Initialize(uf);
+                UserFlagUserDevicesManagedGroup.Initialize(uf);
+            });
         }
 
         public static List<UserFlag> GetUserFlags() { return _cache.GetUserFlags(); }
@@ -41,13 +65,17 @@ namespace Disco.Services.Users.UserFlags
                 Name = UserFlag.Name,
                 Description = UserFlag.Description,
                 Icon = UserFlag.Icon,
-                IconColour = UserFlag.IconColour
+                IconColour = UserFlag.IconColour,
+                UsersLinkedGroup = UserFlag.UsersLinkedGroup,
+                UserDevicesLinkedGroup = UserFlag.UserDevicesLinkedGroup
             };
 
             Database.UserFlags.Add(flag);
             Database.SaveChanges();
 
-            return _cache.Update(flag);
+            _cache.AddOrUpdate(flag);
+
+            return flag;
         }
         public static UserFlag Update(DiscoDataContext Database, UserFlag UserFlag)
         {
@@ -61,11 +89,19 @@ namespace Disco.Services.Users.UserFlags
 
             Database.SaveChanges();
 
-            return _cache.Update(UserFlag);
+            _cache.AddOrUpdate(UserFlag);
+            UserFlagUsersManagedGroup.Initialize(UserFlag);
+            UserFlagUserDevicesManagedGroup.Initialize(UserFlag);
+
+            return UserFlag;
         }
         public static void DeleteUserFlag(DiscoDataContext Database, int UserFlagId, IScheduledTaskStatus Status)
         {
             UserFlag flag = Database.UserFlags.Find(UserFlagId);
+
+            // Dispose of AD Managed Groups
+            Interop.ActiveDirectory.ActiveDirectory.Context.ManagedGroups.Remove(UserFlagUserDevicesManagedGroup.GetKey(flag));
+            Interop.ActiveDirectory.ActiveDirectory.Context.ManagedGroups.Remove(UserFlagUsersManagedGroup.GetKey(flag));
 
             // Delete Assignments
             Status.UpdateStatus(0, string.Format("Removing '{0}' [{1}] User Flag", flag.Name, flag.Id), "Starting");
@@ -94,34 +130,43 @@ namespace Disco.Services.Users.UserFlags
         {
             if (Users.Count > 0)
             {
-
                 double progressInterval;
+                const int databaseChunkSize = 100;
                 string comments = string.IsNullOrWhiteSpace(Comments) ? null : Comments.Trim();
 
                 var addUsers = Users.Where(u => !u.UserFlagAssignments.Any(a => a.UserFlagId == UserFlag.Id && !a.RemovedDate.HasValue)).ToList();
 
                 progressInterval = (double)100 / addUsers.Count;
 
-                var addedUserAssignments = addUsers.Select((user, index) =>
+                var addedUserAssignments = addUsers.Chunk(databaseChunkSize).SelectMany((chunk, chunkIndex) =>
                 {
-                    Status.UpdateStatus(index * progressInterval, string.Format("Assigning Flag: {0}", user.ToString()));
+                    var chunkIndexOffset = databaseChunkSize * chunkIndex;
 
-                    var fa = new UserFlagAssignment()
+                    var chunkResults = chunk.Select((user, index) =>
                     {
-                        UserFlagId = UserFlag.Id,
-                        UserId = user.UserId,
-                        AddedDate = DateTime.Now,
-                        AddedUserId = Technician.UserId,
-                        Comments = comments
-                    };
+                        Status.UpdateStatus((chunkIndexOffset + index) * progressInterval, string.Format("Assigning Flag: {0}", user.ToString()));
 
-                    Database.UserFlagAssignments.Add(fa);
+                        var fa = new UserFlagAssignment()
+                        {
+                            UserFlagId = UserFlag.Id,
+                            UserId = user.UserId,
+                            AddedDate = DateTime.Now,
+                            AddedUserId = Technician.UserId,
+                            Comments = comments
+                        };
+
+                        Database.UserFlagAssignments.Add(fa);
+                        return fa;
+                    }).ToList();
+
+                    // Save Chunk Items to Database
                     Database.SaveChanges();
-                    return fa;
+
+                    return chunkResults;
                 }).Where(fa => fa != null).ToList();
 
                 Status.SetFinishedMessage(string.Format("{0} Users/s Added; {1} User/s Skipped", addUsers.Count, (Users.Count - addUsers.Count)));
-                
+
                 return addedUserAssignments;
             }
             else
@@ -134,6 +179,7 @@ namespace Disco.Services.Users.UserFlags
         public static IEnumerable<UserFlagAssignment> BulkAssignOverrideUsers(DiscoDataContext Database, UserFlag UserFlag, User Technician, string Comments, List<User> Users, IScheduledTaskStatus Status)
         {
             double progressInterval;
+            const int databaseChunkSize = 100;
             string comments = string.IsNullOrWhiteSpace(Comments) ? null : Comments.Trim();
 
             Status.UpdateStatus(0, "Calculating assignment changes");
@@ -147,31 +193,53 @@ namespace Disco.Services.Users.UserFlags
                 progressInterval = (double)100 / (removeAssignments.Count + addUsers.Count);
                 var removedDateTime = DateTime.Now;
 
-                removeAssignments.Select((flagAssignment, index) =>
+                // Remove Assignments
+                removeAssignments.Chunk(databaseChunkSize).SelectMany((chunk, chunkIndex) =>
                 {
-                    Status.UpdateStatus(index * progressInterval, string.Format("Removing Flag: {0}", flagAssignment.User.ToString()));
-                    flagAssignment.RemovedDate = removedDateTime;
-                    flagAssignment.RemovedUserId = Technician.UserId;
+                    var chunkIndexOffset = (chunkIndex * databaseChunkSize) + removeAssignments.Count;
+
+                    var chunkResults = chunk.Select((flagAssignment, index) =>
+                    {
+                        Status.UpdateStatus((chunkIndexOffset + index) * progressInterval, string.Format("Removing Flag: {0}", flagAssignment.User.ToString()));
+
+                        flagAssignment.RemovedDate = removedDateTime;
+                        flagAssignment.RemovedUserId = Technician.UserId;
+                        
+                        return flagAssignment;
+                    }).ToList();
+
+                    // Save Chunk Items to Database
                     Database.SaveChanges();
-                    return flagAssignment;
+
+                    return chunkResults;
                 }).ToList();
 
-                var addedUserAssignments = addUsers.Select((user, index) =>
+                // Add Assignments
+                var addedUserAssignments = addUsers.Chunk(databaseChunkSize).SelectMany((chunk, chunkIndex) =>
                 {
-                    Status.UpdateStatus((removeAssignments.Count + index) * progressInterval, string.Format("Assigning Flag: {0}", user.ToString()));
+                    var chunkIndexOffset = (chunkIndex * databaseChunkSize) + removeAssignments.Count;
 
-                    var fa = new UserFlagAssignment()
+                    var chunkResults = chunk.Select((user, index) =>
                     {
-                        UserFlagId = UserFlag.Id,
-                        UserId = user.UserId,
-                        AddedDate = DateTime.Now,
-                        AddedUserId = Technician.UserId,
-                        Comments = comments
-                    };
+                        Status.UpdateStatus((chunkIndexOffset + index) * progressInterval, string.Format("Assigning Flag: {0}", user.ToString()));
 
-                    Database.UserFlagAssignments.Add(fa);
+                        var fa = new UserFlagAssignment()
+                        {
+                            UserFlagId = UserFlag.Id,
+                            UserId = user.UserId,
+                            AddedDate = DateTime.Now,
+                            AddedUserId = Technician.UserId,
+                            Comments = comments
+                        };
+
+                        Database.UserFlagAssignments.Add(fa);
+                        return fa;
+                    }).ToList();
+
+                    // Save Chunk Items to Database
                     Database.SaveChanges();
-                    return fa;
+
+                    return chunkResults;
                 }).ToList();
 
                 Status.SetFinishedMessage(string.Format("{0} Users/s Added; {1} User/s Removed; {2} User/s Skipped", addUsers.Count, removeAssignments.Count, (Users.Count - addUsers.Count)));

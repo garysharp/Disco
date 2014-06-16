@@ -30,6 +30,13 @@ namespace Disco.Web.Areas.Config.Controllers
                 if (m == null)
                     throw new ArgumentException("Invalid User Flag Id");
 
+                UserFlagUsersManagedGroup assignedUsersManagedGroup;
+                if (UserFlagUsersManagedGroup.TryGetManagedGroup(m.UserFlag, out assignedUsersManagedGroup))
+                    m.UsersLinkedGroup = assignedUsersManagedGroup;
+                UserFlagUserDevicesManagedGroup assignedUserDevicesManagedGroup;
+                if (UserFlagUserDevicesManagedGroup.TryGetManagedGroup(m.UserFlag, out assignedUserDevicesManagedGroup))
+                    m.UserDevicesLinkedGroup = assignedUserDevicesManagedGroup;
+
                 if (Authorization.Has(Claims.Config.UserFlag.Configure))
                 {
                     m.Icons = UIHelpers.Icons;

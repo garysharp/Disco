@@ -250,9 +250,9 @@
 
             xhr.open("POST", self.uploadUrl, true);
             xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
+                if (xhr.readyState === 4) {
                     if (xhr.status !== 200) {
-                        alert('Error Uploading [' + fileName + ']: ' + xhr.responseText);
+                        alert('Error Uploading [' + fileName + ']: ' + xhr.statusText);
                     }
                     progress.slideUp(400, function () {
                         progress.remove();

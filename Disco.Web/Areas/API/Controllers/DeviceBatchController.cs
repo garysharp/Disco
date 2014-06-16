@@ -1,6 +1,9 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
+using Disco.Services.Devices.ManagedGroups;
+using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Tasks;
 using Disco.Services.Web;
 using Disco.Web.Extensions;
 using System;
@@ -27,6 +30,8 @@ namespace Disco.Web.Areas.API.Controllers
         const string pInsuredUntil = "insureduntil";
         const string pInsuranceDetails = "insurancedetails";
         const string pComments = "comments";
+        const string pDevicesLinkedGroup = "deviceslinkedgroup";
+        const string pAssignedUsersLinkedGroup = "assigneduserslinkedgroup";
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
         public virtual ActionResult Update(int id, string key, string value = null, bool redirect = false)
@@ -85,6 +90,12 @@ namespace Disco.Web.Areas.API.Controllers
                             break;
                         case pComments:
                             UpdateComments(deviceBatch, value);
+                            break;
+                        case pDevicesLinkedGroup:
+                            UpdateDevicesLinkedGroup(deviceBatch, value);
+                            break;
+                        case pAssignedUsersLinkedGroup:
+                            UpdateAssignedUsersLinkedGroup(deviceBatch, value);
                             break;
                         default:
                             throw new Exception("Invalid Update Key");
@@ -192,6 +203,71 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult UpdateComments(int id, string Comments = null, bool redirect = false)
         {
             return Update(id, pComments, Comments, redirect);
+        }
+
+        [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        public virtual ActionResult UpdateDevicesLinkedGroup(int id, string GroupId = null, bool redirect = false)
+        {
+            try
+            {
+                if (id < 0)
+                    throw new ArgumentOutOfRangeException("id");
+
+                var deviceBatch = Database.DeviceBatches.Find(id);
+                if (deviceBatch == null)
+                    throw new ArgumentException("Invalid Device Batch Id", "id");
+
+                var syncTaskStatus = UpdateDevicesLinkedGroup(deviceBatch, GroupId);
+                if (redirect)
+                    if (syncTaskStatus == null)
+                        return RedirectToAction(MVC.Config.DeviceBatch.Index(deviceBatch.Id));
+                    else
+                    {
+                        syncTaskStatus.SetFinishedUrl(Url.Action(MVC.Config.DeviceBatch.Index(deviceBatch.Id)));
+                        return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
+                    }
+                else
+                    return Json("OK", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                if (redirect)
+                    throw;
+                else
+                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        public virtual ActionResult UpdateAssignedUsersLinkedGroup(int id, string GroupId = null, bool redirect = false)
+        {
+            try
+            {
+                if (id < 0)
+                    throw new ArgumentOutOfRangeException("id");
+
+                var deviceBatch = Database.DeviceBatches.Find(id);
+                if (deviceBatch == null)
+                    throw new ArgumentException("Invalid Device Batch Id", "id");
+
+                var syncTaskStatus = UpdateAssignedUsersLinkedGroup(deviceBatch, GroupId);
+                if (redirect)
+                    if (syncTaskStatus == null)
+                        return RedirectToAction(MVC.Config.DeviceBatch.Index(deviceBatch.Id));
+                    else
+                    {
+                        syncTaskStatus.SetFinishedUrl(Url.Action(MVC.Config.DeviceBatch.Index(deviceBatch.Id)));
+                        return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
+                    }
+                else
+                    return Json("OK", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                if (redirect)
+                    throw;
+                else
+                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+            }
         }
         #endregion
 
@@ -396,6 +472,40 @@ namespace Disco.Web.Areas.API.Controllers
             else
                 deviceBatch.Comments = Comments;
             Database.SaveChanges();
+        }
+
+        private ScheduledTaskStatus UpdateDevicesLinkedGroup(DeviceBatch DeviceBatch, string DevicesLinkedGroup)
+        {
+            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceBatchDevicesManagedGroup.GetKey(DeviceBatch), DevicesLinkedGroup, null);
+
+            if (DeviceBatch.DevicesLinkedGroup != configJson)
+            {
+                DeviceBatch.DevicesLinkedGroup = configJson;
+                Database.SaveChanges();
+
+                var managedGroup = DeviceBatchDevicesManagedGroup.Initialize(DeviceBatch);
+                if (managedGroup != null) // Sync Group
+                    return ADManagedGroupsSyncTask.ScheduleSync(managedGroup);
+            }
+
+            return null;
+        }
+
+        private ScheduledTaskStatus UpdateAssignedUsersLinkedGroup(DeviceBatch DeviceBatch, string AssignedUsersLinkedGroup)
+        {
+            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceBatchAssignedUsersManagedGroup.GetKey(DeviceBatch), AssignedUsersLinkedGroup, null);
+
+            if (DeviceBatch.AssignedUsersLinkedGroup != configJson)
+            {
+                DeviceBatch.AssignedUsersLinkedGroup = configJson;
+                Database.SaveChanges();
+
+                var managedGroup = DeviceBatchDevicesManagedGroup.Initialize(DeviceBatch);
+                if (managedGroup != null) // Sync Group
+                    return ADManagedGroupsSyncTask.ScheduleSync(managedGroup);
+            }
+
+            return null;
         }
         #endregion
 

@@ -1,6 +1,7 @@
 ﻿@model Disco.Web.Areas.Config.Models.UserFlag.ShowModel
-@using Disco.Services.Users.UserFlags;
 @using Disco.Services.Interop.ActiveDirectory;
+@using Disco.Services.Users.UserFlags;
+@using Disco.Web.Areas.Config.Models.Shared;
 @{
     Authorization.Require(Claims.Config.UserFlag.Show);
 
@@ -11,9 +12,13 @@
     var canBulkAssignment = Authorization.HasAll(Claims.User.Actions.AddFlags, Claims.User.Actions.RemoveFlags, Claims.User.ShowFlagAssignments);
     var canShowUsers = Model.CurrentAssignmentCount > 0 && Authorization.HasAll(Claims.User.Search, Claims.User.ShowFlagAssignments);
 
+    var hideAdvanced =
+        Model.UserFlag.UserDevicesLinkedGroup == null &&
+        Model.UserFlag.UsersLinkedGroup == null;
+
     Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
 }
-<div id="Config_UserFlags_Show" class="form" style="width: 550px">
+<div id="Config_UserFlags_Show" class="form@(hideAdvanced ? " Config_HideAdvanced" : null)" style="width: 550px">
     <table>
         <tr>
             <th style="width: 150px">Id:
@@ -193,6 +198,51 @@
                 }
             </td>
         </tr>
+        @if (hideAdvanced)
+        {
+            <tr>
+                <td colspan="2" style="text-align: right;">
+                    <button id="Config_HideAdvanced_Show" class="button small">Show Advanced Options</button>
+                    <script>
+                        $(function () {
+                            $('#Config_HideAdvanced_Show').click(function () {
+                                var $this = $(this);
+                                $this.closest('.Config_HideAdvanced').removeClass('Config_HideAdvanced');
+                                $this.closest('tr').remove();
+                            });
+                        });
+                    </script>
+                </td>
+            </tr>
+        }
+        <tr class="Config_HideAdvanced_Item">
+            <th>Linked Groups:
+            </th>
+            <td>
+                <div>
+                    @Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
+               {
+                   CanConfigure = canConfig,
+                   CategoryDescription = UserFlagUsersManagedGroup.GetCategoryDescription(Model.UserFlag),
+                   Description = UserFlagUsersManagedGroup.GetDescription(Model.UserFlag),
+                   ManagedGroup = Model.UsersLinkedGroup,
+                   UpdateUrl = Url.Action(MVC.API.UserFlag.UpdateAssignedUsersLinkedGroup(Model.UserFlag.Id, redirect: true))
+               })
+                    @Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
+               {
+                   CanConfigure = canConfig,
+                   CategoryDescription = UserFlagUserDevicesManagedGroup.GetCategoryDescription(Model.UserFlag),
+                   Description = UserFlagUserDevicesManagedGroup.GetDescription(Model.UserFlag),
+                   ManagedGroup = Model.UserDevicesLinkedGroup,
+                   UpdateUrl = Url.Action(MVC.API.UserFlag.UpdateAssignedUserDevicesLinkedGroup(Model.UserFlag.Id, redirect: true))
+               })
+                    @if (canConfig)
+                    {
+                        @Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared)
+                    }
+                </div>
+            </td>
+        </tr>
     </table>
 </div>
 @if (canBulkAssignment || canDelete || canShowUsers)
@@ -241,7 +291,7 @@
                     <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Loading current assignments...</h4>
                 </div>
                 <form action="#" method="post">
-                    <textarea id="Config_UserFlags_BulkAssign_AssignDialog_UserIds" name="UserIds" data-val="true"></textarea>
+                    <textarea id="Config_UserFlags_BulkAssign_AssignDialog_UserIds" name="UserIds"></textarea>
                     <h4>Comments:</h4>
                     <textarea id="Config_UserFlags_BulkAssign_AssignDialog_Comments" name="Comments"></textarea>
                 </form>
@@ -303,35 +353,35 @@
                         if (mode == "Override") {
                             assignUserIds.closest('form').attr('action', '@(Url.Action(MVC.API.UserFlag.BulkAssignUsers(Model.UserFlag.Id, true)))');
 
-                                    assignDialog.addClass('loading');
-                                    $.getJSON('@Url.Action(MVC.API.UserFlag.AssignedUsers(Model.UserFlag.Id))', function (response, result) {
-                                        assignDialog.removeClass('loading');
+                            assignDialog.addClass('loading');
+                            $.getJSON('@Url.Action(MVC.API.UserFlag.AssignedUsers(Model.UserFlag.Id))', function (response, result) {
+                                assignDialog.removeClass('loading');
 
-                                        if (result != 'success') {
-                                            alert('Unable to load current assignments:\n' + response);
-                                            assignDialog.dialog('close');
-                                        } else {
-                                            if (!!response) {
-                                                assignUserIds.val(response.join('\n'));
-                                            } else {
-                                                assignUserIds.val('');
-                                            }
-                                        }
-                                    });
+                                if (result != 'success') {
+                                    alert('Unable to load current assignments:\n' + response);
+                                    assignDialog.dialog('close');
+                                } else {
+                                    if (!!response) {
+                                        assignUserIds.val(response.join('\n'));
+                                    } else {
+                                        assignUserIds.val('');
+                                    }
                                 }
-                                else // Assume Add
-                                {
-                                    assignUserIds.closest('form').attr('action', '@(Url.Action(MVC.API.UserFlag.BulkAssignUsers(Model.UserFlag.Id, false)))');
-                                }
-
-                                assignDialog.dialog('open');
-                            }
-
-                            $('#Config_UserFlags_BulkAssign_Button').click(function () {
-                                showModeDialog();
-                                return false;
                             });
-                        });
+                        }
+                        else // Assume Add
+                        {
+                            assignUserIds.closest('form').attr('action', '@(Url.Action(MVC.API.UserFlag.BulkAssignUsers(Model.UserFlag.Id, false)))');
+                        }
+
+                        assignDialog.dialog('open');
+                    }
+
+                    $('#Config_UserFlags_BulkAssign_Button').click(function () {
+                        showModeDialog();
+                        return false;
+                    });
+                });
             </script>
         }
 

@@ -73,32 +73,51 @@ WriteLiteral(" href=\"http://www.springframework.net/doc-latest/reference/html/e
 
 WriteLiteral("\r\n            target=\"_blank\"");
 
-WriteLiteral(">Expression Evaluation</a> documentation.\r\n    <h2>\r\n        Device Scope</h2>\r\n " +
-"   <div");
+WriteLiteral(">Expression Evaluation</a> documentation.\r\n    <h2");
+
+WriteLiteral(" id=\"DeviceScope\"");
+
+WriteLiteral(">\r\n        Device Scope</h2>\r\n    <div");
 
 WriteLiteral(" id=\"deviceScopeTree\"");
 
 WriteLiteral(" class=\"expressionTree\"");
 
-WriteLiteral(">\r\n    </div>\r\n    <h2>\r\n        Job Scope</h2>\r\n    <div");
+WriteLiteral(">\r\n    </div>\r\n    <h2");
+
+WriteLiteral(" id=\"JobScope\"");
+
+WriteLiteral(">\r\n        Job Scope</h2>\r\n    <div");
 
 WriteLiteral(" id=\"jobScopeTree\"");
 
 WriteLiteral(" class=\"expressionTree\"");
 
-WriteLiteral(">\r\n    </div>\r\n    <h2>\r\n        User Scope</h2>\r\n    <div");
+WriteLiteral(">\r\n    </div>\r\n    <h2");
+
+WriteLiteral(" id=\"UserScope\"");
+
+WriteLiteral(">\r\n        User Scope</h2>\r\n    <div");
 
 WriteLiteral(" id=\"userScopeTree\"");
 
 WriteLiteral(" class=\"expressionTree\"");
 
-WriteLiteral(">\r\n    </div>\r\n    <h2>\r\n        Variables\r\n    </h2>\r\n    <div");
+WriteLiteral(">\r\n    </div>\r\n    <h2");
+
+WriteLiteral(" id=\"Variables\"");
+
+WriteLiteral(">\r\n        Variables\r\n    </h2>\r\n    <div");
 
 WriteLiteral(" id=\"variableScopeTree\"");
 
 WriteLiteral(" class=\"expressionTree\"");
 
-WriteLiteral(">\r\n    </div>\r\n    <h2>\r\n        Extension Libraries</h2>\r\n    <div");
+WriteLiteral(">\r\n    </div>\r\n    <h2");
+
+WriteLiteral(" id=\"ExtensionLibraries\"");
+
+WriteLiteral(">\r\n        Extension Libraries</h2>\r\n    <div");
 
 WriteLiteral(" id=\"extScopeTree\"");
 

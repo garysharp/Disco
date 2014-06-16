@@ -1,4 +1,6 @@
 ﻿@model Disco.Web.Areas.Config.Models.DeviceProfile.ShowModel
+@using Disco.Services.Devices.ManagedGroups;
+@using Disco.Web.Areas.Config.Models.Shared;
 @{
     Authorization.Require(Claims.Config.DeviceProfile.Show);
 
@@ -8,13 +10,17 @@
     var canConfigExpression = Authorization.Has(Claims.Config.DeviceProfile.ConfigureComputerNameTemplate);
     var canDelete = (Authorization.Has(Claims.Config.DeviceProfile.Delete) && Model.CanDelete);
 
+    var hideAdvanced =
+        Model.DeviceProfile.AssignedUsersLinkedGroup == null &&
+        Model.DeviceProfile.DevicesLinkedGroup == null;
+
     if (canConfig)
     {
         Html.BundleDeferred("~/Style/Fancytree");
         Html.BundleDeferred("~/ClientScripts/Modules/jQuery-Fancytree");
     }
 }
-<div id="configurationDeviceProfileShow" class="form" style="width: 640px">
+<div id="configurationDeviceProfileShow" class="form@(hideAdvanced ? " Config_HideAdvanced" : null)" style="width: 640px">
     <table>
         <tr>
             <th style="width: 170px;">Id:
@@ -686,6 +692,54 @@
                         Enforce Organisational Unit
                     </label>
                     @AjaxHelpers.AjaxLoader()
+                </div>
+            </td>
+        </tr>
+        @if (hideAdvanced)
+        {
+            <tr>
+                <td colspan="2" style="text-align: right;">
+                    <button id="Config_HideAdvanced_Show" class="button small">Show Advanced Options</button>
+                    <script>
+                        $(function () {
+                            $('#Config_HideAdvanced_Show').click(function () {
+                                var $this = $(this);
+                                $this.closest('.Config_HideAdvanced').removeClass('Config_HideAdvanced');
+                                $this.closest('tr').remove();
+                            });
+                        });
+                    </script>
+                </td>
+            </tr>
+        }
+        <tr class="Config_HideAdvanced_Item">
+            <th>Linked Groups:
+            </th>
+            <td>
+                <div>
+                    @Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
+               {
+                   CanConfigure = canConfig,
+                   CategoryDescription = DeviceProfileDevicesManagedGroup.GetCategoryDescription(Model.DeviceProfile),
+                   Description = DeviceProfileDevicesManagedGroup.GetDescription(Model.DeviceProfile),
+                   ManagedGroup = Model.DevicesLinkedGroup,
+                   UpdateUrl = Url.Action(MVC.API.DeviceProfile.UpdateDevicesLinkedGroup(Model.DeviceProfile.Id, redirect: true))
+               })
+                    @Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
+               {
+                   CanConfigure = canConfig,
+                   CategoryDescription = DeviceProfileAssignedUsersManagedGroup.GetCategoryDescription(Model.DeviceProfile),
+                   Description = DeviceProfileAssignedUsersManagedGroup.GetDescription(Model.DeviceProfile),
+                   ManagedGroup = Model.AssignedUsersLinkedGroup,
+                   UpdateUrl = Url.Action(MVC.API.DeviceProfile.UpdateAssignedUsersLinkedGroup(Model.DeviceProfile.Id, redirect: true))
+               })
+                    @if (canConfig)
+                    {
+                        @Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared)
+                    }
+                </div>
+                <div style="padding: 0.7em 0.7em;" class="ui-state-highlight ui-corner-all">
+                    <i class="fa fa-info-circle information"></i>&nbsp;Linked Active Directory Groups are automatically synchronized to include members currently associated with this Device Profile.
                 </div>
             </td>
         </tr>

@@ -111,32 +111,41 @@ namespace Disco.Services.Interop.ActiveDirectory
                 additionalProperties);
         }
 
+        [Obsolete("Use generic equivalents: GetPropertyValue<T>(string PropertyName)")]
         public object GetPropertyValue(string PropertyName, int Index = 0)
+        {
+            return GetPropertyValues<object>(PropertyName).Skip(Index).FirstOrDefault();
+        }
+        public T GetPropertyValue<T>(string PropertyName)
+        {
+            return GetPropertyValues<T>(PropertyName).FirstOrDefault();
+        }
+        public IEnumerable<T> GetPropertyValues<T>(string PropertyName)
         {
             switch (PropertyName.ToLower())
             {
                 case "name":
-                    return this.Name;
+                    return new string[] { this.Name }.OfType<T>();
                 case "samaccountname":
-                    return this.SamAccountName;
+                    return new string[] { this.SamAccountName }.OfType<T>();
                 case "distinguishedname":
-                    return this.DistinguishedName;
+                    return new string[] { this.DistinguishedName }.OfType<T>();
                 case "objectsid":
-                    return this.SecurityIdentifier.ToString();
+                    return new SecurityIdentifier[] { this.SecurityIdentifier }.OfType<T>();
                 case "sn":
-                    return this.Surname;
+                    return new string[] { this.Surname }.OfType<T>();
                 case "givenname":
-                    return this.GivenName;
+                    return new string[] { this.GivenName }.OfType<T>();
                 case "mail":
-                    return this.Email;
+                    return new string[] { this.Email }.OfType<T>();
                 case "telephonenumber":
-                    return this.Phone;
+                    return new string[] { this.Phone }.OfType<T>();
                 default:
                     object[] adProperty;
-                    if (this.LoadedProperties.TryGetValue(PropertyName, out adProperty) && Index <= adProperty.Length)
-                        return adProperty[Index];
+                    if (this.LoadedProperties.TryGetValue(PropertyName, out adProperty))
+                        return adProperty.OfType<T>();
                     else
-                        return null;
+                        return Enumerable.Empty<T>();
             }
         }
 

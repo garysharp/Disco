@@ -1,6 +1,7 @@
 ﻿using Disco.Data.Configuration.Modules;
 using Disco.Models.Repository;
 using Disco.Models.Services.Jobs.Noticeboards;
+using Disco.Services.Interop.ActiveDirectory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Disco.Services.Jobs.Noticeboards
         {
             get
             {
-                return DeviceComputerName == null ? null : UserExtensions.FriendlyUserId(DeviceComputerName);
+                return DeviceComputerName == null ? null : ActiveDirectory.FriendlyAccountId(DeviceComputerName);
             }
             set { } // for XML Serialization
         }
@@ -67,7 +68,7 @@ namespace Disco.Services.Jobs.Noticeboards
         {
             get
             {
-                return UserId == null ? null : UserExtensions.FriendlyUserId(UserId);
+                return UserId == null ? null : ActiveDirectory.FriendlyAccountId(UserId);
             }
             set { } // for XML Serialization
         }

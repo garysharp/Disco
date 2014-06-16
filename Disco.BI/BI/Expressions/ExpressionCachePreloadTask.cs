@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Disco.Services.Tasks;
+﻿using Disco.BI.Extensions;
 using Disco.Data.Repository;
+using Disco.Services.Tasks;
 using Quartz;
-using Disco.BI.Extensions;
-using System.Diagnostics;
+using System;
+using System.Linq;
 
 namespace Disco.BI.Expressions
 {
@@ -20,7 +17,7 @@ namespace Disco.BI.Expressions
 
         public override void InitalizeScheduledTask(DiscoDataContext Database)
         {
-            // Run in Background 1 Second after Scheduled (on App Startup)
+            // Run in Background 5 Second after Scheduled (on App Startup)
             TriggerBuilder triggerBuilder = TriggerBuilder.Create().StartAt(new DateTimeOffset(DateTime.Now).AddSeconds(5));
 
             this.ScheduleTask(triggerBuilder);
@@ -37,8 +34,6 @@ namespace Disco.BI.Expressions
                         documentTemplate.FilterExpressionFromCache();
                 }
             }
-
-
         }
     }
 }

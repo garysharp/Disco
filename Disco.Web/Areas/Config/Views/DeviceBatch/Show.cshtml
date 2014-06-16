@@ -1,4 +1,6 @@
 ﻿@model Disco.Web.Areas.Config.Models.DeviceBatch.ShowModel
+@using Disco.Services.Devices.ManagedGroups;
+@using Disco.Web.Areas.Config.Models.Shared;
 @{
     Authorization.Require(Claims.Config.DeviceBatch.Show);
 
@@ -7,6 +9,10 @@
     var canConfig = Authorization.Has(Claims.Config.DeviceBatch.Configure);
     var canDeviceModelShow = Authorization.Has(Claims.Config.DeviceModel.Show);
 
+    var hideAdvanced =
+        Model.DeviceBatch.AssignedUsersLinkedGroup == null &&
+        Model.DeviceBatch.DevicesLinkedGroup == null;
+
     if (canConfig)
     {
         Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
@@ -14,7 +20,7 @@
         Html.BundleDeferred("~/ClientScripts/Modules/tinymce");
     }
 }
-<div class="form deviceBatches" style="width: 730px">
+<div class="form deviceBatches@(hideAdvanced ? " Config_HideAdvanced" : null)" style="width: 730px">
     <table>
         <tr>
             <th style="width: 150px">Id:
@@ -650,6 +656,54 @@
                     else
                     {@(new HtmlString(Model.DeviceBatch.Comments))}
                 }
+            </td>
+        </tr>
+        @if (hideAdvanced)
+        {
+            <tr>
+                <td colspan="2" style="text-align: right;">
+                    <button id="Config_HideAdvanced_Show" class="button small">Show Advanced Options</button>
+                    <script>
+                        $(function () {
+                            $('#Config_HideAdvanced_Show').click(function () {
+                                var $this = $(this);
+                                $this.closest('.Config_HideAdvanced').removeClass('Config_HideAdvanced');
+                                $this.closest('tr').remove();
+                            });
+                        });
+                    </script>
+                </td>
+            </tr>
+        }
+        <tr class="Config_HideAdvanced_Item">
+            <th>Linked Groups:
+            </th>
+            <td>
+                <div>
+                    @Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
+               {
+                   CanConfigure = canConfig,
+                   CategoryDescription = DeviceBatchDevicesManagedGroup.GetCategoryDescription(Model.DeviceBatch),
+                   Description = DeviceBatchDevicesManagedGroup.GetDescription(Model.DeviceBatch),
+                   ManagedGroup = Model.DevicesLinkedGroup,
+                   UpdateUrl = Url.Action(MVC.API.DeviceBatch.UpdateDevicesLinkedGroup(Model.DeviceBatch.Id, redirect: true))
+               })
+                    @Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
+               {
+                   CanConfigure = canConfig,
+                   CategoryDescription = DeviceBatchAssignedUsersManagedGroup.GetCategoryDescription(Model.DeviceBatch),
+                   Description = DeviceBatchAssignedUsersManagedGroup.GetDescription(Model.DeviceBatch),
+                   ManagedGroup = Model.AssignedUsersLinkedGroup,
+                   UpdateUrl = Url.Action(MVC.API.DeviceBatch.UpdateAssignedUsersLinkedGroup(Model.DeviceBatch.Id, redirect: true))
+               })
+                    @if (canConfig)
+                    {
+                        @Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared)
+                    }
+                </div>
+                <div style="padding: 0.7em 0.7em;" class="ui-state-highlight ui-corner-all">
+                    <i class="fa fa-info-circle information"></i>&nbsp;Linked Active Directory Groups are automatically synchronized to include members currently associated with this Device Batch.
+                </div>
             </td>
         </tr>
     </table>

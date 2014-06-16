@@ -1,6 +1,6 @@
 ﻿@model Disco.Web.Areas.Config.Models.UserFlag.IndexModel
 @{
-    Authorization.RequireAll(Claims.Config.UserFlag.Create, Claims.Config.UserFlag.Configure);
+    Authorization.Require(Claims.Config.UserFlag.Show);
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "User Flags", MVC.Config.UserFlag.Index(null));
 }
 <div id="Config_UserFlags_Index">
@@ -16,6 +16,7 @@
             <tr>
                 <th>Name</th>
                 <th>Description</th>
+                <th>Linked</th>
             </tr>
             @foreach (var item in Model.UserFlags)
             {
@@ -35,11 +36,23 @@
                         @item.Description.ToHtmlComment()
                         }
                     </td>
+                    <td>@if (item.UserDevicesLinkedGroup != null || item.UsersLinkedGroup != null)
+                        {
+                        <i class="fa fa-link fa-lg success"></i>
+                        }
+                        else
+                        {
+                        <i class="fa fa-unlink fa-lg information"></i>
+                        }
+                    </td>
                 </tr>
             }
         </table>
     }
-    <div class="actionBar">
-        @Html.ActionLinkButton("Create User Flag", MVC.Config.UserFlag.Create())
-    </div>
+    @if (Authorization.Has(Claims.Config.UserFlag.Create))
+    {
+        <div class="actionBar">
+            @Html.ActionLinkButton("Create User Flag", MVC.Config.UserFlag.Create())
+        </div>
+    }
 </div>

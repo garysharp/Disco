@@ -1,7 +1,7 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Models.Repository;
-using Disco.Services.Interop.ActiveDirectory;
 using System;
+using System.Linq;
 
 namespace Disco.BI.Expressions.Extensions
 {
@@ -11,7 +11,7 @@ namespace Disco.BI.Expressions.Extensions
         {
             var adUserAccount = User.ActiveDirectoryAccount(PropertyName);
             if (adUserAccount != null)
-                return adUserAccount.GetPropertyValue(PropertyName, Index);
+                return adUserAccount.GetPropertyValues<object>(PropertyName).Skip(Index).FirstOrDefault();
             else
                 return null;
         }

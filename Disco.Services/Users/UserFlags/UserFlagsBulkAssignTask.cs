@@ -41,7 +41,7 @@ namespace Disco.Services.Users.UserFlags
 
                 // Parse Users
                 var userIds = UserIds
-                    .Select(u => u.Contains('\\') ? u : string.Concat(ActiveDirectory.Context.PrimaryDomain.NetBiosName, @"\", u))
+                    .Select(u => ActiveDirectory.ParseDomainAccountId(u))
                     .Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 
                 Status.UpdateStatus(10, "Loading users from the database");

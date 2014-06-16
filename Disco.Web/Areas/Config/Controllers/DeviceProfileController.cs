@@ -2,6 +2,7 @@
 using Disco.Models.Repository;
 using Disco.Models.UI.Config.DeviceProfile;
 using Disco.Services.Authorization;
+using Disco.Services.Devices.ManagedGroups;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins;
 using Disco.Services.Plugins.Features.CertificateProvider;
@@ -35,6 +36,13 @@ namespace Disco.Web.Areas.Config.Controllers
 
                 if (m.DeviceProfile.DefaultOrganisationAddress.HasValue)
                     m.DefaultOrganisationAddress = Database.DiscoConfiguration.OrganisationAddresses.GetAddress(m.DeviceProfile.DefaultOrganisationAddress.Value);
+
+                DeviceProfileAssignedUsersManagedGroup assignedUsersManagedGroup;
+                if (DeviceProfileAssignedUsersManagedGroup.TryGetManagedGroup(m.DeviceProfile, out assignedUsersManagedGroup))
+                    m.AssignedUsersLinkedGroup = assignedUsersManagedGroup;
+                DeviceProfileDevicesManagedGroup devicesManagedGroup;
+                if (DeviceProfileDevicesManagedGroup.TryGetManagedGroup(m.DeviceProfile, out devicesManagedGroup))
+                    m.DevicesLinkedGroup = devicesManagedGroup;
 
                 m.CertificateProviders = Plugins.GetPluginFeatures(typeof(CertificateProviderFeature));
 

@@ -2,43 +2,49 @@
 
 // Theme Changes
 .ui-widget {
-	font-family: @FontFamilyBody;
-	font-size: 1em;
+    font-family: @FontFamilyBody;
+    font-size: 1em;
 }
-.ui-widget input,
-.ui-widget select,
-.ui-widget textarea,
-.ui-widget button {
-	font-family: @FontFamilyBody;
-}
+
+    .ui-widget input,
+    .ui-widget select,
+    .ui-widget textarea,
+    .ui-widget button {
+        font-family: @FontFamilyBody;
+    }
+
 .ui-corner-all,
 .ui-corner-top,
 .ui-corner-left,
 .ui-corner-tl {
-	border-top-left-radius: 0;
+    border-top-left-radius: 0;
 }
+
 .ui-corner-all,
 .ui-corner-top,
 .ui-corner-right,
 .ui-corner-tr {
-	border-top-right-radius: 0;
+    border-top-right-radius: 0;
 }
+
 .ui-corner-all,
 .ui-corner-bottom,
 .ui-corner-left,
 .ui-corner-bl {
-	border-bottom-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
+
 .ui-corner-all,
 .ui-corner-bottom,
 .ui-corner-right,
 .ui-corner-br {
-	border-bottom-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
+
 .ui-widget-overlay {
-	background: #666666;
-	opacity: .5;
-	filter: Alpha(Opacity=50);
+    background: #666666;
+    opacity: .5;
+    filter: Alpha(Opacity=50);
 }
 
 // Watermark
@@ -197,12 +203,32 @@ input:-moz-placeholder {
 // Dialogs
 
 .ui-dialog {
+    position: fixed;
+    overflow: visible;
+    padding: 0;
+    border-color: @HeaderBackgroundColour;
+    background: #fcfcfc;
+    box-shadow: rgba(20,20,20,.7) 0px 0px 50px;
+    top: 50px !important;
     animation-name: ui-dialog-show;
     -webkit-animation-name: ui-dialog-show;
     animation-duration: .2s;
     -webkit-animation-duration: .2s;
     animation-timing-function: ease-in-out;
     -webkit-animation-timing-function: ease-in-out;
+
+    .ui-widget-header {
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom-color: @BackgroundColour;
+        background: @HeaderBackgroundColour;
+        color: #fff;
+        font-size: 1.1em;
+        font-weight: normal;
+        text-transform: uppercase;
+        padding: .6em 1em;
+    }
 }
 
 @keyframes ui-dialog-show {
@@ -263,27 +289,6 @@ input:-moz-placeholder {
 .page .dialog {
     display: none;
 }
-
-.ui-dialog {
-    padding: 0;
-    border-color: @HeaderBackgroundColour;
-    background: #fcfcfc;
-    box-shadow: rgba(20,20,20,.7) 0px 0px 50px;
-    top: 50px !important;
-}
-
-    .ui-dialog .ui-widget-header {
-        border-top: none;
-        border-left: none;
-        border-right: none;
-        border-bottom-color: @BackgroundColour;
-        background: @HeaderBackgroundColour;
-        color: #fff;
-        font-size: 1.1em;
-        font-weight: normal;
-        text-transform: uppercase;
-        padding: .6em 1em;
-    }
 
 // Tooltip
 body .ui-tooltip {

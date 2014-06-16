@@ -114,23 +114,23 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         #region Groups
 
-        public static ADGroup RetrieveADGroup(string Id)
+        public static ADGroup RetrieveADGroup(string Id, params string[] AdditionalProperties)
         {
             var domain = Context.GetDomainFromId(Id);
-            return domain.GetAvailableDomainController().RetrieveADGroup(Id);
+            return domain.GetAvailableDomainController().RetrieveADGroup(Id, AdditionalProperties);
         }
-        public static ADGroup RetrieveADGroupByDistinguishedName(string DistinguishedName)
+        public static ADGroup RetrieveADGroupByDistinguishedName(string DistinguishedName, params string[] AdditionalProperties)
         {
             var domain = Context.GetDomainFromDistinguishedName(DistinguishedName);
-            return domain.GetAvailableDomainController().RetrieveADGroupByDistinguishedName(DistinguishedName);
+            return domain.GetAvailableDomainController().RetrieveADGroupByDistinguishedName(DistinguishedName, AdditionalProperties);
         }
-        public static ADGroup RetrieveADGroupWithSecurityIdentifier(SecurityIdentifier SecurityIdentifier)
+        public static ADGroup RetrieveADGroupWithSecurityIdentifier(SecurityIdentifier SecurityIdentifier, params string[] AdditionalProperties)
         {
             var domain = Context.GetDomainFromSecurityIdentifier(SecurityIdentifier);
-            return domain.GetAvailableDomainController().RetrieveADGroupWithSecurityIdentifier(SecurityIdentifier);
+            return domain.GetAvailableDomainController().RetrieveADGroupWithSecurityIdentifier(SecurityIdentifier, AdditionalProperties);
         }
 
-        public static IEnumerable<ADGroup> SearchADGroups(string Term, int? ResultLimit = ActiveDirectory.DefaultSearchResultLimit)
+        public static IEnumerable<ADGroup> SearchADGroups(string Term, int? ResultLimit = ActiveDirectory.DefaultSearchResultLimit, params string[] AdditionalProperties)
         {
             if (string.IsNullOrWhiteSpace(Term))
                 throw new ArgumentNullException("Term");
@@ -141,7 +141,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (string.IsNullOrWhiteSpace(term))
                 return Enumerable.Empty<ADGroup>();
 
-            var ldapFilter= string.Format(ADGroup.LdapSearchFilterTemplate, ADHelpers.EscapeLdapQuery(term));
+            var ldapFilter = string.Format(ADGroup.LdapSearchFilterTemplate, ADHelpers.EscapeLdapQuery(term));
 
             IEnumerable<ADSearchResult> searchResults;
             if (searchDomain != null)
@@ -149,7 +149,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             else
                 searchResults = Context.SearchScope(ldapFilter, ADGroup.LoadProperties, ResultLimit);
 
-            return searchResults.Select(result => result.AsADGroup());
+            return searchResults.Select(result => result.AsADGroup(AdditionalProperties));
         }
 
         #endregion
@@ -184,6 +184,124 @@ namespace Disco.Services.Interop.ActiveDirectory
         #endregion
 
         #region Helpers
+
+        public static string ParseDomainAccountId(string AccountId)
+        {
+            return ParseDomainAccountId(AccountId, null);
+        }
+        public static string ParseDomainAccountId(string AccountId, string AccountDomain)
+        {
+            string accountUsername;
+            ADDomain domain;
+
+            return ParseDomainAccountId(AccountId, AccountDomain, out accountUsername, out domain);
+        }
+        public static string ParseDomainAccountId(string AccountId, out string AccountUsername)
+        {
+            return ParseDomainAccountId(AccountId, null, out AccountUsername);
+        }
+        public static string ParseDomainAccountId(string AccountId, string AccountDomain, out string AccountUsername)
+        {
+            ADDomain domain;
+
+            return ParseDomainAccountId(AccountId, AccountDomain, out AccountUsername, out domain);
+        }
+        public static string ParseDomainAccountId(string AccountId, out ADDomain Domain)
+        {
+            return ParseDomainAccountId(AccountId, null, out Domain);
+        }
+        public static string ParseDomainAccountId(string AccountId, string AccountDomain, out ADDomain Domain)
+        {
+            string accountUsername;
+
+            return ParseDomainAccountId(AccountId, AccountDomain, out accountUsername, out Domain);
+        }
+        public static string ParseDomainAccountId(string AccountId, out string AccountUsername, out ADDomain Domain)
+        {
+            return ParseDomainAccountId(AccountId, null, out AccountUsername, out Domain);
+        }
+        public static string ParseDomainAccountId(string AccountId, string AccountDomain, out string AccountUsername, out ADDomain Domain)
+        {
+            if (string.IsNullOrWhiteSpace(AccountId))
+                throw new ArgumentNullException("AccountId");
+
+            var slashIndex = AccountId.IndexOf('\\');
+
+            if (slashIndex < 0 && !string.IsNullOrWhiteSpace(AccountDomain))
+            {
+                AccountId = AccountDomain + @"\" + AccountId;
+                slashIndex = AccountDomain.Length;
+            }
+
+            if (slashIndex < 0)
+            {
+                AccountUsername = AccountId;
+                Domain = Context.PrimaryDomain;
+            }
+            else
+            {
+                AccountUsername = AccountId.Substring(slashIndex + 1);
+                Domain = Context.GetDomainByNetBiosName(AccountId.Substring(0, slashIndex));
+            }
+
+            return string.Concat(Domain.NetBiosName, @"\", AccountUsername);
+        }
+
+        public static bool IsValidDomainAccountId(string AccountId)
+        {
+            string accountUsername;
+            ADDomain domain;
+
+            return IsValidDomainAccountId(AccountId, out accountUsername, out domain);
+        }
+        public static bool IsValidDomainAccountId(string AccountId, out string AccountUsername)
+        {
+            ADDomain domain;
+
+            return IsValidDomainAccountId(AccountId, out AccountUsername, out domain);
+        }
+        public static bool IsValidDomainAccountId(string AccountId, out ADDomain Domain)
+        {
+            string accountUsername;
+
+            return IsValidDomainAccountId(AccountId, out accountUsername, out Domain);
+        }
+        public static bool IsValidDomainAccountId(string AccountId, out string AccountUsername, out ADDomain Domain)
+        {
+            if (string.IsNullOrEmpty(AccountId))
+            {
+                AccountUsername = null;
+                Domain = null;
+                return false;
+            }
+
+            var slashIndex = AccountId.IndexOf('\\');
+            if (slashIndex < 0)
+            {
+                AccountUsername = AccountId;
+                Domain = null;
+                return false;
+            }
+            else
+            {
+                AccountUsername = AccountId.Substring(slashIndex + 1);
+                return ActiveDirectory.Context.TryGetDomainByNetBiosName(AccountId.Substring(0, slashIndex), out Domain);
+            }
+        }
+
+        /// <summary>
+        /// If the AccountId Domain matches the Primary Domain, returns the Account Username without the Domain specified
+        /// </summary>
+        /// <returns></returns>
+        public static string FriendlyAccountId(string AccountId)
+        {
+            var slashIndex = AccountId.IndexOf('\\');
+
+            if (slashIndex > 0 && AccountId.Substring(0, slashIndex).Equals(ActiveDirectory.Context.PrimaryDomain.NetBiosName, StringComparison.OrdinalIgnoreCase))
+                return AccountId.Substring(slashIndex + 1);
+            else
+                return AccountId;
+        }
 
         private static string RelevantSearchTerm(string Term, out ADDomain Domain)
         {

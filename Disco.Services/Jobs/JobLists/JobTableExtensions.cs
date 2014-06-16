@@ -2,6 +2,7 @@
 using Disco.Models.Repository;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Services.Authorization;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using System;
 using System.Collections.Generic;
@@ -233,8 +234,8 @@ namespace Disco.Services
 
             foreach (var j in items)
             {
-                j.UserFriendlyId =j.UserId == null ? null : UserExtensions.FriendlyUserId(j.UserId);
-                j.OpenedTechUserFriendlyId = UserExtensions.FriendlyUserId(j.OpenedTechUserId);
+                j.UserFriendlyId =j.UserId == null ? null : ActiveDirectory.FriendlyAccountId(j.UserId);
+                j.OpenedTechUserFriendlyId = ActiveDirectory.FriendlyAccountId(j.OpenedTechUserId);
 
                 if (j.DeviceAddressId.HasValue)
                     j.DeviceAddress = Database.DiscoConfiguration.OrganisationAddresses.GetAddress(j.DeviceAddressId.Value).Name;

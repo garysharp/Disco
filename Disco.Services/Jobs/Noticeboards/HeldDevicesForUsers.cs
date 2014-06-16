@@ -82,9 +82,7 @@ namespace Disco.Services.Jobs.Noticeboards
         }
         public static IHeldDeviceItem GetHeldDeviceForUsers(DiscoDataContext Database, string UserId)
         {
-            var split = UserExtensions.SplitUserId(UserId);
-            if (split.Item1 == null)
-                UserId = string.Format(@"{0}\{1}", ActiveDirectory.Context.PrimaryDomain.NetBiosName, UserId);
+            UserId = ActiveDirectory.ParseDomainAccountId(UserId);
 
             return GetHeldDevicesForUsers(Database.Devices.Where(d => d.AssignedUserId == UserId).SelectMany(d => d.Jobs)).FirstOrDefault();
         }

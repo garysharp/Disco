@@ -501,9 +501,12 @@ namespace Disco.BI.DeviceBI
                         }
                         else
                         {
-                            var computerId = Disco.Services.UserExtensions.SplitUserId(RepoDevice.DeviceDomainId);
-                            response.DeviceDomainName = computerId.Item1;
-                            response.DeviceComputerName = computerId.Item2;
+                            string accountUsername;
+                            ADDomain accountDomain;
+                            ActiveDirectory.ParseDomainAccountId(RepoDevice.DeviceDomainId, out accountUsername, out accountDomain);
+
+                            response.DeviceDomainName = accountDomain == null ? null : accountDomain.NetBiosName;
+                            response.DeviceComputerName = accountUsername;
                         }
                     }
                     else
@@ -527,16 +530,17 @@ namespace Disco.BI.DeviceBI
                             domain = ActiveDirectory.Context.GetDomainFromDistinguishedName(RepoDevice.DeviceProfile.OrganisationalUnit);
 
                         var calculatedComputerName = RepoDevice.ComputerNameRender(Database, domain);
-                        var computerNameSplit = Disco.Services.UserExtensions.SplitUserId(calculatedComputerName);
+                        string calculatedAccountUsername;
+                        ActiveDirectory.ParseDomainAccountId(calculatedComputerName, out calculatedAccountUsername);
 
-                        if (!Request.DeviceComputerName.Equals(computerNameSplit.Item2, StringComparison.OrdinalIgnoreCase))
+                        if (!Request.DeviceComputerName.Equals(calculatedAccountUsername, StringComparison.OrdinalIgnoreCase))
                         {
                             EnrolmentLog.LogSessionProgress(sessionId, 50, string.Format("Renaming Device: {0} -> {1}", Request.DeviceComputerName, calculatedComputerName));
                             EnrolmentLog.LogSessionTaskRenamingDevice(sessionId, Request.DeviceComputerName, calculatedComputerName);
 
                             RepoDevice.DeviceDomainId = calculatedComputerName;
-                            response.DeviceDomainName = computerNameSplit.Item1;
-                            response.DeviceComputerName = computerNameSplit.Item2;
+                            response.DeviceDomainName = domain.NetBiosName;
+                            response.DeviceComputerName = calculatedAccountUsername;
 
                             // Create New Account
                             string offlineProvisionDiagnosicInfo;

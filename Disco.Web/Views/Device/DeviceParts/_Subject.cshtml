@@ -350,7 +350,7 @@
                     </table>
                     @if (Model.Device.CanUpdateDeviceProfile())
                     {
-                        @Html.ActionLinkSmallButton("Update Profile", MVC.API.Device.UpdateDeviceProfileId(Model.Device.SerialNumber, null, true), "Device_Show_Policies_Profile_Actions_Update_Button")
+                        @Html.ActionLinkSmallButton("Update Profile", MVC.API.Device.UpdateDeviceProfileId(Model.Device.SerialNumber, redirect: true), "Device_Show_Policies_Profile_Actions_Update_Button")
 
                         <div id="Device_Show_Policies_Profile_Actions_Update_Dialog" class="dialog" title="Assign to Device Profile">
                             <div>
@@ -561,11 +561,14 @@
             }
             @if (Model.Device.CanUpdateAssignment())
             {
-                @Html.ActionLinkSmallButton("Update Assignment", MVC.API.Device.UpdateAssignedUserId(Model.Device.SerialNumber, null, null, true), "Device_Show_User_Actions_Assign_Button")
+                <a id="Device_Show_User_Actions_Assign_Button" href="#" class="button small">Update Assignment</a>
                 <div id="Device_Show_User_Actions_Assign_Dialog" class="dialog" title="Assign this Device?">
                     <h4><i class="fa fa-info-circle information"></i>&nbsp;Assign to User:</h4>
                     <br />
-                    <input id="Device_Show_User_Actions_Assign_UserId" type="text" />
+                    @using (Html.BeginForm(MVC.API.Device.UpdateAssignedUserId(Model.Device.SerialNumber, redirect: true)))
+                    {
+                        <input id="Device_Show_User_Actions_Assign_UserId" name="AssignedUserId" type="text" />
+                    }
                 </div>
                 <script type="text/javascript">
                     $(function () {
@@ -575,17 +578,19 @@
 
                         var dialogButtons = {
                                                 @{
-                if (assignedUser != null)
-                {
+                    if (assignedUser != null)
+                    {
                                                         <text>
                             "Unassign": function () {
                                 var $this = $(this);
                                 $this.dialog("disable");
                                 $this.dialog("option", "buttons", null);
-                                window.location.href = button.attr('href');
+
+                                inputUserId.val('');
+                                inputUserId.closest('form').submit()
                             },
                                                 </text>
-                }
+                    }
                                                 }
                             "Assign": function () {
                                 var $this = $(this);
@@ -593,7 +598,7 @@
                                 if (userId) {
                                     $this.dialog("disable");
                                     $this.dialog("option", "buttons", null);
-                                    window.location.href = button.attr('href') + '&AssignedUserId=' + userId;
+                                    inputUserId.closest('form').submit()
                                 } else {
                                     alert('Enter a user to assign this device');
                                 }

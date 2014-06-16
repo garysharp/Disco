@@ -396,7 +396,7 @@ a {
         border: 1px solid @ButtonBorderColour;
         background: @ButtonColour;
         color: @white;
-        font-weight: bold;
+        font-weight: 600;
         text-transform: uppercase;
         cursor: pointer;
         white-space: nowrap;
@@ -1088,6 +1088,52 @@ div.form {
             border-right: none;
             padding-right: 0;
         }
+}
+
+div.infoBox {
+    margin: 0.4em 0;
+    padding: 0.4em;
+    border: 1px solid lighten(@StatusHighlight, 35%);
+    background-color: lighten(@StatusHighlight, 54%);
+
+    i {
+        color: @StatusInformation;
+    }
+
+    &.alert {
+        border: 1px solid @StatusAlert;
+        background-color: lighten(@StatusAlert, 49%);
+        color: @FontBodyColour;
+
+        i {
+            color: @StatusAlert;
+        }
+    }
+
+    &.error {
+        border: 1px solid @StatusError;
+        background-color: lighten(@StatusError, 54%);
+        color: @StatusError;
+
+        i {
+            color: @StatusError;
+        }
+    }
+
+    p {
+        line-height: 1.2em;
+    }
+}
+
+p.fa-p {
+    text-indent: -1.48em;
+    margin-left: 1.48em;
+
+    & > i:first-child {
+        text-indent: 0;
+        width: 1.28em;
+        margin-right: 0.2em;
+    }
 }
 
 // Attachment Uploader

@@ -44,6 +44,9 @@ namespace Disco.Models.Repository
         [DataType(DataType.MultilineText)]
         public string Comments { get; set; }
 
+        public string DevicesLinkedGroup { get; set; }
+        public string AssignedUsersLinkedGroup { get; set; }
+
         [ForeignKey("DefaultDeviceModelId")]
         public virtual DeviceModel DefaultDeviceModel { get; set; }
 

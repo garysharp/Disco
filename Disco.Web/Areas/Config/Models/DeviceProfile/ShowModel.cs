@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Disco.Services.Plugins;
-using Disco.Models.UI.Config.DeviceProfile;
+﻿using Disco.Models.UI.Config.DeviceProfile;
+using Disco.Services.Devices.ManagedGroups;
 using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Plugins;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace Disco.Web.Areas.Config.Models.DeviceProfile
 {
@@ -15,6 +13,9 @@ namespace Disco.Web.Areas.Config.Models.DeviceProfile
         public List<SelectListItem> DeviceProfileDistributionTypes { get; set; }
         public Disco.Models.BI.Config.OrganisationAddress DefaultOrganisationAddress { get; set; }
         public List<Disco.Models.BI.Config.OrganisationAddress> OrganisationAddresses { get; set; }
+
+        public DeviceProfileAssignedUsersManagedGroup AssignedUsersLinkedGroup { get; set; }
+        public DeviceProfileDevicesManagedGroup DevicesLinkedGroup { get; set; }
 
         public string FriendlyOrganisationalUnitName
         {

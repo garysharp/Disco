@@ -47,6 +47,9 @@ namespace Disco.Models.Repository
 
         public bool AllowUntrustedReimageJobEnrolment { get; set; }
 
+        public string DevicesLinkedGroup { get; set; }
+        public string AssignedUsersLinkedGroup { get; set; }
+
         public virtual IList<Device> Devices { get; set; }
 
         public override string ToString()

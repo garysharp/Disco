@@ -1,0 +1,64 @@
+﻿@model Disco.Web.Areas.Config.Models.Shared.LinkedGroupModel
+@using Disco.Services.Interop.ActiveDirectory;
+<h5>@(Model.CategoryDescription)</h5>
+<div class="Config_LinkedGroup_Instance">
+    <div class="infoBox">
+        <p class="fa-p">
+            <i class="fa fa-fw fa-info-circle"></i>@Model.Description
+        </p>
+    </div>
+    @{
+        ADGroup group = null;
+        if (Model.ManagedGroup != null)
+        {
+            group = Model.ManagedGroup.GetGroup();
+        }
+        if (Model.CanConfigure)
+        {
+            if (Model.ManagedGroup != null)
+            {
+                if (group != null)
+                {
+        <div class="code" title="@group.Id">
+            <i class="fa fa-fw fa-lg fa-link success"></i>@group.Domain.FriendlyDistinguishedNamePath(group.DistinguishedName)
+        </div>
+        <button class="button small Config_LinkedGroup_LinkButton" data-linkedgroupid="@(Model.ManagedGroup.Configuration.GroupId)" data-linkedroupdescription="@(Model.CategoryDescription)" data-linkedroupupdateurl="@(Model.UpdateUrl)">Change Link</button>
+        <a href="@(Url.Action(MVC.API.System.SyncActiveDirectoryManagedGroup(Model.ManagedGroup.Key, Context.Request.Path)))" class="button small">Synchronize Now</a>
+                }
+                else
+                {
+        <div class="code error">
+            <i class="fa fa-fw fa-lg fa-unlink error"></i>Group Not Found: <strong class="code">@Model.ManagedGroup.Configuration.GroupId</strong>
+        </div>            
+        <button class="button small Config_LinkedGroup_LinkButton" data-linkedgroupid="@(Model.ManagedGroup.Configuration.GroupId)" data-linkedroupdescription="@(Model.CategoryDescription)" data-linkedroupupdateurl="@(Model.UpdateUrl)">Change Link</button>
+                }
+            }
+            else
+            {
+        <button class="button small Config_LinkedGroup_LinkButton" data-linkedgroupid="" data-linkedroupdescription="@(Model.CategoryDescription)" data-linkedroupupdateurl="@(Model.UpdateUrl)">Link Group</button>
+            }
+        }
+        else
+        {
+            if (Model.ManagedGroup != null)
+            {
+                if (group != null)
+                {
+        <div class="code" title="@group.Id">
+            <i class="fa fa-fw fa-lg fa-link success"></i>@group.Domain.FriendlyDistinguishedNamePath(group.DistinguishedName)
+        </div>
+                }
+                else
+                {
+        <div class="code error">
+            <i class="fa fa-fw fa-lg fa-unlink error"></i>Group Not Found: <strong class="code">@Model.ManagedGroup.Configuration.GroupId</strong>
+        </div>       
+                }
+            }
+            else
+            {
+        <div class="smallMessage"><i class="fa fa-fw fa-lg fa-unlink information"></i>No Group Linked</div>
+            }
+        }   
+    }
+</div>

@@ -1,9 +1,17 @@
 ﻿@model Disco.Web.Areas.Config.Models.DocumentTemplate.ShowModel
+@using Disco.BI.DocumentTemplateBI.ManagedGroups;
 @using Disco.Services.Interop.ActiveDirectory;
+@using Disco.Web.Areas.Config.Models.Shared;
 @{
     Authorization.Require(Claims.Config.DocumentTemplate.Show);
 
     var canConfig = Authorization.Has(Claims.Config.DocumentTemplate.Configure);
+
+    var hideAdvanced =
+        Model.DocumentTemplate.UsersLinkedGroup == null &&
+        Model.DocumentTemplate.DevicesLinkedGroup == null &&
+        Model.DocumentTemplate.FilterExpression == null &&
+        Model.TemplateExpressions.All(e => e.All(p => !p.ParseError));
 
     #region Can Bulk Generate
     var canBulkGenerate = Authorization.Has(Claims.Config.DocumentTemplate.BulkGenerate);
@@ -28,242 +36,178 @@
 
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(null), Model.DocumentTemplate.Description);
 }
-<div class="form" style="width: 650px">
-    <table>
-        <tr>
-            <th>Id:
-            </th>
-            <td>@Html.DisplayFor(model => model.DocumentTemplate.Id)
-            </td>
-        </tr>
-        <tr>
-            <th>Stored Instances:
-            </th>
-            <td>@Html.DisplayFor(model => model.StoredInstanceCount)
-            </td>
-        </tr>
-        <tr>
-            <th>Description:
-            </th>
-            <td>@if (canConfig)
-                {
-                @Html.TextBoxFor(model => model.DocumentTemplate.Description)
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
-                    $(function () {
-                        var $Description = $('#DocumentTemplate_Description');
-                        var $DescriptionAjaxSave = $Description.next('.ajaxSave');
-                        $Description
-                                .watermark('Description')
-                                .focus(function () { $Description.select() })
-                                .keydown(function (e) {
-                                    $DescriptionAjaxSave.show();
-                                    if (e.which == 13) {
-                                        $(this).blur();
-                                    }
-                                }).blur(function () {
-                                    $DescriptionAjaxSave.hide();
-                                })
-                                .change(function () {
-                                    $DescriptionAjaxSave.hide();
-                                    var $ajaxLoading = $DescriptionAjaxSave.next('.ajaxLoading').show();
-                                    var data = { Description: $Description.val() };
-                                    $.ajax({
-                                        url: '@Url.Action(MVC.API.DocumentTemplate.UpdateDescription(Model.DocumentTemplate.Id))',
-                                        dataType: 'json',
-                                        data: data,
-                                        success: function (d) {
-                                            if (d == 'OK') {
-                                                $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                            } else {
-                                                $ajaxLoading.hide();
-                                                alert('Unable to update description: ' + d);
+<div id="Config_DocumentTemplates_Show" class="@(hideAdvanced ? "Config_HideAdvanced" : null)">
+    <div class="form" style="width: 650px; margin: 10px auto 20px;">
+        <table>
+            <tbody>
+                <tr>
+                    <th>Id:
+                    </th>
+                    <td>@Html.DisplayFor(model => model.DocumentTemplate.Id)
+                    </td>
+                </tr>
+                <tr>
+                    <th>Statistics:
+                    </th>
+                    <td>
+                        <strong>@Html.DisplayFor(model => model.StoredInstanceCount)</strong> Stored Instance@(Model.StoredInstanceCount == 1 ? null : "s")
+                    </td>
+                </tr>
+                <tr>
+                    <th>Description:
+                    </th>
+                    <td>@if (canConfig)
+                        {
+                        @Html.TextBoxFor(model => model.DocumentTemplate.Description)
+                        @AjaxHelpers.AjaxSave()
+                        @AjaxHelpers.AjaxLoader()
+                        <script type="text/javascript">
+                            $(function () {
+                                var $Description = $('#DocumentTemplate_Description');
+                                var $DescriptionAjaxSave = $Description.next('.ajaxSave');
+                                $Description
+                                        .watermark('Description')
+                                        .focus(function () { $Description.select() })
+                                        .keydown(function (e) {
+                                            $DescriptionAjaxSave.show();
+                                            if (e.which == 13) {
+                                                $(this).blur();
                                             }
-                                        },
-                                        error: function (jqXHR, textStatus, errorThrown) {
-                                            alert('Unable to update description: ' + textStatus);
-                                            $ajaxLoading.hide();
-                                        }
-                                    });
-                                });
-                    });
-                </script>
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(Model.DocumentTemplate.Description))
-                    {
-                <span class="smallMessage">&lt;None Specified&gt;</span>
-                    }
-                    else
-                    {
-                @Model.DocumentTemplate.Description
-                    }
-                }
-            </td>
-        </tr>
-        <tr>
-            <th>Always Flatten Form:
-            </th>
-            <td>@if (canConfig)
-                {
-                <input id="DocumentTemplate_FlattenForm" type="checkbox" @(Model.DocumentTemplate.FlattenForm ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
-                    $(function () {
-                        $('#DocumentTemplate_FlattenForm').click(function () {
-                            var $this = $(this);
-                            var $ajaxLoading = $this.next('.ajaxLoading').show();
-                            var data = { FlattenForm: $this.is(':checked') };
-                            $.getJSON('@(Url.Action(MVC.API.DocumentTemplate.UpdateFlattenForm(Model.DocumentTemplate.Id)))', data, function (response, result) {
-                                if (result != 'success' || response != 'OK') {
-                                    alert('Unable to change Flatten Form:\n' + response);
-                                    $ajaxLoading.hide();
-                                } else {
-                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                }
-                            });
-                        });
-                    });
-                </script>
-                }
-                else
-                {
-                <input id="DocumentTemplate_FlattenForm" type="checkbox" @(Model.DocumentTemplate.FlattenForm ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
-                }
-            </td>
-        </tr>
-        <tr>
-            <th>Scope:
-            </th>
-            <td>@if (canConfig)
-                {
-                @Html.DropDownListFor(model => model.DocumentTemplate.Scope, Model.Scopes.ToSelectListItems(null))
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
-                    $(function () {
-                        var $scope = $('#DocumentTemplate_Scope');
-                        $scope.change(function () {
-                            var $ajaxLoading = $scope.next('.ajaxLoading').show();
-                            var data = { Scope: $scope.val() };
-                            $.ajax({
-                                url: '@Url.Action(MVC.API.DocumentTemplate.UpdateScope(Model.DocumentTemplate.Id))',
-                                dataType: 'json',
-                                data: data,
-                                success: function (d) {
-                                    if (d == 'OK') {
-                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                        scopeChange();
-                                    } else {
-                                        $ajaxLoading.hide();
-                                        alert('Unable to update scope: ' + d);
-                                    }
-                                },
-                                error: function (jqXHR, textStatus, errorThrown) {
-                                    alert('Unable to update scope: ' + textStatus);
-                                    $ajaxLoading.hide();
-                                }
-                            });
-                        });
-
-                        var $JobSubTypes = $('#Config_DocumentTemplates_JobSubTypes');
-
-                        function scopeChange() {
-                            if ($scope.val() == 'Job') {
-                                $JobSubTypes.slideDown('fast');
-                            } else {
-                                $JobSubTypes.slideUp('fast');
-                            }
-                        }
-                    });
-                </script>
-                }
-                else
-                {
-                <div>@Model.DocumentTemplate.Scope</div>
-                }
-                @if (canConfig || (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.Job))
-                {
-                    <div id="Config_DocumentTemplates_JobSubTypes" @(Model.DocumentTemplate.Scope != DocumentTemplate.DocumentTemplateScopes.Job ? "style=\"display: none;\" " : null)>
-                        <h4>Filter:</h4>
-                        <div>
-                            @if (Model.DocumentTemplate.JobSubTypes.Count > 0)
-                            {
-                                <ul>
-                                    @foreach (var jobType in Model.DocumentTemplate.JobSubTypes.GroupBy(jst => jst.JobType).OrderBy(jtg => jtg.Key.Description))
-                                    {
-                                        <li>
-                                            @jobType.Key.Description
-                                            <ul>
-                                                @if (jobType.Count() == Model.JobTypes.FirstOrDefault(jt => jt.Id == jobType.Key.Id).JobSubTypes.Count)
-                                                {
-                                                    <li><span class="smallMessage">[All Sub Types]</span></li>
-                                                }
-                                                else
-                                                {
-                                                    foreach (var jobSubType in jobType)
-                                                    {
-                                                    <li>@jobSubType.Description</li>
+                                        }).blur(function () {
+                                            $DescriptionAjaxSave.hide();
+                                        })
+                                        .change(function () {
+                                            $DescriptionAjaxSave.hide();
+                                            var $ajaxLoading = $DescriptionAjaxSave.next('.ajaxLoading').show();
+                                            var data = { Description: $Description.val() };
+                                            $.ajax({
+                                                url: '@Url.Action(MVC.API.DocumentTemplate.UpdateDescription(Model.DocumentTemplate.Id))',
+                                                dataType: 'json',
+                                                data: data,
+                                                success: function (d) {
+                                                    if (d == 'OK') {
+                                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                                    } else {
+                                                        $ajaxLoading.hide();
+                                                        alert('Unable to update description: ' + d);
                                                     }
+                                                },
+                                                error: function (jqXHR, textStatus, errorThrown) {
+                                                    alert('Unable to update description: ' + textStatus);
+                                                    $ajaxLoading.hide();
                                                 }
-                                            </ul>
-                                        </li>
-                                    }
-                                </ul>
+                                            });
+                                        });
+                            });
+                        </script>
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(Model.DocumentTemplate.Description))
+                            {
+                        <span class="smallMessage">&lt;None Specified&gt;</span>
                             }
                             else
                             {
-                                <span class="smallMessage">&lt;No Filter&gt;</span>
+                        @Model.DocumentTemplate.Description
                             }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>Always Flatten Form:
+                    </th>
+                    <td>@if (canConfig)
+                        {
+                        <input id="DocumentTemplate_FlattenForm" type="checkbox" @(Model.DocumentTemplate.FlattenForm ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
+                        @AjaxHelpers.AjaxLoader()
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#DocumentTemplate_FlattenForm').click(function () {
+                                    var $this = $(this);
+                                    var $ajaxLoading = $this.next('.ajaxLoading').show();
+                                    var data = { FlattenForm: $this.is(':checked') };
+                                    $.getJSON('@(Url.Action(MVC.API.DocumentTemplate.UpdateFlattenForm(Model.DocumentTemplate.Id)))', data, function (response, result) {
+                                        if (result != 'success' || response != 'OK') {
+                                            alert('Unable to change Flatten Form:\n' + response);
+                                            $ajaxLoading.hide();
+                                        } else {
+                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                        }
+                        else
+                        {
+                        <input id="DocumentTemplate_FlattenForm" type="checkbox" @(Model.DocumentTemplate.FlattenForm ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>Scope:
+                    </th>
+                    <td>
+                        <h4>@Model.DocumentTemplate.Scope Scope</h4>
+                        <div class="infoBox">
+                            <p class="fa-p">
+                                <i class="fa fa-info-circle"></i>This template is generated from @(Model.DocumentTemplate.Scope)s. Any expressions within the Template&nbsp;PDF will be evaluated within the <a href="@(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser()))#@(Model.DocumentTemplate.Scope)Scope">@(Model.DocumentTemplate.Scope) Scope</a>.
+                            </p>
+                        </div>
+                        <div>
+                            <button id="Config_DocumentTemplates_Scope_Button" class="button small">Change Scope</button>
                         </div>
                         @if (canConfig)
                         {
-                            <a id="Config_DocumentTemplates_JobSubTypes_Update" href="#" class="button small">Update</a>
-                            <div id="Config_DocumentTemplates_JobSubTypes_Update_Dialog" class="dialog" title="Job Type Filter">
-                                @using (Html.BeginForm(MVC.API.DocumentTemplate.UpdateJobSubTypes(Model.DocumentTemplate.Id, null, true)))
+                            <div id="Config_DocumentTemplates_Scope_Dialog" title="Change Document Template Scope" class="dialog">
+                                @using (Html.BeginForm(MVC.API.DocumentTemplate.UpdateScope(Model.DocumentTemplate.Id, redirect: true)))
                                 {
-                                    var selectedTypes = Model.DocumentTemplate.JobSubTypes.Select(jst => jst.JobType).Distinct().ToList();
-                                    foreach (var jt in Model.JobTypes)
-                                    {
-                                    <div class="jobTypes">
-                                        <h4>
-                                            <input id="Types_@(jt.Id)" class="jobType" type="checkbox" value="@(jt.Id)" @(selectedTypes.Contains(jt) ? "checked=\"checked\"" : null) /><label for="Types_@(jt.Id)">@jt.Description</label></h4>
-                                        <div id="SubTypes_@(jt.Id)" class="jobSubTypes">
-                                            @CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id), "div")
-                                            @CommonHelpers.CheckBoxList("JobSubTypes", jt.JobSubTypes.OrderBy(jst => jst.Description).ToSelectListItems(Model.DocumentTemplate.JobSubTypes), 2)
-                                        </div>
-                                    </div>   
-                                    }
+                                    <div class="input">
+                                        <label for="Config_DocumentTemplates_Scope_Scope">Scope: </label>
+                                        <select id="Config_DocumentTemplates_Scope_Scope" name="Scope">
+                                            @foreach (var scope in Model.Scopes)
+                                            {
+                                                <option value="@scope" selected="@(scope == Model.DocumentTemplate.Scope ? "selected" : null)">@scope</option>   
+                                            }
+                                        </select>
+                                    </div>
+                                }
+                                <div class="infoBox">
+                                    <p class="fa-p">
+                                        <i class="fa fa-info-circle"></i>Expressions within the Template PDF may need to be updated to reflect any changes to the Document Template Scope.
+                                    </p>
+                                </div>
+                                @if (Model.DocumentTemplate.UsersLinkedGroup != null || Model.DocumentTemplate.DevicesLinkedGroup != null)
+                                {
+                                    <div class="infoBox error">
+                                        <p class="fa-p">
+                                            <i class="fa fa-exclamation-circle"></i><strong>Warning:</strong> This Document Template contains Linked Groups, these will be automatically updated to reflect the new Document Template Scope which <strong>may result in undesired behaviour</strong>.
+                                        </p>
+                                    </div>
                                 }
                             </div>
-                            <script>
-                                (function () {
+                            <script type="text/javascript">
+                                $(function () {
                                     var dialog;
 
                                     function showDialog() {
-                                        if (!dialog) {
-                                            dialog = $('#Config_DocumentTemplates_JobSubTypes_Update_Dialog').dialog({
+                                        if (dialog == null) {
+                                            dialog = $('#Config_DocumentTemplates_Scope_Dialog').dialog({
+                                                width: 400,
                                                 resizable: false,
                                                 modal: true,
                                                 autoOpen: false,
-                                                width: 750,
-                                                height: 620,
                                                 buttons: {
-                                                    "Save Changes": saveChanges,
-                                                    Cancel: cancel
+                                                    'Save Changes': function () {
+                                                        dialog.dialog('option', 'buttons', null);
+                                                        dialog.dialog('disable');
+                                                        $('#Config_DocumentTemplates_Scope_Scope').closest('form').submit();
+                                                    },
+                                                    'Cancel': function () {
+                                                        dialog.dialog('close');
+                                                    }
                                                 }
-                                            });
-
-                                            dialog.find('.jobSubTypes').hide();
-                                            dialog.on('change', 'input.jobType', function () {
-                                                var $this = $(this);
-                                                if ($this.is(':checked'))
-                                                    $('#SubTypes_' + $this.val()).slideDown('fast');
-                                                else
-                                                    $('#SubTypes_' + $this.val()).slideUp('fast');
-                                            }).find('input.jobType:checked').each(function () {
-                                                $('#SubTypes_' + $(this).val()).show();
                                             });
                                         }
 
@@ -272,140 +216,321 @@
                                         return false;
                                     }
 
-                                    function cancel() {
-                                        dialog.dialog("disable");
-                                        dialog.dialog("option", "buttons", null);
-
-                                        // Refresh Page
-                                        window.location.href = window.location.href;
-                                    }
-
-                                    function saveChanges() {
-                                        var form = dialog.find('form');
-
-                                        $('input.jobType:unchecked').each(function () {
-                                            $('#SubTypes_' + $(this).val()).find('input').prop('checked', false);
-                                        });
-
-                                        form.submit();
-
-                                        dialog.dialog("disable");
-                                        dialog.dialog("option", "buttons", null);
-                                    }
-
-                                    $(function () {
-                                        $('#Config_DocumentTemplates_JobSubTypes_Update').click(showDialog);
-                                    });
-
-                                })();
+                                    $('#Config_DocumentTemplates_Scope_Button').click(showDialog);
+                                });
                             </script>
                         }
-                    </div>
-                }
-            </td>
-        </tr>
-        <tr>
-            <th>Template PDF
-            </th>
-            <td>
-                @Html.ActionLink("Download Template", MVC.API.DocumentTemplate.Template(Model.DocumentTemplate.Id))
-                @if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.Upload))
-                {
-                    <br />
-                    using (Html.BeginForm(MVC.API.DocumentTemplate.Template(Model.DocumentTemplate.Id, true, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
-                    {
-                    <input type="file" name="Template" id="Template" style="width: 250px;" />
-                    <input class="button" type="submit" value="Upload" />
-                    }
-                    <script type="text/javascript">
-                        $(function () {
-                            var $template = $('#Template');
-                            $template.closest('form').submit(function () {
-                                if ($template.val() == '') {
-                                    alert('A template file is required to upload.');
-                                    return false;
-                                }
-                            });
-                        });
-                    </script>
-                }
-            </td>
-        </tr>
-        <tr>
-            <th>Filter Expression:
-            </th>
-            <td>@if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
-                {
-                @Html.TextBoxFor(model => model.DocumentTemplate.FilterExpression)
-                @AjaxHelpers.AjaxRemove()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
-                    $(function () {
-                        var $FilterExpression = $('#DocumentTemplate_FilterExpression');
-                        var $ajaxLoading = $FilterExpression.nextAll('.ajaxLoading').first();
-                        var $ajaxRemove = $FilterExpression.nextAll('.ajaxRemove').first();
-                        $FilterExpression
-                                .watermark('Filter Expression')
-                                .focus(function () { $FilterExpression.select() })
-                                .keydown(function (e) {
-                                    if (e.which == 13) {
-                                        $(this).blur();
+                        @if (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.Job)
+                        {
+                            <hr />
+                            <h4>Job Type Filters:</h4>
+                            <div id="Config_DocumentTemplates_JobSubTypes" @(Model.DocumentTemplate.Scope != DocumentTemplate.DocumentTemplateScopes.Job ? "style=\"display: none;\" " : null)>
+                                <div>
+                                    @if (Model.DocumentTemplate.JobSubTypes.Count > 0)
+                                    {
+                                        <ul>
+                                            @foreach (var jobType in Model.DocumentTemplate.JobSubTypes.GroupBy(jst => jst.JobType).OrderBy(jtg => jtg.Key.Description))
+                                            {
+                                                <li>
+                                                    @jobType.Key.Description
+                                                    <ul>
+                                                        @if (jobType.Count() == Model.JobTypes.FirstOrDefault(jt => jt.Id == jobType.Key.Id).JobSubTypes.Count)
+                                                        {
+                                                            <li><span class="smallMessage">[All Sub Types]</span></li>
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var jobSubType in jobType)
+                                                            {
+                                                            <li>@jobSubType.Description</li>
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </li>
+                                            }
+                                        </ul>
                                     }
-                                }).change(function () {
-                                    updateFilterExpression($FilterExpression.val());
+                                    else
+                                    {
+                                        <span class="smallMessage">&lt;No Filter&gt;</span>
+                                    }
+                                </div>
+                                @if (canConfig)
+                                {
+                                    <a id="Config_DocumentTemplates_JobSubTypes_Update" href="#" class="button small">Update</a>
+                                    <div id="Config_DocumentTemplates_JobSubTypes_Update_Dialog" class="dialog" title="Job Type Filter">
+                                        @using (Html.BeginForm(MVC.API.DocumentTemplate.UpdateJobSubTypes(Model.DocumentTemplate.Id, null, true)))
+                                        {
+                                            var selectedTypes = Model.DocumentTemplate.JobSubTypes.Select(jst => jst.JobType).Distinct().ToList();
+                                            foreach (var jt in Model.JobTypes)
+                                            {
+                                            <div class="jobTypes">
+                                                <h4>
+                                                    <input id="Types_@(jt.Id)" class="jobType" type="checkbox" value="@(jt.Id)" @(selectedTypes.Contains(jt) ? "checked=\"checked\"" : null) /><label for="Types_@(jt.Id)">@jt.Description</label></h4>
+                                                <div id="SubTypes_@(jt.Id)" class="jobSubTypes">
+                                                    @CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id), "div")
+                                                    @CommonHelpers.CheckBoxList("JobSubTypes", jt.JobSubTypes.OrderBy(jst => jst.Description).ToSelectListItems(Model.DocumentTemplate.JobSubTypes), 2)
+                                                </div>
+                                            </div>   
+                                            }
+                                        }
+                                    </div>
+                                    <script>
+                                        (function () {
+                                            var dialog;
+
+                                            function showDialog() {
+                                                if (!dialog) {
+                                                    dialog = $('#Config_DocumentTemplates_JobSubTypes_Update_Dialog').dialog({
+                                                        resizable: false,
+                                                        modal: true,
+                                                        autoOpen: false,
+                                                        width: 750,
+                                                        height: 620,
+                                                        buttons: {
+                                                            "Save Changes": saveChanges,
+                                                            Cancel: cancel
+                                                        }
+                                                    });
+
+                                                    dialog.find('.jobSubTypes').hide();
+                                                    dialog.on('change', 'input.jobType', function () {
+                                                        var $this = $(this);
+                                                        if ($this.is(':checked'))
+                                                            $('#SubTypes_' + $this.val()).slideDown('fast');
+                                                        else
+                                                            $('#SubTypes_' + $this.val()).slideUp('fast');
+                                                    }).find('input.jobType:checked').each(function () {
+                                                        $('#SubTypes_' + $(this).val()).show();
+                                                    });
+                                                }
+
+                                                dialog.dialog('open');
+
+                                                return false;
+                                            }
+
+                                            function cancel() {
+                                                dialog.dialog("disable");
+                                                dialog.dialog("option", "buttons", null);
+
+                                                // Refresh Page
+                                                window.location.href = window.location.href;
+                                            }
+
+                                            function saveChanges() {
+                                                var form = dialog.find('form');
+
+                                                $('input.jobType:unchecked').each(function () {
+                                                    $('#SubTypes_' + $(this).val()).find('input').prop('checked', false);
+                                                });
+
+                                                form.submit();
+
+                                                dialog.dialog("disable");
+                                                dialog.dialog("option", "buttons", null);
+                                            }
+
+                                            $(function () {
+                                                $('#Config_DocumentTemplates_JobSubTypes_Update').click(showDialog);
+                                            });
+
+                                        })();
+                                    </script>
+                                }
+                            </div>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>PDF Template
+                    </th>
+                    <td>
+                        @Html.ActionLinkSmallButton("Download Template", MVC.API.DocumentTemplate.Template(Model.DocumentTemplate.Id))
+                        @if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.Upload))
+                        {
+                            <button class="button small" id="Config_DocumentTemplates_TemplatePdf_Button">Replace Template</button>
+                            <div id="Config_DocumentTemplates_TemplatePdf_Dialog" title="Replace Document PDF Template" class="dialog">
+                                <h4>Select a PDF Template to upload:</h4>
+                                <div>
+                                    @using (Html.BeginForm(MVC.API.DocumentTemplate.Template(Model.DocumentTemplate.Id, true, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                    {
+                                        <input type="file" name="Template" id="Config_DocumentTemplates_TemplatePdf_Template" style="width: 250px;" />
+                                    }
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                $(function () {
+                                    var dialog, template;
+
+                                    function showDialog() {
+                                        if (dialog == null) {
+                                            template = $('#Config_DocumentTemplates_TemplatePdf_Template');
+
+                                            dialog = $('#Config_DocumentTemplates_TemplatePdf_Dialog').dialog({
+                                                width: 350,
+                                                resizable: false,
+                                                modal: true,
+                                                autoOpen: false,
+                                                buttons: {
+                                                    'Upload': function () {
+                                                        if (template.val() == '') {
+                                                            alert('A template file is required to upload.');
+                                                        } else {
+                                                            dialog.dialog('option', 'buttons', null);
+                                                            dialog.dialog('disable');
+                                                            template.closest('form').submit();
+                                                        }
+                                                    },
+                                                    'Cancel': function () {
+                                                        dialog.dialog('close');
+                                                    }
+                                                }
+                                            });
+                                        }
+
+                                        dialog.dialog('open');
+
+                                        return false;
+                                    }
+
+                                    $('#Config_DocumentTemplates_TemplatePdf_Button').click(showDialog);
                                 });
-                        if ($FilterExpression.val() != '')
-                            $ajaxRemove.show();
-                        $ajaxRemove.click(function () {
-                            updateFilterExpression('');
-                            $FilterExpression.val('');
-                        });
-                        var updateFilterExpression = function (filterExpression) {
-                            $ajaxLoading.show();
-                            $ajaxRemove.hide();
-                            var data = { FilterExpression: filterExpression };
-                            $.ajax({
-                                url: '@Url.Action(MVC.API.DocumentTemplate.UpdateFilterExpression(Model.DocumentTemplate.Id))',
-                                dataType: 'json',
-                                data: data,
-                                success: function (d) {
-                                    if (d == 'OK') {
-                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                        if (data.FilterExpression != '')
-                                            $ajaxRemove.fadeIn('fast');
-                                    } else {
-                                        $ajaxLoading.hide();
-                                        alert('Unable to update filter expression: ' + d);
-                                    }
-                                },
-                                error: function (jqXHR, textStatus, errorThrown) {
-                                    alert('Unable to update filter expression: ' + textStatus);
-                                    $ajaxLoading.hide();
-                                }
-                            });
-                        };
-                    });
-                </script>
-                }
-                else
+                            </script>
+                        }
+                    </td>
+                </tr>
+                @if (hideAdvanced)
                 {
-                    if (string.IsNullOrWhiteSpace(Model.DocumentTemplate.FilterExpression))
-                    {
-                <span class="smallMessage">&lt;None Specified&gt;</span>
-                    }
-                    else
-                    {
-                <div class="code">
-                    @Model.DocumentTemplate.FilterExpression
-                </div>
-                    }
+                    <tr>
+                        <td colspan="2" style="text-align: right;">
+                            <button id="Config_HideAdvanced_Show" class="button small">Show Advanced Options</button>
+                            <script>
+                                $(function () {
+                                    $('#Config_HideAdvanced_Show').click(function () {
+                                        var $this = $(this);
+                                        $this.closest('.Config_HideAdvanced').removeClass('Config_HideAdvanced');
+                                        $this.closest('tr').remove();
+                                    });
+                                });
+                            </script>
+                        </td>
+                    </tr>
                 }
-            </td>
-        </tr>
-    </table>
+            </tbody>
+        </table>
+    </div>
+    <div class="form Config_HideAdvanced_Item" style="width: 650px;">
+        <h2>Advanced Options</h2>
+        <table>
+            <tbody>
+                <tr>
+                    <th>Filter Expression:
+                    </th>
+                    <td>@if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
+                        {
+                        @Html.TextBoxFor(model => model.DocumentTemplate.FilterExpression)
+                        @AjaxHelpers.AjaxRemove()
+                        @AjaxHelpers.AjaxLoader()
+                        <script type="text/javascript">
+                            $(function () {
+                                var $FilterExpression = $('#DocumentTemplate_FilterExpression');
+                                var $ajaxLoading = $FilterExpression.nextAll('.ajaxLoading').first();
+                                var $ajaxRemove = $FilterExpression.nextAll('.ajaxRemove').first();
+                                $FilterExpression
+                                        .watermark('Filter Expression')
+                                        .focus(function () { $FilterExpression.select() })
+                                        .keydown(function (e) {
+                                            if (e.which == 13) {
+                                                $(this).blur();
+                                            }
+                                        }).change(function () {
+                                            updateFilterExpression($FilterExpression.val());
+                                        });
+                                if ($FilterExpression.val() != '')
+                                    $ajaxRemove.show();
+                                $ajaxRemove.click(function () {
+                                    updateFilterExpression('');
+                                    $FilterExpression.val('');
+                                });
+                                var updateFilterExpression = function (filterExpression) {
+                                    $ajaxLoading.show();
+                                    $ajaxRemove.hide();
+                                    var data = { FilterExpression: filterExpression };
+                                    $.ajax({
+                                        url: '@Url.Action(MVC.API.DocumentTemplate.UpdateFilterExpression(Model.DocumentTemplate.Id))',
+                                        dataType: 'json',
+                                        data: data,
+                                        success: function (d) {
+                                            if (d == 'OK') {
+                                                $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                                if (data.FilterExpression != '')
+                                                    $ajaxRemove.fadeIn('fast');
+                                            } else {
+                                                $ajaxLoading.hide();
+                                                alert('Unable to update filter expression: ' + d);
+                                            }
+                                        },
+                                        error: function (jqXHR, textStatus, errorThrown) {
+                                            alert('Unable to update filter expression: ' + textStatus);
+                                            $ajaxLoading.hide();
+                                        }
+                                    });
+                                };
+                            });
+                        </script>
+                        }
+                        else
+                        {
+                            if (string.IsNullOrWhiteSpace(Model.DocumentTemplate.FilterExpression))
+                            {
+                        <span class="smallMessage">&lt;None Specified&gt;</span>
+                            }
+                            else
+                            {
+                        <div class="code">
+                            @Model.DocumentTemplate.FilterExpression
+                        </div>
+                            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>Linked Groups:
+                    </th>
+                    <td>
+                        <div>
+                            @Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
+               {
+                   CanConfigure = canConfig,
+                   CategoryDescription = DocumentTemplateUsersManagedGroup.GetCategoryDescription(Model.DocumentTemplate),
+                   Description = DocumentTemplateUsersManagedGroup.GetDescription(Model.DocumentTemplate),
+                   ManagedGroup = Model.UsersLinkedGroup,
+                   UpdateUrl = Url.Action(MVC.API.DocumentTemplate.UpdateUsersLinkedGroup(Model.DocumentTemplate.Id, redirect: true))
+               })
+                            @Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
+               {
+                   CanConfigure = canConfig,
+                   CategoryDescription = DocumentTemplateDevicesManagedGroup.GetCategoryDescription(Model.DocumentTemplate),
+                   Description = DocumentTemplateDevicesManagedGroup.GetDescription(Model.DocumentTemplate),
+                   ManagedGroup = Model.DevicesLinkedGroup,
+                   UpdateUrl = Url.Action(MVC.API.DocumentTemplate.UpdateDevicesLinkedGroup(Model.DocumentTemplate.Id, redirect: true))
+               })
+                            @if (canConfig)
+                            {
+                                @Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared)
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="Config_HideAdvanced_Item">
+        <h2>Template Expressions</h2>
+        @Html.Partial(MVC.Config.DocumentTemplate.Views._ExpressionsTable, Model.TemplateExpressions)
+    </div>
 </div>
-<h2>Template Expressions</h2>
-@Html.Partial(MVC.Config.DocumentTemplate.Views._ExpressionsTable, Model.TemplateExpressions)
 <div id="dialogConfirmDelete" title="Delete this Document Template?">
     <p>
         <i class="fa fa-exclamation-triangle fa-lg warning"></i>This item will be permanently deleted and cannot be recovered.<br />

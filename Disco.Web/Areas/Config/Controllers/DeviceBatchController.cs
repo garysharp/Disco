@@ -1,6 +1,7 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Models.UI.Config.DeviceBatch;
 using Disco.Services.Authorization;
+using Disco.Services.Devices.ManagedGroups;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Web;
 using System;
@@ -35,6 +36,13 @@ namespace Disco.Web.Areas.Config.Controllers
                     DeviceCount = dG.Count(),
                     DeviceDecommissionedCount = dG.Count(d => d.DecommissionedDate.HasValue)
                 }).ToArray().Cast<ConfigDeviceBatchShowModelMembership>().ToList();
+
+                DeviceBatchAssignedUsersManagedGroup assignedUsersManagedGroup;
+                if (DeviceBatchAssignedUsersManagedGroup.TryGetManagedGroup(m.DeviceBatch, out assignedUsersManagedGroup))
+                    m.AssignedUsersLinkedGroup = assignedUsersManagedGroup;
+                DeviceBatchDevicesManagedGroup devicesManagedGroup;
+                if (DeviceBatchDevicesManagedGroup.TryGetManagedGroup(m.DeviceBatch, out devicesManagedGroup))
+                    m.DevicesLinkedGroup = devicesManagedGroup;
 
                 if (Authorization.Has(Claims.Config.DeviceBatch.Delete))
                     m.CanDelete = m.DeviceBatch.CanDelete(Database);

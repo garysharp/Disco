@@ -12,16 +12,15 @@ using System.Linq;
 
 namespace Disco.Services.Interop.ActiveDirectory
 {
-    public class ADTaskUpdateNetworkLogonDates : ScheduledTask
+    public class ADNetworkLogonDatesUpdateTask : ScheduledTask
     {
-
         public override string TaskName { get { return "Active Directory - Update Last Network Logon Dates Task"; } }
         public override bool SingleInstanceTask { get { return true; } }
         public override bool CancelInitiallySupported { get { return false; } }
 
         public override void InitalizeScheduledTask(DiscoDataContext Database)
         {
-            // ActiveDirectoryUpdateLastNetworkLogonDateJob @ 11:30pm
+            // ADNetworkLogonDatesUpdateTask @ 11:30pm
             TriggerBuilder triggerBuilder = TriggerBuilder.Create().
                 WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(23, 30));
 
@@ -50,11 +49,11 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public static ScheduledTaskStatus ScheduleImmediately()
         {
-            var existingTask = ScheduledTasks.GetTaskStatuses(typeof(ADTaskUpdateNetworkLogonDates)).Where(s => s.IsRunning).FirstOrDefault();
+            var existingTask = ScheduledTasks.GetTaskStatuses(typeof(ADNetworkLogonDatesUpdateTask)).Where(s => s.IsRunning).FirstOrDefault();
             if (existingTask != null)
                 return existingTask;
 
-            var instance = new ADTaskUpdateNetworkLogonDates();
+            var instance = new ADNetworkLogonDatesUpdateTask();
             return instance.ScheduleTask();
         }
 
@@ -68,16 +67,18 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (!string.IsNullOrEmpty(Device.DeviceDomainId) && Device.DeviceDomainId.Contains('\\'))
             {
                 var context = ActiveDirectory.Context;
-                var deviceSamAccountName = UserExtensions.SplitUserId(Device.DeviceDomainId).Item2 + "$";
-                var ldapFilter = string.Format(ldapFilterTemplate, ADHelpers.EscapeLdapQuery(deviceSamAccountName));
+                string deviceSamAccountName;
+                ADDomain deviceDomain;
 
-                var domain = context.GetDomainFromId(Device.DeviceDomainId);
+                ActiveDirectory.ParseDomainAccountId(Device.DeviceDomainId + "$", out deviceSamAccountName, out deviceDomain);
+                
+                var ldapFilter = string.Format(ldapFilterTemplate, ADHelpers.EscapeLdapQuery(deviceSamAccountName));
                 IEnumerable<ADDomainController> domainControllers;
 
                 if (context.SearchAllForestServers)
-                    domainControllers = domain.GetAllReachableDomainControllers();
+                    domainControllers = deviceDomain.GetAllReachableDomainControllers();
                 else
-                    domainControllers = domain.GetReachableSiteDomainControllers();
+                    domainControllers = deviceDomain.GetReachableSiteDomainControllers();
 
                 lastLogon = domainControllers.Select(dc =>
                 {

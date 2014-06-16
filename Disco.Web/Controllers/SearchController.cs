@@ -205,8 +205,7 @@ namespace Disco.Web.Controllers
                     case "userid":
                         Authorization.Require(Claims.User.Search);
 
-                        if (!term.Contains('\\'))
-                            term = string.Format(@"{0}\{1}", ActiveDirectory.Context.PrimaryDomain.NetBiosName, term);
+                        term = ActiveDirectory.ParseDomainAccountId(term);
 
                         var user = Database.Users.FirstOrDefault(u => u.UserId == term);
                         if (user != null)

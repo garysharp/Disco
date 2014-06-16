@@ -19,7 +19,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Config.System.Show)]
         public virtual ActionResult UpdateLastNetworkLogonDates()
         {
-            var taskStatus = Disco.Services.Interop.ActiveDirectory.ADTaskUpdateNetworkLogonDates.ScheduleImmediately();
+            var taskStatus = Disco.Services.Interop.ActiveDirectory.ADNetworkLogonDatesUpdateTask.ScheduleImmediately();
 
             return RedirectToAction(MVC.Config.Logging.TaskStatus(taskStatus.SessionId));
         }
@@ -294,6 +294,17 @@ namespace Disco.Web.Areas.API.Controllers
             return Json(results, JsonRequestBehavior.AllowGet);
         }
 
+        [DiscoAuthorizeAny(Claims.Config.UserFlag.Configure)]
+        public virtual ActionResult SearchGroupSubjects(string term)
+        {
+            var groupResults = ActiveDirectory.SearchADGroups(term).Cast<IADObject>();
+
+            var results = groupResults.OrderBy(r => r.SamAccountName)
+                .Select(r => Models.Shared.SubjectDescriptorModel.FromActiveDirectoryObject(r)).ToList();
+
+            return Json(results, JsonRequestBehavior.AllowGet);
+        }
+
         [DiscoAuthorizeAny(Claims.DiscoAdminAccount, Claims.Config.JobQueue.Configure)]
         public virtual ActionResult Subject(string Id)
         {
@@ -303,6 +314,22 @@ namespace Disco.Web.Areas.API.Controllers
                 return Json(null, JsonRequestBehavior.AllowGet);
             else
                 return Json(Models.Shared.SubjectDescriptorModel.FromActiveDirectoryObject(subject), JsonRequestBehavior.AllowGet);
+        }
+
+        [DiscoAuthorizeAny(Claims.Config.UserFlag.Configure)]
+        public virtual ActionResult SyncActiveDirectoryManagedGroup(string id, string redirectUrl = null)
+        {
+            ADManagedGroup managedGroup;
+            
+            if (!ActiveDirectory.Context.ManagedGroups.TryGetValue(id, out managedGroup))
+                throw new ArgumentException("Unknown Managed Group Key");
+
+            var taskStatus = ADManagedGroupsSyncTask.ScheduleSync(managedGroup);
+            
+            if (redirectUrl != null)
+                taskStatus.SetFinishedUrl(redirectUrl);
+
+            return RedirectToAction(MVC.Config.Logging.TaskStatus(taskStatus.SessionId));
         }
 
         #endregion

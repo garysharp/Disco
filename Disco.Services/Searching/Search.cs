@@ -235,7 +235,7 @@ namespace Disco.Services.Searching
                 UserFlagAssignments = u.UserFlagAssignments
             }).ToList();
 
-            results.ForEach(u => u.FriendlyId = UserExtensions.FriendlyUserId(u.Id));
+            results.ForEach(u => u.FriendlyId = ActiveDirectory.FriendlyAccountId(u.Id));
 
             return results;
         }

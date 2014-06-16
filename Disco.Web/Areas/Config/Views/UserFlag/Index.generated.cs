@@ -47,7 +47,7 @@ namespace Disco.Web.Areas.Config.Views.UserFlag
             
             #line 2 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
   
-    Authorization.RequireAll(Claims.Config.UserFlag.Create, Claims.Config.UserFlag.Configure);
+    Authorization.Require(Claims.Config.UserFlag.Show);
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "User Flags", MVC.Config.UserFlag.Index(null));
 
             
@@ -95,16 +95,16 @@ WriteLiteral("        <table");
 WriteLiteral(" class=\"tableData\"");
 
 WriteLiteral(">\r\n            <tr>\r\n                <th>Name</th>\r\n                <th>Descripti" +
-"on</th>\r\n            </tr>\r\n");
+"on</th>\r\n                <th>Linked</th>\r\n            </tr>\r\n");
 
             
-            #line 20 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 21 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 20 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 21 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
              foreach (var item in Model.UserFlags)
             {
 
@@ -113,37 +113,37 @@ WriteLiteral(">\r\n            <tr>\r\n                <th>Name</th>\r\n        
             #line hidden
 WriteLiteral("                <tr>\r\n                    <td>\r\n                        <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 815), Tuple.Create("\"", 869)
+WriteAttribute("href", Tuple.Create(" href=\"", 809), Tuple.Create("\"", 863)
             
-            #line 24 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 822), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.UserFlag.Index(item.Id))
+            #line 25 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 816), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.UserFlag.Index(item.Id))
             
             #line default
             #line hidden
-, 822), false)
+, 816), false)
 );
 
 WriteLiteral(">\r\n                            <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 903), Tuple.Create("\"", 956)
-, Tuple.Create(Tuple.Create("", 911), Tuple.Create("fa", 911), true)
-, Tuple.Create(Tuple.Create(" ", 913), Tuple.Create("fa-", 914), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 897), Tuple.Create("\"", 950)
+, Tuple.Create(Tuple.Create("", 905), Tuple.Create("fa", 905), true)
+, Tuple.Create(Tuple.Create(" ", 907), Tuple.Create("fa-", 908), true)
             
-            #line 25 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 917), Tuple.Create<System.Object, System.Int32>(item.Icon
-            
-            #line default
-            #line hidden
-, 917), false)
-, Tuple.Create(Tuple.Create(" ", 929), Tuple.Create("fa-lg", 930), true)
-, Tuple.Create(Tuple.Create(" ", 935), Tuple.Create("d-", 936), true)
-            
-            #line 25 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 938), Tuple.Create<System.Object, System.Int32>(item.IconColour
+            #line 26 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 911), Tuple.Create<System.Object, System.Int32>(item.Icon
             
             #line default
             #line hidden
-, 938), false)
+, 911), false)
+, Tuple.Create(Tuple.Create(" ", 923), Tuple.Create("fa-lg", 924), true)
+, Tuple.Create(Tuple.Create(" ", 929), Tuple.Create("d-", 930), true)
+            
+            #line 26 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 932), Tuple.Create<System.Object, System.Int32>(item.IconColour
+            
+            #line default
+            #line hidden
+, 932), false)
 );
 
 WriteLiteral("></i>\r\n");
@@ -151,7 +151,7 @@ WriteLiteral("></i>\r\n");
 WriteLiteral("                            ");
 
             
-            #line 26 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 27 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
                        Write(item.Name);
 
             
@@ -161,7 +161,7 @@ WriteLiteral("\r\n                        </a>\r\n                    </td>\r\n 
 "d>");
 
             
-            #line 29 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 30 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
                          if (string.IsNullOrWhiteSpace(item.Description))
                         {
 
@@ -175,7 +175,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;none&gt;</span>\r\n");
 
             
-            #line 32 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 33 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
                         }
                         else
                         {
@@ -184,15 +184,53 @@ WriteLiteral(">&lt;none&gt;</span>\r\n");
             #line default
             #line hidden
             
-            #line 35 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 36 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
                    Write(item.Description.ToHtmlComment());
 
             
             #line default
             #line hidden
             
-            #line 35 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 36 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
                                                          
+                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    </td>\r\n                    <td>");
+
+            
+            #line 39 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+                         if (item.UserDevicesLinkedGroup != null || item.UsersLinkedGroup != null)
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <i");
+
+WriteLiteral(" class=\"fa fa-link fa-lg success\"");
+
+WriteLiteral("></i>\r\n");
+
+            
+            #line 42 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+                        }
+                        else
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <i");
+
+WriteLiteral(" class=\"fa fa-unlink fa-lg information\"");
+
+WriteLiteral("></i>\r\n");
+
+            
+            #line 46 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
                         }
 
             
@@ -201,7 +239,7 @@ WriteLiteral(">&lt;none&gt;</span>\r\n");
 WriteLiteral("                    </td>\r\n                </tr>\r\n");
 
             
-            #line 39 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 49 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
             }
 
             
@@ -210,28 +248,47 @@ WriteLiteral("                    </td>\r\n                </tr>\r\n");
 WriteLiteral("        </table>\r\n");
 
             
-            #line 41 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 51 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
     }
 
             
             #line default
             #line hidden
-WriteLiteral("    <div");
+WriteLiteral("    ");
+
+            
+            #line 52 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+     if (Authorization.Has(Claims.Config.UserFlag.Create))
+    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <div");
 
 WriteLiteral(" class=\"actionBar\"");
 
 WriteLiteral(">\r\n");
 
-WriteLiteral("        ");
+WriteLiteral("            ");
 
             
-            #line 43 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
-   Write(Html.ActionLinkButton("Create User Flag", MVC.Config.UserFlag.Create()));
+            #line 55 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+       Write(Html.ActionLinkButton("Create User Flag", MVC.Config.UserFlag.Create()));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n    </div>\r\n</div>\r\n");
+WriteLiteral("\r\n        </div>\r\n");
+
+            
+            #line 57 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</div>");
 
         }
     }

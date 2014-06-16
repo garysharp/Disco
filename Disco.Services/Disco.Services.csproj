@@ -204,7 +204,13 @@
     <Compile Include="Devices\Importing\Fields\ModelIdImportField.cs" />
     <Compile Include="Devices\Importing\IDeviceImportCache.cs" />
     <Compile Include="Devices\DeviceUpdatesHub.cs" />
+    <Compile Include="Devices\ManagedGroups\DeviceBatchAssignedUsersManagedGroup.cs" />
+    <Compile Include="Devices\ManagedGroups\DeviceBatchDevicesManagedGroup.cs" />
+    <Compile Include="Devices\ManagedGroups\DeviceManagedGroups.cs" />
+    <Compile Include="Devices\ManagedGroups\DeviceProfileAssignedUsersManagedGroup.cs" />
+    <Compile Include="Devices\ManagedGroups\DeviceProfileDevicesManagedGroup.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\RxExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\UIHelpers.cs" />
@@ -212,6 +218,7 @@
     <Compile Include="Interop\ActiveDirectory\ActiveDirectoryContext.cs" />
     <Compile Include="Interop\ActiveDirectory\ActiveDirectoryExtensions.cs" />
     <Compile Include="Interop\ActiveDirectory\ActiveDirectoryGroupCache.cs" />
+    <Compile Include="Interop\ActiveDirectory\ActiveDirectoryManagedGroups.cs" />
     <Compile Include="Interop\ActiveDirectory\ADDirectoryEntry.cs" />
     <Compile Include="Interop\ActiveDirectory\ADDiscoverForestServers.cs" />
     <Compile Include="Interop\ActiveDirectory\ADDomain.cs" />
@@ -219,11 +226,14 @@
     <Compile Include="Interop\ActiveDirectory\ADGroup.cs" />
     <Compile Include="Interop\ActiveDirectory\ADHelpers.cs" />
     <Compile Include="Interop\ActiveDirectory\ADMachineAccount.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADManagedGroup.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADManagedGroupsSyncTask.cs" />
     <Compile Include="Interop\ActiveDirectory\ADOrganisationalUnit.cs" />
     <Compile Include="Interop\ActiveDirectory\ADSearchResult.cs" />
     <Compile Include="Interop\ActiveDirectory\ADSite.cs" />
-    <Compile Include="Interop\ActiveDirectory\ADTaskUpdateNetworkLogonDates.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADNetworkLogonDatesUpdateTask.cs" />
     <Compile Include="Interop\ActiveDirectory\ADUserAccount.cs" />
+    <Compile Include="Interop\ActiveDirectory\Description.cs" />
     <Compile Include="Interop\ActiveDirectory\IADObject.cs" />
     <Compile Include="Jobs\JobExtensions.cs" />
     <Compile Include="Jobs\JobLists\JobTableExtensions.cs" />
@@ -300,6 +310,8 @@
     <Compile Include="Users\CacheCleanTask.cs" />
     <Compile Include="Users\UserExtensions.cs" />
     <Compile Include="Users\UserFlags\Cache.cs" />
+    <Compile Include="Users\UserFlags\UserFlagUserDevicesManagedGroup.cs" />
+    <Compile Include="Users\UserFlags\UserFlagUsersManagedGroup.cs" />
     <Compile Include="Users\UserFlags\UserFlagsBulkAssignTask.cs" />
     <Compile Include="Users\UserFlags\UserFlagsDeleteTask.cs" />
     <Compile Include="Users\UserFlags\UserFlagService.cs" />

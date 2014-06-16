@@ -36,10 +36,7 @@ namespace Disco.Web.Controllers
             if (string.IsNullOrWhiteSpace(id))
                 throw new ArgumentNullException("id", "The User Id must be provided");
 
-            if (string.IsNullOrEmpty(Domain))
-                id = ActiveDirectory.Context.PrimaryDomain.NetBiosName + @"\" + id;
-            else
-                id = Domain + @"\" + id;
+            id = ActiveDirectory.ParseDomainAccountId(id, Domain);
 
             var m = new Models.User.ShowModel();
 

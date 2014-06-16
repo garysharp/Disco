@@ -111,6 +111,7 @@
     <Compile Include="Services\Devices\Importing\IDeviceImportRecord.cs" />
     <Compile Include="Services\Devices\Importing\IDeviceImportContext.cs" />
     <Compile Include="Services\Devices\Importing\IDeviceImportField.cs" />
+    <Compile Include="Services\Interop\ActiveDirectory\ADManagedGroupConfiguration.cs" />
     <Compile Include="Services\Jobs\JobLists\JobLocationReference.cs" />
     <Compile Include="Services\Jobs\JobLists\JobTableItemModel.cs" />
     <Compile Include="Services\Jobs\JobLists\JobTableModel.cs" />
@@ -181,7 +182,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2011/7/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2011/7/1" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

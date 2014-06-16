@@ -55,7 +55,7 @@ namespace Disco.BI.Extensions
 
         public static bool UpdateLastNetworkLogonDate(this Device Device)
         {
-            return Disco.Services.Interop.ActiveDirectory.ADTaskUpdateNetworkLogonDates.UpdateLastNetworkLogonDate(Device);
+            return Disco.Services.Interop.ActiveDirectory.ADNetworkLogonDatesUpdateTask.UpdateLastNetworkLogonDate(Device);
         }
 
         public static DeviceAttachment CreateAttachment(this Device Device, DiscoDataContext Database, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, byte[] PdfThumbnail = null)
@@ -142,10 +142,7 @@ namespace Disco.BI.Extensions
             Database.Devices.Add(d2);
             if (!string.IsNullOrEmpty(d.AssignedUserId))
             {
-                if (!d.AssignedUserId.Contains('\\'))
-                    d.AssignedUserId = string.Format(@"{0}\{1}", ActiveDirectory.Context.PrimaryDomain.NetBiosName, d.AssignedUserId);
-
-                User u = UserService.GetUser(d.AssignedUserId, Database, true);
+                User u = UserService.GetUser(ActiveDirectory.ParseDomainAccountId(d.AssignedUserId), Database, true);
                 d2.AssignDevice(Database, u);
             }
 

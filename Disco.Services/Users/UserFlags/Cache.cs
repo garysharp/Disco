@@ -42,28 +42,9 @@ namespace Disco.Services.Users.UserFlags
             return _Cache.Values.ToList();
         }
 
-        public UserFlag Update(UserFlag UserFlag)
+        public void AddOrUpdate(UserFlag UserFlag)
         {
-            UserFlag existingItem;
-
-            if (_Cache.TryGetValue(UserFlag.Id, out existingItem))
-            {
-                if (_Cache.TryUpdate(UserFlag.Id, UserFlag, existingItem))
-                {
-                    return UserFlag;
-                }
-                else
-                    return null;
-            }
-            else
-            {
-                if (_Cache.TryAdd(UserFlag.Id, UserFlag))
-                {
-                    return UserFlag;
-                }
-                else
-                    return null;
-            }
+            _Cache.AddOrUpdate(UserFlag.Id, UserFlag, (key, existingItem) => UserFlag);
         }
 
         public UserFlag Remove(int UserFlagId)

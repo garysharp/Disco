@@ -674,7 +674,7 @@ WriteLiteralTo(@__razor_helper_writer, " <span>");
 
 
 #line 58 "..\..\App_Code\CommonHelpers.cshtml"
-WriteTo(@__razor_helper_writer, Disco.Services.UserExtensions.FriendlyUserId(UserId));
+WriteTo(@__razor_helper_writer, Disco.Services.Interop.ActiveDirectory.ActiveDirectory.FriendlyAccountId(UserId));
 
 #line default
 #line hidden

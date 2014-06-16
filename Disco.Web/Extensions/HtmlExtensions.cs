@@ -147,11 +147,14 @@ namespace Disco.Web
                         if (string.IsNullOrWhiteSpace(userId))
                             return match.Value;
                         if (string.IsNullOrWhiteSpace(domainId))
-                            userId = string.Concat(ActiveDirectory.Context.PrimaryDomain.NetBiosName, @"\", userId);
+                            userId = ActiveDirectory.ParseDomainAccountId(userId);
                         else
                             userId = string.Concat(domainId, userId);
 
-                        return string.Format("<a href=\"{2}\" title=\"User {1}\">{0}</a>", match.Value, userId, urlHelper.Action(MVC.User.Show(userId)));
+                        if (!ActiveDirectory.IsValidDomainAccountId(userId))
+                            return match.Value;
+
+                        return string.Format("<a href=\"{2}\" title=\"User {1}\">{0}</a>", match.Value, ActiveDirectory.FriendlyAccountId(userId), urlHelper.Action(MVC.User.Show(userId)));
                     }
                     catch (Exception)
                     {

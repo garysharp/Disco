@@ -58,10 +58,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.User.Actions.AddAttachments)]
         public virtual ActionResult AttachmentUpload(string id, string Domain, string Comments)
         {
-            if (string.IsNullOrEmpty(Domain))
-                id = ActiveDirectory.Context.PrimaryDomain.NetBiosName + @"\" + id;
-            else
-                id = Domain + @"\" + id;
+            id = ActiveDirectory.ParseDomainAccountId(id, Domain);
 
             var u = Database.Users.Find(id);
             if (u != null)
@@ -120,10 +117,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.User.ShowAttachments)]
         public virtual ActionResult Attachments(string id, string Domain)
         {
-            if (string.IsNullOrEmpty(Domain))
-                id = ActiveDirectory.Context.PrimaryDomain.NetBiosName + @"\" + id;
-            else
-                id = Domain + @"\" + id;
+            id = ActiveDirectory.ParseDomainAccountId(id, Domain);
 
             var u = Database.Users.Include("UserAttachments.DocumentTemplate").Include("UserAttachments.TechUser").Where(m => m.UserId == id).FirstOrDefault();
             if (u != null)
@@ -167,10 +161,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (string.IsNullOrEmpty(DocumentTemplateId))
                 throw new ArgumentNullException("AttachmentTypeId");
 
-            if (string.IsNullOrEmpty(Domain))
-                id = ActiveDirectory.Context.PrimaryDomain.NetBiosName + @"\" + id;
-            else
-                id = Domain + @"\" + id;
+            id = ActiveDirectory.ParseDomainAccountId(id, Domain);
 
             var user = Database.Users.Find(id);
             if (user != null)

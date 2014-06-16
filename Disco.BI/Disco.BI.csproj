@@ -98,6 +98,9 @@
     <Compile Include="BI\DeviceBI\Migration\LogMacAddressImporting.cs" />
     <Compile Include="BI\DisposableImageCollection.cs" />
     <Compile Include="BI\DocumentTemplateBI\DocumentTemplateQRCodeLocationCache.cs" />
+    <Compile Include="BI\DocumentTemplateBI\ManagedGroups\DocumentTemplateUsersManagedGroup.cs" />
+    <Compile Include="BI\DocumentTemplateBI\ManagedGroups\DocumentTemplateDevicesManagedGroup.cs" />
+    <Compile Include="BI\DocumentTemplateBI\ManagedGroups\DocumentTemplateManagedGroups.cs" />
     <Compile Include="BI\Expressions\EvaluateExpressionParseException.cs" />
     <Compile Include="BI\Expressions\ExpressionCachePreloadTask.cs" />
     <Compile Include="BI\Expressions\Extensions\DataExt.cs" />
@@ -204,7 +207,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2011/7/1" BuildVersion_BuildAction="Both" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
