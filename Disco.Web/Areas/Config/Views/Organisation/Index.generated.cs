@@ -359,19 +359,21 @@ WriteLiteral("                    <div");
 
 WriteLiteral(" id=\"messageMultiSiteMode\"");
 
-WriteLiteral(" style=\"padding: 0.7em 0.7em; margin-top: 20px;\"");
+WriteLiteral(" class=\"info-box\"");
 
-WriteLiteral(" class=\"ui-state-highlight ui-corner-all\"");
+WriteLiteral(">\r\n                        <p");
 
-WriteLiteral(">\r\n                        <i");
+WriteLiteral(" class=\"fa-p\"");
 
-WriteLiteral(" class=\"fa fa-info-circle information\"");
+WriteLiteral(">\r\n                            <i");
 
-WriteLiteral("></i>&nbsp;Multi-Site mode is recommended where multiple addresses are configured" +
-".\r\n                    </div>\r\n");
+WriteLiteral(" class=\"fa fa-info-circle\"");
+
+WriteLiteral("></i>Multi-Site mode is recommended where multiple addresses are configured.\r\n   " +
+"                     </p>\r\n                    </div>\r\n");
 
             
-            #line 82 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 84 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                 }
 
             
@@ -384,13 +386,13 @@ WriteLiteral(" style=\"width: 160px\"");
 WriteLiteral(">Addresses:\r\n");
 
             
-            #line 87 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 89 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 87 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 89 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                  if (canConfigAddresses)
                 {
 
@@ -412,7 +414,7 @@ WriteLiteral(" class=\"button\"");
 WriteLiteral(">Create</a>\r\n");
 
             
-            #line 92 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 94 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                 }
 
             
@@ -421,13 +423,13 @@ WriteLiteral(">Create</a>\r\n");
 WriteLiteral("            </th>\r\n            <td>\r\n");
 
             
-            #line 95 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 97 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 95 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 97 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                  if (Model.OrganisationAddresses.Count > 0)
                 { 
 
@@ -444,13 +446,13 @@ WriteLiteral(">\r\n                        <tr>\r\n                            <
 "    </tr>\r\n");
 
             
-            #line 105 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 107 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 105 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 107 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                          foreach (var item in Model.OrganisationAddresses)
                         {
 
@@ -462,7 +464,7 @@ WriteLiteral("                            <tr");
 WriteLiteral(" data-addressid=\"");
 
             
-            #line 107 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 109 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                            Write(item.Id);
 
             
@@ -478,7 +480,7 @@ WriteLiteral(" class=\"name\"");
 WriteLiteral(">");
 
             
-            #line 109 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 111 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                                   Write(Html.DisplayFor(modelItem => item.Name));
 
             
@@ -491,7 +493,7 @@ WriteLiteral(" class=\"shortName\"");
 WriteLiteral(">");
 
             
-            #line 109 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 111 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                                                                                                            Write(Html.DisplayFor(modelItem => item.ShortName));
 
             
@@ -505,7 +507,7 @@ WriteLiteral(" class=\"address\"");
 WriteLiteral(">");
 
             
-            #line 112 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 114 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                                      Write(Html.DisplayFor(modelItem => item.Address));
 
             
@@ -518,7 +520,7 @@ WriteLiteral(" class=\"suburb\"");
 WriteLiteral(">");
 
             
-            #line 113 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 115 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                                     Write(Html.DisplayFor(modelItem => item.Suburb));
 
             
@@ -531,7 +533,7 @@ WriteLiteral(" class=\"postcode\"");
 WriteLiteral(">");
 
             
-            #line 113 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 115 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                                                                                                              Write(Html.DisplayFor(modelItem => item.Postcode));
 
             
@@ -544,7 +546,7 @@ WriteLiteral(" class=\"state\"");
 WriteLiteral(">");
 
             
-            #line 114 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 116 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                                    Write(Html.DisplayFor(modelItem => item.State));
 
             
@@ -557,7 +559,7 @@ WriteLiteral(" class=\"country\"");
 WriteLiteral(">");
 
             
-            #line 114 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 116 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                                                                                                           Write(Html.DisplayFor(modelItem => item.Country));
 
             
@@ -574,7 +576,7 @@ WriteLiteral(" class=\"phoneNumber\"");
 WriteLiteral(">");
 
             
-            #line 115 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 117 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                                                                                   Write(Html.DisplayFor(modelItem => item.PhoneNumber));
 
             
@@ -591,7 +593,7 @@ WriteLiteral(" class=\"faxNumber\"");
 WriteLiteral(">");
 
             
-            #line 116 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 118 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                                                                               Write(Html.DisplayFor(modelItem => item.FaxNumber));
 
             
@@ -601,13 +603,13 @@ WriteLiteral("</span>\r\n                                </td>\r\n              
 "td>\r\n");
 
             
-            #line 119 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 121 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 119 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 121 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                      if (canConfigAddresses)
                                     {
 
@@ -631,7 +633,7 @@ WriteLiteral(" title=\"Delete Address\"");
 WriteLiteral("></i>\r\n");
 
             
-            #line 122 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 124 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                     }
 
             
@@ -640,7 +642,7 @@ WriteLiteral("></i>\r\n");
 WriteLiteral("                                </td>\r\n                            </tr>\r\n");
 
             
-            #line 125 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 127 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                         }
 
             
@@ -649,7 +651,7 @@ WriteLiteral("                                </td>\r\n                         
 WriteLiteral("                    </table>\r\n");
 
             
-            #line 127 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 129 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                 }
                 else
                 { 
@@ -664,7 +666,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">No Addresses Stored</span>\r\n");
 
             
-            #line 131 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 133 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                 }
 
             
@@ -673,7 +675,7 @@ WriteLiteral(">No Addresses Stored</span>\r\n");
 WriteLiteral("            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n");
 
             
-            #line 136 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 138 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
  if (Authorization.Has(Claims.Config.Organisation.ConfigureLogo))
 {
 
@@ -689,13 +691,13 @@ WriteLiteral(" title=\"Update Organisation Logo\"");
 WriteLiteral(">\r\n");
 
             
-            #line 139 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 141 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 139 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 141 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
          using (Html.BeginForm(MVC.API.System.OrganisationLogo(true, null, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
 
@@ -764,7 +766,7 @@ WriteLiteral(" class=\"field-validation-valid field-validation-error\"");
 WriteLiteral(">* Required</span>\r\n                </div>\r\n            </div>\r\n");
 
             
-            #line 154 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 156 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
         }
 
             
@@ -805,14 +807,14 @@ WriteLiteral(">\r\n        $(function () {\r\n            var button = $(\'#butt
 "               }\r\n            });\r\n        });\r\n    </script>\r\n");
 
             
-            #line 201 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 203 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
 }
 
             
             #line default
             #line hidden
             
-            #line 202 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 204 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
  if (canConfigAddresses)
 {
 
@@ -940,51 +942,54 @@ WriteLiteral(@">
                     buttons['Delete'] = function () { $(this).dialog(""disable""); window.location.href = '");
 
             
-            #line 301 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 303 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                                                                                      Write(Url.Action(MVC.API.System.DeleteOrganisationAddress()));
 
             
             #line default
             #line hidden
-WriteLiteral("\' + \'?redirect=true&id=\' + id; };\r\n                var buttons = dialog.dialog(\"o" +
-"ption\", \"buttons\", buttons);\r\n                dialog.dialog(\'open\');\r\n          " +
-"  }\r\n        });\r\n\r\n        var editAddress = function (element) {\r\n            " +
-"var id = \'\', shortName = \'\', name = \'\', address = \'\', suburb = \'\', postcode = \'\'" +
-", state = \'\', country = \'\', phoneNumber = \'\', faxNumber = \'\';\r\n            var d" +
-"ialog = $(\'#dialogEdit\');\r\n            if (element) {\r\n                id = elem" +
-"ent.attr(\'data-addressid\');\r\n                shortName = element.find(\'.shortNam" +
-"e\').text();\r\n                name = element.find(\'.name\').text();\r\n             " +
-"   address = element.find(\'.address\').text();\r\n                suburb = element." +
-"find(\'.suburb\').text();\r\n                postcode = element.find(\'.postcode\').te" +
-"xt();\r\n                state = element.find(\'.state\').text();\r\n                c" +
-"ountry = element.find(\'.country\').text();\r\n                phoneNumber = element" +
-".find(\'.phoneNumber\').text();\r\n                faxNumber = element.find(\'.faxNum" +
-"ber\').text();\r\n                dialog.attr(\'data-addressid\', id);\r\n             " +
-"   dialog.dialog(\'option\', \'title\', \'Edit Address: \' + name);\r\n            } els" +
-"e {\r\n                dialog.attr(\'data-addressid\', null);\r\n                dialo" +
-"g.dialog(\'option\', \'title\', \'Create Address\');\r\n            }\r\n\r\n            $(\'" +
-"#editShortName\').val(shortName);\r\n            $(\'#editName\').val(name);\r\n       " +
-"     $(\'#editAddress\').val(address);\r\n            $(\'#editSuburb\').val(suburb);\r" +
-"\n            $(\'#editPostcode\').val(postcode);\r\n            $(\'#editState\').val(" +
-"state);\r\n            $(\'#editCountry\').val(country);\r\n            $(\'#editPhoneN" +
-"umber\').val(phoneNumber);\r\n            $(\'#editFaxNumber\').val(faxNumber);\r\n    " +
-"        dialog.dialog(\'open\');\r\n        }\r\n\r\n        $(\'#organisationAddresses\')" +
-".find(\'i.edit\').click(function () {\r\n            var componentRow = $(this).clos" +
-"est(\'tr\');\r\n            editAddress(componentRow);\r\n        });\r\n\r\n        $(\'#c" +
-"reateAddress\').click(function () {\r\n            editAddress();\r\n            retu" +
-"rn false;\r\n        });\r\n\r\n        var submitAddress = function () {\r\n           " +
-" var dialog = $(\'#dialogEdit\');\r\n            var data = {\r\n                Id: d" +
-"ialog.attr(\'data-addressid\'),\r\n                ShortName: $(\'#editShortName\').va" +
-"l(),\r\n                Name: $(\'#editName\').val(),\r\n                Address: $(\'#" +
-"editAddress\').val(),\r\n                Suburb: $(\'#editSuburb\').val(),\r\n         " +
-"       Postcode: $(\'#editPostcode\').val(),\r\n                State: $(\'#editState" +
-"\').val(),\r\n                Country: $(\'#editCountry\').val(),\r\n                Ph" +
-"oneNumber: $(\'#editPhoneNumber\').val(),\r\n                FaxNumber: $(\'#editFaxN" +
-"umber\').val()\r\n            };\r\n\r\n            $.ajax({\r\n                url: \'");
+WriteLiteral("\' + \'?redirect=true&id=\' + id; };\r\n                    var buttons = dialog.dialo" +
+"g(\"option\", \"buttons\", buttons);\r\n                    dialog.dialog(\'open\');\r\n  " +
+"              }\r\n            });\r\n\r\n            var editAddress = function (elem" +
+"ent) {\r\n                var id = \'\', shortName = \'\', name = \'\', address = \'\', su" +
+"burb = \'\', postcode = \'\', state = \'\', country = \'\', phoneNumber = \'\', faxNumber " +
+"= \'\';\r\n                var dialog = $(\'#dialogEdit\');\r\n                if (eleme" +
+"nt) {\r\n                    id = element.attr(\'data-addressid\');\r\n               " +
+"     shortName = element.find(\'.shortName\').text();\r\n                    name = " +
+"element.find(\'.name\').text();\r\n                    address = element.find(\'.addr" +
+"ess\').text();\r\n                    suburb = element.find(\'.suburb\').text();\r\n   " +
+"                 postcode = element.find(\'.postcode\').text();\r\n                 " +
+"   state = element.find(\'.state\').text();\r\n                    country = element" +
+".find(\'.country\').text();\r\n                    phoneNumber = element.find(\'.phon" +
+"eNumber\').text();\r\n                    faxNumber = element.find(\'.faxNumber\').te" +
+"xt();\r\n                    dialog.attr(\'data-addressid\', id);\r\n                 " +
+"   dialog.dialog(\'option\', \'title\', \'Edit Address: \' + name);\r\n                }" +
+" else {\r\n                    dialog.attr(\'data-addressid\', null);\r\n             " +
+"       dialog.dialog(\'option\', \'title\', \'Create Address\');\r\n                }\r\n\r" +
+"\n                $(\'#editShortName\').val(shortName);\r\n                $(\'#editNa" +
+"me\').val(name);\r\n                $(\'#editAddress\').val(address);\r\n              " +
+"  $(\'#editSuburb\').val(suburb);\r\n                $(\'#editPostcode\').val(postcode" +
+");\r\n                $(\'#editState\').val(state);\r\n                $(\'#editCountry" +
+"\').val(country);\r\n                $(\'#editPhoneNumber\').val(phoneNumber);\r\n     " +
+"           $(\'#editFaxNumber\').val(faxNumber);\r\n                dialog.dialog(\'o" +
+"pen\');\r\n            }\r\n\r\n            $(\'#organisationAddresses\').find(\'i.edit\')." +
+"click(function () {\r\n                var componentRow = $(this).closest(\'tr\');\r\n" +
+"                editAddress(componentRow);\r\n            });\r\n\r\n            $(\'#c" +
+"reateAddress\').click(function () {\r\n                editAddress();\r\n            " +
+"    return false;\r\n            });\r\n\r\n            var submitAddress = function (" +
+") {\r\n                var dialog = $(\'#dialogEdit\');\r\n                var data = " +
+"{\r\n                    Id: dialog.attr(\'data-addressid\'),\r\n                    S" +
+"hortName: $(\'#editShortName\').val(),\r\n                    Name: $(\'#editName\').v" +
+"al(),\r\n                    Address: $(\'#editAddress\').val(),\r\n                  " +
+"  Suburb: $(\'#editSuburb\').val(),\r\n                    Postcode: $(\'#editPostcod" +
+"e\').val(),\r\n                    State: $(\'#editState\').val(),\r\n                 " +
+"   Country: $(\'#editCountry\').val(),\r\n                    PhoneNumber: $(\'#editP" +
+"honeNumber\').val(),\r\n                    FaxNumber: $(\'#editFaxNumber\').val()\r\n " +
+"               };\r\n\r\n                $.ajax({\r\n                    url: \'");
 
             
-            #line 366 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
-                  Write(Url.Action(MVC.API.System.UpdateOrganisationAddress()));
+            #line 368 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+                      Write(Url.Action(MVC.API.System.UpdateOrganisationAddress()));
 
             
             #line default
@@ -994,7 +999,7 @@ WriteLiteral("\',\r\n                dataType: \'json\',\r\n                data
 "f (d == \'OK\') {\r\n                        window.location.href = \'");
 
             
-            #line 372 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 374 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                             Write(Url.Action(MVC.Config.Organisation.Index()));
 
             
@@ -1013,27 +1018,27 @@ WriteLiteral(@"';
             });
 
         };
-        $(""#dialogEdit"").dialog({
-            resizable: false,
-            modal: true,
-            autoOpen: false,
-            width: 350,
-            buttons: {
-                ""Save"": function () {
-                    submitAddress();
-                },
-                Cancel: function () {
-                    $(this).dialog(""close"");
+            $(""#dialogEdit"").dialog({
+                resizable: false,
+                modal: true,
+                autoOpen: false,
+                width: 350,
+                buttons: {
+                    ""Save"": function () {
+                        submitAddress();
+                    },
+                    Cancel: function () {
+                        $(this).dialog(""close"");
+                    }
                 }
-            }
-        });
+            });
 
-    });
+        });
     </script>
 ");
 
             
-            #line 402 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 404 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
 }
             
             #line default

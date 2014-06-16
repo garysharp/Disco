@@ -48,7 +48,7 @@ namespace Disco.Web.Areas.Config.Views.UserFlag
             #line 2 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
   
     Authorization.Require(Claims.Config.UserFlag.Show);
-    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "User Flags", MVC.Config.UserFlag.Index(null));
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "User Flags");
 
             
             #line default
@@ -113,37 +113,37 @@ WriteLiteral(">\r\n            <tr>\r\n                <th>Name</th>\r\n        
             #line hidden
 WriteLiteral("                <tr>\r\n                    <td>\r\n                        <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 809), Tuple.Create("\"", 863)
+WriteAttribute("href", Tuple.Create(" href=\"", 776), Tuple.Create("\"", 830)
             
             #line 25 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 816), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.UserFlag.Index(item.Id))
+, Tuple.Create(Tuple.Create("", 783), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.UserFlag.Index(item.Id))
             
             #line default
             #line hidden
-, 816), false)
+, 783), false)
 );
 
 WriteLiteral(">\r\n                            <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 897), Tuple.Create("\"", 950)
-, Tuple.Create(Tuple.Create("", 905), Tuple.Create("fa", 905), true)
-, Tuple.Create(Tuple.Create(" ", 907), Tuple.Create("fa-", 908), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 864), Tuple.Create("\"", 917)
+, Tuple.Create(Tuple.Create("", 872), Tuple.Create("fa", 872), true)
+, Tuple.Create(Tuple.Create(" ", 874), Tuple.Create("fa-", 875), true)
             
             #line 26 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 911), Tuple.Create<System.Object, System.Int32>(item.Icon
+, Tuple.Create(Tuple.Create("", 878), Tuple.Create<System.Object, System.Int32>(item.Icon
             
             #line default
             #line hidden
-, 911), false)
-, Tuple.Create(Tuple.Create(" ", 923), Tuple.Create("fa-lg", 924), true)
-, Tuple.Create(Tuple.Create(" ", 929), Tuple.Create("d-", 930), true)
+, 878), false)
+, Tuple.Create(Tuple.Create(" ", 890), Tuple.Create("fa-lg", 891), true)
+, Tuple.Create(Tuple.Create(" ", 896), Tuple.Create("d-", 897), true)
             
             #line 26 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 932), Tuple.Create<System.Object, System.Int32>(item.IconColour
+, Tuple.Create(Tuple.Create("", 899), Tuple.Create<System.Object, System.Int32>(item.IconColour
             
             #line default
             #line hidden
-, 932), false)
+, 899), false)
 );
 
 WriteLiteral("></i>\r\n");

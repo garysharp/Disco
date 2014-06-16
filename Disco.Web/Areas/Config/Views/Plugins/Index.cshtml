@@ -70,102 +70,108 @@
             </div>
             <div>
                 <input id="uninstallPluginData" type="checkbox" /><label for="uninstallPluginData"> Uninstall Plugin Data</label>
-                <div id="uninstallPluginDataAlert" style="display: none; padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-error ui-corner-all">
-                    <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;NOTE: Data will be permanently deleted
+                <div id="uninstallPluginDataAlert" class="info-box error" style="display: none;">
+                    <p class="fa-p">
+                        <i class="fa fa-exclamation-triangle"></i><strong>Warning:</strong> Data will be permanently deleted
+                    </p>
                 </div>
             </div>
         </div>
         <div id="dialogUninstallPluginConfirm" title="Confirm Plugin Uninstall">
-            <div style="padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-highlight ui-corner-all">
-                <i class="fa fa-info-circle information"></i>&nbsp;Are you sure you want to uninstall this plugin?
-            <h4 id="uninstallPluginConfirm"></h4>
+            <div class="info-box">
+                <p class="fa-p">
+                    <i class="fa fa-info-circle"></i>Are you sure you want to uninstall this plugin?
+                </p>
+                <h4 id="uninstallPluginConfirm"></h4>
             </div>
-            <div id="uninstallPluginDataConfirm" style="display: none; padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-error ui-corner-all">
-                <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;NOTE: Data will be permanently deleted
+            <div id="uninstallPluginDataConfirm" class="info-box error" style="display: none;">
+                <p class="fa-p">
+                    <i class="fa fa-exclamation-triangle"></i><strong>Warning:</strong> Data will be permanently deleted
+                </p>
             </div>
         </div>
         <script>
             $(function () {
                 // Uninstall
                 var uninstallUrl = '@(Url.Action(MVC.API.Plugin.Uninstall()))/';
-        var uninstallPlugin, uninstallPluginData, $dialogConfirm, uninstallPluginConfirm, uninstallPluginDataConfirm;
+                var uninstallPlugin, uninstallPluginData, $dialogConfirm, uninstallPluginConfirm, uninstallPluginDataConfirm;
 
-        var pluginId, pluginName, pluginUninstallData;
+                var pluginId, pluginName, pluginUninstallData;
 
-        var $dialog = $('#dialogUninstallPlugins').dialog({
-            resizable: false,
-            modal: true,
-            width: 350,
-            autoOpen: false,
-            buttons: {
-                "Uninstall": function () {
-                    pluginId = uninstallPlugin.val();
-                    pluginName = uninstallPlugin.find('option:selected').text();
-                    pluginUninstallData = uninstallPluginData.is(':checked');
+                var $dialog = $('#dialogUninstallPlugins').dialog({
+                    resizable: false,
+                    modal: true,
+                    width: 350,
+                    autoOpen: false,
+                    buttons: {
+                        "Uninstall": function () {
+                            pluginId = uninstallPlugin.val();
+                            pluginName = uninstallPlugin.find('option:selected').text();
+                            pluginUninstallData = uninstallPluginData.is(':checked');
 
-                    if (!pluginId) {
-                        alert('Select a plugin to uninstall');
-                    } else {
-                        uninstallPluginConfirm.text(pluginName + ' [' + pluginId + ']');
-                        if (pluginUninstallData)
-                            uninstallPluginDataConfirm.show();
-                        else
-                            uninstallPluginDataConfirm.hide();
+                            if (!pluginId) {
+                                alert('Select a plugin to uninstall');
+                            } else {
+                                uninstallPluginConfirm.text(pluginName + ' [' + pluginId + ']');
+                                if (pluginUninstallData)
+                                    uninstallPluginDataConfirm.show();
+                                else
+                                    uninstallPluginDataConfirm.hide();
 
-                        $dialogConfirm.dialog('open');
-                        $(this).dialog("close");
+                                $dialogConfirm.dialog('open');
+                                $(this).dialog("close");
+                            }
+                        },
+                        Cancel: function () {
+                            uninstallPluginData.prop('checked', false);
+                            $('#uninstallPluginDataAlert').hide();
+                            $(this).dialog("close");
+                        }
                     }
-                },
-                Cancel: function () {
-                    uninstallPluginData.prop('checked', false);
-                    $('#uninstallPluginDataAlert').hide();
-                    $(this).dialog("close");
-                }
-            }
-        });
+                });
 
-        $dialogConfirm = $('#dialogUninstallPluginConfirm').dialog({
-            resizable: false,
-            modal: true,
-            width: 350,
-            autoOpen: false,
-            buttons: {
-                "Confirm Uninstall": function () {
-                    var url = uninstallUrl + pluginId;
-                    if (pluginUninstallData)
-                        url += '?UninstallData=true'
-                    else
-                        url += '?UninstallData=false'
+                $dialogConfirm = $('#dialogUninstallPluginConfirm').dialog({
+                    resizable: false,
+                    modal: true,
+                    width: 350,
+                    autoOpen: false,
+                    buttons: {
+                        "Confirm Uninstall": function () {
+                            var url = uninstallUrl + pluginId;
+                            if (pluginUninstallData)
+                                url += '?UninstallData=true'
+                            else
+                                url += '?UninstallData=false'
 
-                    window.location.href = url;
-                    $(this).dialog("disable");
-                },
-                Cancel: function () {
-                    uninstallPluginData.prop('checked', false);
-                    $('#uninstallPluginDataAlert').hide();
-                    $(this).dialog("close");
-                }
-            }
-        });
+                            window.location.href = url;
+                            $(this).dialog("disable");
+                        },
+                        Cancel: function () {
+                            uninstallPluginData.prop('checked', false);
+                            $('#uninstallPluginDataAlert').hide();
+                            $(this).dialog("close");
+                        }
+                    }
+                });
 
-        uninstallPlugin = $('#uninstallPlugin');
-        uninstallPluginData = $('#uninstallPluginData');
-        uninstallPluginConfirm = $('#uninstallPluginConfirm');
-        uninstallPluginDataConfirm = $('#uninstallPluginDataConfirm');
+                uninstallPlugin = $('#uninstallPlugin');
+                uninstallPluginData = $('#uninstallPluginData');
+                uninstallPluginConfirm = $('#uninstallPluginConfirm');
+                uninstallPluginDataConfirm = $('#uninstallPluginDataConfirm');
 
-        $('#buttonUninstall').click(function () {
-            $dialog.dialog('open');
-            return false;
-        });
+                $('#buttonUninstall').click(function () {
+                    $dialog.dialog('open');
+                    return false;
+                });
 
-        $('#uninstallPluginData').change(function () {
-            if ($(this).is(':checked')) {
-                $('#uninstallPluginDataAlert').slideDown();
-            } else {
-                $('#uninstallPluginDataAlert').slideUp();
-            }
-        });
-    });
+                $('#uninstallPluginData').change(function () {
+                    if ($(this).is(':checked')) {
+                        $('#uninstallPluginDataAlert').slideDown();
+                    } else {
+                        $('#uninstallPluginDataAlert').slideUp();
+                    }
+                });
+            });
         </script>
                 }
                 if (Model.PluginUpdates.Count > 0)

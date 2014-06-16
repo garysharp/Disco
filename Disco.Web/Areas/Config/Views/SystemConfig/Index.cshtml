@@ -237,10 +237,11 @@
                     <div>
                         @Html.CheckBoxFor(m => m.ADSearchAllForestServers, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchAllForestServers)
                     </div>
-                    <div style="padding: 0.7em 0.7em;" class="ui-state-highlight ui-corner-all">
-                        <i class="fa fa-info-circle information"></i>&nbsp;Forest servers are currently being retrieved.
-                        <br />
-                        Try refreshing this page in a moment.
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle"></i>Forest servers are currently being retrieved.<br />
+                            Try refreshing this page in a moment.
+                        </p>
                     </div>
                 }
                 else
@@ -252,8 +253,10 @@
                         @if (!canSearchEntireForest)
                         {
                             @Html.CheckBoxFor(m => m.ADSearchAllForestServers, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchAllForestServers)
-                            <div style="padding: 0.7em 0.7em;" class="ui-state-highlight ui-corner-all">
-                                <i class="fa fa-exclamation-circle warning"></i>&nbsp;Disco will not search entire forests which consist of more than @(Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxForestServerSearch) servers. Only servers within this site will be searched.
+                            <div class="info-box">
+                                <p class="fa-p">
+                                    <i class="fa fa-exclamation-circle warning"></i>Disco will not search entire forests which consist of more than @(Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxForestServerSearch) servers. Only servers within this site will be searched.
+                                </p>
                             </div>
                         }
                         else

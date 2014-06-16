@@ -109,6 +109,7 @@
   margin: 4px 0 8px 4px;
   padding: 4px 0 4px 6px;
   border-left: 4px solid #cccccc;
+  background-color: #ffffff;
 }
 .Config_LinkedGroup_Instance div.code {
   margin-left: 2px;
@@ -920,6 +921,19 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
 #plugins #pageMenu td .pageMenuArea > h3:hover {
   color: #335a87;
 }
+#dialogUninstallPlugins #uninstallPlugin {
+  margin: .5em 0;
+}
+#dialogUninstallPlugins #uninstallPluginData {
+  margin: .5em 0;
+}
+#dialogUninstallPluginConfirm #uninstallPluginConfirm {
+  text-align: center;
+  margin: 1em 0 0.5em 0;
+}
+#dialogUninstallPluginConfirm #uninstallPluginDataConfirm {
+  margin-top: 1em;
+}
 #pluginCatalog #pluginCatalogHeading {
   margin-bottom: 20px;
   text-align: right;
@@ -947,6 +961,12 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
 #pluginCatalog .pluginItem > h2:first-child a {
   float: right;
   font-size: 12px;
+}
+#dialogInstallPlugin div.info-box {
+  margin-top: 1em;
+}
+#dialogUploadPlugin #pluginFile {
+  margin: 1em 0 1em 6px;
 }
 #Config_AuthRoles_Show #Config_AuthRoles_Claims_Tree span.fancytree-node {
   padding: 1px;

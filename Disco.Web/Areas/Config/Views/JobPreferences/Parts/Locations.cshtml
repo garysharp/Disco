@@ -16,8 +16,10 @@
                 @AjaxHelpers.AjaxSave()
                 @AjaxHelpers.AjaxLoader()
                 <div id="Config_Location_Unrestricted">
-                    <div style="padding: 0.7em 0.7em;" class="ui-state-highlight ui-corner-all">
-                        <i class="fa fa-info-circle information"></i>&nbsp;Technicians will be able to specify <em>any</em> value when entering a location. A selection of locations used historically will be offered.
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle"></i>Technicians will be able to specify <em>any</em> value when entering a location. A selection of locations used historically will be offered.
+                        </p>
                     </div>
                 </div>
                 <div id="Config_Location_List">
@@ -45,20 +47,26 @@
                                 <input type="checkbox" id="Config_Location_ListImport_Dialog_Overwrite" name="Override" value="True" /><label for="Config_Location_ListImport_Dialog_Overwrite">Override Existing List</label>
                             </div>
                             <textarea id="Config_Location_ListImport_Dialog_LocationList" name="LocationList"></textarea>
-                            <div style="padding: 0.7em 0.7em; margin-top: 10px;" class="ui-state-highlight ui-corner-all">
-                                <i class="fa fa-info-circle information"></i>&nbsp;Enter multiple locations separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                            <div class="info-box">
+                                <p class="fa-p">
+                                    <i class="fa fa-info-circle"></i>Enter multiple locations separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                                </p>
                             </div>
                         </form>
                     </div>
                 </div>
                 <div id="Config_Location_Optional">
-                    <div style="padding: 0.7em 0.7em;" class="ui-state-highlight ui-corner-all">
-                        <i class="fa fa-info-circle information"></i>&nbsp;Technicians will be able to specify <em>any</em> value when entering a location. A defined list of location options is suggested.
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle"></i>Technicians will be able to specify <em>any</em> value when entering a location. A defined list of location options is suggested.
+                        </p>
                     </div>
                 </div>
                 <div id="Config_Location_Restricted">
-                    <div style="padding: 0.7em 0.7em;" class="ui-state-highlight ui-corner-all">
-                        <i class="fa fa-info-circle information"></i>&nbsp;Technicians are restricted to select a location from the defined list.
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle"></i>Technicians are restricted to select a location from the defined list.
+                        </p>
                     </div>
                 </div>
                 <script type="text/javascript">
@@ -117,7 +125,6 @@
                                     modal: true,
                                     autoOpen: false,
                                     width: 350,
-                                    height: 420,
                                     buttons: {
                                         "Save Changes": saveChanges,
                                         Cancel: cancel
@@ -245,7 +252,6 @@
                                     modal: true,
                                     autoOpen: false,
                                     width: 350,
-                                    height: 420,
                                     buttons: {
                                         "Build Automatic List": function () {
                                             $('#Config_Location_ListImport_Dialog_AutomaticList').val('True').closest('form').submit();

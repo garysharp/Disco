@@ -891,20 +891,22 @@ WriteLiteral("\r\n                    </div>\r\n");
 
 WriteLiteral("                    <div");
 
-WriteLiteral(" style=\"padding: 0.7em 0.7em;\"");
+WriteLiteral(" class=\"info-box\"");
 
-WriteLiteral(" class=\"ui-state-highlight ui-corner-all\"");
+WriteLiteral(">\r\n                        <p");
 
-WriteLiteral(">\r\n                        <i");
+WriteLiteral(" class=\"fa-p\"");
 
-WriteLiteral(" class=\"fa fa-info-circle information\"");
+WriteLiteral(">\r\n                            <i");
 
-WriteLiteral("></i>&nbsp;Forest servers are currently being retrieved.\r\n                       " +
-" <br />\r\n                        Try refreshing this page in a moment.\r\n        " +
-"            </div>\r\n");
+WriteLiteral(" class=\"fa fa-info-circle\"");
+
+WriteLiteral("></i>Forest servers are currently being retrieved.<br />\r\n                       " +
+"     Try refreshing this page in a moment.\r\n                        </p>\r\n      " +
+"              </div>\r\n");
 
             
-            #line 245 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 246 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                 }
                 else
                 {
@@ -918,13 +920,13 @@ WriteLiteral("></i>&nbsp;Forest servers are currently being retrieved.\r\n      
 WriteLiteral("                    <div>\r\n");
 
             
-            #line 252 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 253 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 252 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 253 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                          if (!canSearchEntireForest)
                         {
                             
@@ -932,27 +934,27 @@ WriteLiteral("                    <div>\r\n");
             #line default
             #line hidden
             
-            #line 254 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 255 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                        Write(Html.CheckBoxFor(m => m.ADSearchAllForestServers, new { disabled = "disabled" }));
 
             
             #line default
             #line hidden
             
-            #line 254 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 255 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                                                                               
             
             #line default
             #line hidden
             
-            #line 254 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 255 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                                                                          Write(Html.LabelFor(m => m.ADSearchAllForestServers));
 
             
             #line default
             #line hidden
             
-            #line 254 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 255 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                                                                                                                              
 
             
@@ -960,28 +962,30 @@ WriteLiteral("                    <div>\r\n");
             #line hidden
 WriteLiteral("                            <div");
 
-WriteLiteral(" style=\"padding: 0.7em 0.7em;\"");
+WriteLiteral(" class=\"info-box\"");
 
-WriteLiteral(" class=\"ui-state-highlight ui-corner-all\"");
+WriteLiteral(">\r\n                                <p");
 
-WriteLiteral(">\r\n                                <i");
+WriteLiteral(" class=\"fa-p\"");
+
+WriteLiteral(">\r\n                                    <i");
 
 WriteLiteral(" class=\"fa fa-exclamation-circle warning\"");
 
-WriteLiteral("></i>&nbsp;Disco will not search entire forests which consist of more than ");
+WriteLiteral("></i>Disco will not search entire forests which consist of more than ");
 
             
-            #line 256 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                                                                                                                  Write(Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxForestServerSearch);
+            #line 258 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+                                                                                                                                                Write(Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxForestServerSearch);
 
             
             #line default
             #line hidden
 WriteLiteral(" servers. Only servers within this site will be searched.\r\n                      " +
-"      </div>\r\n");
+"          </p>\r\n                            </div>\r\n");
 
             
-            #line 258 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 261 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                         }
                         else
                         {
@@ -990,40 +994,40 @@ WriteLiteral(" servers. Only servers within this site will be searched.\r\n     
             #line default
             #line hidden
             
-            #line 261 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 264 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                        Write(Html.CheckBoxFor(m => m.ADSearchAllForestServers));
 
             
             #line default
             #line hidden
             
-            #line 261 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 264 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                                                
             
             #line default
             #line hidden
             
-            #line 261 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 264 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                                           Write(Html.LabelFor(m => m.ADSearchAllForestServers));
 
             
             #line default
             #line hidden
             
-            #line 261 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 264 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                                                                                                
             
             #line default
             #line hidden
             
-            #line 261 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 264 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                                                                                           Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 261 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 264 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                                                                                                                         
 
             
@@ -1042,7 +1046,7 @@ WriteLiteral("                            <script>\r\n                          
 "Helper($(\'#ADSearchAllForestServers\'), null, \'");
 
             
-            #line 267 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 270 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                                                                                     Write(Url.Action(MVC.API.System.UpdateActiveDirectorySearchAllForestServers()));
 
             
@@ -1052,7 +1056,7 @@ WriteLiteral("\', \'SearchAllForestServers\');\r\n                              
 "               </script>\r\n");
 
             
-            #line 270 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 273 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                         }
 
             
@@ -1061,7 +1065,7 @@ WriteLiteral("\', \'SearchAllForestServers\');\r\n                              
 WriteLiteral("                    </div>\r\n");
 
             
-            #line 272 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 275 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                     }
                     else
                     {
@@ -1074,7 +1078,7 @@ WriteLiteral("                    <div>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 276 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 279 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                    Write(Html.CheckBoxFor(m => m.ADSearchAllForestServers, new { disabled = "disabled" }));
 
             
@@ -1083,7 +1087,7 @@ WriteLiteral("                        ");
 WriteLiteral(" ");
 
             
-            #line 276 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 279 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                                                                      Write(Html.LabelFor(m => m.ADSearchAllForestServers));
 
             
@@ -1098,7 +1102,7 @@ WriteLiteral(">\r\n                            If this setting is enabled, Disco
 "              </div>\r\n                    </div>\r\n");
 
             
-            #line 281 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 284 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                     }
 
             
@@ -1114,13 +1118,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 286 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 289 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 286 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 289 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                               
                     var domainIndex = Model.ADDomains.ToDictionary(d => d.Name, StringComparer.OrdinalIgnoreCase);
                     foreach (var server in Model.ADForestServers.OrderBy(s => s))
@@ -1142,7 +1146,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                                <li><code>");
 
             
-            #line 300 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 303 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                      Write(serverDescription);
 
             
@@ -1151,7 +1155,7 @@ WriteLiteral("                                <li><code>");
 WriteLiteral("</code>");
 
             
-            #line 300 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 303 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                                     if (isSiteServer)
                                                                    {
             
@@ -1166,7 +1170,7 @@ WriteLiteral(" title=\"Site Server\"");
 WriteLiteral("></i> ");
 
             
-            #line 301 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 304 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                                                                                                             }
             
             #line default
@@ -1174,7 +1178,7 @@ WriteLiteral("></i> ");
 WriteLiteral("</li>\r\n");
 
             
-            #line 302 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 305 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                     }
                             
             
@@ -1208,7 +1212,7 @@ WriteLiteral(@"
 ");
 
             
-            #line 328 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 331 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                 }
 
             
@@ -1221,13 +1225,13 @@ WriteLiteral(" style=\"width: 135px\"");
 WriteLiteral(">Search Scope:\r\n            </th>\r\n            <td>\r\n");
 
             
-            #line 335 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 338 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 335 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 338 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                  if (Model.ADSearchContainers != null && Model.ADSearchContainers.Count > 0)
                 {
 
@@ -1244,13 +1248,13 @@ WriteLiteral(" id=\"Config_System_AD_SearchScope_DistinguishedNames\"");
 WriteLiteral(">\r\n");
 
             
-            #line 339 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 342 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 339 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 342 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                          foreach (var adContainer in Model.ADSearchContainers)
                         {
 
@@ -1262,7 +1266,7 @@ WriteLiteral("                            <li");
 WriteLiteral(" data-distinguishedname=\"");
 
             
-            #line 341 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 344 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                    Write(adContainer.Item1);
 
             
@@ -1273,7 +1277,7 @@ WriteLiteral("\"");
 WriteLiteral("><code>");
 
             
-            #line 341 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 344 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                                              Write(adContainer.Item3);
 
             
@@ -1282,7 +1286,7 @@ WriteLiteral("><code>");
 WriteLiteral("</code></li>\r\n");
 
             
-            #line 342 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 345 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                         }
 
             
@@ -1291,7 +1295,7 @@ WriteLiteral("</code></li>\r\n");
 WriteLiteral("                    </ul>\r\n");
 
             
-            #line 344 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 347 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                 }
                 else
                 {
@@ -1309,7 +1313,7 @@ WriteLiteral(">When searching, the entire domain will be queried. This is suitab
 "gle-domain deployments.</div>\r\n");
 
             
-            #line 349 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 352 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                 }
 
             
@@ -1318,7 +1322,7 @@ WriteLiteral(">When searching, the entire domain will be queried. This is suitab
 WriteLiteral("                ");
 
             
-            #line 350 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 353 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                  if (canConfigAD)
                 {
 
@@ -1353,7 +1357,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                            ");
 
             
-            #line 358 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 361 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                        Write(AjaxHelpers.AjaxLoader());
 
             
@@ -1369,13 +1373,13 @@ WriteLiteral(" class=\"organisationalUnitTree\"");
 WriteLiteral(">\r\n                        </div>\r\n");
 
             
-            #line 362 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 365 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 362 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 365 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                          using (Html.BeginForm(MVC.API.System.UpdateActiveDirectorySearchScope(null, redirect: true)))
                         {
                         }
@@ -1422,7 +1426,7 @@ WriteLiteral("                    <script>\r\n                        $(function
 "\');\r\n\r\n                                    $.getJSON(\'");
 
             
-            #line 416 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 419 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                            Write(Url.Action(MVC.API.System.DomainOrganisationalUnits()));
 
             
@@ -1468,7 +1472,7 @@ WriteLiteral("\', null, function (data) {\r\n                                   
 "\r\n                    </script>\r\n");
 
             
-            #line 473 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 476 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                 }
 
             
@@ -1477,7 +1481,7 @@ WriteLiteral("\', null, function (data) {\r\n                                   
 WriteLiteral("            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n");
 
             
-            #line 478 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 481 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
  if (canConfigProxy)
 {
     using (Html.BeginForm(MVC.API.System.UpdateProxySettings()))
@@ -1502,7 +1506,7 @@ WriteLiteral(">Address:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 489 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 492 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.EditorFor(m => m.ProxyAddress));
 
             
@@ -1513,7 +1517,7 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 490 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 493 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.ValidationMessageFor(m => m.ProxyAddress));
 
             
@@ -1529,7 +1533,7 @@ WriteLiteral(">Port:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 497 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 500 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.EditorFor(m => m.ProxyPort));
 
             
@@ -1540,7 +1544,7 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 498 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 501 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.ValidationMessageFor(m => m.ProxyPort));
 
             
@@ -1556,7 +1560,7 @@ WriteLiteral(">Username:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 505 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 508 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.EditorFor(m => m.ProxyUsername));
 
             
@@ -1567,7 +1571,7 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 506 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 509 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.ValidationMessageFor(m => m.ProxyUsername));
 
             
@@ -1583,7 +1587,7 @@ WriteLiteral(">Password:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 513 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 516 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.EditorFor(m => m.ProxyPassword));
 
             
@@ -1594,7 +1598,7 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 514 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 517 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.ValidationMessageFor(m => m.ProxyPassword));
 
             
@@ -1616,7 +1620,7 @@ WriteLiteral(" value=\"Save Proxy Settings\"");
 WriteLiteral(" />\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </div>\r\n");
 
             
-            #line 526 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 529 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
     }
 }
 else
@@ -1641,7 +1645,7 @@ WriteLiteral(">Address:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 537 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 540 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.ProxyAddress));
 
             
@@ -1657,7 +1661,7 @@ WriteLiteral(">Port:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 544 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 547 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.ProxyPort));
 
             
@@ -1673,7 +1677,7 @@ WriteLiteral(">Username:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 551 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 554 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.ProxyUsername));
 
             
@@ -1688,7 +1692,7 @@ WriteLiteral(">Password:\r\n                </th>\r\n                <td>*******
 "</td>\r\n            </tr>\r\n        </table>\r\n    </div>\r\n");
 
             
-            #line 562 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 565 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
 }
 
             
@@ -1703,7 +1707,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 564 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 567 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
 Write(Html.ActionLinkButton("Update Device Last Network Logons", MVC.API.System.UpdateLastNetworkLogonDates()));
 
             

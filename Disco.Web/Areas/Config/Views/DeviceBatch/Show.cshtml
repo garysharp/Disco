@@ -139,9 +139,11 @@
                 @if (Model.DeviceBatch.UnitQuantity.HasValue && Model.DeviceBatch.UnitQuantity.Value > Model.DeviceCount)
                 {
                     var missingCount = Model.DeviceBatch.UnitQuantity.Value - Model.DeviceCount;
-                    <div style="padding: 0.7em 0.7em; margin-top: 20px;" class="ui-state-highlight ui-corner-all">
-                        <i class="fa fa-info-circle information"></i>
-                        @Model.DeviceCount.ToString("n0") of @(Model.DeviceBatch.UnitQuantity.Value.ToString("n0")) purchased devices are managed by Disco. <strong>@missingCount.ToString("n0") @(missingCount == 1 ? "is" : "are") not managed</strong>.
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle information"></i>
+                            @Model.DeviceCount.ToString("n0") of @(Model.DeviceBatch.UnitQuantity.Value.ToString("n0")) purchased devices are managed by Disco. <strong>@missingCount.ToString("n0") @(missingCount == 1 ? "is" : "are") not managed</strong>.
+                        </p>
                     </div>
                 }
             </td>
@@ -700,9 +702,6 @@
                     {
                         @Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared)
                     }
-                </div>
-                <div style="padding: 0.7em 0.7em;" class="ui-state-highlight ui-corner-all">
-                    <i class="fa fa-info-circle information"></i>&nbsp;Linked Active Directory Groups are automatically synchronized to include members currently associated with this Device Batch.
                 </div>
             </td>
         </tr>

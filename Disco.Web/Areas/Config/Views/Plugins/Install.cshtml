@@ -68,9 +68,11 @@
     <h2 id="dialogInstallPluginName"></h2>
     <h4 id="dialogInstallPluginDetails"></h4>
 
-    <div style="padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-highlight ui-corner-all">
-        <i class="fa fa-exclamation-triangle fa-lg information"></i>&nbsp;Warning: All plugins run with the same level of network privileges as the Disco Web App.<br />
-        <strong>Only Install plugins from a trusted source.</strong>
+    <div class="info-box">
+        <p class="fa-p">
+            <i class="fa fa-exclamation-triangle"></i><strong>Warning:</strong> All plugins run with the same level of network privileges as the Disco Web App.<br />
+            <strong>Only Install plugins from a trusted source.</strong>
+        </p>
     </div>
 </div>
 @if (canInstallLocal)
@@ -83,9 +85,11 @@
                 <input id="pluginFile" name="Plugin" type="file" />
             }
         </div>
-        <div style="padding: 0.7em 0.7em; margin-top: 8px;" class="ui-state-error ui-corner-all">
-            <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Warning: All plugins run with the same level of network privileges as the Disco Web App.<br />
-            <strong>Only install plugins from a trusted source.</strong>
+        <div class="info-box error">
+            <p class="fa-p">
+                <i class="fa fa-exclamation-triangle"></i><strong>Warning:</strong> All plugins run with the same level of network privileges as the Disco Web App.<br />
+                <strong>Only install plugins from a trusted source.</strong>
+            </p>
         </div>
     </div>
 }

@@ -50,7 +50,7 @@
                     <th>Statistics:
                     </th>
                     <td>
-                        <strong>@Html.DisplayFor(model => model.StoredInstanceCount)</strong> Stored Instance@(Model.StoredInstanceCount == 1 ? null : "s")
+                        <strong>@Model.StoredInstanceCount.ToString("n0")</strong> Stored Instance@(Model.StoredInstanceCount == 1 ? null : "s")
                     </td>
                 </tr>
                 <tr>
@@ -150,7 +150,7 @@
                     </th>
                     <td>
                         <h4>@Model.DocumentTemplate.Scope Scope</h4>
-                        <div class="infoBox">
+                        <div class="info-box">
                             <p class="fa-p">
                                 <i class="fa fa-info-circle"></i>This template is generated from @(Model.DocumentTemplate.Scope)s. Any expressions within the Template&nbsp;PDF will be evaluated within the <a href="@(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser()))#@(Model.DocumentTemplate.Scope)Scope">@(Model.DocumentTemplate.Scope) Scope</a>.
                             </p>
@@ -173,14 +173,14 @@
                                         </select>
                                     </div>
                                 }
-                                <div class="infoBox">
+                                <div class="info-box">
                                     <p class="fa-p">
                                         <i class="fa fa-info-circle"></i>Expressions within the Template PDF may need to be updated to reflect any changes to the Document Template Scope.
                                     </p>
                                 </div>
                                 @if (Model.DocumentTemplate.UsersLinkedGroup != null || Model.DocumentTemplate.DevicesLinkedGroup != null)
                                 {
-                                    <div class="infoBox error">
+                                    <div class="info-box error">
                                         <p class="fa-p">
                                             <i class="fa fa-exclamation-circle"></i><strong>Warning:</strong> This Document Template contains Linked Groups, these will be automatically updated to reflect the new Document Template Scope which <strong>may result in undesired behaviour</strong>.
                                         </p>

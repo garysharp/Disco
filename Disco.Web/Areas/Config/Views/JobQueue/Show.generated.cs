@@ -1781,20 +1781,22 @@ WriteLiteral("                    <script>\r\n                        (function 
             #line hidden
 WriteLiteral("                <div");
 
-WriteLiteral(" style=\"padding: 0.7em 0.7em;\"");
+WriteLiteral(" class=\"info-box\"");
 
-WriteLiteral(" class=\"ui-state-highlight ui-corner-all\"");
+WriteLiteral(">\r\n                    <p");
 
-WriteLiteral(">\r\n                    <i");
+WriteLiteral(" class=\"fa-p\"");
 
-WriteLiteral(" class=\"fa fa-info-circle information\"");
+WriteLiteral(">\r\n                        <i");
 
-WriteLiteral("></i>&nbsp;When jobs of these types are created, they will automatically be added" +
-" into this queue.\r\n                </div>\r\n            </td>\r\n        </tr>\r\n   " +
-" </table>\r\n</div>\r\n");
+WriteLiteral(" class=\"fa fa-info-circle\"");
+
+WriteLiteral("></i>When jobs of these types are created, they will automatically be added into " +
+"this queue.\r\n                    </p>\r\n                </div>\r\n            </td>" +
+"\r\n        </tr>\r\n    </table>\r\n</div>\r\n");
 
             
-            #line 628 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+            #line 630 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
  if (canDelete || canShowJobs)
 {
 
@@ -1808,13 +1810,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 631 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+            #line 633 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 631 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+            #line 633 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
          if (canDelete)
         {
             
@@ -1822,14 +1824,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 633 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+            #line 635 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
        Write(Html.ActionLinkButton("Delete", MVC.API.JobQueue.Delete(Model.Token.JobQueue.Id, true), "Config_JobQueues_Actions_Delete_Button"));
 
             
             #line default
             #line hidden
             
-            #line 633 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+            #line 635 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
                                                                                                                                               
 
             
@@ -1884,7 +1886,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 670 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+            #line 672 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
         }
 
             
@@ -1893,7 +1895,7 @@ WriteLiteral(@">
 WriteLiteral("        ");
 
             
-            #line 671 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+            #line 673 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
          if (canShowJobs)
         {
             
@@ -1901,14 +1903,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 673 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+            #line 675 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
        Write(Html.ActionLinkButton(string.Format("Show {0} job{1}", Model.OpenJobCount, (Model.OpenJobCount == 1 ? null : "s")), MVC.Job.Queue(Model.Token.JobQueue.Id), "Config_JobQueues_Actions_ShowJobs_Button"));
 
             
             #line default
             #line hidden
             
-            #line 673 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+            #line 675 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
                                                                                                                                                                                                                     
         }
 
@@ -1918,7 +1920,7 @@ WriteLiteral("        ");
 WriteLiteral("    </div>\r\n");
 
             
-            #line 676 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
+            #line 678 "..\..\Areas\Config\Views\JobQueue\Show.cshtml"
 }
             
             #line default

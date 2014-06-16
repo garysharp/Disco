@@ -76,8 +76,10 @@
                 }
                 @if (Model.OrganisationAddresses.Count > 1)
                 {
-                    <div id="messageMultiSiteMode" style="padding: 0.7em 0.7em; margin-top: 20px;" class="ui-state-highlight ui-corner-all">
-                        <i class="fa fa-info-circle information"></i>&nbsp;Multi-Site mode is recommended where multiple addresses are configured.
+                    <div id="messageMultiSiteMode" class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle"></i>Multi-Site mode is recommended where multiple addresses are configured.
+                        </p>
                     </div>
                 }
             </td>
@@ -299,71 +301,71 @@
                     var dialog = $("#dialogConfirmRemove");
                     var buttons = dialog.dialog("option", "buttons");
                     buttons['Delete'] = function () { $(this).dialog("disable"); window.location.href = '@(Url.Action(MVC.API.System.DeleteOrganisationAddress()))' + '?redirect=true&id=' + id; };
-                var buttons = dialog.dialog("option", "buttons", buttons);
+                    var buttons = dialog.dialog("option", "buttons", buttons);
+                    dialog.dialog('open');
+                }
+            });
+
+            var editAddress = function (element) {
+                var id = '', shortName = '', name = '', address = '', suburb = '', postcode = '', state = '', country = '', phoneNumber = '', faxNumber = '';
+                var dialog = $('#dialogEdit');
+                if (element) {
+                    id = element.attr('data-addressid');
+                    shortName = element.find('.shortName').text();
+                    name = element.find('.name').text();
+                    address = element.find('.address').text();
+                    suburb = element.find('.suburb').text();
+                    postcode = element.find('.postcode').text();
+                    state = element.find('.state').text();
+                    country = element.find('.country').text();
+                    phoneNumber = element.find('.phoneNumber').text();
+                    faxNumber = element.find('.faxNumber').text();
+                    dialog.attr('data-addressid', id);
+                    dialog.dialog('option', 'title', 'Edit Address: ' + name);
+                } else {
+                    dialog.attr('data-addressid', null);
+                    dialog.dialog('option', 'title', 'Create Address');
+                }
+
+                $('#editShortName').val(shortName);
+                $('#editName').val(name);
+                $('#editAddress').val(address);
+                $('#editSuburb').val(suburb);
+                $('#editPostcode').val(postcode);
+                $('#editState').val(state);
+                $('#editCountry').val(country);
+                $('#editPhoneNumber').val(phoneNumber);
+                $('#editFaxNumber').val(faxNumber);
                 dialog.dialog('open');
             }
-        });
 
-        var editAddress = function (element) {
-            var id = '', shortName = '', name = '', address = '', suburb = '', postcode = '', state = '', country = '', phoneNumber = '', faxNumber = '';
-            var dialog = $('#dialogEdit');
-            if (element) {
-                id = element.attr('data-addressid');
-                shortName = element.find('.shortName').text();
-                name = element.find('.name').text();
-                address = element.find('.address').text();
-                suburb = element.find('.suburb').text();
-                postcode = element.find('.postcode').text();
-                state = element.find('.state').text();
-                country = element.find('.country').text();
-                phoneNumber = element.find('.phoneNumber').text();
-                faxNumber = element.find('.faxNumber').text();
-                dialog.attr('data-addressid', id);
-                dialog.dialog('option', 'title', 'Edit Address: ' + name);
-            } else {
-                dialog.attr('data-addressid', null);
-                dialog.dialog('option', 'title', 'Create Address');
-            }
+            $('#organisationAddresses').find('i.edit').click(function () {
+                var componentRow = $(this).closest('tr');
+                editAddress(componentRow);
+            });
 
-            $('#editShortName').val(shortName);
-            $('#editName').val(name);
-            $('#editAddress').val(address);
-            $('#editSuburb').val(suburb);
-            $('#editPostcode').val(postcode);
-            $('#editState').val(state);
-            $('#editCountry').val(country);
-            $('#editPhoneNumber').val(phoneNumber);
-            $('#editFaxNumber').val(faxNumber);
-            dialog.dialog('open');
-        }
+            $('#createAddress').click(function () {
+                editAddress();
+                return false;
+            });
 
-        $('#organisationAddresses').find('i.edit').click(function () {
-            var componentRow = $(this).closest('tr');
-            editAddress(componentRow);
-        });
+            var submitAddress = function () {
+                var dialog = $('#dialogEdit');
+                var data = {
+                    Id: dialog.attr('data-addressid'),
+                    ShortName: $('#editShortName').val(),
+                    Name: $('#editName').val(),
+                    Address: $('#editAddress').val(),
+                    Suburb: $('#editSuburb').val(),
+                    Postcode: $('#editPostcode').val(),
+                    State: $('#editState').val(),
+                    Country: $('#editCountry').val(),
+                    PhoneNumber: $('#editPhoneNumber').val(),
+                    FaxNumber: $('#editFaxNumber').val()
+                };
 
-        $('#createAddress').click(function () {
-            editAddress();
-            return false;
-        });
-
-        var submitAddress = function () {
-            var dialog = $('#dialogEdit');
-            var data = {
-                Id: dialog.attr('data-addressid'),
-                ShortName: $('#editShortName').val(),
-                Name: $('#editName').val(),
-                Address: $('#editAddress').val(),
-                Suburb: $('#editSuburb').val(),
-                Postcode: $('#editPostcode').val(),
-                State: $('#editState').val(),
-                Country: $('#editCountry').val(),
-                PhoneNumber: $('#editPhoneNumber').val(),
-                FaxNumber: $('#editFaxNumber').val()
-            };
-
-            $.ajax({
-                url: '@(Url.Action(MVC.API.System.UpdateOrganisationAddress()))',
+                $.ajax({
+                    url: '@(Url.Action(MVC.API.System.UpdateOrganisationAddress()))',
                 dataType: 'json',
                 data: data,
                 type: 'post',
@@ -382,21 +384,21 @@
             });
 
         };
-        $("#dialogEdit").dialog({
-            resizable: false,
-            modal: true,
-            autoOpen: false,
-            width: 350,
-            buttons: {
-                "Save": function () {
-                    submitAddress();
-                },
-                Cancel: function () {
-                    $(this).dialog("close");
+            $("#dialogEdit").dialog({
+                resizable: false,
+                modal: true,
+                autoOpen: false,
+                width: 350,
+                buttons: {
+                    "Save": function () {
+                        submitAddress();
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
                 }
-            }
-        });
+            });
 
-    });
+        });
     </script>
 }

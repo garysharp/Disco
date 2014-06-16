@@ -2066,22 +2066,10 @@ WriteLiteral("\r\n");
             
             #line default
             #line hidden
-WriteLiteral("                </div>\r\n                <div");
-
-WriteLiteral(" style=\"padding: 0.7em 0.7em;\"");
-
-WriteLiteral(" class=\"ui-state-highlight ui-corner-all\"");
-
-WriteLiteral(">\r\n                    <i");
-
-WriteLiteral(" class=\"fa fa-info-circle information\"");
-
-WriteLiteral("></i>&nbsp;Linked Active Directory Groups are automatically synchronized to inclu" +
-"de members currently associated with this Device Profile.\r\n                </div" +
-">\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n");
+WriteLiteral("                </div>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n");
 
             
-            #line 748 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 745 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
  if (canDelete)
 {
 
@@ -2136,7 +2124,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 784 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 781 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
 }
 
             
@@ -2149,13 +2137,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 786 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 783 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 786 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 783 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (canDelete)
     { 
         
@@ -2163,14 +2151,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 788 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 785 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
    Write(Html.ActionLinkButton("Delete", MVC.API.DeviceProfile.Delete(Model.DeviceProfile.Id, true), "buttonDelete"));
 
             
             #line default
             #line hidden
             
-            #line 788 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 785 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                     
     }
 
@@ -2180,7 +2168,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 790 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 787 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (Authorization.Has(Claims.Device.Actions.Export))
     {
         
@@ -2188,14 +2176,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 792 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 789 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
    Write(Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.Exporting.DeviceExportTypes.Profile, Model.DeviceProfile.Id)));
 
             
             #line default
             #line hidden
             
-            #line 792 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 789 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                                                                     
     }
 
@@ -2205,7 +2193,7 @@ WriteLiteral("    ");
 WriteLiteral("    ");
 
             
-            #line 794 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 791 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (Authorization.Has(Claims.Device.Search) && Model.DeviceCount > 0)
     {
         
@@ -2213,14 +2201,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 796 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 793 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
    Write(Html.ActionLinkButton(string.Format("View {0} Device{1}", Model.DeviceCount, (Model.DeviceCount != 1 ? "s" : null)), MVC.Search.Query(Model.DeviceProfile.Id.ToString(), "DeviceProfile")));
 
             
             #line default
             #line hidden
             
-            #line 796 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 793 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                                                                                                    
     }
 

@@ -58,7 +58,7 @@ WriteLiteral(" id=\"Config_LinkedGroup_Title\"");
 
 WriteLiteral("></h3>\r\n    <div");
 
-WriteLiteral(" class=\"infoBox error\"");
+WriteLiteral(" class=\"info-box error\"");
 
 WriteLiteral(">\r\n        <p");
 

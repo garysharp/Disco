@@ -2283,48 +2283,44 @@ WriteLiteral(" class=\"dialog\"");
 
 WriteLiteral(" title=\"Trust this Device?\"");
 
-WriteLiteral(">\r\n                    <div");
+WriteLiteral(@">
+                    <p>
+                        Devices flagged as 'trusted' are allowed a single-use device enrolment without providing authentication (for example: Active Directory Computer Account).
+                    </p>
+                    <p>
+                        Once a device enrols, its trust setting is reset and additional enrolments need to be authenticated (domain joined) or manually trusted again.
+                    </p>
+                    <div");
 
-WriteLiteral(" class=\"ui-widget\"");
+WriteLiteral(" class=\"info-box\"");
 
-WriteLiteral(">\r\n                        <div");
+WriteLiteral(" style=\"margin-top: 1em;\"");
 
-WriteLiteral(" class=\"ui-state-highlight ui-corner-all\"");
+WriteLiteral(">\r\n                        <p");
 
-WriteLiteral(" style=\"padding: 6px;\"");
+WriteLiteral(" class=\"fa-p\"");
 
-WriteLiteral(">\r\n                            <div");
+WriteLiteral(" style=\"margin-bottom: 1em;\"");
 
-WriteLiteral(" style=\"padding-bottom: 6px;\"");
+WriteLiteral(">\r\n                            <i");
 
-WriteLiteral(">\r\n                                <i");
+WriteLiteral(" class=\"fa fa-exclamation-triangle\"");
 
-WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
-
-WriteLiteral("></i>&nbsp;\r\n                                This action will allow a device <em>" +
-"claiming</em> to have the Serial Number \'");
+WriteLiteral("></i>This action will allow a device <em>claiming</em> to have the Serial Number " +
+"\'");
 
             
-            #line 654 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                                                                                         Write(Model.Device.SerialNumber);
+            #line 658 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+                                                                                                                                               Write(Model.Device.SerialNumber);
 
             
             #line default
             #line hidden
 WriteLiteral(@"' to be enrolled without authentication.
-                            </div>
+                        </p>
+                        <div>
                             <strong>Are you sure you want to allow an unauthenticated enrolment?</strong>
                         </div>
-                    </div>
-                    <div");
-
-WriteLiteral(" class=\"smallMessage\"");
-
-WriteLiteral(" style=\"margin-top: 10px; font-size: 1em;\"");
-
-WriteLiteral(@">
-                        Devices flagged as 'trusted' are allowed a single-use device enrolment without providing authentication (for example: Active Directory Computer Account).<br />
-                        Once a devices enrol, their trust setting is reset and additional enrolments need to be authenticated (domain joined) or manually trusted again.
                     </div>
                 </div>
 ");
@@ -2356,7 +2352,7 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "               });\r\n                </script>\r\n");
 
             
-            #line 697 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 698 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
             }
 
             
@@ -2365,7 +2361,7 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 WriteLiteral("            ");
 
             
-            #line 698 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 699 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
              if (Model.Device.CanUpdateUntrustEnrol())
             {
                 
@@ -2373,14 +2369,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 700 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 701 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Untrust Enrol", MVC.API.Device.UpdateAllowUnauthenticatedEnrol(Model.Device.SerialNumber, false.ToString(), true), "Device_Show_Device_Actions_UntrustEnrol_Button"));
 
             
             #line default
             #line hidden
             
-            #line 700 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 701 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                                                                                                  
 
             
@@ -2394,15 +2390,24 @@ WriteLiteral(" title=\"Untrust this Device?\"");
 
 WriteLiteral(">\r\n                    <div");
 
-WriteLiteral(" style=\"padding-bottom: 6px;\"");
+WriteLiteral(" class=\"info-box\"");
 
-WriteLiteral(">\r\n                        <i");
+WriteLiteral(">\r\n                        <p");
 
-WriteLiteral(" class=\"fa fa-info-circle information\"");
+WriteLiteral(" class=\"fa-p\"");
 
-WriteLiteral(@"></i>&nbsp;This action will require the device to enrol with authentication (for example: domain joined).
+WriteLiteral(" style=\"margin-bottom: 1em;\"");
+
+WriteLiteral(">\r\n                            <i");
+
+WriteLiteral(" class=\"fa fa-info-circle\"");
+
+WriteLiteral(@"></i>This action will require the device to enrol with authentication (for example: domain joined).
+                        </p>
+                        <div>
+                            <strong>Are you sure you want to require an authenticated enrolment?</strong>
+                        </div>
                     </div>
-                    <strong>Are you sure you want to require an authenticated enrolment?</strong>
                 </div>
 ");
 
@@ -2442,7 +2447,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 736 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 741 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
             }
 
             
@@ -2451,7 +2456,7 @@ WriteLiteral(@">
 WriteLiteral("            ");
 
             
-            #line 737 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 742 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
              if (Model.Device.CanDecommission())
             { 
                 
@@ -2459,14 +2464,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 739 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 744 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Decommission", MVC.API.Device.Decommission(), "Device_Show_Device_Actions_Decommission_Button"));
 
             
             #line default
             #line hidden
             
-            #line 739 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 744 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                             
 
             
@@ -2498,13 +2503,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 746 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 751 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 746 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 751 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                              foreach (DecommissionReasons decommissionReason in Enum.GetValues(typeof(DecommissionReasons)))
                             {
 
@@ -2515,34 +2520,34 @@ WriteLiteral("                                <li>\r\n                          
 
 WriteLiteral(" type=\"radio\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 47449), Tuple.Create("\"", 47527)
-, Tuple.Create(Tuple.Create("", 47454), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 47454), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 47481), Tuple.Create("\"", 47559)
+, Tuple.Create(Tuple.Create("", 47486), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 47486), true)
             
-            #line 749 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                           , Tuple.Create(Tuple.Create("", 47501), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 754 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+                           , Tuple.Create(Tuple.Create("", 47533), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 47501), false)
+, 47533), false)
 );
 
 WriteLiteral("\r\n                                        name=\"Device_Show_Device_Actions_Decomm" +
 "ission_Reason\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 47623), Tuple.Create("\"", 47657)
+WriteAttribute("value", Tuple.Create(" value=\"", 47655), Tuple.Create("\"", 47689)
             
-            #line 750 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                     , Tuple.Create(Tuple.Create("", 47631), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 755 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+                     , Tuple.Create(Tuple.Create("", 47663), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 47631), false)
+, 47663), false)
 );
 
 WriteLiteral(" ");
 
             
-            #line 750 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 755 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                              Write((decommissionReason == DecommissionReasons.EndOfLife) ? "checked=\"checked\"" : string.Empty);
 
             
@@ -2550,21 +2555,21 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral("/>\r\n                                    <label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 47800), Tuple.Create("\"", 47879)
-, Tuple.Create(Tuple.Create("", 47806), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 47806), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 47832), Tuple.Create("\"", 47911)
+, Tuple.Create(Tuple.Create("", 47838), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 47838), true)
             
-            #line 751 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-               , Tuple.Create(Tuple.Create("", 47853), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 756 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+               , Tuple.Create(Tuple.Create("", 47885), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 47853), false)
+, 47885), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 751 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 756 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                        Write(decommissionReason.ReasonMessage());
 
             
@@ -2573,7 +2578,7 @@ WriteLiteral(">");
 WriteLiteral("</label>\r\n                                </li>\r\n");
 
             
-            #line 753 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 758 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                             }
 
             
@@ -2591,7 +2596,7 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "uttonDialog = null;\r\n                        var deviceSerialNumber = \'");
 
             
-            #line 761 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 766 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                               Write(Model.Device.SerialNumber);
 
             
@@ -2624,7 +2629,7 @@ WriteLiteral("\';\r\n\r\n                        button.click(function () {\r\n\
 "   });\r\n                </script>\r\n");
 
             
-            #line 797 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 802 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
             }
 
             
@@ -2633,7 +2638,7 @@ WriteLiteral("\';\r\n\r\n                        button.click(function () {\r\n\
 WriteLiteral("            ");
 
             
-            #line 798 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 803 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
              if (Model.Device.CanRecommission())
             { 
                 
@@ -2641,14 +2646,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 800 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 805 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Recommission", MVC.API.Device.Recommission(Model.Device.SerialNumber, true), "Device_Show_Device_Actions_Recommission_Button"));
 
             
             #line default
             #line hidden
             
-            #line 800 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 805 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                                                            
 
             
@@ -2702,7 +2707,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 835 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 840 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
             }
 
             
@@ -2711,7 +2716,7 @@ WriteLiteral(@">
 WriteLiteral("            ");
 
             
-            #line 836 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 841 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
              if (Model.Device.CanDelete())
             { 
                 
@@ -2719,14 +2724,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 838 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 843 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Delete Device", MVC.API.Device.Delete(Model.Device.SerialNumber, true), "Device_Show_Device_Actions_Delete_Button"));
 
             
             #line default
             #line hidden
             
-            #line 838 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 843 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                                                 
 
             
@@ -2786,7 +2791,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 876 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 881 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
             }
 
             

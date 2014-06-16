@@ -391,20 +391,22 @@ WriteLiteral(" id=\"dialogInstallPluginDetails\"");
 
 WriteLiteral("></h4>\r\n\r\n    <div");
 
-WriteLiteral(" style=\"padding: 0.7em 0.7em; margin-top: 8px;\"");
+WriteLiteral(" class=\"info-box\"");
 
-WriteLiteral(" class=\"ui-state-highlight ui-corner-all\"");
+WriteLiteral(">\r\n        <p");
 
-WriteLiteral(">\r\n        <i");
+WriteLiteral(" class=\"fa-p\"");
 
-WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg information\"");
+WriteLiteral(">\r\n            <i");
 
-WriteLiteral("></i>&nbsp;Warning: All plugins run with the same level of network privileges as " +
-"the Disco Web App.<br />\r\n        <strong>Only Install plugins from a trusted so" +
-"urce.</strong>\r\n    </div>\r\n</div>\r\n");
+WriteLiteral(" class=\"fa fa-exclamation-triangle\"");
+
+WriteLiteral("></i><strong>Warning:</strong> All plugins run with the same level of network pri" +
+"vileges as the Disco Web App.<br />\r\n            <strong>Only Install plugins fr" +
+"om a trusted source.</strong>\r\n        </p>\r\n    </div>\r\n</div>\r\n");
 
             
-            #line 76 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 78 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
  if (canInstallLocal)
 {
 
@@ -424,13 +426,13 @@ WriteLiteral(" style=\"padding-bottom: 10px;\"");
 WriteLiteral(">\r\n");
 
             
-            #line 80 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 82 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 80 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 82 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
              using (Html.BeginForm(MVC.API.Plugin.InstallLocal(), FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
 
@@ -454,7 +456,7 @@ WriteLiteral(" type=\"file\"");
 WriteLiteral(" />\r\n");
 
             
-            #line 84 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 86 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
             }
 
             
@@ -462,20 +464,23 @@ WriteLiteral(" />\r\n");
             #line hidden
 WriteLiteral("        </div>\r\n        <div");
 
-WriteLiteral(" style=\"padding: 0.7em 0.7em; margin-top: 8px;\"");
+WriteLiteral(" class=\"info-box error\"");
 
-WriteLiteral(" class=\"ui-state-error ui-corner-all\"");
+WriteLiteral(">\r\n            <p");
 
-WriteLiteral(">\r\n            <i");
+WriteLiteral(" class=\"fa-p\"");
 
-WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
+WriteLiteral(">\r\n                <i");
 
-WriteLiteral("></i>&nbsp;Warning: All plugins run with the same level of network privileges as " +
-"the Disco Web App.<br />\r\n            <strong>Only install plugins from a truste" +
-"d source.</strong>\r\n        </div>\r\n    </div>\r\n");
+WriteLiteral(" class=\"fa fa-exclamation-triangle\"");
+
+WriteLiteral("></i><strong>Warning:</strong> All plugins run with the same level of network pri" +
+"vileges as the Disco Web App.<br />\r\n                <strong>Only install plugin" +
+"s from a trusted source.</strong>\r\n            </p>\r\n        </div>\r\n    </div>\r" +
+"\n");
 
             
-            #line 91 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 95 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
 }
 
             
@@ -510,13 +515,13 @@ WriteLiteral("<script>\r\n    $(function () {\r\n        var $selectedPlugin;\r\
 "  return false;\r\n        });\r\n\r\n");
 
             
-            #line 148 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 152 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 148 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 152 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
          if (canInstallLocal)
         {
             
@@ -551,7 +556,7 @@ WriteLiteral(@"
         ");
 
             
-            #line 175 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 179 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
                }
 
             
@@ -566,7 +571,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 179 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 183 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
 Write(Html.ActionLinkButton("Update Catalogue", MVC.API.Plugin.UpdateLibraryCatalogue()));
 
             
@@ -575,13 +580,13 @@ Write(Html.ActionLinkButton("Update Catalogue", MVC.API.Plugin.UpdateLibraryCata
 WriteLiteral("\r\n");
 
             
-            #line 180 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 184 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 180 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 184 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
      if (canInstallLocal)
     {
         
@@ -589,14 +594,14 @@ WriteLiteral("\r\n");
             #line default
             #line hidden
             
-            #line 182 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 186 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
    Write(Html.ActionLinkButton("Install Plugin Package", MVC.API.Plugin.InstallLocal(), "buttonUpload"));
 
             
             #line default
             #line hidden
             
-            #line 182 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 186 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
                                                                                                        
     }
 

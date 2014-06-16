@@ -1,7 +1,7 @@
 ﻿@model Disco.Web.Areas.Config.Models.UserFlag.IndexModel
 @{
     Authorization.Require(Claims.Config.UserFlag.Show);
-    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "User Flags", MVC.Config.UserFlag.Index(null));
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "User Flags");
 }
 <div id="Config_UserFlags_Index">
     @if (Model.UserFlags.Count == 0)

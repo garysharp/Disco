@@ -137,7 +137,7 @@ WriteLiteral("\r\n                    </td>\r\n                </tr>\r\n        
 
             
             #line 53 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                           Write(Html.DisplayFor(model => model.StoredInstanceCount));
+                           Write(Model.StoredInstanceCount.ToString("n0"));
 
             
             #line default
@@ -146,7 +146,7 @@ WriteLiteral("</strong> Stored Instance");
 
             
             #line 53 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                                                                                         Write(Model.StoredInstanceCount == 1 ? null : "s");
+                                                                                              Write(Model.StoredInstanceCount == 1 ? null : "s");
 
             
             #line default
@@ -428,7 +428,7 @@ WriteLiteral("                    </td>\r\n                </tr>\r\n            
             #line hidden
 WriteLiteral(" Scope</h4>\r\n                        <div");
 
-WriteLiteral(" class=\"infoBox\"");
+WriteLiteral(" class=\"info-box\"");
 
 WriteLiteral(">\r\n                            <p");
 
@@ -449,23 +449,23 @@ WriteLiteral("></i>This template is generated from ");
             #line hidden
 WriteLiteral("s. Any expressions within the Template&nbsp;PDF will be evaluated within the <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 8600), Tuple.Create("\"", 8706)
+WriteAttribute("href", Tuple.Create(" href=\"", 8590), Tuple.Create("\"", 8696)
             
             #line 155 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                                                                                                                       , Tuple.Create(Tuple.Create("", 8607), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser())
+                                                                                                                                       , Tuple.Create(Tuple.Create("", 8597), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser())
             
             #line default
             #line hidden
-, 8607), false)
-, Tuple.Create(Tuple.Create("", 8669), Tuple.Create("#", 8669), true)
+, 8597), false)
+, Tuple.Create(Tuple.Create("", 8659), Tuple.Create("#", 8659), true)
             
             #line 155 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                                                                                                                                                                                      , Tuple.Create(Tuple.Create("", 8670), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Scope
+                                                                                                                                                                                                      , Tuple.Create(Tuple.Create("", 8660), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Scope
             
             #line default
             #line hidden
-, 8670), false)
-, Tuple.Create(Tuple.Create("", 8701), Tuple.Create("Scope", 8701), true)
+, 8660), false)
+, Tuple.Create(Tuple.Create("", 8691), Tuple.Create("Scope", 8691), true)
 );
 
 WriteLiteral(">");
@@ -556,24 +556,24 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                                <option");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 9830), Tuple.Create("\"", 9844)
+WriteAttribute("value", Tuple.Create(" value=\"", 9820), Tuple.Create("\"", 9834)
             
             #line 171 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 9838), Tuple.Create<System.Object, System.Int32>(scope
+, Tuple.Create(Tuple.Create("", 9828), Tuple.Create<System.Object, System.Int32>(scope
             
             #line default
             #line hidden
-, 9838), false)
+, 9828), false)
 );
 
-WriteAttribute("selected", Tuple.Create(" selected=\"", 9845), Tuple.Create("\"", 9916)
+WriteAttribute("selected", Tuple.Create(" selected=\"", 9835), Tuple.Create("\"", 9906)
             
             #line 171 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-  , Tuple.Create(Tuple.Create("", 9856), Tuple.Create<System.Object, System.Int32>(scope == Model.DocumentTemplate.Scope ? "selected" : null
+  , Tuple.Create(Tuple.Create("", 9846), Tuple.Create<System.Object, System.Int32>(scope == Model.DocumentTemplate.Scope ? "selected" : null
             
             #line default
             #line hidden
-, 9856), false)
+, 9846), false)
 );
 
 WriteLiteral(">");
@@ -606,7 +606,7 @@ WriteLiteral("                                        </select>\r\n             
             #line hidden
 WriteLiteral("                                <div");
 
-WriteLiteral(" class=\"infoBox\"");
+WriteLiteral(" class=\"info-box\"");
 
 WriteLiteral(">\r\n                                    <p");
 
@@ -636,7 +636,7 @@ WriteLiteral("></i>Expressions within the Template PDF may need to be updated to
             #line hidden
 WriteLiteral("                                    <div");
 
-WriteLiteral(" class=\"infoBox error\"");
+WriteLiteral(" class=\"info-box error\"");
 
 WriteLiteral(">\r\n                                        <p");
 
@@ -911,29 +911,29 @@ WriteLiteral(" class=\"jobTypes\"");
 WriteLiteral(">\r\n                                                <h4>\r\n                        " +
 "                            <input");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 16558), Tuple.Create("\"", 16577)
-, Tuple.Create(Tuple.Create("", 16563), Tuple.Create("Types_", 16563), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 16550), Tuple.Create("\"", 16569)
+, Tuple.Create(Tuple.Create("", 16555), Tuple.Create("Types_", 16555), true)
             
             #line 269 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 16569), Tuple.Create<System.Object, System.Int32>(jt.Id
+, Tuple.Create(Tuple.Create("", 16561), Tuple.Create<System.Object, System.Int32>(jt.Id
             
             #line default
             #line hidden
-, 16569), false)
+, 16561), false)
 );
 
 WriteLiteral(" class=\"jobType\"");
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 16610), Tuple.Create("\"", 16626)
+WriteAttribute("value", Tuple.Create(" value=\"", 16602), Tuple.Create("\"", 16618)
             
             #line 269 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                      , Tuple.Create(Tuple.Create("", 16618), Tuple.Create<System.Object, System.Int32>(jt.Id
+                                      , Tuple.Create(Tuple.Create("", 16610), Tuple.Create<System.Object, System.Int32>(jt.Id
             
             #line default
             #line hidden
-, 16618), false)
+, 16610), false)
 );
 
 WriteLiteral(" ");
@@ -947,15 +947,15 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 16697), Tuple.Create("\"", 16717)
-, Tuple.Create(Tuple.Create("", 16703), Tuple.Create("Types_", 16703), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 16689), Tuple.Create("\"", 16709)
+, Tuple.Create(Tuple.Create("", 16695), Tuple.Create("Types_", 16695), true)
             
             #line 269 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                                                                                                                 , Tuple.Create(Tuple.Create("", 16709), Tuple.Create<System.Object, System.Int32>(jt.Id
+                                                                                                                                 , Tuple.Create(Tuple.Create("", 16701), Tuple.Create<System.Object, System.Int32>(jt.Id
             
             #line default
             #line hidden
-, 16709), false)
+, 16701), false)
 );
 
 WriteLiteral(">");
@@ -969,15 +969,15 @@ WriteLiteral(">");
             #line hidden
 WriteLiteral("</label></h4>\r\n                                                <div");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 16801), Tuple.Create("\"", 16823)
-, Tuple.Create(Tuple.Create("", 16806), Tuple.Create("SubTypes_", 16806), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 16793), Tuple.Create("\"", 16815)
+, Tuple.Create(Tuple.Create("", 16798), Tuple.Create("SubTypes_", 16798), true)
             
             #line 270 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 16815), Tuple.Create<System.Object, System.Int32>(jt.Id
+, Tuple.Create(Tuple.Create("", 16807), Tuple.Create<System.Object, System.Int32>(jt.Id
             
             #line default
             #line hidden
-, 16815), false)
+, 16807), false)
 );
 
 WriteLiteral(" class=\"jobSubTypes\"");
@@ -1616,16 +1616,16 @@ WriteLiteral(" id=\"dialogBulkGenerate\"");
 
 WriteLiteral(" class=\"hiddenDialog\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 33937), Tuple.Create("\"", 33988)
-, Tuple.Create(Tuple.Create("", 33945), Tuple.Create("Bulk", 33945), true)
-, Tuple.Create(Tuple.Create(" ", 33949), Tuple.Create("Generate:", 33950), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 33929), Tuple.Create("\"", 33980)
+, Tuple.Create(Tuple.Create("", 33937), Tuple.Create("Bulk", 33937), true)
+, Tuple.Create(Tuple.Create(" ", 33941), Tuple.Create("Generate:", 33942), true)
             
             #line 579 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-, Tuple.Create(Tuple.Create(" ", 33959), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
+, Tuple.Create(Tuple.Create(" ", 33951), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
             
             #line default
             #line hidden
-, 33960), false)
+, 33952), false)
 );
 
 WriteLiteral(">\r\n            <div");

@@ -65,7 +65,7 @@ WriteLiteral(" class=\"Config_LinkedGroup_Instance\"");
 
 WriteLiteral(">\r\n    <div");
 
-WriteLiteral(" class=\"infoBox\"");
+WriteLiteral(" class=\"info-box\"");
 
 WriteLiteral(">\r\n        <p");
 
@@ -114,14 +114,14 @@ WriteLiteral("        <div");
 
 WriteLiteral(" class=\"code\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 680), Tuple.Create("\"", 697)
+WriteAttribute("title", Tuple.Create(" title=\"", 681), Tuple.Create("\"", 698)
             
             #line 22 "..\..\Areas\Config\Views\Shared\LinkedGroupInstance.cshtml"
-, Tuple.Create(Tuple.Create("", 688), Tuple.Create<System.Object, System.Int32>(group.Id
+, Tuple.Create(Tuple.Create("", 689), Tuple.Create<System.Object, System.Int32>(group.Id
             
             #line default
             #line hidden
-, 688), false)
+, 689), false)
 );
 
 WriteLiteral(">\r\n            <i");
@@ -180,14 +180,14 @@ WriteLiteral(">Change Link</button>\r\n");
 
 WriteLiteral("        <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 1113), Tuple.Create("\"", 1227)
+WriteAttribute("href", Tuple.Create(" href=\"", 1114), Tuple.Create("\"", 1228)
             
             #line 26 "..\..\Areas\Config\Views\Shared\LinkedGroupInstance.cshtml"
-, Tuple.Create(Tuple.Create("", 1120), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.System.SyncActiveDirectoryManagedGroup(Model.ManagedGroup.Key, Context.Request.Path))
+, Tuple.Create(Tuple.Create("", 1121), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.System.SyncActiveDirectoryManagedGroup(Model.ManagedGroup.Key, Context.Request.Path))
             
             #line default
             #line hidden
-, 1120), false)
+, 1121), false)
 );
 
 WriteLiteral(" class=\"button small\"");
@@ -323,14 +323,14 @@ WriteLiteral("        <div");
 
 WriteLiteral(" class=\"code\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2271), Tuple.Create("\"", 2288)
+WriteAttribute("title", Tuple.Create(" title=\"", 2272), Tuple.Create("\"", 2289)
             
             #line 47 "..\..\Areas\Config\Views\Shared\LinkedGroupInstance.cshtml"
-, Tuple.Create(Tuple.Create("", 2279), Tuple.Create<System.Object, System.Int32>(group.Id
+, Tuple.Create(Tuple.Create("", 2280), Tuple.Create<System.Object, System.Int32>(group.Id
             
             #line default
             #line hidden
-, 2279), false)
+, 2280), false)
 );
 
 WriteLiteral(">\r\n            <i");

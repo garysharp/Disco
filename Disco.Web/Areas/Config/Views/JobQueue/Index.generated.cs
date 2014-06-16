@@ -48,7 +48,7 @@ namespace Disco.Web.Areas.Config.Views.JobQueue
             #line 2 "..\..\Areas\Config\Views\JobQueue\Index.cshtml"
   
     Authorization.Require(Claims.Config.JobQueue.Show);
-    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Job Queues", MVC.Config.JobQueue.Index(null));
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Job Queues");
 
             
             #line default
@@ -114,37 +114,37 @@ WriteLiteral(">\r\n            <tr>\r\n                <th>Name</th>\r\n        
             #line hidden
 WriteLiteral("                <tr>\r\n                    <td>\r\n                        <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 851), Tuple.Create("\"", 914)
+WriteAttribute("href", Tuple.Create(" href=\"", 818), Tuple.Create("\"", 881)
             
             #line 26 "..\..\Areas\Config\Views\JobQueue\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 858), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.JobQueue.Index(item.JobQueue.Id))
+, Tuple.Create(Tuple.Create("", 825), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.JobQueue.Index(item.JobQueue.Id))
             
             #line default
             #line hidden
-, 858), false)
+, 825), false)
 );
 
 WriteLiteral(">\r\n                            <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 948), Tuple.Create("\"", 1019)
-, Tuple.Create(Tuple.Create("", 956), Tuple.Create("fa", 956), true)
-, Tuple.Create(Tuple.Create(" ", 958), Tuple.Create("fa-", 959), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 915), Tuple.Create("\"", 986)
+, Tuple.Create(Tuple.Create("", 923), Tuple.Create("fa", 923), true)
+, Tuple.Create(Tuple.Create(" ", 925), Tuple.Create("fa-", 926), true)
             
             #line 27 "..\..\Areas\Config\Views\JobQueue\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 962), Tuple.Create<System.Object, System.Int32>(item.JobQueue.Icon
+, Tuple.Create(Tuple.Create("", 929), Tuple.Create<System.Object, System.Int32>(item.JobQueue.Icon
             
             #line default
             #line hidden
-, 962), false)
-, Tuple.Create(Tuple.Create(" ", 983), Tuple.Create("fa-lg", 984), true)
-, Tuple.Create(Tuple.Create(" ", 989), Tuple.Create("d-", 990), true)
+, 929), false)
+, Tuple.Create(Tuple.Create(" ", 950), Tuple.Create("fa-lg", 951), true)
+, Tuple.Create(Tuple.Create(" ", 956), Tuple.Create("d-", 957), true)
             
             #line 27 "..\..\Areas\Config\Views\JobQueue\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 992), Tuple.Create<System.Object, System.Int32>(item.JobQueue.IconColour
+, Tuple.Create(Tuple.Create("", 959), Tuple.Create<System.Object, System.Int32>(item.JobQueue.IconColour
             
             #line default
             #line hidden
-, 992), false)
+, 959), false)
 );
 
 WriteLiteral("></i>\r\n");
@@ -201,27 +201,27 @@ WriteLiteral(">&lt;none&gt;</span>\r\n");
             #line hidden
 WriteLiteral("                    </td>\r\n                    <td>\r\n                        <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1574), Tuple.Create("\"", 1642)
-, Tuple.Create(Tuple.Create("", 1582), Tuple.Create("fa", 1582), true)
-, Tuple.Create(Tuple.Create(" ", 1584), Tuple.Create("d-priority-", 1585), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1541), Tuple.Create("\"", 1609)
+, Tuple.Create(Tuple.Create("", 1549), Tuple.Create("fa", 1549), true)
+, Tuple.Create(Tuple.Create(" ", 1551), Tuple.Create("d-priority-", 1552), true)
             
             #line 41 "..\..\Areas\Config\Views\JobQueue\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 1596), Tuple.Create<System.Object, System.Int32>(item.JobQueue.Priority.ToString().ToLower()
+, Tuple.Create(Tuple.Create("", 1563), Tuple.Create<System.Object, System.Int32>(item.JobQueue.Priority.ToString().ToLower()
             
             #line default
             #line hidden
-, 1596), false)
+, 1563), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 1643), Tuple.Create("\"", 1696)
+WriteAttribute("title", Tuple.Create(" title=\"", 1610), Tuple.Create("\"", 1663)
             
             #line 41 "..\..\Areas\Config\Views\JobQueue\Index.cshtml"
-                        , Tuple.Create(Tuple.Create("", 1651), Tuple.Create<System.Object, System.Int32>(item.JobQueue.Priority.ToString()
+                        , Tuple.Create(Tuple.Create("", 1618), Tuple.Create<System.Object, System.Int32>(item.JobQueue.Priority.ToString()
             
             #line default
             #line hidden
-, 1651), false)
-, Tuple.Create(Tuple.Create(" ", 1687), Tuple.Create("Priority", 1688), true)
+, 1618), false)
+, Tuple.Create(Tuple.Create(" ", 1654), Tuple.Create("Priority", 1655), true)
 );
 
 WriteLiteral("></i>\r\n                    </td>\r\n                    <td>\r\n");

@@ -4753,32 +4753,32 @@ div.form > table table.sub > tbody > tr > th.name {
   border-right: none;
   padding-right: 0;
 }
-div.infoBox {
+div.info-box {
   margin: 0.4em 0;
   padding: 0.4em;
   border: 1px solid #fff397;
   background-color: #fffef7;
 }
-div.infoBox i {
+div.info-box i {
   color: #1e6dab;
 }
-div.infoBox.alert {
+div.info-box.alert {
   border: 1px solid #fa6800;
   background-color: #fff9f5;
   color: #333333;
 }
-div.infoBox.alert i {
+div.info-box.alert i {
   color: #fa6800;
 }
-div.infoBox.error {
+div.info-box.error {
   border: 1px solid #e51400;
   background-color: #fffaf9;
   color: #e51400;
 }
-div.infoBox.error i {
+div.info-box.error i {
   color: #e51400;
 }
-div.infoBox p {
+div.info-box p {
   line-height: 1.2em;
 }
 p.fa-p {

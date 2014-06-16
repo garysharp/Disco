@@ -167,15 +167,15 @@ WriteLiteral("                    <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 1233), Tuple.Create("\"", 1289)
+WriteAttribute("title", Tuple.Create(" title=\"", 1233), Tuple.Create("\"", 1304)
             
             #line 44 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 1241), Tuple.Create<System.Object, System.Int32>(item.DeviceDecommissionedCount
+, Tuple.Create(Tuple.Create("", 1241), Tuple.Create<System.Object, System.Int32>(item.DeviceDecommissionedCount.ToString("n0")
             
             #line default
             #line hidden
 , 1241), false)
-, Tuple.Create(Tuple.Create(" ", 1274), Tuple.Create("Decommissioned", 1275), true)
+, Tuple.Create(Tuple.Create(" ", 1289), Tuple.Create("Decommissioned", 1290), true)
 );
 
 WriteLiteral(">\r\n                        (");
