@@ -1,5 +1,6 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Models.Repository;
+using Disco.Services.Users;
 using System;
 using System.Linq;
 
@@ -7,6 +8,7 @@ namespace Disco.BI.Expressions.Extensions
 {
     public static class UserExt
     {
+        #region Active Directory Extensions
         public static object GetActiveDirectoryObjectValue(User User, string PropertyName, int Index = 0)
         {
             var adUserAccount = User.ActiveDirectoryAccount(PropertyName);
@@ -44,5 +46,29 @@ namespace Disco.BI.Expressions.Extensions
                 return intValue;
             }
         }
+        #endregion
+
+        #region Authorization Testing Extensions
+        public static bool HasAuthorization(User User, string Claim)
+        {
+            var authorization = UserService.GetAuthorization(User.UserId);
+
+            return authorization.Has(Claim);
+        }
+
+        public static bool HasAuthorizationAll(User User, params string[] Claims)
+        {
+            var authorization = UserService.GetAuthorization(User.UserId);
+
+            return authorization.HasAll(Claims);
+        }
+
+        public static bool HasAuthorizationAny(User User, params string[] Claims)
+        {
+            var authorization = UserService.GetAuthorization(User.UserId);
+
+            return authorization.HasAny(Claims);
+        }
+        #endregion
     }
 }
