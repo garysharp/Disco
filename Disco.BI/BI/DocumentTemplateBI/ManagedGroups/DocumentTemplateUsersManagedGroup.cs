@@ -18,7 +18,8 @@ namespace Disco.BI.DocumentTemplateBI.ManagedGroups
         private const string CategoryDescriptionFormat = "Related Users Linked Group";
         private const string GroupDescriptionFormat = "{0} [Document Template Users]";
 
-        private IDisposable repositorySubscription;
+        private IDisposable repositoryAddSubscription;
+        private IDisposable repositoryRemoveSubscription;
         private IDisposable jobCloseRepositorySubscription;
         private IDisposable deviceAssignmentRepositorySubscription;
         private string DocumentTemplateId;
@@ -45,27 +46,36 @@ namespace Disco.BI.DocumentTemplateBI.ManagedGroups
             {
                 case DocumentTemplate.DocumentTemplateScopes.Device:
                     // Observe Device Attachments
-                    repositorySubscription = DocumentTemplateManagedGroups.DeviceScopeRepositoryEvents.Value
+                    repositoryAddSubscription = DocumentTemplateManagedGroups.DeviceAttachmentAddRepositoryEvents.Value
                         .Where(e => ((DeviceAttachment)e.Entity).DocumentTemplateId == DocumentTemplateId)
-                        .Subscribe(ProcessDeviceRepositoryEvent);
+                        .Subscribe(ProcessDeviceAttachmentAddEvent);
+                    repositoryRemoveSubscription = DocumentTemplateManagedGroups.DeviceAttachmentRemoveEvents.Value
+                        .Where(e => e.Item3 == DocumentTemplateId)
+                        .Subscribe(ProcessDeviceAttachmentRemoveEvent);
                     // Observe Device Assignments
                     deviceAssignmentRepositorySubscription = DocumentTemplateManagedGroups.DeviceAssignmentRepositoryEvents.Value
                         .Subscribe(ProcessDeviceAssignmentRepositoryEvent);
                     break;
                 case DocumentTemplate.DocumentTemplateScopes.Job:
                     // Observe Job Attachments
-                    repositorySubscription = DocumentTemplateManagedGroups.UserScopeRepositoryEvents.Value
+                    repositoryAddSubscription = DocumentTemplateManagedGroups.UserAttachmentAddRepositoryEvents.Value
                         .Where(e => ((JobAttachment)e.Entity).DocumentTemplateId == DocumentTemplateId)
-                        .Subscribe(ProcessJobRepositoryEvent);
+                        .Subscribe(ProcessJobAttachmentAddEvent);
+                    repositoryRemoveSubscription = DocumentTemplateManagedGroups.JobAttachmentRemoveEvents.Value
+                        .Where(e => e.Item3 == DocumentTemplateId)
+                        .Subscribe(ProcessJobAttachmentRemoveEvent);
                     // Observe Job Close/Reopen
                     jobCloseRepositorySubscription = DocumentTemplateManagedGroups.JobCloseRepositoryEvents.Value
                         .Subscribe(ProcessJobCloseRepositoryEvent);
                     break;
                 case DocumentTemplate.DocumentTemplateScopes.User:
                     // Observe User Attachments
-                    repositorySubscription = DocumentTemplateManagedGroups.UserScopeRepositoryEvents.Value
+                    repositoryAddSubscription = DocumentTemplateManagedGroups.UserAttachmentAddRepositoryEvents.Value
                         .Where(e => ((UserAttachment)e.Entity).DocumentTemplateId == DocumentTemplateId)
-                        .Subscribe(ProcessUserRepositoryEvent);
+                        .Subscribe(ProcessUserAttachmentAddEvent);
+                    repositoryRemoveSubscription = DocumentTemplateManagedGroups.UserAttachmentRemoveEvents.Value
+                        .Where(e => e.Item3 == DocumentTemplateId)
+                        .Subscribe(ProcessUserAttachmentRemoveEvent);
                     break;
             }
         }
@@ -82,7 +92,7 @@ namespace Disco.BI.DocumentTemplateBI.ManagedGroups
                 case DocumentTemplate.DocumentTemplateScopes.Job:
                     return string.Format(DescriptionFormat, DocumentTemplateScope, DocumentTemplateDescription);
                 case DocumentTemplate.DocumentTemplateScopes.User:
-                    return string.Format(UserDescriptionFormat, DocumentTemplateDescription);                    
+                    return string.Format(UserDescriptionFormat, DocumentTemplateDescription);
                 default:
                     throw new ArgumentException("Unknown Document Template Scope", "Scope");
             }
@@ -183,15 +193,29 @@ namespace Disco.BI.DocumentTemplateBI.ManagedGroups
             }
         }
 
-        private void ProcessDeviceRepositoryEvent(RepositoryMonitorEvent e)
+        private void ProcessDeviceAttachmentAddEvent(RepositoryMonitorEvent e)
         {
             var attachment = (DeviceAttachment)e.Entity;
 
             string userId;
-            if (DeviceContainsAttachment(e.Database, attachment.DeviceSerialNumber, out userId))
+            if (DeviceContainsAttachment(e.Database, attachment.DeviceSerialNumber, out userId) && userId != null)
                 AddMember(userId, (database) => new string[] { userId });
-            else if (userId != null)
-                RemoveMember(userId, (database) => new string[] { userId });
+        }
+        private void ProcessDeviceAttachmentRemoveEvent(Tuple<DiscoDataContext, int, string, string> e)
+        {
+            var deviceSerialNumber = e.Item4;
+            string userId = e.Item1.Devices.Where(d => d.SerialNumber == deviceSerialNumber && d.AssignedUserId != null).Select(j => j.AssignedUserId).FirstOrDefault();
+
+            if (userId != null)
+            {
+                RemoveMember(userId, (database) =>
+                {
+                    if (DeviceContainsAttachment(database, deviceSerialNumber, out userId) && userId != null)
+                        return new string[] { userId };
+                    else
+                        return null;
+                });
+            }
         }
         #endregion
 
@@ -217,15 +241,29 @@ namespace Disco.BI.DocumentTemplateBI.ManagedGroups
             }
         }
 
-        private void ProcessJobRepositoryEvent(RepositoryMonitorEvent e)
+        private void ProcessJobAttachmentAddEvent(RepositoryMonitorEvent e)
         {
             var attachment = (JobAttachment)e.Entity;
 
             string userId;
-            if (JobsContainAttachment(e.Database, attachment.JobId, out userId))
+            if (JobsContainAttachment(e.Database, attachment.JobId, out userId) && userId != null)
                 AddMember(userId, (database) => new string[] { userId });
-            else if (userId != null)
-                RemoveMember(userId, (database) => new string[] { userId });
+        }
+        private void ProcessJobAttachmentRemoveEvent(Tuple<DiscoDataContext, int, string, int> e)
+        {
+            var jobId = e.Item4;
+            string userId = e.Item1.Jobs.Where(j => j.Id == jobId && j.UserId != null).Select(j => j.UserId).FirstOrDefault();
+
+            if (userId != null)
+            {
+                RemoveMember(userId, (database) =>
+                {
+                    if (JobsContainAttachment(database, jobId, out userId) && userId != null)
+                        return new string[] { userId };
+                    else
+                        return null;
+                });
+            }
         }
         #endregion
 
@@ -239,15 +277,25 @@ namespace Disco.BI.DocumentTemplateBI.ManagedGroups
             return result;
         }
 
-        private void ProcessUserRepositoryEvent(RepositoryMonitorEvent e)
+        private void ProcessUserAttachmentAddEvent(RepositoryMonitorEvent e)
         {
             var attachment = (UserAttachment)e.Entity;
             var userId = attachment.UserId;
 
-            if (UserContainAttachment(e.Database, userId))
+            if (UserContainAttachment(e.Database, userId) && userId != null)
                 AddMember(userId, (database) => new string[] { userId });
-            else
-                RemoveMember(userId, (database) => new string[] { userId });
+        }
+        private void ProcessUserAttachmentRemoveEvent(Tuple<DiscoDataContext, int, string, string> e)
+        {
+            var userId = e.Item4;
+
+            RemoveMember(userId, (database) =>
+            {
+                if (!UserContainAttachment(database, userId))
+                    return new string[] { userId };
+                else
+                    return null;
+            });
         }
         #endregion
 
@@ -301,8 +349,11 @@ namespace Disco.BI.DocumentTemplateBI.ManagedGroups
 
         public override void Dispose()
         {
-            if (repositorySubscription != null)
-                repositorySubscription.Dispose();
+            if (repositoryAddSubscription != null)
+                repositoryAddSubscription.Dispose();
+
+            if (repositoryRemoveSubscription != null)
+                repositoryRemoveSubscription.Dispose();
 
             if (jobCloseRepositorySubscription != null)
                 jobCloseRepositorySubscription.Dispose();

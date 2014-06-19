@@ -4,14 +4,19 @@ using Disco.Models.Repository;
 using System;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 
 namespace Disco.BI.DocumentTemplateBI.ManagedGroups
 {
     public static class DocumentTemplateManagedGroups
     {
-        internal static Lazy<IObservable<RepositoryMonitorEvent>> DeviceScopeRepositoryEvents;
-        internal static Lazy<IObservable<RepositoryMonitorEvent>> JobScopeRepositoryEvents;
-        internal static Lazy<IObservable<RepositoryMonitorEvent>> UserScopeRepositoryEvents;
+        internal static Lazy<IObservable<RepositoryMonitorEvent>> DeviceAttachmentAddRepositoryEvents;
+        internal static Lazy<IObservable<RepositoryMonitorEvent>> JobAttachmentAddRepositoryEvents;
+        internal static Lazy<IObservable<RepositoryMonitorEvent>> UserAttachmentAddRepositoryEvents;
+
+        internal static Lazy<Subject<Tuple<DiscoDataContext, int, string, string>>> DeviceAttachmentRemoveEvents;
+        internal static Lazy<Subject<Tuple<DiscoDataContext, int, string, int>>> JobAttachmentRemoveEvents;
+        internal static Lazy<Subject<Tuple<DiscoDataContext, int, string, string>>> UserAttachmentRemoveEvents;
 
         internal static Lazy<IObservable<RepositoryMonitorEvent>> DeviceRenameRepositoryEvents;
         internal static Lazy<IObservable<RepositoryMonitorEvent>> JobCloseRepositoryEvents;
@@ -19,31 +24,34 @@ namespace Disco.BI.DocumentTemplateBI.ManagedGroups
 
         static DocumentTemplateManagedGroups()
         {
-            DeviceScopeRepositoryEvents =
+            DeviceAttachmentAddRepositoryEvents =
                 new Lazy<IObservable<RepositoryMonitorEvent>>(() =>
                     RepositoryMonitor.StreamAfterCommit.Where(e =>
                         e.EntityType == typeof(DeviceAttachment) &&
-                        ((DeviceAttachment)e.Entity).DocumentTemplateId != null && (
-                        (e.EventType == RepositoryMonitorEventType.Added) ||
-                        (e.EventType == RepositoryMonitorEventType.Deleted)
-                        )
+                        ((DeviceAttachment)e.Entity).DocumentTemplateId != null &&
+                        e.EventType == RepositoryMonitorEventType.Added
                     ));
-            JobScopeRepositoryEvents =
+            JobAttachmentAddRepositoryEvents =
                 new Lazy<IObservable<RepositoryMonitorEvent>>(() =>
                     RepositoryMonitor.StreamAfterCommit.Where(e =>
-                        e.EntityType == typeof(JobAttachment) && (
-                        (e.EventType == RepositoryMonitorEventType.Added) ||
-                        (e.EventType == RepositoryMonitorEventType.Deleted)
-                        )
+                        e.EntityType == typeof(JobAttachment) &&
+                        ((JobAttachment)e.Entity).DocumentTemplateId != null &&
+                        e.EventType == RepositoryMonitorEventType.Added
                     ));
-            UserScopeRepositoryEvents =
+            UserAttachmentAddRepositoryEvents =
                 new Lazy<IObservable<RepositoryMonitorEvent>>(() =>
                     RepositoryMonitor.StreamAfterCommit.Where(e =>
-                        e.EntityType == typeof(UserAttachment) && (
-                        (e.EventType == RepositoryMonitorEventType.Added) ||
-                        (e.EventType == RepositoryMonitorEventType.Deleted)
-                        )
+                        e.EntityType == typeof(UserAttachment) &&
+                        ((UserAttachment)e.Entity).DocumentTemplateId != null &&
+                        e.EventType == RepositoryMonitorEventType.Added
                     ));
+
+            DeviceAttachmentRemoveEvents =
+                new Lazy<Subject<Tuple<DiscoDataContext, int, string, string>>>(() => new Subject<Tuple<DiscoDataContext, int, string, string>>());
+            JobAttachmentRemoveEvents =
+                new Lazy<Subject<Tuple<DiscoDataContext, int, string, int>>>(() => new Subject<Tuple<DiscoDataContext, int, string, int>>());
+            UserAttachmentRemoveEvents =
+                new Lazy<Subject<Tuple<DiscoDataContext, int, string, string>>>(() => new Subject<Tuple<DiscoDataContext, int, string, string>>());
 
             DeviceRenameRepositoryEvents =
                 new Lazy<IObservable<RepositoryMonitorEvent>>(() =>
@@ -79,6 +87,24 @@ namespace Disco.BI.DocumentTemplateBI.ManagedGroups
                     DocumentTemplateDevicesManagedGroup.Initialize(dp);
                     DocumentTemplateUsersManagedGroup.Initialize(dp);
                 });
+        }
+
+        public static void TriggerDeviceAttachmentDeleted(DiscoDataContext Database, int AttachmentId, string DocumentTemplateId, string DeviceSerialNumber)
+        {
+            if (DocumentTemplateId != null)
+                DeviceAttachmentRemoveEvents.Value.OnNext(Tuple.Create(Database, AttachmentId, DocumentTemplateId, DeviceSerialNumber));
+        }
+
+        public static void TriggerJobAttachmentDeleted(DiscoDataContext Database, int AttachmentId, string DocumentTemplateId, int JobId)
+        {
+            if (DocumentTemplateId != null)
+                JobAttachmentRemoveEvents.Value.OnNext(Tuple.Create(Database, AttachmentId, DocumentTemplateId, JobId));
+        }
+
+        public static void TriggerUserAttachmentDeleted(DiscoDataContext Database, int AttachmentId, string DocumentTemplateId, string UserId)
+        {
+            if (DocumentTemplateId != null)
+                UserAttachmentRemoveEvents.Value.OnNext(Tuple.Create(Database, AttachmentId, DocumentTemplateId, UserId));
         }
     }
 }

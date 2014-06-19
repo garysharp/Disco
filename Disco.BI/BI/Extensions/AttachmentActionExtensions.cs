@@ -6,6 +6,7 @@ using Disco.Models.Repository;
 using Disco.Data.Repository;
 using Disco.Services.Users;
 using Disco.Services.Authorization;
+using Disco.BI.DocumentTemplateBI.ManagedGroups;
 
 namespace Disco.BI.Extensions
 {
@@ -29,8 +30,14 @@ namespace Disco.BI.Extensions
             if (!da.CanDelete())
                 throw new InvalidOperationException("Deletion of Attachment is Denied");
 
+            var attachmentId = da.Id;
+            var documentTemplateId = da.DocumentTemplateId;
+            var deviceSerialNumber = da.DeviceSerialNumber;
+
             da.RepositoryDelete(Database);
             Database.DeviceAttachments.Remove(da);
+
+            DocumentTemplateManagedGroups.TriggerDeviceAttachmentDeleted(Database, attachmentId, documentTemplateId, deviceSerialNumber);
         }
         public static bool CanDelete(this JobAttachment ja)
         {
@@ -48,8 +55,14 @@ namespace Disco.BI.Extensions
             if (!ja.CanDelete())
                 throw new InvalidOperationException("Deletion of Attachment is Denied");
 
+            var attachmentId = ja.Id;
+            var documentTemplateId = ja.DocumentTemplateId;
+            var jobId = ja.JobId;
+
             ja.RepositoryDelete(Database);
             Database.JobAttachments.Remove(ja);
+
+            DocumentTemplateManagedGroups.TriggerJobAttachmentDeleted(Database, attachmentId, documentTemplateId, jobId);
         }
         public static bool CanDelete(this UserAttachment ua)
         {
@@ -67,8 +80,14 @@ namespace Disco.BI.Extensions
             if (!ua.CanDelete())
                 throw new InvalidOperationException("Deletion of Attachment is Denied");
 
+            var attachmentId = ua.Id;
+            var documentTemplateId = ua.DocumentTemplateId;
+            var userId = ua.UserId;
+
             ua.RepositoryDelete(Database);
             Database.UserAttachments.Remove(ua);
+
+            DocumentTemplateManagedGroups.TriggerUserAttachmentDeleted(Database, attachmentId, documentTemplateId, userId);
         }
         #endregion
 
