@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Disco.Services.Interop.ActiveDirectory;
+using Newtonsoft.Json;
 
 namespace Disco.Services.Authorization.Roles
 {
@@ -23,6 +24,8 @@ namespace Disco.Services.Authorization.Roles
 
         internal static void Initialize(DiscoDataContext Database)
         {
+            MigrateAuthorizationRoles(Database);
+
             _Cache = Database.AuthorizationRoles.ToList().Select(ar => RoleToken.FromAuthorizationRole(ar)).ToList();
 
             // Add System Roles
@@ -146,6 +149,61 @@ namespace Disco.Services.Authorization.Roles
             var subjectIds = SecurityGroup.Concat(new string[] { User.UserId });
 
             return _Cache.Where(t => subjectIds.Any(sg => t.SubjectIdHashes.Contains(sg))).Cast<IRoleToken>().ToList();
+        }
+
+        /// <summary>
+        /// Migrates authorization role claims to conform with changes to Disco since the last release.
+        /// Claims are only added when the meaning of an existing claim has changed (or expanded/contracted) to improve the migration experience.
+        /// </summary>
+        private static void MigrateAuthorizationRoles(DiscoDataContext Database)
+        {
+            // Use 'MyJobs' (A new claim) to detect if the Role hasn't been migrated yet
+            var affectedRoles = Database.AuthorizationRoles.Where(r => !r.ClaimsJson.Contains("MyJobs")).ToList();
+
+            if (affectedRoles.Count > 0)
+            {
+                foreach (var role in affectedRoles)
+                {
+                    var claims = JsonConvert.DeserializeObject<RoleClaims>(role.ClaimsJson);
+
+                    // MyJobs replaces 'AwaitingTechnicianAction' jobs on the Job page.
+                    if (claims.Job.Lists.AwaitingTechnicianAction)
+                    {
+                        claims.Job.Lists.MyJobs = true;
+                        claims.Job.Lists.MyJobsOrphaned = true;
+                    }
+                    // Stale Jobs expands on Long Running Jobs (and replaces it on the Job page)
+                    if (claims.Job.Lists.LongRunningJobs)
+                    {
+                        claims.Job.Lists.StaleJobs = true;
+                    }
+                    // Greater control to create jobs was added, this adds claims to keep the behaviour the same for existing roles
+                    if (claims.Job.Actions.Create)
+                    {
+                        claims.Job.Types.CreateHMisc = true;
+                        claims.Job.Types.CreateHNWar = true;
+                        claims.Job.Types.CreateHWar = true;
+                        claims.Job.Types.CreateSApp = true;
+                        claims.Job.Types.CreateSOS = true;
+                        claims.Job.Types.CreateSImg = true;
+                        claims.Job.Types.CreateUMgmt = true;
+                    }
+                    // A claim was added to control whether Current User Assignments could be shown (independently of User Assignment History)
+                    if (claims.User.ShowAssignmentHistory)
+                    {
+                        claims.User.ShowAssignments = true;
+                    }
+                    // A claim was added to control whether User personal details could be shown
+                    if (claims.User.Show)
+                    {
+                        claims.User.ShowDetails = true;
+                    }
+
+                    role.ClaimsJson = Newtonsoft.Json.JsonConvert.SerializeObject(claims);
+                }
+
+                Database.SaveChanges();
+            }
         }
     }
 }
