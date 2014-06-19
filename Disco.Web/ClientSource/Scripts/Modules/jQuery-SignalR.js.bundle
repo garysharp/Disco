@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bundle minify="true" runOnBuild="true">
-  <file>/ClientSource/Scripts/Modules/jQuery-SignalR/jquery.signalR-2.0.3.js</file>
+  <file>/ClientSource/Scripts/Modules/jQuery-SignalR/jquery.signalR-2.1.0.js</file>
   <file>/ClientSource/Scripts/Modules/jQuery-SignalR/disco-hubs.js</file>
 </bundle>

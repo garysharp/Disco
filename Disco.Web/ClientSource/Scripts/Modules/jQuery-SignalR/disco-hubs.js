@@ -1,5 +1,5 @@
 /*!
- * ASP.NET SignalR JavaScript Library v2.0.3
+ * ASP.NET SignalR JavaScript Library v2.1.0
  * http://signalr.net/
  *
  * Copyright Microsoft Open Technologies, Inc. All rights reserved.
@@ -78,37 +78,38 @@
             registerHubProxies(proxies, false);
         });
 
-        proxies.deviceUpdates = this.createHubProxy('deviceUpdates'); 
-        proxies.deviceUpdates.client = { };
-        proxies.deviceUpdates.server = {
+        proxies['deviceUpdates'] = this.createHubProxy('deviceUpdates'); 
+        proxies['deviceUpdates'].client = { };
+        proxies['deviceUpdates'].server = {
         };
 
-        proxies.jobUpdates = this.createHubProxy('jobUpdates'); 
-        proxies.jobUpdates.client = { };
-        proxies.jobUpdates.server = {
+        proxies['jobUpdates'] = this.createHubProxy('jobUpdates'); 
+        proxies['jobUpdates'].client = { };
+        proxies['jobUpdates'].server = {
         };
 
-        proxies.logNotifications = this.createHubProxy('logNotifications'); 
-        proxies.logNotifications.client = { };
-        proxies.logNotifications.server = {
+        proxies['logNotifications'] = this.createHubProxy('logNotifications'); 
+        proxies['logNotifications'].client = { };
+        proxies['logNotifications'].server = {
         };
 
-        proxies.noticeboardUpdates = this.createHubProxy('noticeboardUpdates'); 
-        proxies.noticeboardUpdates.client = { };
-        proxies.noticeboardUpdates.server = {
+        proxies['noticeboardUpdates'] = this.createHubProxy('noticeboardUpdates'); 
+        proxies['noticeboardUpdates'].client = { };
+        proxies['noticeboardUpdates'].server = {
         };
 
-        proxies.scheduledTaskNotifications = this.createHubProxy('scheduledTaskNotifications'); 
-        proxies.scheduledTaskNotifications.client = { };
-        proxies.scheduledTaskNotifications.server = {
+        proxies['scheduledTaskNotifications'] = this.createHubProxy('scheduledTaskNotifications'); 
+        proxies['scheduledTaskNotifications'].client = { };
+        proxies['scheduledTaskNotifications'].server = {
             getStatus: function () {
-                return proxies.scheduledTaskNotifications.invoke.apply(proxies.scheduledTaskNotifications, $.merge(["GetStatus"], $.makeArray(arguments)));
+            /// <summary>Calls the GetStatus method on the server-side scheduledTaskNotifications hub.&#10;Returns a jQuery.Deferred() promise.</summary>
+                return proxies['scheduledTaskNotifications'].invoke.apply(proxies['scheduledTaskNotifications'], $.merge(["GetStatus"], $.makeArray(arguments)));
              }
         };
 
-        proxies.userUpdates = this.createHubProxy('userUpdates'); 
-        proxies.userUpdates.client = { };
-        proxies.userUpdates.server = {
+        proxies['userUpdates'] = this.createHubProxy('userUpdates'); 
+        proxies['userUpdates'].client = { };
+        proxies['userUpdates'].server = {
         };
 
         return proxies;
