@@ -319,7 +319,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2011/7/1" />
+      <UserProperties BuildVersion_StartDate="2014/6/1" BuildVersion_DetectChanges="False" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

@@ -2087,7 +2087,7 @@
     <None Include="ClientSource\Scripts\Modules\tinymce\themes\modern\theme.min.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce\tinymce.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce\tinymce.min.js" />
-    <Content Include="ClientSource\Scripts\Modules\jQuery-SignalR\jquery.signalR-2.1.0.js" />
+    <None Include="ClientSource\Scripts\Modules\jQuery-SignalR\jquery.signalR-2.1.0.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -2177,7 +2177,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2011/7/1" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2014/6/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
