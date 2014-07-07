@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Disco.Data.Repository;
+using Disco.Services.Tasks;
+using Quartz;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Disco.Data.Repository;
-using Disco.Services.Tasks;
-using Quartz;
 
 namespace Disco.Services.Plugins
 {
@@ -109,7 +106,14 @@ namespace Disco.Services.Plugins
                             if (Directory.Exists(packagePath))
                             {
                                 this.Status.UpdateStatus(25, "Removing Existing Files");
-                                Directory.Delete(packagePath, true);
+                                try
+                                {
+                                    Directory.Delete(packagePath, true);
+                                }
+                                catch (UnauthorizedAccessException)
+                                {
+                                    throw new InvalidOperationException("Unable to delete existing plugin files, they may be locked by another process. Please restart Disco ICT and try installing the plugin again.");
+                                }
                             }
                             Directory.CreateDirectory(packagePath);
 

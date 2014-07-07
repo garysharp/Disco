@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Disco.Data.Repository;
+using Disco.Models.BI.Interop.Community;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Disco.Data.Repository;
-using System.IO.Compression;
-using Disco.Models.BI.Interop.Community;
-using System.Web;
-using Newtonsoft.Json;
 using System.Threading;
+using System.Web;
 
 namespace Disco.Services.Plugins
 {
@@ -482,12 +480,6 @@ namespace Disco.Services.Plugins
                         packageManifest = PluginManifest.FromPluginManifestFile(packageManifestStream);
                     }
 
-                    if (ExistingManifest.Version == packageManifest.Version)
-                    {
-                        // Skip Update if already installed
-                        PluginsLog.LogInitializeWarning(string.Format("This plugin [{0}] version [{1}] is already installed, skipping Update", ExistingManifest.Id, ExistingManifest.Version));
-                        return ExistingManifest;
-                    }
                     if (ExistingManifest.Version > packageManifest.Version)
                     {
                         throw new InvalidDataException("A newer version of this plugin is already installed");
