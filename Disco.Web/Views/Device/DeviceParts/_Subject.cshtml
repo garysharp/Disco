@@ -524,7 +524,9 @@
                                         });
                                     }
 
-                                    dialogInputs.filter('[data-devicebatchid=' + currentBatch + ']').prop('checked', true).change();
+                                    if (!!currentBatch) {
+                                        dialogInputs.filter('[data-devicebatchid=' + currentBatch + ']').prop('checked', true).change();
+                                    }
 
                                     buttonDialog.dialog('open');
                                     return false;
