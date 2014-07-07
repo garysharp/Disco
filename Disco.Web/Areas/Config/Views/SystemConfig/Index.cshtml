@@ -521,7 +521,33 @@
                 <th style="width: 135px">&nbsp;
                 </th>
                 <td>
-                    <input type="submit" class="button small" value="Save Proxy Settings" />
+                    <button id="Config_System_Proxy_Save" type="button" class="button small">Save Proxy Settings</button>@AjaxHelpers.AjaxLoader()
+                    <script>
+                        $(function () {
+                            var button = $('#Config_System_Proxy_Save');
+
+                            button.click(function () {
+                                var url = '@(Url.Action(MVC.API.System.UpdateProxySettings()))';
+                                var data = {
+                                    ProxyAddress: $('#ProxyAddress').val(),
+                                    ProxyPort: $('#ProxyPort').val(),
+                                    ProxyUsername: $('#ProxyUsername').val(),
+                                    ProxyPassword: $('#ProxyPassword').val()
+                                }
+                                var ajaxLoading = button.next('.ajaxLoading').first().show();
+
+                                $.getJSON(url, data, function (response, result) {
+                                    if (result != 'success' || response != 'OK') {
+                                        alert('Unable to change property "' + UpdatePropertyName + '":\n' + response);
+                                        ajaxLoading.hide();
+                                    } else {
+                                        ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                    }
+                                })
+
+                            });
+                        });
+                    </script>
                 </td>
             </tr>
         </table>

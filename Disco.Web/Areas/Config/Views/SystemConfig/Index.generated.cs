@@ -1609,18 +1609,65 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>
 
 WriteLiteral(" style=\"width: 135px\"");
 
-WriteLiteral(">&nbsp;\r\n                </th>\r\n                <td>\r\n                    <input");
+WriteLiteral(">&nbsp;\r\n                </th>\r\n                <td>\r\n                    <button" +
+"");
 
-WriteLiteral(" type=\"submit\"");
+WriteLiteral(" id=\"Config_System_Proxy_Save\"");
+
+WriteLiteral(" type=\"button\"");
 
 WriteLiteral(" class=\"button small\"");
 
-WriteLiteral(" value=\"Save Proxy Settings\"");
-
-WriteLiteral(" />\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </div>\r\n");
+WriteLiteral(">Save Proxy Settings</button>");
 
             
-            #line 529 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 524 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+                                                                                                                    Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                    <script>\r\n                        $(function () {\r\n        " +
+"                    var button = $(\'#Config_System_Proxy_Save\');\r\n\r\n            " +
+"                button.click(function () {\r\n                                var " +
+"url = \'");
+
+            
+            #line 530 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+                                       Write(Url.Action(MVC.API.System.UpdateProxySettings()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"';
+                                var data = {
+                                    ProxyAddress: $('#ProxyAddress').val(),
+                                    ProxyPort: $('#ProxyPort').val(),
+                                    ProxyUsername: $('#ProxyUsername').val(),
+                                    ProxyPassword: $('#ProxyPassword').val()
+                                }
+                                var ajaxLoading = button.next('.ajaxLoading').first().show();
+
+                                $.getJSON(url, data, function (response, result) {
+                                    if (result != 'success' || response != 'OK') {
+                                        alert('Unable to change property ""' + UpdatePropertyName + '"":\n' + response);
+                                        ajaxLoading.hide();
+                                    } else {
+                                        ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                    }
+                                })
+
+                            });
+                        });
+                    </script>
+                </td>
+            </tr>
+        </table>
+    </div>
+");
+
+            
+            #line 555 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
     }
 }
 else
@@ -1645,7 +1692,7 @@ WriteLiteral(">Address:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 540 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 566 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.ProxyAddress));
 
             
@@ -1661,7 +1708,7 @@ WriteLiteral(">Port:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 547 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 573 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.ProxyPort));
 
             
@@ -1677,7 +1724,7 @@ WriteLiteral(">Username:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 554 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 580 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.ProxyUsername));
 
             
@@ -1692,7 +1739,7 @@ WriteLiteral(">Password:\r\n                </th>\r\n                <td>*******
 "</td>\r\n            </tr>\r\n        </table>\r\n    </div>\r\n");
 
             
-            #line 565 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 591 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
 }
 
             
@@ -1707,7 +1754,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 567 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 593 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
 Write(Html.ActionLinkButton("Update Device Last Network Logons", MVC.API.System.UpdateLastNetworkLogonDates()));
 
             
