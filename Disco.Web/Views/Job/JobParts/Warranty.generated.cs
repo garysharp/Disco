@@ -60,98 +60,114 @@ WriteLiteral(" class=\"jobPart\"");
 
 WriteLiteral(">\r\n    <table");
 
-WriteLiteral(" id=\"jobNonWarrantyFinance\"");
+WriteLiteral(" id=\"jobWarrantyDetails\"");
 
-WriteLiteral(">\r\n        <tr>\r\n            <th");
+WriteLiteral(">\r\n");
+
+            
+            #line 7 "..\..\Views\Job\JobParts\Warranty.cshtml"
+        
+            
+            #line default
+            #line hidden
+            
+            #line 7 "..\..\Views\Job\JobParts\Warranty.cshtml"
+         if (Model.Job.JobMetaWarranty.ExternalName != null || Model.Job.JobMetaWarranty.ExternalLoggedDate.HasValue || Model.Job.JobMetaWarranty.ExternalReference != null)
+        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <tr>\r\n                <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">Warranty Provider\r\n            </th>\r\n            <td>\r\n");
+WriteLiteral(">Warranty Provider\r\n                </th>\r\n                <td>\r\n");
 
             
-            #line 11 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                
-            
-            #line default
-            #line hidden
-            
-            #line 11 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                 if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ExternalName))
-                {
+            #line 13 "..\..\Views\Job\JobParts\Warranty.cshtml"
                     
             
             #line default
             #line hidden
             
             #line 13 "..\..\Views\Job\JobParts\Warranty.cshtml"
-               Write(Html.EditorFor(m => m.Job.JobMetaWarranty.ExternalName));
-
-            
-            #line default
-            #line hidden
-            
-            #line 13 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                                                            
-                    
-            
-            #line default
-            #line hidden
-            
-            #line 14 "..\..\Views\Job\JobParts\Warranty.cshtml"
-               Write(AjaxHelpers.AjaxSave());
-
-            
-            #line default
-            #line hidden
-            
-            #line 14 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                           
-                    
+                     if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ExternalName))
+                    {
+                        
             
             #line default
             #line hidden
             
             #line 15 "..\..\Views\Job\JobParts\Warranty.cshtml"
-               Write(AjaxHelpers.AjaxLoader());
+                   Write(Html.EditorFor(m => m.Job.JobMetaWarranty.ExternalName));
 
             
             #line default
             #line hidden
             
             #line 15 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                             
+                                                                                
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 16 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                   Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("                    <script");
+            
+            #line 16 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                               
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 17 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                   Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+            
+            #line 17 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                                 
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
-                        $(function () {
-                            document.DiscoFunctions.PropertyChangeHelper(
-                                $('#Job_JobMetaWarranty_ExternalName'),
-                                'Unknown',
-                                '");
+                            $(function () {
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    $('#Job_JobMetaWarranty_ExternalName'),
+                                    'Unknown',
+                                    '");
 
             
-            #line 21 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                            Write(Url.Action(MVC.API.Job.UpdateWarrantyExternalName(Model.Job.Id, null)));
+            #line 23 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                Write(Url.Action(MVC.API.Job.UpdateWarrantyExternalName(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'ExternalName\'\r\n                        );\r\n     " +
-"                   });\r\n                    </script>\r\n");
+"                       });\r\n                        </script>\r\n");
 
             
-            #line 26 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                }
-                else
-                {
-                    if (string.IsNullOrWhiteSpace(Model.Job.JobMetaWarranty.ExternalName))
+            #line 28 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                    }
+                    else
                     {
+                        if (string.IsNullOrWhiteSpace(Model.Job.JobMetaWarranty.ExternalName))
+                        {
             
             #line default
             #line hidden
@@ -162,10 +178,10 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;Unknown/None&gt;</span>");
 
             
-            #line 30 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                                                           }
-                    else
-                    {
+            #line 32 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                                                               }
+                        else
+                        {
             
             #line default
             #line hidden
@@ -176,8 +192,8 @@ WriteLiteral(" id=\"Job_JobMetaWarranty_ExternalName\"");
 WriteLiteral(">");
 
             
-            #line 32 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                                            Write(Model.Job.JobMetaWarranty.ExternalName);
+            #line 34 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                                                Write(Model.Job.JobMetaWarranty.ExternalName);
 
             
             #line default
@@ -185,70 +201,72 @@ WriteLiteral(">");
 WriteLiteral("</span>");
 
             
-            #line 32 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                                                                                               }
-                }
+            #line 34 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                                                                                                   }
+                    }
 
             
             #line default
             #line hidden
-WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th");
+WriteLiteral("                </td>\r\n            </tr>\r\n");
+
+WriteLiteral("            <tr>\r\n                <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">Warranty Logged\r\n            </th>\r\n            <td>\r\n");
+WriteLiteral(">Warranty Logged\r\n                </th>\r\n                <td>\r\n");
 
             
-            #line 40 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                
-            
-            #line default
-            #line hidden
-            
-            #line 40 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                 if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ExternalLoggedDate))
-                {
+            #line 42 "..\..\Views\Job\JobParts\Warranty.cshtml"
                     
             
             #line default
             #line hidden
             
             #line 42 "..\..\Views\Job\JobParts\Warranty.cshtml"
-               Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaWarranty.ExternalLoggedDate, "Not Logged", "Job_JobMetaWarranty_ExternalLoggedDate"));
+                     if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ExternalLoggedDate))
+                    {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 44 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                   Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaWarranty.ExternalLoggedDate, "Not Logged", "Job_JobMetaWarranty_ExternalLoggedDate"));
 
             
             #line default
             #line hidden
             
-            #line 42 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                                                                                                                                     
-                    
+            #line 44 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                                                                                                                                         
+                        
             
             #line default
             #line hidden
             
-            #line 43 "..\..\Views\Job\JobParts\Warranty.cshtml"
-               Write(AjaxHelpers.AjaxLoader());
+            #line 45 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                   Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 43 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                             
+            #line 45 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                                 
 
             
             #line default
             #line hidden
-WriteLiteral("                    <script");
+WriteLiteral("                        <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(">\r\n                        document.DiscoFunctions.DateDialogCreateUpdater(\'");
+WriteLiteral(">\r\n                            document.DiscoFunctions.DateDialogCreateUpdater(\'");
 
             
-            #line 45 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                                                     Write(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)));
+            #line 47 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                                                         Write(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)));
 
             
             #line default
@@ -257,128 +275,130 @@ WriteLiteral("\', \'Warranty Logged\', \'Job_JobMetaWarranty_ExternalLoggedDate\
 "ternalLoggedDate\', \'Not Logged\', \'");
 
             
-            #line 45 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                                                                                                                                                                                                                             Write(Model.Job.OpenedDate.ToISO8601());
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\', false);\r\n                    </script>\r\n");
-
-            
             #line 47 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                }
-                else
-                {
-                    
+                                                                                                                                                                                                                                                 Write(Model.Job.OpenedDate.ToISO8601());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\', false);\r\n                        </script>\r\n");
+
+            
+            #line 49 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                    }
+                    else
+                    {
+                        
             
             #line default
             #line hidden
             
-            #line 50 "..\..\Views\Job\JobParts\Warranty.cshtml"
-               Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaWarranty.ExternalLoggedDate, "Unknown/None", null));
+            #line 52 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                   Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaWarranty.ExternalLoggedDate, "Unknown/None", null));
 
             
             #line default
             #line hidden
             
-            #line 50 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                                                                                                   
-                }
+            #line 52 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                                                                                                       
+                    }
 
             
             #line default
             #line hidden
-WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th");
+WriteLiteral("                </td>\r\n            </tr>\r\n");
+
+WriteLiteral("            <tr>\r\n                <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">Warranty Reference\r\n            </th>\r\n            <td>\r\n");
+WriteLiteral(">Warranty Reference\r\n                </th>\r\n                <td>\r\n");
 
             
-            #line 58 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                
-            
-            #line default
-            #line hidden
-            
-            #line 58 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                 if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ExternalReference))
-                {
+            #line 60 "..\..\Views\Job\JobParts\Warranty.cshtml"
                     
             
             #line default
             #line hidden
             
             #line 60 "..\..\Views\Job\JobParts\Warranty.cshtml"
-               Write(Html.EditorFor(m => m.Job.JobMetaWarranty.ExternalReference));
-
-            
-            #line default
-            #line hidden
-            
-            #line 60 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                                                                 
-                    
-            
-            #line default
-            #line hidden
-            
-            #line 61 "..\..\Views\Job\JobParts\Warranty.cshtml"
-               Write(AjaxHelpers.AjaxSave());
-
-            
-            #line default
-            #line hidden
-            
-            #line 61 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                           
-                    
+                     if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ExternalReference))
+                    {
+                        
             
             #line default
             #line hidden
             
             #line 62 "..\..\Views\Job\JobParts\Warranty.cshtml"
-               Write(AjaxHelpers.AjaxLoader());
+                   Write(Html.EditorFor(m => m.Job.JobMetaWarranty.ExternalReference));
 
             
             #line default
             #line hidden
             
             #line 62 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                             
+                                                                                     
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 63 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                   Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("                    <script");
+            
+            #line 63 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                               
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 64 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                   Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+            
+            #line 64 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                                 
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
-                        $(function () {
-                            document.DiscoFunctions.PropertyChangeHelper(
-                                $('#Job_JobMetaWarranty_ExternalReference'),
-                                'Unknown',
-                                '");
+                            $(function () {
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    $('#Job_JobMetaWarranty_ExternalReference'),
+                                    'Unknown',
+                                    '");
 
             
-            #line 68 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                            Write(Url.Action(MVC.API.Job.UpdateWarrantyExternalReference(Model.Job.Id, null)));
+            #line 70 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                Write(Url.Action(MVC.API.Job.UpdateWarrantyExternalReference(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'ExternalReference\'\r\n                        );\r\n" +
-"                        });\r\n                    </script>\r\n");
+"                            });\r\n                        </script>\r\n");
 
             
-            #line 73 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                }
-                else
-                {
-                    if (string.IsNullOrWhiteSpace(Model.Job.JobMetaWarranty.ExternalReference))
+            #line 75 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                    }
+                    else
                     {
+                        if (string.IsNullOrWhiteSpace(Model.Job.JobMetaWarranty.ExternalReference))
+                        {
             
             #line default
             #line hidden
@@ -389,100 +409,95 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;Unknown/None&gt;</span>");
 
             
-            #line 77 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                                                           }
-                    else
+            #line 79 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                                                               }
+                        else
+                        {
+            
+            #line default
+            #line hidden
+            
+            #line 81 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                    Write(Model.Job.JobMetaWarranty.ExternalReference);
+
+            
+            #line default
+            #line hidden
+            
+            #line 81 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                                                     }
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                </td>\r\n            </tr>\r\n");
+
+            
+            #line 85 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                    if (Model.Job.JobMetaWarranty.ExternalLoggedDate.HasValue)
                     {
-            
-            #line default
-            #line hidden
-            
-            #line 79 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                Write(Model.Job.JobMetaWarranty.ExternalReference);
 
             
             #line default
             #line hidden
-            
-            #line 79 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                                                 }
-                }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("            </td>\r\n        </tr>\r\n");
-
-            
-            #line 83 "..\..\Views\Job\JobParts\Warranty.cshtml"
-        
-            
-            #line default
-            #line hidden
-            
-            #line 83 "..\..\Views\Job\JobParts\Warranty.cshtml"
-         if (Model.Job.JobMetaWarranty.ExternalLoggedDate.HasValue){
-
-            
-            #line default
-            #line hidden
-WriteLiteral("        <tr>\r\n            <th");
+WriteLiteral("            <tr>\r\n                <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">Warranty Completed\r\n            </th>\r\n            <td>\r\n");
+WriteLiteral(">Warranty Completed\r\n                </th>\r\n                <td>\r\n");
 
             
-            #line 88 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                
-            
-            #line default
-            #line hidden
-            
-            #line 88 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                 if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ExternalCompletedDate))
-                {
-                    
-            
-            #line default
-            #line hidden
-            
-            #line 90 "..\..\Views\Job\JobParts\Warranty.cshtml"
-               Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaWarranty.ExternalCompletedDate, "Not Completed", "Job_JobMetaWarranty_ExternalCompletedDate"));
-
-            
-            #line default
-            #line hidden
-            
-            #line 90 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                                                                                                                                              
+            #line 91 "..\..\Views\Job\JobParts\Warranty.cshtml"
                     
             
             #line default
             #line hidden
             
             #line 91 "..\..\Views\Job\JobParts\Warranty.cshtml"
-               Write(AjaxHelpers.AjaxLoader());
+                     if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ExternalCompletedDate))
+                    {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 93 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                   Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaWarranty.ExternalCompletedDate, "Not Completed", "Job_JobMetaWarranty_ExternalCompletedDate"));
 
             
             #line default
             #line hidden
             
-            #line 91 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                             
+            #line 93 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                                                                                                                                                  
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 94 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                   Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral("                    <script");
+            
+            #line 94 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                                 
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(">\r\n                        document.DiscoFunctions.DateDialogCreateUpdater(\'");
+WriteLiteral(">\r\n                            document.DiscoFunctions.DateDialogCreateUpdater(\'");
 
             
-            #line 93 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                                                     Write(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)));
+            #line 96 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                                                         Write(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)));
 
             
             #line default
@@ -491,54 +506,46 @@ WriteLiteral("\', \'Warranty Logged\', \'Job_JobMetaWarranty_ExternalCompletedDa
 "yExternalCompletedDate\', \'Not Completed\', \'");
 
             
-            #line 93 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                                                                                                                                                                                                                                      Write(Model.Job.OpenedDate.ToISO8601());
+            #line 96 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                                                                                                                                                                                                                                          Write(Model.Job.OpenedDate.ToISO8601());
 
             
             #line default
             #line hidden
-WriteLiteral("\', false);\r\n                    </script>\r\n");
+WriteLiteral("\', false);\r\n                        </script>\r\n");
 
-            
-            #line 95 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                }
-                else
-                {
-                    
-            
-            #line default
-            #line hidden
             
             #line 98 "..\..\Views\Job\JobParts\Warranty.cshtml"
-               Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaWarranty.ExternalCompletedDate, "Unknown/None", null));
+                    }
+                    else
+                    {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 101 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                   Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaWarranty.ExternalCompletedDate, "Unknown/None", null));
 
             
             #line default
             #line hidden
             
-            #line 98 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                                                                                                      
-                }
+            #line 101 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                                                                                                          
+                    }
 
             
             #line default
             #line hidden
-WriteLiteral("            </td>\r\n        </tr>\r\n");
+WriteLiteral("                </td>\r\n            </tr>\r\n");
 
             
-            #line 102 "..\..\Views\Job\JobParts\Warranty.cshtml"
-        }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("        ");
-
-            
-            #line 103 "..\..\Views\Job\JobParts\Warranty.cshtml"
-         if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ProviderDetails))
-        {
-            Html.BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
+            #line 105 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                    }
+                    if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ProviderDetails))
+                    {
+                        Html.BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
 
             
             #line default
@@ -575,7 +582,69 @@ WriteLiteral(" style=\"display: none\"");
 WriteLiteral(">\r\n                    </div>\r\n                </td>\r\n            </tr>\r\n");
 
             
-            #line 117 "..\..\Views\Job\JobParts\Warranty.cshtml"
+            #line 120 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                    }
+        }
+        else
+        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <tr>\r\n                <th");
+
+WriteLiteral(" style=\"width: 200px;\"");
+
+WriteLiteral(">Actions\r\n                </th>\r\n                <td>\r\n");
+
+            
+            #line 128 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 128 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                     if (Model.Job.CanLogWarranty())
+                    { 
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 130 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                   Write(Html.ActionLinkSmallButton("Log Warranty", MVC.Job.LogWarranty(Model.Job.Id, null, null), "Job_Show_Warranty_Actions_LogWarranty_Button"));
+
+            
+            #line default
+            #line hidden
+            
+            #line 130 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                                                                                                                                                                  
+                    }
+                    else
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None&gt;</span>\r\n");
+
+            
+            #line 135 "..\..\Views\Job\JobParts\Warranty.cshtml"
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                </td>\r\n            </tr>\r\n");
+
+            
+            #line 138 "..\..\Views\Job\JobParts\Warranty.cshtml"
         }
 
             
@@ -589,14 +658,14 @@ WriteLiteral(">\r\n    $(\'#jobDetailTabItems\').append(\'<li><a href=\"#jobDeta
 "nty</a></li>\');\r\n");
 
             
-            #line 122 "..\..\Views\Job\JobParts\Warranty.cshtml"
+            #line 143 "..\..\Views\Job\JobParts\Warranty.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 122 "..\..\Views\Job\JobParts\Warranty.cshtml"
-     if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ProviderDetails))
+            #line 143 "..\..\Views\Job\JobParts\Warranty.cshtml"
+     if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ProviderDetails) && Model.Job.JobMetaWarranty.ExternalName != null)
     {
             
             #line default
@@ -622,7 +691,7 @@ WriteLiteral(@"
                                 '");
 
             
-            #line 141 "..\..\Views\Job\JobParts\Warranty.cshtml"
+            #line 162 "..\..\Views\Job\JobParts\Warranty.cshtml"
                              Write(Url.Action(MVC.Job.WarrantyProviderJobDetails()));
 
             
@@ -631,7 +700,7 @@ WriteLiteral(@"
 WriteLiteral("\',\r\n                                { id: \'");
 
             
-            #line 142 "..\..\Views\Job\JobParts\Warranty.cshtml"
+            #line 163 "..\..\Views\Job\JobParts\Warranty.cshtml"
                                    Write(Model.Job.Id);
 
             
@@ -654,7 +723,7 @@ WriteLiteral(@"' },
     ");
 
             
-            #line 156 "..\..\Views\Job\JobParts\Warranty.cshtml"
+            #line 177 "..\..\Views\Job\JobParts\Warranty.cshtml"
            }
 
             

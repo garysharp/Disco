@@ -3,106 +3,109 @@
     Authorization.Require(Claims.Job.ShowWarranty);
 }
 <div id="jobDetailTab-Warranty" class="jobPart">
-    <table id="jobNonWarrantyFinance">
-        <tr>
-            <th style="width: 200px;">Warranty Provider
-            </th>
-            <td>
-                @if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ExternalName))
-                {
-                    @Html.EditorFor(m => m.Job.JobMetaWarranty.ExternalName)
-                    @AjaxHelpers.AjaxSave()
-                    @AjaxHelpers.AjaxLoader()
-                    <script type="text/javascript">
-                        $(function () {
-                            document.DiscoFunctions.PropertyChangeHelper(
-                                $('#Job_JobMetaWarranty_ExternalName'),
-                                'Unknown',
-                                '@Url.Action(MVC.API.Job.UpdateWarrantyExternalName(Model.Job.Id, null))',
+    <table id="jobWarrantyDetails">
+        @if (Model.Job.JobMetaWarranty.ExternalName != null || Model.Job.JobMetaWarranty.ExternalLoggedDate.HasValue || Model.Job.JobMetaWarranty.ExternalReference != null)
+        {
+            <tr>
+                <th style="width: 200px;">Warranty Provider
+                </th>
+                <td>
+                    @if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ExternalName))
+                    {
+                        @Html.EditorFor(m => m.Job.JobMetaWarranty.ExternalName)
+                        @AjaxHelpers.AjaxSave()
+                        @AjaxHelpers.AjaxLoader()
+                        <script type="text/javascript">
+                            $(function () {
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    $('#Job_JobMetaWarranty_ExternalName'),
+                                    'Unknown',
+                                    '@Url.Action(MVC.API.Job.UpdateWarrantyExternalName(Model.Job.Id, null))',
                             'ExternalName'
                         );
-                        });
-                    </script>
-                }
-                else
-                {
-                    if (string.IsNullOrWhiteSpace(Model.Job.JobMetaWarranty.ExternalName))
-                    {<span class="smallMessage">&lt;Unknown/None&gt;</span>}
+                            });
+                        </script>
+                    }
                     else
-                    {<span id="Job_JobMetaWarranty_ExternalName">@Model.Job.JobMetaWarranty.ExternalName</span>}
-                }
-            </td>
-        </tr>
-        <tr>
-            <th style="width: 200px;">Warranty Logged
-            </th>
-            <td>
-                @if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ExternalLoggedDate))
-                {
-                    @CommonHelpers.FriendlyDate(Model.Job.JobMetaWarranty.ExternalLoggedDate, "Not Logged", "Job_JobMetaWarranty_ExternalLoggedDate")
-                    @AjaxHelpers.AjaxLoader()
-                    <script type="text/javascript">
-                        document.DiscoFunctions.DateDialogCreateUpdater('@(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)))', 'Warranty Logged', 'Job_JobMetaWarranty_ExternalLoggedDate', null, 'WarrantyExternalLoggedDate', 'Not Logged', '@(Model.Job.OpenedDate.ToISO8601())', false);
-                    </script>
-                }
-                else
-                {
-                    @CommonHelpers.FriendlyDate(Model.Job.JobMetaWarranty.ExternalLoggedDate, "Unknown/None", null)
-                }
-            </td>
-        </tr>
-        <tr>
-            <th style="width: 200px;">Warranty Reference
-            </th>
-            <td>
-                @if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ExternalReference))
-                {
-                    @Html.EditorFor(m => m.Job.JobMetaWarranty.ExternalReference)
-                    @AjaxHelpers.AjaxSave()
-                    @AjaxHelpers.AjaxLoader()
-                    <script type="text/javascript">
-                        $(function () {
-                            document.DiscoFunctions.PropertyChangeHelper(
-                                $('#Job_JobMetaWarranty_ExternalReference'),
-                                'Unknown',
-                                '@Url.Action(MVC.API.Job.UpdateWarrantyExternalReference(Model.Job.Id, null))',
+                    {
+                        if (string.IsNullOrWhiteSpace(Model.Job.JobMetaWarranty.ExternalName))
+                        {<span class="smallMessage">&lt;Unknown/None&gt;</span>}
+                        else
+                        {<span id="Job_JobMetaWarranty_ExternalName">@Model.Job.JobMetaWarranty.ExternalName</span>}
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 200px;">Warranty Logged
+                </th>
+                <td>
+                    @if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ExternalLoggedDate))
+                    {
+                        @CommonHelpers.FriendlyDate(Model.Job.JobMetaWarranty.ExternalLoggedDate, "Not Logged", "Job_JobMetaWarranty_ExternalLoggedDate")
+                        @AjaxHelpers.AjaxLoader()
+                        <script type="text/javascript">
+                            document.DiscoFunctions.DateDialogCreateUpdater('@(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)))', 'Warranty Logged', 'Job_JobMetaWarranty_ExternalLoggedDate', null, 'WarrantyExternalLoggedDate', 'Not Logged', '@(Model.Job.OpenedDate.ToISO8601())', false);
+                        </script>
+                    }
+                    else
+                    {
+                        @CommonHelpers.FriendlyDate(Model.Job.JobMetaWarranty.ExternalLoggedDate, "Unknown/None", null)
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 200px;">Warranty Reference
+                </th>
+                <td>
+                    @if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ExternalReference))
+                    {
+                        @Html.EditorFor(m => m.Job.JobMetaWarranty.ExternalReference)
+                        @AjaxHelpers.AjaxSave()
+                        @AjaxHelpers.AjaxLoader()
+                        <script type="text/javascript">
+                            $(function () {
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    $('#Job_JobMetaWarranty_ExternalReference'),
+                                    'Unknown',
+                                    '@Url.Action(MVC.API.Job.UpdateWarrantyExternalReference(Model.Job.Id, null))',
                             'ExternalReference'
                         );
-                        });
-                    </script>
-                }
-                else
-                {
-                    if (string.IsNullOrWhiteSpace(Model.Job.JobMetaWarranty.ExternalReference))
-                    {<span class="smallMessage">&lt;Unknown/None&gt;</span>}
+                            });
+                        </script>
+                    }
                     else
-                    {@Model.Job.JobMetaWarranty.ExternalReference}
-                }
-            </td>
-        </tr>
-        @if (Model.Job.JobMetaWarranty.ExternalLoggedDate.HasValue){
-        <tr>
-            <th style="width: 200px;">Warranty Completed
-            </th>
-            <td>
-                @if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ExternalCompletedDate))
-                {
-                    @CommonHelpers.FriendlyDate(Model.Job.JobMetaWarranty.ExternalCompletedDate, "Not Completed", "Job_JobMetaWarranty_ExternalCompletedDate")
-                    @AjaxHelpers.AjaxLoader()
-                    <script type="text/javascript">
-                        document.DiscoFunctions.DateDialogCreateUpdater('@(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)))', 'Warranty Logged', 'Job_JobMetaWarranty_ExternalCompletedDate', null, 'WarrantyExternalCompletedDate', 'Not Completed', '@(Model.Job.OpenedDate.ToISO8601())', false);
-                    </script>
-                }
-                else
-                {
-                    @CommonHelpers.FriendlyDate(Model.Job.JobMetaWarranty.ExternalCompletedDate, "Unknown/None", null)
-                }
-            </td>
-        </tr>
-        }
-        @if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ProviderDetails))
-        {
-            Html.BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
+                    {
+                        if (string.IsNullOrWhiteSpace(Model.Job.JobMetaWarranty.ExternalReference))
+                        {<span class="smallMessage">&lt;Unknown/None&gt;</span>}
+                        else
+                        {@Model.Job.JobMetaWarranty.ExternalReference}
+                    }
+                </td>
+            </tr>
+                    if (Model.Job.JobMetaWarranty.ExternalLoggedDate.HasValue)
+                    {
+            <tr>
+                <th style="width: 200px;">Warranty Completed
+                </th>
+                <td>
+                    @if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ExternalCompletedDate))
+                    {
+                        @CommonHelpers.FriendlyDate(Model.Job.JobMetaWarranty.ExternalCompletedDate, "Not Completed", "Job_JobMetaWarranty_ExternalCompletedDate")
+                        @AjaxHelpers.AjaxLoader()
+                        <script type="text/javascript">
+                            document.DiscoFunctions.DateDialogCreateUpdater('@(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)))', 'Warranty Logged', 'Job_JobMetaWarranty_ExternalCompletedDate', null, 'WarrantyExternalCompletedDate', 'Not Completed', '@(Model.Job.OpenedDate.ToISO8601())', false);
+                        </script>
+                    }
+                    else
+                    {
+                        @CommonHelpers.FriendlyDate(Model.Job.JobMetaWarranty.ExternalCompletedDate, "Unknown/None", null)
+                    }
+                </td>
+            </tr>
+                    }
+                    if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ProviderDetails))
+                    {
+                        Html.BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
             <tr id="jobWarrantyProviderDetailContainer" style="display: none">
                 <th style="width: 200px;">Provider Details
                 </th>
@@ -114,12 +117,30 @@
                     </div>
                 </td>
             </tr>
+                    }
+        }
+        else
+        {
+            <tr>
+                <th style="width: 200px;">Actions
+                </th>
+                <td>
+                    @if (Model.Job.CanLogWarranty())
+                    { 
+                        @Html.ActionLinkSmallButton("Log Warranty", MVC.Job.LogWarranty(Model.Job.Id, null, null), "Job_Show_Warranty_Actions_LogWarranty_Button")
+                    }
+                    else
+                    {
+                        <span class="smallMessage">&lt;None&gt;</span>
+                    }
+                </td>
+            </tr>
         }
     </table>
 </div>
 <script type="text/javascript">
     $('#jobDetailTabItems').append('<li><a href="#jobDetailTab-Warranty">Warranty</a></li>');
-    @if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ProviderDetails))
+    @if (Authorization.Has(Claims.Job.Properties.WarrantyProperties.ProviderDetails) && Model.Job.JobMetaWarranty.ExternalName != null)
     {<text>
     $(function () {
         var warrantyProviderDetailLoaded = false;

@@ -16,16 +16,22 @@ namespace Disco.Web.Extensions
             if (SelectedItem != null)
                 selectedId = SelectedItem.Id;
 
-            return PluginFeatureDefinitions.ToSelectListItems(selectedId);
+            return PluginFeatureDefinitions.ToSelectListItems(selectedId, false, null);
         }
 
         public static List<SelectListItem> ToSelectListItems(this IEnumerable<PluginFeatureManifest> PluginDefinitions, string SelectedId = null, bool IncludeInstructionFirst = false, string InstructionMessage = "Select a Plugin")
         {
-            var selectItems = default(List<SelectListItem>);
-            if (SelectedId == null)
-                selectItems =  PluginDefinitions.Select(wpd => new SelectListItem { Value = wpd.Id, Text = wpd.Name }).ToList();
-            else
-                selectItems = PluginDefinitions.Select(wpd => new SelectListItem { Value = wpd.Id, Text = wpd.Name, Selected = (SelectedId.Equals(wpd.Id)) }).ToList();
+            return ToSelectListItems(PluginDefinitions, SelectedId, IncludeInstructionFirst, InstructionMessage, null);
+        }
+
+        public static List<SelectListItem> ToSelectListItems(this IEnumerable<PluginFeatureManifest> PluginDefinitions, string SelectedId = null, bool IncludeInstructionFirst = false, string InstructionMessage = "Select a Plugin", Dictionary<string, string> AdditionalItems = null)
+        {
+            List<SelectListItem> selectItems;
+
+            selectItems = PluginDefinitions
+                .Select(wpd => new SelectListItem { Value = wpd.Id, Text = wpd.Name, Selected = (SelectedId != null && SelectedId.Equals(wpd.Id)) })
+                .Concat(AdditionalItems.Select(i => new SelectListItem { Value = i.Key, Text = i.Value, Selected = (SelectedId != null && SelectedId.Equals(i.Key)) }))
+                .OrderBy(i => i.Text).ToList();
 
             if (IncludeInstructionFirst)
                 selectItems.Insert(0, new SelectListItem() { Value = String.Empty, Text = String.Format("<{0}>", InstructionMessage), Selected = String.IsNullOrEmpty(SelectedId) });

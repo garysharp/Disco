@@ -397,7 +397,7 @@ namespace Disco.Web.Controllers
             {
                 // Create New Job
                 var currentUser = Database.Users.Find(UserService.CurrentUserId);
-                
+
                 // Try QuickLog?
                 bool addAutoQueues = !(Authorization.Has(Claims.Job.Actions.Close)
                     && m.QuickLog.HasValue && m.QuickLog.Value
@@ -473,7 +473,12 @@ namespace Disco.Web.Controllers
         [DiscoAuthorize(Claims.Job.Actions.LogWarranty)]
         public virtual ActionResult LogWarranty(int id, string WarrantyProviderId, int? OrganisationAddressId)
         {
-            var m = new Models.Job.LogWarrantyModel() { JobId = id, WarrantyProviderId = WarrantyProviderId, OrganisationAddressId = OrganisationAddressId };
+            var m = new Models.Job.LogWarrantyModel()
+            {
+                JobId = id,
+                WarrantyProviderId = WarrantyProviderId,
+                OrganisationAddressId = OrganisationAddressId
+            };
             m.UpdateModel(Database, false);
             m.FaultDescription = m.Job.GenerateFaultDescription(Database);
 
@@ -500,6 +505,47 @@ namespace Disco.Web.Controllers
             {
                 switch (m.WarrantyAction)
                 {
+                    case "Update":
+                        var updatedModel = new Models.Job.LogWarrantyModel()
+                        {
+                            JobId = m.JobId,
+                            WarrantyProviderId = m.WarrantyProviderId,
+                            OrganisationAddressId = m.OrganisationAddressId,
+                            FaultDescription = m.FaultDescription
+                        };
+                        updatedModel.UpdateModel(Database, false);
+
+                        if (updatedModel.WarrantyProvider != null)
+                        {
+                            using (var wp = updatedModel.WarrantyProvider.CreateInstance<WarrantyProviderFeature>())
+                            {
+                                if (wp.SubmitJobViewType != null)
+                                {
+                                    updatedModel.WarrantyProviderSubmitJobViewType = wp.SubmitJobViewType;
+                                    updatedModel.WarrantyProviderSubmitJobModel = wp.SubmitJobViewModel(Database, this, updatedModel.Job, updatedModel.OrganisationAddress, updatedModel.TechUser);
+                                }
+                            }
+                        }
+
+                        return View(updatedModel);
+                    case "Custom":
+                        if (string.IsNullOrWhiteSpace(m.CustomProviderName))
+                        {
+                            ModelState.AddModelError("CustomProviderName", "The Custom Warranty Provider Name is required");
+                            return View(Views.LogWarranty, m);
+                        }
+                        try
+                        {
+                            m.Job.OnLogWarranty(Database, m.FaultDescription, m.CustomProviderName, m.CustomProviderReference, m.OrganisationAddress, m.TechUser);
+                            Database.SaveChanges();
+                            return RedirectToAction(MVC.Job.Show(m.JobId));
+                        }
+                        catch (Exception ex)
+                        {
+                            m.Error = ex;
+                            return View(Views.LogWarrantyError, m);
+                            throw;
+                        }
                     case "Disclose":
                         using (var p = m.WarrantyProvider.CreateInstance<WarrantyProviderFeature>())
                         {

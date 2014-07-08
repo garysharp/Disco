@@ -34,6 +34,16 @@ namespace Disco.Web.Models.Job
         [Required]
         public string WarrantyAction { get; set; }
 
+        public bool IsCustomProvider
+        {
+            get
+            {
+                return WarrantyProviderId == "CUSTOM";
+            }
+        }
+        public string CustomProviderName { get; set; }
+        public string CustomProviderReference { get; set; }
+
         public Type WarrantyProviderSubmitJobViewType { get; set; }
         public object WarrantyProviderSubmitJobModel { get; set; }
         public string WarrantyProviderPropertiesJson { get; set; }
@@ -93,7 +103,7 @@ namespace Disco.Web.Models.Job
                 WarrantyProviderId = Job.Device.DeviceModel.DefaultWarrantyProvider;
             }
 
-            if (!string.IsNullOrEmpty(WarrantyProviderId))
+            if (!string.IsNullOrEmpty(WarrantyProviderId) && WarrantyProviderId != "CUSTOM")
                 WarrantyProvider = Plugins.GetPluginFeature(WarrantyProviderId, typeof(WarrantyProviderFeature));
 
             this.OrganisationAddresses = Database.DiscoConfiguration.OrganisationAddresses.Addresses.OrderBy(a => a.Name).ToList();

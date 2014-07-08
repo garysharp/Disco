@@ -605,6 +605,22 @@
 #jobComponents tr .totalCost {
   font-weight: bold;
 }
+#jobWarrantyDetails {
+  border: solid 1px #d8d8d8;
+  border-collapse: collapse;
+}
+#jobWarrantyDetails td {
+  border: solid 1px #d8d8d8;
+  background-color: #ffffff;
+}
+#jobWarrantyDetails th {
+  background-color: #eeeeee;
+  border: solid 1px #d8d8d8;
+}
+#jobWarrantyDetails tr th {
+  width: 200px;
+  text-align: right;
+}
 #jobNonWarrantyFinance {
   border: solid 1px #d8d8d8;
   border-collapse: collapse;

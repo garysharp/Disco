@@ -1,7 +1,7 @@
 ﻿@model Disco.Web.Models.Job.LogWarrantyModel
 @{
     Authorization.Require(Claims.Job.Actions.LogWarranty);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Log Warranty");
 }
 @using (Html.BeginForm(MVC.Job.LogWarranty(), FormMethod.Post))
@@ -9,7 +9,7 @@
     @Html.ValidationSummary(true)
     @Html.HiddenFor(m => m.JobId)
     @Html.ValidationMessageFor(m => m.JobId)
-    <input type="hidden" name="WarrantyAction" value="Disclose" />
+    <input type="hidden" name="WarrantyAction" value="@(Model.IsCustomProvider ? "Custom" : "Disclose")" />
     <div id="warrantyJobForm" class="form" style="width: 650px">
         <table>
             <tr>
@@ -50,10 +50,6 @@
                 <td>
                     @Html.DropDownListFor(model => model.OrganisationAddressId, Model.OrganisationAddresses.ToSelectListItems(Model.OrganisationAddressId, (Model.OrganisationAddress == null)))<br />
                     @Html.ValidationMessageFor(m => m.OrganisationAddressId)
-                    <div id="organisationAddressDetailsLoading" style="display: none">
-                        <img src="@(Links.ClientSource.Style.Images.Status.loading_gif)" alt="Loading" />
-                        <span class="smallMessage">Loading Details...</span>
-                    </div>
                     <div id="organisationAddressDetails">
                         @{
     var oa = Model.OrganisationAddress;
@@ -73,10 +69,27 @@
                 <th>Warranty Provider:
                 </th>
                 <td>
-                    @Html.DropDownListFor(model => model.WarrantyProviderId, Model.WarrantyProviders.ToSelectListItems(Model.WarrantyProviderId, true))<br />
+                    @Html.DropDownListFor(model => model.WarrantyProviderId, Model.WarrantyProviders.ToSelectListItems(Model.WarrantyProviderId, true, InstructionMessage: "Select a Provider", AdditionalItems: new Dictionary<string, string>() { { "CUSTOM", "<Custom Provider>" } }))<br />
                     @Html.ValidationMessageFor(m => m.WarrantyProviderId)
                 </td>
             </tr>
+            @if (Model.IsCustomProvider)
+            {
+                <tr>
+                    <th>Custom Provider:</th>
+                    <td>
+                        @Html.EditorFor(model => model.CustomProviderName)<br />
+                        @Html.ValidationMessageFor(m => m.CustomProviderName)
+                    </td>
+                </tr>
+                <tr>
+                    <th>Provider Job Reference:</th>
+                    <td>
+                        @Html.EditorFor(model => model.CustomProviderReference)<br />
+                        @Html.ValidationMessageFor(m => m.CustomProviderReference)
+                    </td>
+                </tr>
+            }
         </table>
     </div>
     <div id="warrantyJobFaultDescription" class="form" style="width: 650px; margin-top: 15px;">
@@ -90,34 +103,57 @@
             </tr>
         </table>
     </div>
-    if (Model.WarrantyProvider != null && Model.WarrantyProviderSubmitJobViewType != null)
-    { 
+            if (Model.WarrantyProvider != null && Model.WarrantyProviderSubmitJobViewType != null)
+            { 
     <div id="warrantyJobProviderProperties">
         @Html.PartialCompiled(Model.WarrantyProviderSubmitJobViewType, Model.WarrantyProviderSubmitJobModel)
     </div>
-    }
+            }
     <div class="actionBar">
-        <input type="submit" class="button" value="Preview Warranty Claim" />
+        @if (Model.IsCustomProvider)
+        {
+            <input type="submit" class="button" value="Save Warranty Claim" />
+        }
+        else
+        {
+            <input type="submit" class="button" value="Preview Warranty Claim" />
+        }
     </div>
 }
 <script type="text/javascript">
     $(function () {
+        var $providerId = $('#WarrantyProviderId');
+        var $addressId = $('#OrganisationAddressId');
 
-        var $organisationAddressDetails = $('#organisationAddressDetails');
-        var $organisationAddressDetailsLoading = $('#organisationAddressDetailsLoading');
-        var $OrganisationAddressId = $('#OrganisationAddressId');
-
-        var $ProviderId = $('#WarrantyProviderId');
-
-        var updateProviderDetails = function () {
-            var providerId = $ProviderId.val();
-            var orgAddressId = $OrganisationAddressId.val();
-
-            if (providerId) {
-                window.location.href = '@(Url.Action(MVC.Job.LogWarranty(Model.JobId, null, null)))?WarrantyProviderId=' + providerId + '&OrganisationAddressId=' + orgAddressId;
-            }
+        function updateDetails() {
+            $('<form>').attr({
+                action: $providerId.closest('form').attr('action'),
+                method: 'post'
+            }).append(
+                $('<input>').attr({ type: 'hidden', name: 'WarrantyAction', value: 'Update' })
+            ).append(
+                $('<input>').attr({ type: 'hidden', name: 'JobId', value: $('#JobId').val() })
+            ).append(
+                $('<input>').attr({ type: 'hidden', name: 'WarrantyProviderId', value: $providerId.val() })
+            ).append(
+                $('<input>').attr({ type: 'hidden', name: 'OrganisationAddressId', value: $addressId.val() })
+            ).append(
+                $('<input>').attr({ type: 'hidden', name: 'FaultDescription', value: $('#FaultDescription').val() })
+            ).append(
+                $('<input>').attr({ type: 'hidden', name: 'CustomProviderName', value: $('#CustomProviderName').val() })
+            ).append(
+                $('<input>').attr({ type: 'hidden', name: 'CustomProviderReference', value: $('#CustomProviderReference').val() })
+            ).appendTo('body').submit();
         }
-        $OrganisationAddressId.change(updateProviderDetails);
-        $ProviderId.change(updateProviderDetails);
+
+        $providerId.change(updateDetails);
+        $addressId.change(updateDetails);
+
+        var customProvider = $('#CustomProviderName');
+        if (customProvider.length > 0 && !customProvider.val()) {
+            customProvider.focus();
+        } else {
+            $('#FaultDescription').focus();
+        }
     });
 </script>
