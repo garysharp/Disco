@@ -14,9 +14,9 @@
                         <tr>
                             <td><span title="Computer Name">Name:</span>
                             </td>
-                            <td>@if (string.IsNullOrWhiteSpace(Model.Device.DeviceDomainId))
+                            <td>@if (string.IsNullOrWhiteSpace(Model.Device.ComputerName))
                                 {
-                                <span id="Device_Show_Details_Asset_NameUnknown" title="Computer Name" class="smallMessage">&lt;Unknown/Not Allocated&gt;</span>
+                                <span id="Device_Show_Details_Asset_NameUnknown" title="Computer Name" class="smallMessage">&lt;Unknown/None&gt;</span>
                                 }
                                 else
                                 {
@@ -27,9 +27,9 @@
                         <tr>
                             <td><span title="Domain Name">Domain:</span>
                             </td>
-                            <td>@if (string.IsNullOrWhiteSpace(Model.Device.DeviceDomainId))
+                            <td>@if (string.IsNullOrWhiteSpace(Model.Device.ComputerDomainName))
                                 {
-                                <span id="Device_Show_Details_Asset_DomainUnknown" title="Computer Domain" class="smallMessage">&lt;Unknown/Not Allocated&gt;</span>
+                                <span id="Device_Show_Details_Asset_DomainUnknown" title="Computer Domain" class="smallMessage">&lt;None&gt;</span>
                                 }
                                 else
                                 {

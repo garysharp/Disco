@@ -180,7 +180,7 @@ namespace Disco.Web.Areas.API.Controllers
                         device.DeviceProfile = p;
 
                         // Update AD Account
-                        if (!string.IsNullOrEmpty(device.DeviceDomainId) && device.DeviceDomainId.Length <= 24)
+                        if (ActiveDirectory.IsValidDomainAccountId(device.DeviceDomainId))
                         {
                             var adMachineAccount = ActiveDirectory.RetrieveADMachineAccount(device.DeviceDomainId);
                             if (adMachineAccount != null)

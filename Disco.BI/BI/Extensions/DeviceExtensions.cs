@@ -177,13 +177,11 @@ namespace Disco.BI.Extensions
             }
 
             // Update AD Account
-            if (!string.IsNullOrEmpty(d.DeviceDomainId))
+            if (ActiveDirectory.IsValidDomainAccountId(d.DeviceDomainId))
             {
                 var adMachineAccount = ActiveDirectory.RetrieveADMachineAccount(d.DeviceDomainId);
                 if (adMachineAccount != null)
-                {
                     adMachineAccount.SetDescription(d);
-                }
             }
 
             return newDua;
@@ -191,7 +189,7 @@ namespace Disco.BI.Extensions
 
         public static ADMachineAccount ActiveDirectoryAccount(this Device Device, params string[] AdditionalProperties)
         {
-            if (!string.IsNullOrEmpty(Device.DeviceDomainId))
+            if (ActiveDirectory.IsValidDomainAccountId(Device.DeviceDomainId))
                 return ActiveDirectory.RetrieveADMachineAccount(Device.DeviceDomainId, AdditionalProperties: AdditionalProperties);
             else
                 return null;
