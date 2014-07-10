@@ -343,72 +343,73 @@ WriteLiteral("\', null, function (data) {\r\n\r\n                    var inProce
 "toLowerCase(), deviceAddresses) < 0;\r\n                                    });\r\n " +
 "                               }\r\n                                break;\r\n      " +
 "                      case \'deviceprofileinclude\':\r\n                            " +
-"    var deviceProfiles = value.split(\",\");\r\n                                if (" +
-"deviceProfiles.length > 0) {\r\n                                    filters.push(f" +
-"unction (heldDeviceItem) {\r\n                                        // true if D" +
-"eviceProfileId is included\r\n                                        return $.inA" +
-"rray(heldDeviceItem.DeviceProfileId, deviceProfiles) >= 0;\r\n                    " +
-"                });\r\n                                }\r\n                        " +
-"        break;\r\n                            case \'deviceprofileexclude\':\r\n      " +
-"                          var deviceProfiles = value.split(\",\");\r\n              " +
-"                  if (deviceProfiles.length > 0) {\r\n                            " +
-"        filters.push(function (heldDeviceItem) {\r\n                              " +
-"          // true if DeviceProfileId is excluded\r\n                              " +
-"          return $.inArray(heldDeviceItem.DeviceProfileId, deviceProfiles) < 0;\r" +
-"\n                                    });\r\n                                }\r\n   " +
-"                             break;\r\n                        }\r\n                " +
-"    });\r\n                }\r\n\r\n                if (filters.length > 0)\r\n         " +
-"           itemFilters = filters;\r\n                else\r\n                    ite" +
-"mFilters = null;\r\n            }\r\n\r\n            function connectionError() {\r\n   " +
-"             try {\r\n                    $(\'body\').addClass(\'status-error\');\r\n   " +
-"                 $.connection.hub.stop();\r\n                } catch (e) {\r\n      " +
-"              // Ignore\r\n                }\r\n\r\n                window.setTimeout(" +
-"function () {\r\n                    window.location.href = window.location.href;\r" +
-"\n                }, 10000);\r\n            }\r\n\r\n            // Helpers\r\n          " +
-"  function rotateArray(koArray, element) {\r\n                var items = koArray(" +
-");\r\n\r\n                if (items.length <= 1)\r\n                    return 0;\r\n\r\n " +
-"               if (element.height() < (element.parent().height() - 30)) {\r\n\r\n   " +
-"                 if (findUnsortedArrayTopIndex(items) !== 0)\r\n                  " +
-"      koArray.sort(sortFunction);\r\n\r\n                    // Don\'t rotate if smal" +
-"l & sorted correctly\r\n                    return;\r\n                }\r\n\r\n        " +
-"        // Move Last Item to Top\r\n                var item = koArray.pop();\r\n   " +
-"             koArray.unshift(item);\r\n            }\r\n            function removeI" +
-"temFromArray(koArray, deviceSerialNumber) {\r\n                var items = koArray" +
-"();\r\n                for (var i = 0; i < items.length; i++) {\r\n                 " +
-"   if (items[i].DeviceSerialNumber == deviceSerialNumber) {\r\n                   " +
-"     koArray.splice(i, 1);\r\n                        items = koArray();\r\n        " +
-"                i--;\r\n                    }\r\n                }\r\n            }\r\n " +
-"           function findUnsortedArrayTopIndex(items) {\r\n                // Only " +
-"one Item\r\n                if (items.length <= 1)\r\n                    return 0;\r" +
-"\n\r\n                for (var i = 1; i < items.length; i++) {\r\n                   " +
-" var s = sortFunction(items[i - 1], items[i]);\r\n                    if (s > 0)\r\n" +
-"                        return i;\r\n                }\r\n\r\n                return 0" +
-";\r\n            }\r\n            function findSortedInsertIndex(koArray, heldDevice" +
-"Item) {\r\n                var items = koArray();\r\n                var startIndex " +
-"= findUnsortedArrayTopIndex(items);\r\n                for (var i = startIndex; i " +
-"< items.length; i++) {\r\n                    var s = sortFunction(heldDeviceItem," +
-" items[i]);\r\n                    if (s <= 0)\r\n                        return i;\r" +
-"\n                }\r\n                if (startIndex !== 0) {\r\n                   " +
-" for (var i = 0; i < startIndex; i++) {\r\n                        var s = sortFun" +
-"ction(heldDeviceItem, items[i]);\r\n                        if (s <= 0)\r\n         " +
-"                   return i;\r\n                    }\r\n                    return " +
-"startIndex;\r\n                } else {\r\n                    return -1;\r\n         " +
-"       }\r\n            }\r\n            function sortFunction(l, r) {\r\n            " +
-"    return l.DeviceDescription.toLowerCase() == r.DeviceDescription.toLowerCase(" +
-") ? 0 : (l.DeviceDescription.toLowerCase() < r.DeviceDescription.toLowerCase() ?" +
-" -1 : 1)\r\n            }\r\n            function isInProcess(i) {\r\n                " +
-"return !i.ReadyForReturn && !i.WaitingForUserAction;\r\n            }\r\n           " +
-" function isReadyForReturn(i) {\r\n                return i.ReadyForReturn && !i.W" +
-"aitingForUserAction;\r\n            }\r\n            function isWaitingForUserAction" +
-"(i) {\r\n                return i.WaitingForUserAction;\r\n            }\r\n          " +
-"  function getQueryStringParameters() {\r\n\r\n                if (window.location.s" +
-"earch.length === 0)\r\n                    return null;\r\n\r\n                var par" +
-"ams = {};\r\n                window.location.search.substr(1).split(\"&\").forEach(f" +
-"unction (pair) {\r\n                    if (pair === \"\") return;\r\n                " +
-"    var parts = pair.split(\"=\");\r\n                    params[parts[0]] = parts[1" +
-"] && decodeURIComponent(parts[1].replace(/\\+/g, \" \"));\r\n                });\r\n   " +
-"             return params;\r\n            }\r\n\r\n            init();\r\n        });\r\n" +
-"    </script>\r\n</body>\r\n</html>");
+"    var deviceProfiles = value.split(\",\").map(function (v) { return parseInt(v);" +
+" });\r\n                                if (deviceProfiles.length > 0) {\r\n        " +
+"                            filters.push(function (heldDeviceItem) {\r\n          " +
+"                              // true if DeviceProfileId is included\r\n          " +
+"                              return $.inArray(heldDeviceItem.DeviceProfileId, d" +
+"eviceProfiles) >= 0;\r\n                                    });\r\n                 " +
+"               }\r\n                                break;\r\n                      " +
+"      case \'deviceprofileexclude\':\r\n                                var devicePr" +
+"ofiles = value.split(\",\").map(function (v) { return parseInt(v); });\r\n          " +
+"                      if (deviceProfiles.length > 0) {\r\n                        " +
+"            filters.push(function (heldDeviceItem) {\r\n                          " +
+"              // true if DeviceProfileId is excluded\r\n                          " +
+"              return $.inArray(heldDeviceItem.DeviceProfileId, deviceProfiles) <" +
+" 0;\r\n                                    });\r\n                                }\r" +
+"\n                                break;\r\n                        }\r\n            " +
+"        });\r\n                }\r\n\r\n                if (filters.length > 0)\r\n     " +
+"               itemFilters = filters;\r\n                else\r\n                   " +
+" itemFilters = null;\r\n            }\r\n\r\n            function connectionError() {\r" +
+"\n                try {\r\n                    $(\'body\').addClass(\'status-error\');\r" +
+"\n                    $.connection.hub.stop();\r\n                } catch (e) {\r\n  " +
+"                  // Ignore\r\n                }\r\n\r\n                window.setTime" +
+"out(function () {\r\n                    window.location.href = window.location.hr" +
+"ef;\r\n                }, 10000);\r\n            }\r\n\r\n            // Helpers\r\n      " +
+"      function rotateArray(koArray, element) {\r\n                var items = koAr" +
+"ray();\r\n\r\n                if (items.length <= 1)\r\n                    return 0;\r" +
+"\n\r\n                if (element.height() < (element.parent().height() - 30)) {\r\n\r" +
+"\n                    if (findUnsortedArrayTopIndex(items) !== 0)\r\n              " +
+"          koArray.sort(sortFunction);\r\n\r\n                    // Don\'t rotate if " +
+"small & sorted correctly\r\n                    return;\r\n                }\r\n\r\n    " +
+"            // Move Last Item to Top\r\n                var item = koArray.pop();\r" +
+"\n                koArray.unshift(item);\r\n            }\r\n            function rem" +
+"oveItemFromArray(koArray, deviceSerialNumber) {\r\n                var items = koA" +
+"rray();\r\n                for (var i = 0; i < items.length; i++) {\r\n             " +
+"       if (items[i].DeviceSerialNumber == deviceSerialNumber) {\r\n               " +
+"         koArray.splice(i, 1);\r\n                        items = koArray();\r\n    " +
+"                    i--;\r\n                    }\r\n                }\r\n            " +
+"}\r\n            function findUnsortedArrayTopIndex(items) {\r\n                // O" +
+"nly one Item\r\n                if (items.length <= 1)\r\n                    return" +
+" 0;\r\n\r\n                for (var i = 1; i < items.length; i++) {\r\n               " +
+"     var s = sortFunction(items[i - 1], items[i]);\r\n                    if (s > " +
+"0)\r\n                        return i;\r\n                }\r\n\r\n                retu" +
+"rn 0;\r\n            }\r\n            function findSortedInsertIndex(koArray, heldDe" +
+"viceItem) {\r\n                var items = koArray();\r\n                var startIn" +
+"dex = findUnsortedArrayTopIndex(items);\r\n                for (var i = startIndex" +
+"; i < items.length; i++) {\r\n                    var s = sortFunction(heldDeviceI" +
+"tem, items[i]);\r\n                    if (s <= 0)\r\n                        return" +
+" i;\r\n                }\r\n                if (startIndex !== 0) {\r\n               " +
+"     for (var i = 0; i < startIndex; i++) {\r\n                        var s = sor" +
+"tFunction(heldDeviceItem, items[i]);\r\n                        if (s <= 0)\r\n     " +
+"                       return i;\r\n                    }\r\n                    ret" +
+"urn startIndex;\r\n                } else {\r\n                    return -1;\r\n     " +
+"           }\r\n            }\r\n            function sortFunction(l, r) {\r\n        " +
+"        return l.DeviceDescription.toLowerCase() == r.DeviceDescription.toLowerC" +
+"ase() ? 0 : (l.DeviceDescription.toLowerCase() < r.DeviceDescription.toLowerCase" +
+"() ? -1 : 1)\r\n            }\r\n            function isInProcess(i) {\r\n            " +
+"    return !i.ReadyForReturn && !i.WaitingForUserAction;\r\n            }\r\n       " +
+"     function isReadyForReturn(i) {\r\n                return i.ReadyForReturn && " +
+"!i.WaitingForUserAction;\r\n            }\r\n            function isWaitingForUserAc" +
+"tion(i) {\r\n                return i.WaitingForUserAction;\r\n            }\r\n      " +
+"      function getQueryStringParameters() {\r\n\r\n                if (window.locati" +
+"on.search.length === 0)\r\n                    return null;\r\n\r\n                var" +
+" params = {};\r\n                window.location.search.substr(1).split(\"&\").forEa" +
+"ch(function (pair) {\r\n                    if (pair === \"\") return;\r\n            " +
+"        var parts = pair.split(\"=\");\r\n                    params[parts[0]] = par" +
+"ts[1] && decodeURIComponent(parts[1].replace(/\\+/g, \" \"));\r\n                });\r" +
+"\n                return params;\r\n            }\r\n\r\n            init();\r\n        }" +
+");\r\n    </script>\r\n</body>\r\n</html>");
 
         }
     }

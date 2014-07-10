@@ -271,7 +271,7 @@
                                 }
                                 break;
                             case 'deviceprofileinclude':
-                                var deviceProfiles = value.split(",");
+                                var deviceProfiles = value.split(",").map(function (v) { return parseInt(v); });
                                 if (deviceProfiles.length > 0) {
                                     filters.push(function (heldDeviceItem) {
                                         // true if DeviceProfileId is included
@@ -280,7 +280,7 @@
                                 }
                                 break;
                             case 'deviceprofileexclude':
-                                var deviceProfiles = value.split(",");
+                                var deviceProfiles = value.split(",").map(function (v) { return parseInt(v); });
                                 if (deviceProfiles.length > 0) {
                                     filters.push(function (heldDeviceItem) {
                                         // true if DeviceProfileId is excluded
