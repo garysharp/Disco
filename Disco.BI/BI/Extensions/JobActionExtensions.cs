@@ -170,7 +170,7 @@ namespace Disco.BI.Extensions
                 j.JobMetaWarranty.ExternalLoggedDate = DateTime.Now;
                 j.JobMetaWarranty.ExternalName = WarrantyProvider.WarrantyProviderId;
 
-                if (providerRef.Length > 100)
+                if (providerRef != null && providerRef.Length > 100)
                     j.JobMetaWarranty.ExternalReference = providerRef.Substring(0, 100);
                 else
                     j.JobMetaWarranty.ExternalReference = providerRef;
@@ -186,18 +186,18 @@ namespace Disco.BI.Extensions
                 Database.JobLogs.Add(jobLog);
             }
         }
-        public static void OnLogWarranty(this Job j, DiscoDataContext Database, string FaultDescription, string CustomProviderName, string CustomProviderReference, OrganisationAddress Address, User TechUser)
+        public static void OnLogWarranty(this Job j, DiscoDataContext Database, string FaultDescription, string ManualProviderName, string ManualProviderReference, OrganisationAddress Address, User TechUser)
         {
             if (!j.CanLogWarranty())
                 throw new InvalidOperationException("Log Warranty was Denied");
 
             j.JobMetaWarranty.ExternalLoggedDate = DateTime.Now;
-            j.JobMetaWarranty.ExternalName = CustomProviderName;
+            j.JobMetaWarranty.ExternalName = ManualProviderName;
 
-            if (CustomProviderReference != null && CustomProviderReference.Length > 100)
-                j.JobMetaWarranty.ExternalReference = CustomProviderReference.Substring(0, 100);
+            if (ManualProviderReference != null && ManualProviderReference.Length > 100)
+                j.JobMetaWarranty.ExternalReference = ManualProviderReference.Substring(0, 100);
             else
-                j.JobMetaWarranty.ExternalReference = CustomProviderReference;
+                j.JobMetaWarranty.ExternalReference = ManualProviderReference;
 
             // Write Log
             JobLog jobLog = new JobLog()
@@ -205,7 +205,7 @@ namespace Disco.BI.Extensions
                 JobId = j.Id,
                 TechUserId = TechUser.UserId,
                 Timestamp = DateTime.Now,
-                Comments = string.Format("####Custom Warranty Claim Submitted\r\nCustom Provider: **{0}**\r\nAddress: **{1}**\r\nReference: **{2}**\r\n___\r\n{3}", CustomProviderName, Address.Name, CustomProviderReference ?? "<None>", FaultDescription)
+                Comments = string.Format("####Manual Warranty Claim Submitted\r\nProvider: **{0}**\r\nAddress: **{1}**\r\nReference: **{2}**\r\n___\r\n{3}", ManualProviderName, Address.Name, ManualProviderReference ?? "<None>", FaultDescription)
             };
             Database.JobLogs.Add(jobLog);
         }
@@ -341,7 +341,7 @@ namespace Disco.BI.Extensions
                 !j.JobMetaNonWarranty.RepairerLoggedDate.HasValue &&
                 !j.JobMetaNonWarranty.RepairerCompletedDate.HasValue;
         }
-        public static void OnLogRepair(this Job j, DiscoDataContext Database, string RepairDescription, PluginFeatureManifest RepairProviderDefinition, OrganisationAddress Address, User TechUser, Dictionary<string, string> ProviderProperties)
+        public static void OnLogRepair(this Job j, DiscoDataContext Database, string RepairDescription, PluginFeatureManifest RepairProviderDefinition, OrganisationAddress Address, User TechUser, Dictionary<string, string> RepairProviderProperties)
         {
             if (!j.CanLogRepair())
                 throw new InvalidOperationException("Log Repair was Denied");
@@ -353,12 +353,12 @@ namespace Disco.BI.Extensions
 
             using (RepairProviderFeature RepairProvider = RepairProviderDefinition.CreateInstance<RepairProviderFeature>())
             {
-                string providerRef = RepairProvider.SubmitJob(Database, j, Address, TechUser, RepairDescription, ProviderProperties);
+                string providerRef = RepairProvider.SubmitJob(Database, j, Address, TechUser, RepairDescription, RepairProviderProperties);
 
                 j.JobMetaNonWarranty.RepairerLoggedDate = DateTime.Now;
                 j.JobMetaNonWarranty.RepairerName = RepairProvider.ProviderId;
 
-                if (providerRef.Length > 100)
+                if (providerRef != null && providerRef.Length > 100)
                     j.JobMetaNonWarranty.RepairerReference = providerRef.Substring(0, 100);
                 else
                     j.JobMetaNonWarranty.RepairerReference = providerRef;
@@ -373,6 +373,29 @@ namespace Disco.BI.Extensions
                 };
                 Database.JobLogs.Add(jobLog);
             }
+        }
+        public static void OnLogRepair(this Job j, DiscoDataContext Database, string FaultDescription, string ManualProviderName, string ManualProviderReference, OrganisationAddress Address, User TechUser)
+        {
+            if (!j.CanLogRepair())
+                throw new InvalidOperationException("Log Repair was Denied");
+
+            j.JobMetaNonWarranty.RepairerLoggedDate = DateTime.Now;
+            j.JobMetaNonWarranty.RepairerName = ManualProviderName;
+
+            if (ManualProviderReference != null && ManualProviderReference.Length > 100)
+                j.JobMetaNonWarranty.RepairerReference = ManualProviderReference.Substring(0, 100);
+            else
+                j.JobMetaNonWarranty.RepairerReference = ManualProviderReference;
+
+            // Write Log
+            JobLog jobLog = new JobLog()
+            {
+                JobId = j.Id,
+                TechUserId = TechUser.UserId,
+                Timestamp = DateTime.Now,
+                Comments = string.Format("####Manual Repair Request Submitted\r\nProvider: **{0}**\r\nAddress: **{1}**\r\nReference: **{2}**\r\n___\r\n{3}", ManualProviderName, Address.Name, ManualProviderReference ?? "<None>", FaultDescription)
+            };
+            Database.JobLogs.Add(jobLog);
         }
         #endregion
 

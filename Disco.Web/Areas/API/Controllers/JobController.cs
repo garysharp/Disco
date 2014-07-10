@@ -1599,31 +1599,6 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
-        [DiscoAuthorize(Claims.Job.Actions.LogRepair)]
-        public virtual ActionResult LogRepair(int id, string RepairerName, string RepairerReference, bool? redirect = null)
-        {
-            var j = Database.Jobs.Include("JobMetaNonWarranty").Where(job => job.Id == id).FirstOrDefault();
-            if (j != null)
-            {
-                if (j.CanLogRepair())
-                {
-                    j.OnLogRepair(RepairerName, RepairerReference);
-
-                    Database.SaveChanges();
-
-                    if (redirect.HasValue && redirect.Value)
-                        return RedirectToAction(MVC.Job.Show(id));
-                    else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    return Json("Job's state doesn't allow this action", JsonRequestBehavior.AllowGet);
-                }
-            }
-            return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
-        }
-
         [DiscoAuthorize(Claims.Job.Properties.DeviceReadyForReturn)]
         public virtual ActionResult DeviceReadyForReturn(int id, bool redirect)
         {

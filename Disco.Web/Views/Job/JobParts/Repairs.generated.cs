@@ -47,7 +47,7 @@ namespace Disco.Web.Views.Job.JobParts
             
             #line 2 "..\..\Views\Job\JobParts\Repairs.cshtml"
   
-    Authorization.Require(Claims.Job.ShowNonWarrantyFinance);
+    Authorization.Require(Claims.Job.ShowNonWarrantyRepairs);
 
     Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
 
@@ -58,96 +58,112 @@ WriteLiteral("\r\n<table");
 
 WriteLiteral(" id=\"jobNonWarrantyRepairs\"");
 
-WriteLiteral(">\r\n    <tr>\r\n        <th");
+WriteLiteral(">\r\n");
+
+            
+            #line 8 "..\..\Views\Job\JobParts\Repairs.cshtml"
+    
+            
+            #line default
+            #line hidden
+            
+            #line 8 "..\..\Views\Job\JobParts\Repairs.cshtml"
+     if (Model.Job.JobMetaNonWarranty.RepairerName != null || Model.Job.JobMetaNonWarranty.RepairerLoggedDate.HasValue || Model.Job.JobMetaNonWarranty.RepairerReference != null)
+    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <tr>\r\n            <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">Repairer Name\r\n        </th>\r\n        <td>\r\n");
+WriteLiteral(">Repairer Name\r\n            </th>\r\n            <td>\r\n");
 
             
-            #line 12 "..\..\Views\Job\JobParts\Repairs.cshtml"
-            
-            
-            #line default
-            #line hidden
-            
-            #line 12 "..\..\Views\Job\JobParts\Repairs.cshtml"
-             if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerName))
-            {
+            #line 14 "..\..\Views\Job\JobParts\Repairs.cshtml"
                 
             
             #line default
             #line hidden
             
             #line 14 "..\..\Views\Job\JobParts\Repairs.cshtml"
-           Write(Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerName));
-
-            
-            #line default
-            #line hidden
-            
-            #line 14 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                                                                           
-                
-            
-            #line default
-            #line hidden
-            
-            #line 15 "..\..\Views\Job\JobParts\Repairs.cshtml"
-           Write(AjaxHelpers.AjaxSave());
-
-            
-            #line default
-            #line hidden
-            
-            #line 15 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                                       
-                
+                 if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerName))
+                {
+                    
             
             #line default
             #line hidden
             
             #line 16 "..\..\Views\Job\JobParts\Repairs.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+               Write(Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerName));
 
             
             #line default
             #line hidden
             
             #line 16 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                                         
+                                                                               
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 17 "..\..\Views\Job\JobParts\Repairs.cshtml"
+               Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("                <script");
+            
+            #line 17 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                           
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 18 "..\..\Views\Job\JobParts\Repairs.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+            
+            #line 18 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                             
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
-                    $(function () {
-                        document.DiscoFunctions.PropertyChangeHelper(
-                                $('#Job_JobMetaNonWarranty_RepairerName'),
-                                'Unknown',
-                                '");
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                    $('#Job_JobMetaNonWarranty_RepairerName'),
+                                    'Unknown',
+                                    '");
 
             
-            #line 22 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                            Write(Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerName(Model.Job.Id, null)));
+            #line 24 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                Write(Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerName(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'RepairerName\'\r\n                        );\r\n     " +
-"               });\r\n                </script>\r\n");
+"                   });\r\n                    </script>\r\n");
 
             
-            #line 27 "..\..\Views\Job\JobParts\Repairs.cshtml"
-            }
-            else
-            {
-                if (string.IsNullOrWhiteSpace(Model.Job.JobMetaNonWarranty.RepairerName))
+            #line 29 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                }
+                else
                 {
+                    if (string.IsNullOrWhiteSpace(Model.Job.JobMetaNonWarranty.RepairerName))
+                    {
             
             #line default
             #line hidden
@@ -158,133 +174,219 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;Unknown/None&gt;</span>");
 
             
-            #line 31 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                                                                       }
+            #line 33 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                                                           }
+                    else
+                    {
+            
+            #line default
+            #line hidden
+            
+            #line 35 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                Write(Model.Job.JobMetaNonWarranty.RepairerName);
+
+            
+            #line default
+            #line hidden
+            
+            #line 35 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                                               }
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </td>\r\n        </tr>\r\n");
+
+WriteLiteral("        <tr>\r\n            <th");
+
+WriteLiteral(" style=\"width: 200px;\"");
+
+WriteLiteral(">Repair Logged\r\n            </th>\r\n            <td>\r\n");
+
+            
+            #line 43 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 43 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                 if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerLoggedDate))
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 45 "..\..\Views\Job\JobParts\Repairs.cshtml"
+               Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.RepairerLoggedDate, "Not Logged", "Job_JobMetaNonWarranty_RepairerLoggedDate"));
+
+            
+            #line default
+            #line hidden
+            
+            #line 45 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                                                                                                                                           
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 46 "..\..\Views\Job\JobParts\Repairs.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+            
+            #line 46 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                             
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(">\r\n                        document.DiscoFunctions.DateDialogCreateUpdater(\'");
+
+            
+            #line 48 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                                                     Write(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\', \'Repairer Name\', \'Job_JobMetaNonWarranty_RepairerLoggedDate\', null, \'NonWarran" +
+"tyRepairerLoggedDate\', \'Not Logged\', \'");
+
+            
+            #line 48 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                                                                                                                                                                                                                                 Write(Model.Job.OpenedDate.ToISO8601());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\', false);\r\n                    </script>\r\n");
+
+            
+            #line 50 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                }
                 else
                 {
+                    
             
             #line default
             #line hidden
             
-            #line 33 "..\..\Views\Job\JobParts\Repairs.cshtml"
-            Write(Model.Job.JobMetaNonWarranty.RepairerName);
+            #line 53 "..\..\Views\Job\JobParts\Repairs.cshtml"
+               Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.RepairerLoggedDate, "Not Logged", null));
 
             
             #line default
             #line hidden
             
-            #line 33 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                                                           }
-            }
+            #line 53 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                                                                                                    
+                }
 
             
             #line default
             #line hidden
-WriteLiteral("        </td>\r\n    </tr>\r\n    <tr>\r\n        <th");
+WriteLiteral("            </td>\r\n        </tr>\r\n");
+
+WriteLiteral("        <tr>\r\n            <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">Repair Logged\r\n        </th>\r\n        <td>\r\n");
-
-WriteLiteral("            ");
+WriteLiteral(">Repair Reference\r\n            </th>\r\n            <td>\r\n");
 
             
-            #line 41 "..\..\Views\Job\JobParts\Repairs.cshtml"
-       Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.RepairerLoggedDate, "Not Logged", "Job_JobMetaNonWarranty_RepairerLoggedDate"));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <th");
-
-WriteLiteral(" style=\"width: 200px;\"");
-
-WriteLiteral(">Repair Reference\r\n        </th>\r\n        <td>\r\n");
-
-            
-            #line 48 "..\..\Views\Job\JobParts\Repairs.cshtml"
-            
-            
-            #line default
-            #line hidden
-            
-            #line 48 "..\..\Views\Job\JobParts\Repairs.cshtml"
-             if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerReference))
-            {
+            #line 61 "..\..\Views\Job\JobParts\Repairs.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 50 "..\..\Views\Job\JobParts\Repairs.cshtml"
-           Write(Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerReference));
+            #line 61 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                 if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerReference))
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 63 "..\..\Views\Job\JobParts\Repairs.cshtml"
+               Write(Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerReference));
 
             
             #line default
             #line hidden
             
-            #line 50 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                                                                                
-                
+            #line 63 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                                                                    
+                    
             
             #line default
             #line hidden
             
-            #line 51 "..\..\Views\Job\JobParts\Repairs.cshtml"
-           Write(AjaxHelpers.AjaxSave());
+            #line 64 "..\..\Views\Job\JobParts\Repairs.cshtml"
+               Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 51 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                                       
-                
+            #line 64 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                           
+                    
             
             #line default
             #line hidden
             
-            #line 52 "..\..\Views\Job\JobParts\Repairs.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 65 "..\..\Views\Job\JobParts\Repairs.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 52 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                                         
+            #line 65 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                             
 
             
             #line default
             #line hidden
-WriteLiteral("                <script");
+WriteLiteral("                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
-                    $(function () {
-                        document.DiscoFunctions.PropertyChangeHelper(
-                                $('#Job_JobMetaNonWarranty_RepairerReference'),
-                                'Unknown',
-                                '");
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                    $('#Job_JobMetaNonWarranty_RepairerReference'),
+                                    'Unknown',
+                                    '");
 
             
-            #line 58 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                            Write(Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerReference(Model.Job.Id, null)));
+            #line 71 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                Write(Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerReference(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'RepairerReference\'\r\n                        );\r\n" +
-"                    });\r\n                </script>\r\n");
+"                        });\r\n                    </script>\r\n");
 
             
-            #line 63 "..\..\Views\Job\JobParts\Repairs.cshtml"
-            }
-            else
-            {
-                if (string.IsNullOrWhiteSpace(Model.Job.JobMetaNonWarranty.RepairerReference))
+            #line 76 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                }
+                else
                 {
+                    if (string.IsNullOrWhiteSpace(Model.Job.JobMetaNonWarranty.RepairerReference))
+                    {
             
             #line default
             #line hidden
@@ -295,109 +397,325 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;Unknown/None&gt;</span>");
 
             
-            #line 67 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                                                                       }
-                else
+            #line 80 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                                                           }
+                    else
+                    {
+            
+            #line default
+            #line hidden
+            
+            #line 82 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                Write(Model.Job.JobMetaNonWarranty.RepairerReference);
+
+            
+            #line default
+            #line hidden
+            
+            #line 82 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                                                    }
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </td>\r\n        </tr>\r\n");
+
+            
+            #line 86 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                if (Model.Job.JobMetaNonWarranty.RepairerLoggedDate.HasValue)
                 {
-            
-            #line default
-            #line hidden
-            
-            #line 69 "..\..\Views\Job\JobParts\Repairs.cshtml"
-            Write(Model.Job.JobMetaNonWarranty.RepairerReference);
 
             
             #line default
             #line hidden
-            
-            #line 69 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                                                                }
-            }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("        </td>\r\n    </tr>\r\n    <tr>\r\n        <th");
+WriteLiteral("        <tr>\r\n            <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">Repair Completed\r\n        </th>\r\n        <td>\r\n");
-
-WriteLiteral("            ");
+WriteLiteral(">Repair Completed\r\n            </th>\r\n            <td>\r\n");
 
             
-            #line 77 "..\..\Views\Job\JobParts\Repairs.cshtml"
-       Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.RepairerCompletedDate, "Not Completed", "Job_JobMetaNonWarranty_RepairerCompletedDate"));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n        </td>\r\n    </tr>\r\n</table>\r\n<script>\r\n    $(function () {\r\n        var " +
-"updateUrl = \'");
-
-            
-            #line 83 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                     Write(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\';\r\n        var jobOpenDate = \'");
-
-            
-            #line 84 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                       Write(Model.Job.OpenedDate.ToISO8601());
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\';\r\n\r\n");
-
-            
-            #line 86 "..\..\Views\Job\JobParts\Repairs.cshtml"
-        
+            #line 92 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                
             
             #line default
             #line hidden
             
-            #line 86 "..\..\Views\Job\JobParts\Repairs.cshtml"
-         if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerLoggedDate))
-        {
+            #line 92 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                 if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerCompletedDate))
+                {
+                    
             
             #line default
             #line hidden
-WriteLiteral("document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, \'Repairer Name\', \'Job_" +
-"JobMetaNonWarranty_RepairerLoggedDate\', null, \'NonWarrantyRepairerLoggedDate\', \'" +
-"Not Logged\', jobOpenDate, false);");
-
             
-            #line 87 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                                                                                                                                                                                                                        }
+            #line 94 "..\..\Views\Job\JobParts\Repairs.cshtml"
+               Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.RepairerCompletedDate, "Not Completed", "Job_JobMetaNonWarranty_RepairerCompletedDate"));
 
             
             #line default
             #line hidden
-WriteLiteral("        ");
-
             
-            #line 88 "..\..\Views\Job\JobParts\Repairs.cshtml"
-         if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerCompletedDate))
-        {
+            #line 94 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                                                                                                                                                    
+                    
             
             #line default
             #line hidden
-WriteLiteral("document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, \'Repair Completed\', \'J" +
-"ob_JobMetaNonWarranty_RepairerCompletedDate\', null, \'NonWarrantyRepairerComplete" +
-"dDate\', \'Not Completed\', jobOpenDate, false);");
-
             
-            #line 89 "..\..\Views\Job\JobParts\Repairs.cshtml"
-                                                                                                                                                                                                                                    }
+            #line 95 "..\..\Views\Job\JobParts\Repairs.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral("    });\r\n</script>\r\n");
+            
+            #line 95 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                             
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(">\r\n                        document.DiscoFunctions.DateDialogCreateUpdater(\'");
+
+            
+            #line 97 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                                                     Write(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\', \'Repairer Completed\', \'Job_JobMetaNonWarranty_RepairerCompletedDate\', null, \'N" +
+"onWarrantyRepairerCompletedDate\', \'Not Completed\', \'");
+
+            
+            #line 97 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                                                                                                                                                                                                                                               Write(Model.Job.OpenedDate.ToISO8601());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\', false);\r\n                    </script>\r\n");
+
+            
+            #line 99 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                }
+                else
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 102 "..\..\Views\Job\JobParts\Repairs.cshtml"
+               Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.RepairerCompletedDate, "Not Completed", null));
+
+            
+            #line default
+            #line hidden
+            
+            #line 102 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                                                                                                          
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </td>\r\n        </tr>\r\n");
+
+            
+            #line 106 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                }
+                if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairProviderDetails))
+                {
+                    Html.BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <tr");
+
+WriteLiteral(" id=\"jobRepairProviderDetailContainer\"");
+
+WriteLiteral(" style=\"display: none\"");
+
+WriteLiteral(">\r\n            <th");
+
+WriteLiteral(" style=\"width: 200px;\"");
+
+WriteLiteral(">Provider Details\r\n            </th>\r\n            <td>\r\n                <div");
+
+WriteLiteral(" id=\"jobRepairProviderDetailLoading\"");
+
+WriteLiteral(">\r\n                    <span");
+
+WriteLiteral(" class=\"ajaxLoading\"");
+
+WriteLiteral(" title=\"Loading...\"");
+
+WriteLiteral("></span>Loading...\r\n                </div>\r\n                <div");
+
+WriteLiteral(" id=\"jobRepairProviderDetailHost\"");
+
+WriteLiteral(" class=\"clearfix\"");
+
+WriteLiteral(" style=\"display: none\"");
+
+WriteLiteral(">\r\n                </div>\r\n            </td>\r\n        </tr>\r\n");
+
+            
+            #line 121 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                }
+    }
+    else
+    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <tr>\r\n            <th");
+
+WriteLiteral(" style=\"width: 200px;\"");
+
+WriteLiteral(">Actions\r\n            </th>\r\n            <td>\r\n");
+
+            
+            #line 129 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 129 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                 if (Model.Job.CanLogRepair())
+                { 
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 131 "..\..\Views\Job\JobParts\Repairs.cshtml"
+               Write(Html.ActionLinkSmallButton("Log Repair", MVC.Job.LogRepair(Model.Job.Id, null, null), "Job_Show_Repair_Actions_LogRepair_Button"));
+
+            
+            #line default
+            #line hidden
+            
+            #line 131 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                                                                                                                                      
+                }
+                else
+                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None&gt;</span>\r\n");
+
+            
+            #line 136 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </td>\r\n        </tr>\r\n");
+
+            
+            #line 139 "..\..\Views\Job\JobParts\Repairs.cshtml"
+    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</table>\r\n<script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 142 "..\..\Views\Job\JobParts\Repairs.cshtml"
+    
+            
+            #line default
+            #line hidden
+            
+            #line 142 "..\..\Views\Job\JobParts\Repairs.cshtml"
+     if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairProviderDetails) && Model.Job.JobMetaNonWarranty.RepairerName != null)
+    {
+            
+            #line default
+            #line hidden
+WriteLiteral(@"
+    $(function () {
+        var repairProviderDetailLoaded = false;
+
+        $('#jobDetailTabs').on('tabsactivate', function (e, ui) {
+            if ($(ui.newPanel).is('#jobDetailTab-NonWarrantyRepairs')) {
+                if (!repairProviderDetailLoaded) {
+                    var repairerName;
+                    var $repairerName = $('#Job_JobMetaNonWarranty_RepairerName');
+                    if ($repairerName.length > 0) {
+                        if ($repairerName[0].nodeName === 'INPUT')
+                            repairerName = $repairerName.val();
+                        else
+                            repairerName = $repairerName.text();
+                        if (repairerName) {
+                            $('#jobRepairProviderDetailContainer').show();
+                            $('#jobRepairProviderDetailLoading span').show();
+                            $('#jobRepairProviderDetailHost').load(
+                                '");
+
+            
+            #line 161 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                             Write(Url.Action(MVC.Job.RepairProviderJobDetails()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\',\r\n                                { id: \'");
+
+            
+            #line 162 "..\..\Views\Job\JobParts\Repairs.cshtml"
+                                   Write(Model.Job.Id);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"' },
+                                function () {
+                                    $('#jobRepairProviderDetailLoading').hide();
+                                    $(this).slideDown();
+                                }
+                            );
+
+                            repairProviderDetailLoaded = true;
+                        }
+                    }
+                }
+            }
+        });
+    });
+    ");
+
+            
+            #line 176 "..\..\Views\Job\JobParts\Repairs.cshtml"
+           }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</script>\r\n");
 
         }
     }

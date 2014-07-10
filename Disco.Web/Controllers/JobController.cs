@@ -1,5 +1,4 @@
 ﻿using Disco.BI.Extensions;
-using Disco.Data.Repository;
 using Disco.Models.BI.Job;
 using Disco.Models.Repository;
 using Disco.Models.Services.Jobs.JobLists;
@@ -8,6 +7,7 @@ using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Jobs.JobLists;
 using Disco.Services.Jobs.JobQueues;
+using Disco.Services.Plugins.Features.RepairProvider;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Plugins.Features.WarrantyProvider;
 using Disco.Services.Users;
@@ -503,7 +503,7 @@ namespace Disco.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                switch (m.WarrantyAction)
+                switch (m.SubmissionAction)
                 {
                     case "Update":
                         var updatedModel = new Models.Job.LogWarrantyModel()
@@ -528,15 +528,15 @@ namespace Disco.Web.Controllers
                         }
 
                         return View(updatedModel);
-                    case "Custom":
-                        if (string.IsNullOrWhiteSpace(m.CustomProviderName))
+                    case "Manual":
+                        if (string.IsNullOrWhiteSpace(m.ManualProviderName))
                         {
-                            ModelState.AddModelError("CustomProviderName", "The Custom Warranty Provider Name is required");
+                            ModelState.AddModelError("ManualProviderName", "The Warranty Provider Name is required");
                             return View(Views.LogWarranty, m);
                         }
                         try
                         {
-                            m.Job.OnLogWarranty(Database, m.FaultDescription, m.CustomProviderName, m.CustomProviderReference, m.OrganisationAddress, m.TechUser);
+                            m.Job.OnLogWarranty(Database, m.FaultDescription, m.ManualProviderName, m.ManualProviderReference, m.OrganisationAddress, m.TechUser);
                             Database.SaveChanges();
                             return RedirectToAction(MVC.Job.Show(m.JobId));
                         }
@@ -564,7 +564,7 @@ namespace Disco.Web.Controllers
 
                             if (warrantyProviderProperties != null)
                             {
-                                m.WarrantyProviderPropertiesJson = JsonConvert.SerializeObject(warrantyProviderProperties);
+                                m.ProviderPropertiesJson = JsonConvert.SerializeObject(warrantyProviderProperties);
                             }
                             m.DiscloseProperties = p.SubmitJobDiscloseInfo(Database, m.Job, m.OrganisationAddress, m.TechUser, m.FaultDescription, warrantyProviderProperties);
                             return View(Views.LogWarrantyDisclose, m);
@@ -572,7 +572,7 @@ namespace Disco.Web.Controllers
                     case "Submit":
                         try
                         {
-                            m.Job.OnLogWarranty(Database, m.FaultDescription, m.WarrantyProvider, m.OrganisationAddress, m.TechUser, m.WarrantyProviderProperties());
+                            m.Job.OnLogWarranty(Database, m.FaultDescription, m.WarrantyProvider, m.OrganisationAddress, m.TechUser, m.ProviderProperties());
                             Database.SaveChanges();
                             return RedirectToAction(MVC.Job.Show(m.JobId));
                         }
@@ -596,7 +596,7 @@ namespace Disco.Web.Controllers
         [DiscoAuthorize(Claims.Job.Properties.WarrantyProperties.ProviderDetails)]
         public virtual ActionResult WarrantyProviderJobDetails(int id)
         {
-            Models.Job.WarrantyProviderJobDetailsModel model = new Models.Job.WarrantyProviderJobDetailsModel();
+            Models.Job.ProviderJobDetailsModel model = new Models.Job.ProviderJobDetailsModel();
 
             Job job = Database.Jobs.Include("Device.DeviceModel").Include("JobMetaWarranty").Include("JobSubTypes").Where(j => j.Id == id).FirstOrDefault();
             if (job != null)
@@ -638,6 +638,186 @@ namespace Disco.Web.Controllers
 
                     model.JobDetailsSupported = false;
                     model.JobDetailsNotSupportedMessage = string.Format("Warranty Provider '{0}' is not integrated with Disco", job.JobMetaWarranty.ExternalName);
+                    return View(model);
+                }
+                else
+                {
+                    model.JobDetailsSupported = false;
+                    model.JobDetailsNotSupportedMessage = "Job not in the correct state";
+                    return View(model);
+                }
+            }
+            else
+            {
+                return HttpNotFound("Invalid Job Id");
+            }
+        }
+        #endregion
+
+        #region Log Repair
+        [DiscoAuthorize(Claims.Job.Actions.LogRepair)]
+        public virtual ActionResult LogRepair(int id, string RepairProviderId, int? OrganisationAddressId)
+        {
+            var m = new Models.Job.LogRepairModel()
+            {
+                JobId = id,
+                RepairProviderId = RepairProviderId,
+                OrganisationAddressId = OrganisationAddressId
+            };
+            m.UpdateModel(Database, false);
+            m.RepairDescription = m.Job.GenerateFaultDescription(Database);
+
+            if (m.RepairProvider != null)
+            {
+                using (var rp = m.RepairProvider.CreateInstance<RepairProviderFeature>())
+                {
+                    m.RepairProviderSubmitJobBeginResult = rp.SubmitJobBegin(Database, this, m.Job, m.OrganisationAddress, m.TechUser);
+                }
+            }
+
+            return View(m);
+        }
+        [HttpPost, DiscoAuthorize(Claims.Job.Actions.LogRepair)]
+        public virtual ActionResult LogRepair(Models.Job.LogRepairModel m, FormCollection form)
+        {
+            m.UpdateModel(Database, true);
+
+            if (ModelState.IsValid)
+            {
+                switch (m.SubmissionAction)
+                {
+                    case "Update":
+                        var updatedModel = new Models.Job.LogRepairModel()
+                        {
+                            JobId = m.JobId,
+                            RepairProviderId = m.RepairProviderId,
+                            OrganisationAddressId = m.OrganisationAddressId,
+                            RepairDescription = m.RepairDescription
+                        };
+                        updatedModel.UpdateModel(Database, false);
+
+                        if (updatedModel.RepairProvider != null)
+                        {
+                            using (var wp = updatedModel.RepairProvider.CreateInstance<RepairProviderFeature>())
+                            {
+                                using (var rp = m.RepairProvider.CreateInstance<RepairProviderFeature>())
+                                {
+                                    m.RepairProviderSubmitJobBeginResult = rp.SubmitJobBegin(Database, this, updatedModel.Job, updatedModel.OrganisationAddress, updatedModel.TechUser);
+                                }
+                            }
+                        }
+
+                        return View(updatedModel);
+                    case "Manual":
+                        if (string.IsNullOrWhiteSpace(m.ManualProviderName))
+                        {
+                            ModelState.AddModelError("ManualProviderName", "The Repair Provider Name is required");
+                            return View(Views.LogRepair, m);
+                        }
+                        try
+                        {
+                            m.Job.OnLogRepair(Database, m.RepairDescription, m.ManualProviderName, m.ManualProviderReference, m.OrganisationAddress, m.TechUser);
+                            Database.SaveChanges();
+                            return RedirectToAction(MVC.Job.Show(m.JobId));
+                        }
+                        catch (Exception ex)
+                        {
+                            m.Error = ex;
+                            return View(Views.LogRepairError, m);
+                            throw;
+                        }
+                    case "Disclose":
+                        using (var p = m.RepairProvider.CreateInstance<RepairProviderFeature>())
+                        {
+                            Dictionary<string, string> warrantyProviderProperties;
+                            try
+                            {
+                                warrantyProviderProperties = p.SubmitJobParseProperties(Database, form, this, m.Job, m.OrganisationAddress, m.TechUser, m.RepairDescription);
+                            }
+                            catch (Exception ex)
+                            {
+                                m.Error = ex;
+                                return View(Views.LogRepairError, m);
+                            }
+                            if (!ModelState.IsValid)
+                                return View(Views.LogRepair, m);
+
+                            if (warrantyProviderProperties != null)
+                            {
+                                m.ProviderPropertiesJson = JsonConvert.SerializeObject(warrantyProviderProperties);
+                            }
+                            m.DiscloseProperties = p.SubmitJobDiscloseInfo(Database, m.Job, m.OrganisationAddress, m.TechUser, m.RepairDescription, warrantyProviderProperties);
+                            return View(Views.LogRepairDisclose, m);
+                        }
+                    case "Submit":
+                        try
+                        {
+                            m.Job.OnLogRepair(Database, m.RepairDescription, m.RepairProvider, m.OrganisationAddress, m.TechUser, m.ProviderProperties());
+                            Database.SaveChanges();
+                            return RedirectToAction(MVC.Job.Show(m.JobId));
+                        }
+                        catch (Exception ex)
+                        {
+                            m.Error = ex;
+                            return View(Views.LogRepairError, m);
+                            throw;
+                        }
+                    default:
+                        return RedirectToAction(MVC.Job.Show(m.JobId));
+                }
+
+            }
+            else
+            {
+                return View(Views.LogRepair, m);
+            }
+        }
+
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.RepairProviderDetails)]
+        public virtual ActionResult RepairProviderJobDetails(int id)
+        {
+            Models.Job.ProviderJobDetailsModel model = new Models.Job.ProviderJobDetailsModel();
+
+            Job job = Database.Jobs.Include("Device.DeviceModel").Include("JobMetaNonWarranty").Include("JobSubTypes").Where(j => j.Id == id).FirstOrDefault();
+            if (job != null)
+            {
+                if (job.JobMetaNonWarranty != null && !string.IsNullOrEmpty(job.JobMetaNonWarranty.RepairerName))
+                {
+                    var providerDef = RepairProviderFeature.FindPluginFeature(job.JobMetaNonWarranty.RepairerName);
+
+                    if (providerDef != null)
+                    {
+                        using (RepairProviderFeature providerInstance = providerDef.CreateInstance<RepairProviderFeature>())
+                        {
+                            if (providerInstance.JobDetailsSupported)
+                            {
+                                try
+                                {
+                                    Tuple<Type, dynamic> details = providerInstance.JobDetails(Database, this, job);
+
+                                    model.JobDetailsSupported = true;
+                                    model.ViewType =  details.Item1;
+                                    model.ViewModel = details.Item2;
+                                    return View(model);
+                                }
+                                catch (Exception ex)
+                                {
+                                    model.JobDetailsSupported = false;
+                                    model.JobDetailsException = ex;
+                                    return View(model);
+                                }
+                            }
+                            else
+                            {
+                                model.JobDetailsSupported = false;
+                                model.JobDetailsNotSupportedMessage = string.Format("Plugin '{0} ({1})' (Repair Provider for '{2}') doesn't support Job Details", providerInstance.Manifest.Name, providerInstance.Manifest.Id, providerInstance.ProviderId);
+                                return View(model);
+                            }
+                        }
+                    }
+
+                    model.JobDetailsSupported = false;
+                    model.JobDetailsNotSupportedMessage = string.Format("Repair Provider '{0}' is not integrated with Disco", job.JobMetaNonWarranty.RepairerName);
                     return View(model);
                 }
                 else

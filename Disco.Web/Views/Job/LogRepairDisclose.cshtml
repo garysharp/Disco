@@ -1,19 +1,19 @@
-﻿@model Disco.Web.Models.Job.LogWarrantyModel
+﻿@model Disco.Web.Models.Job.LogRepairModel
 @{
-    Authorization.Require(Claims.Job.Actions.LogWarranty);
+    Authorization.Require(Claims.Job.Actions.LogRepair);
     
-    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Log Warranty");
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Log Repair");
 }
-@using (Html.BeginForm(MVC.Job.LogWarranty(), FormMethod.Post))
+@using (Html.BeginForm(MVC.Job.LogRepair(), FormMethod.Post))
 {
     @Html.ValidationSummary(true)
     @Html.HiddenFor(m => m.JobId)
     @Html.HiddenFor(m => m.OrganisationAddressId)
-    @Html.HiddenFor(m => m.WarrantyProviderId)
-    @Html.HiddenFor(m => m.FaultDescription)
+    @Html.HiddenFor(m => m.RepairProviderId)
+    @Html.HiddenFor(m => m.RepairDescription)
     @Html.HiddenFor(m => m.ProviderPropertiesJson)
     <input type="hidden" name="SubmissionAction" value="Submit" />
-    <div id="warrantyJobForm" class="form" style="width: 650px">
+    <div id="repairJobForm" class="form" style="width: 650px">
         <table>
             <tr>
                 <th>
@@ -53,7 +53,7 @@
             </tr>
             <tr>
                 <th style="width: 150px">
-                    Warranty Address:
+                    Repair Address:
                 </th>
                 <td>
                     <div id="organisationAddressDetails">
@@ -68,18 +68,18 @@
             </tr>
             <tr>
                 <th>
-                    Warranty Provider:
+                    Repair Provider:
                 </th>
                 <td>
-                    @Model.WarrantyProvider.Name (@Model.WarrantyProvider.Id) @Model.WarrantyProvider.PluginManifest.Version.ToString(3)
+                    @Model.RepairProvider.Name (@Model.RepairProvider.Id) @Model.RepairProvider.PluginManifest.Version.ToString(3)
                 </td>
             </tr>
             <tr>
                 <th>
-                    Fault Description:
+                    Repair Description:
                 </th>
                 <td>
-                    @Model.FaultDescription.ToMultilineString()
+                    @Model.RepairDescription.ToMultilineString()
                 </td>
             </tr>
             <tr>
@@ -87,7 +87,7 @@
                     Disclosed Information
                 </th>
                 <td>
-                    <div id="warrantyDisclosedInformation">
+                    <div id="repairDisclosedInformation">
                         <table>
                             @foreach (var dp in Model.DiscloseProperties)
                             {
@@ -105,6 +105,6 @@
         </table>
     </div>
     <div class="actionBar">
-        <input type="submit" class="button" value="Submit Warranty Claim" />
+        <input type="submit" class="button" value="Submit Repair Request" />
     </div>
 }

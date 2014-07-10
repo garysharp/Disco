@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Disco.Web.Models.Job
 {
-    public class WarrantyProviderJobDetailsModel
+    public class ProviderJobDetailsModel
     {
         public Type ViewType { get; set; }
         public object ViewModel { get; set; }

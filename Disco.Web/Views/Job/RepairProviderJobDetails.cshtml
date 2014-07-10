@@ -1,7 +1,7 @@
 ﻿@model Disco.Web.Models.Job.ProviderJobDetailsModel
 @{ Layout = null;
 
-   Authorization.Require(Claims.Job.Properties.WarrantyProperties.ProviderDetails);
+   Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.RepairProviderDetails);
    
    if (Model.JobDetailsException != null)
    {
@@ -10,8 +10,8 @@
     <div>
         <strong>@Model.JobDetailsException.Message</strong>
     </div>
-    <a href="#" id="warrantyJobDetailsErrorShow" class="smallMessage">(show more)</a>
-    <div id="warrantyJobDetailsErrorMore" style="display: none">
+    <a href="#" id="repairJobDetailsErrorShow" class="smallMessage">(show more)</a>
+    <div id="repairJobDetailsErrorMore" style="display: none">
         <br />
         <strong>Error Type: </strong>@Model.JobDetailsException.GetType().Name
         <br />
@@ -33,9 +33,9 @@
         }
         <script type="text/javascript">
             $(function () {
-                $('#warrantyJobDetailsErrorShow').click(function () {
+                $('#repairJobDetailsErrorShow').click(function () {
                     $(this).hide();
-                    $('#warrantyJobDetailsErrorMore').slideDown();
+                    $('#repairJobDetailsErrorMore').slideDown();
                 });
             });
         </script>

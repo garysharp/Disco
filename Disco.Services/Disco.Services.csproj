@@ -261,6 +261,8 @@
     <Compile Include="Logging\Persistance\LogPersistContextInitializer.cs" />
     <Compile Include="Logging\Utilities.cs" />
     <Compile Include="Plugins\CommunityInterop\PluginLibraryUpdateTask.cs" />
+    <Compile Include="Plugins\Features\RepairProvider\RepairProviderFeature.cs" />
+    <Compile Include="Plugins\Features\RepairProvider\RepairProviderSubmitJobException.cs" />
     <Compile Include="Plugins\Features\UIExtension\Results\LiteralResult.cs" />
     <Compile Include="Plugins\Features\UIExtension\Results\MultipleResult.cs" />
     <Compile Include="Plugins\Features\UIExtension\Results\PluginResourceCssResult.cs" />

@@ -1,91 +1,177 @@
 ﻿@model Disco.Web.Models.Job.ShowModel
 @{
-    Authorization.Require(Claims.Job.ShowNonWarrantyFinance);
+    Authorization.Require(Claims.Job.ShowNonWarrantyRepairs);
 
     Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
 }
 <table id="jobNonWarrantyRepairs">
-    <tr>
-        <th style="width: 200px;">Repairer Name
-        </th>
-        <td>
-            @if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerName))
-            {
-                @Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerName)
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
-                    $(function () {
-                        document.DiscoFunctions.PropertyChangeHelper(
-                                $('#Job_JobMetaNonWarranty_RepairerName'),
-                                'Unknown',
-                                '@Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerName(Model.Job.Id, null))',
+    @if (Model.Job.JobMetaNonWarranty.RepairerName != null || Model.Job.JobMetaNonWarranty.RepairerLoggedDate.HasValue || Model.Job.JobMetaNonWarranty.RepairerReference != null)
+    {
+        <tr>
+            <th style="width: 200px;">Repairer Name
+            </th>
+            <td>
+                @if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerName))
+                {
+                    @Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerName)
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                    $('#Job_JobMetaNonWarranty_RepairerName'),
+                                    'Unknown',
+                                    '@Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerName(Model.Job.Id, null))',
                             'RepairerName'
                         );
-                    });
-                </script>
-            }
-            else
-            {
-                if (string.IsNullOrWhiteSpace(Model.Job.JobMetaNonWarranty.RepairerName))
-                {<span class="smallMessage">&lt;Unknown/None&gt;</span>}
+                        });
+                    </script>
+                }
                 else
-                {@Model.Job.JobMetaNonWarranty.RepairerName}
-            }
-        </td>
-    </tr>
-    <tr>
-        <th style="width: 200px;">Repair Logged
-        </th>
-        <td>
-            @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.RepairerLoggedDate, "Not Logged", "Job_JobMetaNonWarranty_RepairerLoggedDate")
-        </td>
-    </tr>
-    <tr>
-        <th style="width: 200px;">Repair Reference
-        </th>
-        <td>
-            @if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerReference))
-            {
-                @Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerReference)
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
-                    $(function () {
-                        document.DiscoFunctions.PropertyChangeHelper(
-                                $('#Job_JobMetaNonWarranty_RepairerReference'),
-                                'Unknown',
-                                '@Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerReference(Model.Job.Id, null))',
+                {
+                    if (string.IsNullOrWhiteSpace(Model.Job.JobMetaNonWarranty.RepairerName))
+                    {<span class="smallMessage">&lt;Unknown/None&gt;</span>}
+                    else
+                    {@Model.Job.JobMetaNonWarranty.RepairerName}
+                }
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px;">Repair Logged
+            </th>
+            <td>
+                @if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerLoggedDate))
+                {
+                    @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.RepairerLoggedDate, "Not Logged", "Job_JobMetaNonWarranty_RepairerLoggedDate")
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                        document.DiscoFunctions.DateDialogCreateUpdater('@(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)))', 'Repairer Name', 'Job_JobMetaNonWarranty_RepairerLoggedDate', null, 'NonWarrantyRepairerLoggedDate', 'Not Logged', '@(Model.Job.OpenedDate.ToISO8601())', false);
+                    </script>
+                }
+                else
+                {
+                    @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.RepairerLoggedDate, "Not Logged", null)
+                }
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px;">Repair Reference
+            </th>
+            <td>
+                @if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerReference))
+                {
+                    @Html.EditorFor(m => m.Job.JobMetaNonWarranty.RepairerReference)
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                    $('#Job_JobMetaNonWarranty_RepairerReference'),
+                                    'Unknown',
+                                    '@Url.Action(MVC.API.Job.UpdateNonWarrantyRepairerReference(Model.Job.Id, null))',
                             'RepairerReference'
                         );
-                    });
-                </script>
-            }
-            else
-            {
-                if (string.IsNullOrWhiteSpace(Model.Job.JobMetaNonWarranty.RepairerReference))
-                {<span class="smallMessage">&lt;Unknown/None&gt;</span>}
+                        });
+                    </script>
+                }
                 else
-                {@Model.Job.JobMetaNonWarranty.RepairerReference}
-            }
-        </td>
-    </tr>
-    <tr>
-        <th style="width: 200px;">Repair Completed
-        </th>
-        <td>
-            @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.RepairerCompletedDate, "Not Completed", "Job_JobMetaNonWarranty_RepairerCompletedDate")
-        </td>
-    </tr>
+                {
+                    if (string.IsNullOrWhiteSpace(Model.Job.JobMetaNonWarranty.RepairerReference))
+                    {<span class="smallMessage">&lt;Unknown/None&gt;</span>}
+                    else
+                    {@Model.Job.JobMetaNonWarranty.RepairerReference}
+                }
+            </td>
+        </tr>
+                if (Model.Job.JobMetaNonWarranty.RepairerLoggedDate.HasValue)
+                {
+        <tr>
+            <th style="width: 200px;">Repair Completed
+            </th>
+            <td>
+                @if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerCompletedDate))
+                {
+                    @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.RepairerCompletedDate, "Not Completed", "Job_JobMetaNonWarranty_RepairerCompletedDate")
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                        document.DiscoFunctions.DateDialogCreateUpdater('@(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)))', 'Repairer Completed', 'Job_JobMetaNonWarranty_RepairerCompletedDate', null, 'NonWarrantyRepairerCompletedDate', 'Not Completed', '@(Model.Job.OpenedDate.ToISO8601())', false);
+                    </script>
+                }
+                else
+                {
+                    @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.RepairerCompletedDate, "Not Completed", null)
+                }
+            </td>
+        </tr>
+                }
+                if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairProviderDetails))
+                {
+                    Html.BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
+        <tr id="jobRepairProviderDetailContainer" style="display: none">
+            <th style="width: 200px;">Provider Details
+            </th>
+            <td>
+                <div id="jobRepairProviderDetailLoading">
+                    <span class="ajaxLoading" title="Loading..."></span>Loading...
+                </div>
+                <div id="jobRepairProviderDetailHost" class="clearfix" style="display: none">
+                </div>
+            </td>
+        </tr>
+                }
+    }
+    else
+    {
+        <tr>
+            <th style="width: 200px;">Actions
+            </th>
+            <td>
+                @if (Model.Job.CanLogRepair())
+                { 
+                    @Html.ActionLinkSmallButton("Log Repair", MVC.Job.LogRepair(Model.Job.Id, null, null), "Job_Show_Repair_Actions_LogRepair_Button")
+                }
+                else
+                {
+                    <span class="smallMessage">&lt;None&gt;</span>
+                }
+            </td>
+        </tr>
+    }
 </table>
-<script>
+<script type="text/javascript">
+    @if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairProviderDetails) && Model.Job.JobMetaNonWarranty.RepairerName != null)
+    {<text>
     $(function () {
-        var updateUrl = '@(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)))';
-        var jobOpenDate = '@(Model.Job.OpenedDate.ToISO8601())';
+        var repairProviderDetailLoaded = false;
 
-        @if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerLoggedDate))
-        {<text>document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Repairer Name', 'Job_JobMetaNonWarranty_RepairerLoggedDate', null, 'NonWarrantyRepairerLoggedDate', 'Not Logged', jobOpenDate, false);</text>}
-        @if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.RepairerCompletedDate))
-        {<text>document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Repair Completed', 'Job_JobMetaNonWarranty_RepairerCompletedDate', null, 'NonWarrantyRepairerCompletedDate', 'Not Completed', jobOpenDate, false);</text>}
+        $('#jobDetailTabs').on('tabsactivate', function (e, ui) {
+            if ($(ui.newPanel).is('#jobDetailTab-NonWarrantyRepairs')) {
+                if (!repairProviderDetailLoaded) {
+                    var repairerName;
+                    var $repairerName = $('#Job_JobMetaNonWarranty_RepairerName');
+                    if ($repairerName.length > 0) {
+                        if ($repairerName[0].nodeName === 'INPUT')
+                            repairerName = $repairerName.val();
+                        else
+                            repairerName = $repairerName.text();
+                        if (repairerName) {
+                            $('#jobRepairProviderDetailContainer').show();
+                            $('#jobRepairProviderDetailLoading span').show();
+                            $('#jobRepairProviderDetailHost').load(
+                                '@(Url.Action(MVC.Job.RepairProviderJobDetails()))',
+                                { id: '@(Model.Job.Id)' },
+                                function () {
+                                    $('#jobRepairProviderDetailLoading').hide();
+                                    $(this).slideDown();
+                                }
+                            );
+
+                            repairProviderDetailLoaded = true;
+                        }
+                    }
+                }
+            }
+        });
     });
+    </text>}
 </script>

@@ -594,6 +594,7 @@
     <Compile Include="Models\Device\ExportModel.cs" />
     <Compile Include="Models\Device\ImportHeadersModel.cs" />
     <Compile Include="Models\InitialConfig\AdministratorsModel.cs" />
+    <Compile Include="Models\Job\LogRepairModel.cs" />
     <Compile Include="T4MVC.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -611,6 +612,26 @@
     </Compile>
     <Compile Include="Views\InitialConfig\Administrators.generated.cs">
       <DependentUpon>Administrators.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\LogRepair.generated.cs">
+      <DependentUpon>LogRepair.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\LogRepairDisclose.generated.cs">
+      <DependentUpon>LogRepairDisclose.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\LogRepairError.generated.cs">
+      <DependentUpon>LogRepairError.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\RepairProviderJobDetails.generated.cs">
+      <DependentUpon>RepairProviderJobDetails.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -674,7 +695,7 @@
     <Compile Include="Models\Job\CreateModel.cs" />
     <Compile Include="Models\Job\CreateRedirectModel.cs" />
     <Compile Include="Models\Job\ShowModel.cs" />
-    <Compile Include="Models\Job\WarrantyProviderJobDetailsModel.cs" />
+    <Compile Include="Models\Job\ProviderJobDetailsModel.cs" />
     <Compile Include="Models\Search\QueryModel.cs" />
     <Compile Include="Models\Shared\FancyTreeNode.cs" />
     <Compile Include="Models\Update\IndexModel.cs" />
@@ -1712,6 +1733,22 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Welcome.generated.cs</LastGenOutput>
     </None>
+    <Content Include="Views\Job\RepairProviderJobDetails.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>RepairProviderJobDetails.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Views\Job\LogRepair.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>LogRepair.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Views\Job\LogRepairDisclose.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>LogRepairDisclose.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Views\Job\LogRepairError.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>LogRepairError.generated.cs</LastGenOutput>
+    </Content>
     <None Include="Views\Job\Create_Redirect.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create_Redirect.generated.cs</LastGenOutput>

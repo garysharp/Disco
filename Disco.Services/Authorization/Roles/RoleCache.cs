@@ -157,12 +157,15 @@ namespace Disco.Services.Authorization.Roles
         /// </summary>
         private static void MigrateAuthorizationRoles(DiscoDataContext Database)
         {
-            // Use 'MyJobs' (A new claim) to detect if the Role hasn't been migrated yet
-            var affectedRoles = Database.AuthorizationRoles.Where(r => !r.ClaimsJson.Contains("MyJobs")).ToList();
+            // Determine roles which need migration from DBv11 -> DBv14
+            var affectedRoles_DBv14 = Database.AuthorizationRoles.Where(r => !r.ClaimsJson.Contains("MyJobs")).ToList();
+            
+            // Determine roles which need migration from DBv14 -> DBv15
+            var affectedRoles_DBv15 = Database.AuthorizationRoles.Where(r => !r.ClaimsJson.Contains("RepairProviderDetails")).ToList();
 
-            if (affectedRoles.Count > 0)
+            if (affectedRoles_DBv14.Count > 0)
             {
-                foreach (var role in affectedRoles)
+                foreach (var role in affectedRoles_DBv14)
                 {
                     var claims = JsonConvert.DeserializeObject<RoleClaims>(role.ClaimsJson);
 
@@ -197,6 +200,24 @@ namespace Disco.Services.Authorization.Roles
                     if (claims.User.Show)
                     {
                         claims.User.ShowDetails = true;
+                    }
+
+                    role.ClaimsJson = Newtonsoft.Json.JsonConvert.SerializeObject(claims);
+                }
+
+                Database.SaveChanges();
+            }
+
+            if (affectedRoles_DBv15.Count > 0)
+            {
+                foreach (var role in affectedRoles_DBv15)
+                {
+                    var claims = JsonConvert.DeserializeObject<RoleClaims>(role.ClaimsJson);
+
+                    // If the user previously had the ability to view warranty provider details, they probably should be able to view repair provider details (new feature).
+                    if (claims.Job.Properties.WarrantyProperties.ProviderDetails)
+                    {
+                        claims.Job.Properties.NonWarrantyProperties.RepairProviderDetails = true;
                     }
 
                     role.ClaimsJson = Newtonsoft.Json.JsonConvert.SerializeObject(claims);

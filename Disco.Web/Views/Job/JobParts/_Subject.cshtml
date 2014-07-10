@@ -820,56 +820,7 @@
             }
             @if (Model.Job.CanLogRepair())
             { 
-                @Html.ActionLinkSmallButton("Repairs Logged", MVC.API.Job.LogRepair(Model.Job.Id, null, null, true), "Job_Show_Job_Actions_LogRepair_Button")
-                <div id="Job_Show_Job_Actions_LogRepair_Dialog" class="dialog" title="Repairs Logged">
-                    @using (Html.BeginForm(MVC.API.Job.LogRepair(Model.Job.Id, null, null, true)))
-                    {
-                        <h3>Repairer Name:</h3>
-                        <p>
-                            <input type="text" id="Job_Show_Job_Actions_LogRepair_Dialog_RepairerName" name="RepairerName" />
-                        </p>
-                        <h3>Repairer Reference:</h3>
-                        <p>
-                            <input type="text" id="Job_Show_Job_Actions_LogRepair_Dialog_RepairerReference" name="RepairerReference" />
-                        </p>
-                    }
-                </div>
-                <script type="text/javascript">
-                    $(function () {
-                        var button = $('#Job_Show_Job_Actions_LogRepair_Button');
-                        var buttonDialog = null;
-                        button.attr('href', '#');
-                        button.click(function () {
-                            if (!buttonDialog){
-                                buttonDialog = $('#Job_Show_Job_Actions_LogRepair_Dialog');
-                                buttonDialog.dialog({
-                                    resizable: false,
-                                    height: 240,
-                                    modal: true,
-                                    autoOpen: false,
-                                    buttons: {
-                                        "Log Repairs": function () {
-                                            var $this = $(this);
-                                            $this.dialog("disable");
-                                            $this.dialog("option", "buttons", null);
-                                            $this.find('form').submit();
-                                        },
-                                        Cancel: function () {
-                                            $(this).dialog("close");
-                                        }
-                                    }
-                                });
-                            }
-
-                            buttonDialog.dialog('open');
-
-                            $('#Job_Show_Job_Actions_LogRepair_Dialog_RepairerName').val($('#Job_JobMetaNonWarranty_RepairerName').val()).focus();
-                            $('#Job_Show_Job_Actions_LogRepair_Dialog_RepairerReference').val($('#Job_JobMetaNonWarranty_RepairerReference').val());
-
-                            return false;
-                        });
-                    });
-                </script>
+                @Html.ActionLinkSmallButton("Log Repair", MVC.Job.LogRepair(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogRepair_Button")
             }
             @if (Model.Job.CanRepairComplete())
             { 

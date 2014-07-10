@@ -33,6 +33,9 @@ namespace Disco.Models.Repository
         [StringLength(40)]
         public string DefaultWarrantyProvider { get; set; }
 
+        [StringLength(40)]
+        public string DefaultRepairProvider { get; set; }
+
         public virtual IList<DeviceComponent> DeviceComponents { get; set; }
 
         public virtual IList<Device> Devices { get; set; }

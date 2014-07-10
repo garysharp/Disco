@@ -36,20 +36,20 @@ namespace Disco.Web.Views.Job
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Job/LogWarranty.cshtml")]
-    public partial class LogWarranty : Disco.Services.Web.WebViewPage<Disco.Web.Models.Job.LogWarrantyModel>
+    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Job/LogRepair.cshtml")]
+    public partial class LogRepair : Disco.Services.Web.WebViewPage<Disco.Web.Models.Job.LogRepairModel>
     {
-        public LogWarranty()
+        public LogRepair()
         {
         }
         public override void Execute()
         {
             
-            #line 2 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 2 "..\..\Views\Job\LogRepair.cshtml"
   
-    Authorization.Require(Claims.Job.Actions.LogWarranty);
+    Authorization.Require(Claims.Job.Actions.LogRepair);
 
-    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Log Warranty");
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Log Repair");
 
             
             #line default
@@ -57,50 +57,50 @@ namespace Disco.Web.Views.Job
 WriteLiteral("\r\n");
 
             
-            #line 7 "..\..\Views\Job\LogWarranty.cshtml"
- using (Html.BeginForm(MVC.Job.LogWarranty(), FormMethod.Post))
+            #line 7 "..\..\Views\Job\LogRepair.cshtml"
+ using (Html.BeginForm(MVC.Job.LogRepair(), FormMethod.Post))
 {
     
             
             #line default
             #line hidden
             
-            #line 9 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 9 "..\..\Views\Job\LogRepair.cshtml"
 Write(Html.ValidationSummary(true));
 
             
             #line default
             #line hidden
             
-            #line 9 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 9 "..\..\Views\Job\LogRepair.cshtml"
                                  
     
             
             #line default
             #line hidden
             
-            #line 10 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 10 "..\..\Views\Job\LogRepair.cshtml"
 Write(Html.HiddenFor(m => m.JobId));
 
             
             #line default
             #line hidden
             
-            #line 10 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 10 "..\..\Views\Job\LogRepair.cshtml"
                                  
     
             
             #line default
             #line hidden
             
-            #line 11 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 11 "..\..\Views\Job\LogRepair.cshtml"
 Write(Html.ValidationMessageFor(m => m.JobId));
 
             
             #line default
             #line hidden
             
-            #line 11 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 11 "..\..\Views\Job\LogRepair.cshtml"
                                             
 
             
@@ -112,21 +112,21 @@ WriteLiteral(" type=\"hidden\"");
 
 WriteLiteral(" name=\"SubmissionAction\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 497), Tuple.Create("\"", 554)
+WriteAttribute("value", Tuple.Create(" value=\"", 489), Tuple.Create("\"", 546)
             
-            #line 12 "..\..\Views\Job\LogWarranty.cshtml"
-, Tuple.Create(Tuple.Create("", 505), Tuple.Create<System.Object, System.Int32>(Model.IsManualProvider ? "Manual" : "Disclose"
+            #line 12 "..\..\Views\Job\LogRepair.cshtml"
+, Tuple.Create(Tuple.Create("", 497), Tuple.Create<System.Object, System.Int32>(Model.IsManualProvider ? "Manual" : "Disclose"
             
             #line default
             #line hidden
-, 505), false)
+, 497), false)
 );
 
 WriteLiteral(" />\r\n");
 
 WriteLiteral("    <div");
 
-WriteLiteral(" id=\"warrantyJobForm\"");
+WriteLiteral(" id=\"repairJobForm\"");
 
 WriteLiteral(" class=\"form\"");
 
@@ -138,7 +138,7 @@ WriteLiteral(">\r\n        <table>\r\n            <tr>\r\n                <th>In
 WriteLiteral("                    ");
 
             
-            #line 19 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 19 "..\..\Views\Job\LogRepair.cshtml"
                Write(Model.JobId);
 
             
@@ -150,7 +150,7 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>
 WriteLiteral("                    ");
 
             
-            #line 26 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 26 "..\..\Views\Job\LogRepair.cshtml"
                Write(Model.Job.Device.SerialNumber);
 
             
@@ -162,7 +162,7 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>
 WriteLiteral("                    ");
 
             
-            #line 33 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 33 "..\..\Views\Job\LogRepair.cshtml"
                Write(Model.Job.Device.DeviceModel.Manufacturer);
 
             
@@ -171,7 +171,7 @@ WriteLiteral("                    ");
 WriteLiteral(" ");
 
             
-            #line 33 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 33 "..\..\Views\Job\LogRepair.cshtml"
                                                           Write(Model.Job.Device.DeviceModel.Model);
 
             
@@ -183,7 +183,7 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>
 WriteLiteral("                    ");
 
             
-            #line 40 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 40 "..\..\Views\Job\LogRepair.cshtml"
                Write(Model.TechUser.DisplayName);
 
             
@@ -196,7 +196,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">\r\n                        Email Address: ");
 
             
-            #line 42 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 42 "..\..\Views\Job\LogRepair.cshtml"
                                   Write(Model.TechUser.EmailAddress);
 
             
@@ -205,7 +205,7 @@ WriteLiteral(">\r\n                        Email Address: ");
 WriteLiteral("<br />\r\n                        Phone Number: ");
 
             
-            #line 43 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 43 "..\..\Views\Job\LogRepair.cshtml"
                                  Write(Model.TechUser.PhoneNumber);
 
             
@@ -221,7 +221,7 @@ WriteLiteral(">Repair Address:\r\n                </th>\r\n                <td>\
 WriteLiteral("                    ");
 
             
-            #line 51 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 51 "..\..\Views\Job\LogRepair.cshtml"
                Write(Html.DropDownListFor(model => model.OrganisationAddressId, Model.OrganisationAddresses.ToSelectListItems(Model.OrganisationAddressId, (Model.OrganisationAddress == null))));
 
             
@@ -232,7 +232,7 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 52 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 52 "..\..\Views\Job\LogRepair.cshtml"
                Write(Html.ValidationMessageFor(m => m.OrganisationAddressId));
 
             
@@ -245,13 +245,13 @@ WriteLiteral(" id=\"organisationAddressDetails\"");
 WriteLiteral(">\r\n");
 
             
-            #line 54 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 54 "..\..\Views\Job\LogRepair.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 54 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 54 "..\..\Views\Job\LogRepair.cshtml"
                           
     var oa = Model.OrganisationAddress;
     if (oa != null)
@@ -263,7 +263,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                            <span>");
 
             
-            #line 58 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 58 "..\..\Views\Job\LogRepair.cshtml"
                              Write(oa.Address);
 
             
@@ -276,7 +276,7 @@ WriteLiteral("                            <br />\r\n");
 WriteLiteral("                            <span>");
 
             
-            #line 60 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 60 "..\..\Views\Job\LogRepair.cshtml"
                              Write(oa.Suburb);
 
             
@@ -285,7 +285,7 @@ WriteLiteral("                            <span>");
 WriteLiteral(", ");
 
             
-            #line 60 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 60 "..\..\Views\Job\LogRepair.cshtml"
                                          Write(oa.Postcode);
 
             
@@ -298,7 +298,7 @@ WriteLiteral("                            <br />\r\n");
 WriteLiteral("                            <span>");
 
             
-            #line 62 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 62 "..\..\Views\Job\LogRepair.cshtml"
                              Write(oa.State);
 
             
@@ -307,7 +307,7 @@ WriteLiteral("                            <span>");
 WriteLiteral(", ");
 
             
-            #line 62 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 62 "..\..\Views\Job\LogRepair.cshtml"
                                         Write(oa.Country);
 
             
@@ -316,21 +316,21 @@ WriteLiteral(", ");
 WriteLiteral("</span>\r\n");
 
             
-            #line 63 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 63 "..\..\Views\Job\LogRepair.cshtml"
     }
                         
             
             #line default
             #line hidden
 WriteLiteral("\r\n                    </div>\r\n                </td>\r\n            </tr>\r\n         " +
-"   <tr>\r\n                <th>Warranty Provider:\r\n                </th>\r\n        " +
-"        <td>\r\n");
+"   <tr>\r\n                <th>Repair Provider:\r\n                </th>\r\n          " +
+"      <td>\r\n");
 
 WriteLiteral("                    ");
 
             
-            #line 72 "..\..\Views\Job\LogWarranty.cshtml"
-               Write(Html.DropDownListFor(model => model.WarrantyProviderId, Model.WarrantyProviders.ToSelectListItems(Model.WarrantyProviderId, AdditionalItems: new Dictionary<string, string>() { { "MANUAL", "<Manually Submitted Claim>" } })));
+            #line 72 "..\..\Views\Job\LogRepair.cshtml"
+               Write(Html.DropDownListFor(model => model.RepairProviderId, Model.RepairProviders.ToSelectListItems(Model.RepairProviderId, AdditionalItems: new Dictionary<string, string>() { { "MANUAL", "<Manually Submitted Request>" } })));
 
             
             #line default
@@ -340,8 +340,8 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 73 "..\..\Views\Job\LogWarranty.cshtml"
-               Write(Html.ValidationMessageFor(m => m.WarrantyProviderId));
+            #line 73 "..\..\Views\Job\LogRepair.cshtml"
+               Write(Html.ValidationMessageFor(m => m.RepairProviderId));
 
             
             #line default
@@ -349,14 +349,14 @@ WriteLiteral("                    ");
 WriteLiteral("\r\n");
 
             
-            #line 74 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 74 "..\..\Views\Job\LogRepair.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 74 "..\..\Views\Job\LogWarranty.cshtml"
-                     if (Model.WarrantyProviders.Count == 0 && Authorization.Has(Claims.Config.Plugin.Install))
+            #line 74 "..\..\Views\Job\LogRepair.cshtml"
+                     if (Model.RepairProviders.Count == 0 && Authorization.Has(Claims.Config.Plugin.Install))
                     {
 
             
@@ -376,21 +376,21 @@ WriteLiteral(" class=\"fa fa-info-circle\"");
 
 WriteLiteral("></i>View the <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 3317), Tuple.Create("\"", 3367)
+WriteAttribute("href", Tuple.Create(" href=\"", 3297), Tuple.Create("\"", 3347)
             
-            #line 78 "..\..\Views\Job\LogWarranty.cshtml"
-    , Tuple.Create(Tuple.Create("", 3324), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
+            #line 78 "..\..\Views\Job\LogRepair.cshtml"
+    , Tuple.Create(Tuple.Create("", 3304), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
             
             #line default
             #line hidden
-, 3324), false)
+, 3304), false)
 );
 
-WriteLiteral(">Plugin Catalogue</a> to discover and install warranty provider plugins.\r\n       " +
-"                     </p>\r\n                        </div>\r\n");
+WriteLiteral(">Plugin Catalogue</a> to discover and install repair provider plugins.\r\n         " +
+"                   </p>\r\n                        </div>\r\n");
 
             
-            #line 81 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 81 "..\..\Views\Job\LogRepair.cshtml"
                     }
 
             
@@ -399,13 +399,13 @@ WriteLiteral(">Plugin Catalogue</a> to discover and install warranty provider pl
 WriteLiteral("                </td>\r\n            </tr>\r\n");
 
             
-            #line 84 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 84 "..\..\Views\Job\LogRepair.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 84 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 84 "..\..\Views\Job\LogRepair.cshtml"
              if (Model.IsManualProvider)
             {
 
@@ -418,7 +418,7 @@ WriteLiteral("                <tr>\r\n                    <th>Provider Name:</th
 WriteLiteral("                        ");
 
             
-            #line 89 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 89 "..\..\Views\Job\LogRepair.cshtml"
                    Write(Html.EditorFor(model => model.ManualProviderName));
 
             
@@ -429,7 +429,7 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                        ");
 
             
-            #line 90 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 90 "..\..\Views\Job\LogRepair.cshtml"
                    Write(Html.ValidationMessageFor(m => m.ManualProviderName));
 
             
@@ -443,7 +443,7 @@ WriteLiteral("                <tr>\r\n                    <th>Provider Job Refer
 WriteLiteral("                        ");
 
             
-            #line 96 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 96 "..\..\Views\Job\LogRepair.cshtml"
                    Write(Html.EditorFor(model => model.ManualProviderReference));
 
             
@@ -454,7 +454,7 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                        ");
 
             
-            #line 97 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 97 "..\..\Views\Job\LogRepair.cshtml"
                    Write(Html.ValidationMessageFor(m => m.ManualProviderReference));
 
             
@@ -463,7 +463,7 @@ WriteLiteral("                        ");
 WriteLiteral("\r\n                    </td>\r\n                </tr>\r\n");
 
             
-            #line 100 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 100 "..\..\Views\Job\LogRepair.cshtml"
             }
 
             
@@ -473,20 +473,20 @@ WriteLiteral("        </table>\r\n    </div>\r\n");
 
 WriteLiteral("    <div");
 
-WriteLiteral(" id=\"warrantyJobFaultDescription\"");
+WriteLiteral(" id=\"repairJobRepairDescription\"");
 
 WriteLiteral(" class=\"form\"");
 
 WriteLiteral(" style=\"width: 650px; margin-top: 15px;\"");
 
-WriteLiteral(">\r\n        <h2>Fault Description</h2>\r\n        <table>\r\n            <tr>\r\n       " +
-"         <td>\r\n");
+WriteLiteral(">\r\n        <h2>Repair Description</h2>\r\n        <table>\r\n            <tr>\r\n      " +
+"          <td>\r\n");
 
 WriteLiteral("                    ");
 
             
-            #line 108 "..\..\Views\Job\LogWarranty.cshtml"
-               Write(Html.EditorFor(model => model.FaultDescription));
+            #line 108 "..\..\Views\Job\LogRepair.cshtml"
+               Write(Html.EditorFor(model => model.RepairDescription));
 
             
             #line default
@@ -496,8 +496,8 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 109 "..\..\Views\Job\LogWarranty.cshtml"
-               Write(Html.ValidationMessageFor(m => m.FaultDescription));
+            #line 109 "..\..\Views\Job\LogRepair.cshtml"
+               Write(Html.ValidationMessageFor(m => m.RepairDescription));
 
             
             #line default
@@ -505,8 +505,8 @@ WriteLiteral("                    ");
 WriteLiteral("\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </div>\r\n");
 
             
-            #line 114 "..\..\Views\Job\LogWarranty.cshtml"
-            if (Model.WarrantyProvider != null && Model.WarrantyProviderSubmitJobViewType != null)
+            #line 114 "..\..\Views\Job\LogRepair.cshtml"
+            if (Model.RepairProvider != null && Model.RepairProviderSubmitJobBeginResult != null)
             { 
 
             
@@ -514,15 +514,15 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n        </table>
             #line hidden
 WriteLiteral("    <div");
 
-WriteLiteral(" id=\"warrantyJobProviderProperties\"");
+WriteLiteral(" id=\"repairJobProviderProperties\"");
 
 WriteLiteral(">\r\n");
 
 WriteLiteral("        ");
 
             
-            #line 117 "..\..\Views\Job\LogWarranty.cshtml"
-   Write(Html.PartialCompiled(Model.WarrantyProviderSubmitJobViewType, Model.WarrantyProviderSubmitJobModel));
+            #line 117 "..\..\Views\Job\LogRepair.cshtml"
+   Write(Html.PartialCompiled(Model.RepairProviderSubmitJobBeginResult.Item1, Model.RepairProviderSubmitJobBeginResult.Item2));
 
             
             #line default
@@ -530,7 +530,7 @@ WriteLiteral("        ");
 WriteLiteral("\r\n    </div>\r\n");
 
             
-            #line 119 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 119 "..\..\Views\Job\LogRepair.cshtml"
             }
 
             
@@ -543,13 +543,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 121 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 121 "..\..\Views\Job\LogRepair.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 121 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 121 "..\..\Views\Job\LogRepair.cshtml"
          if (Model.IsManualProvider)
         {
 
@@ -562,12 +562,12 @@ WriteLiteral(" type=\"submit\"");
 
 WriteLiteral(" class=\"button\"");
 
-WriteLiteral(" value=\"Save Warranty Claim\"");
+WriteLiteral(" value=\"Save Repair Request\"");
 
 WriteLiteral(" />\r\n");
 
             
-            #line 124 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 124 "..\..\Views\Job\LogRepair.cshtml"
         }
         else
         {
@@ -581,12 +581,12 @@ WriteLiteral(" type=\"submit\"");
 
 WriteLiteral(" class=\"button\"");
 
-WriteLiteral(" value=\"Preview Warranty Claim\"");
+WriteLiteral(" value=\"Preview Repair Request\"");
 
 WriteLiteral(" />\r\n");
 
             
-            #line 128 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 128 "..\..\Views\Job\LogRepair.cshtml"
         }
 
             
@@ -595,7 +595,7 @@ WriteLiteral(" />\r\n");
 WriteLiteral("    </div>\r\n");
 
             
-            #line 130 "..\..\Views\Job\LogWarranty.cshtml"
+            #line 130 "..\..\Views\Job\LogRepair.cshtml"
 }
 
             
@@ -605,27 +605,27 @@ WriteLiteral("<script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(">\r\n    $(function () {\r\n        var $providerId = $(\'#WarrantyProviderId\');\r\n    " +
-"    var $addressId = $(\'#OrganisationAddressId\');\r\n\r\n        function updateDeta" +
-"ils() {\r\n            $(\'<form>\').attr({\r\n                action: $providerId.clo" +
-"sest(\'form\').attr(\'action\'),\r\n                method: \'post\'\r\n            }).app" +
-"end(\r\n                $(\'<input>\').attr({ type: \'hidden\', name: \'SubmissionActio" +
-"n\', value: \'Update\' })\r\n            ).append(\r\n                $(\'<input>\').attr" +
-"({ type: \'hidden\', name: \'JobId\', value: $(\'#JobId\').val() })\r\n            ).app" +
-"end(\r\n                $(\'<input>\').attr({ type: \'hidden\', name: \'WarrantyProvide" +
-"rId\', value: $providerId.val() })\r\n            ).append(\r\n                $(\'<in" +
-"put>\').attr({ type: \'hidden\', name: \'OrganisationAddressId\', value: $addressId.v" +
-"al() })\r\n            ).append(\r\n                $(\'<input>\').attr({ type: \'hidde" +
-"n\', name: \'FaultDescription\', value: $(\'#FaultDescription\').val() })\r\n          " +
-"  ).append(\r\n                $(\'<input>\').attr({ type: \'hidden\', name: \'ManualPr" +
-"oviderName\', value: $(\'#ManualProviderName\').val() })\r\n            ).append(\r\n  " +
-"              $(\'<input>\').attr({ type: \'hidden\', name: \'ManualProviderReference" +
-"\', value: $(\'#ManualProviderReference\').val() })\r\n            ).appendTo(\'body\')" +
-".submit();\r\n        }\r\n\r\n        $providerId.change(updateDetails);\r\n        $ad" +
-"dressId.change(updateDetails);\r\n\r\n        var manualProvider = $(\'#ManualProvide" +
-"rName\');\r\n        if (manualProvider.length > 0 && !manualProvider.val()) {\r\n   " +
-"         manualProvider.focus();\r\n        } else {\r\n            $(\'#FaultDescrip" +
-"tion\').focus();\r\n        }\r\n    });\r\n</script>\r\n");
+WriteLiteral(">\r\n    $(function () {\r\n        var $providerId = $(\'#RepairProviderId\');\r\n      " +
+"  var $addressId = $(\'#OrganisationAddressId\');\r\n\r\n        function updateDetail" +
+"s() {\r\n            $(\'<form>\').attr({\r\n                action: $providerId.close" +
+"st(\'form\').attr(\'action\'),\r\n                method: \'post\'\r\n            }).appen" +
+"d(\r\n                $(\'<input>\').attr({ type: \'hidden\', name: \'SubmissionAction\'" +
+", value: \'Update\' })\r\n            ).append(\r\n                $(\'<input>\').attr({" +
+" type: \'hidden\', name: \'JobId\', value: $(\'#JobId\').val() })\r\n            ).appen" +
+"d(\r\n                $(\'<input>\').attr({ type: \'hidden\', name: \'RepairProviderId\'" +
+", value: $providerId.val() })\r\n            ).append(\r\n                $(\'<input>" +
+"\').attr({ type: \'hidden\', name: \'OrganisationAddressId\', value: $addressId.val()" +
+" })\r\n            ).append(\r\n                $(\'<input>\').attr({ type: \'hidden\', " +
+"name: \'RepairDescription\', value: $(\'#RepairDescription\').val() })\r\n            " +
+").append(\r\n                $(\'<input>\').attr({ type: \'hidden\', name: \'ManualProv" +
+"iderName\', value: $(\'#ManualProviderName\').val() })\r\n            ).append(\r\n    " +
+"            $(\'<input>\').attr({ type: \'hidden\', name: \'ManualProviderReference\'," +
+" value: $(\'#ManualProviderReference\').val() })\r\n            ).appendTo(\'body\').s" +
+"ubmit();\r\n        }\r\n\r\n        $providerId.change(updateDetails);\r\n        $addr" +
+"essId.change(updateDetails);\r\n\r\n        var manualProvider = $(\'#ManualProviderN" +
+"ame\');\r\n        if (manualProvider.length > 0 && !manualProvider.val()) {\r\n     " +
+"       manualProvider.focus();\r\n        } else {\r\n            $(\'#RepairDescript" +
+"ion\').focus();\r\n        }\r\n    });\r\n</script>\r\n");
 
         }
     }

@@ -2,6 +2,7 @@
 using Disco.Models.UI.Config.DeviceModel;
 using Disco.Services.Authorization;
 using Disco.Services.Plugins;
+using Disco.Services.Plugins.Features.RepairProvider;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Plugins.Features.WarrantyProvider;
 using Disco.Services.Web;
@@ -29,6 +30,7 @@ namespace Disco.Web.Areas.Config.Controllers
                     throw new ArgumentException("Invalid Device Model Id", "id");
 
                 m.WarrantyProviders = Plugins.GetPluginFeatures(typeof(WarrantyProviderFeature));
+                m.RepairProviders = Plugins.GetPluginFeatures(typeof(RepairProviderFeature));
 
                 m.DeviceComponentsModel = new Models.DeviceModel.ComponentsModel()
                 {

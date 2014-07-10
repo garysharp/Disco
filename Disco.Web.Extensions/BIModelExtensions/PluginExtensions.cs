@@ -26,12 +26,13 @@ namespace Disco.Web.Extensions
 
         public static List<SelectListItem> ToSelectListItems(this IEnumerable<PluginFeatureManifest> PluginDefinitions, string SelectedId = null, bool IncludeInstructionFirst = false, string InstructionMessage = "Select a Plugin", Dictionary<string, string> AdditionalItems = null)
         {
-            List<SelectListItem> selectItems;
+            var items = PluginDefinitions
+                .Select(wpd => new SelectListItem { Value = wpd.Id, Text = wpd.Name, Selected = (SelectedId != null && SelectedId.Equals(wpd.Id)) });
 
-            selectItems = PluginDefinitions
-                .Select(wpd => new SelectListItem { Value = wpd.Id, Text = wpd.Name, Selected = (SelectedId != null && SelectedId.Equals(wpd.Id)) })
-                .Concat(AdditionalItems.Select(i => new SelectListItem { Value = i.Key, Text = i.Value, Selected = (SelectedId != null && SelectedId.Equals(i.Key)) }))
-                .OrderBy(i => i.Text).ToList();
+            if (AdditionalItems != null)
+                items = items.Concat(AdditionalItems.Select(i => new SelectListItem { Value = i.Key, Text = i.Value, Selected = (SelectedId != null && SelectedId.Equals(i.Key)) }));
+
+            var selectItems = items.OrderBy(i => i.Text).ToList();
 
             if (IncludeInstructionFirst)
                 selectItems.Insert(0, new SelectListItem() { Value = String.Empty, Text = String.Format("<{0}>", InstructionMessage), Selected = String.IsNullOrEmpty(SelectedId) });

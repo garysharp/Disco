@@ -1,16 +1,16 @@
-﻿@model Disco.Web.Models.Job.LogWarrantyModel
+﻿@model Disco.Web.Models.Job.LogRepairModel
 @{
-    Authorization.Require(Claims.Job.Actions.LogWarranty);
+    Authorization.Require(Claims.Job.Actions.LogRepair);
 
-    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Log Warranty");
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Log Repair");
 }
-@using (Html.BeginForm(MVC.Job.LogWarranty(), FormMethod.Post))
+@using (Html.BeginForm(MVC.Job.LogRepair(), FormMethod.Post))
 {
     @Html.ValidationSummary(true)
     @Html.HiddenFor(m => m.JobId)
     @Html.ValidationMessageFor(m => m.JobId)
     <input type="hidden" name="SubmissionAction" value="@(Model.IsManualProvider ? "Manual" : "Disclose")" />
-    <div id="warrantyJobForm" class="form" style="width: 650px">
+    <div id="repairJobForm" class="form" style="width: 650px">
         <table>
             <tr>
                 <th>Internal Job Id:
@@ -66,16 +66,16 @@
                 </td>
             </tr>
             <tr>
-                <th>Warranty Provider:
+                <th>Repair Provider:
                 </th>
                 <td>
-                    @Html.DropDownListFor(model => model.WarrantyProviderId, Model.WarrantyProviders.ToSelectListItems(Model.WarrantyProviderId, AdditionalItems: new Dictionary<string, string>() { { "MANUAL", "<Manually Submitted Claim>" } }))<br />
-                    @Html.ValidationMessageFor(m => m.WarrantyProviderId)
-                    @if (Model.WarrantyProviders.Count == 0 && Authorization.Has(Claims.Config.Plugin.Install))
+                    @Html.DropDownListFor(model => model.RepairProviderId, Model.RepairProviders.ToSelectListItems(Model.RepairProviderId, AdditionalItems: new Dictionary<string, string>() { { "MANUAL", "<Manually Submitted Request>" } }))<br />
+                    @Html.ValidationMessageFor(m => m.RepairProviderId)
+                    @if (Model.RepairProviders.Count == 0 && Authorization.Has(Claims.Config.Plugin.Install))
                     {
                         <div class="info-box">
                             <p class="fa-p">
-                                <i class="fa fa-info-circle"></i>View the <a href="@(Url.Action(MVC.Config.Plugins.Install()))">Plugin Catalogue</a> to discover and install warranty provider plugins.
+                                <i class="fa fa-info-circle"></i>View the <a href="@(Url.Action(MVC.Config.Plugins.Install()))">Plugin Catalogue</a> to discover and install repair provider plugins.
                             </p>
                         </div>
                     }
@@ -100,37 +100,37 @@
             }
         </table>
     </div>
-    <div id="warrantyJobFaultDescription" class="form" style="width: 650px; margin-top: 15px;">
-        <h2>Fault Description</h2>
+    <div id="repairJobRepairDescription" class="form" style="width: 650px; margin-top: 15px;">
+        <h2>Repair Description</h2>
         <table>
             <tr>
                 <td>
-                    @Html.EditorFor(model => model.FaultDescription)<br />
-                    @Html.ValidationMessageFor(m => m.FaultDescription)
+                    @Html.EditorFor(model => model.RepairDescription)<br />
+                    @Html.ValidationMessageFor(m => m.RepairDescription)
                 </td>
             </tr>
         </table>
     </div>
-            if (Model.WarrantyProvider != null && Model.WarrantyProviderSubmitJobViewType != null)
+            if (Model.RepairProvider != null && Model.RepairProviderSubmitJobBeginResult != null)
             { 
-    <div id="warrantyJobProviderProperties">
-        @Html.PartialCompiled(Model.WarrantyProviderSubmitJobViewType, Model.WarrantyProviderSubmitJobModel)
+    <div id="repairJobProviderProperties">
+        @Html.PartialCompiled(Model.RepairProviderSubmitJobBeginResult.Item1, Model.RepairProviderSubmitJobBeginResult.Item2)
     </div>
             }
     <div class="actionBar">
         @if (Model.IsManualProvider)
         {
-            <input type="submit" class="button" value="Save Warranty Claim" />
+            <input type="submit" class="button" value="Save Repair Request" />
         }
         else
         {
-            <input type="submit" class="button" value="Preview Warranty Claim" />
+            <input type="submit" class="button" value="Preview Repair Request" />
         }
     </div>
 }
 <script type="text/javascript">
     $(function () {
-        var $providerId = $('#WarrantyProviderId');
+        var $providerId = $('#RepairProviderId');
         var $addressId = $('#OrganisationAddressId');
 
         function updateDetails() {
@@ -142,11 +142,11 @@
             ).append(
                 $('<input>').attr({ type: 'hidden', name: 'JobId', value: $('#JobId').val() })
             ).append(
-                $('<input>').attr({ type: 'hidden', name: 'WarrantyProviderId', value: $providerId.val() })
+                $('<input>').attr({ type: 'hidden', name: 'RepairProviderId', value: $providerId.val() })
             ).append(
                 $('<input>').attr({ type: 'hidden', name: 'OrganisationAddressId', value: $addressId.val() })
             ).append(
-                $('<input>').attr({ type: 'hidden', name: 'FaultDescription', value: $('#FaultDescription').val() })
+                $('<input>').attr({ type: 'hidden', name: 'RepairDescription', value: $('#RepairDescription').val() })
             ).append(
                 $('<input>').attr({ type: 'hidden', name: 'ManualProviderName', value: $('#ManualProviderName').val() })
             ).append(
@@ -161,7 +161,7 @@
         if (manualProvider.length > 0 && !manualProvider.val()) {
             manualProvider.focus();
         } else {
-            $('#FaultDescription').focus();
+            $('#RepairDescription').focus();
         }
     });
 </script>

@@ -44,6 +44,9 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.Job
         [ClaimDetails("Repairer Reference Property", "Can update property")]
         public bool RepairerReference { get; set; }
 
+        [ClaimDetails("Repair Provider Details", "Can access repair provider details")]
+        public bool RepairProviderDetails { get; set; }
+
         [ClaimDetails("Insurance Detail Properties", "Can update insurance detail properties")]
         public bool InsuranceDetails { get; set; }
     }

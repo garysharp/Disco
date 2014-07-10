@@ -133,6 +133,7 @@ namespace Disco.Services.Authorization
 				{ "Job.Properties.NonWarrantyProperties.PurchaseOrderRaised", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.PurchaseOrderRaised, (c, v) => c.Job.Properties.NonWarrantyProperties.PurchaseOrderRaised = v, "Purchase Order Raised Property", "Can update property", false) },
 				{ "Job.Properties.NonWarrantyProperties.PurchaseOrderReference", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.PurchaseOrderReference, (c, v) => c.Job.Properties.NonWarrantyProperties.PurchaseOrderReference = v, "Purchase Order Reference Property", "Can update property", false) },
 				{ "Job.Properties.NonWarrantyProperties.PurchaseOrderSent", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.PurchaseOrderSent, (c, v) => c.Job.Properties.NonWarrantyProperties.PurchaseOrderSent = v, "Purchase Order Sent Property", "Can update property", false) },
+				{ "Job.Properties.NonWarrantyProperties.RepairProviderDetails", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.RepairProviderDetails, (c, v) => c.Job.Properties.NonWarrantyProperties.RepairProviderDetails = v, "Repair Provider Details", "Can access repair provider details", false) },
 				{ "Job.Properties.NonWarrantyProperties.RepairerCompletedDate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.RepairerCompletedDate, (c, v) => c.Job.Properties.NonWarrantyProperties.RepairerCompletedDate = v, "Repairer Completed Date Property", "Can update property", false) },
 				{ "Job.Properties.NonWarrantyProperties.RepairerLoggedDate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.RepairerLoggedDate, (c, v) => c.Job.Properties.NonWarrantyProperties.RepairerLoggedDate = v, "Repairer Logged Date Property", "Can update property", false) },
 				{ "Job.Properties.NonWarrantyProperties.RepairerName", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.RepairerName, (c, v) => c.Job.Properties.NonWarrantyProperties.RepairerName = v, "Repairer Name Property", "Can update property", false) },
@@ -352,6 +353,7 @@ namespace Disco.Services.Authorization
 				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.PurchaseOrderRaised", false),
 				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.PurchaseOrderReference", false),
 				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.PurchaseOrderSent", false),
+				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.RepairProviderDetails", false),
 				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.RepairerCompletedDate", false),
 				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.RepairerLoggedDate", false),
 				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.RepairerName", false),
@@ -645,6 +647,7 @@ namespace Disco.Services.Authorization
 			c.Job.Properties.NonWarrantyProperties.PurchaseOrderRaised = true;
 			c.Job.Properties.NonWarrantyProperties.PurchaseOrderReference = true;
 			c.Job.Properties.NonWarrantyProperties.PurchaseOrderSent = true;
+			c.Job.Properties.NonWarrantyProperties.RepairProviderDetails = true;
 			c.Job.Properties.NonWarrantyProperties.RepairerCompletedDate = true;
 			c.Job.Properties.NonWarrantyProperties.RepairerLoggedDate = true;
 			c.Job.Properties.NonWarrantyProperties.RepairerName = true;
@@ -1423,6 +1426,11 @@ namespace Disco.Services.Authorization
                     /// <para>Can update property</para>
                     /// </summary>
                     public const string PurchaseOrderSent = "Job.Properties.NonWarrantyProperties.PurchaseOrderSent";
+
+                    /// <summary>Repair Provider Details
+                    /// <para>Can access repair provider details</para>
+                    /// </summary>
+                    public const string RepairProviderDetails = "Job.Properties.NonWarrantyProperties.RepairProviderDetails";
 
                     /// <summary>Repairer Completed Date Property
                     /// <para>Can update property</para>

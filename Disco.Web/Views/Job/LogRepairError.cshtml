@@ -1,0 +1,127 @@
+﻿@model Disco.Web.Models.Job.LogRepairModel
+@{
+    Authorization.Require(Claims.Job.Actions.LogRepair);
+
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Log Repair Error");
+}
+<div class="form" style="width: 650px">
+    <h2>Submission Error</h2>
+    <table>
+        <tr>
+            <td>
+                <div>
+                    <strong>@Model.Error.Message</strong>
+                </div>
+                <a href="#" id="repairJobErrorShow" class="smallMessage">(show more)</a>
+                <div id="repairJobErrorMore" style="display: none">
+                    <br />
+                    <strong>Error Type: </strong>@Model.Error.GetType().Name
+                    <br />
+                    <strong>Stack Trace:</strong>
+                    <div class="code">
+                        @Model.Error.StackTrace.ToMultilineString()
+                    </div>
+                    @if (Model.Error.InnerException != null)
+                    { 
+                        <hr />
+                        <div>
+                            <strong>Inner Exception:</strong> @Model.Error.InnerException.Message<br />
+                            <strong>Error Type:</strong> @Model.Error.GetType().Name<br />
+                            <strong>Stack Trace:</strong>
+                            <div class="code">
+                                @Model.Error.InnerException.StackTrace
+                            </div>
+                        </div>
+                    }
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#repairJobErrorShow').click(function () {
+                            $(this).hide();
+                            $('#repairJobErrorMore').slideDown();
+                            return false;
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="repairJobForm" class="form" style="width: 650px; margin-top: 15px;">
+    <h2>Repair Submission Details</h2>
+    <table>
+        <tr>
+            <th>Internal Job Id:
+            </th>
+            <td>
+                @Model.JobId
+            </td>
+        </tr>
+        <tr>
+            <th>Device Serial Number:
+            </th>
+            <td>
+                @Model.Job.Device.SerialNumber
+            </td>
+        </tr>
+        <tr>
+            <th>Device Model:
+            </th>
+            <td>
+                @Model.Job.Device.DeviceModel.Manufacturer @Model.Job.Device.DeviceModel.Model
+            </td>
+        </tr>
+        <tr>
+            <th>Technician:
+            </th>
+            <td>
+                @Model.TechUser.DisplayName
+                <div class="smallMessage">
+                    Email Address: @Model.TechUser.EmailAddress<br />
+                    Phone Number: @Model.TechUser.PhoneNumber
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 150px">Repair Address:
+            </th>
+            <td>
+                <div id="organisationAddressDetails">
+                    @Model.OrganisationAddress.Name
+                    <div class="smallMessage">
+                        <span>@Model.OrganisationAddress.Address</span><br />
+                        <span>@Model.OrganisationAddress.Suburb, @Model.OrganisationAddress.Postcode</span><br />
+                        <span>@Model.OrganisationAddress.State, @Model.OrganisationAddress.Country</span>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>Repair Provider:
+            </th>
+            <td>
+                @if (Model.RepairProvider != null)
+                {
+                    <span>
+                        @Model.RepairProvider.Name (@Model.RepairProvider.Id) @Model.RepairProvider.PluginManifest.Version.ToString(3)
+                    </span>
+                }
+                else
+                {
+                    <span class="smallMessage">None Selected</span>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Repair Description:
+            </th>
+            <td>
+                @Model.RepairDescription.ToMultilineString()
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="actionBar">
+    @Html.ActionLinkButton("Try Again", MVC.Job.LogRepair(Model.JobId, null, null))
+    @Html.ActionLinkButton("Return to Job", MVC.Job.Show(Model.JobId))
+</div>

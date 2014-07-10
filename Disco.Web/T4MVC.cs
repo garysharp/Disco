@@ -319,7 +319,7 @@ namespace Links
                     public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
                     public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
                     public static readonly string disco_hubs_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco-hubs.min.js") ? Url("disco-hubs.min.js") : Url("disco-hubs.js");
-                    public static readonly string jquery_signalR_2_0_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.signalR-2.0.3.min.js") ? Url("jquery.signalR-2.0.3.min.js") : Url("jquery.signalR-2.0.3.js");
+                    public static readonly string jquery_signalR_2_1_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.signalR-2.1.0.min.js") ? Url("jquery.signalR-2.1.0.min.js") : Url("jquery.signalR-2.1.0.js");
                 }
             
                 public static readonly string jQuery_SignalR_js_bundle = Url("jQuery-SignalR.js.bundle");
@@ -1612,6 +1612,18 @@ namespace Disco.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.WarrantyProviderJobDetails);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult LogRepair()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LogRepair);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult RepairProviderJobDetails()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RepairProviderJobDetails);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public JobController Actions { get { return MVC.Job; } }
@@ -1648,6 +1660,8 @@ namespace Disco.Web.Controllers
             public readonly string Create = "Create";
             public readonly string LogWarranty = "LogWarranty";
             public readonly string WarrantyProviderJobDetails = "WarrantyProviderJobDetails";
+            public readonly string LogRepair = "LogRepair";
+            public readonly string RepairProviderJobDetails = "RepairProviderJobDetails";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1673,6 +1687,8 @@ namespace Disco.Web.Controllers
             public const string Create = "Create";
             public const string LogWarranty = "LogWarranty";
             public const string WarrantyProviderJobDetails = "WarrantyProviderJobDetails";
+            public const string LogRepair = "LogRepair";
+            public const string RepairProviderJobDetails = "RepairProviderJobDetails";
         }
 
 
@@ -1722,6 +1738,26 @@ namespace Disco.Web.Controllers
         {
             public readonly string id = "id";
         }
+        static readonly ActionParamsClass_LogRepair s_params_LogRepair = new ActionParamsClass_LogRepair();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_LogRepair LogRepairParams { get { return s_params_LogRepair; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_LogRepair
+        {
+            public readonly string id = "id";
+            public readonly string RepairProviderId = "RepairProviderId";
+            public readonly string OrganisationAddressId = "OrganisationAddressId";
+            public readonly string m = "m";
+            public readonly string form = "form";
+        }
+        static readonly ActionParamsClass_RepairProviderJobDetails s_params_RepairProviderJobDetails = new ActionParamsClass_RepairProviderJobDetails();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_RepairProviderJobDetails RepairProviderJobDetailsParams { get { return s_params_RepairProviderJobDetails; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_RepairProviderJobDetails
+        {
+            public readonly string id = "id";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -1738,9 +1774,13 @@ namespace Disco.Web.Controllers
                 public readonly string Create_Redirect = "Create_Redirect";
                 public readonly string Index = "Index";
                 public readonly string List = "List";
+                public readonly string LogRepair = "LogRepair";
+                public readonly string LogRepairDisclose = "LogRepairDisclose";
+                public readonly string LogRepairError = "LogRepairError";
                 public readonly string LogWarranty = "LogWarranty";
                 public readonly string LogWarrantyDisclose = "LogWarrantyDisclose";
                 public readonly string LogWarrantyError = "LogWarrantyError";
+                public readonly string RepairProviderJobDetails = "RepairProviderJobDetails";
                 public readonly string Show = "Show";
                 public readonly string WarrantyProviderJobDetails = "WarrantyProviderJobDetails";
             }
@@ -1750,9 +1790,13 @@ namespace Disco.Web.Controllers
             public readonly string Create_Redirect = "~/Views/Job/Create_Redirect.cshtml";
             public readonly string Index = "~/Views/Job/Index.cshtml";
             public readonly string List = "~/Views/Job/List.cshtml";
+            public readonly string LogRepair = "~/Views/Job/LogRepair.cshtml";
+            public readonly string LogRepairDisclose = "~/Views/Job/LogRepairDisclose.cshtml";
+            public readonly string LogRepairError = "~/Views/Job/LogRepairError.cshtml";
             public readonly string LogWarranty = "~/Views/Job/LogWarranty.cshtml";
             public readonly string LogWarrantyDisclose = "~/Views/Job/LogWarrantyDisclose.cshtml";
             public readonly string LogWarrantyError = "~/Views/Job/LogWarrantyError.cshtml";
+            public readonly string RepairProviderJobDetails = "~/Views/Job/RepairProviderJobDetails.cshtml";
             public readonly string Show = "~/Views/Job/Show.cshtml";
             public readonly string WarrantyProviderJobDetails = "~/Views/Job/WarrantyProviderJobDetails.cshtml";
             static readonly _JobPartsClass s_JobParts = new _JobPartsClass();
@@ -2046,6 +2090,45 @@ namespace Disco.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.WarrantyProviderJobDetails);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             WarrantyProviderJobDetailsOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void LogRepairOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string RepairProviderId, int? OrganisationAddressId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult LogRepair(int id, string RepairProviderId, int? OrganisationAddressId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LogRepair);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "RepairProviderId", RepairProviderId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "OrganisationAddressId", OrganisationAddressId);
+            LogRepairOverride(callInfo, id, RepairProviderId, OrganisationAddressId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void LogRepairOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Models.Job.LogRepairModel m, System.Web.Mvc.FormCollection form);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult LogRepair(Disco.Web.Models.Job.LogRepairModel m, System.Web.Mvc.FormCollection form)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LogRepair);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "m", m);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "form", form);
+            LogRepairOverride(callInfo, m, form);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void RepairProviderJobDetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult RepairProviderJobDetails(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RepairProviderJobDetails);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            RepairProviderJobDetailsOverride(callInfo, id);
             return callInfo;
         }
 
@@ -4774,6 +4857,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateDefaultRepairProvider()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDefaultRepairProvider);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Image()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Image);
@@ -4834,6 +4923,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateDescription = "UpdateDescription";
             public readonly string UpdateDefaultPurchaseDate = "UpdateDefaultPurchaseDate";
             public readonly string UpdateDefaultWarrantyProvider = "UpdateDefaultWarrantyProvider";
+            public readonly string UpdateDefaultRepairProvider = "UpdateDefaultRepairProvider";
             public readonly string Image = "Image";
             public readonly string Delete = "Delete";
             public readonly string Component = "Component";
@@ -4851,6 +4941,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateDescription = "UpdateDescription";
             public const string UpdateDefaultPurchaseDate = "UpdateDefaultPurchaseDate";
             public const string UpdateDefaultWarrantyProvider = "UpdateDefaultWarrantyProvider";
+            public const string UpdateDefaultRepairProvider = "UpdateDefaultRepairProvider";
             public const string Image = "Image";
             public const string Delete = "Delete";
             public const string Component = "Component";
@@ -4901,6 +4992,16 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string DefaultWarrantyProvider = "DefaultWarrantyProvider";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateDefaultRepairProvider s_params_UpdateDefaultRepairProvider = new ActionParamsClass_UpdateDefaultRepairProvider();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateDefaultRepairProvider UpdateDefaultRepairProviderParams { get { return s_params_UpdateDefaultRepairProvider; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateDefaultRepairProvider
+        {
+            public readonly string id = "id";
+            public readonly string DefaultRepairProvider = "DefaultRepairProvider";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_Image s_params_Image = new ActionParamsClass_Image();
@@ -5041,6 +5142,20 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DefaultWarrantyProvider", DefaultWarrantyProvider);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateDefaultWarrantyProviderOverride(callInfo, id, DefaultWarrantyProvider, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateDefaultRepairProviderOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string DefaultRepairProvider, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateDefaultRepairProvider(int id, string DefaultRepairProvider, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDefaultRepairProvider);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DefaultRepairProvider", DefaultRepairProvider);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateDefaultRepairProviderOverride(callInfo, id, DefaultRepairProvider, redirect);
             return callInfo;
         }
 
@@ -6864,12 +6979,6 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult LogRepair()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LogRepair);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult DeviceReadyForReturn()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeviceReadyForReturn);
@@ -7058,7 +7167,6 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateFlag = "UpdateFlag";
             public readonly string WaitingForUserAction = "WaitingForUserAction";
             public readonly string NotWaitingForUserAction = "NotWaitingForUserAction";
-            public readonly string LogRepair = "LogRepair";
             public readonly string DeviceReadyForReturn = "DeviceReadyForReturn";
             public readonly string DeviceHeld = "DeviceHeld";
             public readonly string DeviceReturned = "DeviceReturned";
@@ -7130,7 +7238,6 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateFlag = "UpdateFlag";
             public const string WaitingForUserAction = "WaitingForUserAction";
             public const string NotWaitingForUserAction = "NotWaitingForUserAction";
-            public const string LogRepair = "LogRepair";
             public const string DeviceReadyForReturn = "DeviceReadyForReturn";
             public const string DeviceHeld = "DeviceHeld";
             public const string DeviceReturned = "DeviceReturned";
@@ -7579,17 +7686,6 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string Resolution = "Resolution";
-            public readonly string redirect = "redirect";
-        }
-        static readonly ActionParamsClass_LogRepair s_params_LogRepair = new ActionParamsClass_LogRepair();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_LogRepair LogRepairParams { get { return s_params_LogRepair; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_LogRepair
-        {
-            public readonly string id = "id";
-            public readonly string RepairerName = "RepairerName";
-            public readonly string RepairerReference = "RepairerReference";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_DeviceReadyForReturn s_params_DeviceReadyForReturn = new ActionParamsClass_DeviceReadyForReturn();
@@ -8391,21 +8487,6 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Resolution", Resolution);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             NotWaitingForUserActionOverride(callInfo, id, Resolution, redirect);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void LogRepairOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string RepairerName, string RepairerReference, bool? redirect);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult LogRepair(int id, string RepairerName, string RepairerReference, bool? redirect)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LogRepair);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "RepairerName", RepairerName);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "RepairerReference", RepairerReference);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            LogRepairOverride(callInfo, id, RepairerName, RepairerReference, redirect);
             return callInfo;
         }
 

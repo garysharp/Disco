@@ -36,19 +36,19 @@ namespace Disco.Web.Views.Job
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Job/WarrantyProviderJobDetails.cshtml")]
-    public partial class WarrantyProviderJobDetails : Disco.Services.Web.WebViewPage<Disco.Web.Models.Job.ProviderJobDetailsModel>
+    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Job/RepairProviderJobDetails.cshtml")]
+    public partial class RepairProviderJobDetails : Disco.Services.Web.WebViewPage<Disco.Web.Models.Job.ProviderJobDetailsModel>
     {
-        public WarrantyProviderJobDetails()
+        public RepairProviderJobDetails()
         {
         }
         public override void Execute()
         {
             
-            #line 2 "..\..\Views\Job\WarrantyProviderJobDetails.cshtml"
+            #line 2 "..\..\Views\Job\RepairProviderJobDetails.cshtml"
    Layout = null;
 
-   Authorization.Require(Claims.Job.Properties.WarrantyProperties.ProviderDetails);
+   Authorization.Require(Claims.Job.Properties.NonWarrantyProperties.RepairProviderDetails);
    
    if (Model.JobDetailsException != null)
    {
@@ -61,7 +61,7 @@ WriteLiteral("    <h3>\r\n        Error:</h3>\r\n");
 WriteLiteral("    <div>\r\n        <strong>");
 
             
-            #line 11 "..\..\Views\Job\WarrantyProviderJobDetails.cshtml"
+            #line 11 "..\..\Views\Job\RepairProviderJobDetails.cshtml"
            Write(Model.JobDetailsException.Message);
 
             
@@ -73,7 +73,7 @@ WriteLiteral("    <a");
 
 WriteLiteral(" href=\"#\"");
 
-WriteLiteral(" id=\"warrantyJobDetailsErrorShow\"");
+WriteLiteral(" id=\"repairJobDetailsErrorShow\"");
 
 WriteLiteral(" class=\"smallMessage\"");
 
@@ -81,14 +81,14 @@ WriteLiteral(">(show more)</a>\r\n");
 
 WriteLiteral("    <div");
 
-WriteLiteral(" id=\"warrantyJobDetailsErrorMore\"");
+WriteLiteral(" id=\"repairJobDetailsErrorMore\"");
 
 WriteLiteral(" style=\"display: none\"");
 
 WriteLiteral(">\r\n        <br />\r\n        <strong>Error Type: </strong>");
 
             
-            #line 16 "..\..\Views\Job\WarrantyProviderJobDetails.cshtml"
+            #line 16 "..\..\Views\Job\RepairProviderJobDetails.cshtml"
                                 Write(Model.JobDetailsException.GetType().Name);
 
             
@@ -103,7 +103,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("            ");
 
             
-            #line 20 "..\..\Views\Job\WarrantyProviderJobDetails.cshtml"
+            #line 20 "..\..\Views\Job\RepairProviderJobDetails.cshtml"
        Write(Model.JobDetailsException.StackTrace.ToMultilineString());
 
             
@@ -112,13 +112,13 @@ WriteLiteral("            ");
 WriteLiteral("\r\n        </div>\r\n");
 
             
-            #line 22 "..\..\Views\Job\WarrantyProviderJobDetails.cshtml"
+            #line 22 "..\..\Views\Job\RepairProviderJobDetails.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 22 "..\..\Views\Job\WarrantyProviderJobDetails.cshtml"
+            #line 22 "..\..\Views\Job\RepairProviderJobDetails.cshtml"
          if (Model.JobDetailsException.InnerException != null)
         { 
 
@@ -130,7 +130,7 @@ WriteLiteral("            <hr />\r\n");
 WriteLiteral("            <div>\r\n                <strong>Inner Exception:</strong> ");
 
             
-            #line 26 "..\..\Views\Job\WarrantyProviderJobDetails.cshtml"
+            #line 26 "..\..\Views\Job\RepairProviderJobDetails.cshtml"
                                              Write(Model.JobDetailsException.InnerException.Message);
 
             
@@ -139,7 +139,7 @@ WriteLiteral("            <div>\r\n                <strong>Inner Exception:</str
 WriteLiteral("<br />\r\n                <strong>Error Type:</strong> ");
 
             
-            #line 27 "..\..\Views\Job\WarrantyProviderJobDetails.cshtml"
+            #line 27 "..\..\Views\Job\RepairProviderJobDetails.cshtml"
                                         Write(Model.JobDetailsException.GetType().Name);
 
             
@@ -154,7 +154,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                    ");
 
             
-            #line 30 "..\..\Views\Job\WarrantyProviderJobDetails.cshtml"
+            #line 30 "..\..\Views\Job\RepairProviderJobDetails.cshtml"
                Write(Model.JobDetailsException.InnerException.StackTrace);
 
             
@@ -163,7 +163,7 @@ WriteLiteral("                    ");
 WriteLiteral("\r\n                </div>\r\n            </div>\r\n");
 
             
-            #line 33 "..\..\Views\Job\WarrantyProviderJobDetails.cshtml"
+            #line 33 "..\..\Views\Job\RepairProviderJobDetails.cshtml"
         }
 
             
@@ -175,9 +175,9 @@ WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
             $(function () {
-                $('#warrantyJobDetailsErrorShow').click(function () {
+                $('#repairJobDetailsErrorShow').click(function () {
                     $(this).hide();
-                    $('#warrantyJobDetailsErrorMore').slideDown();
+                    $('#repairJobDetailsErrorMore').slideDown();
                 });
             });
         </script>
@@ -185,7 +185,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 43 "..\..\Views\Job\WarrantyProviderJobDetails.cshtml"
+            #line 43 "..\..\Views\Job\RepairProviderJobDetails.cshtml"
    }
    else
    {
@@ -196,14 +196,14 @@ WriteLiteral(@">
             #line default
             #line hidden
             
-            #line 48 "..\..\Views\Job\WarrantyProviderJobDetails.cshtml"
+            #line 48 "..\..\Views\Job\RepairProviderJobDetails.cshtml"
 Write(Html.PartialCompiled(Model.ViewType, Model.ViewModel));
 
             
             #line default
             #line hidden
             
-            #line 48 "..\..\Views\Job\WarrantyProviderJobDetails.cshtml"
+            #line 48 "..\..\Views\Job\RepairProviderJobDetails.cshtml"
                                                           
        }
        else
@@ -219,7 +219,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">");
 
             
-            #line 52 "..\..\Views\Job\WarrantyProviderJobDetails.cshtml"
+            #line 52 "..\..\Views\Job\RepairProviderJobDetails.cshtml"
                           Write(Model.JobDetailsNotSupportedMessage);
 
             
@@ -228,7 +228,7 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n");
 
             
-            #line 53 "..\..\Views\Job\WarrantyProviderJobDetails.cshtml"
+            #line 53 "..\..\Views\Job\RepairProviderJobDetails.cshtml"
        }
    }
 

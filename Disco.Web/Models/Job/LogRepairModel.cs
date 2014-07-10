@@ -1,6 +1,6 @@
 ﻿using Disco.Data.Repository;
 using Disco.Services.Plugins;
-using Disco.Services.Plugins.Features.WarrantyProvider;
+using Disco.Services.Plugins.Features.RepairProvider;
 using Disco.Services.Users;
 using Newtonsoft.Json;
 using System;
@@ -10,11 +10,11 @@ using System.Linq;
 
 namespace Disco.Web.Models.Job
 {
-    public class LogWarrantyModel
+    public class LogRepairModel
     {
         public Disco.Models.Repository.Job Job { get; set; }
-        public List<PluginFeatureManifest> WarrantyProviders { get; set; }
-        public PluginFeatureManifest WarrantyProvider { get; set; }
+        public List<PluginFeatureManifest> RepairProviders { get; set; }
+        public PluginFeatureManifest RepairProvider { get; set; }
         public List<Disco.Models.BI.Config.OrganisationAddress> OrganisationAddresses { get; set; }
         public Disco.Models.BI.Config.OrganisationAddress OrganisationAddress { get; set; }
 
@@ -24,10 +24,10 @@ namespace Disco.Web.Models.Job
         public int JobId { get; set; }
         [Required(ErrorMessage = "Please specify a Repair Address")]
         public Nullable<int> OrganisationAddressId { get; set; }
-        [Required(ErrorMessage = "Please specify a Warranty Provider")]
-        public string WarrantyProviderId { get; set; }
+        [Required(ErrorMessage = "Please specify a Repair Provider")]
+        public string RepairProviderId { get; set; }
         [Required(ErrorMessage = "A fault description is required"), DataType(System.ComponentModel.DataAnnotations.DataType.MultilineText)]
-        public string FaultDescription { get; set; }
+        public string RepairDescription { get; set; }
         [Required]
         public string SubmissionAction { get; set; }
 
@@ -35,14 +35,13 @@ namespace Disco.Web.Models.Job
         {
             get
             {
-                return WarrantyProviderId == "MANUAL";
+                return RepairProviderId == "MANUAL";
             }
         }
         public string ManualProviderName { get; set; }
         public string ManualProviderReference { get; set; }
 
-        public Type WarrantyProviderSubmitJobViewType { get; set; }
-        public object WarrantyProviderSubmitJobModel { get; set; }
+        public Tuple<Type, object> RepairProviderSubmitJobBeginResult { get; set; }
         public string ProviderPropertiesJson { get; set; }
         public Dictionary<string, string> ProviderProperties()
         {
@@ -81,7 +80,7 @@ namespace Disco.Web.Models.Job
                     } catch (Exception) {}
                 }
 
-                Job = (from j in Database.Jobs.Include("Device.DeviceModel").Include("JobMetaWarranty").Include("JobSubTypes")
+                Job = (from j in Database.Jobs.Include("Device.DeviceModel").Include("JobMetaNonWarranty").Include("JobSubTypes")
                        where (j.Id == JobId)
                        select j).FirstOrDefault();
                 if (Job == null)
@@ -93,18 +92,18 @@ namespace Disco.Web.Models.Job
             // Update TechUser's Details [#12]
             this.TechUser = UserService.GetUser(UserService.CurrentUserId, Database, true);
 
-            WarrantyProviders = Plugins.GetPluginFeatures(typeof(WarrantyProviderFeature));
+            RepairProviders = Plugins.GetPluginFeatures(typeof(RepairProviderFeature));
 
-            if (!IsPostBack && string.IsNullOrEmpty(WarrantyProviderId))
+            if (!IsPostBack && string.IsNullOrEmpty(RepairProviderId))
             {
-                WarrantyProviderId = Job.Device.DeviceModel.DefaultWarrantyProvider;
+                RepairProviderId = Job.Device.DeviceModel.DefaultRepairProvider;
 
-                if (string.IsNullOrEmpty(WarrantyProviderId))
-                    WarrantyProviderId = "MANUAL";
+                if (string.IsNullOrEmpty(RepairProviderId))
+                    RepairProviderId = "MANUAL";
             }
 
-            if (!string.IsNullOrEmpty(WarrantyProviderId) && WarrantyProviderId != "MANUAL")
-                WarrantyProvider = Plugins.GetPluginFeature(WarrantyProviderId, typeof(WarrantyProviderFeature));
+            if (!string.IsNullOrEmpty(RepairProviderId) && RepairProviderId != "MANUAL")
+                RepairProvider = Plugins.GetPluginFeature(RepairProviderId, typeof(RepairProviderFeature));
 
             this.OrganisationAddresses = Database.DiscoConfiguration.OrganisationAddresses.Addresses.OrderBy(a => a.Name).ToList();
 
@@ -115,8 +114,8 @@ namespace Disco.Web.Models.Job
             if (this.OrganisationAddressId.HasValue)
                 this.OrganisationAddress = this.OrganisationAddresses.FirstOrDefault(oa => oa.Id == this.OrganisationAddressId.Value);
 
-            if (!string.IsNullOrEmpty(FaultDescription))
-                FaultDescription = FaultDescription.Trim();
+            if (!string.IsNullOrEmpty(RepairDescription))
+                RepairDescription = RepairDescription.Trim();
         }
     }
 }
