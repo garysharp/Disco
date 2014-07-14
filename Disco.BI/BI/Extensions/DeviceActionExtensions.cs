@@ -88,7 +88,7 @@ namespace Disco.BI.Extensions
             d.DecommissionReason = Reason;
 
             // Disable AD Account
-            if (d.DeviceDomainId != null)
+            if (ActiveDirectory.IsValidDomainAccountId(d.DeviceDomainId))
             {
                 var adAccount = d.ActiveDirectoryAccount();
                 if (adAccount != null && !adAccount.IsCriticalSystemObject)
@@ -115,7 +115,7 @@ namespace Disco.BI.Extensions
             d.DecommissionReason = null;
 
             // Enable AD Account
-            if (d.DeviceDomainId != null)
+            if (ActiveDirectory.IsValidDomainAccountId(d.DeviceDomainId))
             {
                 var adAccount = d.ActiveDirectoryAccount();
                 if (adAccount != null && !adAccount.IsCriticalSystemObject)
