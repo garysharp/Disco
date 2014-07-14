@@ -120,7 +120,10 @@ namespace Disco.Services.Devices.Exporting
                 case DeviceExportTypes.All:
                     return GenerateExport(Database, Database.Devices, Options, TaskStatus);
                 case DeviceExportTypes.Batch:
-                    return GenerateExport(Database, Database.Devices.Where(d => d.DeviceBatchId == Options.ExportTypeTargetId), Options, TaskStatus);
+                    if (Options.ExportTypeTargetId.HasValue && Options.ExportTypeTargetId.Value > 0)
+                        return GenerateExport(Database, Database.Devices.Where(d => d.DeviceBatchId == Options.ExportTypeTargetId), Options, TaskStatus);
+                    else
+                        return GenerateExport(Database, Database.Devices.Where(d => d.DeviceBatchId == null), Options, TaskStatus);
                 case DeviceExportTypes.Model:
                     return GenerateExport(Database, Database.Devices.Where(d => d.DeviceModelId == Options.ExportTypeTargetId), Options, TaskStatus);
                 case DeviceExportTypes.Profile:

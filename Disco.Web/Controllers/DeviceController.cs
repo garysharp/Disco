@@ -93,7 +93,7 @@ namespace Disco.Web.Controllers
             var m = new Models.Device.ExportModel()
             {
                 Options = Database.DiscoConfiguration.Devices.LastExportOptions,
-                DeviceBatches = Database.DeviceBatches.OrderBy(db => db.Name).Select(db => new { Key = db.Id, Value = db.Name }).ToList().Select(i => new KeyValuePair<int, string>(i.Key, i.Value)),
+                DeviceBatches = new KeyValuePair<int, string>[] { new KeyValuePair<int, string>(0, "<No Associated Batch>") }.Concat(Database.DeviceBatches.OrderBy(db => db.Name).Select(db => new { Key = db.Id, Value = db.Name }).ToList().Select(i => new KeyValuePair<int, string>(i.Key, i.Value))),
                 DeviceModels = Database.DeviceModels.OrderBy(dm => dm.Description).Select(dm => new { Key = dm.Id, Value = dm.Description }).ToList().Select(i => new KeyValuePair<int, string>(i.Key, i.Value)),
                 DeviceProfiles = Database.DeviceProfiles.OrderBy(dp => dp.Name).Select(dp => new { Key = dp.Id, Value = dp.Name }).ToList().Select(i => new KeyValuePair<int, string>(i.Key, i.Value))
             };
