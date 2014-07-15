@@ -365,7 +365,7 @@ namespace Disco.BI.DeviceBI
 
                         if (domain == null)
                             domain = ActiveDirectory.Context.GetDomainByName(Request.DeviceDNSDomainName);
-                        
+
                         if (!authenticatedToken.User.UserId.Equals(string.Format(@"{0}\{1}$", domain.NetBiosName, Request.DeviceComputerName), System.StringComparison.OrdinalIgnoreCase))
                             throw new EnrolSafeException(string.Format("Connection not correctly authenticated (SN: {0}; Auth User: {1})", Request.DeviceSerialNumber, authenticatedToken.User.UserId));
                     }
@@ -499,7 +499,7 @@ namespace Disco.BI.DeviceBI
                             response.DeviceComputerName = adMachineAccount.Name;
                             response.DeviceDomainName = adMachineAccount.Domain.NetBiosName;
                         }
-                        else
+                        else if (ActiveDirectory.IsValidDomainAccountId(RepoDevice.DeviceDomainId))
                         {
                             string accountUsername;
                             ADDomain accountDomain;
@@ -507,6 +507,11 @@ namespace Disco.BI.DeviceBI
 
                             response.DeviceDomainName = accountDomain == null ? null : accountDomain.NetBiosName;
                             response.DeviceComputerName = accountUsername;
+                        }
+                        else
+                        {
+                            response.DeviceDomainName = Request.DeviceDNSDomainName;
+                            response.DeviceComputerName = Request.DeviceComputerName;
                         }
                     }
                     else
