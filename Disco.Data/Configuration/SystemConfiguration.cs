@@ -1,5 +1,5 @@
 ﻿using Disco.Data.Repository;
-using Disco.Models.BI.Interop.Community;
+using Disco.Models.Services.Interop.DiscoServices;
 using System;
 using System.IO;
 
@@ -269,11 +269,18 @@ namespace Disco.Data.Configuration
                 return this.Get<string>(null);
             }
         }
-        public UpdateResponse UpdateLastCheck
+        public string DeploymentSecret
         {
             get
             {
-                return this.Get<UpdateResponse>(null);
+                return this.Get<string>(null);
+            }
+        }
+        public UpdateResponseV2 UpdateLastCheckResponse
+        {
+            get
+            {
+                return this.Get<UpdateResponseV2>(null);
             }
             set
             {

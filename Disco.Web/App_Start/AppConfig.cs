@@ -1,4 +1,5 @@
 ﻿using Disco.Data.Repository;
+using Disco.Services.Interop.DiscoServices;
 using System;
 using System.Linq;
 using System.Web;
@@ -70,10 +71,10 @@ namespace Disco.Web
             Disco.Services.Tasks.ScheduledTasks.InitalizeScheduledTasks(Database, DiscoApplication.SchedulerFactory, true);
 
             // Schedule Immediate Check for Update (if never updated, or last updated over 2 days ago)
-            if (Database.DiscoConfiguration.UpdateLastCheck == null ||
-                Database.DiscoConfiguration.UpdateLastCheck.ResponseTimestamp < DateTime.Now.AddDays(-2))
+            if (Database.DiscoConfiguration.UpdateLastCheckResponse == null ||
+                Database.DiscoConfiguration.UpdateLastCheckResponse.UpdateResponseDate < DateTime.Now.AddDays(-2))
             {
-                Disco.BI.Interop.Community.UpdateCheckTask.ScheduleNow();
+                UpdateQueryTask.ScheduleNow();
             }
 
             // Setup Attachment Monitor

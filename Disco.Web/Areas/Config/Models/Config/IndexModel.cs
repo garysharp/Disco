@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Disco.Models.BI.Interop.Community;
+﻿using Disco.Models.Services.Interop.DiscoServices;
+using System;
 
 namespace Disco.Web.Areas.Config.Models.Config
 {
@@ -14,13 +11,14 @@ namespace Disco.Web.Areas.Config.Models.Config
             {
                 if (UpdateResponse != null)
                 {
-                    var updateVersion = Version.Parse(UpdateResponse.Version);
+                    var updateVersion = Version.Parse(UpdateResponse.LatestVersion);
                     return (updateVersion > typeof(DiscoApplication).Assembly.GetName().Version);
                 }
 
                 return false;
             }
         }
-        public UpdateResponse UpdateResponse { get; set; }
+
+        public UpdateResponseV2 UpdateResponse { get; set; }
     }
 }

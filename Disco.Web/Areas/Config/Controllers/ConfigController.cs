@@ -15,7 +15,7 @@ namespace Disco.Web.Areas.Config.Controllers
 
             var m = new Models.Config.IndexModel()
             {
-                UpdateResponse = Database.DiscoConfiguration.UpdateLastCheck
+                UpdateResponse = Database.DiscoConfiguration.UpdateLastCheckResponse
             };
 
             return View(m);

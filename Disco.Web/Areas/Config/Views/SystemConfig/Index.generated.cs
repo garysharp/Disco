@@ -269,7 +269,7 @@ WriteLiteral(">Last Run:\r\n                </th>\r\n                <td>\r\n   
 
             
             #line 88 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                     Write(CommonHelpers.FriendlyDate(Model.UpdateLatestResponse.ResponseTimestamp));
+                     Write(CommonHelpers.FriendlyDate(Model.UpdateLatestResponse.UpdateResponseDate.ToLocalTime()));
 
             
             #line default
@@ -278,7 +278,7 @@ WriteLiteral("</span>\r\n                </td>\r\n            </tr>\r\n");
 
             
             #line 91 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                if (Model.UpdateLatestResponse.IsUpdatable(typeof(DiscoApplication).Assembly.GetName().Version))
+                if (Model.UpdateAvailable)
                 {
 
             
@@ -297,7 +297,7 @@ WriteLiteral("></i>&nbsp;Version ");
 
             
             #line 98 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                                                     Write(Model.UpdateLatestResponse.Version);
+                                                                                     Write(Model.UpdateLatestResponse.LatestVersion);
 
             
             #line default
@@ -310,7 +310,7 @@ WriteLiteral(">\r\n                        [Released ");
 
             
             #line 101 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                              Write(CommonHelpers.FriendlyDate(Model.UpdateLatestResponse.VersionReleasedTimestamp));
+                              Write(CommonHelpers.FriendlyDate(Model.UpdateLatestResponse.ReleasedDate));
 
             
             #line default
@@ -323,21 +323,21 @@ WriteLiteral(">");
 
             
             #line 103 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                          Write(new HtmlString(Model.UpdateLatestResponse.Blurb));
+                                          Write(new HtmlString(Model.UpdateLatestResponse.Description));
 
             
             #line default
             #line hidden
 WriteLiteral("</div>\r\n                    <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 3996), Tuple.Create("\"", 4040)
+WriteAttribute("href", Tuple.Create(" href=\"", 3941), Tuple.Create("\"", 3985)
             
             #line 104 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 4003), Tuple.Create<System.Object, System.Int32>(Model.UpdateLatestResponse.UrlLink
+, Tuple.Create(Tuple.Create("", 3948), Tuple.Create<System.Object, System.Int32>(Model.UpdateLatestResponse.UrlLink
             
             #line default
             #line hidden
-, 4003), false)
+, 3948), false)
 );
 
 WriteLiteral(" target=\"_blank\"");
@@ -704,18 +704,18 @@ WriteLiteral("                                        <i");
 
 WriteLiteral(" class=\"fa fa-exclamation warning fa-fw fa-lg\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 8221), Tuple.Create("\"", 8304)
-, Tuple.Create(Tuple.Create("", 8229), Tuple.Create("Unavailable,", 8229), true)
-, Tuple.Create(Tuple.Create(" ", 8241), Tuple.Create("will", 8242), true)
-, Tuple.Create(Tuple.Create(" ", 8246), Tuple.Create("retry", 8247), true)
-, Tuple.Create(Tuple.Create(" ", 8252), Tuple.Create("at", 8253), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 8166), Tuple.Create("\"", 8249)
+, Tuple.Create(Tuple.Create("", 8174), Tuple.Create("Unavailable,", 8174), true)
+, Tuple.Create(Tuple.Create(" ", 8186), Tuple.Create("will", 8187), true)
+, Tuple.Create(Tuple.Create(" ", 8191), Tuple.Create("retry", 8192), true)
+, Tuple.Create(Tuple.Create(" ", 8197), Tuple.Create("at", 8198), true)
             
             #line 203 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                           , Tuple.Create(Tuple.Create(" ", 8255), Tuple.Create<System.Object, System.Int32>(server.AvailableWhen.Value.ToLongTimeString()
+                                           , Tuple.Create(Tuple.Create(" ", 8200), Tuple.Create<System.Object, System.Int32>(server.AvailableWhen.Value.ToLongTimeString()
             
             #line default
             #line hidden
-, 8256), false)
+, 8201), false)
 );
 
 WriteLiteral("></i>\r\n");
@@ -1639,35 +1639,29 @@ WriteLiteral("\r\n                    <script>\r\n                        $(func
             
             #line default
             #line hidden
-WriteLiteral(@"';
-                                var data = {
-                                    ProxyAddress: $('#ProxyAddress').val(),
-                                    ProxyPort: $('#ProxyPort').val(),
-                                    ProxyUsername: $('#ProxyUsername').val(),
-                                    ProxyPassword: $('#ProxyPassword').val()
-                                }
-                                var ajaxLoading = button.next('.ajaxLoading').first().show();
-
-                                $.getJSON(url, data, function (response, result) {
-                                    if (result != 'success' || response != 'OK') {
-                                        alert('Unable to change property ""' + UpdatePropertyName + '"":\n' + response);
-                                        ajaxLoading.hide();
-                                    } else {
-                                        ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                    }
-                                })
-
-                            });
-                        });
-                    </script>
-                </td>
-            </tr>
-        </table>
-    </div>
-");
+WriteLiteral("\';\r\n                                var data = {\r\n                               " +
+"     ProxyAddress: $(\'#ProxyAddress\').val(),\r\n                                  " +
+"  ProxyPort: $(\'#ProxyPort\').val(),\r\n                                    ProxyUs" +
+"ername: $(\'#ProxyUsername\').val(),\r\n                                    ProxyPas" +
+"sword: $(\'#ProxyPassword\').val()\r\n                                }\r\n           " +
+"                     var ajaxLoading = button.next(\'.ajaxLoading\').first().show(" +
+");\r\n\r\n                                $.ajax({\r\n                                " +
+"    type: \'POST\',\r\n                                    dataType: \'json\',\r\n      " +
+"                              url: url,\r\n                                    dat" +
+"a: data,\r\n                                    success: function (response, resul" +
+"t) {\r\n                                        if (result != \'success\' || respons" +
+"e != \'OK\') {\r\n                                            alert(\'Unable to chang" +
+"e property \"\' + UpdatePropertyName + \'\":\\n\' + response);\r\n                      " +
+"                      ajaxLoading.hide();\r\n                                     " +
+"   } else {\r\n                                            ajaxLoading.hide().next" +
+"(\'.ajaxOk\').show().delay(\'fast\').fadeOut(\'slow\');\r\n                             " +
+"           }\r\n                                    }\r\n                           " +
+"     });\r\n                            });\r\n                        });\r\n        " +
+"            </script>\r\n                </td>\r\n            </tr>\r\n        </table" +
+">\r\n    </div>\r\n");
 
             
-            #line 555 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 560 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
     }
 }
 else
@@ -1692,7 +1686,7 @@ WriteLiteral(">Address:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 566 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 571 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.ProxyAddress));
 
             
@@ -1708,7 +1702,7 @@ WriteLiteral(">Port:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 573 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 578 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.ProxyPort));
 
             
@@ -1724,7 +1718,7 @@ WriteLiteral(">Username:\r\n                </th>\r\n                <td>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 580 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 585 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.ProxyUsername));
 
             
@@ -1739,7 +1733,7 @@ WriteLiteral(">Password:\r\n                </th>\r\n                <td>*******
 "</td>\r\n            </tr>\r\n        </table>\r\n    </div>\r\n");
 
             
-            #line 591 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 596 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
 }
 
             
@@ -1754,7 +1748,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 593 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 598 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
 Write(Html.ActionLinkButton("Update Device Last Network Logons", MVC.API.System.UpdateLastNetworkLogonDates()));
 
             

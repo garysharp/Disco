@@ -145,7 +145,7 @@
     <div id="updateAvailableContainer">
         <i class="fa fa-cloud-download info"></i>
         <div>An updated version of Disco is available</div>
-        <a href="@Model.UpdateResponse.UrlLink" class="button small alert" target="_blank">Download v@(Model.UpdateResponse.Version)</a>
+        <a href="@Model.UpdateResponse.UrlLink" class="button small alert" target="_blank">Download v@(Model.UpdateResponse.LatestVersion)</a>
     </div>
     <script>
         (function () {
@@ -154,7 +154,7 @@
                 var updateAvailableContainer = $('#updateAvailableContainer');
                 updateAvailableContainer.appendTo(layout_PageHeading);
                 @{
-        if (Model.UpdateResponse.VersionReleasedTimestamp < DateTime.Now.AddDays(-14))
+        if (Model.UpdateResponse.ReleasedDate < DateTime.Now.AddDays(-14))
         {
                     <text>
                 updateAvailableContainer.effect("shake", { times: 3 }, 500);

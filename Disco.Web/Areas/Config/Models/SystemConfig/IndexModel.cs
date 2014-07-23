@@ -1,15 +1,13 @@
-﻿using System;
+﻿using Disco.Data.Configuration;
+using Disco.Models.Services.Interop.DiscoServices;
+using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Interop.DiscoServices;
+using Disco.Services.Tasks;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Disco.Data.Configuration;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
-using Disco.Data.Repository;
-using Disco.Models.BI.Interop.Community;
-using Disco.Services.Tasks;
-using System.DirectoryServices.ActiveDirectory;
-using Disco.Services.Interop.ActiveDirectory;
+using System.Linq;
 
 namespace Disco.Web.Areas.Config.Models.SystemConfig
 {
@@ -98,7 +96,8 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
 
         public ScheduledTaskStatus UpdateRunningStatus { get; set; }
         public DateTime? UpdateNextScheduled { get; set; }
-        public UpdateResponse UpdateLatestResponse { get; set; }
+        public UpdateResponseV2 UpdateLatestResponse { get; set; }
+        public bool UpdateAvailable { get; set; }
         public bool UpdateBetaDeployment { get; set; }
 
         public static IndexModel FromConfiguration(SystemConfiguration config)
@@ -111,11 +110,14 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
                 ProxyPort = config.ProxyPort,
                 ProxyUsername = config.ProxyUsername,
                 ProxyPassword = config.ProxyPassword,
-                UpdateLatestResponse = config.UpdateLastCheck,
-                UpdateRunningStatus = Disco.BI.Interop.Community.UpdateCheckTask.RunningStatus,
-                UpdateNextScheduled = Disco.BI.Interop.Community.UpdateCheckTask.NextScheduled,
+                UpdateLatestResponse = config.UpdateLastCheckResponse,
+                UpdateRunningStatus = UpdateQueryTask.RunningStatus,
+                UpdateNextScheduled = UpdateQueryTask.NextScheduled,
                 UpdateBetaDeployment = config.UpdateBetaDeployment
             };
+
+            // Is an update available?
+            m.UpdateAvailable = m.UpdateLatestResponse != null && (Version.Parse(m.UpdateLatestResponse.LatestVersion) > m.DiscoVersion);
 
             // AD
             m.ADDomains = ActiveDirectory.Context.Domains.ToList();

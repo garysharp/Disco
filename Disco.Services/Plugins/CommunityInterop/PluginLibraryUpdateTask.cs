@@ -13,6 +13,7 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Quartz;
+using Disco.Services.Interop.DiscoServices;
 
 namespace Disco.Services.Plugins.CommunityInterop
 {
@@ -173,11 +174,11 @@ namespace Disco.Services.Plugins.CommunityInterop
 
         private static string PluginLibraryUpdateUrl()
         {
-            return string.Concat(Disco.Data.Configuration.CommunityHelpers.CommunityUrl(), "DiscoPluginLibrary/V1");
+            return string.Concat(DiscoServiceHelpers.CommunityUrl(), "DiscoPluginLibrary/V1");
         }
         private static string PluginLibraryCompatibilityUrl()
         {
-            return string.Concat(Disco.Data.Configuration.CommunityHelpers.CommunityUrl(), "DiscoPluginLibrary/CompatibilityV1");
+            return string.Concat(DiscoServiceHelpers.CommunityUrl(), "DiscoPluginLibrary/CompatibilityV1");
         }
 
         public static ScheduledTaskStatus ScheduleNow()

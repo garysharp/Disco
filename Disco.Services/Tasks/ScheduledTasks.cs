@@ -35,7 +35,9 @@ namespace Disco.Services.Tasks
                     var scheduledTasksHostAssemblyName = typeof(ScheduledTask).Assembly.GetName().Name;
 
                     var scheduledTaskTypes = (from a in appDomain.GetAssemblies()
-                                              where !a.GlobalAssemblyCache && !a.IsDynamic && a.GetReferencedAssemblies().Any(ra => ra.Name == scheduledTasksHostAssemblyName)
+                                              where !a.GlobalAssemblyCache &&
+                                                !a.IsDynamic &&
+                                                (a.GetName().Name == scheduledTasksHostAssemblyName || a.GetReferencedAssemblies().Any(ra => ra.Name == scheduledTasksHostAssemblyName))
                                               from type in a.GetTypes()
                                               where typeof(ScheduledTask).IsAssignableFrom(type) && !type.IsAbstract
                                               select type);

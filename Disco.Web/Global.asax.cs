@@ -1,12 +1,10 @@
 ﻿using Disco.Data.Repository;
-using Disco.Services.Authorization;
-using Disco.Services.Users;
+using Disco.Services.Interop.DiscoServices;
 using Disco.Services.Web;
 using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.Net;
-using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -44,13 +42,13 @@ namespace Disco.Web
                 {
                     // Check for Post-Update
                     var previousVersion = database.DiscoConfiguration.InstalledDatabaseVersion;
-                    bool isVersionUpdate = previousVersion != Disco.BI.Interop.Community.UpdateCheck.CurrentDiscoVersion();
+                    bool isVersionUpdate = previousVersion != UpdateQuery.CurrentDiscoVersion();
                     bool ignoreVersionUpdate = false;
 
                     if (isVersionUpdate)
                     {
                         // Update Database with New Version
-                        database.DiscoConfiguration.InstalledDatabaseVersion = Disco.BI.Interop.Community.UpdateCheck.CurrentDiscoVersion();
+                        database.DiscoConfiguration.InstalledDatabaseVersion = UpdateQuery.CurrentDiscoVersion();
                         database.SaveChanges();
 
                         // Check if configured to Ignore Plugin Updates (Mainly for Dev environment)

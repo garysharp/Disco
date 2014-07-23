@@ -85,22 +85,22 @@
                 <th style="width: 135px">Last Run:
                 </th>
                 <td>
-                    <span>@CommonHelpers.FriendlyDate(Model.UpdateLatestResponse.ResponseTimestamp)</span>
+                    <span>@CommonHelpers.FriendlyDate(Model.UpdateLatestResponse.UpdateResponseDate.ToLocalTime())</span>
                 </td>
             </tr>
-                if (Model.UpdateLatestResponse.IsUpdatable(typeof(DiscoApplication).Assembly.GetName().Version))
+                if (Model.UpdateAvailable)
                 {
             <tr>
                 <th style="width: 135px">Update Available:
                 </th>
                 <td>
                     <div>
-                        <i class="fa fa-info-circle fa-lg information"></i>&nbsp;Version @(Model.UpdateLatestResponse.Version) is available
+                        <i class="fa fa-info-circle fa-lg information"></i>&nbsp;Version @(Model.UpdateLatestResponse.LatestVersion) is available
                     </div>
                     <div class="smallMessage">
-                        [Released @(CommonHelpers.FriendlyDate(Model.UpdateLatestResponse.VersionReleasedTimestamp))]
+                        [Released @(CommonHelpers.FriendlyDate(Model.UpdateLatestResponse.ReleasedDate))]
                     </div>
-                    <div class="smallMessage">@(new HtmlString(Model.UpdateLatestResponse.Blurb))</div>
+                    <div class="smallMessage">@(new HtmlString(Model.UpdateLatestResponse.Description))</div>
                     <a href="@(Model.UpdateLatestResponse.UrlLink)" target="_blank">Download Now</a>
                 </td>
             </tr>
@@ -536,15 +536,20 @@
                                 }
                                 var ajaxLoading = button.next('.ajaxLoading').first().show();
 
-                                $.getJSON(url, data, function (response, result) {
-                                    if (result != 'success' || response != 'OK') {
-                                        alert('Unable to change property "' + UpdatePropertyName + '":\n' + response);
-                                        ajaxLoading.hide();
-                                    } else {
-                                        ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                $.ajax({
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    url: url,
+                                    data: data,
+                                    success: function (response, result) {
+                                        if (result != 'success' || response != 'OK') {
+                                            alert('Unable to change property "' + UpdatePropertyName + '":\n' + response);
+                                            ajaxLoading.hide();
+                                        } else {
+                                            ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                        }
                                     }
-                                })
-
+                                });
                             });
                         });
                     </script>

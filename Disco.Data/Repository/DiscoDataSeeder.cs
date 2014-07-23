@@ -34,6 +34,11 @@ namespace Disco.Data.Repository
                 var deploymentId = Guid.NewGuid().ToString("D");
                 Database.ConfigurationItems.Add(new ConfigurationItem { Scope = "System", Key = "DeploymentId", Value = deploymentId });
             }
+            if (Database.ConfigurationItems.Count(ci => ci.Scope == "System" && ci.Key == "DeploymentSecret") == 0)
+            {
+                var deploymentId = Guid.NewGuid().ToString("N");
+                Database.ConfigurationItems.Add(new ConfigurationItem { Scope = "System", Key = "DeploymentSecret", Value = deploymentId });
+            }
         }
         public static void SeedJobTypes(this DiscoDataContext Database)
         {

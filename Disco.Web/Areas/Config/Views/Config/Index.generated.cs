@@ -930,7 +930,7 @@ WriteLiteral(">Download v");
 
             
             #line 148 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                                                                                 Write(Model.UpdateResponse.Version);
+                                                                                                 Write(Model.UpdateResponse.LatestVersion);
 
             
             #line default
@@ -954,7 +954,7 @@ WriteLiteral(@"    <script>
             
             #line 156 "..\..\Areas\Config\Views\Config\Index.cshtml"
                   
-        if (Model.UpdateResponse.VersionReleasedTimestamp < DateTime.Now.AddDays(-14))
+        if (Model.UpdateResponse.ReleasedDate < DateTime.Now.AddDays(-14))
         {
 
             

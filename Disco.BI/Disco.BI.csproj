@@ -146,8 +146,6 @@
     <Compile Include="BI\DocumentTemplateBI\Importer\DocumentImporterCleanCacheJob.cs" />
     <Compile Include="BI\DocumentTemplateBI\Importer\DocumentImporterLog.cs" />
     <Compile Include="BI\Expressions\ExpressionCache.cs" />
-    <Compile Include="BI\Interop\Community\UpdateCheck.cs" />
-    <Compile Include="BI\Interop\Community\UpdateCheckTask.cs" />
     <Compile Include="BI\Interop\MimeTypes.cs" />
     <Compile Include="BI\Interop\Pdf\PdfGenerator.cs" />
     <Compile Include="BI\Interop\Pdf\PdfImporter.cs" />
@@ -207,7 +205,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2014/6/1" BuildVersion_BuildAction="Both" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2014/6/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

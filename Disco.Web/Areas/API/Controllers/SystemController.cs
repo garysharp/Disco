@@ -2,6 +2,7 @@
 using Disco.Data.Configuration;
 using Disco.Services.Authorization;
 using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Interop.DiscoServices;
 using Disco.Services.Web;
 using System;
 using System.Collections.Generic;
@@ -66,7 +67,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Config.System.Show)]
         public virtual ActionResult UpdateCheck()
         {
-            var ts = Disco.BI.Interop.Community.UpdateCheckTask.ScheduleNow();
+            var ts = Disco.Services.Interop.DiscoServices.UpdateQueryTask.ScheduleNow();
             ts.SetFinishedUrl(Url.Action(MVC.Config.SystemConfig.Index()));
             return RedirectToAction(MVC.Config.Logging.TaskStatus(ts.SessionId));
         }
@@ -354,10 +355,10 @@ namespace Disco.Web.Areas.API.Controllers
             Database.SaveChanges();
 
             // Try and check for updates if needed - After Proxy Changed
-            if (Database.DiscoConfiguration.UpdateLastCheck == null
-                || Database.DiscoConfiguration.UpdateLastCheck.ResponseTimestamp < DateTime.Now.AddDays(-1))
+            if (Database.DiscoConfiguration.UpdateLastCheckResponse == null
+                || Database.DiscoConfiguration.UpdateLastCheckResponse.UpdateResponseDate < DateTime.Now.AddDays(-1))
             {
-                Disco.BI.Interop.Community.UpdateCheckTask.ScheduleNow();
+                UpdateQueryTask.ScheduleNow();
             }
 
             if (redirect)

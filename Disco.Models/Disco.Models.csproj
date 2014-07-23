@@ -63,9 +63,6 @@
     <Compile Include="BI\Interop\Community\PluginLibraryItem.cs" />
     <Compile Include="BI\Interop\Community\PluginLibraryUpdateRequest.cs" />
     <Compile Include="BI\Interop\Community\PluginLibraryUpdateResponse.cs" />
-    <Compile Include="BI\Interop\Community\UpdateRequestBase.cs" />
-    <Compile Include="BI\Interop\Community\UpdateRequestV1.cs" />
-    <Compile Include="BI\Interop\Community\UpdateResponse.cs" />
     <Compile Include="BI\Job\Statistics\DailyOpenedClosedItem.cs" />
     <Compile Include="ClientServices\EnrolResponse.cs" />
     <Compile Include="ClientServices\MacEnrol.cs" />
@@ -112,6 +109,8 @@
     <Compile Include="Services\Devices\Importing\IDeviceImportContext.cs" />
     <Compile Include="Services\Devices\Importing\IDeviceImportField.cs" />
     <Compile Include="Services\Interop\ActiveDirectory\ADManagedGroupConfiguration.cs" />
+    <Compile Include="Services\Interop\DiscoServices\UpdateRequestV2.cs" />
+    <Compile Include="Services\Interop\DiscoServices\UpdateResponseV2.cs" />
     <Compile Include="Services\Jobs\JobLists\JobLocationReference.cs" />
     <Compile Include="Services\Jobs\JobLists\JobTableItemModel.cs" />
     <Compile Include="Services\Jobs\JobLists\JobTableModel.cs" />
