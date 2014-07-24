@@ -48,7 +48,7 @@ namespace Disco.Web.Views.Job
             #line 2 "..\..\Views\Job\LogRepairDisclose.cshtml"
   
     Authorization.Require(Claims.Job.Actions.LogRepair);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Log Repair");
 
             
@@ -166,39 +166,37 @@ WriteLiteral(" class=\"form\"");
 
 WriteLiteral(" style=\"width: 650px\"");
 
-WriteLiteral(">\r\n        <table>\r\n            <tr>\r\n                <th>\r\n                    I" +
-"nternal Job Id:\r\n                </th>\r\n                <td>\r\n");
+WriteLiteral(">\r\n        <table>\r\n            <tr>\r\n                <th>Internal Job Id:\r\n     " +
+"           </th>\r\n                <td>\r\n");
 
 WriteLiteral("                    ");
 
             
-            #line 23 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 22 "..\..\Views\Job\LogRepairDisclose.cshtml"
                Write(Model.JobId);
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <th" +
-">\r\n                    Device Serial Number:\r\n                </th>\r\n           " +
-"     <td>\r\n");
+">Device Serial Number:\r\n                </th>\r\n                <td>\r\n");
 
 WriteLiteral("                    ");
 
             
-            #line 31 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 29 "..\..\Views\Job\LogRepairDisclose.cshtml"
                Write(Model.Job.Device.SerialNumber);
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <th" +
-">\r\n                    Device Model:\r\n                </th>\r\n                <td" +
-">\r\n");
+">Device Model:\r\n                </th>\r\n                <td>\r\n");
 
 WriteLiteral("                    ");
 
             
-            #line 39 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 36 "..\..\Views\Job\LogRepairDisclose.cshtml"
                Write(Model.Job.Device.DeviceModel.Manufacturer);
 
             
@@ -207,20 +205,19 @@ WriteLiteral("                    ");
 WriteLiteral(" ");
 
             
-            #line 39 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 36 "..\..\Views\Job\LogRepairDisclose.cshtml"
                                                           Write(Model.Job.Device.DeviceModel.Model);
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <th" +
-">\r\n                    Technician:\r\n                </th>\r\n                <td>\r" +
-"\n");
+">Technician:\r\n                </th>\r\n                <td>\r\n");
 
 WriteLiteral("                    ");
 
             
-            #line 47 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 43 "..\..\Views\Job\LogRepairDisclose.cshtml"
                Write(Model.TechUser.DisplayName);
 
             
@@ -233,7 +230,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">\r\n                        Email Address: ");
 
             
-            #line 49 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 45 "..\..\Views\Job\LogRepairDisclose.cshtml"
                                   Write(Model.TechUser.EmailAddress);
 
             
@@ -242,7 +239,7 @@ WriteLiteral(">\r\n                        Email Address: ");
 WriteLiteral("<br />\r\n                        Phone Number: ");
 
             
-            #line 50 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 46 "..\..\Views\Job\LogRepairDisclose.cshtml"
                                  Write(Model.TechUser.PhoneNumber);
 
             
@@ -253,8 +250,8 @@ WriteLiteral("\r\n                    </div>\r\n                </td>\r\n       
 
 WriteLiteral(" style=\"width: 150px\"");
 
-WriteLiteral(">\r\n                    Repair Address:\r\n                </th>\r\n                <t" +
-"d>\r\n                    <div");
+WriteLiteral(">Repair Address:\r\n                </th>\r\n                <td>\r\n                  " +
+"  <div");
 
 WriteLiteral(" id=\"organisationAddressDetails\"");
 
@@ -263,7 +260,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                        ");
 
             
-            #line 60 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 55 "..\..\Views\Job\LogRepairDisclose.cshtml"
                    Write(Model.OrganisationAddress.Name);
 
             
@@ -276,7 +273,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">\r\n                            <span>");
 
             
-            #line 62 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 57 "..\..\Views\Job\LogRepairDisclose.cshtml"
                              Write(Model.OrganisationAddress.Address);
 
             
@@ -285,7 +282,7 @@ WriteLiteral(">\r\n                            <span>");
 WriteLiteral("</span><br />\r\n                            <span>");
 
             
-            #line 63 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 58 "..\..\Views\Job\LogRepairDisclose.cshtml"
                              Write(Model.OrganisationAddress.Suburb);
 
             
@@ -294,7 +291,7 @@ WriteLiteral("</span><br />\r\n                            <span>");
 WriteLiteral(", ");
 
             
-            #line 63 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 58 "..\..\Views\Job\LogRepairDisclose.cshtml"
                                                                 Write(Model.OrganisationAddress.Postcode);
 
             
@@ -303,7 +300,7 @@ WriteLiteral(", ");
 WriteLiteral("</span><br />\r\n                            <span>");
 
             
-            #line 64 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 59 "..\..\Views\Job\LogRepairDisclose.cshtml"
                              Write(Model.OrganisationAddress.State);
 
             
@@ -312,20 +309,20 @@ WriteLiteral("</span><br />\r\n                            <span>");
 WriteLiteral(", ");
 
             
-            #line 64 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 59 "..\..\Views\Job\LogRepairDisclose.cshtml"
                                                                Write(Model.OrganisationAddress.Country);
 
             
             #line default
             #line hidden
 WriteLiteral("</span>\r\n                        </div>\r\n                    </div>\r\n            " +
-"    </td>\r\n            </tr>\r\n            <tr>\r\n                <th>\r\n          " +
-"          Repair Provider:\r\n                </th>\r\n                <td>\r\n");
+"    </td>\r\n            </tr>\r\n            <tr>\r\n                <th>Repair Provi" +
+"der:\r\n                </th>\r\n                <td>\r\n");
 
 WriteLiteral("                    ");
 
             
-            #line 74 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 68 "..\..\Views\Job\LogRepairDisclose.cshtml"
                Write(Model.RepairProvider.Name);
 
             
@@ -334,7 +331,7 @@ WriteLiteral("                    ");
 WriteLiteral(" (");
 
             
-            #line 74 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 68 "..\..\Views\Job\LogRepairDisclose.cshtml"
                                            Write(Model.RepairProvider.Id);
 
             
@@ -343,41 +340,40 @@ WriteLiteral(" (");
 WriteLiteral(") ");
 
             
-            #line 74 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 68 "..\..\Views\Job\LogRepairDisclose.cshtml"
                                                                      Write(Model.RepairProvider.PluginManifest.Version.ToString(3));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <th" +
-">\r\n                    Repair Description:\r\n                </th>\r\n             " +
-"   <td>\r\n");
+">Repair Description:\r\n                </th>\r\n                <td>\r\n");
 
 WriteLiteral("                    ");
 
             
-            #line 82 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 75 "..\..\Views\Job\LogRepairDisclose.cshtml"
                Write(Model.RepairDescription.ToMultilineString());
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <th" +
-">\r\n                    Disclosed Information\r\n                </th>\r\n           " +
-"     <td>\r\n                    <div");
+">Disclosed Information\r\n                </th>\r\n                <td>\r\n           " +
+"         <div");
 
 WriteLiteral(" id=\"repairDisclosedInformation\"");
 
 WriteLiteral(">\r\n                        <table>\r\n");
 
             
-            #line 92 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 84 "..\..\Views\Job\LogRepairDisclose.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 92 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 84 "..\..\Views\Job\LogRepairDisclose.cshtml"
                              foreach (var dp in Model.DiscloseProperties)
                             {
 
@@ -387,7 +383,7 @@ WriteLiteral(">\r\n                        <table>\r\n");
 WriteLiteral("                                <tr>\r\n                                    <th>");
 
             
-            #line 95 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 87 "..\..\Views\Job\LogRepairDisclose.cshtml"
                                    Write(dp.Key);
 
             
@@ -397,7 +393,7 @@ WriteLiteral(":\r\n                                    </th>\r\n                
 " <td>");
 
             
-            #line 97 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 89 "..\..\Views\Job\LogRepairDisclose.cshtml"
                                    Write(dp.Value);
 
             
@@ -407,20 +403,302 @@ WriteLiteral("\r\n                                    </td>\r\n                 
 ">   \r\n");
 
             
-            #line 100 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 92 "..\..\Views\Job\LogRepairDisclose.cshtml"
                             }
 
             
             #line default
             #line hidden
 WriteLiteral("                        </table>\r\n                    </div>\r\n                </t" +
-"d>\r\n            </tr>\r\n        </table>\r\n    </div>\r\n");
+"d>\r\n            </tr>\r\n");
+
+            
+            #line 97 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            
+            
+            #line default
+            #line hidden
+            
+            #line 97 "..\..\Views\Job\LogRepairDisclose.cshtml"
+             if (Model.PublishAttachments.Count > 0)
+            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <tr>\r\n                    <th>Sending Attachments</th>\r\n         " +
+"           <td>\r\n                        <div>\r\n                            <div" +
+"");
+
+WriteLiteral(" id=\"publishJobAttachments\"");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 104 "..\..\Views\Job\LogRepairDisclose.cshtml"
+                                
+            
+            #line default
+            #line hidden
+            
+            #line 104 "..\..\Views\Job\LogRepairDisclose.cshtml"
+                                 foreach (var ja in Model.PublishAttachments)
+                                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                    <input");
+
+WriteLiteral(" type=\"hidden\"");
+
+WriteLiteral(" name=\"PublishAttachmentIds\"");
+
+WriteAttribute("value", Tuple.Create(" value=\"", 4117), Tuple.Create("\"", 4131)
+            
+            #line 106 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            , Tuple.Create(Tuple.Create("", 4125), Tuple.Create<System.Object, System.Int32>(ja.Id
+            
+            #line default
+            #line hidden
+, 4125), false)
+);
+
+WriteLiteral(" />\r\n");
+
+WriteLiteral("                                    <a");
+
+WriteAttribute("href", Tuple.Create(" href=\"", 4175), Tuple.Create("\"", 4232)
+            
+            #line 107 "..\..\Views\Job\LogRepairDisclose.cshtml"
+, Tuple.Create(Tuple.Create("", 4182), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
+            
+            #line default
+            #line hidden
+, 4182), false)
+);
+
+WriteLiteral(" data-attachmentid=\"");
+
+            
+            #line 107 "..\..\Views\Job\LogRepairDisclose.cshtml"
+                                                                                                               Write(ja.Id);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(" data-mimetype=\"");
+
+            
+            #line 107 "..\..\Views\Job\LogRepairDisclose.cshtml"
+                                                                                                                                      Write(ja.MimeType);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(">\r\n                                        <span");
+
+WriteLiteral(" class=\"icon\"");
+
+WriteAttribute("title", Tuple.Create(" title=\"", 4350), Tuple.Create("\"", 4370)
+            
+            #line 108 "..\..\Views\Job\LogRepairDisclose.cshtml"
+, Tuple.Create(Tuple.Create("", 4358), Tuple.Create<System.Object, System.Int32>(ja.Filename
+            
+            #line default
+            #line hidden
+, 4358), false)
+);
+
+WriteLiteral(">\r\n                                            <img");
+
+WriteLiteral(" alt=\"Attachment Thumbnail\"");
+
+WriteAttribute("src", Tuple.Create(" src=\"", 4449), Tuple.Create("\"", 4508)
+            
+            #line 109 "..\..\Views\Job\LogRepairDisclose.cshtml"
+  , Tuple.Create(Tuple.Create("", 4455), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
+            
+            #line default
+            #line hidden
+, 4455), false)
+);
+
+WriteLiteral(" /></span>\r\n                                        <span");
+
+WriteLiteral(" class=\"comments\"");
+
+WriteAttribute("title", Tuple.Create(" title=\"", 4583), Tuple.Create("\"", 4603)
+            
+            #line 110 "..\..\Views\Job\LogRepairDisclose.cshtml"
+, Tuple.Create(Tuple.Create("", 4591), Tuple.Create<System.Object, System.Int32>(ja.Comments
+            
+            #line default
+            #line hidden
+, 4591), false)
+);
+
+WriteLiteral(">\r\n");
+
+            
+            #line 111 "..\..\Views\Job\LogRepairDisclose.cshtml"
+                                            
+            
+            #line default
+            #line hidden
+            
+            #line 111 "..\..\Views\Job\LogRepairDisclose.cshtml"
+                                              if (!string.IsNullOrEmpty(ja.DocumentTemplateId))
+                                              { 
+            
+            #line default
+            #line hidden
+            
+            #line 112 "..\..\Views\Job\LogRepairDisclose.cshtml"
+                                           Write(ja.DocumentTemplate.Description);
+
+            
+            #line default
+            #line hidden
+            
+            #line 112 "..\..\Views\Job\LogRepairDisclose.cshtml"
+                                                                                }
+                                              else
+                                              { 
+            
+            #line default
+            #line hidden
+            
+            #line 114 "..\..\Views\Job\LogRepairDisclose.cshtml"
+                                           Write(ja.Comments);
+
+            
+            #line default
+            #line hidden
+            
+            #line 114 "..\..\Views\Job\LogRepairDisclose.cshtml"
+                                                             }
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                                        </span><span");
+
+WriteLiteral(" class=\"author\"");
+
+WriteLiteral(">");
+
+            
+            #line 115 "..\..\Views\Job\LogRepairDisclose.cshtml"
+                                                               Write(ja.TechUser.ToStringFriendly());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span><span");
+
+WriteLiteral(" class=\"timestamp\"");
+
+WriteLiteral(" data-livestamp=\"");
+
+            
+            #line 115 "..\..\Views\Job\LogRepairDisclose.cshtml"
+                                                                                                                                              Write(ja.Timestamp.ToUnixEpoc());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteAttribute("title", Tuple.Create(" title=\"", 5079), Tuple.Create("\"", 5117)
+            
+            #line 115 "..\..\Views\Job\LogRepairDisclose.cshtml"
+                                                                                                       , Tuple.Create(Tuple.Create("", 5087), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
+            
+            #line default
+            #line hidden
+, 5087), false)
+);
+
+WriteLiteral(">");
+
+            
+            #line 115 "..\..\Views\Job\LogRepairDisclose.cshtml"
+                                                                                                                                                                                                                  Write(ja.Timestamp.ToFullDateTime());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span>\r\n                                    </a>   \r\n");
+
+            
+            #line 117 "..\..\Views\Job\LogRepairDisclose.cshtml"
+                                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            </div>\r\n                        </div>\r\n             " +
+"       </td>\r\n                </tr>\r\n");
+
+            
+            #line 122 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        </table>\r\n    </div>\r\n");
+
+WriteLiteral("    <div");
+
+WriteLiteral(" id=\"submitDialog\"");
+
+WriteLiteral(" class=\"dialog\"");
+
+WriteLiteral(" title=\"Please Wait\"");
+
+WriteLiteral(">\r\n        <h4><i");
+
+WriteLiteral(" class=\"fa fa-lg fa-cog fa-spin\"");
+
+WriteLiteral(" title=\"Please Wait\"");
+
+WriteLiteral("></i>Submitting Repair Request...</h4>\r\n    </div>\r\n");
+
+WriteLiteral(@"    <script>
+        $(function () {
+            var dialog = null;
+
+            $('#submitJob').closest('form').submit(function () {
+                if (dialog == null) {
+                    dialog = $('#submitDialog').dialog({
+                        width: 400,
+                        height: 160,
+                        resizable: false,
+                        modal: true,
+                        autoOpen: false
+                    });
+                }
+
+                window.setTimeout(function () {
+                    dialog.dialog('open');
+                }, 100);
+            });
+        });
+    </script>
+");
 
 WriteLiteral("    <div");
 
 WriteLiteral(" class=\"actionBar\"");
 
 WriteLiteral(">\r\n        <input");
+
+WriteLiteral(" id=\"submitJob\"");
 
 WriteLiteral(" type=\"submit\"");
 
@@ -431,7 +709,7 @@ WriteLiteral(" value=\"Submit Repair Request\"");
 WriteLiteral(" />\r\n    </div>\r\n");
 
             
-            #line 110 "..\..\Views\Job\LogRepairDisclose.cshtml"
+            #line 152 "..\..\Views\Job\LogRepairDisclose.cshtml"
 }
             
             #line default

@@ -111,6 +111,34 @@
             </tr>
         </table>
     </div>
+            if (!Model.IsManualProvider && Authorization.Has(Claims.Job.ShowAttachments) && Model.Job.JobAttachments.Count > 0)
+            {
+    <div class="form" style="width: 650px; margin-top: 15px;">
+        <h2>Send Attachments</h2>
+        <table>
+            <tr>
+                <td>
+                    <div id="publishJobAttachments">
+                        @foreach (var ja in Model.Job.JobAttachments)
+                        {
+                            <a href="@Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))" data-attachmentid="@ja.Id" data-mimetype="@ja.MimeType">
+                                <input type="checkbox" class="select" name="PublishAttachmentIds" value="@ja.Id" @(Model.PublishAttachmentIds.Contains(ja.Id) ? "checked" : null) />
+                                <span class="icon" title="@ja.Filename">
+                                    <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id)))" /></span>
+                                <span class="comments" title="@ja.Comments">
+                                    @{if (!string.IsNullOrEmpty(ja.DocumentTemplateId))
+                                      { @ja.DocumentTemplate.Description}
+                                      else
+                                      { @ja.Comments }}
+                                </span><span class="author">@ja.TechUser.ToStringFriendly()</span><span class="timestamp" data-livestamp="@(ja.Timestamp.ToUnixEpoc())" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.ToFullDateTime()</span>
+                            </a>   
+                        }
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+            }
             if (Model.RepairProvider != null && Model.RepairProviderSubmitJobBeginResult != null)
             { 
     <div id="repairJobProviderProperties">

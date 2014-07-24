@@ -378,19 +378,44 @@ namespace Disco.BI.Extensions
                 !j.JobMetaNonWarranty.RepairerLoggedDate.HasValue &&
                 !j.JobMetaNonWarranty.RepairerCompletedDate.HasValue;
         }
-        public static void OnLogRepair(this Job j, DiscoDataContext Database, string RepairDescription, PluginFeatureManifest RepairProviderDefinition, OrganisationAddress Address, User TechUser, Dictionary<string, string> RepairProviderProperties)
+        public static void OnLogRepair(this Job j, DiscoDataContext Database, string RepairDescription, List<JobAttachment> SendAttachments, PluginFeatureManifest RepairProviderDefinition, OrganisationAddress Address, User TechUser, Dictionary<string, string> RepairProviderProperties)
         {
             if (!j.CanLogRepair())
                 throw new InvalidOperationException("Log Repair was Denied");
 
-            if (string.IsNullOrWhiteSpace(RepairDescription))
-                RepairDescription = j.GenerateFaultDescriptionFooter(Database, RepairProviderDefinition);
-            else
-                RepairDescription = string.Concat(RepairDescription, Environment.NewLine, Environment.NewLine, j.GenerateFaultDescriptionFooter(Database, RepairProviderDefinition));
-
+            PublishJobResult publishJobResult = null;
+            
             using (RepairProviderFeature RepairProvider = RepairProviderDefinition.CreateInstance<RepairProviderFeature>())
             {
-                string providerRef = RepairProvider.SubmitJob(Database, j, Address, TechUser, RepairDescription, RepairProviderProperties);
+                if (SendAttachments != null && SendAttachments.Count > 0)
+                {
+                    publishJobResult = DiscoServicesJobs.Publish(
+                        Database,
+                        j,
+                        TechUser,
+                        RepairProvider.ProviderId,
+                        null,
+                        RepairDescription,
+                        SendAttachments,
+                        Disco.BI.Extensions.AttachmentExtensions.RepositoryFilename);
+
+                    if (!publishJobResult.Success)
+                        throw new Exception(string.Format("Disco ICT Online Services failed with the following message: ", publishJobResult.ErrorMessage));
+
+                    if (string.IsNullOrWhiteSpace(RepairDescription))
+                        RepairDescription = publishJobResult.PublishMessage;
+                    else
+                        RepairDescription = string.Concat(RepairDescription, Environment.NewLine, "___", Environment.NewLine, publishJobResult.PublishMessage);
+                }
+
+                string submitDescription;
+
+                if (string.IsNullOrWhiteSpace(RepairDescription))
+                    submitDescription = j.GenerateFaultDescriptionFooter(Database, RepairProviderDefinition);
+                else
+                    submitDescription = string.Concat(RepairDescription, Environment.NewLine, Environment.NewLine, j.GenerateFaultDescriptionFooter(Database, RepairProviderDefinition));
+
+                string providerRef = RepairProvider.SubmitJob(Database, j, Address, TechUser, submitDescription, RepairProviderProperties);
 
                 j.JobMetaNonWarranty.RepairerLoggedDate = DateTime.Now;
                 j.JobMetaNonWarranty.RepairerName = RepairProvider.ProviderId;
@@ -406,9 +431,18 @@ namespace Disco.BI.Extensions
                     JobId = j.Id,
                     TechUserId = TechUser.UserId,
                     Timestamp = DateTime.Now,
-                    Comments = string.Format("####Repair Request Submitted\r\nProvider: **{0}**\r\nAddress: **{1}**\r\nReference: **{2}**\r\n{3}", RepairProvider.Manifest.Name, Address.Name, providerRef, RepairDescription)
+                    Comments = string.Format("####Repair Request Submitted\r\nProvider: **{0}**\r\nAddress: **{1}**\r\nReference: **{2}**\r\n___\r\n{3}", RepairProvider.Manifest.Name, Address.Name, providerRef, RepairDescription)
                 };
                 Database.JobLogs.Add(jobLog);
+
+                if (publishJobResult != null)
+                {
+                    try
+                    {
+                        DiscoServicesJobs.UpdateRecipientReference(Database, j, publishJobResult.Id, publishJobResult.Secret, j.JobMetaNonWarranty.RepairerReference);
+                    }
+                    catch (Exception) { } // Ignore Errors as this is not completely necessary
+                }
             }
         }
         public static void OnLogRepair(this Job j, DiscoDataContext Database, string FaultDescription, string ManualProviderName, string ManualProviderReference, OrganisationAddress Address, User TechUser)
