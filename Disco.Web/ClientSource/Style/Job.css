@@ -294,6 +294,7 @@
 }
 #jobShowResources #Comments div.commentOutput > div div.comment p {
   line-height: 1.2em;
+  padding-bottom: .2em;
 }
 #jobShowResources #Comments div.commentOutput > div:hover span.remove {
   opacity: .5;
@@ -705,6 +706,88 @@
 #warrantyJobFaultDescription #FaultDescription {
   width: 600px;
   height: 250px;
+}
+#publishJobAttachments {
+  border: 1px solid #cccccc;
+  background-color: #ffffff;
+  position: relative;
+  max-height: 249px;
+  overflow: auto;
+}
+#publishJobAttachments > a {
+  display: block;
+  float: left;
+  height: 48px;
+  width: 261px;
+  padding: 2px;
+  margin: 2px;
+  font-size: 0.95em;
+  border: 1px solid #ffffff;
+  color: #000000;
+  text-decoration: none;
+}
+#publishJobAttachments > a span.comments,
+#publishJobAttachments > a span.author,
+#publishJobAttachments > a span.timestamp {
+  display: block;
+  float: left;
+  width: 188px;
+  overflow: hidden;
+  height: 16px;
+}
+#publishJobAttachments > a span.author {
+  color: #888;
+  width: 150px;
+}
+#publishJobAttachments > a span.timestamp {
+  color: #888;
+  font-style: italic;
+}
+#publishJobAttachments > a span.icon {
+  display: block;
+  float: left;
+  height: 48px;
+  width: 48px;
+  margin-right: 2px;
+}
+#publishJobAttachments > a span.icon img {
+  height: 48px;
+  width: 48px;
+}
+#publishJobAttachments > a span.icon img.loading {
+  display: none;
+}
+#publishJobAttachments > a input.select {
+  display: block;
+  float: left;
+  line-height: 48px;
+  margin-right: 2px;
+  width: 20px;
+}
+#publishJobAttachments > a:hover {
+  background-color: #ededed;
+  border: 1px solid #cccccc;
+}
+#publishJobAttachments > a:hover span.remove {
+  opacity: .5;
+}
+#publishJobAttachments > a span.remove {
+  font-size: 1.2em;
+  color: #e51400;
+  margin-left: 2px;
+  cursor: pointer;
+  opacity: 0;
+}
+#publishJobAttachments > a span.remove:hover {
+  opacity: 1;
+}
+#submitDialog {
+  padding-top: 50px;
+  text-align: center;
+}
+#submitDialog i {
+  margin-right: 10px;
+  color: #1e6dab;
 }
 #repairJobForm #repairDisclosedInformation table {
   font-size: 0.9em;

@@ -10,6 +10,9 @@ using Disco.Services.Users;
 using Disco.Services.Authorization;
 using Disco.Services.Plugins.Features.RepairProvider;
 
+using PublishJobResult = Disco.Models.Services.Interop.DiscoServices.PublishJobResult;
+using DiscoServicesJobs = Disco.Services.Interop.DiscoServices.Jobs;
+
 namespace Disco.BI.Extensions
 {
     public static class JobActionExtensions
@@ -147,25 +150,50 @@ namespace Disco.BI.Extensions
         {
             if (!UserService.CurrentAuthorization.Has(Claims.Job.Actions.LogWarranty))
                 return false;
-            
+
             return !j.ClosedDate.HasValue &&
                 (j.DeviceSerialNumber != null) &&
                 j.JobTypeId == JobType.JobTypeIds.HWar &&
                 !j.JobMetaWarranty.ExternalLoggedDate.HasValue;
         }
-        public static void OnLogWarranty(this Job j, DiscoDataContext Database, string FaultDescription, PluginFeatureManifest WarrantyProviderDefinition, OrganisationAddress Address, User TechUser, Dictionary<string, string> WarrantyProviderProperties)
+        public static void OnLogWarranty(this Job j, DiscoDataContext Database, string FaultDescription, List<JobAttachment> SendAttachments, PluginFeatureManifest WarrantyProviderDefinition, OrganisationAddress Address, User TechUser, Dictionary<string, string> WarrantyProviderProperties)
         {
             if (!j.CanLogWarranty())
                 throw new InvalidOperationException("Log Warranty was Denied");
 
-            if (string.IsNullOrWhiteSpace(FaultDescription))
-                FaultDescription = j.GenerateFaultDescriptionFooter(Database, WarrantyProviderDefinition);
-            else
-                FaultDescription = string.Concat(FaultDescription, Environment.NewLine, Environment.NewLine, j.GenerateFaultDescriptionFooter(Database, WarrantyProviderDefinition));
+            PublishJobResult publishJobResult = null;
 
             using (WarrantyProviderFeature WarrantyProvider = WarrantyProviderDefinition.CreateInstance<WarrantyProviderFeature>())
             {
-                string providerRef = WarrantyProvider.SubmitJob(Database, j, Address, TechUser, FaultDescription, WarrantyProviderProperties);
+                if (SendAttachments != null && SendAttachments.Count > 0)
+                {
+                    publishJobResult = DiscoServicesJobs.Publish(
+                        Database,
+                        j,
+                        TechUser,
+                        WarrantyProvider.WarrantyProviderId,
+                        null,
+                        FaultDescription,
+                        SendAttachments,
+                        Disco.BI.Extensions.AttachmentExtensions.RepositoryFilename);
+
+                    if (!publishJobResult.Success)
+                        throw new Exception(string.Format("Disco ICT Online Services failed with the following message: ", publishJobResult.ErrorMessage));
+
+                    if (string.IsNullOrWhiteSpace(FaultDescription))
+                        FaultDescription = publishJobResult.PublishMessage;
+                    else
+                        FaultDescription = string.Concat(FaultDescription, Environment.NewLine, "___", Environment.NewLine, publishJobResult.PublishMessage);
+                }
+
+                string submitDescription;
+
+                if (string.IsNullOrWhiteSpace(FaultDescription))
+                    submitDescription = j.GenerateFaultDescriptionFooter(Database, WarrantyProviderDefinition);
+                else
+                    submitDescription = string.Concat(FaultDescription, Environment.NewLine, Environment.NewLine, j.GenerateFaultDescriptionFooter(Database, WarrantyProviderDefinition));
+
+                string providerRef = WarrantyProvider.SubmitJob(Database, j, Address, TechUser, submitDescription, WarrantyProviderProperties);
 
                 j.JobMetaWarranty.ExternalLoggedDate = DateTime.Now;
                 j.JobMetaWarranty.ExternalName = WarrantyProvider.WarrantyProviderId;
@@ -184,6 +212,15 @@ namespace Disco.BI.Extensions
                     Comments = string.Format("####Warranty Claim Submitted\r\nProvider: **{0}**\r\nAddress: **{1}**\r\nReference: **{2}**\r\n___\r\n{3}", WarrantyProvider.Manifest.Name, Address.Name, providerRef, FaultDescription)
                 };
                 Database.JobLogs.Add(jobLog);
+
+                if (publishJobResult != null)
+                {
+                    try
+                    {
+                        DiscoServicesJobs.UpdateRecipientReference(Database, j, publishJobResult.Id, publishJobResult.Secret, j.JobMetaWarranty.ExternalReference);
+                    }
+                    catch (Exception) { } // Ignore Errors as this is not completely necessary
+                }
             }
         }
         public static void OnLogWarranty(this Job j, DiscoDataContext Database, string FaultDescription, string ManualProviderName, string ManualProviderReference, OrganisationAddress Address, User TechUser)
@@ -458,7 +495,7 @@ namespace Disco.BI.Extensions
 
             return false;
         }
-        
+
         public static bool CanCloseNormally(this Job j)
         {
             if (j.CanCloseNever())

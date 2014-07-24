@@ -18,6 +18,8 @@ namespace Disco.Web.Models.Job
         public List<Disco.Models.BI.Config.OrganisationAddress> OrganisationAddresses { get; set; }
         public Disco.Models.BI.Config.OrganisationAddress OrganisationAddress { get; set; }
 
+        public List<Disco.Models.Repository.JobAttachment> PublishAttachments { get; set; }
+
         public Disco.Models.Repository.User TechUser { get; set; }
 
         [Required]
@@ -28,6 +30,7 @@ namespace Disco.Web.Models.Job
         public string WarrantyProviderId { get; set; }
         [Required(ErrorMessage = "A fault description is required"), DataType(System.ComponentModel.DataAnnotations.DataType.MultilineText)]
         public string FaultDescription { get; set; }
+        public List<int> PublishAttachmentIds { get; set; }
         [Required]
         public string SubmissionAction { get; set; }
 
@@ -81,13 +84,12 @@ namespace Disco.Web.Models.Job
                     } catch (Exception) {}
                 }
 
-                Job = (from j in Database.Jobs.Include("Device.DeviceModel").Include("JobMetaWarranty").Include("JobSubTypes")
-                       where (j.Id == JobId)
-                       select j).FirstOrDefault();
+                Job = Database.Jobs.Include("Device.DeviceModel").Include("JobMetaWarranty").Include("JobSubTypes").Include("JobAttachments")
+                    .Where(j => j.Id == JobId)
+                    .FirstOrDefault();
+
                 if (Job == null)
-                {
                     throw new ArgumentException("Invalid Job Number Specified", "JobId");
-                }
             }
 
             // Update TechUser's Details [#12]
@@ -117,6 +119,16 @@ namespace Disco.Web.Models.Job
 
             if (!string.IsNullOrEmpty(FaultDescription))
                 FaultDescription = FaultDescription.Trim();
+
+            if (PublishAttachmentIds == null)
+            {
+                PublishAttachmentIds = new List<int>();
+                PublishAttachments = new List<Disco.Models.Repository.JobAttachment>();
+            }
+            else
+            {
+                PublishAttachments = Job.JobAttachments.Where(ja => PublishAttachmentIds.Contains(ja.Id)).ToList();
+            }
         }
     }
 }

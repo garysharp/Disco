@@ -11,7 +11,7 @@ namespace Disco.Models.Services.Interop.DiscoServices
         public bool IsBetaDeployment { get; set; }
 
         public string OrganisationName { get; set; }
-        public string BroadbandDoeWanId { get; set; }
+        public string VicEduDeptWanId { get; set; }
 
         public List<StatisticInt> Stat_JobCounts { get; set; }
         public List<StatisticInt> Stat_OpenJobCounts { get; set; }

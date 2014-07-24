@@ -115,7 +115,9 @@ namespace Disco.Web
         private static Lazy<Regex> htmlCommentDeviceRegex = new Lazy<Regex>(() => { return new Regex(@"((?<!&)!([\w\d-_.]+[\w\d]))", RegexOptions.Compiled, TimeSpan.FromSeconds(.1)); });
         private static IMarkdownOptions markdownOptions = new MarkdownOptions()
         {
-            AutoNewLines = true
+            AutoNewLines = true,
+            AutoHyperlink = true,
+            LinkEmails = true
         };
         public static MvcHtmlString ToHtmlComment(this string s)
         {
@@ -180,7 +182,7 @@ namespace Disco.Web
             }
 
             return new MvcHtmlString(markdown);
-        }      
+        }
 
         public static IEnumerable<SelectListItem> ToSelectListItems(this IEnumerable<string> Items, string SelectedItem = null)
         {

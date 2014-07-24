@@ -141,7 +141,7 @@ namespace Disco.Services.Interop.DiscoServices
 
             var whoAmIResponse = VicEduDept.VicSmart.WhoAmI();
             if (whoAmIResponse != null && !string.IsNullOrWhiteSpace(whoAmIResponse.Item1))
-                m.BroadbandDoeWanId = whoAmIResponse.Item1;
+                m.VicEduDeptWanId = whoAmIResponse.Item1;
 
             m.Stat_JobCounts = Database.Jobs.GroupBy(j => j.JobTypeId).Select(g => new StatisticInt() { K = g.Key, V = g.Count() }).ToList();
             m.Stat_OpenJobCounts = Database.Jobs.Where(j => j.ClosedDate == null).GroupBy(j => j.JobTypeId).Select(g => new StatisticInt() { K = g.Key, V = g.Count() }).ToList();

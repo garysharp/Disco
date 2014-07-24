@@ -511,7 +511,8 @@ namespace Disco.Web.Controllers
                             JobId = m.JobId,
                             WarrantyProviderId = m.WarrantyProviderId,
                             OrganisationAddressId = m.OrganisationAddressId,
-                            FaultDescription = m.FaultDescription
+                            FaultDescription = m.FaultDescription,
+                            PublishAttachments = m.PublishAttachments
                         };
                         updatedModel.UpdateModel(Database, false);
 
@@ -572,7 +573,7 @@ namespace Disco.Web.Controllers
                     case "Submit":
                         try
                         {
-                            m.Job.OnLogWarranty(Database, m.FaultDescription, m.WarrantyProvider, m.OrganisationAddress, m.TechUser, m.ProviderProperties());
+                            m.Job.OnLogWarranty(Database, m.FaultDescription, m.PublishAttachments, m.WarrantyProvider, m.OrganisationAddress, m.TechUser, m.ProviderProperties());
                             Database.SaveChanges();
                             return RedirectToAction(MVC.Job.Show(m.JobId));
                         }

@@ -1,7 +1,7 @@
 ﻿@model Disco.Web.Models.Job.LogWarrantyModel
 @{
     Authorization.Require(Claims.Job.Actions.LogWarranty);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Log Warranty");
 }
 @using (Html.BeginForm(MVC.Job.LogWarranty(), FormMethod.Post))
@@ -16,32 +16,28 @@
     <div id="warrantyJobForm" class="form" style="width: 650px">
         <table>
             <tr>
-                <th>
-                    Internal Job Id:
+                <th>Internal Job Id:
                 </th>
                 <td>
                     @Model.JobId
                 </td>
             </tr>
             <tr>
-                <th>
-                    Device Serial Number:
+                <th>Device Serial Number:
                 </th>
                 <td>
                     @Model.Job.Device.SerialNumber
                 </td>
             </tr>
             <tr>
-                <th>
-                    Device Model:
+                <th>Device Model:
                 </th>
                 <td>
                     @Model.Job.Device.DeviceModel.Manufacturer @Model.Job.Device.DeviceModel.Model
                 </td>
             </tr>
             <tr>
-                <th>
-                    Technician:
+                <th>Technician:
                 </th>
                 <td>
                     @Model.TechUser.DisplayName
@@ -52,8 +48,7 @@
                 </td>
             </tr>
             <tr>
-                <th style="width: 150px">
-                    Warranty Address:
+                <th style="width: 150px">Warranty Address:
                 </th>
                 <td>
                     <div id="organisationAddressDetails">
@@ -67,24 +62,21 @@
                 </td>
             </tr>
             <tr>
-                <th>
-                    Warranty Provider:
+                <th>Warranty Provider:
                 </th>
                 <td>
                     @Model.WarrantyProvider.Name (@Model.WarrantyProvider.Id) @Model.WarrantyProvider.PluginManifest.Version.ToString(3)
                 </td>
             </tr>
             <tr>
-                <th>
-                    Fault Description:
+                <th>Fault Description:
                 </th>
                 <td>
                     @Model.FaultDescription.ToMultilineString()
                 </td>
             </tr>
             <tr>
-                <th>
-                    Disclosed Information
+                <th>Disclosed Information
                 </th>
                 <td>
                     <div id="warrantyDisclosedInformation">
@@ -102,9 +94,59 @@
                     </div>
                 </td>
             </tr>
+            @if (Model.PublishAttachments.Count > 0)
+            {
+                <tr>
+                    <th>Sending Attachments</th>
+                    <td>
+                        <div>
+                            <div id="publishJobAttachments">
+                                @foreach (var ja in Model.PublishAttachments)
+                                {
+                                    <input type="hidden" name="PublishAttachmentIds" value="@ja.Id" />
+                                    <a href="@Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))" data-attachmentid="@ja.Id" data-mimetype="@ja.MimeType">
+                                        <span class="icon" title="@ja.Filename">
+                                            <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id)))" /></span>
+                                        <span class="comments" title="@ja.Comments">
+                                            @{if (!string.IsNullOrEmpty(ja.DocumentTemplateId))
+                                              { @ja.DocumentTemplate.Description}
+                                              else
+                                              { @ja.Comments }}
+                                        </span><span class="author">@ja.TechUser.ToStringFriendly()</span><span class="timestamp" data-livestamp="@(ja.Timestamp.ToUnixEpoc())" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.ToFullDateTime()</span>
+                                    </a>   
+                                }
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
         </table>
     </div>
+    <div id="submitDialog" class="dialog" title="Please Wait">
+        <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Submitting Warranty Job...</h4>
+    </div>
+    <script>
+        $(function () {
+            var dialog = null;
+
+            $('#submitJob').closest('form').submit(function () {
+                if (dialog == null) {
+                    dialog = $('#submitDialog').dialog({
+                        width: 400,
+                        height: 160,
+                        resizable: false,
+                        modal: true,
+                        autoOpen: false
+                    });
+                }
+
+                window.setTimeout(function () {
+                    dialog.dialog('open');
+                }, 100);
+            });
+        });
+    </script>
     <div class="actionBar">
-        <input type="submit" class="button" value="Submit Warranty Claim" />
+        <input id="submitJob" type="submit" class="button" value="Submit Warranty Claim" />
     </div>
 }
