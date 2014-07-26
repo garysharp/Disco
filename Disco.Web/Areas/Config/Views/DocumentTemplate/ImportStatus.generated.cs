@@ -144,6 +144,8 @@ WriteLiteral(">\r\n                            Disco QR-Code not found<br />\r\n
 
 WriteLiteral(" target=\"_blank\"");
 
+WriteLiteral(" href=\"#\"");
+
 WriteLiteral(" data-bind=\"attr: { href: manuallyAssignUrl }, visible: $parent.sessionEnded\"");
 
 WriteLiteral(">Manually Assign Page</a>\r\n                        </div>\r\n                      " +
@@ -155,12 +157,16 @@ WriteLiteral(">\r\n                            Document: <a");
 
 WriteLiteral(" target=\"_blank\"");
 
+WriteLiteral("  href=\"#\"");
+
 WriteLiteral(" data-bind=\"text: documentTemplate, attr: { href: documentTemplateUrl }\"");
 
 WriteLiteral("></a>\r\n                            <br />\r\n                            Target: <a" +
 "");
 
 WriteLiteral(" target=\"_blank\"");
+
+WriteLiteral(" href=\"#\"");
 
 WriteLiteral(" data-bind=\"text: assignedData, attr: { href: assignedDataUrl }\"");
 
@@ -460,7 +466,7 @@ WriteLiteral(@"',
 
             
             #line 309 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
-                                             Write(Disco.BI.DocumentTemplateBI.Importer.DocumentImporterLog.Current.LiveLogGroupName);
+                                             Write(Disco.BI.DocumentTemplateBI.DocumentsLog.Current.LiveLogGroupName);
 
             
             #line default

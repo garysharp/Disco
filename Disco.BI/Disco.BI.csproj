@@ -152,7 +152,7 @@
     <Compile Include="BI\DocumentTemplateBI\Importer\DocumentDropBoxMonitor.cs" />
     <Compile Include="BI\DocumentTemplateBI\Importer\DocumentImporterJob.cs" />
     <Compile Include="BI\DocumentTemplateBI\Importer\DocumentImporterCleanCacheJob.cs" />
-    <Compile Include="BI\DocumentTemplateBI\Importer\DocumentImporterLog.cs" />
+    <Compile Include="BI\DocumentTemplateBI\DocumentsLog.cs" />
     <Compile Include="BI\Expressions\ExpressionCache.cs" />
     <Compile Include="BI\Interop\MimeTypes.cs" />
     <Compile Include="BI\Interop\Pdf\PdfGenerator.cs" />
@@ -189,6 +189,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

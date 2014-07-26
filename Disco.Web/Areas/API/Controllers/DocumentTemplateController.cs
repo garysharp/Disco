@@ -21,6 +21,8 @@ namespace Disco.Web.Areas.API.Controllers
         const string pDescription = "description";
         const string pScope = "scope";
         const string pFilterExpression = "filterexpression";
+        const string pOnGenerateExpression = "ongenerateexpression";
+        const string pOnImportAttachmentExpression = "onimportattachmentexpression";
         const string pFlattenForm = "flattenform";
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
@@ -49,6 +51,12 @@ namespace Disco.Web.Areas.API.Controllers
                         case pFilterExpression:
                             Authorization.Require(Claims.Config.DocumentTemplate.ConfigureFilterExpression);
                             UpdateFilterExpression(documentTemplate, value);
+                            break;
+                        case pOnGenerateExpression:
+                            UpdateOnGenerateExpression(documentTemplate, value);
+                            break;
+                        case pOnImportAttachmentExpression:
+                            UpdateOnImportAttachmentExpression(documentTemplate, value);
                             break;
                         case pFlattenForm:
                             UpdateFlattenForm(documentTemplate, value);
@@ -140,6 +148,16 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult UpdateFilterExpression(string id, string FilterExpression = null, bool redirect = false)
         {
             return Update(id, pFilterExpression, FilterExpression, redirect);
+        }
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Configure, Claims.Config.DocumentTemplate.ConfigureFilterExpression)]
+        public virtual ActionResult UpdateOnGenerateExpression(string id, string OnGenerateExpression = null, bool redirect = false)
+        {
+            return Update(id, pOnGenerateExpression, OnGenerateExpression, redirect);
+        }
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Configure, Claims.Config.DocumentTemplate.ConfigureFilterExpression)]
+        public virtual ActionResult UpdateOnImportAttachmentExpression(string id, string OnImportAttachmentExpression = null, bool redirect = false)
+        {
+            return Update(id, pOnImportAttachmentExpression, OnImportAttachmentExpression, redirect);
         }
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
         public virtual ActionResult UpdateFlattenForm(string id, string FlattenForm = null, bool redirect = false)
@@ -300,6 +318,36 @@ namespace Disco.Web.Areas.API.Controllers
             }
             // Invalidate Cache
             documentTemplate.FilterExpressionInvalidateCache();
+
+            Database.SaveChanges();
+        }
+        private void UpdateOnGenerateExpression(Disco.Models.Repository.DocumentTemplate documentTemplate, string OnGenerateExpression)
+        {
+            if (string.IsNullOrWhiteSpace(OnGenerateExpression))
+            {
+                documentTemplate.OnGenerateExpression = null;
+            }
+            else
+            {
+                documentTemplate.OnGenerateExpression = OnGenerateExpression.Trim();
+            }
+            // Invalidate Cache
+            documentTemplate.OnGenerateExpressionInvalidateCache();
+
+            Database.SaveChanges();
+        }
+        private void UpdateOnImportAttachmentExpression(Disco.Models.Repository.DocumentTemplate documentTemplate, string OnImportAttachmentExpression)
+        {
+            if (string.IsNullOrWhiteSpace(OnImportAttachmentExpression))
+            {
+                documentTemplate.OnImportAttachmentExpression = null;
+            }
+            else
+            {
+                documentTemplate.OnImportAttachmentExpression = OnImportAttachmentExpression.Trim();
+            }
+            // Invalidate Cache
+            documentTemplate.OnImportAttachmentExpressionInvalidateCache();
 
             Database.SaveChanges();
         }

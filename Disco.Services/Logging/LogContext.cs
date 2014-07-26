@@ -54,9 +54,11 @@ namespace Disco.Services.Logging
                         LogModules = new Dictionary<int, LogBase>();
                         // Load all LogModules (Only from Disco Assemblies)
                         var appDomain = AppDomain.CurrentDomain;
+                        var servicesAssemblyName = typeof(LogContext).Assembly.GetName().Name;
 
                         var logModuleTypes = (from a in appDomain.GetAssemblies()
-                                              where !a.GlobalAssemblyCache && !a.IsDynamic && a.FullName.StartsWith("Disco.", StringComparison.OrdinalIgnoreCase)
+                                              where !a.GlobalAssemblyCache && !a.IsDynamic &&
+                                                (a.GetName().Name == servicesAssemblyName || a.GetReferencedAssemblies().Any(ra => ra.Name == servicesAssemblyName))
                                               from type in a.GetTypes()
                                               where typeof(LogBase).IsAssignableFrom(type) && !type.IsAbstract
                                               select type);

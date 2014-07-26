@@ -228,8 +228,12 @@ table.deviceProfileTable {
 }
 
 #configurationDeviceProfileShow {
-    #ComputerNameTemplate {
-        width: 300px;
+    #DeviceProfile_ComputerNameTemplate {
+        height: 16px;
+        min-height: 16px;
+        width: calc(~"100% - 32px");
+        overflow: hidden;
+        font-family: @FontFamilyMono;
     }
 
     #expressionBrowserAnchor {
@@ -654,6 +658,13 @@ div.logEventsViewport {
 #Config_DocumentTemplates_Show {
     & > div.form > table > tbody > tr > th {
         width: 140px;
+    }
+
+    #DocumentTemplate_FilterExpression, #DocumentTemplate_OnGenerateExpression, #DocumentTemplate_OnImportAttachmentExpression {
+        height: 16px;
+        min-height: 16px;
+        overflow: hidden;
+        font-family: @FontFamilyMono;
     }
 
     #Config_DocumentTemplates_Scope_Button {

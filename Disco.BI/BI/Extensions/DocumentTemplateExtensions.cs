@@ -75,16 +75,29 @@ namespace Disco.BI.Extensions
         }
         public static System.IO.Stream GeneratePdf(this DocumentTemplate dt, DiscoDataContext Database, object Data, User CreatorUser, System.DateTime TimeStamp, DocumentState State, bool FlattenFields = false)
         {
-            return Interop.Pdf.PdfGenerator.GenerateFromTemplate(dt, Database, Data, CreatorUser, TimeStamp, State, FlattenFields);
+            bool generateExpression = !string.IsNullOrEmpty(dt.OnGenerateExpression);
+            string generateExpressionResult = null;
+
+            if (generateExpression)
+                generateExpressionResult = dt.EvaluateOnGenerateExpression(Data, Database, CreatorUser, TimeStamp, State);
+
+            var pdfStream = Interop.Pdf.PdfGenerator.GenerateFromTemplate(dt, Database, Data, CreatorUser, TimeStamp, State, FlattenFields);
+
+            if (generateExpression)
+                DocumentsLog.LogDocumentGenerated(dt, Data, CreatorUser, generateExpressionResult);
+            else
+                DocumentsLog.LogDocumentGenerated(dt, Data, CreatorUser);
+
+            return pdfStream;
         }
 
         public static Expression FilterExpressionFromCache(this DocumentTemplate dt)
         {
-            return ExpressionCache.GetValue("DocumentTemplateFilterExpression", dt.Id, () => { return Expression.TokenizeSingleDynamic(null, dt.FilterExpression, 0); });
+            return ExpressionCache.GetValue("DocumentTemplate_FilterExpression", dt.Id, () => { return Expression.TokenizeSingleDynamic(null, dt.FilterExpression, 0); });
         }
         public static void FilterExpressionInvalidateCache(this DocumentTemplate dt)
         {
-            ExpressionCache.InvalidateKey("DocumentTemplateFilterExpression", dt.Id);
+            ExpressionCache.InvalidateKey("DocumentTemplate_FilterExpression", dt.Id);
         }
         public static bool FilterExpressionMatches(this DocumentTemplate dt, object Data, DiscoDataContext Database, User User, System.DateTime TimeStamp, DocumentState State)
         {
@@ -112,6 +125,64 @@ namespace Disco.BI.Extensions
             }
             return true;
         }
+
+        public static Expression OnImportAttachmentExpressionFromCache(this DocumentTemplate dt)
+        {
+            return ExpressionCache.GetValue("DocumentTemplate_OnImportExpression", dt.Id, () => { return Expression.TokenizeSingleDynamic(null, dt.OnImportAttachmentExpression, 0); });
+        }
+        public static void OnImportAttachmentExpressionInvalidateCache(this DocumentTemplate dt)
+        {
+            ExpressionCache.InvalidateKey("DocumentTemplate_OnImportExpression", dt.Id);
+        }
+        public static string EvaluateOnAttachmentImportExpression(this DocumentTemplate dt, object Data, DiscoDataContext Database, User User, System.DateTime TimeStamp)
+        {
+            if (!string.IsNullOrEmpty(dt.OnImportAttachmentExpression))
+            {
+                Expression compiledExpression = dt.OnImportAttachmentExpressionFromCache();
+                System.Collections.IDictionary evaluatorVariables = Expression.StandardVariables(dt, Database, User, TimeStamp, null);
+                try
+                {
+                    object result = compiledExpression.EvaluateFirst<object>(Data, evaluatorVariables);
+                    if (result == null)
+                        return null;
+                    else
+                        return result.ToString();
+                }
+                catch
+                {
+                    throw;
+                }
+            }
+            return null;
+        }
+
+        public static Expression OnGenerateExpressionFromCache(this DocumentTemplate dt)
+        {
+            return ExpressionCache.GetValue("DocumentTemplate_OnGenerateExpression", dt.Id, () => { return Expression.TokenizeSingleDynamic(null, dt.OnGenerateExpression, 0); });
+        }
+        public static void OnGenerateExpressionInvalidateCache(this DocumentTemplate dt)
+        {
+            ExpressionCache.InvalidateKey("DocumentTemplate_OnGenerateExpression", dt.Id);
+        }
+        public static string EvaluateOnGenerateExpression(this DocumentTemplate dt, object Data, DiscoDataContext Database, User User, System.DateTime TimeStamp, DocumentState State)
+        {
+            if (!string.IsNullOrEmpty(dt.OnGenerateExpression))
+            {
+                Expression compiledExpression = dt.OnGenerateExpressionFromCache();
+                System.Collections.IDictionary evaluatorVariables = Expression.StandardVariables(dt, Database, User, TimeStamp, State);
+                try
+                {
+                    object result = compiledExpression.EvaluateFirst<object>(Data, evaluatorVariables);
+                    return result.ToString();
+                }
+                catch
+                {
+                    throw;
+                }
+            }
+            return null;
+        }
+
         public static string GetDataId(this DocumentTemplate dt, object Data)
         {
             if (Data is string)

@@ -20,14 +20,14 @@ namespace Disco.Models.Repository
         [Required, StringLength(10)]
         public string ShortName { get; set; }
 
-        [StringLength(500)]
+        [StringLength(500), DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
         public int? DefaultOrganisationAddress { get; set; }
 
         // Migration from DeviceProfile Configuration
         // 2012-06-14 G#
-        [Required]
+        [Required, DataType(DataType.MultilineText)]
         public string ComputerNameTemplate { get; set; }
         
         [Required]

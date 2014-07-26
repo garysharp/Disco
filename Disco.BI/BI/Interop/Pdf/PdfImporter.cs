@@ -307,7 +307,7 @@ namespace Disco.BI.Interop.Pdf
         {
             DetectPageResult result = new DetectPageResult() { PageNumber = PageNumber };
 
-            DocumentImporterLog.LogImportPageProgress(SessionId, PageNumber, 10, "Loading Page Images");
+            DocumentsLog.LogImportPageProgress(SessionId, PageNumber, 10, "Loading Page Images");
 
             using (DisposableImageCollection pageImages = pdfReader.PdfPageImages(PageNumber))
             {
@@ -317,13 +317,13 @@ namespace Disco.BI.Interop.Pdf
                     var pageThumbnailFilename = Path.Combine(DataStoreSessionCacheLocation, string.Format("{0}-{1}", SessionId, PageNumber));
 
                     result.ThumbnailImage.Montage.SavePng(pageThumbnailFilename);
-                    DocumentImporterLog.LogImportPageImageUpdate(SessionId, PageNumber);
+                    DocumentsLog.LogImportPageImageUpdate(SessionId, PageNumber);
 
                     double pageProgressInterval = 90 / pageImages.Count;
 
                     foreach (var pageImageOriginal in pageImages)
                     {
-                        DocumentImporterLog.LogImportPageProgress(SessionId, PageNumber, (int)(10 + (pageProgressInterval * pageImages.IndexOf(pageImageOriginal))), String.Format("Processing Page Image {0} of {1}", pageImages.IndexOf(pageImageOriginal) + 1, pageImages.Count));
+                        DocumentsLog.LogImportPageProgress(SessionId, PageNumber, (int)(10 + (pageProgressInterval * pageImages.IndexOf(pageImageOriginal))), String.Format("Processing Page Image {0} of {1}", pageImages.IndexOf(pageImageOriginal) + 1, pageImages.Count));
 
                         using (var zxingResult = DetectImage(Database, pageImageOriginal, SessionId, detectDocumentTemplates, StateHints))
                         {
@@ -343,7 +343,7 @@ namespace Disco.BI.Interop.Pdf
                                     }
 
                                     result.ThumbnailImage.Montage.SavePng(pageThumbnailFilename);
-                                    DocumentImporterLog.LogImportPageImageUpdate(SessionId, PageNumber);
+                                    DocumentsLog.LogImportPageImageUpdate(SessionId, PageNumber);
 
                                     result.AttachmentThumbnailImage = new MemoryStream();
                                     using (var attachmentThumbImage = pageImages.BuildImageMontage(48, 48, true))
@@ -381,7 +381,7 @@ namespace Disco.BI.Interop.Pdf
         {
             var dataStoreUnassignedLocation = DataStore.CreateLocation(Database, "DocumentDropBox_Unassigned");
 
-            DocumentImporterLog.LogImportProgress(SessionId, 0, "Reading File");
+            DocumentsLog.LogImportProgress(SessionId, 0, "Reading File");
 
             using (FileStream fs = new FileStream(Filename, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
             {
@@ -398,8 +398,8 @@ namespace Disco.BI.Interop.Pdf
 
                 for (int PageNumber = 1; PageNumber <= pdfReader.NumberOfPages; PageNumber++)
                 {
-                    DocumentImporterLog.LogImportProgress(SessionId, (int)(PageNumber * progressInterval), string.Format("Processing Page {0} of {1}", PageNumber, pdfReader.NumberOfPages));
-                    DocumentImporterLog.LogImportPageStarting(SessionId, PageNumber);
+                    DocumentsLog.LogImportProgress(SessionId, (int)(PageNumber * progressInterval), string.Format("Processing Page {0} of {1}", PageNumber, pdfReader.NumberOfPages));
+                    DocumentsLog.LogImportPageStarting(SessionId, PageNumber);
 
                     using (var pageResult = DetectPage(Database, pdfReader, PageNumber, SessionId, dataStoreSessionPagesCacheLocation, detectDocumentTemplates, detectStateHints))
                     {
@@ -409,19 +409,25 @@ namespace Disco.BI.Interop.Pdf
                             pdfPagesAssigned.Add(PageNumber, new Tuple<DocumentUniqueIdentifier, byte[]>(docId, pageResult.AttachmentThumbnailImage.ToArray()));
 
                             docId.LoadComponents(Database);
-                            DocumentImporterLog.LogImportPageDetected(SessionId, PageNumber, docId.TemplateTypeId, docId.DocumentTemplate.Description, docId.DocumentTemplate.Scope, docId.DataId, docId.DataDescription);
+                            DocumentsLog.LogImportPageDetected(SessionId, PageNumber, docId.TemplateTypeId, docId.DocumentTemplate.Description, docId.DocumentTemplate.Scope, docId.DataId, docId.DataDescription);
                         }
                         else
                         {
                             // Undetected Page - Write Preview-Images while still in Memory
-                            DocumentImporterLog.LogImportPageUndetected(SessionId, PageNumber);
+                            DocumentsLog.LogImportPageUndetected(SessionId, PageNumber);
 
                             // Thumbnail:
                             string unassignedImageThumbnailFilename = Path.Combine(dataStoreUnassignedLocation, string.Format("{0}_{1}_thumbnail.png", SessionId, PageNumber));
-                            pageResult.ThumbnailImage.Montage.SavePng(unassignedImageThumbnailFilename);
+                            if (pageResult.ThumbnailImage != null)
+                                pageResult.ThumbnailImage.Montage.SavePng(unassignedImageThumbnailFilename);
+                            else
+                                Disco.Properties.Resources.MimeType_pdf48.SavePng(unassignedImageThumbnailFilename);
                             // Large Preview
                             string unassignedImageFilename = Path.Combine(dataStoreUnassignedLocation, string.Format("{0}_{1}.jpg", SessionId, PageNumber));
-                            pageResult.UndetectedPageImage.Montage.SaveJpg(90, unassignedImageFilename);
+                            if (pageResult.UndetectedPageImage != null)
+                                pageResult.UndetectedPageImage.Montage.SaveJpg(90, unassignedImageFilename);
+                            else
+                                Disco.Properties.Resources.MimeType_pdf48.SaveJpg(90, unassignedImageFilename);
                         }
                     }
 
@@ -435,7 +441,7 @@ namespace Disco.BI.Interop.Pdf
 
                     foreach (var documentPortion in assignedDocuments)
                     {
-                        DocumentImporterLog.LogImportProgress(SessionId, (int)(70 + (assignedDocuments.IndexOf(documentPortion) * progressInterval)), string.Format("Importing Documents {0} of {1}", assignedDocuments.IndexOf(documentPortion) + 1, assignedDocuments.Count));
+                        DocumentsLog.LogImportProgress(SessionId, (int)(70 + (assignedDocuments.IndexOf(documentPortion) * progressInterval)), string.Format("Importing Documents {0} of {1}", assignedDocuments.IndexOf(documentPortion) + 1, assignedDocuments.Count));
 
                         var documentPortionInfo = documentPortion.First().Value;
                         var documentPortionIdentifier = documentPortionInfo.Item1;
@@ -506,7 +512,7 @@ namespace Disco.BI.Interop.Pdf
                     //dataStoreUnassignedLocation
                     foreach (var PageNumber in pdfPagesUnassigned)
                     {
-                        DocumentImporterLog.LogImportProgress(SessionId, (int)(90 + (pdfPagesUnassigned.IndexOf(PageNumber) * progressInterval)), string.Format("Processing Undetected Documents {0} of {1}", pdfPagesUnassigned.IndexOf(PageNumber) + 1, pdfPagesUnassigned.Count));
+                        DocumentsLog.LogImportProgress(SessionId, (int)(90 + (pdfPagesUnassigned.IndexOf(PageNumber) * progressInterval)), string.Format("Processing Undetected Documents {0} of {1}", pdfPagesUnassigned.IndexOf(PageNumber) + 1, pdfPagesUnassigned.Count));
 
                         using (MemoryStream msBuilder = new MemoryStream())
                         {
@@ -527,14 +533,14 @@ namespace Disco.BI.Interop.Pdf
 
                             File.WriteAllBytes(Path.Combine(dataStoreUnassignedLocation, string.Format("{0}_{1}.pdf", SessionId, PageNumber)), msBuilder.ToArray());
 
-                            DocumentImporterLog.LogImportPageUndetectedStored(SessionId, PageNumber);
+                            DocumentsLog.LogImportPageUndetectedStored(SessionId, PageNumber);
                         }
                     }
                 }
 
             }
 
-            DocumentImporterLog.LogImportProgress(SessionId, 100, "Finished Importing Document");
+            DocumentsLog.LogImportProgress(SessionId, 100, "Finished Importing Document");
 
             return true;
         }

@@ -35,12 +35,12 @@
                         <h3 data-bind="text: title"></h3>
                         <div data-bind="visible: undetected">
                             Disco QR-Code not found<br />
-                            <a target="_blank" data-bind="attr: { href: manuallyAssignUrl }, visible: $parent.sessionEnded">Manually Assign Page</a>
+                            <a target="_blank" href="#" data-bind="attr: { href: manuallyAssignUrl }, visible: $parent.sessionEnded">Manually Assign Page</a>
                         </div>
                         <div data-bind="visible: detected">
-                            Document: <a target="_blank" data-bind="text: documentTemplate, attr: { href: documentTemplateUrl }"></a>
+                            Document: <a target="_blank"  href="#" data-bind="text: documentTemplate, attr: { href: documentTemplateUrl }"></a>
                             <br />
-                            Target: <a target="_blank" data-bind="text: assignedData, attr: { href: assignedDataUrl }"></a>
+                            Target: <a target="_blank" href="#" data-bind="text: assignedData, attr: { href: assignedDataUrl }"></a>
                         </div>
                         <div data-bind="visible: !(detected() || undetected())">
                             <p class="sessionStatus" data-bind="text: progressStatus">
@@ -306,7 +306,7 @@
             logHub = $.connection.logNotifications;
             logHub.client.receiveLog = parseLog
 
-            $.connection.hub.qs = { LogModules: '@(Disco.BI.DocumentTemplateBI.Importer.DocumentImporterLog.Current.LiveLogGroupName)' };
+            $.connection.hub.qs = { LogModules: '@(Disco.BI.DocumentTemplateBI.DocumentsLog.Current.LiveLogGroupName)' };
             $.connection.hub.error(function (error) {
                 alert('Live-Log Error: ' + error);
             });

@@ -12,7 +12,7 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DocumentT
         [ClaimDetails("Configure Document Templates", "Can configure document templates")]
         public bool Configure { get; set; }
 
-        [ClaimDetails("Configure Filter Expression", "Can configure filter expressions for document templates")]
+        [ClaimDetails("Configure Advanced Expression", "Can configure filter, generate and import expressions for document templates")]
         public bool ConfigureFilterExpression { get; set; }
 
         [ClaimDetails("Upload Document Templates", "Can upload document templates")]

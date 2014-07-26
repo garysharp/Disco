@@ -60,7 +60,9 @@ if (!document.DiscoFunctions.PropertyChangeHelper) {
         if (PropertyField[0].nodeName.toLowerCase() == 'textarea') {
             PropertyField.keydown(function () {
                 $ajaxSave.show();
-            })
+            }).blur(function () {
+                $ajaxSave.hide();
+            });
         }
     }
 };

@@ -45,8 +45,8 @@ namespace Disco.Services.Authorization
 				{ "Config.DeviceProfile.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceProfile.Delete, (c, v) => c.Config.DeviceProfile.Delete = v, "Delete Device Profiles", "Can delete device profiles", false) },
 				{ "Config.DeviceProfile.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceProfile.Show, (c, v) => c.Config.DeviceProfile.Show = v, "Show Device Profiles", "Can show device profiles", false) },
 				{ "Config.DocumentTemplate.BulkGenerate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.BulkGenerate, (c, v) => c.Config.DocumentTemplate.BulkGenerate = v, "Bulk Generate Document Templates", "Can bulk generate document templates", false) },
+				{ "Config.DocumentTemplate.ConfigureFilterExpression", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.ConfigureFilterExpression, (c, v) => c.Config.DocumentTemplate.ConfigureFilterExpression = v, "Configure Advanced Expression", "Can configure filter, generate and import expressions for document templates", false) },
 				{ "Config.DocumentTemplate.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Configure, (c, v) => c.Config.DocumentTemplate.Configure = v, "Configure Document Templates", "Can configure document templates", false) },
-				{ "Config.DocumentTemplate.ConfigureFilterExpression", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.ConfigureFilterExpression, (c, v) => c.Config.DocumentTemplate.ConfigureFilterExpression = v, "Configure Filter Expression", "Can configure filter expressions for document templates", false) },
 				{ "Config.DocumentTemplate.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Create, (c, v) => c.Config.DocumentTemplate.Create = v, "Create Document Templates", "Can create document templates", false) },
 				{ "Config.DocumentTemplate.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Delete, (c, v) => c.Config.DocumentTemplate.Delete = v, "Delete Document Templates", "Can delete document templates", false) },
 				{ "Config.DocumentTemplate.UndetectedPages", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.UndetectedPages, (c, v) => c.Config.DocumentTemplate.UndetectedPages = v, "Process Undetected Pages", "Can show and assign imported documents which were not undetected", false) },
@@ -253,8 +253,8 @@ namespace Disco.Services.Authorization
 				        }),
 				        new ClaimNavigatorItem("Config.DocumentTemplate", "Document Templates", "Permissions related to Document Templates", false, new List<IClaimNavigatorItem>() {
 				            new ClaimNavigatorItem("Config.DocumentTemplate.BulkGenerate", false),
-				            new ClaimNavigatorItem("Config.DocumentTemplate.Configure", false),
 				            new ClaimNavigatorItem("Config.DocumentTemplate.ConfigureFilterExpression", false),
+				            new ClaimNavigatorItem("Config.DocumentTemplate.Configure", false),
 				            new ClaimNavigatorItem("Config.DocumentTemplate.Create", false),
 				            new ClaimNavigatorItem("Config.DocumentTemplate.Delete", false),
 				            new ClaimNavigatorItem("Config.DocumentTemplate.UndetectedPages", false),
@@ -559,8 +559,8 @@ namespace Disco.Services.Authorization
 			c.Config.DeviceProfile.Delete = true;
 			c.Config.DeviceProfile.Show = true;
 			c.Config.DocumentTemplate.BulkGenerate = true;
-			c.Config.DocumentTemplate.Configure = true;
 			c.Config.DocumentTemplate.ConfigureFilterExpression = true;
+			c.Config.DocumentTemplate.Configure = true;
 			c.Config.DocumentTemplate.Create = true;
 			c.Config.DocumentTemplate.Delete = true;
 			c.Config.DocumentTemplate.UndetectedPages = true;
@@ -897,15 +897,15 @@ namespace Disco.Services.Authorization
                 /// </summary>
                 public const string BulkGenerate = "Config.DocumentTemplate.BulkGenerate";
 
+                /// <summary>Configure Advanced Expression
+                /// <para>Can configure filter, generate and import expressions for document templates</para>
+                /// </summary>
+                public const string ConfigureFilterExpression = "Config.DocumentTemplate.ConfigureFilterExpression";
+
                 /// <summary>Configure Document Templates
                 /// <para>Can configure document templates</para>
                 /// </summary>
                 public const string Configure = "Config.DocumentTemplate.Configure";
-
-                /// <summary>Configure Filter Expression
-                /// <para>Can configure filter expressions for document templates</para>
-                /// </summary>
-                public const string ConfigureFilterExpression = "Config.DocumentTemplate.ConfigureFilterExpression";
 
                 /// <summary>Create Document Templates
                 /// <para>Can create document templates</para>

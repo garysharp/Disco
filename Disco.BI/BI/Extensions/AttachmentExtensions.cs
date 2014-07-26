@@ -7,6 +7,7 @@ using Disco.Data.Repository;
 using System.IO;
 using Disco.BI.DocumentTemplateBI;
 using Disco.Services.Users;
+using Disco.Services.Logging;
 
 namespace Disco.BI.Extensions
 {
@@ -15,11 +16,11 @@ namespace Disco.BI.Extensions
 
         public static bool ImportPdfAttachment(this DocumentUniqueIdentifier UniqueIdentifier, DiscoDataContext Database, System.IO.Stream PdfContent, byte[] PdfThumbnail)
         {
-
             UniqueIdentifier.LoadComponents(Database);
             DocumentTemplate documentTemplate = UniqueIdentifier.DocumentTemplate;
             string filename;
             string comments;
+            object attachment;
 
             if (documentTemplate == null)
             {
@@ -42,20 +43,33 @@ namespace Disco.BI.Extensions
             {
                 case DocumentTemplate.DocumentTemplateScopes.Device:
                     Device d = (Device)UniqueIdentifier.Data;
-                    d.CreateAttachment(Database, creatorUser, filename, DocumentTemplate.PdfMimeType, comments, PdfContent, documentTemplate, PdfThumbnail);
-                    return true;
+                    attachment = d.CreateAttachment(Database, creatorUser, filename, DocumentTemplate.PdfMimeType, comments, PdfContent, documentTemplate, PdfThumbnail);
+                    break;
                 case DocumentTemplate.DocumentTemplateScopes.Job:
                     Job j = (Job)UniqueIdentifier.Data;
-                    j.CreateAttachment(Database, creatorUser, filename, DocumentTemplate.PdfMimeType, comments, PdfContent, documentTemplate, PdfThumbnail);
-                    return true;
+                    attachment = j.CreateAttachment(Database, creatorUser, filename, DocumentTemplate.PdfMimeType, comments, PdfContent, documentTemplate, PdfThumbnail);
+                    break;
                 case DocumentTemplate.DocumentTemplateScopes.User:
                     User u = (User)UniqueIdentifier.Data;
-                    u.CreateAttachment(Database, creatorUser, filename, DocumentTemplate.PdfMimeType, comments, PdfContent, documentTemplate, PdfThumbnail);
-                    return true;
+                    attachment = u.CreateAttachment(Database, creatorUser, filename, DocumentTemplate.PdfMimeType, comments, PdfContent, documentTemplate, PdfThumbnail);
+                    break;
                 default:
                     return false;
             }
 
+            if (documentTemplate != null && !string.IsNullOrWhiteSpace(documentTemplate.OnImportAttachmentExpression))
+            {
+                try
+                {
+                    var expressionResult = documentTemplate.EvaluateOnAttachmentImportExpression(attachment, Database, creatorUser, UniqueIdentifier.TimeStamp);
+                    DocumentsLog.LogImportAttachmentExpressionEvaluated(documentTemplate, UniqueIdentifier.Data, attachment, expressionResult);
+                }
+                catch (Exception ex)
+                {
+                    SystemLog.LogException("Document Importer - OnImportAttachmentExpression", ex);
+                }
+            }
+            return true;
         }
 
         public static string RepositoryFilename(this DeviceAttachment da, DiscoDataContext Database)

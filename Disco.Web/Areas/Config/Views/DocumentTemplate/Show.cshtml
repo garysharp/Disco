@@ -11,6 +11,8 @@
         Model.DocumentTemplate.UsersLinkedGroup == null &&
         Model.DocumentTemplate.DevicesLinkedGroup == null &&
         Model.DocumentTemplate.FilterExpression == null &&
+        Model.DocumentTemplate.OnGenerateExpression == null &&
+        Model.DocumentTemplate.OnImportAttachmentExpression == null &&
         Model.TemplateExpressions.All(e => e.All(p => !p.ParseError));
 
     #region Can Bulk Generate
@@ -35,6 +37,11 @@
     #endregion
 
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(null), Model.DocumentTemplate.Description);
+
+    if (canConfig)
+    {
+        Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
+    }
 }
 <div id="Config_DocumentTemplates_Show" class="@(hideAdvanced ? "Config_HideAdvanced" : null)">
     <div class="form" style="width: 650px; margin: 10px auto 20px;">
@@ -63,41 +70,12 @@
                         @AjaxHelpers.AjaxLoader()
                         <script type="text/javascript">
                             $(function () {
-                                var $Description = $('#DocumentTemplate_Description');
-                                var $DescriptionAjaxSave = $Description.next('.ajaxSave');
-                                $Description
-                                        .watermark('Description')
-                                        .focus(function () { $Description.select() })
-                                        .keydown(function (e) {
-                                            $DescriptionAjaxSave.show();
-                                            if (e.which == 13) {
-                                                $(this).blur();
-                                            }
-                                        }).blur(function () {
-                                            $DescriptionAjaxSave.hide();
-                                        })
-                                        .change(function () {
-                                            $DescriptionAjaxSave.hide();
-                                            var $ajaxLoading = $DescriptionAjaxSave.next('.ajaxLoading').show();
-                                            var data = { Description: $Description.val() };
-                                            $.ajax({
-                                                url: '@Url.Action(MVC.API.DocumentTemplate.UpdateDescription(Model.DocumentTemplate.Id))',
-                                                dataType: 'json',
-                                                data: data,
-                                                success: function (d) {
-                                                    if (d == 'OK') {
-                                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                                    } else {
-                                                        $ajaxLoading.hide();
-                                                        alert('Unable to update description: ' + d);
-                                                    }
-                                                },
-                                                error: function (jqXHR, textStatus, errorThrown) {
-                                                    alert('Unable to update description: ' + textStatus);
-                                                    $ajaxLoading.hide();
-                                                }
-                                            });
-                                        });
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    $('#DocumentTemplate_Description'),
+                                    'Description',
+                                    '@Url.Action(MVC.API.DocumentTemplate.UpdateDescription(Model.DocumentTemplate.Id))',
+                                    'Description'
+                                );
                             });
                         </script>
                         }
@@ -123,19 +101,12 @@
                         @AjaxHelpers.AjaxLoader()
                         <script type="text/javascript">
                             $(function () {
-                                $('#DocumentTemplate_FlattenForm').click(function () {
-                                    var $this = $(this);
-                                    var $ajaxLoading = $this.next('.ajaxLoading').show();
-                                    var data = { FlattenForm: $this.is(':checked') };
-                                    $.getJSON('@(Url.Action(MVC.API.DocumentTemplate.UpdateFlattenForm(Model.DocumentTemplate.Id)))', data, function (response, result) {
-                                        if (result != 'success' || response != 'OK') {
-                                            alert('Unable to change Flatten Form:\n' + response);
-                                            $ajaxLoading.hide();
-                                        } else {
-                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                        }
-                                    });
-                                });
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    $('#DocumentTemplate_FlattenForm'),
+                                    null,
+                                    '@Url.Action(MVC.API.DocumentTemplate.UpdateFlattenForm(Model.DocumentTemplate.Id))',
+                                    'FlattenForm'
+                                );
                             });
                         </script>
                         }
@@ -429,54 +400,46 @@
                     </th>
                     <td>@if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
                         {
-                        @Html.TextBoxFor(model => model.DocumentTemplate.FilterExpression)
+                        @Html.EditorFor(model => model.DocumentTemplate.FilterExpression)
                         @AjaxHelpers.AjaxRemove()
+                        @AjaxHelpers.AjaxSave()
                         @AjaxHelpers.AjaxLoader()
                         <script type="text/javascript">
                             $(function () {
-                                var $FilterExpression = $('#DocumentTemplate_FilterExpression');
-                                var $ajaxLoading = $FilterExpression.nextAll('.ajaxLoading').first();
-                                var $ajaxRemove = $FilterExpression.nextAll('.ajaxRemove').first();
-                                $FilterExpression
-                                        .watermark('Filter Expression')
-                                        .focus(function () { $FilterExpression.select() })
-                                        .keydown(function (e) {
-                                            if (e.which == 13) {
-                                                $(this).blur();
-                                            }
-                                        }).change(function () {
-                                            updateFilterExpression($FilterExpression.val());
-                                        });
-                                if ($FilterExpression.val() != '')
-                                    $ajaxRemove.show();
-                                $ajaxRemove.click(function () {
-                                    updateFilterExpression('');
-                                    $FilterExpression.val('');
+                                var field = $('#DocumentTemplate_FilterExpression');
+                                var fieldRemove = field.next('.ajaxRemove');
+                                var fieldOriginalWidth, fieldOriginalHeight;
+
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    field,
+                                    'None',
+                                    '@Url.Action(MVC.API.DocumentTemplate.UpdateFilterExpression(Model.DocumentTemplate.Id))',
+                                    'FilterExpression'
+                                );
+
+                                field.focus(function () {
+                                    fieldOriginalWidth = field.width();
+                                    fieldOriginalHeight = field.height();
+                                    field.css('overflow', 'visible').animate({ width: field.parent().width() - 42, height: 75 }, 200);
+                                }).blur(function () {
+                                    field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
+                                }).change(function () {
+                                    if (!!field.val()) {
+                                        fieldRemove.show();
+                                    } else {
+                                        fieldRemove.hide();
+                                    }
+                                }).attr('placeholder', 'None').attr('spellcheck', 'false');
+
+                                fieldRemove.click(function () {
+                                    field.val('').change();
                                 });
-                                var updateFilterExpression = function (filterExpression) {
-                                    $ajaxLoading.show();
-                                    $ajaxRemove.hide();
-                                    var data = { FilterExpression: filterExpression };
-                                    $.ajax({
-                                        url: '@Url.Action(MVC.API.DocumentTemplate.UpdateFilterExpression(Model.DocumentTemplate.Id))',
-                                        dataType: 'json',
-                                        data: data,
-                                        success: function (d) {
-                                            if (d == 'OK') {
-                                                $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                                if (data.FilterExpression != '')
-                                                    $ajaxRemove.fadeIn('fast');
-                                            } else {
-                                                $ajaxLoading.hide();
-                                                alert('Unable to update filter expression: ' + d);
-                                            }
-                                        },
-                                        error: function (jqXHR, textStatus, errorThrown) {
-                                            alert('Unable to update filter expression: ' + textStatus);
-                                            $ajaxLoading.hide();
-                                        }
-                                    });
-                                };
+
+                                if (!!field.val()) {
+                                    fieldRemove.show();
+                                } else {
+                                    fieldRemove.hide();
+                                }
                             });
                         </script>
                         }
@@ -493,6 +456,147 @@
                         </div>
                             }
                         }
+                        <div class="info-box">
+                            <p class="fa-p">
+                                <i class="fa fa-fw fa-info-circle"></i>This expression will be evaluated to determine if this template is shown in the <em>Generate Document</em> drop-down list.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>On Generated Expression:
+                    </th>
+                    <td>@if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
+                        {
+                        @Html.EditorFor(model => model.DocumentTemplate.OnGenerateExpression)
+                        @AjaxHelpers.AjaxRemove()
+                        @AjaxHelpers.AjaxSave()
+                        @AjaxHelpers.AjaxLoader()
+                        <script type="text/javascript">
+                            $(function () {
+                                var field = $('#DocumentTemplate_OnGenerateExpression');
+                                var fieldRemove = field.next('.ajaxRemove');
+                                var fieldOriginalWidth, fieldOriginalHeight;
+
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    field,
+                                    'None',
+                                    '@Url.Action(MVC.API.DocumentTemplate.UpdateOnGenerateExpression(Model.DocumentTemplate.Id))',
+                                    'OnGenerateExpression'
+                                );
+
+                                field.focus(function () {
+                                    fieldOriginalWidth = field.width();
+                                    fieldOriginalHeight = field.height();
+                                    field.css('overflow', 'visible').animate({ width: field.parent().width() - 42, height: 75 }, 200);
+                                }).blur(function () {
+                                    field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
+                                }).change(function () {
+                                    if (!!field.val()) {
+                                        fieldRemove.show();
+                                    } else {
+                                        fieldRemove.hide();
+                                    }
+                                }).attr('placeholder', 'None').attr('spellcheck', 'false');
+
+                                fieldRemove.click(function () {
+                                    field.val('').change();
+                                });
+
+                                if (!!field.val()) {
+                                    fieldRemove.show();
+                                } else {
+                                    fieldRemove.hide();
+                                }
+                            });
+                        </script>
+                        }
+                        else
+                        {
+                            if (string.IsNullOrWhiteSpace(Model.DocumentTemplate.OnGenerateExpression))
+                            {
+                        <span class="smallMessage">&lt;None Specified&gt;</span>
+                            }
+                            else
+                            {
+                        <div class="code">
+                            @Model.DocumentTemplate.OnGenerateExpression
+                        </div>
+                            }
+                        }
+                        <div class="info-box">
+                            <p class="fa-p">
+                                <i class="fa fa-fw fa-info-circle"></i>This expression will be evaluated each time a document is generated from this template.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>On Import Expression:
+                    </th>
+                    <td>@if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
+                        {
+                        @Html.EditorFor(model => model.DocumentTemplate.OnImportAttachmentExpression)
+                        @AjaxHelpers.AjaxRemove()
+                        @AjaxHelpers.AjaxSave()
+                        @AjaxHelpers.AjaxLoader()
+                        <script type="text/javascript">
+                            $(function () {
+                                var field = $('#DocumentTemplate_OnImportAttachmentExpression');
+                                var fieldRemove = field.next('.ajaxRemove');
+                                var fieldOriginalWidth, fieldOriginalHeight;
+
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    field,
+                                    'None',
+                                    '@Url.Action(MVC.API.DocumentTemplate.UpdateOnImportAttachmentExpression(Model.DocumentTemplate.Id))',
+                                    'OnImportAttachmentExpression'
+                                );
+
+                                field.focus(function () {
+                                    fieldOriginalWidth = field.width();
+                                    fieldOriginalHeight = field.height();
+                                    field.css('overflow', 'visible').animate({ width: field.parent().width() - 42, height: 75 }, 200);
+                                }).blur(function () {
+                                    field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
+                                }).change(function () {
+                                    if (!!field.val()) {
+                                        fieldRemove.show();
+                                    } else {
+                                        fieldRemove.hide();
+                                    }
+                                }).attr('placeholder', 'None').attr('spellcheck', 'false');
+
+                                fieldRemove.click(function () {
+                                    field.val('').change();
+                                });
+
+                                if (!!field.val()) {
+                                    fieldRemove.show();
+                                } else {
+                                    fieldRemove.hide();
+                                }
+                            });
+                        </script>
+                        }
+                        else
+                        {
+                            if (string.IsNullOrWhiteSpace(Model.DocumentTemplate.OnImportAttachmentExpression))
+                            {
+                        <span class="smallMessage">&lt;None Specified&gt;</span>
+                            }
+                            else
+                            {
+                        <div class="code">
+                            @Model.DocumentTemplate.OnImportAttachmentExpression
+                        </div>
+                            }
+                        }
+                        <div class="info-box">
+                            <p class="fa-p">
+                                <i class="fa fa-fw fa-info-circle"></i>This expression will be evaluated each time a document is imported (as an attachment) where it is determined the document was based on this template.
+                            </p>
+                        </div>
                     </td>
                 </tr>
                 <tr>

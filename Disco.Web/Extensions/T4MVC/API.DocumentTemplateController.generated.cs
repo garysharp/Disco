@@ -83,6 +83,18 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateOnGenerateExpression()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateOnGenerateExpression);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateOnImportAttachmentExpression()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateOnImportAttachmentExpression);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult UpdateFlattenForm()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateFlattenForm);
@@ -173,6 +185,8 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string Template = "Template";
             public readonly string UpdateDescription = "UpdateDescription";
             public readonly string UpdateFilterExpression = "UpdateFilterExpression";
+            public readonly string UpdateOnGenerateExpression = "UpdateOnGenerateExpression";
+            public readonly string UpdateOnImportAttachmentExpression = "UpdateOnImportAttachmentExpression";
             public readonly string UpdateFlattenForm = "UpdateFlattenForm";
             public readonly string UpdateScope = "UpdateScope";
             public readonly string UpdateJobSubTypes = "UpdateJobSubTypes";
@@ -195,6 +209,8 @@ namespace Disco.Web.Areas.API.Controllers
             public const string Template = "Template";
             public const string UpdateDescription = "UpdateDescription";
             public const string UpdateFilterExpression = "UpdateFilterExpression";
+            public const string UpdateOnGenerateExpression = "UpdateOnGenerateExpression";
+            public const string UpdateOnImportAttachmentExpression = "UpdateOnImportAttachmentExpression";
             public const string UpdateFlattenForm = "UpdateFlattenForm";
             public const string UpdateScope = "UpdateScope";
             public const string UpdateJobSubTypes = "UpdateJobSubTypes";
@@ -250,6 +266,26 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string FilterExpression = "FilterExpression";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateOnGenerateExpression s_params_UpdateOnGenerateExpression = new ActionParamsClass_UpdateOnGenerateExpression();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateOnGenerateExpression UpdateOnGenerateExpressionParams { get { return s_params_UpdateOnGenerateExpression; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateOnGenerateExpression
+        {
+            public readonly string id = "id";
+            public readonly string OnGenerateExpression = "OnGenerateExpression";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateOnImportAttachmentExpression s_params_UpdateOnImportAttachmentExpression = new ActionParamsClass_UpdateOnImportAttachmentExpression();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateOnImportAttachmentExpression UpdateOnImportAttachmentExpressionParams { get { return s_params_UpdateOnImportAttachmentExpression; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateOnImportAttachmentExpression
+        {
+            public readonly string id = "id";
+            public readonly string OnImportAttachmentExpression = "OnImportAttachmentExpression";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateFlattenForm s_params_UpdateFlattenForm = new ActionParamsClass_UpdateFlattenForm();
@@ -454,6 +490,34 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "FilterExpression", FilterExpression);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateFilterExpressionOverride(callInfo, id, FilterExpression, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateOnGenerateExpressionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string OnGenerateExpression, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateOnGenerateExpression(string id, string OnGenerateExpression, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateOnGenerateExpression);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "OnGenerateExpression", OnGenerateExpression);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateOnGenerateExpressionOverride(callInfo, id, OnGenerateExpression, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateOnImportAttachmentExpressionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string OnImportAttachmentExpression, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateOnImportAttachmentExpression(string id, string OnImportAttachmentExpression, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateOnImportAttachmentExpression);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "OnImportAttachmentExpression", OnImportAttachmentExpression);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateOnImportAttachmentExpressionOverride(callInfo, id, OnImportAttachmentExpression, redirect);
             return callInfo;
         }
 

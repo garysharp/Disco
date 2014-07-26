@@ -287,8 +287,12 @@ table.deviceProfileTable th.type {
 table.deviceProfileTable th.deviceCount {
   width: 120px;
 }
-#configurationDeviceProfileShow #ComputerNameTemplate {
-  width: 300px;
+#configurationDeviceProfileShow #DeviceProfile_ComputerNameTemplate {
+  height: 16px;
+  min-height: 16px;
+  width: calc(100% - 32px);
+  overflow: hidden;
+  font-family: Consolas, "Courier New", monospace;
 }
 #configurationDeviceProfileShow #expressionBrowserAnchor {
   display: inline-block;
@@ -621,6 +625,14 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
 }
 #Config_DocumentTemplates_Show > div.form > table > tbody > tr > th {
   width: 140px;
+}
+#Config_DocumentTemplates_Show #DocumentTemplate_FilterExpression,
+#Config_DocumentTemplates_Show #DocumentTemplate_OnGenerateExpression,
+#Config_DocumentTemplates_Show #DocumentTemplate_OnImportAttachmentExpression {
+  height: 16px;
+  min-height: 16px;
+  overflow: hidden;
+  font-family: Consolas, "Courier New", monospace;
 }
 #Config_DocumentTemplates_Show #Config_DocumentTemplates_Scope_Button {
   margin-top: 4px;
