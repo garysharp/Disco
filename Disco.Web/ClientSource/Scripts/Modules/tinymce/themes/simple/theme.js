@@ -311,13 +311,13 @@ tinymce.ThemeManager.add('simple', function(editor) {
 			width = Math.max(settings.min_width || 100, width);
 			width = Math.min(settings.max_width || 0xFFFF, width);
 
-			DOM.css(containerElm, 'width', width + (containerSize.width - iframeSize.width));
-			DOM.css(iframeElm, 'width', width);
+			DOM.setStyle(containerElm, 'width', width + (containerSize.width - iframeSize.width));
+			DOM.setStyle(iframeElm, 'width', width);
 		}
 
 		height = Math.max(settings.min_height || 100, height);
 		height = Math.min(settings.max_height || 0xFFFF, height);
-		DOM.css(iframeElm, 'height', height);
+		DOM.setStyle(iframeElm, 'height', height);
 
 		editor.fire('ResizeEditor');
 	}
@@ -352,7 +352,7 @@ tinymce.ThemeManager.add('simple', function(editor) {
 					deltaY = Math.max(0, scrollContainerPos.y - bodyPos.y);
 				}
 
-				panel.fixed(false).moveRel(body, editor.rtl ? ['tr-br', 'br-tr'] : ['tl-bl', 'bl-tl']).moveBy(deltaX, deltaY);
+				panel.fixed(false).moveRel(body, editor.rtl ? ['tr-br', 'br-tr'] : ['tl-bl', 'bl-tl', 'tr-br']).moveBy(deltaX, deltaY);
 			}
 		}
 
@@ -392,7 +392,6 @@ tinymce.ThemeManager.add('simple', function(editor) {
 				fixed: !!inlineToolbarContainer,
 				border: 1,
 				items: [
-					settings.menubar === false ? null : {type: 'menubar', border: '0 0 1 0', items: createMenuButtons()},
 					settings.toolbar === false ? null : {type: 'panel', name: 'toolbar', layout: 'stack', items: createToolbars()}
 				]
 			});
@@ -447,7 +446,6 @@ tinymce.ThemeManager.add('simple', function(editor) {
 			layout: 'stack',
 			border: 1,
 			items: [
-				settings.menubar === false ? null : {type: 'menubar', border: '0 0 1 0', items: createMenuButtons()},
 				settings.toolbar === false ? null : {type: 'panel', layout: 'stack', items: createToolbars()},
 				{type: 'panel', name: 'iframe', layout: 'stack', classes: 'edit-area', html: '', border: '1 0 0 0'}
 			]
@@ -518,28 +516,8 @@ tinymce.ThemeManager.add('simple', function(editor) {
 	 * @return {Object} Theme UI data items.
 	 */
 	self.renderUI = function(args) {
-		var skin = settings.skin !== false ? settings.skin || 'lightgray' : false;
-
-		if (skin) {
-			var skinUrl = settings.skin_url;
-
-			if (skinUrl) {
-				skinUrl = editor.documentBaseURI.toAbsolute(skinUrl);
-			} else {
-				skinUrl = tinymce.baseURL + '/skins/' + skin;
-			}
-
-			// Load special skin for IE7
-			// TODO: Remove this when we drop IE7 support
-			if (tinymce.Env.documentMode <= 7) {
-				tinymce.DOM.loadCSS(skinUrl + '/skin.ie7.min.css');
-			} else {
-				tinymce.DOM.loadCSS(skinUrl + '/skin.min.css');
-			}
-
-			// Load content.min.css or content.inline.min.css
-			editor.contentCSS.push(skinUrl + '/content' + (editor.inline ? '.inline' : '') + '.min.css');
-		}
+	    tinymce.DOM.loadCSS('/Style/tinymce/skin?v=1');
+		editor.contentCSS.push('/Style/tinymce/' + (editor.inline ? 'inline' : '') + 'content?v=1');
 
 		// Handle editor setProgressState change
 		editor.on('ProgressState', function(e) {

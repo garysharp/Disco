@@ -23,6 +23,9 @@ namespace Disco.Web
             BundleTable.Add(new FileBundle("~/Style/Fancytree", Links.ClientSource.Style.Fancytree.disco_fancytree_min_css));
             BundleTable.Add(new FileBundle("~/Style/Shadowbox", Links.ClientSource.Style.Shadowbox_min_css));
             BundleTable.Add(new FileBundle("~/Style/Timeline", Links.ClientSource.Style.Timeline_min_css));
+            BundleTable.Add(new FileBundle("~/Style/tinymce/skin", Links.ClientSource.Style.tinymce.skin_min_css));
+            BundleTable.Add(new FileBundle("~/Style/tinymce/content", Links.ClientSource.Style.tinymce.content_min_css));
+            BundleTable.Add(new FileBundle("~/Style/tinymce/inlinecontent", Links.ClientSource.Style.tinymce.content_inline_min_css));
 
             // Styles - Public Targeted
             BundleTable.Add(new FileBundle("~/Style/Public/HeldDevices", Links.ClientSource.Style.Public.HeldDevices_min_css));

@@ -1,9 +1,5 @@
-﻿using Disco.Services;
-using Disco.Services.Interop.ActiveDirectory;
+﻿using Disco.Services.Interop.ActiveDirectory;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Disco.Web.Controllers

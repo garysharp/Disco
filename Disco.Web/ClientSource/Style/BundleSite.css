@@ -2181,8 +2181,8 @@ body .ui-tooltip {
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url('/ClientSource/Style/FontAwesome//fontawesome-webfont.eot?v=4.1.0');
-  src: url('/ClientSource/Style/FontAwesome//fontawesome-webfont.eot?#iefix&v=4.1.0') format('embedded-opentype'), url('/ClientSource/Style/FontAwesome//fontawesome-webfont.woff?v=4.1.0') format('woff'), url('/ClientSource/Style/FontAwesome//fontawesome-webfont.ttf?v=4.1.0') format('truetype'), url('/ClientSource/Style/FontAwesome//fontawesome-webfont.svg?v=4.1.0#fontawesomeregular') format('svg');
+  src: url('/ClientSource/Style/FontAwesome/fontawesome-webfont.eot?v=4.1.0');
+  src: url('/ClientSource/Style/FontAwesome/fontawesome-webfont.eot?#iefix&v=4.1.0') format('embedded-opentype'), url('/ClientSource/Style/FontAwesome/fontawesome-webfont.woff?v=4.1.0') format('woff'), url('/ClientSource/Style/FontAwesome/fontawesome-webfont.ttf?v=4.1.0') format('truetype'), url('/ClientSource/Style/FontAwesome/fontawesome-webfont.svg?v=4.1.0#fontawesomeregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
