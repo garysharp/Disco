@@ -502,7 +502,7 @@ WriteLiteral(@"
 WriteLiteral(@"',
                         minLength: 2,
                         focus: function (e, ui) {
-                            $AssignedUserId.val(ui.item.DisplayName + ' (' + ui.item.Id + ')');
+                            $AssignedUserId.val(ui.item.Id);
                             return false;
                         },
                         select: function (e, ui) {
