@@ -5,7 +5,9 @@ using Disco.Models.Services.Jobs.Noticeboards;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 
 namespace Disco.Services.Jobs.Noticeboards
 {
@@ -41,10 +43,19 @@ namespace Disco.Services.Jobs.Noticeboards
             "DisplayName"
         };
 
+        private static Subject<Tuple<List<string>, List<string>>> BufferedUpdateStream;
+
         static HeldDevices()
         {
+            BufferedUpdateStream = new Subject<Tuple<List<string>, List<string>>>();
+
+            BufferedUpdateStream
+                .DelayBuffer(TimeSpan.FromMilliseconds(500))
+                .SubscribeOn(TaskPoolScheduler.Default)
+                .Subscribe(ProcessUpdates);
+
             // Subscribe to Repository Notifications
-            RepositoryMonitor.StreamAfterCommit.Where(e =>
+            RepositoryMonitor.StreamBeforeCommit.Where(e =>
                 (e.EntityType == typeof(Job) &&
                     (e.EventType == RepositoryMonitorEventType.Added ||
                     e.EventType == RepositoryMonitorEventType.Deleted ||
@@ -65,93 +76,105 @@ namespace Disco.Services.Jobs.Noticeboards
                     (e.EventType == RepositoryMonitorEventType.Modified && e.ModifiedProperties.Any(p => MonitorUserProperties.Contains(p)))
                     )
                 )
-                .DelayBuffer(TimeSpan.FromMilliseconds(500))
                 .Subscribe(RepositoryEvent);
         }
 
-        private static void RepositoryEvent(IEnumerable<RepositoryMonitorEvent> e)
+        private static void RepositoryEvent(RepositoryMonitorEvent i)
         {
             List<string> deviceSerialNumbers = new List<string>();
             List<string> userIds = new List<string>();
 
-            using (DiscoDataContext Database = new DiscoDataContext())
+            if (i.EntityType == typeof(Job))
             {
-                foreach (var i in e)
+                if (i.EventType == RepositoryMonitorEventType.Modified &&
+                    i.ModifiedProperties.Contains("DeviceSerialNumber"))
                 {
-                    if (i.EntityType == typeof(Job))
-                    {
-                        if (i.EventType == RepositoryMonitorEventType.Modified &&
-                            i.ModifiedProperties.Contains("DeviceSerialNumber"))
-                        {
-                            var p = i.GetPreviousPropertyValue<string>("DeviceSerialNumber");
-                            if (p != null)
-                                deviceSerialNumbers.Add(p);
-                        }
-
-                        var j = (Job)i.Entity;
-                        if (j.DeviceSerialNumber != null)
-                            deviceSerialNumbers.Add(j.DeviceSerialNumber);
-                    }
-                    else if (i.EntityType == typeof(JobMetaNonWarranty))
-                    {
-                        var jmnw = (JobMetaNonWarranty)i.Entity;
-
-                        if (jmnw.Job != null)
-                        {
-                            if (jmnw.Job.DeviceSerialNumber != null)
-                                deviceSerialNumbers.Add(jmnw.Job.DeviceSerialNumber);
-                        }
-                        else
-                        {
-                            var sn = Database.Jobs.Where(j => j.Id == jmnw.JobId).Select(j => j.DeviceSerialNumber).FirstOrDefault();
-                            if (sn != null)
-                                deviceSerialNumbers.Add(sn);
-                        }
-                    }
-                    else if (i.EntityType == typeof(Device))
-                    {
-                        var d = (Device)i.Entity;
-                        deviceSerialNumbers.Add(d.SerialNumber);
-
-                        if (i.EventType == RepositoryMonitorEventType.Modified &&
-                            i.ModifiedProperties.Contains("AssignedUserId"))
-                        {
-                            var p = i.GetPreviousPropertyValue<string>("AssignedUserId");
-                            if (p != null)
-                                userIds.Add(p);
-                        }
-                    }
-                    else if (i.EntityType == typeof(DeviceProfile))
-                    {
-                        var dp = (DeviceProfile)i.Entity;
-
-                        deviceSerialNumbers.AddRange(
-                            Database.Jobs
-                                .Where(j => !j.ClosedDate.HasValue && j.Device.DeviceProfileId == dp.Id)
-                                .Select(j => j.DeviceSerialNumber)
-                            );
-                    }
-                    else if (i.EntityType == typeof(User))
-                    {
-                        var u = (User)i.Entity;
-
-                        deviceSerialNumbers.AddRange(
-                            Database.Jobs
-                                .Where(j => !j.ClosedDate.HasValue && j.Device.AssignedUserId == u.UserId)
-                                .Select(j => j.DeviceSerialNumber)
-                            );
-                    }
+                    var p = i.GetPreviousPropertyValue<string>("DeviceSerialNumber");
+                    if (p != null)
+                        deviceSerialNumbers.Add(p);
                 }
 
-                deviceSerialNumbers = deviceSerialNumbers.Distinct().ToList();
+                var j = (Job)i.Entity;
+                if (j.DeviceSerialNumber != null)
+                    deviceSerialNumbers.Add(j.DeviceSerialNumber);
+            }
+            else if (i.EntityType == typeof(JobMetaNonWarranty))
+            {
+                var jmnw = (JobMetaNonWarranty)i.Entity;
+
+                if (jmnw.Job != null)
+                {
+                    if (jmnw.Job.DeviceSerialNumber != null)
+                        deviceSerialNumbers.Add(jmnw.Job.DeviceSerialNumber);
+                }
+                else
+                {
+                    var sn = i.Database.Jobs.Where(j => j.Id == jmnw.JobId).Select(j => j.DeviceSerialNumber).FirstOrDefault();
+                    if (sn != null)
+                        deviceSerialNumbers.Add(sn);
+                }
+            }
+            else if (i.EntityType == typeof(Device))
+            {
+                var d = (Device)i.Entity;
+                deviceSerialNumbers.Add(d.SerialNumber);
+
+                if (i.EventType == RepositoryMonitorEventType.Modified &&
+                    i.ModifiedProperties.Contains("AssignedUserId"))
+                {
+                    var p = i.GetPreviousPropertyValue<string>("AssignedUserId");
+                    if (p != null)
+                        userIds.Add(p);
+                }
+            }
+            else if (i.EntityType == typeof(DeviceProfile))
+            {
+                var dp = (DeviceProfile)i.Entity;
+
+                deviceSerialNumbers.AddRange(
+                    i.Database.Jobs
+                        .Where(j => !j.ClosedDate.HasValue && j.Device.DeviceProfileId == dp.Id)
+                        .Select(j => j.DeviceSerialNumber)
+                    );
+            }
+            else if (i.EntityType == typeof(User))
+            {
+                var u = (User)i.Entity;
+
+                deviceSerialNumbers.AddRange(
+                    i.Database.Jobs
+                        .Where(j => !j.ClosedDate.HasValue && j.Device.AssignedUserId == u.UserId)
+                        .Select(j => j.DeviceSerialNumber)
+                    );
+            }
+
+            if (deviceSerialNumbers.Count > 0 || userIds.Count > 0)
+            {
+                i.ExecuteAfterCommit(e =>
+                {
+                    BufferedUpdateStream.OnNext(Tuple.Create(deviceSerialNumbers, userIds));
+                });
+            }
+        }
+
+        private static void ProcessUpdates(IEnumerable<Tuple<List<string>, List<string>>> e)
+        {
+            using (DiscoDataContext Database = new DiscoDataContext())
+            {
+                var deviceSerialNumbers = e.SelectMany(i => i.Item1).Distinct().ToList();
+                var userIds = e.SelectMany(i => i.Item2).Distinct().ToList();
 
                 // Determine Held Devices for Users
-                userIds.AddRange(
-                    Database.Devices
-                        .Where(d => d.AssignedUserId != null && deviceSerialNumbers.Contains(d.SerialNumber))
-                        .Select(d => d.AssignedUserId)
-                    );
-                userIds = userIds.Distinct().ToList();
+                if (deviceSerialNumbers.Count > 0)
+                {
+                    userIds.AddRange(
+                        Database.Devices
+                            .Where(d => d.AssignedUserId != null && deviceSerialNumbers.Contains(d.SerialNumber))
+                            .Select(d => d.AssignedUserId)
+                        );
+                }
+                if (userIds.Count > 0)
+                    userIds = userIds.Distinct().ToList();
 
 
                 // Notify Held Devices
@@ -172,8 +195,9 @@ namespace Disco.Services.Jobs.Noticeboards
             {
                 var updates = DeviceSerialNumbers
                     .Skip(skipAmount).Take(30)
-                    .ToDictionary(dsn => dsn, 
-                    dsn => {
+                    .ToDictionary(dsn => dsn,
+                    dsn =>
+                    {
                         IHeldDeviceItem item;
                         items.TryGetValue(dsn, out item);
                         return item;
