@@ -265,21 +265,16 @@ namespace Disco.BI.DeviceBI
                 {
                     EnrolmentLog.LogSessionProgress(sessionId, 50, "Existing Device, Updating Disco Instance");
                     EnrolmentLog.LogSessionTaskUpdatingDevice(sessionId, Request.DeviceSerialNumber);
-                    if (!RepoDevice.DeviceModelId.HasValue || RepoDevice.DeviceModelId.Value == 1)
-                    {
-                        var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModelType.Trim());
-                        DeviceModel deviceModel = deviceModelResult.Item1;
-                        if (deviceModelResult.Item2)
-                            EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
-                        else
-                            EnrolmentLog.LogSessionDevice(sessionId, Request.DeviceSerialNumber, deviceModel.Id);
 
-                        RepoDevice.DeviceModel = deviceModel;
-                    }
+                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModelType.Trim());
+                    DeviceModel deviceModel = deviceModelResult.Item1;
+                    if (deviceModelResult.Item2)
+                        EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
                     else
-                    {
-                        EnrolmentLog.LogSessionDevice(sessionId, Request.DeviceSerialNumber, RepoDevice.DeviceModelId);
-                    }
+                        EnrolmentLog.LogSessionDevice(sessionId, Request.DeviceSerialNumber, deviceModel.Id);
+
+                    RepoDevice.DeviceModel = deviceModel;
+
                     RepoDevice.DeviceDomainId = Request.DeviceComputerName;
                     if (!RepoDevice.EnrolledDate.HasValue)
                     {
