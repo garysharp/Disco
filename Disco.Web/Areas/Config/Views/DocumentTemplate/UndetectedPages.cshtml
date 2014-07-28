@@ -70,11 +70,19 @@
         var urlImporterUndetectedDelete = '@(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedDelete()))/';
         var $undetectedPageDialog = $('#undetectedPageDialog').dialog({
             modal: true,
-            height: 850,
             width: 800,
             resizable: false,
             autoOpen: false
         });
+
+        function resizeUndetectedPageDialog() {
+            var dialogHeight = Math.min($(window).height() - 120, 805);
+            $undetectedPageDialog.height(dialogHeight);
+            $undetectedPageDialog.find('.pagePreview').height(dialogHeight - 105);
+        }
+        resizeUndetectedPageDialog();
+
+        $(window).resize(resizeUndetectedPageDialog);
 
         $dialogRemove = $('#dialogRemove').dialog({
             resizable: false,

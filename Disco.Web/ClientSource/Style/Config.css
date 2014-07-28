@@ -856,8 +856,10 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
 }
 #undetectedPageDialog > .pagePreview {
   height: 700px;
+  max-height: 700px;
   background-position: top center;
   background-repeat: no-repeat;
+  background-size: contain;
 }
 #undetectedPageDialog .actions {
   border-top: 1px solid #d1d1d1;
