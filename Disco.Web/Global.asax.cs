@@ -145,6 +145,9 @@ namespace Disco.Web
                 _OrganisationName = value;
             }
         }
+
+        public static string DeploymentId { get; set; }
+
         public static bool MultiSiteMode { get; set; }
 
         #region Version

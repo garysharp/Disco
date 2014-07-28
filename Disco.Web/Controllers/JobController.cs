@@ -12,6 +12,7 @@ using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Plugins.Features.WarrantyProvider;
 using Disco.Services.Users;
 using Disco.Services.Web;
+using Exceptionless;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -544,6 +545,7 @@ namespace Disco.Web.Controllers
                         }
                         catch (Exception ex)
                         {
+                            ex.ToExceptionless().Submit();
                             m.Error = ex;
                             return View(Views.LogWarrantyError, m);
                             throw;
@@ -558,6 +560,7 @@ namespace Disco.Web.Controllers
                             }
                             catch (Exception ex)
                             {
+                                ex.ToExceptionless().Submit();
                                 m.Error = ex;
                                 return View(Views.LogWarrantyError, m);
                             }
@@ -580,6 +583,7 @@ namespace Disco.Web.Controllers
                         }
                         catch (Exception ex)
                         {
+                            ex.ToExceptionless().Submit();
                             m.Error = ex;
                             return View(Views.LogWarrantyError, m);
                             throw;
@@ -624,6 +628,7 @@ namespace Disco.Web.Controllers
                                 }
                                 catch (Exception ex)
                                 {
+                                    ex.ToExceptionless().Submit();
                                     model.JobDetailsSupported = false;
                                     model.JobDetailsException = ex;
                                     return View(model);
@@ -726,6 +731,7 @@ namespace Disco.Web.Controllers
                         }
                         catch (Exception ex)
                         {
+                            ex.ToExceptionless().Submit();
                             m.Error = ex;
                             return View(Views.LogRepairError, m);
                             throw;
@@ -740,6 +746,7 @@ namespace Disco.Web.Controllers
                             }
                             catch (Exception ex)
                             {
+                                ex.ToExceptionless().Submit();
                                 m.Error = ex;
                                 return View(Views.LogRepairError, m);
                             }
@@ -762,6 +769,7 @@ namespace Disco.Web.Controllers
                         }
                         catch (Exception ex)
                         {
+                            ex.ToExceptionless().Submit();
                             m.Error = ex;
                             return View(Views.LogRepairError, m);
                             throw;
@@ -806,6 +814,7 @@ namespace Disco.Web.Controllers
                                 }
                                 catch (Exception ex)
                                 {
+                                    ex.ToExceptionless().Submit();
                                     model.JobDetailsSupported = false;
                                     model.JobDetailsException = ex;
                                     return View(model);

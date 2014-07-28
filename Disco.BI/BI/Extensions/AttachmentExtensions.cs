@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Disco.Models.Repository;
+﻿using Disco.BI.DocumentTemplateBI;
 using Disco.Data.Repository;
-using System.IO;
-using Disco.BI.DocumentTemplateBI;
-using Disco.Services.Users;
+using Disco.Models.Repository;
 using Disco.Services.Logging;
+using Disco.Services.Users;
+using Exceptionless;
+using System;
+using System.IO;
 
 namespace Disco.BI.Extensions
 {

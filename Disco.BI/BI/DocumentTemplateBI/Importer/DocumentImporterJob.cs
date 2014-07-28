@@ -1,9 +1,10 @@
+using Disco.Data.Repository;
+using Exceptionless;
+using Quartz;
+using Quartz.Impl.Triggers;
 using System;
 using System.IO;
 using System.Web.Caching;
-using Disco.Data.Repository;
-using Quartz;
-using Quartz.Impl.Triggers;
 
 namespace Disco.BI.DocumentTemplateBI.Importer
 {
@@ -69,8 +70,9 @@ namespace Disco.BI.DocumentTemplateBI.Importer
                                     }
                                     File.Move(filename, filenameError);
                                 }
-                                catch
+                                catch (Exception ex)
                                 {
+                                    ex.ToExceptionless().Submit();
                                     // Ignore Errors
                                 }
                             }
@@ -108,6 +110,7 @@ namespace Disco.BI.DocumentTemplateBI.Importer
             }
             catch (Exception ex)
             {
+                ex.ToExceptionless().Submit();
                 DocumentsLog.LogImportWarning(sessionId, string.Format("{0}; Will try again in 10 Seconds", ex.Message));
                 // Reschedule Job for 10 seconds
                 SimpleTriggerImpl trig = new SimpleTriggerImpl(Guid.NewGuid().ToString(), new DateTimeOffset(DateTime.Now.AddSeconds(10)));

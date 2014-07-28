@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Exceptionless;
 using Disco.Data.Repository;
 using Disco.Models.BI.Config;
 using Disco.Models.Repository;
@@ -219,7 +220,7 @@ namespace Disco.BI.Extensions
                     {
                         DiscoServicesJobs.UpdateRecipientReference(Database, j, publishJobResult.Id, publishJobResult.Secret, j.JobMetaWarranty.ExternalReference);
                     }
-                    catch (Exception) { } // Ignore Errors as this is not completely necessary
+                    catch (Exception ex) { ex.ToExceptionless().Submit(); } // Ignore Errors as this is not completely necessary
                 }
             }
         }
@@ -441,7 +442,7 @@ namespace Disco.BI.Extensions
                     {
                         DiscoServicesJobs.UpdateRecipientReference(Database, j, publishJobResult.Id, publishJobResult.Secret, j.JobMetaNonWarranty.RepairerReference);
                     }
-                    catch (Exception) { } // Ignore Errors as this is not completely necessary
+                    catch (Exception ex) { ex.ToExceptionless().Submit(); } // Ignore Errors as this is not completely necessary
                 }
             }
         }

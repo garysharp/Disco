@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Disco.BI.Extensions;
+using Exceptionless;
+using iTextSharp.text.pdf;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using Disco.BI.Extensions;
-using iTextSharp.text.pdf;
 
 namespace Disco.BI.AttachmentBI
 {
@@ -33,10 +34,11 @@ namespace Disco.BI.AttachmentBI
                             }
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        ex.ToExceptionless().Submit();
+
                         // Ignore Thumbnail Generation exceptions for images
-                        //throw;
                     }
                     
                 }
@@ -62,6 +64,10 @@ namespace Disco.BI.AttachmentBI
                                 }
                             }
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.ToExceptionless().Submit();
                     }
                     finally
                     {

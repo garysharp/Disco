@@ -7,10 +7,10 @@ using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using System;
 using System.Collections.Generic;
-using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Tamir.SharpSsh;
+using Exceptionless;
 
 namespace Disco.BI.DeviceBI
 {
@@ -118,6 +118,7 @@ namespace Disco.BI.DeviceBI
             }
             catch (System.Exception ex)
             {
+                ex.ToExceptionless().Submit();
                 EnrolmentLog.LogSessionError(sessionId, ex);
                 throw ex;
             }
@@ -306,6 +307,7 @@ namespace Disco.BI.DeviceBI
             }
             catch (System.Exception ex2)
             {
+                ex2.ToExceptionless().Submit();
                 EnrolmentLog.LogSessionError(sessionId, ex2);
                 throw ex2;
             }
@@ -655,6 +657,7 @@ namespace Disco.BI.DeviceBI
             }
             catch (System.Exception ex2)
             {
+                ex2.ToExceptionless().Submit();
                 EnrolmentLog.LogSessionError(sessionId, ex2);
                 throw ex2;
             }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Disco.Services.Logging;
 using Disco.Services.Logging.Models;
+using Exceptionless;
 
 namespace Disco.Services.Tasks
 {
@@ -54,6 +55,8 @@ namespace Disco.Services.Tasks
 
         public static void LogInitializeException(Exception ex)
         {
+            ex.ToExceptionless().Submit();
+
             if (ex.InnerException != null)
             {
                 Log(EventTypeIds.InitializeExceptionWithInner, ex.GetType().Name, ex.Message, ex.StackTrace, ex.InnerException.GetType().Name, ex.InnerException.Message, ex.InnerException.StackTrace);
@@ -65,6 +68,8 @@ namespace Disco.Services.Tasks
         }
         public static void LogInitializeException(Exception ex, Type ScheduledTaskType)
         {
+            ex.ToExceptionless().Submit();
+
             if (ex.InnerException != null)
             {
                 Log(EventTypeIds.InitializeScheduledTasksExceptionWithInner, ScheduledTaskType.Name, ScheduledTaskType.Assembly.Location, ex.GetType().Name, ex.Message, ex.StackTrace, ex.InnerException.GetType().Name, ex.InnerException.Message, ex.InnerException.StackTrace);
@@ -77,6 +82,12 @@ namespace Disco.Services.Tasks
 
         public static void LogScheduledTaskException(string ScheduledTaskName, string SessionId, Type ScheduledTaskType, Exception ex)
         {
+            ex.ToExceptionless()
+                .AddTags("Scheduled Task")
+                .AddObject(ScheduledTaskName, "ScheduledTaskName")
+                .AddObject(ScheduledTaskType.Name, "ScheduledTaskTypeName")
+                .Submit();
+
             if (ex.InnerException != null)
             {
                 Log(EventTypeIds.ScheduledTasksExceptionWithInner, ScheduledTaskName, SessionId, ScheduledTaskType.Assembly.Location, ex.GetType().Name, ex.Message, ex.StackTrace, ex.InnerException.GetType().Name, ex.InnerException.Message, ex.InnerException.StackTrace);

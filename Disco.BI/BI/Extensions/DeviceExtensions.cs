@@ -9,6 +9,7 @@ using System.IO;
 using Disco.Services.Users;
 using Disco.Services.Authorization;
 using Disco.Services.Interop.ActiveDirectory;
+using Exceptionless;
 
 namespace Disco.BI.Extensions
 {
@@ -36,6 +37,7 @@ namespace Disco.BI.Extensions
             }
             catch (Exception ex)
             {
+                ex.ToExceptionless().AddObject(deviceProfile.ComputerNameTemplate, "ComputerNameTemplate").Submit();
                 throw new InvalidOperationException(string.Format("An error occurred rendering the computer name: [{0}] {1}", ex.GetType().Name, ex.Message), ex.InnerException);
             }
             if (rendered == null || rendered.Length > 24)

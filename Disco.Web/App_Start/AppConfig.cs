@@ -1,8 +1,12 @@
 ﻿using Disco.Data.Repository;
 using Disco.Services.Interop.DiscoServices;
+using Exceptionless;
+using Exceptionless.Configuration;
 using System;
 using System.Linq;
 using System.Web;
+
+[assembly: Exceptionless("https://errors.discoict.com.au", "c81e644582374f68aaf1fb546e3db0cd")]
 
 namespace Disco.Web
 {
@@ -27,15 +31,18 @@ namespace Disco.Web
 
         public static void InitalizeCoreEnvironment(DiscoDataContext Database)
         {
+            ExceptionlessClient.Current.SendingError += Exceptionless_SendingError;
+
             // Initialize Logging
             Disco.Services.Logging.LogContext.Initalize(Database, DiscoApplication.SchedulerFactory);
 
-            // Initialize Active Directory Interop
-            Disco.Services.Interop.ActiveDirectory.ActiveDirectory.Initialize(Database);
-
             // Load Organisation Name
+            DiscoApplication.DeploymentId = Database.DiscoConfiguration.DeploymentId;
             DiscoApplication.OrganisationName = Database.DiscoConfiguration.OrganisationName;
             DiscoApplication.MultiSiteMode = Database.DiscoConfiguration.MultiSiteMode;
+
+            // Initialize Active Directory Interop
+            Disco.Services.Interop.ActiveDirectory.ActiveDirectory.Initialize(Database);
 
             // Setup Global Proxy
             DiscoApplication.SetGlobalProxy(Database.DiscoConfiguration.ProxyAddress,
@@ -45,6 +52,14 @@ namespace Disco.Web
 
             // Initialize User Service Interop
             Disco.Services.Users.UserService.Initialize(Database);
+        }
+
+        static void Exceptionless_SendingError(object sender, ErrorModelEventArgs e)
+        {
+            e.Error.UserName = DiscoApplication.DeploymentId;
+            e.Error.UserDescription = DiscoApplication.OrganisationName;
+            
+            e.Error.Tags.Add(string.Concat("v", DiscoApplication.Version));
         }
 
         public static void InitalizeNormalEnvironment(DiscoDataContext Database)
