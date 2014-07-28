@@ -248,6 +248,8 @@
     <Compile Include="Interop\ActiveDirectory\IADObject.cs" />
     <Compile Include="Interop\DiscoServices\DiscoServiceHelpers.cs" />
     <Compile Include="Interop\DiscoServices\Jobs.cs" />
+    <Compile Include="Interop\DiscoServices\PluginLibrary.cs" />
+    <Compile Include="Interop\DiscoServices\PluginLibraryUpdateTask.cs" />
     <Compile Include="Interop\VicEduDept\VicSmart.cs" />
     <Compile Include="Interop\DiscoServices\UpdateQuery.cs" />
     <Compile Include="Interop\DiscoServices\UpdateQueryTask.cs" />
@@ -275,7 +277,6 @@
     <Compile Include="Logging\Persistance\LogPersistContext.cs" />
     <Compile Include="Logging\Persistance\LogPersistContextInitializer.cs" />
     <Compile Include="Logging\Utilities.cs" />
-    <Compile Include="Plugins\CommunityInterop\PluginLibraryUpdateTask.cs" />
     <Compile Include="Plugins\Features\RepairProvider\RepairProviderFeature.cs" />
     <Compile Include="Plugins\Features\RepairProvider\RepairProviderSubmitJobException.cs" />
     <Compile Include="Plugins\Features\UIExtension\Results\LiteralResult.cs" />
@@ -379,7 +380,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2014/6/1" BuildVersion_BuildAction="Both" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" />
+      <UserProperties BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2014/6/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

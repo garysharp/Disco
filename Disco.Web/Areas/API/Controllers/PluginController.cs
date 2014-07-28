@@ -1,6 +1,6 @@
 ﻿using Disco.Services.Authorization;
+using Disco.Services.Interop.DiscoServices;
 using Disco.Services.Plugins;
-using Disco.Services.Plugins.CommunityInterop;
 using Disco.Services.Tasks;
 using Disco.Services.Web;
 using System;
@@ -15,7 +15,7 @@ namespace Disco.Web.Areas.API.Controllers
     public partial class PluginController : AuthorizedDatabaseController
     {
         [DiscoAuthorize(Claims.Config.Plugin.Install)]
-        public virtual ActionResult UpdateLibraryCatalogue(bool TryWaitingForCompletion = false)
+        public virtual ActionResult UpdateLibraryManifest(bool TryWaitingForCompletion = false)
         {
             var status = PluginLibraryUpdateTask.ScheduleNow();
 
@@ -93,19 +93,25 @@ namespace Disco.Web.Areas.API.Controllers
             if (string.IsNullOrEmpty(PluginId))
                 throw new ArgumentNullException("PluginId", "A PluginId must be supplied");
 
-            var catalogue = Plugins.LoadCatalogue(Database);
-            var plugin = catalogue.Plugins.FirstOrDefault(p => p.Id.Equals(PluginId));
+            var library = PluginLibrary.LoadManifest(Database);
+            var libraryIncompatibility = library.LoadIncompatibilityData();
+            var libraryItem = library.Plugins.FirstOrDefault(p => p.Id.Equals(PluginId));
 
-            if (plugin == null)
-                throw new ArgumentNullException("PluginId", "Plugin not found in catalogue");
+            if (libraryItem == null)
+                throw new ArgumentNullException("PluginId", "Plugin not found in library");
+
+            var libraryItemRelease = libraryItem.LatestCompatibleRelease(libraryIncompatibility);
+
+            if (libraryItemRelease == null)
+                throw new ArgumentNullException("PluginId", "No compatibility releases were found in library");
 
             // Already Installed?
-            if (Plugins.PluginInstalled(plugin.Id))
+            if (Plugins.PluginInstalled(libraryItem.Id))
                 throw new InvalidOperationException("This plugin is already installed");
 
-            var tempPluginLocation = Path.Combine(Database.DiscoConfiguration.PluginPackagesLocation, string.Format("{0}.discoPlugin", plugin.Id));
+            var tempPluginLocation = Path.Combine(Database.DiscoConfiguration.PluginPackagesLocation, string.Format("{0}.discoPlugin", libraryItem.Id));
 
-            var status = InstallPluginTask.InstallPlugin(plugin.LatestDownloadUrl, tempPluginLocation, true);
+            var status = InstallPluginTask.InstallPlugin(libraryItem.LatestCompatibleRelease(libraryIncompatibility).DownloadUrl, tempPluginLocation, true);
 
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }

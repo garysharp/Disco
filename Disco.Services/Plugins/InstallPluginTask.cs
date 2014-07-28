@@ -1,11 +1,13 @@
 ﻿using Disco.Data.Repository;
+using Disco.Models.Services.Interop.DiscoServices;
+using Disco.Services.Interop.DiscoServices;
 using Disco.Services.Tasks;
 using Quartz;
 using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 
 namespace Disco.Services.Plugins
 {
@@ -33,30 +35,16 @@ namespace Disco.Services.Plugins
                     Directory.CreateDirectory(Path.GetDirectoryName(packageFilePath));
 
                 // Need to Download the Package
-                HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(packageUrlPath);
-                webRequest.KeepAlive = false;
-
-                webRequest.ContentType = "application/xml";
-                webRequest.Method = WebRequestMethods.Http.Get;
-                webRequest.UserAgent = string.Format("Disco/{0} (PluginLibrary)", Disco.Services.Plugins.CommunityInterop.PluginLibraryUpdateTask.CurrentDiscoVersion());
-
-                using (HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse())
+                using (HttpClient httpClient = new HttpClient())
                 {
-                    if (webResponse.StatusCode == HttpStatusCode.OK)
+                    using (var httpResponse = httpClient.GetAsync(packageUrlPath).Result)
                     {
-                        Status.UpdateStatus(0, "Downloading...");
-                        using (var wResStream = webResponse.GetResponseStream())
+                        httpResponse.EnsureSuccessStatusCode();
+
+                        using (FileStream fsOut = new FileStream(packageFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
                         {
-                            using (FileStream fsOut = new FileStream(packageFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
-                            {
-                                wResStream.CopyTo(fsOut);
-                            }
+                            httpResponse.Content.ReadAsStreamAsync().Result.CopyTo(fsOut);
                         }
-                    }
-                    else
-                    {
-                        Status.SetTaskException(new WebException(string.Format("Server responded with: [{0}] {1}", webResponse.StatusCode, webResponse.StatusDescription)));
-                        return;
                     }
                 }
             }
@@ -97,10 +85,10 @@ namespace Disco.Services.Plugins
                             string packagePath = Path.Combine(database.DiscoConfiguration.PluginsLocation, packageManifest.Id);
 
                             // Check for Compatibility
-                            var compatibilityData = Plugins.LoadCompatibilityData(database);
-                            var pluginCompatibility = compatibilityData.Plugins.FirstOrDefault(i => i.Id.Equals(packageManifest.Id, StringComparison.OrdinalIgnoreCase) && packageManifest.Version == Version.Parse(i.Version));
-                            if (pluginCompatibility != null && !pluginCompatibility.Compatible)
-                                throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] is not compatible: {2}", packageManifest.Id, packageManifest.VersionFormatted, pluginCompatibility.Reason));
+                            var libraryIncompatibility = PluginLibrary.LoadManifest(database).LoadIncompatibilityData();
+                            PluginIncompatibility incompatibility;
+                            if (!libraryIncompatibility.IsCompatible(packageManifest.Id, packageManifest.Version, out incompatibility))
+                                throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] is not compatible: {2}", packageManifest.Id, packageManifest.VersionFormatted, incompatibility.Reason));
 
                             // Force Delete of Existing Folder
                             if (Directory.Exists(packagePath))

@@ -1,17 +1,14 @@
-﻿using System;
+﻿using Disco.Data.Repository;
+using Disco.Models.Services.Interop.DiscoServices;
+using Disco.Services.Interop.DiscoServices;
+using Disco.Services.Tasks;
+using Quartz;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
-using Disco.Data.Repository;
-using Disco.Models.BI.Interop.Community;
-using Disco.Services.Tasks;
-using Quartz;
+using System.Net.Http;
 
 namespace Disco.Services.Plugins
 {
@@ -24,17 +21,19 @@ namespace Disco.Services.Plugins
             string pluginId = (string)this.ExecutionContext.JobDetail.JobDataMap["PluginId"];
             string packageFilePath = (string)this.ExecutionContext.JobDetail.JobDataMap["PackageFilePath"];
 
-            PluginLibraryUpdateResponse catalogue;
+            PluginLibraryManifestV2 libraryManifest;
+            PluginLibraryIncompatibility libraryIncompatibility;
             string pluginPackagesLocation;
 
             if (!Plugins.PluginsLoaded)
                 throw new InvalidOperationException("Plugins have not been initialized");
 
-            List<Tuple<PluginManifest, string, PluginLibraryItem>> updatePlugins;
+            List<Tuple<PluginManifest, string, PluginLibraryItemV2, PluginLibraryItemReleaseV2>> updatePlugins;
 
             using (DiscoDataContext database = new DiscoDataContext())
             {
-                catalogue = Plugins.LoadCatalogue(database);
+                libraryManifest = PluginLibrary.LoadManifest(database);
+                libraryIncompatibility = libraryManifest.LoadIncompatibilityData();
                 pluginPackagesLocation = database.DiscoConfiguration.PluginPackagesLocation;
             }
 
@@ -44,30 +43,41 @@ namespace Disco.Services.Plugins
                 {
                     // Update Single from Catalogue
                     PluginManifest existingManifest = Plugins.GetPlugin(pluginId);
-                    var catalogueItem = catalogue.Plugins.FirstOrDefault(p => p.Id == existingManifest.Id);
+                    var libraryItem = libraryManifest.Plugins.FirstOrDefault(p => p.Id == existingManifest.Id);
 
-                    if (catalogueItem == null)
-                        throw new InvalidOperationException("No updates are available for this Plugin");
-                    if (Version.Parse(catalogueItem.LatestVersion) <= existingManifest.Version)
+                    if (libraryItem == null)
+                        throw new InvalidOperationException("This item isn't in the plugin library manifest");
+
+                    var libraryItemRelease = libraryItem.LatestCompatibleRelease(libraryIncompatibility);
+
+                    if (Version.Parse(libraryItemRelease.Version) <= existingManifest.Version)
                         throw new InvalidOperationException("Only newer versions can be used to update a plugin");
 
-                    updatePlugins = new List<Tuple<PluginManifest, string, PluginLibraryItem>>() {
-                        new Tuple<PluginManifest,string,PluginLibraryItem>(existingManifest, null, catalogueItem)
+                    updatePlugins = new List<Tuple<PluginManifest, string, PluginLibraryItemV2, PluginLibraryItemReleaseV2>>() {
+                        Tuple.Create(existingManifest, (string)null, libraryItem, libraryItemRelease)
                     };
                 }
                 else
                 {
                     // Update Single from Local
                     PluginManifest existingManifest = Plugins.GetPlugin(pluginId);
-                    updatePlugins = new List<Tuple<PluginManifest, string, PluginLibraryItem>>() {
-                        new Tuple<PluginManifest,string,PluginLibraryItem>(existingManifest, packageFilePath, null)
+                    updatePlugins = new List<Tuple<PluginManifest, string, PluginLibraryItemV2, PluginLibraryItemReleaseV2>>() {
+                        Tuple.Create(existingManifest, packageFilePath, (PluginLibraryItemV2)null, (PluginLibraryItemReleaseV2)null)
                     };
                 }
             }
             else
             {
                 // Update All
-                updatePlugins = Plugins.GetPlugins().Join((IEnumerable<PluginLibraryItem>)catalogue.Plugins, manifest => manifest.Id, update => update.Id, (manifest, update) => new Tuple<PluginManifest, string, PluginLibraryItem>(manifest, null, update)).Where(i => Version.Parse(i.Item3.LatestVersion) > i.Item1.Version).ToList();
+                updatePlugins = Plugins.GetPlugins()
+                    .Join(
+                        libraryManifest.Plugins,
+                        manifest => manifest.Id,
+                        libraryItem => libraryItem.Id,
+                        (manifest, libraryItem) => Tuple.Create(manifest, (string)null, libraryItem, libraryItem.LatestCompatibleRelease(libraryIncompatibility)),
+                        StringComparer.OrdinalIgnoreCase)
+                    .Where(i => Version.Parse(i.Item4.Version) > i.Item1.Version)
+                    .ToList();
             }
 
             if (updatePlugins == null || updatePlugins.Count == 0)
@@ -115,31 +125,40 @@ namespace Disco.Services.Plugins
 
         internal static void UpdateOffline(ScheduledTaskStatus Status)
         {
-            PluginLibraryUpdateResponse pluginCatalogue = null;
+            PluginLibraryManifestV2 libraryManifest = null;
+            PluginLibraryIncompatibility libraryIncompatibility = null;
             List<PluginManifest> installedPluginManifests;
             string pluginPackagesLocation;
-            List<Tuple<PluginManifest, string, PluginLibraryItem>> updatePlugins = new List<Tuple<PluginManifest, string, PluginLibraryItem>>();
+            List<Tuple<PluginManifest, string, PluginLibraryItemV2, PluginLibraryItemReleaseV2>> updatePlugins =
+                new List<Tuple<PluginManifest, string, PluginLibraryItemV2, PluginLibraryItemReleaseV2>>();
 
-            
+
             using (DiscoDataContext database = new DiscoDataContext())
             {
                 pluginPackagesLocation = database.DiscoConfiguration.PluginPackagesLocation;
                 installedPluginManifests = OfflineInstalledPlugins(database);
 
-                if (installedPluginManifests.Count > 0)
-                    pluginCatalogue = Plugins.LoadCatalogue(database);
+                if (installedPluginManifests.Count > 0){
+                    libraryManifest = PluginLibrary.LoadManifest(database);
+                    libraryIncompatibility = libraryManifest.LoadIncompatibilityData();
+                }
             }
 
-            if (pluginCatalogue != null && installedPluginManifests.Count > 0)
+            if (libraryManifest != null && installedPluginManifests.Count > 0)
             {
                 foreach (var pluginManifest in installedPluginManifests)
                 {
                     // Check for Update
-                    var catalogueItem = pluginCatalogue.Plugins.FirstOrDefault(i => i.Id == pluginManifest.Id && Version.Parse(i.LatestVersion) > pluginManifest.Version);
+                    var libraryItem = libraryManifest.Plugins.FirstOrDefault(i => i.Id == pluginManifest.Id);
 
-                    if (catalogueItem != null)
-                    { // Update Available
-                        updatePlugins.Add(new Tuple<PluginManifest, string, PluginLibraryItem>(pluginManifest, null, catalogueItem));
+                    if (libraryItem != null)
+                    {
+                        var libraryItemRelease = libraryItem.LatestCompatibleRelease(libraryIncompatibility);
+
+                        if (libraryItemRelease != null && Version.Parse(libraryItemRelease.Version) > pluginManifest.Version)
+                        { // Update Available
+                            updatePlugins.Add(Tuple.Create(pluginManifest, (string)null, libraryItem, libraryItemRelease));
+                        }
                     }
                 }
             }
@@ -150,18 +169,19 @@ namespace Disco.Services.Plugins
             }
         }
 
-        internal static void ExecuteTaskInternal(ScheduledTaskStatus Status, string pluginPackagesLocation, List<Tuple<PluginManifest, string, PluginLibraryItem>> UpdatePlugins)
+        internal static void ExecuteTaskInternal(ScheduledTaskStatus Status, string pluginPackagesLocation, List<Tuple<PluginManifest, string, PluginLibraryItemV2, PluginLibraryItemReleaseV2>> UpdatePlugins)
         {
             while (UpdatePlugins.Count > 0)
             {
                 var updatePlugin = UpdatePlugins[0];
                 var existingManifest = updatePlugin.Item1;
                 var packageTempFilePath = updatePlugin.Item2;
-                var catalogueItem = updatePlugin.Item3;
+                var libraryItem = updatePlugin.Item3;
+                var libraryItemRelease = updatePlugin.Item4;
                 UpdatePlugins.Remove(updatePlugin);
 
-                var pluginId = existingManifest != null ? existingManifest.Id : catalogueItem.Id;
-                var pluginName = existingManifest != null ? existingManifest.Name : catalogueItem.Name;
+                var pluginId = existingManifest != null ? existingManifest.Id : libraryItemRelease.PluginId;
+                var pluginName = existingManifest != null ? existingManifest.Name : libraryItem.Name;
 
                 if (string.IsNullOrEmpty(packageTempFilePath))
                 {
@@ -176,30 +196,18 @@ namespace Disco.Services.Plugins
                         Directory.CreateDirectory(Path.GetDirectoryName(packageTempFilePath));
 
                     // Need to Download the Package
-                    HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(catalogueItem.LatestDownloadUrl);
-                    webRequest.KeepAlive = false;
-
-                    webRequest.ContentType = "application/xml";
-                    webRequest.Method = WebRequestMethods.Http.Get;
-                    webRequest.UserAgent = string.Format("Disco/{0} (PluginLibrary)", Disco.Services.Plugins.CommunityInterop.PluginLibraryUpdateTask.CurrentDiscoVersion());
-
-                    using (HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse())
+                    using (HttpClient httpClient = new HttpClient())
                     {
-                        if (webResponse.StatusCode == HttpStatusCode.OK)
+                        Status.UpdateStatus(0, "Downloading...");
+
+                        using (var httpResponse = httpClient.GetAsync(libraryItemRelease.DownloadUrl).Result)
                         {
-                            Status.UpdateStatus(0, "Downloading...");
-                            using (var wResStream = webResponse.GetResponseStream())
+                            httpResponse.EnsureSuccessStatusCode();
+
+                            using (FileStream fsOut = new FileStream(packageTempFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
                             {
-                                using (FileStream fsOut = new FileStream(packageTempFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
-                                {
-                                    wResStream.CopyTo(fsOut);
-                                }
+                                httpResponse.Content.ReadAsStreamAsync().Result.CopyTo(fsOut);
                             }
-                        }
-                        else
-                        {
-                            Status.SetTaskException(new WebException(string.Format("Server responded with: [{0}] {1}", webResponse.StatusCode, webResponse.StatusDescription)));
-                            return;
                         }
                     }
                 }
@@ -234,10 +242,10 @@ namespace Disco.Services.Plugins
                 using (DiscoDataContext database = new DiscoDataContext())
                 {
                     // Check for Compatibility
-                    var compatibilityData = Plugins.LoadCompatibilityData(database);
-                    var pluginCompatibility = compatibilityData.Plugins.FirstOrDefault(i => i.Id.Equals(updateManifest.Id, StringComparison.OrdinalIgnoreCase) && updateManifest.Version == Version.Parse(i.Version));
-                    if (pluginCompatibility != null && !pluginCompatibility.Compatible)
-                        throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] is not compatible: {2}", updateManifest.Id, updateManifest.VersionFormatted, pluginCompatibility.Reason));
+                    var incompatibilityLibrary = PluginLibrary.LoadManifest(database).LoadIncompatibilityData();
+                    PluginIncompatibility incompatibility;
+                    if (!incompatibilityLibrary.IsCompatible(updateManifest.Id, updateManifest.Version, out incompatibility))
+                        throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] is not compatible: {2}", updateManifest.Id, updateManifest.VersionFormatted, incompatibility.Reason));
 
                     var updatePluginPath = Path.Combine(database.DiscoConfiguration.PluginsLocation, string.Format("{0}.discoPlugin", updateManifest.Id));
                     File.Move(packageTempFilePath, updatePluginPath);

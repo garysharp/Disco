@@ -671,11 +671,13 @@ div.logEventsViewport {
         margin-top: 4px;
     }
 }
+
 #Config_DocumentTemplates_Scope_Dialog {
     div.input {
         margin: 14px 10px 20px;
     }
 }
+
 #Config_DocumentTemplates_TemplatePdf_Dialog {
     div {
         text-align: center;
@@ -1066,34 +1068,53 @@ div.logEventsViewport {
 }
 
 #dialogUninstallPlugins {
-    #uninstallPlugin{
+    #uninstallPlugin {
         margin: .5em 0;
     }
-    #uninstallPluginData{
+
+    #uninstallPluginData {
         margin: .5em 0;
     }
 }
+
 #dialogUninstallPluginConfirm {
     #uninstallPluginConfirm {
         text-align: center;
         margin: 1em 0 0.5em 0;
     }
-    #uninstallPluginDataConfirm{
+
+    #uninstallPluginDataConfirm {
         margin-top: 1em;
     }
 }
 
-#pluginCatalog {
-    #pluginCatalogHeading {
-        margin-bottom: 20px;
-        text-align: right;
+#pluginLibraryHeading {
+    float: right;
+}
+
+#pluginLibrary {
+
+    #pluginLibraryGroups {
+
+        width: 900px;
+        margin: 0 auto;
+
+        & > div.form {
+            width: 50%;
+            float: left;
+
+            & > table {
+                margin: 0 10px 10px 4px;
+                width: calc(~"100% - 14px");
+            }
+        }
     }
 
     .pluginItem {
         .pluginItemBlurb {
-            margin: 4px 0 4px 2px;
+            margin: 8px 0 8px 2px;
             padding: 0 4px;
-            border-left: 4px solid @TableDataBorderColour;
+            border-left: 4px solid @BackgroundColour;
 
             * {
                 padding: 0;
@@ -1129,6 +1150,7 @@ div.logEventsViewport {
         margin-top: 1em;
     }
 }
+
 #dialogUploadPlugin {
     #pluginFile {
         margin: 1em 0 1em 6px;

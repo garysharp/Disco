@@ -873,6 +873,7 @@ namespace Links
         public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
         public static readonly string Disco_ClientBootstrapper_exe = Url("Disco.ClientBootstrapper.exe");
+        public static readonly string DiscoServices_InitialPluginLibraryManifest_json = Url("DiscoServices.InitialPluginLibraryManifest.json");
         public static readonly string PreparationClient_zip = Url("PreparationClient.zip");
     }
 

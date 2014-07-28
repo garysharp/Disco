@@ -57,12 +57,6 @@
     <Compile Include="BI\Device\ImportDeviceSession.cs" />
     <Compile Include="BI\DocumentTemplate\DocumentState.cs" />
     <Compile Include="BI\Expressions\IImageExpressionResult.cs" />
-    <Compile Include="BI\Interop\Community\PluginLibraryCompatibilityItem.cs" />
-    <Compile Include="BI\Interop\Community\PluginLibraryCompatibilityResponse.cs" />
-    <Compile Include="BI\Interop\Community\PluginLibraryCompatibilityRequest.cs" />
-    <Compile Include="BI\Interop\Community\PluginLibraryItem.cs" />
-    <Compile Include="BI\Interop\Community\PluginLibraryUpdateRequest.cs" />
-    <Compile Include="BI\Interop\Community\PluginLibraryUpdateResponse.cs" />
     <Compile Include="BI\Job\Statistics\DailyOpenedClosedItem.cs" />
     <Compile Include="ClientServices\EnrolResponse.cs" />
     <Compile Include="ClientServices\MacEnrol.cs" />
@@ -109,6 +103,9 @@
     <Compile Include="Services\Devices\Importing\IDeviceImportContext.cs" />
     <Compile Include="Services\Devices\Importing\IDeviceImportField.cs" />
     <Compile Include="Services\Interop\ActiveDirectory\ADManagedGroupConfiguration.cs" />
+    <Compile Include="Services\Interop\DiscoServices\PluginIncompatibility.cs" />
+    <Compile Include="Services\Interop\DiscoServices\PluginLibraryIncompatibility.cs" />
+    <Compile Include="Services\Interop\DiscoServices\PluginLibraryManifestV2.cs" />
     <Compile Include="Services\Interop\DiscoServices\PublishJobResult.cs" />
     <Compile Include="Services\Interop\DiscoServices\UpdateRequestV2.cs" />
     <Compile Include="Services\Interop\DiscoServices\UpdateResponseV2.cs" />
@@ -182,7 +179,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2014/6/1" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" />
+      <UserProperties BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_StartDate="2014/6/1" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

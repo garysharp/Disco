@@ -1227,6 +1227,7 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Noticeboard.generated.cs</LastGenOutput>
     </None>
+    <Content Include="ClientBin\DiscoServices.InitialPluginLibraryManifest.json" />
     <None Include="ClientSource\Scripts\Core.min.js.map">
       <DependentUpon>Core.js.bundle</DependentUpon>
     </None>

@@ -7,10 +7,9 @@
 
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Plugins", MVC.Config.Plugins.Index(), "Install Plugin");
 }
-<div id="pluginCatalog">
-    <h4 id="pluginCatalogHeading">The plugin catalogue [<a href="https://discoict.com.au/">https://discoict.com.au</a>] was last updated @CommonHelpers.FriendlyDate((Model.Catalogue.ResponseTimestamp > DateTime.Now ? DateTime.Now : Model.Catalogue.ResponseTimestamp))
-    </h4>
-    @if (Model.Catalogue.Plugins.Count == 0)
+<div id="pluginLibrary">
+    <h4 id="pluginLibraryHeading">The plugin library [<a href="https://discoict.com.au/">https://discoict.com.au</a>] was last updated @CommonHelpers.FriendlyDate((Model.Library.ManifestDate > DateTime.Now ? DateTime.Now : Model.Library.ManifestDate))</h4>
+    @if (Model.Library.Plugins.Count == 0)
     { 
         <div class="form" style="width: 450px; padding: 100px 0;">
             <h2>No Plugins are Available</h2>
@@ -18,50 +17,50 @@
     }
     else
     {
-        var plugins = Model.Catalogue.Plugins;
-        int itemsPerColumn = plugins.Count / 3;
-        var itemNextId = 0;
-        <table id="pageMenu">
-            <tr>
-                @for (int i = 0; i < 3; i++)
-                {
-                    <td>
-                        @{
-                    int itemsForThisColumn = itemsPerColumn + (plugins.Count % 3 > i ? 1 : 0);
-                    for (int i2 = 0; i2 < itemsForThisColumn && itemNextId < plugins.Count; i2++)
-                    {
-                        var plugin = plugins[itemNextId];
-                        itemNextId++;
-                        var installedPlugin = Plugins.PluginInstalled(plugin.Id) ? Plugins.GetPlugin(plugin.Id) : null;
-                            <div class="pageMenuArea pluginItem@(installedPlugin != null ? " pluginInstalled" : string.Empty)">
-                                <h2 class="pluginName"><i class="fa fa-cogs"></i>@plugin.Name
-                                    @if (installedPlugin == null)
-                                    {
-                                        <a class="pluginInstallLink button" href="@(Url.Action(MVC.API.Plugin.Install(plugin.Id)))">Install</a>
-                                    }
-                                    else
-                                    {
-                                        if (Version.Parse(plugin.LatestVersion) > installedPlugin.Version)
-                                        {
-                                        <a class="pluginUpdateLink button" href="@(Url.Action(MVC.API.Plugin.Update(plugin.Id)))">Update</a>    
-                                        }
-                                        else
-                                        {
-                                        <a class="pluginInstalledLink button disabled" href="#">Installed</a>    
-                                        }
-                                    }
-                                </h2>
-                                <div class="pluginItemBlurb">@(new HtmlString(plugin.Blurb))</div>
-                                <div class="pageMenuBlurb">
-                                    <span class="pluginId">@plugin.Id</span> | <span class="pluginVersion">v@(plugin.LatestVersion)</span> | @plugin.Author | <a href="@plugin.Url" title="More Information" target="_blank"><i class="fa fa-external-link"></i></a>
-                                </div>
-                            </div>
-                    }
+        var pluginGroups = Model.AvailablePlugins;
+        
+        <div id="pluginLibraryGroups">
+            @foreach (var pluginGroup in pluginGroups)
+            {
+                <div class="form">
+                    <h2>@pluginGroup.Item1</h2>
+                    <table>
+                        @foreach (var plugin in pluginGroup.Item2)
+                        {
+                            var installedPlugin = Plugins.PluginInstalled(plugin.Item1.Id) ? Plugins.GetPlugin(plugin.Item1.Id) : null;
+                            <tr>
+                                <td>
+                                    <div class="pluginItem@(installedPlugin != null ? " pluginInstalled" : string.Empty)">
+                                        <h2 class="pluginName"><i class="fa fa-cogs"></i>@plugin.Item1.Name
+                                            @if (installedPlugin == null)
+                                            {
+                                                <a class="pluginInstallLink button" href="@(Url.Action(MVC.API.Plugin.Install(plugin.Item1.Id)))">Install</a>
+                                            }
+                                            else
+                                            {
+                                                if (Version.Parse(plugin.Item2.Version) > installedPlugin.Version)
+                                                {
+                                                <a class="pluginUpdateLink button" href="@(Url.Action(MVC.API.Plugin.Update(plugin.Item1.Id)))">Update</a>    
+                                                }
+                                                else
+                                                {
+                                                <a class="pluginInstalledLink button disabled" href="#">Installed</a>    
+                                                }
+                                            }
+                                        </h2>
+                                        <div class="pluginItemBlurb">@(new HtmlString(plugin.Item1.Description))</div>
+                                        <div class="pageMenuBlurb">
+                                            <span class="pluginId">@plugin.Item1.Id</span> | <span class="pluginVersion">v@(plugin.Item2.Version)</span> | @plugin.Item1.Author | <a href="@plugin.Item1.InformationUrl" title="More Information" target="_blank"><i class="fa fa-external-link"></i></a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>   
                         }
-                    </td>
-                }
-            </tr>
-        </table>
+                    </table>
+                </div>
+            }
+        </div>
+        
     }
 </div>
 <div id="dialogInstallPlugin" title="Install this Plugin?">
@@ -98,6 +97,8 @@
         var $selectedPlugin;
         var $selectedPluginUrl;
 
+        $('#pluginLibraryHeading').appendTo('#layout_PageHeading');
+
         // Install
         var $dialogInstall = $('#dialogInstallPlugin').dialog({
             resizable: false,
@@ -120,7 +121,7 @@
                 }
             }
         });
-        $('#pageMenu').find('a.pluginInstallLink').click(function () {
+        $('#pluginLibraryGroups').find('a.pluginInstallLink').click(function () {
             $this = $(this);
 
             $selectedPlugin = $this.closest('.pluginItem');
@@ -134,7 +135,7 @@
 
             return false;
         });
-        $('#pageMenu').find('a.pluginUpdateLink').click(function () {
+        $('#pluginLibraryGroups').find('a.pluginUpdateLink').click(function () {
             $this = $(this);
 
             $selectedPlugin = $this.closest('.pluginItem');
@@ -180,7 +181,7 @@
     });
 </script>
 <div class="actionBar">
-    @Html.ActionLinkButton("Update Catalogue", MVC.API.Plugin.UpdateLibraryCatalogue())
+    @Html.ActionLinkButton("Update Plugin Library", MVC.API.Plugin.UpdateLibraryManifest())
     @if (canInstallLocal)
     {
         @Html.ActionLinkButton("Install Plugin Package", MVC.API.Plugin.InstallLocal(), "buttonUpload")

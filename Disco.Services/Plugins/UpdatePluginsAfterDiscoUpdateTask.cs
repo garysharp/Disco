@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Disco.Data.Repository;
+using Disco.Services.Interop.DiscoServices;
 using Disco.Services.Tasks;
+using System;
+using System.Linq;
 
 namespace Disco.Services.Plugins
 {
@@ -20,12 +19,15 @@ namespace Disco.Services.Plugins
             // Wait for App to Load (10 Seconds)
             for (int i = 0; i < 10; i++)
             {
-                this.Status.UpdateStatus(10 * i);                
+                this.Status.UpdateStatus(10 * i);
                 System.Threading.Thread.Sleep(1000);
             }
 
             // Update Catalogue
-            CommunityInterop.PluginLibraryUpdateTask.ExecuteTaskInternal(this.Status);
+            using (DiscoDataContext database = new DiscoDataContext())
+            {
+                PluginLibrary.UpdateManifest(database, this.Status);
+            }
 
             // Update all Plugins
             UpdatePluginTask.UpdateOffline(this.Status);

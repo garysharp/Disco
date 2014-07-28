@@ -1,33 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Disco.Models.BI.Interop.Community;
+﻿using Disco.Models.Services.Interop.DiscoServices;
+using Disco.Services.Interop.DiscoServices;
 using Disco.Services.Plugins;
 using Disco.Services.Plugins.Features.Other;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Disco.Web.Areas.Config.Models.Plugins
 {
     public class IndexViewModel
     {
         public List<PluginManifest> PluginManifests { get; set; }
-        public PluginLibraryUpdateResponse Catalogue { get; set; }
+        public PluginLibraryManifestV2 PluginLibrary { get; set; }
 
-        private Dictionary<PluginManifest, PluginLibraryItem> _PluginUpdates;
-        public Dictionary<PluginManifest, PluginLibraryItem> PluginUpdates
+        private Dictionary<PluginManifest, Tuple<PluginLibraryItemV2, PluginLibraryItemReleaseV2>> _PluginUpdates;
+        public Dictionary<PluginManifest, Tuple<PluginLibraryItemV2, PluginLibraryItemReleaseV2>> PluginUpdates
         {
             get
             {
                 if (_PluginUpdates == null)
                 {
-                    if (Catalogue == null || Catalogue.Plugins == null || Catalogue.Plugins.Count == 0 ||
+                    if (PluginLibrary == null || PluginLibrary.Plugins == null || PluginLibrary.Plugins.Count == 0 ||
                         PluginManifests == null || PluginManifests.Count == 0)
                     {
-                        _PluginUpdates = new Dictionary<PluginManifest, PluginLibraryItem>(); // No Updates
+                        _PluginUpdates = new Dictionary<PluginManifest,Tuple<PluginLibraryItemV2,PluginLibraryItemReleaseV2>>(); // No Updates
                     }
                     else
                     {
-                        _PluginUpdates = PluginManifests.Join((IEnumerable<PluginLibraryItem>)Catalogue.Plugins, manifest => manifest.Id, update => update.Id, (manifest, update) => new Tuple<PluginManifest, PluginLibraryItem>(manifest, update)).Where(i => Version.Parse(i.Item2.LatestVersion) > i.Item1.Version).ToDictionary(i => i.Item1, i => i.Item2);
+                        var libraryIncompatibility = PluginLibrary.LoadIncompatibilityData();
+
+                        _PluginUpdates = PluginManifests
+                            .Join(
+                                PluginLibrary.Plugins,
+                                manifest => manifest.Id,
+                                libraryItem => libraryItem.Id,
+                                (manifest, libraryItem) => Tuple.Create(manifest, libraryItem, libraryItem.LatestCompatibleRelease(libraryIncompatibility)),
+                                StringComparer.OrdinalIgnoreCase)
+                            .Where(i => i.Item3 != null && Version.Parse(i.Item3.Version) > i.Item1.Version)
+                            .ToDictionary(i => i.Item1, i => Tuple.Create(i.Item2, i.Item3));
                     }
                 }
                 return _PluginUpdates;

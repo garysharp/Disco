@@ -1,4 +1,5 @@
 ﻿using Disco.Services.Authorization;
+using Disco.Services.Interop.DiscoServices;
 using Disco.Services.Plugins;
 using Disco.Services.Users;
 using Disco.Services.Web;
@@ -16,7 +17,7 @@ namespace Disco.Web.Areas.Config.Controllers
             Models.Plugins.IndexViewModel vm = new Models.Plugins.IndexViewModel()
                 {
                     PluginManifests = Plugins.GetPlugins(),
-                    Catalogue = Plugins.LoadCatalogue(Database)
+                    PluginLibrary = PluginLibrary.LoadManifest(Database)
                 };
             return View(vm);
         }
@@ -70,18 +71,18 @@ namespace Disco.Web.Areas.Config.Controllers
         public virtual ActionResult Install()
         {
             // Check for recent catalogue
-            var catalogue = Plugins.LoadCatalogue(Database);
+            var library = PluginLibrary.LoadManifest(Database);
 
-            if (catalogue == null || catalogue.ResponseTimestamp < DateTime.Now.AddHours(-1))
+            if (library == null || library.ManifestDate < DateTime.Now.AddHours(-1))
             {
                 // Need to Update Catalogue (over 1 hour old)
-                return RedirectToAction(MVC.API.Plugin.UpdateLibraryCatalogue(true));
+                return RedirectToAction(MVC.API.Plugin.UpdateLibraryManifest(true));
             }
             else
             {
                 var model = new Models.Plugins.InstallModel()
                 {
-                    Catalogue = catalogue
+                    Library = library
                 };
 
                 return View(model);

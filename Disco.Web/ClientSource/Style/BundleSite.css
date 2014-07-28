@@ -4144,6 +4144,7 @@ div.actionBar {
   border-top: 1px solid #d1d1d1;
   text-align: right;
   background-color: #f2f2f2;
+  clear: both;
 }
 div.actionBar:not(:first-child) {
   margin-top: 10px;

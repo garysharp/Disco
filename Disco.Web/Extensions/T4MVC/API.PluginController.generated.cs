@@ -103,7 +103,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
-            public readonly string UpdateLibraryCatalogue = "UpdateLibraryCatalogue";
+            public readonly string UpdateLibraryManifest = "UpdateLibraryManifest";
             public readonly string UpdateAll = "UpdateAll";
             public readonly string Update = "Update";
             public readonly string UpdateLocal = "UpdateLocal";
@@ -115,7 +115,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
-            public const string UpdateLibraryCatalogue = "UpdateLibraryCatalogue";
+            public const string UpdateLibraryManifest = "UpdateLibraryManifest";
             public const string UpdateAll = "UpdateAll";
             public const string Update = "Update";
             public const string UpdateLocal = "UpdateLocal";
@@ -125,11 +125,11 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
 
-        static readonly ActionParamsClass_UpdateLibraryCatalogue s_params_UpdateLibraryCatalogue = new ActionParamsClass_UpdateLibraryCatalogue();
+        static readonly ActionParamsClass_UpdateLibraryManifest s_params_UpdateLibraryManifest = new ActionParamsClass_UpdateLibraryManifest();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_UpdateLibraryCatalogue UpdateLibraryCatalogueParams { get { return s_params_UpdateLibraryCatalogue; } }
+        public ActionParamsClass_UpdateLibraryManifest UpdateLibraryManifestParams { get { return s_params_UpdateLibraryManifest; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_UpdateLibraryCatalogue
+        public class ActionParamsClass_UpdateLibraryManifest
         {
             public readonly string TryWaitingForCompletion = "TryWaitingForCompletion";
         }
@@ -195,14 +195,14 @@ namespace Disco.Web.Areas.API.Controllers
         public T4MVC_PluginController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void UpdateLibraryCatalogueOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool TryWaitingForCompletion);
+        partial void UpdateLibraryManifestOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool TryWaitingForCompletion);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateLibraryCatalogue(bool TryWaitingForCompletion)
+        public override System.Web.Mvc.ActionResult UpdateLibraryManifest(bool TryWaitingForCompletion)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLibraryCatalogue);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLibraryManifest);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "TryWaitingForCompletion", TryWaitingForCompletion);
-            UpdateLibraryCatalogueOverride(callInfo, TryWaitingForCompletion);
+            UpdateLibraryManifestOverride(callInfo, TryWaitingForCompletion);
             return callInfo;
         }
 
