@@ -1,5 +1,8 @@
 ﻿@model IEnumerable<Disco.Models.Services.Searching.UserSearchResultItem>
 @using Disco.Services.Users.UserFlags;
+@{
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-DataTableHelpers");
+}
 <div class="genericData userTable">
     @if (Model != null && Model.Count() > 0)
     { 

@@ -2,6 +2,8 @@
 @{
     var canShowDevices = Authorization.Has(Claims.Device.Show);
     var canShowUsers = Authorization.Has(Claims.User.Show);
+
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-DataTableHelpers");
 }
 <div class="genericData deviceTable">
     @if (Model != null && Model.Count() > 0)
