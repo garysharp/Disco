@@ -107,6 +107,7 @@ namespace Disco.Services.Tasks
             this._currentProcess = "Scheduled";
             this._currentDescription = "Scheduled Task for Execution";
 
+            this.ProgressMultiplier = 1;
             this._progress = 0;
         }
 
@@ -381,7 +382,7 @@ namespace Disco.Services.Tasks
                 this._progress = 0;
                 changedProperties.Add(new ChangedItem("Progress", this._progress));
             }
-            this.ProgressMultiplier = 0;
+            this.ProgressMultiplier = 1;
             this.ProgressOffset = 0;
             this.IgnoreCurrentDescription = false;
             this.IgnoreCurrentProcessChanges = false;
