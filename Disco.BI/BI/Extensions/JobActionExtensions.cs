@@ -385,7 +385,7 @@ namespace Disco.BI.Extensions
                 throw new InvalidOperationException("Log Repair was Denied");
 
             PublishJobResult publishJobResult = null;
-            
+
             using (RepairProviderFeature RepairProvider = RepairProviderDefinition.CreateInstance<RepairProviderFeature>())
             {
                 if (SendAttachments != null && SendAttachments.Count > 0)
@@ -544,20 +544,25 @@ namespace Disco.BI.Extensions
             switch (j.JobTypeId)
             {
                 case JobType.JobTypeIds.HWar:
+
                     if (!string.IsNullOrEmpty(j.JobMetaWarranty.ExternalReference) && !j.JobMetaWarranty.ExternalCompletedDate.HasValue)
                         return false; // Job Logged (Warranty) but not completed
+
                     break;
                 case JobType.JobTypeIds.HNWar:
+
                     if (j.JobMetaNonWarranty.RepairerLoggedDate.HasValue && !j.JobMetaNonWarranty.RepairerCompletedDate.HasValue)
                         return false; // Job Logged (Repair) but not completed
-                    if (j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue && (!j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue || !j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue))
-                        return false; // Accounting Charge Required, but not added or paid
 
-                    if (j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue)
-                        return false; // Accounting Charge Added, but not paid
+                    if (j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue && !j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue)
+                        return false; // Accounting Charge Required, but not added
+
+                    if ((j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue || j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue) && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue)
+                        return false; // Accounting Charge Required or Added, but not paid
 
                     if (j.JobMetaNonWarranty.IsInsuranceClaim && !j.JobMetaInsurance.ClaimFormSentDate.HasValue)
                         return false; // Is Insurance Claim, but claim form not sent
+
                     break;
             }
 
@@ -576,6 +581,14 @@ namespace Disco.BI.Extensions
         #region Force Close
         public static bool CanCloseForced(this Job j)
         {
+            List<string> reasons;
+
+            return CanCloseForced(j, out reasons);
+        }
+        public static bool CanCloseForced(this Job j, out List<string> Reasons)
+        {
+            Reasons = null;
+
             if (!UserService.CurrentAuthorization.Has(Claims.Job.Actions.ForceClose))
                 return false;
 
@@ -585,27 +598,35 @@ namespace Disco.BI.Extensions
             if (j.CanCloseNormally())
                 return false;
 
+            Reasons = new List<string>();
+
             switch (j.JobTypeId)
             {
                 case JobType.JobTypeIds.HWar:
                     if (!string.IsNullOrEmpty(j.JobMetaWarranty.ExternalReference) && !j.JobMetaWarranty.ExternalCompletedDate.HasValue)
-                        return true; // Job Logged (Warranty) but not completed
+                        Reasons.Add("Warranty Job Not Completed"); // Job Logged (Warranty) but not completed
                     break;
                 case JobType.JobTypeIds.HNWar:
-                    if (j.JobMetaNonWarranty.RepairerLoggedDate.HasValue && !j.JobMetaNonWarranty.RepairerCompletedDate.HasValue)
-                        return true; // Job Logged (Repair) but not completed
-                    if (j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue && (!j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue || !j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue))
-                        return true; // Accounting Charge Required, but not added or paid
 
-                    if (j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue)
-                        return true; // Accounting Charge Added, but not paid
+                    if (j.JobMetaNonWarranty.RepairerLoggedDate.HasValue && !j.JobMetaNonWarranty.RepairerCompletedDate.HasValue)
+                        Reasons.Add("Repair Job Not Completed"); // Job Logged (Repair) but not completed
+
+                    if (j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue && (!j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue))
+                        Reasons.Add("Accounting Charge Required But Not Added Or Paid"); // Accounting Charge Required, but not added or paid
+                    else if (j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue && !j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue)
+                        Reasons.Add("Accounting Charge Required But Not Added"); // Accounting Charge Required, but not added
+                    else if (j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue)
+                        Reasons.Add("Accounting Charge Added But Not Paid"); // Accounting Charge Added, but not paid
+                    else if (j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue)
+                        Reasons.Add("Accounting Charge Required But Not Paid"); // Accounting Charge Required, but not paid
 
                     if (j.JobMetaNonWarranty.IsInsuranceClaim && !j.JobMetaInsurance.ClaimFormSentDate.HasValue)
-                        return true; // Is Insurance Claim, but claim form not sent
+                        Reasons.Add("Insurance Claim Form Not Sent"); // Is Insurance Claim, but claim form not sent
+
                     break;
             }
 
-            return false;
+            return (Reasons.Count > 0);
         }
         public static void OnCloseForced(this Job j, DiscoDataContext Database, User Technician, string Reason)
         {

@@ -520,15 +520,25 @@
     </tr>
     <tr id="Job_Show_Subjects_Actions">
         <td id="Job_Show_Job_Actions">
-            @if (Model.Job.CanCloseForced())
-            { 
+            @{
+                List<string> CanCloseForcedReasons;
+                if (Model.Job.CanCloseForced(out CanCloseForcedReasons))
+                { 
                 @Html.ActionLinkSmallButton("Forcibly Close", MVC.API.Job.Close(Model.Job.Id, true), "Job_Show_Job_Actions_ForceClose_Button")
                 <div id="Job_Show_Job_Actions_ForceClose_Dialog" class="dialog" title="Forcibly Close this Job?">
+                    <div class="info-box error">
+                        <p class="fa-p">
+                            <i class="fa fa-exclamation-circle"></i><strong>Are you sure?</strong>
+                        </p>
+                        <ul>
+                            @foreach (var reason in CanCloseForcedReasons)
+                            {
+                                <li>@reason</li>
+                            }
+                        </ul>
+                    </div>
                     @using (Html.BeginForm(MVC.API.Job.ForceClose(Model.Job.Id, null, true)))
                     {
-                        <p>
-                            <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?
-                        </p>
                         <h3>Reason:</h3>
                         <p>
                             <textarea name="Reason" class="block"></textarea>
@@ -566,6 +576,7 @@
                         });
                     });
                 </script>
+                }   
             }
 
             @if (Model.Job.CanCloseNormally())

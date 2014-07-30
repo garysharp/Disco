@@ -132,8 +132,8 @@ namespace Disco.Web.Controllers
             var m = new Models.Job.ListModel() { Title = "Jobs Awaiting Finance" };
             m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j =>
                 (j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty_IsInsuranceClaim.Value && !j.JobMetaInsurance_ClaimFormSentDate.HasValue)) ||
-                (j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty_AccountingChargeRequiredDate.HasValue && (!j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue))) ||
-                (j.JobTypeId == JobType.JobTypeIds.HNWar && (!j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue || !j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue)) ||
+                (j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty_AccountingChargeRequiredDate.HasValue && !j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue)) ||
+                (j.JobTypeId == JobType.JobTypeIds.HNWar && ((j.JobMetaNonWarranty_AccountingChargeRequiredDate.HasValue || j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue) && !j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue)) ||
                 (j.JobTypeId == JobType.JobTypeIds.UMgmt && Job.UserManagementFlags.Infringement_BreachFinancialAgreement == (j.Flags & Job.UserManagementFlags.Infringement_BreachFinancialAgreement))
                 ));
 
@@ -148,7 +148,7 @@ namespace Disco.Web.Controllers
         {
             var m = new Models.Job.ListModel() { Title = "Jobs Awaiting Finance - Accounting Charge" };
             m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j =>
-                j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty_AccountingChargeRequiredDate.HasValue && (!j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue))
+                j.JobTypeId == JobType.JobTypeIds.HNWar && (j.JobMetaNonWarranty_AccountingChargeRequiredDate.HasValue && !j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue)
                 ).OrderBy(j => j.JobId));
 
             // UI Extensions
