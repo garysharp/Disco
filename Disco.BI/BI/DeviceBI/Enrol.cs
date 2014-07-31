@@ -467,54 +467,46 @@ namespace Disco.BI.DeviceBI
 
                 if (adMachineAccount == null)
                 {
-                    if (isAuthenticated || RepoDevice.AllowUnauthenticatedEnrol)
+                    if (RepoDevice.DeviceProfile.ProvisionADAccount)
                     {
-                        if (RepoDevice.DeviceProfile.ProvisionADAccount)
-                        {
-                            EnrolmentLog.LogSessionProgress(sessionId, 50, "Provisioning an Active Directory Computer Account");
+                        EnrolmentLog.LogSessionProgress(sessionId, 50, "Provisioning an Active Directory Computer Account");
 
-                            if (string.IsNullOrWhiteSpace(RepoDevice.DeviceProfile.OrganisationalUnit))
-                                throw new InvalidOperationException("No Organisational Unit has been set in the device profile");
-                            if (domain == null)
-                                domain = ActiveDirectory.Context.GetDomainFromDistinguishedName(RepoDevice.DeviceProfile.OrganisationalUnit);
+                        if (string.IsNullOrWhiteSpace(RepoDevice.DeviceProfile.OrganisationalUnit))
+                            throw new InvalidOperationException("No Organisational Unit has been set in the device profile");
+                        if (domain == null)
+                            domain = ActiveDirectory.Context.GetDomainFromDistinguishedName(RepoDevice.DeviceProfile.OrganisationalUnit);
 
-                            if (string.IsNullOrEmpty(RepoDevice.DeviceDomainId) || RepoDevice.DeviceProfile.EnforceComputerNameConvention)
-                                RepoDevice.DeviceDomainId = RepoDevice.ComputerNameRender(Database, domain);
+                        if (string.IsNullOrEmpty(RepoDevice.DeviceDomainId) || RepoDevice.DeviceProfile.EnforceComputerNameConvention)
+                            RepoDevice.DeviceDomainId = RepoDevice.ComputerNameRender(Database, domain);
 
-                            string offlineProvisionDiagnosicInfo;
-                            EnrolmentLog.LogSessionTaskProvisioningADAccount(sessionId, RepoDevice.SerialNumber, RepoDevice.DeviceDomainId);
-                            adMachineAccount = domainController.Value.RetrieveADMachineAccount(RepoDevice.DeviceDomainId);
+                        string offlineProvisionDiagnosicInfo;
+                        EnrolmentLog.LogSessionTaskProvisioningADAccount(sessionId, RepoDevice.SerialNumber, RepoDevice.DeviceDomainId);
+                        adMachineAccount = domainController.Value.RetrieveADMachineAccount(RepoDevice.DeviceDomainId);
 
-                            response.OfflineDomainJoin = domainController.Value.OfflineDomainJoinProvision(RepoDevice.DeviceDomainId, RepoDevice.DeviceProfile.OrganisationalUnit, ref adMachineAccount, out offlineProvisionDiagnosicInfo);
+                        response.OfflineDomainJoin = domainController.Value.OfflineDomainJoinProvision(RepoDevice.DeviceDomainId, RepoDevice.DeviceProfile.OrganisationalUnit, ref adMachineAccount, out offlineProvisionDiagnosicInfo);
 
-                            EnrolmentLog.LogSessionDiagnosticInformation(sessionId, offlineProvisionDiagnosicInfo);
+                        EnrolmentLog.LogSessionDiagnosticInformation(sessionId, offlineProvisionDiagnosicInfo);
 
-                            response.RequireReboot = true;
-                        }
-                        if (adMachineAccount != null)
-                        {
-                            response.DeviceComputerName = adMachineAccount.Name;
-                            response.DeviceDomainName = adMachineAccount.Domain.NetBiosName;
-                        }
-                        else if (ActiveDirectory.IsValidDomainAccountId(RepoDevice.DeviceDomainId))
-                        {
-                            string accountUsername;
-                            ADDomain accountDomain;
-                            ActiveDirectory.ParseDomainAccountId(RepoDevice.DeviceDomainId, out accountUsername, out accountDomain);
+                        response.RequireReboot = true;
+                    }
+                    if (adMachineAccount != null)
+                    {
+                        response.DeviceComputerName = adMachineAccount.Name;
+                        response.DeviceDomainName = adMachineAccount.Domain.NetBiosName;
+                    }
+                    else if (ActiveDirectory.IsValidDomainAccountId(RepoDevice.DeviceDomainId))
+                    {
+                        string accountUsername;
+                        ADDomain accountDomain;
+                        ActiveDirectory.ParseDomainAccountId(RepoDevice.DeviceDomainId, out accountUsername, out accountDomain);
 
-                            response.DeviceDomainName = accountDomain == null ? null : accountDomain.NetBiosName;
-                            response.DeviceComputerName = accountUsername;
-                        }
-                        else
-                        {
-                            response.DeviceDomainName = Request.DeviceDNSDomainName;
-                            response.DeviceComputerName = Request.DeviceComputerName;
-                        }
+                        response.DeviceDomainName = accountDomain == null ? null : accountDomain.NetBiosName;
+                        response.DeviceComputerName = accountUsername;
                     }
                     else
                     {
-                        response.DeviceComputerName = Request.DeviceComputerName;
                         response.DeviceDomainName = Request.DeviceDNSDomainName;
+                        response.DeviceComputerName = Request.DeviceComputerName;
                     }
                 }
                 else
