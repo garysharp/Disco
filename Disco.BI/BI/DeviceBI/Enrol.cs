@@ -5,12 +5,12 @@ using Disco.Models.Repository;
 using Disco.Services.Authorization;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
+using Exceptionless;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Tamir.SharpSsh;
-using Exceptionless;
 
 namespace Disco.BI.DeviceBI
 {
@@ -20,7 +20,8 @@ namespace Disco.BI.DeviceBI
         {
             Normal,
             Mac = 5,
-            MacSecure
+            MacSecure,
+            Register = 30
         }
 
         private static Regex SshPromptRegEx = new Regex("[\\$,\\#]", RegexOptions.Multiline);
@@ -642,6 +643,192 @@ namespace Disco.BI.DeviceBI
             {
                 EnrolmentLog.LogSessionError(sessionId, ex);
                 return new EnrolResponse
+                {
+                    SessionId = sessionId,
+                    ErrorMessage = ex.Message
+                };
+            }
+            catch (System.Exception ex2)
+            {
+                ex2.ToExceptionless().Submit();
+                EnrolmentLog.LogSessionError(sessionId, ex2);
+                throw ex2;
+            }
+            finally
+            {
+                EnrolmentLog.LogSessionFinished(sessionId);
+            }
+            return response;
+        }
+
+        public static RegisterResponse Register(DiscoDataContext Database, string Username, Register Request)
+        {
+            RegisterResponse response = new RegisterResponse();
+            ADMachineAccount adMachineAccount = null;
+            AuthorizationToken authenticatedToken = null;
+
+            ADDomain domain = null;
+            Lazy<ADDomainController> domainController = new Lazy<ADDomainController>(() =>
+            {
+                if (domain == null)
+                    throw new InvalidOperationException("The [domain] variable must be initialized first");
+                return domain.GetAvailableDomainController(RequireWritable: true);
+            });
+
+            string sessionId = System.Guid.NewGuid().ToString("B");
+            response.SessionId = sessionId;
+
+            EnrolmentLog.LogSessionStarting(sessionId, Request.DeviceSerialNumber, EnrolmentTypes.Register);
+            EnrolmentLog.LogSessionDeviceInfo(sessionId, Request);
+
+            try
+            {
+                EnrolmentLog.LogSessionProgress(sessionId, 10, "Loading User Data");
+                if (!string.IsNullOrWhiteSpace(Username))
+                {
+                    authenticatedToken = UserService.GetAuthorization(Username, Database);
+                }
+                EnrolmentLog.LogSessionProgress(sessionId, 13, "Loading Device Data");
+
+                Device RepoDevice = Database.Devices.Include("AssignedUser").Include("DeviceModel").Include("DeviceProfile").Where(d => d.SerialNumber == Request.DeviceSerialNumber).FirstOrDefault();
+                EnrolmentLog.LogSessionProgress(sessionId, 15, "Discovering User/Device Disco Permissions");
+                if (authenticatedToken != null)
+                {
+                    if (!authenticatedToken.Has(Claims.Device.Actions.EnrolDevices))
+                    {
+                        if (!authenticatedToken.Has(Claims.ComputerAccount))
+                            throw new EnrolSafeException(string.Format("Connection not correctly authenticated (SN: {0}; Auth User: {1})", Request.DeviceSerialNumber, authenticatedToken.User.UserId));
+
+                        if (domain == null)
+                            domain = ActiveDirectory.Context.GetDomainByName(Request.DeviceDNSDomainName);
+
+                        if (!authenticatedToken.User.UserId.Equals(string.Format(@"{0}\{1}$", domain.NetBiosName, Request.DeviceComputerName), System.StringComparison.OrdinalIgnoreCase))
+                            throw new EnrolSafeException(string.Format("Connection not correctly authenticated (SN: {0}; Auth User: {1})", Request.DeviceSerialNumber, authenticatedToken.User.UserId));
+                    }
+                }
+                else
+                {
+                    if (RepoDevice == null)
+                    {
+                        throw new EnrolSafeException(string.Format("Unknown Device Serial Number (SN: '{0}')", Request.DeviceSerialNumber));
+                    }
+                    if (!RepoDevice.AllowUnauthenticatedEnrol)
+                    {
+                        if (RepoDevice.DeviceProfile.AllowUntrustedReimageJobEnrolment)
+                        {
+                            if (Database.Jobs.Count(j => j.DeviceSerialNumber == RepoDevice.SerialNumber && j.JobTypeId == JobType.JobTypeIds.SImg && !j.ClosedDate.HasValue) == 0)
+                            {
+                                throw new EnrolSafeException(string.Format("Device has no open 'Software - Reimage' job (SN: '{0}')", Request.DeviceSerialNumber));
+                            }
+                        }
+                        else
+                        {
+                            throw new EnrolSafeException(string.Format("Device isn't allowed an Unauthenticated Enrolment (SN: '{0}')", Request.DeviceSerialNumber));
+                        }
+                    }
+                }
+                if (Request.DeviceIsPartOfDomain && !string.IsNullOrWhiteSpace(Request.DeviceComputerName))
+                {
+                    EnrolmentLog.LogSessionProgress(sessionId, 20, "Loading Active Directory Computer Account");
+                    System.Guid? uuidGuid = null;
+                    if (!string.IsNullOrEmpty(Request.DeviceUUID))
+                        uuidGuid = ADMachineAccount.NetbootGUIDFromUUID(Request.DeviceUUID);
+
+                    if (domain == null)
+                        domain = ActiveDirectory.Context.GetDomainByName(Request.DeviceDNSDomainName);
+
+                    var requestDeviceId = string.Format(@"{0}\{1}", domain.NetBiosName, Request.DeviceComputerName);
+
+                    adMachineAccount = domainController.Value.RetrieveADMachineAccount(requestDeviceId, uuidGuid);
+                }
+                if (RepoDevice == null)
+                {
+                    EnrolmentLog.LogSessionProgress(sessionId, 30, "New Device, Creating Disco Instance");
+                    EnrolmentLog.LogSessionTaskAddedDevice(sessionId, Request.DeviceSerialNumber);
+                    DeviceProfile deviceProfile = Database.DeviceProfiles.Find(Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId);
+
+                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModelType.Trim());
+                    DeviceModel deviceModel = deviceModelResult.Item1;
+                    if (deviceModelResult.Item2)
+                        EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
+                    else
+                        EnrolmentLog.LogSessionDevice(sessionId, Request.DeviceSerialNumber, deviceModel.Id);
+
+                    if (domain == null)
+                        domain = ActiveDirectory.Context.GetDomainByName(Request.DeviceDNSDomainName);
+
+                    RepoDevice = new Device
+                    {
+                        SerialNumber = Request.DeviceSerialNumber,
+                        DeviceDomainId = string.Format(@"{0}\{1}", domain.NetBiosName, Request.DeviceComputerName),
+                        DeviceProfile = deviceProfile,
+                        DeviceModel = deviceModel,
+                        AllowUnauthenticatedEnrol = false,
+                        CreatedDate = DateTime.Now,
+                        EnrolledDate = DateTime.Now,
+                        LastEnrolDate = DateTime.Now,
+                        DeviceDetails = new List<DeviceDetail>()
+                    };
+                    Database.Devices.Add(RepoDevice);
+                }
+                else
+                {
+                    EnrolmentLog.LogSessionProgress(sessionId, 30, "Existing Device, Updating Disco Instance");
+                    EnrolmentLog.LogSessionTaskUpdatingDevice(sessionId, Request.DeviceSerialNumber);
+
+                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModelType.Trim());
+                    DeviceModel deviceModel = deviceModelResult.Item1;
+                    if (deviceModelResult.Item2)
+                        EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
+                    else
+                        EnrolmentLog.LogSessionDevice(sessionId, Request.DeviceSerialNumber, deviceModel.Id);
+
+                    RepoDevice.DeviceModel = deviceModel;
+
+                    if (!RepoDevice.EnrolledDate.HasValue)
+                        RepoDevice.EnrolledDate = DateTime.Now;
+                    RepoDevice.LastEnrolDate = DateTime.Now;
+                }
+
+                if (adMachineAccount == null)
+                {
+                    if (adMachineAccount != null)
+                    {
+                        response.DeviceComputerName = adMachineAccount.Name;
+                        response.DeviceDomainName = adMachineAccount.Domain.NetBiosName;
+                    }
+                    else if (ActiveDirectory.IsValidDomainAccountId(RepoDevice.DeviceDomainId))
+                    {
+                        string accountUsername;
+                        ADDomain accountDomain;
+                        ActiveDirectory.ParseDomainAccountId(RepoDevice.DeviceDomainId, out accountUsername, out accountDomain);
+
+                        response.DeviceDomainName = accountDomain == null ? null : accountDomain.NetBiosName;
+                        response.DeviceComputerName = accountUsername;
+                    }
+                    else
+                    {
+                        response.DeviceDomainName = Request.DeviceDNSDomainName;
+                        response.DeviceComputerName = Request.DeviceComputerName;
+                    }
+                }
+                else
+                {
+                    RepoDevice.DeviceDomainId = adMachineAccount.Id.Trim('$');
+                    response.DeviceComputerName = adMachineAccount.Name;
+                    response.DeviceDomainName = adMachineAccount.Domain.NetBiosName;
+                }
+
+                // Reset 'AllowUnauthenticatedEnrol'
+                if (RepoDevice.AllowUnauthenticatedEnrol)
+                    RepoDevice.AllowUnauthenticatedEnrol = false;
+
+                EnrolmentLog.LogSessionProgress(sessionId, 100, "Completed Successfully");
+            }
+            catch (EnrolSafeException ex)
+            {
+                EnrolmentLog.LogSessionError(sessionId, ex);
+                return new RegisterResponse
                 {
                     SessionId = sessionId,
                     ErrorMessage = ex.Message

@@ -108,6 +108,10 @@ namespace Disco.BI.DeviceBI
         {
             EnrolmentLog.LogSessionDeviceInfo(SessionId, Request.DeviceSerialNumber, Request.DeviceUUID, Request.DeviceComputerName, Request.DeviceLanMacAddress, Request.DeviceWlanMacAddress, Request.DeviceManufacturer, Request.DeviceModel, Request.DeviceModelType);
         }
+        public static void LogSessionDeviceInfo(string SessionId, Models.ClientServices.Register Request)
+        {
+            EnrolmentLog.LogSessionDeviceInfo(SessionId, Request.DeviceSerialNumber, Request.DeviceUUID, Request.DeviceComputerName, null, null, Request.DeviceManufacturer, Request.DeviceModel, Request.DeviceModelType);
+        }
         public static void LogSessionProgress(string SessionId, int Progress, string Status)
         {
             EnrolmentLog.Log(EnrolmentLog.EventTypeIds.SessionProgress, new object[]

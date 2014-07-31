@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Disco.BI.Extensions;
+using Disco.Data.Repository;
+using Disco.Models.ClientServices;
+using Disco.Services.Authorization;
+using Newtonsoft.Json;
+using System;
 using System.Web;
 using System.Web.Mvc;
-using Disco.Models.ClientServices;
-using Disco.BI;
-using Disco.BI.Extensions;
-using Disco.Data.Repository;
 using System.Web.Script.Serialization;
-using Newtonsoft.Json;
-using Disco.Services.Authorization;
 
 namespace Disco.Web.Areas.Services.Controllers
 {
@@ -66,6 +63,13 @@ namespace Disco.Web.Areas.Services.Controllers
                             return Json(enrolResponse, JsonRequestBehavior.AllowGet);
                         }
                     }
+                case "register":
+                    {
+                        Register registerRequest = new Register();
+                        this.UpdateModel(registerRequest);
+                        RegisterResponse registerResponse = registerRequest.BuildResponse();
+                        return Json(registerResponse);
+                    }
             }
             throw new MissingMethodException(string.Format("Unknown Feature: {0}", feature));
         }
@@ -91,6 +95,13 @@ namespace Disco.Web.Areas.Services.Controllers
                         Enrol enrolRequest = serializer.Deserialize<Enrol>(base.Request.InputStream.StreamToString());
                         EnrolResponse enrolResponse = enrolRequest.BuildResponse();
                         return Json(enrolResponse);
+                    }
+                case "register":
+                    {
+                        Register registerRequest = new Register();
+                        this.UpdateModel(registerRequest);
+                        RegisterResponse registerResponse = registerRequest.BuildResponse();
+                        return Json(registerResponse);
                     }
             }
             throw new MissingMethodException(string.Format("Unknown Feature: {0}", feature));
