@@ -2497,8 +2497,8 @@ WriteLiteral(">\r\n                        <i");
 
 WriteLiteral(" class=\"fa fa-question-circle fa-lg information\"");
 
-WriteLiteral("></i>&nbsp;Why was this Device Decommissioned?\r\n                    </div>\r\n     " +
-"               <div>\r\n                        <ul");
+WriteLiteral("></i>&nbsp;Why is this device to be decommissioned?\r\n                    </div>\r\n" +
+"                    <div>\r\n                        <ul");
 
 WriteLiteral(" class=\"none\"");
 
@@ -2512,7 +2512,7 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 753 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                             foreach (DecommissionReasons decommissionReason in Enum.GetValues(typeof(DecommissionReasons)))
+                             foreach (DecommissionReasons decommissionReason in Enum.GetValues(typeof(DecommissionReasons)).Cast<DecommissionReasons>().OrderBy(r => r.ToString()))
                             {
 
             
@@ -2522,28 +2522,28 @@ WriteLiteral("                                <li>\r\n                          
 
 WriteLiteral(" type=\"radio\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 47559), Tuple.Create("\"", 47637)
-, Tuple.Create(Tuple.Create("", 47564), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 47564), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 47619), Tuple.Create("\"", 47697)
+, Tuple.Create(Tuple.Create("", 47624), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 47624), true)
             
             #line 756 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                           , Tuple.Create(Tuple.Create("", 47611), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+                           , Tuple.Create(Tuple.Create("", 47671), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 47611), false)
+, 47671), false)
 );
 
 WriteLiteral("\r\n                                        name=\"Device_Show_Device_Actions_Decomm" +
 "ission_Reason\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 47733), Tuple.Create("\"", 47767)
+WriteAttribute("value", Tuple.Create(" value=\"", 47793), Tuple.Create("\"", 47827)
             
             #line 757 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                     , Tuple.Create(Tuple.Create("", 47741), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+                     , Tuple.Create(Tuple.Create("", 47801), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 47741), false)
+, 47801), false)
 );
 
 WriteLiteral(" ");
@@ -2557,15 +2557,15 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral("/>\r\n                                    <label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 47910), Tuple.Create("\"", 47989)
-, Tuple.Create(Tuple.Create("", 47916), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 47916), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 47970), Tuple.Create("\"", 48049)
+, Tuple.Create(Tuple.Create("", 47976), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 47976), true)
             
             #line 758 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-               , Tuple.Create(Tuple.Create("", 47963), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+               , Tuple.Create(Tuple.Create("", 48023), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 47963), false)
+, 48023), false)
 );
 
 WriteLiteral(">");

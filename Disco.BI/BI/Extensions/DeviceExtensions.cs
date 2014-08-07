@@ -213,6 +213,8 @@ namespace Disco.BI.Extensions
                     return "Damaged";
                 case DecommissionReasons.Donated:
                     return "Donated";
+                case DecommissionReasons.Returned:
+                    return "Returned";
                 default:
                     return "Unknown";
             }

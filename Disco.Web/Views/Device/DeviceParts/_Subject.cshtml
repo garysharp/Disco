@@ -746,11 +746,11 @@
                 @Html.ActionLinkSmallButton("Decommission", MVC.API.Device.Decommission(), "Device_Show_Device_Actions_Decommission_Button")
                 <div id="Device_Show_Device_Actions_Decommission_Dialog" class="dialog" title="Device Decommissioning">
                     <div class="clearfix" style="margin-bottom: 10px;">
-                        <i class="fa fa-question-circle fa-lg information"></i>&nbsp;Why was this Device Decommissioned?
+                        <i class="fa fa-question-circle fa-lg information"></i>&nbsp;Why is this device to be decommissioned?
                     </div>
                     <div>
                         <ul class="none">
-                            @foreach (DecommissionReasons decommissionReason in Enum.GetValues(typeof(DecommissionReasons)))
+                            @foreach (DecommissionReasons decommissionReason in Enum.GetValues(typeof(DecommissionReasons)).Cast<DecommissionReasons>().OrderBy(r => r.ToString()))
                             {
                                 <li>
                                     <input type="radio" id="Device_Show_Device_Actions_Decommission_Reason_@((int)decommissionReason)"

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Disco.Models.Repository
 {
     public enum DecommissionReasons
@@ -13,6 +8,7 @@ namespace Disco.Models.Repository
         Stolen = 20,
         Lost = 30,
         Damaged = 40,
-        Donated = 50
+        Donated = 50,
+        Returned = 60
     }
 }
