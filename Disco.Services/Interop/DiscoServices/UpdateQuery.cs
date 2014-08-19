@@ -17,6 +17,7 @@ namespace Disco.Services.Interop.DiscoServices
     using StatisticInt = UpdateRequestV2.StatisticInt;
     using StatisticJob = UpdateRequestV2.StatisticJob;
     using StatisticString = UpdateRequestV2.StatisticString;
+    using StatisticIntPair = UpdateRequestV2.StatisticIntPair;
 
     public static class UpdateQuery
     {
@@ -63,7 +64,6 @@ namespace Disco.Services.Interop.DiscoServices
             Status.UpdateStatus(10, "Gathering statistics and building update request");
 
             var updateRequest = BuildRequest(Database);
-            var updateRequestJson = JsonConvert.SerializeObject(updateRequest);
 
             Status.UpdateStatus(40, "Sending statistics and update request");
 
@@ -87,7 +87,9 @@ namespace Disco.Services.Interop.DiscoServices
                 {
                     using (var requestStreamWriter = new StreamWriter(compressedStream, Encoding.UTF8))
                     {
-                        requestStreamWriter.Write(updateRequestJson);
+                        JsonSerializer serializer = new JsonSerializer();
+                        serializer.Serialize(requestStreamWriter, updateRequest);
+
                         requestStreamWriter.Flush();
                     }
                 }
@@ -143,65 +145,85 @@ namespace Disco.Services.Interop.DiscoServices
             if (whoAmIResponse != null && !string.IsNullOrWhiteSpace(whoAmIResponse.Item1))
                 m.VicEduDeptWanId = whoAmIResponse.Item1;
 
-            m.Stat_JobCounts = Database.Jobs.GroupBy(j => j.JobTypeId).Select(g => new StatisticInt() { K = g.Key, V = g.Count() }).ToList();
-            m.Stat_OpenJobCounts = Database.Jobs.Where(j => j.ClosedDate == null).GroupBy(j => j.JobTypeId).Select(g => new StatisticInt() { K = g.Key, V = g.Count() }).ToList();
-            m.Stat_DeviceModelCounts = Database.DeviceModels.Select(dm => new StatisticInt() { K = dm.Manufacturer + ";" + dm.Model, V = dm.Devices.Count(d => d.DecommissionedDate == null) }).ToList();
+            m.Stat_JobCounts = Database.Jobs.GroupBy(j => j.JobTypeId).Select(g => new StatisticInt() { Key = g.Key, Value = g.Count() }).ToList();
+            m.Stat_OpenJobCounts = Database.Jobs.Where(j => j.ClosedDate == null).GroupBy(j => j.JobTypeId).Select(g => new StatisticInt() { Key = g.Key, Value = g.Count() }).ToList();
+            m.Stat_DeviceModelCounts = Database.DeviceModels.Select(dm => new StatisticInt() { Key = dm.Manufacturer + ";" + dm.Model, Value = dm.Devices.Count(d => d.DecommissionedDate == null) }).ToList();
             var activeThreshold = DateTime.Now.AddDays(-60);
-            m.Stat_ActiveDeviceModelCounts = Database.DeviceModels.Select(dm => new StatisticInt() { K = dm.Manufacturer + ";" + dm.Model, V = dm.Devices.Count(d => d.DecommissionedDate == null && (d.LastNetworkLogonDate == null || d.LastNetworkLogonDate > activeThreshold)) }).ToList();
+            m.Stat_ActiveDeviceModelCounts = Database.DeviceModels.Select(dm => new StatisticInt() { Key = dm.Manufacturer + ";" + dm.Model, Value = dm.Devices.Count(d => d.DecommissionedDate == null && (d.LastNetworkLogonDate == null || d.LastNetworkLogonDate > activeThreshold)) }).ToList();
             m.Stat_UserCounts = new List<StatisticInt>() {
-                new StatisticInt() { K = "All", V = Database.Users.Count() },
-                new StatisticInt() { K = "Assigned Current", V  = Database.Users.Where(u => u.DeviceUserAssignments.Any(dua => !dua.UnassignedDate.HasValue)).Count() },
-                new StatisticInt() { K = "Assigned Ever", V = Database.Users.Where(u => u.DeviceUserAssignments.Any()).Count() },
-                new StatisticInt() { K = "Job Technicians", V = Database.Jobs.Select(j => j.OpenedTechUserId).Distinct().ToList().Concat(Database.Jobs.Select(j => j.ClosedTechUserId).Distinct().ToList()).Distinct().Count() },
-                new StatisticInt() { K = "Job Users", V = Database.Jobs.Where(j => j.UserId != null).Select(j => j.UserId).Distinct().Count() }
+                new StatisticInt() { Key = "All", Value = Database.Users.Count() },
+                new StatisticInt() { Key = "Assigned Current", Value  = Database.Users.Where(u => u.DeviceUserAssignments.Any(dua => !dua.UnassignedDate.HasValue)).Count() },
+                new StatisticInt() { Key = "Assigned Ever", Value = Database.Users.Where(u => u.DeviceUserAssignments.Any()).Count() },
+                new StatisticInt() { Key = "Job Technicians", Value = Database.Jobs.Select(j => j.OpenedTechUserId).Distinct().ToList().Concat(Database.Jobs.Select(j => j.ClosedTechUserId).Distinct().ToList()).Distinct().Count() },
+                new StatisticInt() { Key = "Job Users", Value = Database.Jobs.Where(j => j.UserId != null).Select(j => j.UserId).Distinct().Count() }
             };
 
-            IQueryable<Job> jobs;
-            if (lastUpdate == null)
-                jobs = Database.Jobs;
-            else
+            var jobIds = Database.Jobs.OrderBy(j => j.Id).Select(j => j.Id).ToList();
+            if (jobIds.Count > 0)
             {
-                var lastUpdateDate = lastUpdate.UpdateResponseDate.Date;
-                jobs = Database.Jobs.Where(j => j.OpenedDate >= lastUpdateDate || (j.ClosedDate.HasValue && j.ClosedDate.Value >= lastUpdateDate));
+                m.Stat_JobIdentifiers = new List<StatisticIntPair>();
+                var jobIdSequenceBegin = jobIds.First();
+                jobIds.Skip(1).Aggregate(jobIdSequenceBegin, (last, current) =>
+                {
+                    if (current == last + 1)
+                        return current;
+                    else
+                    {
+                        m.Stat_JobIdentifiers.Add(new StatisticIntPair() { Begin = jobIdSequenceBegin, End = last });
+                        jobIdSequenceBegin = current;
+                    }
+
+                    return current;
+                });
+                m.Stat_JobIdentifiers.Add(new StatisticIntPair() { Begin = jobIdSequenceBegin, End = jobIds.Last() });
+
+                IQueryable<Job> jobs;
+                if (lastUpdate == null)
+                    jobs = Database.Jobs;
+                else
+                {
+                    var lastUpdateDate = lastUpdate.UpdateResponseDate.Date;
+                    jobs = Database.Jobs.Where(j => j.OpenedDate >= lastUpdateDate || (j.ClosedDate.HasValue && j.ClosedDate.Value >= lastUpdateDate));
+                }
+
+                var reportedJobs = jobs.Select(j => new
+                {
+                    Id = j.Id,
+                    OpenedDate = j.OpenedDate,
+                    ClosedDate = j.ClosedDate,
+                    JobType = j.JobTypeId,
+                    JobSubTypes = j.JobSubTypes.Select(jst => jst.Id),
+                    DeviceModelManufacturer = j.Device.DeviceModel.Manufacturer,
+                    DeviceModelModel = j.Device.DeviceModel.Model,
+                    DeviceSerialNumber = j.DeviceSerialNumber,
+                    UserId = j.UserId,
+                    JobTechnicianId = j.OpenedTechUserId,
+                    WarrantyRepairer = j.JobMetaWarranty.ExternalName,
+                    WarrantyRepairerLoggedDate = j.JobMetaWarranty.ExternalLoggedDate,
+                    WarrantyRepairerCompletedDate = j.JobMetaWarranty.ExternalCompletedDate,
+                    Repairer = j.JobMetaNonWarranty.RepairerName,
+                    RepairerLoggedDate = j.JobMetaNonWarranty.RepairerLoggedDate,
+                    RepairerCompletedDate = j.JobMetaNonWarranty.RepairerCompletedDate,
+                }).ToList();
+
+                m.Stat_Jobs = reportedJobs.Select(j => new StatisticJob()
+                {
+                    Identifier = j.Id,
+                    OpenedDate = j.OpenedDate,
+                    ClosedDate = j.ClosedDate,
+                    Type = j.JobType,
+                    SubTypes = j.JobSubTypes == null ? null : string.Join(";", j.JobSubTypes),
+                    DeviceIdentifier = HashDeploymentData(Database, j.DeviceSerialNumber),
+                    UserIdentifier = HashDeploymentData(Database, j.UserId),
+                    TechnicianIdentifier = HashDeploymentData(Database, j.JobTechnicianId),
+                    DeviceModel = string.Format("{0};{1}", j.DeviceModelManufacturer, j.DeviceModelModel),
+                    Repairer = j.JobType == JobType.JobTypeIds.HWar ? j.WarrantyRepairer : j.Repairer,
+                    RepairerLogged = j.JobType == JobType.JobTypeIds.HWar ? j.WarrantyRepairerLoggedDate : j.RepairerLoggedDate,
+                    RepairerCompleted = j.JobType == JobType.JobTypeIds.HWar ? j.WarrantyRepairerCompletedDate : j.RepairerCompletedDate
+                }).ToList();
             }
 
-            var reportedJobs = jobs.Select(j => new
-            {
-                Id = j.Id,
-                OpenedDate = j.OpenedDate,
-                ClosedDate = j.ClosedDate,
-                JobType = j.JobTypeId,
-                JobSubTypes = j.JobSubTypes.Select(jst => jst.Id),
-                DeviceModelManufacturer = j.Device.DeviceModel.Manufacturer,
-                DeviceModelModel = j.Device.DeviceModel.Model,
-                DeviceSerialNumber = j.DeviceSerialNumber,
-                UserId = j.UserId,
-                JobTechnicianId = j.OpenedTechUserId,
-                WarrantyRepairer = j.JobMetaWarranty.ExternalName,
-                WarrantyRepairerLoggedDate = j.JobMetaWarranty.ExternalLoggedDate,
-                WarrantyRepairerCompletedDate = j.JobMetaWarranty.ExternalCompletedDate,
-                Repairer = j.JobMetaNonWarranty.RepairerName,
-                RepairerLoggedDate = j.JobMetaNonWarranty.RepairerLoggedDate,
-                RepairerCompletedDate = j.JobMetaNonWarranty.RepairerCompletedDate,
-            }).ToList();
-
-            m.Stat_Jobs = reportedJobs.Select(j => new StatisticJob()
-            {
-                I = j.Id,
-                OD = j.OpenedDate,
-                CD = j.ClosedDate,
-                T = j.JobType,
-                ST = j.JobSubTypes == null ? null : string.Join(";", j.JobSubTypes),
-                D = HashDeploymentData(Database, j.DeviceSerialNumber),
-                U = HashDeploymentData(Database, j.UserId),
-                TI = HashDeploymentData(Database, j.JobTechnicianId),
-                DM = string.Format("{0};{1}", j.DeviceModelManufacturer, j.DeviceModelModel),
-                R = j.JobType == JobType.JobTypeIds.HWar ? j.WarrantyRepairer : j.Repairer,
-                RL = j.JobType == JobType.JobTypeIds.HWar ? j.WarrantyRepairerLoggedDate : j.RepairerLoggedDate,
-                RC = j.JobType == JobType.JobTypeIds.HWar ? j.WarrantyRepairerCompletedDate : j.RepairerCompletedDate
-            }).ToList();
-
-            m.InstalledPlugins = Disco.Services.Plugins.Plugins.GetPlugins().Select(manifest => new StatisticString() { K = manifest.Id, V = manifest.VersionFormatted }).ToList();
+            m.InstalledPlugins = Disco.Services.Plugins.Plugins.GetPlugins().Select(manifest => new StatisticString() { Key = manifest.Id, Value = manifest.VersionFormatted }).ToList();
 
             return m;
         }

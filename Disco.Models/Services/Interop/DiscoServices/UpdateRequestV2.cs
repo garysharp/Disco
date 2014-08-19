@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace Disco.Models.Services.Interop.DiscoServices
@@ -21,18 +22,31 @@ namespace Disco.Models.Services.Interop.DiscoServices
 
         public List<StatisticString> InstalledPlugins { get; set; }
 
+        public List<StatisticIntPair> Stat_JobIdentifiers { get; set; }
         public List<StatisticJob> Stat_Jobs { get; set; }
+
+        public class StatisticIntPair
+        {
+            [JsonProperty("B")]
+            public int Begin;
+            [JsonProperty("E")]
+            public int End;
+        }
 
         public class StatisticInt
         {
-            public string K;
-            public int V;
+            [JsonProperty("K")]
+            public string Key;
+            [JsonProperty("V")]
+            public int Value;
         }
 
         public class StatisticString
         {
-            public string K;
-            public string V;
+            [JsonProperty("K")]
+            public string Key;
+            [JsonProperty("V")]
+            public string Value;
         }
 
         public class StatisticJob
@@ -40,62 +54,74 @@ namespace Disco.Models.Services.Interop.DiscoServices
             /// <summary>
             /// Job Identifier
             /// </summary>
-            public int I { get; set; }
+            [JsonProperty("I")]
+            public int Identifier { get; set; }
 
             /// <summary>
             /// Opened Date
             /// </summary>
-            public DateTime OD { get; set; }
+            [JsonProperty("OD")]
+            public DateTime OpenedDate { get; set; }
 
             /// <summary>
             /// Closed Date
             /// </summary>
-            public DateTime? CD { get; set; }
+            [JsonProperty("CD", NullValueHandling = NullValueHandling.Ignore)]
+            public DateTime? ClosedDate { get; set; }
 
             /// <summary>
             /// Job Type
             /// </summary>
-            public string T { get; set; }
+            [JsonProperty("T")]
+            public string Type { get; set; }
 
             /// <summary>
             /// Job Sub Types (Semicolon Separated)
             /// </summary>
-            public string ST { get; set; }
+            [JsonProperty("ST")]
+            public string SubTypes { get; set; }
 
             /// <summary>
             /// Deployment-Unique Device Serial Identifier (Device Serial Number anonymized via hashing salted with Deployment Secret)
             /// </summary>
-            public string D { get; set; }
+            [JsonProperty("D", NullValueHandling = NullValueHandling.Ignore)]
+            public string DeviceIdentifier { get; set; }
 
             /// <summary>
             /// Deployment-Unique Job User Identifier (Job User Id anonymized via hashing salted with Deployment Secret)
             /// </summary>
-            public string U { get; set; }
+            [JsonProperty("U", NullValueHandling = NullValueHandling.Ignore)]
+            public string UserIdentifier { get; set; }
 
             /// <summary>
             /// Deployment-Unique Job Technician Identifier (Job Technician Id anonymized via hashing salted with Deployment Secret)
             /// </summary>
-            public string TI { get; set; }
+            [JsonProperty("TI")]
+            public string TechnicianIdentifier { get; set; }
 
             /// <summary>
             /// Device Model
             /// </summary>
-            public string DM { get; set; }
+            [JsonProperty("DM", NullValueHandling = NullValueHandling.Ignore)]
+            public string DeviceModel { get; set; }
 
             /// <summary>
             /// External Repairer
             /// </summary>
-            public string R { get; set; }
+            [JsonProperty("R", NullValueHandling = NullValueHandling.Ignore)]
+            public string Repairer { get; set; }
 
             /// <summary>
             /// External Repairer Logged
             /// </summary>
-            public DateTime? RL { get; set; }
+            [JsonProperty("RL", NullValueHandling = NullValueHandling.Ignore)]
+            public DateTime? RepairerLogged { get; set; }
 
             /// <summary>
             /// External Repairer Completed
             /// </summary>
-            public DateTime? RC { get; set; }
+            [JsonProperty("RC", NullValueHandling = NullValueHandling.Ignore)]
+            public DateTime? RepairerCompleted { get; set; }
         }
     }
 }
