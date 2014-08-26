@@ -273,6 +273,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Locations.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Config\Views\JobPreferences\Parts\Reports.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reports.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Config\Views\JobQueue\Create.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -324,6 +329,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Areas\Public\Controllers\HeldDevicesController.cs" />
+    <Compile Include="Areas\Public\Models\UserHeldDevices\NoticeboardModel.cs" />
     <Compile Include="Areas\Public\Views\HeldDevices\Index.generated.cs">
       <DependentUpon>Index.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1187,6 +1193,10 @@
     <None Include="Areas\Config\Views\JobPreferences\Parts\Locations.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Locations.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\JobPreferences\Parts\Reports.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Reports.generated.cs</LastGenOutput>
     </None>
     <None Include="Areas\Config\Views\JobQueue\Show.cshtml">
       <Generator>RazorGenerator</Generator>

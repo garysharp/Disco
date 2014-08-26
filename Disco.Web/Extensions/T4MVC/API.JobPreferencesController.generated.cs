@@ -71,6 +71,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateDefaultNoticeboardTheme()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDefaultNoticeboardTheme);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult UpdateLocationMode()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLocationMode);
@@ -105,6 +111,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string UpdateLongRunningJobDaysThreshold = "UpdateLongRunningJobDaysThreshold";
             public readonly string UpdateStaleJobMinutesThreshold = "UpdateStaleJobMinutesThreshold";
+            public readonly string UpdateDefaultNoticeboardTheme = "UpdateDefaultNoticeboardTheme";
             public readonly string UpdateLocationMode = "UpdateLocationMode";
             public readonly string UpdateLocationList = "UpdateLocationList";
             public readonly string ImportLocationList = "ImportLocationList";
@@ -115,6 +122,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public const string UpdateLongRunningJobDaysThreshold = "UpdateLongRunningJobDaysThreshold";
             public const string UpdateStaleJobMinutesThreshold = "UpdateStaleJobMinutesThreshold";
+            public const string UpdateDefaultNoticeboardTheme = "UpdateDefaultNoticeboardTheme";
             public const string UpdateLocationMode = "UpdateLocationMode";
             public const string UpdateLocationList = "UpdateLocationList";
             public const string ImportLocationList = "ImportLocationList";
@@ -137,6 +145,15 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateStaleJobMinutesThreshold
         {
             public readonly string StaleJobMinutesThreshold = "StaleJobMinutesThreshold";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateDefaultNoticeboardTheme s_params_UpdateDefaultNoticeboardTheme = new ActionParamsClass_UpdateDefaultNoticeboardTheme();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateDefaultNoticeboardTheme UpdateDefaultNoticeboardThemeParams { get { return s_params_UpdateDefaultNoticeboardTheme; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateDefaultNoticeboardTheme
+        {
+            public readonly string DefaultNoticeboardTheme = "DefaultNoticeboardTheme";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateLocationMode s_params_UpdateLocationMode = new ActionParamsClass_UpdateLocationMode();
@@ -210,6 +227,19 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "StaleJobMinutesThreshold", StaleJobMinutesThreshold);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateStaleJobMinutesThresholdOverride(callInfo, StaleJobMinutesThreshold, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateDefaultNoticeboardThemeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string DefaultNoticeboardTheme, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateDefaultNoticeboardTheme(string DefaultNoticeboardTheme, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDefaultNoticeboardTheme);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DefaultNoticeboardTheme", DefaultNoticeboardTheme);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateDefaultNoticeboardThemeOverride(callInfo, DefaultNoticeboardTheme, redirect);
             return callInfo;
         }
 

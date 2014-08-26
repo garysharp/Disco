@@ -36,6 +36,20 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        public virtual ActionResult UpdateDefaultNoticeboardTheme(string DefaultNoticeboardTheme, bool redirect = false)
+        {
+            Database.DiscoConfiguration.JobPreferences.DefaultNoticeboardTheme = DefaultNoticeboardTheme;
+            Database.SaveChanges();
+
+            Disco.Services.Jobs.Noticeboards.NoticeboardUpdatesHub.SetTheme(DefaultNoticeboardTheme);
+
+            if (redirect)
+                return RedirectToAction(MVC.Config.JobPreferences.Index());
+            else
+                return Json("OK", JsonRequestBehavior.AllowGet);
+        }
+
+        [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
         public virtual ActionResult UpdateLocationMode(LocationModes LocationMode, bool redirect = false)
         {
             Database.DiscoConfiguration.JobPreferences.LocationMode = LocationMode;

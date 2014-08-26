@@ -36,5 +36,10 @@ namespace Disco.Services.Jobs.Noticeboards
 
             return base.OnConnected();
         }
+
+        public static void SetTheme(string ThemeName)
+        {
+            HubContext.Clients.All.setTheme(ThemeName);
+        }
     }
 }

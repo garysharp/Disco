@@ -1,0 +1,249 @@
+﻿@model Disco.Web.Areas.Config.Models.JobPreferences.IndexModel
+@{
+    Authorization.Require(Claims.Config.JobPreferences.Show);
+
+    var canConfig = Authorization.Has(Claims.Config.JobPreferences.Configure);
+}
+<div id="Config_ReportPrefs" class="form" style="width: 530px;">
+    <h2>Report Preferences</h2>
+    <table>
+        <tr>
+            <th style="width: 200px">Noticeboard Default Theme:
+            </th>
+            <td>@if (canConfig)
+                {
+                @Html.DropDownListFor(model => model.DefaultNoticeboardTheme, Model.DefaultNoticeboardThemeOptions().Select(o => new SelectListItem() { Value = o.Key, Text = o.Value }))
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
+                    $(function () {
+                        $element = $('#DefaultNoticeboardTheme');
+
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $element,
+                            null,
+                            '@(Url.Action(MVC.API.JobPreferences.UpdateDefaultNoticeboardTheme()))',
+                            'DefaultNoticeboardTheme');
+
+                        $element.change(function () {
+                            $('#Config_ReportPrefs_Preview').attr('class', 'theme-' + $(this).val());
+                        });
+                    });
+                </script>
+                }
+                else
+                {
+                @Model.DefaultNoticeboardThemeOptions().First(o => o.Key == Model.DefaultNoticeboardTheme).Value
+                }
+                <div id="Config_ReportPrefs_Preview" class="theme-@(Model.DefaultNoticeboardTheme)">
+                    <div class="heading">Noticeboard Heading</div>
+                    <div class="column-heading">Column One</div>
+                    <div class="column-heading">Column Two</div>
+                    <div class="column-heading">Column Three</div>
+                    <div class="column"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="column"><span></span><span class="alert"></span><span></span><span></span></div>
+                    <div class="column"><span></span><span></span><span class="alert"></span><span></span><span class="alert"></span><span></span><span></span><span></span><span></span><span></span></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>&nbsp;</th>
+            <td>
+                <button id="Config_ReportPrefs_Builder_Button" class="button small">Link Builder</button>
+                <div class="info-box">
+                    <p class="fa-p">
+                        <i class="fa fa-info-circle"></i>Report Links can be created which override the default theme and filter the data shown.
+                    </p>
+                </div>
+                <div id="Config_ReportPrefs_Builder" title="Report Link Builder" class="dialog">
+                    <form>
+                        <div class="report">
+                            <h3>Report</h3>
+                            <ul class="none">
+                                <li>
+                                    <input type="radio" id="Config_ReportPrefs_Builder_NTHDU" name="Report" class="themeable" data-url="@(Url.ActionAbsolute(MVC.Public.UserHeldDevices.Noticeboard()))" checked="checked" /><label for="Config_ReportPrefs_Builder_NTHDU">Technician Held Devices for Users (Noticeboard)</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="Config_ReportPrefs_Builder_THDU" name="Report" data-url="@(Url.ActionAbsolute(MVC.Public.UserHeldDevices.Index()))" /><label for="Config_ReportPrefs_Builder_THDU">Technician Held Devices for Users (Report)</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="Config_ReportPrefs_Builder_NTHD" name="Report" class="themeable" data-url="@(Url.ActionAbsolute(MVC.Public.HeldDevices.Noticeboard()))" /><label for="Config_ReportPrefs_Builder_NTHD">Technician Held Devices (Noticeboard)</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="Config_ReportPrefs_Builder_THD" name="Report" data-url="@(Url.ActionAbsolute(MVC.Public.HeldDevices.Index()))" /><label for="Config_ReportPrefs_Builder_THD">Technician Held Devices (Report)</label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="theme">
+                            <h3>Noticeboard Theme</h3>
+                            @Html.DropDownList("Config_ReportPrefs_Builder_Theme", new SelectListItem[] { new SelectListItem() { Value = "", Text = "<Default>", Selected = true } }.Concat(Model.DefaultNoticeboardThemeOptions().Select(o => new SelectListItem() { Value = o.Key, Text = o.Value })))
+                        </div>
+                        <div class="filter">
+                            <h3>Filter</h3>
+                            <select id="Config_ReportPrefs_Builder_Filter">
+                                <option value="">&lt;None&gt;</option>
+                                <option value="DeviceProfile">Device Profile</option>
+                                <option value="DeviceAddress">Device Profile Address</option>
+                            </select>
+                            <div class="options">
+                                <div class="method">
+                                    <input type="radio" id="Config_ReportPrefs_Builder_I" name="FilterAction" value="Include" checked="checked" /><label for="Config_ReportPrefs_Builder_I">Include</label>
+                                    <input type="radio" id="Config_ReportPrefs_Builder_E" name="FilterAction" value="Exclude" /><label for="Config_ReportPrefs_Builder_E">Exclude</label>
+                                </div>
+                                <div class="filter-option filter-DeviceProfile">
+                                    <ul class="none">
+                                        @foreach (var deviceProfile in Model.DeviceProfiles.Value)
+                                        {
+                                            <li>
+                                                <input id="Config_ReportPrefs_Builder_DP_@(deviceProfile.Id)" type="checkbox" value="@deviceProfile.Id" /><label for="Config_ReportPrefs_Builder_DP_@(deviceProfile.Id)">@deviceProfile.Description</label></li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="filter-option filter-DeviceAddress">
+                                    <ul class="none">
+                                        @foreach (var address in Model.OrganisationAddresses.Value)
+                                        {
+                                            <li>
+                                                <input id="Config_ReportPrefs_Builder_OA_@(address.Id)" type="checkbox" value="@address.ShortName" /><label for="Config_ReportPrefs_Builder_OA_@(address.Id)">@address.Name (@address.ShortName)</label></li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="output">
+                        <textarea readonly></textarea>
+                        <a href="#" target="_blank"><i class="fa fa-external-link" title="Open Link"></i></a>
+                        <i class="fa fa-clipboard" title="Copy Link to Clipboard"></i>
+                    </div>
+                </div>
+                <script>
+                    $(function () {
+                        var dialog, url;
+
+                        function updateUrl() {
+                            var theme = null;
+                            var filter = null;
+                            var filterMethod = null;
+                            var filterValue = null;
+
+                            var report = dialog.find('.report input:checked');
+                            if (report.length > 0) {
+                                url = report.attr('data-url');
+
+                                if (report.hasClass('themeable')) {
+                                    theme = dialog.find('.theme > select').val();
+                                }
+
+                                filter = dialog.find('.filter > select').val();
+
+                                if (!!filter) {
+                                    filterMethod = dialog.find('.filter .method input:checked').val();
+
+                                    filterValue = dialog
+                                        .find('.filter .filter-' + filter)
+                                        .find('input:checked')
+                                        .map(function (index, element) { return $(element).val(); })
+                                        .toArray().join(',');
+                                }
+
+                                if (!!theme || !!filter) {
+                                    url += '?';
+
+                                    if (!!theme)
+                                        url += 'theme=' + theme;
+
+                                    if (!!theme && !!filter)
+                                        url += '&';
+
+                                    if (!!filter)
+                                        url += filter + filterMethod + '=' + filterValue;
+                                }
+                            }
+
+                            $('#Config_ReportPrefs_Builder_Buttonpane').find('textarea').val(url);
+                            $('#Config_ReportPrefs_Builder_Buttonpane').find('.fa-external-link').closest('a').attr('href', url);
+                        }
+
+                        $('#Config_ReportPrefs_Builder_Button').click(function () {
+
+                            if (!dialog) {
+                                dialog = $('#Config_ReportPrefs_Builder').dialog({
+                                    resizable: false,
+                                    modal: true,
+                                    autoOpen: false,
+                                    width: 550,
+                                    maxHeight: 520,
+                                    buttons: {
+                                        Close: function () {
+                                            dialog.dialog('close');
+                                        }
+                                    }
+                                });
+
+                                dialog.find('.report').on('change', 'input', function () {
+                                    var $this = $(this);
+                                    var $theme = dialog.find('.theme');
+
+                                    if ($this.hasClass('themeable'))
+                                        $theme.slideDown();
+                                    else
+                                        $theme.slideUp();
+
+                                    updateUrl();
+                                });
+
+                                dialog.find('#Config_ReportPrefs_Builder_Theme').change(updateUrl);
+
+                                dialog.find('#Config_ReportPrefs_Builder_Filter').change(function () {
+                                    var $this = $(this);
+                                    var $filter = dialog.find('.options');
+
+                                    if (!$this.val())
+                                        $filter.slideUp();
+                                    else {
+                                        $filter.find('.filter-option').hide();
+                                        $filter.show();
+                                        $filter.find('.filter-' + $this.val()).slideDown();
+                                    }
+
+                                    updateUrl();
+                                });
+
+                                dialog.find('.filter .options').on('click', 'input', updateUrl);
+
+                                var $buttonpane = dialog.closest('.ui-dialog').children('.ui-dialog-buttonpane');
+                                $buttonpane.attr('id', 'Config_ReportPrefs_Builder_Buttonpane').append(dialog.children('.output'));
+
+                                $buttonpane.find('textarea').focus(function () {
+                                    $(this).select();
+                                });
+
+
+                                var $clipboard = $buttonpane.find('.fa-clipboard');
+                                
+                                if (!!window.clipboardData) {
+                                    $clipboard.click(function () {
+                                        window.clipboardData.setData('Text', url);
+                                        alert('Link copied to Clipboard');
+                                        return false;
+                                    });
+                                } else {
+                                    $clipboard.hide();
+                                }
+
+                            }
+
+                            dialog.dialog('open');
+
+                            updateUrl();
+
+                            return false;
+                        });
+
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+</div>

@@ -19,6 +19,7 @@ namespace Disco.Web.Areas.Config.Controllers
             {
                 LongRunningJobDaysThreshold = Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold,
                 StaleJobMinutesThreshold = Database.DiscoConfiguration.JobPreferences.StaleJobMinutesThreshold,
+                DefaultNoticeboardTheme = Database.DiscoConfiguration.JobPreferences.DefaultNoticeboardTheme,
                 LocationMode = Database.DiscoConfiguration.JobPreferences.LocationMode,
                 LocationList = Database.DiscoConfiguration.JobPreferences.LocationList
             };

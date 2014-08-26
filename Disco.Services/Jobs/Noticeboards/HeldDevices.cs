@@ -209,7 +209,7 @@ namespace Disco.Services.Jobs.Noticeboards
             }
         }
 
-        private static IEnumerable<IHeldDeviceItem> GetHeldDevices(IQueryable<Job> query)
+        public static IEnumerable<IHeldDeviceItem> GetHeldDevices(IQueryable<Job> query)
         {
             var jobs = query
                 .Where(j =>

@@ -11,11 +11,9 @@ html, body {
 }
 
 body {
-    background: linear-gradient(to bottom, darken(@ButtonColour, 10%), @ButtonColour) left top repeat-x @ButtonColour;
     font-size: 16px;
     font-family: @FontFamilyBody;
-    color: @white;
-    cursor: auto;
+    cursor: none;
 }
 
 h1, h2, h3, h4 {
@@ -31,6 +29,7 @@ div#page {
 
 header, #header {
     position: relative;
+    color: @white;
     background-color: @HeaderBackgroundColour;
     margin: 0;
     padding: 0;
@@ -88,10 +87,10 @@ header, #header {
             margin-bottom: 10px;
             font-size: 1.4em;
             height: 30px;
+            color: @white;
         }
 
         div.content {
-            background: rgba(255, 255, 255, 0.2);
             height: calc(~"100% - 30px");
             overflow: hidden;
 
@@ -103,7 +102,6 @@ header, #header {
                 text-align: center;
                 text-transform: lowercase;
                 margin-top: 40px;
-                color: rgba(255, 255, 255, 0.8);
             }
 
             ul {
@@ -114,27 +112,21 @@ header, #header {
                 li {
                     position: relative;
                     margin: 4px 2px;
-                    background-color: #fff;
-                    border: 1px solid lighten(@ButtonColour, 10%);
                     padding: 6px 8px;
-                    color: @black;
                     clear: both;
                     overflow: hidden;
                     white-space: nowrap;
                     -ms-text-overflow: ellipsis;
                     -o-text-overflow: ellipsis;
                     text-overflow: ellipsis;
+                    background-color: @white;
+                    color: @black;
 
                     .small {
                         display: inline-block;
                         float: right;
                         font-size: 0.8em;
                         margin-top: 0.1em;
-                    }
-
-                    &.alert {
-                        background-color: @StatusError;
-                        color: @white;
                     }
 
                     &:after {
@@ -168,7 +160,6 @@ footer, #footer {
     bottom: 0;
     width: 100%;
     height: 50px;
-    background: linear-gradient(to bottom, fadeout(@ButtonColour, 100%), @ButtonColour 90%) left top repeat-x;
     display: block;
 }
 
@@ -206,4 +197,96 @@ body.status-error {
     #mainSection {
         opacity: 0.3;
     }
+}
+
+/* Themes */
+
+.theme-builder(@main-colour, @alert-colour: difference(@main-colour, @white), @alert-text-colour: contrast(@alert-colour)) {
+    background: linear-gradient(to bottom, darken(@main-colour, 10%), @main-colour) left top repeat-x @main-colour;
+
+    #mainSection {
+        .list {
+            div.content {
+                background: fade(@white, 20%);
+            }
+
+            ul li {
+                border: 1px solid softlight(@main-colour, #aaa);
+
+                &.alert {
+                    background-color: @alert-colour;
+                    border: 1px solid hardlight(@alert-colour, #aaa);
+                    color: @alert-text-colour;
+                }
+            }
+        }
+    }
+
+    footer, #footer {
+        background: linear-gradient(to bottom, fadeout(@main-colour, 100%), @main-colour 90%) left top repeat-x;
+    }
+}
+
+body.theme-default {
+    .theme-builder(@ButtonColour, @ThemeRed);
+}
+
+body.theme-default-soft {
+    .theme-builder(@ButtonColour, hardlight(@ThemeYellow, #bbb));
+}
+
+body.theme-green {
+    .theme-builder(@ThemeGreen, @ThemeRed);
+}
+
+body.theme-green-soft {
+    .theme-builder(@ThemeGreen, screen(@ThemeYellow, #111));
+}
+
+body.theme-violet {
+    .theme-builder(@ThemeViolet, @ThemeRed);
+}
+
+body.theme-violet-soft {
+    .theme-builder(@ThemeViolet, hardlight(@ThemeYellow, #bbb));
+}
+
+body.theme-magenta {
+    .theme-builder(@ThemeMagenta, darken(@ThemeCyan, 10%), @white);
+}
+
+body.theme-magenta-soft {
+    .theme-builder(@ThemeMagenta, screen(@ThemeCyan, #777));
+}
+
+body.theme-crimson {
+    .theme-builder(@ThemeCrimson, screen(@ThemeLime, #222));
+}
+
+body.theme-crimson-soft {
+    .theme-builder(@ThemeCrimson, screen(@ThemeLime, #777));
+}
+
+body.theme-amber {
+    .theme-builder(@ThemeAmber, @ThemeCobalt);
+}
+
+body.theme-amber-soft {
+    .theme-builder(@ThemeAmber, hardlight(@ThemeCobalt, #ddd));
+}
+
+body.theme-brown {
+    .theme-builder(@ThemeBrown, @ThemeYellow);
+}
+
+body.theme-brown-soft {
+    .theme-builder(@ThemeBrown, hardlight(@ThemeYellow, #bbb));
+}
+
+body.theme-steel {
+    .theme-builder(@ThemeSteel, @ThemeRed);
+}
+
+body.theme-steel-soft {
+    .theme-builder(@ThemeSteel, hardlight(@ThemeYellow, #bbb));
 }

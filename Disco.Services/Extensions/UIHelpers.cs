@@ -17,6 +17,10 @@ namespace Disco.Services.Extensions
         /// User-selectable Colour Themes
         /// </summary>
         public static ReadOnlyCollection<KeyValuePair<string, string>> ThemeColours { get; private set; }
+        /// <summary>
+        /// Noticeboard Colour Themes
+        /// </summary>
+        public static ReadOnlyCollection<KeyValuePair<string, string>> NoticeboardThemes { get; private set; }
 
         /// <summary>
         /// Returns a randomly selected Icon using <see cref="System.Random"/>.
@@ -220,6 +224,26 @@ namespace Disco.Services.Extensions
                 new KeyValuePair<string, string>("steel" , "Steel"),
                 new KeyValuePair<string, string>("mauve" , "Mauve"),
                 new KeyValuePair<string, string>("sienna" , "Sienna")
+            }.AsReadOnly();
+
+            // Noticeboard Themes
+            NoticeboardThemes = new List<KeyValuePair<string, string>>(){
+                 new KeyValuePair<string, string>("default" , "Default Blue"),
+                new KeyValuePair<string, string>("default-soft" , "Default Blue Soft"),
+                new KeyValuePair<string, string>("green" , "Green"),
+                new KeyValuePair<string, string>("green-soft" , "Green Soft"),
+                new KeyValuePair<string, string>("violet" , "Violet"),
+                new KeyValuePair<string, string>("violet-soft" , "Violet Soft"),
+                new KeyValuePair<string, string>("magenta" , "Magenta"),
+                new KeyValuePair<string, string>("magenta-soft" , "Magenta Soft"),
+                new KeyValuePair<string, string>("crimson" , "Crimson"),
+                new KeyValuePair<string, string>("crimson-soft" , "Crimson Soft"),
+                new KeyValuePair<string, string>("amber" , "Amber"),
+                new KeyValuePair<string, string>("amber-soft" , "Amber Soft"),
+                new KeyValuePair<string, string>("brown" , "Brown"),
+                new KeyValuePair<string, string>("brown-soft" , "Brown Soft"),
+                new KeyValuePair<string, string>("steel" , "Steel"),
+                new KeyValuePair<string, string>("steel-soft" , "Steel Soft")
             }.AsReadOnly();
         }
     }

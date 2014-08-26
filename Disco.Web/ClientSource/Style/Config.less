@@ -1097,7 +1097,6 @@ div.logEventsViewport {
 #pluginLibrary {
 
     #pluginLibraryGroups {
-
         width: 900px;
         margin: 0 auto;
 
@@ -1260,6 +1259,195 @@ div.logEventsViewport {
                 }
             }
         }
+    }
+}
+
+#Config_ReportPrefs {
+    margin-top: 10px;
+
+    #Config_ReportPrefs_Preview {
+        float: right;
+        width: 150px;
+        height: 80px;
+        border: 1px solid #444;
+        font-size: 4px;
+        color: @white;
+        overflow: hidden;
+        text-transform: uppercase;
+
+        .heading {
+            height: 6px;
+            padding-left: 3px;
+            overflow: hidden;
+            background-color: @HeaderBackgroundColour;
+        }
+
+        .column-heading {
+            float: left;
+            width: calc(~"33% - 4px");
+            padding-left: 2px;
+            margin: 1px 0 0 2px;
+        }
+
+        .column {
+            height: 100%;
+            float: left;
+            width: calc(~"33% - 2px");
+            margin-left: 2px;
+            overflow: hidden;
+            background: fade(@white, 20%);
+
+            span {
+                display: block;
+                height: 4px;
+                margin: 1px;
+                background-color: @white;
+            }
+        }
+
+        .theme-builder(@main-colour, @alert-colour: difference(@main-colour, @white), @alert-text-colour: contrast(@alert-colour)) {
+            background: linear-gradient(to bottom, darken(@main-colour, 10%), @main-colour) left top repeat-x @main-colour;
+
+            .column span.alert {
+                background-color: @alert-colour;
+                color: @alert-text-colour;
+            }
+        }
+
+        &.theme-default {
+            .theme-builder(@ButtonColour, @ThemeRed);
+        }
+
+        &.theme-default-soft {
+            .theme-builder(@ButtonColour, hardlight(@ThemeYellow, #bbb));
+        }
+
+        &.theme-green {
+            .theme-builder(@ThemeGreen, @ThemeRed);
+        }
+
+        &.theme-green-soft {
+            .theme-builder(@ThemeGreen, screen(@ThemeYellow, #111));
+        }
+
+        &.theme-violet {
+            .theme-builder(@ThemeViolet, @ThemeRed);
+        }
+
+        &.theme-violet-soft {
+            .theme-builder(@ThemeViolet, hardlight(@ThemeYellow, #bbb));
+        }
+
+        &.theme-magenta {
+            .theme-builder(@ThemeMagenta, darken(@ThemeCyan, 10%), @white);
+        }
+
+        &.theme-magenta-soft {
+            .theme-builder(@ThemeMagenta, screen(@ThemeCyan, #777));
+        }
+
+        &.theme-crimson {
+            .theme-builder(@ThemeCrimson, screen(@ThemeLime, #222));
+        }
+
+        &.theme-crimson-soft {
+            .theme-builder(@ThemeCrimson, screen(@ThemeLime, #777));
+        }
+
+        &.theme-amber {
+            .theme-builder(@ThemeAmber, @ThemeCobalt);
+        }
+
+        &.theme-amber-soft {
+            .theme-builder(@ThemeAmber, hardlight(@ThemeCobalt, #ddd));
+        }
+
+        &.theme-brown {
+            .theme-builder(@ThemeBrown, @ThemeYellow);
+        }
+
+        &.theme-brown-soft {
+            .theme-builder(@ThemeBrown, hardlight(@ThemeYellow, #bbb));
+        }
+
+        &.theme-steel {
+            .theme-builder(@ThemeSteel, @ThemeRed);
+        }
+
+        &.theme-steel-soft {
+            .theme-builder(@ThemeSteel, hardlight(@ThemeYellow, #bbb));
+        }
+    }
+}
+
+#Config_ReportPrefs_Builder {
+    .report {
+        margin-bottom: 10px;
+
+        ul {
+            margin-left: 10px;
+        }
+    }
+
+    .theme {
+        margin-bottom: 10px;
+
+        & > select {
+            margin-left: 10px;
+        }
+    }
+
+    .filter {
+        & > select {
+            margin-left: 10px;
+        }
+
+        div.options {
+            display: none;
+            background-color: @white;
+            border: 1px dashed @SubtleBorderColour;
+            margin-top: 4px;
+            margin-left: 15px;
+            padding: 2px 6px;
+
+            .method {
+                margin-top: 4px;
+                margin-bottom: 8px;
+
+                label {
+                    margin-right: 14px;
+                }
+            }
+        }
+    }
+}
+
+#Config_ReportPrefs_Builder_Buttonpane {
+    padding-right: .3em;
+
+    textarea {
+        float: left;
+        font-family: @FontFamilyMono;
+        color: @FontBodyColour;
+        width: calc(~"100% - 1.2em - 10px");
+        border: 1px solid @SubtleBorderColour;
+        white-space: pre;
+        min-height: 0;
+    }
+
+    i {
+        float: right;
+        cursor: pointer;
+        margin: .3em .2em 0 0;
+        color: @HyperLinkColour;
+
+        &:hover {
+            color: @HyperLinkHoverColour;
+        }
+    }
+
+    .ui-dialog-buttonset {
+        display: none;
     }
 }
 

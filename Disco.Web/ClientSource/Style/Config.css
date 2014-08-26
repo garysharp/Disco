@@ -1075,6 +1075,211 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
 #Config_AuthRoles_Subjects_Update_Dialog #Config_AuthRoles_Subjects_Update_Dialog_List li .remove:hover {
   opacity: 1;
 }
+#Config_ReportPrefs {
+  margin-top: 10px;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview {
+  float: right;
+  width: 150px;
+  height: 80px;
+  border: 1px solid #444;
+  font-size: 4px;
+  color: #ffffff;
+  overflow: hidden;
+  text-transform: uppercase;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview .heading {
+  height: 6px;
+  padding-left: 3px;
+  overflow: hidden;
+  background-color: #333333;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview .column-heading {
+  float: left;
+  width: calc(33% - 4px);
+  padding-left: 2px;
+  margin: 1px 0 0 2px;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview .column {
+  height: 100%;
+  float: left;
+  width: calc(33% - 2px);
+  margin-left: 2px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.2);
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview .column span {
+  display: block;
+  height: 4px;
+  margin: 1px;
+  background-color: #ffffff;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-default {
+  background: linear-gradient(to bottom, #165180, #1e6dab) left top repeat-x #1e6dab;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-default .column span.alert {
+  background-color: #e51400;
+  color: #ffffff;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-default-soft {
+  background: linear-gradient(to bottom, #165180, #1e6dab) left top repeat-x #1e6dab;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-default-soft .column span.alert {
+  background-color: #f0e277;
+  color: #000000;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-green {
+  background: linear-gradient(to bottom, #477c11, #60a917) left top repeat-x #60a917;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-green .column span.alert {
+  background-color: #e51400;
+  color: #ffffff;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-green-soft {
+  background: linear-gradient(to bottom, #477c11, #60a917) left top repeat-x #60a917;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-green-soft .column span.alert {
+  background-color: #e5cc11;
+  color: #000000;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-violet {
+  background: linear-gradient(to bottom, #8800cc, #aa00ff) left top repeat-x #aa00ff;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-violet .column span.alert {
+  background-color: #e51400;
+  color: #ffffff;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-violet-soft {
+  background: linear-gradient(to bottom, #8800cc, #aa00ff) left top repeat-x #aa00ff;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-violet-soft .column span.alert {
+  background-color: #f0e277;
+  color: #000000;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-magenta {
+  background: linear-gradient(to bottom, #a50058, #d80073) left top repeat-x #d80073;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-magenta .column span.alert {
+  background-color: #1681b4;
+  color: #ffffff;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-magenta-soft {
+  background: linear-gradient(to bottom, #a50058, #d80073) left top repeat-x #d80073;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-magenta-soft .column span.alert {
+  background-color: #85cdf0;
+  color: #000000;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-crimson {
+  background: linear-gradient(to bottom, #6f0019, #a20025) left top repeat-x #a20025;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-crimson .column span.alert {
+  background-color: #b0cc22;
+  color: #000000;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-crimson-soft {
+  background: linear-gradient(to bottom, #6f0019, #a20025) left top repeat-x #a20025;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-crimson-soft .column span.alert {
+  background-color: #cee077;
+  color: #000000;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-amber {
+  background: linear-gradient(to bottom, #bf8208, #f0a30a) left top repeat-x #f0a30a;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-amber .column span.alert {
+  background-color: #0050ef;
+  color: #ffffff;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-amber-soft {
+  background: linear-gradient(to bottom, #bf8208, #f0a30a) left top repeat-x #f0a30a;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-amber-soft .column span.alert {
+  background-color: #bbd0fb;
+  color: #000000;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-brown {
+  background: linear-gradient(to bottom, #5c401f, #825a2c) left top repeat-x #825a2c;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-brown .column span.alert {
+  background-color: #e3c800;
+  color: #000000;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-brown-soft {
+  background: linear-gradient(to bottom, #5c401f, #825a2c) left top repeat-x #825a2c;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-brown-soft .column span.alert {
+  background-color: #f0e277;
+  color: #000000;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-steel {
+  background: linear-gradient(to bottom, #4e5d6c, #647689) left top repeat-x #647689;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-steel .column span.alert {
+  background-color: #e51400;
+  color: #ffffff;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-steel-soft {
+  background: linear-gradient(to bottom, #4e5d6c, #647689) left top repeat-x #647689;
+}
+#Config_ReportPrefs #Config_ReportPrefs_Preview.theme-steel-soft .column span.alert {
+  background-color: #f0e277;
+  color: #000000;
+}
+#Config_ReportPrefs_Builder .report {
+  margin-bottom: 10px;
+}
+#Config_ReportPrefs_Builder .report ul {
+  margin-left: 10px;
+}
+#Config_ReportPrefs_Builder .theme {
+  margin-bottom: 10px;
+}
+#Config_ReportPrefs_Builder .theme > select {
+  margin-left: 10px;
+}
+#Config_ReportPrefs_Builder .filter > select {
+  margin-left: 10px;
+}
+#Config_ReportPrefs_Builder .filter div.options {
+  display: none;
+  background-color: #ffffff;
+  border: 1px dashed #cccccc;
+  margin-top: 4px;
+  margin-left: 15px;
+  padding: 2px 6px;
+}
+#Config_ReportPrefs_Builder .filter div.options .method {
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+#Config_ReportPrefs_Builder .filter div.options .method label {
+  margin-right: 14px;
+}
+#Config_ReportPrefs_Builder_Buttonpane {
+  padding-right: .3em;
+}
+#Config_ReportPrefs_Builder_Buttonpane textarea {
+  float: left;
+  font-family: Consolas, "Courier New", monospace;
+  color: #333333;
+  width: calc(100% - 1.2em - 10px);
+  border: 1px solid #cccccc;
+  white-space: pre;
+  min-height: 0;
+}
+#Config_ReportPrefs_Builder_Buttonpane i {
+  float: right;
+  cursor: pointer;
+  margin: .3em .2em 0 0;
+  color: #335a87;
+}
+#Config_ReportPrefs_Builder_Buttonpane i:hover {
+  color: #5e8cc2;
+}
+#Config_ReportPrefs_Builder_Buttonpane .ui-dialog-buttonset {
+  display: none;
+}
 #Config_Location {
   margin-top: 10px;
 }

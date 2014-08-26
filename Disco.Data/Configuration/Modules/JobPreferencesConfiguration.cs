@@ -41,6 +41,22 @@ namespace Disco.Data.Configuration.Modules
             }
         }
 
+        /// <summary>
+        /// Theme used in noticeboards by default.
+        /// <see cref="Disco.Services.Extensions.UIHelpers.NoticeboardThemes"/>
+        /// </summary>
+        public string DefaultNoticeboardTheme
+        {
+            get { return Get("default"); }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentNullException("DefaultNoticeboardTheme");
+
+                Set(value);
+            }
+        }
+
         public LocationModes LocationMode
         {
             get { return Get<LocationModes>(LocationModes.Unrestricted); }

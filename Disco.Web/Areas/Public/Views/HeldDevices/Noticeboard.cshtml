@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Disco.Web.Areas.Public.Models.UserHeldDevices.NoticeboardModel
+@{
     Layout = null;
     Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
@@ -13,7 +14,7 @@
     <title>Disco ICT - Held Devices</title>
     @Html.BundleRenderDeferred()
 </head>
-<body class="status-connecting">
+<body class="theme-@(Model.DefaultTheme) status-connecting">
     <div id="page">
         <header id="header">
             <div id="heading">Held Devices</div>
@@ -92,6 +93,7 @@
 
             var rotateSpeed = 3000;
             var itemFilters;
+            var fixedTheme = null;
 
             var $inProcessList = $('#inProcess').find('ul');
             var $readyForReturnList = $('#readyForReturn').find('ul');
@@ -118,11 +120,15 @@
             }
 
             function init() {
+                monitorMouseMove();
+                applyQueryString();
+
                 // Connect to Hub
                 hub = $.connection.noticeboardUpdates;
 
                 // Map Functions
                 hub.client.updateHeldDevice = updateHeldDevice;
+                hub.client.setTheme = setTheme;
 
                 $.connection.hub.qs = { Noticeboard: '@(Disco.Services.Jobs.Noticeboards.HeldDevices.Name)' };
                 $.connection.hub.error(connectionError);
@@ -165,7 +171,6 @@
 
                     window.setTimeout(scheduleRotation, rotateSpeed);
                 });
-                buildFilters();
             }
 
             // Called by SignalR
@@ -237,14 +242,53 @@
                 }, true);
             }
 
-            function buildFilters() {
-                var filters = [];
+            function setTheme(theme) {
+                if (!!fixedTheme)
+                    return;
+
+                var $body = $(document.body);
+
+                // Existing classes
+                var c = $body.attr('class').split(' ');
+                // Remove existing theme
+                c = $.grep(c, function (i) { return (i.indexOf('theme-') !== 0) });
+
+                c.push('theme-' + theme);
+
+                $body.attr('class', c.join(' '));
+            }
+
+            function monitorMouseMove() {
+                var token = null,
+                    $body = $(document.body);
+
+                $body.mousemove(function () {
+                    if (!!token)
+                        window.clearTimeout(token);
+                    else if ($body.css('cursor') == 'none')
+                        $body.css('cursor', 'auto');
+
+                    token = window.setTimeout(function () {
+                        $body.css('cursor', 'none');
+                        token = null;
+                    }, 3500);
+                });
+
+            }
+
+            function applyQueryString() {
                 var queryStringParameters = getQueryStringParameters();
 
                 if (queryStringParameters !== null) {
+                    var filters = [];
+
                     $.each(queryStringParameters, function (key, value) {
                         switch (key.toLowerCase()) {
-                            case 'deviceaddressinclude':
+                            case 'theme': // THEME
+                                setTheme(value);
+                                fixedTheme = value;
+                                break;
+                            case 'deviceaddressinclude': // FILTER: Device Address Include
                                 var deviceAddresses = value.split(",").map(function (v) { return v.toLowerCase(); });
                                 if (deviceAddresses.length > 0) {
                                     filters.push(function (heldDeviceItem) {
@@ -257,7 +301,7 @@
                                     });
                                 }
                                 break;
-                            case 'deviceaddressexclude':
+                            case 'deviceaddressexclude': // FILTER: Device Address Exclude
                                 var deviceAddresses = value.split(",").map(function (v) { return v.toLowerCase(); });
                                 if (deviceAddresses.length > 0) {
                                     filters.push(function (heldDeviceItem) {
@@ -270,7 +314,7 @@
                                     });
                                 }
                                 break;
-                            case 'deviceprofileinclude':
+                            case 'deviceprofileinclude': // FILTER: Device Profile Include
                                 var deviceProfiles = value.split(",").map(function (v) { return parseInt(v); });
                                 if (deviceProfiles.length > 0) {
                                     filters.push(function (heldDeviceItem) {
@@ -279,7 +323,7 @@
                                     });
                                 }
                                 break;
-                            case 'deviceprofileexclude':
+                            case 'deviceprofileexclude': // FILTER: Device Profile Exclude
                                 var deviceProfiles = value.split(",").map(function (v) { return parseInt(v); });
                                 if (deviceProfiles.length > 0) {
                                     filters.push(function (heldDeviceItem) {
@@ -290,12 +334,12 @@
                                 break;
                         }
                     });
-                }
 
-                if (filters.length > 0)
-                    itemFilters = filters;
-                else
-                    itemFilters = null;
+                    if (filters.length > 0)
+                        itemFilters = filters;
+                    else
+                        itemFilters = null;
+                }
             }
 
             function connectionError() {

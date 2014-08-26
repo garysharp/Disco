@@ -38,7 +38,7 @@ namespace Disco.Services.Jobs.Noticeboards
             }
         }
 
-        private static IEnumerable<IHeldDeviceItem> GetHeldDevicesForUsers(IQueryable<Job> query)
+        public static IEnumerable<IHeldDeviceItem> GetHeldDevicesForUsers(IQueryable<Job> query)
         {
             var jobs = query
                 .Where(j =>

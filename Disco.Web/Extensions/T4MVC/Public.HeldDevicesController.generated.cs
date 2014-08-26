@@ -59,6 +59,12 @@ namespace Disco.Web.Areas.Public.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Index()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult HeldDevice()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.HeldDevice);
@@ -101,6 +107,17 @@ namespace Disco.Web.Areas.Public.Controllers
         }
 
 
+        static readonly ActionParamsClass_Index s_params_Index = new ActionParamsClass_Index();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Index IndexParams { get { return s_params_Index; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Index
+        {
+            public readonly string DeviceProfileInclude = "DeviceProfileInclude";
+            public readonly string DeviceProfileExclude = "DeviceProfileExclude";
+            public readonly string DeviceAddressInclude = "DeviceAddressInclude";
+            public readonly string DeviceAddressExclude = "DeviceAddressExclude";
+        }
         static readonly ActionParamsClass_HeldDevice s_params_HeldDevice = new ActionParamsClass_HeldDevice();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_HeldDevice HeldDeviceParams { get { return s_params_HeldDevice; } }
@@ -133,13 +150,17 @@ namespace Disco.Web.Areas.Public.Controllers
         public T4MVC_HeldDevicesController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Collections.Generic.List<int?> DeviceProfileInclude, System.Collections.Generic.List<int?> DeviceProfileExclude, System.Collections.Generic.List<string> DeviceAddressInclude, System.Collections.Generic.List<string> DeviceAddressExclude);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Index()
+        public override System.Web.Mvc.ActionResult Index(System.Collections.Generic.List<int?> DeviceProfileInclude, System.Collections.Generic.List<int?> DeviceProfileExclude, System.Collections.Generic.List<string> DeviceAddressInclude, System.Collections.Generic.List<string> DeviceAddressExclude)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
-            IndexOverride(callInfo);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DeviceProfileInclude", DeviceProfileInclude);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DeviceProfileExclude", DeviceProfileExclude);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DeviceAddressInclude", DeviceAddressInclude);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DeviceAddressExclude", DeviceAddressExclude);
+            IndexOverride(callInfo, DeviceProfileInclude, DeviceProfileExclude, DeviceAddressInclude, DeviceAddressExclude);
             return callInfo;
         }
 

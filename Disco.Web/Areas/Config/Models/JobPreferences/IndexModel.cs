@@ -1,11 +1,11 @@
-﻿using Disco.Models.BI.Job;
+﻿using Disco.Data.Repository;
+using Disco.Models.BI.Job;
 using Disco.Models.UI.Config.JobPreferences;
+using Disco.Services.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
 namespace Disco.Web.Areas.Config.Models.JobPreferences
 {
@@ -13,8 +13,30 @@ namespace Disco.Web.Areas.Config.Models.JobPreferences
     {
         public int LongRunningJobDaysThreshold { get; set; }
         public int StaleJobMinutesThreshold { get; set; }
+        public string DefaultNoticeboardTheme { get; set; }
         public LocationModes LocationMode { get; set; }
         public List<string> LocationList { get; set; }
+
+        public List<KeyValuePair<string, string>> DefaultNoticeboardThemeOptions()
+        {
+            return UIHelpers.NoticeboardThemes.ToList();
+        }
+
+        public Lazy<List<Disco.Models.Repository.DeviceProfile>> DeviceProfiles = new Lazy<List<Disco.Models.Repository.DeviceProfile>>(() =>
+        {
+            using (var database = new DiscoDataContext())
+            {
+                return database.DeviceProfiles.OrderBy(a => a.Description).ToList();
+            }
+        });
+
+        public Lazy<List<Disco.Models.BI.Config.OrganisationAddress>> OrganisationAddresses = new Lazy<List<Disco.Models.BI.Config.OrganisationAddress>>(() =>
+        {
+            using (var database = new DiscoDataContext())
+            {
+                return database.DiscoConfiguration.OrganisationAddresses.Addresses.OrderBy(a => a.Name).ToList();
+            }
+        });
 
         public List<KeyValuePair<int, string>> LongRunningJobDaysThresholdOptions()
         {
