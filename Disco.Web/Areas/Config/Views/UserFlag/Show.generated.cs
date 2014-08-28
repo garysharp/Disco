@@ -598,7 +598,7 @@ WriteLiteral("                                </div>\r\n                        
 "   dialog = $(\'#Config_UserFlags_Icon_Update_Dialog\').dialog({\r\n                " +
 "                            resizable: false,\r\n                                 " +
 "           modal: true,\r\n                                            autoOpen: f" +
-"alse,\r\n                                            width: 750,\r\n                " +
+"alse,\r\n                                            width: 780,\r\n                " +
 "                            height: 650,\r\n                                      " +
 "      buttons: {\r\n                                                \"Save\": save,\r" +
 "\n                                                Cancel: cancel\r\n               " +
