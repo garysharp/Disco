@@ -36,7 +36,7 @@ namespace Disco.Services.Devices.ManagedGroups
                         (e.EventType == RepositoryMonitorEventType.Added &&
                             ActiveDirectory.IsValidDomainAccountId(((Device)e.Entity).DeviceDomainId)) ||
                         (e.EventType == RepositoryMonitorEventType.Modified &&
-                            (e.ModifiedProperties.Contains("DeviceBatchId") || e.ModifiedProperties.Contains("DeviceDomainId"))) ||
+                            (e.ModifiedProperties.Contains("DeviceBatchId") || e.ModifiedProperties.Contains("DeviceDomainId") || e.ModifiedProperties.Contains("LastEnrolDate"))) ||
                         (e.EventType == RepositoryMonitorEventType.Deleted)
                         )
                     ));
