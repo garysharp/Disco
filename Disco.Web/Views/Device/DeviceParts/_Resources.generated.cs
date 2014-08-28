@@ -345,13 +345,13 @@ WriteLiteral(" class=\"attachmentInput clearfix\"");
 
 WriteLiteral(">\r\n                            <span");
 
-WriteLiteral(" class=\"action upload fa fa-upload\"");
+WriteLiteral(" class=\"action upload fa fa-upload disabled\"");
 
 WriteLiteral(" title=\"Attach File\"");
 
 WriteLiteral("></span><span");
 
-WriteLiteral(" class=\"action photo fa fa-camera\"");
+WriteLiteral(" class=\"action photo fa fa-camera disabled\"");
 
 WriteLiteral(" title=\"Capture Image\"");
 
@@ -396,23 +396,45 @@ WriteLiteral(@">
             
             #line default
             #line hidden
-WriteLiteral(@"' };
-                            $.connection.hub.error(onHubError);
-
-                            // Start Connection
-                            $.connection.hub.start().fail(onHubError);
-
-                            function onHubError(error) {
-                                alert('Live-update Error: ' + error);
-                            }
-
-                            function onAddAttachment(id, quick) {
-                                var data = { id: id };
-                                $.ajax({
-                                    url: '");
+WriteLiteral("\' };\r\n                            $.connection.hub.error(onHubFailed);\r\n         " +
+"                   $.connection.hub.disconnected(onHubFailed);\r\n\r\n              " +
+"              $.connection.hub.reconnecting(function () {\r\n                     " +
+"           $(\'#AttachmentsContainer\').find(\'span.action\').addClass(\'disabled\');\r" +
+"\n                            });\r\n                            $.connection.hub.r" +
+"econnected(function () {\r\n                                $(\'#AttachmentsContain" +
+"er\').find(\'span.action\').removeClass(\'disabled\');\r\n                            }" +
+");\r\n\r\n                            // Start Connection\r\n                         " +
+"   $.connection.hub.start(function () {\r\n                                $(\'#Att" +
+"achmentsContainer\').find(\'span.action\').removeClass(\'disabled\');\r\n              " +
+"              }).fail(onHubFailed);\r\n\r\n                            function onHu" +
+"bFailed(error) {\r\n                                // Disable UI\r\n               " +
+"                 $(\'#AttachmentsContainer\').find(\'span.action\').addClass(\'disabl" +
+"ed\');\r\n\r\n                                // Show Dialog Message\r\n               " +
+"                 if ($(\'.disconnected-dialog\').length == 0) {\r\n                 " +
+"                   $(\'<div>\')\r\n                                        .addClass" +
+"(\'dialog disconnected-dialog\')\r\n                                        .html(\'<" +
+"h3><span class=\"fa-stack fa-lg\"><i class=\"fa fa-wifi fa-stack-1x\"></i><i class=\"" +
+"fa fa-ban fa-stack-2x error\"></i></span>Disconnected from the Disco ICT Server</" +
+"h3><div>Please ensure you are connected to the server, then refresh this page to" +
+" enable features.</div>\')\r\n                                        .dialog({\r\n  " +
+"                                          resizable: false,\r\n                   " +
+"                         title: \'Disconnected\',\r\n                               " +
+"             width: 400,\r\n                                            modal: tru" +
+"e,\r\n                                            buttons: {\r\n                    " +
+"                            \'Refresh Now\': function () {\r\n                      " +
+"                              $(this).dialog(\'option\', \'buttons\', null);\r\n      " +
+"                                              window.location.href = window.loca" +
+"tion.href;\r\n                                                },\r\n                " +
+"                                \'Close\': function () {\r\n                        " +
+"                            $(this).dialog(\'destroy\');\r\n                        " +
+"                        }\r\n                                            }\r\n      " +
+"                                  });\r\n                                }\r\n      " +
+"                      }\r\n\r\n                            function onAddAttachment(" +
+"id, quick) {\r\n                                var data = { id: id };\r\n          " +
+"                      $.ajax({\r\n                                    url: \'");
 
             
-            #line 84 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 117 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                      Write(Url.Action(MVC.API.Device.Attachment()));
 
             
@@ -427,13 +449,13 @@ WriteLiteral(@"',
 ");
 
             
-            #line 90 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 123 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 90 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 123 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                          if (canRemoveAnyAttachments)
                                         {
 
@@ -447,7 +469,7 @@ WriteLiteral("buildAttachment(a, true, quick);");
 WriteLiteral("\r\n");
 
             
-            #line 93 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 126 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                         }
                                         else if (canRemoveOwnAttachments)
                                         {
@@ -460,7 +482,7 @@ WriteLiteral("                                        ");
 WriteLiteral("buildAttachment(a, (a.AuthorId === \'");
 
             
-            #line 96 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 129 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                               Write(CurrentUser.UserId);
 
             
@@ -471,7 +493,7 @@ WriteLiteral("\'), quick);");
 WriteLiteral("\r\n");
 
             
-            #line 97 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 130 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                         }
                                         else
                                         {
@@ -486,7 +508,7 @@ WriteLiteral("buildAttachment(a, false, quick);");
 WriteLiteral("\r\n");
 
             
-            #line 101 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 134 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                         }
 
             
@@ -513,7 +535,7 @@ WriteLiteral(@"                                        } else {
                                 e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '");
 
             
-            #line 120 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 153 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                                                               Write(Url.Action(MVC.API.Device.AttachmentDownload()));
 
             
@@ -545,7 +567,7 @@ WriteLiteral(@"/' + a.Id);
                                         img.attr('src', '");
 
             
-            #line 143 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 176 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                      Write(Url.Action(MVC.API.Device.AttachmentThumbnail()));
 
             
@@ -596,13 +618,13 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                           
 "                           }\r\n\r\n");
 
             
-            #line 202 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 235 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 202 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 235 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                          if (canAddAttachments)
                         {
             
@@ -613,7 +635,7 @@ WriteLiteral("\r\n                            //#region Add Attachments\r\n     
 "                     \'");
 
             
-            #line 206 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 239 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                              Write(Url.Action(MVC.API.Device.AttachmentUpload(Model.Device.SerialNumber, null)));
 
             
@@ -623,26 +645,32 @@ WriteLiteral("\',\r\n                            $Attachments.find(\'.Disco-Atta
 "rget\'),\r\n                            $Attachments.find(\'.Disco-AttachmentUpload-" +
 "Progress\'));\r\n\r\n                            var $attachmentInput = $Attachments." +
 "find(\'.attachmentInput\');\r\n                            $attachmentInput.find(\'.p" +
-"hoto\').click(function () {\r\n                                attachmentUploader.u" +
-"ploadImage();\r\n                            });\r\n                            $att" +
-"achmentInput.find(\'.upload\').click(function () {\r\n                              " +
-"  attachmentUploader.uploadFiles();\r\n                            });\r\n\r\n        " +
-"                    var resourcesTab;\r\n                            $(document).o" +
-"n(\'dragover\', function () {\r\n                                if (!resourcesTab) " +
-"{\r\n                                    var tabs = $Attachments.closest(\'.ui-tabs" +
-"\');\r\n                                    resourcesTab = {\r\n                     " +
-"                   tabs: tabs,\r\n                                        resource" +
-"sIndex: tabs.children(\'ul.ui-tabs-nav\').find(\'a[href=\"#DeviceDetailTab-Resources" +
-"\"]\').closest(\'li\').index()\r\n                                    };\r\n            " +
-"                    }\r\n                                var selectedIndex = resou" +
-"rcesTab.tabs.tabs(\'option\', \'active\');\r\n                                if (reso" +
-"urcesTab.resourcesIndex !== selectedIndex)\r\n                                    " +
-"resourcesTab.tabs.tabs(\'option\', \'active\', resourcesTab.resourcesIndex);\r\n      " +
-"                      });\r\n                            //#endregion\r\n           " +
-"                 ");
+"hoto\').click(function () {\r\n                                if ($(this).hasClass" +
+"(\'disabled\'))\r\n                                    alert(\'Disconnected from the " +
+"Disco ICT Server, please refresh this page and try again\');\r\n                   " +
+"             else\r\n                                    attachmentUploader.upload" +
+"Image();\r\n                            });\r\n                            $attachme" +
+"ntInput.find(\'.upload\').click(function () {\r\n                                if " +
+"($(this).hasClass(\'disabled\'))\r\n                                    alert(\'Disco" +
+"nnected from the Disco ICT Server, please refresh this page and try again\');\r\n  " +
+"                              else\r\n                                    attachme" +
+"ntUploader.uploadFiles();\r\n                            });\r\n\r\n                  " +
+"          var resourcesTab;\r\n                            $(document).on(\'dragove" +
+"r\', function () {\r\n                                if (!resourcesTab) {\r\n       " +
+"                             var tabs = $Attachments.closest(\'.ui-tabs\');\r\n     " +
+"                               resourcesTab = {\r\n                               " +
+"         tabs: tabs,\r\n                                        resourcesIndex: ta" +
+"bs.children(\'ul.ui-tabs-nav\').find(\'a[href=\"#DeviceDetailTab-Resources\"]\').close" +
+"st(\'li\').index()\r\n                                    };\r\n                      " +
+"          }\r\n                                var selectedIndex = resourcesTab.ta" +
+"bs.tabs(\'option\', \'active\');\r\n                                if (resourcesTab.r" +
+"esourcesIndex !== selectedIndex)\r\n                                    resourcesT" +
+"ab.tabs.tabs(\'option\', \'active\', resourcesTab.resourcesIndex);\r\n                " +
+"            });\r\n                            //#endregion\r\n                     " +
+"       ");
 
             
-            #line 232 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 271 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                    }
 
             
@@ -651,7 +679,7 @@ WriteLiteral("\',\r\n                            $Attachments.find(\'.Disco-Atta
 WriteLiteral("                        ");
 
             
-            #line 233 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 272 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                          if (canRemoveAnyAttachments || canRemoveOwnAttachments)
                         {
             
@@ -684,7 +712,7 @@ WriteLiteral(@"
                                             url: '");
 
             
-            #line 258 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 297 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                              Write(Url.Action(MVC.API.Device.AttachmentRemove()));
 
             
@@ -712,7 +740,7 @@ WriteLiteral("\',\r\n                                            dataType: \'jso
 "endregion\r\n                        ");
 
             
-            #line 285 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 324 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                }
 
             
@@ -749,7 +777,7 @@ WriteLiteral("></i>&nbsp;Are you sure?\r\n        </p>\r\n    </div>\r\n    <scr
 "etailTab-ResourcesLink\">Attachments [");
 
             
-            #line 306 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 345 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                                                                                 Write(Model.Device.DeviceAttachments == null ? 0 : Model.Device.DeviceAttachments.Count);
 
             

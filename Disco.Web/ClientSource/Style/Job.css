@@ -346,6 +346,15 @@
   background-color: #ededed;
   border: 1px solid #cccccc;
 }
+#jobShowResources #Comments div.commentInput span.action.disabled {
+  color: rgba(51, 51, 51, 0.2);
+  cursor: default;
+}
+#jobShowResources #Comments div.commentInput span.action.disabled:hover {
+  color: rgba(51, 51, 51, 0.2);
+  background-color: inherit;
+  border: 1px solid #ffffff;
+}
 #jobShowResources #AttachmentsContainer {
   padding: 0;
 }
@@ -445,6 +454,15 @@
   color: #335a87;
   background-color: #ededed;
   border: 1px solid #cccccc;
+}
+#jobShowResources #Attachments div.attachmentInput span.action.disabled {
+  color: rgba(51, 51, 51, 0.2);
+  cursor: default;
+}
+#jobShowResources #Attachments div.attachmentInput span.action.disabled:hover {
+  color: rgba(51, 51, 51, 0.2);
+  background-color: inherit;
+  border: 1px solid #ffffff;
 }
 #Job_Show_Job_Actions_AddQueue_Dialog {
   height: 400px;

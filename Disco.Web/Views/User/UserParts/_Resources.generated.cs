@@ -345,13 +345,13 @@ WriteLiteral(" class=\"attachmentInput clearfix\"");
 
 WriteLiteral(">\r\n                            <span");
 
-WriteLiteral(" class=\"action upload fa fa-upload\"");
+WriteLiteral(" class=\"action upload fa fa-upload disabled\"");
 
 WriteLiteral(" title=\"Attach File\"");
 
 WriteLiteral("></span><span");
 
-WriteLiteral(" class=\"action photo fa fa-camera\"");
+WriteLiteral(" class=\"action photo fa fa-camera disabled\"");
 
 WriteLiteral(" title=\"Capture Image\"");
 
@@ -394,44 +394,66 @@ WriteLiteral(@">
             
             #line default
             #line hidden
-WriteLiteral(@"' };
-                        $.connection.hub.error(onHubError);
-
-                        // Start Connection
-                        $.connection.hub.start().fail(onHubError);
-
-                        function onHubError(error) {
-                            alert('Live-update Error: ' + error);
-                        }
-
-                        function onAddAttachment(id, quick) {
-                            var data = { id: id };
-                            $.ajax({
-                                url: '");
+WriteLiteral("\' };\r\n                            $.connection.hub.error(onHubFailed);\r\n         " +
+"                   $.connection.hub.disconnected(onHubFailed);\r\n\r\n              " +
+"              $.connection.hub.reconnecting(function () {\r\n                     " +
+"           $(\'#AttachmentsContainer\').find(\'span.action\').addClass(\'disabled\');\r" +
+"\n                            });\r\n                            $.connection.hub.r" +
+"econnected(function () {\r\n                                $(\'#AttachmentsContain" +
+"er\').find(\'span.action\').removeClass(\'disabled\');\r\n                            }" +
+");\r\n\r\n                            // Start Connection\r\n                         " +
+"   $.connection.hub.start(function () {\r\n                                $(\'#Att" +
+"achmentsContainer\').find(\'span.action\').removeClass(\'disabled\');\r\n              " +
+"              }).fail(onHubFailed);\r\n\r\n                            function onHu" +
+"bFailed(error) {\r\n                                // Disable UI\r\n               " +
+"                 $(\'#AttachmentsContainer\').find(\'span.action\').addClass(\'disabl" +
+"ed\');\r\n\r\n                                // Show Dialog Message\r\n               " +
+"                 if ($(\'.disconnected-dialog\').length == 0) {\r\n                 " +
+"                   $(\'<div>\')\r\n                                        .addClass" +
+"(\'dialog disconnected-dialog\')\r\n                                        .html(\'<" +
+"h3><span class=\"fa-stack fa-lg\"><i class=\"fa fa-wifi fa-stack-1x\"></i><i class=\"" +
+"fa fa-ban fa-stack-2x error\"></i></span>Disconnected from the Disco ICT Server</" +
+"h3><div>Please ensure you are connected to the server, then refresh this page to" +
+" enable features.</div>\')\r\n                                        .dialog({\r\n  " +
+"                                          resizable: false,\r\n                   " +
+"                         title: \'Disconnected\',\r\n                               " +
+"             width: 400,\r\n                                            modal: tru" +
+"e,\r\n                                            buttons: {\r\n                    " +
+"                            \'Refresh Now\': function () {\r\n                      " +
+"                              $(this).dialog(\'option\', \'buttons\', null);\r\n      " +
+"                                              window.location.href = window.loca" +
+"tion.href;\r\n                                                },\r\n                " +
+"                                \'Close\': function () {\r\n                        " +
+"                            $(this).dialog(\'destroy\');\r\n                        " +
+"                        }\r\n                                            }\r\n      " +
+"                                  });\r\n                                }\r\n      " +
+"                      }\r\n\r\n                            function onAddAttachment(" +
+"id, quick) {\r\n                                var data = { id: id };\r\n          " +
+"                      $.ajax({\r\n                                    url: \'");
 
             
-            #line 82 "..\..\Views\User\UserParts\_Resources.cshtml"
-                                 Write(Url.Action(MVC.API.User.Attachment()));
+            #line 115 "..\..\Views\User\UserParts\_Resources.cshtml"
+                                     Write(Url.Action(MVC.API.User.Attachment()));
 
             
             #line default
             #line hidden
 WriteLiteral(@"',
-                                dataType: 'json',
-                                data: data,
-                                success: function (d) {
-                                    if (d.Result == 'OK') {
-                                        var a = d.Attachment;
+                                    dataType: 'json',
+                                    data: data,
+                                    success: function (d) {
+                                        if (d.Result == 'OK') {
+                                            var a = d.Attachment;
 ");
 
             
-            #line 88 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 121 "..\..\Views\User\UserParts\_Resources.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 88 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 121 "..\..\Views\User\UserParts\_Resources.cshtml"
                                          if (canRemoveAnyAttachments)
                                         {
 
@@ -445,7 +467,7 @@ WriteLiteral("buildAttachment(a, true, quick);");
 WriteLiteral("\r\n");
 
             
-            #line 91 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 124 "..\..\Views\User\UserParts\_Resources.cshtml"
                                         }
                                         else if (canRemoveOwnAttachments)
                                         {
@@ -458,7 +480,7 @@ WriteLiteral("                                        ");
 WriteLiteral("buildAttachment(a, (a.AuthorId === \'");
 
             
-            #line 94 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 127 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                               Write(CurrentUser.UserId);
 
             
@@ -469,7 +491,7 @@ WriteLiteral("\'), quick);");
 WriteLiteral("\r\n");
 
             
-            #line 95 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 128 "..\..\Views\User\UserParts\_Resources.cshtml"
                                         }
                                         else
                                         {
@@ -484,159 +506,169 @@ WriteLiteral("buildAttachment(a, false, quick);");
 WriteLiteral("\r\n");
 
             
-            #line 99 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 132 "..\..\Views\User\UserParts\_Resources.cshtml"
                                         }
 
             
             #line default
             #line hidden
-WriteLiteral(@"                                    } else {
-                                        alert('Unable to add attachment: ' + d.Result);
+WriteLiteral(@"                                        } else {
+                                            alert('Unable to add attachment: ' + d.Result);
+                                        }
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        alert('Unable to add attachment: ' + textStatus);
                                     }
-                                },
-                                error: function (jqXHR, textStatus, errorThrown) {
-                                    alert('Unable to add attachment: ' + textStatus);
-                                }
-                            });
-                        }
-                        function buildAttachment(a, canRemove, quick) {
-                            var t = '<a><span class=""icon""><img alt=""Attachment Thumbnail"" /></span><span class=""comments""></span><span class=""author""></span>';
-                            if (canRemove)
-                                t += '<span class=""remove fa fa-times-circle""></span>';
-                            t += '<span class=""timestamp""></span></a>';
+                                });
+                            }
+                            function buildAttachment(a, canRemove, quick) {
+                                var t = '<a><span class=""icon""><img alt=""Attachment Thumbnail"" /></span><span class=""comments""></span><span class=""author""></span>';
+                                if (canRemove)
+                                    t += '<span class=""remove fa fa-times-circle""></span>';
+                                t += '<span class=""timestamp""></span></a>';
 
-                            var e = $(t);
+                                var e = $(t);
 
-                            e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '");
+                                e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '");
 
             
-            #line 117 "..\..\Views\User\UserParts\_Resources.cshtml"
-                                                                                                          Write(Url.Action(MVC.API.User.AttachmentDownload()));
+            #line 150 "..\..\Views\User\UserParts\_Resources.cshtml"
+                                                                                                              Write(Url.Action(MVC.API.User.AttachmentDownload()));
 
             
             #line default
             #line hidden
 WriteLiteral(@"/' + a.Id);
-                            e.find('.comments').text(a.Description);
-                            e.find('.author').text(a.Author);
-                            e.find('.timestamp').text(a.TimestampFull).attr('title', a.TimestampFull).livestamp(a.TimestampUnixEpoc);
-                            if (canRemove)
-                                e.find('.remove').click(removeAttachment);
-                            if (!quick)
-                                e.hide();
-                            $attachmentOutput.append(e);
-                            onUpdate();
-                            if (!quick)
-                                e.show('slow');
-                            if (a.MimeType.toLowerCase().indexOf('image/') == 0)
-                                e.shadowbox({ gallery: 'attachments', player: 'img', title: a.Description });
-                            else
-                                e.click(onDownload);
+                                e.find('.comments').text(a.Description);
+                                e.find('.author').text(a.Author);
+                                e.find('.timestamp').text(a.TimestampFull).attr('title', a.TimestampFull).livestamp(a.TimestampUnixEpoc);
+                                if (canRemove)
+                                    e.find('.remove').click(removeAttachment);
+                                if (!quick)
+                                    e.hide();
+                                $attachmentOutput.append(e);
+                                onUpdate();
+                                if (!quick)
+                                    e.show('slow');
+                                if (a.MimeType.toLowerCase().indexOf('image/') == 0)
+                                    e.shadowbox({ gallery: 'attachments', player: 'img', title: a.Description });
+                                else
+                                    e.click(onDownload);
 
-                            // Add Thumbnail
-                            var buildThumbnail = function () {
-                                var retryCount = 0;
-                                var img = e.find('.icon img');
+                                // Add Thumbnail
+                                var buildThumbnail = function () {
+                                    var retryCount = 0;
+                                    var img = e.find('.icon img');
 
-                                var setThumbnailUrl = function () {
-                                    img.attr('src', '");
+                                    var setThumbnailUrl = function () {
+                                        img.attr('src', '");
 
             
-            #line 140 "..\..\Views\User\UserParts\_Resources.cshtml"
-                                                 Write(Url.Action(MVC.API.User.AttachmentThumbnail()));
+            #line 173 "..\..\Views\User\UserParts\_Resources.cshtml"
+                                                     Write(Url.Action(MVC.API.User.AttachmentThumbnail()));
 
             
             #line default
             #line hidden
-WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                                };\r\n           " +
-"                     img.on(\'error\', function () {\r\n                            " +
-"        img.addClass(\'loading\');\r\n                                    retryCount" +
-"++;\r\n                                    if (retryCount < 6)\r\n                  " +
-"                      window.setTimeout(setThumbnailUrl, retryCount * 250);\r\n   " +
-"                             });\r\n                                img.on(\'load\'," +
-" function () {\r\n                                    img.removeClass(\'loading\');\r" +
-"\n                                });\r\n                                window.set" +
-"Timeout(setThumbnailUrl, 100);\r\n                            };\r\n                " +
-"            buildThumbnail();\r\n                        }\r\n\r\n                    " +
-"    function onDownload() {\r\n                            var $this = $(this);\r\n " +
-"                           var url = $this.attr(\'href\');\r\n\r\n                    " +
-"        if ($.connection && $.connection.hub && $.connection.hub.transport &&\r\n " +
-"                                               $.connection.hub.transport.name =" +
-"= \'foreverFrame\') {\r\n                                // SignalR active with fore" +
-"verFrame transport - use popup window\r\n                                window.op" +
-"en(url, \'_blank\', \'height=150,width=250,location=no,menubar=no,resizable=no,scro" +
-"llbars=no,status=no,toolbar=no\');\r\n                            } else {\r\n       " +
-"                         // use iFrame\r\n                                if (!$at" +
-"tachmentDownloadHost) {\r\n                                    $attachmentDownload" +
-"Host = $(\'<iframe>\')\r\n                                        .attr({ \'src\': url" +
-", \'title\': \'Attachment Download Host\' })\r\n                                      " +
-"  .addClass(\'hidden\')\r\n                                        .appendTo(\'body\')" +
-"\r\n                                        .contents();\r\n                        " +
-"        } else {\r\n                                    $attachmentDownloadHost[0]" +
-".location.href = url;\r\n                                }\r\n                      " +
-"      }\r\n\r\n                            return false;\r\n                        }\r" +
-"\n\r\n                        function onRemoveAttachment(id) {\r\n                  " +
-"          var a = $attachmentOutput.find(\'a[data-attachmentid=\' + id + \']\');\r\n\r\n" +
-"                            a.hide(300).delay(300).queue(function () {\r\n        " +
-"                        var $this = $(this);\r\n                                if" +
+WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                                    };\r\n       " +
+"                             img.on(\'error\', function () {\r\n                    " +
+"                    img.addClass(\'loading\');\r\n                                  " +
+"      retryCount++;\r\n                                        if (retryCount < 6)" +
+"\r\n                                            window.setTimeout(setThumbnailUrl," +
+" retryCount * 250);\r\n                                    });\r\n                  " +
+"                  img.on(\'load\', function () {\r\n                                " +
+"        img.removeClass(\'loading\');\r\n                                    });\r\n  " +
+"                                  window.setTimeout(setThumbnailUrl, 100);\r\n    " +
+"                            };\r\n                                buildThumbnail()" +
+";\r\n                            }\r\n\r\n                            function onDownl" +
+"oad() {\r\n                                var $this = $(this);\r\n                 " +
+"               var url = $this.attr(\'href\');\r\n\r\n                                " +
+"if ($.connection && $.connection.hub && $.connection.hub.transport &&\r\n         " +
+"                                           $.connection.hub.transport.name == \'f" +
+"oreverFrame\') {\r\n                                    // SignalR active with fore" +
+"verFrame transport - use popup window\r\n                                    windo" +
+"w.open(url, \'_blank\', \'height=150,width=250,location=no,menubar=no,resizable=no," +
+"scrollbars=no,status=no,toolbar=no\');\r\n                                } else {\r" +
+"\n                                    // use iFrame\r\n                            " +
+"        if (!$attachmentDownloadHost) {\r\n                                       " +
+" $attachmentDownloadHost = $(\'<iframe>\')\r\n                                      " +
+"      .attr({ \'src\': url, \'title\': \'Attachment Download Host\' })\r\n              " +
+"                              .addClass(\'hidden\')\r\n                             " +
+"               .appendTo(\'body\')\r\n                                            .c" +
+"ontents();\r\n                                    } else {\r\n                      " +
+"                  $attachmentDownloadHost[0].location.href = url;\r\n             " +
+"                       }\r\n                                }\r\n\r\n                 " +
+"               return false;\r\n                            }\r\n\r\n                 " +
+"           function onRemoveAttachment(id) {\r\n                                va" +
+"r a = $attachmentOutput.find(\'a[data-attachmentid=\' + id + \']\');\r\n\r\n            " +
+"                    a.hide(300).delay(300).queue(function () {\r\n                " +
+"                    var $this = $(this);\r\n                                    if" +
 " ($this.attr(\'data-mimetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n           " +
-"                         Shadowbox.removeCache(this);\r\n                         " +
-"       $this.find(\'.timestamp\').livestamp(\'destroy\');\r\n                         " +
-"       $this.remove();\r\n                                onUpdate();\r\n           " +
-"                 });\r\n                        }\r\n\r\n                        funct" +
-"ion onUpdate() {\r\n                            var attachmentCount = $attachmentO" +
-"utput.children(\'a\').length;\r\n                            var tabHeading = \'Attac" +
-"hments [\' + attachmentCount + \']\';\r\n                            $(\'#UserDetailTa" +
-"b-ResourcesLink\').text(tabHeading);\r\n                        }\r\n\r\n");
+"                             Shadowbox.removeCache(this);\r\n                     " +
+"               $this.find(\'.timestamp\').livestamp(\'destroy\');\r\n                 " +
+"                   $this.remove();\r\n                                    onUpdate" +
+"();\r\n                                });\r\n                            }\r\n\r\n     " +
+"                       function onUpdate() {\r\n                                va" +
+"r attachmentCount = $attachmentOutput.children(\'a\').length;\r\n                   " +
+"             var tabHeading = \'Attachments [\' + attachmentCount + \']\';\r\n        " +
+"                        $(\'#UserDetailTab-ResourcesLink\').text(tabHeading);\r\n   " +
+"                         }\r\n\r\n");
 
             
-            #line 199 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 232 "..\..\Views\User\UserParts\_Resources.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 199 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 232 "..\..\Views\User\UserParts\_Resources.cshtml"
                          if (canAddAttachments)
                         {
             
             #line default
             #line hidden
-WriteLiteral("\r\n                        //#region Add Attachments\r\n                        var " +
-"attachmentUploader = new document.Disco.AttachmentUploader(\r\n                   " +
-"         \'");
+WriteLiteral("\r\n                            //#region Add Attachments\r\n                        " +
+"    var attachmentUploader = new document.Disco.AttachmentUploader(\r\n           " +
+"                     \'");
 
             
-            #line 203 "..\..\Views\User\UserParts\_Resources.cshtml"
-                         Write(Url.Action(MVC.API.User.AttachmentUpload(Model.User.UserId, null)));
+            #line 236 "..\..\Views\User\UserParts\_Resources.cshtml"
+                             Write(Url.Action(MVC.API.User.AttachmentUpload(Model.User.UserId, null)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            $Attachments.find(\'.Disco-AttachmentUpload-DropTa" +
 "rget\'),\r\n                            $Attachments.find(\'.Disco-AttachmentUpload-" +
-"Progress\'));\r\n\r\n                        var $attachmentInput = $Attachments.find" +
-"(\'.attachmentInput\');\r\n                        $attachmentInput.find(\'.photo\').c" +
-"lick(function () {\r\n                            attachmentUploader.uploadImage()" +
-";\r\n                        });\r\n                        $attachmentInput.find(\'." +
-"upload\').click(function () {\r\n                            attachmentUploader.upl" +
-"oadFiles();\r\n                        });\r\n\r\n                        var resource" +
-"sTab;\r\n                        $(document).on(\'dragover\', function () {\r\n       " +
-"                     if (!resourcesTab) {\r\n                                var t" +
-"abs = $Attachments.closest(\'.ui-tabs\');\r\n                                resourc" +
-"esTab = {\r\n                                    tabs: tabs,\r\n                    " +
-"                resourcesIndex: tabs.children(\'ul.ui-tabs-nav\').find(\'a[href=\"#U" +
-"serDetailTab-Resources\"]\').closest(\'li\').index()\r\n                              " +
-"  };\r\n                            }\r\n                            var selectedInd" +
-"ex = resourcesTab.tabs.tabs(\'option\', \'active\');\r\n                            if" +
-" (resourcesTab.resourcesIndex !== selectedIndex)\r\n                              " +
-"  resourcesTab.tabs.tabs(\'option\', \'active\', resourcesTab.resourcesIndex);\r\n    " +
-"                    });\r\n                        //#endregion\r\n                 " +
-"       ");
+"Progress\'));\r\n\r\n                            var $attachmentInput = $Attachments." +
+"find(\'.attachmentInput\');\r\n                            $attachmentInput.find(\'.p" +
+"hoto\').click(function () {\r\n                                if ($(this).hasClass" +
+"(\'disabled\'))\r\n                                    alert(\'Disconnected from the " +
+"Disco ICT Server, please refresh this page and try again\');\r\n                   " +
+"             else\r\n                                    attachmentUploader.upload" +
+"Image();\r\n                            });\r\n                            $attachme" +
+"ntInput.find(\'.upload\').click(function () {\r\n                                if " +
+"($(this).hasClass(\'disabled\'))\r\n                                    alert(\'Disco" +
+"nnected from the Disco ICT Server, please refresh this page and try again\');\r\n  " +
+"                              else\r\n                                    attachme" +
+"ntUploader.uploadFiles();\r\n                            });\r\n\r\n                  " +
+"          var resourcesTab;\r\n                            $(document).on(\'dragove" +
+"r\', function () {\r\n                                if (!resourcesTab) {\r\n       " +
+"                             var tabs = $Attachments.closest(\'.ui-tabs\');\r\n     " +
+"                               resourcesTab = {\r\n                               " +
+"         tabs: tabs,\r\n                                        resourcesIndex: ta" +
+"bs.children(\'ul.ui-tabs-nav\').find(\'a[href=\"#UserDetailTab-Resources\"]\').closest" +
+"(\'li\').index()\r\n                                    };\r\n                        " +
+"        }\r\n                                var selectedIndex = resourcesTab.tabs" +
+".tabs(\'option\', \'active\');\r\n                                if (resourcesTab.res" +
+"ourcesIndex !== selectedIndex)\r\n                                    resourcesTab" +
+".tabs.tabs(\'option\', \'active\', resourcesTab.resourcesIndex);\r\n                  " +
+"          });\r\n                            //#endregion\r\n                       " +
+"     ");
 
             
-            #line 229 "..\..\Views\User\UserParts\_Resources.cshtml"
-                               }
+            #line 268 "..\..\Views\User\UserParts\_Resources.cshtml"
+                                   }
 
             
             #line default
@@ -644,92 +676,83 @@ WriteLiteral("\',\r\n                            $Attachments.find(\'.Disco-Atta
 WriteLiteral("                        ");
 
             
-            #line 230 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 269 "..\..\Views\User\UserParts\_Resources.cshtml"
                          if (canRemoveAnyAttachments || canRemoveOwnAttachments)
                         {
             
             #line default
             #line hidden
 WriteLiteral(@"
-                        //#region Remove Attachments
+                            //#region Remove Attachments
 
-                        $attachmentOutput.find('span.remove').click(removeAttachment);
+                            $attachmentOutput.find('span.remove').click(removeAttachment);
 
-                        function removeAttachment() {
-                            $this = $(this).closest('a');
+                            function removeAttachment() {
+                                $this = $(this).closest('a');
 
-                            var data = { id: $this.attr('data-attachmentid') };
+                                var data = { id: $this.attr('data-attachmentid') };
 
-                            if (!$dialogRemoveAttachment) {
-                                $dialogRemoveAttachment = $('#dialogRemoveAttachment').dialog({
-                                    resizable: false,
-                                    height: 140,
-                                    modal: true,
-                                    autoOpen: false
-                                });
-                            }
+                                if (!$dialogRemoveAttachment) {
+                                    $dialogRemoveAttachment = $('#dialogRemoveAttachment').dialog({
+                                        resizable: false,
+                                        height: 140,
+                                        modal: true,
+                                        autoOpen: false
+                                    });
+                                }
 
-                            $dialogRemoveAttachment.dialog(""enable"");
-                            $dialogRemoveAttachment.dialog('option', 'buttons', {
-                                ""Remove"": function () {
-                                    $dialogRemoveAttachment.dialog(""disable"");
-                                    $dialogRemoveAttachment.dialog(""option"", ""buttons"", null);
-                                    $.ajax({
-                                        url: '");
+                                $dialogRemoveAttachment.dialog(""enable"");
+                                $dialogRemoveAttachment.dialog('option', 'buttons', {
+                                    ""Remove"": function () {
+                                        $dialogRemoveAttachment.dialog(""disable"");
+                                        $dialogRemoveAttachment.dialog(""option"", ""buttons"", null);
+                                        $.ajax({
+                                            url: '");
 
             
-            #line 256 "..\..\Views\User\UserParts\_Resources.cshtml"
-                                         Write(Url.Action(MVC.API.User.AttachmentRemove()));
+            #line 295 "..\..\Views\User\UserParts\_Resources.cshtml"
+                                             Write(Url.Action(MVC.API.User.AttachmentRemove()));
 
             
             #line default
             #line hidden
-WriteLiteral(@"',
-                                        dataType: 'json',
-                                        data: data,
-                                        success: function (d) {
-                                            if (d == 'OK') {
-                                                // Do nothing, await SignalR notification
-                                            } else {
-                                                alert('Unable to remove attachment: ' + d);
-                                            }
-                                            $dialogRemoveAttachment.dialog(""close"");
-                                        },
-                                        error: function (jqXHR, textStatus, errorThrown) {
-                                            alert('Unable to remove attachment: ' + textStatus);
-                                            $dialogRemoveAttachment.dialog(""close"");
-                                        }
-                                    });
-                                },
-                                Cancel: function () {
-                                    $dialogRemoveAttachment.dialog(""close"");
-                                }
-                            });
-
-                            $dialogRemoveAttachment.dialog('open');
-
-                            return false;
-                        }
-
-                        //#endregion
-                        ");
+WriteLiteral("\',\r\n                                            dataType: \'json\',\r\n              " +
+"                              data: data,\r\n                                     " +
+"       success: function (d) {\r\n                                                " +
+"if (d == \'OK\') {\r\n                                                    // Do noth" +
+"ing, await SignalR notification\r\n                                               " +
+" } else {\r\n                                                    alert(\'Unable to " +
+"remove attachment: \' + d);\r\n                                                }\r\n " +
+"                                               $dialogRemoveAttachment.dialog(\"c" +
+"lose\");\r\n                                            },\r\n                       " +
+"                     error: function (jqXHR, textStatus, errorThrown) {\r\n       " +
+"                                         alert(\'Unable to remove attachment: \' +" +
+" textStatus);\r\n                                                $dialogRemoveAtta" +
+"chment.dialog(\"close\");\r\n                                            }\r\n        " +
+"                                });\r\n                                    },\r\n   " +
+"                                 Cancel: function () {\r\n                        " +
+"                $dialogRemoveAttachment.dialog(\"close\");\r\n                      " +
+"              }\r\n                                });\r\n\r\n                        " +
+"        $dialogRemoveAttachment.dialog(\'open\');\r\n\r\n                             " +
+"   return false;\r\n                            }\r\n\r\n                            /" +
+"/#endregion\r\n                        ");
 
             
-            #line 284 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 323 "..\..\Views\User\UserParts\_Resources.cshtml"
                                }
 
             
             #line default
             #line hidden
 WriteLiteral(@"
-                        $attachmentOutput.children('a').each(function () {
-                            $this = $(this);
-                            if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
-                                $this.shadowbox({ gallery: 'attachments', player: 'img', title: $this.find('.comments').text() });
-                            else
-                                $this.click(onDownload);
+                            $attachmentOutput.children('a').each(function () {
+                                $this = $(this);
+                                if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
+                                    $this.shadowbox({ gallery: 'attachments', player: 'img', title: $this.find('.comments').text() });
+                                else
+                                    $this.click(onDownload);
+                            });
                         });
-                    });
                     </script>
                 </div>
             </td>
@@ -739,7 +762,7 @@ WriteLiteral(@"
         $('#UserDetailTabItems').append('<li><a href=""#UserDetailTab-Resources"" id=""UserDetailTab-ResourcesLink"">Attachments [");
 
             
-            #line 300 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 339 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                                                                           Write(Model.User.UserAttachments == null ? 0 : Model.User.UserAttachments.Count);
 
             
@@ -748,7 +771,7 @@ WriteLiteral(@"
 WriteLiteral("]</a></li>\');\r\n    </script>\r\n</div>\r\n");
 
             
-            #line 303 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 342 "..\..\Views\User\UserParts\_Resources.cshtml"
  if (canRemoveAnyAttachments || canRemoveOwnAttachments)
 {
 
@@ -770,7 +793,7 @@ WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
 WriteLiteral("></i>&nbsp;Are you sure?\r\n        </p>\r\n    </div>\r\n");
 
             
-            #line 310 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 349 "..\..\Views\User\UserParts\_Resources.cshtml"
 }
             
             #line default

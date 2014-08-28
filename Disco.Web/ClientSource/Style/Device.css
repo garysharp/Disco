@@ -357,6 +357,15 @@
   background-color: #ededed;
   border: 1px solid #cccccc;
 }
+#deviceShowResources #Attachments div.attachmentInput span.action.disabled {
+  color: rgba(51, 51, 51, 0.2);
+  cursor: default;
+}
+#deviceShowResources #Attachments div.attachmentInput span.action.disabled:hover {
+  color: rgba(51, 51, 51, 0.2);
+  background-color: inherit;
+  border: 1px solid #ffffff;
+}
 #Devices_Export .Devices_Export_Type_Target {
   margin-top: 10px;
   display: none;

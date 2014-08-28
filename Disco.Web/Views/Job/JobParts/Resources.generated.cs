@@ -284,7 +284,7 @@ WriteLiteral(" accesskey=\"l\"");
 
 WriteLiteral("></textarea>\r\n                            <span");
 
-WriteLiteral(" class=\"action post commentInputPost fa fa-comment\"");
+WriteLiteral(" class=\"action post commentInputPost fa fa-comment disabled\"");
 
 WriteLiteral(" title=\"Post Comment\"");
 
@@ -324,14 +324,14 @@ WriteLiteral(">\r\n                <div");
 
 WriteLiteral(" id=\"Attachments\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2939), Tuple.Create("\"", 3014)
+WriteAttribute("class", Tuple.Create(" class=\"", 2948), Tuple.Create("\"", 3023)
             
             #line 56 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 2947), Tuple.Create<System.Object, System.Int32>(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments"
+, Tuple.Create(Tuple.Create("", 2956), Tuple.Create<System.Object, System.Int32>(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments"
             
             #line default
             #line hidden
-, 2947), false)
+, 2956), false)
 );
 
 WriteLiteral(">\r\n                    <div");
@@ -361,14 +361,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 3351), Tuple.Create("\"", 3408)
+WriteAttribute("href", Tuple.Create(" href=\"", 3360), Tuple.Create("\"", 3417)
             
             #line 63 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3358), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
+, Tuple.Create(Tuple.Create("", 3367), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
             
             #line default
             #line hidden
-, 3358), false)
+, 3367), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
@@ -397,42 +397,42 @@ WriteLiteral(">\r\n                                <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3518), Tuple.Create("\"", 3538)
+WriteAttribute("title", Tuple.Create(" title=\"", 3527), Tuple.Create("\"", 3547)
             
             #line 64 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3526), Tuple.Create<System.Object, System.Int32>(ja.Filename
+, Tuple.Create(Tuple.Create("", 3535), Tuple.Create<System.Object, System.Int32>(ja.Filename
             
             #line default
             #line hidden
-, 3526), false)
+, 3535), false)
 );
 
 WriteLiteral(">\r\n                                    <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 3609), Tuple.Create("\"", 3668)
+WriteAttribute("src", Tuple.Create(" src=\"", 3618), Tuple.Create("\"", 3677)
             
             #line 65 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3615), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
+, Tuple.Create(Tuple.Create("", 3624), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
             
             #line default
             #line hidden
-, 3615), false)
+, 3624), false)
 );
 
 WriteLiteral(" /></span>\r\n                                <span");
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3735), Tuple.Create("\"", 3755)
+WriteAttribute("title", Tuple.Create(" title=\"", 3744), Tuple.Create("\"", 3764)
             
             #line 66 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3743), Tuple.Create<System.Object, System.Int32>(ja.Comments
+, Tuple.Create(Tuple.Create("", 3752), Tuple.Create<System.Object, System.Int32>(ja.Comments
             
             #line default
             #line hidden
-, 3743), false)
+, 3752), false)
 );
 
 WriteLiteral(">\r\n");
@@ -527,14 +527,14 @@ WriteLiteral(" data-livestamp=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4450), Tuple.Create("\"", 4488)
+WriteAttribute("title", Tuple.Create(" title=\"", 4459), Tuple.Create("\"", 4497)
             
             #line 72 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                                                                                             , Tuple.Create(Tuple.Create("", 4458), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
+                                                                                                                                                             , Tuple.Create(Tuple.Create("", 4467), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 4458), false)
+, 4467), false)
 );
 
 WriteLiteral(">");
@@ -583,13 +583,13 @@ WriteLiteral(" class=\"attachmentInput clearfix\"");
 
 WriteLiteral(">\r\n                            <span");
 
-WriteLiteral(" class=\"action upload fa fa-upload\"");
+WriteLiteral(" class=\"action upload fa fa-upload disabled\"");
 
 WriteLiteral(" title=\"Attach File\"");
 
 WriteLiteral("></span><span");
 
-WriteLiteral(" class=\"action photo fa fa-camera\"");
+WriteLiteral(" class=\"action photo fa fa-camera disabled\"");
 
 WriteLiteral(" title=\"Capture Image\"");
 
@@ -735,45 +735,55 @@ WriteLiteral(@"
             });
 
             function postComment() {
+                if ($Comments.find('.commentInputPost').hasClass('disabled')) {
+                    alert('Disconnected from the Disco ICT Server, please refresh this page and try again');
+                    return;
+                }
+
                 var comment = $CommentInput.val();
-                if (comment != '') {
-                    var data = { comment: comment }
-                    $.ajax({
-                        url: '");
+
+                if (comment == '') {
+                    alert('Enter a comment to post');
+                    $CommentInput.focus();
+                    return;
+                }
+
+                var data = { comment: comment }
+                $.ajax({
+                    url: '");
 
             
-            #line 147 "..\..\Views\Job\JobParts\Resources.cshtml"
-                         Write(Url.Action(MVC.API.Job.CommentPost(Model.Job.Id, null)));
+            #line 158 "..\..\Views\Job\JobParts\Resources.cshtml"
+                     Write(Url.Action(MVC.API.Job.CommentPost(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
 WriteLiteral(@"',
-                        dataType: 'json',
-                        data: data,
-                        success: function (d) {
-                            if (d.Result == 'OK') {
-                                // Should be added via Repository Notifications
-                                // addComment(d.Comment, false);
-                                $CommentInput.val('').attr('disabled', false).focus();
-                            } else {
-                                alert('Unable to post comment: ' + d.Result);
-                                $CommentInput.attr('disabled', false);
-                            }
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            alert('Unable to post comment: ' + textStatus);
+                    dataType: 'json',
+                    data: data,
+                    success: function (d) {
+                        if (d.Result == 'OK') {
+                            // Should be added via Repository Notifications
+                            // addComment(d.Comment, false);
+                            $CommentInput.val('').attr('disabled', false).focus();
+                        } else {
+                            alert('Unable to post comment: ' + d.Result);
                             $CommentInput.attr('disabled', false);
                         }
-                    });
-                }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert('Unable to post comment: ' + textStatus);
+                        $CommentInput.attr('disabled', false);
+                    }
+                });
             }
 
             //#endregion
             ");
 
             
-            #line 169 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 179 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
@@ -782,7 +792,7 @@ WriteLiteral(@"',
 WriteLiteral("            ");
 
             
-            #line 170 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 180 "..\..\Views\Job\JobParts\Resources.cshtml"
              if (canRemoveAnyLogs || canRemoveOwnLogs)
             {
             
@@ -816,7 +826,7 @@ WriteLiteral(@"
                             url: '");
 
             
-            #line 196 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 206 "..\..\Views\Job\JobParts\Resources.cshtml"
                              Write(Url.Action(MVC.API.Job.CommentRemove()));
 
             
@@ -854,7 +864,7 @@ WriteLiteral(@"',
             ");
 
             
-            #line 225 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 235 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
@@ -864,7 +874,7 @@ WriteLiteral("\r\n            function loadLiveComment(key) {\r\n               
 "            url: \'");
 
             
-            #line 229 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 239 "..\..\Views\Job\JobParts\Resources.cshtml"
                      Write(Url.Action(MVC.API.Job.Comment()));
 
             
@@ -875,13 +885,13 @@ WriteLiteral("\',\r\n                    dataType: \'json\',\r\n                
 "d.JobId == jobId) {\r\n");
 
             
-            #line 234 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 244 "..\..\Views\Job\JobParts\Resources.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 234 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 244 "..\..\Views\Job\JobParts\Resources.cshtml"
                                  if (canRemoveAnyLogs)
                                 {
             
@@ -890,7 +900,7 @@ WriteLiteral("\',\r\n                    dataType: \'json\',\r\n                
 WriteLiteral("addComment(d, false, true);");
 
             
-            #line 235 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 245 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                          }
                                 else if (canRemoveOwnLogs)
                                 {
@@ -900,7 +910,7 @@ WriteLiteral("addComment(d, false, true);");
 WriteLiteral("addComment(d, false, (d.AuthorId === \'");
 
             
-            #line 237 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 247 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                          Write(CurrentUser.UserId);
 
             
@@ -909,7 +919,7 @@ WriteLiteral("addComment(d, false, (d.AuthorId === \'");
 WriteLiteral("\'));");
 
             
-            #line 237 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 247 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                              }
                                 else
                                 {
@@ -919,7 +929,7 @@ WriteLiteral("\'));");
 WriteLiteral("addComment(d, false, false);");
 
             
-            #line 239 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 249 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                           }
 
             
@@ -953,14 +963,14 @@ WriteLiteral("\r\n                        }\r\n                    },\r\n       
 "= liveRemoveComment;\r\n            //#endregion\r\n        });\r\n    </script>\r\n");
 
             
-            #line 287 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 297 "..\..\Views\Job\JobParts\Resources.cshtml"
 }
 
             
             #line default
             #line hidden
             
-            #line 288 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 298 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowAttachments)
 {
 
@@ -981,7 +991,7 @@ WriteLiteral(@"    <script>
             var jobId = parseInt('");
 
             
-            #line 301 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 311 "..\..\Views\Job\JobParts\Resources.cshtml"
                               Write(Model.Job.Id);
 
             
@@ -992,13 +1002,13 @@ WriteLiteral("\');\r\n\r\n            //#region Attachments\r\n            var $
 "tput\');\r\n\r\n");
 
             
-            #line 307 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 317 "..\..\Views\Job\JobParts\Resources.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 307 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 317 "..\..\Views\Job\JobParts\Resources.cshtml"
              if (canAddAttachments)
             {
             
@@ -1008,42 +1018,36 @@ WriteLiteral("\r\n            //#region Add Attachments\r\n            var attac
 " document.Disco.AttachmentUploader(\r\n                \'");
 
             
-            #line 311 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 321 "..\..\Views\Job\JobParts\Resources.cshtml"
              Write(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
-WriteLiteral(@"',
-                $Attachments.find('.Disco-AttachmentUpload-DropTarget'),
-                $Attachments.find('.Disco-AttachmentUpload-Progress'));
-
-            var $attachmentInput = $Attachments.find('.attachmentInput');
-            $attachmentInput.find('.photo').click(function () {
-                attachmentUploader.uploadImage();
-            });
-            $attachmentInput.find('.upload').click(function () {
-                attachmentUploader.uploadFiles();
-            });
-
-            var resourcesTab;
-            $(document).on('dragover', function () {
-                if (!resourcesTab) {
-                    var tabs = $Attachments.closest('.ui-tabs');
-                    resourcesTab = {
-                        tabs: tabs,
-                        resourcesIndex: tabs.children('ul.ui-tabs-nav').find('a[href=""#jobDetailTab-Resources""]').closest('li').index()
-                    };
-                }
-                var selectedIndex = resourcesTab.tabs.tabs('option', 'active');
-                if (resourcesTab.resourcesIndex !== selectedIndex)
-                    resourcesTab.tabs.tabs('option', 'active', resourcesTab.resourcesIndex);
-            });
-            //#endregion
-            ");
+WriteLiteral("\',\r\n                $Attachments.find(\'.Disco-AttachmentUpload-DropTarget\'),\r\n   " +
+"             $Attachments.find(\'.Disco-AttachmentUpload-Progress\'));\r\n\r\n        " +
+"    var $attachmentInput = $Attachments.find(\'.attachmentInput\');\r\n            $" +
+"attachmentInput.find(\'.photo\').click(function () {\r\n                if ($(this)." +
+"hasClass(\'disabled\'))\r\n                    alert(\'Disconnected from the Disco IC" +
+"T Server, please refresh this page and try again\');\r\n                else\r\n     " +
+"               attachmentUploader.uploadImage();\r\n            });\r\n            $" +
+"attachmentInput.find(\'.upload\').click(function () {\r\n                if ($(this)" +
+".hasClass(\'disabled\'))\r\n                    alert(\'Disconnected from the Disco I" +
+"CT Server, please refresh this page and try again\');\r\n                else\r\n    " +
+"                attachmentUploader.uploadFiles();\r\n            });\r\n\r\n          " +
+"  var resourcesTab;\r\n            $(document).on(\'dragover\', function () {\r\n     " +
+"           if (!resourcesTab) {\r\n                    var tabs = $Attachments.clo" +
+"sest(\'.ui-tabs\');\r\n                    resourcesTab = {\r\n                       " +
+" tabs: tabs,\r\n                        resourcesIndex: tabs.children(\'ul.ui-tabs-" +
+"nav\').find(\'a[href=\"#jobDetailTab-Resources\"]\').closest(\'li\').index()\r\n         " +
+"           };\r\n                }\r\n                var selectedIndex = resourcesT" +
+"ab.tabs.tabs(\'option\', \'active\');\r\n                if (resourcesTab.resourcesInd" +
+"ex !== selectedIndex)\r\n                    resourcesTab.tabs.tabs(\'option\', \'act" +
+"ive\', resourcesTab.resourcesIndex);\r\n            });\r\n            //#endregion\r\n" +
+"            ");
 
             
-            #line 337 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 353 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
@@ -1052,13 +1056,13 @@ WriteLiteral(@"',
 WriteLiteral("\r\n");
 
             
-            #line 339 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 355 "..\..\Views\Job\JobParts\Resources.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 339 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 355 "..\..\Views\Job\JobParts\Resources.cshtml"
              if (canRemoveAnyAttachments || canRemoveOwnAttachments)
             {
             
@@ -1093,7 +1097,7 @@ WriteLiteral(@"
                             url: '");
 
             
-            #line 366 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 382 "..\..\Views\Job\JobParts\Resources.cshtml"
                              Write(Url.Action(MVC.API.Job.AttachmentRemove()));
 
             
@@ -1129,7 +1133,7 @@ WriteLiteral(@"',
             ");
 
             
-            #line 393 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 409 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
@@ -1139,7 +1143,7 @@ WriteLiteral("\r\n            function addAttachment(key, quick) {\r\n          
 "id: key };\r\n                $.ajax({\r\n                    url: \'");
 
             
-            #line 398 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 414 "..\..\Views\Job\JobParts\Resources.cshtml"
                      Write(Url.Action(MVC.API.Job.Attachment()));
 
             
@@ -1150,13 +1154,13 @@ WriteLiteral("\',\r\n                    dataType: \'json\',\r\n                
 "\'OK\') {\r\n                            var a = d.Attachment;\r\n");
 
             
-            #line 404 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 420 "..\..\Views\Job\JobParts\Resources.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 404 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 420 "..\..\Views\Job\JobParts\Resources.cshtml"
                                  if (canRemoveAnyAttachments)
                                 {
 
@@ -1170,7 +1174,7 @@ WriteLiteral("buildAttachment(a, true, quick);");
 WriteLiteral("\r\n");
 
             
-            #line 407 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 423 "..\..\Views\Job\JobParts\Resources.cshtml"
                                 }
                                 else if (canRemoveOwnAttachments)
                                 {
@@ -1183,7 +1187,7 @@ WriteLiteral("                                ");
 WriteLiteral("buildAttachment(a, (a.AuthorId === \'");
 
             
-            #line 410 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 426 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                       Write(CurrentUser.UserId);
 
             
@@ -1194,7 +1198,7 @@ WriteLiteral("\'), quick);");
 WriteLiteral("\r\n");
 
             
-            #line 411 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 427 "..\..\Views\Job\JobParts\Resources.cshtml"
                                 }
                                 else
                                 {
@@ -1209,7 +1213,7 @@ WriteLiteral("buildAttachment(a, false, quick);");
 WriteLiteral("\r\n");
 
             
-            #line 415 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 431 "..\..\Views\Job\JobParts\Resources.cshtml"
                                 }
 
             
@@ -1236,7 +1240,7 @@ WriteLiteral(@"                        } else {
                     e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '");
 
             
-            #line 434 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 450 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                   Write(Url.Action(MVC.API.Job.AttachmentDownload()));
 
             
@@ -1268,7 +1272,7 @@ WriteLiteral(@"/' + a.Id);
                             img.attr('src', '");
 
             
-            #line 457 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 473 "..\..\Views\Job\JobParts\Resources.cshtml"
                                          Write(Url.Action(MVC.API.Job.AttachmentThumbnail()));
 
             
@@ -1315,14 +1319,14 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                        };\
 "script>\r\n");
 
             
-            #line 527 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 543 "..\..\Views\Job\JobParts\Resources.cshtml"
 }
 
             
             #line default
             #line hidden
             
-            #line 528 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 544 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowLogs || canShowAttachments)
 {
 
@@ -1332,7 +1336,7 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                        };\
 WriteLiteral("    <script>\r\n        $(function () {\r\n            var jobId = parseInt(\'");
 
             
-            #line 532 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 548 "..\..\Views\Job\JobParts\Resources.cshtml"
                               Write(Model.Job.Id);
 
             
@@ -1342,7 +1346,7 @@ WriteLiteral("\');\r\n\r\n            //#region LiveEvents\r\n            var hu
 "dates;\r\n\r\n            // Map Functions\r\n");
 
             
-            #line 538 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 554 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowLogs)
 {
             
@@ -1353,14 +1357,14 @@ WriteLiteral("\r\n            hub.client.addLog = document.DiscoFunctions.liveLo
 "      ");
 
             
-            #line 542 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 558 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
             #line default
             #line hidden
             
-            #line 543 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 559 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowAttachments)
 {
             
@@ -1381,30 +1385,48 @@ WriteLiteral(@"
 ");
 
             
-            #line 556 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 572 "..\..\Views\Job\JobParts\Resources.cshtml"
        }
 
             
             #line default
             #line hidden
-WriteLiteral(@"
-            $.connection.hub.qs = { JobId: jobId };
-            $.connection.hub.error(onHubError);
-
-            // Start Connection
-            $.connection.hub.start().fail(onHubError);
-
-            function onHubError(error) {
-                alert('Live-update Error: ' + error);
-            }
-
-            //#endregion
-        });
-    </script>
-");
+WriteLiteral("\r\n            $.connection.hub.qs = { JobId: jobId };\r\n            $.connection.h" +
+"ub.error(onHubFailed);\r\n            $.connection.hub.disconnected(onHubFailed);\r" +
+"\n\r\n            $.connection.hub.reconnecting(function () {\r\n                $(\'#" +
+"CommentsContainer\').find(\'span.action\').addClass(\'disabled\');\r\n                $" +
+"(\'#AttachmentsContainer\').find(\'span.action\').addClass(\'disabled\');\r\n           " +
+" });\r\n            $.connection.hub.reconnected(function () {\r\n                $(" +
+"\'#CommentsContainer\').find(\'span.action\').removeClass(\'disabled\');\r\n            " +
+"    $(\'#AttachmentsContainer\').find(\'span.action\').removeClass(\'disabled\');\r\n   " +
+"         });\r\n\r\n            // Start Connection\r\n            $.connection.hub.st" +
+"art(function () {\r\n                $(\'#CommentsContainer\').find(\'span.action\').r" +
+"emoveClass(\'disabled\');\r\n                $(\'#AttachmentsContainer\').find(\'span.a" +
+"ction\').removeClass(\'disabled\');\r\n            }).fail(onHubFailed);\r\n\r\n         " +
+"   function onHubFailed(error) {\r\n                // Disable UI\r\n               " +
+" $(\'#CommentsContainer\').find(\'textarea.commentInput\').attr(\'readonly\', \'readonl" +
+"y\');\r\n                $(\'#CommentsContainer\').find(\'span.action\').addClass(\'disa" +
+"bled\');\r\n                $(\'#AttachmentsContainer\').find(\'span.action\').addClass" +
+"(\'disabled\');\r\n\r\n                // Show Dialog Message\r\n                if ($(\'" +
+".disconnected-dialog\').length == 0) {\r\n                    $(\'<div>\')\r\n         " +
+"               .addClass(\'dialog disconnected-dialog\')\r\n                        " +
+".html(\'<h3><span class=\"fa-stack fa-lg\"><i class=\"fa fa-wifi fa-stack-1x\"></i><i" +
+" class=\"fa fa-ban fa-stack-2x error\"></i></span>Disconnected from the Disco ICT " +
+"Server</h3><div>Please ensure you are connected to the server, then refresh this" +
+" page to enable features.</div>\')\r\n                        .dialog({\r\n          " +
+"                  resizable: false,\r\n                            title: \'Disconn" +
+"ected\',\r\n                            width: 400,\r\n                            mo" +
+"dal: true,\r\n                            buttons: {\r\n                            " +
+"    \'Refresh Now\': function () {\r\n                                    $(this).di" +
+"alog(\'option\', \'buttons\', null);\r\n                                    window.loc" +
+"ation.href = window.location.href;\r\n                                },\r\n        " +
+"                        \'Close\': function () {\r\n                                " +
+"    $(this).dialog(\'destroy\');\r\n                                }\r\n             " +
+"               }\r\n                        });\r\n                }\r\n            }\r" +
+"\n\r\n            //#endregion\r\n        });\r\n    </script>\r\n");
 
             
-            #line 571 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 625 "..\..\Views\Job\JobParts\Resources.cshtml"
 }
             
             #line default

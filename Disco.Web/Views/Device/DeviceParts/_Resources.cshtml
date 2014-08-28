@@ -46,7 +46,7 @@
                     {
                         <div class="Disco-AttachmentUpload-Progress"></div>
                         <div class="attachmentInput clearfix">
-                            <span class="action upload fa fa-upload" title="Attach File"></span><span class="action photo fa fa-camera" title="Capture Image"></span>
+                            <span class="action upload fa fa-upload disabled" title="Attach File"></span><span class="action photo fa fa-camera disabled" title="Capture Image"></span>
                         </div>
                     }
                     <script type="text/javascript">
@@ -69,13 +69,46 @@
                             hub.client.removeAttachment = onRemoveAttachment;
 
                             $.connection.hub.qs = { DeviceSerialNumber: '@(Model.Device.SerialNumber)' };
-                            $.connection.hub.error(onHubError);
+                            $.connection.hub.error(onHubFailed);
+                            $.connection.hub.disconnected(onHubFailed);
+
+                            $.connection.hub.reconnecting(function () {
+                                $('#AttachmentsContainer').find('span.action').addClass('disabled');
+                            });
+                            $.connection.hub.reconnected(function () {
+                                $('#AttachmentsContainer').find('span.action').removeClass('disabled');
+                            });
 
                             // Start Connection
-                            $.connection.hub.start().fail(onHubError);
+                            $.connection.hub.start(function () {
+                                $('#AttachmentsContainer').find('span.action').removeClass('disabled');
+                            }).fail(onHubFailed);
 
-                            function onHubError(error) {
-                                alert('Live-update Error: ' + error);
+                            function onHubFailed(error) {
+                                // Disable UI
+                                $('#AttachmentsContainer').find('span.action').addClass('disabled');
+
+                                // Show Dialog Message
+                                if ($('.disconnected-dialog').length == 0) {
+                                    $('<div>')
+                                        .addClass('dialog disconnected-dialog')
+                                        .html('<h3><span class="fa-stack fa-lg"><i class="fa fa-wifi fa-stack-1x"></i><i class="fa fa-ban fa-stack-2x error"></i></span>Disconnected from the Disco ICT Server</h3><div>Please ensure you are connected to the server, then refresh this page to enable features.</div>')
+                                        .dialog({
+                                            resizable: false,
+                                            title: 'Disconnected',
+                                            width: 400,
+                                            modal: true,
+                                            buttons: {
+                                                'Refresh Now': function () {
+                                                    $(this).dialog('option', 'buttons', null);
+                                                    window.location.href = window.location.href;
+                                                },
+                                                'Close': function () {
+                                                    $(this).dialog('destroy');
+                                                }
+                                            }
+                                        });
+                                }
                             }
 
                             function onAddAttachment(id, quick) {
@@ -209,10 +242,16 @@
 
                             var $attachmentInput = $Attachments.find('.attachmentInput');
                             $attachmentInput.find('.photo').click(function () {
-                                attachmentUploader.uploadImage();
+                                if ($(this).hasClass('disabled'))
+                                    alert('Disconnected from the Disco ICT Server, please refresh this page and try again');
+                                else
+                                    attachmentUploader.uploadImage();
                             });
                             $attachmentInput.find('.upload').click(function () {
-                                attachmentUploader.uploadFiles();
+                                if ($(this).hasClass('disabled'))
+                                    alert('Disconnected from the Disco ICT Server, please refresh this page and try again');
+                                else
+                                    attachmentUploader.uploadFiles();
                             });
 
                             var resourcesTab;

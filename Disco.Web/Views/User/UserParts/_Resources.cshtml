@@ -46,7 +46,7 @@
                     {
                         <div class="Disco-AttachmentUpload-Progress"></div>
                         <div class="attachmentInput clearfix">
-                            <span class="action upload fa fa-upload" title="Attach File"></span><span class="action photo fa fa-camera" title="Capture Image"></span>
+                            <span class="action upload fa fa-upload disabled" title="Attach File"></span><span class="action photo fa fa-camera disabled" title="Capture Image"></span>
                         </div>
                     }
                     <script type="text/javascript">
@@ -67,24 +67,57 @@
                             hub.client.removeAttachment = onRemoveAttachment;
 
                             $.connection.hub.qs = { UserId: '@(Model.User.UserId.Replace(@"\", @"\\"))' };
-                        $.connection.hub.error(onHubError);
+                            $.connection.hub.error(onHubFailed);
+                            $.connection.hub.disconnected(onHubFailed);
 
-                        // Start Connection
-                        $.connection.hub.start().fail(onHubError);
+                            $.connection.hub.reconnecting(function () {
+                                $('#AttachmentsContainer').find('span.action').addClass('disabled');
+                            });
+                            $.connection.hub.reconnected(function () {
+                                $('#AttachmentsContainer').find('span.action').removeClass('disabled');
+                            });
 
-                        function onHubError(error) {
-                            alert('Live-update Error: ' + error);
-                        }
+                            // Start Connection
+                            $.connection.hub.start(function () {
+                                $('#AttachmentsContainer').find('span.action').removeClass('disabled');
+                            }).fail(onHubFailed);
 
-                        function onAddAttachment(id, quick) {
-                            var data = { id: id };
-                            $.ajax({
-                                url: '@Url.Action(MVC.API.User.Attachment())',
-                                dataType: 'json',
-                                data: data,
-                                success: function (d) {
-                                    if (d.Result == 'OK') {
-                                        var a = d.Attachment;
+                            function onHubFailed(error) {
+                                // Disable UI
+                                $('#AttachmentsContainer').find('span.action').addClass('disabled');
+
+                                // Show Dialog Message
+                                if ($('.disconnected-dialog').length == 0) {
+                                    $('<div>')
+                                        .addClass('dialog disconnected-dialog')
+                                        .html('<h3><span class="fa-stack fa-lg"><i class="fa fa-wifi fa-stack-1x"></i><i class="fa fa-ban fa-stack-2x error"></i></span>Disconnected from the Disco ICT Server</h3><div>Please ensure you are connected to the server, then refresh this page to enable features.</div>')
+                                        .dialog({
+                                            resizable: false,
+                                            title: 'Disconnected',
+                                            width: 400,
+                                            modal: true,
+                                            buttons: {
+                                                'Refresh Now': function () {
+                                                    $(this).dialog('option', 'buttons', null);
+                                                    window.location.href = window.location.href;
+                                                },
+                                                'Close': function () {
+                                                    $(this).dialog('destroy');
+                                                }
+                                            }
+                                        });
+                                }
+                            }
+
+                            function onAddAttachment(id, quick) {
+                                var data = { id: id };
+                                $.ajax({
+                                    url: '@Url.Action(MVC.API.User.Attachment())',
+                                    dataType: 'json',
+                                    data: data,
+                                    success: function (d) {
+                                        if (d.Result == 'OK') {
+                                            var a = d.Attachment;
                                         @if (canRemoveAnyAttachments)
                                         {
                                         <text>buildAttachment(a, true, quick);</text>
@@ -97,200 +130,206 @@
                                         {
                                         <text>buildAttachment(a, false, quick);</text>
                                         }
-                                    } else {
-                                        alert('Unable to add attachment: ' + d.Result);
+                                        } else {
+                                            alert('Unable to add attachment: ' + d.Result);
+                                        }
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        alert('Unable to add attachment: ' + textStatus);
                                     }
-                                },
-                                error: function (jqXHR, textStatus, errorThrown) {
-                                    alert('Unable to add attachment: ' + textStatus);
-                                }
-                            });
-                        }
-                        function buildAttachment(a, canRemove, quick) {
-                            var t = '<a><span class="icon"><img alt="Attachment Thumbnail" /></span><span class="comments"></span><span class="author"></span>';
-                            if (canRemove)
-                                t += '<span class="remove fa fa-times-circle"></span>';
-                            t += '<span class="timestamp"></span></a>';
+                                });
+                            }
+                            function buildAttachment(a, canRemove, quick) {
+                                var t = '<a><span class="icon"><img alt="Attachment Thumbnail" /></span><span class="comments"></span><span class="author"></span>';
+                                if (canRemove)
+                                    t += '<span class="remove fa fa-times-circle"></span>';
+                                t += '<span class="timestamp"></span></a>';
 
-                            var e = $(t);
+                                var e = $(t);
 
-                            e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '@(Url.Action(MVC.API.User.AttachmentDownload()))/' + a.Id);
-                            e.find('.comments').text(a.Description);
-                            e.find('.author').text(a.Author);
-                            e.find('.timestamp').text(a.TimestampFull).attr('title', a.TimestampFull).livestamp(a.TimestampUnixEpoc);
-                            if (canRemove)
-                                e.find('.remove').click(removeAttachment);
-                            if (!quick)
-                                e.hide();
-                            $attachmentOutput.append(e);
-                            onUpdate();
-                            if (!quick)
-                                e.show('slow');
-                            if (a.MimeType.toLowerCase().indexOf('image/') == 0)
-                                e.shadowbox({ gallery: 'attachments', player: 'img', title: a.Description });
-                            else
-                                e.click(onDownload);
+                                e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '@(Url.Action(MVC.API.User.AttachmentDownload()))/' + a.Id);
+                                e.find('.comments').text(a.Description);
+                                e.find('.author').text(a.Author);
+                                e.find('.timestamp').text(a.TimestampFull).attr('title', a.TimestampFull).livestamp(a.TimestampUnixEpoc);
+                                if (canRemove)
+                                    e.find('.remove').click(removeAttachment);
+                                if (!quick)
+                                    e.hide();
+                                $attachmentOutput.append(e);
+                                onUpdate();
+                                if (!quick)
+                                    e.show('slow');
+                                if (a.MimeType.toLowerCase().indexOf('image/') == 0)
+                                    e.shadowbox({ gallery: 'attachments', player: 'img', title: a.Description });
+                                else
+                                    e.click(onDownload);
 
-                            // Add Thumbnail
-                            var buildThumbnail = function () {
-                                var retryCount = 0;
-                                var img = e.find('.icon img');
+                                // Add Thumbnail
+                                var buildThumbnail = function () {
+                                    var retryCount = 0;
+                                    var img = e.find('.icon img');
 
-                                var setThumbnailUrl = function () {
-                                    img.attr('src', '@(Url.Action(MVC.API.User.AttachmentThumbnail()))/' + a.Id + '?v=' + retryCount);
+                                    var setThumbnailUrl = function () {
+                                        img.attr('src', '@(Url.Action(MVC.API.User.AttachmentThumbnail()))/' + a.Id + '?v=' + retryCount);
+                                    };
+                                    img.on('error', function () {
+                                        img.addClass('loading');
+                                        retryCount++;
+                                        if (retryCount < 6)
+                                            window.setTimeout(setThumbnailUrl, retryCount * 250);
+                                    });
+                                    img.on('load', function () {
+                                        img.removeClass('loading');
+                                    });
+                                    window.setTimeout(setThumbnailUrl, 100);
                                 };
-                                img.on('error', function () {
-                                    img.addClass('loading');
-                                    retryCount++;
-                                    if (retryCount < 6)
-                                        window.setTimeout(setThumbnailUrl, retryCount * 250);
-                                });
-                                img.on('load', function () {
-                                    img.removeClass('loading');
-                                });
-                                window.setTimeout(setThumbnailUrl, 100);
-                            };
-                            buildThumbnail();
-                        }
-
-                        function onDownload() {
-                            var $this = $(this);
-                            var url = $this.attr('href');
-
-                            if ($.connection && $.connection.hub && $.connection.hub.transport &&
-                                                $.connection.hub.transport.name == 'foreverFrame') {
-                                // SignalR active with foreverFrame transport - use popup window
-                                window.open(url, '_blank', 'height=150,width=250,location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no');
-                            } else {
-                                // use iFrame
-                                if (!$attachmentDownloadHost) {
-                                    $attachmentDownloadHost = $('<iframe>')
-                                        .attr({ 'src': url, 'title': 'Attachment Download Host' })
-                                        .addClass('hidden')
-                                        .appendTo('body')
-                                        .contents();
-                                } else {
-                                    $attachmentDownloadHost[0].location.href = url;
-                                }
+                                buildThumbnail();
                             }
 
-                            return false;
-                        }
-
-                        function onRemoveAttachment(id) {
-                            var a = $attachmentOutput.find('a[data-attachmentid=' + id + ']');
-
-                            a.hide(300).delay(300).queue(function () {
+                            function onDownload() {
                                 var $this = $(this);
-                                if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
-                                    Shadowbox.removeCache(this);
-                                $this.find('.timestamp').livestamp('destroy');
-                                $this.remove();
-                                onUpdate();
-                            });
-                        }
+                                var url = $this.attr('href');
 
-                        function onUpdate() {
-                            var attachmentCount = $attachmentOutput.children('a').length;
-                            var tabHeading = 'Attachments [' + attachmentCount + ']';
-                            $('#UserDetailTab-ResourcesLink').text(tabHeading);
-                        }
+                                if ($.connection && $.connection.hub && $.connection.hub.transport &&
+                                                    $.connection.hub.transport.name == 'foreverFrame') {
+                                    // SignalR active with foreverFrame transport - use popup window
+                                    window.open(url, '_blank', 'height=150,width=250,location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no');
+                                } else {
+                                    // use iFrame
+                                    if (!$attachmentDownloadHost) {
+                                        $attachmentDownloadHost = $('<iframe>')
+                                            .attr({ 'src': url, 'title': 'Attachment Download Host' })
+                                            .addClass('hidden')
+                                            .appendTo('body')
+                                            .contents();
+                                    } else {
+                                        $attachmentDownloadHost[0].location.href = url;
+                                    }
+                                }
+
+                                return false;
+                            }
+
+                            function onRemoveAttachment(id) {
+                                var a = $attachmentOutput.find('a[data-attachmentid=' + id + ']');
+
+                                a.hide(300).delay(300).queue(function () {
+                                    var $this = $(this);
+                                    if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
+                                        Shadowbox.removeCache(this);
+                                    $this.find('.timestamp').livestamp('destroy');
+                                    $this.remove();
+                                    onUpdate();
+                                });
+                            }
+
+                            function onUpdate() {
+                                var attachmentCount = $attachmentOutput.children('a').length;
+                                var tabHeading = 'Attachments [' + attachmentCount + ']';
+                                $('#UserDetailTab-ResourcesLink').text(tabHeading);
+                            }
 
                         @if (canAddAttachments)
                         {<text>
-                        //#region Add Attachments
-                        var attachmentUploader = new document.Disco.AttachmentUploader(
-                            '@(Url.Action(MVC.API.User.AttachmentUpload(Model.User.UserId, null)))',
+                            //#region Add Attachments
+                            var attachmentUploader = new document.Disco.AttachmentUploader(
+                                '@(Url.Action(MVC.API.User.AttachmentUpload(Model.User.UserId, null)))',
                             $Attachments.find('.Disco-AttachmentUpload-DropTarget'),
                             $Attachments.find('.Disco-AttachmentUpload-Progress'));
 
-                        var $attachmentInput = $Attachments.find('.attachmentInput');
-                        $attachmentInput.find('.photo').click(function () {
-                            attachmentUploader.uploadImage();
-                        });
-                        $attachmentInput.find('.upload').click(function () {
-                            attachmentUploader.uploadFiles();
-                        });
-
-                        var resourcesTab;
-                        $(document).on('dragover', function () {
-                            if (!resourcesTab) {
-                                var tabs = $Attachments.closest('.ui-tabs');
-                                resourcesTab = {
-                                    tabs: tabs,
-                                    resourcesIndex: tabs.children('ul.ui-tabs-nav').find('a[href="#UserDetailTab-Resources"]').closest('li').index()
-                                };
-                            }
-                            var selectedIndex = resourcesTab.tabs.tabs('option', 'active');
-                            if (resourcesTab.resourcesIndex !== selectedIndex)
-                                resourcesTab.tabs.tabs('option', 'active', resourcesTab.resourcesIndex);
-                        });
-                        //#endregion
-                        </text>}
-                        @if (canRemoveAnyAttachments || canRemoveOwnAttachments)
-                        {<text>
-                        //#region Remove Attachments
-
-                        $attachmentOutput.find('span.remove').click(removeAttachment);
-
-                        function removeAttachment() {
-                            $this = $(this).closest('a');
-
-                            var data = { id: $this.attr('data-attachmentid') };
-
-                            if (!$dialogRemoveAttachment) {
-                                $dialogRemoveAttachment = $('#dialogRemoveAttachment').dialog({
-                                    resizable: false,
-                                    height: 140,
-                                    modal: true,
-                                    autoOpen: false
-                                });
-                            }
-
-                            $dialogRemoveAttachment.dialog("enable");
-                            $dialogRemoveAttachment.dialog('option', 'buttons', {
-                                "Remove": function () {
-                                    $dialogRemoveAttachment.dialog("disable");
-                                    $dialogRemoveAttachment.dialog("option", "buttons", null);
-                                    $.ajax({
-                                        url: '@Url.Action(MVC.API.User.AttachmentRemove())',
-                                        dataType: 'json',
-                                        data: data,
-                                        success: function (d) {
-                                            if (d == 'OK') {
-                                                // Do nothing, await SignalR notification
-                                            } else {
-                                                alert('Unable to remove attachment: ' + d);
-                                            }
-                                            $dialogRemoveAttachment.dialog("close");
-                                        },
-                                        error: function (jqXHR, textStatus, errorThrown) {
-                                            alert('Unable to remove attachment: ' + textStatus);
-                                            $dialogRemoveAttachment.dialog("close");
-                                        }
-                                    });
-                                },
-                                Cancel: function () {
-                                    $dialogRemoveAttachment.dialog("close");
-                                }
+                            var $attachmentInput = $Attachments.find('.attachmentInput');
+                            $attachmentInput.find('.photo').click(function () {
+                                if ($(this).hasClass('disabled'))
+                                    alert('Disconnected from the Disco ICT Server, please refresh this page and try again');
+                                else
+                                    attachmentUploader.uploadImage();
+                            });
+                            $attachmentInput.find('.upload').click(function () {
+                                if ($(this).hasClass('disabled'))
+                                    alert('Disconnected from the Disco ICT Server, please refresh this page and try again');
+                                else
+                                    attachmentUploader.uploadFiles();
                             });
 
-                            $dialogRemoveAttachment.dialog('open');
+                            var resourcesTab;
+                            $(document).on('dragover', function () {
+                                if (!resourcesTab) {
+                                    var tabs = $Attachments.closest('.ui-tabs');
+                                    resourcesTab = {
+                                        tabs: tabs,
+                                        resourcesIndex: tabs.children('ul.ui-tabs-nav').find('a[href="#UserDetailTab-Resources"]').closest('li').index()
+                                    };
+                                }
+                                var selectedIndex = resourcesTab.tabs.tabs('option', 'active');
+                                if (resourcesTab.resourcesIndex !== selectedIndex)
+                                    resourcesTab.tabs.tabs('option', 'active', resourcesTab.resourcesIndex);
+                            });
+                            //#endregion
+                            </text>}
+                        @if (canRemoveAnyAttachments || canRemoveOwnAttachments)
+                        {<text>
+                            //#region Remove Attachments
 
-                            return false;
-                        }
+                            $attachmentOutput.find('span.remove').click(removeAttachment);
 
-                        //#endregion
+                            function removeAttachment() {
+                                $this = $(this).closest('a');
+
+                                var data = { id: $this.attr('data-attachmentid') };
+
+                                if (!$dialogRemoveAttachment) {
+                                    $dialogRemoveAttachment = $('#dialogRemoveAttachment').dialog({
+                                        resizable: false,
+                                        height: 140,
+                                        modal: true,
+                                        autoOpen: false
+                                    });
+                                }
+
+                                $dialogRemoveAttachment.dialog("enable");
+                                $dialogRemoveAttachment.dialog('option', 'buttons', {
+                                    "Remove": function () {
+                                        $dialogRemoveAttachment.dialog("disable");
+                                        $dialogRemoveAttachment.dialog("option", "buttons", null);
+                                        $.ajax({
+                                            url: '@Url.Action(MVC.API.User.AttachmentRemove())',
+                                            dataType: 'json',
+                                            data: data,
+                                            success: function (d) {
+                                                if (d == 'OK') {
+                                                    // Do nothing, await SignalR notification
+                                                } else {
+                                                    alert('Unable to remove attachment: ' + d);
+                                                }
+                                                $dialogRemoveAttachment.dialog("close");
+                                            },
+                                            error: function (jqXHR, textStatus, errorThrown) {
+                                                alert('Unable to remove attachment: ' + textStatus);
+                                                $dialogRemoveAttachment.dialog("close");
+                                            }
+                                        });
+                                    },
+                                    Cancel: function () {
+                                        $dialogRemoveAttachment.dialog("close");
+                                    }
+                                });
+
+                                $dialogRemoveAttachment.dialog('open');
+
+                                return false;
+                            }
+
+                            //#endregion
                         </text>}
 
-                        $attachmentOutput.children('a').each(function () {
-                            $this = $(this);
-                            if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
-                                $this.shadowbox({ gallery: 'attachments', player: 'img', title: $this.find('.comments').text() });
-                            else
-                                $this.click(onDownload);
+                            $attachmentOutput.children('a').each(function () {
+                                $this = $(this);
+                                if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
+                                    $this.shadowbox({ gallery: 'attachments', player: 'img', title: $this.find('.comments').text() });
+                                else
+                                    $this.click(onDownload);
+                            });
                         });
-                    });
                     </script>
                 </div>
             </td>

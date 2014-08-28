@@ -336,6 +336,17 @@
                     background-color: @SubtleColour;
                     border: 1px solid @SubtleBorderColour;
                 }
+
+                &.disabled {
+                    color: fade(@HeaderBackgroundColour, 20%);
+                    cursor: default;
+
+                    &:hover {
+                        color: fade(@HeaderBackgroundColour, 20%);
+                        background-color: inherit;
+                        border: 1px solid @white;
+                    }
+                }
             }
         }
     }
@@ -451,6 +462,17 @@
                     color: @HyperLinkColour;
                     background-color: @SubtleColour;
                     border: 1px solid @SubtleBorderColour;
+                }
+
+                &.disabled {
+                    color: fade(@HeaderBackgroundColour, 20%);
+                    cursor: default;
+
+                    &:hover {
+                        color: fade(@HeaderBackgroundColour, 20%);
+                        background-color: inherit;
+                        border: 1px solid @white;
+                    }
                 }
             }
         }

@@ -444,6 +444,15 @@
   background-color: #ededed;
   border: 1px solid #cccccc;
 }
+#userShowResources #Attachments div.attachmentInput span.action.disabled {
+  color: rgba(51, 51, 51, 0.2);
+  cursor: default;
+}
+#userShowResources #Attachments div.attachmentInput span.action.disabled:hover {
+  color: rgba(51, 51, 51, 0.2);
+  background-color: inherit;
+  border: 1px solid #ffffff;
+}
 #User_Show_Details_Actions_CreateJob_Dialog #CreateJob_Assignments {
   margin-top: 6px;
   background-color: #ffffff;
