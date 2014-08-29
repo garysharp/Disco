@@ -107,18 +107,18 @@ namespace Disco.Services.Interop.ActiveDirectory
             IEnumerable<ADDomainController> availableServers;
 
             // Try Site Servers first
-            availableServers = AvilableDomainControllers(RequireSiteServer: true, RequireWritable: RequireWritable);
+            availableServers = AvailableDomainControllers(RequireSiteServer: true, RequireWritable: RequireWritable);
 
             if (!availableServers.Any())
             {
                 // No Site Servers available - try all
-                availableServers = AvilableDomainControllers(RequireSiteServer: false, RequireWritable: RequireWritable);
+                availableServers = AvailableDomainControllers(RequireSiteServer: false, RequireWritable: RequireWritable);
 
                 if (!availableServers.Any())
                 {
                     lock (domainMaintainLock)
                     {
-                        availableServers = AvilableDomainControllers(RequireSiteServer: false, RequireWritable: RequireWritable);
+                        availableServers = AvailableDomainControllers(RequireSiteServer: false, RequireWritable: RequireWritable);
 
                         if (!availableServers.Any())
                             return DiscoverAvailableDomainController(RequireWritable);
@@ -142,7 +142,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                     return availableServers.ElementAt(dcrrValue);
             }
         }
-        private IEnumerable<ADDomainController> AvilableDomainControllers(bool RequireSiteServer, bool RequireWritable)
+        private IEnumerable<ADDomainController> AvailableDomainControllers(bool RequireSiteServer, bool RequireWritable)
         {
             IEnumerable<ADDomainController> query = this.DomainControllers.Where(dc => dc.IsAvailable);
             if (RequireSiteServer)
