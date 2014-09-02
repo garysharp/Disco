@@ -1975,37 +1975,161 @@ WriteLiteral(">\r\n            <div");
 
 WriteLiteral(" class=\"brief\"");
 
-WriteLiteral(">\r\n                <div>\r\n                    Enter multiple <span");
+WriteLiteral(">\r\n");
+
+            
+            #line 685 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 685 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                 switch (Model.DocumentTemplate.Scope)
+                {
+                    case "Device":
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <div>\r\n                        Enter multiple <span");
 
 WriteLiteral(" class=\"scopeDescBulkGenerate\"");
 
-WriteLiteral("></span>&nbsp;separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>)" +
-" or semicolons (<code>;</code>).\r\n                </div>\r\n                <div");
+WriteLiteral(">Device Serial Numbers</span> separated by <code>&lt;new line&gt;</code>, commas " +
+"(<code>,</code>) or semicolons (<code>;</code>).\r\n                    </div>\r\n");
+
+WriteLiteral("                    <div");
 
 WriteLiteral(" class=\"examples clearfix\"");
 
-WriteLiteral(">\r\n                    <h4>Examples:</h4>\r\n                    <div");
+WriteLiteral(">\r\n                        <h4>Examples:</h4>\r\n                        <div");
 
 WriteLiteral(" class=\"example1 code\"");
 
-WriteLiteral("></div>\r\n                    <div");
+WriteLiteral(">01234567<br />\r\n                            ABCD9876<br />\r\n                    " +
+"        8VQ6G2R</div>\r\n                        <div");
 
 WriteLiteral(" class=\"example2 code\"");
 
-WriteLiteral("></div>\r\n                    <div");
+WriteLiteral(">01234567,ABCD9876,8VQ6G2R</div>\r\n                        <div");
 
 WriteLiteral(" class=\"example3 code\"");
 
-WriteLiteral("></div>\r\n                </div>\r\n            </div>\r\n");
+WriteLiteral(">01234567;ABCD9876;8VQ6G2R</div>\r\n                    </div>\r\n");
 
             
-            #line 695 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 699 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                        break;
+                    case "Job":
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <div>\r\n                        Enter multiple <span");
+
+WriteLiteral(" class=\"scopeDescBulkGenerate\"");
+
+WriteLiteral(">Job Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code" +
+">) or semicolons (<code>;</code>).\r\n                    </div>\r\n");
+
+WriteLiteral("                    <div");
+
+WriteLiteral(" class=\"examples clearfix\"");
+
+WriteLiteral(">\r\n                        <h4>Examples:</h4>\r\n                        <div");
+
+WriteLiteral(" class=\"example1 code\"");
+
+WriteLiteral(">86<br />\r\n                            99<br />\r\n                            44</" +
+"div>\r\n                        <div");
+
+WriteLiteral(" class=\"example2 code\"");
+
+WriteLiteral(">86,99,44</div>\r\n                        <div");
+
+WriteLiteral(" class=\"example3 code\"");
+
+WriteLiteral(">86;99;44</div>\r\n                    </div>\r\n");
+
+            
+            #line 712 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                        break;
+                    case "User":
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <div>\r\n                        Enter multiple <span");
+
+WriteLiteral(" class=\"scopeDescBulkGenerate\"");
+
+WriteLiteral(">User Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</cod" +
+"e>) or semicolons (<code>;</code>).\r\n                    </div>\r\n");
+
+WriteLiteral("                    <div");
+
+WriteLiteral(" class=\"examples clearfix\"");
+
+WriteLiteral(">\r\n                        <h4>Examples:</h4>\r\n                        <div");
+
+WriteLiteral(" class=\"example1 code\"");
+
+WriteLiteral(">user6<br />\r\n                            smi0099<br />");
+
+            
+            #line 720 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                     Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\\rsmith</div>\r\n                        <div");
+
+WriteLiteral(" class=\"example2 code\"");
+
+WriteLiteral(">user6,smi0099,");
+
+            
+            #line 721 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                                             Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\\rsmith</div>\r\n                        <div");
+
+WriteLiteral(" class=\"example3 code\"");
+
+WriteLiteral(">user6;smi0099;");
+
+            
+            #line 722 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                                             Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\\rsmith</div>\r\n                    </div>\r\n");
+
+            
+            #line 724 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                        break;
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </div>\r\n");
+
+            
+            #line 727 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 695 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 727 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
              using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
             {
 
@@ -2035,7 +2159,7 @@ WriteLiteral(" data-val-required=\"Identifiers are required\"");
 WriteLiteral("></textarea>\r\n");
 
             
-            #line 699 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 731 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
             }
 
             
@@ -2044,73 +2168,46 @@ WriteLiteral("></textarea>\r\n");
 WriteLiteral("        </div>\r\n");
 
             
-            #line 701 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 733 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
 
 
             
             #line default
             #line hidden
-WriteLiteral("        <script>\r\n            $(function () {\r\n                var dialog;\r\n\r\n   " +
-"             $(\'#buttonBulkGenerate\').click(function () {\r\n                    i" +
-"f (!dialog) {\r\n                        dialog = $(\'#dialogBulkGenerate\').dialog(" +
-"{\r\n                            resizable: false,\r\n                            mo" +
-"dal: true,\r\n                            autoOpen: false,\r\n                      " +
-"      width: 460,\r\n                            buttons: {\r\n                     " +
-"           \"Bulk Generate\": function () {\r\n                                    d" +
-"ialog.find(\'form\').submit();\r\n                                    dialog.dialog(" +
-"\"disable\");\r\n                                },\r\n                               " +
-" Close: function () {\r\n                                    $(this).dialog(\"close" +
-"\");\r\n                                }\r\n                            }\r\n         " +
-"               });\r\n\r\n                        $.validator.unobtrusive.reparse(\'#" +
-"inputBulkGenerateDataIds\');\r\n                    }\r\n\r\n                    switch" +
-" ($(\'#DocumentTemplate_Scope\').val()) {\r\n                        case \'Device\':\r" +
-"\n                            dialog.find(\'.scopeDescBulkGenerate\').text(\'Device " +
-"Serial Numbers\');\r\n                            dialog.find(\'.example1\').html(\'01" +
-"234567<br />ABCD9876<br />8VQ6G2R\');\r\n                            dialog.find(\'." +
-"example2\').text(\'01234567,ABCD9876,8VQ6G2R\');\r\n                            dialo" +
-"g.find(\'.example3\').text(\'01234567;ABCD9876;8VQ6G2R\');\r\n                        " +
-"    break;\r\n                        case \'Job\':\r\n                            dia" +
-"log.find(\'.scopeDescBulkGenerate\').text(\'Job Ids\');\r\n                           " +
-" dialog.find(\'.example1\').html(\'86<br />99<br />44\');\r\n                         " +
-"   dialog.find(\'.example2\').text(\'86,99,44\');\r\n                            dialo" +
-"g.find(\'.example3\').text(\'86;99;44\');\r\n                            break;\r\n     " +
-"                   case \'User\':\r\n                            dialog.find(\'.scope" +
-"DescBulkGenerate\').text(\'User Ids\');\r\n                            dialog.find(\'." +
-"example1\').html(\'user6<br />smi0099<br />");
+WriteLiteral(@"        <script>
+            $(function () {
+                var dialog;
+
+                $('#buttonBulkGenerate').click(function () {
+                    if (!dialog) {
+                        dialog = $('#dialogBulkGenerate').dialog({
+                            resizable: false,
+                            modal: true,
+                            autoOpen: false,
+                            width: 460,
+                            buttons: {
+                                ""Bulk Generate"": function () {
+                                    dialog.find('form').submit();
+                                    dialog.dialog(""disable"");
+                                },
+                                Close: function () {
+                                    $(this).dialog(""close"");
+                                }
+                            }
+                        });
+
+                        $.validator.unobtrusive.reparse('#inputBulkGenerateDataIds');
+                    }
+
+                    dialog.dialog('open');
+                    return false;
+                });
+            });
+        </script>
+");
 
             
-            #line 742 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                                                               Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\\\\rsmith\');\r\n                            dialog.find(\'.example2\').text(\'user6,smi" +
-"0099,");
-
-            
-            #line 743 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                                                     Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\\\\rsmith\');\r\n                            dialog.find(\'.example3\').text(\'user6;smi" +
-"0099;");
-
-            
-            #line 744 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                                                     Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\\\\rsmith\');\r\n                            break;\r\n                    }\r\n\r\n       " +
-"             dialog.dialog(\'open\');\r\n                    return false;\r\n        " +
-"        });\r\n            });\r\n        </script>\r\n");
-
-            
-            #line 753 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 764 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
     }
 
             
@@ -2119,7 +2216,7 @@ WriteLiteral("\\\\rsmith\');\r\n                            break;\r\n          
 WriteLiteral("    ");
 
             
-            #line 754 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 765 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
      if (Authorization.Has(Claims.Config.DocumentTemplate.Delete))
     {
         
@@ -2127,14 +2224,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 756 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 767 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
    Write(Html.ActionLinkButton("Delete", MVC.API.DocumentTemplate.Delete(Model.DocumentTemplate.Id, true), "buttonDelete"));
 
             
             #line default
             #line hidden
             
-            #line 756 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 767 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                                                                                           
     }
 

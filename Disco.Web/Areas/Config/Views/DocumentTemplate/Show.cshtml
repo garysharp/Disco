@@ -682,15 +682,47 @@
         <a id="buttonBulkGenerate" href="#" class="button">Bulk Generate</a>
         <div id="dialogBulkGenerate" class="hiddenDialog" title="Bulk Generate: @(Model.DocumentTemplate.Id)">
             <div class="brief">
-                <div>
-                    Enter multiple <span class="scopeDescBulkGenerate"></span>&nbsp;separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
-                </div>
-                <div class="examples clearfix">
-                    <h4>Examples:</h4>
-                    <div class="example1 code"></div>
-                    <div class="example2 code"></div>
-                    <div class="example3 code"></div>
-                </div>
+                @switch (Model.DocumentTemplate.Scope)
+                {
+                    case "Device":
+                    <div>
+                        Enter multiple <span class="scopeDescBulkGenerate">Device Serial Numbers</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                    </div>
+                    <div class="examples clearfix">
+                        <h4>Examples:</h4>
+                        <div class="example1 code">01234567<br />
+                            ABCD9876<br />
+                            8VQ6G2R</div>
+                        <div class="example2 code">01234567,ABCD9876,8VQ6G2R</div>
+                        <div class="example3 code">01234567;ABCD9876;8VQ6G2R</div>
+                    </div>
+                        break;
+                    case "Job":
+                    <div>
+                        Enter multiple <span class="scopeDescBulkGenerate">Job Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                    </div>
+                    <div class="examples clearfix">
+                        <h4>Examples:</h4>
+                        <div class="example1 code">86<br />
+                            99<br />
+                            44</div>
+                        <div class="example2 code">86,99,44</div>
+                        <div class="example3 code">86;99;44</div>
+                    </div>
+                        break;
+                    case "User":
+                    <div>
+                        Enter multiple <span class="scopeDescBulkGenerate">User Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                    </div>
+                    <div class="examples clearfix">
+                        <h4>Examples:</h4>
+                        <div class="example1 code">user6<br />
+                            smi0099<br />@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith</div>
+                        <div class="example2 code">user6,smi0099,@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith</div>
+                        <div class="example3 code">user6;smi0099;@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith</div>
+                    </div>
+                        break;
+                }
             </div>
             @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
             {
@@ -722,27 +754,6 @@
                         });
 
                         $.validator.unobtrusive.reparse('#inputBulkGenerateDataIds');
-                    }
-
-                    switch ($('#DocumentTemplate_Scope').val()) {
-                        case 'Device':
-                            dialog.find('.scopeDescBulkGenerate').text('Device Serial Numbers');
-                            dialog.find('.example1').html('01234567<br />ABCD9876<br />8VQ6G2R');
-                            dialog.find('.example2').text('01234567,ABCD9876,8VQ6G2R');
-                            dialog.find('.example3').text('01234567;ABCD9876;8VQ6G2R');
-                            break;
-                        case 'Job':
-                            dialog.find('.scopeDescBulkGenerate').text('Job Ids');
-                            dialog.find('.example1').html('86<br />99<br />44');
-                            dialog.find('.example2').text('86,99,44');
-                            dialog.find('.example3').text('86;99;44');
-                            break;
-                        case 'User':
-                            dialog.find('.scopeDescBulkGenerate').text('User Ids');
-                            dialog.find('.example1').html('user6<br />smi0099<br />@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\\rsmith');
-                            dialog.find('.example2').text('user6,smi0099,@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\\rsmith');
-                            dialog.find('.example3').text('user6;smi0099;@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\\rsmith');
-                            break;
                     }
 
                     dialog.dialog('open');
