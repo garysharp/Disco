@@ -28,7 +28,7 @@ namespace Disco.BI
                 {
                     // Check again now that lock is enforced
                     deviceModel = DeviceModelsSet.FirstOrDefault(dm => dm.Manufacturer == Manufacturer && dm.Model == Model);
-                    
+
                     if (deviceModel == null)
                     {
                         // Create the Device Model in a different DataContext so we don't have to commit unrelated changes
@@ -51,6 +51,11 @@ namespace Disco.BI
                         return new Tuple<DeviceModel, bool>(deviceModel, true);
                     }
                 }
+            }
+            else
+            {
+                if (deviceModel.ModelType != ModelType)
+                    deviceModel.ModelType = ModelType;
             }
 
             return new Tuple<DeviceModel,bool>(deviceModel, false);
