@@ -1,4 +1,3 @@
-﻿///#source 1 1 /ClientSource/Scripts/Modules/jQuery-Fancytree/jquery.fancytree-all.js
 /*!
  * jquery.fancytree.js
  * Dynamic tree view control, with support for lazy loading of branches.

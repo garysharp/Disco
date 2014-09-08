@@ -1287,9 +1287,6 @@
       <DependentUpon>Disco-AjaxHelperIcons.js.bundle</DependentUpon>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons\disco.ajaxhelpericons.js" />
-    <None Include="ClientSource\Scripts\Modules\Disco-CreateJob.min.js.map">
-      <DependentUpon>Disco-CreateJob.js.bundle</DependentUpon>
-    </None>
     <None Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.min.js.map">
       <DependentUpon>Disco-DataTableHelpers.js.bundle</DependentUpon>
     </None>
@@ -1317,17 +1314,17 @@
       <DependentUpon>jQuery-Isotope.js.bundle</DependentUpon>
     </None>
     <None Include="ClientSource\Scripts\Modules\jQuery-Isotope\jquery.isotope.js" />
-    <None Include="ClientSource\Scripts\Modules\Disco-CreateJob.js">
-      <DependentUpon>Disco-CreateJob.js.bundle</DependentUpon>
-    </None>
     <None Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader\webcam.js" />
     <Content Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader\webcam.swf" />
-    <Content Include="ClientSource\Scripts\Modules\Disco-CreateJob.min.js">
-      <DependentUpon>Disco-CreateJob.js.bundle</DependentUpon>
-    </Content>
     <None Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.js">
       <DependentUpon>Disco-DataTableHelpers.js.bundle</DependentUpon>
     </None>
+    <Content Include="ClientSource\Scripts\Modules\Disco-CreateJob.js">
+      <DependentUpon>Disco-CreateJob.js.bundle</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Scripts\Modules\Disco-CreateJob.min.js">
+      <DependentUpon>Disco-CreateJob.js.bundle</DependentUpon>
+    </Content>
     <Content Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.min.js">
       <DependentUpon>Disco-DataTableHelpers.js.bundle</DependentUpon>
     </Content>
@@ -2406,7 +2403,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2014/6/1" />
+      <UserProperties BuildVersion_StartDate="2014/6/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

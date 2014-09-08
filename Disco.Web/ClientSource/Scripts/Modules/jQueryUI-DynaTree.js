@@ -1,4 +1,3 @@
-﻿///#source 1 1 /ClientSource/Scripts/Modules/jQueryUI-DynaTree/jquery.dynatree.js
 /*************************************************************************
 	jquery.dynatree.js
 	Dynamic tree view control, with support for lazy loading of branches.

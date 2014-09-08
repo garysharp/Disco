@@ -599,7 +599,7 @@ WriteLiteral("                                </div>\r\n                        
 "                            resizable: false,\r\n                                 " +
 "           modal: true,\r\n                                            autoOpen: f" +
 "alse,\r\n                                            width: 780,\r\n                " +
-"                            height: 650,\r\n                                      " +
+"                            height: 540,\r\n                                      " +
 "      buttons: {\r\n                                                \"Save\": save,\r" +
 "\n                                                Cancel: cancel\r\n               " +
 "                             }\r\n                                        });\r\n\r\n " +

@@ -989,7 +989,7 @@ WriteLiteral("                                    <script>\r\n                  
 "izable: false,\r\n                                                        modal: t" +
 "rue,\r\n                                                        autoOpen: false,\r\n" +
 "                                                        width: 750,\r\n           " +
-"                                             height: 620,\r\n                     " +
+"                                             height: 580,\r\n                     " +
 "                                   buttons: {\r\n                                 " +
 "                           \"Save Changes\": saveChanges,\r\n                       " +
 "                                     Cancel: cancel\r\n                           " +

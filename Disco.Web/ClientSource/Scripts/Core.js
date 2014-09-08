@@ -1,4 +1,3 @@
-///#source 1 1 /ClientSource/Scripts/Core/modernizr-2.7.2.js
 /*!
  * Modernizr v2.7.2
  * www.modernizr.com
@@ -1406,7 +1405,6 @@ window.Modernizr = (function( window, document, undefined ) {
 
 })(this, this.document);
 
-///#source 1 1 /ClientSource/Scripts/Core/jquery-2.1.1.js
 /*!
  * jQuery JavaScript Library v2.1.1
  * http://jquery.com/
@@ -10598,7 +10596,6 @@ return jQuery;
 
 }));
 
-///#source 1 1 /ClientSource/Scripts/Core/jquery.validate.js
 /*!
  * jQuery Validation Plugin v1.12.0
  *
@@ -11893,7 +11890,6 @@ $.format = function deprecated() {
 	});
 }(jQuery));
 
-///#source 1 1 /ClientSource/Scripts/Core/jquery.validate.unobtrusive.js
 /* NUGET: BEGIN LICENSE TEXT
  *
  * Microsoft grants you the right to use these script files for the sole
@@ -12288,7 +12284,6 @@ $.format = function deprecated() {
         $jQval.unobtrusive.parse(document);
     });
 }(jQuery));
-///#source 1 1 /ClientSource/Scripts/Core/disco.unobtrusiveValidation.extensions.js
 // Adapted from: http://xhalent.wordpress.com/2011/01/24/applying-unobtrusive-validation-to-dynamic-content/
 (function ($) {
     $.validator.unobtrusive.reparse = function (selector) {
@@ -12324,7 +12319,6 @@ $.format = function deprecated() {
         });
     }
 })($);
-///#source 1 1 /ClientSource/Scripts/Core/jquery-ui-1.10.4.js
 /*! jQuery UI - v1.10.4 - 2014-01-17
 * http://jqueryui.com
 * Includes: jquery.ui.core.js, jquery.ui.widget.js, jquery.ui.mouse.js, jquery.ui.position.js, jquery.ui.accordion.js, jquery.ui.autocomplete.js, jquery.ui.button.js, jquery.ui.datepicker.js, jquery.ui.dialog.js, jquery.ui.draggable.js, jquery.ui.droppable.js, jquery.ui.effect.js, jquery.ui.effect-blind.js, jquery.ui.effect-bounce.js, jquery.ui.effect-clip.js, jquery.ui.effect-drop.js, jquery.ui.effect-explode.js, jquery.ui.effect-fade.js, jquery.ui.effect-fold.js, jquery.ui.effect-highlight.js, jquery.ui.effect-pulsate.js, jquery.ui.effect-scale.js, jquery.ui.effect-shake.js, jquery.ui.effect-slide.js, jquery.ui.effect-transfer.js, jquery.ui.menu.js, jquery.ui.progressbar.js, jquery.ui.resizable.js, jquery.ui.selectable.js, jquery.ui.slider.js, jquery.ui.sortable.js, jquery.ui.spinner.js, jquery.ui.tabs.js, jquery.ui.tooltip.js
@@ -27334,7 +27328,6 @@ $.widget( "ui.tooltip", {
 
 }( jQuery ) );
 
-///#source 1 1 /ClientSource/Scripts/Core/jquery.watermark.js
 /*	
 	Watermark plugin for jQuery
 	Version: 3.1.4
@@ -27934,7 +27927,6 @@ if ( $.watermark.runOnce ) {
 
 })( jQuery, window );
 
-///#source 1 1 /ClientSource/Scripts/Core/jquery.dataTables.js
 /**
  * @summary     DataTables
  * @description Paginate, search and sort HTML tables
@@ -40028,7 +40020,6 @@ if ( $.watermark.runOnce ) {
 	 */
 }(jQuery, window, document, undefined));
 
-///#source 1 1 /ClientSource/Scripts/Core/moment.js
 //! moment.js
 //! version : 2.6.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -42519,7 +42510,6 @@ if ( $.watermark.runOnce ) {
     }
 }).call(this);
 
-///#source 1 1 /ClientSource/Scripts/Core/moment.en-au.js
 // moment.js language configuration
 // language : australian english (en-au)
 
@@ -42583,9 +42573,7 @@ if ( $.watermark.runOnce ) {
     });
 }));
 
-///#source 1 1 /ClientSource/Scripts/Core/disco.moment.extensions.js
 moment.lang('en-au');
-///#source 1 1 /ClientSource/Scripts/Core/livestamp.js
 // Livestamp.js / v1.1.2 / (c) 2012 Matt Bradley / MIT License
 (function (plugin) {
     if (typeof define === 'function' && define.amd) {
@@ -42729,7 +42717,6 @@ moment.lang('en-au');
         return livestampLocal[method](this, options);
     };
 }));
-///#source 1 1 /ClientSource/Scripts/Core/disco.dataTables.extensions.js
 jQuery.fn.dataTableExt.afnSortData['text'] = function (oSettings, iColumn) {
     var aData = [];
     $('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
@@ -42776,7 +42763,6 @@ jQuery.fn.dataTableExt.oSort['disco_datetime-desc'] = function (a, b) {
 // Change Default Menu Lengths
 
 jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, -1], [10, 20, 50, "All"]];
-///#source 1 1 /ClientSource/Scripts/Core/disco.uicore.js
 (function ($, window, document, Modernizr) {
 
     // Document Ready

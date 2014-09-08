@@ -1,7 +1,4 @@
-﻿/// <reference path="../../Core/jquery-1.8.1.js" />
-/// <reference path="../../Core/jquery-ui-1.8.23.js" />
-
-(function ($, window, document) {
+﻿(function ($, window, document) {
     $(function () {
         var createJobDialog = null;
         var dialogMethods = {
@@ -18,16 +15,16 @@
             document.DiscoFunctions = {};
         }
         document.DiscoFunctions.CreateOpenJobDialog = function (url) {
-            createJobDialog = $('<div>').attr('id', 'createJobDialog').css({ width: '100%', height: '100%', paddingTop: '0' }).appendTo(document.body);
+            createJobDialog = $('<div>').attr('id', 'createJobDialog').css({ paddingTop: '0' }).appendTo(document.body);
 
             createJobDialog.dialog({
                 resizable: false,
                 draggable: false,
                 modal: true,
-                autoOpen: true,
+                autoOpen: false,
                 title: 'Create Job',
                 width: 850,
-                height: $(window).height() - 100,
+                height: Math.min(670, $(window).height() - 50),
                 close: function () {
                     createJobDialog.find('iframe').attr('src', 'about:blank');
                     createJobDialog.dialog('destroy').remove();
@@ -36,16 +33,27 @@
                 buttons: {}
             });
 
-            var iframe = $('<iframe>').attr({ 'src': url }).width('100%').height('100%').css('border', 'none').appendTo(createJobDialog);
+            var iframe = $('<iframe>')
+                .attr({ 'src': url })
+                .css({
+                    'border': 'none',
+                    'height': '100%',
+                    'width': '100%'
+                })
+                .appendTo(createJobDialog);
 
             createJobDialog[0].discoDialogMethods = dialogMethods;
+
+            window.setTimeout(function () {
+                createJobDialog.dialog('open');
+            }, 1);
         }
 
         // Create Job Button
         $('#buttonCreateJob').click(function () {
             var $this = $(this);
             var href = $this.attr('href');
-            
+
             document.DiscoFunctions.CreateOpenJobDialog(href);
 
             return false;

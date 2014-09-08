@@ -1,4 +1,3 @@
-///#source 1 1 /ClientSource/Scripts/Modules/Disco-PropertyChangeHelpers/disco.propertychangehelpers.js
 if (!document.DiscoFunctions) {
     document.DiscoFunctions = {};
 }

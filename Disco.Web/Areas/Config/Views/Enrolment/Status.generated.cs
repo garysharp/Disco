@@ -447,7 +447,7 @@ WriteLiteral(")\';\r\n\r\n        function pageViewModel() {\r\n            var 
 "ult:\r\n                            session.messages.unshift(log);\r\n              " +
 "      }\r\n                }\r\n            }\r\n        }\r\n        function init() {\r" +
 "\n            hostDialogSessions.dialog({\r\n                modal: true,\r\n        " +
-"        height: 664,\r\n                width: 900,\r\n                resizable: fa" +
+"        height: 574,\r\n                width: 900,\r\n                resizable: fa" +
 "lse,\r\n                autoOpen: false\r\n            });\r\n            //hostDialog" +
 "SessionsProgress.progressbar();\r\n\r\n            // Create View Model\r\n           " +
 " vm = new pageViewModel();\r\n            $.ajax({\r\n                url: \'");

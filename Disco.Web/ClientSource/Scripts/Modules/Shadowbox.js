@@ -1,4 +1,3 @@
-﻿///#source 1 1 /ClientSource/Scripts/Modules/Shadowbox/shadowbox.js
 /*
  * Shadowbox.js, version 3.0.3
  * http://shadowbox-js.com/

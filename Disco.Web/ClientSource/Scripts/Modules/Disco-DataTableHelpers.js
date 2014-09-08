@@ -1,4 +1,3 @@
-///#source 1 1 /ClientSource/Scripts/Modules/Disco-DataTableHelpers/disco.datatablehelpers.js
 (function (window, document, $) {
     var dataTables = [];
 

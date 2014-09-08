@@ -1,4 +1,3 @@
-///#source 1 1 /ClientSource/Scripts/Modules/Highcharts/highcharts.src.js
 // ==ClosureCompiler==
 // @compilation_level SIMPLE_OPTIMIZATIONS
 
