@@ -1,7 +1,7 @@
 ﻿@model Disco.Web.Models.Job.IndexModel
 @{
     ViewBag.Title = "Jobs";
-    
+
     if (Authorization.Has(Claims.Job.ShowDailyChart))
     {
         Html.BundleDeferred("~/ClientScripts/Modules/Highcharts");
@@ -133,11 +133,15 @@
 </div>
 @if (Authorization.Has(Claims.Job.Lists.MyJobs))
 {
-    <h2>My Jobs (@Model.MyJobs.Items.Count())</h2>
-    @Html.Partial(MVC.Shared.Views._JobTable, Model.MyJobs, new ViewDataDictionary())
+    <div id="Jobs_Index_MyJobs">
+        <h2>My Jobs (@Model.MyJobs.Items.Count())</h2>
+        @Html.Partial(MVC.Shared.Views._JobTable, Model.MyJobs, new ViewDataDictionary())
+    </div>
 }
 @if (Authorization.Has(Claims.Job.Lists.StaleJobs))
 {
-    <h2>Stale Jobs (@Model.StaleJobs.Items.Count())</h2>
-    @Html.Partial(MVC.Shared.Views._JobTable, Model.StaleJobs, new ViewDataDictionary())
+    <div id="Jobs_Index_StaleJobs">
+        <h2>Stale Jobs (@Model.StaleJobs.Items.Count())</h2>
+        @Html.Partial(MVC.Shared.Views._JobTable, Model.StaleJobs, new ViewDataDictionary())
+    </div>
 }

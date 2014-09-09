@@ -424,6 +424,9 @@ hr {
   border-bottom: 1px dashed #aaa;
   margin-top: 15px;
 }
+strong {
+  font-weight: 600;
+}
 a:link {
   color: #335a87;
   text-decoration: none;
@@ -541,7 +544,7 @@ h6 {
   font-size: 12px;
   font-family: "Segoe UI", Arial, Verdana, Tahoma, sans-serif;
   font-stretch: normal;
-  font-weight: bold;
+  font-weight: 600;
 }
 table {
   border: none;
@@ -558,7 +561,7 @@ table th {
   padding: 5px;
   margin: 0;
   text-align: left;
-  font-weight: bold;
+  font-weight: 600;
   vertical-align: top;
 }
 table.none {
@@ -690,7 +693,7 @@ table.genericData td.id a {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAHCAYAAAA1WQxeAAAAK0lEQVQI12OIjY39D8QSDECAzIYDqCBYApmNTQE6liCk4D/JJuB1A05fAACQykyB48rZCQAAAABJRU5ErkJggg==) /*Images/Actions/dataTableLastDisabled.png*/;
 }
 .dataTables_wrapper .dataTables_paginate .paginate_active {
-  font-weight: bold;
+  font-weight: 600;
   color: #1e6dab;
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button_disabled {
@@ -1148,7 +1151,7 @@ div.Disco-AttachmentUpload-DropTarget.dragHighlight h2 {
   margin-top: 3em !important;
   color: #2c1e02;
   text-align: center;
-  font-weight: bold;
+  font-weight: 600;
 }
 div.Disco-AttachmentUpload-DropTarget.dragHighlight.dragHover {
   background-color: rgba(173, 235, 110, 0.5);
@@ -1232,7 +1235,7 @@ div.Disco-AttachmentUpload-ImageDialog {
 }
 body > .User_FlagAssignment_Tooltip span.name {
   display: block;
-  font-weight: bold;
+  font-weight: 600;
 }
 body > .User_FlagAssignment_Tooltip span.comments {
   display: block;

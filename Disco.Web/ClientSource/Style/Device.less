@@ -52,12 +52,12 @@
             table.verticalHeadings {
                 & > tbody > tr > td:first-child {
                     width: 104px;
-                    font-weight: bold;
+                    font-weight: @FontWeightBodyBold;
                 }
             }
 
             #Device_Show_Details_Asset_Name {
-                font-weight: bold;
+                font-weight: @FontWeightBodyBold;
             }
 
             #Device_Show_Details_Asset_Enrolled_Trusted {
@@ -95,7 +95,7 @@
             table.verticalHeadings {
                 & > tbody > tr > td:first-child {
                     width: 120px;
-                    font-weight: bold;
+                    font-weight: @FontWeightBodyBold;
                 }
             }
         }
@@ -166,15 +166,15 @@
     ul {
         li {
             background-color: @white;
-            padding: 2px 0;
+            padding: 2px 0 2px 4px;
 
             &:nth-child(odd) {
                 background-color: @TableDataRowBackgroundColor;
             }
 
             &.selected {
-                background-color: @TableDataDarkBorderColour;
-                font-weight: bold;
+                background-color: @HighlightColour;
+                font-weight: @FontWeightBodyBold;
             }
         }
     }

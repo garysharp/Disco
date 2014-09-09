@@ -27,6 +27,21 @@
     }
 }
 
+#Jobs_Index_MyJobs {
+    margin-bottom: 10px;
+}
+
+#Jobs_Index_MyJobs, #Jobs_Index_StaleJobs {
+    .jobTable > h3 {
+        color: #555;
+        font-family: @FontFamilyBody;
+        font-weight: normal;
+        font-size: 12px;
+        margin: 8px 0 20px 20px !important;
+        text-transform: uppercase;
+    }
+}
+
 #Job_List {
     padding-top: 20px;
 
@@ -64,6 +79,11 @@
 
         #Job_Show_Job {
             #Job_Show_Job_Type {
+                & > h2 {
+                    text-transform: uppercase;
+                    font-size: 16px;
+                }
+                
                 & > table {
                     table-layout: fixed;
                 }
@@ -71,7 +91,7 @@
 
             #Job_Show_Job_SubTypes_1, #Job_Show_Job_SubTypes_2 {
                 padding-left: 16px;
-                font-weight: bold;
+                font-weight: @FontWeightBodyBold;
             }
 
             #Job_Show_Job_SubTypes_Update {
@@ -94,7 +114,7 @@
                     }
 
                         & > tbody > tr > td:first-child {
-                            font-weight: bold;
+                            font-weight: @FontWeightBodyBold;
                             width: 60px;
                         }
                 }
@@ -253,7 +273,7 @@
                 span.author {
                     color: #444;
                     display: block;
-                    font-weight: bold;
+                    font-weight: @FontWeightBodyBold;
                     font-size: 0.95em;
                     float: left;
                 }
@@ -273,6 +293,21 @@
                     p {
                         line-height: 1.2em;
                         padding-bottom: .2em;
+                    }
+
+                    h1, h2, h3, h4, h5 {
+                        font-family: @FontFamilyBody;
+                        font-weight: 600;
+                        font-size: 14px;
+                        margin: 2px 0 !important;
+                    }
+
+                    hr {
+                        margin-top: .2em;
+                    }
+
+                    code {
+                        font-size: .9em;
                     }
                 }
 
@@ -664,7 +699,7 @@
         }
 
         .totalCost {
-            font-weight: bold;
+            font-weight: @FontWeightBodyBold;
         }
     }
 }
@@ -741,7 +776,7 @@
 
             th {
                 padding: 2px;
-                font-weight: bold;
+                font-weight: @FontWeightBodyBold;
                 width: 200px;
             }
 
@@ -865,7 +900,7 @@
 
             th {
                 padding: 2px;
-                font-weight: bold;
+                font-weight: @FontWeightBodyBold;
                 width: 200px;
             }
 

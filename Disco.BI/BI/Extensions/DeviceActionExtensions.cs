@@ -157,8 +157,8 @@ namespace Disco.BI.Extensions
                         JobId = j.Id,
                         TechUserId = UserService.CurrentUser.UserId,
                         Timestamp = DateTime.Now,
-                        Comments = string.Format("Device Deleted{0}{0}Serial Number: {1}{0}Computer Name: {2}{0}Model: {3}{0}Profile: {4}",
-                                                    Environment.NewLine, d.SerialNumber, d.DeviceDomainId, d.DeviceModel, d.DeviceProfile)
+                        Comments = string.Format("# Device Deleted\r\n\r\nSerial Number: **{0}**\r\nComputer Name: **{1}**\r\nModel: **{2}**\r\nProfile: **{3}**",
+                                                    d.SerialNumber, d.DeviceDomainId, d.DeviceModel, d.DeviceProfile)
                     };
                     Database.JobLogs.Add(jobLog);
                 }

@@ -249,7 +249,7 @@ table.expressionsTable td.parseError {
 }
 #organisationAddresses th {
   padding: 2px;
-  font-weight: bold;
+  font-weight: 600;
   width: 200px;
 }
 #organisationAddresses td {
@@ -356,7 +356,7 @@ table.deviceProfileTable th.deviceCount {
 }
 #Logging_Task_Status th.process {
   text-align: left;
-  font-weight: bold;
+  font-weight: 600;
   background-color: #f4f4f4;
   min-height: 30px;
   vertical-align: middle;
@@ -410,7 +410,7 @@ div.logEventsViewport table.logEventsViewport > thead > tr {
 }
 div.logEventsViewport table.logEventsViewport > thead > tr > th {
   padding: 4px 2px;
-  font-weight: bold;
+  font-weight: 600;
   border-bottom: 1px solid #bbb;
 }
 div.logEventsViewport table.logEventsViewport > thead > tr > th.icon {
@@ -566,7 +566,7 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
 }
 #dialogSession .sessionInfoContainer .sessionInfoMessages table.logEventsViewport > thead > tr > th {
   padding: 4px 2px;
-  font-weight: bold;
+  font-weight: 600;
   border-bottom: 1px solid #bbb;
 }
 #dialogSession .sessionInfoContainer .sessionInfoMessages table.logEventsViewport > thead > tr > th.icon {
@@ -677,7 +677,7 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
   margin: 0 0 8px 0;
 }
 #dialogBulkGenerate .brief .scopeDescBulkGenerate {
-  font-weight: bold;
+  font-weight: 600;
 }
 #dialogBulkGenerate .brief div.examples {
   margin: 8px auto;
@@ -784,7 +784,7 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
 }
 #importStatus #sessions .session .sessionInfoMessages table.logEventsViewport > thead > tr > th {
   padding: 4px 2px;
-  font-weight: bold;
+  font-weight: 600;
   border-bottom: 1px solid #bbb;
 }
 #importStatus #sessions .session .sessionInfoMessages table.logEventsViewport > thead > tr > th.icon {
@@ -1544,7 +1544,7 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
   margin: 0 0 8px 0;
 }
 #Config_UserFlags_BulkAssign_AssignDialog .brief .scopeDescBulkGenerate {
-  font-weight: bold;
+  font-weight: 600;
 }
 #Config_UserFlags_BulkAssign_AssignDialog .brief div.examples {
   margin: 8px auto;

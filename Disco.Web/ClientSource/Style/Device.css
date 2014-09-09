@@ -117,10 +117,10 @@
 }
 #Device_Show #Device_Show_Subjects #Device_Show_Details table.verticalHeadings > tbody > tr > td:first-child {
   width: 104px;
-  font-weight: bold;
+  font-weight: 600;
 }
 #Device_Show #Device_Show_Subjects #Device_Show_Details #Device_Show_Details_Asset_Name {
-  font-weight: bold;
+  font-weight: 600;
 }
 #Device_Show #Device_Show_Subjects #Device_Show_Details #Device_Show_Details_Asset_Enrolled_Trusted {
   display: inline-block;
@@ -146,7 +146,7 @@
 }
 #Device_Show #Device_Show_Subjects #Device_Show_Policies table.verticalHeadings > tbody > tr > td:first-child {
   width: 120px;
-  font-weight: bold;
+  font-weight: 600;
 }
 #Device_Show #Device_Show_Subjects #Device_Show_Aspects #Device_Show_Aspects_Model_Image {
   display: block;
@@ -200,7 +200,7 @@
 #Device_Show_Policies_Profile_Actions_Update_Dialog ul li,
 #Device_Show_Policies_Batch_Actions_Update_Dialog ul li {
   background-color: #ffffff;
-  padding: 2px 0;
+  padding: 2px 0 2px 4px;
 }
 #Device_Show_Policies_Profile_Actions_Update_Dialog ul li:nth-child(odd),
 #Device_Show_Policies_Batch_Actions_Update_Dialog ul li:nth-child(odd) {
@@ -208,8 +208,8 @@
 }
 #Device_Show_Policies_Profile_Actions_Update_Dialog ul li.selected,
 #Device_Show_Policies_Batch_Actions_Update_Dialog ul li.selected {
-  background-color: #d8d8d8;
-  font-weight: bold;
+  background-color: #cddbec;
+  font-weight: 600;
 }
 #DeviceDetailTab-JobsContainer div.jobTable {
   margin: -1px;

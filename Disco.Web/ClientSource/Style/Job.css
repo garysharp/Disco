@@ -100,6 +100,18 @@
   height: 50px;
   font-size: 0.6em;
 }
+#Jobs_Index_MyJobs {
+  margin-bottom: 10px;
+}
+#Jobs_Index_MyJobs .jobTable > h3,
+#Jobs_Index_StaleJobs .jobTable > h3 {
+  color: #555;
+  font-family: "Segoe UI", Arial, Verdana, Tahoma, sans-serif;
+  font-weight: normal;
+  font-size: 12px;
+  margin: 8px 0 20px 20px !important;
+  text-transform: uppercase;
+}
 #Job_List {
   padding-top: 20px;
 }
@@ -127,13 +139,17 @@
 #Job_Show #Job_Show_Subjects > tbody > tr > td:not(:last-child) {
   border-right: 1px dashed #aaa;
 }
+#Job_Show #Job_Show_Subjects #Job_Show_Job #Job_Show_Job_Type > h2 {
+  text-transform: uppercase;
+  font-size: 16px;
+}
 #Job_Show #Job_Show_Subjects #Job_Show_Job #Job_Show_Job_Type > table {
   table-layout: fixed;
 }
 #Job_Show #Job_Show_Subjects #Job_Show_Job #Job_Show_Job_SubTypes_1,
 #Job_Show #Job_Show_Subjects #Job_Show_Job #Job_Show_Job_SubTypes_2 {
   padding-left: 16px;
-  font-weight: bold;
+  font-weight: 600;
 }
 #Job_Show #Job_Show_Subjects #Job_Show_Job #Job_Show_Job_SubTypes_Update {
   margin-left: 16px;
@@ -152,7 +168,7 @@
   vertical-align: middle;
 }
 #Job_Show #Job_Show_Subjects #Job_Show_Job #Job_Show_Job_Dates table > tbody > tr > td:first-child {
-  font-weight: bold;
+  font-weight: 600;
   width: 60px;
 }
 #Job_Show #Job_Show_Subjects #Job_Show_Job #Job_Show_GenerateDocument_Container {
@@ -277,7 +293,7 @@
 #jobShowResources #Comments div.commentOutput > div span.author {
   color: #444;
   display: block;
-  font-weight: bold;
+  font-weight: 600;
   font-size: 0.95em;
   float: left;
 }
@@ -295,6 +311,22 @@
 #jobShowResources #Comments div.commentOutput > div div.comment p {
   line-height: 1.2em;
   padding-bottom: .2em;
+}
+#jobShowResources #Comments div.commentOutput > div div.comment h1,
+#jobShowResources #Comments div.commentOutput > div div.comment h2,
+#jobShowResources #Comments div.commentOutput > div div.comment h3,
+#jobShowResources #Comments div.commentOutput > div div.comment h4,
+#jobShowResources #Comments div.commentOutput > div div.comment h5 {
+  font-family: "Segoe UI", Arial, Verdana, Tahoma, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  margin: 2px 0 !important;
+}
+#jobShowResources #Comments div.commentOutput > div div.comment hr {
+  margin-top: .2em;
+}
+#jobShowResources #Comments div.commentOutput > div div.comment code {
+  font-size: .9em;
 }
 #jobShowResources #Comments div.commentOutput > div:hover span.remove {
   opacity: .5;
@@ -622,7 +654,7 @@
   background-image: url(data:image/gif;base64,R0lGODlhEAALAPQAAP///zNah+Hm7dng6O7x9DddiTNah1d3nJqtw3+Xs8fS3k5vlm6JqaGzx4KatcrU4FFymDZciHGMq+ru8t/l7Pb3+V9+oeLo7vT2+MTP3LLB0dTc5fHz9gAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA) /*Images/Status/loading.gif*/;
 }
 #jobComponents tr .totalCost {
-  font-weight: bold;
+  font-weight: 600;
 }
 #jobWarrantyDetails {
   border: solid 1px #d8d8d8;
@@ -715,7 +747,7 @@
 }
 #warrantyJobForm #warrantyDisclosedInformation table th {
   padding: 2px;
-  font-weight: bold;
+  font-weight: 600;
   width: 200px;
 }
 #warrantyJobForm #warrantyDisclosedInformation table td {
@@ -815,7 +847,7 @@
 }
 #repairJobForm #repairDisclosedInformation table th {
   padding: 2px;
-  font-weight: bold;
+  font-weight: 600;
   width: 200px;
 }
 #repairJobForm #repairDisclosedInformation table td {

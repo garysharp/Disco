@@ -132,18 +132,18 @@ namespace Disco.BI.Extensions
             if (addedSubTypes.Count > 0 || removedSubTypes.Count > 0)
             {
                 StringBuilder logBuilder = new StringBuilder();
-                logBuilder.AppendLine("Updated Job Sub Types");
+                logBuilder.AppendLine("# Updated Job Sub Types");
                 if (removedSubTypes.Count > 0)
                 {
-                    logBuilder.AppendLine("Removed:");
+                    logBuilder.AppendLine().AppendLine("Removed:");
                     foreach (var t in removedSubTypes)
-                        logBuilder.Append("- ").AppendLine(t.ToString());
+                        logBuilder.Append("- **").Append(t.ToString()).AppendLine("**");
                 }
                 if (addedSubTypes.Count > 0)
                 {
-                    logBuilder.AppendLine("Added:");
+                    logBuilder.AppendLine().AppendLine("Added:");
                     foreach (var t in addedSubTypes)
-                        logBuilder.Append("- ").AppendLine(t.ToString());
+                        logBuilder.Append("- **").Append(t.ToString()).AppendLine("**");
                 }
                 Database.JobLogs.Add(new JobLog()
                 {

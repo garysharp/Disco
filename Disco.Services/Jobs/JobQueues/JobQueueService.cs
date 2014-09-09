@@ -98,14 +98,14 @@ namespace Disco.Services.Jobs.JobQueues
                         JobId = jqj.JobId,
                         TechUserId = jqj.AddedUserId,
                         Timestamp = jqj.AddedDate,
-                        Comments = string.Format("Added to Job Queue: {1}{0}Priority: {2}{0}Comment: {3}", Environment.NewLine, queue.Name, jqj.Priority.ToString(), string.IsNullOrWhiteSpace(jqj.AddedComment) ? "<none>" : jqj.AddedComment)
+                        Comments = string.Format("# Added to Queue\r\n**{0}**\r\nPriority: **{1}**\r\n{2}", Environment.NewLine, queue.Name, jqj.Priority.ToString(), string.IsNullOrWhiteSpace(jqj.AddedComment) ? "<no comment>" : jqj.AddedComment)
                     });
                     Database.JobLogs.Add(new JobLog()
                     {
                         JobId = jqj.JobId,
                         TechUserId = jqj.RemovedUserId,
                         Timestamp = jqj.RemovedDate.Value,
-                        Comments = string.Format("Removed from Job Queue: {1}{0}Comment: {2}", Environment.NewLine, queue.Name, string.IsNullOrWhiteSpace(jqj.RemovedComment) ? "<none>" : jqj.RemovedComment)
+                        Comments = string.Format("# Removed from Queue\r\n**{0}**\r\n{1}", queue.Name, string.IsNullOrWhiteSpace(jqj.RemovedComment) ? "<no comment>" : jqj.RemovedComment)
                     });
 
                     // Delete JQJ

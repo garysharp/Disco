@@ -1510,7 +1510,7 @@ namespace Disco.Web.Areas.API.Controllers
                             JobId = job.Id,
                             TechUserId = CurrentUser.UserId,
                             Timestamp = DateTime.Now,
-                            Comments = string.Format("Added Flag: {0}{1}Reason: {2}", flagStatus.Item1, Environment.NewLine, Reason)
+                            Comments = string.Format("# Added Flag\r\n**{0}**\r\n{1}", flagStatus.Item1, string.IsNullOrWhiteSpace(Reason) ? "<no reason provided>" : Reason)
                         };
                         Database.JobLogs.Add(jobLog);
 

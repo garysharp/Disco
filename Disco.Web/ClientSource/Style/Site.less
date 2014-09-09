@@ -362,6 +362,10 @@ hr {
     margin-top: 15px;
 }
 
+strong {
+    font-weight: @FontWeightBodyBold;
+}
+
 // Anchor Tags (Default)
 a {
     &:link {
@@ -484,7 +488,7 @@ h5, h6 {
     font-size: 12px;
     font-family: @FontFamilyHeading;
     font-stretch: normal;
-    font-weight: bold;
+    font-weight: @FontWeightBodyBold;
 }
 
 table {
@@ -503,7 +507,7 @@ table {
         padding: 5px;
         margin: 0;
         text-align: left;
-        font-weight: bold;
+        font-weight: @FontWeightBodyBold;
         vertical-align: top;
     }
 }
@@ -633,7 +637,7 @@ table {
         }
 
         .paginate_active {
-            font-weight: bold;
+            font-weight: @FontWeightBodyBold;
             color: @ButtonColour;
         }
 
@@ -1156,7 +1160,7 @@ div.Disco-AttachmentUpload-DropTarget {
             margin-top: 3em !important;
             color: darken(@ThemeAmber, 40%);
             text-align: center;
-            font-weight: bold;
+            font-weight: @FontWeightBodyBold;
         }
 
         &.dragHover {
@@ -1234,7 +1238,7 @@ div.Disco-AttachmentUpload-ImageDialog {
 body > .User_FlagAssignment_Tooltip {
     span.name {
         display: block;
-        font-weight: bold;
+        font-weight: @FontWeightBodyBold;
     }
 
     span.comments {

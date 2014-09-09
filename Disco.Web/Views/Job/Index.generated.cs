@@ -48,7 +48,7 @@ namespace Disco.Web.Views.Job
             #line 2 "..\..\Views\Job\Index.cshtml"
   
     ViewBag.Title = "Jobs";
-    
+
     if (Authorization.Has(Claims.Job.ShowDailyChart))
     {
         Html.BundleDeferred("~/ClientScripts/Modules/Highcharts");
@@ -160,49 +160,49 @@ WriteLiteral(">\r\n                (function () {\r\n                    var cha
 "ew Highcharts.Chart({\r\n                                chart: {\r\n               " +
 "                     renderTo: \'chartHostJobDailyOpenedClosed\',\r\n               " +
 "                     height: 175,\r\n                                    animation" +
-": false,\r\n                                    style: {\n                         " +
-"               fontFamily: \'\"Segoe UI\", Arial, Verdana, Tahoma, sans-serif\'\n    " +
-"                                }\r\n                                },\r\n         " +
-"                       colors: [\'#BBBBBB\', \'#005fab\', \'#60ab1e\'],\r\n             " +
-"                   title: {\r\n                                    text: null\r\n   " +
-"                             },\r\n                                plotOptions: {\r" +
-"\n                                    series: {\r\n                                " +
-"        marker: {\r\n                                            radius: 3\r\n      " +
-"                                  },\r\n                                        an" +
-"imation: false\r\n                                    }\r\n                         " +
-"       },\r\n                                legend: {\r\n                          " +
-"          align: \'left\',\r\n                                    verticalAlign: \'to" +
-"p\',\r\n                                    y: 0,\r\n                                " +
-"    floating: true,\r\n                                    borderWidth: 0,\r\n      " +
-"                              itemStyle: {\r\n                                    " +
-"    color: \'#333\',\n                                        fontWeight: \'normal\'\r" +
-"\n                                    }\r\n                                },\r\n    " +
-"                            xAxis: {\r\n                                    type: " +
-"\'datetime\',\r\n                                    tickInterval: 7 * 24 * 3600 * 1" +
-"000, // week\r\n                                    tickWidth: 1,\r\n               " +
-"                     gridLineWidth: 1,\r\n                                    date" +
-"TimeLabelFormats: {\r\n                                        week: \'%e %b\'\r\n    " +
-"                                }\r\n                                },\r\n         " +
-"                       yAxis: [{\r\n                                    title: {\r\n" +
-"                                        text: null\r\n                            " +
-"        },\r\n                                    labels: {\r\n                     " +
-"                   enabled: false\r\n                                    },\r\n     " +
-"                               min: 0\r\n                                }, {\r\n   " +
-"                                 title: {\r\n                                     " +
-"   text: null\r\n                                    },\r\n                         " +
-"           labels: {\r\n                                        enabled: false\r\n  " +
-"                                  },\r\n                                    min: 0" +
-"\r\n                                }],\r\n                                series: [" +
-"{\r\n                                    name: \'Total Open Jobs\',\r\n               " +
-"                     data: dataTotalOpenJobs,\r\n                                 " +
-"   yAxis: 1\r\n                                }, {\r\n                             " +
-"       name: \'Closed Jobs\',\r\n                                    data: dataClose" +
-"dJobs\r\n                                }, {\r\n                                   " +
-" name: \'Opened Jobs\',\r\n                                    data: dataOpenedJobs\r" +
-"\n                                }],\r\n                                credits: {" +
-"\r\n                                    enabled: false\r\n                          " +
-"      }\r\n                            });\r\n                        });\r\n         " +
-"           }\r\n                    chartData = $.parseJSON(\'");
+": false,\r\n                                    style: {\r\n                        " +
+"                fontFamily: \'\"Segoe UI\", Arial, Verdana, Tahoma, sans-serif\'\r\n  " +
+"                                  }\r\n                                },\r\n       " +
+"                         colors: [\'#BBBBBB\', \'#005fab\', \'#60ab1e\'],\r\n           " +
+"                     title: {\r\n                                    text: null\r\n " +
+"                               },\r\n                                plotOptions: " +
+"{\r\n                                    series: {\r\n                              " +
+"          marker: {\r\n                                            radius: 3\r\n    " +
+"                                    },\r\n                                        " +
+"animation: false\r\n                                    }\r\n                       " +
+"         },\r\n                                legend: {\r\n                        " +
+"            align: \'left\',\r\n                                    verticalAlign: \'" +
+"top\',\r\n                                    y: 0,\r\n                              " +
+"      floating: true,\r\n                                    borderWidth: 0,\r\n    " +
+"                                itemStyle: {\r\n                                  " +
+"      color: \'#333\',\n                                        fontWeight: \'normal" +
+"\'\r\n                                    }\r\n                                },\r\n  " +
+"                              xAxis: {\r\n                                    type" +
+": \'datetime\',\r\n                                    tickInterval: 7 * 24 * 3600 *" +
+" 1000, // week\r\n                                    tickWidth: 1,\r\n             " +
+"                       gridLineWidth: 1,\r\n                                    da" +
+"teTimeLabelFormats: {\r\n                                        week: \'%e %b\'\r\n  " +
+"                                  }\r\n                                },\r\n       " +
+"                         yAxis: [{\r\n                                    title: {" +
+"\r\n                                        text: null\r\n                          " +
+"          },\r\n                                    labels: {\r\n                   " +
+"                     enabled: false\r\n                                    },\r\n   " +
+"                                 min: 0\r\n                                }, {\r\n " +
+"                                   title: {\r\n                                   " +
+"     text: null\r\n                                    },\r\n                       " +
+"             labels: {\r\n                                        enabled: false\r\n" +
+"                                    },\r\n                                    min:" +
+" 0\r\n                                }],\r\n                                series:" +
+" [{\r\n                                    name: \'Total Open Jobs\',\r\n             " +
+"                       data: dataTotalOpenJobs,\r\n                               " +
+"     yAxis: 1\r\n                                }, {\r\n                           " +
+"         name: \'Closed Jobs\',\r\n                                    data: dataClo" +
+"sedJobs\r\n                                }, {\r\n                                 " +
+"   name: \'Opened Jobs\',\r\n                                    data: dataOpenedJob" +
+"s\r\n                                }],\r\n                                credits:" +
+" {\r\n                                    enabled: false\r\n                        " +
+"        }\r\n                            });\r\n                        });\r\n       " +
+"             }\r\n                    chartData = $.parseJSON(\'");
 
             
             #line 126 "..\..\Views\Job\Index.cshtml"
@@ -231,73 +231,75 @@ WriteLiteral("</div>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("    <h2>My Jobs (");
+WriteLiteral("    <div");
+
+WriteLiteral(" id=\"Jobs_Index_MyJobs\"");
+
+WriteLiteral(">\r\n        <h2>My Jobs (");
 
             
-            #line 136 "..\..\Views\Job\Index.cshtml"
-            Write(Model.MyJobs.Items.Count());
+            #line 137 "..\..\Views\Job\Index.cshtml"
+                Write(Model.MyJobs.Items.Count());
 
             
             #line default
             #line hidden
 WriteLiteral(")</h2>\r\n");
 
+WriteLiteral("        ");
+
             
-            #line 137 "..\..\Views\Job\Index.cshtml"
-    
-            
-            #line default
-            #line hidden
-            
-            #line 137 "..\..\Views\Job\Index.cshtml"
-Write(Html.Partial(MVC.Shared.Views._JobTable, Model.MyJobs, new ViewDataDictionary()));
+            #line 138 "..\..\Views\Job\Index.cshtml"
+   Write(Html.Partial(MVC.Shared.Views._JobTable, Model.MyJobs, new ViewDataDictionary()));
 
             
             #line default
             #line hidden
+WriteLiteral("\r\n    </div>\r\n");
+
             
-            #line 137 "..\..\Views\Job\Index.cshtml"
-                                                                                     
+            #line 140 "..\..\Views\Job\Index.cshtml"
 }
 
             
             #line default
             #line hidden
             
-            #line 139 "..\..\Views\Job\Index.cshtml"
+            #line 141 "..\..\Views\Job\Index.cshtml"
  if (Authorization.Has(Claims.Job.Lists.StaleJobs))
 {
 
             
             #line default
             #line hidden
-WriteLiteral("    <h2>Stale Jobs (");
+WriteLiteral("    <div");
+
+WriteLiteral(" id=\"Jobs_Index_StaleJobs\"");
+
+WriteLiteral(">\r\n        <h2>Stale Jobs (");
 
             
-            #line 141 "..\..\Views\Job\Index.cshtml"
-               Write(Model.StaleJobs.Items.Count());
+            #line 144 "..\..\Views\Job\Index.cshtml"
+                   Write(Model.StaleJobs.Items.Count());
 
             
             #line default
             #line hidden
 WriteLiteral(")</h2>\r\n");
 
+WriteLiteral("        ");
+
             
-            #line 142 "..\..\Views\Job\Index.cshtml"
-    
-            
-            #line default
-            #line hidden
-            
-            #line 142 "..\..\Views\Job\Index.cshtml"
-Write(Html.Partial(MVC.Shared.Views._JobTable, Model.StaleJobs, new ViewDataDictionary()));
+            #line 145 "..\..\Views\Job\Index.cshtml"
+   Write(Html.Partial(MVC.Shared.Views._JobTable, Model.StaleJobs, new ViewDataDictionary()));
 
             
             #line default
             #line hidden
+WriteLiteral("\r\n    </div>\r\n");
+
             
-            #line 142 "..\..\Views\Job\Index.cshtml"
-                                                                                        
+            #line 147 "..\..\Views\Job\Index.cshtml"
 }
             
             #line default
