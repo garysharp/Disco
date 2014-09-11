@@ -22,6 +22,8 @@ namespace Disco.Services.Searching
 
             IQueryable<Job> query = default(IQueryable<Job>);
 
+            string userIdTerm = Term.Contains('\\') ? Term : ActiveDirectory.ParseDomainAccountId(Term);
+
             if (int.TryParse(Term, out termInt))
             {
                 // Term is a Number (int)
@@ -29,7 +31,7 @@ namespace Disco.Services.Searching
                         j.Id == termInt ||
                         j.Device.SerialNumber.Contains(Term) ||
                         j.Device.AssetNumber.Contains(Term) ||
-                        j.User.UserId == Term ||
+                        j.User.UserId == userIdTerm ||
                         j.User.DisplayName.Contains(Term));
             }
             else
@@ -37,7 +39,7 @@ namespace Disco.Services.Searching
                 query = Database.Jobs.Where(j =>
                         j.Device.SerialNumber.Contains(Term) ||
                         j.Device.AssetNumber.Contains(Term) ||
-                        j.User.UserId == Term ||
+                        j.User.UserId == userIdTerm ||
                         j.User.DisplayName.Contains(Term));
             }
 
@@ -65,6 +67,8 @@ namespace Disco.Services.Searching
 
             IQueryable<Job> query = default(IQueryable<Job>);
 
+            string userIdTerm = Term.Contains('\\') ? Term : ActiveDirectory.ParseDomainAccountId(Term);
+
             if (int.TryParse(Term, out termInt))
             {
                 // Term is a Number (int)
@@ -75,7 +79,7 @@ namespace Disco.Services.Searching
                         j.DeviceHeldLocation.Contains(Term) ||
                         j.Device.SerialNumber.Contains(Term) ||
                         j.Device.AssetNumber.Contains(Term) ||
-                        j.User.UserId == Term ||
+                        j.User.UserId == userIdTerm ||
                         j.User.Surname.Contains(Term) ||
                         j.User.GivenName.Contains(Term) ||
                         j.User.DisplayName.Contains(Term) ||
@@ -89,7 +93,7 @@ namespace Disco.Services.Searching
                         j.DeviceHeldLocation.Contains(Term) ||
                         j.Device.SerialNumber.Contains(Term) ||
                         j.Device.AssetNumber.Contains(Term) ||
-                        j.User.UserId == Term ||
+                        j.User.UserId == userIdTerm ||
                         j.User.Surname.Contains(Term) ||
                         j.User.GivenName.Contains(Term) ||
                         j.User.DisplayName.Contains(Term));
@@ -103,7 +107,7 @@ namespace Disco.Services.Searching
                         j.DeviceHeldLocation.Contains(Term) ||
                         j.Device.SerialNumber.Contains(Term) ||
                         j.Device.AssetNumber.Contains(Term) ||
-                        j.User.UserId == Term ||
+                        j.User.UserId == userIdTerm ||
                         j.User.Surname.Contains(Term) ||
                         j.User.GivenName.Contains(Term) ||
                         j.User.DisplayName.Contains(Term) ||
@@ -116,7 +120,7 @@ namespace Disco.Services.Searching
                         j.DeviceHeldLocation.Contains(Term) ||
                         j.Device.SerialNumber.Contains(Term) ||
                         j.Device.AssetNumber.Contains(Term) ||
-                        j.User.UserId == Term ||
+                        j.User.UserId == userIdTerm ||
                         j.User.Surname.Contains(Term) ||
                         j.User.GivenName.Contains(Term) ||
                         j.User.DisplayName.Contains(Term));
