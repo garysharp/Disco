@@ -157,7 +157,7 @@ WriteLiteral(">\r\n                            Document: <a");
 
 WriteLiteral(" target=\"_blank\"");
 
-WriteLiteral("  href=\"#\"");
+WriteLiteral(" href=\"#\"");
 
 WriteLiteral(" data-bind=\"text: documentTemplate, attr: { href: documentTemplateUrl }\"");
 
@@ -471,21 +471,26 @@ WriteLiteral(@"',
             
             #line default
             #line hidden
-WriteLiteral(@"' };
-            $.connection.hub.error(function (error) {
-                alert('Live-Log Error: ' + error);
-            });
-
-            $.connection.hub.start()
-                .done(function () { isLive = true; })
-                .fail(function (error) {
-                    alert('Live-Log Connection Error: ' + error);
-                });
-        }
-        init();
-    });
-</script>
-");
+WriteLiteral("\' };\r\n            $.connection.hub.error(onHubFailed);\r\n\r\n            $.connectio" +
+"n.hub.start()\r\n                .done(function () { isLive = true; })\r\n          " +
+"      .fail(onHubFailed);\r\n\r\n            function onHubFailed(error) {\r\n        " +
+"        // Show Dialog Message\r\n                if ($(\'.disconnected-dialog\').le" +
+"ngth == 0) {\r\n                    $(\'<div>\')\r\n                        .addClass(" +
+"\'dialog disconnected-dialog\')\r\n                        .html(\'<h3><span class=\"f" +
+"a-stack fa-lg\"><i class=\"fa fa-wifi fa-stack-1x\"></i><i class=\"fa fa-ban fa-stac" +
+"k-2x error\"></i></span>Disconnected from the Disco ICT Server</h3><div>This page" +
+" is not receiving live updates. Please ensure you are connected to the server, t" +
+"hen refresh this page to enable features.</div>\')\r\n                        .dial" +
+"og({\r\n                            resizable: false,\r\n                           " +
+" title: \'Disconnected\',\r\n                            width: 400,\r\n              " +
+"              modal: true,\r\n                            buttons: {\r\n            " +
+"                    \'Refresh Now\': function () {\r\n                              " +
+"      $(this).dialog(\'option\', \'buttons\', null);\r\n                              " +
+"      window.location.reload(true);\r\n                                },\r\n       " +
+"                         \'Close\': function () {\r\n                               " +
+"     $(this).dialog(\'destroy\');\r\n                                }\r\n            " +
+"                }\r\n                        });\r\n                }\r\n            }" +
+"\r\n        }\r\n        init();\r\n    });\r\n</script>\r\n");
 
         }
     }

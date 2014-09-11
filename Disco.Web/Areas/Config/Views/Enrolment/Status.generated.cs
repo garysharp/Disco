@@ -48,7 +48,7 @@ namespace Disco.Web.Areas.Config.Views.Enrolment
             #line 1 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
   
     Authorization.Require(Claims.Config.Enrolment.ShowStatus);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Enrolment", MVC.Config.Enrolment.Index(), "Status");
     Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
@@ -67,51 +67,50 @@ WriteLiteral(" id=\"noSessions\"");
 
 WriteLiteral(" data-bind=\"visible: noSessions\"");
 
-WriteLiteral(">\r\n        <h2>\r\n            No enrolment sessions today</h2>\r\n    </div>\r\n    <d" +
-"iv");
+WriteLiteral(">\r\n        <h2>No enrolment sessions today</h2>\r\n    </div>\r\n    <div");
 
 WriteLiteral(" id=\"sessions\"");
 
-WriteLiteral(" data-bind=\"visible: !noSessions(), foreach: {data: sessions, afterRender: sessio" +
-"nRendered, afterAdd: sessionAdded}\"");
+WriteLiteral(" data-bind=\"visible: !noSessions(), foreach: { data: sessions, afterRender: sessi" +
+"onRendered, afterAdd: sessionAdded }\"");
 
-WriteLiteral("\r\n        style=\"display: none\"");
+WriteLiteral(" style=\"display: none\"");
 
 WriteLiteral(">\r\n        <div");
 
 WriteLiteral(" class=\"session\"");
 
-WriteLiteral(" data-bind=\"style: {backgroundImage: deviceModelImageUrl}, click: select\"");
+WriteLiteral(" data-bind=\"style: { backgroundImage: deviceModelImageUrl }, click: select\"");
 
 WriteLiteral(">\r\n            <h3>\r\n                <span");
 
 WriteLiteral(" data-bind=\"text: title\"");
 
-WriteLiteral("></span><span");
+WriteLiteral("></span>\r\n                <span");
 
 WriteLiteral(" class=\"details\"");
 
 WriteLiteral(" data-bind=\"text: \'(\' + deviceModelDescription() + \')\'\"");
 
-WriteLiteral(">\r\n                </span>\r\n            </h3>\r\n            <p");
+WriteLiteral("></span>\r\n            </h3>\r\n            <p");
 
 WriteLiteral(" class=\"sessionStart\"");
 
 WriteLiteral(" data-bind=\"text: startTime\"");
 
-WriteLiteral(">\r\n            </p>\r\n            <p");
+WriteLiteral("></p>\r\n            <p");
 
 WriteLiteral(" class=\"sessionStatus\"");
 
 WriteLiteral(" data-bind=\"text: progressStatus\"");
 
-WriteLiteral(">\r\n            </p>\r\n            <div");
+WriteLiteral("></p>\r\n            <div");
 
 WriteLiteral(" data-bind=\"visible: !sessionEnded(), progressValue: progressValue\"");
 
 WriteLiteral(" class=\"sessionProgress\"");
 
-WriteLiteral(">\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div");
+WriteLiteral("></div>\r\n        </div>\r\n    </div>\r\n    <div");
 
 WriteLiteral(" id=\"dialogSession\"");
 
@@ -121,21 +120,21 @@ WriteLiteral(">\r\n        <div");
 
 WriteLiteral(" class=\"sessionHeader clearfix\"");
 
-WriteLiteral(" data-bind=\"style: {backgroundImage: deviceModelImageUrl}\"");
+WriteLiteral(" data-bind=\"style: { backgroundImage: deviceModelImageUrl }\"");
 
-WriteLiteral(">\r\n            <h2>\r\n                <a");
+WriteLiteral(">\r\n            <h2><a");
 
 WriteLiteral(" href=\"\"");
 
 WriteLiteral(" target=\"_blank\"");
 
-WriteLiteral(" data-bind=\"text: title, attr: {href: deviceUrl}\"");
+WriteLiteral(" data-bind=\"text: title, attr: { href: deviceUrl }\"");
 
-WriteLiteral("></a>\r\n            </h2>\r\n            <h3");
+WriteLiteral("></a></h2>\r\n            <h3");
 
 WriteLiteral(" data-bind=\"text: deviceModelDescription\"");
 
-WriteLiteral(">\r\n            </h3>\r\n            <table");
+WriteLiteral("></h3>\r\n            <table");
 
 WriteLiteral(" data-bind=\"if: sessionDeviceInfo\"");
 
@@ -143,54 +142,45 @@ WriteLiteral(">\r\n                <tr>\r\n                    <th");
 
 WriteLiteral(" style=\"width: 128px\"");
 
-WriteLiteral(">\r\n                        Computer Name:\r\n                    </th>\r\n           " +
-"         <td");
+WriteLiteral(">Computer Name:</th>\r\n                    <td");
 
 WriteLiteral(" data-bind=\"text: sessionDeviceInfo().Arguments[3]\"");
 
-WriteLiteral(">\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n      " +
-"              <th");
+WriteLiteral("></td>\r\n                </tr>\r\n                <tr>\r\n                    <th");
 
 WriteLiteral(" style=\"width: 128px\"");
 
-WriteLiteral(">\r\n                        UUID:\r\n                    </th>\r\n                    " +
-"<td");
+WriteLiteral(">UUID:</th>\r\n                    <td");
 
 WriteLiteral(" data-bind=\"text: sessionDeviceInfo().Arguments[2]\"");
 
-WriteLiteral(">\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n      " +
-"              <th");
+WriteLiteral("></td>\r\n                </tr>\r\n                <tr>\r\n                    <th");
 
 WriteLiteral(" style=\"width: 128px\"");
 
-WriteLiteral(">\r\n                        LAN Mac Address:\r\n                    </th>\r\n         " +
-"           <td");
+WriteLiteral(">LAN Mac Address:</th>\r\n                    <td");
 
 WriteLiteral(" data-bind=\"text: sessionDeviceInfo().Arguments[4]\"");
 
-WriteLiteral(">\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n      " +
-"              <th");
+WriteLiteral("></td>\r\n                </tr>\r\n                <tr>\r\n                    <th");
 
 WriteLiteral(" style=\"width: 128px\"");
 
-WriteLiteral(">\r\n                        WLAN Mac Address:\r\n                    </th>\r\n        " +
-"            <td");
+WriteLiteral(">WLAN Mac Address:</th>\r\n                    <td");
 
 WriteLiteral(" data-bind=\"text: sessionDeviceInfo().Arguments[5]\"");
 
-WriteLiteral(">\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n      " +
-"              <th");
+WriteLiteral("></td>\r\n                </tr>\r\n                <tr>\r\n                    <th");
 
 WriteLiteral(" style=\"width: 128px\"");
 
-WriteLiteral(">\r\n                        Manufacturer/Model:\r\n                    </th>\r\n      " +
-"              <td");
+WriteLiteral(">Manufacturer/Model:</th>\r\n                    <td");
 
 WriteLiteral(" data-bind=\"text: sessionDeviceInfo().Arguments[6] + \' \' + sessionDeviceInfo().Ar" +
 "guments[7]\"");
 
-WriteLiteral(">\r\n                    </td>\r\n                </tr>\r\n            </table>\r\n      " +
-"  </div>\r\n        <div");
+WriteLiteral("></td>\r\n                </tr>\r\n            </table>\r\n        </div>\r\n        <div" +
+"");
 
 WriteLiteral(" class=\"sessionProgress clearfix\"");
 
@@ -200,17 +190,17 @@ WriteLiteral(" class=\"sessionStart\"");
 
 WriteLiteral(" data-bind=\"text: startTime\"");
 
-WriteLiteral(">\r\n            </p>\r\n            <p");
+WriteLiteral("></p>\r\n            <p");
 
 WriteLiteral(" class=\"sessionStatus\"");
 
 WriteLiteral(" data-bind=\"text: progressStatus\"");
 
-WriteLiteral(">\r\n            </p>\r\n            <div");
+WriteLiteral("></p>\r\n            <div");
 
 WriteLiteral(" data-bind=\"visible: !sessionEnded(), progressValue: progressValue\"");
 
-WriteLiteral(">\r\n            </div>\r\n        </div>\r\n        <div");
+WriteLiteral("></div>\r\n        </div>\r\n        <div");
 
 WriteLiteral(" class=\"sessionInfoContainer clearfix\"");
 
@@ -227,14 +217,12 @@ WriteLiteral(">\r\n                    <thead>\r\n                        <tr>\r
 
 WriteLiteral(" class=\"icon\"");
 
-WriteLiteral(">\r\n                                &nbsp;\r\n                            </th>\r\n   " +
-"                         <th");
+WriteLiteral(">&nbsp;</th>\r\n                            <th");
 
 WriteLiteral(" class=\"message\"");
 
-WriteLiteral(">\r\n                                Message\r\n                            </th>\r\n  " +
-"                      </tr>\r\n                    </thead>\r\n                </tab" +
-"le>\r\n                <div");
+WriteLiteral(">Message</th>\r\n                        </tr>\r\n                    </thead>\r\n     " +
+"           </table>\r\n                <div");
 
 WriteLiteral(" class=\"logEventsViewportContainer\"");
 
@@ -244,10 +232,9 @@ WriteLiteral(" class=\"logEventsViewportNoLogs\"");
 
 WriteLiteral(" data-bind=\"visible: messages().length == 0\"");
 
-WriteLiteral("\r\n                        style=\"display: none\"");
+WriteLiteral(" style=\"display: none\"");
 
-WriteLiteral(">\r\n                        No logs\r\n                    </div>\r\n                 " +
-"   <table");
+WriteLiteral(">No logs</div>\r\n                    <table");
 
 WriteLiteral(" class=\"logEventsViewport\"");
 
@@ -275,7 +262,7 @@ WriteLiteral("></i></td>\r\n                                <td");
 
 WriteLiteral(" class=\"message\"");
 
-WriteLiteral(" data-bind=\"text: FormattedMessage, attr: {title: EventTypeName}\"");
+WriteLiteral(" data-bind=\"text: FormattedMessage, attr: { title: EventTypeName }\"");
 
 WriteLiteral("></td>\r\n                            </tr>\r\n                        </tbody>\r\n    " +
 "                </table>\r\n                </div>\r\n            </div>\r\n          " +
@@ -323,7 +310,7 @@ WriteLiteral(@">
         var deviceBaseUrl = '");
 
             
-            #line 140 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 107 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                          Write(Url.Action(MVC.Device.Show()));
 
             
@@ -332,7 +319,7 @@ WriteLiteral(@">
 WriteLiteral("/\'\r\n        var deviceModelImageUrl = \'");
 
             
-            #line 141 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 108 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                Write(Url.Action(MVC.API.DeviceModel.Image()));
 
             
@@ -341,7 +328,7 @@ WriteLiteral("/\'\r\n        var deviceModelImageUrl = \'");
 WriteLiteral("/\'\r\n        var iconWarningUrl = \'url(");
 
             
-            #line 142 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 109 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                               Write(Links.ClientSource.Style.Images.Status.warning32_png);
 
             
@@ -350,7 +337,7 @@ WriteLiteral("/\'\r\n        var iconWarningUrl = \'url(");
 WriteLiteral(")\';\r\n        var iconErrorUrl = \'url(");
 
             
-            #line 143 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 110 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                             Write(Links.ClientSource.Style.Images.Status.fail32_png);
 
             
@@ -453,7 +440,7 @@ WriteLiteral(")\';\r\n\r\n        function pageViewModel() {\r\n            var 
 " vm = new pageViewModel();\r\n            $.ajax({\r\n                url: \'");
 
             
-            #line 307 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 274 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                   Write(Url.Action(MVC.API.DeviceModel.Index()));
 
             
@@ -487,7 +474,7 @@ WriteLiteral(@"',
                 url: '");
 
             
-            #line 332 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 299 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                   Write(Url.Action(MVC.API.Logging.RetrieveEvents()));
 
             
@@ -526,27 +513,32 @@ WriteLiteral(@"',
             $.connection.hub.qs = { LogModules: '");
 
             
-            #line 362 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 329 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                              Write(Disco.BI.DeviceBI.EnrolmentLog.Current.LiveLogGroupName);
 
             
             #line default
             #line hidden
-WriteLiteral(@"' };
-            $.connection.hub.error(function (error) {
-                alert('Live-Log Error: ' + error);
-            });
-
-            $.connection.hub.start()
-                .done(function () { isLive = true; })
-                .fail(function (error) {
-                    alert('Live-Log Connection Error: ' + error);
-                });
-        }
-        init();
-    });
-</script>
-");
+WriteLiteral("\' };\r\n            $.connection.hub.error(onHubFailed);\r\n\r\n            $.connectio" +
+"n.hub.start()\r\n                .done(function () { isLive = true; })\r\n          " +
+"      .fail(onHubFailed);\r\n\r\n            function onHubFailed(error) {\r\n        " +
+"        // Show Dialog Message\r\n                if ($(\'.disconnected-dialog\').le" +
+"ngth == 0) {\r\n                    $(\'<div>\')\r\n                        .addClass(" +
+"\'dialog disconnected-dialog\')\r\n                        .html(\'<h3><span class=\"f" +
+"a-stack fa-lg\"><i class=\"fa fa-wifi fa-stack-1x\"></i><i class=\"fa fa-ban fa-stac" +
+"k-2x error\"></i></span>Disconnected from the Disco ICT Server</h3><div>This page" +
+" is not receiving live updates. Please ensure you are connected to the server, t" +
+"hen refresh this page to enable features.</div>\')\r\n                        .dial" +
+"og({\r\n                            resizable: false,\r\n                           " +
+" title: \'Disconnected\',\r\n                            width: 400,\r\n              " +
+"              modal: true,\r\n                            buttons: {\r\n            " +
+"                    \'Refresh Now\': function () {\r\n                              " +
+"      $(this).dialog(\'option\', \'buttons\', null);\r\n                              " +
+"      window.location.reload(true);\r\n                                },\r\n       " +
+"                         \'Close\': function () {\r\n                               " +
+"     $(this).dialog(\'destroy\');\r\n                                }\r\n            " +
+"                }\r\n                        });\r\n                }\r\n            }" +
+"\r\n        }\r\n        init();\r\n    });\r\n</script>\r\n");
 
         }
     }

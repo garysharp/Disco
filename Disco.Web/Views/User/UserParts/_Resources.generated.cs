@@ -413,23 +413,24 @@ WriteLiteral("\' };\r\n                            $.connection.hub.error(onHubF
 "(\'dialog disconnected-dialog\')\r\n                                        .html(\'<" +
 "h3><span class=\"fa-stack fa-lg\"><i class=\"fa fa-wifi fa-stack-1x\"></i><i class=\"" +
 "fa fa-ban fa-stack-2x error\"></i></span>Disconnected from the Disco ICT Server</" +
-"h3><div>Please ensure you are connected to the server, then refresh this page to" +
-" enable features.</div>\')\r\n                                        .dialog({\r\n  " +
-"                                          resizable: false,\r\n                   " +
-"                         title: \'Disconnected\',\r\n                               " +
-"             width: 400,\r\n                                            modal: tru" +
-"e,\r\n                                            buttons: {\r\n                    " +
-"                            \'Refresh Now\': function () {\r\n                      " +
-"                              $(this).dialog(\'option\', \'buttons\', null);\r\n      " +
-"                                              window.location.href = window.loca" +
-"tion.href;\r\n                                                },\r\n                " +
-"                                \'Close\': function () {\r\n                        " +
-"                            $(this).dialog(\'destroy\');\r\n                        " +
-"                        }\r\n                                            }\r\n      " +
-"                                  });\r\n                                }\r\n      " +
-"                      }\r\n\r\n                            function onAddAttachment(" +
-"id, quick) {\r\n                                var data = { id: id };\r\n          " +
-"                      $.ajax({\r\n                                    url: \'");
+"h3><div>This page is not receiving live updates. Please ensure you are connected" +
+" to the server, then refresh this page to enable features.</div>\')\r\n            " +
+"                            .dialog({\r\n                                         " +
+"   resizable: false,\r\n                                            title: \'Discon" +
+"nected\',\r\n                                            width: 400,\r\n             " +
+"                               modal: true,\r\n                                   " +
+"         buttons: {\r\n                                                \'Refresh No" +
+"w\': function () {\r\n                                                    $(this).d" +
+"ialog(\'option\', \'buttons\', null);\r\n                                             " +
+"       window.location.reload(true);\r\n                                          " +
+"      },\r\n                                                \'Close\': function () {" +
+"\r\n                                                    $(this).dialog(\'destroy\');" +
+"\r\n                                                }\r\n                           " +
+"                 }\r\n                                        });\r\n               " +
+"                 }\r\n                            }\r\n\r\n                           " +
+" function onAddAttachment(id, quick) {\r\n                                var data" +
+" = { id: id };\r\n                                $.ajax({\r\n                      " +
+"              url: \'");
 
             
             #line 115 "..\..\Views\User\UserParts\_Resources.cshtml"

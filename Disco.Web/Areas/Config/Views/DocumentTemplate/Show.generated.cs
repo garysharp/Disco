@@ -1012,21 +1012,21 @@ WriteLiteral("                                    <script>\r\n                  
 "el() {\r\n                                                dialog.dialog(\"disable\")" +
 ";\r\n                                                dialog.dialog(\"option\", \"butt" +
 "ons\", null);\r\n\r\n                                                // Refresh Page\r" +
-"\n                                                window.location.href = window.l" +
-"ocation.href;\r\n                                            }\r\n\r\n                " +
-"                            function saveChanges() {\r\n                          " +
-"                      var form = dialog.find(\'form\');\r\n\r\n                       " +
-"                         $(\'input.jobType:unchecked\').each(function () {\r\n      " +
-"                                              $(\'#SubTypes_\' + $(this).val()).fi" +
-"nd(\'input\').prop(\'checked\', false);\r\n                                           " +
-"     });\r\n\r\n                                                form.submit();\r\n\r\n  " +
-"                                              dialog.dialog(\"disable\");\r\n       " +
-"                                         dialog.dialog(\"option\", \"buttons\", null" +
-");\r\n                                            }\r\n\r\n                           " +
-"                 $(function () {\r\n                                              " +
-"  $(\'#Config_DocumentTemplates_JobSubTypes_Update\').click(showDialog);\r\n        " +
-"                                    });\r\n\r\n                                     " +
-"   })();\r\n                                    </script>\r\n");
+"\n                                                window.location.reload(true);\r\n" +
+"                                            }\r\n\r\n                               " +
+"             function saveChanges() {\r\n                                         " +
+"       var form = dialog.find(\'form\');\r\n\r\n                                      " +
+"          $(\'input.jobType:unchecked\').each(function () {\r\n                     " +
+"                               $(\'#SubTypes_\' + $(this).val()).find(\'input\').pro" +
+"p(\'checked\', false);\r\n                                                });\r\n\r\n   " +
+"                                             form.submit();\r\n\r\n                 " +
+"                               dialog.dialog(\"disable\");\r\n                      " +
+"                          dialog.dialog(\"option\", \"buttons\", null);\r\n           " +
+"                                 }\r\n\r\n                                          " +
+"  $(function () {\r\n                                                $(\'#Config_Do" +
+"cumentTemplates_JobSubTypes_Update\').click(showDialog);\r\n                       " +
+"                     });\r\n\r\n                                        })();\r\n     " +
+"                               </script>\r\n");
 
             
             #line 311 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
@@ -1959,16 +1959,16 @@ WriteLiteral(" id=\"dialogBulkGenerate\"");
 
 WriteLiteral(" class=\"hiddenDialog\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 38168), Tuple.Create("\"", 38219)
-, Tuple.Create(Tuple.Create("", 38176), Tuple.Create("Bulk", 38176), true)
-, Tuple.Create(Tuple.Create(" ", 38180), Tuple.Create("Generate:", 38181), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 38153), Tuple.Create("\"", 38204)
+, Tuple.Create(Tuple.Create("", 38161), Tuple.Create("Bulk", 38161), true)
+, Tuple.Create(Tuple.Create(" ", 38165), Tuple.Create("Generate:", 38166), true)
             
             #line 683 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-, Tuple.Create(Tuple.Create(" ", 38190), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
+, Tuple.Create(Tuple.Create(" ", 38175), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
             
             #line default
             #line hidden
-, 38191), false)
+, 38176), false)
 );
 
 WriteLiteral(">\r\n            <div");

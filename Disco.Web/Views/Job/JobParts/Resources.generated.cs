@@ -1412,18 +1412,19 @@ WriteLiteral("\r\n            $.connection.hub.qs = { JobId: jobId };\r\n       
 "               .addClass(\'dialog disconnected-dialog\')\r\n                        " +
 ".html(\'<h3><span class=\"fa-stack fa-lg\"><i class=\"fa fa-wifi fa-stack-1x\"></i><i" +
 " class=\"fa fa-ban fa-stack-2x error\"></i></span>Disconnected from the Disco ICT " +
-"Server</h3><div>Please ensure you are connected to the server, then refresh this" +
-" page to enable features.</div>\')\r\n                        .dialog({\r\n          " +
-"                  resizable: false,\r\n                            title: \'Disconn" +
-"ected\',\r\n                            width: 400,\r\n                            mo" +
-"dal: true,\r\n                            buttons: {\r\n                            " +
-"    \'Refresh Now\': function () {\r\n                                    $(this).di" +
-"alog(\'option\', \'buttons\', null);\r\n                                    window.loc" +
-"ation.href = window.location.href;\r\n                                },\r\n        " +
-"                        \'Close\': function () {\r\n                                " +
-"    $(this).dialog(\'destroy\');\r\n                                }\r\n             " +
-"               }\r\n                        });\r\n                }\r\n            }\r" +
-"\n\r\n            //#endregion\r\n        });\r\n    </script>\r\n");
+"Server</h3><div>This page is not receiving live updates. Please ensure you are c" +
+"onnected to the server, then refresh this page to enable features.</div>\')\r\n    " +
+"                    .dialog({\r\n                            resizable: false,\r\n  " +
+"                          title: \'Disconnected\',\r\n                            wi" +
+"dth: 400,\r\n                            modal: true,\r\n                           " +
+" buttons: {\r\n                                \'Refresh Now\': function () {\r\n     " +
+"                               $(this).dialog(\'option\', \'buttons\', null);\r\n     " +
+"                               window.location.reload(true);\r\n                  " +
+"              },\r\n                                \'Close\': function () {\r\n      " +
+"                              $(this).dialog(\'destroy\');\r\n                      " +
+"          }\r\n                            }\r\n                        });\r\n       " +
+"         }\r\n            }\r\n\r\n            //#endregion\r\n        });\r\n    </script" +
+">\r\n");
 
             
             #line 625 "..\..\Views\Job\JobParts\Resources.cshtml"

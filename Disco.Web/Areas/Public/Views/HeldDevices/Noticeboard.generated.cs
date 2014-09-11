@@ -394,52 +394,51 @@ WriteLiteral("\', null, function (data) {\r\n\r\n                    var inProce
 "\r\n                    $(\'body\').addClass(\'status-error\');\r\n                    $" +
 ".connection.hub.stop();\r\n                } catch (e) {\r\n                    // I" +
 "gnore\r\n                }\r\n\r\n                window.setTimeout(function () {\r\n   " +
-"                 window.location.href = window.location.href;\r\n                }" +
-", 10000);\r\n            }\r\n\r\n            // Helpers\r\n            function rotateA" +
-"rray(koArray, element) {\r\n                var items = koArray();\r\n\r\n            " +
-"    if (items.length <= 1)\r\n                    return 0;\r\n\r\n                if " +
-"(element.height() < (element.parent().height() - 30)) {\r\n\r\n                    i" +
-"f (findUnsortedArrayTopIndex(items) !== 0)\r\n                        koArray.sort" +
-"(sortFunction);\r\n\r\n                    // Don\'t rotate if small & sorted correct" +
-"ly\r\n                    return;\r\n                }\r\n\r\n                // Move La" +
-"st Item to Top\r\n                var item = koArray.pop();\r\n                koArr" +
-"ay.unshift(item);\r\n            }\r\n            function removeItemFromArray(koArr" +
-"ay, deviceSerialNumber) {\r\n                var items = koArray();\r\n             " +
-"   for (var i = 0; i < items.length; i++) {\r\n                    if (items[i].De" +
-"viceSerialNumber == deviceSerialNumber) {\r\n                        koArray.splic" +
-"e(i, 1);\r\n                        items = koArray();\r\n                        i-" +
-"-;\r\n                    }\r\n                }\r\n            }\r\n            functio" +
-"n findUnsortedArrayTopIndex(items) {\r\n                // Only one Item\r\n        " +
-"        if (items.length <= 1)\r\n                    return 0;\r\n\r\n               " +
-" for (var i = 1; i < items.length; i++) {\r\n                    var s = sortFunct" +
-"ion(items[i - 1], items[i]);\r\n                    if (s > 0)\r\n                  " +
-"      return i;\r\n                }\r\n\r\n                return 0;\r\n            }\r\n" +
-"            function findSortedInsertIndex(koArray, heldDeviceItem) {\r\n         " +
-"       var items = koArray();\r\n                var startIndex = findUnsortedArra" +
-"yTopIndex(items);\r\n                for (var i = startIndex; i < items.length; i+" +
-"+) {\r\n                    var s = sortFunction(heldDeviceItem, items[i]);\r\n     " +
-"               if (s <= 0)\r\n                        return i;\r\n                }" +
-"\r\n                if (startIndex !== 0) {\r\n                    for (var i = 0; i" +
-" < startIndex; i++) {\r\n                        var s = sortFunction(heldDeviceIt" +
-"em, items[i]);\r\n                        if (s <= 0)\r\n                           " +
-" return i;\r\n                    }\r\n                    return startIndex;\r\n     " +
-"           } else {\r\n                    return -1;\r\n                }\r\n        " +
-"    }\r\n            function sortFunction(l, r) {\r\n                return l.Devic" +
-"eDescription.toLowerCase() == r.DeviceDescription.toLowerCase() ? 0 : (l.DeviceD" +
-"escription.toLowerCase() < r.DeviceDescription.toLowerCase() ? -1 : 1)\r\n        " +
-"    }\r\n            function isInProcess(i) {\r\n                return !i.ReadyFor" +
-"Return && !i.WaitingForUserAction;\r\n            }\r\n            function isReadyF" +
-"orReturn(i) {\r\n                return i.ReadyForReturn && !i.WaitingForUserActio" +
-"n;\r\n            }\r\n            function isWaitingForUserAction(i) {\r\n           " +
-"     return i.WaitingForUserAction;\r\n            }\r\n            function getQuer" +
-"yStringParameters() {\r\n\r\n                if (window.location.search.length === 0" +
-")\r\n                    return null;\r\n\r\n                var params = {};\r\n       " +
-"         window.location.search.substr(1).split(\"&\").forEach(function (pair) {\r\n" +
-"                    if (pair === \"\") return;\r\n                    var parts = pa" +
-"ir.split(\"=\");\r\n                    params[parts[0]] = parts[1] && decodeURIComp" +
-"onent(parts[1].replace(/\\+/g, \" \"));\r\n                });\r\n                retur" +
-"n params;\r\n            }\r\n\r\n            init();\r\n        });\r\n    </script>\r\n</b" +
-"ody>\r\n</html>");
+"                 window.location.reload(true);\r\n                }, 10000);\r\n    " +
+"        }\r\n\r\n            // Helpers\r\n            function rotateArray(koArray, e" +
+"lement) {\r\n                var items = koArray();\r\n\r\n                if (items.l" +
+"ength <= 1)\r\n                    return 0;\r\n\r\n                if (element.height" +
+"() < (element.parent().height() - 30)) {\r\n\r\n                    if (findUnsorted" +
+"ArrayTopIndex(items) !== 0)\r\n                        koArray.sort(sortFunction);" +
+"\r\n\r\n                    // Don\'t rotate if small & sorted correctly\r\n           " +
+"         return;\r\n                }\r\n\r\n                // Move Last Item to Top\r" +
+"\n                var item = koArray.pop();\r\n                koArray.unshift(item" +
+");\r\n            }\r\n            function removeItemFromArray(koArray, deviceSeria" +
+"lNumber) {\r\n                var items = koArray();\r\n                for (var i =" +
+" 0; i < items.length; i++) {\r\n                    if (items[i].DeviceSerialNumbe" +
+"r == deviceSerialNumber) {\r\n                        koArray.splice(i, 1);\r\n     " +
+"                   items = koArray();\r\n                        i--;\r\n           " +
+"         }\r\n                }\r\n            }\r\n            function findUnsortedA" +
+"rrayTopIndex(items) {\r\n                // Only one Item\r\n                if (ite" +
+"ms.length <= 1)\r\n                    return 0;\r\n\r\n                for (var i = 1" +
+"; i < items.length; i++) {\r\n                    var s = sortFunction(items[i - 1" +
+"], items[i]);\r\n                    if (s > 0)\r\n                        return i;" +
+"\r\n                }\r\n\r\n                return 0;\r\n            }\r\n            fun" +
+"ction findSortedInsertIndex(koArray, heldDeviceItem) {\r\n                var item" +
+"s = koArray();\r\n                var startIndex = findUnsortedArrayTopIndex(items" +
+");\r\n                for (var i = startIndex; i < items.length; i++) {\r\n         " +
+"           var s = sortFunction(heldDeviceItem, items[i]);\r\n                    " +
+"if (s <= 0)\r\n                        return i;\r\n                }\r\n             " +
+"   if (startIndex !== 0) {\r\n                    for (var i = 0; i < startIndex; " +
+"i++) {\r\n                        var s = sortFunction(heldDeviceItem, items[i]);\r" +
+"\n                        if (s <= 0)\r\n                            return i;\r\n   " +
+"                 }\r\n                    return startIndex;\r\n                } el" +
+"se {\r\n                    return -1;\r\n                }\r\n            }\r\n        " +
+"    function sortFunction(l, r) {\r\n                return l.DeviceDescription.to" +
+"LowerCase() == r.DeviceDescription.toLowerCase() ? 0 : (l.DeviceDescription.toLo" +
+"werCase() < r.DeviceDescription.toLowerCase() ? -1 : 1)\r\n            }\r\n        " +
+"    function isInProcess(i) {\r\n                return !i.ReadyForReturn && !i.Wa" +
+"itingForUserAction;\r\n            }\r\n            function isReadyForReturn(i) {\r\n" +
+"                return i.ReadyForReturn && !i.WaitingForUserAction;\r\n           " +
+" }\r\n            function isWaitingForUserAction(i) {\r\n                return i.W" +
+"aitingForUserAction;\r\n            }\r\n            function getQueryStringParamete" +
+"rs() {\r\n\r\n                if (window.location.search.length === 0)\r\n            " +
+"        return null;\r\n\r\n                var params = {};\r\n                window" +
+".location.search.substr(1).split(\"&\").forEach(function (pair) {\r\n               " +
+"     if (pair === \"\") return;\r\n                    var parts = pair.split(\"=\");\r" +
+"\n                    params[parts[0]] = parts[1] && decodeURIComponent(parts[1]." +
+"replace(/\\+/g, \" \"));\r\n                });\r\n                return params;\r\n    " +
+"        }\r\n\r\n            init();\r\n        });\r\n    </script>\r\n</body>\r\n</html>");
 
         }
     }

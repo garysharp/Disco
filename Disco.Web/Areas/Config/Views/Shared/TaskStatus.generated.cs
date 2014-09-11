@@ -281,11 +281,24 @@ WriteLiteral("\';\r\n\r\n        var view = $(\'#Logging_Task_Status\');\r\n    
 "n.scheduledTaskNotifications;\r\n            notificationsHub.client.initializeTas" +
 "kStatus = vm.Initialize;\r\n            notificationsHub.client.updateTaskStatus =" +
 " vm.Update;\r\n\r\n            $.connection.hub.qs = { TaskSessionId: sessionId };\r\n" +
-"            $.connection.hub.error(function (error) {\r\n                alert(\'Li" +
-"ve-Status Error: \' + error);\r\n            });\r\n\r\n            $.connection.hub.st" +
-"art()\r\n                .fail(function (error) {\r\n                    alert(\'Live" +
-"-Status Connection Error: \' + error);\r\n                });\r\n        }\r\n\r\n    });" +
-"\r\n</script>\r\n");
+"            $.connection.hub.error(onHubFailed);\r\n\r\n            $.connection.hub" +
+".start()\r\n                .fail(onHubFailed);\r\n        }\r\n\r\n        function onH" +
+"ubFailed(error) {\r\n            // Show Dialog Message\r\n            if ($(\'.disco" +
+"nnected-dialog\').length == 0) {\r\n                $(\'<div>\')\r\n                   " +
+" .addClass(\'dialog disconnected-dialog\')\r\n                    .html(\'<h3><span c" +
+"lass=\"fa-stack fa-lg\"><i class=\"fa fa-wifi fa-stack-1x\"></i><i class=\"fa fa-ban " +
+"fa-stack-2x error\"></i></span>Disconnected from the Disco ICT Server</h3><div>Th" +
+"is page is not receiving live updates. Please ensure you are connected to the se" +
+"rver, then refresh this page to enable features.</div>\')\r\n                    .d" +
+"ialog({\r\n                        resizable: false,\r\n                        titl" +
+"e: \'Disconnected\',\r\n                        width: 400,\r\n                       " +
+" modal: true,\r\n                        buttons: {\r\n                            \'" +
+"Refresh Now\': function () {\r\n                                $(this).dialog(\'opt" +
+"ion\', \'buttons\', null);\r\n                                window.location.reload(" +
+"true);\r\n                            },\r\n                            \'Close\': fun" +
+"ction () {\r\n                                $(this).dialog(\'destroy\');\r\n        " +
+"                    }\r\n                        }\r\n                    });\r\n     " +
+"       }\r\n        }\r\n\r\n    });\r\n</script>\r\n");
 
         }
     }

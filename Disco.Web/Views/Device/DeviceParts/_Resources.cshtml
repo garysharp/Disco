@@ -92,7 +92,7 @@
                                 if ($('.disconnected-dialog').length == 0) {
                                     $('<div>')
                                         .addClass('dialog disconnected-dialog')
-                                        .html('<h3><span class="fa-stack fa-lg"><i class="fa fa-wifi fa-stack-1x"></i><i class="fa fa-ban fa-stack-2x error"></i></span>Disconnected from the Disco ICT Server</h3><div>Please ensure you are connected to the server, then refresh this page to enable features.</div>')
+                                        .html('<h3><span class="fa-stack fa-lg"><i class="fa fa-wifi fa-stack-1x"></i><i class="fa fa-ban fa-stack-2x error"></i></span>Disconnected from the Disco ICT Server</h3><div>This page is not receiving live updates. Please ensure you are connected to the server, then refresh this page to enable features.</div>')
                                         .dialog({
                                             resizable: false,
                                             title: 'Disconnected',
@@ -101,7 +101,7 @@
                                             buttons: {
                                                 'Refresh Now': function () {
                                                     $(this).dialog('option', 'buttons', null);
-                                                    window.location.href = window.location.href;
+                                                    window.location.reload(true);
                                                 },
                                                 'Close': function () {
                                                     $(this).dialog('destroy');

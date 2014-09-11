@@ -1,6 +1,6 @@
 ﻿@{
     Authorization.Require(Claims.Config.Enrolment.ShowStatus);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Enrolment", MVC.Config.Enrolment.Index(), "Status");
     Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
@@ -8,101 +8,68 @@
 }
 <div id="enrolStatus">
     <div id="noSessions" data-bind="visible: noSessions">
-        <h2>
-            No enrolment sessions today</h2>
+        <h2>No enrolment sessions today</h2>
     </div>
-    <div id="sessions" data-bind="visible: !noSessions(), foreach: {data: sessions, afterRender: sessionRendered, afterAdd: sessionAdded}"
-        style="display: none">
-        <div class="session" data-bind="style: {backgroundImage: deviceModelImageUrl}, click: select">
+    <div id="sessions" data-bind="visible: !noSessions(), foreach: { data: sessions, afterRender: sessionRendered, afterAdd: sessionAdded }" style="display: none">
+        <div class="session" data-bind="style: { backgroundImage: deviceModelImageUrl }, click: select">
             <h3>
-                <span data-bind="text: title"></span><span class="details" data-bind="text: '(' + deviceModelDescription() + ')'">
-                </span>
+                <span data-bind="text: title"></span>
+                <span class="details" data-bind="text: '(' + deviceModelDescription() + ')'"></span>
             </h3>
-            <p class="sessionStart" data-bind="text: startTime">
-            </p>
-            <p class="sessionStatus" data-bind="text: progressStatus">
-            </p>
-            <div data-bind="visible: !sessionEnded(), progressValue: progressValue" class="sessionProgress">
-            </div>
+            <p class="sessionStart" data-bind="text: startTime"></p>
+            <p class="sessionStatus" data-bind="text: progressStatus"></p>
+            <div data-bind="visible: !sessionEnded(), progressValue: progressValue" class="sessionProgress"></div>
         </div>
     </div>
     <div id="dialogSession" data-bind="with: currentSession">
-        <div class="sessionHeader clearfix" data-bind="style: {backgroundImage: deviceModelImageUrl}">
-            <h2>
-                <a href="" target="_blank" data-bind="text: title, attr: {href: deviceUrl}"></a>
-            </h2>
-            <h3 data-bind="text: deviceModelDescription">
-            </h3>
+        <div class="sessionHeader clearfix" data-bind="style: { backgroundImage: deviceModelImageUrl }">
+            <h2><a href="" target="_blank" data-bind="text: title, attr: { href: deviceUrl }"></a></h2>
+            <h3 data-bind="text: deviceModelDescription"></h3>
             <table data-bind="if: sessionDeviceInfo">
                 <tr>
-                    <th style="width: 128px">
-                        Computer Name:
-                    </th>
-                    <td data-bind="text: sessionDeviceInfo().Arguments[3]">
-                    </td>
+                    <th style="width: 128px">Computer Name:</th>
+                    <td data-bind="text: sessionDeviceInfo().Arguments[3]"></td>
                 </tr>
                 <tr>
-                    <th style="width: 128px">
-                        UUID:
-                    </th>
-                    <td data-bind="text: sessionDeviceInfo().Arguments[2]">
-                    </td>
+                    <th style="width: 128px">UUID:</th>
+                    <td data-bind="text: sessionDeviceInfo().Arguments[2]"></td>
                 </tr>
                 <tr>
-                    <th style="width: 128px">
-                        LAN Mac Address:
-                    </th>
-                    <td data-bind="text: sessionDeviceInfo().Arguments[4]">
-                    </td>
+                    <th style="width: 128px">LAN Mac Address:</th>
+                    <td data-bind="text: sessionDeviceInfo().Arguments[4]"></td>
                 </tr>
                 <tr>
-                    <th style="width: 128px">
-                        WLAN Mac Address:
-                    </th>
-                    <td data-bind="text: sessionDeviceInfo().Arguments[5]">
-                    </td>
+                    <th style="width: 128px">WLAN Mac Address:</th>
+                    <td data-bind="text: sessionDeviceInfo().Arguments[5]"></td>
                 </tr>
                 <tr>
-                    <th style="width: 128px">
-                        Manufacturer/Model:
-                    </th>
-                    <td data-bind="text: sessionDeviceInfo().Arguments[6] + ' ' + sessionDeviceInfo().Arguments[7]">
-                    </td>
+                    <th style="width: 128px">Manufacturer/Model:</th>
+                    <td data-bind="text: sessionDeviceInfo().Arguments[6] + ' ' + sessionDeviceInfo().Arguments[7]"></td>
                 </tr>
             </table>
         </div>
         <div class="sessionProgress clearfix">
-            <p class="sessionStart" data-bind="text: startTime">
-            </p>
-            <p class="sessionStatus" data-bind="text: progressStatus">
-            </p>
-            <div data-bind="visible: !sessionEnded(), progressValue: progressValue">
-            </div>
+            <p class="sessionStart" data-bind="text: startTime"></p>
+            <p class="sessionStatus" data-bind="text: progressStatus"></p>
+            <div data-bind="visible: !sessionEnded(), progressValue: progressValue"></div>
         </div>
         <div class="sessionInfoContainer clearfix">
             <div class="sessionInfoMessages">
                 <table class="logEventsViewport">
                     <thead>
                         <tr>
-                            <th class="icon">
-                                &nbsp;
-                            </th>
-                            <th class="message">
-                                Message
-                            </th>
+                            <th class="icon">&nbsp;</th>
+                            <th class="message">Message</th>
                         </tr>
                     </thead>
                 </table>
                 <div class="logEventsViewportContainer">
-                    <div class="logEventsViewportNoLogs" data-bind="visible: messages().length == 0"
-                        style="display: none">
-                        No logs
-                    </div>
+                    <div class="logEventsViewportNoLogs" data-bind="visible: messages().length == 0" style="display: none">No logs</div>
                     <table class="logEventsViewport" data-bind="visible: messages().length > 0" style="display: none">
                         <tbody data-bind="foreach: messages">
                             <tr>
                                 <td class="icon"><i class="fa" data-bind="css: { 'fa-info-circle': EventTypeSeverity == 0, 'fa-exclamation-triangle': EventTypeSeverity == 1, 'fa-exclamation-circle': EventTypeSeverity == 2 }"></i></td>
-                                <td class="message" data-bind="text: FormattedMessage, attr: {title: EventTypeName}"></td>
+                                <td class="message" data-bind="text: FormattedMessage, attr: { title: EventTypeName }"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -360,15 +327,35 @@
             logHub.client.receiveLog = parseLog
 
             $.connection.hub.qs = { LogModules: '@(Disco.BI.DeviceBI.EnrolmentLog.Current.LiveLogGroupName)' };
-            $.connection.hub.error(function (error) {
-                alert('Live-Log Error: ' + error);
-            });
+            $.connection.hub.error(onHubFailed);
 
             $.connection.hub.start()
                 .done(function () { isLive = true; })
-                .fail(function (error) {
-                    alert('Live-Log Connection Error: ' + error);
-                });
+                .fail(onHubFailed);
+
+            function onHubFailed(error) {
+                // Show Dialog Message
+                if ($('.disconnected-dialog').length == 0) {
+                    $('<div>')
+                        .addClass('dialog disconnected-dialog')
+                        .html('<h3><span class="fa-stack fa-lg"><i class="fa fa-wifi fa-stack-1x"></i><i class="fa fa-ban fa-stack-2x error"></i></span>Disconnected from the Disco ICT Server</h3><div>This page is not receiving live updates. Please ensure you are connected to the server, then refresh this page to enable features.</div>')
+                        .dialog({
+                            resizable: false,
+                            title: 'Disconnected',
+                            width: 400,
+                            modal: true,
+                            buttons: {
+                                'Refresh Now': function () {
+                                    $(this).dialog('option', 'buttons', null);
+                                    window.location.reload(true);
+                                },
+                                'Close': function () {
+                                    $(this).dialog('destroy');
+                                }
+                            }
+                        });
+                }
+            }
         }
         init();
     });
