@@ -5,21 +5,19 @@
 }
 @using (Html.BeginForm())
 { 
+    @Html.ValidationSummary(false)
     <div class="form" style="width: 450px">
         <table>
             <tr>
-                <th>
-                    Name:
-                </th>
+                <th>Name:</th>
                 <td>
                     @Html.EditorFor(model => model.DeviceBatch.Name)<br />@Html.ValidationMessageFor(model => model.DeviceBatch.Name)
                 </td>
             </tr>
             <tr>
-                <th>
-                    Purchase Date:
-                </th>
-                <td>@Html.EditorFor(model => model.DeviceBatch.PurchaseDate)<br />@Html.ValidationMessageFor(model => model.DeviceBatch.PurchaseDate)
+                <th>Purchase Date:</th>
+                <td>
+                    @Html.EditorFor(model => model.DeviceBatch.PurchaseDate)<br />@Html.ValidationMessageFor(model => model.DeviceBatch.PurchaseDate)
                 </td>
             </tr>
         </table>
