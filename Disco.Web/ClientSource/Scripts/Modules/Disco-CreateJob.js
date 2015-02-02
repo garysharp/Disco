@@ -1,5 +1,4 @@
-﻿///#source 1 1 Disco-CreateJob/disco.createjob.js
-(function ($, window, document) {
+﻿(function ($, window, document) {
     $(function () {
         var createJobDialog = null;
         var dialogMethods = {

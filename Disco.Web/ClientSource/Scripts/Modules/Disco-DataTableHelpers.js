@@ -1,5 +1,4 @@
-﻿///#source 1 1 Disco-DataTableHelpers/disco.datatablehelpers.js
-(function (window, document, $) {
+﻿(function (window, document, $) {
     var dataTables = [];
 
     $(function () {

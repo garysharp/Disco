@@ -1,5 +1,4 @@
-﻿///#source 1 1 jQuery-SignalR/jquery.signalR-2.1.1.js
-/* jquery.signalR.core.js */
+﻿/* jquery.signalR.core.js */
 /*global window:false */
 /*!
  * ASP.NET SignalR JavaScript Library v2.1.1
@@ -2828,7 +2827,6 @@
     $.signalR.version = "2.1.1";
 }(window.jQuery));
 
-///#source 1 1 jQuery-SignalR/disco-hubs.js
 /*!
  * ASP.NET SignalR JavaScript Library v2.1.1
  * http://signalr.net/

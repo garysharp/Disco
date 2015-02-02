@@ -1,5 +1,4 @@
-﻿///#source 1 1 Disco-ExpressionEditor/disco.expressioneditor.js
-/// <reference path="../../Core/jquery-1.7.1.js" />
+﻿/// <reference path="../../Core/jquery-1.7.1.js" />
 function DiscoExpressionEditor(host, validateUrl, expression) {
     this.host = host;
     this.hostDocument = null;

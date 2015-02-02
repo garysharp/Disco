@@ -1,5 +1,4 @@
-﻿///#source 1 1 Shadowbox/shadowbox.js
-/*
+﻿/*
  * Shadowbox.js, version 3.0.3
  * http://shadowbox-js.com/
  *

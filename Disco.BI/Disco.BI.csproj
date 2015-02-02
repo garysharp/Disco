@@ -40,9 +40,6 @@
     <Reference Include="BitMiracle.LibTiff.NET">
       <HintPath>..\Resources\Libraries\LibTiff.NET\BitMiracle.LibTiff.NET.dll</HintPath>
     </Reference>
-    <Reference Include="DellWarrantyPlugin">
-      <HintPath>..\..\..\..\Disco Instance\DiscoDataStore\Plugins\DellWarrantyPlugin\DellWarrantyPlugin.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>

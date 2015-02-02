@@ -1,5 +1,4 @@
-﻿///#source 1 1 Highcharts/highcharts.src.js
-// ==ClosureCompiler==
+﻿// ==ClosureCompiler==
 // @compilation_level SIMPLE_OPTIMIZATIONS
 
 /**
