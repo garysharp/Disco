@@ -1,3 +1,4 @@
+﻿///#source 1 1 jQuery-Isotope/jquery.isotope.js
 /**
  * Isotope v1.5.25
  * An exquisite jQuery plugin for magical layouts

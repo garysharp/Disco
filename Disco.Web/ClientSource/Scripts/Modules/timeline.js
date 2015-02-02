@@ -1,3 +1,4 @@
+﻿///#source 1 1 Timeline/disco.simileajaxextensions.js
 window.SimileAjax = {
     loaded: true,
     loadingScriptsCount: 0,
@@ -5,6 +6,7 @@ window.SimileAjax = {
     params: { bundle: "true" },
     Platform: new Object()
 };
+///#source 1 1 Timeline/simile-ajax-bundle-DiscoMod.js
 
 
 /* jquery-1.2.6.min.js */
@@ -1567,12 +1569,14 @@ SimileAjax.XmlHttp._forceXML=function(A){try{A.overrideMimeType("text/xml");
 }catch(B){A.setrequestheader("Content-Type","text/xml");
 }};
 
+///#source 1 1 Timeline/disco.timelineextensions.js
 window.Timeline = new Object();
 window.Timeline.DateTime = window.SimileAjax.DateTime; // for backward compatibility
 window.Timeline.urlPrefix = '/ClientSource/Style/Timeline/';
 window.Timeline.serverLocale = 'en';
 window.Timeline.clientLocale = 'en';
 window.Timeline.timeZone = 10;
+///#source 1 1 Timeline/timeline-bundle.js
 
 
 /* band.js */
@@ -4409,6 +4413,7 @@ Timeline.NativeDateUnit.later=function(B,A){return Timeline.NativeDateUnit.compa
 Timeline.NativeDateUnit.change=function(A,B){return new Date(A.getTime()+B);
 };
 
+///#source 1 1 Timeline/timeline.js
 /*==================================================
  *  Common localization strings
  *==================================================
@@ -4419,6 +4424,7 @@ Timeline.strings["en"] = {
 };
 
 
+///#source 1 1 Timeline/labellers.js
 /*==================================================
  *  Localization of labellers.js
  *==================================================

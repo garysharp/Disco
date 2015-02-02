@@ -1,4 +1,4 @@
-.mce-object {
+﻿.mce-object {
   border: 1px dotted #3A3A3A;
   background: #d5d5d5 url('data:image/gif;base64,R0lGODlhEQANALMPAOXl5T8/P29vb7S0tFdXV/39/djY2N3d3crKyu/v7/f39/Ly8p2dnf///zMzMwAAACH5BAEAAA8ALAAAAAARAA0AAARF0MlJq3uutay75lmGNU9pjiNFCsipqhgxmO9HSgFTgtt9O4EBABWa3AiGwvBlfAgWisPOyCslDDSbSHTa+SzgpmdMbkQAADs=') /*img/object.gif*/ no-repeat center;
   *background: #d5d5d5 url(img/object.gif) no-repeat center;
@@ -70,3 +70,4 @@ th.mce-item-selected {
 .mce-edit-focus {
   outline: 1px dotted #333;
 }
+/*# sourceMappingURL=content.inline.css.map */

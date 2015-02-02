@@ -1247,6 +1247,9 @@
       <LastGenOutput>Noticeboard.generated.cs</LastGenOutput>
     </None>
     <Content Include="ClientBin\DiscoServices.InitialPluginLibraryManifest.json" />
+    <Content Include="ClientSource\Scripts\Core.min.js.map">
+      <DependentUpon>Core.min.js</DependentUpon>
+    </Content>
     <None Include="ClientSource\Scripts\Core\disco.dataTables.extensions.js" />
     <None Include="ClientSource\Scripts\Core\disco.moment.extensions.js" />
     <None Include="ClientSource\Scripts\Core\disco.unobtrusiveValidation.extensions.js" />
@@ -1258,6 +1261,9 @@
     <Content Include="ClientSource\Scripts\Core.min.js">
       <DependentUpon>Core.js.bundle</DependentUpon>
     </Content>
+    <Content Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.min.js.map">
+      <DependentUpon>Disco-AjaxHelperIcons.min.js</DependentUpon>
+    </Content>
     <None Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader.js">
       <DependentUpon>Disco-AttachmentUploader.js.bundle</DependentUpon>
     </None>
@@ -1265,6 +1271,27 @@
       <DependentUpon>Disco-AttachmentUploader.js.bundle</DependentUpon>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader.js.bundle" />
+    <Content Include="ClientSource\Scripts\Modules\Highcharts.min.js.map">
+      <DependentUpon>Highcharts.min.js</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers.min.js.map">
+      <DependentUpon>Disco-PropertyChangeHelpers.min.js</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions.min.js.map">
+      <DependentUpon>Disco-jQueryExtensions.min.js</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.min.js.map">
+      <DependentUpon>Disco-ExpressionEditor.min.js</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.min.js.map">
+      <DependentUpon>Disco-DataTableHelpers.min.js</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Scripts\Modules\Disco-CreateJob.min.js.map">
+      <DependentUpon>Disco-CreateJob.min.js</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader.min.js.map">
+      <DependentUpon>Disco-AttachmentUploader.min.js</DependentUpon>
+    </Content>
     <None Include="ClientSource\Scripts\Modules\jQuery-Fancytree.js">
       <DependentUpon>jQuery-Fancytree.js.bundle</DependentUpon>
     </None>
@@ -1286,6 +1313,12 @@
     <None Include="ClientSource\Scripts\Modules\Disco-CreateJob\disco.createjob.js" />
     <None Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions\disco.jQueryExtensions.js" />
     <None Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers\disco.propertychangehelpers.js" />
+    <Content Include="ClientSource\Scripts\Modules\jQuery-Isotope.min.js.map">
+      <DependentUpon>jQuery-Isotope.min.js</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Scripts\Modules\jQuery-Fancytree.min.js.map">
+      <DependentUpon>jQuery-Fancytree.min.js</DependentUpon>
+    </Content>
     <None Include="ClientSource\Scripts\Modules\jQuery-Isotope\jquery.isotope.js" />
     <None Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader\webcam.js" />
     <Content Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader\webcam.swf" />
@@ -1342,10 +1375,28 @@
     <Content Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.min.js">
       <DependentUpon>jQuery-NumberFormatter.js.bundle</DependentUpon>
     </Content>
+    <Content Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.min.js.map">
+      <DependentUpon>jQuery-NumberFormatter.min.js</DependentUpon>
+    </Content>
     <None Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter\jquery.numberformatter.js" />
     <None Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter\jshashtable-2.1.js" />
+    <Content Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.min.js.map">
+      <DependentUpon>jQueryUI-DynaTree.min.js</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Scripts\Modules\jQuery-SignalR.min.js.map">
+      <DependentUpon>jQuery-SignalR.min.js</DependentUpon>
+    </Content>
     <None Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree\jquery.dynatree.js" />
+    <Content Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker.min.js.map">
+      <DependentUpon>jQueryUI-TimePicker.min.js</DependentUpon>
+    </Content>
     <None Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker\jquery-ui-timepicker-addon.js" />
+    <Content Include="ClientSource\Scripts\Modules\Shadowbox.min.js.map">
+      <DependentUpon>Shadowbox.min.js</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Scripts\Modules\Knockout.min.js.map">
+      <DependentUpon>Knockout.min.js</DependentUpon>
+    </Content>
     <None Include="ClientSource\Scripts\Modules\Shadowbox\shadowbox.js" />
     <None Include="ClientSource\Scripts\Modules\jQuery-SignalR.js">
       <DependentUpon>jQuery-SignalR.js.bundle</DependentUpon>
@@ -1378,12 +1429,18 @@
     <Content Include="ClientSource\Scripts\Modules\Shadowbox.min.js">
       <DependentUpon>Shadowbox.js.bundle</DependentUpon>
     </Content>
+    <Content Include="ClientSource\Scripts\Modules\Timeline.min.js.map">
+      <DependentUpon>Timeline.min.js</DependentUpon>
+    </Content>
     <None Include="ClientSource\Scripts\Modules\Timeline\disco.simileajaxextensions.js" />
     <None Include="ClientSource\Scripts\Modules\Timeline\disco.timelineextensions.js" />
     <None Include="ClientSource\Scripts\Modules\Timeline\labellers.js" />
     <None Include="ClientSource\Scripts\Modules\Timeline\simile-ajax-bundle-DiscoMod.js" />
     <None Include="ClientSource\Scripts\Modules\Timeline\timeline-bundle.js" />
     <None Include="ClientSource\Scripts\Modules\Timeline\timeline.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce.min.js.map">
+      <DependentUpon>tinymce.min.js</DependentUpon>
+    </Content>
     <None Include="ClientSource\Scripts\Modules\tinymce\disco.tinymceextensions.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce.js">
       <DependentUpon>tinymce.js.bundle</DependentUpon>
@@ -1397,17 +1454,65 @@
     <Content Include="ClientSource\Scripts\Modules\tinymce.min.js">
       <DependentUpon>tinymce.js.bundle</DependentUpon>
     </Content>
+    <Content Include="ClientSource\Style\AppMaintenance.css.map">
+      <DependentUpon>AppMaintenance.css</DependentUpon>
+    </Content>
     <None Include="ClientSource\Style\BundleSite.css">
       <DependentUpon>BundleSite.less</DependentUpon>
     </None>
+    <Content Include="ClientSource\Style\BundleSite.css.map">
+      <DependentUpon>BundleSite.css</DependentUpon>
+    </Content>
     <None Include="ClientSource\Style\BundleSite.less" />
     <None Include="ClientSource\Style\Config.css">
       <DependentUpon>Config.less</DependentUpon>
     </None>
     <None Include="ClientSource\Scripts\Modules\tinymce\themes\simple\theme.js" />
+    <Content Include="ClientSource\Style\Config.css.map">
+      <DependentUpon>Config.css</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\Credits.css.map">
+      <DependentUpon>Credits.css</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\Shared.css.map">
+      <DependentUpon>Shared.css</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\Timeline\disco.timelineextensions.css.map">
+      <DependentUpon>disco.timelineextensions.css</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\Fancytree\disco.fancytree.css.map">
+      <DependentUpon>disco.fancytree.css</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\Job.css.map">
+      <DependentUpon>Job.css</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\Dialog.css.map">
+      <DependentUpon>Dialog.css</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\jQueryUIExtensions.css.map">
+      <DependentUpon>jQueryUIExtensions.css</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\Device.css.map">
+      <DependentUpon>Device.css</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\Site.css.map">
+      <DependentUpon>Site.css</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\Public\HeldDevicesNoticeboard.css.map">
+      <DependentUpon>HeldDevicesNoticeboard.css</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\normalize.css.map">
+      <DependentUpon>normalize.css</DependentUpon>
+    </Content>
     <None Include="ClientSource\Style\tinymce\content.css">
       <DependentUpon>content.less</DependentUpon>
     </None>
+    <Content Include="ClientSource\Style\tinymce\content.css.map">
+      <DependentUpon>content.css</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Style\tinymce\content.inline.css.map">
+      <DependentUpon>content.inline.css</DependentUpon>
+    </Content>
     <None Include="ClientSource\Style\tinymce\content.inline.less" />
     <None Include="ClientSource\Style\tinymce\content.less" />
     <None Include="ClientSource\Style\tinymce\content.inline.css">
@@ -1426,6 +1531,9 @@
     <None Include="ClientSource\Style\tinymce\skin.css">
       <DependentUpon>skin.less</DependentUpon>
     </None>
+    <Content Include="ClientSource\Style\tinymce\skin.css.map">
+      <DependentUpon>skin.css</DependentUpon>
+    </Content>
     <None Include="ClientSource\Style\tinymce\skin.less" />
     <Content Include="ClientSource\Style\tinymce\skin.min.css">
       <DependentUpon>skin.less</DependentUpon>
@@ -1745,6 +1853,9 @@
     <Content Include="ClientSource\Style\FontAwesome\fontawesome-webfont.ttf" />
     <Content Include="ClientSource\Style\FontAwesome\fontawesome-webfont.eot" />
     <Content Include="ClientSource\Style\FontAwesome\FontAwesome.otf" />
+    <Content Include="ClientSource\Style\User.css.map">
+      <DependentUpon>User.css</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\Debug Installer.pubxml" />
     <None Include="Properties\PublishProfiles\Installer.pubxml" />
     <None Include="App_Code\AjaxHelpers.cshtml">
@@ -2349,7 +2460,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_StartDate="2014/6/1" BuildVersion_BuildAction="Both" BuildVersion_UseGlobalSettings="False" BuildVersion_DetectChanges="False" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.DeltaBaseYear.MonthAndDayStamp.TimeStamp" BuildVersion_DetectChanges="False" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2014/6/1" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

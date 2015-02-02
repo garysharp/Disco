@@ -1,3 +1,4 @@
+﻿///#source 1 1 Disco-jQueryExtensions/disco.jQueryExtensions.js
 /// <reference path="../../Core/jquery-1.7.1.js" />
 (function ($) {
 

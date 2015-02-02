@@ -1,3 +1,4 @@
+﻿///#source 1 1 Knockout/knockout-3.1.0.js
 // Knockout JavaScript library v3.1.0
 // (c) Steven Sanderson - http://knockoutjs.com/
 // License: MIT (http://www.opensource.org/licenses/mit-license.php)

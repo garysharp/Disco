@@ -1,4 +1,4 @@
-.tableData {
+﻿.tableData {
   border: solid 1px #f4f4f4;
   border-collapse: collapse;
 }
@@ -567,3 +567,4 @@
 #Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody span.smallMessage {
   color: inherit;
 }
+/*# sourceMappingURL=Device.css.map */

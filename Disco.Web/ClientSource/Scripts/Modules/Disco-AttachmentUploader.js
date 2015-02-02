@@ -1,3 +1,4 @@
+﻿///#source 1 1 Disco-AttachmentUploader/webcam.js
 // WebcamJS v1.0
 // Webcam library for capturing JPEG/PNG images in JavaScript
 // Attempts getUserMedia, falls back to Flash
@@ -397,6 +398,7 @@ var Webcam = {
 
 Webcam.init();
 
+///#source 1 1 Disco-AttachmentUploader/disco-attachmentuploader.js
 /// <reference path="webcam.js" />
 
 ; (function (window, document, $, Webcam) {
