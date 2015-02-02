@@ -23,7 +23,9 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
                 {
                     try
                     {
-                        return new DateTime(v.Minor + 2014, v.Build / 100, v.Build % 100, v.Revision / 100, v.Revision % 100, 0);
+                        return new DateTime(2000 + (v.Build / 1000), 1, 1, v.Revision / 100, v.Revision % 100, 0, DateTimeKind.Utc)
+                            .AddDays((v.Build % 1000) - 1)
+                            .ToLocalTime();
                     }
                     catch (Exception)
                     {
