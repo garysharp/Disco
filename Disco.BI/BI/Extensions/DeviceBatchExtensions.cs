@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
-using Disco.Data.Repository;
-using Disco.Services.Users;
 using Disco.Services.Authorization;
+using Disco.Services.Devices.ManagedGroups;
+using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Users;
+using System;
+using System.Linq;
 
 namespace Disco.BI.Extensions
 {
@@ -28,6 +28,10 @@ namespace Disco.BI.Extensions
         {
             if (!db.CanDelete(Database))
                 throw new InvalidOperationException("The state of this Device Batch doesn't allow it to be deleted");
+
+            // Remove Linked Group
+            ActiveDirectory.Context.ManagedGroups.Remove(DeviceBatchDevicesManagedGroup.GetKey(db));
+            ActiveDirectory.Context.ManagedGroups.Remove(DeviceBatchAssignedUsersManagedGroup.GetKey(db));
 
             // Delete Batch
             Database.DeviceBatches.Remove(db);

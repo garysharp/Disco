@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Disco.Models.Repository;
-using Disco.Data.Repository;
-using Disco.Data.Configuration.Modules;
+﻿using Disco.Data.Repository;
 using Disco.Models.BI.Config;
-using Disco.Services.Users;
+using Disco.Models.Repository;
 using Disco.Services.Authorization;
+using Disco.Services.Devices.ManagedGroups;
+using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Users;
+using System;
+using System.Linq;
 
 namespace Disco.BI.Extensions
 {
@@ -57,6 +56,10 @@ namespace Disco.BI.Extensions
                 Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId = 1;
             if (Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId == dp.Id)
                 Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId = 1;
+
+            // Remove Linked Group
+            ActiveDirectory.Context.ManagedGroups.Remove(DeviceProfileDevicesManagedGroup.GetKey(dp));
+            ActiveDirectory.Context.ManagedGroups.Remove(DeviceProfileAssignedUsersManagedGroup.GetKey(dp));
 
             // Delete Profile
             Database.DeviceProfiles.Remove(dp);

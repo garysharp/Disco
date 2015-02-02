@@ -1,17 +1,17 @@
-using System;
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Web;
+using Disco.BI.DocumentTemplateBI;
+using Disco.BI.DocumentTemplateBI.ManagedGroups;
+using Disco.BI.Expressions;
 using Disco.Data.Repository;
 using Disco.Models.BI.DocumentTemplates;
 using Disco.Models.Repository;
-using System.Collections;
-using System.Collections.Generic;
+using Disco.Services.Interop.ActiveDirectory;
 using iTextSharp.text.pdf;
-using Disco.BI.Expressions;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using Disco.BI.DocumentTemplateBI;
+using System.Linq;
 
 namespace Disco.BI.Extensions
 {
@@ -272,6 +272,10 @@ namespace Disco.BI.Extensions
                 a.DocumentTemplateId = null;
                 a.DocumentTemplate = null;
             }
+
+            // Remove Linked Group
+            ActiveDirectory.Context.ManagedGroups.Remove(DocumentTemplateDevicesManagedGroup.GetKey(dt));
+            ActiveDirectory.Context.ManagedGroups.Remove(DocumentTemplateUsersManagedGroup.GetKey(dt));
 
             // Delete SubTypes
             dt.JobSubTypes.Clear();
