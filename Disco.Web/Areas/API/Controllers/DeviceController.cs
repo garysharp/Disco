@@ -490,7 +490,7 @@ namespace Disco.Web.Areas.API.Controllers
                         var da = new DeviceAttachment()
                         {
                             DeviceSerialNumber = d.SerialNumber,
-                            TechUserId = UserService.CurrentUserId,
+                            TechUserId = UserService.CurrentUser.UserId,
                             Filename = file.FileName,
                             MimeType = contentType,
                             Timestamp = DateTime.Now,

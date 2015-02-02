@@ -75,7 +75,7 @@ namespace Disco.Web.Areas.API.Controllers
                         var ua = new Disco.Models.Repository.UserAttachment()
                         {
                             UserId = u.UserId,
-                            TechUserId = UserService.CurrentUserId,
+                            TechUserId = UserService.CurrentUser.UserId,
                             Filename = file.FileName,
                             MimeType = contentType,
                             Timestamp = DateTime.Now,

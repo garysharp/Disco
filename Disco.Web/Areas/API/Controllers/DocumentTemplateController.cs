@@ -558,7 +558,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             var undetectedLocation = DataStore.CreateLocation(Database, "DocumentDropBox_Unassigned");
             var filename = System.IO.Path.Combine(undetectedLocation, string.Concat(id, ".pdf"));
-            if (BI.Interop.Pdf.PdfImporter.ProcessPdfAttachment(filename, Database, DocumentTemplateId, DataId, UserService.CurrentUserId, DateTime.Now))
+            if (BI.Interop.Pdf.PdfImporter.ProcessPdfAttachment(filename, Database, DocumentTemplateId, DataId, UserService.CurrentUser.UserId, DateTime.Now))
             {
                 // Delete File
                 System.IO.File.Delete(filename);

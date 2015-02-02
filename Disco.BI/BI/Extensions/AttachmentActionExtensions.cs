@@ -20,7 +20,7 @@ namespace Disco.BI.Extensions
                 return true;
 
             if (UserService.CurrentAuthorization.Has(Claims.Device.Actions.RemoveOwnAttachments)
-                && da.TechUserId == UserService.CurrentUserId)
+                && da.TechUserId.Equals(UserService.CurrentUserId, StringComparison.OrdinalIgnoreCase))
                 return true;
 
             return false;
@@ -45,7 +45,7 @@ namespace Disco.BI.Extensions
                 return true;
 
             if (UserService.CurrentAuthorization.Has(Claims.Job.Actions.RemoveOwnAttachments)
-                && ja.TechUserId == UserService.CurrentUserId)
+                && ja.TechUserId.Equals(UserService.CurrentUserId, StringComparison.OrdinalIgnoreCase))
                 return true;
 
             return false;
@@ -70,7 +70,7 @@ namespace Disco.BI.Extensions
                 return true;
 
             if (UserService.CurrentAuthorization.Has(Claims.User.Actions.RemoveOwnAttachments)
-                && ua.TechUserId == UserService.CurrentUserId)
+                && ua.TechUserId.Equals(UserService.CurrentUserId, StringComparison.OrdinalIgnoreCase))
                 return true;
 
             return false;
