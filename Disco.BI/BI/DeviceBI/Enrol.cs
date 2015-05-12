@@ -63,29 +63,29 @@ namespace Disco.BI.DeviceBI
                         EnrolmentLog.LogSessionDiagnosticInformation(sessionId, output);
                     }
                     EnrolmentLog.LogSessionProgress(sessionId, 20, "Retrieving Serial Number");
-                    trustedRequest.DeviceSerialNumber = ParseMacShellCommand(shell, "system_profiler SPHardwareDataType | grep \"Serial Number\" | cut -d \":\" -f 2-", sessionId);
+                    trustedRequest.DeviceSerialNumber = ParseMacShellCommand(shell, "system_profiler SPHardwareDataType 2>/dev/null | grep \"Serial Number\" | cut -d \":\" -f 2-", sessionId);
                     EnrolmentLog.LogSessionDevice(sessionId, trustedRequest.DeviceSerialNumber, null);
                     EnrolmentLog.LogSessionProgress(sessionId, 30, "Retrieving Hardware UUID");
-                    trustedRequest.DeviceUUID = ParseMacShellCommand(shell, "system_profiler SPHardwareDataType | grep \"Hardware UUID:\" | cut -d \":\" -f 2-", sessionId);
+                    trustedRequest.DeviceUUID = ParseMacShellCommand(shell, "system_profiler SPHardwareDataType 2>/dev/null | grep \"Hardware UUID:\" | cut -d \":\" -f 2-", sessionId);
                     EnrolmentLog.LogSessionProgress(sessionId, 40, "Retrieving Computer Name");
                     trustedRequest.DeviceComputerName = ParseMacShellCommand(shell, "scutil --get ComputerName", sessionId);
                     EnrolmentLog.LogSessionProgress(sessionId, 50, "Retrieving Ethernet MAC Address");
-                    string lanNicId = ParseMacShellCommand(shell, "system_profiler SPEthernetDataType | egrep -o \"en0|en1|en2|en3|en4|en5|en6\"", sessionId);
+                    string lanNicId = ParseMacShellCommand(shell, "system_profiler SPEthernetDataType 2>/dev/null | egrep -o \"en0|en1|en2|en3|en4|en5|en6\"", sessionId);
                     if (!string.IsNullOrWhiteSpace(lanNicId))
                     {
                         trustedRequest.DeviceLanMacAddress = ParseMacShellCommand(shell, string.Format("ifconfig {0} | grep ether | cut -d \" \" -f 2-", lanNicId), sessionId);
                     }
                     EnrolmentLog.LogSessionProgress(sessionId, 65, "Retrieving Wireless MAC Address");
-                    string wlanNicId = ParseMacShellCommand(shell, "system_profiler SPAirPortDataType | egrep -o \"en0|en1|en2|en3|en4|en5|en6\"", sessionId);
+                    string wlanNicId = ParseMacShellCommand(shell, "system_profiler SPAirPortDataType 2>/dev/null | egrep -o \"en0|en1|en2|en3|en4|en5|en6\"", sessionId);
                     if (!string.IsNullOrWhiteSpace(wlanNicId))
                     {
                         trustedRequest.DeviceWlanMacAddress = ParseMacShellCommand(shell, string.Format("ifconfig {0} | grep ether | cut -d \" \" -f 2-", wlanNicId), sessionId);
                     }
                     trustedRequest.DeviceManufacturer = "Apple Inc.";
                     EnrolmentLog.LogSessionProgress(sessionId, 80, "Retrieving Model");
-                    trustedRequest.DeviceModel = ParseMacShellCommand(shell, "system_profiler SPHardwareDataType | grep \"Model Identifier:\" | cut -d \":\" -f 2-", sessionId);
+                    trustedRequest.DeviceModel = ParseMacShellCommand(shell, "system_profiler SPHardwareDataType 2>/dev/null | grep \"Model Identifier:\" | cut -d \":\" -f 2-", sessionId);
                     EnrolmentLog.LogSessionProgress(sessionId, 90, "Retrieving Model Type");
-                    trustedRequest.DeviceModelType = ParseMacModelType(ParseMacShellCommand(shell, "system_profiler SPHardwareDataType | grep \"Model Name:\" | cut -d \":\" -f 2-", sessionId));
+                    trustedRequest.DeviceModelType = ParseMacModelType(ParseMacShellCommand(shell, "system_profiler SPHardwareDataType 2>/dev/null | grep \"Model Name:\" | cut -d \":\" -f 2-", sessionId));
                     EnrolmentLog.LogSessionProgress(sessionId, 99, "Disconnecting");
                     output = ParseMacModelType(ParseMacShellCommand(shell, "exit", sessionId));
                     if (sessionElevated)
