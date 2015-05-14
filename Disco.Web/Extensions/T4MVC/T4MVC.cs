@@ -172,7 +172,6 @@ namespace Links
             public static readonly string Core_js_bundle = Url("Core.js.bundle");
             public static readonly string Core_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Core.min.js") ? Url("Core.min.js") : Url("Core.js");
             public static readonly string Core_min_js = Url("Core.min.js");
-            public static readonly string Core_min_js_map = Url("Core.min.js.map");
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public static class Modules {
                 private const string URLPATH = "~/ClientSource/Scripts/Modules";
@@ -189,7 +188,6 @@ namespace Links
                 public static readonly string Disco_AjaxHelperIcons_js_bundle = Url("Disco-AjaxHelperIcons.js.bundle");
                 public static readonly string Disco_AjaxHelperIcons_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Disco-AjaxHelperIcons.min.js") ? Url("Disco-AjaxHelperIcons.min.js") : Url("Disco-AjaxHelperIcons.js");
                 public static readonly string Disco_AjaxHelperIcons_min_js = Url("Disco-AjaxHelperIcons.min.js");
-                public static readonly string Disco_AjaxHelperIcons_min_js_map = Url("Disco-AjaxHelperIcons.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Disco_AttachmentUploader {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/Disco-AttachmentUploader";
@@ -203,7 +201,6 @@ namespace Links
                 public static readonly string Disco_AttachmentUploader_js_bundle = Url("Disco-AttachmentUploader.js.bundle");
                 public static readonly string Disco_AttachmentUploader_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Disco-AttachmentUploader.min.js") ? Url("Disco-AttachmentUploader.min.js") : Url("Disco-AttachmentUploader.js");
                 public static readonly string Disco_AttachmentUploader_min_js = Url("Disco-AttachmentUploader.min.js");
-                public static readonly string Disco_AttachmentUploader_min_js_map = Url("Disco-AttachmentUploader.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Disco_CreateJob {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/Disco-CreateJob";
@@ -215,7 +212,6 @@ namespace Links
                 public static readonly string Disco_CreateJob_js_bundle = Url("Disco-CreateJob.js.bundle");
                 public static readonly string Disco_CreateJob_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Disco-CreateJob.min.js") ? Url("Disco-CreateJob.min.js") : Url("Disco-CreateJob.js");
                 public static readonly string Disco_CreateJob_min_js = Url("Disco-CreateJob.min.js");
-                public static readonly string Disco_CreateJob_min_js_map = Url("Disco-CreateJob.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Disco_DataTableHelpers {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/Disco-DataTableHelpers";
@@ -227,7 +223,6 @@ namespace Links
                 public static readonly string Disco_DataTableHelpers_js_bundle = Url("Disco-DataTableHelpers.js.bundle");
                 public static readonly string Disco_DataTableHelpers_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Disco-DataTableHelpers.min.js") ? Url("Disco-DataTableHelpers.min.js") : Url("Disco-DataTableHelpers.js");
                 public static readonly string Disco_DataTableHelpers_min_js = Url("Disco-DataTableHelpers.min.js");
-                public static readonly string Disco_DataTableHelpers_min_js_map = Url("Disco-DataTableHelpers.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Disco_ExpressionEditor {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/Disco-ExpressionEditor";
@@ -239,7 +234,6 @@ namespace Links
                 public static readonly string Disco_ExpressionEditor_js_bundle = Url("Disco-ExpressionEditor.js.bundle");
                 public static readonly string Disco_ExpressionEditor_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Disco-ExpressionEditor.min.js") ? Url("Disco-ExpressionEditor.min.js") : Url("Disco-ExpressionEditor.js");
                 public static readonly string Disco_ExpressionEditor_min_js = Url("Disco-ExpressionEditor.min.js");
-                public static readonly string Disco_ExpressionEditor_min_js_map = Url("Disco-ExpressionEditor.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Disco_jQueryExtensions {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/Disco-jQueryExtensions";
@@ -251,7 +245,6 @@ namespace Links
                 public static readonly string Disco_jQueryExtensions_js_bundle = Url("Disco-jQueryExtensions.js.bundle");
                 public static readonly string Disco_jQueryExtensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Disco-jQueryExtensions.min.js") ? Url("Disco-jQueryExtensions.min.js") : Url("Disco-jQueryExtensions.js");
                 public static readonly string Disco_jQueryExtensions_min_js = Url("Disco-jQueryExtensions.min.js");
-                public static readonly string Disco_jQueryExtensions_min_js_map = Url("Disco-jQueryExtensions.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Disco_PropertyChangeHelpers {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/Disco-PropertyChangeHelpers";
@@ -263,7 +256,6 @@ namespace Links
                 public static readonly string Disco_PropertyChangeHelpers_js_bundle = Url("Disco-PropertyChangeHelpers.js.bundle");
                 public static readonly string Disco_PropertyChangeHelpers_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Disco-PropertyChangeHelpers.min.js") ? Url("Disco-PropertyChangeHelpers.min.js") : Url("Disco-PropertyChangeHelpers.js");
                 public static readonly string Disco_PropertyChangeHelpers_min_js = Url("Disco-PropertyChangeHelpers.min.js");
-                public static readonly string Disco_PropertyChangeHelpers_min_js_map = Url("Disco-PropertyChangeHelpers.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Highcharts {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/Highcharts";
@@ -275,7 +267,6 @@ namespace Links
                 public static readonly string Highcharts_js_bundle = Url("Highcharts.js.bundle");
                 public static readonly string Highcharts_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Highcharts.min.js") ? Url("Highcharts.min.js") : Url("Highcharts.js");
                 public static readonly string Highcharts_min_js = Url("Highcharts.min.js");
-                public static readonly string Highcharts_min_js_map = Url("Highcharts.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class jQuery_Fancytree {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/jQuery-Fancytree";
@@ -287,7 +278,6 @@ namespace Links
                 public static readonly string jQuery_Fancytree_js_bundle = Url("jQuery-Fancytree.js.bundle");
                 public static readonly string jQuery_Fancytree_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jQuery-Fancytree.min.js") ? Url("jQuery-Fancytree.min.js") : Url("jQuery-Fancytree.js");
                 public static readonly string jQuery_Fancytree_min_js = Url("jQuery-Fancytree.min.js");
-                public static readonly string jQuery_Fancytree_min_js_map = Url("jQuery-Fancytree.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class jQuery_Isotope {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/jQuery-Isotope";
@@ -299,7 +289,6 @@ namespace Links
                 public static readonly string jQuery_Isotope_js_bundle = Url("jQuery-Isotope.js.bundle");
                 public static readonly string jQuery_Isotope_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jQuery-Isotope.min.js") ? Url("jQuery-Isotope.min.js") : Url("jQuery-Isotope.js");
                 public static readonly string jQuery_Isotope_min_js = Url("jQuery-Isotope.min.js");
-                public static readonly string jQuery_Isotope_min_js_map = Url("jQuery-Isotope.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class jQuery_NumberFormatter {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/jQuery-NumberFormatter";
@@ -312,7 +301,6 @@ namespace Links
                 public static readonly string jQuery_NumberFormatter_js_bundle = Url("jQuery-NumberFormatter.js.bundle");
                 public static readonly string jQuery_NumberFormatter_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jQuery-NumberFormatter.min.js") ? Url("jQuery-NumberFormatter.min.js") : Url("jQuery-NumberFormatter.js");
                 public static readonly string jQuery_NumberFormatter_min_js = Url("jQuery-NumberFormatter.min.js");
-                public static readonly string jQuery_NumberFormatter_min_js_map = Url("jQuery-NumberFormatter.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class jQuery_SignalR {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/jQuery-SignalR";
@@ -325,7 +313,6 @@ namespace Links
                 public static readonly string jQuery_SignalR_js_bundle = Url("jQuery-SignalR.js.bundle");
                 public static readonly string jQuery_SignalR_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jQuery-SignalR.min.js") ? Url("jQuery-SignalR.min.js") : Url("jQuery-SignalR.js");
                 public static readonly string jQuery_SignalR_min_js = Url("jQuery-SignalR.min.js");
-                public static readonly string jQuery_SignalR_min_js_map = Url("jQuery-SignalR.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class jQueryUI_DynaTree {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/jQueryUI-DynaTree";
@@ -337,7 +324,6 @@ namespace Links
                 public static readonly string jQueryUI_DynaTree_js_bundle = Url("jQueryUI-DynaTree.js.bundle");
                 public static readonly string jQueryUI_DynaTree_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jQueryUI-DynaTree.min.js") ? Url("jQueryUI-DynaTree.min.js") : Url("jQueryUI-DynaTree.js");
                 public static readonly string jQueryUI_DynaTree_min_js = Url("jQueryUI-DynaTree.min.js");
-                public static readonly string jQueryUI_DynaTree_min_js_map = Url("jQueryUI-DynaTree.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class jQueryUI_TimePicker {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/jQueryUI-TimePicker";
@@ -349,7 +335,6 @@ namespace Links
                 public static readonly string jQueryUI_TimePicker_js_bundle = Url("jQueryUI-TimePicker.js.bundle");
                 public static readonly string jQueryUI_TimePicker_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jQueryUI-TimePicker.min.js") ? Url("jQueryUI-TimePicker.min.js") : Url("jQueryUI-TimePicker.js");
                 public static readonly string jQueryUI_TimePicker_min_js = Url("jQueryUI-TimePicker.min.js");
-                public static readonly string jQueryUI_TimePicker_min_js_map = Url("jQueryUI-TimePicker.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Knockout {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/Knockout";
@@ -361,7 +346,6 @@ namespace Links
                 public static readonly string Knockout_js_bundle = Url("Knockout.js.bundle");
                 public static readonly string Knockout_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Knockout.min.js") ? Url("Knockout.min.js") : Url("Knockout.js");
                 public static readonly string Knockout_min_js = Url("Knockout.min.js");
-                public static readonly string Knockout_min_js_map = Url("Knockout.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Shadowbox {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/Shadowbox";
@@ -373,7 +357,6 @@ namespace Links
                 public static readonly string Shadowbox_js_bundle = Url("Shadowbox.js.bundle");
                 public static readonly string Shadowbox_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Shadowbox.min.js") ? Url("Shadowbox.min.js") : Url("Shadowbox.js");
                 public static readonly string Shadowbox_min_js = Url("Shadowbox.min.js");
-                public static readonly string Shadowbox_min_js_map = Url("Shadowbox.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Timeline {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/Timeline";
@@ -390,7 +373,6 @@ namespace Links
                 public static readonly string Timeline_js_bundle = Url("Timeline.js.bundle");
                 public static readonly string Timeline_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Timeline.min.js") ? Url("Timeline.min.js") : Url("Timeline.js");
                 public static readonly string Timeline_min_js = Url("Timeline.min.js");
-                public static readonly string Timeline_min_js_map = Url("Timeline.min.js.map");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class tinymce {
                     private const string URLPATH = "~/ClientSource/Scripts/Modules/tinymce";
@@ -477,7 +459,6 @@ namespace Links
                 public static readonly string tinymce_js_bundle = Url("tinymce.js.bundle");
                 public static readonly string tinymce_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/tinymce.min.js") ? Url("tinymce.min.js") : Url("tinymce.js");
                 public static readonly string tinymce_min_js = Url("tinymce.min.js");
-                public static readonly string tinymce_min_js_map = Url("tinymce.min.js.map");
             }
         
         }

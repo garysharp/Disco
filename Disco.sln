@@ -20,6 +20,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disco.Client", "Disco.Client\Disco.Client.csproj", "{D6B85A86-0FAA-4B04-BC9E-D01A08C03387}"
 EndProject
 Global
+	GlobalSection(AutomaticVersions) = postSolution
+		UpdateAssemblyVersion = True
+		UpdateAssemblyFileVersion = True
+		UpdateAssemblyInfoVersion = False
+		AssemblyVersionSettings = None.None.DateStamp.TimeStamp
+		AssemblyFileVersionSettings = None.None.DateStamp.TimeStamp
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -114,15 +121,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		ConfigurationFilter = 
-		AssemblyInfoFilePath = 
-		UpdateAssemblyVersion = True
-		UpdateAssemblyFileVersion = True
-		UpdateAssemblyInfoVersion = False
-		AssemblyVersionSettings = None.None.DateStamp.TimeStamp
-		AssemblyFileVersionSettings = None.None.DateStamp.TimeStamp
-		AssemblyInfoVersionSettings = 
 	EndGlobalSection
 EndGlobal
