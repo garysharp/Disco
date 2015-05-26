@@ -6,12 +6,13 @@
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
-    
+
     <div class="form" style="width: 650px">
         <h2>SQL Server Connection</h2>
         <table>
             <tr>
-                <th style="width: 150px;">Server:
+                <th style="width: 150px;">
+                    Server:
                 </th>
                 <td>
                     @Html.EditorFor(m => m.Server) @Html.ValidationMessageFor(m => m.Server)
@@ -22,7 +23,8 @@
                 </td>
             </tr>
             <tr>
-                <th>Database Name:
+                <th>
+                    Database Name:
                 </th>
                 <td>
                     @Html.EditorFor(m => m.DatabaseName)  @Html.ValidationMessageFor(m => m.DatabaseName)
@@ -32,7 +34,8 @@
                 </td>
             </tr>
             <tr>
-                <th>Authentication Method:
+                <th>
+                    Authentication Method:
                 </th>
                 <td>
                     @Html.DropDownListFor(m => m.AuthMethod, Model.AuthMethods) @Html.ValidationMessageFor(m => m.AuthMethod)
@@ -65,7 +68,10 @@
     </div>
 }
 <div id="dialogWait" title="Please Wait">
-    <h2><span class="ajaxLoading"></span>Building and Validating Database</h2>
+    <h2>
+        <i class="fa fa-lg fa-cog fa-spin"></i>
+        Building and Validating Database
+    </h2>
     <div>Please wait while the Disco database is created and/or validated</div>
 </div>
 <script>
