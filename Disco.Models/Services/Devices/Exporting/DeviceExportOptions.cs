@@ -50,6 +50,8 @@ namespace Disco.Models.Services.Devices.Exporting
         public bool DetailACAdapter { get; set; }
         [Display(ShortName = "Details", Name = "Battery", Description = "The Battery associated with the device")]
         public bool DetailBattery { get; set; }
+        [Display(ShortName = "Details", Name = "Keyboard", Description = "The Keyboard associated with the device")]
+        public bool DetailKeyboard { get; set; }
 
         // Model
         [Display(ShortName = "Model", Name = "Identifier", Description = "The identifier of the device model associated with the device")]

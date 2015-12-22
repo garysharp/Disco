@@ -32,6 +32,7 @@ namespace Disco.Services.Devices.Importing
                 { DeviceImportFieldTypes.DetailWLanMacAddress, typeof(DetailWLanMacAddressImportField) },
                 { DeviceImportFieldTypes.DetailACAdapter, typeof(DetailACAdapterImportField) },
                 { DeviceImportFieldTypes.DetailBattery, typeof(DetailBatteryImportField) },
+                { DeviceImportFieldTypes.DetailKeyboard, typeof(DetailKeyboardImportField) },
 
                 { DeviceImportFieldTypes.ModelId, typeof(ModelIdImportField) },
 

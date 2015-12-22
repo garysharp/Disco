@@ -30,6 +30,8 @@ namespace Disco.Models.Services.Devices.Importing
         DetailACAdapter,
         [Display(Name = "Device Battery", Description = "The Battery associated with the device")]
         DetailBattery,
+        [Display(Name = "Device Keyboard", Description = "The Keyboard associated with the device")]
+        DetailKeyboard,
 
         [Display(Name = "Model Identifier", Description = "The identifier of the device model associated with the device")]
         ModelId,
