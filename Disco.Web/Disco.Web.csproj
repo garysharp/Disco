@@ -1783,6 +1783,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4MVC.cs</LastGenOutput>
     </None>
+    <None Include="razorgenerator.directives" />
     <None Include="Views\Device\AddOffline.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>AddOffline.generated.cs</LastGenOutput>
