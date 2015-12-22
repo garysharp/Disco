@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace Disco.ClientBootstrapper
 {
@@ -40,11 +39,14 @@ namespace Disco.ClientBootstrapper
                         statusForm.Show();
                         string installLocation = null;
                         string wimImage = null;
+                        string tempPath = null;
                         if (args.Length > 1)
                             installLocation = args[1];
                         if (args.Length > 2)
                             wimImage = args[2];
-                        InstallLoop = new InstallLoop(installLocation, wimImage);
+                        if (args.Length > 3)
+                            tempPath = args[3];
+                        InstallLoop = new InstallLoop(installLocation, wimImage, tempPath);
                         InstallLoop.Start(new InstallLoop.CompleteCallback(InstallComplete));
                         Application.Run();
                         return;

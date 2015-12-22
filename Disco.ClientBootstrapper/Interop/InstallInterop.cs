@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
+using System;
 using System.IO;
-using System.Threading;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Disco.ClientBootstrapper.Interop
 {
@@ -187,7 +183,7 @@ namespace Disco.ClientBootstrapper.Interop
             #endregion
         }
 
-        public static void Install(string InstallLocation, string WimImageId = null)
+        public static void Install(string InstallLocation, string WimImageId, string TempPath)
         {
             Program.Status.UpdateStatus("Installing Bootstrapper", "Starting", "Please wait...", false);
 
@@ -234,12 +230,12 @@ namespace Disco.ClientBootstrapper.Interop
                 }
 
                 // Get Temp Path
-                var wimMountPath = Path.Combine(Path.GetTempPath(), "DiscoClientBootstrapperWimMount");
+                var wimMountPath = Path.Combine(TempPath ?? Path.GetTempPath(), "DiscoClientBootstrapperWimMount");
                 if (Directory.Exists(wimMountPath))
                     Directory.Delete(wimMountPath, true);
                 Directory.CreateDirectory(wimMountPath);
 
-                var wimTempMountPath = Path.Combine(Path.GetTempPath(), "DiscoClientBootstrapperWimTempMount");
+                var wimTempMountPath = Path.Combine(TempPath ?? Path.GetTempPath(), "DiscoClientBootstrapperWimTempMount");
                 if (Directory.Exists(wimTempMountPath))
                     Directory.Delete(wimTempMountPath, true);
                 Directory.CreateDirectory(wimTempMountPath);

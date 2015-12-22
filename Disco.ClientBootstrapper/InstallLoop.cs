@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace Disco.ClientBootstrapper
@@ -14,11 +11,13 @@ namespace Disco.ClientBootstrapper
         private CompleteCallback mCompleteCallback;
         private string InstallLocation;
         private string WimImageId;
+        private string TempPath;
 
-        public InstallLoop(string InstallLocation, string WimImageId = null)
+        public InstallLoop(string InstallLocation, string WimImageId, string TempPath)
         {
             this.InstallLocation = InstallLocation;
             this.WimImageId = WimImageId;
+            this.TempPath = TempPath;
         }
 
         public void Start(CompleteCallback Callback)
@@ -34,7 +33,7 @@ namespace Disco.ClientBootstrapper
 
                 //Program.Status.UpdateStatus(null, null, "Testing UI");
                 //Program.SleepThread(5000, false);
-                Interop.InstallInterop.Install(this.InstallLocation, this.WimImageId);
+                Interop.InstallInterop.Install(this.InstallLocation, this.WimImageId, this.TempPath);
                 if (this.mCompleteCallback != null)
                 {
                     this.mCompleteCallback.BeginInvoke(null, null);
