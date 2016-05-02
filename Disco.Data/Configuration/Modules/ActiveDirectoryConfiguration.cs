@@ -29,5 +29,15 @@ namespace Disco.Data.Configuration.Modules
             get { return Get<bool?>(null); }
             set { Set(value); }
         }
+
+        /// <summary>
+        /// If true LDAP filters contain wildcards only at the end of the search term.
+        /// This greatly improves performance in very large AD environments (ie: EDU001/EDU002)
+        /// </summary>
+        public bool SearchWildcardSuffixOnly
+        {
+            get { return Get(false); }
+            set { Set(value); }
+        }
     }
 }

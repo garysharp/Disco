@@ -9,7 +9,7 @@ namespace Disco.Services.Interop.ActiveDirectory
     public class ADGroup : IADObject
     {
         internal static readonly string[] LoadProperties = { "name", "distinguishedName", "sAMAccountName", "objectSid", "memberOf" };
-        internal const string LdapSearchFilterTemplate = "(&(objectCategory=Group)(|(sAMAccountName=*{0}*)(name=*{0}*)(cn=*{0}*)))";
+        internal static string LdapSearchFilterTemplate = "(&(objectCategory=Group)(|(sAMAccountName=*{0}*)(name=*{0}*)(cn=*{0}*)))";
         internal const string LdapSamAccountNameFilterTemplate = "(&(objectCategory=Group)(sAMAccountName={0}))";
         internal const string LdapSecurityIdentifierFilterTemplate = "(&(objectCategory=Group)(objectSid={0}))";
 

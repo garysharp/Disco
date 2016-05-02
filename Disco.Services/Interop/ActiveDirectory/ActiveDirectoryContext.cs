@@ -55,6 +55,13 @@ namespace Disco.Services.Interop.ActiveDirectory
             // Search Entire Forest (default: true)
             this._SearchAllForestServers = Database.DiscoConfiguration.ActiveDirectory.SearchAllForestServers ?? true;
 
+            // Set Search LDAP Filters
+            if (Database.DiscoConfiguration.ActiveDirectory.SearchWildcardSuffixOnly)
+            {
+                ADGroup.LdapSearchFilterTemplate = "(&(objectCategory=Group)(|(sAMAccountName={0}*)(name={0}*)(cn={0}*)))";
+                ADUserAccount.LdapSearchFilterTemplate = "(&(objectCategory=Person)(objectClass=user)(|(sAMAccountName={0}*)(displayName={0}*)(sn={0}*)(givenName={0}*)))";
+            }
+
             // Determine Site
             var computerSite = ActiveDirectorySite.GetComputerSite();
             this.Site = new ADSite(this, computerSite);
