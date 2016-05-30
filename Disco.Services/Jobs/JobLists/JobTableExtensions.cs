@@ -120,16 +120,14 @@ namespace Disco.Services
             if (model.ShowStatus || model.ShowLastActivityDate)
             {
 
-                var jobItems = Jobs.Select(j => new JobTableStatusItemModel()
+                var jobData = Jobs.Select(j => new
                 {
                     JobId = j.Id,
                     OpenedDate = j.OpenedDate,
                     ClosedDate = j.ClosedDate,
                     JobTypeId = j.JobTypeId,
                     JobTypeDescription = j.JobType.Description,
-                    DeviceSerialNumber = j.Device.SerialNumber,
-                    DeviceProfileId = j.Device.DeviceProfileId,
-                    DeviceModelId = j.Device.DeviceModelId,
+                    Device = j.Device,
                     DeviceModelDescription = j.Device.DeviceModel.Description,
                     DeviceAddressId = j.Device.DeviceProfile.DefaultOrganisationAddress,
                     UserId = j.UserId,
@@ -139,37 +137,71 @@ namespace Disco.Services
                     DeviceHeldLocation = j.DeviceHeldLocation,
                     Flags = j.Flags,
 
-                    JobMetaWarranty_ExternalReference = j.JobMetaWarranty.ExternalReference,
-                    JobMetaWarranty_ExternalLoggedDate = j.JobMetaWarranty.ExternalLoggedDate,
-                    JobMetaWarranty_ExternalCompletedDate = j.JobMetaWarranty.ExternalCompletedDate,
-                    JobMetaNonWarranty_RepairerLoggedDate = j.JobMetaNonWarranty.RepairerLoggedDate,
-                    JobMetaNonWarranty_RepairerCompletedDate = j.JobMetaNonWarranty.RepairerCompletedDate,
-                    JobMetaNonWarranty_AccountingChargeAddedDate = j.JobMetaNonWarranty.AccountingChargeAddedDate,
-                    JobMetaNonWarranty_AccountingChargePaidDate = j.JobMetaNonWarranty.AccountingChargePaidDate,
-                    JobMetaNonWarranty_AccountingChargeRequiredDate = j.JobMetaNonWarranty.AccountingChargeRequiredDate,
-                    JobMetaNonWarranty_IsInsuranceClaim = j.JobMetaNonWarranty.IsInsuranceClaim,
+                    JobMetaWarranty = j.JobMetaWarranty,
+                    JobMetaNonWarranty = j.JobMetaNonWarranty,
                     JobMetaInsurance_ClaimFormSentDate = j.JobMetaInsurance.ClaimFormSentDate,
-                    JobMetaNonWarranty_InvoiceReceivedDate = j.JobMetaNonWarranty.InvoiceReceivedDate,
-                    JobMetaNonWarranty_PurchaseOrderRaisedDate = j.JobMetaNonWarranty.PurchaseOrderRaisedDate,
-                    JobMetaNonWarranty_PurchaseOrderSentDate = j.JobMetaNonWarranty.PurchaseOrderSentDate,
 
-                    RecentAttachmentDate = j.JobAttachments.Max(ja => ja.Timestamp),
-                    RecentLogDate = j.JobLogs.Max(jl => jl.Timestamp),
+                    RecentAttachmentDate = (DateTime?)j.JobAttachments.Max(ja => ja.Timestamp),
+                    RecentLogDate = (DateTime?)j.JobLogs.Max(jl => jl.Timestamp),
 
                     WaitingForUserAction = j.WaitingForUserAction,
                     DeviceReadyForReturn = j.DeviceReadyForReturn,
                     DeviceHeld = j.DeviceHeld,
                     DeviceReturnedDate = j.DeviceReturnedDate,
-                    JobMetaWarranty_ExternalName = j.JobMetaWarranty.ExternalName,
-                    JobMetaNonWarranty_RepairerName = j.JobMetaNonWarranty.RepairerName,
-                    ActiveJobQueues = j.JobQueues.Where(jq => !jq.RemovedDate.HasValue).Select(jq => new JobTableStatusQueueItemModel()
+
+                    JobQueues = j.JobQueues.Where(jq => !jq.RemovedDate.HasValue)
+                }).ToList();
+
+                var jobItems = jobData.Select(j => new JobTableStatusItemModel()
+                {
+                    JobId = j.JobId,
+                    OpenedDate = j.OpenedDate,
+                    ClosedDate = j.ClosedDate,
+                    JobTypeId = j.JobTypeId,
+                    JobTypeDescription = j.JobTypeDescription,
+                    DeviceSerialNumber = j.Device?.SerialNumber,
+                    DeviceProfileId = j.Device?.DeviceProfileId,
+                    DeviceModelId = j.Device?.DeviceModelId,
+                    DeviceModelDescription = j.DeviceModelDescription,
+                    DeviceAddressId = j.DeviceAddressId,
+                    UserId = j.UserId,
+                    UserDisplayName = j.UserDisplayName,
+                    OpenedTechUserId = j.OpenedTechUserId,
+                    OpenedTechUserDisplayName = j.OpenedTechUserDisplayName,
+                    DeviceHeldLocation = j.DeviceHeldLocation,
+                    Flags = j.Flags,
+
+                    JobMetaWarranty_ExternalReference = j.JobMetaWarranty?.ExternalReference,
+                    JobMetaWarranty_ExternalLoggedDate = j.JobMetaWarranty?.ExternalLoggedDate,
+                    JobMetaWarranty_ExternalCompletedDate = j.JobMetaWarranty?.ExternalCompletedDate,
+                    JobMetaNonWarranty_RepairerLoggedDate = j.JobMetaNonWarranty?.RepairerLoggedDate,
+                    JobMetaNonWarranty_RepairerCompletedDate = j.JobMetaNonWarranty?.RepairerCompletedDate,
+                    JobMetaNonWarranty_AccountingChargeAddedDate = j.JobMetaNonWarranty?.AccountingChargeAddedDate,
+                    JobMetaNonWarranty_AccountingChargePaidDate = j.JobMetaNonWarranty?.AccountingChargePaidDate,
+                    JobMetaNonWarranty_AccountingChargeRequiredDate = j.JobMetaNonWarranty?.AccountingChargeRequiredDate,
+                    JobMetaNonWarranty_IsInsuranceClaim = j.JobMetaNonWarranty?.IsInsuranceClaim,
+                    JobMetaInsurance_ClaimFormSentDate = j.JobMetaInsurance_ClaimFormSentDate,
+                    JobMetaNonWarranty_InvoiceReceivedDate = j.JobMetaNonWarranty?.InvoiceReceivedDate,
+                    JobMetaNonWarranty_PurchaseOrderRaisedDate = j.JobMetaNonWarranty?.PurchaseOrderRaisedDate,
+                    JobMetaNonWarranty_PurchaseOrderSentDate = j.JobMetaNonWarranty?.PurchaseOrderSentDate,
+
+                    RecentAttachmentDate = j.RecentAttachmentDate,
+                    RecentLogDate = j.RecentLogDate,
+
+                    WaitingForUserAction = j.WaitingForUserAction,
+                    DeviceReadyForReturn = j.DeviceReadyForReturn,
+                    DeviceHeld = j.DeviceHeld,
+                    DeviceReturnedDate = j.DeviceReturnedDate,
+                    JobMetaWarranty_ExternalName = j.JobMetaWarranty?.ExternalName,
+                    JobMetaNonWarranty_RepairerName = j.JobMetaNonWarranty?.RepairerName,
+                    ActiveJobQueues = j.JobQueues?.Where(jq => !jq.RemovedDate.HasValue).Select(jq => new JobTableStatusQueueItemModel()
                     {
                         Id = jq.Id,
                         QueueId = jq.JobQueueId,
                         AddedDate = jq.AddedDate,
                         SLAExpiresDate = jq.SLAExpiresDate,
                         Priority = jq.Priority
-                    })
+                    }).ToList() ?? Enumerable.Empty<JobTableStatusQueueItemModel>()
                 });
 
                 items = new List<JobTableItemModel>();
