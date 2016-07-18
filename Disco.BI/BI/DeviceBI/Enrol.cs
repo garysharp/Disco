@@ -10,7 +10,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Tamir.SharpSsh;
+using Renci.SshNet;
+using PList;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Disco.BI.DeviceBI
 {
@@ -24,7 +28,6 @@ namespace Disco.BI.DeviceBI
             Register = 30
         }
 
-        private static Regex SshPromptRegEx = new Regex("[\\$,\\#]", RegexOptions.Multiline);
         public static MacSecureEnrolResponse MacSecureEnrol(DiscoDataContext Database, string Host)
         {
             MacEnrol trustedRequest = new MacEnrol();
@@ -33,89 +36,112 @@ namespace Disco.BI.DeviceBI
             try
             {
                 EnrolmentLog.LogSessionStarting(sessionId, Host, EnrolmentTypes.MacSecure);
-                EnrolmentLog.LogSessionProgress(sessionId, 0, string.Format("Connecting to '{0}' as '{1}'", Host, Database.DiscoConfiguration.Bootstrapper.MacSshUsername));
-                SshShell shell = new SshShell(Host, Database.DiscoConfiguration.Bootstrapper.MacSshUsername, Database.DiscoConfiguration.Bootstrapper.MacSshPassword);
-                try
+                EnrolmentLog.LogSessionProgress(sessionId, 0, $"Connecting to '{Host}' as '{Database.DiscoConfiguration.Bootstrapper.MacSshUsername}'");
+
+                var sshConnectionInfo = new KeyboardInteractiveConnectionInfo(Host, Database.DiscoConfiguration.Bootstrapper.MacSshUsername);
+                sshConnectionInfo.AuthenticationPrompt += (sender, e) =>
                 {
-                    shell.ExpectPattern = "#";
-                    shell.Connect();
-                    EnrolmentLog.LogSessionProgress(sessionId, 10, "Connected, Authenticating");
-                    var output = shell.Expect(SshPromptRegEx);
-                    bool sessionElevated = false;
-                    EnrolmentLog.LogSessionDiagnosticInformation(sessionId, output);
-                    if (!output.TrimEnd(new char[0]).EndsWith("#"))
+                    foreach (var prompt in e.Prompts)
                     {
-                        EnrolmentLog.LogSessionProgress(sessionId, 22, "Connected, Elevating Credentials");
-                        shell.WriteLine("sudo -k");
-                        System.Threading.Thread.Sleep(250);
-                        output = shell.Expect(SshPromptRegEx);
-                        EnrolmentLog.LogSessionProgress(sessionId, 25, "Connected, Elevating Credentials");
-                        EnrolmentLog.LogSessionDiagnosticInformation(sessionId, output);
-                        shell.WriteLine("sudo -s -S");
-                        System.Threading.Thread.Sleep(250);
-                        output = shell.Expect(":");
-                        EnrolmentLog.LogSessionProgress(sessionId, 27, "Connected, Elevating Credentials");
-                        EnrolmentLog.LogSessionDiagnosticInformation(sessionId, output);
-                        shell.WriteLine(Database.DiscoConfiguration.Bootstrapper.MacSshPassword);
-                        System.Threading.Thread.Sleep(250);
-                        output = shell.Expect(SshPromptRegEx);
-                        sessionElevated = true;
-                        EnrolmentLog.LogSessionDiagnosticInformation(sessionId, output);
-                    }
-                    EnrolmentLog.LogSessionProgress(sessionId, 20, "Retrieving Serial Number");
-                    trustedRequest.DeviceSerialNumber = ParseMacShellCommand(shell, "system_profiler SPHardwareDataType | grep \"Serial Number\" | cut -d \":\" -f 2-", sessionId);
-                    EnrolmentLog.LogSessionDevice(sessionId, trustedRequest.DeviceSerialNumber, null);
-                    EnrolmentLog.LogSessionProgress(sessionId, 30, "Retrieving Hardware UUID");
-                    trustedRequest.DeviceUUID = ParseMacShellCommand(shell, "system_profiler SPHardwareDataType | grep \"Hardware UUID:\" | cut -d \":\" -f 2-", sessionId);
-                    EnrolmentLog.LogSessionProgress(sessionId, 40, "Retrieving Computer Name");
-                    trustedRequest.DeviceComputerName = ParseMacShellCommand(shell, "scutil --get ComputerName", sessionId);
-                    EnrolmentLog.LogSessionProgress(sessionId, 50, "Retrieving Ethernet MAC Address");
-                    string lanNicId = ParseMacShellCommand(shell, "system_profiler SPEthernetDataType | egrep -o \"en0|en1|en2|en3|en4|en5|en6\"", sessionId);
-                    if (!string.IsNullOrWhiteSpace(lanNicId))
-                    {
-                        trustedRequest.DeviceLanMacAddress = ParseMacShellCommand(shell, string.Format("ifconfig {0} | grep ether | cut -d \" \" -f 2-", lanNicId), sessionId);
-                    }
-                    EnrolmentLog.LogSessionProgress(sessionId, 65, "Retrieving Wireless MAC Address");
-                    string wlanNicId = ParseMacShellCommand(shell, "system_profiler SPAirPortDataType | egrep -o \"en0|en1|en2|en3|en4|en5|en6\"", sessionId);
-                    if (!string.IsNullOrWhiteSpace(wlanNicId))
-                    {
-                        trustedRequest.DeviceWlanMacAddress = ParseMacShellCommand(shell, string.Format("ifconfig {0} | grep ether | cut -d \" \" -f 2-", wlanNicId), sessionId);
-                    }
-                    trustedRequest.DeviceManufacturer = "Apple Inc.";
-                    EnrolmentLog.LogSessionProgress(sessionId, 80, "Retrieving Model");
-                    trustedRequest.DeviceModel = ParseMacShellCommand(shell, "system_profiler SPHardwareDataType | grep \"Model Identifier:\" | cut -d \":\" -f 2-", sessionId);
-                    EnrolmentLog.LogSessionProgress(sessionId, 90, "Retrieving Model Type");
-                    trustedRequest.DeviceModelType = ParseMacModelType(ParseMacShellCommand(shell, "system_profiler SPHardwareDataType | grep \"Model Name:\" | cut -d \":\" -f 2-", sessionId));
-                    EnrolmentLog.LogSessionProgress(sessionId, 99, "Disconnecting");
-                    output = ParseMacModelType(ParseMacShellCommand(shell, "exit", sessionId));
-                    if (sessionElevated)
-                    {
-                        output = ParseMacModelType(ParseMacShellCommand(shell, "exit", sessionId));
-                    }
-                    if (shell.Connected)
-                    {
-                        shell.Close();
-                    }
-                    EnrolmentLog.LogSessionProgress(sessionId, 100, "Disconnected, Starting Disco Enrolment");
-                    MacSecureEnrolResponse response = MacSecureEnrolResponse.FromMacEnrolResponse(MacEnrol(Database, trustedRequest, true, sessionId));
-                    EnrolmentLog.LogSessionFinished(sessionId);
-                    MacSecureEnrol = response;
-                }
-                catch (System.Exception ex)
-                {
-                    throw ex;
-                }
-                finally
-                {
-                    if (shell != null)
-                    {
-                        bool connected = shell.Connected;
-                        if (connected)
+                        if (prompt.Request.StartsWith("Password", StringComparison.OrdinalIgnoreCase))
                         {
-                            shell.Close();
+                            EnrolmentLog.LogSessionProgress(sessionId, 10, $"Authenticating at '{Host}' as '{Database.DiscoConfiguration.Bootstrapper.MacSshUsername}'");
+                            prompt.Response = Database.DiscoConfiguration.Bootstrapper.MacSshPassword;
+                        }
+                    }
+                };
+
+                using (var sshClient = new SshClient(sshConnectionInfo))
+                {
+                    sshClient.Connect();
+
+                    try
+                    {
+                        EnrolmentLog.LogSessionProgress(sessionId, 30, "Retrieving System Profile Information");
+                        var sshResult = sshClient.RunCommand("system_profiler -xml SPHardwareDataType SPNetworkDataType SPSoftwareDataType");
+                        PListRoot profilerData;
+                        using (var reader = new StringReader(sshResult.Result))
+                        {
+                            using (var xmlReader = XmlReader.Create(reader, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Ignore }))
+                            {
+                                XmlSerializer serializer = new XmlSerializer(typeof(PListRoot));
+                                profilerData = (PListRoot)serializer.Deserialize(xmlReader);
+                            }
+                        }
+
+                        EnrolmentLog.LogSessionProgress(sessionId, 90, "Processing System Profile Information");
+
+                        PListDict profilerDataHardware = null;
+                        PListArray profilerDataNetwork = null;
+                        PListDict profilerDataSoftware = null;
+
+                        foreach (PListDict node in (profilerData.Root as PListArray))
+                        {
+                            var nodeItems = ((PListArray)node["_items"]);
+
+                            switch (((PListString)node["_dataType"]).Value)
+                            {
+                                case "SPHardwareDataType":
+                                    profilerDataHardware = (PListDict)nodeItems[0];
+                                    break;
+                                case "SPNetworkDataType":
+                                    profilerDataNetwork = nodeItems;
+                                    break;
+                                case "SPSoftwareDataType":
+                                    profilerDataSoftware = (PListDict)nodeItems[0];
+                                    break;
+                            }
+                        }
+
+                        if (profilerDataHardware == null || profilerDataNetwork == null || profilerDataSoftware == null)
+                            throw new InvalidOperationException("System Profiler didn't return information for a requested data type");
+
+                        trustedRequest.DeviceSerialNumber = (profilerDataHardware["serial_number"] as PListString).Value;
+                        trustedRequest.DeviceUUID = (profilerDataHardware["platform_UUID"] as PListString).Value;
+                        trustedRequest.DeviceComputerName = (profilerDataSoftware["local_host_name"] as PListString).Value;
+
+                        var profilerDataNetworkEthernet = profilerDataNetwork.Cast<PListDict>().FirstOrDefault(e => ((PListString)e["_name"]).Value == "Ethernet");
+                        if (profilerDataNetworkEthernet != null)
+                        {
+                            trustedRequest.DeviceLanMacAddress = ((PListString)(profilerDataNetworkEthernet["Ethernet"] as PListDict)["MAC Address"]).Value;
+                        }
+
+                        var profilerDataNetworkWiFi = profilerDataNetwork.Cast<PListDict>().FirstOrDefault(e => ((PListString)e["_name"]).Value == "Wi-Fi");
+                        if (profilerDataNetworkWiFi != null)
+                        {
+                            trustedRequest.DeviceWlanMacAddress = ((PListString)(profilerDataNetworkWiFi["Ethernet"] as PListDict)["MAC Address"]).Value;
+                        }
+
+                        trustedRequest.DeviceManufacturer = "Apple Inc.";
+                        trustedRequest.DeviceModel = (profilerDataHardware["machine_model"] as PListString).Value;
+
+                        trustedRequest.DeviceModelType = ParseMacModelType((profilerDataHardware["machine_name"] as PListString).Value);
+
+                        EnrolmentLog.LogSessionProgress(sessionId, 99, "Disconnecting");
+
+                        sshClient.Disconnect();
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        if (sshClient != null)
+                        {
+                            bool connected = sshClient.IsConnected;
+                            if (connected)
+                            {
+                                sshClient.Disconnect();
+                            }
                         }
                     }
                 }
+
+                EnrolmentLog.LogSessionProgress(sessionId, 100, "Disconnected, Starting Disco Enrolment");
+                MacSecureEnrolResponse response = MacSecureEnrolResponse.FromMacEnrolResponse(MacEnrol(Database, trustedRequest, true, sessionId));
+                EnrolmentLog.LogSessionFinished(sessionId);
+                MacSecureEnrol = response;
             }
             catch (System.Exception ex)
             {
@@ -123,6 +149,7 @@ namespace Disco.BI.DeviceBI
                 EnrolmentLog.LogSessionError(sessionId, ex);
                 throw ex;
             }
+
             return MacSecureEnrol;
         }
 
@@ -152,63 +179,6 @@ namespace Disco.BI.DeviceBI
             }
             ParseMacModelType = "Unknown";
             return ParseMacModelType;
-        }
-
-        private static string ParseMacShellCommand(SshShell Shell, string Command, string LogSessionId)
-        {
-            Shell.WriteLine(Command);
-            System.Threading.Thread.Sleep(250);
-            string Response = Shell.Expect(SshPromptRegEx);
-            Response = Response.Replace("\r", string.Empty);
-            EnrolmentLog.LogSessionDiagnosticInformation(LogSessionId, Response);
-            bool flag = Response.Contains("\n");
-            string ParseMacShellCommand;
-            if (flag)
-            {
-                string[] ResponseLines = Response.Split(new char[]
-					{
-						'\n'
-					});
-                switch (ResponseLines.Length)
-                {
-                    case 0:
-                    case 1:
-                        {
-                            ParseMacShellCommand = string.Empty;
-                            break;
-                        }
-                    case 2:
-                    case 3:
-                        {
-                            ParseMacShellCommand = ResponseLines[1].Trim();
-                            break;
-                        }
-                    default:
-                        {
-                            System.Text.StringBuilder ResponseBuilder = new System.Text.StringBuilder();
-                            int num = ResponseLines.Length - 2;
-                            int lineIndex = 1;
-                            while (true)
-                            {
-                                int arg_111_0 = lineIndex;
-                                int num2 = num;
-                                if (arg_111_0 > num2)
-                                {
-                                    break;
-                                }
-                                ResponseBuilder.AppendLine(ResponseLines[lineIndex]);
-                                lineIndex++;
-                            }
-                            ParseMacShellCommand = ResponseBuilder.ToString().Trim();
-                            break;
-                        }
-                }
-            }
-            else
-            {
-                ParseMacShellCommand = Response;
-            }
-            return ParseMacShellCommand;
         }
 
         #endregion
