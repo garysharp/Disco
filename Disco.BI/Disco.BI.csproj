@@ -54,8 +54,15 @@
     <Reference Include="itextsharp">
       <HintPath>..\Resources\Libraries\iTextSharp\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="PList, Version=0.1.4109.38751, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\plist.net.1.0\lib\Net35\PList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Quartz">
       <HintPath>..\Resources\Libraries\Quartz\Quartz.dll</HintPath>
+    </Reference>
+    <Reference Include="Renci.SshNet">
+      <HintPath>..\..\..\Resources\Libraries\SshNet\Renci.SshNet.dll</HintPath>
     </Reference>
     <Reference Include="Spring.Core">
       <HintPath>..\Resources\Libraries\Spring.NET\Spring.Core.dll</HintPath>
@@ -99,9 +106,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Tamir.SharpSSH">
-      <HintPath>..\Resources\Libraries\SharpSSH\Tamir.SharpSSH.dll</HintPath>
-    </Reference>
     <Reference Include="zxing">
       <HintPath>..\Resources\Libraries\ZXing\zxing.dll</HintPath>
     </Reference>
