@@ -94,6 +94,7 @@ namespace Disco.BI.Extensions
                 if (adAccount != null && !adAccount.IsCriticalSystemObject)
                 {
                     adAccount.DisableAccount();
+					adAccount.SetDescription($"Decommissioned Date/Time: {DateTime.Now} - Decommissioned Reason: {Reason}");
                 }
             }
         }
@@ -121,6 +122,7 @@ namespace Disco.BI.Extensions
                 if (adAccount != null && !adAccount.IsCriticalSystemObject)
                 {
                     adAccount.EnableAccount();
+					adAccount.SetDescription(""); //Clear description on recommission
                 }
             }
         }
