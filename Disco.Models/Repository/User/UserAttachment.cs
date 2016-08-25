@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Disco.Models.Repository
 {
-    public class UserAttachment
+    public class UserAttachment : IAttachment
     {
         [Key]
         public int Id { get; set; }
@@ -23,6 +20,12 @@ namespace Disco.Models.Repository
         public string Comments { get; set; }
 
         public string DocumentTemplateId { get; set; }
+
+        [NotMapped]
+        public object Reference { get { return UserId; } }
+
+        [NotMapped]
+        public AttachmentTypes AttachmentType { get { return AttachmentTypes.User; } }
 
         [ForeignKey("UserId"), InverseProperty("UserAttachments")]
         public virtual User User { get; set; }

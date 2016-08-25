@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Disco.Models.Repository
 {
-    public class DeviceAttachment
+    public class DeviceAttachment : IAttachment
     {
         [Key]
         public int Id { get; set; }
@@ -24,6 +21,12 @@ namespace Disco.Models.Repository
 
         public string DocumentTemplateId { get; set; }
 
+        [NotMapped]
+        public object Reference { get { return DeviceSerialNumber; } }
+
+        [NotMapped]
+        public AttachmentTypes AttachmentType { get { return AttachmentTypes.Device; } }
+
         [InverseProperty("DeviceAttachments"), ForeignKey("DeviceSerialNumber")]
         public virtual Device Device { get; set; }
 
@@ -32,6 +35,5 @@ namespace Disco.Models.Repository
 
         [ForeignKey("DocumentTemplateId")]
         public virtual DocumentTemplate DocumentTemplate { get; set; }
-
     }
 }

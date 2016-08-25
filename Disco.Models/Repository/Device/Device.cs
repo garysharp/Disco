@@ -7,9 +7,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Disco.Models.Repository
 {
-    public class Device
+    public class Device : IAttachmentTarget
     {
-        [Required(ErrorMessage="The Serial Number is Required"), Key, StringLength(60)]
+        [Required(ErrorMessage = "The Serial Number is Required"), Key, StringLength(60)]
         public string SerialNumber { get; set; }
 
         [StringLength(40)]
@@ -18,7 +18,7 @@ namespace Disco.Models.Repository
         public string Location { get; set; }
 
         public int? DeviceModelId { get; set; }
-        [Range(1, int.MaxValue, ErrorMessage="A valid Device Profile is Required")]
+        [Range(1, int.MaxValue, ErrorMessage = "A valid Device Profile is Required")]
         public int DeviceProfileId { get; set; }
         public int? DeviceBatchId { get; set; }
 
@@ -26,7 +26,7 @@ namespace Disco.Models.Repository
         public string DeviceDomainId { get; set; }
         public string AssignedUserId { get; set; }
         public DateTime? LastNetworkLogonDate { get; set; }
-        
+
         public bool AllowUnauthenticatedEnrol { get; set; }
 
         public DateTime CreatedDate { get; set; }
@@ -48,7 +48,7 @@ namespace Disco.Models.Repository
         public virtual IList<DeviceDetail> DeviceDetails { get; set; }
         public virtual IList<DeviceAttachment> DeviceAttachments { get; set; }
         public virtual IList<DeviceCertificate> DeviceCertificates { get; set; }
-        
+
         [InverseProperty("DeviceSerialNumber")]
         public virtual IList<Job> Jobs { get; set; }
 
@@ -85,5 +85,11 @@ namespace Disco.Models.Repository
                 return index < 0 ? null : DeviceDomainId.Substring(0, index);
             }
         }
+
+        [NotMapped]
+        public string AttachmentReferenceId { get { return SerialNumber; } }
+
+        [NotMapped]
+        public AttachmentTypes HasAttachmentType { get { return AttachmentTypes.Device; } }
     }
 }

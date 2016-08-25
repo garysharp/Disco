@@ -7,6 +7,7 @@ using Disco.Data.Repository;
 using Disco.Services.Users;
 using Disco.Services.Authorization;
 using Disco.BI.DocumentTemplateBI.ManagedGroups;
+using Disco.Services;
 
 namespace Disco.BI.Extensions
 {

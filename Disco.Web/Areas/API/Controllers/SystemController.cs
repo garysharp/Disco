@@ -1,5 +1,6 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Data.Configuration;
+using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Interop.DiscoServices;

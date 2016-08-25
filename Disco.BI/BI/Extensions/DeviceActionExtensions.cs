@@ -1,5 +1,6 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
+using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;

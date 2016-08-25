@@ -1,5 +1,8 @@
 ﻿using Disco.BI.Extensions;
+using Disco.Models.Services.Documents;
+using Disco.Services;
 using Disco.Services.Authorization;
+using Disco.Services.Interop;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using Disco.Services.Web;
@@ -70,7 +73,7 @@ namespace Disco.Web.Areas.API.Controllers
                     {
                         var contentType = file.ContentType;
                         if (string.IsNullOrEmpty(contentType) || contentType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
-                            contentType = BI.Interop.MimeTypes.ResolveMimeType(file.FileName);
+                            contentType = MimeTypes.ResolveMimeType(file.FileName);
 
                         var ua = new Disco.Models.Repository.UserAttachment()
                         {
@@ -171,7 +174,7 @@ namespace Disco.Web.Areas.API.Controllers
                 {
                     var timeStamp = DateTime.Now;
                     Stream pdf;
-                    using (var generationState = Disco.Models.BI.DocumentTemplates.DocumentState.DefaultState())
+                    using (var generationState = DocumentState.DefaultState())
                     {
                         pdf = documentTemplate.GeneratePdf(Database, user, UserService.CurrentUser, timeStamp, generationState);
                     }

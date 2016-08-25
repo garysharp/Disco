@@ -1,15 +1,16 @@
-using System.Linq;
-using Disco.Data.Configuration;
 using Disco.Data.Repository;
-using Disco.Models.BI.DocumentTemplates;
 using Disco.Models.Repository;
-using System.Collections.Generic;
-using System;
-using System.IO;
-using Disco.Services.Users;
+using Disco.Models.Services.Documents;
+using Disco.Services;
 using Disco.Services.Authorization;
+using Disco.Services.Expressions;
 using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Users;
 using Exceptionless;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Disco.BI.Extensions
 {
@@ -21,15 +22,15 @@ namespace Disco.BI.Extensions
             if (Domain == null)
                 throw new ArgumentNullException("Domain");
 
-            DeviceProfile deviceProfile = device.DeviceProfile;
-            Expressions.Expression computerNameTemplateExpression = null;
-            computerNameTemplateExpression = Expressions.ExpressionCache.GetValue(DeviceProfileExtensions.ComputerNameExpressionCacheModule, deviceProfile.Id.ToString(), () =>
+            var deviceProfile = device.DeviceProfile;
+            Expression computerNameTemplateExpression = null;
+            computerNameTemplateExpression = ExpressionCache.GetValue(DeviceProfileExtensions.ComputerNameExpressionCacheModule, deviceProfile.Id.ToString(), () =>
             {
                 // Removed 2012-06-14 G# - Properties moved to DeviceProfile model & DB Migrated in DBv3.
                 //return Expressions.Expression.TokenizeSingleDynamic(null, deviceProfile.Configuration(context).ComputerNameTemplate, 0);
-                return Expressions.Expression.TokenizeSingleDynamic(null, deviceProfile.ComputerNameTemplate, 0);
+                return Expression.TokenizeSingleDynamic(null, deviceProfile.ComputerNameTemplate, 0);
             });
-            System.Collections.IDictionary evaluatorVariables = Expressions.Expression.StandardVariables(null, Database, UserService.CurrentUser, System.DateTime.Now, null);
+            var evaluatorVariables = Expression.StandardVariables(null, Database, UserService.CurrentUser, DateTime.Now, null);
             string rendered;
             try
             {
@@ -42,53 +43,22 @@ namespace Disco.BI.Extensions
             }
             if (rendered == null || rendered.Length > 24)
             {
-                throw new System.InvalidOperationException("The rendered computer name would be invalid or longer than 24 characters");
+                throw new InvalidOperationException("The rendered computer name would be invalid or longer than 24 characters");
             }
 
             return string.Format(@"{0}\{1}", Domain.NetBiosName, rendered);
         }
-        public static System.Collections.Generic.List<DocumentTemplate> AvailableDocumentTemplates(this Device d, DiscoDataContext Database, User User, System.DateTime TimeStamp)
+        public static List<DocumentTemplate> AvailableDocumentTemplates(this Device d, DiscoDataContext Database, User User, DateTime TimeStamp)
         {
             List<DocumentTemplate> ats = Database.DocumentTemplates
-                .Where(at => at.Scope == Disco.Models.Repository.DocumentTemplate.DocumentTemplateScopes.Device).ToList();
+                .Where(at => at.Scope == DocumentTemplate.DocumentTemplateScopes.Device).ToList();
 
             return ats.Where(at => at.FilterExpressionMatches(d, Database, User, TimeStamp, DocumentState.DefaultState())).ToList();
         }
 
         public static bool UpdateLastNetworkLogonDate(this Device Device)
         {
-            return Disco.Services.Interop.ActiveDirectory.ADNetworkLogonDatesUpdateTask.UpdateLastNetworkLogonDate(Device);
-        }
-
-        public static DeviceAttachment CreateAttachment(this Device Device, DiscoDataContext Database, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, byte[] PdfThumbnail = null)
-        {
-            if (string.IsNullOrEmpty(MimeType) || MimeType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
-                MimeType = Interop.MimeTypes.ResolveMimeType(Filename);
-
-            DeviceAttachment da = new DeviceAttachment()
-            {
-                DeviceSerialNumber = Device.SerialNumber,
-                TechUserId = CreatorUser.UserId,
-                Filename = Filename,
-                MimeType = MimeType,
-                Timestamp = DateTime.Now,
-                Comments = Comments
-            };
-
-            if (DocumentTemplate != null)
-                da.DocumentTemplateId = DocumentTemplate.Id;
-
-            Database.DeviceAttachments.Add(da);
-            Database.SaveChanges();
-
-            da.SaveAttachment(Database, Content);
-            Content.Position = 0;
-            if (PdfThumbnail == null)
-                da.GenerateThumbnail(Database, Content);
-            else
-                da.SaveThumbnailAttachment(Database, PdfThumbnail);
-
-            return da;
+            return ADNetworkLogonDatesUpdateTask.UpdateLastNetworkLogonDate(Device);
         }
 
         public static Device AddOffline(this Device d, DiscoDataContext Database)
@@ -189,15 +159,7 @@ namespace Disco.BI.Extensions
             return newDua;
         }
 
-        public static ADMachineAccount ActiveDirectoryAccount(this Device Device, params string[] AdditionalProperties)
-        {
-            if (ActiveDirectory.IsValidDomainAccountId(Device.DeviceDomainId))
-                return ActiveDirectory.RetrieveADMachineAccount(Device.DeviceDomainId, AdditionalProperties: AdditionalProperties);
-            else
-                return null;
-        }
-
-        public static string ReasonMessage(this Disco.Models.Repository.DecommissionReasons r)
+        public static string ReasonMessage(this DecommissionReasons r)
         {
             switch (r)
             {
@@ -220,7 +182,7 @@ namespace Disco.BI.Extensions
             }
         }
 
-        public static string ReasonMessage(this Disco.Models.Repository.DecommissionReasons? r)
+        public static string ReasonMessage(this DecommissionReasons? r)
         {
             if (!r.HasValue)
                 return "Not Decommissioned";

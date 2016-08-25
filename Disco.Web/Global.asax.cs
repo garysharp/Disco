@@ -211,7 +211,7 @@ namespace Disco.Web
         }
         #endregion
         #region Dropbox Monitor
-        public static BI.DocumentTemplateBI.Importer.DocumentDropBoxMonitor DocumentDropBoxMonitor { get; set; }
+        public static Disco.Services.Documents.AttachmentImport.ImportDirectoryMonitor DocumentDropBoxMonitor { get; set; }
         #endregion
         #region Global Error Logging
         void DiscoApplication_Error(object sender, EventArgs e)

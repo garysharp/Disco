@@ -51,7 +51,10 @@
     <Compile Include="BI\Job\LocationModes.cs" />
     <Compile Include="ClientServices\Register.cs" />
     <Compile Include="ClientServices\RegisterResponse.cs" />
+    <Compile Include="Repository\Attachment\AttachmentTypes.cs" />
+    <Compile Include="Repository\Attachment\IAttachmentTarget.cs" />
     <Compile Include="Repository\Device\DeviceDecommissionReasons.cs" />
+    <Compile Include="Repository\Attachment\IAttachment.cs" />
     <Compile Include="Repository\User\Flag\UserFlag.cs" />
     <Compile Include="Repository\User\Flag\UserFlagAssignment.cs" />
     <Compile Include="Services\Authorization\IAuthorizationToken.cs" />
@@ -60,7 +63,7 @@
     <Compile Include="BI\Config\OrganisationAddress.cs" />
     <Compile Include="BI\Device\ImportDevice.cs" />
     <Compile Include="BI\Device\ImportDeviceSession.cs" />
-    <Compile Include="BI\DocumentTemplate\DocumentState.cs" />
+    <Compile Include="Services\Documents\DocumentState.cs" />
     <Compile Include="BI\Expressions\IImageExpressionResult.cs" />
     <Compile Include="BI\Job\Statistics\DailyOpenedClosedItem.cs" />
     <Compile Include="ClientServices\EnrolResponse.cs" />
@@ -181,7 +184,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="BI\DocumentTemplate\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

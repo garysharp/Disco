@@ -1,10 +1,10 @@
 ﻿using Disco.Data.Repository;
+using Disco.Services;
 using Disco.Services.Interop.DiscoServices;
 using Exceptionless;
 using Exceptionless.Configuration;
 using System;
 using System.Linq;
-using System.Web;
 
 [assembly: Exceptionless("https://errors.discoict.com.au", "c81e644582374f68aaf1fb546e3db0cd")]
 
@@ -67,7 +67,7 @@ namespace Disco.Web
             InitalizeCoreEnvironment(Database);
 
             // Initialize Expressions
-            BI.Expressions.Expression.InitializeExpressions();
+            Disco.Services.Expressions.Expression.InitializeExpressions();
 
             // Initialize Job Queues
             Disco.Services.Jobs.JobQueues.JobQueueService.Initialize(Database);
@@ -93,10 +93,11 @@ namespace Disco.Web
             }
 
             // Setup Attachment Monitor
-            DiscoApplication.DocumentDropBoxMonitor = new BI.DocumentTemplateBI.Importer.DocumentDropBoxMonitor(Database, DiscoApplication.SchedulerFactory, HttpContext.Current.Cache);
+            var dropboxLocation = DataStore.CreateLocation(Database, "DocumentDropBox");
+            DiscoApplication.DocumentDropBoxMonitor = new Services.Documents.AttachmentImport.ImportDirectoryMonitor(dropboxLocation, DiscoApplication.SchedulerFactory.GetScheduler(), 5000);
 
-            DiscoApplication.DocumentDropBoxMonitor.StartWatching();
-            DiscoApplication.DocumentDropBoxMonitor.ScheduleCurrentFiles(10);
+            DiscoApplication.DocumentDropBoxMonitor.Start();
+            DiscoApplication.DocumentDropBoxMonitor.ScheduleCurrentFiles(10000); // 10 Second Delay
         }
 
         public static void InitializeUpdateEnvironment(DiscoDataContext Database, Version PreviousVersion)

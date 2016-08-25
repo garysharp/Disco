@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Disco.Models.Repository
 {
-    public class JobAttachment
+    public class JobAttachment : IAttachment
     {
         [Key]
         public int Id { get; set; }
@@ -24,6 +21,12 @@ namespace Disco.Models.Repository
         public string Comments { get; set; }
 
         public string DocumentTemplateId { get; set; }
+
+        [NotMapped]
+        public object Reference { get { return JobId; } }
+
+        [NotMapped]
+        public AttachmentTypes AttachmentType { get { return AttachmentTypes.Job; } }
 
         [ForeignKey("JobId"), InverseProperty("JobAttachments")]
         public virtual Job Job { get; set; }

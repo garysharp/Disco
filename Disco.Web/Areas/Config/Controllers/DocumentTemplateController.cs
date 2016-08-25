@@ -1,7 +1,9 @@
 ﻿using Disco.BI.DocumentTemplateBI.ManagedGroups;
 using Disco.BI.Extensions;
 using Disco.Models.UI.Config.DocumentTemplate;
+using Disco.Services;
 using Disco.Services.Authorization;
+using Disco.Services.Expressions;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Web;
 using System;
@@ -137,8 +139,8 @@ namespace Disco.Web.Areas.Config.Controllers
                     DeviceType = typeof(Disco.Models.Repository.Device).AssemblyQualifiedName,
                     JobType = typeof(Disco.Models.Repository.Job).AssemblyQualifiedName,
                     UserType = typeof(Disco.Models.Repository.User).AssemblyQualifiedName,
-                    Variables = BI.Expressions.Expression.StandardVariableTypes(),
-                    ExtensionLibraries = BI.Expressions.Expression.ExtensionLibraryTypes()
+                    Variables = Expression.StandardVariableTypes(),
+                    ExtensionLibraries = Expression.ExtensionLibraryTypes()
                 };
 
                 // UI Extensions
@@ -151,7 +153,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 var t = Type.GetType(type);
                 if (t != null)
                 {
-                    return Json(BI.Expressions.ExpressionTypeDescriptor.Build(t, StaticDeclaredMembersOnly), JsonRequestBehavior.AllowGet);
+                    return Json(ExpressionTypeDescriptor.Build(t, StaticDeclaredMembersOnly), JsonRequestBehavior.AllowGet);
                 }
                 else
                 {

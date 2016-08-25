@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Disco.Models.Repository
 {
-    public class Job
+    public class Job : IAttachmentTarget
     {
         [Key]
         public int Id { get; set; }
@@ -75,6 +75,12 @@ namespace Disco.Models.Repository
         public virtual JobMetaWarranty JobMetaWarranty { get; set; }
         public virtual JobMetaNonWarranty JobMetaNonWarranty { get; set; }
 
+        [NotMapped]
+        public string AttachmentReferenceId { get { return Id.ToString(); } }
+
+        [NotMapped]
+        public AttachmentTypes HasAttachmentType { get { return AttachmentTypes.Job; } }
+
         #region Helper Members
         public decimal JobComponentsTotalCost()
         {
@@ -85,6 +91,11 @@ namespace Disco.Models.Repository
             return decimal.Zero;
         }
         #endregion
+
+        public override string ToString()
+        {
+            return $"Job #{Id}";
+        }
 
         public static class JobStatusIds
         {

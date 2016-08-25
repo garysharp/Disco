@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Disco.Models.Repository
 {
-    public class User
+    public class User : IAttachmentTarget
     {
         [StringLength(50), Key, Column("Id")]
         public string UserId { get; set; }
@@ -59,6 +59,12 @@ namespace Disco.Models.Repository
                 return index < 0 ? null : UserId.Substring(0, index);
             }
         }
+
+        [NotMapped]
+        public string AttachmentReferenceId { get { return UserId; } }
+
+        [NotMapped]
+        public AttachmentTypes HasAttachmentType { get { return AttachmentTypes.User; } }
 
         public override string ToString()
         {

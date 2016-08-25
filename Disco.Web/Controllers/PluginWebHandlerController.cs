@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Disco.Services.Plugins;
 using Disco.Services.Authorization;
 using Disco.Services.Users;
+using Disco.Services.Interop;
 
 namespace Disco.Web.Controllers
 {
@@ -57,7 +58,7 @@ namespace Disco.Web.Controllers
 
             var pluginResourcePath = pluginResource.Item1;
 
-            var mimeType = Disco.BI.Interop.MimeTypes.ResolveMimeType(pluginResourcePath);
+            var mimeType = MimeTypes.ResolveMimeType(pluginResourcePath);
             if (Download.HasValue && Download.Value)
                 return File(pluginResourcePath, mimeType, Path.GetFileName(pluginResourcePath));
             else

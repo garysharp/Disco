@@ -1,13 +1,12 @@
-﻿using System;
+﻿using Disco.Models.Repository;
+using Disco.Services.Interop.ActiveDirectory;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Disco.Services.Interop.ActiveDirectory
+namespace Disco.Services
 {
     public static class ActiveDirectoryExtensions
     {
@@ -98,6 +97,17 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         #endregion
 
+        public static ADUserAccount ActiveDirectoryAccount(this User User, params string[] AdditionalProperties)
+        {
+            return ActiveDirectory.RetrieveADUserAccount(User.UserId, AdditionalProperties);
+        }
 
+        public static ADMachineAccount ActiveDirectoryAccount(this Device Device, params string[] AdditionalProperties)
+        {
+            if (ActiveDirectory.IsValidDomainAccountId(Device.DeviceDomainId))
+                return ActiveDirectory.RetrieveADMachineAccount(Device.DeviceDomainId, AdditionalProperties: AdditionalProperties);
+            else
+                return null;
+        }
     }
 }

@@ -3,6 +3,7 @@ using Disco.Models.BI.Config;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
 using Disco.Services.Devices.ManagedGroups;
+using Disco.Services.Expressions;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using System;
@@ -16,7 +17,7 @@ namespace Disco.BI.Extensions
 
         public static void ComputerNameInvalidateCache(this DeviceProfile deviceProfile)
         {
-            Expressions.ExpressionCache.InvalidateKey(ComputerNameExpressionCacheModule, deviceProfile.Id.ToString());
+            ExpressionCache.InvalidateKey(ComputerNameExpressionCacheModule, deviceProfile.Id.ToString());
         }
 
         public static OrganisationAddress DefaultOrganisationAddressDetails(this DeviceProfile deviceProfile, DiscoDataContext Database)

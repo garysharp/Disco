@@ -276,6 +276,22 @@ namespace Disco.Data.Configuration
                 return this.Get<string>(null);
             }
         }
+        public short DeploymentChecksum
+        {
+            get
+            {
+                var deploymentIdBytes = Guid.Parse(DeploymentId).ToByteArray();
+                return
+                    (short)(BitConverter.ToInt16(deploymentIdBytes, 0) ^
+                    BitConverter.ToInt16(deploymentIdBytes, 2) ^
+                    BitConverter.ToInt16(deploymentIdBytes, 2) ^
+                    BitConverter.ToInt16(deploymentIdBytes, 2) ^
+                    BitConverter.ToInt16(deploymentIdBytes, 2) ^
+                    BitConverter.ToInt16(deploymentIdBytes, 2) ^
+                    BitConverter.ToInt16(deploymentIdBytes, 2) ^
+                    BitConverter.ToInt16(deploymentIdBytes, 2));
+            }
+        }
         public UpdateResponseV2 UpdateLastCheckResponse
         {
             get

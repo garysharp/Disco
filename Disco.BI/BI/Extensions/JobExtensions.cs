@@ -1,50 +1,18 @@
-﻿using System;
+﻿using Disco.Data.Repository;
+using Disco.Models.Repository;
+using Disco.Models.Services.Documents;
+using Disco.Services;
+using Disco.Services.Authorization;
+using Disco.Services.Plugins;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Disco.Models.Repository;
-using Disco.Data.Repository;
-using System.IO;
-using Disco.Models.BI.DocumentTemplates;
-using Disco.Services.Plugins;
-using Disco.Models.BI.Job;
-using Disco.Services.Authorization;
 
 namespace Disco.BI.Extensions
 {
     public static class JobExtensions
     {
-        public static JobAttachment CreateAttachment(this Job Job, DiscoDataContext Database, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, byte[] PdfThumbnail = null)
-        {
-            if (string.IsNullOrEmpty(MimeType) || MimeType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
-                MimeType = Interop.MimeTypes.ResolveMimeType(Filename);
-
-            JobAttachment ja = new JobAttachment()
-            {
-                JobId = Job.Id,
-                TechUserId = CreatorUser.UserId,
-                Filename = Filename,
-                MimeType = MimeType,
-                Timestamp = DateTime.Now,
-                Comments = Comments
-            };
-
-            if (DocumentTemplate != null)
-                ja.DocumentTemplateId = DocumentTemplate.Id;
-
-            Database.JobAttachments.Add(ja);
-            Database.SaveChanges();
-
-            ja.SaveAttachment(Database, Content);
-            Content.Position = 0;
-            if (PdfThumbnail == null)
-                ja.GenerateThumbnail(Database, Content);
-            else
-                ja.SaveThumbnailAttachment(Database, PdfThumbnail);
-
-            return ja;
-        }
-
         public static List<DocumentTemplate> AvailableDocumentTemplates(this Job j, DiscoDataContext Database, User User, DateTime TimeStamp)
         {
             var dts = Database.DocumentTemplates.Include("JobSubTypes")

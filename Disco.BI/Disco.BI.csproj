@@ -64,9 +64,6 @@
     <Reference Include="Renci.SshNet">
       <HintPath>..\..\..\Resources\Libraries\SshNet\Renci.SshNet.dll</HintPath>
     </Reference>
-    <Reference Include="Spring.Core">
-      <HintPath>..\Resources\Libraries\Spring.NET\Spring.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -106,33 +103,16 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="zxing">
-      <HintPath>..\Resources\Libraries\ZXing\zxing.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BI\DataStore.cs" />
-    <Compile Include="BI\AttachmentBI\Utilities.cs" />
     <Compile Include="BI\DeviceBI\BatchUtilities.cs" />
     <Compile Include="BI\DeviceBI\DeviceModelBI.cs" />
     <Compile Include="BI\DeviceBI\Migration\LogMacAddressImporting.cs" />
     <Compile Include="BI\DisposableImageCollection.cs" />
-    <Compile Include="BI\DocumentTemplateBI\DocumentTemplateQRCodeLocationCache.cs" />
     <Compile Include="BI\DocumentTemplateBI\ManagedGroups\DocumentTemplateUsersManagedGroup.cs" />
     <Compile Include="BI\DocumentTemplateBI\ManagedGroups\DocumentTemplateDevicesManagedGroup.cs" />
     <Compile Include="BI\DocumentTemplateBI\ManagedGroups\DocumentTemplateManagedGroups.cs" />
-    <Compile Include="BI\Expressions\EvaluateExpressionParseException.cs" />
-    <Compile Include="BI\Expressions\ExpressionCachePreloadTask.cs" />
-    <Compile Include="BI\Expressions\Extensions\DataExt.cs" />
-    <Compile Include="BI\Expressions\Extensions\DeviceExt.cs" />
-    <Compile Include="BI\Expressions\Extensions\ImageExt.cs" />
-    <Compile Include="BI\Expressions\Extensions\ImageResultImplementations\BaseImageExpressionResult.cs" />
-    <Compile Include="BI\Expressions\Extensions\ImageResultImplementations\FileMontageImageExpressionResult.cs" />
-    <Compile Include="BI\Expressions\Extensions\ImageResultImplementations\FileImageExpressionResult.cs" />
-    <Compile Include="BI\Expressions\Extensions\ImageResultImplementations\BitmapImageExpressionResult.cs" />
-    <Compile Include="BI\Expressions\Extensions\UserExt.cs" />
     <Compile Include="BI\Extensions\AttachmentActionExtensions.cs" />
-    <Compile Include="BI\Extensions\AttachmentExtensions.cs" />
     <Compile Include="BI\Extensions\AuthorizationRoleExtensions.cs" />
     <Compile Include="BI\Extensions\ClientServicesExtensions.cs" />
     <Compile Include="BI\Extensions\UserFlagActionExtensions.cs" />
@@ -154,21 +134,7 @@
     <Compile Include="BI\DeviceBI\EnrolmentLog.cs" />
     <Compile Include="BI\Extensions\DocumentTemplateExtensions.cs" />
     <Compile Include="BI\DocumentTemplateBI\Utilities.cs" />
-    <Compile Include="BI\DocumentTemplateBI\DocumentUniqueIdentifier.cs" />
-    <Compile Include="BI\Expressions\EvaluateExpressionPart.cs" />
-    <Compile Include="BI\Expressions\Expression.cs" />
-    <Compile Include="BI\Expressions\ExpressionTypeDescriptor.cs" />
-    <Compile Include="BI\Expressions\ExpressionTypeMemberDescriptor.cs" />
-    <Compile Include="BI\Expressions\IExpressionPart.cs" />
-    <Compile Include="BI\Expressions\TextExpressionPart.cs" />
-    <Compile Include="BI\DocumentTemplateBI\Importer\DocumentDropBoxMonitor.cs" />
-    <Compile Include="BI\DocumentTemplateBI\Importer\DocumentImporterJob.cs" />
-    <Compile Include="BI\DocumentTemplateBI\Importer\DocumentImporterCleanCacheJob.cs" />
-    <Compile Include="BI\DocumentTemplateBI\DocumentsLog.cs" />
-    <Compile Include="BI\Expressions\ExpressionCache.cs" />
-    <Compile Include="BI\Interop\MimeTypes.cs" />
     <Compile Include="BI\Interop\Pdf\PdfGenerator.cs" />
-    <Compile Include="BI\Interop\Pdf\PdfImporter.cs" />
     <Compile Include="BI\JobBI\Statistics\DailyOpenedClosed.cs" />
     <Compile Include="BI\JobBI\Utilities.cs" />
     <Compile Include="BI\Extensions\UtilityExtensions.cs" />

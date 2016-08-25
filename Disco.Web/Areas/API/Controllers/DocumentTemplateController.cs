@@ -2,7 +2,9 @@
 using Disco.BI.DocumentTemplateBI.ManagedGroups;
 using Disco.BI.Extensions;
 using Disco.Models.Repository;
+using Disco.Services;
 using Disco.Services.Authorization;
+using Disco.Services.Documents;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Tasks;
 using Disco.Services.Users;
@@ -558,7 +560,9 @@ namespace Disco.Web.Areas.API.Controllers
         {
             var undetectedLocation = DataStore.CreateLocation(Database, "DocumentDropBox_Unassigned");
             var filename = System.IO.Path.Combine(undetectedLocation, string.Concat(id, ".pdf"));
-            if (BI.Interop.Pdf.PdfImporter.ProcessPdfAttachment(filename, Database, DocumentTemplateId, DataId, UserService.CurrentUser.UserId, DateTime.Now))
+            var identifier = DocumentUniqueIdentifier.Create(Database, DocumentTemplateId, DataId, UserService.CurrentUser.UserId, DateTime.Now, 0);
+
+            if (Disco.Services.Documents.AttachmentImport.Importer.ImportPdfAttachment(identifier, Database, filename))
             {
                 // Delete File
                 System.IO.File.Delete(filename);

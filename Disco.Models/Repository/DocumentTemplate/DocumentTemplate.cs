@@ -35,6 +35,25 @@ namespace Disco.Models.Repository
         [InverseProperty("DocumentTemplates")]
         public virtual IList<JobSubType> JobSubTypes { get; set; }
 
+        [NotMapped]
+        public AttachmentTypes AttachmentType
+        {
+            get
+            {
+                switch (Scope)
+                {
+                    case DocumentTemplateScopes.Device:
+                        return AttachmentTypes.Device;
+                    case DocumentTemplateScopes.Job:
+                        return AttachmentTypes.Job;
+                    case DocumentTemplateScopes.User:
+                        return AttachmentTypes.User;
+                    default:
+                        throw new ArgumentException("Unexpected Document Scope");
+                }
+            }
+        }
+
         public static class DocumentTemplateScopes
         {
             public const string Device = "Device";

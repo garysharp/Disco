@@ -13,6 +13,7 @@ using Disco.Services.Plugins.Features.RepairProvider;
 
 using PublishJobResult = Disco.Models.Services.Interop.DiscoServices.PublishJobResult;
 using DiscoServicesJobs = Disco.Services.Interop.DiscoServices.Jobs;
+using Disco.Services;
 
 namespace Disco.BI.Extensions
 {
@@ -176,7 +177,7 @@ namespace Disco.BI.Extensions
                         null,
                         FaultDescription,
                         SendAttachments,
-                        Disco.BI.Extensions.AttachmentExtensions.RepositoryFilename);
+                        AttachmentDataStoreExtensions.RepositoryFilename);
 
                     if (!publishJobResult.Success)
                         throw new Exception(string.Format("Disco ICT Online Services failed with the following message: ", publishJobResult.ErrorMessage));
@@ -398,7 +399,7 @@ namespace Disco.BI.Extensions
                         null,
                         RepairDescription,
                         SendAttachments,
-                        Disco.BI.Extensions.AttachmentExtensions.RepositoryFilename);
+                        AttachmentDataStoreExtensions.RepositoryFilename);
 
                     if (!publishJobResult.Success)
                         throw new Exception(string.Format("Disco ICT Online Services failed with the following message: ", publishJobResult.ErrorMessage));

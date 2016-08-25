@@ -1,9 +1,10 @@
-﻿using Disco.BI.Expressions;
-using Disco.BI.Extensions;
+﻿using Disco.BI.Extensions;
 using Disco.Data.Repository;
-using Disco.Models.BI.DocumentTemplates;
 using Disco.Models.BI.Expressions;
 using Disco.Models.Repository;
+using Disco.Models.Services.Documents;
+using Disco.Services;
+using Disco.Services.Expressions;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using iTextSharp.text.pdf;
@@ -19,14 +20,14 @@ namespace Disco.BI.Interop.Pdf
     public static class PdfGenerator
     {
 
-        public static System.IO.Stream GenerateBulkFromTemplate(DocumentTemplate dt, DiscoDataContext Database, User CreatorUser, System.DateTime Timestamp, params object[] DataObjects)
+        public static Stream GenerateBulkFromTemplate(DocumentTemplate dt, DiscoDataContext Database, User CreatorUser, System.DateTime Timestamp, params IAttachmentTarget[] DataObjects)
         {
             if (DataObjects.Length > 0)
             {
                 List<Stream> generatedPdfs = new List<Stream>(DataObjects.Length);
-                using (Models.BI.DocumentTemplates.DocumentState state = Models.BI.DocumentTemplates.DocumentState.DefaultState())
+                using (var state = DocumentState.DefaultState())
                 {
-                    foreach (object d in DataObjects)
+                    foreach (var d in DataObjects)
                     {
                         generatedPdfs.Add(dt.GeneratePdf(Database, d, CreatorUser, Timestamp, state, true));
                         state.SequenceNumber++;
@@ -48,9 +49,9 @@ namespace Disco.BI.Interop.Pdf
             return null;
         }
 
-        public static System.IO.Stream GenerateBulkFromTemplate(DocumentTemplate dt, DiscoDataContext Database, User CreatorUser, System.DateTime Timestamp, params string[] DataObjectsIds)
+        public static Stream GenerateBulkFromTemplate(DocumentTemplate dt, DiscoDataContext Database, User CreatorUser, DateTime Timestamp, params string[] DataObjectsIds)
         {
-            object[] DataObjects;
+            IAttachmentTarget[] DataObjects;
 
             switch (dt.Scope)
             {
@@ -62,7 +63,7 @@ namespace Disco.BI.Interop.Pdf
                     DataObjects = Database.Jobs.Where(j => intDataObjectsIds.Contains(j.Id)).ToArray();
                     break;
                 case DocumentTemplate.DocumentTemplateScopes.User:
-                    DataObjects = new object[DataObjectsIds.Length];
+                    DataObjects = new IAttachmentTarget[DataObjectsIds.Length];
                     for (int idIndex = 0; idIndex < DataObjectsIds.Length; idIndex++)
                     {
                         string dataObjectId = DataObjectsIds[idIndex];
@@ -79,7 +80,7 @@ namespace Disco.BI.Interop.Pdf
             return GenerateBulkFromTemplate(dt, Database, CreatorUser, Timestamp, DataObjects);
         }
 
-        public static System.IO.Stream GenerateFromTemplate(DocumentTemplate dt, DiscoDataContext Database, object Data, User CreatorUser, System.DateTime TimeStamp, DocumentState State, bool FlattenFields = false)
+        public static Stream GenerateFromTemplate(DocumentTemplate dt, DiscoDataContext Database, IAttachmentTarget Data, User CreatorUser, DateTime TimeStamp, DocumentState State, bool FlattenFields = false)
         {
             // Validate Data
             switch (dt.Scope)
@@ -124,7 +125,7 @@ namespace Disco.BI.Interop.Pdf
                 if (pdfFieldKey.Equals("DiscoAttachmentId", StringComparison.OrdinalIgnoreCase))
                 {
                     AcroFields.Item fields = pdfStamper.AcroFields.Fields[pdfFieldKey];
-                    string fieldValue = dt.UniqueIdentifier(Data, CreatorUser.UserId, TimeStamp);
+                    string fieldValue = dt.CreateUniqueIdentifier(Database, Data, CreatorUser, TimeStamp, 0).ToJson();
                     if (FlattenFields)
                         pdfStamper.AcroFields.SetField(pdfFieldKey, String.Empty);
                     else
@@ -134,7 +135,7 @@ namespace Disco.BI.Interop.Pdf
                     for (int pdfFieldOrdinal = 0; pdfFieldOrdinal < fields.Size; pdfFieldOrdinal++)
                     {
                         AcroFields.FieldPosition pdfFieldPosition = pdfFieldPositions[pdfFieldOrdinal];
-                        string pdfBarcodeContent = dt.UniquePageIdentifier(Data, CreatorUser.UserId, TimeStamp, pdfFieldPosition.page);
+                        string pdfBarcodeContent = dt.CreateUniqueIdentifier(Database, Data, CreatorUser, TimeStamp, pdfFieldPosition.page).ToQRCodeString();
                         BarcodeQRCode pdfBarcode = new BarcodeQRCode(pdfBarcodeContent, (int)pdfFieldPosition.position.Width, (int)pdfFieldPosition.position.Height, null);
                         iTextSharp.text.Image pdfBarcodeImage = pdfBarcode.GetImage();
                         pdfBarcodeImage.SetAbsolutePosition(pdfFieldPosition.position.Left, pdfFieldPosition.position.Bottom);

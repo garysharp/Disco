@@ -306,7 +306,7 @@
             logHub = $.connection.logNotifications;
             logHub.client.receiveLog = parseLog
 
-            $.connection.hub.qs = { LogModules: '@(Disco.BI.DocumentTemplateBI.DocumentsLog.Current.LiveLogGroupName)' };
+            $.connection.hub.qs = { LogModules: '@(Disco.Services.Documents.DocumentsLog.Current.LiveLogGroupName)' };
             $.connection.hub.error(onHubFailed);
 
             $.connection.hub.start()
