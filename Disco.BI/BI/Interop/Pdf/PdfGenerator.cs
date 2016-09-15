@@ -4,10 +4,12 @@ using Disco.Models.BI.Expressions;
 using Disco.Models.Repository;
 using Disco.Models.Services.Documents;
 using Disco.Services;
+using Disco.Services.Documents;
 using Disco.Services.Expressions;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.codec;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -135,11 +137,23 @@ namespace Disco.BI.Interop.Pdf
                     for (int pdfFieldOrdinal = 0; pdfFieldOrdinal < fields.Size; pdfFieldOrdinal++)
                     {
                         AcroFields.FieldPosition pdfFieldPosition = pdfFieldPositions[pdfFieldOrdinal];
-                        string pdfBarcodeContent = dt.CreateUniqueIdentifier(Database, Data, CreatorUser, TimeStamp, pdfFieldPosition.page).ToQRCodeString();
-                        BarcodeQRCode pdfBarcode = new BarcodeQRCode(pdfBarcodeContent, (int)pdfFieldPosition.position.Width, (int)pdfFieldPosition.position.Height, null);
-                        iTextSharp.text.Image pdfBarcodeImage = pdfBarcode.GetImage();
-                        pdfBarcodeImage.SetAbsolutePosition(pdfFieldPosition.position.Left, pdfFieldPosition.position.Bottom);
-                        pdfStamper.GetOverContent(pdfFieldPosition.page).AddImage(pdfBarcodeImage);
+
+                        // Create Binary Unique Identifier
+                        var pageUniqueId = dt.CreateUniqueIdentifier(Database, Data, CreatorUser, TimeStamp, pdfFieldPosition.page);
+                        var pageUniqueIdBytes = pageUniqueId.ToQRCodeBytes();
+
+                        // Encode to QRCode byte array
+                        var pageUniqueIdWidth = (int)pdfFieldPosition.position.Width;
+                        var pageUniqueIdHeight = (int)pdfFieldPosition.position.Height;
+                        var pageUniqueIdEncoded = QRCodeBinaryEncoder.Encode(pageUniqueIdBytes, pageUniqueIdWidth, pageUniqueIdHeight);
+
+                        // Encode byte array to Image
+                        var pageUniqueIdImageData = CCITTG4Encoder.Compress(pageUniqueIdEncoded, pageUniqueIdWidth, pageUniqueIdHeight);
+                        var pageUniqueIdImage = iTextSharp.text.Image.GetInstance(pageUniqueIdWidth, pageUniqueIdHeight, false, 256, 1, pageUniqueIdImageData, null);
+
+                        // Add to the pdf page
+                        pageUniqueIdImage.SetAbsolutePosition(pdfFieldPosition.position.Left, pdfFieldPosition.position.Bottom);
+                        pdfStamper.GetOverContent(pdfFieldPosition.page).AddImage(pageUniqueIdImage);
                     }
                     // Hide Fields
                     PdfDictionary field = fields.GetValue(0);

@@ -212,9 +212,9 @@ namespace Disco.Services.Documents
 
             // magic number (1) + version/flags (1) + deployment checksum (2) + timestamp (4) +
             //  page index (2) + creator id length (1) + target id length (1)
-            var requiredBytes = 12;
             var creatorIdLength = encoding.GetByteCount(CreatorId);
             var targetIdLength = encoding.GetByteCount(TargetId);
+            var requiredBytes = 12 + creatorIdLength + targetIdLength;
             var documentTemplateIdLength = 0;
 
             if (DocumentTemplateId != null)
@@ -222,6 +222,7 @@ namespace Disco.Services.Documents
                 flags |= 1;
                 requiredBytes++;
                 documentTemplateIdLength = encoding.GetByteCount(DocumentTemplateId);
+                requiredBytes += documentTemplateIdLength;
             }
 
             int position = 0;
@@ -230,7 +231,7 @@ namespace Disco.Services.Documents
             // magic number
             result[position++] = MagicNumber;
             // version & flags
-            result[position++] = (byte)(2 | (flags << 4));
+            result[position++] = (byte)(flags | (2 << 4));
             // deployment checksum
             deploymentChecksumBytes.CopyTo(result, position);
             position += 2;
@@ -343,7 +344,7 @@ namespace Disco.Services.Documents
             if (IsDocumentUniqueIdentifier(UniqueIdentifier))
             {
                 // first 4 bit indicate version
-                var version = UniqueIdentifier[2] & 0x0F;
+                var version = UniqueIdentifier[1] >> 4;
 
                 // Version 2
                 if (version == 2)
@@ -362,10 +363,10 @@ namespace Disco.Services.Documents
                     // ?    | document template id length (optional based on flag)
                     // ?-?  | document template id (UTF8, optional based on flag)
                     var encoding = Encoding.UTF8;
-                    var position = 2;
+                    var position = 1;
 
                     // next 4 bits are flags
-                    var flags = UniqueIdentifier[position++] >> 4;
+                    var flags = UniqueIdentifier[position++] & 0x0F;
 
                     var deploymentChecksum = BitConverter.ToInt16(UniqueIdentifier, position);
                     position += 2;
@@ -404,6 +405,7 @@ namespace Disco.Services.Documents
                     var timeStamp = DateTime.FromFileTimeUtc(116444736000000000L).AddTicks(TimeSpan.TicksPerSecond * timeStampEpoch).ToLocalTime();
 
                     Identifier = new DocumentUniqueIdentifier(Database, version, deploymentChecksum, documentTemplateId, targetId, creatorId, timeStamp, pageIndex, attachmentType);
+                    return true;
                 }
             }
 
