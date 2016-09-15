@@ -67,7 +67,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (!DistinguishedName.EndsWith(this.Domain.DistinguishedName, StringComparison.OrdinalIgnoreCase))
                 throw new ArgumentException(string.Format("The Distinguished Name ({0}) isn't a member of this domain [{1}]", DistinguishedName, this.Domain.Name), "DistinguishedName");
 
-            var entry = new DirectoryEntry(string.Format(LdapPathTemplate, this.Name, DistinguishedName));
+            var entry = new DirectoryEntry(string.Format(LdapPathTemplate, this.Name, ADHelpers.EscapeDistinguishedName(DistinguishedName)));
 
             if (LoadProperties != null)
                 entry.RefreshCache(LoadProperties);

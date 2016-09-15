@@ -1,4 +1,5 @@
-﻿using System.Security.Principal;
+﻿using System;
+using System.Security.Principal;
 using System.Text;
 
 namespace Disco.Services.Interop.ActiveDirectory
@@ -47,11 +48,23 @@ namespace Disco.Services.Interop.ActiveDirectory
             return query.Replace("*", "\\2a").Replace("(", "\\28").Replace(")", "\\29").Replace("\\", "\\5c").Replace("NUL", "\\00").Replace("/", "\\2f");
         }
 
-        internal static string ToLdapQueryFormat(this System.Guid g)
+        internal static string EscapeDistinguishedName(string DistinguishedName)
+        {
+            if (DistinguishedName.Contains("/"))
+            {
+                return DistinguishedName.Replace("/", @"\/");
+            }
+            else
+            {
+                return DistinguishedName;
+            }
+        }
+
+        internal static string ToLdapQueryFormat(this Guid g)
         {
             checked
             {
-                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                StringBuilder sb = new StringBuilder();
                 byte[] array = g.ToByteArray();
                 for (int i = 0; i < array.Length; i++)
                 {
