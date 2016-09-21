@@ -37,6 +37,7 @@ namespace Disco.Services.Documents
                     if (documentTemplate != null)
                     {
                         attachmentType = documentTemplate.AttachmentType;
+                        DocumentTemplateId = documentTemplate.Id;
                     }
                 }
 
@@ -108,6 +109,10 @@ namespace Disco.Services.Documents
                         default:
                             throw new ArgumentException("Unexpected Attachment Type", nameof(AttachmentType));
                     }
+                    if (target != null)
+                    {
+                        TargetId = target.AttachmentReferenceId;
+                    }
                 }
 
                 return target;
@@ -121,6 +126,10 @@ namespace Disco.Services.Documents
                 if (creator == null)
                 {
                     creator = database.Users.Find(ActiveDirectory.ParseDomainAccountId(CreatorId));
+                    if (creator != null)
+                    {
+                        CreatorId = creator.UserId;
+                    }
                 }
                 return creator;
             }
@@ -176,85 +185,95 @@ namespace Disco.Services.Documents
         public byte[] ToQRCodeBytes()
         {
             // Byte | Meaning
-            // 0    | magic number = 0x0D
-            // 1    | bits 0-3 = version; 4-7 = flags (1 = has document template id, 2 = device attachment,
-            //      |                                  4 = job attachment, 8 = user attachment)
+            // 0    | magic number = 0xC4
+            // 1    | bits 0-3 = version;
+            //      |      4   = flag: has document template id
+            //      |      5-6 = (01 = device attachment, 10 = job attachment, 11 = user attachment)
+            //      |      7   = not used
             // 2-3  | deployment checksum (int16)
             // 4-7  | timestamp (uint32 unix epoch)
             // 8-9  | page index (uint16)
-            // 10   | creator id length
-            // 11-? | creator id (UTF8)
-            // ?    | target id length
-            // ?-?  | target id
-            // ?    | document template id length (optional based on flag)
-            // ?-?  | document template id (UTF8, optional based on flag)
+            // 10   | creator id encoded
+            // ?    | target id encoded
+            // ?    | document template id encoded (optional based on flag)
+            const int version = 2;
 
-            var encoding = Encoding.UTF8;
-            byte flags = 0;
+            // encode variable-length parameters first
 
+            // encode creator id (strip default domain)
+            var creatorIdBytes = this.BinaryEncode(ActiveDirectory.FriendlyAccountId(CreatorId));
+
+            // encode target id
+            byte[] targetIdBytes;
+            if (AttachmentType.HasValue && AttachmentType.Value == AttachmentTypes.User)
+            {
+                // strip default domain from user targetted attachments
+                targetIdBytes = this.BinaryEncode(ActiveDirectory.FriendlyAccountId(TargetId));
+            }
+            else
+            {
+                targetIdBytes = this.BinaryEncode(TargetId);
+            }
+
+            byte[] documentTemplateIdBytes = null;
+            if (DocumentTemplateId != null)
+            {
+                documentTemplateIdBytes = this.BinaryEncode(DocumentTemplateId);
+            }
+
+            var result = new byte[10 + creatorIdBytes.Length + targetIdBytes.Length + (documentTemplateIdBytes?.Length ?? 0)];
+
+            // write magic number
+            result[0] = MagicNumber;
+
+            // write version
+            result[1] = (version << 4);
+
+            // write 'has document template id' flag
+            if (documentTemplateIdBytes != null)
+            {
+                result[1] |= 0x8; // 0000 1000
+            }
+
+            // write attachment type
             switch (AttachmentType)
             {
                 case AttachmentTypes.Device:
-                    flags = 2;
+                    result[1] |= 0x2; // 0000 0010 - 01
                     break;
                 case AttachmentTypes.Job:
-                    flags = 4;
+                    result[1] |= 0x4; // 0000 0100 - 10
                     break;
                 case AttachmentTypes.User:
-                    flags = 8;
+                    result[1] |= 0x6; // 0000 0110 - 11
                     break;
             }
 
-            var deploymentChecksumBytes = BitConverter.GetBytes(DeploymentChecksum);
-            var timeStampEpochBytes = BitConverter.GetBytes((uint)(TimeStamp.ToUniversalTime().Subtract(DateTime.FromFileTimeUtc(116444736000000000L)).Ticks / TimeSpan.TicksPerSecond));
-            var pageIndexBytes = BitConverter.GetBytes((ushort)PageIndex);
+            // write deployment checksum
+            result[2] = (byte)(DeploymentChecksum >> 8);
+            result[3] = (byte)DeploymentChecksum;
 
+            // write timestamp
+            var timestamp = (uint)(TimeStamp.ToUniversalTime().Subtract(DateTime.FromFileTimeUtc(116444736000000000L)).Ticks / TimeSpan.TicksPerSecond);
+            result[4] = (byte)(timestamp >> 24);
+            result[5] = (byte)(timestamp >> 16);
+            result[6] = (byte)(timestamp >> 8);
+            result[7] = (byte)timestamp;
 
-            // magic number (1) + version/flags (1) + deployment checksum (2) + timestamp (4) +
-            //  page index (2) + creator id length (1) + target id length (1)
-            var creatorIdLength = encoding.GetByteCount(CreatorId);
-            var targetIdLength = encoding.GetByteCount(TargetId);
-            var requiredBytes = 12 + creatorIdLength + targetIdLength;
-            var documentTemplateIdLength = 0;
+            // write page index
+            result[8] = (byte)(PageIndex >> 8);
+            result[9] = (byte)PageIndex;
 
-            if (DocumentTemplateId != null)
+            // write creator id
+            creatorIdBytes.CopyTo(result, 10);
+
+            // write target id
+            targetIdBytes.CopyTo(result, 10 + creatorIdBytes.Length);
+
+            // write document template id
+            if (documentTemplateIdBytes != null)
             {
-                flags |= 1;
-                requiredBytes++;
-                documentTemplateIdLength = encoding.GetByteCount(DocumentTemplateId);
-                requiredBytes += documentTemplateIdLength;
-            }
-
-            int position = 0;
-            var result = new byte[requiredBytes];
-
-            // magic number
-            result[position++] = MagicNumber;
-            // version & flags
-            result[position++] = (byte)(flags | (2 << 4));
-            // deployment checksum
-            deploymentChecksumBytes.CopyTo(result, position);
-            position += 2;
-            // timestamp
-            timeStampEpochBytes.CopyTo(result, position);
-            position += 4;
-            // page index
-            pageIndexBytes.CopyTo(result, position);
-            position += 2;
-            // creator id length
-            result[position++] = (byte)creatorIdLength;
-            // creator id
-            position += encoding.GetBytes(CreatorId, 0, CreatorId.Length, result, position);
-            // target id length
-            result[position++] = (byte)targetIdLength;
-            // target id
-            position += encoding.GetBytes(TargetId, 0, TargetId.Length, result, position);
-            if (documentTemplateIdLength > 0)
-            {
-                // document template id length
-                result[position++] = (byte)documentTemplateIdLength;
-                // document template id
-                position += encoding.GetBytes(DocumentTemplateId, 0, DocumentTemplateId.Length, result, position);
+                documentTemplateIdBytes.CopyTo(result, 10 + creatorIdBytes.Length + targetIdBytes.Length);
             }
 
             return result;
@@ -339,68 +358,74 @@ namespace Disco.Services.Documents
             return false;
         }
 
-        public static bool TryParse(DiscoDataContext Database, byte[] UniqueIdentifier, out DocumentUniqueIdentifier Identifier)
+        public static bool TryParse(DiscoDataContext Database, byte[] Data, out DocumentUniqueIdentifier Identifier)
         {
-            if (IsDocumentUniqueIdentifier(UniqueIdentifier))
+            if (IsDocumentUniqueIdentifier(Data))
             {
                 // first 4 bit indicate version
-                var version = UniqueIdentifier[1] >> 4;
+                var version = Data[1] >> 4;
 
                 // Version 2
                 if (version == 2)
                 {
                     // Byte | Meaning
-                    // 0    | magic number = 0x0D
-                    // 1    | bits 0-3 = version; 4-7 = flags (1 = has document template id, 2 = device attachment,
-                    //      |                                  4 = job attachment, 8 = user attachment)
+                    // 0    | magic number = 0xC4
+                    // 1    | bits 0-3 = version;
+                    //      |      4   = flag: has document template id
+                    //      |      5-6 = (01 = device attachment, 10 = job attachment, 11 = user attachment)
+                    //      |      7   = not used
                     // 2-3  | deployment checksum (int16)
                     // 4-7  | timestamp (uint32 unix epoch)
                     // 8-9  | page index (uint16)
-                    // 10   | creator id length
-                    // 11-? | creator id (UTF8)
-                    // ?    | target id length
-                    // ?-?  | target id
-                    // ?    | document template id length (optional based on flag)
-                    // ?-?  | document template id (UTF8, optional based on flag)
-                    var encoding = Encoding.UTF8;
-                    var position = 1;
+                    // 10   | creator id encoded
+                    // ?    | target id encoded
+                    // ?    | document template id encoded (optional based on flag)
 
-                    // next 4 bits are flags
-                    var flags = UniqueIdentifier[position++] & 0x0F;
+                    // read flags
+                    var flags = Data[1] & 0x0F;
 
-                    var deploymentChecksum = BitConverter.ToInt16(UniqueIdentifier, position);
-                    position += 2;
+                    // read deployment checksum
+                    short deploymentChecksum = (short)((Data[2] << 8) | Data[3]);
 
-                    var timeStampEpoch = BitConverter.ToUInt32(UniqueIdentifier, position);
-                    position += 4;
+                    // read timestamp
+                    var timeStampEpoch = ((long)Data[4] << 24) |
+                        ((long)Data[5] << 16) |
+                        ((long)Data[6] << 8) |
+                        Data[7];
 
-                    var pageIndex = BitConverter.ToUInt16(UniqueIdentifier, position);
-                    position += 2;
+                    // write page index
+                    var pageIndex = (Data[8] << 8) | Data[9];
 
-                    var creatorIdLength = UniqueIdentifier[position++];
-                    var creatorId = encoding.GetString(UniqueIdentifier, position, creatorIdLength);
-                    position += creatorIdLength;
+                    var position = 10;
 
-                    var targetIdLength = UniqueIdentifier[position++];
-                    var targetId = encoding.GetString(UniqueIdentifier, position, targetIdLength);
-                    position += targetIdLength;
+                    // write creator id
+                    var creatorId = DocumentUniqueIdentifierExtensions.BinaryDecode(Data, position, out position);
 
+                    // write target id
+                    var targetId = DocumentUniqueIdentifierExtensions.BinaryDecode(Data, position, out position);
+
+                    // write document template id
                     string documentTemplateId = null;
 
                     // Has document template id flag
-                    if ((flags & 1) == 1)
+                    if ((flags & 0x8) == 0x8)
                     {
-                        var documentTemplateIdLength = UniqueIdentifier[position++];
-                        documentTemplateId = encoding.GetString(UniqueIdentifier, position, documentTemplateIdLength);
+                        documentTemplateId = DocumentUniqueIdentifierExtensions.BinaryDecode(Data, position, out position);
                     }
 
                     AttachmentTypes? attachmentType = null;
-                    if ((flags & 2) == 2)
-                        attachmentType = AttachmentTypes.Device;
-                    else if ((flags & 4) == 4)
-                        attachmentType = AttachmentTypes.Job;
-                    else if ((flags & 8) == 8)
-                        attachmentType = AttachmentTypes.User;
+                    switch (flags & 0x6)
+                    {
+                        case 0x2:
+                            attachmentType = AttachmentTypes.Device;
+                            break;
+                        case 0x4:
+                            attachmentType = AttachmentTypes.Job;
+                            break;
+                        case 0x6:
+                            attachmentType = AttachmentTypes.User;
+                            break;
+                    }
 
                     var timeStamp = DateTime.FromFileTimeUtc(116444736000000000L).AddTicks(TimeSpan.TicksPerSecond * timeStampEpoch).ToLocalTime();
 

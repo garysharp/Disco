@@ -19,7 +19,7 @@ namespace Disco.Services.Documents
                 mode.getCharacterCountBits(ZXing.QrCode.Internal.Version.getVersionForNumber(1)) +
                 (Content.Length * 8);
 
-            var version = ChooseVersion(bitsNeeded, ecLevel);
+            var version = ChooseVersion(bitsNeeded, out ecLevel);
             var ecBlocks = version.getECBlocksForLevel(ecLevel);
             var totalByteCapacity = version.TotalCodewords - ecBlocks.TotalECCodewords;
             var totalBitCapacity = totalByteCapacity << 3;
@@ -75,8 +75,11 @@ namespace Disco.Services.Documents
             return scaleMatrix(matrix.Array, Width, Height);
         }
 
-        private static ZXing.QrCode.Internal.Version ChooseVersion(int RequiredBits, ErrorCorrectionLevel ECLevel)
+        private static ZXing.QrCode.Internal.Version ChooseVersion(int RequiredBits, out ErrorCorrectionLevel ECLevel)
         {
+            var ecls = new ErrorCorrectionLevel[] { ErrorCorrectionLevel.H, ErrorCorrectionLevel.Q, ErrorCorrectionLevel.M, ErrorCorrectionLevel.L };
+            int totalInputBytes = (RequiredBits + 7) / 8;
+
             // In the following comments, we use numbers of Version 7-H.
             for (int versionNum = 1; versionNum <= 40; versionNum++)
             {
@@ -84,14 +87,21 @@ namespace Disco.Services.Documents
                 // numBytes = 196
                 int numBytes = version.TotalCodewords;
                 // getNumECBytes = 130
-                var ecBlocks = version.getECBlocksForLevel(ECLevel);
-                int numEcBytes = ecBlocks.TotalECCodewords;
-                // getNumDataBytes = 196 - 130 = 66
-                int numDataBytes = numBytes - numEcBytes;
-                int totalInputBytes = (RequiredBits + 7) / 8;
-                if (numDataBytes >= totalInputBytes)
+
+                if (numBytes >= totalInputBytes)
                 {
-                    return version;
+                    for (int ecl = 0; ecl < ecls.Length; ecl++)
+                    {
+                        var ecBlocks = version.getECBlocksForLevel(ecls[ecl]);
+                        int numEcBytes = ecBlocks.TotalECCodewords;
+                        // getNumDataBytes = 196 - 130 = 66
+                        int numDataBytes = numBytes - numEcBytes;
+                        if (numDataBytes >= totalInputBytes)
+                        {
+                            ECLevel = ecls[ecl];
+                            return version;
+                        }
+                    }
                 }
             }
             throw new ArgumentException("Data too big", nameof(RequiredBits));
