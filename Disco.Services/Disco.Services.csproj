@@ -261,7 +261,7 @@
     <Compile Include="Documents\AttachmentImport\ImportDirectoryMonitor.cs" />
     <Compile Include="Documents\AttachmentImport\ImportPage.cs" />
     <Compile Include="Documents\DocumentsLog.cs" />
-    <Compile Include="Documents\DocumentTemplateActionExtensions.cs" />
+    <Compile Include="Documents\DocumentTemplateExtensions.cs" />
     <Compile Include="Documents\DocumentTemplateDataStoreExtensions.cs" />
     <Compile Include="Documents\DocumentTemplateExpressionExtensions.cs" />
     <Compile Include="Documents\DocumentUniqueIdentifier.cs" />

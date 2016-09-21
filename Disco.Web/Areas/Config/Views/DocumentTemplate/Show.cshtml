@@ -48,76 +48,93 @@
         <table>
             <tbody>
                 <tr>
-                    <th>Id:
+                    <th>
+                        Id:
                     </th>
-                    <td>@Html.DisplayFor(model => model.DocumentTemplate.Id)
+                    <td>
+                        @Html.DisplayFor(model => model.DocumentTemplate.Id)
                     </td>
                 </tr>
                 <tr>
-                    <th>Statistics:
+                    <th>
+                        Statistics:
                     </th>
                     <td>
                         <strong>@Model.StoredInstanceCount.ToString("n0")</strong> Stored Instance@(Model.StoredInstanceCount == 1 ? null : "s")
                     </td>
                 </tr>
                 <tr>
-                    <th>Description:
+                    <th>
+                        Description:
                     </th>
-                    <td>@if (canConfig)
+                    <td>
+                        @if (canConfig)
                         {
-                        @Html.TextBoxFor(model => model.DocumentTemplate.Description)
-                        @AjaxHelpers.AjaxSave()
-                        @AjaxHelpers.AjaxLoader()
-                        <script type="text/javascript">
-                            $(function () {
-                                document.DiscoFunctions.PropertyChangeHelper(
-                                    $('#DocumentTemplate_Description'),
-                                    'Description',
-                                    '@Url.Action(MVC.API.DocumentTemplate.UpdateDescription(Model.DocumentTemplate.Id))',
-                                    'Description'
-                                );
-                            });
-                        </script>
+                            @Html.TextBoxFor(model => model.DocumentTemplate.Description)
+                            @AjaxHelpers.AjaxSave()
+                            @AjaxHelpers.AjaxLoader()
+                            <script type="text/javascript">
+                                $(function () {
+                                    document.DiscoFunctions.PropertyChangeHelper(
+                                        $('#DocumentTemplate_Description'),
+                                        'Description',
+                                        '@Url.Action(MVC.API.DocumentTemplate.UpdateDescription(Model.DocumentTemplate.Id))',
+                                        'Description'
+                                    );
+                                });
+                            </script>
                         }
                         else
                         {
                             if (string.IsNullOrEmpty(Model.DocumentTemplate.Description))
                             {
-                        <span class="smallMessage">&lt;None Specified&gt;</span>
+                                <span class="smallMessage">&lt;None Specified&gt;</span>
                             }
                             else
                             {
-                        @Model.DocumentTemplate.Description
+                                @Model.DocumentTemplate.Description
                             }
                         }
                     </td>
                 </tr>
                 <tr>
-                    <th>Always Flatten Form:
+                    <th>
+                        &nbsp;
                     </th>
-                    <td>@if (canConfig)
-                        {
-                        <input id="DocumentTemplate_FlattenForm" type="checkbox" @(Model.DocumentTemplate.FlattenForm ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
-                        @AjaxHelpers.AjaxLoader()
-                        <script type="text/javascript">
-                            $(function () {
-                                document.DiscoFunctions.PropertyChangeHelper(
-                                    $('#DocumentTemplate_FlattenForm'),
-                                    null,
-                                    '@Url.Action(MVC.API.DocumentTemplate.UpdateFlattenForm(Model.DocumentTemplate.Id))',
-                                    'FlattenForm'
-                                );
-                            });
-                        </script>
-                        }
-                        else
-                        {
-                        <input id="DocumentTemplate_FlattenForm" type="checkbox" @(Model.DocumentTemplate.FlattenForm ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
-                        }
+                    <td>
+                        <div>
+                            @if (canConfig)
+            {
+                                <input id="DocumentTemplate_FlattenForm" type="checkbox" @(Model.DocumentTemplate.FlattenForm ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) />
+                                <label for="DocumentTemplate_FlattenForm">Flatten Form</label>
+                                @AjaxHelpers.AjaxLoader()
+                                <script type="text/javascript">
+                                    $(function () {
+                                        document.DiscoFunctions.PropertyChangeHelper(
+                                            $('#DocumentTemplate_FlattenForm'),
+                                            null,
+                                            '@Url.Action(MVC.API.DocumentTemplate.UpdateFlattenForm(Model.DocumentTemplate.Id))',
+                                            'FlattenForm'
+                                        );
+                                    });
+                                </script>
+                            }
+                            else
+                            {
+                                <input id="DocumentTemplate_FlattenForm" type="checkbox" @(Model.DocumentTemplate.FlattenForm ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
+                                <label for="DocumentTemplate_FlattenForm">Flatten Form</label>
+                            }
+                        </div>
+                        <div class="info-box">
+                            <p class="fa-p">
+                                <i class="fa fa-info-circle"></i>If selected when a document is generated all form elements will be removed and their content written in place.
+                            </p>
+                        </div>
                     </td>
                 </tr>
                 <tr>
-                    <th>Scope:
+                    <th>
+                        Scope:
                     </th>
                     <td>
                         <h4>@Model.DocumentTemplate.Scope Scope</h4>
@@ -130,7 +147,7 @@
                             <button id="Config_DocumentTemplates_Scope_Button" class="button small">Change Scope</button>
                         </div>
                         @if (canConfig)
-                        {
+            {
                             <div id="Config_DocumentTemplates_Scope_Dialog" title="Change Document Template Scope" class="dialog">
                                 @using (Html.BeginForm(MVC.API.DocumentTemplate.UpdateScope(Model.DocumentTemplate.Id, redirect: true)))
                                 {
@@ -139,7 +156,7 @@
                                         <select id="Config_DocumentTemplates_Scope_Scope" name="Scope">
                                             @foreach (var scope in Model.Scopes)
                                             {
-                                                <option value="@scope" selected="@(scope == Model.DocumentTemplate.Scope ? "selected" : null)">@scope</option>   
+                                                <option value="@scope" selected="@(scope == Model.DocumentTemplate.Scope ? "selected" : null)">@scope</option>
                                             }
                                         </select>
                                     </div>
@@ -192,7 +209,7 @@
                             </script>
                         }
                         @if (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.Job)
-                        {
+            {
                             <hr />
                             <h4>Job Type Filters:</h4>
                             <div id="Config_DocumentTemplates_JobSubTypes" @(Model.DocumentTemplate.Scope != DocumentTemplate.DocumentTemplateScopes.Job ? "style=\"display: none;\" " : null)>
@@ -213,7 +230,7 @@
                                                         {
                                                             foreach (var jobSubType in jobType)
                                                             {
-                                                            <li>@jobSubType.Description</li>
+                                                                <li>@jobSubType.Description</li>
                                                             }
                                                         }
                                                     </ul>
@@ -235,14 +252,15 @@
                                             var selectedTypes = Model.DocumentTemplate.JobSubTypes.Select(jst => jst.JobType).Distinct().ToList();
                                             foreach (var jt in Model.JobTypes)
                                             {
-                                            <div class="jobTypes">
-                                                <h4>
-                                                    <input id="Types_@(jt.Id)" class="jobType" type="checkbox" value="@(jt.Id)" @(selectedTypes.Contains(jt) ? "checked=\"checked\"" : null) /><label for="Types_@(jt.Id)">@jt.Description</label></h4>
-                                                <div id="SubTypes_@(jt.Id)" class="jobSubTypes">
-                                                    @CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id), "div")
-                                                    @CommonHelpers.CheckBoxList("JobSubTypes", jt.JobSubTypes.OrderBy(jst => jst.Description).ToSelectListItems(Model.DocumentTemplate.JobSubTypes), 2)
+                                                <div class="jobTypes">
+                                                    <h4>
+                                                        <input id="Types_@(jt.Id)" class="jobType" type="checkbox" value="@(jt.Id)" @(selectedTypes.Contains(jt) ? "checked=\"checked\"" : null) /><label for="Types_@(jt.Id)">@jt.Description</label>
+                                                    </h4>
+                                                    <div id="SubTypes_@(jt.Id)" class="jobSubTypes">
+                                                        @CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id), "div")
+                                                        @CommonHelpers.CheckBoxList("JobSubTypes", jt.JobSubTypes.OrderBy(jst => jst.Description).ToSelectListItems(Model.DocumentTemplate.JobSubTypes), 2)
+                                                    </div>
                                                 </div>
-                                            </div>   
                                             }
                                         }
                                     </div>
@@ -313,147 +331,149 @@
                         }
                     </td>
                 </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form Config_DocumentTemplates_Template" style="width: 650px; margin: 0 auto 20px;">
+        <h2>PDF Template</h2>
+        <table>
+            <tbody>
                 <tr>
-                    <th>PDF Template
-                    </th>
                     <td>
-                        @Html.ActionLinkSmallButton("Download Template", MVC.API.DocumentTemplate.Template(Model.DocumentTemplate.Id))
-                        @if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.Upload))
-                        {
-                            <button class="button small" id="Config_DocumentTemplates_TemplatePdf_Button">Replace Template</button>
-                            <div id="Config_DocumentTemplates_TemplatePdf_Dialog" title="Replace Document PDF Template" class="dialog">
-                                <h4>Select a PDF Template to upload:</h4>
-                                <div>
-                                    @using (Html.BeginForm(MVC.API.DocumentTemplate.Template(Model.DocumentTemplate.Id, true, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
-                                    {
-                                        <input type="file" name="Template" id="Config_DocumentTemplates_TemplatePdf_Template" style="width: 250px;" />
-                                    }
-                                </div>
-                            </div>
-                            <script type="text/javascript">
-                                $(function () {
-                                    var dialog, template;
-
-                                    function showDialog() {
-                                        if (dialog == null) {
-                                            template = $('#Config_DocumentTemplates_TemplatePdf_Template');
-
-                                            dialog = $('#Config_DocumentTemplates_TemplatePdf_Dialog').dialog({
-                                                width: 350,
-                                                resizable: false,
-                                                modal: true,
-                                                autoOpen: false,
-                                                buttons: {
-                                                    'Upload': function () {
-                                                        if (template.val() == '') {
-                                                            alert('A template file is required to upload.');
-                                                        } else {
-                                                            dialog.dialog('option', 'buttons', null);
-                                                            dialog.dialog('disable');
-                                                            template.closest('form').submit();
-                                                        }
-                                                    },
-                                                    'Cancel': function () {
-                                                        dialog.dialog('close');
-                                                    }
-                                                }
-                                            });
-                                        }
-
-                                        dialog.dialog('open');
-
-                                        return false;
-                                    }
-
-                                    $('#Config_DocumentTemplates_TemplatePdf_Button').click(showDialog);
-                                });
-                            </script>
-                        }
+                        <div style="margin: -8px -5px; max-height: 350px; overflow-y: scroll; text-align: center;">
+                            <img style="margin: 8px 5px;" src="@Url.Action(MVC.API.DocumentTemplate.TemplatePreview(Model.DocumentTemplate.Id))" />
+                        </div>
                     </td>
                 </tr>
-                @if (hideAdvanced)
+                @if (canConfig)
                 {
                     <tr>
-                        <td colspan="2" style="text-align: right;">
-                            <button id="Config_HideAdvanced_Show" class="button small">Show Advanced Options</button>
-                            <script>
-                                $(function () {
-                                    $('#Config_HideAdvanced_Show').click(function () {
-                                        var $this = $(this);
-                                        $this.closest('.Config_HideAdvanced').removeClass('Config_HideAdvanced');
-                                        $this.closest('tr').remove();
+                        <td style="text-align: right;">
+                            @Html.ActionLinkSmallButton("Download Template", MVC.API.DocumentTemplate.Template(Model.DocumentTemplate.Id))
+                            @if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.Upload))
+                            {
+                                <button class="button small" id="Config_DocumentTemplates_TemplatePdf_Button">Replace Template</button>
+                                <div id="Config_DocumentTemplates_TemplatePdf_Dialog" title="Replace Document PDF Template" class="dialog">
+                                    <h4>Select a PDF Template to upload:</h4>
+                                    <div>
+                                        @using (Html.BeginForm(MVC.API.DocumentTemplate.Template(Model.DocumentTemplate.Id, true, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                        {
+                                            <input type="file" name="Template" id="Config_DocumentTemplates_TemplatePdf_Template" style="width: 250px;" />
+                                        }
+                                    </div>
+                                </div>
+                                <script type="text/javascript">
+                                    $(function () {
+                                        var dialog, template;
+
+                                        function showDialog() {
+                                            if (dialog == null) {
+                                                template = $('#Config_DocumentTemplates_TemplatePdf_Template');
+
+                                                dialog = $('#Config_DocumentTemplates_TemplatePdf_Dialog').dialog({
+                                                    width: 350,
+                                                    resizable: false,
+                                                    modal: true,
+                                                    autoOpen: false,
+                                                    buttons: {
+                                                        'Upload': function () {
+                                                            if (template.val() == '') {
+                                                                alert('A template file is required to upload.');
+                                                            } else {
+                                                                dialog.dialog('option', 'buttons', null);
+                                                                dialog.dialog('disable');
+                                                                template.closest('form').submit();
+                                                            }
+                                                        },
+                                                        'Cancel': function () {
+                                                            dialog.dialog('close');
+                                                        }
+                                                    }
+                                                });
+                                            }
+
+                                            dialog.dialog('open');
+
+                                            return false;
+                                        }
+
+                                        $('#Config_DocumentTemplates_TemplatePdf_Button').click(showDialog);
                                     });
-                                });
-                            </script>
+                                </script>
+                            }
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+
     <div class="form Config_HideAdvanced_Item" style="width: 650px;">
         <h2>Advanced Options</h2>
         <table>
             <tbody>
                 <tr>
-                    <th>Filter Expression:
+                    <th>
+                        Filter Expression:
                     </th>
-                    <td>@if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
+                    <td>
+                        @if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
                         {
-                        @Html.EditorFor(model => model.DocumentTemplate.FilterExpression)
-                        @AjaxHelpers.AjaxRemove()
-                        @AjaxHelpers.AjaxSave()
-                        @AjaxHelpers.AjaxLoader()
-                        <script type="text/javascript">
-                            $(function () {
-                                var field = $('#DocumentTemplate_FilterExpression');
-                                var fieldRemove = field.next('.ajaxRemove');
-                                var fieldOriginalWidth, fieldOriginalHeight;
+                            @Html.EditorFor(model => model.DocumentTemplate.FilterExpression)
+                            @AjaxHelpers.AjaxRemove()
+                            @AjaxHelpers.AjaxSave()
+                            @AjaxHelpers.AjaxLoader()
+                            <script type="text/javascript">
+                                $(function () {
+                                    var field = $('#DocumentTemplate_FilterExpression');
+                                    var fieldRemove = field.next('.ajaxRemove');
+                                    var fieldOriginalWidth, fieldOriginalHeight;
 
-                                document.DiscoFunctions.PropertyChangeHelper(
-                                    field,
-                                    'None',
-                                    '@Url.Action(MVC.API.DocumentTemplate.UpdateFilterExpression(Model.DocumentTemplate.Id))',
-                                    'FilterExpression'
-                                );
+                                    document.DiscoFunctions.PropertyChangeHelper(
+                                        field,
+                                        'None',
+                                        '@Url.Action(MVC.API.DocumentTemplate.UpdateFilterExpression(Model.DocumentTemplate.Id))',
+                                        'FilterExpression'
+                                    );
 
-                                field.focus(function () {
-                                    fieldOriginalWidth = field.width();
-                                    fieldOriginalHeight = field.height();
-                                    field.css('overflow', 'visible').animate({ width: field.parent().width() - 42, height: 75 }, 200);
-                                }).blur(function () {
-                                    field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
-                                }).change(function () {
+                                    field.focus(function () {
+                                        fieldOriginalWidth = field.width();
+                                        fieldOriginalHeight = field.height();
+                                        field.css('overflow', 'visible').animate({ width: field.parent().width() - 42, height: 75 }, 200);
+                                    }).blur(function () {
+                                        field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
+                                    }).change(function () {
+                                        if (!!field.val()) {
+                                            fieldRemove.show();
+                                        } else {
+                                            fieldRemove.hide();
+                                        }
+                                    }).attr('placeholder', 'None').attr('spellcheck', 'false');
+
+                                    fieldRemove.click(function () {
+                                        field.val('').change();
+                                    });
+
                                     if (!!field.val()) {
                                         fieldRemove.show();
                                     } else {
                                         fieldRemove.hide();
                                     }
-                                }).attr('placeholder', 'None').attr('spellcheck', 'false');
-
-                                fieldRemove.click(function () {
-                                    field.val('').change();
                                 });
-
-                                if (!!field.val()) {
-                                    fieldRemove.show();
-                                } else {
-                                    fieldRemove.hide();
-                                }
-                            });
-                        </script>
+                            </script>
                         }
                         else
                         {
                             if (string.IsNullOrWhiteSpace(Model.DocumentTemplate.FilterExpression))
                             {
-                        <span class="smallMessage">&lt;None Specified&gt;</span>
+                                <span class="smallMessage">&lt;None Specified&gt;</span>
                             }
                             else
                             {
-                        <div class="code">
-                            @Model.DocumentTemplate.FilterExpression
-                        </div>
+                                <div class="code">
+                                    @Model.DocumentTemplate.FilterExpression
+                                </div>
                             }
                         }
                         <div class="info-box">
@@ -464,64 +484,66 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>On Generated Expression:
+                    <th>
+                        On Generated Expression:
                     </th>
-                    <td>@if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
-                        {
-                        @Html.EditorFor(model => model.DocumentTemplate.OnGenerateExpression)
-                        @AjaxHelpers.AjaxRemove()
-                        @AjaxHelpers.AjaxSave()
-                        @AjaxHelpers.AjaxLoader()
-                        <script type="text/javascript">
-                            $(function () {
-                                var field = $('#DocumentTemplate_OnGenerateExpression');
-                                var fieldRemove = field.next('.ajaxRemove');
-                                var fieldOriginalWidth, fieldOriginalHeight;
+                    <td>
+                        @if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
+            {
+                            @Html.EditorFor(model => model.DocumentTemplate.OnGenerateExpression)
+                            @AjaxHelpers.AjaxRemove()
+                            @AjaxHelpers.AjaxSave()
+                            @AjaxHelpers.AjaxLoader()
+                            <script type="text/javascript">
+                                $(function () {
+                                    var field = $('#DocumentTemplate_OnGenerateExpression');
+                                    var fieldRemove = field.next('.ajaxRemove');
+                                    var fieldOriginalWidth, fieldOriginalHeight;
 
-                                document.DiscoFunctions.PropertyChangeHelper(
-                                    field,
-                                    'None',
-                                    '@Url.Action(MVC.API.DocumentTemplate.UpdateOnGenerateExpression(Model.DocumentTemplate.Id))',
-                                    'OnGenerateExpression'
-                                );
+                                    document.DiscoFunctions.PropertyChangeHelper(
+                                        field,
+                                        'None',
+                                        '@Url.Action(MVC.API.DocumentTemplate.UpdateOnGenerateExpression(Model.DocumentTemplate.Id))',
+                                        'OnGenerateExpression'
+                                    );
 
-                                field.focus(function () {
-                                    fieldOriginalWidth = field.width();
-                                    fieldOriginalHeight = field.height();
-                                    field.css('overflow', 'visible').animate({ width: field.parent().width() - 42, height: 75 }, 200);
-                                }).blur(function () {
-                                    field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
-                                }).change(function () {
+                                    field.focus(function () {
+                                        fieldOriginalWidth = field.width();
+                                        fieldOriginalHeight = field.height();
+                                        field.css('overflow', 'visible').animate({ width: field.parent().width() - 42, height: 75 }, 200);
+                                    }).blur(function () {
+                                        field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
+                                    }).change(function () {
+                                        if (!!field.val()) {
+                                            fieldRemove.show();
+                                        } else {
+                                            fieldRemove.hide();
+                                        }
+                                    }).attr('placeholder', 'None').attr('spellcheck', 'false');
+
+                                    fieldRemove.click(function () {
+                                        field.val('').change();
+                                    });
+
                                     if (!!field.val()) {
                                         fieldRemove.show();
                                     } else {
                                         fieldRemove.hide();
                                     }
-                                }).attr('placeholder', 'None').attr('spellcheck', 'false');
-
-                                fieldRemove.click(function () {
-                                    field.val('').change();
                                 });
-
-                                if (!!field.val()) {
-                                    fieldRemove.show();
-                                } else {
-                                    fieldRemove.hide();
-                                }
-                            });
-                        </script>
+                            </script>
                         }
                         else
                         {
                             if (string.IsNullOrWhiteSpace(Model.DocumentTemplate.OnGenerateExpression))
                             {
-                        <span class="smallMessage">&lt;None Specified&gt;</span>
+                                <span class="smallMessage">&lt;None Specified&gt;</span>
                             }
                             else
                             {
-                        <div class="code">
-                            @Model.DocumentTemplate.OnGenerateExpression
-                        </div>
+                                <div class="code">
+                                    @Model.DocumentTemplate.OnGenerateExpression
+                                </div>
                             }
                         }
                         <div class="info-box">
@@ -532,64 +554,66 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>On Import Expression:
+                    <th>
+                        On Import Expression:
                     </th>
-                    <td>@if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
+                    <td>
+                        @if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
                         {
-                        @Html.EditorFor(model => model.DocumentTemplate.OnImportAttachmentExpression)
-                        @AjaxHelpers.AjaxRemove()
-                        @AjaxHelpers.AjaxSave()
-                        @AjaxHelpers.AjaxLoader()
-                        <script type="text/javascript">
-                            $(function () {
-                                var field = $('#DocumentTemplate_OnImportAttachmentExpression');
-                                var fieldRemove = field.next('.ajaxRemove');
-                                var fieldOriginalWidth, fieldOriginalHeight;
+                            @Html.EditorFor(model => model.DocumentTemplate.OnImportAttachmentExpression)
+                            @AjaxHelpers.AjaxRemove()
+                            @AjaxHelpers.AjaxSave()
+                            @AjaxHelpers.AjaxLoader()
+                            <script type="text/javascript">
+                                $(function () {
+                                    var field = $('#DocumentTemplate_OnImportAttachmentExpression');
+                                    var fieldRemove = field.next('.ajaxRemove');
+                                    var fieldOriginalWidth, fieldOriginalHeight;
 
-                                document.DiscoFunctions.PropertyChangeHelper(
-                                    field,
-                                    'None',
-                                    '@Url.Action(MVC.API.DocumentTemplate.UpdateOnImportAttachmentExpression(Model.DocumentTemplate.Id))',
-                                    'OnImportAttachmentExpression'
-                                );
+                                    document.DiscoFunctions.PropertyChangeHelper(
+                                        field,
+                                        'None',
+                                        '@Url.Action(MVC.API.DocumentTemplate.UpdateOnImportAttachmentExpression(Model.DocumentTemplate.Id))',
+                                        'OnImportAttachmentExpression'
+                                    );
 
-                                field.focus(function () {
-                                    fieldOriginalWidth = field.width();
-                                    fieldOriginalHeight = field.height();
-                                    field.css('overflow', 'visible').animate({ width: field.parent().width() - 42, height: 75 }, 200);
-                                }).blur(function () {
-                                    field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
-                                }).change(function () {
+                                    field.focus(function () {
+                                        fieldOriginalWidth = field.width();
+                                        fieldOriginalHeight = field.height();
+                                        field.css('overflow', 'visible').animate({ width: field.parent().width() - 42, height: 75 }, 200);
+                                    }).blur(function () {
+                                        field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
+                                    }).change(function () {
+                                        if (!!field.val()) {
+                                            fieldRemove.show();
+                                        } else {
+                                            fieldRemove.hide();
+                                        }
+                                    }).attr('placeholder', 'None').attr('spellcheck', 'false');
+
+                                    fieldRemove.click(function () {
+                                        field.val('').change();
+                                    });
+
                                     if (!!field.val()) {
                                         fieldRemove.show();
                                     } else {
                                         fieldRemove.hide();
                                     }
-                                }).attr('placeholder', 'None').attr('spellcheck', 'false');
-
-                                fieldRemove.click(function () {
-                                    field.val('').change();
                                 });
-
-                                if (!!field.val()) {
-                                    fieldRemove.show();
-                                } else {
-                                    fieldRemove.hide();
-                                }
-                            });
-                        </script>
+                            </script>
                         }
                         else
                         {
                             if (string.IsNullOrWhiteSpace(Model.DocumentTemplate.OnImportAttachmentExpression))
                             {
-                        <span class="smallMessage">&lt;None Specified&gt;</span>
+                                <span class="smallMessage">&lt;None Specified&gt;</span>
                             }
                             else
                             {
-                        <div class="code">
-                            @Model.DocumentTemplate.OnImportAttachmentExpression
-                        </div>
+                                <div class="code">
+                                    @Model.DocumentTemplate.OnImportAttachmentExpression
+                                </div>
                             }
                         }
                         <div class="info-box">
@@ -600,28 +624,29 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Linked Groups:
+                    <th>
+                        Linked Groups:
                     </th>
                     <td>
                         <div>
                             @Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
-               {
-                   CanConfigure = canConfig,
-                   CategoryDescription = DocumentTemplateUsersManagedGroup.GetCategoryDescription(Model.DocumentTemplate),
-                   Description = DocumentTemplateUsersManagedGroup.GetDescription(Model.DocumentTemplate),
-                   ManagedGroup = Model.UsersLinkedGroup,
-                   UpdateUrl = Url.Action(MVC.API.DocumentTemplate.UpdateUsersLinkedGroup(Model.DocumentTemplate.Id, redirect: true))
-               })
+                       {
+                           CanConfigure = canConfig,
+                           CategoryDescription = DocumentTemplateUsersManagedGroup.GetCategoryDescription(Model.DocumentTemplate),
+                           Description = DocumentTemplateUsersManagedGroup.GetDescription(Model.DocumentTemplate),
+                           ManagedGroup = Model.UsersLinkedGroup,
+                           UpdateUrl = Url.Action(MVC.API.DocumentTemplate.UpdateUsersLinkedGroup(Model.DocumentTemplate.Id, redirect: true))
+                       })
                             @Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
-               {
-                   CanConfigure = canConfig,
-                   CategoryDescription = DocumentTemplateDevicesManagedGroup.GetCategoryDescription(Model.DocumentTemplate),
-                   Description = DocumentTemplateDevicesManagedGroup.GetDescription(Model.DocumentTemplate),
-                   ManagedGroup = Model.DevicesLinkedGroup,
-                   UpdateUrl = Url.Action(MVC.API.DocumentTemplate.UpdateDevicesLinkedGroup(Model.DocumentTemplate.Id, redirect: true))
-               })
+                       {
+                           CanConfigure = canConfig,
+                           CategoryDescription = DocumentTemplateDevicesManagedGroup.GetCategoryDescription(Model.DocumentTemplate),
+                           Description = DocumentTemplateDevicesManagedGroup.GetDescription(Model.DocumentTemplate),
+                           ManagedGroup = Model.DevicesLinkedGroup,
+                           UpdateUrl = Url.Action(MVC.API.DocumentTemplate.UpdateDevicesLinkedGroup(Model.DocumentTemplate.Id, redirect: true))
+                       })
                             @if (canConfig)
-                            {
+            {
                                 @Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared)
                             }
                         </div>
@@ -638,8 +663,10 @@
 <div id="dialogConfirmDelete" title="Delete this Document Template?">
     <p>
         <i class="fa fa-exclamation-triangle fa-lg warning"></i>This item will be permanently deleted and cannot be recovered.<br />
-        <em>This <strong>will not delete attachments</strong> which have already been imported,
-            but any generated documents will no longer be automatically imported.</em><br />
+        <em>
+            This <strong>will not delete attachments</strong> which have already been imported,
+            but any generated documents will no longer be automatically imported.
+        </em><br />
         Are you sure?
     </p>
 </div>
@@ -673,6 +700,18 @@
     });
 </script>
 <div class="actionBar">
+    @if (hideAdvanced)
+    {
+        <button id="Config_HideAdvanced_Show" class="button">Show Advanced Options</button>
+        <script>
+            $(function () {
+                $('#Config_HideAdvanced_Show').click(function () {
+                    $('#Config_DocumentTemplates_Show').removeClass('Config_HideAdvanced');
+                    $(this).remove();
+                });
+            });
+        </script>
+    }
     @if (Authorization.Has(Claims.Config.Show))
     {
         @Html.ActionLinkButton("Expression Browser", MVC.Config.DocumentTemplate.ExpressionBrowser())
@@ -685,47 +724,53 @@
                 @switch (Model.DocumentTemplate.Scope)
                 {
                     case "Device":
-                    <div>
-                        Enter multiple <span class="scopeDescBulkGenerate">Device Serial Numbers</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
-                    </div>
-                    <div class="examples clearfix">
-                        <h4>Examples:</h4>
-                        <div class="example1 code">01234567<br />
-                            ABCD9876<br />
-                            8VQ6G2R</div>
-                        <div class="example2 code">01234567,ABCD9876,8VQ6G2R</div>
-                        <div class="example3 code">01234567;ABCD9876;8VQ6G2R</div>
-                    </div>
+                        <div>
+                            Enter multiple <span class="scopeDescBulkGenerate">Device Serial Numbers</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                        </div>
+                        <div class="examples clearfix">
+                            <h4>Examples:</h4>
+                            <div class="example1 code">
+                                01234567<br />
+                                ABCD9876<br />
+                                8VQ6G2R
+                            </div>
+                            <div class="example2 code">01234567,ABCD9876,8VQ6G2R</div>
+                            <div class="example3 code">01234567;ABCD9876;8VQ6G2R</div>
+                        </div>
                         break;
                     case "Job":
-                    <div>
-                        Enter multiple <span class="scopeDescBulkGenerate">Job Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
-                    </div>
-                    <div class="examples clearfix">
-                        <h4>Examples:</h4>
-                        <div class="example1 code">86<br />
-                            99<br />
-                            44</div>
-                        <div class="example2 code">86,99,44</div>
-                        <div class="example3 code">86;99;44</div>
-                    </div>
+                        <div>
+                            Enter multiple <span class="scopeDescBulkGenerate">Job Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                        </div>
+                        <div class="examples clearfix">
+                            <h4>Examples:</h4>
+                            <div class="example1 code">
+                                86<br />
+                                99<br />
+                                44
+                            </div>
+                            <div class="example2 code">86,99,44</div>
+                            <div class="example3 code">86;99;44</div>
+                        </div>
                         break;
                     case "User":
-                    <div>
-                        Enter multiple <span class="scopeDescBulkGenerate">User Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
-                    </div>
-                    <div class="examples clearfix">
-                        <h4>Examples:</h4>
-                        <div class="example1 code">user6<br />
-                            smi0099<br />@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith</div>
-                        <div class="example2 code">user6,smi0099,@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith</div>
-                        <div class="example3 code">user6;smi0099;@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith</div>
-                    </div>
+                        <div>
+                            Enter multiple <span class="scopeDescBulkGenerate">User Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                        </div>
+                        <div class="examples clearfix">
+                            <h4>Examples:</h4>
+                            <div class="example1 code">
+                                user6<br />
+                                smi0099<br />@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith
+                            </div>
+                            <div class="example2 code">user6,smi0099,@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith</div>
+                            <div class="example3 code">user6;smi0099;@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith</div>
+                        </div>
                         break;
                 }
             </div>
             @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
-            {
+                {
                 <div class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="DataIds"></div>
                 <textarea id="inputBulkGenerateDataIds" name="DataIds" data-val="true" data-val-required="Identifiers are required"></textarea>
             }

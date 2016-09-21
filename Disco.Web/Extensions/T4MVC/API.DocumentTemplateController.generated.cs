@@ -71,6 +71,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult TemplatePreview()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TemplatePreview);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult UpdateDescription()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDescription);
@@ -183,6 +189,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string Update = "Update";
             public readonly string Template = "Template";
+            public readonly string TemplatePreview = "TemplatePreview";
             public readonly string UpdateDescription = "UpdateDescription";
             public readonly string UpdateFilterExpression = "UpdateFilterExpression";
             public readonly string UpdateOnGenerateExpression = "UpdateOnGenerateExpression";
@@ -207,6 +214,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public const string Update = "Update";
             public const string Template = "Template";
+            public const string TemplatePreview = "TemplatePreview";
             public const string UpdateDescription = "UpdateDescription";
             public const string UpdateFilterExpression = "UpdateFilterExpression";
             public const string UpdateOnGenerateExpression = "UpdateOnGenerateExpression";
@@ -247,6 +255,14 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string id = "id";
             public readonly string redirect = "redirect";
             public readonly string Template = "Template";
+        }
+        static readonly ActionParamsClass_TemplatePreview s_params_TemplatePreview = new ActionParamsClass_TemplatePreview();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_TemplatePreview TemplatePreviewParams { get { return s_params_TemplatePreview; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_TemplatePreview
+        {
+            public readonly string id = "id";
         }
         static readonly ActionParamsClass_UpdateDescription s_params_UpdateDescription = new ActionParamsClass_UpdateDescription();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -462,6 +478,18 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Template", Template);
             TemplateOverride(callInfo, id, redirect, Template);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void TemplatePreviewOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult TemplatePreview(string id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TemplatePreview);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            TemplatePreviewOverride(callInfo, id);
             return callInfo;
         }
 
