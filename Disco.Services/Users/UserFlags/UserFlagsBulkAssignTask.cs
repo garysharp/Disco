@@ -19,11 +19,11 @@ namespace Disco.Services.Users.UserFlags
 
         protected override void ExecuteTask()
         {
-            int UserFlagId = (int)this.ExecutionContext.JobDetail.JobDataMap["UserFlagId"];
-            string TechnicianUserId = (string)this.ExecutionContext.JobDetail.JobDataMap["TechnicianUserId"];
-            string Comments = (string)this.ExecutionContext.JobDetail.JobDataMap["Comments"];
-            List<string> UserIds = (List<string>)this.ExecutionContext.JobDetail.JobDataMap["UserIds"];
-            bool Override = (bool)this.ExecutionContext.JobDetail.JobDataMap["Override"];
+            int UserFlagId = (int)ExecutionContext.JobDetail.JobDataMap["UserFlagId"];
+            string TechnicianUserId = (string)ExecutionContext.JobDetail.JobDataMap["TechnicianUserId"];
+            string Comments = (string)ExecutionContext.JobDetail.JobDataMap["Comments"];
+            List<string> UserIds = (List<string>)ExecutionContext.JobDetail.JobDataMap["UserIds"];
+            bool Override = (bool)ExecutionContext.JobDetail.JobDataMap["Override"];
 
             using (DiscoDataContext Database = new DiscoDataContext())
             {

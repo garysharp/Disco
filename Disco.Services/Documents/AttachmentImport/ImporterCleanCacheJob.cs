@@ -52,11 +52,7 @@ namespace Disco.Services.Documents.AttachmentImport
                 }
             }
 
-            SystemLog.LogInformation(
-                $"Cleared DocumentDropBox_SessionPages Cache, Deleted {deleteCount} File/s, with {errorCount} Error/s",
-                deleteCount,
-                errorCount
-                );
+            Status.LogInformation($"Cleared DocumentDropBox_SessionPages Cache, Deleted {deleteCount} File/s, with {errorCount} Error/s");
         }
     }
 }

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
+﻿using Disco.Data.Repository;
 using Disco.Services.Tasks;
 using Quartz;
-using Disco.Data.Repository;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace Disco.Services.Plugins
 {
@@ -18,10 +13,10 @@ namespace Disco.Services.Plugins
 
         protected override void ExecuteTask()
         {
-            PluginManifest manifest = (PluginManifest)this.ExecutionContext.JobDetail.JobDataMap["PluginManifest"];
-            bool UninstallData = (bool)this.ExecutionContext.JobDetail.JobDataMap["UninstallData"];
+            var manifest = (PluginManifest)ExecutionContext.JobDetail.JobDataMap["PluginManifest"];
+            var UninstallData = (bool)ExecutionContext.JobDetail.JobDataMap["UninstallData"];
 
-            this.Status.UpdateStatus(25, string.Format("Uninstalling Plugin: {0} [{1}]", manifest.Name, manifest.Id), "Queuing plugin for uninstall");
+            Status.UpdateStatus(25, string.Format("Uninstalling Plugin: {0} [{1}]", manifest.Name, manifest.Id), "Queuing plugin for uninstall");
 
             PluginsLog.LogUninstalling(manifest, UninstallData);
 
@@ -31,7 +26,7 @@ namespace Disco.Services.Plugins
 
             using (DiscoDataContext database = new DiscoDataContext())
             {
-                manifest.UninstallPlugin(database, UninstallData, this.Status);
+                manifest.UninstallPlugin(database, UninstallData, Status);
             }
 
             string manifestUninstallFileLocation = Path.Combine(manifest.PluginLocation, "manifest.uninstall.json");
@@ -50,7 +45,7 @@ namespace Disco.Services.Plugins
                 File.Copy(manifestUninstallFileLocation, manifestDataUninstallFileLocation);
             }
 
-            this.Status.Finished("Restarting Disco, please wait...", "/Config/Plugins");
+            Status.Finished("Restarting Disco, please wait...", "/Config/Plugins");
             Plugins.RestartApp(2500);
         }
 
@@ -63,7 +58,7 @@ namespace Disco.Services.Plugins
             if (ScheduledTasks.GetTaskStatuses(typeof(InstallPluginTask)).Where(s => s.IsRunning).Count() > 0)
                 throw new InvalidOperationException("A plugin is being Installed");
 
-            JobDataMap taskData = new JobDataMap() { { "PluginManifest", Manifest }, { "UninstallData", UninstallData } };
+            var taskData = new JobDataMap() { { "PluginManifest", Manifest }, { "UninstallData", UninstallData } };
 
             var instance = new UninstallPluginTask();
 

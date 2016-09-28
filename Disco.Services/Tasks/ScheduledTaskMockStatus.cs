@@ -20,6 +20,10 @@ namespace Disco.Services.Tasks
 
         public Exception TaskException { get; set; }
 
+        [Obsolete("Use ScheduledTaskMockStatus.Create(TaskName) instead")]
+        public ScheduledTaskMockStatus() : this("Unknown Task")
+        { }
+
         public ScheduledTaskMockStatus(string TaskName)
         {
             this.TaskName = TaskName;
@@ -103,10 +107,10 @@ namespace Disco.Services.Tasks
             ScheduledTasksLog.LogScheduledTaskInformation(TaskName, null, Message);
         }
 
-        [Obsolete("Use the constructor which requires a TaskName instead")]
+        [Obsolete("Use ScheduledTaskMockStatus.Create(TaskName) instead")]
         public static ScheduledTaskMockStatus Create()
         {
-            return new ScheduledTaskMockStatus("Unknown Task");
+            return new ScheduledTaskMockStatus();
         }
 
         public static ScheduledTaskMockStatus Create(string TaskName)

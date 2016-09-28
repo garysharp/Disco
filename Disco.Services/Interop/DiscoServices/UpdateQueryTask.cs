@@ -32,14 +32,14 @@ namespace Disco.Services.Interop.DiscoServices
             {
                 try
                 {
-                    UpdateQuery.Check(database, true, this.Status);
+                    UpdateQuery.Check(database, true, Status);
                 }
                 catch (Exception ex)
                 {
-                    ScheduledTasksLog.LogScheduledTaskException(this.Status.TaskName, this.Status.SessionId, this.Status.TaskType, ex);
+                    ScheduledTasksLog.LogScheduledTaskException(Status.TaskName, Status.SessionId, Status.TaskType, ex);
 
                     // Could be proxy error - try again without proxy:
-                    UpdateQuery.Check(database, false, this.Status);
+                    UpdateQuery.Check(database, false, Status);
                 }
             }
         }

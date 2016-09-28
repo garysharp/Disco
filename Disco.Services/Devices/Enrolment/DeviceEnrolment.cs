@@ -608,7 +608,7 @@ namespace Disco.Services.Devices.Enrolment
                     {
                         foreach (var wirelessProfiles in provisionResult.Profiles)
                         {
-                            EnrolmentLog.LogSessionTaskProvisioningCertificate(sessionId, RepoDevice.SerialNumber, wirelessProfiles.Name);
+                            EnrolmentLog.LogSessionTaskProvisioningWirelessProfile(sessionId, RepoDevice.SerialNumber, wirelessProfiles.Name);
                         }
                     }
 

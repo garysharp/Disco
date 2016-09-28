@@ -26,7 +26,7 @@ namespace Disco.Services.Plugins
 
             if (!string.IsNullOrEmpty(packageUrlPath))
             {
-                this.Status.UpdateStatus(0, "Downloading Plugin Package", "Connecting...");
+                Status.UpdateStatus(0, "Downloading Plugin Package", "Connecting...");
 
                 if (File.Exists(packageFilePath))
                     File.Delete(packageFilePath);
@@ -49,7 +49,7 @@ namespace Disco.Services.Plugins
                 }
             }
 
-            this.Status.UpdateStatus(10, "Opening Plugin Package", Path.GetFileName(packageFilePath));
+            Status.UpdateStatus(10, "Opening Plugin Package", Path.GetFileName(packageFilePath));
 
             using (var packageStream = File.OpenRead(packageFilePath))
             {
@@ -67,7 +67,7 @@ namespace Disco.Services.Plugins
                         packageManifest = PluginManifest.FromPluginManifestFile(packageManifestStream);
                     }
 
-                    this.Status.UpdateStatus(20, string.Format("{0} [{1} v{2}] by {3}", packageManifest.Name, packageManifest.Id, packageManifest.Version.ToString(4), packageManifest.Author), "Initializing Install Environment");
+                    Status.UpdateStatus(20, string.Format("{0} [{1} v{2}] by {3}", packageManifest.Name, packageManifest.Id, packageManifest.Version.ToString(4), packageManifest.Author), "Initializing Install Environment");
 
                     PluginsLog.LogInstalling(packageManifest);
                     
@@ -93,7 +93,7 @@ namespace Disco.Services.Plugins
                             // Force Delete of Existing Folder
                             if (Directory.Exists(packagePath))
                             {
-                                this.Status.UpdateStatus(25, "Removing Existing Files");
+                                Status.UpdateStatus(25, "Removing Existing Files");
                                 try
                                 {
                                     Directory.Delete(packagePath, true);
@@ -105,8 +105,8 @@ namespace Disco.Services.Plugins
                             }
                             Directory.CreateDirectory(packagePath);
 
-                            
-                            this.Status.UpdateStatus(30, "Extracting Files");
+
+                            Status.UpdateStatus(30, "Extracting Files");
 
                             double extractFileInterval = (double)50 / packageArchive.Entries.Count;
                             int countExtractedFiles = 0;
@@ -114,7 +114,7 @@ namespace Disco.Services.Plugins
                             // Extract Package Contents
                             foreach (var packageEntry in packageArchive.Entries)
                             {
-                                this.Status.UpdateStatus(30 + (countExtractedFiles++ * extractFileInterval), string.Format("Extracting File: {0}", packageEntry.FullName));
+                                Status.UpdateStatus(30 + (countExtractedFiles++ * extractFileInterval), string.Format("Extracting File: {0}", packageEntry.FullName));
 
                                 // Determine Extraction Path
                                 var packageEntryTarget = Path.Combine(packagePath, packageEntry.FullName);
@@ -135,19 +135,19 @@ namespace Disco.Services.Plugins
                             packageManifest = PluginManifest.FromPluginManifestFile(Path.Combine(packagePath, "manifest.json"));
 
                             // Install Plugin
-                            this.Status.UpdateStatus(80, "Initial Package Configuration");
-                            packageManifest.InstallPlugin(database, this.Status);
+                            Status.UpdateStatus(80, "Initial Package Configuration");
+                            packageManifest.InstallPlugin(database, Status);
 
                             // Initialize Plugin
-                            this.Status.UpdateStatus(98, "Initializing Plugin for Use");
+                            Status.UpdateStatus(98, "Initializing Plugin for Use");
                             packageManifest.InitializePlugin(database);
 
                             // Add Plugin Manifest to Host Environment
                             Plugins.AddPlugin(packageManifest);
 
                             PluginsLog.LogInstalled(packageManifest);
-                            this.Status.SetFinishedUrl(string.Format("/Config/Plugins/{0}", System.Web.HttpUtility.UrlEncode(packageManifest.Id)));
-                            this.Status.UpdateStatus(100, "Plugin Installation Completed");
+                            Status.SetFinishedUrl(string.Format("/Config/Plugins/{0}", System.Web.HttpUtility.UrlEncode(packageManifest.Id)));
+                            Status.UpdateStatus(100, "Plugin Installation Completed");
                         }
                     }
                 }

@@ -1,13 +1,9 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
-using Disco.Services.Logging;
 using Disco.Services.Tasks;
 using Quartz;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.DirectoryServices;
-using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 
 namespace Disco.Services.Interop.ActiveDirectory
@@ -24,7 +20,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             TriggerBuilder triggerBuilder = TriggerBuilder.Create().
                 WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(23, 30));
 
-            this.ScheduleTask(triggerBuilder);
+            ScheduleTask(triggerBuilder);
         }
 
         protected override void ExecuteTask()
@@ -35,16 +31,12 @@ namespace Disco.Services.Interop.ActiveDirectory
             using (DiscoDataContext database = new DiscoDataContext())
             {
                 UpdateLastNetworkLogonDates(database, this.Status);
-                this.Status.UpdateStatus(95, "Updating Database", "Writing last network logon dates to the Database");
+                Status.UpdateStatus(95, "Updating Database", "Writing last network logon dates to the Database");
                 changeCount = database.SaveChanges();
-                this.Status.Finished(string.Format("{0} Device last network logon dates updated", changeCount), "/Config/SystemConfig");
+                Status.Finished(string.Format("{0} Device last network logon dates updated", changeCount), "/Config/SystemConfig");
             }
 
-            SystemLog.LogInformation(new string[]
-                {
-                    "Updated LastNetworkLogon Device Property for Device/s", 
-                    changeCount.ToString()
-                });
+            Status.LogInformation($"Updated LastNetworkLogon Device Property for Device/s, {changeCount:N0} changes");
         }
 
         public static ScheduledTaskStatus ScheduleImmediately()
@@ -62,7 +54,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             const string ldapFilterTemplate = "(&(objectCategory=Computer)(sAMAccountName={0}))";
             string[] ldapProperties = new string[] { "lastLogon", "lastLogonTimestamp" };
 
-            System.DateTime? lastLogon = null;
+            DateTime? lastLogon = null;
 
             if (!string.IsNullOrEmpty(Device.DeviceDomainId) && Device.DeviceDomainId.Contains('\\'))
             {

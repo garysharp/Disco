@@ -14,7 +14,7 @@ namespace Disco.Services.Users.UserFlags
 
         protected override void ExecuteTask()
         {
-            int UserFlagId = (int)this.ExecutionContext.JobDetail.JobDataMap["UserFlagId"];
+            int UserFlagId = (int)ExecutionContext.JobDetail.JobDataMap["UserFlagId"];
 
             using (DiscoDataContext Database = new DiscoDataContext())
             {
@@ -24,7 +24,7 @@ namespace Disco.Services.Users.UserFlags
 
         public static ScheduledTaskStatus ScheduleNow(int UserFlagId)
         {
-            JobDataMap taskData = new JobDataMap() { { "UserFlagId", UserFlagId } };
+            var taskData = new JobDataMap() { { "UserFlagId", UserFlagId } };
 
             var instance = new UserFlagDeleteTask();
 

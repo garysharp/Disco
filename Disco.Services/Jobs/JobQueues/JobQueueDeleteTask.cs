@@ -1,11 +1,6 @@
 ﻿using Disco.Data.Repository;
 using Disco.Services.Tasks;
 using Quartz;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Services.Jobs.JobQueues
 {
@@ -19,11 +14,11 @@ namespace Disco.Services.Jobs.JobQueues
 
         protected override void ExecuteTask()
         {
-            int jobQueueId = (int)this.ExecutionContext.JobDetail.JobDataMap["JobQueueId"];
+            int jobQueueId = (int)ExecutionContext.JobDetail.JobDataMap["JobQueueId"];
 
             using (DiscoDataContext Database = new DiscoDataContext())
             {
-                JobQueueService.DeleteJobQueue(Database, jobQueueId, this.Status);
+                JobQueueService.DeleteJobQueue(Database, jobQueueId, Status);
             }
         }
 
