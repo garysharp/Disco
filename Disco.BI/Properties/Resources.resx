@@ -117,20 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="MimeType_doc48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MimeType-doc48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MimeType_img16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MimeType-img16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MimeType_pdf16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MimeType-pdf16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MimeType_pdf48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MimeType-pdf48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MimeType_unknown48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MimeType-unknown48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
 </root>

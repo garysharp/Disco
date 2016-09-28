@@ -84,6 +84,8 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
         public ADSite ADSite { get; set; }
         public List<ADDomainController> ADServers { get; set; }
         public List<Tuple<string, ADDomain, string>> ADSearchContainers { get; set; }
+        [Display(Name = "Search With Suffix Wildcard Only")]
+        public bool ADSearchWildcardSuffixOnly { get; set; }
         public List<string> ADForestServers { get; set; }
 
         #endregion
@@ -126,6 +128,7 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
             m.ADPrimaryDomain = ActiveDirectory.Context.PrimaryDomain;
             m.ADSite = ActiveDirectory.Context.Site;
             m.ADServers = ActiveDirectory.Context.Domains.SelectMany(d => d.DomainControllers).ToList();
+            m.ADSearchWildcardSuffixOnly = config.ActiveDirectory.SearchWildcardSuffixOnly;
             var configSearchContainers = config.ActiveDirectory.SearchContainers;
             m.ADSearchContainers = configSearchContainers == null ? null : configSearchContainers.SelectMany(d => d.Value, (k, c) =>
             {

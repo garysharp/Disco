@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Disco.BI;
-using Disco.BI.Extensions;
+﻿using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Device;
-using Disco.Web.Extensions;
 using Disco.Services.Plugins;
-using Disco.Models.Services.Jobs.JobLists;
+using Disco.Web.Extensions;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace Disco.Web.Models.Device
 {
@@ -18,7 +13,8 @@ namespace Disco.Web.Models.Device
 
         public List<Disco.Models.Repository.DeviceProfile> DeviceProfiles { get; set; }
         public Disco.Models.BI.Config.OrganisationAddress DeviceProfileDefaultOrganisationAddress { get; set; }
-        public PluginFeatureManifest DeviceProfileCertificateProvider { get; set; }
+        public List<PluginFeatureManifest> DeviceProfileCertificateProviders { get; set; }
+        public List<PluginFeatureManifest> DeviceProfileWirelessProfileProviders { get; set; }
 
         public List<Disco.Models.Repository.DeviceBatch> DeviceBatches { get; set; }
         public JobTableModel Jobs { get; set; }

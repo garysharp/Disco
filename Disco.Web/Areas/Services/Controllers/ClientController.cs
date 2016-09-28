@@ -1,12 +1,12 @@
-﻿using Disco.BI.Extensions;
-using Disco.Data.Repository;
+﻿using Disco.Data.Repository;
 using Disco.Models.ClientServices;
+using Disco.Services;
 using Disco.Services.Authorization;
+using Disco.Services.Devices.Enrolment;
 using Newtonsoft.Json;
 using System;
-using System.Web;
+using System.IO;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
 
 namespace Disco.Web.Areas.Services.Controllers
 {
@@ -34,8 +34,31 @@ namespace Disco.Web.Areas.Services.Controllers
             {
                 case "enrol":
                     {
-                        JavaScriptSerializer serializer = new JavaScriptSerializer();
-                        Enrol enrolRequest = serializer.Deserialize<Enrol>(base.Request.InputStream.StreamToString());
+                        // Ensure supported version
+                        if (Request.UserAgent.StartsWith(@"Disco-Client/", StringComparison.OrdinalIgnoreCase))
+                        {
+                            Version clientVersion;
+                            if (Version.TryParse(Request.UserAgent.Substring(13), out clientVersion))
+                            {
+                                if (clientVersion < new Version(2, 2))
+                                {
+                                    return new HttpStatusCodeResult(400, "Disco Client not compatible");
+                                }
+                            }
+                        }
+
+                        var serializer = new JsonSerializer();
+                        Enrol enrolRequest;
+
+                        Request.InputStream.Position = 0;
+                        using (var streamReader = new StreamReader(Request.InputStream))
+                        {
+                            using (var jsonReader = new JsonTextReader(streamReader))
+                            {
+                                enrolRequest = serializer.Deserialize<Enrol>(jsonReader);
+                            }
+                        }
+
                         EnrolResponse enrolResponse = enrolRequest.BuildResponse();
                         return Json(enrolResponse);
                     }
@@ -58,17 +81,10 @@ namespace Disco.Web.Areas.Services.Controllers
                         using (var database = new DiscoDataContext())
                         {
                             var host = HttpContext.Request.UserHostAddress;
-                            MacSecureEnrolResponse enrolResponse = BI.DeviceBI.DeviceEnrol.MacSecureEnrol(database, host);
+                            MacSecureEnrolResponse enrolResponse = DeviceEnrolment.MacSecureEnrol(database, host);
                             database.SaveChanges();
                             return Json(enrolResponse, JsonRequestBehavior.AllowGet);
                         }
-                    }
-                case "register":
-                    {
-                        Register registerRequest = new Register();
-                        this.UpdateModel(registerRequest);
-                        RegisterResponse registerResponse = registerRequest.BuildResponse();
-                        return Json(registerResponse);
                     }
             }
             throw new MissingMethodException(string.Format("Unknown Feature: {0}", feature));
@@ -91,17 +107,33 @@ namespace Disco.Web.Areas.Services.Controllers
                     }
                 case "enrol":
                     {
-                        JavaScriptSerializer serializer = new JavaScriptSerializer();
-                        Enrol enrolRequest = serializer.Deserialize<Enrol>(base.Request.InputStream.StreamToString());
+                        // Ensure supported version
+                        if (Request.UserAgent.StartsWith(@"Disco-Client/", StringComparison.OrdinalIgnoreCase))
+                        {
+                            Version clientVersion;
+                            if (Version.TryParse(Request.UserAgent.Substring(13), out clientVersion))
+                            {
+                                if (clientVersion < new Version(2, 2))
+                                {
+                                    return new HttpStatusCodeResult(400, "Disco Client not compatible");
+                                }
+                            }
+                        }
+
+                        var serializer = new JsonSerializer();
+                        Enrol enrolRequest;
+
+                        Request.InputStream.Position = 0;
+                        using (var streamReader = new StreamReader(Request.InputStream))
+                        {
+                            using (var jsonReader = new JsonTextReader(streamReader))
+                            {
+                                enrolRequest = serializer.Deserialize<Enrol>(jsonReader);
+                            }
+                        }
+
                         EnrolResponse enrolResponse = enrolRequest.BuildResponse();
                         return Json(enrolResponse);
-                    }
-                case "register":
-                    {
-                        Register registerRequest = new Register();
-                        this.UpdateModel(registerRequest);
-                        RegisterResponse registerResponse = registerRequest.BuildResponse();
-                        return Json(registerResponse);
                     }
             }
             throw new MissingMethodException(string.Format("Unknown Feature: {0}", feature));
@@ -133,9 +165,9 @@ namespace Disco.Web.Areas.Services.Controllers
             }
 
             if (string.IsNullOrEmpty(SessionId))
-                Disco.BI.DeviceBI.EnrolmentLog.LogClientError(clientIP, DeviceIdentifier, clientVersion, errorMessage, JsonException);
+                EnrolmentLog.LogClientError(clientIP, DeviceIdentifier, clientVersion, errorMessage, JsonException);
             else
-                Disco.BI.DeviceBI.EnrolmentLog.LogSessionClientError(SessionId, clientIP, DeviceIdentifier, clientVersion, errorMessage, JsonException);
+                EnrolmentLog.LogSessionClientError(SessionId, clientIP, DeviceIdentifier, clientVersion, errorMessage, JsonException);
 
             return Content("Error Message Logged");
         }

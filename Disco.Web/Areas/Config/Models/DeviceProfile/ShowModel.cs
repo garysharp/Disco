@@ -35,6 +35,8 @@ namespace Disco.Web.Areas.Config.Models.DeviceProfile
         }
 
         public List<PluginFeatureManifest> CertificateProviders { get; set; }
+        public List<PluginFeatureManifest> CertificateAuthorityProviders { get; set; }
+        public List<PluginFeatureManifest> WirelessProfileProviders { get; set; }
 
         public int DeviceCount { get; set; }
         public int DeviceDecommissionedCount { get; set; }

@@ -15,6 +15,7 @@
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <AssemblyVersion>2.2.16272.1003</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -82,12 +83,19 @@
       <HintPath>..\packages\PDFsharp.1.50.4000-beta3b\lib\net20\PdfSharp.Charting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PList, Version=0.1.4109.38751, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\plist.net.1.0\lib\Net35\PList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Quartz">
       <HintPath>..\Resources\Libraries\Quartz\Quartz.dll</HintPath>
     </Reference>
     <Reference Include="RazorGenerator.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\RazorGenerator.Mvc.2.2.3\lib\net40\RazorGenerator.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Renci.SshNet">
+      <HintPath>..\..\..\Resources\Libraries\SshNet\Renci.SshNet.dll</HintPath>
     </Reference>
     <Reference Include="Spring.Core">
       <HintPath>..\..\..\Resources\Libraries\Spring.NET\Spring.Core.dll</HintPath>
@@ -177,6 +185,7 @@
     <Compile Include="Attachments\AttachmentDataStoreExtensions.cs" />
     <Compile Include="Authorization\AccessDeniedException.cs" />
     <Compile Include="Authorization\AuthorizationLog.cs" />
+    <Compile Include="Authorization\AuthorizationRoleExtensions.cs" />
     <Compile Include="Authorization\AuthorizationToken.cs" />
     <Compile Include="Authorization\ClaimNavigatorItem.cs" />
     <Compile Include="Authorization\DiscoAuthorizeBaseAttribute.cs" />
@@ -220,8 +229,23 @@
     <Compile Include="Authorization\Roles\RoleCache.cs" />
     <Compile Include="Authorization\Roles\RoleClaims.cs" />
     <Compile Include="Authorization\Roles\RoleToken.cs" />
+    <Compile Include="ClientServices\ClientServicesExtensions.cs" />
     <Compile Include="DataStore.cs" />
+    <Compile Include="Devices\DeviceActionExtensions.cs" />
+    <Compile Include="Devices\DeviceBatches.cs" />
+    <Compile Include="Devices\DeviceBatchExtensions.cs" />
+    <Compile Include="Devices\DeviceCertificateExtensions.cs" />
     <Compile Include="Devices\DeviceDataStoreExtensions.cs" />
+    <Compile Include="Devices\DeviceDetailExtensions.cs" />
+    <Compile Include="Devices\DeviceExtensions.cs" />
+    <Compile Include="Devices\DeviceModelExtensions.cs" />
+    <Compile Include="Devices\DeviceProfileExtensions.cs" />
+    <Compile Include="Devices\DeviceWirelessProfileExtensions.cs" />
+    <Compile Include="Devices\Enrolment\DeviceEnrolment.cs" />
+    <Compile Include="Devices\Enrolment\EnrolmentLog.cs" />
+    <Compile Include="Devices\Enrolment\EnrolmentSafeException.cs" />
+    <Compile Include="Devices\Enrolment\EnrolmentTypes.cs" />
+    <Compile Include="Devices\Enrolment\LogMacAddressImportingTask.cs" />
     <Compile Include="Devices\Exporting\DeviceExport.cs" />
     <Compile Include="Devices\Exporting\DeviceExportTask.cs" />
     <Compile Include="Devices\Exporting\DeviceExportTaskContext.cs" />
@@ -260,12 +284,16 @@
     <Compile Include="Documents\AttachmentImport\ImporterJob.cs" />
     <Compile Include="Documents\AttachmentImport\ImportDirectoryMonitor.cs" />
     <Compile Include="Documents\AttachmentImport\ImportPage.cs" />
+    <Compile Include="Documents\AttachmentImport\ThumbnailUpdateTask.cs" />
     <Compile Include="Documents\DocumentsLog.cs" />
     <Compile Include="Documents\DocumentTemplateExtensions.cs" />
     <Compile Include="Documents\DocumentTemplateDataStoreExtensions.cs" />
     <Compile Include="Documents\DocumentTemplateExpressionExtensions.cs" />
     <Compile Include="Documents\DocumentUniqueIdentifier.cs" />
     <Compile Include="Documents\DocumentUniqueIdentifierExtensions.cs" />
+    <Compile Include="Documents\ManagedGroups\DocumentTemplateDevicesManagedGroup.cs" />
+    <Compile Include="Documents\ManagedGroups\DocumentTemplateManagedGroups.cs" />
+    <Compile Include="Documents\ManagedGroups\DocumentTemplateUsersManagedGroup.cs" />
     <Compile Include="Documents\QRCodeBinaryEncoder.cs" />
     <Compile Include="Expressions\EvaluateExpressionParseException.cs" />
     <Compile Include="Expressions\EvaluateExpressionPart.cs" />
@@ -319,18 +347,23 @@
     <Compile Include="Interop\VicEduDept\VicSmart.cs" />
     <Compile Include="Interop\DiscoServices\UpdateQuery.cs" />
     <Compile Include="Interop\DiscoServices\UpdateQueryTask.cs" />
+    <Compile Include="Jobs\JobActionExtensions.cs" />
     <Compile Include="Jobs\JobExtensions.cs" />
+    <Compile Include="Jobs\JobFlagExtensions.cs" />
     <Compile Include="Jobs\JobLists\JobTableExtensions.cs" />
     <Compile Include="Jobs\JobQueues\Cache.cs" />
     <Compile Include="Jobs\JobQueues\JobQueueDeleteTask.cs" />
+    <Compile Include="Jobs\JobQueues\JobQueueExtensions.cs" />
     <Compile Include="Jobs\JobQueues\JobQueueService.cs" />
     <Compile Include="Jobs\JobQueues\JobQueueToken.cs" />
     <Compile Include="Jobs\JobLists\ManagedJobList.cs" />
+    <Compile Include="Jobs\Jobs.cs" />
     <Compile Include="Jobs\JobUpdatesHub.cs" />
     <Compile Include="Jobs\Noticeboards\HeldDeviceItem.cs" />
     <Compile Include="Jobs\Noticeboards\NoticeboardUpdatesHub.cs" />
     <Compile Include="Jobs\Noticeboards\HeldDevices.cs" />
     <Compile Include="Jobs\Noticeboards\HeldDevicesForUsers.cs" />
+    <Compile Include="Jobs\Statistics\DailyOpenedClosed.cs" />
     <Compile Include="Logging\LogBase.cs" />
     <Compile Include="Logging\LogContext.cs" />
     <Compile Include="Logging\LogReInitalizeJob.cs" />
@@ -343,6 +376,12 @@
     <Compile Include="Logging\Persistance\LogPersistContext.cs" />
     <Compile Include="Logging\Persistance\LogPersistContextInitializer.cs" />
     <Compile Include="Logging\Utilities.cs" />
+    <Compile Include="Plugins\Features\CertificateAuthorityProvider\CertificateAuthorityProviderFeature.cs" />
+    <Compile Include="Plugins\Features\CertificateProvider\ProvisionPersonalCertificateResult.cs" />
+    <Compile Include="Plugins\Features\CertificateAuthorityProvider\ProvisionAuthorityCertificatesResult.cs" />
+    <Compile Include="Plugins\Features\WirelessProfileProvider\ProvisionWirelessProfilesResult.cs" />
+    <Compile Include="Plugins\Features\WirelessProfileProvider\WirelessProfile.cs" />
+    <Compile Include="Plugins\Features\WirelessProfileProvider\WirelessProfileTransformation.cs" />
     <Compile Include="Plugins\Features\RepairProvider\RepairProviderFeature.cs" />
     <Compile Include="Plugins\Features\RepairProvider\RepairProviderSubmitJobException.cs" />
     <Compile Include="Plugins\Features\UIExtension\Results\LiteralResult.cs" />
@@ -352,6 +391,7 @@
     <Compile Include="Plugins\Features\UIExtension\Results\PrecompiledPartialViewResult.cs" />
     <Compile Include="Plugins\Features\UIExtension\UIExtensionResult.cs" />
     <Compile Include="Plugins\Features\UIExtension\UIExtensionFeature.cs" />
+    <Compile Include="Plugins\Features\WirelessProfileProvider\WirelessProfileProviderFeature.cs" />
     <Compile Include="Plugins\UpdatePluginsAfterDiscoUpdateTask.cs" />
     <Compile Include="Plugins\UpdatePluginTask.cs" />
     <Compile Include="Plugins\InstallPluginTask.cs" />
@@ -400,6 +440,7 @@
     <Compile Include="Users\CacheCleanTask.cs" />
     <Compile Include="Users\UserExtensions.cs" />
     <Compile Include="Users\UserFlags\Cache.cs" />
+    <Compile Include="Users\UserFlags\UserFlagExtensions.cs" />
     <Compile Include="Users\UserFlags\UserFlagUserDevicesManagedGroup.cs" />
     <Compile Include="Users\UserFlags\UserFlagUsersManagedGroup.cs" />
     <Compile Include="Users\UserFlags\UserFlagsBulkAssignTask.cs" />

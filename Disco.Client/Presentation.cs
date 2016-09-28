@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using Disco.Client.Extensions;
+using Disco.Client.Interop;
 
 namespace Disco.Client
 {
@@ -38,8 +39,8 @@ namespace Disco.Client
         public static void WriteBanner()
         {
             StringBuilder message = new StringBuilder();
-            message.Append("Version: ").AppendLine(Assembly.GetExecutingAssembly().GetName().Version.ToString(3));
-            message.Append("Device: ").Append(Interop.SystemAudit.DeviceSerialNumber).Append(" (").Append(Interop.SystemAudit.DeviceManufacturer).Append(" ").Append(Interop.SystemAudit.DeviceModel).AppendLine(")");
+            message.AppendLine($"Version: {Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}");
+            message.AppendLine($"Device: {Hardware.Information.SerialNumber} ({Hardware.Information.Manufacturer} {Hardware.Information.Model})");
             Console.ForegroundColor = ConsoleColor.Yellow;
             UpdateStatus("Preparation Client Started", message.ToString(), false, 0);
             Console.ForegroundColor = ConsoleColor.White;
@@ -52,8 +53,8 @@ namespace Disco.Client
             ClientServiceException clientServiceException = ex as ClientServiceException;
             if (clientServiceException != null)
             {
-                UpdateStatus(string.Format("An error occurred during {0}", clientServiceException.ServiceFeature),
-                     clientServiceException.Message, false, 0);
+                UpdateStatus($"An error occurred during {clientServiceException.ServiceFeature}",
+                    clientServiceException.Message, false, 0);
             }
             else
             {

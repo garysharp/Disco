@@ -1,7 +1,6 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Services.Interop.DiscoServices;
 using Disco.Services.Interop.DiscoServices;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -187,15 +186,22 @@ namespace Disco.Services.Plugins
         }
         public static bool TryGetPluginFeature(string PluginFeatureId, Type CategoryType, out PluginFeatureManifest PluginFeatureManifest)
         {
-            PluginFeatureManifest = null;
-
             if (_PluginManifests == null)
+            {
+                PluginFeatureManifest = null;
                 return false;
+            }
 
-            var featureManifest = _PluginManifests.Values.SelectMany(pm => pm.Features).Where(fm => fm.Id == PluginFeatureId).FirstOrDefault();
+            var featureManifest = _PluginManifests.Values
+                .SelectMany(pm => pm.Features)
+                .Where(fm => fm.Id == PluginFeatureId)
+                .FirstOrDefault();
 
             if (featureManifest == null)
+            {
+                PluginFeatureManifest = null;
                 return false;
+            }
 
             if (CategoryType == null)
             {
@@ -210,7 +216,10 @@ namespace Disco.Services.Plugins
                     return true;
                 }
                 else
+                {
+                    PluginFeatureManifest = null;
                     return false;
+                }
             }
         }
         public static PluginFeatureManifest GetPluginFeature(string PluginFeatureId)

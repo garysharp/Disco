@@ -1,4 +1,5 @@
 ﻿@model Disco.Web.Models.Job.ShowModel
+@using Disco.Models.Services.Job;
 @using Disco.Services.Users.UserFlags;
 @{
     Authorization.Require(Claims.Job.Show);
@@ -293,11 +294,11 @@
                                             {
                                                 switch (Model.LocationMode)
                                                 {
-                                                    case Disco.Models.BI.Job.LocationModes.Unrestricted:
-                                                    case Disco.Models.BI.Job.LocationModes.OptionalList:
+                                                    case LocationModes.Unrestricted:
+                                                    case LocationModes.OptionalList:
                                                 @Html.TextBoxFor(m => m.Job.DeviceHeldLocation, new { @class = "small discreet" })
                                                         break;
-                                                    case Disco.Models.BI.Job.LocationModes.RestrictedList:
+                                                    case LocationModes.RestrictedList:
                                                         List<SelectListItem> listOptions = new List<SelectListItem>() { new SelectListItem() { Value = "", Text = "<Unknown>" } };
                                                         if (!string.IsNullOrWhiteSpace(Model.Job.DeviceHeldLocation) && !Model.LocationOptions.Any(l => l.Location.Equals(Model.Job.DeviceHeldLocation)))
                                                         {
@@ -345,8 +346,8 @@
                                     $(function () {
                                         @switch (Model.LocationMode)
                                         {
-                                            case Disco.Models.BI.Job.LocationModes.Unrestricted:
-                                            case Disco.Models.BI.Job.LocationModes.OptionalList:
+                                            case LocationModes.Unrestricted:
+                                            case LocationModes.OptionalList:
                                                 <text>
                                         var $deviceHeldLocation = $('#Job_DeviceHeldLocation');
                                         var $ajaxSave = $deviceHeldLocation.next('.ajaxSave');
@@ -430,7 +431,7 @@
                                             });
                                         </text>
                                                 break;
-                                            case Disco.Models.BI.Job.LocationModes.RestrictedList:
+                                            case LocationModes.RestrictedList:
                                                         <text>
                                         document.DiscoFunctions.PropertyChangeHelper(
                                             $('#Job_DeviceHeldLocation'),

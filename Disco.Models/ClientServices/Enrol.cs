@@ -1,7 +1,5 @@
-﻿using System;
+﻿using Disco.Models.ClientServices.EnrolmentInformation;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Disco.Models.ClientServices
 {
@@ -12,21 +10,20 @@ namespace Disco.Models.ClientServices
             get { return "Enrol"; }
         }
 
-        public string DeviceSerialNumber { get; set; }
-        public string DeviceUUID { get; set; }
+        public string SerialNumber { get; set; }
 
-        public string DeviceDNSDomainName { get; set; }
-        public string DeviceComputerName { get; set; }
-        public bool DeviceIsPartOfDomain { get; set; }
-        
-        public string DeviceManufacturer { get; set; }
-        public string DeviceModel { get; set; }
-        public string DeviceModelType { get; set; }
+        public string DNSDomainName { get; set; }
+        public string ComputerName { get; set; }
+        public bool IsPartOfDomain { get; set; }
 
-        public string DeviceLanMacAddress { get; set; }
-        
-        public string DeviceWlanMacAddress { get; set; }
+        public string RunningUserName { get; set; }
+        public string RunningUserDomain { get; set; }
+        public bool RunningInteractively { get; internal set; }
 
-        public List<string> DeviceCertificates { get; set; }
+        public DeviceHardware Hardware { get; set; }
+
+        public List<Certificate> Certificates { get; set; }
+
+        public List<WirelessProfile> WirelessProfiles { get; set; }
     }
 }

@@ -25,84 +25,91 @@
 <div id="configurationDeviceProfileShow" class="form@(hideAdvanced ? " Config_HideAdvanced" : null)" style="width: 640px">
     <table>
         <tr>
-            <th style="width: 170px;">Id:
+            <th style="width: 170px;">
+                Id:
             </th>
             <td>
                 @Html.DisplayFor(model => model.DeviceProfile.Id)
             </td>
         </tr>
         <tr>
-            <th>Name:
+            <th>
+                Name:
             </th>
-            <td>@if (canConfig)
-                {
-                @Html.TextBoxFor(model => model.DeviceProfile.Name)
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
-                    $(function () {
-                        document.DiscoFunctions.PropertyChangeHelper(
-                            $('#DeviceProfile_Name'),
-                            'Name',
-                            '@Url.Action(MVC.API.DeviceProfile.UpdateName(Model.DeviceProfile.Id))',
-                            'ProfileName'
-                        );
-                    });
-                </script>
+            <td>
+                @if (canConfig)
+            {
+                    @Html.TextBoxFor(model => model.DeviceProfile.Name)
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                $('#DeviceProfile_Name'),
+                                'Name',
+                                '@Url.Action(MVC.API.DeviceProfile.UpdateName(Model.DeviceProfile.Id))',
+                                'ProfileName'
+                            );
+                        });
+                    </script>
                 }
                 else
                 {
-                @Model.DeviceProfile.Name
+                    @Model.DeviceProfile.Name
                 }
             </td>
         </tr>
         <tr>
-            <th>Short Name:
+            <th>
+                Short Name:
             </th>
-            <td>@if (canConfig)
+            <td>
+                @if (canConfig)
                 {
-                @Html.TextBoxFor(model => model.DeviceProfile.ShortName)
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
-                    $(function () {
-                        document.DiscoFunctions.PropertyChangeHelper(
-                            $('#DeviceProfile_ShortName'),
-                            'Short Name',
-                            '@Url.Action(MVC.API.DeviceProfile.UpdateShortName(Model.DeviceProfile.Id))',
-                            'ShortName'
-                        );
-                    });
-                </script>
+                    @Html.TextBoxFor(model => model.DeviceProfile.ShortName)
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                $('#DeviceProfile_ShortName'),
+                                'Short Name',
+                                '@Url.Action(MVC.API.DeviceProfile.UpdateShortName(Model.DeviceProfile.Id))',
+                                'ShortName'
+                            );
+                        });
+                    </script>
                 }
                 else
                 {
-                @Model.DeviceProfile.ShortName
+                    @Model.DeviceProfile.ShortName
                 }
             </td>
         </tr>
         <tr>
-            <th>Description:
+            <th>
+                Description:
             </th>
-            <td>@if (canConfig)
+            <td>
+                @if (canConfig)
                 {
-                @Html.EditorFor(model => model.DeviceProfile.Description)
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
-                    $(function () {
-                        document.DiscoFunctions.PropertyChangeHelper(
-                            $('#DeviceProfile_Description'),
-                            'Description',
-                            '@Url.Action(MVC.API.DeviceProfile.UpdateDescription(Model.DeviceProfile.Id))',
-                            'Description'
-                        );
-                    });
-                </script>
+                    @Html.EditorFor(model => model.DeviceProfile.Description)
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                $('#DeviceProfile_Description'),
+                                'Description',
+                                '@Url.Action(MVC.API.DeviceProfile.UpdateDescription(Model.DeviceProfile.Id))',
+                                'Description'
+                            );
+                        });
+                    </script>
                 }
                 else
                 {
-                @Model.DeviceProfile.Description
+                    @Model.DeviceProfile.Description
                 }
             </td>
         </tr>
@@ -117,156 +124,222 @@
             </td>
         </tr>
         <tr>
-            <th>Distribution Type:
+            <th>
+                Distribution Type:
             </th>
-            <td>@if (canConfig)
+            <td>
+                @if (canConfig)
                 {
-                @Html.DropDownList("DeviceProfile_DistributionType", Model.DeviceProfileDistributionTypes)
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
-                    $(function () {
-                        document.DiscoFunctions.PropertyChangeHelper(
-                            $('#DeviceProfile_DistributionType'),
-                            null,
-                            '@Url.Action(MVC.API.DeviceProfile.UpdateDistributionType(Model.DeviceProfile.Id))',
-                            'DistributionType'
-                        );
-                    });
-                </script>
+                    @Html.DropDownList("DeviceProfile_DistributionType", Model.DeviceProfileDistributionTypes)
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                $('#DeviceProfile_DistributionType'),
+                                null,
+                                '@Url.Action(MVC.API.DeviceProfile.UpdateDistributionType(Model.DeviceProfile.Id))',
+                                'DistributionType'
+                            );
+                        });
+                    </script>
                 }
                 else
                 {
-                @Model.DeviceProfile.DistributionType.ToString()
+                    @Model.DeviceProfile.DistributionType.ToString()
                 }
+                <div class="info-box">
+                    <p class="fa-p">
+                        <i class="fa fa-info-circle"></i>One-to-many devices are typically shared.
+                        One-to-one devices are typically assigned to a user;
+                        enrolment with a one-to-one device isn't considered complete until it is assigned.
+                    </p>
+                </div>
             </td>
         </tr>
         <tr>
-            <th>Address:
+            <th>
+                Address:
             </th>
-            <td>@if (canConfig)
+            <td>
+                @if (canConfig)
                 {
-                @Html.DropDownListFor(m => m.DeviceProfile.DefaultOrganisationAddress, Model.OrganisationAddresses.ToSelectListItems(Model.DeviceProfile.DefaultOrganisationAddress, true, "None"))
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
-                    $(function () {
-                        document.DiscoFunctions.PropertyChangeHelper(
-                            $('#DeviceProfile_DefaultOrganisationAddress'),
-                            null,
-                            '@Url.Action(MVC.API.DeviceProfile.UpdateDefaultOrganisationAddress(Model.DeviceProfile.Id))',
-                            'DefaultOrganisationAddress'
-                        );
-                    });
-                </script>
+                    @Html.DropDownListFor(m => m.DeviceProfile.DefaultOrganisationAddress, Model.OrganisationAddresses.ToSelectListItems(Model.DeviceProfile.DefaultOrganisationAddress, true, "None"))
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                $('#DeviceProfile_DefaultOrganisationAddress'),
+                                null,
+                                '@Url.Action(MVC.API.DeviceProfile.UpdateDefaultOrganisationAddress(Model.DeviceProfile.Id))',
+                                'DefaultOrganisationAddress'
+                            );
+                        });
+                    </script>
                 }
                 else
                 {
                     if (Model.DefaultOrganisationAddress == null)
                     {
-                <span class="smallMessage">&lt;None Specified&gt;</span>
-                    }
-                    else
-                    {
-                @Model.DefaultOrganisationAddress.ToString()
-                    }
-                }
-            </td>
-        </tr>
-        <tr>
-            <th>Allocate Certificates:
-            </th>
-            <td>@if (canConfig && Model.CertificateProviders.Count > 0)
-                {
-                @Html.DropDownListFor(model => model.DeviceProfile.CertificateProviderId, Model.CertificateProviders.ToSelectListItems(null, true, "Not Allocated"))
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
-                    $(function () {
-                        document.DiscoFunctions.PropertyChangeHelper(
-                            $('#DeviceProfile_CertificateProviderId'),
-                            null,
-                            '@Url.Action(MVC.API.DeviceProfile.UpdateCertificateProviderId(Model.DeviceProfile.Id))',
-                            'CertificateProviderId'
-                        );
-                    });
-                </script>
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(Model.DeviceProfile.CertificateProviderId))
-                    {
-                <span class="smallMessage">&lt;None Allocated&gt;</span>
-                    }
-                    else
-                    {
-                        var cp = Model.CertificateProviders.FirstOrDefault(p => p.Id == Model.DeviceProfile.CertificateProviderId);
-                        if (cp == null)
-                        {
-                <span class="smallMessage">&lt;None Allocated&gt;</span>
-                        }
-                        else
-                        {
-                @cp.Name
-                        }
-                    }
-                }
-                @if (canViewPlugins)
-                {
-                    <div class="info-box">
-                        <p class="fa-p">
-                            <i class="fa fa-info-circle"></i>View the <a href="@(Url.Action(MVC.Config.Plugins.Install()))">Plugin Catalogue</a> to discover and install certificate provider plugins.
-                        </p>
-                    </div>
-                }
-            </td>
-        </tr>
-        <tr>
-            <th>Computer Name<br />
-                Template Expression:
-            </th>
-            <td>@if (canConfig && canConfigExpression)
-                {
-                @Html.EditorFor(model => model.DeviceProfile.ComputerNameTemplate)
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <a id="expressionBrowserAnchor" href="@(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser()))">&nbsp;</a>
-                <script type="text/javascript">
-                    $(function () {
-                        var field = $('#DeviceProfile_ComputerNameTemplate');
-                        var fieldOriginalWidth, fieldOriginalHeight;
-
-                        document.DiscoFunctions.PropertyChangeHelper(
-                            field,
-                            'None',
-                            '@Url.Action(MVC.API.DeviceProfile.UpdateComputerNameTemplate(Model.DeviceProfile.Id))',
-                            'ComputerNameTemplate'
-                        );
-
-                        field.focus(function () {
-                            fieldOriginalWidth = field.width();
-                            fieldOriginalHeight = field.height();
-                            field.css('overflow', 'visible').animate({ width: field.parent().width() - 52, height: 75 }, 200);
-                        }).blur(function () {
-                            field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
-                        }).attr('placeholder', 'None').attr('spellcheck', 'false');
-                    });
-                </script>
-                }
-                else
-                {
-                <div id="displayComputerNameTemplate" class="code">
-                    @if (string.IsNullOrWhiteSpace(Model.DeviceProfile.ComputerNameTemplate))
-                    {
                         <span class="smallMessage">&lt;None Specified&gt;</span>
                     }
                     else
                     {
-                        @Model.DeviceProfile.ComputerNameTemplate
+                        @Model.DefaultOrganisationAddress.ToString()
                     }
+                }
+                <div class="info-box">
+                    <p class="fa-p">
+                        <i class="fa fa-info-circle"></i>The profile address is used to separate jobs for <a href="@Url.Action(MVC.Config.Organisation.Index())">multi-site mode</a>.
+                        It is also suggested as the default address for warranty/repair actions.
+                    </p>
                 </div>
+            </td>
+        </tr>
+        <tr>
+            <th>Policies</th>
+            <td>
+                <div>
+                    @if (canConfig)
+                    {
+                        <input id="DeviceProfile_ProvisionADAccount" type="checkbox" @(Model.DeviceProfile.ProvisionADAccount ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) />
+                        <script type="text/javascript">
+                            $(function () {
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    $('#DeviceProfile_ProvisionADAccount'),
+                                    null,
+                                    '@Url.Action(MVC.API.DeviceProfile.UpdateProvisionADAccount(Model.DeviceProfile.Id))',
+                                    'ProvisionADAccount'
+                                );
+                            });
+                        </script>
+                    }
+                    else
+                    {
+                        <input id="DeviceProfile_ProvisionADAccount" type="checkbox" @(Model.DeviceProfile.ProvisionADAccount ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
+                    }
+                    <label for="DeviceProfile_ProvisionADAccount">
+                        Provision Active Directory Account
+                    </label>
+                    @AjaxHelpers.AjaxLoader()
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle"></i>When enabled an Active Directory account will be provisioned for the device when enrolment occurs
+                            and the device will be joined to the domain (refer to the <code>Computer&nbsp;Name&nbsp;Template&nbsp;Expression</code> and the
+                            <code>Organisational&nbsp;Unit</code> configuration options below).
+                        </p>
+                    </div>
+                </div>
+                <div style="margin-top: 8px;">
+                    @if (canConfig)
+                    {
+                        <input id="DeviceProfile_AssignedUserLocalAdmin" type="checkbox" @(Model.DeviceProfile.AssignedUserLocalAdmin ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) />
+                        <script type="text/javascript">
+                            $(function () {
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    $('#DeviceProfile_AssignedUserLocalAdmin'),
+                                    null,
+                                    '@Url.Action(MVC.API.DeviceProfile.UpdateAssignedUserLocalAdmin(Model.DeviceProfile.Id))',
+                                    'AssignedUserLocalAdmin'
+                                );
+                            });
+                        </script>
+                    }
+                    else
+                    {
+                        <input id="DeviceProfile_AssignedUserLocalAdmin" type="checkbox" @(Model.DeviceProfile.AssignedUserLocalAdmin ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
+                    }
+                    <label for="DeviceProfile_AssignedUserLocalAdmin">
+                        Assigned User is Local Administrator
+                    </label>
+                    @AjaxHelpers.AjaxLoader()
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle"></i>When enabled the user assigned to the device will be added to the <code>Local&nbsp;Administrators</code> group during device enrolment.
+                        </p>
+                    </div>
+                </div>
+                <div style="margin-top: 8px;">
+                    @if (canConfig)
+                    {
+                        <input id="DeviceProfile_AllowUntrustedReimageJobEnrolment" type="checkbox" @(Model.DeviceProfile.AllowUntrustedReimageJobEnrolment ? new MvcHtmlString("checked=\"checked\" ") : null) />
+                        <script type="text/javascript">
+                            $(function () {
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    $('#DeviceProfile_AllowUntrustedReimageJobEnrolment'),
+                                    null,
+                                    '@Url.Action(MVC.API.DeviceProfile.UpdateAllowUntrustedReimageJobEnrolment(Model.DeviceProfile.Id))',
+                                    'AllowUntrustedReimageJobEnrolment'
+                                );
+                            });
+                        </script>
+                    }
+                    else
+                    {
+                        <input id="DeviceProfile_AllowUntrustedReimageJobEnrolment" type="checkbox" @(Model.DeviceProfile.AllowUntrustedReimageJobEnrolment ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
+                    }
+                    <label for="DeviceProfile_AllowUntrustedReimageJobEnrolment">
+                        Allow Untrusted Enrolment Where a <span class="code">'Software - Reimage'</span> Job is Open
+                    </label>
+                    @AjaxHelpers.AjaxLoader()
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle"></i>When enabled an untrusted device enrolment will be allowed if a <code>Software&nbsp;-&nbsp;Reimage</code> job is open for the device.
+                        </p>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Computer Name<br />
+                Template Expression:
+            </th>
+            <td>
+                @if (canConfig && canConfigExpression)
+                {
+                    @Html.EditorFor(model => model.DeviceProfile.ComputerNameTemplate)
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <a id="expressionBrowserAnchor" href="@(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser()))">&nbsp;</a>
+                    <script type="text/javascript">
+                        $(function () {
+                            var field = $('#DeviceProfile_ComputerNameTemplate');
+                            var fieldOriginalWidth, fieldOriginalHeight;
+
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                field,
+                                'None',
+                                '@Url.Action(MVC.API.DeviceProfile.UpdateComputerNameTemplate(Model.DeviceProfile.Id))',
+                                'ComputerNameTemplate'
+                            );
+
+                            field.focus(function () {
+                                fieldOriginalWidth = field.width();
+                                fieldOriginalHeight = field.height();
+                                field.css('overflow', 'visible').animate({ width: field.parent().width() - 52, height: 75 }, 200);
+                            }).blur(function () {
+                                field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
+                            }).attr('placeholder', 'None').attr('spellcheck', 'false');
+                        });
+                    </script>
+                }
+                else
+                {
+                    <div id="displayComputerNameTemplate" class="code">
+                        @if (string.IsNullOrWhiteSpace(Model.DeviceProfile.ComputerNameTemplate))
+                        {
+                            <span class="smallMessage">&lt;None Specified&gt;</span>
+                        }
+                        else
+                        {
+                            @Model.DeviceProfile.ComputerNameTemplate
+                        }
+                    </div>
                 }
                 <div style="margin-top: 8px;">
                     @if (canConfig)
                     {
-                        <input id="DeviceProfile_EnforceComputerNameConvention" type="checkbox" @(Model.DeviceProfile.EnforceComputerNameConvention ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
+                        <input id="DeviceProfile_EnforceComputerNameConvention" type="checkbox" @(Model.DeviceProfile.EnforceComputerNameConvention ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) />
                         <script type="text/javascript">
                             $(function () {
                                 document.DiscoFunctions.PropertyChangeHelper(
@@ -287,231 +360,159 @@
                     </label>
                     @AjaxHelpers.AjaxLoader()
                 </div>
-                <div class="smallMessage" style="margin-top: 8px;">
-                    Note: Computer names are only changed when Active Directory accounts are provisioned.
+                <div class="info-box">
+                    <p class="fa-p">
+                        <i class="fa fa-info-circle"></i>Computer names are only changed when Active Directory accounts are provisioned.
+                        If the device has already joined the domain when enrolment occurs the name will remain the same unless Enforce Naming Convention is enabled.
+                    </p>
                 </div>
             </td>
         </tr>
         <tr>
-            <th>Policies</th>
-            <td>
-                <div>
-                    @if (canConfig)
-                    {
-                        <input id="DeviceProfile_ProvisionADAccount" type="checkbox" @(Model.DeviceProfile.ProvisionADAccount ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
-                        <script type="text/javascript">
-                            $(function () {
-                                document.DiscoFunctions.PropertyChangeHelper(
-                                    $('#DeviceProfile_ProvisionADAccount'),
-                                    null,
-                                    '@Url.Action(MVC.API.DeviceProfile.UpdateProvisionADAccount(Model.DeviceProfile.Id))',
-                                    'ProvisionADAccount'
-                                );
-                            });
-                        </script>
-                    }
-                    else
-                    {
-                        <input id="DeviceProfile_ProvisionADAccount" type="checkbox" @(Model.DeviceProfile.ProvisionADAccount ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
-                    }
-                    <label for="DeviceProfile_ProvisionADAccount">
-                        Provision Active Directory Account
-                    </label>
-                    @AjaxHelpers.AjaxLoader()
-                </div>
-                <div style="margin-top: 8px;">
-                    @if (canConfig)
-                    {
-                        <input id="DeviceProfile_AssignedUserLocalAdmin" type="checkbox" @(Model.DeviceProfile.AssignedUserLocalAdmin ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
-                        <script type="text/javascript">
-                            $(function () {
-                                document.DiscoFunctions.PropertyChangeHelper(
-                                    $('#DeviceProfile_AssignedUserLocalAdmin'),
-                                    null,
-                                    '@Url.Action(MVC.API.DeviceProfile.UpdateAssignedUserLocalAdmin(Model.DeviceProfile.Id))',
-                                    'AssignedUserLocalAdmin'
-                                );
-                            });
-                        </script>
-                    }
-                    else
-                    {
-                        <input id="DeviceProfile_AssignedUserLocalAdmin" type="checkbox" @(Model.DeviceProfile.AssignedUserLocalAdmin ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
-                    }
-                    <label for="DeviceProfile_AssignedUserLocalAdmin">
-                        Assigned User is Local Administrator
-                    </label>
-                    @AjaxHelpers.AjaxLoader()
-                </div>
-                <div style="margin-top: 8px;">
-                    @if (canConfig)
-                    {
-                        <input id="DeviceProfile_AllowUntrustedReimageJobEnrolment" type="checkbox" @(Model.DeviceProfile.AllowUntrustedReimageJobEnrolment ? new MvcHtmlString("checked=\"checked\" ") : null)/>
-                        <script type="text/javascript">
-                            $(function () {
-                                document.DiscoFunctions.PropertyChangeHelper(
-                                    $('#DeviceProfile_AllowUntrustedReimageJobEnrolment'),
-                                    null,
-                                    '@Url.Action(MVC.API.DeviceProfile.UpdateAllowUntrustedReimageJobEnrolment(Model.DeviceProfile.Id))',
-                                    'AllowUntrustedReimageJobEnrolment'
-                                );
-                            });
-                        </script>
-                    }
-                    else
-                    {
-                        <input id="DeviceProfile_AllowUntrustedReimageJobEnrolment" type="checkbox" @(Model.DeviceProfile.AllowUntrustedReimageJobEnrolment ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
-                    }
-                    <label for="DeviceProfile_AllowUntrustedReimageJobEnrolment">
-                        Allow Untrusted Enrolment Where a <span class="code">'Software - Reimage'</span> Job is Open
-                    </label>
-                    @AjaxHelpers.AjaxLoader()
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <th>Organisational Unit:
+            <th>
+                Organisational Unit:
             </th>
-            <td>@if (canConfig)
+            <td>
+                @if (canConfig)
                 {
-                <div id="DeviceProfile_OrganisationalUnit" class="code" data-value="@Model.DeviceProfile.OrganisationalUnit">
-                    <span>
-                        @Model.FriendlyOrganisationalUnitName
-                    </span>
-                </div>
-                <a id="changeOrganisationalUnit" href="#" class="button small">Change</a>@AjaxHelpers.AjaxLoader()
-                <div id="dialogOrganisationalUnit" title="Organisational Unit" class="dialog">
-                    <div id="dialogOrganisationalUnit_Loading">
-                        @AjaxHelpers.AjaxLoader() Loading Organisational Units
+                    <div id="DeviceProfile_OrganisationalUnit" class="code" data-value="@Model.DeviceProfile.OrganisationalUnit">
+                        <span>
+                            @Model.FriendlyOrganisationalUnitName
+                        </span>
                     </div>
-                    <div id="treeOrganisationalUnit" class="organisationalUnitTree">
+                    <a id="changeOrganisationalUnit" href="#" class="button small">Change</a>@AjaxHelpers.AjaxLoader()
+                    <div id="dialogOrganisationalUnit" title="Organisational Unit" class="dialog">
+                        <div id="dialogOrganisationalUnit_Loading">
+                            @AjaxHelpers.AjaxLoader() Loading Organisational Units
+                        </div>
+                        <div id="treeOrganisationalUnit" class="organisationalUnitTree">
+                        </div>
                     </div>
-                </div>
-                <script type="text/javascript">
-                    $(function () {
-                        var ouSetUrl = '@Url.Action(MVC.API.DeviceProfile.UpdateOrganisationalUnit(Model.DeviceProfile.Id, null, true))';
-                        var ouValue = $('#DeviceProfile_OrganisationalUnit').attr('data-value');
-                        var $ouTree = null;
-                        var ouTree = null;
-                        var $dialog = null;
-                        var ouSet = function (ou) {
-                            var url = ouSetUrl + '&' + $.param({ OrganisationalUnit: ou })
-                            window.location.href = url;
-                        }
-                        var expandNodeTree = function (node) {
-                            var parent = node.parent;
-                            if (parent) {
-                                expandNodeTree(parent);
-                                parent.setExpanded(true, { noAnimation: true, noEvents: false });
+                    <script type="text/javascript">
+                        $(function () {
+                            var ouSetUrl = '@Url.Action(MVC.API.DeviceProfile.UpdateOrganisationalUnit(Model.DeviceProfile.Id, null, true))';
+                            var ouValue = $('#DeviceProfile_OrganisationalUnit').attr('data-value');
+                            var $ouTree = null;
+                            var ouTree = null;
+                            var $dialog = null;
+                            var ouSet = function (ou) {
+                                var url = ouSetUrl + '&' + $.param({ OrganisationalUnit: ou })
+                                window.location.href = url;
                             }
-                        }
-                        var expandAndFocusNode = function (nodeKey) {
-                            if (ouTree) {
-                                var ouNode = ouTree.getNodeByKey(ouValue);
-                                if (ouNode) {
-                                    expandNodeTree(ouNode);
-                                    ouNode.setFocus(true);
-                                    ouNode.setActive(true);
-
-                                    var li = ouNode.li;
-                                    var liOffset = li.offsetParent;
-                                    if (li.offsetTop + li.offsetHeight > liOffset.offsetHeight)
-                                        $(liOffset).animate({ 'scrollTop': li.offsetTop - liOffset.offsetHeight + li.offsetHeight + 4 }, 'fast');
+                            var expandNodeTree = function (node) {
+                                var parent = node.parent;
+                                if (parent) {
+                                    expandNodeTree(parent);
+                                    parent.setExpanded(true, { noAnimation: true, noEvents: false });
                                 }
                             }
-                        }
-                        var ouChange = function () {
-                            if (!$dialog) {
+                            var expandAndFocusNode = function (nodeKey) {
+                                if (ouTree) {
+                                    var ouNode = ouTree.getNodeByKey(ouValue);
+                                    if (ouNode) {
+                                        expandNodeTree(ouNode);
+                                        ouNode.setFocus(true);
+                                        ouNode.setActive(true);
 
-                                $dialog = $('#dialogOrganisationalUnit').dialog({
-                                    autoOpen: false,
-                                    buttons: null,
-                                    draggable: false,
-                                    modal: true,
-                                    resizable: false,
-                                    width: 500,
-                                    height: 500
-                                });
-                                $loading = $('#dialogOrganisationalUnit_Loading');
-                                $loading.find('i.ajaxLoading').show();
+                                        var li = ouNode.li;
+                                        var liOffset = li.offsetParent;
+                                        if (li.offsetTop + li.offsetHeight > liOffset.offsetHeight)
+                                            $(liOffset).animate({ 'scrollTop': li.offsetTop - liOffset.offsetHeight + li.offsetHeight + 4 }, 'fast');
+                                    }
+                                }
+                            }
+                            var ouChange = function () {
+                                if (!$dialog) {
 
-                                $ouTree = $('#treeOrganisationalUnit');
-                                $dialog.css('overflow', 'visible');
-                                $ouTree.css('height', '100%');
-
-                                $.getJSON('@(Url.Action(MVC.API.System.DomainOrganisationalUnits()))', null, function (data) {
-                                    $loading.hide();
-
-                                    // Make 'Domains' unselectable
-                                    $.each(data, function (i, node) {
-                                        node.unselectable = true;
+                                    $dialog = $('#dialogOrganisationalUnit').dialog({
+                                        autoOpen: false,
+                                        buttons: null,
+                                        draggable: false,
+                                        modal: true,
+                                        resizable: false,
+                                        width: 500,
+                                        height: 500
                                     });
+                                    $loading = $('#dialogOrganisationalUnit_Loading');
+                                    $loading.find('i.ajaxLoading').show();
 
-                                    ouTree = $ouTree.fancytree({
-                                        source: data,
-                                        checkbox: false,
-                                        selectMode: 1,
-                                        keyboard: false,
-                                        fx: null
-                                    }).fancytree('getTree');
+                                    $ouTree = $('#treeOrganisationalUnit');
+                                    $dialog.css('overflow', 'visible');
+                                    $ouTree.css('height', '100%');
 
-                                    ouTree.$container.css('position', 'relative');
+                                    $.getJSON('@(Url.Action(MVC.API.System.DomainOrganisationalUnits()))', null, function (data) {
+                                        $loading.hide();
 
-                                    // Set Buttons
-                                    $dialog.dialog('option', 'buttons', {
-                                        'Use Default Container': function () {
-                                            var $this = $(this);
-                                            $this.css('overflow', 'hidden');
-                                            $this.dialog("disable");
-                                            $this.dialog("option", "buttons", null);
-                                            ouSet('');
-                                        },
-                                        'Save': function () {
-                                            var node = ouTree.getActiveNode();
-                                            if (node && node.key.substr(0, 3).toLowerCase() == 'ou=') {
+                                        // Make 'Domains' unselectable
+                                        $.each(data, function (i, node) {
+                                            node.unselectable = true;
+                                        });
+
+                                        ouTree = $ouTree.fancytree({
+                                            source: data,
+                                            checkbox: false,
+                                            selectMode: 1,
+                                            keyboard: false,
+                                            fx: null
+                                        }).fancytree('getTree');
+
+                                        ouTree.$container.css('position', 'relative');
+
+                                        // Set Buttons
+                                        $dialog.dialog('option', 'buttons', {
+                                            'Use Default Container': function () {
                                                 var $this = $(this);
                                                 $this.css('overflow', 'hidden');
                                                 $this.dialog("disable");
                                                 $this.dialog("option", "buttons", null);
-                                                ouSet(node.key);
-                                            } else {
-                                                alert('Select an Organisational Unit to Save')
+                                                ouSet('');
+                                            },
+                                            'Save': function () {
+                                                var node = ouTree.getActiveNode();
+                                                if (node && node.key.substr(0, 3).toLowerCase() == 'ou=') {
+                                                    var $this = $(this);
+                                                    $this.css('overflow', 'hidden');
+                                                    $this.dialog("disable");
+                                                    $this.dialog("option", "buttons", null);
+                                                    ouSet(node.key);
+                                                } else {
+                                                    alert('Select an Organisational Unit to Save')
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
 
+                                        // Expand
+                                        expandAndFocusNode(ouValue);
+
+                                        ouTree.options.fx = { height: "toggle", duration: 200 };
+                                    });
+                                }
+                                $dialog.dialog('open');
+
+                                if (ouTree) {
                                     // Expand
                                     expandAndFocusNode(ouValue);
+                                }
 
-                                    ouTree.options.fx = { height: "toggle", duration: 200 };
-                                });
-                            }
-                            $dialog.dialog('open');
+                                return false;
+                            };
 
-                            if (ouTree) {
-                                // Expand
-                                expandAndFocusNode(ouValue);
-                            }
-
-                            return false;
-                        };
-
-                        $('#changeOrganisationalUnit').click(ouChange);
-                    });
-                </script>
+                            $('#changeOrganisationalUnit').click(ouChange);
+                        });
+                    </script>
                 }
                 else
                 {
-                <div id="displayOrganisationalUnit" class="code">
-                    <span>
-                        @Model.FriendlyOrganisationalUnitName
-                    </span>
-                </div>
+                    <div id="displayOrganisationalUnit" class="code">
+                        <span>
+                            @Model.FriendlyOrganisationalUnitName
+                        </span>
+                    </div>
                 }
                 <div style="margin-top: 8px;">
                     @if (canConfig)
                     {
-                        <input id="DeviceProfile_EnforceOrganisationalUnit" type="checkbox" @(Model.DeviceProfile.EnforceOrganisationalUnit ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))/>
+                        <input id="DeviceProfile_EnforceOrganisationalUnit" type="checkbox" @(Model.DeviceProfile.EnforceOrganisationalUnit ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))   />
                         <script type="text/javascript">
                             $(function () {
                                 document.DiscoFunctions.PropertyChangeHelper(
@@ -532,6 +533,190 @@
                     </label>
                     @AjaxHelpers.AjaxLoader()
                 </div>
+                <div class="info-box">
+                    <p class="fa-p">
+                        <i class="fa fa-info-circle"></i>When an Active Directory account is provisioned it will be placed in this container. This typically occurs
+                        at device enrolment. If the device has already joined the domain and the <code>Enforce&nbsp;Organisational&nbsp;Unit</code> option is enabled
+                        the Active Directory account will be moved into this organisational unit during enrolment.
+                    </p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Provision Certificates:
+                @if (canConfig && (Model.CertificateProviders.Count > 0 || Model.CertificateAuthorityProviders.Count > 0))
+                {
+                    <br />
+                    @AjaxHelpers.AjaxLoader("DeviceProfile_CertificateProviders")
+                }
+                @if (canConfig && Model.CertificateProviders.Count > 0)
+                {
+                    <script type="text/javascript">
+                        $(function () {
+                            var $container = $('#DeviceProfile_CertificateProviders');
+
+                            $container.on('change', 'input', function () {
+                                var $ajaxLoading = $('#DeviceProfile_CertificateProviders_loading').show();
+
+                                var data = {
+                                    CertificateProviders: $('input:checked', $container).map(function () { return $(this).val() }).get().join(',')
+                                };
+                                $.getJSON('@(Url.Action(MVC.API.DeviceProfile.UpdateCertificateProviders(Model.DeviceProfile.Id)))', data, function (response, result) {
+                                    if (result != 'success' || response != 'OK') {
+                                        alert('Unable to change property "CertificateProviders":\n' + response);
+                                        $ajaxLoading.hide();
+                                    } else {
+                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                    }
+                                })
+                            })
+                        });
+                    </script>
+                }
+                @if (canConfig && Model.CertificateProviders.Count > 0)
+                {
+                    <script type="text/javascript">
+                        $(function () {
+                            var $container = $('#DeviceProfile_CertificateAuthorityProviders');
+
+                            $container.on('change', 'input', function () {
+                                var $ajaxLoading = $('#DeviceProfile_CertificateProviders_loading').show();
+
+                                var data = {
+                                    CertificateAuthorityProviders: $('input:checked', $container).map(function () { return $(this).val() }).get().join(',')
+                                };
+                                $.getJSON('@(Url.Action(MVC.API.DeviceProfile.UpdateCertificateAuthorityProviders(Model.DeviceProfile.Id)))', data, function (response, result) {
+                                    if (result != 'success' || response != 'OK') {
+                                        alert('Unable to change property "CertificateAuthorityProviders":\n' + response);
+                                        $ajaxLoading.hide();
+                                    } else {
+                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                    }
+                                })
+                            })
+                        });
+                    </script>
+                }
+            </th>
+            <td>
+                <h4>Device/Machine Certificates</h4>
+                @if (canConfig && Model.CertificateProviders.Count > 0)
+                {
+                    @CommonHelpers.CheckBoxList("DeviceProfile_CertificateProviders", "DeviceProfile_CertificateProviders", Model.CertificateProviders.ToSelectListItems(Model.DeviceProfile.GetCertificateProviders()))
+                }
+                else
+                {
+                    var certificateProviders = Model.DeviceProfile.GetCertificateProviders().ToList();
+
+                    if (certificateProviders.Count == 0)
+                    {
+                        <span class="smallMessage">&lt;None Allocated&gt;</span>
+                    }
+                    else
+                    {
+                        <ul>
+                            @foreach (var certificateProvider in certificateProviders)
+                    {
+                                <li>@certificateProvider.Name</li>
+                            }
+                        </ul>
+                    }
+                }
+                <h4 style="margin-top: 4px;">Authority Certificates</h4>
+                @if (canConfig && Model.CertificateAuthorityProviders.Count > 0)
+                {
+                    @CommonHelpers.CheckBoxList("DeviceProfile_CertificateAuthorityProviders", "DeviceProfile_CertificateAuthorityProviders", Model.CertificateAuthorityProviders.ToSelectListItems(Model.DeviceProfile.GetCertificateAuthorityProviders()))
+                }
+                else
+                {
+                    var certificateProviders = Model.DeviceProfile.GetCertificateAuthorityProviders().ToList();
+
+                    if (certificateProviders.Count == 0)
+                    {
+                        <span class="smallMessage">&lt;None Allocated&gt;</span>
+                    }
+                    else
+                    {
+                        <ul>
+                            @foreach (var certificateProvider in certificateProviders)
+                    {
+                                <li>@certificateProvider.Name</li>
+                            }
+                        </ul>
+                    }
+                }
+                @if (canViewPlugins)
+            {
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle"></i>View the <a href="@(Url.Action(MVC.Config.Plugins.Install()))">Plugin Catalogue</a> to discover and install certificate provider plugins.
+                        </p>
+                    </div>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Provision Wireless Profiles:
+                @if (canConfig && Model.WirelessProfileProviders.Count > 0)
+                {
+                    <br />
+                    @AjaxHelpers.AjaxLoader("DeviceProfile_WirelessProfileProviders")
+                    <script type="text/javascript">
+                        $(function () {
+                            var $container = $('#DeviceProfile_WirelessProfileProviders');
+
+                            $container.on('change', 'input', function () {
+                                var $ajaxLoading = $('#DeviceProfile_WirelessProfileProviders_loading').show();
+
+                                var data = {
+                                    WirelessProfileProviders: $('input:checked', $container).map(function () { return $(this).val() }).get().join(',')
+                                };
+                                $.getJSON('@(Url.Action(MVC.API.DeviceProfile.UpdateWirelessProfileProviders(Model.DeviceProfile.Id)))', data, function (response, result) {
+                                    if (result != 'success' || response != 'OK') {
+                                        alert('Unable to change property "WirelessProfileProviders":\n' + response);
+                                        $ajaxLoading.hide();
+                                    } else {
+                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                    }
+                                })
+                            })
+                        });
+                    </script>
+                }
+            </th>
+            <td>
+                @if (canConfig && Model.WirelessProfileProviders.Count > 0)
+                {
+                    @CommonHelpers.CheckBoxList("DeviceProfile_WirelessProfileProviders", "DeviceProfile_WirelessProfileProviders", Model.WirelessProfileProviders.ToSelectListItems(Model.DeviceProfile.GetWirelessProfileProviders()))
+                }
+                else
+                {
+                    var wirelessProfileProviders = Model.DeviceProfile.GetWirelessProfileProviders().ToList();
+
+                    if (wirelessProfileProviders.Count == 0)
+                    {
+                        <span class="smallMessage">&lt;None Allocated&gt;</span>
+                    }
+                    else
+                    {
+                        <ul>
+                            @foreach (var wirelessProfileProvider in wirelessProfileProviders)
+                    {
+                                <li>@wirelessProfileProvider.Name</li>
+                            }
+                        </ul>
+                    }
+                }
+                @if (canViewPlugins)
+                {
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle"></i>View the <a href="@(Url.Action(MVC.Config.Plugins.Install()))">Plugin Catalogue</a> to discover and install wireless profile provider plugins.
+                        </p>
+                    </div>
+                }
             </td>
         </tr>
         @if (hideAdvanced)
@@ -552,7 +737,8 @@
             </tr>
         }
         <tr class="Config_HideAdvanced_Item">
-            <th>Linked Groups:
+            <th>
+                Linked Groups:
             </th>
             <td>
                 <div>
@@ -620,7 +806,7 @@
 }
 <div class="actionBar">
     @if (canDelete)
-    { 
+    {
         @Html.ActionLinkButton("Delete", MVC.API.DeviceProfile.Delete(Model.DeviceProfile.Id, true), "buttonDelete")
     }
     @if (Authorization.Has(Claims.Device.Actions.Export))

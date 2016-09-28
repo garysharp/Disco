@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
-using Microsoft.AspNet.SignalR;
 
 namespace Disco.Web
 {
@@ -84,8 +79,8 @@ namespace Disco.Web
             // Update Route
             routes.MapRoute(
                 name: "Update", // Route name
-                url: "{controller}/{action}/{id}", // URL with parameters
-                defaults: new { controller = "Update", action = "Index", id = UrlParameter.Optional }, // Parameter defaults
+                url: "{action}", // URL with parameters
+                defaults: new { controller = "Update", action = "Index" }, // Parameter defaults
                 namespaces: new string[] { "Disco.Web.Controllers" } // Controllers Namespace Only
             );
         }

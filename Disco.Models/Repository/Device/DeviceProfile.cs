@@ -61,10 +61,14 @@ namespace Disco.Models.Repository
             return string.Format("{0} ({1})", this.Name, this.ShortName);
         }
 
-        // 2012-06-21
-        // public bool AllocateCertificate { get; set; } // Renamed from 'AllocateWirelessCertificate'
-        [StringLength(64)]
-        public string CertificateProviderId { get; set; }
+        [StringLength(200)]
+        public string CertificateProviders { get; set; }
+
+        [StringLength(200)]
+        public string CertificateAuthorityProviders { get; set; }
+
+        [StringLength(200)]
+        public string WirelessProfileProviders { get; set; }
 
         public const string DefaultComputerNameTemplate = "DeviceProfile.ShortName + '-' + SerialNumber";
 

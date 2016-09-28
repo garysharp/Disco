@@ -17,7 +17,8 @@
 <div class="form" style="width: 450px">
     <table>
         <tr>
-            <th style="width: 135px">Disco Version:
+            <th style="width: 135px">
+                Disco Version:
             </th>
             <td>
                 <div>
@@ -29,7 +30,8 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 135px">Database Connection:
+            <th style="width: 135px">
+                Database Connection:
             </th>
             <td>
                 <table class="sub">
@@ -46,18 +48,19 @@
                         <td>@Model.DatabaseAuthentication</td>
                     </tr>
                     @{if (Model.DatabaseSqlAuthUsername != null)
-                      {
-                        <tr>
-                            <th>SQL&nbsp;User:</th>
-                            <td><span class="code">@Model.DatabaseSqlAuthUsername</span></td>
-                        </tr>      
-                      }
+                        {
+                            <tr>
+                                <th>SQL&nbsp;User:</th>
+                                <td><span class="code">@Model.DatabaseSqlAuthUsername</span></td>
+                            </tr>
+                        }
                     }
                 </table>
             </td>
         </tr>
         <tr>
-            <th style="width: 135px">Data Store Location:
+            <th style="width: 135px">
+                Data Store Location:
             </th>
             <td>
                 <span class="code">@Model.DataStoreLocation</span>
@@ -71,49 +74,53 @@
         @{
             if (Model.UpdateLatestResponse == null)
             {
-            <tr>
-                <th style="width: 135px">Last Check:
-                </th>
-                <td>
-                    <div class="error"><i class="fa fa-exclamation-circle fa-lg"></i>&nbsp;Never</div>
-                </td>
-            </tr>
+                <tr>
+                    <th style="width: 135px">
+                        Last Check:
+                    </th>
+                    <td>
+                        <div class="error"><i class="fa fa-exclamation-circle fa-lg"></i>&nbsp;Never</div>
+                    </td>
+                </tr>
             }
             else
             {
-            <tr>
-                <th style="width: 135px">Last Run:
-                </th>
-                <td>
-                    <span>@CommonHelpers.FriendlyDate(Model.UpdateLatestResponse.UpdateResponseDate.ToLocalTime())</span>
-                </td>
-            </tr>
+                <tr>
+                    <th style="width: 135px">
+                        Last Run:
+                    </th>
+                    <td>
+                        <span>@CommonHelpers.FriendlyDate(Model.UpdateLatestResponse.UpdateResponseDate.ToLocalTime())</span>
+                    </td>
+                </tr>
                 if (Model.UpdateAvailable)
                 {
-            <tr>
-                <th style="width: 135px">Update Available:
-                </th>
-                <td>
-                    <div>
-                        <i class="fa fa-info-circle fa-lg information"></i>&nbsp;Version @(Model.UpdateLatestResponse.LatestVersion) is available
-                    </div>
-                    <div class="smallMessage">
-                        [Released @(CommonHelpers.FriendlyDate(Model.UpdateLatestResponse.ReleasedDate))]
-                    </div>
-                    <div class="smallMessage">@(new HtmlString(Model.UpdateLatestResponse.Description))</div>
-                    <a href="@(Model.UpdateLatestResponse.UrlLink)" target="_blank">Download Now</a>
-                </td>
-            </tr>
+                    <tr>
+                        <th style="width: 135px">
+                            Update Available:
+                        </th>
+                        <td>
+                            <div>
+                                <i class="fa fa-info-circle fa-lg information"></i>&nbsp;Version @(Model.UpdateLatestResponse.LatestVersion) is available
+                            </div>
+                            <div class="smallMessage">
+                                [Released @(CommonHelpers.FriendlyDate(Model.UpdateLatestResponse.ReleasedDate))]
+                            </div>
+                            <div class="smallMessage">@(new HtmlString(Model.UpdateLatestResponse.Description))</div>
+                            <a href="@(Model.UpdateLatestResponse.UrlLink)" target="_blank">Download Now</a>
+                        </td>
+                    </tr>
                 }
                 else
                 {
-            <tr>
-                <th style="width: 135px">Status:
-                </th>
-                <td>
-                    <i class="fa fa-check-square fa-lg success"></i>&nbsp;<span>The latest version is installed</span>
-                </td>
-            </tr>
+                    <tr>
+                        <th style="width: 135px">
+                            Status:
+                        </th>
+                        <td>
+                            <i class="fa fa-check-square fa-lg success"></i>&nbsp;<span>The latest version is installed</span>
+                        </td>
+                    </tr>
                 }
             }
         }
@@ -123,13 +130,13 @@
                 @{
                     if (Model.UpdateRunningStatus == null)
                     {
-                    <span>@Html.ActionLinkSmallButton("Check Now", MVC.API.System.UpdateCheck())</span>
-                    <span class="smallMessage">[Will run automatically <strong>@CommonHelpers.FriendlyDate(Model.UpdateNextScheduled, "Unknown")</strong>]</span>
+                        <span>@Html.ActionLinkSmallButton("Check Now", MVC.API.System.UpdateCheck())</span>
+                        <span class="smallMessage">[Will run automatically <strong>@CommonHelpers.FriendlyDate(Model.UpdateNextScheduled, "Unknown")</strong>]</span>
                     }
                     else
                     {
-                    <span>@Html.ActionLink("View Status", MVC.Config.Logging.TaskStatus(Model.UpdateRunningStatus.SessionId))</span>
-                    <span class="smallMessage">[Running Now]</span>
+                        <span>@Html.ActionLink("View Status", MVC.Config.Logging.TaskStatus(Model.UpdateRunningStatus.SessionId))</span>
+                        <span class="smallMessage">[Running Now]</span>
                     }
                 }
                 @if (Model.UpdateBetaDeployment)
@@ -145,14 +152,16 @@
     <h2>Active Directory</h2>
     <table>
         <tr>
-            <th style="width: 135px">Primary Domain:
+            <th style="width: 135px">
+                Primary Domain:
             </th>
             <td>
                 <code><strong>@Model.ADPrimaryDomain.Name</strong> <span>[@Model.ADPrimaryDomain.NetBiosName]</span></code>
             </td>
         </tr>
         <tr>
-            <th style="width: 135px">Additional Domains:
+            <th style="width: 135px">
+                Additional Domains:
             </th>
             <td>
                 @if (Model.ADDomains.Count > 1)
@@ -162,10 +171,10 @@
                     <code>@adDomainFirst.Name <span>[@adDomainFirst.NetBiosName]</span></code>
                     foreach (var adDomain in adAdditionalDomains.Skip(1))
                     {
-                    <hr />
-                    <div>
-                        <code>@adDomain.Name <span>[@adDomain.NetBiosName]</span></code>
-                    </div>
+                        <hr />
+                        <div>
+                            <code>@adDomain.Name <span>[@adDomain.NetBiosName]</span></code>
+                        </div>
                     }
                 }
                 else
@@ -175,14 +184,16 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 135px">Site:
+            <th style="width: 135px">
+                Site:
             </th>
             <td>
                 <code><strong>@Model.ADSite.Name</strong></code>
             </td>
         </tr>
         <tr>
-            <th style="width: 135px">Servers:
+            <th style="width: 135px">
+                Servers:
             </th>
             <td>
                 <div>
@@ -229,7 +240,8 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 135px">Forest:
+            <th style="width: 135px">
+                Forest:
             </th>
             <td>
                 @if (Model.ADForestServers == null)
@@ -249,60 +261,66 @@
                     if (canConfigAD)
                     {
                         var canSearchEntireForest = (Model.ADForestServers.Count <= Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxForestServerSearch);
-                    <div>
-                        @if (!canSearchEntireForest)
-                        {
-                            @Html.CheckBoxFor(m => m.ADSearchAllForestServers, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchAllForestServers)
-                            <div class="info-box">
-                                <p class="fa-p">
-                                    <i class="fa fa-exclamation-circle warning"></i>Disco will not search entire forests which consist of more than @(Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxForestServerSearch) servers. Only servers within this site will be searched.
-                                </p>
-                            </div>
-                        }
-                        else
-                        {
-                            @Html.CheckBoxFor(m => m.ADSearchAllForestServers) @Html.LabelFor(m => m.ADSearchAllForestServers) @AjaxHelpers.AjaxLoader()
-                            <div class="smallMessage">
-                                If this setting is enabled, Disco will query all servers within the forest rather than only servers within this site.
-                            </div>
-                            <script>
-                                $(function () {
-                                    document.DiscoFunctions.PropertyChangeHelper($('#ADSearchAllForestServers'), null, '@(Url.Action(MVC.API.System.UpdateActiveDirectorySearchAllForestServers()))', 'SearchAllForestServers');
-                                });
-                            </script>
-                        }
-                    </div>
+                        <div>
+                            @if (!canSearchEntireForest)
+                            {
+                                @Html.CheckBoxFor(m => m.ADSearchAllForestServers, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchAllForestServers)
+                                <div class="info-box">
+                                    <p class="fa-p">
+                                        <i class="fa fa-exclamation-circle warning"></i>Disco will not search entire forests which consist of more than @(Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxForestServerSearch) servers. Only servers within this site will be searched.
+                                    </p>
+                                </div>
+                            }
+                            else
+                            {
+                                @Html.CheckBoxFor(m => m.ADSearchAllForestServers) @Html.LabelFor(m => m.ADSearchAllForestServers) @AjaxHelpers.AjaxLoader()
+                                <div class="info-box">
+                                    <p class="fa-p">
+                                        <i class="fa fa-info-circle"></i>If this setting is enabled, Disco will query all servers within the forest rather than only servers within this site.
+                                    </p>
+                                </div>
+                                <script>
+                                    $(function () {
+                                        document.DiscoFunctions.PropertyChangeHelper($('#ADSearchAllForestServers'), null, '@(Url.Action(MVC.API.System.UpdateActiveDirectorySearchAllForestServers()))', 'SearchAllForestServers');
+                                    });
+                                </script>
+                            }
+                        </div>
                     }
                     else
                     {
-                    <div>
-                        @Html.CheckBoxFor(m => m.ADSearchAllForestServers, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchAllForestServers)
-                        <div class="smallMessage">
-                            If this setting is enabled, Disco will search all servers within the forest rather than only servers within this site.
+                        <div>
+                            @Html.CheckBoxFor(m => m.ADSearchAllForestServers, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchAllForestServers)
+                            <div class="info-box">
+                                <p class="fa-p">
+                                    <i class="fa fa-info-circle"></i>If this setting is enabled, Disco will query all servers within the forest rather than only servers within this site.
+                                </p>
+                            </div>
                         </div>
-                    </div>
                     }
                     <div>
                         <hr />
                         <span>All Servers:</span>
                         <ul id="Config_System_AD_ForestServers" class="none">
                             @{
-                    var domainIndex = Model.ADDomains.ToDictionary(d => d.Name, StringComparer.OrdinalIgnoreCase);
-                    foreach (var server in Model.ADForestServers.OrderBy(s => s))
-                    {
-                        var isSiteServer = Model.ADServers.Any(s => s.IsSiteServer && s.Name.Equals(server, StringComparison.OrdinalIgnoreCase));
-                        var serverDescription = server;
-                        if (server.Contains('.'))
-                        {
-                            Disco.Services.Interop.ActiveDirectory.ADDomain serverDomain;
-                            if (domainIndex.TryGetValue(server.Substring(server.IndexOf('.') + 1), out serverDomain))
-                            {
-                                serverDescription = string.Format("{0} [{1}]", server.Substring(0, server.IndexOf('.')), serverDomain.NetBiosName);
-                            }
-                        }
-                                <li><code>@serverDescription</code>@if (isSiteServer)
-                                                                   { <i class="fa fa-building-o information fa-fw" title="Site Server"></i> }</li>
-                    }
+                                var domainIndex = Model.ADDomains.ToDictionary(d => d.Name, StringComparer.OrdinalIgnoreCase);
+                                foreach (var server in Model.ADForestServers.OrderBy(s => s))
+                                {
+                                    var isSiteServer = Model.ADServers.Any(s => s.IsSiteServer && s.Name.Equals(server, StringComparison.OrdinalIgnoreCase));
+                                    var serverDescription = server;
+                                    if (server.Contains('.'))
+                                    {
+                                        Disco.Services.Interop.ActiveDirectory.ADDomain serverDomain;
+                                        if (domainIndex.TryGetValue(server.Substring(server.IndexOf('.') + 1), out serverDomain))
+                                        {
+                                            serverDescription = string.Format("{0} [{1}]", server.Substring(0, server.IndexOf('.')), serverDomain.NetBiosName);
+                                        }
+                                    }
+                                    <li>
+                                        <code>@serverDescription</code>@if (isSiteServer)
+                                        { <i class="fa fa-building-o information fa-fw" title="Site Server"></i> }
+                                    </li>
+                                }
                             }
                         </ul>
                         <script>
@@ -328,11 +346,45 @@
                             });
                         </script>
                     </div>
+                                }
+            </td>
+
+        </tr>
+        <tr>
+            <th style="width: 135px">
+                Searching:
+            </th>
+            <td>
+                @{
+                    object ADSearchWildcardSuffixOnlyAttributes = null;
+                    if (!canConfigAD)
+                    {
+                        ADSearchWildcardSuffixOnlyAttributes = new
+                        {
+                            disabled = "disabled"
+                        };
+                    }
+                }
+                @Html.CheckBoxFor(m => m.ADSearchWildcardSuffixOnly, ADSearchWildcardSuffixOnlyAttributes) @Html.LabelFor(m => m.ADSearchWildcardSuffixOnly) @AjaxHelpers.AjaxLoader()
+                <div class="info-box">
+                    <p class="fa-p">
+                        <i class="fa fa-info-circle"></i>If this setting is enabled, Disco will utilize Active Directory indexes to greatly improve search performance.
+                        If disabled, more results may be returned however performance will be reduced especially in large Active Directory domains.
+                    </p>
+                </div>
+                @if (canConfigAD)
+                {
+                    <script>
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper($('#ADSearchWildcardSuffixOnly'), null, '@(Url.Action(MVC.API.System.UpdateActiveDirectorySearchWildcardSuffixOnly()))', 'SearchWildcardSuffixOnly');
+                        });
+                    </script>
                 }
             </td>
         </tr>
         <tr>
-            <th style="width: 135px">Search Scope:
+            <th style="width: 135px">
+                Search Scope:
             </th>
             <td>
                 @if (Model.ADSearchContainers != null && Model.ADSearchContainers.Count > 0)
@@ -347,8 +399,12 @@
                 }
                 else
                 {
-                    <div>No restrictions are in effect.</div>
-                    <div class="smallMessage">When searching, the entire domain will be queried. This is suitable for most single-domain deployments.</div>
+                    <div>No Organisational&nbsp;Unit restrictions are in effect.</div>
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle"></i>When searching, the entire domain will be queried. This is suitable for most single-domain deployments.
+                        </p>
+                    </div>
                 }
                 @if (canConfigAD)
                 {
@@ -475,88 +531,96 @@
                     </script>
                 }
             </td>
+
+
+
         </tr>
     </table>
 </div>
 @if (canConfigProxy)
 {
     using (Html.BeginForm(MVC.API.System.UpdateProxySettings()))
-    { 
-    <div class="form" style="width: 450px; margin-top: 15px;">
-        <h2>Proxy Settings</h2>
-        <table>
-            <tr>
-                <th style="width: 135px">Address:
-                </th>
-                <td>
-                    @Html.EditorFor(m => m.ProxyAddress)<br />
-                    @Html.ValidationMessageFor(m => m.ProxyAddress)
-                </td>
-            </tr>
-            <tr>
-                <th style="width: 135px">Port:
-                </th>
-                <td>
-                    @Html.EditorFor(m => m.ProxyPort)<br />
-                    @Html.ValidationMessageFor(m => m.ProxyPort)
-                </td>
-            </tr>
-            <tr>
-                <th style="width: 135px">Username:
-                </th>
-                <td>
-                    @Html.EditorFor(m => m.ProxyUsername)<br />
-                    @Html.ValidationMessageFor(m => m.ProxyUsername)
-                </td>
-            </tr>
-            <tr>
-                <th style="width: 135px">Password:
-                </th>
-                <td>
-                    @Html.EditorFor(m => m.ProxyPassword)<br />
-                    @Html.ValidationMessageFor(m => m.ProxyPassword)
-                </td>
-            </tr>
-            <tr>
-                <th style="width: 135px">&nbsp;
-                </th>
-                <td>
-                    <button id="Config_System_Proxy_Save" type="button" class="button small">Save Proxy Settings</button>@AjaxHelpers.AjaxLoader()
-                    <script>
-                        $(function () {
-                            var button = $('#Config_System_Proxy_Save');
+    {
+        <div class="form" style="width: 450px; margin-top: 15px;">
+            <h2>Proxy Settings</h2>
+            <table>
+                <tr>
+                    <th style="width: 135px">
+                        Address:
+                    </th>
+                    <td>
+                        @Html.EditorFor(m => m.ProxyAddress)<br />
+                        @Html.ValidationMessageFor(m => m.ProxyAddress)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 135px">
+                        Port:
+                    </th>
+                    <td>
+                        @Html.EditorFor(m => m.ProxyPort)<br />
+                        @Html.ValidationMessageFor(m => m.ProxyPort)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 135px">
+                        Username:
+                    </th>
+                    <td>
+                        @Html.EditorFor(m => m.ProxyUsername)<br />
+                        @Html.ValidationMessageFor(m => m.ProxyUsername)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 135px">
+                        Password:
+                    </th>
+                    <td>
+                        @Html.EditorFor(m => m.ProxyPassword)<br />
+                        @Html.ValidationMessageFor(m => m.ProxyPassword)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 135px">
+                        &nbsp;
+                    </th>
+                    <td>
+                        <button id="Config_System_Proxy_Save" type="button" class="button small">Save Proxy Settings</button>@AjaxHelpers.AjaxLoader()
+                        <script>
+                            $(function () {
+                                var button = $('#Config_System_Proxy_Save');
 
-                            button.click(function () {
-                                var url = '@(Url.Action(MVC.API.System.UpdateProxySettings()))';
-                                var data = {
-                                    ProxyAddress: $('#ProxyAddress').val(),
-                                    ProxyPort: $('#ProxyPort').val(),
-                                    ProxyUsername: $('#ProxyUsername').val(),
-                                    ProxyPassword: $('#ProxyPassword').val()
-                                }
-                                var ajaxLoading = button.next('.ajaxLoading').first().show();
-
-                                $.ajax({
-                                    type: 'POST',
-                                    dataType: 'json',
-                                    url: url,
-                                    data: data,
-                                    success: function (response, result) {
-                                        if (result != 'success' || response != 'OK') {
-                                            alert('Unable to change property "' + UpdatePropertyName + '":\n' + response);
-                                            ajaxLoading.hide();
-                                        } else {
-                                            ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                        }
+                                button.click(function () {
+                                    var url = '@(Url.Action(MVC.API.System.UpdateProxySettings()))';
+                                    var data = {
+                                        ProxyAddress: $('#ProxyAddress').val(),
+                                        ProxyPort: $('#ProxyPort').val(),
+                                        ProxyUsername: $('#ProxyUsername').val(),
+                                        ProxyPassword: $('#ProxyPassword').val()
                                     }
+                                    var ajaxLoading = button.next('.ajaxLoading').first().show();
+
+                                    $.ajax({
+                                        type: 'POST',
+                                        dataType: 'json',
+                                        url: url,
+                                        data: data,
+                                        success: function (response, result) {
+                                            if (result != 'success' || response != 'OK') {
+                                                alert('Unable to change property "' + UpdatePropertyName + '":\n' + response);
+                                                ajaxLoading.hide();
+                                            } else {
+                                                ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                            }
+                                        }
+                                    });
                                 });
                             });
-                        });
-                    </script>
-                </td>
-            </tr>
-        </table>
-    </div>
+                        </script>
+                    </td>
+                </tr>
+            </table>
+        </div>
     }
 }
 else
@@ -565,30 +629,35 @@ else
         <h2>Proxy Settings</h2>
         <table>
             <tr>
-                <th style="width: 135px">Address:
+                <th style="width: 135px">
+                    Address:
                 </th>
                 <td>
                     @Html.DisplayFor(m => m.ProxyAddress)
                 </td>
             </tr>
             <tr>
-                <th style="width: 135px">Port:
+                <th style="width: 135px">
+                    Port:
                 </th>
                 <td>
                     @Html.DisplayFor(m => m.ProxyPort)
                 </td>
             </tr>
             <tr>
-                <th style="width: 135px">Username:
+                <th style="width: 135px">
+                    Username:
                 </th>
                 <td>
                     @Html.DisplayFor(m => m.ProxyUsername)
                 </td>
             </tr>
             <tr>
-                <th style="width: 135px">Password:
+                <th style="width: 135px">
+                    Password:
                 </th>
-                <td>********
+                <td>
+                    ********
                 </td>
             </tr>
         </table>

@@ -36,7 +36,7 @@ namespace Disco.Data.Configuration.Modules
         /// </summary>
         public bool SearchWildcardSuffixOnly
         {
-            get { return Get(false); }
+            get { return Get(true); }
             set { Set(value); }
         }
     }

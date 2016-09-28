@@ -1,8 +1,8 @@
-﻿using Disco.BI.DocumentTemplateBI.ManagedGroups;
-using Disco.BI.Extensions;
+﻿using Disco.BI.Extensions;
 using Disco.Models.UI.Config.DocumentTemplate;
 using Disco.Services;
 using Disco.Services.Authorization;
+using Disco.Services.Documents.ManagedGroups;
 using Disco.Services.Expressions;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Web;

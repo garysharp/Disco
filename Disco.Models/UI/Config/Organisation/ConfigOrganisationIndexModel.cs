@@ -1,8 +1,5 @@
-﻿using System;
+﻿using Disco.Models.BI.Config;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Models.UI.Config.Organisation
 {
@@ -10,6 +7,6 @@ namespace Disco.Models.UI.Config.Organisation
     {
         string OrganisationName { get; set; }
         bool MultiSiteMode { get; set; }
-        List<Models.BI.Config.OrganisationAddress> OrganisationAddresses { get; set; }
+        List<OrganisationAddress> OrganisationAddresses { get; set; }
     }
 }

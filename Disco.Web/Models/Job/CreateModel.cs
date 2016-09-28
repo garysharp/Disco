@@ -1,12 +1,11 @@
-﻿using Disco.BI.Extensions;
-using Disco.Data.Repository;
+﻿using Disco.Data.Repository;
 using Disco.Models.UI.Job;
+using Disco.Services;
 using Disco.Services.Authorization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
 
 namespace Disco.Web.Models.Job
 {

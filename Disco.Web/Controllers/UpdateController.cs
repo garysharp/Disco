@@ -1,16 +1,5 @@
-﻿using System;
-using System.Data.SqlClient;
-using System.Threading;
+﻿using Disco.Services.Plugins;
 using System.Web.Mvc;
-using Disco.Web.Models.InitialConfig;
-using Disco.Data.Repository;
-using System.Linq;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.IO.Compression;
-using System.Management;
-using System.Web;
-using Disco.Services.Plugins;
 
 namespace Disco.Web.Controllers
 {

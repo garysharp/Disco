@@ -1,12 +1,14 @@
-﻿using Disco.BI.Extensions;
-using Disco.Models.Repository;
+﻿using Disco.Models.Repository;
 using Disco.Models.UI.Config.DeviceProfile;
+using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Devices.ManagedGroups;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins;
+using Disco.Services.Plugins.Features.CertificateAuthorityProvider;
 using Disco.Services.Plugins.Features.CertificateProvider;
 using Disco.Services.Plugins.Features.UIExtension;
+using Disco.Services.Plugins.Features.WirelessProfileProvider;
 using Disco.Services.Web;
 using System;
 using System.Collections.Generic;
@@ -45,6 +47,8 @@ namespace Disco.Web.Areas.Config.Controllers
                     m.DevicesLinkedGroup = devicesManagedGroup;
 
                 m.CertificateProviders = Plugins.GetPluginFeatures(typeof(CertificateProviderFeature));
+                m.CertificateAuthorityProviders = Plugins.GetPluginFeatures(typeof(CertificateAuthorityProviderFeature));
+                m.WirelessProfileProviders = Plugins.GetPluginFeatures(typeof(WirelessProfileProviderFeature));
 
                 var DistributionValues = Enum.GetValues(typeof(Disco.Models.Repository.DeviceProfile.DistributionTypes));
                 m.DeviceProfileDistributionTypes = new List<SelectListItem>();

@@ -1,11 +1,13 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Models.Repository;
 using Disco.Models.Services.Documents;
+using Disco.Models.Services.Job;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Interop;
 using Disco.Services.Jobs.JobLists;
+using Disco.Services.Jobs.Statistics;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using Disco.Web.Extensions;
@@ -528,7 +530,7 @@ namespace Disco.Web.Areas.API.Controllers
         private void UpdateDeviceHeldLocation(Job job, string DeviceHeldLocation)
         {
             if (!string.IsNullOrWhiteSpace(DeviceHeldLocation) &&
-                Database.DiscoConfiguration.JobPreferences.LocationMode == Disco.Models.BI.Job.LocationModes.RestrictedList)
+                Database.DiscoConfiguration.JobPreferences.LocationMode == LocationModes.RestrictedList)
             {
                 // Enforce Restricted List Mode
                 var value = DeviceHeldLocation.Trim();
@@ -2076,7 +2078,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Job.Show)]
         public virtual ActionResult StatisticsDailyOpenedClosed()
         {
-            var result = BI.JobBI.Statistics.DailyOpenedClosed.Data(Database, true);
+            var result = DailyOpenedClosed.Data(Database, true);
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -2123,12 +2125,12 @@ namespace Disco.Web.Areas.API.Controllers
 
             switch (Database.DiscoConfiguration.JobPreferences.LocationMode)
             {
-                case Disco.Models.BI.Job.LocationModes.Unrestricted:
+                case LocationModes.Unrestricted:
                     var jobDateThreshold = DateTime.Now.AddYears(-1);
                     locations = Database.Jobs.Where(j => (j.OpenedDate > jobDateThreshold || !j.ClosedDate.HasValue) && j.DeviceHeldLocation != null).Select(j => j.DeviceHeldLocation).Distinct().OrderBy(l => l).ToList().Where(l => !string.IsNullOrWhiteSpace(l)).Select(l => l.Trim()).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(l => l).ToList();
                     break;
-                case Disco.Models.BI.Job.LocationModes.OptionalList:
-                case Disco.Models.BI.Job.LocationModes.RestrictedList:
+                case LocationModes.OptionalList:
+                case LocationModes.RestrictedList:
                     locations = Database.DiscoConfiguration.JobPreferences.LocationList;
                     break;
                 default:

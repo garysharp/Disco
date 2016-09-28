@@ -103,7 +103,7 @@ namespace Disco.Services.Interop.DiscoServices
                 }
             }
 
-            var manifestJson = JsonConvert.SerializeObject(result);
+            var manifestJson = JsonConvert.SerializeObject(result, Formatting.Indented);
 
             var manifestFile = PluginLibrary.ManifestFilename(Database);
 

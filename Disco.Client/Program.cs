@@ -20,6 +20,17 @@ namespace Disco.Client
         {
             bool keepProcessing;
 
+#if DEBUG
+            if (args != null && args.Any(a => a.Equals("debug", StringComparison.OrdinalIgnoreCase)))
+            {
+                do
+                {
+                    Console.WriteLine("Waiting for Debugger to Attach");
+                    System.Threading.Thread.Sleep(1000);
+                } while (!System.Diagnostics.Debugger.IsAttached);
+            }
+#endif
+
             // Initialize Environment Settings
             SetupEnvironment();
 
@@ -59,10 +70,6 @@ namespace Disco.Client
             {
                 Presentation.DelayUI = true; // Add Delays on Error
             }
-
-            // Initialize Interop
-            Interop.SystemAudit.Initialize();
-            Interop.Network.Initialize();
         }
 
         public static bool WhoAmI()

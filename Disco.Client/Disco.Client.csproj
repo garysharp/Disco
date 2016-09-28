@@ -14,6 +14,7 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <AssemblyVersion>2.2.16272.1003</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -65,6 +66,42 @@
     <Compile Include="..\Disco.Models\ClientServices\Enrol.cs">
       <Link>Models\ClientServices\Enrol.cs</Link>
     </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\Certificate.cs">
+      <Link>Models\ClientServices\EnrolmentInformation\Certificate.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\CertificateStore.cs">
+      <Link>Models\ClientServices\EnrolmentInformation\CertificateStore.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\DeviceHardware.cs">
+      <Link>Models\ClientServices\EnrolmentInformation\DeviceHardware.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\DiskDrive.cs">
+      <Link>Models\ClientServices\EnrolmentInformation\DiskDrive.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\DiskDrivePartition.cs">
+      <Link>Models\ClientServices\EnrolmentInformation\DiskDrivePartition.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\DiskLogical.cs">
+      <Link>Models\ClientServices\EnrolmentInformation\DiskLogical.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\NetworkAdapter.cs">
+      <Link>Models\ClientServices\EnrolmentInformation\NetworkAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\PhysicalMemory.cs">
+      <Link>Models\ClientServices\EnrolmentInformation\PhysicalMemory.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\Processor.cs">
+      <Link>Models\ClientServices\EnrolmentInformation\Processor.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\WirelessProfile.cs">
+      <Link>Models\ClientServices\EnrolmentInformation\WirelessProfile.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\WirelessProfileStore.cs">
+      <Link>Models\ClientServices\EnrolmentInformation\WirelessProfileStore.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\WirelessProfileTransformation.cs">
+      <Link>Models\ClientServices\EnrolmentInformation\WirelessProfileTransformation.cs</Link>
+    </Compile>
     <Compile Include="..\Disco.Models\ClientServices\EnrolResponse.cs">
       <Link>Models\ClientServices\EnrolResponse.cs</Link>
     </Compile>
@@ -92,10 +129,19 @@
     <Compile Include="Extensions\EnrolExtensions.cs" />
     <Compile Include="Extensions\WhoAmIExtensions.cs" />
     <Compile Include="Interop\Certificates.cs" />
+    <Compile Include="Interop\Hardware.cs" />
     <Compile Include="Interop\LocalAuthentication.cs" />
+    <Compile Include="Interop\Native\NetworkConnectionStatuses.cs" />
+    <Compile Include="Interop\Native\ProfileInfoFlags.cs" />
+    <Compile Include="Interop\Native\WlanApi.cs" />
+    <Compile Include="Interop\Native\WLAN_INTERFACE_INFO.cs" />
+    <Compile Include="Interop\Native\WLAN_INTERFACE_INFO_LIST.cs" />
+    <Compile Include="Interop\Native\WLAN_INTERFACE_STATE.cs" />
+    <Compile Include="Interop\Native\WLAN_PROFILE_INFO.cs" />
+    <Compile Include="Interop\Native\WLAN_PROFILE_INFO_LIST.cs" />
     <Compile Include="Interop\Network.cs" />
+    <Compile Include="Interop\WirelessNetwork.cs" />
     <Compile Include="Presentation.cs" />
-    <Compile Include="Interop\SystemAudit.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

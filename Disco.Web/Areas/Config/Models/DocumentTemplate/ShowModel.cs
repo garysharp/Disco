@@ -1,7 +1,7 @@
-﻿using Disco.BI.DocumentTemplateBI.ManagedGroups;
-using Disco.Data.Repository;
+﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.UI.Config.DocumentTemplate;
+using Disco.Services.Documents.ManagedGroups;
 using Disco.Services.Expressions;
 using System.Collections.Generic;
 using System.Linq;

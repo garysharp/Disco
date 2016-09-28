@@ -703,7 +703,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.DiscoAdminAccount)]
         public virtual ActionResult MigrateDeviceMacAddressesFromLog()
         {
-            var taskStatus = Disco.BI.DeviceBI.Migration.LogMacAddressImporting.ScheduleImmediately();
+            var taskStatus = Disco.Services.Devices.Enrolment.LogMacAddressImportingTask.ScheduleImmediately();
             return RedirectToAction(MVC.Config.Logging.TaskStatus(taskStatus.SessionId));
         }
     }

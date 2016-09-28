@@ -1,10 +1,9 @@
-﻿using Disco.BI;
-using Disco.BI.DocumentTemplateBI.ManagedGroups;
-using Disco.BI.Extensions;
+﻿using Disco.BI.Extensions;
 using Disco.Models.Repository;
 using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Documents;
+using Disco.Services.Documents.ManagedGroups;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Tasks;
 using Disco.Services.Users;

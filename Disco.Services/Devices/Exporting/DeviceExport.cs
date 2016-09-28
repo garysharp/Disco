@@ -110,7 +110,7 @@ namespace Disco.Services.Devices.Exporting
         }
         public static DeviceExportResult GenerateExport(DiscoDataContext Database, IQueryable<Device> Devices, DeviceExportOptions Options)
         {
-            return GenerateExport(Database, Devices, Options, ScheduledTaskMockStatus.Create());
+            return GenerateExport(Database, Devices, Options, ScheduledTaskMockStatus.Create("Device Export"));
         }
 
         public static DeviceExportResult GenerateExport(DiscoDataContext Database, DeviceExportOptions Options, IScheduledTaskStatus TaskStatus)
@@ -134,7 +134,7 @@ namespace Disco.Services.Devices.Exporting
         }
         public static DeviceExportResult GenerateExport(DiscoDataContext Database, DeviceExportOptions Options)
         {
-            return GenerateExport(Database, Options, ScheduledTaskMockStatus.Create());
+            return GenerateExport(Database, Options, ScheduledTaskMockStatus.Create("Device Export"));
         }
 
         private static IEnumerable<DeviceExportRecord> BuildRecords(IQueryable<Device> Devices)

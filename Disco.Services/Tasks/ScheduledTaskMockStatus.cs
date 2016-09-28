@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Services.Tasks
 {
     public class ScheduledTaskMockStatus : IScheduledTaskStatus
     {
+        public string TaskName { get; private set; }
+
         public byte Progress { get; set; }
         public string CurrentProcess { get; set; }
         public string CurrentDescription { get; set; }
@@ -21,6 +19,11 @@ namespace Disco.Services.Tasks
         public string FinishedUrl { get; set; }
 
         public Exception TaskException { get; set; }
+
+        public ScheduledTaskMockStatus(string TaskName)
+        {
+            this.TaskName = TaskName;
+        }
 
         private byte CalculateProgressValue(byte Progress)
         {
@@ -90,11 +93,25 @@ namespace Disco.Services.Tasks
             this.TaskException = TaskException;
         }
 
+        public void LogWarning(string Message)
+        {
+            ScheduledTasksLog.LogScheduledTaskWarning(TaskName, null, Message);
+        }
 
+        public void LogInformation(string Message)
+        {
+            ScheduledTasksLog.LogScheduledTaskInformation(TaskName, null, Message);
+        }
 
+        [Obsolete("Use the constructor which requires a TaskName instead")]
         public static ScheduledTaskMockStatus Create()
         {
-            return new ScheduledTaskMockStatus();
+            return new ScheduledTaskMockStatus("Unknown Task");
+        }
+
+        public static ScheduledTaskMockStatus Create(string TaskName)
+        {
+            return new ScheduledTaskMockStatus(TaskName);
         }
     }
 }

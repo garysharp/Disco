@@ -1,55 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Disco.Models.ClientServices;
+using Newtonsoft.Json;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Disco.Models.ClientServices;
-using Newtonsoft.Json;
 
 namespace Disco.Client.Extensions
 {
     public static class ClientServicesExtensions
     {
+#if DEBUG
+        public const string ServicePathAuthenticatedTemplate = "http://WS-GSHARP:57252/Services/Client/Authenticated/{0}";
+        public const string ServicePathUnauthenticatedTemplate = "http://WS-GSHARP:57252/Services/Client/Unauthenticated/{0}";
+#else
         public const string ServicePathAuthenticatedTemplate = "http://DISCO:9292/Services/Client/Authenticated/{0}";
         public const string ServicePathUnauthenticatedTemplate = "http://DISCO:9292/Services/Client/Unauthenticated/{0}";
+#endif
 
         public static ResponseType Post<ResponseType>(this ServiceBase<ResponseType> Service, bool Authenticated)
         {
-            string jsonResponse;
+            ResponseType serviceResponse;
             string serviceUrl;
+
             if (Authenticated)
                 serviceUrl = string.Format(ServicePathAuthenticatedTemplate, Service.Feature);
             else
                 serviceUrl = string.Format(ServicePathUnauthenticatedTemplate, Service.Feature);
 
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(serviceUrl);
-            request.UserAgent = string.Format("Disco-Client/{0}", Assembly.GetExecutingAssembly().GetName().Version.ToString(3));
+            request.UserAgent = $"Disco-Client/{Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}";
             request.ContentType = "application/json";
             request.Method = WebRequestMethods.Http.Post;
             request.UseDefaultCredentials = true;
             request.Timeout = 300000; // 5 Minutes
-            string jsonRequest = JsonConvert.SerializeObject(Service);
 
-            using (StreamWriter requestWriter = new StreamWriter(request.GetRequestStream()))
+            var jsonSerializer = new JsonSerializer();
+
+            using (var requestWriter = new StreamWriter(request.GetRequestStream()))
             {
-                requestWriter.Write(jsonRequest);
+                using (var jsonWriter = new JsonTextWriter(requestWriter))
+                {
+                    jsonSerializer.Serialize(jsonWriter, Service);
+                }
             }
 
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {
-                using (StreamReader responseReader = new StreamReader(response.GetResponseStream()))
+                using (var responseReader = new StreamReader(response.GetResponseStream()))
                 {
-                    jsonResponse = responseReader.ReadToEnd();
+                    using (var jsonReader = new JsonTextReader(responseReader))
+                    {
+                        serviceResponse = jsonSerializer.Deserialize<ResponseType>(jsonReader);
+                    }
                 }
             }
 
-            if (string.IsNullOrEmpty(jsonResponse))
-                return default(ResponseType);
-            else
-                return JsonConvert.DeserializeObject<ResponseType>(jsonResponse);
+            return serviceResponse;
         }
 
     }

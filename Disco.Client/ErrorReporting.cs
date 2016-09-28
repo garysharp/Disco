@@ -89,7 +89,7 @@ namespace Disco.Client
             string reportResponse;
 
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(ServicePathTemplate);
-            request.UserAgent = string.Format("Disco-Client/{0}", Assembly.GetExecutingAssembly().GetName().Version.ToString(3));
+            request.UserAgent = $"Disco-Client/{Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}";
             request.ContentType = "application/json";
             request.Method = WebRequestMethods.Http.Post;
             request.UseDefaultCredentials = true;

@@ -1,12 +1,11 @@
-﻿using Disco.BI.Extensions;
-using Disco.Models.Repository;
+﻿using Disco.Models.Repository;
+using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Authorization.Roles;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 

@@ -1,9 +1,9 @@
-using Disco.BI.DocumentTemplateBI.ManagedGroups;
 using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.Services.Documents;
 using Disco.Services;
 using Disco.Services.Documents;
+using Disco.Services.Documents.ManagedGroups;
 using Disco.Services.Expressions;
 using Disco.Services.Interop.ActiveDirectory;
 using iTextSharp.text.pdf;

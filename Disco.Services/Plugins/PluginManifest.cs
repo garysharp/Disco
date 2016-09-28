@@ -134,10 +134,8 @@ namespace Disco.Services.Plugins
         {
             return new List<string>()
             {
-                "BitMiracle.LibTiff.NET",
                 "C5",
                 "Common.Logging",
-                "DiffieHellman",
                 "Disco.BI",
                 "Disco.Data",
                 "Disco.Models",
@@ -154,14 +152,17 @@ namespace Disco.Services.Plugins
                 "Microsoft.AspNet.SignalR.Core",
                 "Microsoft.AspNet.SignalR.SystemWeb",
                 "Microsoft.Owin",
-                "Microsoft.Owin.Security",
                 "Microsoft.Owin.Host.SystemWeb",
+                "Microsoft.Owin.Security",
                 "Microsoft.Web.Infrastructure",
                 "Newtonsoft.Json",
-                "Org.Mentalis.Security",
                 "Owin",
+                "PdfiumViewer",
+                "PdfSharp",
+                "PList",
                 "Quartz",
                 "RazorGenerator.Mvc",
+                "Renci.SshNet",
                 "Spring.Core",
                 "System.Data.SqlServerCe",
                 "System.Data.SqlServerCe.Entity",
@@ -181,7 +182,6 @@ namespace Disco.Services.Plugins
                 "System.Web.WebPages",
                 "System.Web.WebPages.Razor",
                 "T4MVCExtensions",
-                "Tamir.SharpSSH",
                 "WebActivatorEx",
                 "zxing"
             };

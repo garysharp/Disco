@@ -1,5 +1,5 @@
-﻿using Disco.BI.Extensions;
-using Disco.Models.Repository;
+﻿using Disco.Models.Repository;
+using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Users.UserFlags;
 using Disco.Services.Web;
@@ -13,7 +13,7 @@ namespace Disco.Web.Areas.API.Controllers
     {
         const string pComments = "comments";
 
-        public virtual ActionResult Update(int id, string key, string value = null, Nullable<bool> redirect = null)
+        public virtual ActionResult Update(int id, string key, string value = null, bool? redirect = null)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region Update Shortcut Methods
         [DiscoAuthorizeAny(Claims.User.Actions.EditFlags)]
-        public virtual ActionResult UpdateComments(int id, string Comments = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateComments(int id, string Comments = null, bool? redirect = null)
         {
             return Update(id, pComments, Comments, redirect);
         }

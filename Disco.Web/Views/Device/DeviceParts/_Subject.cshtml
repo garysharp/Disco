@@ -12,28 +12,32 @@
                 <div id="Device_Show_Details_Asset">
                     <table class="none verticalHeadings">
                         <tr>
-                            <td><span title="Computer Name">Name:</span>
+                            <td>
+                                <span title="Computer Name">Name:</span>
                             </td>
-                            <td>@if (string.IsNullOrWhiteSpace(Model.Device.ComputerName))
+                            <td>
+                                @if (string.IsNullOrWhiteSpace(Model.Device.ComputerName))
                                 {
-                                <span id="Device_Show_Details_Asset_NameUnknown" title="Computer Name" class="smallMessage">&lt;Unknown/None&gt;</span>
+                                    <span id="Device_Show_Details_Asset_NameUnknown" title="Computer Name" class="smallMessage">&lt;Unknown/None&gt;</span>
                                 }
                                 else
                                 {
-                                <h4 id="Device_Show_Details_Asset_Name" title="Computer Name">@Model.Device.ComputerName</h4>
+                                    <h4 id="Device_Show_Details_Asset_Name" title="Computer Name">@Model.Device.ComputerName</h4>
                                 }
                             </td>
                         </tr>
                         <tr>
-                            <td><span title="Domain Name">Domain:</span>
+                            <td>
+                                <span title="Domain Name">Domain:</span>
                             </td>
-                            <td>@if (string.IsNullOrWhiteSpace(Model.Device.ComputerDomainName))
+                            <td>
+                                @if (string.IsNullOrWhiteSpace(Model.Device.ComputerDomainName))
                                 {
-                                <span id="Device_Show_Details_Asset_DomainUnknown" title="Computer Domain" class="smallMessage">&lt;None&gt;</span>
+                                    <span id="Device_Show_Details_Asset_DomainUnknown" title="Computer Domain" class="smallMessage">&lt;None&gt;</span>
                                 }
                                 else
                                 {
-                                <h4 id="Device_Show_Details_Asset_Domain" title="Computer Domain">@Model.Device.ComputerDomainName</h4>
+                                    <h4 id="Device_Show_Details_Asset_Domain" title="Computer Domain">@Model.Device.ComputerDomainName</h4>
                                 }
                             </td>
                         </tr>
@@ -65,7 +69,7 @@
                         </tr>
                     </table>
                     @if (Authorization.HasAny(Claims.Device.Properties.AssetNumber, Claims.Device.Properties.Location))
-                    {
+            {
                         <script>
                             $(function () {
                                 @if (Authorization.Has(Claims.Device.Properties.AssetNumber))
@@ -79,21 +83,24 @@
                 <div id="Device_Show_Details_Dates" class="status">
                     <table class="none verticalHeadings">
                         <tr>
-                            <td>Created:
+                            <td>
+                                Created:
                             </td>
                             <td><span id="Device_Show_Details_Dates_Created">@CommonHelpers.FriendlyDate(Model.Device.CreatedDate)</span></td>
                         </tr>
                         @if (Model.Device.DecommissionedDate.HasValue)
                         {
                             <tr>
-                                <td>Decommissioned:
+                                <td>
+                                    Decommissioned:
                                 </td>
                                 <td><span id="Device_Show_Details_Dates_Decommissioned">@CommonHelpers.FriendlyDate(Model.Device.DecommissionedDate)</span></td>
                             </tr>
                         }
 
                         <tr>
-                            <td>Enrolled:
+                            <td>
+                                Enrolled:
                             </td>
                             <td>
                                 @if (Model.Device.EnrolledDate.HasValue)
@@ -101,7 +108,7 @@
                                     <text>First: </text><span id="Device_Show_Details_Asset_Enrolled_First">@CommonHelpers.FriendlyDate(Model.Device.EnrolledDate)</span>
                                     if (Model.Device.LastEnrolDate.HasValue && Model.Device.EnrolledDate.Value != Model.Device.LastEnrolDate.Value)
                                     {
-                                    <br /><text>Last: </text><span id="Device_Show_Details_Asset_Enrolled_Last">@CommonHelpers.FriendlyDate(Model.Device.LastEnrolDate)</span>
+                                        <br /><text>Last: </text><span id="Device_Show_Details_Asset_Enrolled_Last">@CommonHelpers.FriendlyDate(Model.Device.LastEnrolDate)</span>
                                     }
                                 }
                                 else
@@ -120,26 +127,29 @@
                 <div id="Device_Show_Details_Status" class="status">
                     <table class="none verticalHeadings">
                         <tr>
-                            <td><span title="Last Network Logon Date">Last Seen:</span>
+                            <td>
+                                <span title="Last Network Logon Date">Last Seen:</span>
                             </td>
-                            <td>@{
-                                string lastSeenClass = null;
-                                if (Model.Device.LastNetworkLogonDate.HasValue)
-                                {
-                                    if (Model.Device.LastNetworkLogonDate.Value < DateTime.Now.AddDays(-30))
+                            <td>
+                                @{
+                                    string lastSeenClass = null;
+                                    if (Model.Device.LastNetworkLogonDate.HasValue)
                                     {
-                                        lastSeenClass = "error";
-                                    }
-                                    else
-                                    {
-                                        if (Model.Device.LastNetworkLogonDate.Value < DateTime.Now.AddDays(-7))
+                                        if (Model.Device.LastNetworkLogonDate.Value < DateTime.Now.AddDays(-30))
                                         {
-                                            lastSeenClass = "alert";
+                                            lastSeenClass = "error";
+                                        }
+                                        else
+                                        {
+                                            if (Model.Device.LastNetworkLogonDate.Value < DateTime.Now.AddDays(-7))
+                                            {
+                                                lastSeenClass = "alert";
+                                            }
                                         }
                                     }
                                 }
-                            }
-                                <span id="Device_Show_Details_Status_LastSeen" class="@lastSeenClass">@CommonHelpers.FriendlyDate(Model.Device.LastNetworkLogonDate)</span></td>
+                                <span id="Device_Show_Details_Status_LastSeen" class="@lastSeenClass">@CommonHelpers.FriendlyDate(Model.Device.LastNetworkLogonDate)</span>
+                            </td>
                             @if (!string.IsNullOrEmpty(Model.Device.ComputerName))
                             {
                                 <script type="text/javascript">
@@ -183,7 +193,8 @@
                     }
                     <table class="none verticalHeadings">
                         <tr>
-                            <td>Assignment:
+                            <td>
+                                Assignment:
                             </td>
                             <td>
                                 @if (assignedUser != null)
@@ -204,11 +215,11 @@
                                         {
                                             if (!string.IsNullOrWhiteSpace(assignedUser.PhoneNumber))
                                             {
-                                            <div id="Device_Show_User_PhoneNumber" title="Phone Number">@assignedUser.PhoneNumber</div>
+                                                <div id="Device_Show_User_PhoneNumber" title="Phone Number">@assignedUser.PhoneNumber</div>
                                             }
                                             if (!string.IsNullOrWhiteSpace(assignedUser.EmailAddress))
                                             {
-                                            <div id="Device_Show_User_EmailAddress" title="Email Address"><a href="mailto:@(Model.Device.AssignedUser.EmailAddress)">@assignedUser.EmailAddress</a></div>
+                                                <div id="Device_Show_User_EmailAddress" title="Email Address"><a href="mailto:@(Model.Device.AssignedUser.EmailAddress)">@assignedUser.EmailAddress</a></div>
                                             }
                                         }
                                         @if (Authorization.Has(Claims.User.ShowFlagAssignments))
@@ -216,8 +227,12 @@
                                             <div id="Device_Show_User_Flags">
                                                 @foreach (var flag in assignedUser.UserFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, UserFlagService.GetUserFlag(f.UserFlagId))))
                                                 {
-                                                    <i class="flag fa fa-@(flag.Item2.Icon) fa-fw d-@(flag.Item2.IconColour)"><span class="details"><span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
-                                                                                                                                                                                              {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span></span></i>
+                                                    <i class="flag fa fa-@(flag.Item2.Icon) fa-fw d-@(flag.Item2.IconColour)">
+                                                        <span class="details">
+                                                            <span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
+                                                            {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span>
+                                                        </span>
+                                                    </i>
                                                 }
                                                 <script type="text/javascript">
                                                     $(function () {
@@ -305,46 +320,63 @@
         <td id="Device_Show_Policies" rowspan="2">
             <div>
                 <div id="Device_Show_Policies_Profile">
-                    <h2 title="Device Profile">@if (Authorization.Has(Claims.Config.DeviceProfile.Show))
-                                               {
-                        @Html.ActionLink(Model.Device.DeviceProfile.Name, MVC.Config.DeviceProfile.Index(Model.Device.DeviceProfileId))
-                                               }
-                                               else
-                                               {
-                        @Model.Device.DeviceProfile.Name          
-                                               }</h2>
+                    <h2 title="Device Profile">
+                        @if (Authorization.Has(Claims.Config.DeviceProfile.Show))
+            {
+                            @Html.ActionLink(Model.Device.DeviceProfile.Name, MVC.Config.DeviceProfile.Index(Model.Device.DeviceProfileId))
+                        }
+                        else
+                        {
+                            @Model.Device.DeviceProfile.Name
+                        }
+                    </h2>
                     <table class="none verticalHeadings">
                         <tr>
-                            <td><span title="Distribution Type">Distribution:</span>
+                            <td>
+                                <span title="Distribution Type">Distribution:</span>
                             </td>
-                            <td>@Model.Device.DeviceProfile.DistributionType.ToString()
+                            <td>
+                                @Model.Device.DeviceProfile.DistributionType.ToString()
                             </td>
                         </tr>
                         <tr>
-                            <td><span title="Address">Address:</span>
+                            <td>
+                                <span title="Address">Address:</span>
                             </td>
-                            <td>@{
-                                if (Model.DeviceProfileDefaultOrganisationAddress != null)
-                                {
-                                <span id="Device_Show_Policies_Profile_Address">@Model.DeviceProfileDefaultOrganisationAddress.Name</span>
+                            <td>
+                                @{
+                                    if (Model.DeviceProfileDefaultOrganisationAddress != null)
+                                    {
+                                        <span id="Device_Show_Policies_Profile_Address">@Model.DeviceProfileDefaultOrganisationAddress.Name</span>
+                                    }
+                                    else
+                                    {
+                                        <span id="Device_Show_Policies_Profile_Address_None" class="smallMessage">None</span>
+                                    }
                                 }
-                                else
-                                {
-                                <span id="Device_Show_Policies_Profile_Address_None" class="smallMessage">None</span>
-                                }
-                            }
                             </td>
                         </tr>
                         <tr>
-                            <td><span title="Provision Active Directory Account">Provision Account:</span>
+                            <td>
+                                <span title="Provision Active Directory Account">Provision Account:</span>
                             </td>
-                            <td>@(Model.Device.DeviceProfile.ProvisionADAccount ? "Active Directory" : "No")
+                            <td>
+                                @(Model.Device.DeviceProfile.ProvisionADAccount ? "Active Directory" : "No")
                             </td>
                         </tr>
                         <tr>
-                            <td><span title="Allocate Certificates">Allocate Certificate:</span>
+                            <td>
+                                <span title="Provisioned Personal Certificates">Certificates:</span>
                             </td>
-                            <td>@(Model.DeviceProfileCertificateProvider != null ? Model.DeviceProfileCertificateProvider.Name : "No")
+                            <td>
+                                @(Model.DeviceProfileCertificateProviders != null ? string.Join(", ", Model.DeviceProfileCertificateProviders.Select(c => c.Name)) : "None Provisioned")
+                            </td>
+                        <tr>
+                            <td>
+                                <span title="Provisioned Wireless Profiles">Wireless Profiles:</span>
+                            </td>
+                            <td>
+                                @(Model.DeviceProfileWirelessProfileProviders != null ? string.Join(", ", Model.DeviceProfileWirelessProfileProviders.Select(c => c.Name)) : "None Provisioned")
                             </td>
                         </tr>
                     </table>
@@ -356,9 +388,10 @@
                             <div>
                                 <ul class="none">
                                     @foreach (var dp in Model.DeviceProfiles.OrderBy(i => i.Name))
-                                    {
+                {
                                         <li>
-                                            <input type="radio" data-deviceprofileid="@dp.Id" name="DeviceProfile" id="DeviceProfile_@(dp.Id)" /><label for="DeviceProfile_@(dp.Id)" title="Distribution: @(dp.DistributionType)">@dp.Name</label></li>   
+                                            <input type="radio" data-deviceprofileid="@dp.Id" name="DeviceProfile" id="DeviceProfile_@(dp.Id)" /><label for="DeviceProfile_@(dp.Id)" title="Distribution: @(dp.DistributionType)">@dp.Name</label>
+                                        </li>
                                     }
                                 </ul>
                             </div>
@@ -420,43 +453,55 @@
                 <div id="Device_Show_Policies_Batch" class="status">
                     @if (Model.Device.DeviceBatchId.HasValue)
                     {
-                        <h2 title="Device Batch">@if (Authorization.Has(Claims.Config.DeviceBatch.Show))
-                                                 {
-                            @Html.ActionLink(Model.Device.DeviceBatch.Name, MVC.Config.DeviceBatch.Index(Model.Device.DeviceBatchId.Value))
-                                                 }
-                                                 else
-                                                 {
-                            @Model.Device.DeviceBatch.Name
-                                                 }</h2>
+                        <h2 title="Device Batch">
+                            @if (Authorization.Has(Claims.Config.DeviceBatch.Show))
+                            {
+                                @Html.ActionLink(Model.Device.DeviceBatch.Name, MVC.Config.DeviceBatch.Index(Model.Device.DeviceBatchId.Value))
+                            }
+                            else
+                            {
+                                @Model.Device.DeviceBatch.Name
+                            }
+                        </h2>
                         <table class="none verticalHeadings">
                             <tr>
-                                <td><span title="Purchased Date">Purchased:</span>
+                                <td>
+                                    <span title="Purchased Date">Purchased:</span>
                                 </td>
-                                <td>@CommonHelpers.FriendlyDate(Model.Device.DeviceBatch.PurchaseDate)
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span title="Supplier">Supplier:</span>
-                                </td>
-                                <td>@(Model.Device.DeviceBatch.Supplier ?? "Unknown")
+                                <td>
+                                    @CommonHelpers.FriendlyDate(Model.Device.DeviceBatch.PurchaseDate)
                                 </td>
                             </tr>
                             <tr>
-                                <td><span title="Warranty Valid Until">Warranty Until:</span>
+                                <td>
+                                    <span title="Supplier">Supplier:</span>
                                 </td>
-                                <td class="@(Model.Device.DeviceBatch.WarrantyValidUntil.HasValue && Model.Device.DeviceBatch.WarrantyValidUntil.Value < DateTime.Now ? "alert" : null)">@CommonHelpers.FriendlyDate(Model.Device.DeviceBatch.WarrantyValidUntil, "Unknown", null)
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span title="Insurance Supplier">Insurance Supplier:</span>
-                                </td>
-                                <td>@(Model.Device.DeviceBatch.InsuranceSupplier ?? "Unknown")
+                                <td>
+                                    @(Model.Device.DeviceBatch.Supplier ?? "Unknown")
                                 </td>
                             </tr>
                             <tr>
-                                <td><span title="Insured Until">Insured Until:</span>
+                                <td>
+                                    <span title="Warranty Valid Until">Warranty Until:</span>
                                 </td>
-                                <td class="@(Model.Device.DeviceBatch.InsuredUntil.HasValue && Model.Device.DeviceBatch.InsuredUntil.Value < DateTime.Now ? "alert" : null)">@CommonHelpers.FriendlyDate(Model.Device.DeviceBatch.InsuredUntil, "Unknown", null)
+                                <td class="@(Model.Device.DeviceBatch.WarrantyValidUntil.HasValue && Model.Device.DeviceBatch.WarrantyValidUntil.Value < DateTime.Now ? "alert" : null)">
+                                    @CommonHelpers.FriendlyDate(Model.Device.DeviceBatch.WarrantyValidUntil, "Unknown", null)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span title="Insurance Supplier">Insurance Supplier:</span>
+                                </td>
+                                <td>
+                                    @(Model.Device.DeviceBatch.InsuranceSupplier ?? "Unknown")
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span title="Insured Until">Insured Until:</span>
+                                </td>
+                                <td class="@(Model.Device.DeviceBatch.InsuredUntil.HasValue && Model.Device.DeviceBatch.InsuredUntil.Value < DateTime.Now ? "alert" : null)">
+                                    @CommonHelpers.FriendlyDate(Model.Device.DeviceBatch.InsuredUntil, "Unknown", null)
                                 </td>
                             </tr>
                         </table>
@@ -475,7 +520,8 @@
                                     @foreach (var db in Model.DeviceBatches.OrderBy(i => i.Name))
                                     {
                                         <li>
-                                            <input type="radio" data-devicebatchid="@db.Id" name="DeviceBatch" id="DeviceBatch_@(db.Id)" /><label for="DeviceBatch_@(db.Id)" title="Purchased: @(db.PurchaseDate.ToLongDateString())">@db.Name</label></li>   
+                                            <input type="radio" data-devicebatchid="@db.Id" name="DeviceBatch" id="DeviceBatch_@(db.Id)" /><label for="DeviceBatch_@(db.Id)" title="Purchased: @(db.PurchaseDate.ToLongDateString())">@db.Name</label>
+                                        </li>
                                     }
                                 </ul>
                             </div>
@@ -541,14 +587,16 @@
         <td id="Device_Show_Aspects" rowspan="2">
             <div>
                 <div id="Device_Show_Aspects_Model" class="clearfix">
-                    <h2 id="Device_Show_Aspects_Model_Description" title="Model Description">@if (Authorization.Has(Claims.Config.DeviceModel.Show))
-                                                                                             {
-                        @Html.ActionLink(Model.Device.DeviceModel.ToString(), MVC.Config.DeviceModel.Index(Model.Device.DeviceModelId))
-                                                                                             }
-                                                                                             else
-                                                                                             {
-                        @Model.Device.DeviceModel.ToString()
-                                                                                             }</h2>
+                    <h2 id="Device_Show_Aspects_Model_Description" title="Model Description">
+                        @if (Authorization.Has(Claims.Config.DeviceModel.Show))
+            {
+                            @Html.ActionLink(Model.Device.DeviceModel.ToString(), MVC.Config.DeviceModel.Index(Model.Device.DeviceModelId))
+                        }
+                        else
+                        {
+                            @Model.Device.DeviceModel.ToString()
+                        }
+                    </h2>
                     <img id="Device_Show_Aspects_Model_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(Model.Device.DeviceModelId, Model.Device.DeviceModel.ImageHash()))" />
                 </div>
             </div>
@@ -579,7 +627,7 @@
                         var inputUserId = null;
 
                         var dialogButtons = {
-                                                @{
+                            @{
                     if (assignedUser != null)
                     {
                                                         <text>
@@ -591,7 +639,7 @@
                                 inputUserId.val('');
                                 inputUserId.closest('form').submit()
                             },
-                                                </text>
+                            </text>
                     }
                                                 }
                             "Assign": function () {
@@ -644,7 +692,7 @@
 
                     });
                 </script>
-            }
+    }
             @if (Model.Device.CanUpdateTrustEnrol())
             {
                 @Html.ActionLinkSmallButton("Trust Enrol", MVC.API.Device.UpdateAllowUnauthenticatedEnrol(Model.Device.SerialNumber, true.ToString(), true), "Device_Show_Device_Actions_TrustEnrol_Button")
@@ -742,7 +790,7 @@
                 </script>
             }
             @if (Model.Device.CanDecommission())
-            { 
+            {
                 @Html.ActionLinkSmallButton("Decommission", MVC.API.Device.Decommission(), "Device_Show_Device_Actions_Decommission_Button")
                 <div id="Device_Show_Device_Actions_Decommission_Dialog" class="dialog" title="Device Decommissioning">
                     <div class="clearfix" style="margin-bottom: 10px;">
@@ -754,7 +802,7 @@
                             {
                                 <li>
                                     <input type="radio" id="Device_Show_Device_Actions_Decommission_Reason_@((int)decommissionReason)"
-                                        name="Device_Show_Device_Actions_Decommission_Reason" value="@((int)decommissionReason)" @((decommissionReason == DecommissionReasons.EndOfLife) ? "checked=\"checked\"" : string.Empty)/>
+                                           name="Device_Show_Device_Actions_Decommission_Reason" value="@((int)decommissionReason)" @((decommissionReason == DecommissionReasons.EndOfLife) ? "checked=\"checked\"" : string.Empty) />
                                     <label for="Device_Show_Device_Actions_Decommission_Reason_@((int)decommissionReason)">@(decommissionReason.ReasonMessage())</label>
                                 </li>
                             }
@@ -803,7 +851,7 @@
                 </script>
             }
             @if (Model.Device.CanRecommission())
-            { 
+            {
                 @Html.ActionLinkSmallButton("Recommission", MVC.API.Device.Recommission(Model.Device.SerialNumber, true), "Device_Show_Device_Actions_Recommission_Button")
                 <div id="Device_Show_Device_Actions_Recommission_Dialog" title="Recommission this Device?">
                     <p>
@@ -841,7 +889,7 @@
                 </script>
             }
             @if (Model.Device.CanDelete())
-            { 
+            {
                 @Html.ActionLinkSmallButton("Delete Device", MVC.API.Device.Delete(Model.Device.SerialNumber, true), "Device_Show_Device_Actions_Delete_Button")
                 <div id="Device_Show_Device_Actions_Delete_Dialog" title="Delete this Device?">
                     <p>

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Disco.BI;
-using Disco.BI.Extensions;
-using Disco.Data.Repository;
+﻿using Disco.Data.Repository;
+using System;
 
 namespace Disco.Web.Areas.Public.Models.UserHeldDevices
 {

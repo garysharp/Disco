@@ -13,6 +13,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <AssemblyVersion>2.2.16272.1003</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,7 +49,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BI\Job\LocationModes.cs" />
+    <Compile Include="BI\Config\OrganisationAddress.cs" />
+    <Compile Include="ClientServices\EnrolmentInformation\DiskLogical.cs" />
+    <Compile Include="ClientServices\EnrolmentInformation\DeviceHardware.cs" />
+    <Compile Include="ClientServices\EnrolmentInformation\DiskDrive.cs" />
+    <Compile Include="ClientServices\EnrolmentInformation\DiskDrivePartition.cs" />
+    <Compile Include="ClientServices\EnrolmentInformation\NetworkAdapter.cs" />
+    <Compile Include="ClientServices\EnrolmentInformation\PhysicalMemory.cs" />
+    <Compile Include="ClientServices\EnrolmentInformation\Processor.cs" />
+    <Compile Include="ClientServices\EnrolmentInformation\CertificateStore.cs" />
+    <Compile Include="ClientServices\EnrolmentInformation\WirelessProfile.cs" />
+    <Compile Include="ClientServices\EnrolmentInformation\WirelessProfileStore.cs" />
+    <Compile Include="ClientServices\EnrolmentInformation\WirelessProfileTransformation.cs" />
+    <Compile Include="Services\Jobs\LocationModes.cs" />
+    <Compile Include="ClientServices\EnrolmentInformation\Certificate.cs" />
     <Compile Include="ClientServices\Register.cs" />
     <Compile Include="ClientServices\RegisterResponse.cs" />
     <Compile Include="Repository\Attachment\AttachmentTypes.cs" />
@@ -60,12 +74,9 @@
     <Compile Include="Services\Authorization\IAuthorizationToken.cs" />
     <Compile Include="Services\Authorization\IClaimNavigatorItem.cs" />
     <Compile Include="Services\Authorization\IRoleToken.cs" />
-    <Compile Include="BI\Config\OrganisationAddress.cs" />
-    <Compile Include="BI\Device\ImportDevice.cs" />
-    <Compile Include="BI\Device\ImportDeviceSession.cs" />
     <Compile Include="Services\Documents\DocumentState.cs" />
     <Compile Include="BI\Expressions\IImageExpressionResult.cs" />
-    <Compile Include="BI\Job\Statistics\DailyOpenedClosedItem.cs" />
+    <Compile Include="Services\Jobs\Statistics\DailyOpenedClosedItem.cs" />
     <Compile Include="ClientServices\EnrolResponse.cs" />
     <Compile Include="ClientServices\MacEnrol.cs" />
     <Compile Include="ClientServices\MacEnrolResponse.cs" />
@@ -184,9 +195,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BI\DocumentTemplate\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -77,7 +77,7 @@ namespace Disco.Web
 
             // Initialize Satellite Managed Groups (which don't belong to any other component)
             Disco.Services.Devices.ManagedGroups.DeviceManagedGroups.Initialize(Database);
-            Disco.BI.DocumentTemplateBI.ManagedGroups.DocumentTemplateManagedGroups.Initialize(Database);
+            Disco.Services.Documents.ManagedGroups.DocumentTemplateManagedGroups.Initialize(Database);
 
             // Initialize Plugins
             Disco.Services.Plugins.Plugins.InitalizePlugins(Database);
@@ -105,11 +105,15 @@ namespace Disco.Web
             InitalizeCoreEnvironment(Database);
 
             // Initialize Scheduled Tasks
-            Disco.Services.Tasks.ScheduledTasks.InitalizeScheduledTasks(Database, DiscoApplication.SchedulerFactory, true);
+            Disco.Services.Tasks.ScheduledTasks.InitalizeScheduledTasks(Database, DiscoApplication.SchedulerFactory, false);
 
             // Import MAC Address Migration
             if (PreviousVersion != null && PreviousVersion < new Version(1, 2, 910, 0))
-                Disco.BI.DeviceBI.Migration.LogMacAddressImporting.SetRequired(Database);
+                Services.Devices.Enrolment.LogMacAddressImportingTask.SetRequired(Database);
+
+            // Attachment PDF Thumbnail Update
+            if (PreviousVersion != null && PreviousVersion < new Version(2, 2, 0, 0))
+                Services.Documents.AttachmentImport.ThumbnailUpdateTask.SetRequired(Database);
         }
 
         public static void DisposeEnvironment()

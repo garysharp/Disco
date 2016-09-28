@@ -1,5 +1,5 @@
 ﻿using Disco.Data.Repository;
-using Disco.Models.BI.Job;
+using Disco.Models.Services.Job;
 using System;
 using System.Collections.Generic;
 
@@ -59,13 +59,13 @@ namespace Disco.Data.Configuration.Modules
 
         public LocationModes LocationMode
         {
-            get { return Get<LocationModes>(LocationModes.Unrestricted); }
+            get { return Get(LocationModes.Unrestricted); }
             set { Set(value); }
         }
 
         public List<string> LocationList
         {
-            get { return Get<List<string>>(new List<string>()); }
+            get { return Get(new List<string>()); }
             set { Set(value); }
         }
     }

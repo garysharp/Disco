@@ -89,9 +89,21 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult UpdateCertificateProviderId()
+        public virtual System.Web.Mvc.ActionResult UpdateCertificateProviders()
         {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateCertificateProviderId);
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateCertificateProviders);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateCertificateAuthorityProviders()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateCertificateAuthorityProviders);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateWirelessProfileProviders()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateWirelessProfileProviders);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -192,7 +204,9 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateName = "UpdateName";
             public readonly string UpdateShortName = "UpdateShortName";
             public readonly string UpdateDistributionType = "UpdateDistributionType";
-            public readonly string UpdateCertificateProviderId = "UpdateCertificateProviderId";
+            public readonly string UpdateCertificateProviders = "UpdateCertificateProviders";
+            public readonly string UpdateCertificateAuthorityProviders = "UpdateCertificateAuthorityProviders";
+            public readonly string UpdateWirelessProfileProviders = "UpdateWirelessProfileProviders";
             public readonly string UpdateOrganisationalUnit = "UpdateOrganisationalUnit";
             public readonly string UpdateDefaultOrganisationAddress = "UpdateDefaultOrganisationAddress";
             public readonly string UpdateComputerNameTemplate = "UpdateComputerNameTemplate";
@@ -216,7 +230,9 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateName = "UpdateName";
             public const string UpdateShortName = "UpdateShortName";
             public const string UpdateDistributionType = "UpdateDistributionType";
-            public const string UpdateCertificateProviderId = "UpdateCertificateProviderId";
+            public const string UpdateCertificateProviders = "UpdateCertificateProviders";
+            public const string UpdateCertificateAuthorityProviders = "UpdateCertificateAuthorityProviders";
+            public const string UpdateWirelessProfileProviders = "UpdateWirelessProfileProviders";
             public const string UpdateOrganisationalUnit = "UpdateOrganisationalUnit";
             public const string UpdateDefaultOrganisationAddress = "UpdateDefaultOrganisationAddress";
             public const string UpdateComputerNameTemplate = "UpdateComputerNameTemplate";
@@ -284,14 +300,34 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string DistributionType = "DistributionType";
             public readonly string redirect = "redirect";
         }
-        static readonly ActionParamsClass_UpdateCertificateProviderId s_params_UpdateCertificateProviderId = new ActionParamsClass_UpdateCertificateProviderId();
+        static readonly ActionParamsClass_UpdateCertificateProviders s_params_UpdateCertificateProviders = new ActionParamsClass_UpdateCertificateProviders();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_UpdateCertificateProviderId UpdateCertificateProviderIdParams { get { return s_params_UpdateCertificateProviderId; } }
+        public ActionParamsClass_UpdateCertificateProviders UpdateCertificateProvidersParams { get { return s_params_UpdateCertificateProviders; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_UpdateCertificateProviderId
+        public class ActionParamsClass_UpdateCertificateProviders
         {
             public readonly string id = "id";
-            public readonly string CertificateProviderId = "CertificateProviderId";
+            public readonly string CertificateProviders = "CertificateProviders";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateCertificateAuthorityProviders s_params_UpdateCertificateAuthorityProviders = new ActionParamsClass_UpdateCertificateAuthorityProviders();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateCertificateAuthorityProviders UpdateCertificateAuthorityProvidersParams { get { return s_params_UpdateCertificateAuthorityProviders; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateCertificateAuthorityProviders
+        {
+            public readonly string id = "id";
+            public readonly string CertificateAuthorityProviders = "CertificateAuthorityProviders";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateWirelessProfileProviders s_params_UpdateWirelessProfileProviders = new ActionParamsClass_UpdateWirelessProfileProviders();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateWirelessProfileProviders UpdateWirelessProfileProvidersParams { get { return s_params_UpdateWirelessProfileProviders; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateWirelessProfileProviders
+        {
+            public readonly string id = "id";
+            public readonly string WirelessProfileProviders = "WirelessProfileProviders";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateOrganisationalUnit s_params_UpdateOrganisationalUnit = new ActionParamsClass_UpdateOrganisationalUnit();
@@ -512,16 +548,44 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdateCertificateProviderIdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string CertificateProviderId, bool? redirect);
+        partial void UpdateCertificateProvidersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string CertificateProviders, bool? redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateCertificateProviderId(int id, string CertificateProviderId, bool? redirect)
+        public override System.Web.Mvc.ActionResult UpdateCertificateProviders(int id, string CertificateProviders, bool? redirect)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateCertificateProviderId);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateCertificateProviders);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "CertificateProviderId", CertificateProviderId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "CertificateProviders", CertificateProviders);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateCertificateProviderIdOverride(callInfo, id, CertificateProviderId, redirect);
+            UpdateCertificateProvidersOverride(callInfo, id, CertificateProviders, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateCertificateAuthorityProvidersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string CertificateAuthorityProviders, bool? redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateCertificateAuthorityProviders(int id, string CertificateAuthorityProviders, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateCertificateAuthorityProviders);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "CertificateAuthorityProviders", CertificateAuthorityProviders);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateCertificateAuthorityProvidersOverride(callInfo, id, CertificateAuthorityProviders, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateWirelessProfileProvidersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string WirelessProfileProviders, bool? redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateWirelessProfileProviders(int id, string WirelessProfileProviders, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateWirelessProfileProviders);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "WirelessProfileProviders", WirelessProfileProviders);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateWirelessProfileProvidersOverride(callInfo, id, WirelessProfileProviders, redirect);
             return callInfo;
         }
 

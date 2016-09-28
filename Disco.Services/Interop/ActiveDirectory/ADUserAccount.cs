@@ -9,7 +9,7 @@ namespace Disco.Services.Interop.ActiveDirectory
     public class ADUserAccount : IADObject
     {
         internal const string LdapSamAccountNameFilterTemplate = "(&(objectCategory=Person)(sAMAccountName={0}))";
-        internal static string LdapSearchFilterTemplate = "(&(objectCategory=Person)(objectClass=user)(|(sAMAccountName=*{0}*)(displayName=*{0}*)(sn=*{0}*)(givenName=*{0}*)))";
+        internal static string LdapSearchFilterTemplate = "(&(objectCategory=Person)(objectClass=user)(|(sAMAccountName={0}*)(displayName={0}*)(sn={0}*)(givenName={0}*)))";
         internal static readonly string[] LoadProperties = { "name", "distinguishedName", "sAMAccountName", "objectSid", "displayName", "sn", "givenName", "memberOf", "primaryGroupID", "mail", "telephoneNumber" };
         internal static readonly string[] QuickLoadProperties = { "name", "distinguishedName", "sAMAccountName", "objectSid", "displayName", "sn", "givenName", "mail", "telephoneNumber" };
 

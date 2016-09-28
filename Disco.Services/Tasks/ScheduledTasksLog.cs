@@ -25,6 +25,8 @@ namespace Disco.Services.Tasks
             InitializeScheduledTasksExceptionWithInner,
             ScheduledTasksException = 30,
             ScheduledTasksExceptionWithInner,
+            ScheduledTasksWarning,
+            ScheduledTasksInformation,
             ScheduledTaskExecuted = 50,
             ScheduledTaskFinished = 80,
         }
@@ -96,6 +98,16 @@ namespace Disco.Services.Tasks
             {
                 Log(EventTypeIds.ScheduledTasksException, ScheduledTaskName, SessionId, ScheduledTaskType.Assembly.Location, ex.GetType().Name, ex.Message, ex.StackTrace);
             }
+        }
+
+        public static void LogScheduledTaskInformation(string ScheduledTaskName, string SessionId, string Message)
+        {
+            Log(EventTypeIds.ScheduledTasksInformation, ScheduledTaskName, SessionId, Message);
+        }
+
+        public static void LogScheduledTaskWarning(string ScheduledTaskName, string SessionId, string Message)
+        {
+            Log(EventTypeIds.ScheduledTasksWarning, ScheduledTaskName, SessionId, Message);
         }
 
         protected override List<Logging.Models.LogEventType> LoadEventTypes()
@@ -178,7 +190,29 @@ namespace Disco.Services.Tasks
 					UseLive = true, 
 					UsePersist = true, 
 					UseDisplay = true
-				}, 
+				},
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.ScheduledTasksWarning,
+                    ModuleId = _ModuleId,
+                    Name = "Scheduled Task Warning",
+                    Format = "Scheduled Task '{0}' Warning: {2}; Session Id: {1}",
+                    Severity = (int)LogEventType.Severities.Warning,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.ScheduledTasksInformation,
+                    ModuleId = _ModuleId,
+                    Name = "Scheduled Task Information",
+                    Format = "Scheduled Task '{0}' Information: {2}; Session Id: {1}",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                }, 
 				new LogEventType
 				{
 					Id = (int)EventTypeIds.ScheduledTaskExecuted, 
@@ -201,7 +235,7 @@ namespace Disco.Services.Tasks
 					UsePersist = true, 
 					UseDisplay = true
 				}
-			};
+            };
         }
     }
 }

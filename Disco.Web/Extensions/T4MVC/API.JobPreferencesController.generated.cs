@@ -244,10 +244,10 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdateLocationModeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Models.BI.Job.LocationModes LocationMode, bool redirect);
+        partial void UpdateLocationModeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Models.Services.Job.LocationModes LocationMode, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateLocationMode(Disco.Models.BI.Job.LocationModes LocationMode, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateLocationMode(Disco.Models.Services.Job.LocationModes LocationMode, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLocationMode);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "LocationMode", LocationMode);

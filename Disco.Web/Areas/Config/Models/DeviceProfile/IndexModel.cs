@@ -1,10 +1,7 @@
-﻿using System;
+﻿using Disco.Data.Repository;
+using Disco.Models.UI.Config.DeviceProfile;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using Disco.Data.Repository;
-using Disco.BI.Extensions;
-using Disco.Models.UI.Config.DeviceProfile;
 
 namespace Disco.Web.Areas.Config.Models.DeviceProfile
 {

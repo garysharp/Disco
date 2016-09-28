@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Disco.Models.UI.Job;
+﻿using Disco.Models.Services.Job.Statistics;
 using Disco.Models.Services.Jobs.JobLists;
+using Disco.Models.UI.Job;
+using System.Collections.Generic;
 
 namespace Disco.Web.Models.Job
 {
@@ -12,6 +10,6 @@ namespace Disco.Web.Models.Job
         public JobTableModel MyJobs { get; set; }
         public JobTableModel StaleJobs { get; set; }
 
-        public List<Disco.Models.BI.Job.Statistics.DailyOpenedClosedItem> DailyOpenedClosedStatistics { get; set; }
+        public List<DailyOpenedClosedItem> DailyOpenedClosedStatistics { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Disco.Data.Repository;
-using Disco.Models.BI.Job;
+using Disco.Models.Services.Job;
 using Disco.Models.UI.Config.JobPreferences;
 using Disco.Services.Extensions;
 using System;

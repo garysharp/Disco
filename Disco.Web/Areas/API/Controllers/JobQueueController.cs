@@ -1,13 +1,12 @@
 ﻿using Disco.Models.Repository;
 using Disco.Services.Authorization;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Jobs.JobQueues;
 using Disco.Services.Web;
-using Disco.BI.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using System.Collections.Generic;
-using Disco.Services.Interop.ActiveDirectory;
 
 namespace Disco.Web.Areas.API.Controllers
 {

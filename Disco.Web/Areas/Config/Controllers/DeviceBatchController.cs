@@ -1,6 +1,7 @@
-﻿using Disco.BI.Extensions;
-using Disco.Models.UI.Config.DeviceBatch;
+﻿using Disco.Models.UI.Config.DeviceBatch;
+using Disco.Services;
 using Disco.Services.Authorization;
+using Disco.Services.Devices;
 using Disco.Services.Devices.ManagedGroups;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Web;
@@ -79,7 +80,7 @@ namespace Disco.Web.Areas.Config.Controllers
             // Default Batch
             var m = new Models.DeviceBatch.CreateModel()
             {
-                DeviceBatch = BI.DeviceBI.BatchUtilities.DefaultNewDeviceBatch(Database)
+                DeviceBatch = DeviceBatches.DefaultNewDeviceBatch(Database)
             };
 
             // UI Extensions

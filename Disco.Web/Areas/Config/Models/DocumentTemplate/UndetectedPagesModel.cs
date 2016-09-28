@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Disco.BI;
-using Disco.BI.Extensions;
+﻿using Disco.Models.UI.Config.DocumentTemplate;
 using Disco.Web.Extensions;
-using Disco.Models.UI.Config.DocumentTemplate;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace Disco.Web.Areas.Config.Models.DocumentTemplate
 {

@@ -66,11 +66,19 @@
 
 @helper RadioButtonList(string id, List<System.Web.Mvc.SelectListItem> items, int columns = 1)
 {
-    @ItemList("radio", id, items, columns)
+    @ItemList(null, "radio", id, items, columns)
+}
+@helper RadioButtonList(string containerName, string id, List<System.Web.Mvc.SelectListItem> items, int columns = 1)
+{
+    @ItemList(containerName, "radio", id, items, columns)
 }
 @helper CheckBoxList(string id, List<System.Web.Mvc.SelectListItem> items, int columns = 1, bool alignEven = true, int? forceUniqueIds = null, bool htmlEncodeText = true)
 {
-    @ItemList("checkbox", id, items, columns, alignEven, forceUniqueIds, htmlEncodeText)
+    @ItemList(null, "checkbox", id, items, columns, alignEven, forceUniqueIds, htmlEncodeText)
+}
+@helper CheckBoxList(string containerName, string id, List<System.Web.Mvc.SelectListItem> items, int columns = 1, bool alignEven = true, int? forceUniqueIds = null, bool htmlEncodeText = true)
+{
+    @ItemList(containerName, "checkbox", id, items, columns, alignEven, forceUniqueIds, htmlEncodeText)
 }
 @helper CheckboxBulkSelect(string BulkSelectContainerId, string ParentJQuerySelector = null)
 {Html.GetPageHelper().BundleDeferred("~/ClientScripts/Modules/Disco-jQueryExtensions");
@@ -85,12 +93,12 @@
         }
     </span>
 }
-@helper ItemList(string inputType, string id, List<System.Web.Mvc.SelectListItem> items, int columns = 1, bool alignEven = true, int? forceUniqueIds = null, bool htmlEncodeText = true)
+@helper ItemList(string containerId, string inputType, string id, List<System.Web.Mvc.SelectListItem> items, int columns = 1, bool alignEven = true, int? forceUniqueIds = null, bool htmlEncodeText = true)
 {
     int itemsPerColumn = items.Count / columns;
     int columnWidth = (100 / columns);
     var itemNextId = 0;
-    <table class="none">
+    <table id="@containerId" class="none">
         <tr>
             @for (int i = 0; i < columns; i++)
             {

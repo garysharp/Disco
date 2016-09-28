@@ -1,5 +1,4 @@
-﻿using Disco.BI.Extensions;
-using Disco.Models.Services.Jobs.JobLists;
+﻿using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.User;
 using Disco.Services;
 using Disco.Services.Authorization;

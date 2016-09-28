@@ -27,7 +27,6 @@ namespace Disco.Web.Views.Shared
     using System.Web.UI;
     using System.Web.WebPages;
     using Disco;
-    using Disco.BI.Extensions;
     using Disco.Models.Repository;
     using Disco.Services;
     using Disco.Services.Authorization;
@@ -956,11 +955,11 @@ WriteLiteral("            ");
             
             #line default
             #line hidden
-WriteLiteral("\r\n        </section>\r\n        <footer>\r\n            Disco v");
+WriteLiteral("\r\n        </section>\r\n        <footer>\r\n            Disco ICT v");
 
             
             #line 141 "..\..\Views\Shared\_Layout.cshtml"
-               Write(Disco.Web.DiscoApplication.Version);
+                   Write(Disco.Web.DiscoApplication.Version);
 
             
             #line default
@@ -971,7 +970,7 @@ WriteLiteral("@ ");
 
             
             #line 141 "..\..\Views\Shared\_Layout.cshtml"
-                                                        Write(Disco.Web.DiscoApplication.OrganisationName);
+                                                            Write(Disco.Web.DiscoApplication.OrganisationName);
 
             
             #line default

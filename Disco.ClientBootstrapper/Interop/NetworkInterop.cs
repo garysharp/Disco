@@ -165,13 +165,13 @@ namespace Disco.ClientBootstrapper.Interop
             }
         }
 
-        public static bool PingDisco()
+        public static bool PingDisco(string ServerName)
         {
             using (Ping p = new Ping())
             {
                 try
                 {
-                    PingReply pr = p.Send("disco", 2000);
+                    PingReply pr = p.Send(ServerName, 2000);
                     if (pr.Status == IPStatus.Success)
                         return true;
                     else

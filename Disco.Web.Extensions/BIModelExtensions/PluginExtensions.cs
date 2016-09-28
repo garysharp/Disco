@@ -11,12 +11,12 @@ namespace Disco.Web.Extensions
     {
         public static List<SelectListItem> ToSelectListItems(this IEnumerable<PluginFeatureManifest> PluginFeatureDefinitions, PluginFeatureManifest SelectedItem)
         {
-            string selectedId = default(string);
+            return PluginFeatureDefinitions.ToSelectListItems(SelectedItem?.Id, false, null);
+        }
 
-            if (SelectedItem != null)
-                selectedId = SelectedItem.Id;
-
-            return PluginFeatureDefinitions.ToSelectListItems(selectedId, false, null);
+        public static List<SelectListItem> ToSelectListItems(this IEnumerable<PluginFeatureManifest> PluginFeatureDefinitions, IEnumerable<PluginFeatureManifest> SelectedItems)
+        {
+            return PluginFeatureDefinitions.ToSelectListItems(SelectedItems?.Select(i => i.Id), false, null);
         }
 
         public static List<SelectListItem> ToSelectListItems(this IEnumerable<PluginFeatureManifest> PluginDefinitions, string SelectedId = null, bool IncludeInstructionFirst = false, string InstructionMessage = "Select a Plugin")
@@ -24,18 +24,36 @@ namespace Disco.Web.Extensions
             return ToSelectListItems(PluginDefinitions, SelectedId, IncludeInstructionFirst, InstructionMessage, null);
         }
 
+        public static List<SelectListItem> ToSelectListItems(this IEnumerable<PluginFeatureManifest> PluginDefinitions, IEnumerable<string> SelectedIds = null, bool IncludeInstructionFirst = false, string InstructionMessage = "Select a Plugin")
+        {
+            return ToSelectListItems(PluginDefinitions, SelectedIds, IncludeInstructionFirst, InstructionMessage, null);
+        }
+
         public static List<SelectListItem> ToSelectListItems(this IEnumerable<PluginFeatureManifest> PluginDefinitions, string SelectedId = null, bool IncludeInstructionFirst = false, string InstructionMessage = "Select a Plugin", Dictionary<string, string> AdditionalItems = null)
         {
+            string[] selectedIds = null;
+            if (SelectedId != null)
+            {
+                selectedIds = new string[] { SelectedId };
+            }
+
+            return ToSelectListItems(PluginDefinitions, selectedIds, IncludeInstructionFirst, InstructionMessage, AdditionalItems);
+        }
+
+        public static List<SelectListItem> ToSelectListItems(this IEnumerable<PluginFeatureManifest> PluginDefinitions, IEnumerable<string> SelectedIds = null, bool IncludeInstructionFirst = false, string InstructionMessage = "Select a Plugin", Dictionary<string, string> AdditionalItems = null)
+        {
+            var selectedIds = SelectedIds?.ToList();
+
             var items = PluginDefinitions
-                .Select(wpd => new SelectListItem { Value = wpd.Id, Text = wpd.Name, Selected = (SelectedId != null && SelectedId.Equals(wpd.Id)) });
+                .Select(wpd => new SelectListItem { Value = wpd.Id, Text = wpd.Name, Selected = (selectedIds?.Contains(wpd.Id, StringComparer.Ordinal) ?? false) });
 
             if (AdditionalItems != null)
-                items = items.Concat(AdditionalItems.Select(i => new SelectListItem { Value = i.Key, Text = i.Value, Selected = (SelectedId != null && SelectedId.Equals(i.Key)) }));
+                items = items.Concat(AdditionalItems.Select(i => new SelectListItem { Value = i.Key, Text = i.Value, Selected = (selectedIds?.Contains(i.Key, StringComparer.Ordinal) ?? false) }));
 
             var selectItems = items.OrderBy(i => i.Text).ToList();
 
             if (IncludeInstructionFirst)
-                selectItems.Insert(0, new SelectListItem() { Value = String.Empty, Text = String.Format("<{0}>", InstructionMessage), Selected = String.IsNullOrEmpty(SelectedId) });
+                selectItems.Insert(0, new SelectListItem() { Value = String.Empty, Text = String.Format("<{0}>", InstructionMessage), Selected = (selectedIds?.Count ?? 0) != 0 });
 
             return selectItems;
         }

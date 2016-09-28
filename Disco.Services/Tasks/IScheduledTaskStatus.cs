@@ -37,5 +37,8 @@ namespace Disco.Services.Tasks
         void Finished(string FinishedMessage, string FinishedUrl);
 
         void SetTaskException(Exception TaskException);
+
+        void LogWarning(string Message);
+        void LogInformation(string Message);
     }
 }

@@ -42,7 +42,7 @@ namespace Disco.BI.Interop.Pdf
                 }
                 else
                 {
-                    Stream bulkPdf = DocumentTemplateBI.Utilities.JoinPdfs(generatedPdfs.ToArray());
+                    Stream bulkPdf = Utilities.JoinPdfs(generatedPdfs.ToArray());
                     foreach (Stream singlePdf in generatedPdfs)
                         singlePdf.Dispose();
                     return bulkPdf;

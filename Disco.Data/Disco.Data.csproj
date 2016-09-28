@@ -15,6 +15,7 @@
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <AssemblyVersion>2.2.16272.1003</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -150,6 +151,10 @@
     <Compile Include="Migrations\201407260624238_DBv16.Designer.cs">
       <DependentUpon>201407260624238_DBv16.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609260741183_DBv17.cs" />
+    <Compile Include="Migrations\201609260741183_DBv17.Designer.cs">
+      <DependentUpon>201609260741183_DBv17.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DiscoDataMigrator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -212,6 +217,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407260624238_DBv16.resx">
       <DependentUpon>201407260624238_DBv16.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609260741183_DBv17.resx">
+      <DependentUpon>201609260741183_DBv17.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

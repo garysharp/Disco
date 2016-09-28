@@ -111,6 +111,16 @@ namespace Disco.Services.Tasks
             this._progress = 0;
         }
 
+        public void LogWarning(string Message)
+        {
+            ScheduledTasksLog.LogScheduledTaskWarning(TaskName, SessionId, Message);
+        }
+
+        public void LogInformation(string Message)
+        {
+            ScheduledTasksLog.LogScheduledTaskInformation(TaskName, SessionId, Message);
+        }
+
         #region Progress Actions
         private byte CalculateProgressValue(byte Progress)
         {

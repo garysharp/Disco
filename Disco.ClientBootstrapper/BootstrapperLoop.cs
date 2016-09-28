@@ -1,6 +1,4 @@
-﻿//#define Debug
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +19,14 @@ namespace Disco.ClientBootstrapper
         private string tempWorkingDirectory;
         private StringBuilder errorMessage;
         private Process clientProcess;
+
+#if DEBUG
+        public const string DiscoServerName = "WS-GSHARP";
+        public const int DiscoServerPort = 57252;
+#else
+        public const string DiscoServerName = "DISCO";
+        public const int DiscoServerPort = 9292;
+#endif
 
         public BootstrapperLoop(IStatus StatusUI, LoopCompleteCallback Callback)
         {
@@ -79,12 +85,12 @@ namespace Disco.ClientBootstrapper
 
             // Check for Network Connectivity
             statusUI.UpdateStatus(null, "Detecting Network", "Checking network connectivity, Please wait...", true, -1);
-            if (!Interop.NetworkInterop.PingDisco())
+            if (!Interop.NetworkInterop.PingDisco(DiscoServerName))
             {
                 statusUI.UpdateStatus(null, "Detecting Network", "No network connectivity detected, Diagnosing...", true, -1);
                 statusUI_WriteAdapterInfo();
 
-                if (!Interop.NetworkInterop.PingDisco())
+                if (!Interop.NetworkInterop.PingDisco(DiscoServerName))
                 {
                     // Check for Wireless
                     var hasWireless = (Interop.NetworkInterop.NetworkAdapters.Count(na => na.IsWireless) > 0);
@@ -99,17 +105,17 @@ namespace Disco.ClientBootstrapper
                             statusUI_WriteAdapterInfo();
                             statusUI.UpdateStatus(null, null, null, true, i);
                             Program.SleepThread(500, false);
-                            if (Interop.NetworkInterop.PingDisco())
+                            if (Interop.NetworkInterop.PingDisco(DiscoServerName))
                                 break;
                         }
-                        if (!Interop.NetworkInterop.PingDisco())
+                        if (!Interop.NetworkInterop.PingDisco(DiscoServerName))
                         {
                             statusUI.UpdateStatus(null, "Wireless Network Failed", "Unable to connect to the wireless network, please connect the network cable...", false);
                             Program.SleepThread(3000, false);
                         }
                     }
 
-                    if (!Interop.NetworkInterop.PingDisco())
+                    if (!Interop.NetworkInterop.PingDisco(DiscoServerName))
                     {
                         // Instruct user to connect network cable
                         statusUI.UpdateStatus(null, "Please connect the network cable", null);
@@ -118,13 +124,13 @@ namespace Disco.ClientBootstrapper
                             statusUI_WriteAdapterInfo();
                             statusUI.UpdateStatus(null, null, null, true, i);
                             Program.SleepThread(500, false);
-                            if (Interop.NetworkInterop.PingDisco())
+                            if (Interop.NetworkInterop.PingDisco(DiscoServerName))
                                 break;
                         }
                     }
                 }    
                 
-                if (!Interop.NetworkInterop.PingDisco())
+                if (!Interop.NetworkInterop.PingDisco(DiscoServerName))
                 {
                     // Client Failed
                     if (this.mLoopCompleteCallback != null)
@@ -143,7 +149,7 @@ namespace Disco.ClientBootstrapper
                 // Don't use a proxy when downloading the Client
                 webClient.Proxy = new WebProxy();
 
-                webClient.DownloadFile("http://disco:9292/Services/Client/PreparationClient", clientSourceLocation);
+                webClient.DownloadFile($"http://{DiscoServerName}:{DiscoServerPort}/Services/Client/PreparationClient", clientSourceLocation);
             }
 
             // Unzip Client

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Disco.Models.ClientServices.EnrolmentInformation;
 
 namespace Disco.Models.ClientServices
 {
@@ -9,22 +6,22 @@ namespace Disco.Models.ClientServices
     {
         public string SessionId { get; set; }
 
-        public string DeviceDomainName { get; set; }
-        public string DeviceComputerName { get; set; }
-        
-        public string DeviceAssignedUserDomain { get; set; }
-        public string DeviceAssignedUserName { get; set; }
-        public string DeviceAssignedUserSID { get; set; }
-        public string DeviceAssignedUserUsername { get; set; }
+        public string DomainName { get; set; }
+        public string ComputerName { get; set; }
 
-        public bool DeviceAssignedUserIsLocalAdmin { get; set; }
+        public string AssignedUserDomain { get; set; }
+        public string AssignedUserUsername { get; set; }
+        public string AssignedUserSID { get; set; }
+        public string AssignedUserDescription { get; set; }
 
-        public string OfflineDomainJoin { get; set; }
-        
-        public string DeviceCertificate { get; set; }
-        public List<string> DeviceCertificateRemoveExisting { get; set; }
+        public bool AssignedUserIsLocalAdmin { get; set; }
 
-        // Actions
+        public string OfflineDomainJoinManifest { get; set; }
+
+        public CertificateStore Certificates { get; set; }
+
+        public WirelessProfileStore WirelessProfiles { get; set; }
+
         public bool AllowBootstrapperUninstall { get; set; }
         public bool RequireReboot { get; set; }
 

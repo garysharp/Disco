@@ -13,7 +13,7 @@ namespace Disco.Models.ClientServices
 
         public override string ToString()
         {
-            return string.Format("{0} ({1})", DisplayName, Username);
+            return $"{DisplayName} ({Username})";
         }
     }
 }

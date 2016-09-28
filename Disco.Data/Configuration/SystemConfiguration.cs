@@ -284,12 +284,12 @@ namespace Disco.Data.Configuration
                 return
                     (short)(BitConverter.ToInt16(deploymentIdBytes, 0) ^
                     BitConverter.ToInt16(deploymentIdBytes, 2) ^
-                    BitConverter.ToInt16(deploymentIdBytes, 2) ^
-                    BitConverter.ToInt16(deploymentIdBytes, 2) ^
-                    BitConverter.ToInt16(deploymentIdBytes, 2) ^
-                    BitConverter.ToInt16(deploymentIdBytes, 2) ^
-                    BitConverter.ToInt16(deploymentIdBytes, 2) ^
-                    BitConverter.ToInt16(deploymentIdBytes, 2));
+                    BitConverter.ToInt16(deploymentIdBytes, 4) ^
+                    BitConverter.ToInt16(deploymentIdBytes, 6) ^
+                    BitConverter.ToInt16(deploymentIdBytes, 8) ^
+                    BitConverter.ToInt16(deploymentIdBytes, 10) ^
+                    BitConverter.ToInt16(deploymentIdBytes, 12) ^
+                    BitConverter.ToInt16(deploymentIdBytes, 14));
             }
         }
         public UpdateResponseV2 UpdateLastCheckResponse

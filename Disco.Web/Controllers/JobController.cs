@@ -1,12 +1,13 @@
-﻿using Disco.BI.Extensions;
-using Disco.Models.BI.Job;
-using Disco.Models.Repository;
+﻿using Disco.Models.Repository;
+using Disco.Models.Services.Job;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Job;
 using Disco.Services;
 using Disco.Services.Authorization;
+using Disco.Services.Jobs;
 using Disco.Services.Jobs.JobLists;
 using Disco.Services.Jobs.JobQueues;
+using Disco.Services.Jobs.Statistics;
 using Disco.Services.Plugins.Features.RepairProvider;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Plugins.Features.WarrantyProvider;
@@ -41,7 +42,7 @@ namespace Disco.Web.Controllers
                 m.StaleJobs.ShowDates = false;
             }
             if (Authorization.Has(Claims.Job.ShowDailyChart))
-                m.DailyOpenedClosedStatistics = Disco.BI.JobBI.Statistics.DailyOpenedClosed.Data(Database, true);
+                m.DailyOpenedClosedStatistics = DailyOpenedClosed.Data(Database, true);
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobIndexModel>(this.ControllerContext, m);
@@ -404,7 +405,7 @@ namespace Disco.Web.Controllers
                     && m.QuickLog.HasValue && m.QuickLog.Value
                     && m.QuickLogTaskTimeMinutes.HasValue && m.QuickLogTaskTimeMinutes.Value > 0);
 
-                var j = BI.JobBI.Utilities.Create(Database, m.Device, m.User, m.GetJobType, m.GetJobSubTypes, currentUser, addAutoQueues);
+                var j = Jobs.Create(Database, m.Device, m.User, m.GetJobType, m.GetJobSubTypes, currentUser, addAutoQueues);
 
                 if (m.DeviceHeld.Value)
                 {

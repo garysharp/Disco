@@ -1,16 +1,14 @@
-﻿using Disco.Data.Repository.Monitor;
+﻿using Disco.Data.Repository;
+using Disco.Data.Repository.Monitor;
+using Disco.Models.Repository;
 using Disco.Services.Authorization;
 using Disco.Services.Web.Signalling;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Reactive.Linq;
-using Disco.Models.Repository;
-using Disco.Data.Repository;
+using System.Threading.Tasks;
 
 namespace Disco.Services.Devices
 {

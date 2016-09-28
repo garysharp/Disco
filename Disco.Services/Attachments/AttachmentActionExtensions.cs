@@ -1,18 +1,95 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
+using Disco.Services.Authorization;
+using Disco.Services.Documents.ManagedGroups;
+using Disco.Services.Users;
 using Exceptionless;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Services
 {
     public static class AttachmentActionExtensions
     {
+        #region Delete
+        public static bool CanDelete(this DeviceAttachment da)
+        {
+            if (UserService.CurrentAuthorization.Has(Claims.Device.Actions.RemoveAnyAttachments))
+                return true;
+
+            if (UserService.CurrentAuthorization.Has(Claims.Device.Actions.RemoveOwnAttachments)
+                && da.TechUserId.Equals(UserService.CurrentUserId, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            return false;
+        }
+        public static void OnDelete(this DeviceAttachment da, DiscoDataContext Database)
+        {
+            if (!da.CanDelete())
+                throw new InvalidOperationException("Deletion of Attachment is Denied");
+
+            var attachmentId = da.Id;
+            var documentTemplateId = da.DocumentTemplateId;
+            var deviceSerialNumber = da.DeviceSerialNumber;
+
+            da.RepositoryDelete(Database);
+            Database.DeviceAttachments.Remove(da);
+
+            DocumentTemplateManagedGroups.TriggerDeviceAttachmentDeleted(Database, attachmentId, documentTemplateId, deviceSerialNumber);
+        }
+        public static bool CanDelete(this JobAttachment ja)
+        {
+            if (UserService.CurrentAuthorization.Has(Claims.Job.Actions.RemoveAnyAttachments))
+                return true;
+
+            if (UserService.CurrentAuthorization.Has(Claims.Job.Actions.RemoveOwnAttachments)
+                && ja.TechUserId.Equals(UserService.CurrentUserId, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            return false;
+        }
+        public static void OnDelete(this JobAttachment ja, DiscoDataContext Database)
+        {
+            if (!ja.CanDelete())
+                throw new InvalidOperationException("Deletion of Attachment is Denied");
+
+            var attachmentId = ja.Id;
+            var documentTemplateId = ja.DocumentTemplateId;
+            var jobId = ja.JobId;
+
+            ja.RepositoryDelete(Database);
+            Database.JobAttachments.Remove(ja);
+
+            DocumentTemplateManagedGroups.TriggerJobAttachmentDeleted(Database, attachmentId, documentTemplateId, jobId);
+        }
+        public static bool CanDelete(this UserAttachment ua)
+        {
+            if (UserService.CurrentAuthorization.Has(Claims.User.Actions.RemoveAnyAttachments))
+                return true;
+
+            if (UserService.CurrentAuthorization.Has(Claims.User.Actions.RemoveOwnAttachments)
+                && ua.TechUserId.Equals(UserService.CurrentUserId, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            return false;
+        }
+        public static void OnDelete(this UserAttachment ua, DiscoDataContext Database)
+        {
+            if (!ua.CanDelete())
+                throw new InvalidOperationException("Deletion of Attachment is Denied");
+
+            var attachmentId = ua.Id;
+            var documentTemplateId = ua.DocumentTemplateId;
+            var userId = ua.UserId;
+
+            ua.RepositoryDelete(Database);
+            Database.UserAttachments.Remove(ua);
+
+            DocumentTemplateManagedGroups.TriggerUserAttachmentDeleted(Database, attachmentId, documentTemplateId, userId);
+        }
+        #endregion
+
         public static DeviceAttachment CreateAttachment(this Device Device, DiscoDataContext Database, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, Image PdfThumbnail = null)
         {
             if (string.IsNullOrEmpty(MimeType) || MimeType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
@@ -149,8 +226,8 @@ namespace Disco.Services
                     {
                         using (Image sourceImage = Image.FromStream(Source))
                         {
-                            Thumbnail = sourceImage.ResizeImage(48, 48);
-                            using (Image mimeTypeIcon = Disco.Services.Properties.Resources.MimeType_img16)
+                            Thumbnail = sourceImage.ResizeImage(48, 48, Brushes.Black);
+                            using (Image mimeTypeIcon = Properties.Resources.MimeType_img16)
                             {
                                 Thumbnail.EmbedIconOverlay(mimeTypeIcon);
                             }
@@ -177,8 +254,15 @@ namespace Disco.Services
                                 var pageSize = pdfiumDocument.PageSizes[0];
                                 var size = ImagingExtensions.CalculateResize((int)pageSize.Width, (int)pageSize.Height, 48, 48);
 
-                                Thumbnail = pdfiumDocument.Render(0, (int)size.Width, (int)size.Height, 72, 72, true);
-                                return true;
+                                using (var sourceImage = pdfiumDocument.Render(0, (int)size.Width, (int)size.Height, 72, 72, true))
+                                {
+                                    Thumbnail = sourceImage.ResizeImage(48, 48, Brushes.White);
+                                    using (Image mimeTypeIcon = Properties.Resources.MimeType_pdf16)
+                                    {
+                                        Thumbnail.EmbedIconOverlay(mimeTypeIcon);
+                                    }
+                                    return true;
+                                }
                             }
                         }
                     }

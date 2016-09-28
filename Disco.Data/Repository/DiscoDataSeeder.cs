@@ -273,12 +273,6 @@ namespace Disco.Data.Repository
                             case "OrganisationalUnit":
                                 dp.OrganisationalUnit = configurationItem.Value;
                                 break;
-                            case "AllocateWirelessCertificate":
-                                if (bool.Parse(configurationItem.Value))
-                                    dp.CertificateProviderId = "";
-                                else
-                                    dp.CertificateProviderId = null;
-                                break;
                             default:
                                 continue; // Unknown Configuration Item - Leave in DB & Ignore
                         }

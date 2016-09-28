@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Disco.Client.Interop;
 using Disco.Models.ClientServices;
-using System.Security.Cryptography.X509Certificates;
-using System.IO;
-using System.Diagnostics;
 using Microsoft.Win32;
-using System.Text.RegularExpressions;
+using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace Disco.Client.Extensions
 {
@@ -16,26 +12,23 @@ namespace Disco.Client.Extensions
 
         public static void Build(this Enrol enrol)
         {
-            enrol.DeviceUUID = Interop.SystemAudit.DeviceUUID;
-            enrol.DeviceSerialNumber = Interop.SystemAudit.DeviceSerialNumber;
+            enrol.ComputerName = Environment.MachineName;
+            enrol.RunningUserDomain = Environment.UserDomainName;
+            enrol.RunningUserName = Environment.UserName;
+            enrol.RunningInteractively = Environment.UserInteractive;
 
-            enrol.DeviceComputerName = Interop.LocalAuthentication.ComputerName;
+            // Hardware Audit
+            enrol.Hardware = Hardware.Information;
+            enrol.SerialNumber = enrol.Hardware.SerialNumber;
 
-            enrol.DeviceManufacturer = Interop.SystemAudit.DeviceManufacturer;
-            enrol.DeviceModel = Interop.SystemAudit.DeviceModel;
-            enrol.DeviceModelType = Interop.SystemAudit.DeviceType;
-
-            enrol.DeviceIsPartOfDomain = Interop.SystemAudit.DeviceIsPartOfDomain;
-            enrol.DeviceDNSDomainName = Interop.SystemAudit.DeviceDNSDomainName;
-
-            // LAN
-            enrol.DeviceLanMacAddress = Interop.Network.PrimaryLanMacAddress;
-
-            // WAN
-            enrol.DeviceWlanMacAddress = Interop.Network.PrimaryWlanMacAddress;
+            // Apply System Information
+            enrol.ApplySystemInformation();
 
             // Certificates
-            enrol.DeviceCertificates = Interop.Certificates.GetCertificateSubjects(StoreName.My, StoreLocation.LocalMachine);
+            enrol.Certificates = Certificates.GetAllCertificates();
+
+            // Wireless Profiles
+            enrol.WirelessProfiles = WirelessNetwork.GetWirelessProfiles();
         }
 
         public static void Process(this EnrolResponse enrolResponse)
@@ -51,12 +44,14 @@ namespace Disco.Client.Extensions
             // Offline Domain Join
             bool requireReboot = enrolResponse.ApplyOfflineDomainJoin();
 
-            // Certificates
-            enrolResponse.ApplyDeviceCertificates();
-
             // Device Owner
             enrolResponse.ApplyDeviceAssignedUser();
 
+            // Certificates
+            enrolResponse.ApplyDeviceCertificates();
+
+            // Wireless Profiles
+            enrolResponse.ApplyWirelessProfiles();
 
             Presentation.UpdateStatus("Enrolling Device", "Device Enrolment Successfully Completed", false, 0, 1500);
 
@@ -71,15 +66,15 @@ namespace Disco.Client.Extensions
         /// <returns>Boolean indicating whether a reboot is required.</returns>
         private static bool ApplyOfflineDomainJoin(this EnrolResponse enrolResponse)
         {
-            if (!string.IsNullOrWhiteSpace(enrolResponse.OfflineDomainJoin))
+            if (!string.IsNullOrWhiteSpace(enrolResponse.OfflineDomainJoinManifest))
             {
-                Presentation.UpdateStatus("Enrolling Device", string.Format("Performing Offline Domain Join:{0}Renaming Computer: {1} -> {2}", Environment.NewLine, Interop.LocalAuthentication.ComputerName, enrolResponse.DeviceComputerName), true, -1, 1500);
+                Presentation.UpdateStatus("Enrolling Device", $"Performing Offline Domain Join:\r\nRenaming Computer: {Environment.MachineName} -> {enrolResponse.ComputerName}", true, -1, 1500);
 
                 string odjFile = Path.GetTempFileName();
-                File.WriteAllBytes(odjFile, Convert.FromBase64String(enrolResponse.OfflineDomainJoin));
+                File.WriteAllBytes(odjFile, Convert.FromBase64String(enrolResponse.OfflineDomainJoinManifest));
 
                 string odjWindowsPath = Environment.GetEnvironmentVariable("SystemRoot");
-                string odjProcessArguments = string.Format("/REQUESTODJ /LOADFILE \"{0}\" /WINDOWSPATH \"{1}\" /LOCALOS", odjFile, odjWindowsPath);
+                string odjProcessArguments = $"/REQUESTODJ /LOADFILE \"{odjFile}\" /WINDOWSPATH \"{odjWindowsPath}\" /LOCALOS";
 
                 ProcessStartInfo odjProcessStartInfo = new ProcessStartInfo("DJOIN.EXE", odjProcessArguments)
                 {
@@ -95,17 +90,17 @@ namespace Disco.Client.Extensions
                     odjResult = odjProcess.StandardOutput.ReadToEnd();
                     odjProcess.WaitForExit(20000); // 20 Seconds
                 }
-                Presentation.UpdateStatus("Enrolling Device", string.Format("Offline Domain Join Result:{0}{1}", Environment.NewLine, odjResult), true, -1, 3000);
+                Presentation.UpdateStatus("Enrolling Device", $"Offline Domain Join Result:\r\n{odjResult}", true, -1, 3000);
 
                 if (File.Exists(odjFile))
                     File.Delete(odjFile);
 
                 // Flush Logged-On History
-                if (!string.IsNullOrEmpty(enrolResponse.DeviceDomainName))
+                if (!string.IsNullOrEmpty(enrolResponse.DomainName))
                 {
                     using (RegistryKey regWinlogon = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon", true))
                     {
-                        regWinlogon.SetValue("DefaultDomainName", enrolResponse.DeviceDomainName, RegistryValueKind.String);
+                        regWinlogon.SetValue("DefaultDomainName", enrolResponse.DomainName, RegistryValueKind.String);
                         regWinlogon.SetValue("DefaultUserName", String.Empty, RegistryValueKind.String);
                     }
                     using (RegistryKey regLogonUI = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI", true))
@@ -130,62 +125,44 @@ namespace Disco.Client.Extensions
         private static void ApplyDeviceAssignedUser(this EnrolResponse enrolResponse)
         {
             // Only run task if Assigned User was specified
-            if (!string.IsNullOrWhiteSpace(enrolResponse.DeviceAssignedUserSID))
+            if (!string.IsNullOrWhiteSpace(enrolResponse.AssignedUserSID))
             {
-                Presentation.UpdateStatus("Enrolling Device", string.Format(@"Configuring the device owner:{0}{1} ({2}\{3})", Environment.NewLine, enrolResponse.DeviceAssignedUserName, enrolResponse.DeviceAssignedUserDomain, enrolResponse.DeviceAssignedUserUsername), true, -1, 3000);
+                Presentation.UpdateStatus("Enrolling Device", $"Configuring the device owner:\r\n{enrolResponse.AssignedUserDescription} ({enrolResponse.AssignedUserDomain}\\{enrolResponse.AssignedUserUsername})", true, -1, 3000);
 
-                if (enrolResponse.DeviceAssignedUserIsLocalAdmin)
-                    Interop.LocalAuthentication.AddLocalGroupMembership("Administrators", enrolResponse.DeviceAssignedUserSID, enrolResponse.DeviceAssignedUserUsername, enrolResponse.DeviceAssignedUserDomain);
+                if (enrolResponse.AssignedUserIsLocalAdmin)
+                    Interop.LocalAuthentication.AddLocalGroupMembership("Administrators", enrolResponse.AssignedUserSID, enrolResponse.AssignedUserUsername, enrolResponse.AssignedUserDomain);
 
                 // Make Windows think this user was the last to logon
                 using (RegistryKey regWinlogon = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon", true))
                 {
-                    regWinlogon.SetValue("DefaultDomainName", enrolResponse.DeviceAssignedUserDomain, RegistryValueKind.String);
-                    regWinlogon.SetValue("DefaultUserName", enrolResponse.DeviceAssignedUserUsername, RegistryValueKind.String);
+                    regWinlogon.SetValue("DefaultDomainName", enrolResponse.AssignedUserDomain, RegistryValueKind.String);
+                    regWinlogon.SetValue("DefaultUserName", enrolResponse.AssignedUserUsername, RegistryValueKind.String);
                 }
                 using (RegistryKey regLogonUI = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI", true))
                 {
-                    regLogonUI.SetValue("LastLoggedOnUser", string.Format(@"{0}\{1}", enrolResponse.DeviceAssignedUserDomain, enrolResponse.DeviceAssignedUserUsername), RegistryValueKind.String);
+                    regLogonUI.SetValue("LastLoggedOnUser", $@"{enrolResponse.AssignedUserDomain}\{enrolResponse.AssignedUserUsername}", RegistryValueKind.String);
                 }
             }
         }
 
-        /// <summary>
-        /// Processes a Client Service Enrol Response for Device Certificate Actions
-        /// </summary>
-        /// <param name="enrolResponse"></param>
         private static void ApplyDeviceCertificates(this EnrolResponse enrolResponse)
         {
-            // Only run if a Certificate was supplied
-            if (!string.IsNullOrEmpty(enrolResponse.DeviceCertificate))
+            if (enrolResponse.Certificates != null)
             {
-                Presentation.UpdateStatus("Enrolling Device", "Configuring Wireless Certificates", true, -1, 1000);
+                Presentation.UpdateStatus("Enrolling Device", "Configuring Certificates", true, -1, 1000);
 
-                var certPersonalBytes = Convert.FromBase64String(enrolResponse.DeviceCertificate);
-                var certPersonal = new X509Certificate2(certPersonalBytes, "password", X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet);
-                if (certPersonal == null)
-                    throw new ClientServiceException("Enrolment > Device Certificate", "Unable to Import Device Certificate Provided, possibly check password.");
-
-                // Certificate Removal
-                if (enrolResponse.DeviceCertificateRemoveExisting != null && enrolResponse.DeviceCertificateRemoveExisting.Count > 0)
-                {
-                    List<Regex> regExMatchesSubject = new List<Regex>();
-                    foreach (var subjectRegEx in enrolResponse.DeviceCertificateRemoveExisting)
-                        regExMatchesSubject.Add(new Regex(subjectRegEx, RegexOptions.IgnoreCase));
-
-                    // Remove from 'My' Store
-                    Interop.Certificates.RemoveCertificates(StoreName.My, StoreLocation.LocalMachine, regExMatchesSubject, certPersonal);
-                    // Remove from 'Root' Store
-                    Interop.Certificates.RemoveCertificates(StoreName.Root, StoreLocation.LocalMachine, regExMatchesSubject, certPersonal);
-                    // Remove from 'CertificateAuthority' Store
-                    Interop.Certificates.RemoveCertificates(StoreName.CertificateAuthority, StoreLocation.LocalMachine, regExMatchesSubject, certPersonal);
-                }
-
-                // Add Certificate
-                Presentation.UpdateStatus("Enrolling Device", string.Format("Configuring Wireless Certificates{0}Installing Certificate: {1}", Environment.NewLine, Interop.Certificates.GetCertificateFriendlyName(certPersonal)), true, -1);
-                Interop.Certificates.AddCertificate(StoreName.My, StoreLocation.LocalMachine, certPersonal);
+                enrolResponse.Certificates.Apply();
             }
         }
 
+        private static void ApplyWirelessProfiles(this EnrolResponse enrolResponse)
+        {
+            if (enrolResponse.WirelessProfiles != null)
+            {
+                Presentation.UpdateStatus("Enrolling Device", "Configuring Wireless Profiles", true, -1, 1000);
+
+                enrolResponse.WirelessProfiles.Apply();
+            }
+        }
     }
 }

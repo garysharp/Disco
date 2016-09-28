@@ -1,103 +1,130 @@
-﻿using System;
+﻿using Disco.Models.ClientServices.EnrolmentInformation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Disco.Client.Interop
 {
     public static class Certificates
     {
-
-        public static string GetCertificateFriendlyName(X509Certificate2 Certificate)
+        public static List<Certificate> GetAllCertificates()
         {
-            string subject = Certificate.Subject;
-            return subject.Substring(subject.IndexOf("=") + 1, subject.IndexOf(",") - subject.IndexOf("=") - 1);
+            var certificates = new List<Certificate>();
+
+            // Trusted Root Certificates
+            certificates.AddRange(GetCertificates(StoreName.Root, "TrustedRoot"));
+
+            // Intermediate Certificates
+            certificates.AddRange(GetCertificates(StoreName.CertificateAuthority, "Intermediate"));
+
+            // Personal Certificates
+            certificates.AddRange(GetCertificates(StoreName.My, "Personal"));
+
+            return certificates;
         }
 
-        public static List<string> GetCertificateSubjects(StoreName StoreName, StoreLocation StoreLocation)
+        private static IEnumerable<Certificate> GetCertificates(StoreName StoreName, string StoreDescription)
         {
-            X509Store certStore = new X509Store(StoreName, StoreLocation);
-            certStore.Open(OpenFlags.ReadOnly);
-            var certSubjects = certStore.Certificates.Cast<X509Certificate2>().Select(c => c.Subject).ToList();
-            certStore.Close();
-            return certSubjects;
-        }
-
-        public static bool AddCertificate(StoreName StoreName, StoreLocation StoreLocation, X509Certificate2 Certificate)
-        {
-            X509Store certStore = new X509Store(StoreName, StoreLocation);
-            bool certAlreadyAdded = false;
-
-            certStore.Open(OpenFlags.ReadWrite);
-
+            var store = new X509Store(StoreName, StoreLocation.LocalMachine);
+            store.Open(OpenFlags.ReadOnly);
             try
             {
-                foreach (X509Certificate2 cert in certStore.Certificates)
+                foreach (var certificate in store.Certificates)
                 {
-                    if (cert.SerialNumber.Equals(Certificate.SerialNumber))
+                    yield return new Certificate()
                     {
-                        certAlreadyAdded = true;
-                        break;
-                    }
-                }
-
-                if (!certAlreadyAdded)
-                {
-                    Presentation.UpdateStatus("Enrolling Device", string.Format("Configuring Wireless Certificates{0}Adding Certificate: '{1}' from {2}@{3}", Environment.NewLine, GetCertificateFriendlyName(Certificate), StoreName.ToString(), StoreLocation.ToString()), true, -1, 3000);
-                    certStore.Add(Certificate);
+                        Store = StoreDescription,
+                        SubjectName = certificate.SubjectName.Name,
+                        Thumbprint = certificate.Thumbprint,
+                        FriendlyName = certificate.FriendlyName,
+                        DnsName = certificate.GetNameInfo(X509NameType.DnsName, false),
+                        Version = certificate.Version,
+                        SignatureAlgorithm = certificate.SignatureAlgorithm.FriendlyName,
+                        Issuer = certificate.IssuerName.Name,
+                        NotAfter = certificate.NotAfter,
+                        NotBefore = certificate.NotBefore,
+                        HasPrivateKey = certificate.HasPrivateKey
+                    };
                 }
             }
-            catch (Exception) { throw; }
             finally
             {
-                certStore.Close();
+                store.Close();
             }
 
-            return !certAlreadyAdded;
         }
 
-        public static List<string> RemoveCertificates(StoreName StoreName, StoreLocation StoreLocation, List<Regex> RegExMatchesSubject, X509Certificate2 CertificateException)
+        public static void Apply(this CertificateStore EnrolStore)
         {
-            X509Store certStore = new X509Store(StoreName, StoreLocation);
-            List<string> results = new List<string>();
-            List<X509Certificate2> certStoreRemove = new List<X509Certificate2>();
-
-            certStore.Open(OpenFlags.ReadWrite);
-
-            try
+            if (EnrolStore != null)
             {
-                foreach (X509Certificate2 cert in certStore.Certificates)
+                // Apply Trusted Root
+                ApplyToStore(StoreName.Root, EnrolStore.TrustedRootCertificates, EnrolStore.TrustedRootRemoveThumbprints);
+
+                // Apply Intermediate
+                ApplyToStore(StoreName.CertificateAuthority, EnrolStore.IntermediateCertificates, EnrolStore.IntermediateRemoveThumbprints);
+
+                // Apply Personal
+                ApplyToStore(StoreName.My, EnrolStore.PersonalCertificates, EnrolStore.PersonalRemoveThumbprints);
+            }
+        }
+
+        private static void ApplyToStore(StoreName StoreName, List<byte[]> Certificates, List<string> RemoveThumbprints)
+        {
+
+            if ((Certificates != null && Certificates.Count > 0) ||
+                (RemoveThumbprints != null && RemoveThumbprints.Count > 0))
+            {
+                var store = new X509Store(StoreName, StoreLocation.LocalMachine);
+                store.Open(OpenFlags.ReadWrite);
+                try
                 {
-                    if (!cert.SerialNumber.Equals(CertificateException.SerialNumber))
+                    var addedThumbprints = new List<string>();
+                    var existingThumbprints = store.Certificates.Cast<X509Certificate2>().GroupBy(c => c.Thumbprint).ToDictionary(c => c.Key, c => c.ToList(), StringComparer.OrdinalIgnoreCase);
+
+                    // Add
+                    if (Certificates != null && Certificates.Count > 0)
                     {
-                        foreach (var subjectRegEx in RegExMatchesSubject)
+                        foreach (var certificateBytes in Certificates)
                         {
-                            if (subjectRegEx.IsMatch(cert.Subject))
+                            var certificate = new X509Certificate2(certificateBytes, "password", X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet);
+
+                            // check if it already exists
+                            if (!existingThumbprints.ContainsKey(certificate.Thumbprint) && !addedThumbprints.Contains(certificate.Thumbprint))
                             {
-                                certStoreRemove.Add(cert);
-                                break;
+                                Presentation.UpdateStatus("Enrolling Device", $"Configuring Certificates\r\nAdding Certificate: '{certificate.GetNameInfo(X509NameType.DnsName, false)}' from {store.Name}@{store.Location}", true, -1, 1000);
+                                store.Add(certificate);
+                                addedThumbprints.Add(certificate.Thumbprint);
+                            }
+                        }
+                    }
+
+                    // Remove
+                    if (RemoveThumbprints != null && RemoveThumbprints.Count > 0)
+                    {
+                        foreach (var thumbprint in RemoveThumbprints)
+                        {
+                            List<X509Certificate2> certificates;
+                            if (existingThumbprints.TryGetValue(thumbprint, out certificates) && !addedThumbprints.Contains(thumbprint))
+                            {
+                                foreach (var certificate in certificates)
+                                {
+                                    Presentation.UpdateStatus("Enrolling Device", $"Configuring Certificates\r\nRemoving Certificate: '{certificate.GetNameInfo(X509NameType.DnsName, false)}' from {store.Name}@{store.Location}", true, -1, 1000);
+                                    store.Remove(certificate);
+                                    existingThumbprints.Remove(thumbprint);
+                                }
                             }
                         }
                     }
                 }
-
-                foreach (var cert in certStoreRemove)
+                finally
                 {
-                    results.Add(cert.Subject);
-
-                    Presentation.UpdateStatus("Enrolling Device", string.Format("Configuring Wireless Certificates{0}Removing Certificate: '{1}' from {2}@{3}", Environment.NewLine, GetCertificateFriendlyName(cert), StoreName.ToString(), StoreLocation.ToString()), true, -1, 1500);
-                    certStore.Remove(cert);
+                    store.Close();
                 }
             }
-            catch (Exception) { throw; }
-            finally
-            {
-                certStore.Close();
-            }
 
-            return results;
         }
+
     }
 }

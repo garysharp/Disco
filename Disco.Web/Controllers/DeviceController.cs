@@ -1,5 +1,4 @@
-﻿using Disco.BI.Extensions;
-using Disco.Models.Repository;
+﻿using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Exporting;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Device;
@@ -247,9 +246,14 @@ namespace Disco.Web.Controllers
 
             m.DeviceProfileDefaultOrganisationAddress = m.Device.DeviceProfile.DefaultOrganisationAddressDetails(Database);
 
-            PluginFeatureManifest deviceProfileCertificateProvider;
-            if (Disco.Services.Plugins.Plugins.TryGetPluginFeature(m.Device.DeviceProfile.CertificateProviderId, out deviceProfileCertificateProvider))
-                m.DeviceProfileCertificateProvider = deviceProfileCertificateProvider;
+            if (m.Device.DeviceProfile.CertificateProviders != null)
+            {
+                m.DeviceProfileCertificateProviders = m.Device.DeviceProfile.GetCertificateProviders().ToList();
+            }
+            if (m.Device.DeviceProfile.WirelessProfileProviders != null)
+            {
+                m.DeviceProfileWirelessProfileProviders = m.Device.DeviceProfile.GetWirelessProfileProviders().ToList();
+            }
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<DeviceShowModel>(this.ControllerContext, m);

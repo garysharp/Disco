@@ -1,4 +1,4 @@
-﻿using Disco.Models.BI.Job;
+﻿using Disco.Models.Services.Job;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Job;
 using Disco.Web.Extensions;
