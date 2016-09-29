@@ -162,8 +162,10 @@
             var comments = dialog.find('input.comments')
                 .keypress(function (e) {
                     if (e.which === 13) {
-                        result = true;
-                        dialog.dialog("close");
+                        if (!!comments.val()) {
+                            result = true;
+                            dialog.dialog("close");
+                        }
                     }
                 });
 
@@ -174,8 +176,15 @@
                 autoOpen: true,
                 buttons: {
                     "Upload": function () {
-                        result = true;
-                        dialog.dialog("close");
+                        if (!!comments.val()) {
+                            result = true;
+                            dialog.dialog("close");
+                            window.setTimeout(function () {
+                                comments.focus();
+                            }, 1);
+                        } else {
+                            alert('Please provide a comment for this attachment.');
+                        }
                     },
                     Cancel: function () {
                         dialog.dialog("close");
