@@ -12,7 +12,8 @@
                     <div id="User_Show_Details_Identity">
                         <table class="none verticalHeadings">
                             <tr>
-                                <td><span>Username (Id):</span>
+                                <td>
+                                    <span>Username (Id):</span>
                                 </td>
                                 <td>
                                     <h4 id="User_Show_Details_Identity_Id" title="Username">@Model.User.UserId</h4>
@@ -111,114 +112,118 @@
                             @Html.ActionLinkSmallButton("Create Job", MVC.Job.Create(Model.PrimaryDeviceSerialNumber, Model.User.UserId), "User_Show_Details_Actions_CreateJob_Button")
                             if (currentDeviceAssignments.Count > 1)
                             {
-                            <div id="User_Show_Details_Actions_CreateJob_Dialog" class="dialog" title="Create Job for Which Device?">
-                                <div class="clearfix">
-                                    <i class="fa fa-info-circle information"></i>&nbsp;Multiple devices are assigned to this user.
-                                    <br />
-                                    <strong>Which device should be associated with this job?
-                                    </strong>
+                                <div id="User_Show_Details_Actions_CreateJob_Dialog" class="dialog" title="Create Job for Which Device?">
+                                    <div class="clearfix">
+                                        <i class="fa fa-info-circle information"></i>&nbsp;Multiple devices are assigned to this user.
+                                        <br />
+                                        <strong>
+                                            Which device should be associated with this job?
+                                        </strong>
+                                    </div>
+                                    <div>
+                                        <ul id="CreateJob_Assignments" class="none">
+                                            @foreach (var assignment in currentDeviceAssignments)
+                                            {
+                                        <li class="CreateJob_Assignment clearfix" data-createjoburl="@Url.Action(MVC.Job.Create(assignment.DeviceSerialNumber, Model.User.UserId))">
+                                            <table class="none">
+                                                <tbody>
+                                                    <tr>
+                                                        <td rowspan="5">
+                                                            <img class="CreateJob_Assignment_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Serial Number:
+                                                        </td>
+                                                        <td>
+                                                            <span>@assignment.Device.SerialNumber</span> (<span>@assignment.Device.ComputerName</span>)
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Model:
+                                                        </td>
+                                                        <td>
+                                                            <span>@assignment.Device.DeviceModel.ToString()</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Asset:</td>
+                                                        <td>
+                                                            @if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
+                                                            {
+                                                                <span>@assignment.Device.AssetNumber</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="smallMessage">Unknown</span>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Assigned:</td>
+                                                        <td>
+                                                            <span>@CommonHelpers.FriendlyDate(assignment.AssignedDate)</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </li>}
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div>
-                                    <ul id="CreateJob_Assignments" class="none">
-                                        @foreach (var assignment in currentDeviceAssignments)
-                                        {
-                                            <li class="CreateJob_Assignment clearfix" data-createjoburl="@Url.Action(MVC.Job.Create(assignment.DeviceSerialNumber, Model.User.UserId))">
-                                                <img class="CreateJob_Assignment_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))" />
-                                                <div class="CreateJob_Assignment_Details">
-                                                    <table class="none">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>Serial Number:
-                                                                </td>
-                                                                <td>
-                                                                    <span>@assignment.Device.SerialNumber</span> (<span>@assignment.Device.ComputerName</span>)
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Model:
-                                                                </td>
-                                                                <td>
-                                                                    <span>@assignment.Device.DeviceModel.ToString()</span>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Asset:</td>
-                                                                <td>
-                                                                    @if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
-                                                                    {
-                                                                        <span>@assignment.Device.AssetNumber</span>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <span class="smallMessage">Unknown</span>
-                                                                    }
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Assigned:</td>
-                                                                <td>
-                                                                    <span>@CommonHelpers.FriendlyDate(assignment.AssignedDate)</span>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </li>   
-                                        }
-                                    </ul>
-                                </div>
-                            </div>
-                            <script>
-                                $(function () {
-                                    var button = $('#User_Show_Details_Actions_CreateJob_Button');
-                                    var buttonDialog = null;
+                                <script>
+                                    $(function () {
+                                        var button = $('#User_Show_Details_Actions_CreateJob_Button');
+                                        var buttonDialog = null;
 
-                                    button.click(function () {
-                                        if (!buttonDialog) {
-                                            buttonDialog = $('#User_Show_Details_Actions_CreateJob_Dialog').dialog({
-                                                resizable: false,
-                                                width: 400,
-                                                modal: true,
-                                                autoOpen: false,
-                                                buttons: {
-                                                    Cancel: function () {
-                                                        $(this).dialog("close");
+                                        button.click(function () {
+                                            if (!buttonDialog) {
+                                                buttonDialog = $('#User_Show_Details_Actions_CreateJob_Dialog').dialog({
+                                                    resizable: false,
+                                                    width: 400,
+                                                    modal: true,
+                                                    autoOpen: false,
+                                                    buttons: {
+                                                        Cancel: function () {
+                                                            $(this).dialog("close");
+                                                        }
                                                     }
-                                                }
-                                            });
+                                                });
 
-                                            dialogItems = buttonDialog.find('li.CreateJob_Assignment');
+                                                dialogItems = buttonDialog.find('li.CreateJob_Assignment');
 
-                                            dialogItems.click(function () {
-                                                var $this = $(this);
+                                                dialogItems.click(function () {
+                                                    var $this = $(this);
 
-                                                buttonDialog.dialog("close");
+                                                    buttonDialog.dialog("close");
 
-                                                var createJobUrl = $this.attr('data-createjoburl');
-                                                document.DiscoFunctions.CreateOpenJobDialog(createJobUrl);
-                                            });
-                                        }
+                                                    var createJobUrl = $this.attr('data-createjoburl');
+                                                    document.DiscoFunctions.CreateOpenJobDialog(createJobUrl);
+                                                });
+                                            }
 
-                                        buttonDialog.dialog('open');
-                                        return false;
+                                            buttonDialog.dialog('open');
+                                            return false;
+                                        });
                                     });
-                                });
-                            </script>
+                                </script>
                             }
                             else
                             {
-                            <script>
-                                $(function () {
-                                    $('#User_Show_Details_Actions_CreateJob_Button').click(function () {
-                                        var $this = $(this);
-                                        var href = $this.attr('href');
+                                <script>
+                                    $(function () {
+                                        $('#User_Show_Details_Actions_CreateJob_Button').click(function () {
+                                            var $this = $(this);
+                                            var href = $this.attr('href');
 
-                                        document.DiscoFunctions.CreateOpenJobDialog(href);
+                                            document.DiscoFunctions.CreateOpenJobDialog(href);
 
-                                        return false;
+                                            return false;
+                                        });
                                     });
-                                });
-                            </script>
+                                </script>
                             }
                         }
                         @if (Model.User.CanAddUserFlags() && Model.AvailableUserFlags != null && Model.AvailableUserFlags.Count > 0)
@@ -324,86 +329,90 @@
                             {
                                 foreach (var assignment in currentDeviceAssignments)
                                 {
-                                <div class="User_Show_AssignedDevices_CurrentAssignment clearfix" data-deviceserialnumber="@assignment.DeviceSerialNumber">
-                                    @if (Authorization.Has(Claims.Device.Show))
-                                    {
-                                        <a href="@Url.Action(MVC.Device.Show(assignment.Device.SerialNumber))">
+                                    <div class="User_Show_AssignedDevices_CurrentAssignment clearfix" data-deviceserialnumber="@assignment.DeviceSerialNumber">
+                                        @if (Authorization.Has(Claims.Device.Show))
+                                        {
+                                            <a href="@Url.Action(MVC.Device.Show(assignment.Device.SerialNumber))">
+                                                <img class="User_Show_AssignedDevices_CurrentAssignment_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))" />
+                                            </a>
+                                        }
+                                        else
+                                        {
                                             <img class="User_Show_AssignedDevices_CurrentAssignment_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))" />
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <img class="User_Show_AssignedDevices_CurrentAssignment_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))" />
-                                    }
-                                    <div class="User_Show_AssignedDevices_CurrentAssignment_Details">
-                                        <table class="none">
-                                            <tbody>
-                                                <tr>
-                                                    <td>Serial Number:
-                                                    </td>
-                                                    <td>
-                                                        <span class="User_Show_AssignedDevices_CurrentAssignment_SerialNumber">
-                                                            @if (Authorization.Has(Claims.Device.Show))
+                                        }
+                                        <div class="User_Show_AssignedDevices_CurrentAssignment_Details">
+                                            <table class="none">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            Serial Number:
+                                                        </td>
+                                                        <td>
+                                                            <span class="User_Show_AssignedDevices_CurrentAssignment_SerialNumber">
+                                                                @if (Authorization.Has(Claims.Device.Show))
+                                                                {
+                                                                    @Html.ActionLink(assignment.Device.SerialNumber, MVC.Device.Show(assignment.Device.SerialNumber))
+                                                                }
+                                                                else
+                                                                {
+                                                                    @assignment.Device.SerialNumber
+                                                                }
+                                                            </span>
+                                                            @if (!string.IsNullOrWhiteSpace(assignment.Device.ComputerName))
                                                             {
-                                                                @Html.ActionLink(assignment.Device.SerialNumber, MVC.Device.Show(assignment.Device.SerialNumber))
+                                                                <text>(<span class="User_Show_AssignedDevices_CurrentAssignment_ComputerName">@assignment.Device.ComputerName</span>)</text>
                                                             }
-                                                            else
-                                                            {
-                                                                @assignment.Device.SerialNumber
-                                                            }
-                                                        </span>
-                                                        @if (!string.IsNullOrWhiteSpace(assignment.Device.ComputerName))
-                                                        {
-                                                            <text>(<span class="User_Show_AssignedDevices_CurrentAssignment_ComputerName">@assignment.Device.ComputerName</span>)</text>
-                                                        }
-                                                    </td>
-                                                </tr>
-                                                @if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
-                                                {
-                                                    <tr>
-                                                        <td>Asset:</td>
-                                                        <td>
-                                                            <span class="User_Show_AssignedDevices_CurrentAssignment_Asset">@assignment.Device.AssetNumber</span>
                                                         </td>
                                                     </tr>
-                                                }
-                                                @if (assignment.Device.DeviceModelId.HasValue)
-                                                {
+                                                    @if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
+                                                    {
+                                                        <tr>
+                                                            <td>Asset:</td>
+                                                            <td>
+                                                                <span class="User_Show_AssignedDevices_CurrentAssignment_Asset">@assignment.Device.AssetNumber</span>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                    @if (assignment.Device.DeviceModelId.HasValue)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                Model:
+                                                            </td>
+                                                            <td>
+                                                                <span class="User_Show_AssignedDevices_CurrentAssignment_Model">@assignment.Device.DeviceModel.ToString()</span>
+                                                            </td>
+                                                        </tr>
+                                                    }
                                                     <tr>
-                                                        <td>Model:
+                                                        <td>
+                                                            Profile:
                                                         </td>
                                                         <td>
-                                                            <span class="User_Show_AssignedDevices_CurrentAssignment_Model">@assignment.Device.DeviceModel.ToString()</span>
+                                                            <span class="User_Show_AssignedDevices_CurrentAssignment_Profile">@assignment.Device.DeviceProfile.ToString()</span>
                                                         </td>
                                                     </tr>
-                                                }
-                                                <tr>
-                                                    <td>Profile:
-                                                    </td>
-                                                    <td>
-                                                        <span class="User_Show_AssignedDevices_CurrentAssignment_Profile">@assignment.Device.DeviceProfile.ToString()</span>
-                                                    </td>
-                                                </tr>
-                                                @if (assignment.Device.DeviceBatchId.HasValue)
-                                                {
+                                                    @if (assignment.Device.DeviceBatchId.HasValue)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                Batch:
+                                                            </td>
+                                                            <td>
+                                                                <span class="User_Show_AssignedDevices_CurrentAssignment_Batch">@assignment.Device.DeviceBatch.ToString()</span>
+                                                            </td>
+                                                        </tr>
+                                                    }
                                                     <tr>
-                                                        <td>Batch:
-                                                        </td>
+                                                        <td>Assigned:</td>
                                                         <td>
-                                                            <span class="User_Show_AssignedDevices_CurrentAssignment_Batch">@assignment.Device.DeviceBatch.ToString()</span>
+                                                            <span class="User_Show_AssignedDevices_CurrentAssignment_Assigned">@CommonHelpers.FriendlyDate(assignment.AssignedDate)</span>
                                                         </td>
                                                     </tr>
-                                                }
-                                                <tr>
-                                                    <td>Assigned:</td>
-                                                    <td>
-                                                        <span class="User_Show_AssignedDevices_CurrentAssignment_Assigned">@CommonHelpers.FriendlyDate(assignment.AssignedDate)</span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>   
                                 }
                             }
                             else

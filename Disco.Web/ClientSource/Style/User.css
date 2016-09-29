@@ -461,8 +461,10 @@
 #User_Show_Details_Actions_CreateJob_Dialog #CreateJob_Assignments {
   margin-top: 6px;
   background-color: #fff;
-  line-height: 1.3em;
+  line-height: 1.3;
   border: 1px solid #ddd;
+  max-height: 300px;
+  overflow-y: auto;
 }
 #User_Show_Details_Actions_CreateJob_Dialog #CreateJob_Assignments li.CreateJob_Assignment {
   display: block;
@@ -475,16 +477,14 @@
 #User_Show_Details_Actions_CreateJob_Dialog #CreateJob_Assignments li.CreateJob_Assignment:hover {
   background-color: #f4f4f4;
 }
+#User_Show_Details_Actions_CreateJob_Dialog #CreateJob_Assignments li.CreateJob_Assignment tr:first-child td {
+  width: 68px;
+}
 #User_Show_Details_Actions_CreateJob_Dialog #CreateJob_Assignments li.CreateJob_Assignment td:first-child {
   width: 90px;
   font-weight: 600;
 }
 #User_Show_Details_Actions_CreateJob_Dialog #CreateJob_Assignments li.CreateJob_Assignment img.CreateJob_Assignment_Image {
-  float: left;
   width: 64px;
   height: 64px;
-  margin-right: 6px;
-}
-#User_Show_Details_Actions_CreateJob_Dialog #CreateJob_Assignments li.CreateJob_Assignment div.CreateJob_Assignment_Details {
-  float: left;
 }

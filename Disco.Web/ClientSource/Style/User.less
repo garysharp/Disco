@@ -487,8 +487,10 @@
     #CreateJob_Assignments {
         margin-top: 6px;
         background-color: @white;
-        line-height: 1.3em;
+        line-height: 1.3;
         border: 1px solid #ddd;
+        max-height: 300px;
+        overflow-y: auto;
 
         li.CreateJob_Assignment {
             display: block;
@@ -503,20 +505,18 @@
                 background-color: @TableDataBorderColour;
             }
 
+            tr:first-child td {
+                width: 68px;
+            }
+
             td:first-child {
                 width: 90px;
                 font-weight: @FontWeightBodyBold;
             }
 
             img.CreateJob_Assignment_Image {
-                float: left;
                 width: 64px;
                 height: 64px;
-                margin-right: 6px;
-            }
-
-            div.CreateJob_Assignment_Details {
-                float: left;
             }
         }
     }
