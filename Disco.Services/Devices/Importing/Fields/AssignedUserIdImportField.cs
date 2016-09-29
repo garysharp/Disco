@@ -104,7 +104,10 @@ namespace Disco.Services.Devices.Importing.Fields
                 {
                     currentAssignment.UnassignedDate = DateTime.Now;
                 }
+            }
 
+            if (FieldAction == EntityState.Added || FieldAction == EntityState.Modified)
+            {
                 // Add Assignment
                 if (parsedValue != null)
                 {
@@ -133,8 +136,7 @@ namespace Disco.Services.Devices.Importing.Fields
             var possibleColumns = Context.Header
                 .Select((h, i) => Tuple.Create(h, i))
                 .Where(h => h.Item1.Item2 == DeviceImportFieldTypes.IgnoreColumn &&
-                    h.Item1.Item1.IndexOf("user id", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    h.Item1.Item1.IndexOf("userid", System.StringComparison.OrdinalIgnoreCase) >= 0
+                    h.Item1.Item1.IndexOf("user", System.StringComparison.OrdinalIgnoreCase) >= 0
                     );
 
             return possibleColumns.Select(h => (int?)h.Item2).FirstOrDefault();

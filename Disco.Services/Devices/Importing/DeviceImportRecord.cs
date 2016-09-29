@@ -47,13 +47,20 @@ namespace Disco.Services.Devices.Importing
                 }
                 else if (RecordAction == EntityState.Added)
                 {
+                    // Use 'Add Device Offline' default if available
+                    var deviceProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId;
+                    if (deviceProfileId == 0)
+                    {
+                        deviceProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId;
+                    }
+
                     // Create Device
                     device = new Device()
                     {
                         SerialNumber = DeviceSerialNumber.ToUpper(),
                         CreatedDate = DateTime.Now,
                         AllowUnauthenticatedEnrol = true,
-                        DeviceProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId,
+                        DeviceProfileId = deviceProfileId,
                         DeviceModelId = 1 // Default 'Unknown Device Model'
                     };
                     Database.Devices.Add(device);
@@ -64,7 +71,7 @@ namespace Disco.Services.Devices.Importing
                     return false;
                 }
 
-                bool changesMade = false;
+                bool changesMade = (RecordAction == EntityState.Added);
 
                 foreach (var field in Fields.Cast<DeviceImportFieldBase>())
                 {
