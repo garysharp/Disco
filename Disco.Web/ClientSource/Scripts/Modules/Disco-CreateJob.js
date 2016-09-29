@@ -1,4 +1,4 @@
-﻿(function ($, window, document) {
+(function ($, window, document) {
     $(function () {
         var createJobDialog = null;
         var dialogMethods = {

@@ -1,4 +1,4 @@
-﻿// WebcamJS v1.0
+// WebcamJS v1.0
 // Webcam library for capturing JPEG/PNG images in JavaScript
 // Attempts getUserMedia, falls back to Flash
 // Author: Joseph Huckaby: http://github.com/jhuckaby
@@ -561,8 +561,10 @@ Webcam.init();
             var comments = dialog.find('input.comments')
                 .keypress(function (e) {
                     if (e.which === 13) {
-                        result = true;
-                        dialog.dialog("close");
+                        if (!!comments.val()) {
+                            result = true;
+                            dialog.dialog("close");
+                        }
                     }
                 });
 
@@ -573,8 +575,15 @@ Webcam.init();
                 autoOpen: true,
                 buttons: {
                     "Upload": function () {
-                        result = true;
-                        dialog.dialog("close");
+                        if (!!comments.val()) {
+                            result = true;
+                            dialog.dialog("close");
+                            window.setTimeout(function () {
+                                comments.focus();
+                            }, 1);
+                        } else {
+                            alert('Please provide a comment for this attachment.');
+                        }
                     },
                     Cancel: function () {
                         dialog.dialog("close");

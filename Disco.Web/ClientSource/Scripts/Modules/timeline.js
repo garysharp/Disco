@@ -1,4 +1,4 @@
-﻿window.SimileAjax = {
+window.SimileAjax = {
     loaded: true,
     loadingScriptsCount: 0,
     error: null,
@@ -4431,4 +4431,3 @@ Timeline.GregorianDateLabeller.monthNames["en"] = [
 Timeline.GregorianDateLabeller.dayNames["en"] = [
     "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
 ];
-

@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * jquery.fancytree.js
  * Dynamic tree view control, with support for lazy loading of branches.
  * https://github.com/mar10/fancytree/
@@ -5280,4 +5280,3 @@ $.ui.fancytree.registerExtension("themeroller", {
 	}
 });
 }(jQuery, window, document));
-

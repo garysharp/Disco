@@ -1,0 +1,140 @@
+[
+  {
+    "outputFileName": "ClientSource/Scripts/Core.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Core/modernizr-2.7.2.js",
+      "ClientSource/Scripts/Core/jquery-2.1.1.js",
+      "ClientSource/Scripts/Core/jquery.validate.js",
+      "ClientSource/Scripts/Core/jquery.validate.unobtrusive.js",
+      "ClientSource/Scripts/Core/disco.unobtrusiveValidation.extensions.js",
+      "ClientSource/Scripts/Core/jquery-ui-1.10.4.js",
+      "ClientSource/Scripts/Core/jquery.watermark.js",
+      "ClientSource/Scripts/Core/jquery.dataTables.js",
+      "ClientSource/Scripts/Core/moment.js",
+      "ClientSource/Scripts/Core/moment.en-au.js",
+      "ClientSource/Scripts/Core/disco.moment.extensions.js",
+      "ClientSource/Scripts/Core/livestamp.js",
+      "ClientSource/Scripts/Core/disco.dataTables.extensions.js",
+      "ClientSource/Scripts/Core/disco.uicore.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/Disco-AjaxHelperIcons.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/Disco-AjaxHelperIcons/disco.ajaxhelpericons.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/Disco-AttachmentUploader.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/Disco-AttachmentUploader/webcam.js",
+      "ClientSource/Scripts/Modules/Disco-AttachmentUploader/disco-attachmentuploader.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/Disco-CreateJob.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/Disco-CreateJob/disco.createjob.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/Disco-DataTableHelpers.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/Disco-DataTableHelpers/disco.datatablehelpers.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/Disco-ExpressionEditor.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/Disco-ExpressionEditor/disco.expressioneditor.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/Disco-jQueryExtensions.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/Disco-jQueryExtensions/disco.jQueryExtensions.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/Disco-PropertyChangeHelpers.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/Disco-PropertyChangeHelpers/disco.propertychangehelpers.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/Highcharts.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/Highcharts/highcharts.src.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/jQuery-Fancytree.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/jQuery-Fancytree/jquery.fancytree-all.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/jQuery-Isotope.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/jQuery-Isotope/jquery.isotope.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/jQuery-NumberFormatter.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/jQuery-NumberFormatter/jshashtable-2.1.js",
+      "ClientSource/Scripts/Modules/jQuery-NumberFormatter/jquery.numberformatter.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/jQuery-SignalR.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/jQuery-SignalR/jquery.signalR-2.1.1.js",
+      "ClientSource/Scripts/Modules/jQuery-SignalR/disco-hubs.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/jQueryUI-DynaTree.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/jQueryUI-DynaTree/jquery.dynatree.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/jQueryUI-TimePicker.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/jQueryUI-TimePicker/jquery-ui-timepicker-addon.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/Knockout.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/Knockout/knockout-3.1.0.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/Shadowbox.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/Shadowbox/shadowbox.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/Timeline.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/Timeline/disco.simileajaxextensions.js",
+      "ClientSource/Scripts/Modules/Timeline/simile-ajax-bundle-DiscoMod.js",
+      "ClientSource/Scripts/Modules/Timeline/disco.timelineextensions.js",
+      "ClientSource/Scripts/Modules/Timeline/timeline-bundle.js",
+      "ClientSource/Scripts/Modules/Timeline/timeline.js",
+      "ClientSource/Scripts/Modules/Timeline/labellers.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Scripts/Modules/tinymce.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/tinymce/disco.tinymceextensions.js",
+      "ClientSource/Scripts/Modules/tinymce/tinymce.js",
+      "ClientSource/Scripts/Modules/tinymce/themes/simple/theme.js",
+      "ClientSource/Scripts/Modules/tinymce/jquery.tinymce.min.js"
+    ]
+  }
+]

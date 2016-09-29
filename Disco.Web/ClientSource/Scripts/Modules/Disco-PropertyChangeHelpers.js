@@ -1,4 +1,4 @@
-﻿if (!document.DiscoFunctions) {
+if (!document.DiscoFunctions) {
     document.DiscoFunctions = {};
 }
 if (!document.DiscoFunctions.PropertyChangeHelper) {

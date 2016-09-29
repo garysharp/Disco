@@ -1,4 +1,4 @@
-﻿// ==ClosureCompiler==
+// ==ClosureCompiler==
 // @compilation_level SIMPLE_OPTIMIZATIONS
 
 /**
@@ -17670,4 +17670,3 @@ extend(Highcharts, {
 });
 
 }());
-

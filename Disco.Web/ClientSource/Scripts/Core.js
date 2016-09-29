@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * Modernizr v2.7.2
  * www.modernizr.com
  *

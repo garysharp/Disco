@@ -1252,39 +1252,17 @@
       <LastGenOutput>Noticeboard.generated.cs</LastGenOutput>
     </None>
     <Content Include="ClientBin\DiscoServices.InitialPluginLibraryManifest.json" />
+    <None Include="bundleconfig.json" />
     <None Include="ClientSource\Scripts\Core\disco.dataTables.extensions.js" />
     <None Include="ClientSource\Scripts\Core\disco.moment.extensions.js" />
     <None Include="ClientSource\Scripts\Core\disco.unobtrusiveValidation.extensions.js" />
     <None Include="ClientSource\Scripts\Core\jquery.dataTables.js" />
     <None Include="ClientSource\Scripts\Core\jquery.watermark.js" />
-    <None Include="ClientSource\Scripts\Core.js">
-      <DependentUpon>Core.js.bundle</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Scripts\Core.min.js">
-      <DependentUpon>Core.js.bundle</DependentUpon>
-    </Content>
-    <None Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader.js">
-      <DependentUpon>Disco-AttachmentUploader.js.bundle</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader.min.js">
-      <DependentUpon>Disco-AttachmentUploader.js.bundle</DependentUpon>
-    </Content>
-    <None Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\jQuery-Fancytree.js">
-      <DependentUpon>jQuery-Fancytree.js.bundle</DependentUpon>
-    </None>
-    <None Include="ClientSource\Scripts\Modules\jQuery-Fancytree.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.js">
-      <DependentUpon>Disco-AjaxHelperIcons.js.bundle</DependentUpon>
-    </None>
     <None Include="ClientSource\Scripts\Core\disco.uicore.js" />
     <None Include="ClientSource\Scripts\Core\moment.en-au.js" />
     <None Include="ClientSource\Scripts\Core\moment.js" />
     <None Include="ClientSource\Scripts\Core\_references.js" />
     <None Include="ClientSource\Scripts\Core\livestamp.js" />
-    <Content Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.min.js">
-      <DependentUpon>Disco-AjaxHelperIcons.js.bundle</DependentUpon>
-    </Content>
     <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons\disco.ajaxhelpericons.js" />
     <None Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers\disco.datatablehelpers.js" />
     <None Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor\disco.expressioneditor.js" />
@@ -1293,96 +1271,31 @@
     <None Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers\disco.propertychangehelpers.js" />
     <None Include="ClientSource\Scripts\Modules\jQuery-Isotope\jquery.isotope.js" />
     <None Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader\webcam.js" />
+    <None Include="ClientSource\Scripts\Core.js" />
+    <Content Include="ClientSource\Scripts\Core.min.js">
+      <DependentUpon>Core.js</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.js" />
+    <Content Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.min.js">
+      <DependentUpon>Disco-AjaxHelperIcons.js</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader.js" />
+    <Content Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader.min.js">
+      <DependentUpon>Disco-AttachmentUploader.js</DependentUpon>
+    </Content>
     <Content Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader\webcam.swf" />
-    <None Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.js">
-      <DependentUpon>Disco-DataTableHelpers.js.bundle</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Scripts\Modules\Disco-CreateJob.js">
-      <DependentUpon>Disco-CreateJob.js.bundle</DependentUpon>
-    </Content>
+    <None Include="ClientSource\Scripts\Modules\Disco-CreateJob.js" />
     <Content Include="ClientSource\Scripts\Modules\Disco-CreateJob.min.js">
-      <DependentUpon>Disco-CreateJob.js.bundle</DependentUpon>
+      <DependentUpon>Disco-CreateJob.js</DependentUpon>
     </Content>
-    <Content Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.min.js">
-      <DependentUpon>Disco-DataTableHelpers.js.bundle</DependentUpon>
-    </Content>
-    <None Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.js">
-      <DependentUpon>Disco-ExpressionEditor.js.bundle</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.min.js">
-      <DependentUpon>Disco-ExpressionEditor.js.bundle</DependentUpon>
-    </Content>
-    <None Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions.js">
-      <DependentUpon>Disco-jQueryExtensions.js.bundle</DependentUpon>
-    </None>
     <None Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader\disco-attachmentuploader.js" />
-    <Content Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions.min.js">
-      <DependentUpon>Disco-jQueryExtensions.js.bundle</DependentUpon>
-    </Content>
-    <None Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers.js">
-      <DependentUpon>Disco-PropertyChangeHelpers.js.bundle</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers.min.js">
-      <DependentUpon>Disco-PropertyChangeHelpers.js.bundle</DependentUpon>
-    </Content>
-    <None Include="ClientSource\Scripts\Modules\Highcharts.js">
-      <DependentUpon>Highcharts.js.bundle</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Scripts\Modules\Highcharts.min.js">
-      <DependentUpon>Highcharts.js.bundle</DependentUpon>
-    </Content>
-    <None Include="ClientSource\Scripts\Modules\jQuery-Isotope.js">
-      <DependentUpon>jQuery-Isotope.js.bundle</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Scripts\Modules\jQuery-Fancytree.min.js">
-      <DependentUpon>jQuery-Fancytree.js.bundle</DependentUpon>
-    </Content>
     <None Include="ClientSource\Scripts\Modules\jQuery-Fancytree\jquery.fancytree-all.js" />
-    <Content Include="ClientSource\Scripts\Modules\jQuery-Isotope.min.js">
-      <DependentUpon>jQuery-Isotope.js.bundle</DependentUpon>
-    </Content>
-    <None Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.js">
-      <DependentUpon>jQuery-NumberFormatter.js.bundle</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.min.js">
-      <DependentUpon>jQuery-NumberFormatter.js.bundle</DependentUpon>
-    </Content>
     <None Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter\jquery.numberformatter.js" />
     <None Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter\jshashtable-2.1.js" />
     <None Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree\jquery.dynatree.js" />
     <None Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker\jquery-ui-timepicker-addon.js" />
     <None Include="ClientSource\Scripts\Modules\Shadowbox\shadowbox.js" />
-    <None Include="ClientSource\Scripts\Modules\jQuery-SignalR.js">
-      <DependentUpon>jQuery-SignalR.js.bundle</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Scripts\Modules\jQuery-SignalR.min.js">
-      <DependentUpon>jQuery-SignalR.js.bundle</DependentUpon>
-    </Content>
-    <None Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.js">
-      <DependentUpon>jQueryUI-DynaTree.js.bundle</DependentUpon>
-    </None>
     <None Include="ClientSource\Scripts\Modules\jQuery-SignalR\disco-hubs.js" />
-    <Content Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.min.js">
-      <DependentUpon>jQueryUI-DynaTree.js.bundle</DependentUpon>
-    </Content>
-    <None Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker.js">
-      <DependentUpon>jQueryUI-TimePicker.js.bundle</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker.min.js">
-      <DependentUpon>jQueryUI-TimePicker.js.bundle</DependentUpon>
-    </Content>
-    <None Include="ClientSource\Scripts\Modules\Knockout.js">
-      <DependentUpon>Knockout.js.bundle</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Scripts\Modules\Knockout.min.js">
-      <DependentUpon>Knockout.js.bundle</DependentUpon>
-    </Content>
-    <None Include="ClientSource\Scripts\Modules\Shadowbox.js">
-      <DependentUpon>Shadowbox.js.bundle</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Scripts\Modules\Shadowbox.min.js">
-      <DependentUpon>Shadowbox.js.bundle</DependentUpon>
-    </Content>
     <None Include="ClientSource\Scripts\Modules\Timeline\disco.simileajaxextensions.js" />
     <None Include="ClientSource\Scripts\Modules\Timeline\disco.timelineextensions.js" />
     <None Include="ClientSource\Scripts\Modules\Timeline\labellers.js" />
@@ -1390,18 +1303,6 @@
     <None Include="ClientSource\Scripts\Modules\Timeline\timeline-bundle.js" />
     <None Include="ClientSource\Scripts\Modules\Timeline\timeline.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce\disco.tinymceextensions.js" />
-    <None Include="ClientSource\Scripts\Modules\tinymce.js">
-      <DependentUpon>tinymce.js.bundle</DependentUpon>
-    </None>
-    <None Include="ClientSource\Scripts\Modules\Timeline.js">
-      <DependentUpon>Timeline.js.bundle</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Scripts\Modules\Timeline.min.js">
-      <DependentUpon>Timeline.js.bundle</DependentUpon>
-    </Content>
-    <Content Include="ClientSource\Scripts\Modules\tinymce.min.js">
-      <DependentUpon>tinymce.js.bundle</DependentUpon>
-    </Content>
     <None Include="ClientSource\Style\BundleSite.css">
       <DependentUpon>BundleSite.less</DependentUpon>
     </None>
@@ -1422,6 +1323,66 @@
     <None Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\img\loader.gif" />
     <None Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\img\object.gif" />
     <None Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\img\trans.gif" />
+    <None Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.js" />
+    <Content Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.min.js">
+      <DependentUpon>Disco-DataTableHelpers.js</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.js" />
+    <Content Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.min.js">
+      <DependentUpon>Disco-ExpressionEditor.js</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions.js" />
+    <Content Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions.min.js">
+      <DependentUpon>Disco-jQueryExtensions.js</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers.js" />
+    <Content Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers.min.js">
+      <DependentUpon>Disco-PropertyChangeHelpers.js</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Highcharts.js" />
+    <Content Include="ClientSource\Scripts\Modules\Highcharts.min.js">
+      <DependentUpon>Highcharts.js</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\jQuery-Fancytree.js" />
+    <Content Include="ClientSource\Scripts\Modules\jQuery-Fancytree.min.js">
+      <DependentUpon>jQuery-Fancytree.js</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\jQuery-Isotope.js" />
+    <Content Include="ClientSource\Scripts\Modules\jQuery-Isotope.min.js">
+      <DependentUpon>jQuery-Isotope.js</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.js" />
+    <Content Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.min.js">
+      <DependentUpon>jQuery-NumberFormatter.js</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\jQuery-SignalR.js" />
+    <Content Include="ClientSource\Scripts\Modules\jQuery-SignalR.min.js">
+      <DependentUpon>jQuery-SignalR.js</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.js" />
+    <Content Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.min.js">
+      <DependentUpon>jQueryUI-DynaTree.js</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker.js" />
+    <Content Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker.min.js">
+      <DependentUpon>jQueryUI-TimePicker.js</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Knockout.js" />
+    <Content Include="ClientSource\Scripts\Modules\Knockout.min.js">
+      <DependentUpon>Knockout.js</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Shadowbox.js" />
+    <Content Include="ClientSource\Scripts\Modules\Shadowbox.min.js">
+      <DependentUpon>Shadowbox.js</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\Timeline.js" />
+    <Content Include="ClientSource\Scripts\Modules\Timeline.min.js">
+      <DependentUpon>Timeline.js</DependentUpon>
+    </Content>
+    <None Include="ClientSource\Scripts\Modules\tinymce.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce.min.js">
+      <DependentUpon>tinymce.js</DependentUpon>
+    </Content>
     <Content Include="ClientSource\Style\tinymce\content.inline.min.css">
       <DependentUpon>content.inline.less</DependentUpon>
     </Content>
@@ -1724,27 +1685,6 @@
     <Content Include="Global.asax" />
     <None Include="ClientSource\Style\AppMaintenance.less" />
     <None Include="ClientSource\Style\Dialog.less" />
-    <None Include="ClientSource\Scripts\Core.js.bundle">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Disco-CreateJob.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\tinymce.js.bundle">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ClientSource\Scripts\Modules\Timeline.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Shadowbox.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Knockout.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\jQuery-SignalR.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\jQuery-Isotope.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Highcharts.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.js.bundle" />
-    <None Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.js.bundle" />
     <None Include="ClientSource\Style\Timeline.css.bundle" />
     <Content Include="ClientSource\Style\FontAwesome\fontawesome-webfont.woff" />
     <Content Include="ClientSource\Style\FontAwesome\fontawesome-webfont.ttf" />
