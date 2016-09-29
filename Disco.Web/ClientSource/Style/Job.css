@@ -4,7 +4,7 @@
 }
 .tableData > tbody > tr > td {
   border: solid 1px #f4f4f4;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .tableData > tbody > tr:nth-child(odd) > td {
   background-color: #fcfcfc;
@@ -30,14 +30,14 @@
 }
 .tableDataDark td {
   border: solid 1px #d8d8d8;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .tableDataDark th {
-  background-color: #eeeeee;
+  background-color: #eee;
   border: solid 1px #d8d8d8;
 }
 .tableDataContainer {
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .tableDataVertical {
   border: solid 1px #f4f4f4;
@@ -234,7 +234,7 @@
   /*jQuery Tab Extensions*/
   border-radius: 0;
   background-image: none;
-  background-color: #ffffff;
+  background-color: #fff;
   border: none;
   padding: 0;
 }
@@ -276,19 +276,19 @@
 #jobShowResources #Comments {
   height: 300px;
   padding: 0;
-  border: 1px solid #cccccc;
-  background-color: #ffffff;
+  border: 1px solid #ccc;
+  background-color: #fff;
 }
 #jobShowResources #Comments div.commentOutput {
   height: 249px;
   overflow: auto;
   background-color: #fafafa;
-  color: #000000;
+  color: #000;
 }
 #jobShowResources #Comments div.commentOutput > div {
   padding: 3px;
   margin: 4px 6px;
-  border-bottom: 1px solid #cccccc;
+  border-bottom: 1px solid #ccc;
 }
 #jobShowResources #Comments div.commentOutput > div span.author {
   color: #444;
@@ -348,7 +348,7 @@
   height: 300px;
 }
 #jobShowResources #Comments div.commentInput {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ccc;
   height: 40px;
   padding: 5px;
 }
@@ -364,19 +364,19 @@
   resize: none;
 }
 #jobShowResources #Comments div.commentInput span.action {
-  color: #333333;
+  color: #333;
   font-size: 1.5em;
   display: block;
   margin: 0;
   cursor: pointer;
   float: left;
-  border: 1px solid #ffffff;
+  border: 1px solid #fff;
   padding: .5em;
 }
 #jobShowResources #Comments div.commentInput span.action:hover {
-  color: #335a87;
+  color: #335A87;
   background-color: #ededed;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
 }
 #jobShowResources #Comments div.commentInput span.action.disabled {
   color: rgba(51, 51, 51, 0.2);
@@ -385,7 +385,7 @@
 #jobShowResources #Comments div.commentInput span.action.disabled:hover {
   color: rgba(51, 51, 51, 0.2);
   background-color: inherit;
-  border: 1px solid #ffffff;
+  border: 1px solid #fff;
 }
 #jobShowResources #AttachmentsContainer {
   padding: 0;
@@ -393,10 +393,10 @@
 #jobShowResources #Attachments {
   position: relative;
   height: 300px;
-  border-top: 1px solid #cccccc;
-  border-right: 1px solid #cccccc;
-  border-bottom: 1px solid #cccccc;
-  background-color: #ffffff;
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  background-color: #fff;
 }
 #jobShowResources #Attachments div.attachmentOutput {
   position: relative;
@@ -411,8 +411,8 @@
   padding: 2px;
   margin: 2px;
   font-size: 0.95em;
-  border: 1px solid #ffffff;
-  color: #000000;
+  border: 1px solid #fff;
+  color: #000;
   text-decoration: none;
 }
 #jobShowResources #Attachments div.attachmentOutput > a span.comments,
@@ -448,7 +448,7 @@
 }
 #jobShowResources #Attachments div.attachmentOutput > a:hover {
   background-color: #ededed;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
 }
 #jobShowResources #Attachments div.attachmentOutput > a:hover span.remove {
   opacity: .5;
@@ -467,25 +467,25 @@
   height: 300px;
 }
 #jobShowResources #Attachments div.attachmentInput {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ccc;
   height: 40px;
-  background-color: #ffffff;
+  background-color: #fff;
   padding: 5px;
 }
 #jobShowResources #Attachments div.attachmentInput span.action {
-  color: #333333;
+  color: #333;
   display: block;
   margin: 0 4px 0 0;
   font-size: 1.5em;
   cursor: pointer;
   float: right;
-  border: 1px solid #ffffff;
+  border: 1px solid #fff;
   padding: .5em;
 }
 #jobShowResources #Attachments div.attachmentInput span.action:hover {
-  color: #335a87;
+  color: #335A87;
   background-color: #ededed;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
 }
 #jobShowResources #Attachments div.attachmentInput span.action.disabled {
   color: rgba(51, 51, 51, 0.2);
@@ -494,7 +494,7 @@
 #jobShowResources #Attachments div.attachmentInput span.action.disabled:hover {
   color: rgba(51, 51, 51, 0.2);
   background-color: inherit;
-  border: 1px solid #ffffff;
+  border: 1px solid #fff;
 }
 #Job_Show_Job_Actions_AddQueue_Dialog {
   height: 400px;
@@ -508,7 +508,7 @@
   border: 1px solid #ccc;
 }
 #Job_Show_Job_Actions_AddQueue_Dialog .queuePicker > div {
-  background-color: #ffffff;
+  background-color: #fff;
   border-bottom: 1px solid #ddd;
   padding: 6px 0 6px 6px;
   cursor: pointer;
@@ -518,7 +518,7 @@
 }
 #Job_Show_Job_Actions_AddQueue_Dialog .queuePicker > div.selected,
 #Job_Show_Job_Actions_AddQueue_Dialog .queuePicker > div.selected:hover {
-  background-color: #eeeeee;
+  background-color: #eee;
 }
 #Job_Show_Job_Actions_AddQueue_Dialog .details {
   display: none;
@@ -546,10 +546,10 @@
 }
 #jobDetailTab-Queues #jobQueues td {
   border: solid 1px #d8d8d8;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 #jobDetailTab-Queues #jobQueues th {
-  background-color: #eeeeee;
+  background-color: #eee;
   border: solid 1px #d8d8d8;
 }
 #jobDetailTab-Queues #jobQueues i.fa-edit {
@@ -558,7 +558,7 @@
   font-size: 1.1em;
   cursor: pointer;
   display: none;
-  color: #335a87;
+  color: #335A87;
 }
 #jobDetailTab-Queues #jobQueues i.fa-edit:hover {
   color: #5e8cc2;
@@ -605,7 +605,7 @@
   text-align: center;
   padding: 30px 0;
   font-style: italic;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 #Job_Show_Queues_Actions_EditAddedComment_Dialog h4,
 #Job_Show_Queues_Actions_EditRemovedComment_Dialog h4,
@@ -624,10 +624,10 @@
 }
 #jobComponents td {
   border: solid 1px #d8d8d8;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 #jobComponents th {
-  background-color: #eeeeee;
+  background-color: #eee;
   border: solid 1px #d8d8d8;
 }
 #jobComponents tr th.actions {
@@ -662,10 +662,10 @@
 }
 #jobWarrantyDetails td {
   border: solid 1px #d8d8d8;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 #jobWarrantyDetails th {
-  background-color: #eeeeee;
+  background-color: #eee;
   border: solid 1px #d8d8d8;
 }
 #jobWarrantyDetails tr th {
@@ -678,10 +678,10 @@
 }
 #jobNonWarrantyFinance td {
   border: solid 1px #d8d8d8;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 #jobNonWarrantyFinance th {
-  background-color: #eeeeee;
+  background-color: #eee;
   border: solid 1px #d8d8d8;
 }
 #jobNonWarrantyFinance tr th {
@@ -694,10 +694,10 @@
 }
 #jobNonWarrantyRepairs td {
   border: solid 1px #d8d8d8;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 #jobNonWarrantyRepairs th {
-  background-color: #eeeeee;
+  background-color: #eee;
   border: solid 1px #d8d8d8;
 }
 #jobNonWarrantyRepairs tr th {
@@ -710,10 +710,10 @@
 }
 #jobNonWarrantyInsurance td {
   border: solid 1px #d8d8d8;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 #jobNonWarrantyInsurance th {
-  background-color: #eeeeee;
+  background-color: #eee;
   border: solid 1px #d8d8d8;
 }
 #jobNonWarrantyInsurance tr th {
@@ -729,10 +729,10 @@
 }
 #jobFlags td {
   border: solid 1px #d8d8d8;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 #jobFlags th {
-  background-color: #eeeeee;
+  background-color: #eee;
   border: solid 1px #d8d8d8;
 }
 #jobFlags tr th {
@@ -758,8 +758,8 @@
   height: 250px;
 }
 #publishJobAttachments {
-  border: 1px solid #cccccc;
-  background-color: #ffffff;
+  border: 1px solid #ccc;
+  background-color: #fff;
   position: relative;
   max-height: 249px;
   overflow: auto;
@@ -772,8 +772,8 @@
   padding: 2px;
   margin: 2px;
   font-size: 0.95em;
-  border: 1px solid #ffffff;
-  color: #000000;
+  border: 1px solid #fff;
+  color: #000;
   text-decoration: none;
 }
 #publishJobAttachments > a span.comments,
@@ -816,7 +816,7 @@
 }
 #publishJobAttachments > a:hover {
   background-color: #ededed;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
 }
 #publishJobAttachments > a:hover span.remove {
   opacity: .5;
@@ -906,7 +906,7 @@
 #createJob_Container #createJob_SubTypes li.highlight {
   background-color: #cddbec;
   font-weight: 600;
-  color: #000000;
+  color: #000;
 }
 #createJob_Container #createJob_Type li.highlight i,
 #createJob_Container #createJob_SubTypes li.highlight i {

@@ -4,7 +4,7 @@
 }
 .tableData > tbody > tr > td {
   border: solid 1px #f4f4f4;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .tableData > tbody > tr:nth-child(odd) > td {
   background-color: #fcfcfc;
@@ -30,14 +30,14 @@
 }
 .tableDataDark td {
   border: solid 1px #d8d8d8;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .tableDataDark th {
-  background-color: #eeeeee;
+  background-color: #eee;
   border: solid 1px #d8d8d8;
 }
 .tableDataContainer {
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .tableDataVertical {
   border: solid 1px #f4f4f4;
@@ -162,7 +162,7 @@
   /*jQuery Tab Extensions*/
   border-radius: 0;
   background-image: none;
-  background-color: #ffffff;
+  background-color: #fff;
   border: none;
   padding: 0;
 }
@@ -199,7 +199,7 @@
 }
 #Device_Show_Policies_Profile_Actions_Update_Dialog ul li,
 #Device_Show_Policies_Batch_Actions_Update_Dialog ul li {
-  background-color: #ffffff;
+  background-color: #fff;
   padding: 2px 0 2px 4px;
 }
 #Device_Show_Policies_Profile_Actions_Update_Dialog ul li:nth-child(odd),
@@ -235,7 +235,7 @@
 }
 #DeviceDetailTab-DetailsContainer > table > tbody > tr > td {
   border: solid 1px #f4f4f4;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 #DeviceDetailTab-DetailsContainer > table > tbody > tr:nth-child(odd) > td {
   background-color: #fcfcfc;
@@ -267,8 +267,8 @@
 }
 #deviceShowResources #Attachments {
   position: relative;
-  border: 1px solid #cccccc;
-  background-color: #ffffff;
+  border: 1px solid #ccc;
+  background-color: #fff;
 }
 #deviceShowResources #Attachments div.attachmentOutput {
   position: relative;
@@ -284,8 +284,8 @@
   padding: 2px;
   margin: 2px;
   font-size: 0.9em;
-  border: 1px solid #ffffff;
-  color: #000000;
+  border: 1px solid #fff;
+  color: #000;
   text-decoration: none;
 }
 #deviceShowResources #Attachments div.attachmentOutput > a span.comments,
@@ -321,7 +321,7 @@
 }
 #deviceShowResources #Attachments div.attachmentOutput > a:hover {
   background-color: #ededed;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
 }
 #deviceShowResources #Attachments div.attachmentOutput > a:hover span.remove {
   opacity: .5;
@@ -337,25 +337,25 @@
   opacity: 1;
 }
 #deviceShowResources #Attachments div.attachmentInput {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ccc;
   height: 40px;
-  background-color: #ffffff;
+  background-color: #fff;
   padding: 3px;
 }
 #deviceShowResources #Attachments div.attachmentInput span.action {
-  color: #333333;
+  color: #333;
   display: block;
   margin: 0 4px 0 0;
   font-size: 1.5em;
   cursor: pointer;
   float: right;
-  border: 1px solid #ffffff;
+  border: 1px solid #fff;
   padding: .5em;
 }
 #deviceShowResources #Attachments div.attachmentInput span.action:hover {
-  color: #335a87;
+  color: #335A87;
   background-color: #ededed;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
 }
 #deviceShowResources #Attachments div.attachmentInput span.action.disabled {
   color: rgba(51, 51, 51, 0.2);
@@ -364,7 +364,7 @@
 #deviceShowResources #Attachments div.attachmentInput span.action.disabled:hover {
   color: rgba(51, 51, 51, 0.2);
   background-color: inherit;
-  border: 1px solid #ffffff;
+  border: 1px solid #fff;
 }
 #Devices_Export .Devices_Export_Type_Target {
   margin-top: 10px;
@@ -418,7 +418,7 @@
 }
 #Devices_Import_Completed_Dialog i {
   margin-right: 10px;
-  color: #60a917;
+  color: #60A917;
 }
 #Devices_Import_Loading_Dialog {
   padding-top: 50px;
@@ -443,7 +443,7 @@
   z-index: 1000;
 }
 #Devices_Import_Headers #Devices_Import_Headers_TableContainer table > thead td.headerIgnoreColumn {
-  background-color: #fa6800;
+  background-color: #FA6800;
 }
 #Devices_Import_Headers #Devices_Import_Headers_TableContainer table > thead td:not(.headerIgnoreColumn) {
   background-color: #1e6dab;
@@ -460,7 +460,7 @@
   -ms-text-overflow: ellipsis;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
-  color: #cccccc;
+  color: #ccc;
 }
 #Devices_Import_Parsing_Dialog {
   padding-top: 50px;
@@ -526,7 +526,7 @@
   background-color: #fcfcfc;
 }
 #Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr.actionUnchanged td:nth-child(n+3) {
-  color: #cccccc;
+  color: #ccc;
 }
 #Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr.actionModified td.action i:before {
   color: #1e6dab;
@@ -536,14 +536,14 @@
   background-color: #f4f9fd;
 }
 #Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr.actionAdded td.action i:before {
-  color: #60a917;
+  color: #60A917;
   content: "\f067";
 }
 #Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr.actionAdded td {
   background-color: #e7f9d5;
 }
 #Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr:not(.actionUnchanged) td.actionUnchanged:nth-child(n+3):not(.headerDeviceSerialNumber) {
-  color: #cccccc;
+  color: #ccc;
 }
 #Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody td.actionError {
   color: #e51400;

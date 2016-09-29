@@ -1383,6 +1383,8 @@
     <Content Include="ClientSource\Scripts\Modules\tinymce.min.js">
       <DependentUpon>tinymce.js</DependentUpon>
     </Content>
+    <Content Include="ClientSource\Style\Shadowbox.min.css" />
+    <Content Include="ClientSource\Style\Timeline.min.css" />
     <Content Include="ClientSource\Style\tinymce\content.inline.min.css">
       <DependentUpon>content.inline.less</DependentUpon>
     </Content>
@@ -1396,9 +1398,9 @@
     <Content Include="ClientSource\Style\tinymce\skin.min.css">
       <DependentUpon>skin.less</DependentUpon>
     </Content>
-    <Content Include="ClientSource\Style\AppMaintenance.css">
+    <None Include="ClientSource\Style\AppMaintenance.css">
       <DependentUpon>AppMaintenance.less</DependentUpon>
-    </Content>
+    </None>
     <Content Include="ClientSource\Style\AppMaintenance.min.css">
       <DependentUpon>AppMaintenance.less</DependentUpon>
     </Content>
@@ -1495,9 +1497,6 @@
     <Content Include="ClientSource\Style\Fancytree\disco.fancytree.min.css">
       <DependentUpon>disco.fancytree.less</DependentUpon>
     </Content>
-    <None Include="ClientSource\Style\Fancytree\ui.fancytree.min.css">
-      <DependentUpon>ui.fancytree.less</DependentUpon>
-    </None>
     <Content Include="ClientSource\Style\Images\AttachmentTypes\document.png" />
     <Content Include="ClientSource\Style\Images\AttachmentTypes\expressionBrowserIcons.png" />
     <Content Include="ClientSource\Style\Images\AttachmentTypes\image.png" />
@@ -1586,7 +1585,6 @@
     <Content Include="ClientSource\Style\Public\UserHeldDevicesXml_Sharepoint.xslt">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="ClientSource\Style\Shadowbox.css.bundle" />
     <None Include="ClientSource\Style\Shadowbox\close.png" />
     <None Include="ClientSource\Style\Shadowbox\loading.gif" />
     <None Include="ClientSource\Style\Shadowbox\next.png" />
@@ -1594,15 +1592,6 @@
     <None Include="ClientSource\Style\Shadowbox\play.png" />
     <None Include="ClientSource\Style\Shadowbox\previous.png" />
     <None Include="ClientSource\Style\Shadowbox\shadowbox.css" />
-    <None Include="ClientSource\Style\Shadowbox.css">
-      <DependentUpon>Shadowbox.css.bundle</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Style\Shadowbox.min.css">
-      <DependentUpon>Shadowbox.css.bundle</DependentUpon>
-    </Content>
-    <None Include="ClientSource\Style\Shadowbox\shadowbox.min.css">
-      <DependentUpon>shadowbox.css</DependentUpon>
-    </None>
     <None Include="ClientSource\Style\Timeline\disco.timelineextensions.css">
       <DependentUpon>disco.timelineextensions.less</DependentUpon>
     </None>
@@ -1670,12 +1659,6 @@
     <None Include="ClientSource\Style\User.css">
       <DependentUpon>User.less</DependentUpon>
     </None>
-    <None Include="ClientSource\Style\Timeline.css">
-      <DependentUpon>Timeline.css.bundle</DependentUpon>
-    </None>
-    <Content Include="ClientSource\Style\Timeline.min.css">
-      <DependentUpon>Timeline.css.bundle</DependentUpon>
-    </Content>
     <Content Include="ClientSource\Style\User.min.css">
       <DependentUpon>User.less</DependentUpon>
     </Content>
@@ -1685,11 +1668,14 @@
     <Content Include="Global.asax" />
     <None Include="ClientSource\Style\AppMaintenance.less" />
     <None Include="ClientSource\Style\Dialog.less" />
-    <None Include="ClientSource\Style\Timeline.css.bundle" />
     <Content Include="ClientSource\Style\FontAwesome\fontawesome-webfont.woff" />
     <Content Include="ClientSource\Style\FontAwesome\fontawesome-webfont.ttf" />
     <Content Include="ClientSource\Style\FontAwesome\fontawesome-webfont.eot" />
     <Content Include="ClientSource\Style\FontAwesome\FontAwesome.otf" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="Properties\PublishProfiles\Debug Installer.pubxml" />
     <None Include="Properties\PublishProfiles\Installer.pubxml" />
     <None Include="App_Code\AjaxHelpers.cshtml">

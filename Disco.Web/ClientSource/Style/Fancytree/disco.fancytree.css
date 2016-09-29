@@ -498,7 +498,7 @@ span.fancytree-ico-c > span.fancytree-icon:before {
   content: "\f023";
 }
 span.fancytree-ico-c.fancytree-selected > span.fancytree-icon:before {
-  color: #60a917;
+  color: #60A917;
   content: "\f09c";
 }
 span.fancytree-node.fancytree-selected {

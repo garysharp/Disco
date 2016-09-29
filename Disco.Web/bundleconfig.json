@@ -136,5 +136,31 @@
       "ClientSource/Scripts/Modules/tinymce/themes/simple/theme.js",
       "ClientSource/Scripts/Modules/tinymce/jquery.tinymce.min.js"
     ]
+  },
+  {
+    "outputFileName": "ClientSource/Style/ExpressionEditor.min.css",
+    "inputFiles": [
+      "ClientSource/Style/ExpressionEditor.css"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Style/IsotopeStyles.min.css",
+    "inputFiles": [
+      "ClientSource/Style/IsotopeStyles.css"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Style/Shadowbox.min.css",
+    "inputFiles": [
+      "ClientSource/Style/Shadowbox/shadowbox.css"
+    ]
+  },
+  {
+    "outputFileName": "ClientSource/Style/Timeline.min.css",
+    "inputFiles": [
+      "ClientSource/Style/Timeline/graphics.css",
+      "ClientSource/Style/Timeline/timeline-bundle.css",
+      "ClientSource/Style/Timeline/disco.timelineextensions.css"
+    ]
   }
 ]

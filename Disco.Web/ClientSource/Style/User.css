@@ -4,7 +4,7 @@
 }
 .tableData > tbody > tr > td {
   border: solid 1px #f4f4f4;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .tableData > tbody > tr:nth-child(odd) > td {
   background-color: #fcfcfc;
@@ -30,14 +30,14 @@
 }
 .tableDataDark td {
   border: solid 1px #d8d8d8;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .tableDataDark th {
-  background-color: #eeeeee;
+  background-color: #eee;
   border: solid 1px #d8d8d8;
 }
 .tableDataContainer {
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .tableDataVertical {
   border: solid 1px #f4f4f4;
@@ -155,7 +155,7 @@
   /*jQuery Tab Extensions*/
   border-radius: 0;
   background-image: none;
-  background-color: #ffffff;
+  background-color: #fff;
   border: none;
   padding: 0;
 }
@@ -220,7 +220,7 @@
   border: 1px solid #ccc;
 }
 #User_Show_Details_Actions_AddFlag_Dialog .flagPicker > div {
-  background-color: #ffffff;
+  background-color: #fff;
   border-bottom: 1px solid #ddd;
   padding: 6px 0 6px 6px;
   cursor: pointer;
@@ -230,7 +230,7 @@
 }
 #User_Show_Details_Actions_AddFlag_Dialog .flagPicker > div.selected,
 #User_Show_Details_Actions_AddFlag_Dialog .flagPicker > div.selected:hover {
-  background-color: #eeeeee;
+  background-color: #eee;
 }
 #User_Show_Details_Actions_AddFlag_Dialog .details {
   display: none;
@@ -252,10 +252,10 @@
 }
 #UserDetailTab-Flags #userFlags td {
   border: solid 1px #d8d8d8;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 #UserDetailTab-Flags #userFlags th {
-  background-color: #eeeeee;
+  background-color: #eee;
   border: solid 1px #d8d8d8;
 }
 #UserDetailTab-Flags #userFlags i.fa-edit {
@@ -266,7 +266,7 @@
   font-size: 1.1em;
   cursor: pointer;
   display: none;
-  color: #335a87;
+  color: #335A87;
 }
 #UserDetailTab-Flags #userFlags i.fa-edit:hover {
   color: #5e8cc2;
@@ -307,7 +307,7 @@
   text-align: center;
   padding: 30px 0;
   font-style: italic;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 #User_Show_Flags_Actions_EditComments_Dialog h4 {
   margin-bottom: 4px;
@@ -316,8 +316,8 @@
   width: 280px;
 }
 #UserDetailTab-Authorization #UserDetailTab-AuthorizationContainer {
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
+  background-color: #fff;
+  border: 1px solid #ccc;
 }
 #UserDetailTab-Authorization #UserDetailTab-Authorization_ClaimsTree_Container {
   width: 50%;
@@ -332,8 +332,8 @@
   width: 40%;
   float: right;
   padding: 6px 10px;
-  border-left: 1px dashed #cccccc;
-  border-bottom: 1px dashed #cccccc;
+  border-left: 1px dashed #ccc;
+  border-bottom: 1px dashed #ccc;
 }
 #UserDetailTab-Authorization #UserDetailTab-Authorization_Membership #UserDetailTab-Authorization_Membership_Roles {
   margin-bottom: 10px;
@@ -355,14 +355,13 @@
 }
 #userShowResources #Attachments {
   position: relative;
-  border: 1px solid #cccccc;
-  background-color: #ffffff;
+  border: 1px solid #ccc;
+  background-color: #fff;
 }
 #userShowResources #Attachments div.attachmentOutput {
   position: relative;
   height: 115px;
   overflow: auto;
-  font-size: 0.95em;
 }
 #userShowResources #Attachments div.attachmentOutput > a {
   display: block;
@@ -372,8 +371,8 @@
   padding: 2px;
   margin: 2px;
   font-size: 0.9em;
-  border: 1px solid #ffffff;
-  color: #000000;
+  border: 1px solid #fff;
+  color: #000;
   text-decoration: none;
 }
 #userShowResources #Attachments div.attachmentOutput > a span.comments,
@@ -424,25 +423,25 @@
   height: 162px;
 }
 #userShowResources #Attachments div.attachmentInput {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ccc;
   height: 40px;
-  background-color: #ffffff;
+  background-color: #fff;
   padding: 3px;
 }
 #userShowResources #Attachments div.attachmentInput span.action {
-  color: #333333;
+  color: #333;
   display: block;
   margin: 0 4px 0 0;
   font-size: 1.5em;
   cursor: pointer;
   float: right;
-  border: 1px solid #ffffff;
+  border: 1px solid #fff;
   padding: .5em;
 }
 #userShowResources #Attachments div.attachmentInput span.action:hover {
-  color: #335a87;
+  color: #335A87;
   background-color: #ededed;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
 }
 #userShowResources #Attachments div.attachmentInput span.action.disabled {
   color: rgba(51, 51, 51, 0.2);
@@ -451,11 +450,11 @@
 #userShowResources #Attachments div.attachmentInput span.action.disabled:hover {
   color: rgba(51, 51, 51, 0.2);
   background-color: inherit;
-  border: 1px solid #ffffff;
+  border: 1px solid #fff;
 }
 #User_Show_Details_Actions_CreateJob_Dialog #CreateJob_Assignments {
   margin-top: 6px;
-  background-color: #ffffff;
+  background-color: #fff;
   line-height: 1.3em;
   border: 1px solid #ddd;
 }

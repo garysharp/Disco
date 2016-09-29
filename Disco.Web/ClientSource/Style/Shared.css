@@ -4,7 +4,7 @@
 }
 .tableData > tbody > tr > td {
   border: solid 1px #f4f4f4;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .tableData > tbody > tr:nth-child(odd) > td {
   background-color: #fcfcfc;
@@ -30,14 +30,14 @@
 }
 .tableDataDark td {
   border: solid 1px #d8d8d8;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .tableDataDark th {
-  background-color: #eeeeee;
+  background-color: #eee;
   border: solid 1px #d8d8d8;
 }
 .tableDataContainer {
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .tableDataVertical {
   border: solid 1px #f4f4f4;

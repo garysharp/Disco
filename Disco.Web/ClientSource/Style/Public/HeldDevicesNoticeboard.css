@@ -417,7 +417,7 @@ th {
 }
 .fa-border {
   padding: .2em .25em .15em;
-  border: solid 0.08em #eeeeee;
+  border: solid 0.08em #eee;
   border-radius: .1em;
 }
 .pull-right {
@@ -515,7 +515,7 @@ th {
   font-size: 2em;
 }
 .fa-inverse {
-  color: #ffffff;
+  color: #fff;
 }
 /* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
    readers do not read off random characters that represent icons */
@@ -2054,8 +2054,8 @@ div#page {
 header,
 #header {
   position: relative;
-  color: #ffffff;
-  background-color: #333333;
+  color: #fff;
+  background-color: #333;
   margin: 0;
   padding: 0;
   height: 34px;
@@ -2111,7 +2111,7 @@ header #credits i,
   margin-bottom: 10px;
   font-size: 1.4em;
   height: 30px;
-  color: #ffffff;
+  color: #fff;
 }
 #mainSection .list div.content {
   height: calc(100% - 30px);
@@ -2141,8 +2141,8 @@ header #credits i,
   -ms-text-overflow: ellipsis;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
-  background-color: #ffffff;
-  color: #000000;
+  background-color: #fff;
+  color: #000;
 }
 #mainSection .list div.content ul li .small {
   display: inline-block;
@@ -2177,7 +2177,7 @@ footer,
 }
 body.status-connecting #statusConnecting {
   display: inline-block;
-  color: #fa6800;
+  color: #FA6800;
   margin-left: 14px;
   line-height: 34px;
 }
@@ -2190,7 +2190,7 @@ body.status-connecting #mainSection {
 }
 body.status-error #statusError {
   display: inline-block;
-  color: #fa6800;
+  color: #FA6800;
   margin-left: 14px;
   line-height: 34px;
 }
@@ -2212,7 +2212,7 @@ body.theme-default #mainSection .list ul li {
   border: 1px solid #3080b8;
 }
 body.theme-default #mainSection .list ul li.alert {
-  background-color: #e51400;
+  background-color: #E51400;
   border: 1px solid #ee6255;
   color: #ffffff;
 }
@@ -2239,7 +2239,7 @@ body.theme-default-soft #footer {
   background: linear-gradient(to bottom, rgba(30, 109, 171, 0), #1e6dab 90%) left top repeat-x;
 }
 body.theme-green {
-  background: linear-gradient(to bottom, #477c11, #60a917) left top repeat-x #60a917;
+  background: linear-gradient(to bottom, #477c11, #60A917) left top repeat-x #60A917;
 }
 body.theme-green #mainSection .list div.content {
   background: rgba(255, 255, 255, 0.2);
@@ -2248,16 +2248,16 @@ body.theme-green #mainSection .list ul li {
   border: 1px solid #74b627;
 }
 body.theme-green #mainSection .list ul li.alert {
-  background-color: #e51400;
+  background-color: #E51400;
   border: 1px solid #ee6255;
   color: #ffffff;
 }
 body.theme-green footer,
 body.theme-green #footer {
-  background: linear-gradient(to bottom, rgba(96, 169, 23, 0), #60a917 90%) left top repeat-x;
+  background: linear-gradient(to bottom, rgba(96, 169, 23, 0), #60A917 90%) left top repeat-x;
 }
 body.theme-green-soft {
-  background: linear-gradient(to bottom, #477c11, #60a917) left top repeat-x #60a917;
+  background: linear-gradient(to bottom, #477c11, #60A917) left top repeat-x #60A917;
 }
 body.theme-green-soft #mainSection .list div.content {
   background: rgba(255, 255, 255, 0.2);
@@ -2272,10 +2272,10 @@ body.theme-green-soft #mainSection .list ul li.alert {
 }
 body.theme-green-soft footer,
 body.theme-green-soft #footer {
-  background: linear-gradient(to bottom, rgba(96, 169, 23, 0), #60a917 90%) left top repeat-x;
+  background: linear-gradient(to bottom, rgba(96, 169, 23, 0), #60A917 90%) left top repeat-x;
 }
 body.theme-violet {
-  background: linear-gradient(to bottom, #8800cc, #aa00ff) left top repeat-x #aa00ff;
+  background: linear-gradient(to bottom, #8800cc, #AA00FF) left top repeat-x #AA00FF;
 }
 body.theme-violet #mainSection .list div.content {
   background: rgba(255, 255, 255, 0.2);
@@ -2284,16 +2284,16 @@ body.theme-violet #mainSection .list ul li {
   border: 1px solid #b700ff;
 }
 body.theme-violet #mainSection .list ul li.alert {
-  background-color: #e51400;
+  background-color: #E51400;
   border: 1px solid #ee6255;
   color: #ffffff;
 }
 body.theme-violet footer,
 body.theme-violet #footer {
-  background: linear-gradient(to bottom, rgba(170, 0, 255, 0), #aa00ff 90%) left top repeat-x;
+  background: linear-gradient(to bottom, rgba(170, 0, 255, 0), #AA00FF 90%) left top repeat-x;
 }
 body.theme-violet-soft {
-  background: linear-gradient(to bottom, #8800cc, #aa00ff) left top repeat-x #aa00ff;
+  background: linear-gradient(to bottom, #8800cc, #AA00FF) left top repeat-x #AA00FF;
 }
 body.theme-violet-soft #mainSection .list div.content {
   background: rgba(255, 255, 255, 0.2);
@@ -2308,10 +2308,10 @@ body.theme-violet-soft #mainSection .list ul li.alert {
 }
 body.theme-violet-soft footer,
 body.theme-violet-soft #footer {
-  background: linear-gradient(to bottom, rgba(170, 0, 255, 0), #aa00ff 90%) left top repeat-x;
+  background: linear-gradient(to bottom, rgba(170, 0, 255, 0), #AA00FF 90%) left top repeat-x;
 }
 body.theme-magenta {
-  background: linear-gradient(to bottom, #a50058, #d80073) left top repeat-x #d80073;
+  background: linear-gradient(to bottom, #a50058, #D80073) left top repeat-x #D80073;
 }
 body.theme-magenta #mainSection .list div.content {
   background: rgba(255, 255, 255, 0.2);
@@ -2322,14 +2322,14 @@ body.theme-magenta #mainSection .list ul li {
 body.theme-magenta #mainSection .list ul li.alert {
   background-color: #1681b4;
   border: 1px solid #63abcd;
-  color: #ffffff;
+  color: #fff;
 }
 body.theme-magenta footer,
 body.theme-magenta #footer {
-  background: linear-gradient(to bottom, rgba(216, 0, 115, 0), #d80073 90%) left top repeat-x;
+  background: linear-gradient(to bottom, rgba(216, 0, 115, 0), #D80073 90%) left top repeat-x;
 }
 body.theme-magenta-soft {
-  background: linear-gradient(to bottom, #a50058, #d80073) left top repeat-x #d80073;
+  background: linear-gradient(to bottom, #a50058, #D80073) left top repeat-x #D80073;
 }
 body.theme-magenta-soft #mainSection .list div.content {
   background: rgba(255, 255, 255, 0.2);
@@ -2344,10 +2344,10 @@ body.theme-magenta-soft #mainSection .list ul li.alert {
 }
 body.theme-magenta-soft footer,
 body.theme-magenta-soft #footer {
-  background: linear-gradient(to bottom, rgba(216, 0, 115, 0), #d80073 90%) left top repeat-x;
+  background: linear-gradient(to bottom, rgba(216, 0, 115, 0), #D80073 90%) left top repeat-x;
 }
 body.theme-crimson {
-  background: linear-gradient(to bottom, #6f0019, #a20025) left top repeat-x #a20025;
+  background: linear-gradient(to bottom, #6f0019, #A20025) left top repeat-x #A20025;
 }
 body.theme-crimson #mainSection .list div.content {
   background: rgba(255, 255, 255, 0.2);
@@ -2362,10 +2362,10 @@ body.theme-crimson #mainSection .list ul li.alert {
 }
 body.theme-crimson footer,
 body.theme-crimson #footer {
-  background: linear-gradient(to bottom, rgba(162, 0, 37, 0), #a20025 90%) left top repeat-x;
+  background: linear-gradient(to bottom, rgba(162, 0, 37, 0), #A20025 90%) left top repeat-x;
 }
 body.theme-crimson-soft {
-  background: linear-gradient(to bottom, #6f0019, #a20025) left top repeat-x #a20025;
+  background: linear-gradient(to bottom, #6f0019, #A20025) left top repeat-x #A20025;
 }
 body.theme-crimson-soft #mainSection .list div.content {
   background: rgba(255, 255, 255, 0.2);
@@ -2380,10 +2380,10 @@ body.theme-crimson-soft #mainSection .list ul li.alert {
 }
 body.theme-crimson-soft footer,
 body.theme-crimson-soft #footer {
-  background: linear-gradient(to bottom, rgba(162, 0, 37, 0), #a20025 90%) left top repeat-x;
+  background: linear-gradient(to bottom, rgba(162, 0, 37, 0), #A20025 90%) left top repeat-x;
 }
 body.theme-amber {
-  background: linear-gradient(to bottom, #bf8208, #f0a30a) left top repeat-x #f0a30a;
+  background: linear-gradient(to bottom, #bf8208, #F0A30A) left top repeat-x #F0A30A;
 }
 body.theme-amber #mainSection .list div.content {
   background: rgba(255, 255, 255, 0.2);
@@ -2392,16 +2392,16 @@ body.theme-amber #mainSection .list ul li {
   border: 1px solid #f2b113;
 }
 body.theme-amber #mainSection .list ul li.alert {
-  background-color: #0050ef;
+  background-color: #0050EF;
   border: 1px solid #558af4;
   color: #ffffff;
 }
 body.theme-amber footer,
 body.theme-amber #footer {
-  background: linear-gradient(to bottom, rgba(240, 163, 10, 0), #f0a30a 90%) left top repeat-x;
+  background: linear-gradient(to bottom, rgba(240, 163, 10, 0), #F0A30A 90%) left top repeat-x;
 }
 body.theme-amber-soft {
-  background: linear-gradient(to bottom, #bf8208, #f0a30a) left top repeat-x #f0a30a;
+  background: linear-gradient(to bottom, #bf8208, #F0A30A) left top repeat-x #F0A30A;
 }
 body.theme-amber-soft #mainSection .list div.content {
   background: rgba(255, 255, 255, 0.2);
@@ -2416,10 +2416,10 @@ body.theme-amber-soft #mainSection .list ul li.alert {
 }
 body.theme-amber-soft footer,
 body.theme-amber-soft #footer {
-  background: linear-gradient(to bottom, rgba(240, 163, 10, 0), #f0a30a 90%) left top repeat-x;
+  background: linear-gradient(to bottom, rgba(240, 163, 10, 0), #F0A30A 90%) left top repeat-x;
 }
 body.theme-brown {
-  background: linear-gradient(to bottom, #5c401f, #825a2c) left top repeat-x #825a2c;
+  background: linear-gradient(to bottom, #5c401f, #825A2C) left top repeat-x #825A2C;
 }
 body.theme-brown #mainSection .list div.content {
   background: rgba(255, 255, 255, 0.2);
@@ -2428,16 +2428,16 @@ body.theme-brown #mainSection .list ul li {
   border: 1px solid #936e41;
 }
 body.theme-brown #mainSection .list ul li.alert {
-  background-color: #e3c800;
+  background-color: #E3C800;
   border: 1px solid #ecda55;
   color: #000000;
 }
 body.theme-brown footer,
 body.theme-brown #footer {
-  background: linear-gradient(to bottom, rgba(130, 90, 44, 0), #825a2c 90%) left top repeat-x;
+  background: linear-gradient(to bottom, rgba(130, 90, 44, 0), #825A2C 90%) left top repeat-x;
 }
 body.theme-brown-soft {
-  background: linear-gradient(to bottom, #5c401f, #825a2c) left top repeat-x #825a2c;
+  background: linear-gradient(to bottom, #5c401f, #825A2C) left top repeat-x #825A2C;
 }
 body.theme-brown-soft #mainSection .list div.content {
   background: rgba(255, 255, 255, 0.2);
@@ -2452,7 +2452,7 @@ body.theme-brown-soft #mainSection .list ul li.alert {
 }
 body.theme-brown-soft footer,
 body.theme-brown-soft #footer {
-  background: linear-gradient(to bottom, rgba(130, 90, 44, 0), #825a2c 90%) left top repeat-x;
+  background: linear-gradient(to bottom, rgba(130, 90, 44, 0), #825A2C 90%) left top repeat-x;
 }
 body.theme-steel {
   background: linear-gradient(to bottom, #4e5d6c, #647689) left top repeat-x #647689;
@@ -2464,7 +2464,7 @@ body.theme-steel #mainSection .list ul li {
   border: 1px solid #78889a;
 }
 body.theme-steel #mainSection .list ul li.alert {
-  background-color: #e51400;
+  background-color: #E51400;
   border: 1px solid #ee6255;
   color: #ffffff;
 }
