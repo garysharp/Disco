@@ -38,7 +38,7 @@ namespace Disco.Client.Interop.Native
         /// Windows XP with SP3 and Wireless LAN API for Windows XP with SP2:  WlanOpenHandle will return an
         ///   error message if the Wireless Zero Configuration (WZC) service has not been started or if the WZC service is not responsive.
         /// </remarks>
-        [DllImport("Wlanapi.dll")]
+        [DllImport("Wlanapi.dll", SetLastError = true)]
         public static extern uint WlanOpenHandle(uint dwClientVersion, IntPtr pReserved, out uint pdwNegotiatedVersion, out IntPtr phClientHandle);
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Disco.Client.Interop.Native
         ///   to acquire the same lock, a deadlock may occur. In addition, do not call WlanCloseHandle from
         ///   the DllMain function in an application DLL. This could also cause a deadlock.
         /// </remarks>
-        [DllImport("Wlanapi")]
+        [DllImport("Wlanapi", SetLastError = true)]
         public static extern uint WlanCloseHandle(IntPtr hClientHandle, IntPtr pReserved);
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Disco.Client.Interop.Native
         ///   pointed to by ppInterfaceList parameter should be released by calling the WlanFreeMemory function
         ///   after the buffer is no longer needed.
         /// </remarks>
-        [DllImport("Wlanapi")]
+        [DllImport("Wlanapi", SetLastError = true)]
         public static extern uint WlanEnumInterfaces(IntPtr hClientHandle, IntPtr pReserved, out IntPtr ppInterfaceList);
 
         /// <summary>
@@ -124,8 +124,8 @@ namespace Disco.Client.Interop.Native
         ///   supported. These types of profiles are not returned by WlanGetProfileList, even if a profile of this type appears
         ///   on the preferred profile list.
         /// </remarks>
-        [DllImport("Wlanapi")]
-        public static extern uint WlanGetProfileList(IntPtr hClientHandle, Guid pInterfaceGuid, IntPtr pReserved, out IntPtr ppProfileList);
+        [DllImport("Wlanapi", SetLastError = true)]
+        public static extern uint WlanGetProfileList(IntPtr hClientHandle, [MarshalAs(UnmanagedType.LPStruct)] Guid pInterfaceGuid, IntPtr pReserved, out IntPtr ppProfileList);
 
         /// <summary>
         /// The WlanGetProfile function retrieves all information about a specified wireless profile.
@@ -138,8 +138,8 @@ namespace Disco.Client.Interop.Native
         /// <param name="pdwFlags">On input, a pointer to the address location used to provide additional information about the request. If this parameter is NULL on input, then no information on profile flags will be returned. On output, a pointer to the address location used to receive profile flags.</param>
         /// <param name="pdwGrantedAccess">The access mask of the all-user profile.</param>
         /// <returns>If the function succeeds, the return value is ERROR_SUCCESS.</returns>
-        [DllImport("Wlanapi", CharSet = CharSet.Unicode)]
-        public static extern uint WlanGetProfile(IntPtr hClientHandle, Guid pInterfaceGuid, [MarshalAs(UnmanagedType.LPWStr)] string strProfileName, IntPtr pReserved, out IntPtr pstrProfileXml, out uint pdwFlags, out IntPtr pdwGrantedAccess);
+        [DllImport("Wlanapi", CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern uint WlanGetProfile(IntPtr hClientHandle, [MarshalAs(UnmanagedType.LPStruct)] Guid pInterfaceGuid, [MarshalAs(UnmanagedType.LPWStr)] string strProfileName, IntPtr pReserved, out IntPtr pstrProfileXml, out uint pdwFlags, out IntPtr pdwGrantedAccess);
 
         /// <summary>
         /// The WlanSetProfile function sets the content of a specific profile.
@@ -153,8 +153,8 @@ namespace Disco.Client.Interop.Native
         /// <param name="pReserved">Reserved for future use. Must be set to NULL.</param>
         /// <param name="pdwReasonCode">A WLAN_REASON_CODE value that indicates why the profile is not valid.</param>
         /// <returns>If the function succeeds, the return value is ERROR_SUCCESS.</returns>
-        [DllImport("Wlanapi", CharSet = CharSet.Unicode)]
-        public static extern uint WlanSetProfile(IntPtr hClientHandle, Guid pInterfaceGuid, uint dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string strProfileXml, [MarshalAs(UnmanagedType.LPWStr)] string strAllUserProfileSecurity, bool bOverwrite, IntPtr pReserved, out uint pdwReasonCode);
+        [DllImport("Wlanapi", CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern uint WlanSetProfile(IntPtr hClientHandle, [MarshalAs(UnmanagedType.LPStruct)] Guid pInterfaceGuid, uint dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string strProfileXml, [MarshalAs(UnmanagedType.LPWStr)] string strAllUserProfileSecurity, bool bOverwrite, IntPtr pReserved, out uint pdwReasonCode);
 
         /// <summary>
         /// The WlanDeleteProfile function deletes a wireless profile for a wireless interface on the local computer.
@@ -179,8 +179,8 @@ namespace Disco.Client.Interop.Native
         /// The WlanDeleteProfile function can fail with ERROR_INVALID_PARAMETER if the wireless interface specified in the pInterfaceGuid parameter
         ///   for the wireless LAN profile has been removed from the system (a USB wireless adapter that has been removed, for example).
         /// </remarks>
-        [DllImport("Wlanapi", CharSet = CharSet.Unicode)]
-        public static extern uint WlanDeleteProfile(IntPtr hClientHandle, Guid pInterfaceGuid, [MarshalAs(UnmanagedType.LPWStr)] string strProfileName, IntPtr pReserved);
+        [DllImport("Wlanapi", CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern uint WlanDeleteProfile(IntPtr hClientHandle, [MarshalAs(UnmanagedType.LPStruct)] Guid pInterfaceGuid, [MarshalAs(UnmanagedType.LPWStr)] string strProfileName, IntPtr pReserved);
 
         /// <summary>
         /// The WlanReasonCodeToString function retrieves a string that describes a specified reason code.
@@ -190,7 +190,7 @@ namespace Disco.Client.Interop.Native
         /// <param name="pStringBuffer">Pointer to a buffer that will receive the string. The caller must allocate memory to pStringBuffer before calling WlanReasonCodeToString.</param>
         /// <param name="pReserved">Reserved for future use. Must be set to NULL.</param>
         /// <returns>If the function succeeds, the return value is a pointer to a constant string.</returns>
-        [DllImport("Wlanapi", CharSet = CharSet.Unicode)]
+        [DllImport("Wlanapi", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern uint WlanReasonCodeToString(uint dwReasonCode, uint dwBufferSize, ref StringBuilder pStringBuffer, IntPtr pReserved);
 
         /// <summary>
