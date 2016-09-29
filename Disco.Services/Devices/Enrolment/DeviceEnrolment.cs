@@ -189,9 +189,13 @@ namespace Disco.Services.Devices.Enrolment
                 sessionId = OpenSessionId;
             }
             EnrolmentLog.LogSessionDeviceInfo(sessionId, Request);
+
             MacEnrolResponse response = new MacEnrolResponse();
             try
             {
+                if (Request.DeviceSerialNumber.Contains("/") || Request.DeviceSerialNumber.Contains(@"\"))
+                    throw new EnrolmentSafeException(@"The serial number cannot contain '/' or '\' characters.");
+
                 EnrolmentLog.LogSessionProgress(sessionId, 10, "Querying Database");
                 Device RepoDevice = Database.Devices.Include("AssignedUser").Include("DeviceProfile").Include("DeviceProfile").Where(d => d.SerialNumber == Request.DeviceSerialNumber).FirstOrDefault();
                 if (!Trusted)
@@ -307,6 +311,9 @@ namespace Disco.Services.Devices.Enrolment
 
             try
             {
+                if (Request.SerialNumber.Contains("/") || Request.SerialNumber.Contains(@"\"))
+                    throw new EnrolmentSafeException(@"The serial number cannot contain '/' or '\' characters.");
+
                 EnrolmentLog.LogSessionProgress(sessionId, 10, "Loading User Data");
                 if (!string.IsNullOrWhiteSpace(Username))
                 {

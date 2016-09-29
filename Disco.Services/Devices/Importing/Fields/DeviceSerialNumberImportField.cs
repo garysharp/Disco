@@ -28,7 +28,11 @@ namespace Disco.Services.Devices.Importing.Fields
             {
                 parsedValue = Value.Trim();
                 if (parsedValue.Length > maxLength)
-                    return Error(string.Format("Cannot be more than {0} characters", maxLength));
+                    return Error($"Cannot be more than {maxLength} characters");
+                if (parsedValue.Contains(@"/"))
+                    return Error(@"The '/' character is not allowed.");
+                if (parsedValue.Contains(@"\"))
+                    return Error(@"The '\' character is not allowed.");
             }
 
             // Duplicate
@@ -38,7 +42,7 @@ namespace Disco.Services.Devices.Importing.Fields
                 .Where(r => IsDeviceSerialNumberValid(r.Item2))
                 .FirstOrDefault(r => r.Item2.Equals(parsedValue, StringComparison.OrdinalIgnoreCase));
             if (duplicate != null)
-                return Error(string.Format("This Device Serial Number was already present on Row {0}", duplicate.Item1 + 1));
+                return Error($"This Device Serial Number was already present on Row {duplicate.Item1 + 1}");
 
             // No action required
             return Success(EntityState.Unchanged);

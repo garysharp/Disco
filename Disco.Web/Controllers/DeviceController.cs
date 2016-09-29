@@ -67,6 +67,10 @@ namespace Disco.Web.Controllers
             {
                 ModelState.AddModelError("Device.SerialNumber", "The Serial Number is Required");
             }
+            else if (m.Device.SerialNumber.Contains("/") || m.Device.SerialNumber.Contains(@"\"))
+            {
+                ModelState.AddModelError("Device.SerialNumber", @"The Serial Number cannot contain '/' or '\' characters");
+            }
             else
             {
                 // Ensure Existing Device Doesn't Exist

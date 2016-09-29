@@ -69,6 +69,9 @@ namespace Disco.Services
             // - Assigned User Id
             // - Batch
 
+            if (d.SerialNumber.Contains("/") || d.SerialNumber.Contains(@"\"))
+                throw new ArgumentException(@"The device serial number cannot contain '/' or '\' characters.", nameof(d));
+
             // Enforce Authorization
             var auth = UserService.CurrentAuthorization;
             if (!auth.Has(Claims.Device.Properties.AssetNumber))
