@@ -274,7 +274,6 @@
   position: relative;
   height: 115px;
   overflow: auto;
-  font-size: 0.95em;
 }
 #deviceShowResources #Attachments div.attachmentOutput > a {
   display: block;
@@ -295,6 +294,8 @@
   float: left;
   width: 168px;
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   height: 16px;
 }
 #deviceShowResources #Attachments div.attachmentOutput > a span.author {

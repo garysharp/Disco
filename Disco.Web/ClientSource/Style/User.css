@@ -382,6 +382,8 @@
   float: left;
   width: 168px;
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   height: 16px;
 }
 #userShowResources #Attachments div.attachmentOutput > a span.author {
@@ -405,6 +407,10 @@
 }
 #userShowResources #Attachments div.attachmentOutput > a span.icon img.loading {
   display: none;
+}
+#userShowResources #Attachments div.attachmentOutput > a:hover {
+  background-color: #ededed;
+  border: 1px solid #ccc;
 }
 #userShowResources #Attachments div.attachmentOutput > a:hover span.remove {
   opacity: .5;

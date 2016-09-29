@@ -422,6 +422,8 @@
   float: left;
   width: 168px;
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   height: 16px;
 }
 #jobShowResources #Attachments div.attachmentOutput > a span.author {

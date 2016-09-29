@@ -387,6 +387,8 @@
                     float: left;
                     width: 168px;
                     overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
                     height: 16px;
                 }
 
@@ -418,6 +420,9 @@
                 }
 
                 &:hover {
+                    background-color: @SubtleColour;
+                    border: 1px solid @SubtleBorderColour;
+
                     span.remove {
                         opacity: .5;
                     }
