@@ -1,19 +1,19 @@
-﻿using System;
-using System.Data.SqlClient;
-using System.Threading;
-using System.Web.Mvc;
-using Disco.Web.Models.InitialConfig;
-using Disco.Data.Repository;
-using System.Linq;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.IO.Compression;
-using System.Management;
-using System.Web;
-using Disco.Services.Users;
-using Disco.Services.Interop.ActiveDirectory;
+﻿using Disco.Data.Repository;
 using Disco.Services.Authorization;
+using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Users;
 using Disco.Web.Areas.API.Models.Shared;
+using Disco.Web.Models.InitialConfig;
+using System;
+using System.Data.SqlClient;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Management;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Disco.Web.Controllers
 {
@@ -64,10 +64,12 @@ namespace Disco.Web.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            // Updated 2012-11-01 G# - Consider ServerIsCoreSKU
             if (!Request.IsLocal && !ServerIsCoreSKU.Value)
             {
-                filterContext.Result = new HttpStatusCodeResult(System.Net.HttpStatusCode.ServiceUnavailable, "Initial Configuration of Disco is only allowed via a local connection");
+                filterContext.Result = new ContentResult() {
+                    Content = "Initial Configuration of Disco ICT is only allowed via a localhost connection",
+                    ContentType = "text/plain"
+                };
             }
             base.OnActionExecuting(filterContext);
         }

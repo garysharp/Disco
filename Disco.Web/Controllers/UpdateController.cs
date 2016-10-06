@@ -10,7 +10,11 @@ namespace Disco.Web.Controllers
         {
             if (!Request.IsLocal && !InitialConfigController.ServerIsCoreSKU.Value)
             {
-                filterContext.Result = new HttpStatusCodeResult(System.Net.HttpStatusCode.ServiceUnavailable, "Initialization Configuration of Disco is only allowed via a local connection");
+                filterContext.Result = new ContentResult()
+                {
+                    Content = "Maintenance of Disco ICT is only allowed via a localhost connection",
+                    ContentType = "text/plain"
+                };
             }
             base.OnActionExecuting(filterContext);
         }
