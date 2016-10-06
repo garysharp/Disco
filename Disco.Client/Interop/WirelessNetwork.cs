@@ -216,7 +216,7 @@ namespace Disco.Client.Interop
                                 {
                                     if (existingProfile != null && existingProfile.IsGroupPolicy.Value)
                                     {
-                                        Presentation.UpdateStatus("Enrolling Device", $"Configuring Wireless Profiles\r\nUnable to replace Group Policy Wireless Profile '{addProfile.Name}' on '{adapter.NetConnectionID}'", true, -1, 3000);
+                                        Presentation.UpdateStatus("Enrolling Device", $"Configuring Wireless Profiles\r\nSkipped Wireless Profile '{addProfile.Name}' on '{adapter.NetConnectionID}' as this profile is managed by Group Policy", true, -1, 3000);
                                     }
                                     else
                                     {
@@ -257,7 +257,7 @@ namespace Disco.Client.Interop
                                     {
                                         if (existingProfile.IsGroupPolicy.Value)
                                         {
-                                            Presentation.UpdateStatus("Enrolling Device", $"Configuring Wireless Profiles\r\nUnable to modify Group Policy Wireless Profile '{profileName}' on '{adapter.NetConnectionID}'", true, -1, 3000);
+                                            Presentation.UpdateStatus("Enrolling Device", $"Configuring Wireless Profiles\r\nSkipped Wireless Profile '{profileName}' on '{adapter.NetConnectionID}' as this profile is managed by Group Policy", true, -1, 3000);
                                         }
                                         else
                                         {
