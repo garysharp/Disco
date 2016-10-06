@@ -24,19 +24,9 @@ namespace Disco.Web
 
         protected void Application_Start()
         {
-            var timer = new Stopwatch();
-            long timer_last;
-            timer.Start();
-
-
-            Debug.WriteLine("Application Startup Profiling Started");
-            timer_last = timer.ElapsedMilliseconds;
-
             if (AppConfig.InitializeDatabase())
             {
                 // Database Initialized
-                Debug.WriteLine("Initialized Database: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                timer_last = timer.ElapsedMilliseconds;
 
                 using (DiscoDataContext database = new DiscoDataContext())
                 {
@@ -64,33 +54,15 @@ namespace Disco.Web
 
                         AreaRegistration.RegisterAllAreas();
 
-                        Debug.WriteLine("Registered Areas: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                        timer_last = timer.ElapsedMilliseconds;
-
                         WebApiConfig.Register(GlobalConfiguration.Configuration);
-
-                        Debug.WriteLine("Registered API: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                        timer_last = timer.ElapsedMilliseconds;
 
                         FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 
-                        Debug.WriteLine("Registered Global Filters: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                        timer_last = timer.ElapsedMilliseconds;
-
                         RouteConfig.RegisterRoutes(RouteTable.Routes);
-
-                        Debug.WriteLine("Registered Routes: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                        timer_last = timer.ElapsedMilliseconds;
 
                         BundleConfig.RegisterBundles();
 
-                        Debug.WriteLine("Registered Bundles: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                        timer_last = timer.ElapsedMilliseconds;
-
                         AppConfig.InitalizeNormalEnvironment(database);
-
-                        Debug.WriteLine("Initialized Environment: +{0}ms", timer.ElapsedMilliseconds - timer_last);
-                        timer_last = timer.ElapsedMilliseconds;
                     }
                     else
                     {
@@ -107,6 +79,7 @@ namespace Disco.Web
                 // Database Not Initialized
                 // Install
                 InitialConfig = true;
+                FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
                 RouteConfig.RegisterInstallRoutes(RouteTable.Routes);
                 BundleConfig.RegisterBundles();
             }

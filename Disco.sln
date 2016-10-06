@@ -129,10 +129,4 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(AutomaticVersions) = postSolution
-		PrimaryVersionType = AssemblyVersionAttribute
-		UpdateAssemblyVersion = False
-		UpdateAssemblyFileVersion = False
-		UpdateAssemblyInfoVersion = False
-	EndGlobalSection
 EndGlobal

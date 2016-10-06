@@ -15,7 +15,6 @@
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <AssemblyVersion>2.2.16272.1003</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -104,6 +103,7 @@
     <Compile Include="DataModelExtension\DocumentTemplateExtensions.cs" />
     <Compile Include="DataModelExtension\JobSubTypeExtensions.cs" />
     <Compile Include="DataModelExtension\JobTypeExtensions.cs" />
+    <Compile Include="MvcExtensions\JsonNet\JsonDotNetValueProviderFactory.cs" />
     <Compile Include="MvcExtensions\JsonNet\JsonNetResult.cs" />
     <Compile Include="MvcExtensions\PartialCompiled\PartialCompiledHtmlExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
