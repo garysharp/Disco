@@ -71,6 +71,13 @@ namespace Disco.Client.Interop
 
                 // Connect to wireless service
                 interopResult = WlanApi.WlanOpenHandle(WlanApi.WLAN_API_VERSION_2_0, IntPtr.Zero, out wlanServiceVersion, out wlanHandle);
+                if (interopResult == WlanApi.ERROR_SERVICE_NOT_ACTIVE)
+                {
+                    // Indicates the Wlan service has not been started on the client
+                    //  typically as it is not needed (no wireless adapter) or if it
+                    //  has been forcibly disabled.
+                    return null;
+                }
                 if (interopResult != WlanApi.ERROR_SUCCESS)
                 {
                     throw new Exception($"Unable to connect to local wireless service. WlanOpenHandle returned: {interopResult}");
@@ -156,6 +163,14 @@ namespace Disco.Client.Interop
 
                 // Connect to wireless service
                 interopResult = WlanApi.WlanOpenHandle(WlanApi.WLAN_API_VERSION_2_0, IntPtr.Zero, out wlanServiceVersion, out wlanHandle);
+                if (interopResult == WlanApi.ERROR_SERVICE_NOT_ACTIVE)
+                {
+                    // Indicates the Wlan service has not been started on the client
+                    //  typically as it is not needed (no wireless adapter) or if it
+                    //  has been forcibly disabled.
+                    Presentation.UpdateStatus("Enrolling Device", $"Configuring Wireless Profiles\r\nSkipping, the WLAN service is not enabled", true, -1, 3000);
+                    return;
+                }
                 if (interopResult != WlanApi.ERROR_SUCCESS)
                 {
                     throw new Exception($"Unable to connect to local wireless service. WlanOpenHandle returned: {interopResult}");

@@ -11,6 +11,7 @@ namespace Disco.Client.Interop.Native
         public const int ERROR_SUCCESS = 0;
         public const int ERROR_INVALID_PARAMETER = 87;
         public const int ERROR_NOT_ENOUGH_MEMORY = 8;
+        public const int ERROR_SERVICE_NOT_ACTIVE = 1062; // The service has not been started.
 
         /// <summary>
         /// The WlanOpenHandle function opens a connection to the server.
