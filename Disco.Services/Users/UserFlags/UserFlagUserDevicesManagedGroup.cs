@@ -24,7 +24,7 @@ namespace Disco.Services.Users.UserFlags
         public override string Description { get { return string.Format(DescriptionFormat, UserFlagName); } }
         public override string CategoryDescription { get { return CategoryDescriptionFormat; } }
         public override string GroupDescription { get { return string.Format(GroupDescriptionFormat, UserFlagName); } }
-        public override bool IncludeFilterBeginDate { get { return false; } }
+        public override bool IncludeFilterBeginDate { get { return true; } }
 
         private UserFlagUserDevicesManagedGroup(string Key, ADManagedGroupConfiguration Configuration, UserFlag UserFlag)
             : base(Key, Configuration)
@@ -105,7 +105,27 @@ namespace Disco.Services.Users.UserFlags
 
         private IEnumerable<string> DetermineDeviceMembers(DiscoDataContext Database, string UserId)
         {
-            return DetermineDeviceMembers(Database.Users.Where(u => u.UserId == UserId));
+            IQueryable<User> assignments;
+
+            if (Configuration.FilterBeginDate.HasValue)
+            {
+                assignments = Database.Users
+                    .Where(u => u.UserId == UserId &&
+                        u.UserFlagAssignments
+                            .Any(a => a.UserFlagId == UserFlagId &&
+                                !a.RemovedDate.HasValue &&
+                                a.AddedDate >= Configuration.FilterBeginDate));
+            }
+            else
+            {
+                assignments = Database.Users
+                    .Where(u => u.UserId == UserId &&
+                        u.UserFlagAssignments
+                            .Any(a => a.UserFlagId == UserFlagId &&
+                                !a.RemovedDate.HasValue));
+            }
+
+            return DetermineDeviceMembers(assignments);
         }
 
         private IEnumerable<string> DetermineDeviceMembers(IQueryable<User> Users)
@@ -121,38 +141,85 @@ namespace Disco.Services.Users.UserFlags
 
         public override IEnumerable<string> DetermineMembers(DiscoDataContext Database)
         {
-            var assignments = Database.UserFlagAssignments
-                .Where(a => a.UserFlagId == UserFlagId && !a.RemovedDate.HasValue)
-                .Select(a => a.User);
+            IQueryable<User> assignments;
+
+            if (Configuration.FilterBeginDate.HasValue)
+            {
+                assignments = Database.UserFlagAssignments
+                    .Where(a => a.UserFlagId == UserFlagId &&
+                        !a.RemovedDate.HasValue &&
+                        a.AddedDate >= Configuration.FilterBeginDate)
+                    .Select(a => a.User);
+            }
+            else
+            {
+                assignments = Database.UserFlagAssignments
+                    .Where(a => a.UserFlagId == UserFlagId &&
+                        !a.RemovedDate.HasValue)
+                    .Select(a => a.User);
+            }
 
             return DetermineDeviceMembers(assignments);
         }
 
         private void ProcessRepositoryEvent(RepositoryMonitorEvent Event)
         {
-            var userFlagAssignemnt = (UserFlagAssignment)Event.Entity;
-            string userId = userFlagAssignemnt.UserId;
+            var userFlagAssignment = (UserFlagAssignment)Event.Entity;
+            string userId = userFlagAssignment.UserId;
 
             switch (Event.EventType)
             {
                 case RepositoryMonitorEventType.Added:
-                    if (!userFlagAssignemnt.RemovedDate.HasValue)
-                        AddMember(userFlagAssignemnt.UserId, (database) => DetermineDeviceMembers(database, userId));
+                    if (Configuration.FilterBeginDate.HasValue)
+                    {
+                        if (!userFlagAssignment.RemovedDate.HasValue && userFlagAssignment.AddedDate >= Configuration.FilterBeginDate)
+                        {
+                            AddMember(userFlagAssignment.UserId, (database) => DetermineDeviceMembers(database, userId));
+                        }
+                    }
+                    else
+                    {
+                        if (!userFlagAssignment.RemovedDate.HasValue)
+                        {
+                            AddMember(userFlagAssignment.UserId, (database) => DetermineDeviceMembers(database, userId));
+                        }
+                    }
                     break;
                 case RepositoryMonitorEventType.Modified:
-                    if (userFlagAssignemnt.RemovedDate.HasValue)
-                        RemoveMember(userFlagAssignemnt.UserId, (database) => DetermineDeviceMembers(database, userId));
-                    else
-                        AddMember(userFlagAssignemnt.UserId, (database) => DetermineDeviceMembers(database, userId));
+                    if (!Configuration.FilterBeginDate.HasValue || userFlagAssignment.AddedDate >= Configuration.FilterBeginDate)
+                    {
+                        if (userFlagAssignment.RemovedDate.HasValue)
+                            RemoveMember(userFlagAssignment.UserId, (database) => DetermineDeviceMembers(database, userId));
+                        else
+                            AddMember(userFlagAssignment.UserId, (database) => DetermineDeviceMembers(database, userId));
+                    }
                     break;
                 case RepositoryMonitorEventType.Deleted:
                     // Remove the user's devices if no other (non-removed) assignments exist.
                     RemoveMember(userId, (database) =>
                     {
-                        if (database.UserFlagAssignments.Any(a => a.UserFlagId == UserFlagId && a.UserId == userId && !a.RemovedDate.HasValue))
-                            return null;
+                        if (Configuration.FilterBeginDate.HasValue)
+                        {
+                            if (database.UserFlagAssignments.Any(a => a.UserFlagId == UserFlagId && a.UserId == userId && !a.RemovedDate.HasValue && a.AddedDate >= Configuration.FilterBeginDate))
+                            {
+                                return null;
+                            }
+                            else
+                            {
+                                return DetermineDeviceMembers(database, userId);
+                            }
+                        }
                         else
-                            return DetermineDeviceMembers(database, userId);
+                        {
+                            if (database.UserFlagAssignments.Any(a => a.UserFlagId == UserFlagId && a.UserId == userId && !a.RemovedDate.HasValue))
+                            {
+                                return null;
+                            }
+                            else
+                            {
+                                return DetermineDeviceMembers(database, userId);
+                            }
+                        }
                     });
                     break;
             }

@@ -12,5 +12,6 @@ namespace Disco.Web.Areas.Config.Models.Shared
         public string UpdateUrl { get; set; }
 
         public ADManagedGroup ManagedGroup { get; set; }
+        public bool IncludeFilterBeginDate { get; set; }
     }
 }

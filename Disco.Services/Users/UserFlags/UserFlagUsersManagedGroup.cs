@@ -16,7 +16,7 @@ namespace Disco.Services.Users.UserFlags
         private const string DescriptionFormat = "User associated with the {0} Flag will be added to this Active Directory group.";
         private const string CategoryDescriptionFormat = "Assigned Users Linked Group";
         private const string GroupDescriptionFormat = "{0} [User Flag Users]";
-        
+
         private IDisposable repositorySubscription;
         private int UserFlagId;
         private string UserFlagName;
@@ -24,7 +24,7 @@ namespace Disco.Services.Users.UserFlags
         public override string Description { get { return string.Format(DescriptionFormat, UserFlagName); } }
         public override string CategoryDescription { get { return CategoryDescriptionFormat; } }
         public override string GroupDescription { get { return string.Format(GroupDescriptionFormat, UserFlagName); } }
-        public override bool IncludeFilterBeginDate { get { return false; } }
+        public override bool IncludeFilterBeginDate { get { return true; } }
 
         private UserFlagUsersManagedGroup(string Key, ADManagedGroupConfiguration Configuration, UserFlag UserFlag)
             : base(Key, Configuration)
@@ -105,36 +105,96 @@ namespace Disco.Services.Users.UserFlags
 
         public override IEnumerable<string> DetermineMembers(DiscoDataContext Database)
         {
-            return Database.UserFlagAssignments
-                .Where(a => a.UserFlagId == UserFlagId && !a.RemovedDate.HasValue)
-                .Select(a => a.UserId);
+            if (Configuration.FilterBeginDate.HasValue)
+            {
+                return Database.UserFlagAssignments
+                    .Where(a => a.UserFlagId == UserFlagId && !a.RemovedDate.HasValue && a.AddedDate >= Configuration.FilterBeginDate)
+                    .Select(a => a.UserId);
+            }
+            else
+            {
+                return Database.UserFlagAssignments
+                    .Where(a => a.UserFlagId == UserFlagId && !a.RemovedDate.HasValue)
+                    .Select(a => a.UserId);
+            }
         }
 
         private void ProcessRepositoryEvent(RepositoryMonitorEvent Event)
         {
-            var userFlagAssignemnt = (UserFlagAssignment)Event.Entity;
+            var userFlagAssignment = (UserFlagAssignment)Event.Entity;
 
             switch (Event.EventType)
             {
                 case RepositoryMonitorEventType.Added:
-                    if (!userFlagAssignemnt.RemovedDate.HasValue)
-                        AddMember(userFlagAssignemnt.UserId);
+                    if (Configuration.FilterBeginDate.HasValue)
+                    {
+                        if (!userFlagAssignment.RemovedDate.HasValue && userFlagAssignment.AddedDate >= Configuration.FilterBeginDate)
+                        {
+                            AddMember(userFlagAssignment.UserId);
+                        }
+                    }
+                    else
+                    {
+                        if (!userFlagAssignment.RemovedDate.HasValue)
+                        {
+                            AddMember(userFlagAssignment.UserId);
+                        }
+                    }
                     break;
                 case RepositoryMonitorEventType.Modified:
-                    if (userFlagAssignemnt.RemovedDate.HasValue)
-                        RemoveMember(userFlagAssignemnt.UserId);
+                    if (Configuration.FilterBeginDate.HasValue)
+                    {
+                        if (userFlagAssignment.AddedDate >= Configuration.FilterBeginDate)
+                        {
+                            if (userFlagAssignment.RemovedDate.HasValue)
+                            {
+                                RemoveMember(userFlagAssignment.UserId);
+                            }
+                            else
+                            {
+                                AddMember(userFlagAssignment.UserId);
+                            }
+                        }
+                    }
                     else
-                        AddMember(userFlagAssignemnt.UserId);
+                    {
+                        if (userFlagAssignment.RemovedDate.HasValue)
+                        {
+                            RemoveMember(userFlagAssignment.UserId);
+                        }
+                        else
+                        {
+                            AddMember(userFlagAssignment.UserId);
+                        }
+                    }
                     break;
                 case RepositoryMonitorEventType.Deleted:
-                    string userId = userFlagAssignemnt.UserId;
+                    string userId = userFlagAssignment.UserId;
                     // Remove the user if no other (non-removed) assignments exist.
                     RemoveMember(userId, (database) =>
                     {
-                        if (database.UserFlagAssignments.Any(a => a.UserFlagId == UserFlagId && a.UserId == userId && !a.RemovedDate.HasValue))
-                            return null;
+                        if (Configuration.FilterBeginDate.HasValue)
+                        {
+                            if (database.UserFlagAssignments.Any(a => a.UserFlagId == UserFlagId && a.UserId == userId && !a.RemovedDate.HasValue && a.AddedDate >= Configuration.FilterBeginDate))
+                            {
+                                return null;
+                            }
+                            else
+                            {
+                                return new string[] { userId };
+                            }
+                        }
                         else
-                            return new string[] { userId };
+                        {
+                            if (database.UserFlagAssignments.Any(a => a.UserFlagId == UserFlagId && a.UserId == userId && !a.RemovedDate.HasValue))
+                            {
+                                return null;
+                            }
+                            else
+                            {
+                                return new string[] { userId };
+                            }
+                        }
                     });
                     break;
             }

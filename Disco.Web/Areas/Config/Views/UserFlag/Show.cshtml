@@ -21,57 +21,62 @@
 <div id="Config_UserFlags_Show" class="form@(hideAdvanced ? " Config_HideAdvanced" : null)" style="width: 550px">
     <table>
         <tr>
-            <th style="width: 150px">Id:
+            <th style="width: 150px">
+                Id:
             </th>
             <td>
                 @Html.DisplayFor(model => model.UserFlag.Id)
             </td>
         </tr>
         <tr>
-            <th>Name:
+            <th>
+                Name:
             </th>
-            <td>@if (canConfig)
-                {@Html.EditorFor(model => model.UserFlag.Name)
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
-                    $(function () {
-                        document.DiscoFunctions.PropertyChangeHelper(
-                            $('#UserFlag_Name'),
-                            'Invalid Name',
-                            '@(Url.Action(MVC.API.UserFlag.UpdateName(Model.UserFlag.Id)))',
-                            'FlagName'
-                        );
-                    });
-                </script>
+            <td>
+                @if (canConfig)
+            {@Html.EditorFor(model => model.UserFlag.Name)
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                $('#UserFlag_Name'),
+                                'Invalid Name',
+                                '@(Url.Action(MVC.API.UserFlag.UpdateName(Model.UserFlag.Id)))',
+                                'FlagName'
+                            );
+                        });
+                    </script>
                 }
                 else
                 {
-                @Model.UserFlag.Name
+                    @Model.UserFlag.Name
                 }
             </td>
         </tr>
         <tr>
-            <th>Description:
+            <th>
+                Description:
             </th>
-            <td>@if (canConfig)
+            <td>
+                @if (canConfig)
                 {@Html.EditorFor(model => model.UserFlag.Description)
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
-                    $(function () {
-                        document.DiscoFunctions.PropertyChangeHelper(
-                            $('#UserFlag_Description'),
-                            'Invalid Description',
-                            '@(Url.Action(MVC.API.UserFlag.UpdateDescription(Model.UserFlag.Id)))',
-                            'Description'
-                        );
-                    });
-                </script>
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                $('#UserFlag_Description'),
+                                'Invalid Description',
+                                '@(Url.Action(MVC.API.UserFlag.UpdateDescription(Model.UserFlag.Id)))',
+                                'Description'
+                            );
+                        });
+                    </script>
                 }
                 else
                 {
-                <pre>
+                    <pre>
                     @if (string.IsNullOrEmpty(Model.UserFlag.Description))
                     {
                     <text>&lt;None&gt;</text>
@@ -85,7 +90,8 @@
             </td>
         </tr>
         <tr>
-            <th>Statistics:
+            <th>
+                Statistics:
             </th>
             <td>
                 <div><strong>@Model.CurrentAssignmentCount user@(Model.CurrentAssignmentCount != 1 ? "s" : null) currently assigned</strong></div>
@@ -93,7 +99,8 @@
             </td>
         </tr>
         <tr>
-            <th>Icon:
+            <th>
+                Icon:
             </th>
             <td>
                 <i id="Config_UserFlags_Icon" data-icon="@(Model.UserFlag.Icon)" data-colour="@(Model.UserFlag.IconColour)" class="fa fa-@(Model.UserFlag.Icon) fa-4x d-@(Model.UserFlag.IconColour)"></i>
@@ -216,7 +223,8 @@
             </tr>
         }
         <tr class="Config_HideAdvanced_Item">
-            <th>Linked Groups:
+            <th>
+                Linked Groups:
             </th>
             <td>
                 <div>
@@ -226,6 +234,7 @@
                    CategoryDescription = UserFlagUsersManagedGroup.GetCategoryDescription(Model.UserFlag),
                    Description = UserFlagUsersManagedGroup.GetDescription(Model.UserFlag),
                    ManagedGroup = Model.UsersLinkedGroup,
+                   IncludeFilterBeginDate = true,
                    UpdateUrl = Url.Action(MVC.API.UserFlag.UpdateAssignedUsersLinkedGroup(Model.UserFlag.Id, redirect: true))
                })
                     @Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
@@ -234,10 +243,11 @@
                    CategoryDescription = UserFlagUserDevicesManagedGroup.GetCategoryDescription(Model.UserFlag),
                    Description = UserFlagUserDevicesManagedGroup.GetDescription(Model.UserFlag),
                    ManagedGroup = Model.UserDevicesLinkedGroup,
+                   IncludeFilterBeginDate = true,
                    UpdateUrl = Url.Action(MVC.API.UserFlag.UpdateAssignedUserDevicesLinkedGroup(Model.UserFlag.Id, redirect: true))
                })
                     @if (canConfig)
-                    {
+            {
                         @Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared)
                     }
                 </div>
@@ -266,7 +276,7 @@
                         <h5><i class="fa fa-repeat fa-fw"></i>Override</h5>
                         <p>
                             Specified users will have this flag <strong>added</strong>. Specified users which already have this flag will be skipped.
-                                    Users who already have this flag but are not specified will have the flag <strong>removed</strong>.
+                            Users who already have this flag but are not specified will have the flag <strong>removed</strong>.
                         </p>
                     </div>
                 </div>

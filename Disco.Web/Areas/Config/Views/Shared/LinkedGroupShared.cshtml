@@ -1,31 +1,59 @@
-﻿<div id="Config_LinkedGroup_Dialog" title="Linked Group" class="dialog">
+﻿@{
+    Html.BundleDeferred("~/ClientScripts/Modules/jQueryUI-TimePicker");
+}
+<div id="Config_LinkedGroup_Dialog" title="Linked Group" class="dialog">
     <h3 id="Config_LinkedGroup_Title"></h3>
+    <form action="#" method="post">
+        <table class="input">
+            <tbody>
+                <tr>
+                    <th>
+                        <label for="Config_LinkedGroup_Id">Linked Group:</label>
+                    </th>
+                    <td>
+                        <input id="Config_LinkedGroup_Id" type="text" name="GroupId" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="Config_LinkedGroup_FilterDate">Filter Date: </label>
+                    </th>
+                    <td>
+                        <input id="Config_LinkedGroup_FilterDate" type="text" name="FilterBeginDate" placeholder="No Filter" autocomplete="off" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
     <div class="info-box error">
         <p class="fa-p">
             <i class="fa fa-exclamation-circle"></i><strong>Warning:</strong> This group will be managed by Disco ICT.<br />
             Any <strong>existing members will be removed from the group</strong>, and it will be automatically synchronized with related members.
         </p>
     </div>
-    <form action="#" method="post">
-        <div class="input">
-            <label for="Config_LinkedGroup_Id">Linked Group: </label>
-            <input id="Config_LinkedGroup_Id" type="text" name="GroupId" />
-        </div>
-    </form>
 </div>
 <script>
     $(function () {
         var dialog;
         var dialogGroupId;
+        var dialogFilterDate;
         var dialogTitle;
 
-        function showDialog(groupId, updateUrl, title) {
+        function showDialog(groupId, filterDateOption, filterDateValue, updateUrl, title) {
             if (dialog == null) {
                 dialog = $('#Config_LinkedGroup_Dialog').dialog({
                     width: 450,
                     resizable: false,
                     modal: true,
                     autoOpen: false
+                });
+
+                dialogFilterDate = $('#Config_LinkedGroup_FilterDate');
+                dialogFilterDate.datetimepicker({
+                    ampm: true,
+                    changeYear: true,
+                    changeMonth: true,
+                    dateFormat: 'yy/mm/dd'
                 });
 
                 dialogGroupId = $('#Config_LinkedGroup_Id');
@@ -68,6 +96,18 @@
             };
 
             dialogGroupId.val(groupId);
+
+            if (!!filterDateOption) {
+                if (!!filterDateValue) {
+                    dialogFilterDate.datetimepicker('setDate', moment(filterDateValue).toDate());
+                } else {
+                    dialogFilterDate.val('');
+                }
+                dialogFilterDate.closest('tr').show();
+            } else {
+                dialogFilterDate.closest('tr').hide();
+            }
+
             dialogTitle.text(title);
             dialog.dialog('option', 'buttons', dialogButtons);
             dialog.dialog('option', 'title', 'Linked Group: ' + title);
@@ -78,10 +118,12 @@
             $this = $(this);
 
             var configuredGroupId = $this.attr('data-linkedgroupid');
+            var configuredFilterBeginDate = $this.attr('data-linkedgroupfilterdate');
+            var filterDateOption = $this.attr('data-linkedgroupfilterdateoption') == 'True';
             var description = $this.attr('data-linkedroupdescription');
             var updateUrl = $this.attr('data-linkedroupupdateurl');
 
-            showDialog(configuredGroupId, updateUrl, description);
+            showDialog(configuredGroupId, filterDateOption, configuredFilterBeginDate, updateUrl, description);
 
             return false;
         });

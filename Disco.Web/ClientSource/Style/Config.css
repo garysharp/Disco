@@ -117,8 +117,11 @@
 #Config_LinkedGroup_Dialog h3 {
   margin-bottom: 6px;
 }
-#Config_LinkedGroup_Dialog div.input {
+#Config_LinkedGroup_Dialog table.input {
   margin-top: 12px;
+}
+#Config_LinkedGroup_Dialog table.input th {
+  text-align: right;
 }
 #expressionEditor #expressionEditorExceptionContainer {
   display: none;
