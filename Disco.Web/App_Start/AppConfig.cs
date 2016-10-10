@@ -114,6 +114,10 @@ namespace Disco.Web
             // Attachment PDF Thumbnail Update
             if (PreviousVersion != null && PreviousVersion < new Version(2, 2, 0, 0))
                 Services.Documents.AttachmentImport.ThumbnailUpdateTask.SetRequired(Database);
+
+            // AD Device Description Update
+            if (PreviousVersion != null && PreviousVersion < new Version(2, 2, 16281, 0))
+                Services.Interop.ActiveDirectory.ADDeviceDescriptionUpdateTask.SetRequired(Database);
         }
 
         public static void DisposeEnvironment()

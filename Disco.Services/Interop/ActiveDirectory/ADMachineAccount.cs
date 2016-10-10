@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
+using System.Text;
 
 namespace Disco.Services.Interop.ActiveDirectory
 {
@@ -178,15 +179,18 @@ namespace Disco.Services.Interop.ActiveDirectory
             using (var deAccount = WritableDomainController.RetrieveDirectoryEntry(this.DistinguishedName))
             {
                 var descriptionProp = deAccount.Entry.Properties["description"];
-                if (descriptionProp.Count > 0)
+                if (descriptionProp.Count != 1 || (descriptionProp[0] as string) != Description)
                 {
-                    descriptionProp.Clear();
+                    if (descriptionProp.Count > 0)
+                    {
+                        descriptionProp.Clear();
+                    }
+                    if (!string.IsNullOrEmpty(Description))
+                    {
+                        descriptionProp.Add(Description);
+                    }
+                    deAccount.Entry.CommitChanges();
                 }
-                if (!string.IsNullOrEmpty(Description))
-                {
-                    descriptionProp.Add(Description);
-                }
-                deAccount.Entry.CommitChanges();
             }
         }
         public void SetDescription(string Description)
@@ -196,19 +200,28 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public void SetDescription(ADDomainController WritableDomainController, Device Device)
         {
-            System.Text.StringBuilder descriptionBuilder = new System.Text.StringBuilder();
+            var descriptionBuilder = new StringBuilder();
 
-            if (Device.AssignedUserId != null)
+            if (Device.DecommissionedDate.HasValue)
             {
-                descriptionBuilder.Append(Device.AssignedUser.UserId).Append(" (").Append(Device.AssignedUser.DisplayName).Append("); ");
+                descriptionBuilder.Append("Decommissioned: ")
+                    .Append(Device.DecommissionReason.ReasonMessage())
+                    .Append(" (").Append(Device.DecommissionedDate.Value.ToString("yyyy-MM-dd")).Append(')');
             }
-
-            if (Device.DeviceModelId.HasValue)
+            else
             {
-                descriptionBuilder.Append(Device.DeviceModel.Description).Append("; ");
-            }
+                if (Device.AssignedUserId != null)
+                {
+                    descriptionBuilder.Append(Device.AssignedUser.UserId).Append(" (").Append(Device.AssignedUser.DisplayName).Append("); ");
+                }
 
-            descriptionBuilder.Append(Device.DeviceProfile.Description).Append(";");
+                if (Device.DeviceModelId.HasValue)
+                {
+                    descriptionBuilder.Append(Device.DeviceModel.Description).Append("; ");
+                }
+
+                descriptionBuilder.Append(Device.DeviceProfile.Description).Append(";");
+            }
 
             string description = descriptionBuilder.ToString().Trim();
             if (description.Length > 1024)
@@ -336,7 +349,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                     {
                         i.Entry.UsePropertyCache = false;
                         i.Entry.MoveTo(ou.Entry);
-                        
+
                         // Update Distinguished Name
                         this.DistinguishedName = i.Entry.Properties["distinguishedName"][0].ToString();
                     }

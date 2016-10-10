@@ -33,6 +33,14 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Config.Logging.TaskStatus(ts.SessionId));
         }
 
+        [DiscoAuthorize(Claims.DiscoAdminAccount)]
+        public virtual ActionResult UpdateADDeviceDescriptions()
+        {
+            var ts = Disco.Services.Interop.ActiveDirectory.ADDeviceDescriptionUpdateTask.ScheduleImmediately();
+            ts.SetFinishedUrl(Url.Action(MVC.Config.SystemConfig.Index()));
+            return RedirectToAction(MVC.Config.Logging.TaskStatus(ts.SessionId));
+        }
+
         [DiscoAuthorize(Claims.Config.System.Show)]
         public virtual ActionResult UpdateCheck()
         {

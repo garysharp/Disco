@@ -147,6 +147,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string UpdateLastNetworkLogonDates = "UpdateLastNetworkLogonDates";
             public readonly string UpdateAttachmentThumbnails = "UpdateAttachmentThumbnails";
+            public readonly string UpdateADDeviceDescriptions = "UpdateADDeviceDescriptions";
             public readonly string UpdateCheck = "UpdateCheck";
             public readonly string UpdateOrganisationName = "UpdateOrganisationName";
             public readonly string OrganisationLogo = "OrganisationLogo";
@@ -169,6 +170,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public const string UpdateLastNetworkLogonDates = "UpdateLastNetworkLogonDates";
             public const string UpdateAttachmentThumbnails = "UpdateAttachmentThumbnails";
+            public const string UpdateADDeviceDescriptions = "UpdateADDeviceDescriptions";
             public const string UpdateCheck = "UpdateCheck";
             public const string UpdateOrganisationName = "UpdateOrganisationName";
             public const string OrganisationLogo = "OrganisationLogo";
@@ -346,6 +348,17 @@ namespace Disco.Web.Areas.API.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAttachmentThumbnails);
             UpdateAttachmentThumbnailsOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateADDeviceDescriptionsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateADDeviceDescriptions()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateADDeviceDescriptions);
+            UpdateADDeviceDescriptionsOverride(callInfo);
             return callInfo;
         }
 

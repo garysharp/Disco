@@ -80,7 +80,7 @@ namespace Disco.Services
 
             return true;
         }
-        public static void OnDecommission(this Device d, Disco.Models.Repository.DecommissionReasons Reason)
+        public static void OnDecommission(this Device d, DecommissionReasons Reason)
         {
             if (!d.CanDecommission())
                 throw new InvalidOperationException("Decommission of Device is Denied");
@@ -95,6 +95,7 @@ namespace Disco.Services
                 if (adAccount != null && !adAccount.IsCriticalSystemObject)
                 {
                     adAccount.DisableAccount();
+                    adAccount.SetDescription(d);
                 }
             }
         }
@@ -122,6 +123,7 @@ namespace Disco.Services
                 if (adAccount != null && !adAccount.IsCriticalSystemObject)
                 {
                     adAccount.EnableAccount();
+                    adAccount.SetDescription(d);
                 }
             }
         }
