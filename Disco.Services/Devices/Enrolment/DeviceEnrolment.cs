@@ -5,16 +5,14 @@ using Disco.Services.Authorization;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using Exceptionless;
-using PList;
+using PListNet;
+using PListNet.Nodes;
 using Renci.SshNet;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
 
 namespace Disco.Services.Devices.Enrolment
 {
@@ -52,63 +50,75 @@ namespace Disco.Services.Devices.Enrolment
                     {
                         EnrolmentLog.LogSessionProgress(sessionId, 30, "Retrieving System Profile Information");
                         var sshResult = sshClient.RunCommand("system_profiler -xml SPHardwareDataType SPNetworkDataType SPSoftwareDataType");
-                        PListRoot profilerData;
-                        using (var reader = new StringReader(sshResult.Result))
+
+                        ArrayNode profilerData;
+
+                        using (var sshResultStream = new MemoryStream())
                         {
-                            using (var xmlReader = XmlReader.Create(reader, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Ignore }))
+                            using (var sshResultWriter = new StreamWriter(sshResultStream, Encoding.UTF8, 0x400, true))
                             {
-                                XmlSerializer serializer = new XmlSerializer(typeof(PListRoot));
-                                profilerData = (PListRoot)serializer.Deserialize(xmlReader);
+                                sshResultWriter.Write(sshResult.Result);
                             }
+                            sshResultStream.Position = 0;
+
+                            profilerData = PList.Load(sshResultStream) as ArrayNode;
                         }
 
                         EnrolmentLog.LogSessionProgress(sessionId, 90, "Processing System Profile Information");
 
-                        PListDict profilerDataHardware = null;
-                        PListArray profilerDataNetwork = null;
-                        PListDict profilerDataSoftware = null;
+                        DictionaryNode profilerDataHardware = null;
+                        ArrayNode profilerDataNetwork = null;
+                        DictionaryNode profilerDataSoftware = null;
 
-                        foreach (PListDict node in (profilerData.Root as PListArray))
+                        if (profilerData == null)
+                            throw new InvalidOperationException("System Profiler didn't return the expected response");
+
+                        foreach (var node in profilerData.OfType<DictionaryNode>())
                         {
-                            var nodeItems = ((PListArray)node["_items"]);
+                            var nodeItems = ((ArrayNode)node["_items"]);
+                            PNode nodeDataType;
 
-                            switch (((PListString)node["_dataType"]).Value)
+                            if (node.TryGetValue("_dataType", out nodeDataType) && nodeDataType is StringNode)
                             {
-                                case "SPHardwareDataType":
-                                    profilerDataHardware = (PListDict)nodeItems[0];
-                                    break;
-                                case "SPNetworkDataType":
-                                    profilerDataNetwork = nodeItems;
-                                    break;
-                                case "SPSoftwareDataType":
-                                    profilerDataSoftware = (PListDict)nodeItems[0];
-                                    break;
+                                switch (((StringNode)nodeDataType).Value)
+                                {
+                                    case "SPHardwareDataType":
+                                        profilerDataHardware = (DictionaryNode)nodeItems[0];
+                                        break;
+                                    case "SPNetworkDataType":
+                                        profilerDataNetwork = nodeItems;
+                                        break;
+                                    case "SPSoftwareDataType":
+                                        profilerDataSoftware = (DictionaryNode)nodeItems[0];
+                                        break;
+                                }
                             }
+
                         }
 
                         if (profilerDataHardware == null || profilerDataNetwork == null || profilerDataSoftware == null)
                             throw new InvalidOperationException("System Profiler didn't return information for a requested data type");
 
-                        trustedRequest.DeviceSerialNumber = (profilerDataHardware["serial_number"] as PListString).Value;
-                        trustedRequest.DeviceUUID = (profilerDataHardware["platform_UUID"] as PListString).Value;
-                        trustedRequest.DeviceComputerName = (profilerDataSoftware["local_host_name"] as PListString).Value;
+                        trustedRequest.DeviceSerialNumber = ((StringNode)profilerDataHardware["serial_number"]).Value;
+                        trustedRequest.DeviceUUID = ((StringNode)profilerDataHardware["platform_UUID"]).Value;
+                        trustedRequest.DeviceComputerName = ((StringNode)profilerDataSoftware["local_host_name"]).Value;
 
-                        var profilerDataNetworkEthernet = profilerDataNetwork.Cast<PListDict>().FirstOrDefault(e => ((PListString)e["_name"]).Value == "Ethernet");
+                        var profilerDataNetworkEthernet = profilerDataNetwork.OfType<DictionaryNode>().FirstOrDefault(e => ((StringNode)e["_name"]).Value == "Ethernet");
                         if (profilerDataNetworkEthernet != null)
                         {
-                            trustedRequest.DeviceLanMacAddress = ((PListString)(profilerDataNetworkEthernet["Ethernet"] as PListDict)["MAC Address"]).Value;
+                            trustedRequest.DeviceLanMacAddress = ((StringNode)((DictionaryNode)profilerDataNetworkEthernet["Ethernet"])["MAC Address"]).Value;
                         }
 
-                        var profilerDataNetworkWiFi = profilerDataNetwork.Cast<PListDict>().FirstOrDefault(e => ((PListString)e["_name"]).Value == "Wi-Fi");
+                        var profilerDataNetworkWiFi = profilerDataNetwork.OfType<DictionaryNode>().FirstOrDefault(e => ((StringNode)e["_name"]).Value == "Wi-Fi");
                         if (profilerDataNetworkWiFi != null)
                         {
-                            trustedRequest.DeviceWlanMacAddress = ((PListString)(profilerDataNetworkWiFi["Ethernet"] as PListDict)["MAC Address"]).Value;
+                            trustedRequest.DeviceWlanMacAddress = ((StringNode)((DictionaryNode)profilerDataNetworkWiFi["Ethernet"])["MAC Address"]).Value;
                         }
 
                         trustedRequest.DeviceManufacturer = "Apple Inc.";
-                        trustedRequest.DeviceModel = (profilerDataHardware["machine_model"] as PListString).Value;
+                        trustedRequest.DeviceModel = ((StringNode)profilerDataHardware["machine_model"]).Value;
 
-                        trustedRequest.DeviceModelType = ParseMacModelType((profilerDataHardware["machine_name"] as PListString).Value);
+                        trustedRequest.DeviceModelType = ParseMacModelType(((StringNode)profilerDataHardware["machine_name"]).Value);
 
                         EnrolmentLog.LogSessionProgress(sessionId, 99, "Disconnecting");
 

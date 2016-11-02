@@ -82,8 +82,8 @@
       <HintPath>..\packages\PDFsharp.1.50.4000-beta3b\lib\net20\PdfSharp.Charting.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PList, Version=0.1.4109.38751, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\plist.net.1.0\lib\Net35\PList.dll</HintPath>
+    <Reference Include="PListNet, Version=2.0.5870.1919, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PListNet.2.0.3\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\PListNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Quartz">
