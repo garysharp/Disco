@@ -1,0 +1,577 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PdfiumViewer</name>
+    </assembly>
+    <members>
+        <member name="M:PdfiumViewer.CustomScrollControl.IsInputKey(System.Windows.Forms.Keys)">
+            <summary>
+            Determines whether the specified key is a regular input key or a special key that requires preprocessing.
+            </summary>
+            <returns>
+            true if the specified key is a regular input key; otherwise, false.
+            </returns>
+            <param name="keyData">One of the <see cref="T:System.Windows.Forms.Keys"/> values. </param>
+        </member>
+        <member name="M:PdfiumViewer.NativeMethods.FPDF_LoadCustomDocument(System.IO.Stream,System.String,System.Int32)">
+            <summary>
+            Opens a document using a .NET Stream. Allows opening huge
+            PDFs without loading them into memory first.
+            </summary>
+            <param name="input">The input Stream. Don't dispose prior to closing the pdf.</param>
+            <param name="password">Password, if the PDF is protected. Can be null.</param>
+            <param name="streamPtr">Retrieves an IntPtr to the COM object for the Stream. The caller must release this with Marshal.Release prior to Disposing the Stream.</param>
+            <returns>An IntPtr to the FPDF_DOCUMENT object.</returns>
+        </member>
+        <member name="P:PdfiumViewer.PanningZoomingScrollControl.Zoom">
+            <summary>
+            Gets or sets the current zoom level.
+            </summary>
+        </member>
+        <member name="M:PdfiumViewer.PanningZoomingScrollControl.ZoomIn">
+            <summary>
+            Zooms the PDF document in one step.
+            </summary>
+        </member>
+        <member name="M:PdfiumViewer.PanningZoomingScrollControl.ZoomOut">
+            <summary>
+            Zooms the PDF document out one step.
+            </summary>
+        </member>
+        <member name="M:PdfiumViewer.PanningZoomingScrollControl.OnMouseWheel(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.MouseWheel"/> event.
+            </summary>
+            <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data. </param>
+        </member>
+        <member name="M:PdfiumViewer.PanningZoomingScrollControl.IsInputKey(System.Windows.Forms.Keys)">
+            <summary>
+            Determines whether the specified key is a regular input key or a special key that requires preprocessing.
+            </summary>
+            <returns>
+            true if the specified key is a regular input key; otherwise, false.
+            </returns>
+            <param name="keyData">One of the <see cref="T:System.Windows.Forms.Keys"/> values. </param>
+        </member>
+        <member name="F:PdfiumViewer.PasswordForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:PdfiumViewer.PasswordForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:PdfiumViewer.PasswordForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:PdfiumViewer.PdfDocument">
+            <summary>
+            Provides functionality to render a PDF document.
+            </summary>
+        </member>
+        <member name="M:PdfiumViewer.PdfDocument.Load(System.String)">
+            <summary>
+            Initializes a new instance of the PdfDocument class with the provided path.
+            </summary>
+            <param name="path">Path to the PDF document.</param>
+        </member>
+        <member name="M:PdfiumViewer.PdfDocument.Load(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the PdfDocument class with the provided path.
+            </summary>
+            <param name="path">Path to the PDF document.</param>
+            <param name="password">Password for the PDF document.</param>
+        </member>
+        <member name="M:PdfiumViewer.PdfDocument.Load(System.Windows.Forms.IWin32Window,System.String)">
+            <summary>
+            Initializes a new instance of the PdfDocument class with the provided path.
+            </summary>
+            <param name="owner">Window to show any UI for.</param>
+            <param name="path">Path to the PDF document.</param>
+        </member>
+        <member name="M:PdfiumViewer.PdfDocument.Load(System.Windows.Forms.IWin32Window,System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the PdfDocument class with the provided path.
+            </summary>
+            <param name="owner">Window to show any UI for.</param>
+            <param name="stream">Stream for the PDF document.</param>
+        </member>
+        <member name="M:PdfiumViewer.PdfDocument.Load(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the PdfDocument class with the provided stream.
+            </summary>
+            <param name="stream">Stream for the PDF document.</param>
+        </member>
+        <member name="M:PdfiumViewer.PdfDocument.Load(System.IO.Stream,System.String)">
+            <summary>
+            Initializes a new instance of the PdfDocument class with the provided stream.
+            </summary>
+            <param name="stream">Stream for the PDF document.</param>
+            <param name="password">Password for the PDF document.</param>
+        </member>
+        <member name="P:PdfiumViewer.PdfDocument.PageCount">
+            <summary>
+            Number of pages in the PDF document.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.PdfDocument.Bookmarks">
+            <summary>
+            Bookmarks stored in this PdfFile
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.PdfDocument.PageSizes">
+            <summary>
+            Size of each page in the PDF document.
+            </summary>
+        </member>
+        <member name="M:PdfiumViewer.PdfDocument.Render(System.Int32,System.Drawing.Graphics,System.Single,System.Single,System.Drawing.Rectangle,System.Boolean)">
+            <summary>
+            Renders a page of the PDF document to the provided graphics instance.
+            </summary>
+            <param name="page">Number of the page to render.</param>
+            <param name="graphics">Graphics instance to render the page on.</param>
+            <param name="dpiX">Horizontal DPI.</param>
+            <param name="dpiY">Vertical DPI.</param>
+            <param name="bounds">Bounds to render the page in.</param>
+            <param name="forPrinting">Render the page for printing.</param>
+        </member>
+        <member name="M:PdfiumViewer.PdfDocument.Render(System.Int32,System.Drawing.Graphics,System.Single,System.Single,System.Drawing.Rectangle,PdfiumViewer.PdfRenderFlags)">
+            <summary>
+            Renders a page of the PDF document to the provided graphics instance.
+            </summary>
+            <param name="page">Number of the page to render.</param>
+            <param name="graphics">Graphics instance to render the page on.</param>
+            <param name="dpiX">Horizontal DPI.</param>
+            <param name="dpiY">Vertical DPI.</param>
+            <param name="bounds">Bounds to render the page in.</param>
+            <param name="flags">Flags used to influence the rendering.</param>
+        </member>
+        <member name="M:PdfiumViewer.PdfDocument.Render(System.Int32,System.Single,System.Single,System.Boolean)">
+            <summary>
+            Renders a page of the PDF document to an image.
+            </summary>
+            <param name="page">Number of the page to render.</param>
+            <param name="dpiX">Horizontal DPI.</param>
+            <param name="dpiY">Vertical DPI.</param>
+            <param name="forPrinting">Render the page for printing.</param>
+            <returns>The rendered image.</returns>
+        </member>
+        <member name="M:PdfiumViewer.PdfDocument.Render(System.Int32,System.Single,System.Single,PdfiumViewer.PdfRenderFlags)">
+            <summary>
+            Renders a page of the PDF document to an image.
+            </summary>
+            <param name="page">Number of the page to render.</param>
+            <param name="dpiX">Horizontal DPI.</param>
+            <param name="dpiY">Vertical DPI.</param>
+            <param name="flags">Flags used to influence the rendering.</param>
+            <returns>The rendered image.</returns>
+        </member>
+        <member name="M:PdfiumViewer.PdfDocument.Render(System.Int32,System.Int32,System.Int32,System.Single,System.Single,System.Boolean)">
+            <summary>
+            Renders a page of the PDF document to an image.
+            </summary>
+            <param name="page">Number of the page to render.</param>
+            <param name="width">Width of the rendered image.</param>
+            <param name="height">Height of the rendered image.</param>
+            <param name="dpiX">Horizontal DPI.</param>
+            <param name="dpiY">Vertical DPI.</param>
+            <param name="forPrinting">Render the page for printing.</param>
+            <returns>The rendered image.</returns>
+        </member>
+        <member name="M:PdfiumViewer.PdfDocument.Render(System.Int32,System.Int32,System.Int32,System.Single,System.Single,PdfiumViewer.PdfRenderFlags)">
+            <summary>
+            Renders a page of the PDF document to an image.
+            </summary>
+            <param name="page">Number of the page to render.</param>
+            <param name="width">Width of the rendered image.</param>
+            <param name="height">Height of the rendered image.</param>
+            <param name="dpiX">Horizontal DPI.</param>
+            <param name="dpiY">Vertical DPI.</param>
+            <param name="flags">Flags used to influence the rendering.</param>
+            <returns>The rendered image.</returns>
+        </member>
+        <member name="M:PdfiumViewer.PdfDocument.Save(System.String)">
+            <summary>
+            Save the PDF document to the specified location.
+            </summary>
+            <param name="path">Path to save the PDF document to.</param>
+        </member>
+        <member name="M:PdfiumViewer.PdfDocument.Save(System.IO.Stream)">
+            <summary>
+            Save the PDF document to the specified location.
+            </summary>
+            <param name="stream">Stream to save the PDF document to.</param>
+        </member>
+        <member name="M:PdfiumViewer.PdfDocument.CreatePrintDocument">
+            <summary>
+            Creates a <see cref="T:System.Drawing.Printing.PrintDocument"/> for the PDF document.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PdfiumViewer.PdfDocument.CreatePrintDocument(PdfiumViewer.PdfPrintMode)">
+            <summary>
+            Creates a <see cref="T:System.Drawing.Printing.PrintDocument"/> for the PDF document.
+            </summary>
+            <param name="printMode">Specifies the mode for printing. The default
+            value for this parameter is CutMargin.</param>
+            <returns></returns>
+        </member>
+        <member name="T:PdfiumViewer.PdfPageLink">
+            <summary>
+            Describes a link on a page.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.PdfPageLink.Bounds">
+            <summary>
+            The location of the link.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.PdfPageLink.TargetPage">
+            <summary>
+            The target of the link.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.PdfPageLink.Uri">
+            <summary>
+            The target URI of the link.
+            </summary>
+        </member>
+        <member name="M:PdfiumViewer.PdfPageLink.#ctor(System.Drawing.RectangleF,System.Nullable{System.Int32},System.String)">
+            <summary>
+            Creates a new instance of the PdfPageLink class.
+            </summary>
+            <param name="bounds">The location of the link</param>
+            <param name="targetPage">The target page of the link</param>
+            <param name="uri">The target URI of the link</param>
+        </member>
+        <member name="T:PdfiumViewer.PdfPageLinks">
+            <summary>
+            Describes all links on a page.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.PdfPageLinks.Links">
+            <summary>
+            All links of the page.
+            </summary>
+        </member>
+        <member name="T:PdfiumViewer.PdfPrintMode">
+            <summary>
+            Specifies the mode in which the document should be printed.
+            </summary>
+            <remarks>
+            Printers have a hard margin. This is a (small) margin on which it is not
+            possible to print. PdfPrintMode specifies whether the page should be
+            scaled to fit into this margin, or that the margin should be cut off of
+            the page.
+            </remarks>
+        </member>
+        <member name="F:PdfiumViewer.PdfPrintMode.ShrinkToMargin">
+            <summary>
+            Shrink the print area to fall within the hard printer margin.
+            </summary>
+        </member>
+        <member name="F:PdfiumViewer.PdfPrintMode.CutMargin">
+            <summary>
+            Cut the hard printer margin from the output.
+            </summary>
+        </member>
+        <member name="T:PdfiumViewer.PdfRenderFlags">
+            <summary>
+            Flags that influence the page rendering process.
+            </summary>
+        </member>
+        <member name="F:PdfiumViewer.PdfRenderFlags.None">
+            <summary>
+            No flags.
+            </summary>
+        </member>
+        <member name="F:PdfiumViewer.PdfRenderFlags.ForPrinting">
+            <summary>
+            Render for printing.
+            </summary>
+        </member>
+        <member name="F:PdfiumViewer.PdfRenderFlags.Annotations">
+            <summary>
+            Set if annotations are to be rendered.
+            </summary>
+        </member>
+        <member name="F:PdfiumViewer.PdfRenderFlags.LcdText">
+            <summary>
+            Set if using text rendering optimized for LCD display.
+            </summary>
+        </member>
+        <member name="F:PdfiumViewer.PdfRenderFlags.NoNativeText">
+            <summary>
+            Don't use the native text output available on some platforms.
+            </summary>
+        </member>
+        <member name="F:PdfiumViewer.PdfRenderFlags.Grayscale">
+            <summary>
+            Grayscale output.
+            </summary>
+        </member>
+        <member name="F:PdfiumViewer.PdfRenderFlags.LimitImageCacheSize">
+            <summary>
+            Limit image cache size.
+            </summary>
+        </member>
+        <member name="F:PdfiumViewer.PdfRenderFlags.ForceHalftone">
+            <summary>
+            Always use halftone for image stretching.
+            </summary>
+        </member>
+        <member name="F:PdfiumViewer.PdfRenderFlags.Transparent">
+            <summary>
+            Render with a transparent background.
+            </summary>
+        </member>
+        <member name="T:PdfiumViewer.PdfRenderer">
+            <summary>
+            Control to render PDF documents.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.PdfRenderer.TabStop">
+            <summary>
+            Gets or sets a value indicating whether the user can give the focus to this control using the TAB key.
+            </summary>
+            
+            <returns>
+            true if the user can give the focus to the control using the TAB key; otherwise, false. The default is true.Note:This property will always return true for an instance of the <see cref="T:System.Windows.Forms.Form"/> class.
+            </returns>
+            <filterpriority>1</filterpriority><PermissionSet><IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/><IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence"/><IPermission class="System.Diagnostics.PerformanceCounterPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true"/></PermissionSet>
+        </member>
+        <member name="P:PdfiumViewer.PdfRenderer.ZoomMode">
+            <summary>
+            Gets or sets the way the document should be zoomed initially.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.PdfRenderer.Rotation">
+            <summary>
+            Gets or sets the current rotation of the PDF document.
+            </summary>
+        </member>
+        <member name="M:PdfiumViewer.PdfRenderer.#ctor">
+            <summary>
+            Initializes a new instance of the PdfRenderer class.
+            </summary>
+        </member>
+        <member name="M:PdfiumViewer.PdfRenderer.OnLayout(System.Windows.Forms.LayoutEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.Layout"/> event.
+            </summary>
+            <param name="levent">A <see cref="T:System.Windows.Forms.LayoutEventArgs"/> that contains the event data. </param>
+        </member>
+        <member name="M:PdfiumViewer.PdfRenderer.Load(PdfiumViewer.PdfDocument)">
+            <summary>
+            Load a <see cref="T:PdfiumViewer.PdfDocument"/> into the control.
+            </summary>
+            <param name="document">Document to load.</param>
+        </member>
+        <member name="M:PdfiumViewer.PdfRenderer.OnPaint(System.Windows.Forms.PaintEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.Paint"/> event.
+            </summary>
+            <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data. </param>
+        </member>
+        <member name="M:PdfiumViewer.PdfRenderer.RotateLeft">
+            <summary>
+            Rotate the PDF document left.
+            </summary>
+        </member>
+        <member name="M:PdfiumViewer.PdfRenderer.RotateRight">
+            <summary>
+            Rotate the PDF document right.
+            </summary>
+        </member>
+        <member name="M:PdfiumViewer.PdfRenderer.Dispose(System.Boolean)">
+            <summary>
+            Releases the unmanaged resources used by the <see cref="T:System.Windows.Forms.Control"/> and its child controls and optionally releases the managed resources.
+            </summary>
+            <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
+        </member>
+        <member name="T:PdfiumViewer.PdfRotation">
+            <summary>
+            Specifies the rotation of pages shown in the PDF renderer.
+            </summary>
+        </member>
+        <member name="F:PdfiumViewer.PdfRotation.Rotate0">
+            <summary>
+            Rotates the output 0 degrees.
+            </summary>
+        </member>
+        <member name="F:PdfiumViewer.PdfRotation.Rotate90">
+            <summary>
+            Rotates the output 90 degrees.
+            </summary>
+        </member>
+        <member name="F:PdfiumViewer.PdfRotation.Rotate180">
+            <summary>
+            Rotates the output 180 degrees.
+            </summary>
+        </member>
+        <member name="F:PdfiumViewer.PdfRotation.Rotate270">
+            <summary>
+            Rotates the output 270 degrees.
+            </summary>
+        </member>
+        <member name="T:PdfiumViewer.PdfViewer">
+            <summary>
+            Control to host PDF documents with support for printing.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.PdfViewer.Document">
+            <summary>
+            Gets or sets the PDF document.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.PdfViewer.Renderer">
+            <summary>
+            Get the <see cref="T:PdfiumViewer.PdfRenderer"/> that renders the PDF document.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.PdfViewer.DefaultDocumentName">
+            <summary>
+            Gets or sets the default document name used when saving the document.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.PdfViewer.DefaultPrintMode">
+            <summary>
+            Gets or sets the default print mode.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.PdfViewer.ZoomMode">
+            <summary>
+            Gets or sets the way the document should be zoomed initially.
+            </summary>
+        </member>
+        <member name="M:PdfiumViewer.PdfViewer.#ctor">
+            <summary>
+            Initializes a new instance of the PdfViewer class.
+            </summary>
+        </member>
+        <member name="F:PdfiumViewer.PdfViewer.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:PdfiumViewer.PdfViewer.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:PdfiumViewer.PdfViewer.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:PdfiumViewer.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.disk_blue">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.PageNumber">
+            <summary>
+              Looks up a localized string similar to Page {0}.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.printer">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.SaveAsFailedText">
+            <summary>
+              Looks up a localized string similar to Could not save the PDF file to the specified location..
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.SaveAsFailedTitle">
+            <summary>
+              Looks up a localized string similar to Could not save file.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.SaveAsFilter">
+            <summary>
+              Looks up a localized string similar to PDF Files (*.pdf)|*.pdf|All Files (*.*)|*.*.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.SaveAsTitle">
+            <summary>
+              Looks up a localized string similar to Save As.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.ShadeBorder_E">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.ShadeBorder_N">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.ShadeBorder_NE">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.ShadeBorder_NW">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.ShadeBorder_S">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.ShadeBorder_SE">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.ShadeBorder_SW">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.ShadeBorder_W">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.zoom_in">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:PdfiumViewer.Properties.Resources.zoom_out">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+    </members>
+</doc>
