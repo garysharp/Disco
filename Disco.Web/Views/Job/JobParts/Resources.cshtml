@@ -34,7 +34,7 @@
                         @foreach (var jl in Model.Job.JobLogs.OrderBy(m => m.Timestamp))
                         {
                             <div data-logid="@jl.Id">
-                                <span class="author">@jl.TechUser.ToStringFriendly()</span>@if (canRemoveAnyLogs || (canRemoveOwnLogs && jl.TechUserId == CurrentUser.UserId))
+                                <span class="author">@jl.TechUser.ToStringFriendly()</span>@if (canRemoveAnyLogs || (canRemoveOwnLogs && jl.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase)))
                                                                                            {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(jl.Timestamp.ToUnixEpoc())" title="@jl.Timestamp.ToFullDateTime()">@jl.Timestamp.ToFullDateTime()</span>
                                 <div class="comment">@jl.Comments.ToHtmlComment()</div>
                             </div>
@@ -68,7 +68,7 @@
                                       { @ja.DocumentTemplate.Description}
                                       else
                                       { @ja.Comments }}
-                                </span><span class="author">@ja.TechUser.ToStringFriendly()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ja.TechUserId == CurrentUser.UserId))
+                                </span><span class="author">@ja.TechUser.ToStringFriendly()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ja.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase)))
                                                                                                   {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(ja.Timestamp.ToUnixEpoc())" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.ToFullDateTime()</span>
                             </a>   
                         }

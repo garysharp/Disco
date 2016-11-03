@@ -3,16 +3,13 @@ using Disco.Models.Repository;
 using Disco.Services.Authorization;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Services.Users
 {
     internal static class Cache
     {
-        private static ConcurrentDictionary<string, Tuple<User, AuthorizationToken, DateTime>> _Cache = new ConcurrentDictionary<string, Tuple<User, AuthorizationToken, DateTime>>();
+        private static ConcurrentDictionary<string, Tuple<User, AuthorizationToken, DateTime>> _Cache = new ConcurrentDictionary<string, Tuple<User, AuthorizationToken, DateTime>>(StringComparer.OrdinalIgnoreCase);
         private const long CacheTimeoutTicks = 6000000000; // 10 Minutes
 
         internal static AuthorizationToken GetAuthorization(string UserId, DiscoDataContext Database, bool ForceRefresh)
@@ -116,14 +113,13 @@ namespace Disco.Services.Users
         {
             var cache = _Cache;
 
-            string userId = UserId.ToLower();
             Tuple<User, AuthorizationToken, DateTime> record;
-            if (cache.TryGetValue(userId, out record))
+            if (cache.TryGetValue(UserId, out record))
             {
                 if (record.Item3 > DateTime.Now)
                     return record;
                 else
-                    cache.TryRemove(userId, out record);
+                    cache.TryRemove(UserId, out record);
             }
             return null;
         }
@@ -132,18 +128,17 @@ namespace Disco.Services.Users
         {
             var cache = _Cache;
 
-            string userId = UserId.ToLower();
             Tuple<User, AuthorizationToken, DateTime> record = new Tuple<User, AuthorizationToken, DateTime>(Record.Item1, Record.Item2, DateTime.Now.AddTicks(CacheTimeoutTicks));
-            if (cache.ContainsKey(userId))
+            if (cache.ContainsKey(UserId))
             {
                 Tuple<User, AuthorizationToken, DateTime> oldRecord;
-                if (cache.TryGetValue(userId, out oldRecord))
+                if (cache.TryGetValue(UserId, out oldRecord))
                 {
-                    cache.TryUpdate(userId, record, oldRecord);
+                    cache.TryUpdate(UserId, record, oldRecord);
                     return record;
                 }
             }
-            cache.TryAdd(userId, record);
+            cache.TryAdd(UserId, record);
             return record;
         }
 
@@ -170,7 +165,7 @@ namespace Disco.Services.Users
         }
         internal static void FlushCache()
         {
-            _Cache = new ConcurrentDictionary<string, Tuple<User, AuthorizationToken, DateTime>>();
+            _Cache = new ConcurrentDictionary<string, Tuple<User, AuthorizationToken, DateTime>>(StringComparer.OrdinalIgnoreCase);
         }
     }
 }
