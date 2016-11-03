@@ -285,7 +285,7 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Update Properties
-        private void UpdateDescription(Disco.Models.Repository.DeviceProfile deviceProfile, string Description)
+        private void UpdateDescription(DeviceProfile deviceProfile, string Description)
         {
             if (string.IsNullOrWhiteSpace(Description))
                 deviceProfile.Description = null;
@@ -294,7 +294,7 @@ namespace Disco.Web.Areas.API.Controllers
             Database.SaveChanges();
         }
 
-        private void UpdateName(Disco.Models.Repository.DeviceProfile deviceProfile, string Name)
+        private void UpdateName(DeviceProfile deviceProfile, string Name)
         {
             if (string.IsNullOrWhiteSpace(Name))
                 throw new Exception("Profile name cannot be empty");
@@ -303,7 +303,7 @@ namespace Disco.Web.Areas.API.Controllers
             Database.SaveChanges();
         }
 
-        private void UpdateShortName(Disco.Models.Repository.DeviceProfile deviceProfile, string ShortName)
+        private void UpdateShortName(DeviceProfile deviceProfile, string ShortName)
         {
             if (string.IsNullOrWhiteSpace(ShortName))
                 throw new Exception("Profile short name cannot be empty");
@@ -312,12 +312,12 @@ namespace Disco.Web.Areas.API.Controllers
             Database.SaveChanges();
         }
 
-        private void UpdateDistributionType(Disco.Models.Repository.DeviceProfile deviceProfile, string DistributionType)
+        private void UpdateDistributionType(DeviceProfile deviceProfile, string DistributionType)
         {
             int iDt;
             if (int.TryParse(DistributionType, out iDt))
             {
-                deviceProfile.DistributionType = (Disco.Models.Repository.DeviceProfile.DistributionTypes)iDt;
+                deviceProfile.DistributionType = (DeviceProfile.DistributionTypes)iDt;
                 Database.SaveChanges();
                 return;
             }
@@ -432,7 +432,7 @@ namespace Disco.Web.Areas.API.Controllers
             Database.SaveChanges();
         }
 
-        private void UpdateOrganisationalUnit(Disco.Models.Repository.DeviceProfile deviceProfile, string OrganisationalUnit)
+        private void UpdateOrganisationalUnit(DeviceProfile deviceProfile, string OrganisationalUnit)
         {
             if (string.IsNullOrWhiteSpace(OrganisationalUnit))
                 OrganisationalUnit = ActiveDirectory.Context.PrimaryDomain.DefaultComputerContainer;
@@ -444,7 +444,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
-        private void UpdateComputerNameTemplate(Disco.Models.Repository.DeviceProfile deviceProfile, string ComputerNameTemplate)
+        private void UpdateComputerNameTemplate(DeviceProfile deviceProfile, string ComputerNameTemplate)
         {
             Authorization.Require(Claims.Config.DeviceProfile.ConfigureComputerNameTemplate);
 
@@ -458,7 +458,7 @@ namespace Disco.Web.Areas.API.Controllers
             deviceProfile.ComputerNameInvalidateCache();
         }
 
-        private void UpdateDefaultOrganisationAddress(Disco.Models.Repository.DeviceProfile deviceProfile, string DefaultOrganisationAddress)
+        private void UpdateDefaultOrganisationAddress(DeviceProfile deviceProfile, string DefaultOrganisationAddress)
         {
             if (string.IsNullOrEmpty(DefaultOrganisationAddress))
             {
@@ -490,7 +490,7 @@ namespace Disco.Web.Areas.API.Controllers
             Database.SaveChanges();
         }
 
-        private void UpdateEnforceComputerNameConvention(Disco.Models.Repository.DeviceProfile deviceProfile, string EnforceComputerNameConvention)
+        private void UpdateEnforceComputerNameConvention(DeviceProfile deviceProfile, string EnforceComputerNameConvention)
         {
             bool bValue;
             if (bool.TryParse(EnforceComputerNameConvention, out bValue))
@@ -503,7 +503,7 @@ namespace Disco.Web.Areas.API.Controllers
             throw new Exception("Invalid Boolean Value");
         }
 
-        private void UpdateEnforceOrganisationalUnit(Disco.Models.Repository.DeviceProfile deviceProfile, string EnforceOrganisationalUnit)
+        private void UpdateEnforceOrganisationalUnit(DeviceProfile deviceProfile, string EnforceOrganisationalUnit)
         {
             bool bValue;
             if (bool.TryParse(EnforceOrganisationalUnit, out bValue))
@@ -516,7 +516,7 @@ namespace Disco.Web.Areas.API.Controllers
             throw new Exception("Invalid Boolean Value");
         }
 
-        private void UpdateProvisionADAccount(Disco.Models.Repository.DeviceProfile deviceProfile, string ProvisionADAccount)
+        private void UpdateProvisionADAccount(DeviceProfile deviceProfile, string ProvisionADAccount)
         {
             bool bValue;
             if (bool.TryParse(ProvisionADAccount, out bValue))

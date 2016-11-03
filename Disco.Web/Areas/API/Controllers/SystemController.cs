@@ -167,6 +167,11 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Config.Organisation.ConfigureAddresses)]
         public virtual ActionResult DeleteOrganisationAddress(int Id, bool redirect = false)
         {
+            // Remove References in Device Profiles
+            Database.DeviceProfiles
+                .Where(dp => dp.DefaultOrganisationAddress == Id).ToList()
+                .ForEach(dp => dp.DefaultOrganisationAddress = null);
+
             Database.DiscoConfiguration.OrganisationAddresses.RemoveAddress(Id);
             Database.SaveChanges();
 

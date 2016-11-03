@@ -53,9 +53,7 @@ namespace Disco.Services.Jobs.Noticeboards
                 if (DeviceAddressId.HasValue)
                 {
                     var config = new OrganisationAddressesConfiguration(null);
-                    var address = config.GetAddress(DeviceAddressId.Value);
-                    if (address != null)
-                        return address.ShortName;
+                    return config.GetAddress(DeviceAddressId.Value)?.ShortName;
                 }
 
                 return null;

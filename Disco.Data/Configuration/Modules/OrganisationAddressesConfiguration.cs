@@ -16,7 +16,7 @@ namespace Disco.Data.Configuration.Modules
 
         public OrganisationAddress GetAddress(int Id)
         {
-            return this.Get<OrganisationAddress>(null, Id.ToString());
+            return Get<OrganisationAddress>(null, Id.ToString());
         }
         public OrganisationAddress SetAddress(OrganisationAddress Address)
         {
@@ -25,21 +25,21 @@ namespace Disco.Data.Configuration.Modules
                 Address.Id = NextOrganisationAddressId;
             }
 
-            this.Set(Address, Address.Id.ToString());
+            Set(Address, Address.Id.ToString());
 
             return Address;
         }
         public void RemoveAddress(int Id)
         {
             // Remove Configuration Item
-            this.RemoveItem(Id.ToString());
+            RemoveItem(Id.ToString());
         }
 
         public List<OrganisationAddress> Addresses
         {
             get
             {
-                return this.ItemKeys.Select(key => this.Get<OrganisationAddress>(null, key)).ToList();
+                return ItemKeys.Select(key => Get<OrganisationAddress>(null, key)).ToList();
             }
         }
 
@@ -50,7 +50,7 @@ namespace Disco.Data.Configuration.Modules
                 int nextId = 0;
                 while (true)
                 {
-                    if (this.Get<string>(null, nextId.ToString()) == null)
+                    if (Get<string>(null, nextId.ToString()) == null)
                         break;
                     nextId++;
                 }

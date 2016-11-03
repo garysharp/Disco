@@ -270,7 +270,7 @@ namespace Disco.Services
                 j.OpenedTechUserFriendlyId = ActiveDirectory.FriendlyAccountId(j.OpenedTechUserId);
 
                 if (j.DeviceAddressId.HasValue)
-                    j.DeviceAddress = Database.DiscoConfiguration.OrganisationAddresses.GetAddress(j.DeviceAddressId.Value).Name;
+                    j.DeviceAddress = Database.DiscoConfiguration.OrganisationAddresses.GetAddress(j.DeviceAddressId.Value)?.Name;
             }
 
             return items;

@@ -27,8 +27,12 @@ namespace Disco.Web.Areas.Config.Models.DeviceProfile
             if (DiscoApplication.MultiSiteMode)
             {
                 foreach (var dp in m.DeviceProfiles)
+                {
                     if (dp.Address.HasValue)
-                        dp.AddressName = Database.DiscoConfiguration.OrganisationAddresses.GetAddress(dp.Address.Value).Name;
+                    {
+                        dp.AddressName = Database.DiscoConfiguration.OrganisationAddresses.GetAddress(dp.Address.Value)?.Name;
+                    }
+                }
             }
 
             return m;
