@@ -75,7 +75,9 @@ namespace Disco.Web.Areas.Config.Views.UserFlag
 
     var hideAdvanced =
         Model.UserFlag.UserDevicesLinkedGroup == null &&
-        Model.UserFlag.UsersLinkedGroup == null;
+        Model.UserFlag.UsersLinkedGroup == null &&
+        Model.UserFlag.OnAssignmentExpression == null &&
+        Model.UserFlag.OnUnassignmentExpression == null;
 
     Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
 
@@ -86,15 +88,15 @@ WriteLiteral("\r\n<div");
 
 WriteLiteral(" id=\"Config_UserFlags_Show\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1092), Tuple.Create("\"", 1151)
-, Tuple.Create(Tuple.Create("", 1100), Tuple.Create("form", 1100), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1210), Tuple.Create("\"", 1269)
+, Tuple.Create(Tuple.Create("", 1218), Tuple.Create("form", 1218), true)
             
-            #line 21 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 1104), Tuple.Create<System.Object, System.Int32>(hideAdvanced ? " Config_HideAdvanced" : null
+            #line 23 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 1222), Tuple.Create<System.Object, System.Int32>(hideAdvanced ? " Config_HideAdvanced" : null
             
             #line default
             #line hidden
-, 1104), false)
+, 1222), false)
 );
 
 WriteLiteral(" style=\"width: 550px\"");
@@ -108,7 +110,7 @@ WriteLiteral(">\r\n                Id:\r\n            </th>\r\n            <td>\
 WriteLiteral("                ");
 
             
-            #line 28 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 30 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
            Write(Html.DisplayFor(model => model.UserFlag.Id));
 
             
@@ -118,55 +120,55 @@ WriteLiteral("\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n        
 "   Name:\r\n            </th>\r\n            <td>\r\n");
 
             
-            #line 36 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 38 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 36 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 38 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                  if (canConfig)
             {
             
             #line default
             #line hidden
             
-            #line 37 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 39 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
         Write(Html.EditorFor(model => model.UserFlag.Name));
 
             
             #line default
             #line hidden
             
-            #line 37 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 39 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                           
                     
             
             #line default
             #line hidden
             
-            #line 38 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 40 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 38 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 40 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                            
                     
             
             #line default
             #line hidden
             
-            #line 39 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 41 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 39 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 41 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                              
 
             
@@ -182,7 +184,7 @@ WriteLiteral(">\r\n                        $(function () {\r\n                  
 "             \'");
 
             
-            #line 45 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 47 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                              Write(Url.Action(MVC.API.UserFlag.UpdateName(Model.UserFlag.Id)));
 
             
@@ -192,7 +194,7 @@ WriteLiteral("\',\r\n                                \'FlagName\'\r\n           
 "                       });\r\n                    </script>\r\n");
 
             
-            #line 50 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 52 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                 }
                 else
                 {
@@ -201,14 +203,14 @@ WriteLiteral("\',\r\n                                \'FlagName\'\r\n           
             #line default
             #line hidden
             
-            #line 53 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 55 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                Write(Model.UserFlag.Name);
 
             
             #line default
             #line hidden
             
-            #line 53 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 55 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                         
                 }
 
@@ -219,55 +221,55 @@ WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            
 " Description:\r\n            </th>\r\n            <td>\r\n");
 
             
-            #line 62 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 64 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 62 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 64 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                  if (canConfig)
                 {
             
             #line default
             #line hidden
             
-            #line 63 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 65 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
             Write(Html.EditorFor(model => model.UserFlag.Description));
 
             
             #line default
             #line hidden
             
-            #line 63 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 65 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                                      
                     
             
             #line default
             #line hidden
             
-            #line 64 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 66 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 64 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 66 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                            
                     
             
             #line default
             #line hidden
             
-            #line 65 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 67 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 65 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 67 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                              
 
             
@@ -285,7 +287,7 @@ WriteLiteral(@">
                                 '");
 
             
-            #line 71 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 73 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                              Write(Url.Action(MVC.API.UserFlag.UpdateDescription(Model.UserFlag.Id)));
 
             
@@ -295,7 +297,7 @@ WriteLiteral("\',\r\n                                \'Description\'\r\n        
 "\r\n                        });\r\n                    </script>\r\n");
 
             
-            #line 76 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 78 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                 }
                 else
                 {
@@ -306,13 +308,13 @@ WriteLiteral("\',\r\n                                \'Description\'\r\n        
 WriteLiteral("                    <pre>\r\n");
 
             
-            #line 80 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 82 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 80 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 82 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                      if (string.IsNullOrEmpty(Model.UserFlag.Description))
                     {
 
@@ -326,7 +328,7 @@ WriteLiteral("&lt;None&gt;");
 WriteLiteral("\r\n");
 
             
-            #line 83 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 85 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                     }
                     else
                     {
@@ -335,14 +337,14 @@ WriteLiteral("\r\n");
             #line default
             #line hidden
             
-            #line 86 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 88 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                    Write(Model.UserFlag.Description.ToHtmlComment());
 
             
             #line default
             #line hidden
             
-            #line 86 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 88 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                                    
                     }
 
@@ -352,7 +354,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                    </pre>\r\n");
 
             
-            #line 89 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 91 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                 }
 
             
@@ -363,7 +365,7 @@ WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            
 "");
 
             
-            #line 97 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 99 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                         Write(Model.CurrentAssignmentCount);
 
             
@@ -372,7 +374,7 @@ WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            
 WriteLiteral(" user");
 
             
-            #line 97 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 99 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                            Write(Model.CurrentAssignmentCount != 1 ? "s" : null);
 
             
@@ -381,7 +383,7 @@ WriteLiteral(" user");
 WriteLiteral(" currently assigned</strong></div>\r\n                <div>");
 
             
-            #line 98 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 100 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                 Write(Model.TotalAssignmentCount);
 
             
@@ -390,7 +392,7 @@ WriteLiteral(" currently assigned</strong></div>\r\n                <div>");
 WriteLiteral(" total user historical assignment");
 
             
-            #line 98 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 100 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                                              Write(Model.TotalAssignmentCount != 1 ? "s" : null);
 
             
@@ -404,7 +406,7 @@ WriteLiteral(" id=\"Config_UserFlags_Icon\"");
 WriteLiteral(" data-icon=\"");
 
             
-            #line 106 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 108 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                      Write(Model.UserFlag.Icon);
 
             
@@ -415,7 +417,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-colour=\"");
 
             
-            #line 106 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 108 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                                                           Write(Model.UserFlag.IconColour);
 
             
@@ -423,37 +425,37 @@ WriteLiteral(" data-colour=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4268), Tuple.Create("\"", 4341)
-, Tuple.Create(Tuple.Create("", 4276), Tuple.Create("fa", 4276), true)
-, Tuple.Create(Tuple.Create(" ", 4278), Tuple.Create("fa-", 4279), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4386), Tuple.Create("\"", 4459)
+, Tuple.Create(Tuple.Create("", 4394), Tuple.Create("fa", 4394), true)
+, Tuple.Create(Tuple.Create(" ", 4396), Tuple.Create("fa-", 4397), true)
             
-            #line 106 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
-                                                          , Tuple.Create(Tuple.Create("", 4282), Tuple.Create<System.Object, System.Int32>(Model.UserFlag.Icon
-            
-            #line default
-            #line hidden
-, 4282), false)
-, Tuple.Create(Tuple.Create(" ", 4304), Tuple.Create("fa-4x", 4305), true)
-, Tuple.Create(Tuple.Create(" ", 4310), Tuple.Create("d-", 4311), true)
-            
-            #line 106 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
-                                                                                         , Tuple.Create(Tuple.Create("", 4313), Tuple.Create<System.Object, System.Int32>(Model.UserFlag.IconColour
+            #line 108 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                                                          , Tuple.Create(Tuple.Create("", 4400), Tuple.Create<System.Object, System.Int32>(Model.UserFlag.Icon
             
             #line default
             #line hidden
-, 4313), false)
+, 4400), false)
+, Tuple.Create(Tuple.Create(" ", 4422), Tuple.Create("fa-4x", 4423), true)
+, Tuple.Create(Tuple.Create(" ", 4428), Tuple.Create("d-", 4429), true)
+            
+            #line 108 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                                                                                         , Tuple.Create(Tuple.Create("", 4431), Tuple.Create<System.Object, System.Int32>(Model.UserFlag.IconColour
+            
+            #line default
+            #line hidden
+, 4431), false)
 );
 
 WriteLiteral("></i>\r\n");
 
             
-            #line 107 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 109 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 107 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 109 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                  if (canConfig)
                 {
 
@@ -483,13 +485,13 @@ WriteLiteral(" class=\"icons\"");
 WriteLiteral(">\r\n");
 
             
-            #line 114 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 116 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 114 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 116 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                      foreach (var icon in Model.Icons)
                                     {
 
@@ -501,7 +503,7 @@ WriteLiteral("                                        <i");
 WriteLiteral(" data-icon=\"");
 
             
-            #line 116 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 118 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                   Write(icon.Key);
 
             
@@ -509,32 +511,32 @@ WriteLiteral(" data-icon=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4906), Tuple.Create("\"", 4931)
-, Tuple.Create(Tuple.Create("", 4914), Tuple.Create("fa", 4914), true)
-, Tuple.Create(Tuple.Create(" ", 4916), Tuple.Create("fa-", 4917), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 5024), Tuple.Create("\"", 5049)
+, Tuple.Create(Tuple.Create("", 5032), Tuple.Create("fa", 5032), true)
+, Tuple.Create(Tuple.Create(" ", 5034), Tuple.Create("fa-", 5035), true)
             
-            #line 116 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
- , Tuple.Create(Tuple.Create("", 4920), Tuple.Create<System.Object, System.Int32>(icon.Key
+            #line 118 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+ , Tuple.Create(Tuple.Create("", 5038), Tuple.Create<System.Object, System.Int32>(icon.Key
             
             #line default
             #line hidden
-, 4920), false)
+, 5038), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4932), Tuple.Create("\"", 4951)
+WriteAttribute("title", Tuple.Create(" title=\"", 5050), Tuple.Create("\"", 5069)
             
-            #line 116 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
-                    , Tuple.Create(Tuple.Create("", 4940), Tuple.Create<System.Object, System.Int32>(icon.Value
+            #line 118 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                    , Tuple.Create(Tuple.Create("", 5058), Tuple.Create<System.Object, System.Int32>(icon.Value
             
             #line default
             #line hidden
-, 4940), false)
+, 5058), false)
 );
 
 WriteLiteral("></i>\r\n");
 
             
-            #line 117 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 119 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                     }
 
             
@@ -547,13 +549,13 @@ WriteLiteral(" class=\"colours\"");
 WriteLiteral(">\r\n");
 
             
-            #line 120 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 122 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 120 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 122 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                      foreach (var colour in Model.ThemeColours)
                                     {
 
@@ -565,7 +567,7 @@ WriteLiteral("                                        <i");
 WriteLiteral(" data-colour=\"");
 
             
-            #line 122 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 124 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                     Write(colour.Key);
 
             
@@ -573,33 +575,33 @@ WriteLiteral(" data-colour=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 5283), Tuple.Create("\"", 5319)
-, Tuple.Create(Tuple.Create("", 5291), Tuple.Create("fa", 5291), true)
-, Tuple.Create(Tuple.Create(" ", 5293), Tuple.Create("fa-square", 5294), true)
-, Tuple.Create(Tuple.Create(" ", 5303), Tuple.Create("d-", 5304), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 5401), Tuple.Create("\"", 5437)
+, Tuple.Create(Tuple.Create("", 5409), Tuple.Create("fa", 5409), true)
+, Tuple.Create(Tuple.Create(" ", 5411), Tuple.Create("fa-square", 5412), true)
+, Tuple.Create(Tuple.Create(" ", 5421), Tuple.Create("d-", 5422), true)
             
-            #line 122 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
-              , Tuple.Create(Tuple.Create("", 5306), Tuple.Create<System.Object, System.Int32>(colour.Key
+            #line 124 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+              , Tuple.Create(Tuple.Create("", 5424), Tuple.Create<System.Object, System.Int32>(colour.Key
             
             #line default
             #line hidden
-, 5306), false)
+, 5424), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 5320), Tuple.Create("\"", 5341)
+WriteAttribute("title", Tuple.Create(" title=\"", 5438), Tuple.Create("\"", 5459)
             
-            #line 122 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
-                                   , Tuple.Create(Tuple.Create("", 5328), Tuple.Create<System.Object, System.Int32>(colour.Value
+            #line 124 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                                   , Tuple.Create(Tuple.Create("", 5446), Tuple.Create<System.Object, System.Int32>(colour.Value
             
             #line default
             #line hidden
-, 5328), false)
+, 5446), false)
 );
 
 WriteLiteral("></i>\r\n");
 
             
-            #line 123 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 125 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                     }
 
             
@@ -646,7 +648,7 @@ WriteLiteral("                                </div>\r\n                        
 "save() {\r\n                                    var url = \'");
 
             
-            #line 183 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 185 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                            Write(Url.Action(MVC.API.UserFlag.UpdateIconAndColour(id: Model.UserFlag.Id, redirect: true)));
 
             
@@ -677,7 +679,7 @@ WriteLiteral(@"',
 ");
 
             
-            #line 205 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 207 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                 }
 
             
@@ -686,13 +688,13 @@ WriteLiteral(@"',
 WriteLiteral("            </td>\r\n        </tr>\r\n");
 
             
-            #line 208 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 210 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 208 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 210 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
          if (hideAdvanced)
         {
 
@@ -726,7 +728,7 @@ WriteLiteral(@">Show Advanced Options</button>
 ");
 
             
-            #line 224 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 226 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
         }
 
             
@@ -736,13 +738,395 @@ WriteLiteral("        <tr");
 
 WriteLiteral(" class=\"Config_HideAdvanced_Item\"");
 
+WriteLiteral(">\r\n            <th>\r\n                On Assignment<br />Expression:\r\n            " +
+"</th>\r\n            <td>\r\n");
+
+            
+            #line 232 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 232 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                 if (canConfig)
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 234 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+               Write(Html.EditorFor(model => model.UserFlag.OnAssignmentExpression));
+
+            
+            #line default
+            #line hidden
+            
+            #line 234 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                                                                                   
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 235 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+               Write(AjaxHelpers.AjaxRemove());
+
+            
+            #line default
+            #line hidden
+            
+            #line 235 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                                             
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 236 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+               Write(AjaxHelpers.AjaxSave());
+
+            
+            #line default
+            #line hidden
+            
+            #line 236 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                                           
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 237 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+            
+            #line 237 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                                             
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(@">
+                            $(function () {
+                                var field = $('#UserFlag_OnAssignmentExpression');
+                                var fieldRemove = field.next('.ajaxRemove');
+                                var fieldOriginalWidth, fieldOriginalHeight;
+
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    field,
+                                    'None',
+                                    '");
+
+            
+            #line 247 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                                Write(Url.Action(MVC.API.UserFlag.UpdateOnAssignmentExpression(Model.UserFlag.Id)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\',\r\n                                    \'OnAssignmentExpression\'\r\n               " +
+"                 );\r\n\r\n                                field.focus(function () {" +
+"\r\n                                    fieldOriginalWidth = field.width();\r\n     " +
+"                               fieldOriginalHeight = field.height();\r\n          " +
+"                          field.css(\'overflow\', \'visible\').animate({ width: fiel" +
+"d.parent().width() - 42, height: 75 }, 200);\r\n                                })" +
+".blur(function () {\r\n                                    field.css(\'overflow\', \'" +
+"hidden\').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200" +
+");\r\n                                }).change(function () {\r\n                   " +
+"                 if (!!field.val()) {\r\n                                        f" +
+"ieldRemove.show();\r\n                                    } else {\r\n              " +
+"                          fieldRemove.hide();\r\n                                 " +
+"   }\r\n                                }).attr(\'placeholder\', \'None\').attr(\'spell" +
+"check\', \'false\');\r\n\r\n                                fieldRemove.click(function " +
+"() {\r\n                                    field.val(\'\').change();\r\n             " +
+"                   });\r\n\r\n                                if (!!field.val()) {\r\n" +
+"                                    fieldRemove.show();\r\n                       " +
+"         } else {\r\n                                    fieldRemove.hide();\r\n    " +
+"                            }\r\n                            });\r\n                " +
+"    </script>\r\n");
+
+            
+            #line 276 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(Model.UserFlag.OnAssignmentExpression))
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
+
+            
+            #line 282 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                    }
+                    else
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <div");
+
+WriteLiteral(" class=\"code\"");
+
+WriteLiteral(">\r\n");
+
+WriteLiteral("                            ");
+
+            
+            #line 286 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                       Write(Model.UserFlag.OnAssignmentExpression);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                        </div>\r\n");
+
+            
+            #line 288 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                    }
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <div");
+
+WriteLiteral(" class=\"info-box\"");
+
+WriteLiteral(">\r\n                    <p");
+
+WriteLiteral(" class=\"fa-p\"");
+
+WriteLiteral(">\r\n                        <i");
+
+WriteLiteral(" class=\"fa fa-fw fa-info-circle\"");
+
+WriteLiteral("></i>This expression will be evaluated whenever the user flag is assigned to a us" +
+"er. The output of the expression will be shown with the flag assignment.\r\n      " +
+"              </p>\r\n                </div>\r\n            </td>\r\n        </tr>\r\n  " +
+"      <tr");
+
+WriteLiteral(" class=\"Config_HideAdvanced_Item\"");
+
+WriteLiteral(">\r\n            <th>\r\n                On Unassignment<br />Expression:\r\n          " +
+"  </th>\r\n            <td>\r\n");
+
+            
+            #line 302 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 302 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                 if (canConfig)
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 304 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+               Write(Html.EditorFor(model => model.UserFlag.OnUnassignmentExpression));
+
+            
+            #line default
+            #line hidden
+            
+            #line 304 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                                                                                     
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 305 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+               Write(AjaxHelpers.AjaxRemove());
+
+            
+            #line default
+            #line hidden
+            
+            #line 305 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                                             
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 306 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+               Write(AjaxHelpers.AjaxSave());
+
+            
+            #line default
+            #line hidden
+            
+            #line 306 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                                           
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 307 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+            
+            #line 307 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                                             
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(@">
+                        $(function () {
+                            var field = $('#UserFlag_OnUnassignmentExpression');
+                            var fieldRemove = field.next('.ajaxRemove');
+                            var fieldOriginalWidth, fieldOriginalHeight;
+
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                field,
+                                'None',
+                                '");
+
+            
+            #line 317 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                            Write(Url.Action(MVC.API.UserFlag.UpdateOnUnassignmentExpression(Model.UserFlag.Id)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"',
+                                'OnUnassignmentExpression'
+                            );
+
+                            field.focus(function () {
+                                fieldOriginalWidth = field.width();
+                                fieldOriginalHeight = field.height();
+                                field.css('overflow', 'visible').animate({ width: field.parent().width() - 42, height: 75 }, 200);
+                            }).blur(function () {
+                                field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
+                            }).change(function () {
+                                if (!!field.val()) {
+                                    fieldRemove.show();
+                                } else {
+                                    fieldRemove.hide();
+                                }
+                            }).attr('placeholder', 'None').attr('spellcheck', 'false');
+
+                            fieldRemove.click(function () {
+                                field.val('').change();
+                            });
+
+                            if (!!field.val()) {
+                                fieldRemove.show();
+                            } else {
+                                fieldRemove.hide();
+                            }
+                        });
+                    </script>
+");
+
+            
+            #line 346 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(Model.UserFlag.OnUnassignmentExpression))
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
+
+            
+            #line 352 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                    }
+                    else
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <div");
+
+WriteLiteral(" class=\"code\"");
+
+WriteLiteral(">\r\n");
+
+WriteLiteral("                            ");
+
+            
+            #line 356 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                       Write(Model.UserFlag.OnUnassignmentExpression);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                        </div>\r\n");
+
+            
+            #line 358 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                    }
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <div");
+
+WriteLiteral(" class=\"info-box\"");
+
+WriteLiteral(">\r\n                    <p");
+
+WriteLiteral(" class=\"fa-p\"");
+
+WriteLiteral(">\r\n                        <i");
+
+WriteLiteral(" class=\"fa fa-fw fa-info-circle\"");
+
+WriteLiteral("></i>This expression will be evaluated whenever the user flag is removed from a u" +
+"ser. The output of the expression will be shown with the flag assignment.\r\n     " +
+"               </p>\r\n                </div>\r\n            </td>\r\n        </tr>\r\n\r" +
+"\n        <tr");
+
+WriteLiteral(" class=\"Config_HideAdvanced_Item\"");
+
 WriteLiteral(">\r\n            <th>\r\n                Linked Groups:\r\n            </th>\r\n         " +
 "   <td>\r\n                <div>\r\n");
 
 WriteLiteral("                    ");
 
             
-            #line 231 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 374 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
                {
                    CanConfigure = canConfig,
@@ -761,7 +1145,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                    ");
 
             
-            #line 240 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 383 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
                {
                    CanConfigure = canConfig,
@@ -778,13 +1162,13 @@ WriteLiteral("                    ");
 WriteLiteral("\r\n");
 
             
-            #line 249 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 392 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 249 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 392 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                      if (canConfig)
             {
                         
@@ -792,14 +1176,14 @@ WriteLiteral("\r\n");
             #line default
             #line hidden
             
-            #line 251 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 394 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                    Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared));
 
             
             #line default
             #line hidden
             
-            #line 251 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 394 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                                                 
                     }
 
@@ -809,7 +1193,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                </div>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n");
 
             
-            #line 258 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 401 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
  if (canBulkAssignment || canDelete || canShowUsers)
 {
 
@@ -823,13 +1207,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 261 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 404 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 261 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 404 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
          if (canBulkAssignment)
         {
 
@@ -915,7 +1299,7 @@ WriteLiteral(">\r\n                            user6<br />\r\n                  
 WriteLiteral("                            ");
 
             
-            #line 294 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 437 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                         Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
 
             
@@ -928,7 +1312,7 @@ WriteLiteral(" class=\"code\"");
 WriteLiteral(">user6,smi0099,");
 
             
-            #line 296 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 439 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                     Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
 
             
@@ -941,7 +1325,7 @@ WriteLiteral(" class=\"code\"");
 WriteLiteral(">user6;smi0099;");
 
             
-            #line 297 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 440 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                     Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
 
             
@@ -1016,7 +1400,7 @@ WriteLiteral("            <script>\r\n                $(function () {\r\n       
 "\').attr(\'action\', \'");
 
             
-            #line 364 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 507 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                                       Write(Url.Action(MVC.API.UserFlag.BulkAssignUsers(Model.UserFlag.Id, true)));
 
             
@@ -1026,7 +1410,7 @@ WriteLiteral("\');\r\n\r\n                            assignDialog.addClass(\'lo
 "                 $.getJSON(\'");
 
             
-            #line 367 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 510 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                   Write(Url.Action(MVC.API.UserFlag.AssignedUsers(Model.UserFlag.Id)));
 
             
@@ -1052,7 +1436,7 @@ WriteLiteral(@"', function (response, result) {
                             assignUserIds.closest('form').attr('action', '");
 
             
-            #line 384 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 527 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                                       Write(Url.Action(MVC.API.UserFlag.BulkAssignUsers(Model.UserFlag.Id, false)));
 
             
@@ -1073,7 +1457,7 @@ WriteLiteral(@"');
 ");
 
             
-            #line 396 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 539 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
         }
 
             
@@ -1082,13 +1466,13 @@ WriteLiteral(@"');
 WriteLiteral("\r\n\r\n\r\n");
 
             
-            #line 400 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 543 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 400 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 543 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
          if (canDelete)
         {
             
@@ -1096,14 +1480,14 @@ WriteLiteral("\r\n\r\n\r\n");
             #line default
             #line hidden
             
-            #line 402 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 545 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
        Write(Html.ActionLinkButton("Delete", MVC.API.UserFlag.Delete(Model.UserFlag.Id, true), "Config_UserFlags_Actions_Delete_Button"));
 
             
             #line default
             #line hidden
             
-            #line 402 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 545 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                                                                                                         
 
             
@@ -1123,13 +1507,13 @@ WriteLiteral("></i>\r\n                    This item will be permanently deleted
 "covered.<br />\r\n                    <br />\r\n");
 
             
-            #line 408 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 551 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 408 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 551 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                      if (Model.CurrentAssignmentCount > 0)
                     {
 
@@ -1139,7 +1523,7 @@ WriteLiteral("></i>\r\n                    This item will be permanently deleted
 WriteLiteral("                        <strong>");
 
             
-            #line 410 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 553 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                            Write(Model.CurrentAssignmentCount);
 
             
@@ -1148,7 +1532,7 @@ WriteLiteral("                        <strong>");
 WriteLiteral(" user");
 
             
-            #line 410 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 553 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                               Write(Model.CurrentAssignmentCount != 1 ? "s are" : " is");
 
             
@@ -1161,7 +1545,7 @@ WriteLiteral("                        <br />\r\n");
 WriteLiteral("                        <br />\r\n");
 
             
-            #line 413 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 556 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                     }
 
             
@@ -1204,7 +1588,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 445 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 588 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
         }
 
             
@@ -1213,7 +1597,7 @@ WriteLiteral(@">
 WriteLiteral("        ");
 
             
-            #line 446 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 589 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
          if (canShowUsers)
         {
             
@@ -1221,14 +1605,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 448 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 591 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
        Write(Html.ActionLinkButton(string.Format("Show {0} user{1}", Model.CurrentAssignmentCount, (Model.CurrentAssignmentCount == 1 ? null : "s")), MVC.Search.Query(Model.UserFlag.Id.ToString(), "UserFlag"), "Config_UserFlags_Actions_ShowUsers_Button"));
 
             
             #line default
             #line hidden
             
-            #line 448 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 591 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                                                                                                                                                                                                                               
         }
 
@@ -1238,7 +1622,7 @@ WriteLiteral("        ");
 WriteLiteral("    </div>\r\n");
 
             
-            #line 451 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 594 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
 }
             
             #line default

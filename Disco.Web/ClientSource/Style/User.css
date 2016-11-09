@@ -290,6 +290,11 @@
 #UserDetailTab-Flags #userFlags td.removed {
   vertical-align: middle;
 }
+#UserDetailTab-Flags #userFlags td.added .expressionResult,
+#UserDetailTab-Flags #userFlags td.removed .expressionResult {
+  margin-top: 4px;
+  font-style: italic;
+}
 #UserDetailTab-Flags #userFlags td.comments {
   vertical-align: middle;
 }

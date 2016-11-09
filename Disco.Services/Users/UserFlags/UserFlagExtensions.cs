@@ -1,6 +1,8 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
+using Disco.Services.Expressions;
+using Disco.Services.Logging;
 using Disco.Services.Users;
 using System;
 using System.Linq;
@@ -32,13 +34,36 @@ namespace Disco.Services
 
             return UserService.CurrentAuthorization.Has(Claims.User.Actions.RemoveFlags);
         }
-        public static void OnRemove(this UserFlagAssignment fa, User Technician)
+        public static void OnRemove(this UserFlagAssignment fa, DiscoDataContext Database, User RemovingUser)
         {
             if (!fa.CanRemove())
                 throw new InvalidOperationException("Removing user flags is denied");
 
+            fa.OnRemoveUnsafe(Database, RemovingUser);
+        }
+
+        public static void OnRemoveUnsafe(this UserFlagAssignment fa, DiscoDataContext Database, User RemovingUser)
+        {
             fa.RemovedDate = DateTime.Now;
-            fa.RemovedUserId = Technician.UserId;
+            fa.RemovedUserId = RemovingUser.UserId;
+
+            if (!string.IsNullOrWhiteSpace(fa.UserFlag.OnUnassignmentExpression))
+            {
+                try
+                {
+                    Database.SaveChanges();
+                    var expressionResult = fa.EvaluateOnUnassignmentExpression(Database, RemovingUser, fa.AddedDate);
+                    if (!string.IsNullOrWhiteSpace(expressionResult))
+                    {
+                        fa.OnUnassignmentExpressionResult = expressionResult;
+                        Database.SaveChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    SystemLog.LogException("User Flag Expression - OnUnassignmentExpression", ex);
+                }
+            }
         }
         #endregion
 
@@ -59,24 +84,116 @@ namespace Disco.Services
 
             return true;
         }
-        public static UserFlagAssignment OnAddUserFlag(this User u, DiscoDataContext Database, UserFlag flag, User Technician, string Comments)
+        public static UserFlagAssignment OnAddUserFlag(this User u, DiscoDataContext Database, UserFlag flag, User AddingUser, string Comments)
         {
             if (!u.CanAddUserFlag(flag))
                 throw new InvalidOperationException("Adding user flag is denied");
 
+            return u.OnAddUserFlagUnsafe(Database, flag, AddingUser, Comments);
+        }
+
+        public static UserFlagAssignment OnAddUserFlagUnsafe(this User u, DiscoDataContext Database, UserFlag flag, User AddingUser, string Comments)
+        {
             var fa = new UserFlagAssignment()
             {
-                UserFlagId = flag.Id,
-                UserId = u.UserId,
+                UserFlag = flag,
+                User = u,
                 AddedDate = DateTime.Now,
-                AddedUserId = Technician.UserId,
+                AddedUser = AddingUser,
                 Comments = string.IsNullOrWhiteSpace(Comments) ? null : Comments.Trim()
             };
 
             Database.UserFlagAssignments.Add(fa);
+
+            if (!string.IsNullOrWhiteSpace(flag.OnAssignmentExpression))
+            {
+                try
+                {
+                    Database.SaveChanges();
+                    fa = Database.UserFlagAssignments.Where(ufa => ufa.Id == fa.Id).First();
+                    var expressionResult = fa.EvaluateOnAssignmentExpression(Database, AddingUser, fa.AddedDate);
+                    if (!string.IsNullOrWhiteSpace(expressionResult))
+                    {
+                        fa.OnAssignmentExpressionResult = expressionResult;
+                        Database.SaveChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    SystemLog.LogException("User Flag Expression - OnAssignmentExpression", ex);
+                }
+            }
+
             return fa;
         }
         #endregion
 
+        #region Expressions
+
+        public static Expression OnAssignmentExpressionFromCache(this UserFlag uf)
+        {
+            return ExpressionCache.GetValue("UserFlag_OnAssignmentExpression", uf.Id.ToString(), () => { return Expression.TokenizeSingleDynamic(null, uf.OnAssignmentExpression, 0); });
+        }
+
+        public static void OnAssignmentExpressionInvalidateCache(this UserFlag uf)
+        {
+            ExpressionCache.InvalidateKey("UserFlag_OnAssignmentExpression", uf.Id.ToString());
+        }
+
+        public static string EvaluateOnAssignmentExpression(this UserFlagAssignment ufa, DiscoDataContext Database, User AddingUser, DateTime TimeStamp)
+        {
+            if (!string.IsNullOrEmpty(ufa.UserFlag.OnAssignmentExpression))
+            {
+                Expression compiledExpression = ufa.UserFlag.OnAssignmentExpressionFromCache();
+                System.Collections.IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, AddingUser, TimeStamp, null);
+                try
+                {
+                    object result = compiledExpression.EvaluateFirst<object>(ufa, evaluatorVariables);
+                    if (result == null)
+                        return null;
+                    else
+                        return result.ToString();
+                }
+                catch
+                {
+                    throw;
+                }
+            }
+            return null;
+        }
+
+        public static Expression OnUnassignmentExpressionFromCache(this UserFlag uf)
+        {
+            return ExpressionCache.GetValue("UserFlag_OnUnassignmentExpression", uf.Id.ToString(), () => { return Expression.TokenizeSingleDynamic(null, uf.OnUnassignmentExpression, 0); });
+        }
+
+        public static void OnUnassignmentExpressionInvalidateCache(this UserFlag uf)
+        {
+            ExpressionCache.InvalidateKey("UserFlag_OnUnassignmentExpression", uf.Id.ToString());
+        }
+
+        public static string EvaluateOnUnassignmentExpression(this UserFlagAssignment ufa, DiscoDataContext Database, User RemovingUser, DateTime TimeStamp)
+        {
+            if (!string.IsNullOrEmpty(ufa.UserFlag.OnUnassignmentExpression))
+            {
+                Expression compiledExpression = ufa.UserFlag.OnUnassignmentExpressionFromCache();
+                System.Collections.IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, RemovingUser, TimeStamp, null);
+                try
+                {
+                    object result = compiledExpression.EvaluateFirst<object>(ufa, evaluatorVariables);
+                    if (result == null)
+                        return null;
+                    else
+                        return result.ToString();
+                }
+                catch
+                {
+                    throw;
+                }
+            }
+            return null;
+        }
+
+        #endregion
     }
 }

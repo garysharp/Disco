@@ -333,6 +333,7 @@
     <Compile Include="Interop\ActiveDirectory\ADSite.cs" />
     <Compile Include="Interop\ActiveDirectory\ADNetworkLogonDatesUpdateTask.cs" />
     <Compile Include="Interop\ActiveDirectory\ADUserAccount.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADUserAccountControlFlags.cs" />
     <Compile Include="Interop\ActiveDirectory\Description.cs" />
     <Compile Include="Interop\ActiveDirectory\IADObject.cs" />
     <Compile Include="Interop\DiscoServices\DiscoServiceHelpers.cs" />

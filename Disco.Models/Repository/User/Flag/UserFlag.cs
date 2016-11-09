@@ -22,6 +22,11 @@ namespace Disco.Models.Repository
         public string UsersLinkedGroup { get; set; }
         public string UserDevicesLinkedGroup { get; set; }
 
+        [DataType(DataType.MultilineText)]
+        public string OnAssignmentExpression { get; set; }
+        [DataType(DataType.MultilineText)]
+        public string OnUnassignmentExpression { get; set; }
+
         public virtual IList<UserFlagAssignment> UserFlagAssignments { get; set; }
 
         public override string ToString()

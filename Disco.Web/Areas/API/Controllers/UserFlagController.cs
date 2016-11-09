@@ -1,4 +1,5 @@
 ﻿using Disco.Models.Repository;
+using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Tasks;
@@ -16,6 +17,8 @@ namespace Disco.Web.Areas.API.Controllers
         const string pDescription = "description";
         const string pIcon = "icon";
         const string pIconColour = "iconcolour";
+        const string pOnAssignmentExpression = "onassignmentexpression";
+        const string pOnUnassignmentExpression = "onunassignmentexpression";
 
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
         public virtual ActionResult Update(int id, string key, string value = null, Nullable<bool> redirect = null)
@@ -44,6 +47,12 @@ namespace Disco.Web.Areas.API.Controllers
                             break;
                         case pIconColour:
                             UpdateIconColour(flag, value);
+                            break;
+                        case pOnAssignmentExpression:
+                            UpdateOnAssignmentExpression(flag, value);
+                            break;
+                        case pOnUnassignmentExpression:
+                            UpdateOnUnassignmentExpression(flag, value);
                             break;
                         default:
                             throw new Exception("Invalid Update Key");
@@ -121,6 +130,16 @@ namespace Disco.Web.Areas.API.Controllers
                 else
                     return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
             }
+        }
+        [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
+        public virtual ActionResult UpdateOnAssignmentExpression(int id, string OnAssignmentExpression = null, bool redirect = false)
+        {
+            return Update(id, pOnAssignmentExpression, OnAssignmentExpression, redirect);
+        }
+        [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
+        public virtual ActionResult UpdateOnUnassignmentExpression(int id, string OnUnassignmentExpression = null, bool redirect = false)
+        {
+            return Update(id, pOnUnassignmentExpression, OnUnassignmentExpression, redirect);
         }
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
         public virtual ActionResult UpdateAssignedUsersLinkedGroup(int id, string GroupId = null, DateTime? FilterBeginDate = null, bool redirect = false)
@@ -245,6 +264,38 @@ namespace Disco.Web.Areas.API.Controllers
                 UserFlag.Description = Description;
                 UserFlagService.Update(Database, UserFlag);
             }
+        }
+
+        private void UpdateOnAssignmentExpression(UserFlag UserFlag, string OnAssignmentExpression)
+        {
+            if (string.IsNullOrWhiteSpace(OnAssignmentExpression))
+            {
+                UserFlag.OnAssignmentExpression = null;
+            }
+            else
+            {
+                UserFlag.OnAssignmentExpression = OnAssignmentExpression.Trim();
+            }
+            // Invalidate Cache
+            UserFlag.OnAssignmentExpressionInvalidateCache();
+
+            UserFlagService.Update(Database, UserFlag);
+        }
+
+        private void UpdateOnUnassignmentExpression(UserFlag UserFlag, string OnUnassignmentExpression)
+        {
+            if (string.IsNullOrWhiteSpace(OnUnassignmentExpression))
+            {
+                UserFlag.OnUnassignmentExpression = null;
+            }
+            else
+            {
+                UserFlag.OnUnassignmentExpression = OnUnassignmentExpression.Trim();
+            }
+            // Invalidate Cache
+            UserFlag.OnUnassignmentExpressionInvalidateCache();
+
+            UserFlagService.Update(Database, UserFlag);
         }
 
         private ScheduledTaskStatus UpdateAssignedUsersLinkedGroup(UserFlag UserFlag, string AssignedUsersLinkedGroup, DateTime? FilterBeginDate)

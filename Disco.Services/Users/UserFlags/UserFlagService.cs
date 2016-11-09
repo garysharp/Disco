@@ -146,17 +146,7 @@ namespace Disco.Services.Users.UserFlags
                     {
                         Status.UpdateStatus((chunkIndexOffset + index) * progressInterval, string.Format("Assigning Flag: {0}", user.ToString()));
 
-                        var fa = new UserFlagAssignment()
-                        {
-                            UserFlagId = UserFlag.Id,
-                            UserId = user.UserId,
-                            AddedDate = DateTime.Now,
-                            AddedUserId = Technician.UserId,
-                            Comments = comments
-                        };
-
-                        Database.UserFlagAssignments.Add(fa);
-                        return fa;
+                        return user.OnAddUserFlag(Database, UserFlag, Technician, comments);
                     }).ToList();
 
                     // Save Chunk Items to Database
@@ -202,8 +192,7 @@ namespace Disco.Services.Users.UserFlags
                     {
                         Status.UpdateStatus((chunkIndexOffset + index) * progressInterval, string.Format("Removing Flag: {0}", flagAssignment.User.ToString()));
 
-                        flagAssignment.RemovedDate = removedDateTime;
-                        flagAssignment.RemovedUserId = Technician.UserId;
+                        flagAssignment.OnRemoveUnsafe(Database, Technician);
                         
                         return flagAssignment;
                     }).ToList();
@@ -223,17 +212,7 @@ namespace Disco.Services.Users.UserFlags
                     {
                         Status.UpdateStatus((chunkIndexOffset + index) * progressInterval, string.Format("Assigning Flag: {0}", user.ToString()));
 
-                        var fa = new UserFlagAssignment()
-                        {
-                            UserFlagId = UserFlag.Id,
-                            UserId = user.UserId,
-                            AddedDate = DateTime.Now,
-                            AddedUserId = Technician.UserId,
-                            Comments = comments
-                        };
-
-                        Database.UserFlagAssignments.Add(fa);
-                        return fa;
+                        return user.OnAddUserFlag(Database, UserFlag, Technician, comments);
                     }).ToList();
 
                     // Save Chunk Items to Database

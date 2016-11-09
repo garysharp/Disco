@@ -75,7 +75,9 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorizeAny(Claims.User.Actions.AddFlags)]
         public virtual ActionResult AddUser(int id, string UserId, string Comments)
         {
-            var userFlag = UserFlagService.GetUserFlag(id);
+            Database.Configuration.LazyLoadingEnabled = true;
+
+            var userFlag = Database.UserFlags.Find(id);
             if (userFlag == null)
                 throw new ArgumentException("Invalid User Flag Id", "id");
 
@@ -86,8 +88,9 @@ namespace Disco.Web.Areas.API.Controllers
             if (!user.CanAddUserFlag(userFlag))
                 throw new InvalidOperationException("Adding user flag is denied");
 
-            var userFlagAssignment = user.OnAddUserFlag(Database, userFlag, CurrentUser, Comments);
-            Database.SaveChanges();
+            var addingUser = Database.Users.Find(CurrentUser.UserId);
+
+            var userFlagAssignment = user.OnAddUserFlag(Database, userFlag, addingUser, Comments);
 
             return Redirect(string.Format("{0}#UserDetailTab-Flags", Url.Action(MVC.User.Show(user.UserId))));
         }
@@ -95,6 +98,8 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorizeAny(Claims.User.Actions.RemoveFlags)]
         public virtual ActionResult RemoveUser(int id)
         {
+            Database.Configuration.LazyLoadingEnabled = true;
+
             var userFlagAssignment = Database.UserFlagAssignments.FirstOrDefault(a => a.Id == id);
             if (userFlagAssignment == null)
                 throw new ArgumentException("Invalid User Flag Assignment Id", "id");
@@ -102,7 +107,9 @@ namespace Disco.Web.Areas.API.Controllers
             if (!userFlagAssignment.CanRemove())
                 throw new InvalidOperationException("Removing user flag assignment is denied");
 
-            userFlagAssignment.OnRemove(CurrentUser);
+            var removingUser = Database.Users.Find(CurrentUser.UserId);
+
+            userFlagAssignment.OnRemove(Database, removingUser);
             Database.SaveChanges();
 
             return Redirect(string.Format("{0}#UserDetailTab-Flags", Url.Action(MVC.User.Show(userFlagAssignment.UserId))));

@@ -29,9 +29,9 @@ namespace Disco.Services.Users.UserFlags
             {
                 // Load Flag
                 var userFlag = Database.UserFlags.FirstOrDefault(uf => uf.Id == UserFlagId);
-
                 if (userFlag == null)
                     throw new Exception("Invalid User Flag Id");
+
                 Status.UpdateStatus(0, string.Format("Bulk Assigning Users to User Flag: {0}", userFlag.Name), "Preparing to start");
 
                 // Load Technician

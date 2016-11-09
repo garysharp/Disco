@@ -22,6 +22,9 @@ namespace Disco.Models.Repository
 
         public string Comments { get; set; }
 
+        public string OnAssignmentExpressionResult { get; set; }
+        public string OnUnassignmentExpressionResult { get; set; }
+
         [ForeignKey("UserFlagId"), InverseProperty("UserFlagAssignments")]
         public virtual UserFlag UserFlag { get; set; }
 

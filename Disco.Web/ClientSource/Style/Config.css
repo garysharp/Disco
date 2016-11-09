@@ -1461,6 +1461,13 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
 #Config_JobQueues_Subjects_Update_Dialog #Config_JobQueues_Subjects_Update_Dialog_List li .remove:hover {
   opacity: 1;
 }
+#Config_UserFlags_Show #UserFlag_OnAssignmentExpression,
+#Config_UserFlags_Show #UserFlag_OnUnassignmentExpression {
+  height: 16px;
+  min-height: 16px;
+  overflow: hidden;
+  font-family: Consolas, "Courier New", monospace;
+}
 #Config_UserFlags_Index i {
   width: 1.2857142857142858em;
   text-align: center;
