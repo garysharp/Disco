@@ -50,6 +50,21 @@ namespace Disco.Services
 
         public static Tuple<DeviceModel, bool> GetOrCreateDeviceModel(this DbSet<DeviceModel> DeviceModelsSet, string Manufacturer, string Model, string ModelType)
         {
+            if (string.IsNullOrWhiteSpace(Manufacturer))
+                Manufacturer = "Unknown";
+            else
+                Manufacturer = Manufacturer.Trim();
+
+            if (string.IsNullOrWhiteSpace(Model))
+                Model = "Unknown";
+            else
+                Model = Model.Trim();
+
+            if (string.IsNullOrWhiteSpace(ModelType))
+                ModelType = null;
+            else
+                ModelType = ModelType.Trim();
+
             // Already Exists?
             var deviceModel = DeviceModelsSet.FirstOrDefault(dm => dm.Manufacturer == Manufacturer && dm.Model == Model);
             if (deviceModel == null)
@@ -65,12 +80,19 @@ namespace Disco.Services
                         // Create the Device Model in a different DataContext so we don't have to commit unrelated changes
                         using (DiscoDataContext database = new DiscoDataContext())
                         {
+                            var description = $"{Manufacturer} {Model}";
+
+                            if (Model.Equals("Unknown", StringComparison.OrdinalIgnoreCase))
+                            {
+                                description = $"Unknown {Manufacturer} Model";
+                            }
+
                             var addDeviceModel = new DeviceModel
                             {
                                 Manufacturer = Manufacturer,
                                 Model = Model,
                                 ModelType = ModelType,
-                                Description = string.Format("{0} {1}", Manufacturer, Model)
+                                Description = description
                             };
                             database.DeviceModels.Add(addDeviceModel);
                             database.SaveChanges();

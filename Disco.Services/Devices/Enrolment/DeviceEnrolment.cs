@@ -22,7 +22,7 @@ namespace Disco.Services.Devices.Enrolment
         public static MacSecureEnrolResponse MacSecureEnrol(DiscoDataContext Database, string Host)
         {
             MacEnrol trustedRequest = new MacEnrol();
-            string sessionId = System.Guid.NewGuid().ToString("B");
+            string sessionId = Guid.NewGuid().ToString("B");
             MacSecureEnrolResponse MacSecureEnrol;
             try
             {
@@ -191,7 +191,7 @@ namespace Disco.Services.Devices.Enrolment
             string sessionId;
             if (OpenSessionId == null)
             {
-                sessionId = System.Guid.NewGuid().ToString("B");
+                sessionId = Guid.NewGuid().ToString("B");
                 EnrolmentLog.LogSessionStarting(sessionId, Request.DeviceSerialNumber, EnrolmentTypes.Mac);
             }
             else
@@ -221,7 +221,7 @@ namespace Disco.Services.Devices.Enrolment
                     EnrolmentLog.LogSessionTaskAddedDevice(sessionId, Request.DeviceSerialNumber);
                     DeviceProfile deviceProfile = Database.DeviceProfiles.Find(Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId);
 
-                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModelType.Trim());
+                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer, Request.DeviceModel, Request.DeviceModelType);
                     DeviceModel deviceModel = deviceModelResult.Item1;
                     if (deviceModelResult.Item2)
                         EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
@@ -245,7 +245,7 @@ namespace Disco.Services.Devices.Enrolment
                     EnrolmentLog.LogSessionProgress(sessionId, 50, "Existing Device, Updating Disco Instance");
                     EnrolmentLog.LogSessionTaskUpdatingDevice(sessionId, Request.DeviceSerialNumber);
 
-                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer.Trim(), Request.DeviceModel.Trim(), Request.DeviceModelType.Trim());
+                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.DeviceManufacturer, Request.DeviceModel, Request.DeviceModelType);
                     DeviceModel deviceModel = deviceModelResult.Item1;
                     if (deviceModelResult.Item2)
                         EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.DeviceSerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
@@ -313,7 +313,7 @@ namespace Disco.Services.Devices.Enrolment
                 return domain.GetAvailableDomainController(RequireWritable: true);
             });
 
-            string sessionId = System.Guid.NewGuid().ToString("B");
+            string sessionId = Guid.NewGuid().ToString("B");
             response.SessionId = sessionId;
 
             EnrolmentLog.LogSessionStarting(sessionId, Request.SerialNumber, EnrolmentTypes.Normal);
@@ -396,7 +396,7 @@ namespace Disco.Services.Devices.Enrolment
                     DeviceProfile deviceProfile = Database.DeviceProfiles.Find(Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId);
 
 
-                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.Hardware.Manufacturer.Trim(), Request.Hardware.Model.Trim(), Request.Hardware.ModelType.Trim());
+                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.Hardware.Manufacturer, Request.Hardware.Model, Request.Hardware.ModelType);
                     DeviceModel deviceModel = deviceModelResult.Item1;
                     if (deviceModelResult.Item2)
                         EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.SerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
@@ -432,7 +432,7 @@ namespace Disco.Services.Devices.Enrolment
                     EnrolmentLog.LogSessionProgress(sessionId, 30, "Existing Device, Updating Disco Instance");
                     EnrolmentLog.LogSessionTaskUpdatingDevice(sessionId, Request.SerialNumber);
 
-                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.Hardware.Manufacturer.Trim(), Request.Hardware.Model.Trim(), Request.Hardware.ModelType.Trim());
+                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.Hardware.Manufacturer, Request.Hardware.Model, Request.Hardware.ModelType);
                     DeviceModel deviceModel = deviceModelResult.Item1;
                     if (deviceModelResult.Item2)
                         EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.SerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);

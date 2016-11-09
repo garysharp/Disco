@@ -59,6 +59,10 @@ namespace Disco.Client.Interop
                 // Ignore
                 // Indicates 'Wlanapi.dll' isn't present (ie. Servers)
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Disco Client was unable to retrieve Wireless NetworkAdapter information from WlanApi", ex);
+            }
         }
 
         public static List<WirelessProfile> GetWirelessProfiles()
@@ -95,6 +99,10 @@ namespace Disco.Client.Interop
             {
                 // Indicates 'Wlanapi.dll' isn't present (ie. Servers)
                 return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Disco Client was unable to retrieve Wireless Profiles from WlanApi", ex);
             }
         }
 
@@ -346,7 +354,10 @@ namespace Disco.Client.Interop
                 // Indicates 'Wlanapi.dll' isn't present (ie. Servers)
                 // Ignore policies
             }
-
+            catch (Exception ex)
+            {
+                throw new Exception("Disco Client was unable to apply Wireless Profile Changes using WlanApi", ex);
+            }
         }
 
         public static string Description(this WLAN_INTERFACE_STATE State)
