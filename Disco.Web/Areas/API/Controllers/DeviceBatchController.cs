@@ -500,7 +500,7 @@ namespace Disco.Web.Areas.API.Controllers
                 DeviceBatch.AssignedUsersLinkedGroup = configJson;
                 Database.SaveChanges();
 
-                var managedGroup = DeviceBatchDevicesManagedGroup.Initialize(DeviceBatch);
+                var managedGroup = DeviceBatchAssignedUsersManagedGroup.Initialize(DeviceBatch);
                 if (managedGroup != null) // Sync Group
                     return ADManagedGroupsSyncTask.ScheduleSync(managedGroup);
             }

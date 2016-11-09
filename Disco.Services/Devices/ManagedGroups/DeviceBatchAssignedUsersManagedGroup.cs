@@ -57,7 +57,7 @@ namespace Disco.Services.Devices.ManagedGroups
             repositorySubscription = RepositoryEvents.Value
                 .Where(e =>
                     (((Device)e.Entity).DeviceBatchId == DeviceBatchId) ||
-                    (e.EventType == RepositoryMonitorEventType.Modified && e.GetPreviousPropertyValue<int>("DeviceBatchId") == DeviceBatchId))
+                    (e.EventType == RepositoryMonitorEventType.Modified && e.GetPreviousPropertyValue<int?>("DeviceBatchId") == DeviceBatchId))
                 .Subscribe(ProcessRepositoryEvent);
         }
 
