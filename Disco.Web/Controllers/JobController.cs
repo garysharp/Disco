@@ -8,6 +8,7 @@ using Disco.Services.Jobs;
 using Disco.Services.Jobs.JobLists;
 using Disco.Services.Jobs.JobQueues;
 using Disco.Services.Jobs.Statistics;
+using Disco.Services.Logging;
 using Disco.Services.Plugins.Features.RepairProvider;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Plugins.Features.WarrantyProvider;
@@ -397,6 +398,8 @@ namespace Disco.Web.Controllers
             }
             else
             {
+                Database.Configuration.LazyLoadingEnabled = true;
+
                 // Create New Job
                 var currentUser = Database.Users.Find(UserService.CurrentUserId);
 
@@ -424,7 +427,7 @@ namespace Disco.Web.Controllers
                         // Set Opened Date in the past
                         j.OpenedDate = DateTime.Now.AddMinutes(-1 * m.QuickLogTaskTimeMinutes.Value);
                         // Close Job
-                        j.OnCloseNormally(currentUser);
+                        j.OnCloseNormally(Database, currentUser);
                     }
                     else
                     {
@@ -432,10 +435,34 @@ namespace Disco.Web.Controllers
                     }
                 }
 
+                Database.SaveChanges();
+
+                // Evaluate OnCreate Expression
+                try
+                {
+                    var onCreateResult = j.EvaluateOnCreateExpression(Database);
+                    if (!string.IsNullOrWhiteSpace(onCreateResult))
+                    {
+                        var jl = new JobLog()
+                        {
+                            Job = j,
+                            TechUser = currentUser,
+                            Timestamp = DateTime.Now,
+                            Comments = onCreateResult
+                        };
+                        Database.JobLogs.Add(jl);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    SystemLog.LogException("Job Expression - OnCreateExpression", ex);
+                }
+
+
                 // Add Comments
                 if (!string.IsNullOrWhiteSpace(m.Comments))
                 {
-                    var jl = new Disco.Models.Repository.JobLog()
+                    var jl = new JobLog()
                     {
                         Job = j,
                         TechUser = currentUser,

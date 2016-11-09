@@ -1,0 +1,147 @@
+﻿@model Disco.Web.Areas.Config.Models.JobPreferences.IndexModel
+@{
+    Authorization.Require(Claims.Config.JobPreferences.Show);
+
+    var canConfig = Authorization.Has(Claims.Config.JobPreferences.Configure);
+}
+<div id="Config_JobPref_Expressions" class="form" style="width: 530px;">
+    <h2>Expressions</h2>
+    <table>
+        <tr>
+            <th style="width: 200px">On Create:</th>
+            <td>
+                @if (canConfig)
+                {
+                    @Html.EditorFor(model => model.OnCreateExpression)
+                    @AjaxHelpers.AjaxRemove()
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                            $(function () {
+                                var field = $('#OnCreateExpression');
+                                var fieldRemove = field.next('.ajaxRemove');
+                                var fieldOriginalWidth, fieldOriginalHeight;
+
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    field,
+                                    'None',
+                                    '@Url.Action(MVC.API.JobPreferences.UpdateOnCreateExpression())',
+                                    'OnCreateExpression'
+                                );
+
+                                field.focus(function () {
+                                    fieldOriginalWidth = field.width();
+                                    fieldOriginalHeight = field.height();
+                                    field.css('overflow', 'visible').animate({ width: field.parent().width() - 42, height: 75 }, 200);
+                                }).blur(function () {
+                                    field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
+                                }).change(function () {
+                                    if (!!field.val()) {
+                                        fieldRemove.show();
+                                    } else {
+                                        fieldRemove.hide();
+                                    }
+                                }).attr('placeholder', 'None').attr('spellcheck', 'false');
+
+                                fieldRemove.click(function () {
+                                    field.val('').change();
+                                });
+
+                                if (!!field.val()) {
+                                    fieldRemove.show();
+                                } else {
+                                    fieldRemove.hide();
+                                }
+                            });
+                    </script>
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(Model.OnCreateExpression))
+                    {
+                        <span class="smallMessage">&lt;None Specified&gt;</span>
+                    }
+                    else
+                    {
+                        <div class="code">
+                            @Model.OnCreateExpression
+                        </div>
+                    }
+                }
+                <div class="info-box">
+                    <p class="fa-p">
+                        <i class="fa fa-fw fa-info-circle"></i>This expression will be evaluated whenever a job is created. If the expression has any output it will be added to the job log.
+                    </p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 200px">On Close:</th>
+            <td>
+                @if (canConfig)
+                {
+                    @Html.EditorFor(model => model.OnCloseExpression)
+                    @AjaxHelpers.AjaxRemove()
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                            $(function () {
+                                var field = $('#OnCloseExpression');
+                                var fieldRemove = field.next('.ajaxRemove');
+                                var fieldOriginalWidth, fieldOriginalHeight;
+
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    field,
+                                    'None',
+                                    '@Url.Action(MVC.API.JobPreferences.UpdateOnCloseExpression())',
+                                    'OnCloseExpression'
+                                );
+
+                                field.focus(function () {
+                                    fieldOriginalWidth = field.width();
+                                    fieldOriginalHeight = field.height();
+                                    field.css('overflow', 'visible').animate({ width: field.parent().width() - 42, height: 75 }, 200);
+                                }).blur(function () {
+                                    field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
+                                }).change(function () {
+                                    if (!!field.val()) {
+                                        fieldRemove.show();
+                                    } else {
+                                        fieldRemove.hide();
+                                    }
+                                }).attr('placeholder', 'None').attr('spellcheck', 'false');
+
+                                fieldRemove.click(function () {
+                                    field.val('').change();
+                                });
+
+                                if (!!field.val()) {
+                                    fieldRemove.show();
+                                } else {
+                                    fieldRemove.hide();
+                                }
+                            });
+                    </script>
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(Model.OnCloseExpression))
+                    {
+                        <span class="smallMessage">&lt;None Specified&gt;</span>
+                    }
+                    else
+                    {
+                        <div class="code">
+                            @Model.OnCloseExpression
+                        </div>
+                    }
+                }
+                <div class="info-box">
+                    <p class="fa-p">
+                        <i class="fa fa-fw fa-info-circle"></i>This expression will be evaluated whenever a job is closed. If the expression has any output it will be added to the job log.
+                    </p>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

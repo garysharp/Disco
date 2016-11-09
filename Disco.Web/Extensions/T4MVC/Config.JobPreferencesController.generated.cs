@@ -105,10 +105,12 @@ namespace Disco.Web.Areas.Config.Controllers
                 public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
                 public class _ViewNamesClass
                 {
+                    public readonly string Expressions = "Expressions";
                     public readonly string General = "General";
                     public readonly string Locations = "Locations";
                     public readonly string Reports = "Reports";
                 }
+                public readonly string Expressions = "~/Areas/Config/Views/JobPreferences/Parts/Expressions.cshtml";
                 public readonly string General = "~/Areas/Config/Views/JobPreferences/Parts/General.cshtml";
                 public readonly string Locations = "~/Areas/Config/Views/JobPreferences/Parts/Locations.cshtml";
                 public readonly string Reports = "~/Areas/Config/Views/JobPreferences/Parts/Reports.cshtml";

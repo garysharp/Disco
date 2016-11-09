@@ -17,6 +17,11 @@ namespace Disco.Web.Areas.Config.Models.JobPreferences
         public LocationModes LocationMode { get; set; }
         public List<string> LocationList { get; set; }
 
+        [DataType(DataType.MultilineText)]
+        public string OnCreateExpression { get; set; }
+        [DataType(DataType.MultilineText)]
+        public string OnCloseExpression { get; set; }
+
         public List<KeyValuePair<string, string>> DefaultNoticeboardThemeOptions()
         {
             return UIHelpers.NoticeboardThemes.ToList();

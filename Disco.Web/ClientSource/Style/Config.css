@@ -1344,6 +1344,16 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
   height: 200px;
   margin: 0 auto;
 }
+#Config_JobPref_Expressions {
+  margin-top: 10px;
+}
+#Config_JobPref_Expressions #OnCreateExpression,
+#Config_JobPref_Expressions #OnCloseExpression {
+  height: 16px;
+  min-height: 16px;
+  overflow: hidden;
+  font-family: Consolas, "Courier New", monospace;
+}
 #Config_JobQueues_Index i {
   width: 1.2857142857142858em;
   text-align: center;

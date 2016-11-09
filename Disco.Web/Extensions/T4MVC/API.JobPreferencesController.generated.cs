@@ -93,6 +93,18 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportLocationList);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateOnCreateExpression()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateOnCreateExpression);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateOnCloseExpression()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateOnCloseExpression);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public JobPreferencesController Actions { get { return MVC.API.JobPreferences; } }
@@ -115,6 +127,8 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateLocationMode = "UpdateLocationMode";
             public readonly string UpdateLocationList = "UpdateLocationList";
             public readonly string ImportLocationList = "ImportLocationList";
+            public readonly string UpdateOnCreateExpression = "UpdateOnCreateExpression";
+            public readonly string UpdateOnCloseExpression = "UpdateOnCloseExpression";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -126,6 +140,8 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateLocationMode = "UpdateLocationMode";
             public const string UpdateLocationList = "UpdateLocationList";
             public const string ImportLocationList = "ImportLocationList";
+            public const string UpdateOnCreateExpression = "UpdateOnCreateExpression";
+            public const string UpdateOnCloseExpression = "UpdateOnCloseExpression";
         }
 
 
@@ -183,6 +199,24 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string LocationList = "LocationList";
             public readonly string AutomaticList = "AutomaticList";
             public readonly string Override = "Override";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateOnCreateExpression s_params_UpdateOnCreateExpression = new ActionParamsClass_UpdateOnCreateExpression();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateOnCreateExpression UpdateOnCreateExpressionParams { get { return s_params_UpdateOnCreateExpression; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateOnCreateExpression
+        {
+            public readonly string OnCreateExpression = "OnCreateExpression";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateOnCloseExpression s_params_UpdateOnCloseExpression = new ActionParamsClass_UpdateOnCloseExpression();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateOnCloseExpression UpdateOnCloseExpressionParams { get { return s_params_UpdateOnCloseExpression; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateOnCloseExpression
+        {
+            public readonly string OnCloseExpression = "OnCloseExpression";
             public readonly string redirect = "redirect";
         }
         static readonly ViewsClass s_views = new ViewsClass();
@@ -281,6 +315,32 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Override", Override);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             ImportLocationListOverride(callInfo, LocationList, AutomaticList, Override, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateOnCreateExpressionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string OnCreateExpression, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateOnCreateExpression(string OnCreateExpression, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateOnCreateExpression);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "OnCreateExpression", OnCreateExpression);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateOnCreateExpressionOverride(callInfo, OnCreateExpression, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateOnCloseExpressionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string OnCloseExpression, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateOnCloseExpression(string OnCloseExpression, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateOnCloseExpression);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "OnCloseExpression", OnCloseExpression);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateOnCloseExpressionOverride(callInfo, OnCloseExpression, redirect);
             return callInfo;
         }
 

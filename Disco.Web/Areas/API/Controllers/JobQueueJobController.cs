@@ -219,7 +219,7 @@ namespace Disco.Web.Areas.API.Controllers
 
             if (CloseJob.HasValue && CloseJob.Value && job.CanCloseNormally())
             {
-                job.OnCloseNormally(CurrentUser);
+                job.OnCloseNormally(Database, Database.Users.Find(CurrentUser.UserId));
                 Database.SaveChanges();
             }
 

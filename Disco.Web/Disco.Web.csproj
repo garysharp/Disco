@@ -267,6 +267,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Index.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Config\Views\JobPreferences\Parts\Expressions.generated.cs">
+      <DependentUpon>Expressions.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Areas\Config\Views\JobPreferences\Parts\General.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1190,6 +1195,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
     </None>
+    <Content Include="Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Expressions.generated.cs</LastGenOutput>
+    </Content>
     <None Include="Areas\Config\Views\JobPreferences\Parts\General.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>General.generated.cs</LastGenOutput>

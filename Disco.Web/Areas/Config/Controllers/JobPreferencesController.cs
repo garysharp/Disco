@@ -2,10 +2,6 @@
 using Disco.Services.Authorization;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Web;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.Config.Controllers
@@ -21,7 +17,9 @@ namespace Disco.Web.Areas.Config.Controllers
                 StaleJobMinutesThreshold = Database.DiscoConfiguration.JobPreferences.StaleJobMinutesThreshold,
                 DefaultNoticeboardTheme = Database.DiscoConfiguration.JobPreferences.DefaultNoticeboardTheme,
                 LocationMode = Database.DiscoConfiguration.JobPreferences.LocationMode,
-                LocationList = Database.DiscoConfiguration.JobPreferences.LocationList
+                LocationList = Database.DiscoConfiguration.JobPreferences.LocationList,
+                OnCreateExpression = Database.DiscoConfiguration.JobPreferences.OnCreateExpression,
+                OnCloseExpression = Database.DiscoConfiguration.JobPreferences.OnCloseExpression
             };
 
             // UI Extensions

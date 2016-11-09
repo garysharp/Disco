@@ -1,6 +1,8 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
+using Disco.Services.Expressions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -118,6 +120,26 @@ namespace Disco.Services.Jobs
             }
 
             return j;
+        }
+
+        public static Expression OnCreateExpressionFromCache(DiscoDataContext Database)
+        {
+            return ExpressionCache.GetValue("Job_OnCreateExpression", string.Empty, () => { return Expression.TokenizeSingleDynamic(null, Database.DiscoConfiguration.JobPreferences.OnCreateExpression, 0); });
+        }
+
+        public static void OnCreateExpressionInvalidateCache()
+        {
+            ExpressionCache.InvalidateKey("Job_OnCreateExpression", string.Empty);
+        }
+
+        public static Expression OnCloseExpressionFromCache(DiscoDataContext Database)
+        {
+            return ExpressionCache.GetValue("Job_OnCloseExpression", string.Empty, () => { return Expression.TokenizeSingleDynamic(null, Database.DiscoConfiguration.JobPreferences.OnCloseExpression, 0); });
+        }
+
+        public static void OnCloseExpressionInvalidateCache()
+        {
+            ExpressionCache.InvalidateKey("Job_OnCloseExpression", string.Empty);
         }
 
     }

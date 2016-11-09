@@ -3,9 +3,11 @@ using Disco.Models.Repository;
 using Disco.Models.Services.Documents;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Services.Authorization;
+using Disco.Services.Expressions;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -382,6 +384,40 @@ namespace Disco.Services
 
             return JobTypes;
         }
+
+        #region Expressions
+
+        public static string EvaluateOnCreateExpression(this Job job, DiscoDataContext Database)
+        {
+            if (!string.IsNullOrEmpty(Database.DiscoConfiguration.JobPreferences.OnCreateExpression))
+            {
+                Expression compiledExpression = Jobs.Jobs.OnCreateExpressionFromCache(Database);
+                IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, job.OpenedTechUser, DateTime.Now, null);
+                object result = compiledExpression.EvaluateFirst<object>(job, evaluatorVariables);
+                if (result == null)
+                    return null;
+                else
+                    return result.ToString();
+            }
+            return null;
+        }
+
+        public static string EvaluateOnCloseExpression(this Job job, DiscoDataContext Database)
+        {
+            if (!string.IsNullOrEmpty(Database.DiscoConfiguration.JobPreferences.OnCloseExpression))
+            {
+                Expression compiledExpression = Jobs.Jobs.OnCloseExpressionFromCache(Database);
+                IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, job.OpenedTechUser, DateTime.Now, null);
+                object result = compiledExpression.EvaluateFirst<object>(job, evaluatorVariables);
+                if (result == null)
+                    return null;
+                else
+                    return result.ToString();
+            }
+            return null;
+        }
+
+        #endregion
 
     }
 }

@@ -1684,7 +1684,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 if (j.CanCloseForced())
                 {
-                    j.OnCloseForced(Database, CurrentUser, Reason);
+                    j.OnCloseForced(Database, Database.Users.Find(CurrentUser.UserId), Reason);
 
                     Database.SaveChanges();
                     if (redirect.HasValue && redirect.Value)
@@ -1709,7 +1709,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 if (j.CanCloseNormally())
                 {
-                    j.OnCloseNormally(CurrentUser);
+                    j.OnCloseNormally(Database, Database.Users.Find(CurrentUser.UserId));
 
                     Database.SaveChanges();
                     if (redirect)

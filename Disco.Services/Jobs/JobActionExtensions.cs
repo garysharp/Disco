@@ -2,6 +2,7 @@
 using Disco.Models.BI.Config;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
+using Disco.Services.Logging;
 using Disco.Services.Plugins;
 using Disco.Services.Plugins.Features.RepairProvider;
 using Disco.Services.Plugins.Features.WarrantyProvider;
@@ -491,13 +492,35 @@ namespace Disco.Services
         #endregion
 
         #region Close
-        public static void OnCloseNormally(this Job j, User Technician)
+        public static void OnCloseNormally(this Job j, DiscoDataContext Database, User Technician)
         {
             if (!j.CanCloseNormally())
                 throw new InvalidOperationException("Close was Denied");
 
             j.ClosedDate = DateTime.Now;
             j.ClosedTechUserId = Technician.UserId;
+            j.ClosedTechUser = Technician;
+
+            // Evaluate OnClose Expression
+            try
+            {
+                var onCloseResult = j.EvaluateOnCloseExpression(Database);
+                if (!string.IsNullOrWhiteSpace(onCloseResult))
+                {
+                    var jl = new JobLog()
+                    {
+                        Job = j,
+                        TechUser = Technician,
+                        Timestamp = DateTime.Now,
+                        Comments = onCloseResult
+                    };
+                    Database.JobLogs.Add(jl);
+                }
+            }
+            catch (Exception ex)
+            {
+                SystemLog.LogException("Job Expression - OnCloseExpression", ex);
+            }
         }
 
         private static bool CanCloseNever(this Job j, JobQueueJob IgnoreJobQueueJob = null)
@@ -645,6 +668,28 @@ namespace Disco.Services
 
             j.ClosedDate = DateTime.Now;
             j.ClosedTechUserId = Technician.UserId;
+            j.ClosedTechUser = Technician;
+
+            // Evaluate OnClose Expression
+            try
+            {
+                var onCloseResult = j.EvaluateOnCloseExpression(Database);
+                if (!string.IsNullOrWhiteSpace(onCloseResult))
+                {
+                    var jl = new JobLog()
+                    {
+                        Job = j,
+                        TechUser = Technician,
+                        Timestamp = DateTime.Now,
+                        Comments = onCloseResult
+                    };
+                    Database.JobLogs.Add(jl);
+                }
+            }
+            catch (Exception ex)
+            {
+                SystemLog.LogException("Job Expression - OnCloseExpression", ex);
+            }
         }
         #endregion
 

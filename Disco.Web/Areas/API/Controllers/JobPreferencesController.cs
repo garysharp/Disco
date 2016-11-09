@@ -1,5 +1,6 @@
 ﻿using Disco.Models.Services.Job;
 using Disco.Services.Authorization;
+using Disco.Services.Jobs;
 using Disco.Services.Web;
 using System;
 using System.Collections.Generic;
@@ -111,6 +112,54 @@ namespace Disco.Web.Areas.API.Controllers
 
             Database.DiscoConfiguration.JobPreferences.LocationList = list.ToList();
             Database.SaveChanges();
+
+            if (redirect)
+                return RedirectToAction(MVC.Config.JobPreferences.Index());
+            else
+                return Json("OK", JsonRequestBehavior.AllowGet);
+        }
+
+        [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        public virtual ActionResult UpdateOnCreateExpression(string OnCreateExpression, bool redirect = false)
+        {
+            string expression = null;
+
+            if (!string.IsNullOrWhiteSpace(OnCreateExpression))
+            {
+                expression = OnCreateExpression.Trim();
+            }
+
+            if (Database.DiscoConfiguration.JobPreferences.OnCreateExpression != expression)
+            {
+                Database.DiscoConfiguration.JobPreferences.OnCreateExpression = expression;
+                Database.SaveChanges();
+
+                Jobs.OnCreateExpressionInvalidateCache();
+            }
+
+            if (redirect)
+                return RedirectToAction(MVC.Config.JobPreferences.Index());
+            else
+                return Json("OK", JsonRequestBehavior.AllowGet);
+        }
+
+        [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        public virtual ActionResult UpdateOnCloseExpression(string OnCloseExpression, bool redirect = false)
+        {
+            string expression = null;
+
+            if (!string.IsNullOrWhiteSpace(OnCloseExpression))
+            {
+                expression = OnCloseExpression.Trim();
+            }
+
+            if (Database.DiscoConfiguration.JobPreferences.OnCloseExpression != expression)
+            {
+                Database.DiscoConfiguration.JobPreferences.OnCloseExpression = expression;
+                Database.SaveChanges();
+
+                Jobs.OnCloseExpressionInvalidateCache();
+            }
 
             if (redirect)
                 return RedirectToAction(MVC.Config.JobPreferences.Index());

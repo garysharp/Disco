@@ -5,6 +5,7 @@ using Disco.Services.Expressions;
 using Disco.Services.Logging;
 using Disco.Services.Users;
 using System;
+using System.Collections;
 using System.Linq;
 
 namespace Disco.Services
@@ -110,7 +111,6 @@ namespace Disco.Services
                 try
                 {
                     Database.SaveChanges();
-                    fa = Database.UserFlagAssignments.Where(ufa => ufa.Id == fa.Id).First();
                     var expressionResult = fa.EvaluateOnAssignmentExpression(Database, AddingUser, fa.AddedDate);
                     if (!string.IsNullOrWhiteSpace(expressionResult))
                     {
@@ -145,19 +145,12 @@ namespace Disco.Services
             if (!string.IsNullOrEmpty(ufa.UserFlag.OnAssignmentExpression))
             {
                 Expression compiledExpression = ufa.UserFlag.OnAssignmentExpressionFromCache();
-                System.Collections.IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, AddingUser, TimeStamp, null);
-                try
-                {
-                    object result = compiledExpression.EvaluateFirst<object>(ufa, evaluatorVariables);
-                    if (result == null)
-                        return null;
-                    else
-                        return result.ToString();
-                }
-                catch
-                {
-                    throw;
-                }
+                IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, AddingUser, TimeStamp, null);
+                object result = compiledExpression.EvaluateFirst<object>(ufa, evaluatorVariables);
+                if (result == null)
+                    return null;
+                else
+                    return result.ToString();
             }
             return null;
         }
@@ -177,19 +170,12 @@ namespace Disco.Services
             if (!string.IsNullOrEmpty(ufa.UserFlag.OnUnassignmentExpression))
             {
                 Expression compiledExpression = ufa.UserFlag.OnUnassignmentExpressionFromCache();
-                System.Collections.IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, RemovingUser, TimeStamp, null);
-                try
-                {
-                    object result = compiledExpression.EvaluateFirst<object>(ufa, evaluatorVariables);
-                    if (result == null)
-                        return null;
-                    else
-                        return result.ToString();
-                }
-                catch
-                {
-                    throw;
-                }
+                IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, RemovingUser, TimeStamp, null);
+                object result = compiledExpression.EvaluateFirst<object>(ufa, evaluatorVariables);
+                if (result == null)
+                    return null;
+                else
+                    return result.ToString();
             }
             return null;
         }
