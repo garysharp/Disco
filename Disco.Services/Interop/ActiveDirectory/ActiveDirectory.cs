@@ -1,4 +1,5 @@
 ﻿using Disco.Data.Repository;
+using Disco.Models.Repository;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -68,6 +69,12 @@ namespace Disco.Services.Interop.ActiveDirectory
         {
             var domain = Context.GetDomainFromId(Id);
             return domain.GetAvailableDomainController().RetrieveADUserAccount(Id, AdditionalProperties);
+        }
+
+        public static ADUserAccount RetrieveADUserAccount(User User, params string[] AdditionalProperties)
+        {
+            var domain = Context.GetDomainFromId(User.UserId);
+            return domain.GetAvailableDomainController().RetrieveADUserAccount(User.UserId, AdditionalProperties);
         }
 
         public static IEnumerable<ADUserAccount> SearchADUserAccounts(string Term, bool Quick, int? ResultLimit = ActiveDirectory.DefaultSearchResultLimit, params string[] AdditionalProperties)

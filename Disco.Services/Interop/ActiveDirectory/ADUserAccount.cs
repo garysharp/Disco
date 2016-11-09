@@ -10,8 +10,8 @@ namespace Disco.Services.Interop.ActiveDirectory
     {
         internal const string LdapSamAccountNameFilterTemplate = "(&(objectCategory=Person)(sAMAccountName={0}))";
         internal static string LdapSearchFilterTemplate = "(&(objectCategory=Person)(objectClass=user)(|(sAMAccountName={0}*)(displayName={0}*)(sn={0}*)(givenName={0}*)))";
-        internal static readonly string[] LoadProperties = { "name", "distinguishedName", "sAMAccountName", "objectSid", "displayName", "sn", "givenName", "memberOf", "primaryGroupID", "mail", "telephoneNumber" };
-        internal static readonly string[] QuickLoadProperties = { "name", "distinguishedName", "sAMAccountName", "objectSid", "displayName", "sn", "givenName", "mail", "telephoneNumber" };
+        internal static readonly string[] LoadProperties = { "name", "distinguishedName", "sAMAccountName", "objectSid", "userAccountControl", "isCriticalSystemObject", "displayName", "sn", "givenName", "memberOf", "primaryGroupID", "mail", "telephoneNumber" };
+        internal static readonly string[] QuickLoadProperties = { "name", "distinguishedName", "sAMAccountName", "objectSid", "userAccountControl", "isCriticalSystemObject", "displayName", "sn", "givenName", "mail", "telephoneNumber" };
 
 
         public ADDomain Domain { get; private set; }
@@ -30,13 +30,21 @@ namespace Disco.Services.Interop.ActiveDirectory
         public string Email { get; private set; }
         public string Phone { get; private set; }
 
+        public ADUserAccountControlFlags UserAccountControl { get; private set; }
+
+        public bool IsCriticalSystemObject { get; private set; }
+
         public List<ADGroup> Groups { get; private set; }
 
         public Dictionary<string, object[]> LoadedProperties { get; private set; }
 
+        public bool IsDisabled { get { return UserAccountControl.HasFlag(ADUserAccountControlFlags.ADS_UF_ACCOUNTDISABLE); } }
+        public bool IsLockedOut { get { return UserAccountControl.HasFlag(ADUserAccountControlFlags.ADS_UF_LOCKOUT); } }
+        public bool IsPasswordExpired { get { return UserAccountControl.HasFlag(ADUserAccountControlFlags.ADS_UF_PASSWORD_EXPIRED); } }
+
         private ADUserAccount(ADDomain Domain, string DistinguishedName, SecurityIdentifier SecurityIdentifier, string SamAccountName,
-            string Name, string DisplayName, string Surname, string GivenName, string Email, string Phone,
-            List<ADGroup> Groups, Dictionary<string, object[]> LoadedProperties)
+            string Name, string DisplayName, string Surname, string GivenName, string Email, string Phone, ADUserAccountControlFlags UserAccountControl,
+            bool IsCriticalSystemObject, List<ADGroup> Groups, Dictionary<string, object[]> LoadedProperties)
         {
             this.Domain = Domain;
             this.DistinguishedName = DistinguishedName;
@@ -48,6 +56,8 @@ namespace Disco.Services.Interop.ActiveDirectory
             this.GivenName = GivenName;
             this.Email = Email;
             this.Phone = Phone;
+            this.UserAccountControl = UserAccountControl;
+            this.IsCriticalSystemObject = IsCriticalSystemObject;
             this.Groups = Groups;
             this.LoadedProperties = LoadedProperties;
         }
@@ -57,22 +67,25 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (SearchResult == null)
                 throw new ArgumentNullException("SearchResult");
 
-            string name = SearchResult.Value<string>("name");
-            string sAMAccountName = SearchResult.Value<string>("sAMAccountName");
-            string distinguishedName = SearchResult.Value<string>("distinguishedName");
+            var name = SearchResult.Value<string>("name");
+            var sAMAccountName = SearchResult.Value<string>("sAMAccountName");
+            var distinguishedName = SearchResult.Value<string>("distinguishedName");
             var objectSid = new SecurityIdentifier(SearchResult.Value<byte[]>("objectSid"), 0);
 
             var displayName = SearchResult.Value<string>("displayName") ?? sAMAccountName;
             var surname = SearchResult.Value<string>("sn");
-            string givenName = SearchResult.Value<string>("givenName");
-            string email = SearchResult.Value<string>("mail");
-            string phone = SearchResult.Value<string>("telephoneNumber");
+            var givenName = SearchResult.Value<string>("givenName");
+            var email = SearchResult.Value<string>("mail");
+            var phone = SearchResult.Value<string>("telephoneNumber");
+
+            var userAccountControl = (ADUserAccountControlFlags)SearchResult.Value<int>("userAccountControl");
+            var isCriticalSystemObject = SearchResult.Value<bool>("isCriticalSystemObject");
 
             List<ADGroup> groups = null;
             // Don't load Groups when doing a quick search
             if (!Quick)
             {
-                int primaryGroupID = (int)SearchResult.Value<int>("primaryGroupID");
+                var primaryGroupID = SearchResult.Value<int>("primaryGroupID");
                 var primaryGroupSid = ADHelpers.BuildPrimaryGroupSid(objectSid, primaryGroupID);
                 var memberGroups = SearchResult.Values<string>("memberOf");
 
@@ -107,6 +120,8 @@ namespace Disco.Services.Interop.ActiveDirectory
                 givenName,
                 email,
                 phone,
+                userAccountControl,
+                isCriticalSystemObject,
                 groups,
                 additionalProperties);
         }
@@ -125,24 +140,26 @@ namespace Disco.Services.Interop.ActiveDirectory
             switch (PropertyName.ToLower())
             {
                 case "name":
-                    return new string[] { this.Name }.OfType<T>();
+                    return new string[] { Name }.OfType<T>();
                 case "samaccountname":
-                    return new string[] { this.SamAccountName }.OfType<T>();
+                    return new string[] { SamAccountName }.OfType<T>();
                 case "distinguishedname":
-                    return new string[] { this.DistinguishedName }.OfType<T>();
+                    return new string[] { DistinguishedName }.OfType<T>();
                 case "objectsid":
-                    return new SecurityIdentifier[] { this.SecurityIdentifier }.OfType<T>();
+                    return new SecurityIdentifier[] { SecurityIdentifier }.OfType<T>();
                 case "sn":
-                    return new string[] { this.Surname }.OfType<T>();
+                    return new string[] { Surname }.OfType<T>();
                 case "givenname":
-                    return new string[] { this.GivenName }.OfType<T>();
+                    return new string[] { GivenName }.OfType<T>();
                 case "mail":
-                    return new string[] { this.Email }.OfType<T>();
+                    return new string[] { Email }.OfType<T>();
                 case "telephonenumber":
-                    return new string[] { this.Phone }.OfType<T>();
+                    return new string[] { Phone }.OfType<T>();
+                case "userAccountControl":
+                    return new int[] { (int)UserAccountControl }.OfType<T>();
                 default:
                     object[] adProperty;
-                    if (this.LoadedProperties.TryGetValue(PropertyName, out adProperty))
+                    if (LoadedProperties.TryGetValue(PropertyName, out adProperty))
                         return adProperty.OfType<T>();
                     else
                         return Enumerable.Empty<T>();
@@ -153,18 +170,261 @@ namespace Disco.Services.Interop.ActiveDirectory
         {
             return new User
             {
-                UserId = this.Id,
-                DisplayName = this.DisplayName,
-                Surname = this.Surname,
-                GivenName = this.GivenName,
-                EmailAddress = this.Email,
-                PhoneNumber = this.Phone,
+                UserId = Id,
+                DisplayName = DisplayName,
+                Surname = Surname,
+                GivenName = GivenName,
+                EmailAddress = Email,
+                PhoneNumber = Phone,
             };
         }
 
+        #region Actions
+
+        public void DeleteAccount(ADDomainController WritableDomainController)
+        {
+            if (IsCriticalSystemObject)
+                throw new InvalidOperationException(string.Format("This account [{0}] is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
+
+            if (!WritableDomainController.IsWritable)
+                throw new InvalidOperationException(string.Format("The domain controller [{0}] is not writable. This action (Delete Account) requires a writable domain controller.", Name));
+
+            using (ADDirectoryEntry entry = WritableDomainController.RetrieveDirectoryEntry(DistinguishedName))
+            {
+                entry.Entry.DeleteTree();
+            }
+        }
+        public void DeleteAccount()
+        {
+            DeleteAccount(Domain.GetAvailableDomainController(RequireWritable: true));
+        }
+
+        public void DisableAccount(ADDomainController WritableDomainController)
+        {
+            if (IsCriticalSystemObject)
+                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
+
+            if (!IsDisabled)
+            {
+                using (var deAccount = WritableDomainController.RetrieveDirectoryEntry(DistinguishedName))
+                {
+                    var accountControl = (ADUserAccountControlFlags)deAccount.Entry.Properties["userAccountControl"][0];
+                    if (!accountControl.HasFlag(ADUserAccountControlFlags.ADS_UF_ACCOUNTDISABLE))
+                    {
+                        var updatedAccountControl = (accountControl | ADUserAccountControlFlags.ADS_UF_ACCOUNTDISABLE);
+                        deAccount.Entry.Properties["userAccountControl"][0] = (int)updatedAccountControl;
+                        deAccount.Entry.CommitChanges();
+                        UserAccountControl = updatedAccountControl;
+                    }
+                }
+            }
+        }
+        public void DisableAccount()
+        {
+            if (!IsDisabled)
+            {
+                DisableAccount(Domain.GetAvailableDomainController(RequireWritable: true));
+            }
+        }
+
+        public void EnableAccount(ADDomainController WritableDomainController)
+        {
+            if (IsCriticalSystemObject)
+                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco refuses to modify it", DistinguishedName));
+
+            if (IsDisabled)
+            {
+                using (var deAccount = WritableDomainController.RetrieveDirectoryEntry(DistinguishedName))
+                {
+                    var accountControl = (ADUserAccountControlFlags)deAccount.Entry.Properties["userAccountControl"][0];
+                    if (accountControl.HasFlag(ADUserAccountControlFlags.ADS_UF_ACCOUNTDISABLE))
+                    {
+                        var updatedAccountControl = (accountControl ^ ADUserAccountControlFlags.ADS_UF_ACCOUNTDISABLE);
+                        deAccount.Entry.Properties["userAccountControl"][0] = (int)updatedAccountControl;
+                        deAccount.Entry.CommitChanges();
+                        UserAccountControl = updatedAccountControl;
+                    }
+                }
+            }
+        }
+        public void EnableAccount()
+        {
+            if (IsDisabled)
+            {
+                EnableAccount(Domain.GetAvailableDomainController(RequireWritable: true));
+            }
+        }
+
+        public void SetDisplayName(ADDomainController WritableDomainController, string DisplayName)
+        {
+            if (IsCriticalSystemObject)
+                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco refuses to modify it", DistinguishedName));
+
+            if (this.DisplayName != DisplayName)
+            {
+                using (var deAccount = WritableDomainController.RetrieveDirectoryEntry(DistinguishedName))
+                {
+                    var property = deAccount.Entry.Properties["displayName"];
+                    if (property.Count != 1 || (property[0] as string) != DisplayName)
+                    {
+                        if (property.Count > 0)
+                        {
+                            property.Clear();
+                        }
+                        if (!string.IsNullOrEmpty(DisplayName))
+                        {
+                            property.Add(DisplayName);
+                        }
+                        deAccount.Entry.CommitChanges();
+                    }
+                }
+            }
+        }
+        public void SetDisplayName(string DisplayName)
+        {
+            if (this.DisplayName != DisplayName)
+            {
+                SetDisplayName(Domain.GetAvailableDomainController(RequireWritable: true), DisplayName);
+            }
+        }
+
+        public void SetSurname(ADDomainController WritableDomainController, string Surname)
+        {
+            if (IsCriticalSystemObject)
+                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco refuses to modify it", DistinguishedName));
+
+            if (this.Surname != Surname)
+            {
+                using (var deAccount = WritableDomainController.RetrieveDirectoryEntry(DistinguishedName))
+                {
+                    var property = deAccount.Entry.Properties["sn"];
+                    if (property.Count != 1 || (property[0] as string) != Surname)
+                    {
+                        if (property.Count > 0)
+                        {
+                            property.Clear();
+                        }
+                        if (!string.IsNullOrEmpty(Surname))
+                        {
+                            property.Add(Surname);
+                        }
+                        deAccount.Entry.CommitChanges();
+                    }
+                }
+            }
+        }
+        public void SetSurname(string Surname)
+        {
+            if (this.Surname != Surname)
+            {
+                SetSurname(Domain.GetAvailableDomainController(RequireWritable: true), Surname);
+            }
+        }
+
+        public void SetGivenName(ADDomainController WritableDomainController, string GivenName)
+        {
+            if (IsCriticalSystemObject)
+                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco refuses to modify it", DistinguishedName));
+
+            if (this.GivenName != GivenName)
+            {
+                using (var deAccount = WritableDomainController.RetrieveDirectoryEntry(DistinguishedName))
+                {
+                    var property = deAccount.Entry.Properties["givenName"];
+                    if (property.Count != 1 || (property[0] as string) != GivenName)
+                    {
+                        if (property.Count > 0)
+                        {
+                            property.Clear();
+                        }
+                        if (!string.IsNullOrEmpty(GivenName))
+                        {
+                            property.Add(GivenName);
+                        }
+                        deAccount.Entry.CommitChanges();
+                    }
+                }
+            }
+        }
+        public void SetGivenName(string GivenName)
+        {
+            if (this.GivenName != GivenName)
+            {
+                SetGivenName(Domain.GetAvailableDomainController(RequireWritable: true), GivenName);
+            }
+        }
+
+        public void SetEmail(ADDomainController WritableDomainController, string Email)
+        {
+            if (IsCriticalSystemObject)
+                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco refuses to modify it", DistinguishedName));
+
+            if (this.Email != Email)
+            {
+                using (var deAccount = WritableDomainController.RetrieveDirectoryEntry(DistinguishedName))
+                {
+                    var property = deAccount.Entry.Properties["mail"];
+                    if (property.Count != 1 || (property[0] as string) != Email)
+                    {
+                        if (property.Count > 0)
+                        {
+                            property.Clear();
+                        }
+                        if (!string.IsNullOrEmpty(Email))
+                        {
+                            property.Add(Email);
+                        }
+                        deAccount.Entry.CommitChanges();
+                    }
+                }
+            }
+        }
+        public void SetEmail(string Email)
+        {
+            if (this.Email != Email)
+            {
+                SetEmail(Domain.GetAvailableDomainController(RequireWritable: true), Email);
+            }
+        }
+
+        public void SetPhone(ADDomainController WritableDomainController, string Phone)
+        {
+            if (IsCriticalSystemObject)
+                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco refuses to modify it", DistinguishedName));
+
+            if (this.Phone != Phone)
+            {
+                using (var deAccount = WritableDomainController.RetrieveDirectoryEntry(DistinguishedName))
+                {
+                    var property = deAccount.Entry.Properties["telephoneNumber"];
+                    if (property.Count != 1 || (property[0] as string) != Phone)
+                    {
+                        if (property.Count > 0)
+                        {
+                            property.Clear();
+                        }
+                        if (!string.IsNullOrEmpty(Phone))
+                        {
+                            property.Add(Phone);
+                        }
+                        deAccount.Entry.CommitChanges();
+                    }
+                }
+            }
+        }
+        public void SetPhone(string Phone)
+        {
+            if (this.Phone != Phone)
+            {
+                SetPhone(Domain.GetAvailableDomainController(RequireWritable: true), Phone);
+            }
+        }
+
+        #endregion
+
         public override string ToString()
         {
-            return this.Id;
+            return Id;
         }
 
         public override bool Equals(object obj)
@@ -172,11 +432,11 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (obj == null || !(obj is ADUserAccount))
                 return false;
             else
-                return this.DistinguishedName == ((ADUserAccount)obj).DistinguishedName;
+                return DistinguishedName == ((ADUserAccount)obj).DistinguishedName;
         }
         public override int GetHashCode()
         {
-            return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(this.DistinguishedName);
+            return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(DistinguishedName);
         }
     }
 }
