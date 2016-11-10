@@ -7,7 +7,7 @@
   background-color: #fff;
 }
 .tableData > tbody > tr:nth-child(odd) > td {
-  background-color: #fcfcfc;
+  background-color: #fbfbfb;
 }
 .tableData > thead > tr > th,
 .tableData > tbody > tr > th {
@@ -15,10 +15,7 @@
   border: solid 1px #f4f4f4;
 }
 .tableData > tbody > tr:hover > td {
-  background-color: #fefefe;
-}
-.tableData > tbody > tr:hover:nth-child(odd) > td {
-  background-color: #fafafa;
+  background-color: #f9f9f9;
 }
 .tableData > tfoot > tr > th,
 .tableData > tfoot > tr > td {
@@ -204,7 +201,7 @@
 }
 #Device_Show_Policies_Profile_Actions_Update_Dialog ul li:nth-child(odd),
 #Device_Show_Policies_Batch_Actions_Update_Dialog ul li:nth-child(odd) {
-  background-color: #fcfcfc;
+  background-color: #fbfbfb;
 }
 #Device_Show_Policies_Profile_Actions_Update_Dialog ul li.selected,
 #Device_Show_Policies_Batch_Actions_Update_Dialog ul li.selected {
@@ -238,7 +235,7 @@
   background-color: #fff;
 }
 #DeviceDetailTab-DetailsContainer > table > tbody > tr:nth-child(odd) > td {
-  background-color: #fcfcfc;
+  background-color: #fbfbfb;
 }
 #DeviceDetailTab-DetailsContainer > table > thead > tr > th,
 #DeviceDetailTab-DetailsContainer > table > tbody > tr > th {
@@ -246,10 +243,7 @@
   border: solid 1px #f4f4f4;
 }
 #DeviceDetailTab-DetailsContainer > table > tbody > tr:hover > td {
-  background-color: #fefefe;
-}
-#DeviceDetailTab-DetailsContainer > table > tbody > tr:hover:nth-child(odd) > td {
-  background-color: #fafafa;
+  background-color: #f9f9f9;
 }
 #DeviceDetailTab-DetailsContainer > table > tfoot > tr > th,
 #DeviceDetailTab-DetailsContainer > table > tfoot > tr > td {
@@ -495,7 +489,7 @@
   background-color: #e7f9d5;
 }
 #Devices_Import_Review #Devices_Import_Review_Navigation ul li.actionUnchanged {
-  background-color: #fcfcfc;
+  background-color: #fbfbfb;
 }
 #Devices_Import_Review #Devices_Import_Review_TableContainer {
   margin: 18px 0;
@@ -524,7 +518,7 @@
   content: "\f068";
 }
 #Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr.actionUnchanged td {
-  background-color: #fcfcfc;
+  background-color: #fbfbfb;
 }
 #Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr.actionUnchanged td:nth-child(n+3) {
   color: #ccc;

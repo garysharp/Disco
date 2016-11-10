@@ -7,7 +7,7 @@
   background-color: #fff;
 }
 .tableData > tbody > tr:nth-child(odd) > td {
-  background-color: #fcfcfc;
+  background-color: #fbfbfb;
 }
 .tableData > thead > tr > th,
 .tableData > tbody > tr > th {
@@ -15,10 +15,7 @@
   border: solid 1px #f4f4f4;
 }
 .tableData > tbody > tr:hover > td {
-  background-color: #fefefe;
-}
-.tableData > tbody > tr:hover:nth-child(odd) > td {
-  background-color: #fafafa;
+  background-color: #f9f9f9;
 }
 .tableData > tfoot > tr > th,
 .tableData > tfoot > tr > td {
@@ -160,7 +157,7 @@ table.expressionsTable > tbody > tr > td {
   background-color: #fff;
 }
 table.expressionsTable > tbody > tr:nth-child(odd) > td {
-  background-color: #fcfcfc;
+  background-color: #fbfbfb;
 }
 table.expressionsTable > thead > tr > th,
 table.expressionsTable > tbody > tr > th {
@@ -168,10 +165,7 @@ table.expressionsTable > tbody > tr > th {
   border: solid 1px #f4f4f4;
 }
 table.expressionsTable > tbody > tr:hover > td {
-  background-color: #fefefe;
-}
-table.expressionsTable > tbody > tr:hover:nth-child(odd) > td {
-  background-color: #fafafa;
+  background-color: #f9f9f9;
 }
 table.expressionsTable > tfoot > tr > th,
 table.expressionsTable > tfoot > tr > td {
@@ -192,7 +186,7 @@ table.expressionsTable td.parseError {
   background-color: #fff;
 }
 #deviceComponents > tbody > tr:nth-child(odd) > td {
-  background-color: #fcfcfc;
+  background-color: #fbfbfb;
 }
 #deviceComponents > thead > tr > th,
 #deviceComponents > tbody > tr > th {
@@ -200,10 +194,7 @@ table.expressionsTable td.parseError {
   border: solid 1px #f4f4f4;
 }
 #deviceComponents > tbody > tr:hover > td {
-  background-color: #fefefe;
-}
-#deviceComponents > tbody > tr:hover:nth-child(odd) > td {
-  background-color: #fafafa;
+  background-color: #f9f9f9;
 }
 #deviceComponents > tfoot > tr > th,
 #deviceComponents > tfoot > tr > td {
@@ -841,7 +832,7 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
   float: left;
   margin: 4px;
   border: 1px solid #f4f4f4;
-  background-color: #fcfcfc;
+  background-color: #fbfbfb;
   height: 256px;
   width: 256px;
   background-position: top center;
@@ -868,24 +859,6 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
   border-top: 1px solid #D1D1D1;
   padding-top: 8px;
   margin-top: 8px;
-  text-align: right;
-}
-#Config_DeviceBatches #Config_DeviceBatches_List tr.decommissioned {
-  display: none;
-}
-#Config_DeviceBatches #Config_DeviceBatches_List tr.decommissioned > td {
-  background-color: #f7f7f7;
-  color: #888;
-}
-#Config_DeviceBatches #Config_DeviceBatches_List tr.decommissioned:nth-child(odd) > td {
-  background-color: #f2f2f2;
-}
-#Config_DeviceBatches_ShowDecommissioned {
-  position: absolute;
-  right: 30px;
-  bottom: 8px;
-  font-size: 0.5em;
-  line-height: 1em;
   text-align: right;
 }
 .deviceBatches #DeviceBatch_PurchaseDetails_Container {

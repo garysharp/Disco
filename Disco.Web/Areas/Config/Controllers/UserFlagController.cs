@@ -53,7 +53,15 @@ namespace Disco.Web.Areas.Config.Controllers
                 // List Index
                 var m = new Models.UserFlag.IndexModel()
                 {
-                    UserFlags = Database.UserFlags.OrderBy(f => f.Name).ToList()
+                    UserFlags = Database.UserFlags
+                        .Select(uf => new
+                        {
+                            userFlag = uf,
+                            assignmentCount = uf.UserFlagAssignments.Count(fa => !fa.RemovedDate.HasValue)
+                        })
+                        .ToDictionary(
+                            pair => pair.userFlag,
+                            pair => pair.assignmentCount)
                 };
 
                 // UI Extensions

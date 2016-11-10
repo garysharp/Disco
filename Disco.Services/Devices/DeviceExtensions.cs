@@ -50,7 +50,7 @@ namespace Disco.Services
         public static List<DocumentTemplate> AvailableDocumentTemplates(this Device d, DiscoDataContext Database, User User, DateTime TimeStamp)
         {
             List<DocumentTemplate> ats = Database.DocumentTemplates
-                .Where(at => at.Scope == DocumentTemplate.DocumentTemplateScopes.Device).ToList();
+                .Where(at => !at.IsHidden && at.Scope == DocumentTemplate.DocumentTemplateScopes.Device).ToList();
 
             return ats.Where(at => at.FilterExpressionMatches(d, Database, User, TimeStamp, DocumentState.DefaultState())).ToList();
         }

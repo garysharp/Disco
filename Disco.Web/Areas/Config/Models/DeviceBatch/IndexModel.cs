@@ -25,7 +25,8 @@ namespace Disco.Web.Areas.Config.Models.DeviceBatch
                 DefaultDeviceModel = db.DefaultDeviceModel.Description,
                 WarrantyExpires = db.WarrantyValidUntil,
                 InsuranceSupplier = db.InsuranceSupplier,
-                InsuredUntil = db.InsuredUntil
+                InsuredUntil = db.InsuredUntil,
+                IsLinked = db.AssignedUsersLinkedGroup != null || db.DevicesLinkedGroup != null
             }).ToArray().Cast<ConfigDeviceBatchIndexModelItem>().ToList();
 
             foreach (var item in m.DeviceBatches.Where(db => db.DefaultDeviceModel == null))

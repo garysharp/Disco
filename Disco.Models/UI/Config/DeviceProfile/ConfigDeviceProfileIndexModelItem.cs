@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Models.UI.Config.DeviceProfile
+﻿namespace Disco.Models.UI.Config.DeviceProfile
 {
     public interface ConfigDeviceProfileIndexModelItem
     {
@@ -18,5 +12,6 @@ namespace Disco.Models.UI.Config.DeviceProfile
 
         int DeviceCount { get; set; }
         int DeviceDecommissionedCount { get; set; }
+        bool IsLinked { get; set; }
     }
 }

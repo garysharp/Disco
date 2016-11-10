@@ -3,36 +3,67 @@
     Authorization.Require(Claims.Config.DocumentTemplate.Show);
 
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates");
+    var showTags = Model.DocumentTemplates.Keys.Any(i => i.DevicesLinkedGroup != null || i.UsersLinkedGroup != null ||
+        i.FilterExpression != null || i.OnGenerateExpression != null || i.OnImportAttachmentExpression != null);
 }
 @if (Model.DocumentTemplates.Count == 0)
 {
     <div class="form" style="width: 450px; padding: 100px 0;">
         <h2>No document templates are configured</h2>
-    </div>  
+    </div>
 }
 else
 {
-    <table class="tableData">
+    if (Model.DocumentTemplates.Keys.Any(dt => dt.IsHidden))
+    {
+        <a id="Config_DocumentTemplates_ShowHidden" href="#" class="button small">Show Hidden (@(Model.DocumentTemplates.Keys.Count(dt => dt.IsHidden)))</a>
+            <script>
+                $(function () {
+                    $('#Config_DocumentTemplates_ShowHidden').click(function () {
+                        $(this).remove();
+                        $('#Config_DocumentTemplates_List').find('tr.hidden').show();
+                        return false;
+                    }).detach().appendTo('#layout_PageHeading');
+                })
+            </script>
+    }
+    <table id="Config_DocumentTemplates_List" class="tableData">
         <tr>
-            <th>Id
-            </th>
-            <th>Description
-            </th>
-            <th>Scope
-            </th>
+            <th>Id</th>
+            <th>Description</th>
+            <th>Scope</th>
+            <th>Stored&nbsp;Instances</th>
+            @if (showTags)
+                {
+                <th>&nbsp;</th>
+            }
         </tr>
-        @foreach (var item in Model.DocumentTemplates)
+        @foreach (var pair in Model.DocumentTemplates)
         {
-            <tr>
-                <td>
-                    @Html.ActionLink(item.Id.ToString(), MVC.Config.DocumentTemplate.Index(item.Id))
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Scope)
-                </td>
+            var item = pair.Key;
+            var storedCount = pair.Value;
+            <tr class="@(item.IsHidden ? "hidden" : null)">
+                <td>@Html.ActionLink(item.Id.ToString(), MVC.Config.DocumentTemplate.Index(item.Id))</td>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>@Html.DisplayFor(modelItem => item.Scope)</td>
+                <td>@storedCount.ToString("N0")</td>
+                @if (showTags)
+                    {
+                    <td>
+                        @if (item.DevicesLinkedGroup != null || item.UsersLinkedGroup != null)
+                        {
+                            <i class="fa fa-link fa-lg success" title="Is Linked"></i>
+                        }
+                        @if (item.FilterExpression != null || item.OnGenerateExpression != null || item.OnImportAttachmentExpression != null)
+                        {
+                            <i class="fa fa-bolt fa-lg alert" title="Has Expressions"></i>
+                        }
+                        @if (item.IsHidden)
+                        {
+                            <i class="fa fa-minus-square fa-lg error" title="Is Hidden"></i>
+                        }
+                    </td>
+                }
             </tr>
         }
     </table>

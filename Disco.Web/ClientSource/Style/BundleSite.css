@@ -1862,7 +1862,7 @@ body .ui-tooltip {
   background-color: #fff;
 }
 .tableData > tbody > tr:nth-child(odd) > td {
-  background-color: #fcfcfc;
+  background-color: #fbfbfb;
 }
 .tableData > thead > tr > th,
 .tableData > tbody > tr > th {
@@ -1870,10 +1870,7 @@ body .ui-tooltip {
   border: solid 1px #f4f4f4;
 }
 .tableData > tbody > tr:hover > td {
-  background-color: #fefefe;
-}
-.tableData > tbody > tr:hover:nth-child(odd) > td {
-  background-color: #fafafa;
+  background-color: #f9f9f9;
 }
 .tableData > tfoot > tr > th,
 .tableData > tfoot > tr > td {
@@ -4092,6 +4089,14 @@ header .watermark,
 #layout_PageHeading a {
   text-decoration: none;
 }
+#layout_PageHeading > a.button {
+  position: absolute;
+  right: 30px;
+  bottom: 8px;
+  font-size: 0.5em;
+  line-height: 1em;
+  text-align: right;
+}
 #layout_Page {
   background-color: #fff;
   overflow: auto;
@@ -4351,7 +4356,7 @@ table.genericData > tbody > tr > td {
   background-color: #fff;
 }
 table.genericData > tbody > tr:nth-child(odd) > td {
-  background-color: #fcfcfc;
+  background-color: #fbfbfb;
 }
 table.genericData > thead > tr > th,
 table.genericData > tbody > tr > th {
@@ -4359,10 +4364,7 @@ table.genericData > tbody > tr > th {
   border: solid 1px #f4f4f4;
 }
 table.genericData > tbody > tr:hover > td {
-  background-color: #fefefe;
-}
-table.genericData > tbody > tr:hover:nth-child(odd) > td {
-  background-color: #fafafa;
+  background-color: #f9f9f9;
 }
 table.genericData > tfoot > tr > th,
 table.genericData > tfoot > tr > td {
@@ -4570,7 +4572,7 @@ table.jobTable > tbody > tr > td {
   background-color: #fff;
 }
 table.jobTable > tbody > tr:nth-child(odd) > td {
-  background-color: #fcfcfc;
+  background-color: #fbfbfb;
 }
 table.jobTable > thead > tr > th,
 table.jobTable > tbody > tr > th {
@@ -4578,10 +4580,7 @@ table.jobTable > tbody > tr > th {
   border: solid 1px #f4f4f4;
 }
 table.jobTable > tbody > tr:hover > td {
-  background-color: #fefefe;
-}
-table.jobTable > tbody > tr:hover:nth-child(odd) > td {
-  background-color: #fafafa;
+  background-color: #f9f9f9;
 }
 table.jobTable > tfoot > tr > th,
 table.jobTable > tfoot > tr > td {
@@ -4619,16 +4618,16 @@ table.jobTable tr.statusSlaExpired td:not(:last-child) {
   border-right: 1px solid #fad2ce;
 }
 table.jobTable tr:nth-child(odd).statusSlaWarning td {
-  background-color: #fcedcf !important;
+  background-color: #fbeccf !important;
 }
 table.jobTable tr:nth-child(odd).statusSlaExpired td {
-  background-color: #fed6d2 !important;
+  background-color: #fdd5d1 !important;
 }
 table.jobTable tr:hover.statusSlaWarning td {
-  background-color: #fbebca !important;
+  background-color: #fbeaca !important;
 }
 table.jobTable tr:hover.statusSlaExpired td {
-  background-color: #fed1cd !important;
+  background-color: #fdd1cd !important;
 }
 table.jobTable div.queues {
   display: inline-block;
@@ -4953,7 +4952,7 @@ div.Disco-AttachmentUpload-CommentDialog table > tbody > tr > td {
   background-color: #fff;
 }
 div.Disco-AttachmentUpload-CommentDialog table > tbody > tr:nth-child(odd) > td {
-  background-color: #fcfcfc;
+  background-color: #fbfbfb;
 }
 div.Disco-AttachmentUpload-CommentDialog table > thead > tr > th,
 div.Disco-AttachmentUpload-CommentDialog table > tbody > tr > th {
@@ -4961,10 +4960,7 @@ div.Disco-AttachmentUpload-CommentDialog table > tbody > tr > th {
   border: solid 1px #f4f4f4;
 }
 div.Disco-AttachmentUpload-CommentDialog table > tbody > tr:hover > td {
-  background-color: #fefefe;
-}
-div.Disco-AttachmentUpload-CommentDialog table > tbody > tr:hover:nth-child(odd) > td {
-  background-color: #fafafa;
+  background-color: #f9f9f9;
 }
 div.Disco-AttachmentUpload-CommentDialog table > tfoot > tr > th,
 div.Disco-AttachmentUpload-CommentDialog table > tfoot > tr > td {

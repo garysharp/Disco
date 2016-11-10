@@ -204,7 +204,7 @@ namespace Disco.Services
         public static List<DocumentTemplate> AvailableDocumentTemplates(this Job j, DiscoDataContext Database, User User, DateTime TimeStamp)
         {
             var dts = Database.DocumentTemplates.Include("JobSubTypes")
-                .Where(dt => dt.Scope == DocumentTemplate.DocumentTemplateScopes.Job)
+                .Where(dt => !dt.IsHidden && dt.Scope == DocumentTemplate.DocumentTemplateScopes.Job)
                 .ToList();
 
             foreach (var dt in dts.ToArray())

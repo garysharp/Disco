@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.ComponentModel.DataAnnotations;
-using Disco.Web.Extensions;
-using Disco.Models.UI.Config.DeviceProfile;
+﻿using Disco.Models.UI.Config.DeviceProfile;
 
 namespace Disco.Web.Areas.Config.Models.DeviceProfile
 {
@@ -20,5 +14,6 @@ namespace Disco.Web.Areas.Config.Models.DeviceProfile
 
         public int DeviceCount { get; set; }
         public int DeviceDecommissionedCount { get; set; }
+        public bool IsLinked { get; set; }
     }
 }

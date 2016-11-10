@@ -105,29 +105,29 @@
                         <div>
                             @if (canConfig)
                             {
-                            <input id="DocumentTemplate_FlattenForm" type="checkbox" @(Model.DocumentTemplate.FlattenForm ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))  />
-                            <label for="DocumentTemplate_FlattenForm">Flatten Form</label>
+                            <input id="DocumentTemplate_IsHidden" type="checkbox" @(Model.DocumentTemplate.IsHidden ? new MvcHtmlString("checked=\"checked\" ") : null)  />
+                            <label for="DocumentTemplate_IsHidden">Hidden</label>
                             @AjaxHelpers.AjaxLoader()
                             <script type="text/javascript">
                                 $(function () {
                                     document.DiscoFunctions.PropertyChangeHelper(
-                                        $('#DocumentTemplate_FlattenForm'),
+                                        $('#DocumentTemplate_IsHidden'),
                                         null,
-                                        '@Url.Action(MVC.API.DocumentTemplate.UpdateFlattenForm(Model.DocumentTemplate.Id))',
-                                        'FlattenForm'
+                                        '@Url.Action(MVC.API.DocumentTemplate.UpdateIsHidden(Model.DocumentTemplate.Id))',
+                                        'IsHidden'
                                     );
                                 });
                             </script>
                             }
                             else
                             {
-                            <input id="DocumentTemplate_FlattenForm" type="checkbox" @(Model.DocumentTemplate.FlattenForm ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
-                            <label for="DocumentTemplate_FlattenForm">Flatten Form</label>
+                            <input id="DocumentTemplate_IsHidden" type="checkbox" @(Model.DocumentTemplate.IsHidden ? new MvcHtmlString("checked=\"checked\" ") : null) disabled="disabled" />
+                            <label for="DocumentTemplate_IsHidden">Hidden</label>
                             }
                         </div>
                         <div class="info-box">
                             <p class="fa-p">
-                                <i class="fa fa-info-circle"></i>If selected when a document is generated all form elements will be removed and their content written in place.
+                                <i class="fa fa-info-circle"></i>If selected the template will not appear in the list of documents to generate.
                             </p>
                         </div>
                     </td>
@@ -331,6 +331,41 @@
                         }
                     </td>
                 </tr>
+                <tr>
+                    <th>
+                        &nbsp;
+                    </th>
+                    <td>
+                        <div>
+                            @if (canConfig)
+                            {
+                                <input id="DocumentTemplate_FlattenForm" type="checkbox" @(Model.DocumentTemplate.FlattenForm ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) />
+                                <label for="DocumentTemplate_FlattenForm">Flatten Form</label>
+                                @AjaxHelpers.AjaxLoader()
+                                <script type="text/javascript">
+                                $(function () {
+                                    document.DiscoFunctions.PropertyChangeHelper(
+                                        $('#DocumentTemplate_FlattenForm'),
+                                        null,
+                                        '@Url.Action(MVC.API.DocumentTemplate.UpdateFlattenForm(Model.DocumentTemplate.Id))',
+                                        'FlattenForm'
+                                    );
+                                });
+                                </script>
+                            }
+                            else
+                            {
+                                <input id="DocumentTemplate_FlattenForm" type="checkbox" @(Model.DocumentTemplate.FlattenForm ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
+                                <label for="DocumentTemplate_FlattenForm">Flatten Form</label>
+                            }
+                        </div>
+                        <div class="info-box">
+                            <p class="fa-p">
+                                <i class="fa fa-info-circle"></i>When a document is generated all form elements will be removed and their content written in place if this option is selected.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -478,7 +513,7 @@
                         }
                         <div class="info-box">
                             <p class="fa-p">
-                                <i class="fa fa-fw fa-info-circle"></i>This expression will be evaluated to determine if this template is shown in the <em>Generate Document</em> drop-down list.
+                                <i class="fa fa-fw fa-info-circle"></i>This expression will be evaluated to determine if this template is shown in the <em>Generate Document</em> drop-down list. If the template is hidden (see above) this expression is ignored.
                             </p>
                         </div>
                     </td>

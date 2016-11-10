@@ -26,6 +26,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pOnGenerateExpression = "ongenerateexpression";
         const string pOnImportAttachmentExpression = "onimportattachmentexpression";
         const string pFlattenForm = "flattenform";
+        const string pIsHidden = "ishidden";
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
         public virtual ActionResult Update(string id, string key, string value = null, bool redirect = false)
@@ -62,6 +63,9 @@ namespace Disco.Web.Areas.API.Controllers
                             break;
                         case pFlattenForm:
                             UpdateFlattenForm(documentTemplate, value);
+                            break;
+                        case pIsHidden:
+                            UpdateIsHidden(documentTemplate, value);
                             break;
                         default:
                             throw new Exception("Invalid Update Key");
@@ -188,6 +192,11 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult UpdateFlattenForm(string id, string FlattenForm = null, bool redirect = false)
         {
             return Update(id, pFlattenForm, FlattenForm, redirect);
+        }
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
+        public virtual ActionResult UpdateIsHidden(string id, string IsHidden = null, bool redirect = false)
+        {
+            return Update(id, pIsHidden, IsHidden, redirect);
         }
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
         public virtual ActionResult UpdateScope(string id, string Scope = null, bool redirect = false)
@@ -387,6 +396,23 @@ namespace Disco.Web.Areas.API.Controllers
                 bool ff = default(bool);
                 if (bool.TryParse(FlattenForm, out ff))
                     documentTemplate.FlattenForm = ff;
+                else
+                    throw new Exception("Invalid Boolean Format");
+            }
+
+            Database.SaveChanges();
+        }
+        private void UpdateIsHidden(DocumentTemplate documentTemplate, string IsHidden)
+        {
+            if (string.IsNullOrWhiteSpace(IsHidden))
+            {
+                documentTemplate.IsHidden = false;
+            }
+            else
+            {
+                bool value = default(bool);
+                if (bool.TryParse(IsHidden, out value))
+                    documentTemplate.IsHidden = value;
                 else
                     throw new Exception("Invalid Boolean Format");
             }

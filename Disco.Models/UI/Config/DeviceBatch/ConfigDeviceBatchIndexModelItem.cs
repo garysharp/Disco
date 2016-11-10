@@ -20,5 +20,6 @@ namespace Disco.Models.UI.Config.DeviceBatch
         DateTime? WarrantyExpires { get; set; }
         DateTime? InsuredUntil { get; set; }
         string InsuranceSupplier { get; set; }
+        bool IsLinked { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<Disco.Web.Areas.Config.Models.DeviceProfile._IndexModelItem>
 @{
     Authorization.Require(Claims.Config.DeviceProfile.Show);
+    var showTags = Model.Any(i => i.IsLinked);
 }
 <table class="tableData deviceProfileTable">
     <tr>
@@ -16,6 +17,10 @@
         <th class="deviceCount">
             Device Count
         </th>
+        @if (showTags)
+        {
+            <th>&nbsp;</th>
+        }
     </tr>
     @foreach (var item in Model)
     {
@@ -32,11 +37,25 @@
             <td>
                 @item.DeviceCount.ToString("n0")
                 @if (item.DeviceDecommissionedCount > 0)
-                { 
+                {
                     <span class="smallMessage" title="@(item.DeviceDecommissionedCount.ToString("n0")) Decommissioned">
-                        (@(item.DeviceDecommissionedCount.ToString("n0")))</span>
+                        (@(item.DeviceDecommissionedCount.ToString("n0")))
+                    </span>
                 }
             </td>
+            @if (showTags)
+            {
+                <td>
+                    @if (item.IsLinked)
+                    {
+                        <i class="fa fa-link fa-lg success" title="Is Linked"></i>
+                    }
+                    else
+                    {
+                        <text>&nbsp;</text>
+                    }
+                </td>
+            }
         </tr>
     }
 </table>

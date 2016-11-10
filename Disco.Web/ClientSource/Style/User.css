@@ -7,7 +7,7 @@
   background-color: #fff;
 }
 .tableData > tbody > tr:nth-child(odd) > td {
-  background-color: #fcfcfc;
+  background-color: #fbfbfb;
 }
 .tableData > thead > tr > th,
 .tableData > tbody > tr > th {
@@ -15,10 +15,7 @@
   border: solid 1px #f4f4f4;
 }
 .tableData > tbody > tr:hover > td {
-  background-color: #fefefe;
-}
-.tableData > tbody > tr:hover:nth-child(odd) > td {
-  background-color: #fafafa;
+  background-color: #f9f9f9;
 }
 .tableData > tfoot > tr > th,
 .tableData > tfoot > tr > td {

@@ -20,7 +20,18 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             if (string.IsNullOrEmpty(id))
             {
-                var m = new Models.DocumentTemplate.IndexModel() { DocumentTemplates = Database.DocumentTemplates.ToList() };
+                var m = new Models.DocumentTemplate.IndexModel() {
+                    DocumentTemplates = Database.DocumentTemplates
+                        .Select(dt => new
+                        {
+                            documentTemplate = dt,
+                            storedInstances =
+                                Database.DeviceAttachments.Count(a => a.DocumentTemplateId == dt.Id) +
+                                Database.JobAttachments.Count(a => a.DocumentTemplateId == dt.Id) +
+                                Database.UserAttachments.Count(a => a.DocumentTemplateId == dt.Id)
+                        })
+                        .ToDictionary(i => i.documentTemplate, i => i.storedInstances)
+                };
 
                 // UI Extensions
                 UIExtensions.ExecuteExtensions<ConfigDocumentTemplateIndexModel>(this.ControllerContext, m);

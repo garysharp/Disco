@@ -32,6 +32,8 @@ namespace Disco.Models.Repository
         public string DevicesLinkedGroup { get; set; }
         public string UsersLinkedGroup { get; set; }
 
+        public bool IsHidden { get; set; }
+
         [InverseProperty("DocumentTemplates")]
         public virtual IList<JobSubType> JobSubTypes { get; set; }
 

@@ -2,13 +2,15 @@
 @{
     Authorization.Require(Claims.Config.UserFlag.Show);
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "User Flags");
+    var showTags = Model.UserFlags.Keys.Any(i => i.UserDevicesLinkedGroup != null || i.UsersLinkedGroup != null ||
+        i.OnAssignmentExpression != null || i.OnUnassignmentExpression != null);
 }
 <div id="Config_UserFlags_Index">
     @if (Model.UserFlags.Count == 0)
     {
         <div class="form" style="width: 450px; padding: 100px 0;">
             <h2>No user flags are configured</h2>
-        </div>  
+        </div>
     }
     else
     {
@@ -16,10 +18,16 @@
             <tr>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Linked</th>
+                <th>Current&nbsp;Assignments</th>
+                @if (showTags)
+                {
+                    <th>&nbsp;</th>
+                }
             </tr>
-            @foreach (var item in Model.UserFlags)
+            @foreach (var pair in Model.UserFlags.OrderBy(i => i.Key.Name))
             {
+                var item = pair.Key;
+                var assignmentCount = pair.Value;
                 <tr>
                     <td>
                         <a href="@Url.Action(MVC.Config.UserFlag.Index(item.Id))">
@@ -27,24 +35,32 @@
                             @item.Name
                         </a>
                     </td>
-                    <td>@if (string.IsNullOrWhiteSpace(item.Description))
-                        {
-                        <span class="smallMessage">&lt;none&gt;</span>
+                    <td>
+                        @if (string.IsNullOrWhiteSpace(item.Description))
+                    {
+                            <span class="smallMessage">&lt;none&gt;</span>
                         }
                         else
                         {
-                        @item.Description.ToHtmlComment()
+                            @item.Description.ToHtmlComment()
                         }
                     </td>
-                    <td>@if (item.UserDevicesLinkedGroup != null || item.UsersLinkedGroup != null)
-                        {
-                        <i class="fa fa-link fa-lg success"></i>
-                        }
-                        else
-                        {
-                        <i class="fa fa-unlink fa-lg information"></i>
-                        }
+                    <td>
+                        @assignmentCount.ToString("N0")
                     </td>
+                    @if (showTags)
+                    {
+                        <td>
+                            @if (item.UserDevicesLinkedGroup != null || item.UsersLinkedGroup != null)
+                            {
+                                <i class="fa fa-link fa-lg success" title="Is Linked"></i>
+                            }
+                            @if (item.OnAssignmentExpression != null || item.OnUnassignmentExpression != null)
+                            {
+                                <i class="fa fa-bolt fa-lg alert" title="Has Expressions"></i>
+                            }
+                        </td>
+                    }
                 </tr>
             }
         </table>

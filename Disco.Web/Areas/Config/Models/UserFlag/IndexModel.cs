@@ -5,6 +5,6 @@ namespace Disco.Web.Areas.Config.Models.UserFlag
 {
     public class IndexModel : ConfigUserFlagIndexModel
     {
-        public List<Disco.Models.Repository.UserFlag> UserFlags { get; set; }
+        public Dictionary<Disco.Models.Repository.UserFlag, int> UserFlags { get; set; }
     }
 }

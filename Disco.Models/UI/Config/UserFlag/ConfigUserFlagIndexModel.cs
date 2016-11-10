@@ -4,6 +4,6 @@ namespace Disco.Models.UI.Config.UserFlag
 {
     public interface ConfigUserFlagIndexModel : BaseUIModel
     {
-        List<Repository.UserFlag> UserFlags { get; set; }
+        Dictionary<Repository.UserFlag, int> UserFlags { get; set; }
     }
 }

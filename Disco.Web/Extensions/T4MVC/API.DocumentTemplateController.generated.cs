@@ -107,6 +107,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateIsHidden()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateIsHidden);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult UpdateScope()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateScope);
@@ -195,6 +201,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateOnGenerateExpression = "UpdateOnGenerateExpression";
             public readonly string UpdateOnImportAttachmentExpression = "UpdateOnImportAttachmentExpression";
             public readonly string UpdateFlattenForm = "UpdateFlattenForm";
+            public readonly string UpdateIsHidden = "UpdateIsHidden";
             public readonly string UpdateScope = "UpdateScope";
             public readonly string UpdateJobSubTypes = "UpdateJobSubTypes";
             public readonly string UpdateDevicesLinkedGroup = "UpdateDevicesLinkedGroup";
@@ -220,6 +227,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateOnGenerateExpression = "UpdateOnGenerateExpression";
             public const string UpdateOnImportAttachmentExpression = "UpdateOnImportAttachmentExpression";
             public const string UpdateFlattenForm = "UpdateFlattenForm";
+            public const string UpdateIsHidden = "UpdateIsHidden";
             public const string UpdateScope = "UpdateScope";
             public const string UpdateJobSubTypes = "UpdateJobSubTypes";
             public const string UpdateDevicesLinkedGroup = "UpdateDevicesLinkedGroup";
@@ -312,6 +320,16 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string FlattenForm = "FlattenForm";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateIsHidden s_params_UpdateIsHidden = new ActionParamsClass_UpdateIsHidden();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateIsHidden UpdateIsHiddenParams { get { return s_params_UpdateIsHidden; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateIsHidden
+        {
+            public readonly string id = "id";
+            public readonly string IsHidden = "IsHidden";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateScope s_params_UpdateScope = new ActionParamsClass_UpdateScope();
@@ -560,6 +578,20 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "FlattenForm", FlattenForm);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateFlattenFormOverride(callInfo, id, FlattenForm, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateIsHiddenOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string IsHidden, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateIsHidden(string id, string IsHidden, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateIsHidden);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "IsHidden", IsHidden);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateIsHiddenOverride(callInfo, id, IsHidden, redirect);
             return callInfo;
         }
 

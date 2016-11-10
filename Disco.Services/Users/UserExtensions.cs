@@ -28,7 +28,7 @@ namespace Disco.Services
         public static List<DocumentTemplate> AvailableDocumentTemplates(this User u, DiscoDataContext Database, User User, DateTime TimeStamp)
         {
             var dts = Database.DocumentTemplates.Include("JobSubTypes")
-               .Where(dt => dt.Scope == DocumentTemplate.DocumentTemplateScopes.User)
+               .Where(dt => !dt.IsHidden && dt.Scope == DocumentTemplate.DocumentTemplateScopes.User)
                .ToArray()
                .Where(dt => dt.FilterExpressionMatches(u, Database, User, TimeStamp, DocumentState.DefaultState())).ToList();
 
