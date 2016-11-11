@@ -173,7 +173,7 @@ namespace Disco.Services.Expressions
             return e;
         }
 
-        public static IDictionary StandardVariables(DocumentTemplate AttachmentType, DiscoDataContext Database, User User, System.DateTime TimeStamp, DocumentState DocumentState)
+        public static IDictionary StandardVariables(DocumentTemplate AttachmentType, DiscoDataContext Database, User User, DateTime TimeStamp, DocumentState DocumentState)
         {
             return new Hashtable
 			{
@@ -221,7 +221,7 @@ namespace Disco.Services.Expressions
 
 				{
 					"#TimeStamp", 
-					typeof(System.DateTime).AssemblyQualifiedName
+					typeof(DateTime).AssemblyQualifiedName
 				}, 
 
 				{

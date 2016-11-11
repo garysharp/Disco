@@ -1,8 +1,11 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.Services.Documents;
+using Disco.Services.Documents;
 using Disco.Services.Expressions;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Disco.Services
 {
@@ -57,12 +60,13 @@ namespace Disco.Services
             ExpressionCache.InvalidateKey("DocumentTemplate_OnImportExpression", dt.Id);
         }
 
-        public static string EvaluateOnAttachmentImportExpression(this DocumentTemplate dt, object Data, DiscoDataContext Database, User User, DateTime TimeStamp)
+        public static string EvaluateOnAttachmentImportExpression(this DocumentTemplate dt, object Data, DiscoDataContext Database, User User, DateTime TimeStamp, List<DocumentUniqueIdentifier> PageIdentifiers)
         {
             if (!string.IsNullOrEmpty(dt.OnImportAttachmentExpression))
             {
                 Expression compiledExpression = dt.OnImportAttachmentExpressionFromCache();
-                System.Collections.IDictionary evaluatorVariables = Expression.StandardVariables(dt, Database, User, TimeStamp, null);
+                IDictionary evaluatorVariables = Expression.StandardVariables(dt, Database, User, TimeStamp, null);
+                evaluatorVariables.Add("PageIdentifiers", PageIdentifiers);
                 try
                 {
                     object result = compiledExpression.EvaluateFirst<object>(Data, evaluatorVariables);

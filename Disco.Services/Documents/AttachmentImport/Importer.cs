@@ -117,7 +117,7 @@ namespace Disco.Services.Documents.AttachmentImport
                                     msBuilder.Position = 0;
                                     using (var attachmentThumbnail = documentPageFirst.GetAttachmentThumbnail())
                                     {
-                                        documentPageFirst.Identifier.ImportPdfAttachment(Database, msBuilder, attachmentThumbnail);
+                                        documentPageFirst.Identifier.ImportPdfAttachment(Database, msBuilder, attachmentThumbnail, documentPages.Select(p => p.Identifier).ToList());
                                     }
                                 }
                             }
@@ -175,16 +175,21 @@ namespace Disco.Services.Documents.AttachmentImport
         {
             using (var pdfStream = File.OpenRead(PdfFilename))
             {
-                return ImportPdfAttachment(Identifier, Database, pdfStream, Thumbnail);
+                return ImportPdfAttachment(Identifier, Database, pdfStream, Thumbnail, new List<DocumentUniqueIdentifier>() { Identifier });
             }
         }
 
         public static bool ImportPdfAttachment(this DocumentUniqueIdentifier Identifier, DiscoDataContext Database, Stream PdfContent)
         {
-            return ImportPdfAttachment(Identifier, Database, PdfContent, null);
+            return ImportPdfAttachment(Identifier, Database, PdfContent, null, new List<DocumentUniqueIdentifier>() { Identifier });
         }
 
         public static bool ImportPdfAttachment(this DocumentUniqueIdentifier Identifier, DiscoDataContext Database, Stream PdfContent, Image Thumbnail)
+        {
+            return ImportPdfAttachment(Identifier, Database, PdfContent, Thumbnail, new List<DocumentUniqueIdentifier>() { Identifier });
+        }
+
+        public static bool ImportPdfAttachment(this DocumentUniqueIdentifier Identifier, DiscoDataContext Database, Stream PdfContent, Image Thumbnail, List<DocumentUniqueIdentifier> PageIdentifiers)
         {
             string filename;
             string comments;
@@ -230,7 +235,7 @@ namespace Disco.Services.Documents.AttachmentImport
             {
                 try
                 {
-                    var expressionResult = Identifier.DocumentTemplate.EvaluateOnAttachmentImportExpression(attachment, Database, creatorUser, Identifier.TimeStamp);
+                    var expressionResult = Identifier.DocumentTemplate.EvaluateOnAttachmentImportExpression(attachment, Database, creatorUser, Identifier.TimeStamp, PageIdentifiers);
                     DocumentsLog.LogImportAttachmentExpressionEvaluated(Identifier.DocumentTemplate, Identifier.Target, attachment, expressionResult);
                 }
                 catch (Exception ex)
