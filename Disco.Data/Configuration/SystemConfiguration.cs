@@ -11,12 +11,13 @@ namespace Disco.Data.Configuration
             : base(Database)
         {
             // Init Modules
-            this.moduleBootstrapperConfiguration = new Lazy<Modules.BootstrapperConfiguration>(() => new Modules.BootstrapperConfiguration(Database));
-            this.moduleDeviceProfilesConfiguration = new Lazy<Modules.DeviceProfilesConfiguration>(() => new Modules.DeviceProfilesConfiguration(Database));
-            this.moduleOrganisationAddressesConfiguration = new Lazy<Modules.OrganisationAddressesConfiguration>(() => new Modules.OrganisationAddressesConfiguration(Database));
-            this.moduleJobPreferencesConfiguration = new Lazy<Modules.JobPreferencesConfiguration>(() => new Modules.JobPreferencesConfiguration(Database));
-            this.moduleActiveDirectoryConfiguration = new Lazy<Modules.ActiveDirectoryConfiguration>(() => new Modules.ActiveDirectoryConfiguration(Database));
-            this.moduleDevicesConfiguration = new Lazy<Modules.DevicesConfiguration>(() => new Modules.DevicesConfiguration(Database));
+            moduleBootstrapperConfiguration = new Lazy<Modules.BootstrapperConfiguration>(() => new Modules.BootstrapperConfiguration(Database));
+            moduleDeviceProfilesConfiguration = new Lazy<Modules.DeviceProfilesConfiguration>(() => new Modules.DeviceProfilesConfiguration(Database));
+            moduleOrganisationAddressesConfiguration = new Lazy<Modules.OrganisationAddressesConfiguration>(() => new Modules.OrganisationAddressesConfiguration(Database));
+            moduleJobPreferencesConfiguration = new Lazy<Modules.JobPreferencesConfiguration>(() => new Modules.JobPreferencesConfiguration(Database));
+            moduleActiveDirectoryConfiguration = new Lazy<Modules.ActiveDirectoryConfiguration>(() => new Modules.ActiveDirectoryConfiguration(Database));
+            moduleDevicesConfiguration = new Lazy<Modules.DevicesConfiguration>(() => new Modules.DevicesConfiguration(Database));
+            moduleDocumentsConfiguration = new Lazy<Modules.DocumentsConfiguration>(() => new Modules.DocumentsConfiguration(Database));
         }
 
         #region Configuration Modules
@@ -27,6 +28,7 @@ namespace Disco.Data.Configuration
         private Lazy<Modules.JobPreferencesConfiguration> moduleJobPreferencesConfiguration;
         private Lazy<Modules.ActiveDirectoryConfiguration> moduleActiveDirectoryConfiguration;
         private Lazy<Modules.DevicesConfiguration> moduleDevicesConfiguration;
+        private Lazy<Modules.DocumentsConfiguration> moduleDocumentsConfiguration;
 
         public Modules.BootstrapperConfiguration Bootstrapper
         {
@@ -71,6 +73,14 @@ namespace Disco.Data.Configuration
             }
         }
 
+        public Modules.DocumentsConfiguration Documents
+        {
+            get
+            {
+                return moduleDocumentsConfiguration.Value;
+            }
+        }
+
         #endregion
 
         public override string Scope { get { return "System"; } }
@@ -79,7 +89,7 @@ namespace Disco.Data.Configuration
         {
             get
             {
-                var result = this.Get<string>(null);
+                var result = Get<string>(null);
                 if (result == null)
                 {
                     var appDataPath = System.Web.HttpContext.Current.Server.MapPath("~/App_Data");
@@ -102,7 +112,7 @@ namespace Disco.Data.Configuration
                     storePath = value;
                 else
                     storePath = string.Concat(value, '\\');
-                this.Set(storePath);
+                Set(storePath);
             }
         }
 
@@ -110,7 +120,7 @@ namespace Disco.Data.Configuration
         {
             get
             {
-                return this.Get<string>("Domain Admins,Disco Admins");
+                return Get("Domain Admins,Disco Admins");
             }
             set
             {
@@ -123,21 +133,21 @@ namespace Disco.Data.Configuration
         {
             get
             {
-                return System.IO.Path.Combine(this.DataStoreLocation, @"Plugins\");
+                return System.IO.Path.Combine(DataStoreLocation, @"Plugins\");
             }
         }
         public string PluginStorageLocation
         {
             get
             {
-                return System.IO.Path.Combine(this.DataStoreLocation, @"PluginStorage\");
+                return System.IO.Path.Combine(DataStoreLocation, @"PluginStorage\");
             }
         }
         public string PluginPackagesLocation
         {
             get
             {
-                return System.IO.Path.Combine(this.DataStoreLocation, @"PluginPackages\");
+                return System.IO.Path.Combine(DataStoreLocation, @"PluginPackages\");
             }
         }
         #endregion
@@ -155,7 +165,7 @@ namespace Disco.Data.Configuration
         {
             get
             {
-                var path = this.OrganisationLogoPath;
+                var path = OrganisationLogoPath;
                 if (File.Exists(path))
                     return File.GetLastWriteTimeUtc(path).ToBinary().ToString();
                 else
@@ -166,7 +176,7 @@ namespace Disco.Data.Configuration
         {
             get
             {
-                var path = this.OrganisationLogoPath;
+                var path = OrganisationLogoPath;
                 if (File.Exists(path))
                     return new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
                 else
@@ -174,7 +184,7 @@ namespace Disco.Data.Configuration
             }
             set
             {
-                string organisationLogoPath = this.OrganisationLogoPath;
+                string organisationLogoPath = OrganisationLogoPath;
                 if (value == null)
                 {
                     if (System.IO.File.Exists(organisationLogoPath))
@@ -194,22 +204,22 @@ namespace Disco.Data.Configuration
         {
             get
             {
-                return this.Get<string>(null);
+                return Get<string>(null);
             }
             set
             {
-                this.Set(value);
+                Set(value);
             }
         }
         public bool MultiSiteMode
         {
             get
             {
-                return this.Get(false);
+                return Get(false);
             }
             set
             {
-                this.Set(value);
+                Set(value);
             }
         }
         #endregion
@@ -219,44 +229,44 @@ namespace Disco.Data.Configuration
         {
             get
             {
-                return this.Get<string>(null);
+                return Get<string>(null);
             }
             set
             {
-                this.Set(value);
+                Set(value);
             }
         }
         public int ProxyPort
         {
             get
             {
-                return this.Get(8080);
+                return Get(8080);
             }
             set
             {
-                this.Set(value);
+                Set(value);
             }
         }
         public string ProxyUsername
         {
             get
             {
-                return this.Get<string>(null);
+                return Get<string>(null);
             }
             set
             {
-                this.Set(value);
+                Set(value);
             }
         }
         public string ProxyPassword
         {
             get
             {
-                return this.GetDeobsfucated(null);
+                return GetDeobsfucated(null);
             }
             set
             {
-                this.SetObsfucated(value);
+                SetObsfucated(value);
             }
         }
         #endregion
@@ -266,14 +276,14 @@ namespace Disco.Data.Configuration
         {
             get
             {
-                return this.Get<string>(null);
+                return Get<string>(null);
             }
         }
         public string DeploymentSecret
         {
             get
             {
-                return this.Get<string>(null);
+                return Get<string>(null);
             }
         }
         public short DeploymentChecksum
@@ -296,25 +306,25 @@ namespace Disco.Data.Configuration
         {
             get
             {
-                return this.Get<UpdateResponseV2>(null);
+                return Get<UpdateResponseV2>(null);
             }
             set
             {
-                this.Set(value);
+                Set(value);
             }
         }
         public bool UpdateBetaDeployment
         {
             get
             {
-                return this.Get<bool>(false);
+                return Get(false);
             }
         }
         public Version InstalledDatabaseVersion
         {
             get
             {
-                var versionString = this.Get<string>(null);
+                var versionString = Get<string>(null);
                 if (string.IsNullOrEmpty(versionString))
                     return null;
                 else
@@ -322,7 +332,7 @@ namespace Disco.Data.Configuration
             }
             set
             {
-                this.Set<string>(value.ToString(4));
+                Set(value.ToString(4));
             }
         }
         #endregion

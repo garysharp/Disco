@@ -165,14 +165,20 @@
                         @Html.DropDownList("Job_Show_GenerateDocument", Model.DocumentTemplatesSelectListItems)
                         <script type="text/javascript">
                             $(function () {
-                                var generatePdfUrl = '@Url.Action(MVC.API.Job.GeneratePdf(Model.Job.Id.ToString(), null))?DocumentTemplateId=';
+                                var generatePdfUrl = '@Url.Action(MVC.API.Job.GeneratePdf(Model.Job.Id, null))?DocumentTemplateId=';
+                                var generatePackageUrl = '@Url.Action(MVC.API.Job.GeneratePdfPackage(Model.Job.Id, null))?DocumentTemplatePackageId=';
                                 var $documentTemplates = $('#Job_Show_GenerateDocument');
                                 var $generationHost;
 
                                 $documentTemplates.change(function () {
                                     var v = $documentTemplates.val();
                                     if (v) {
-                                        var url = generatePdfUrl + v;
+                                        var url;
+                                        if (v.lastIndexOf('Package:', 0) === 0) {
+                                            url = generatePackageUrl + v.substring(8);
+                                        } else {
+                                            url = generatePdfUrl + v;
+                                        }
 
                                         if ($.connection && $.connection.hub && $.connection.hub.transport &&
                                                 $.connection.hub.transport.name == 'foreverFrame') {

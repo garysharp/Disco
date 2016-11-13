@@ -1,5 +1,6 @@
 ﻿using Disco.Models.Repository;
 using Disco.Models.Services.Authorization;
+using Disco.Models.Services.Documents;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.User;
 using Disco.Services.Users.UserFlags;
@@ -16,6 +17,7 @@ namespace Disco.Web.Models.User
         public Disco.Models.Repository.User User { get; set; }
         public JobTableModel Jobs { get; set; }
         public List<DocumentTemplate> DocumentTemplates { get; set; }
+        public List<DocumentTemplatePackage> DocumentTemplatePackages { get; set; }
 
         public List<UserFlag> AvailableUserFlags { get; set; }
 
@@ -26,7 +28,7 @@ namespace Disco.Web.Models.User
         {
             get
             {
-                var rootNode = FancyTreeNode.FromClaimNavigatorItem(this.ClaimNavigator, true);
+                var rootNode = FancyTreeNode.FromClaimNavigatorItem(ClaimNavigator, true);
                 rootNode.expanded = true;
 
                 return new FancyTreeNode[] {
@@ -41,7 +43,8 @@ namespace Disco.Web.Models.User
             {
                 var list = new List<SelectListItem>();
                 list.Add(new SelectListItem() { Selected = true, Value = string.Empty, Text = "Select a Document to Generate" });
-                list.AddRange(this.DocumentTemplates.ToSelectListItems());
+                list.AddRange(DocumentTemplates.ToSelectListItems());
+                list.AddRange(DocumentTemplatePackages.ToSelectListItems());
                 return list;
             }
         }

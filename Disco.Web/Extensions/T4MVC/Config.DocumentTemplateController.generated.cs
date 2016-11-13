@@ -65,6 +65,12 @@ namespace Disco.Web.Areas.Config.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ShowPackage()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ShowPackage);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult ExpressionBrowser()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExpressionBrowser);
@@ -86,9 +92,11 @@ namespace Disco.Web.Areas.Config.Controllers
         public class ActionNamesClass
         {
             public readonly string Index = "Index";
+            public readonly string ShowPackage = "ShowPackage";
             public readonly string ImportStatus = "ImportStatus";
             public readonly string UndetectedPages = "UndetectedPages";
             public readonly string Create = "Create";
+            public readonly string CreatePackage = "CreatePackage";
             public readonly string ExpressionBrowser = "ExpressionBrowser";
         }
 
@@ -96,9 +104,11 @@ namespace Disco.Web.Areas.Config.Controllers
         public class ActionNameConstants
         {
             public const string Index = "Index";
+            public const string ShowPackage = "ShowPackage";
             public const string ImportStatus = "ImportStatus";
             public const string UndetectedPages = "UndetectedPages";
             public const string Create = "Create";
+            public const string CreatePackage = "CreatePackage";
             public const string ExpressionBrowser = "ExpressionBrowser";
         }
 
@@ -111,11 +121,27 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             public readonly string id = "id";
         }
+        static readonly ActionParamsClass_ShowPackage s_params_ShowPackage = new ActionParamsClass_ShowPackage();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ShowPackage ShowPackageParams { get { return s_params_ShowPackage; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ShowPackage
+        {
+            public readonly string id = "id";
+        }
         static readonly ActionParamsClass_Create s_params_Create = new ActionParamsClass_Create();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Create CreateParams { get { return s_params_Create; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Create
+        {
+            public readonly string model = "model";
+        }
+        static readonly ActionParamsClass_CreatePackage s_params_CreatePackage = new ActionParamsClass_CreatePackage();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_CreatePackage CreatePackageParams { get { return s_params_CreatePackage; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_CreatePackage
         {
             public readonly string model = "model";
         }
@@ -140,18 +166,22 @@ namespace Disco.Web.Areas.Config.Controllers
             {
                 public readonly string _ExpressionsTable = "_ExpressionsTable";
                 public readonly string Create = "Create";
+                public readonly string CreatePackage = "CreatePackage";
                 public readonly string ExpressionBrowser = "ExpressionBrowser";
                 public readonly string ImportStatus = "ImportStatus";
                 public readonly string Index = "Index";
                 public readonly string Show = "Show";
+                public readonly string ShowPackage = "ShowPackage";
                 public readonly string UndetectedPages = "UndetectedPages";
             }
             public readonly string _ExpressionsTable = "~/Areas/Config/Views/DocumentTemplate/_ExpressionsTable.cshtml";
             public readonly string Create = "~/Areas/Config/Views/DocumentTemplate/Create.cshtml";
+            public readonly string CreatePackage = "~/Areas/Config/Views/DocumentTemplate/CreatePackage.cshtml";
             public readonly string ExpressionBrowser = "~/Areas/Config/Views/DocumentTemplate/ExpressionBrowser.cshtml";
             public readonly string ImportStatus = "~/Areas/Config/Views/DocumentTemplate/ImportStatus.cshtml";
             public readonly string Index = "~/Areas/Config/Views/DocumentTemplate/Index.cshtml";
             public readonly string Show = "~/Areas/Config/Views/DocumentTemplate/Show.cshtml";
+            public readonly string ShowPackage = "~/Areas/Config/Views/DocumentTemplate/ShowPackage.cshtml";
             public readonly string UndetectedPages = "~/Areas/Config/Views/DocumentTemplate/UndetectedPages.cshtml";
         }
     }
@@ -170,6 +200,18 @@ namespace Disco.Web.Areas.Config.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             IndexOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ShowPackageOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ShowPackage(string id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ShowPackage);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ShowPackageOverride(callInfo, id);
             return callInfo;
         }
 
@@ -215,6 +257,29 @@ namespace Disco.Web.Areas.Config.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
             CreateOverride(callInfo, model);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void CreatePackageOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult CreatePackage()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CreatePackage);
+            CreatePackageOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void CreatePackageOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Areas.Config.Models.DocumentTemplate.CreatePackageModel model);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult CreatePackage(Disco.Web.Areas.Config.Models.DocumentTemplate.CreatePackageModel model)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CreatePackage);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            CreatePackageOverride(callInfo, model);
             return callInfo;
         }
 

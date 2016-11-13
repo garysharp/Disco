@@ -1,7 +1,9 @@
 ﻿using Disco.BI.Extensions;
+using Disco.Models.Repository;
 using Disco.Models.Services.Documents;
 using Disco.Services;
 using Disco.Services.Authorization;
+using Disco.Services.Documents;
 using Disco.Services.Interop;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
@@ -160,9 +162,9 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult GeneratePdf(string id, string Domain, string DocumentTemplateId)
         {
             if (string.IsNullOrEmpty(id))
-                throw new ArgumentNullException("id");
+                throw new ArgumentNullException(nameof(id));
             if (string.IsNullOrEmpty(DocumentTemplateId))
-                throw new ArgumentNullException("AttachmentTypeId");
+                throw new ArgumentNullException(nameof(DocumentTemplateId));
 
             id = ActiveDirectory.ParseDomainAccountId(id, Domain);
 
@@ -189,6 +191,44 @@ namespace Disco.Web.Areas.API.Controllers
             else
             {
                 throw new ArgumentException("Invalid User Id", "id");
+            }
+        }
+        [DiscoAuthorize(Claims.User.Actions.GenerateDocuments)]
+        public virtual ActionResult GeneratePdfPackage(string id, string Domain, string DocumentTemplatePackageId)
+        {
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentNullException(nameof(id));
+            if (string.IsNullOrEmpty(DocumentTemplatePackageId))
+                throw new ArgumentNullException(nameof(DocumentTemplatePackageId));
+
+            id = ActiveDirectory.ParseDomainAccountId(id, Domain);
+
+            var user = Database.Users.Find(id);
+            if (user != null)
+            {
+                var package = DocumentTemplatePackages.GetPackage(DocumentTemplatePackageId);
+                if (package != null)
+                {
+                    if (package.Scope != AttachmentTypes.User)
+                        throw new ArgumentException("This package cannot be generated from the User Scope", nameof(DocumentTemplatePackageId));
+
+                    var timeStamp = DateTime.Now;
+                    Stream pdf;
+                    using (var generationState = DocumentState.DefaultState())
+                    {
+                        pdf = package.GeneratePdfPackage(Database, user, UserService.CurrentUser, timeStamp, generationState);
+                    }
+                    Database.SaveChanges();
+                    return File(pdf, "application/pdf", string.Format("{0}_{1}_{2:yyyyMMdd-HHmmss}.pdf", package.Id, user.UserId, timeStamp));
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid Document Template Package Id", nameof(DocumentTemplatePackageId));
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Invalid User Id", nameof(id));
             }
         }
 

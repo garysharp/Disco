@@ -69,5 +69,16 @@ namespace Disco.Web.Areas.API.Controllers
 
             return callInfo;
         }
+
+        [NonAction]
+        public virtual ActionResult GeneratePdfPackage(string id, string DocumentTemplatePackageId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdfPackage);
+
+            Disco.Web.Controllers.UserController.T4MVCAddUserIdRouteValues(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DocumentTemplatePackageId", DocumentTemplatePackageId);
+
+            return callInfo;
+        }
     }
 }

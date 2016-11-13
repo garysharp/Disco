@@ -105,7 +105,10 @@ namespace Disco.Web.Controllers
             }
 
             if (Authorization.Has(Claims.User.Actions.GenerateDocuments))
+            {
                 m.DocumentTemplates = m.User.AvailableDocumentTemplates(Database, UserService.CurrentUser, DateTime.Now);
+                m.DocumentTemplatePackages = m.User.AvailableDocumentTemplatePackages(Database, UserService.CurrentUser);
+            }
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<UserShowModel>(this.ControllerContext, m);

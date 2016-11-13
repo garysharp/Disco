@@ -3,6 +3,7 @@ using Disco.Models.Repository;
 using Disco.Models.Services.Documents;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Services.Authorization;
+using Disco.Services.Documents;
 using Disco.Services.Expressions;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins;
@@ -229,6 +230,10 @@ namespace Disco.Services
             dts = dts.Where(dt => dt.FilterExpressionMatches(j, Database, User, TimeStamp, DocumentState.DefaultState())).ToList();
 
             return dts;
+        }
+        public static List<DocumentTemplatePackage> AvailableDocumentTemplatePackages(this Job j, DiscoDataContext Database, User TechnicianUser)
+        {
+            return DocumentTemplatePackages.AvailablePackages(j, Database, TechnicianUser);
         }
 
         public static DateTime ValidateDateAfterOpened(this Job j, DateTime d)

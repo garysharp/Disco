@@ -1,4 +1,5 @@
 ﻿using Disco.Models.BI.Config;
+using Disco.Models.Services.Documents;
 using Disco.Models.Services.Jobs.JobLists;
 using System.Collections.Generic;
 
@@ -18,5 +19,6 @@ namespace Disco.Models.UI.Device
         List<Repository.DeviceCertificate> Certificates { get; set; }
 
         List<Repository.DocumentTemplate> DocumentTemplates { get; set; }
+        List<DocumentTemplatePackage> DocumentTemplatePackages { get; set; }
     }
 }

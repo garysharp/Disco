@@ -1,0 +1,38 @@
+﻿@model Disco.Web.Areas.Config.Models.DocumentTemplate.CreatePackageModel
+@{
+    Authorization.RequireAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure);
+    
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(null), "Create Package");
+}
+@using (Html.BeginForm(MVC.Config.DocumentTemplate.CreatePackage()))
+{ 
+    <div class="form" style="width: 650px">
+        <table>
+            <tr>
+                <th>
+                    Id:
+                </th>
+                <td>@Html.TextBoxFor(model => model.Package.Id)<br />@Html.ValidationMessageFor(model => model.Package.Id)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Description:
+                </th>
+                <td>@Html.TextBoxFor(model => model.Package.Description)<br />@Html.ValidationMessageFor(model => model.Package.Description)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Scope:
+                </th>
+                <td>
+                    @Html.DropDownListFor(model => model.Package.Scope, Model.Scopes.ToSelectListItems(null))
+                </td>
+            </tr>
+        </table>
+        <p class="actions">
+            <input type="submit" class="button" value="Create" />
+        </p>
+    </div>
+}

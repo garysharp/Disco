@@ -214,6 +214,7 @@
     </Compile>
     <Compile Include="App_Start\OwinStartupConfig.cs" />
     <Compile Include="Areas\API\Controllers\AuthorizationRoleController.cs" />
+    <Compile Include="Areas\API\Controllers\DocumentTemplatePackageController.cs" />
     <Compile Include="Areas\API\Controllers\UserFlagAssignmentController.cs" />
     <Compile Include="Areas\API\Controllers\UserFlagController.cs" />
     <Compile Include="Areas\API\Controllers\JobPreferencesController.cs" />
@@ -232,6 +233,8 @@
     <Compile Include="Areas\Config\Models\AuthorizationRole\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\AuthorizationRole\ShowModel.cs" />
     <Compile Include="Areas\Config\Models\Config\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\DocumentTemplate\CreatePackageModel.cs" />
+    <Compile Include="Areas\Config\Models\DocumentTemplate\ShowPackageModel.cs" />
     <Compile Include="Areas\Config\Models\Shared\LinkedGroupModel.cs" />
     <Compile Include="Areas\Config\Models\UserFlag\CreateModel.cs" />
     <Compile Include="Areas\Config\Models\UserFlag\IndexModel.cs" />
@@ -261,6 +264,16 @@
       <DependentUpon>Show.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DocumentTemplate\CreatePackage.generated.cs">
+      <DependentUpon>CreatePackage.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DocumentTemplate\ShowPackage1.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ShowPackage.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Areas\Config\Views\JobPreferences\Index.generated.cs">
       <AutoGen>True</AutoGen>
@@ -614,6 +627,9 @@
       <DependentUpon>Licence.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Extensions\T4MVC\API.DocumentTemplatePackageController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Extensions\T4MVC\T4MVCExtensions.cs" />
     <Compile Include="Extensions\T4MVC\API.AuthorizationRoleController.generated.cs">
@@ -1191,6 +1207,14 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Show.generated.cs</LastGenOutput>
     </None>
+    <Content Include="Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>ShowPackage1.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>CreatePackage.generated.cs</LastGenOutput>
+    </Content>
     <None Include="Areas\Config\Views\JobPreferences\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>

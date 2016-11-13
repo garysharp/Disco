@@ -1,6 +1,7 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.Services.Documents;
+using Disco.Services.Documents;
 using Disco.Services.Interop.ActiveDirectory;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,11 @@ namespace Disco.Services
                .Where(dt => dt.FilterExpressionMatches(u, Database, User, TimeStamp, DocumentState.DefaultState())).ToList();
 
             return dts;
+        }
+
+        public static List<DocumentTemplatePackage> AvailableDocumentTemplatePackages(this User u, DiscoDataContext Database, User TechnicianUser)
+        {
+            return DocumentTemplatePackages.AvailablePackages(u, Database, TechnicianUser);
         }
 
         public static List<DeviceUserAssignment> CurrentDeviceUserAssignments(this User u)

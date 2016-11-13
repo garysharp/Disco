@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Disco.Models.UI.Config.DocumentTemplate
 {
     public interface ConfigDocumentTemplateShowModel : BaseUIModel
     {
-        Disco.Models.Repository.DocumentTemplate DocumentTemplate { get; set; }
+        Repository.DocumentTemplate DocumentTemplate { get; set; }
         int StoredInstanceCount { get; set; }
+        List<bool> TemplatePagesHaveAttachmentId { get; set; }
+        int TemplatePageCount { get; }
 
-        List<Disco.Models.Repository.JobType> JobTypes { get; set; }
+        List<Repository.JobType> JobTypes { get; set; }
 
         List<string> Scopes { get; }
     }

@@ -14,7 +14,9 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
 
         public int StoredInstanceCount { get; set; }
 
+        public List<bool> TemplatePagesHaveAttachmentId { get; set; }
         public List<Expression> TemplateExpressions { get; set; }
+        public int TemplatePageCount { get { return TemplatePagesHaveAttachmentId?.Count() ?? 0; } }
 
         public List<JobType> JobTypes { get; set; }
 

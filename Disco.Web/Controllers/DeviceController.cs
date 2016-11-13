@@ -246,7 +246,10 @@ namespace Disco.Web.Controllers
                 m.Certificates = Database.DeviceCertificates.Where(c => c.DeviceSerialNumber == m.Device.SerialNumber).ToList();
 
             if (Authorization.Has(Claims.Device.Actions.GenerateDocuments))
+            {
                 m.DocumentTemplates = m.Device.AvailableDocumentTemplates(Database, UserService.CurrentUser, DateTime.Now);
+                m.DocumentTemplatePackages = m.Device.AvailableDocumentTemplatePackages(Database, UserService.CurrentUser);
+            }
 
             m.DeviceProfileDefaultOrganisationAddress = m.Device.DeviceProfile.DefaultOrganisationAddressDetails(Database);
 

@@ -344,7 +344,10 @@ namespace Disco.Web.Controllers
                 m.UpdatableJobSubTypes = m.Job.JobType.JobSubTypes.OrderBy(jst => jst.Description).ToList();
 
             if (Authorization.Has(Claims.Job.Actions.GenerateDocuments))
+            {
                 m.AvailableDocumentTemplates = m.Job.AvailableDocumentTemplates(Database, UserService.CurrentUser, DateTime.Now);
+                m.AvailableDocumentTemplatePackages = m.Job.AvailableDocumentTemplatePackages(Database, UserService.CurrentUser);
+            }
 
             // Available Job Queues
             IEnumerable<JobQueueToken> jobQueues = null;

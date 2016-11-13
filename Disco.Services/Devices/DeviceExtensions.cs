@@ -2,6 +2,7 @@
 using Disco.Models.Repository;
 using Disco.Models.Services.Documents;
 using Disco.Services.Authorization;
+using Disco.Services.Documents;
 using Disco.Services.Expressions;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
@@ -53,6 +54,10 @@ namespace Disco.Services
                 .Where(at => !at.IsHidden && at.Scope == DocumentTemplate.DocumentTemplateScopes.Device).ToList();
 
             return ats.Where(at => at.FilterExpressionMatches(d, Database, User, TimeStamp, DocumentState.DefaultState())).ToList();
+        }
+        public static List<DocumentTemplatePackage> AvailableDocumentTemplatePackages(this Device d, DiscoDataContext Database, User TechnicianUser)
+        {
+            return DocumentTemplatePackages.AvailablePackages(d, Database, TechnicianUser);
         }
 
         public static bool UpdateLastNetworkLogonDate(this Device Device)

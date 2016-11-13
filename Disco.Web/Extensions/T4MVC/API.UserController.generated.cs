@@ -99,6 +99,12 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdf);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult GeneratePdfPackage()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdfPackage);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public UserController Actions { get { return MVC.API.User; } }
@@ -122,6 +128,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string Attachments = "Attachments";
             public readonly string AttachmentRemove = "AttachmentRemove";
             public readonly string GeneratePdf = "GeneratePdf";
+            public readonly string GeneratePdfPackage = "GeneratePdfPackage";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -134,6 +141,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string Attachments = "Attachments";
             public const string AttachmentRemove = "AttachmentRemove";
             public const string GeneratePdf = "GeneratePdf";
+            public const string GeneratePdfPackage = "GeneratePdfPackage";
         }
 
 
@@ -197,6 +205,16 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string id = "id";
             public readonly string Domain = "Domain";
             public readonly string DocumentTemplateId = "DocumentTemplateId";
+        }
+        static readonly ActionParamsClass_GeneratePdfPackage s_params_GeneratePdfPackage = new ActionParamsClass_GeneratePdfPackage();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_GeneratePdfPackage GeneratePdfPackageParams { get { return s_params_GeneratePdfPackage; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_GeneratePdfPackage
+        {
+            public readonly string id = "id";
+            public readonly string Domain = "Domain";
+            public readonly string DocumentTemplatePackageId = "DocumentTemplatePackageId";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -303,6 +321,20 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Domain", Domain);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DocumentTemplateId", DocumentTemplateId);
             GeneratePdfOverride(callInfo, id, Domain, DocumentTemplateId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void GeneratePdfPackageOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Domain, string DocumentTemplatePackageId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult GeneratePdfPackage(string id, string Domain, string DocumentTemplatePackageId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdfPackage);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Domain", Domain);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DocumentTemplatePackageId", DocumentTemplatePackageId);
+            GeneratePdfPackageOverride(callInfo, id, Domain, DocumentTemplatePackageId);
             return callInfo;
         }
 

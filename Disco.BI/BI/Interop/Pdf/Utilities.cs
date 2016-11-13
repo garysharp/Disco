@@ -1,39 +1,48 @@
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Disco.BI.Interop.Pdf
 {
     public static class Utilities
     {
-        public static System.IO.Stream JoinPdfs(params System.IO.Stream[] Pdfs)
+        public static Stream JoinPdfs(bool InsertBlankPages, List<Stream> Pdfs)
         {
-            if (Pdfs.Length == 0)
-                throw new System.ArgumentNullException("Pdfs");
+            if (Pdfs.Count == 0)
+                throw new System.ArgumentNullException(nameof(Pdfs));
 
             // Only One PDF - Possible Reference Bug v's Memory/Speed (Returning Param Memory Stream)
-            if (Pdfs.Length == 1)
+            if (Pdfs.Count == 1)
                 return Pdfs[0];
 
             // Join Pdfs
-            System.IO.MemoryStream msBuilder = new System.IO.MemoryStream();
-            
-            Document pdfDoc = new Document();
-            PdfCopy pdfCopy = new PdfCopy(pdfDoc, msBuilder);
+            var msBuilder = new MemoryStream();
+
+            var pdfLastPageSize = PageSize.A4;
+            var pdfDoc = new Document();
+            var pdfCopy = new PdfSmartCopy(pdfDoc, msBuilder);
             pdfDoc.Open();
             pdfCopy.CloseStream = false;
 
-            for (int i = 0; i < Pdfs.Length; i++)
+            for (int i = 0; i < Pdfs.Count; i++)
             {
-                System.IO.Stream pdf = Pdfs[i];
-                PdfReader pdfReader = new PdfReader(pdf);
+                var pdf = Pdfs[i];
+                var pdfReader = new PdfReader(pdf);
 
                 for (int indexPage = 1; indexPage <= pdfReader.NumberOfPages; indexPage++)
                 {
-                    iTextSharp.text.Rectangle pageSize = pdfReader.GetPageSizeWithRotation(indexPage);
-                    PdfImportedPage page = pdfCopy.GetImportedPage(pdfReader, indexPage);
-                    pdfDoc.SetPageSize(pageSize);
+                    pdfLastPageSize = pdfReader.GetPageSizeWithRotation(indexPage);
+                    var page = pdfCopy.GetImportedPage(pdfReader, indexPage);
+                    pdfDoc.SetPageSize(pdfLastPageSize);
                     pdfDoc.NewPage();
                     pdfCopy.AddPage(page);
+                }
+
+                if (InsertBlankPages && (pdfCopy.PageNumber % 2) != 0)
+                {
+                    pdfDoc.NewPage();
+                    pdfCopy.AddPage(pdfLastPageSize, 0);
                 }
 
                 pdfReader.Close();

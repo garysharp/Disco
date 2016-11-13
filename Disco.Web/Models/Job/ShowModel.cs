@@ -1,4 +1,5 @@
-﻿using Disco.Models.Services.Job;
+﻿using Disco.Models.Services.Documents;
+using Disco.Models.Services.Job;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Job;
 using Disco.Web.Extensions;
@@ -15,6 +16,7 @@ namespace Disco.Web.Models.Job
         public TimeSpan? LongRunning { get; set; }
 
         public List<Disco.Models.Repository.DocumentTemplate> AvailableDocumentTemplates { get; set; }
+        public List<DocumentTemplatePackage> AvailableDocumentTemplatePackages { get; set; }
         public List<Disco.Models.Repository.JobSubType> UpdatableJobSubTypes { get; set; }
         public List<Disco.Models.Repository.JobQueue> AvailableQueues { get; set; }
 
@@ -24,7 +26,8 @@ namespace Disco.Web.Models.Job
             {
                 var list = new List<SelectListItem>();
                 list.Add(new SelectListItem() { Selected = true, Value = string.Empty, Text = "Generate Document" });
-                list.AddRange(this.AvailableDocumentTemplates.ToSelectListItems());
+                list.AddRange(AvailableDocumentTemplates.ToSelectListItems());
+                list.AddRange(AvailableDocumentTemplatePackages.ToSelectListItems());
                 return list;
             }
         }

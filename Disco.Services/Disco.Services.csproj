@@ -281,9 +281,11 @@
     <Compile Include="Documents\AttachmentImport\ImportPage.cs" />
     <Compile Include="Documents\AttachmentImport\ThumbnailUpdateTask.cs" />
     <Compile Include="Documents\DocumentsLog.cs" />
+    <Compile Include="Documents\DocumentTemplatePackageExtensions.cs" />
     <Compile Include="Documents\DocumentTemplateExtensions.cs" />
     <Compile Include="Documents\DocumentTemplateDataStoreExtensions.cs" />
     <Compile Include="Documents\DocumentTemplateExpressionExtensions.cs" />
+    <Compile Include="Documents\DocumentTemplatePackages.cs" />
     <Compile Include="Documents\DocumentUniqueIdentifier.cs" />
     <Compile Include="Documents\DocumentUniqueIdentifierExtensions.cs" />
     <Compile Include="Documents\ManagedGroups\DocumentTemplateDevicesManagedGroup.cs" />

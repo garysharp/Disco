@@ -1,16 +1,13 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Services
 {
-    public static class DocumentTemplateActionExtensions
+    public static class DocumentTemplateExtensions
     {
 
         public static Bitmap GenerateTemplatePreview(this DocumentTemplate DocumentTemplate, DiscoDataContext Database, int Width, int PageGapHeight, bool DrawPageBorder)

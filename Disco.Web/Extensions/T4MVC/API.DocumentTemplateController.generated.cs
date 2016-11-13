@@ -429,6 +429,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string DataIds = "DataIds";
+            public readonly string InsertBlankPage = "InsertBlankPage";
         }
         static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -732,15 +733,16 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void BulkGenerateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DataIds);
+        partial void BulkGenerateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DataIds, bool InsertBlankPage);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult BulkGenerate(string id, string DataIds)
+        public override System.Web.Mvc.ActionResult BulkGenerate(string id, string DataIds, bool InsertBlankPage)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerate);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DataIds", DataIds);
-            BulkGenerateOverride(callInfo, id, DataIds);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "InsertBlankPage", InsertBlankPage);
+            BulkGenerateOverride(callInfo, id, DataIds, InsertBlankPage);
             return callInfo;
         }
 

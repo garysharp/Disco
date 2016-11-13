@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Disco.Models.Repository;
+using Disco.Models.Services.Documents;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Web.Mvc;
-using Disco.Models.Repository;
 
 namespace Disco.Web.Extensions
 {
@@ -15,6 +14,14 @@ namespace Disco.Web.Extensions
                 return documentTemplates.Select(dt => new SelectListItem { Value = dt.Id, Text = dt.Description }).ToList();
             else
                 return documentTemplates.Select(dt => new SelectListItem { Value = dt.Id, Text = dt.Description, Selected = (SelectedId == dt.Id) }).ToList();
+        }
+
+        public static IEnumerable<SelectListItem> ToSelectListItems(this IEnumerable<DocumentTemplatePackage> documentTemplatePackages, string SelectedId = null)
+        {
+            if (SelectedId == null)
+                return documentTemplatePackages.Select(dt => new SelectListItem { Value = $"Package:{dt.Id}", Text = $"Package: {dt.Description}" }).ToList();
+            else
+                return documentTemplatePackages.Select(dt => new SelectListItem { Value = $"Package:{dt.Id}", Text = $"Package: {dt.Description}", Selected = (SelectedId == dt.Id) }).ToList();
         }
     }
 }

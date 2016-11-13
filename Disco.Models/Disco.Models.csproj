@@ -60,6 +60,7 @@
     <Compile Include="ClientServices\EnrolmentInformation\WirelessProfile.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\WirelessProfileStore.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\WirelessProfileTransformation.cs" />
+    <Compile Include="Services\Documents\DocumentTemplatePackage.cs" />
     <Compile Include="Services\Jobs\LocationModes.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\Certificate.cs" />
     <Compile Include="ClientServices\Register.cs" />
@@ -157,10 +158,12 @@
     <Compile Include="UI\Config\DeviceProfile\ConfigDeviceProfileIndexModel.cs" />
     <Compile Include="UI\Config\DeviceProfile\ConfigDeviceProfileIndexModelItem.cs" />
     <Compile Include="UI\Config\DeviceProfile\ConfigDeviceProfileShowModel.cs" />
+    <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateCreatePackageModel.cs" />
     <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateCreateModel.cs" />
     <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateExpressionBrowserModel.cs" />
     <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateImportStatusModel.cs" />
     <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateIndexModel.cs" />
+    <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateShowPackageModel.cs" />
     <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateShowModel.cs" />
     <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateUndetectedPagesModel.cs" />
     <Compile Include="UI\Config\Enrolment\ConfigEnrolmentIndexModel.cs" />

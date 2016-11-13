@@ -10,6 +10,7 @@ using iTextSharp.text.pdf;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Disco.BI.Extensions
@@ -45,15 +46,15 @@ namespace Disco.BI.Extensions
             return dt.PdfExpressionsFromCache(Database).Values.OrderBy(e => e.Ordinal).ToList();
         }
 
-        public static System.IO.Stream GeneratePdfBulk(this DocumentTemplate dt, DiscoDataContext Database, User CreatorUser, DateTime Timestamp, params string[] DataObjectsIds)
+        public static Stream GeneratePdfBulk(this DocumentTemplate dt, DiscoDataContext Database, User CreatorUser, DateTime Timestamp, bool InsertBlankPages, params string[] DataObjectsIds)
         {
-            return Interop.Pdf.PdfGenerator.GenerateBulkFromTemplate(dt, Database, CreatorUser, Timestamp, DataObjectsIds);
+            return Interop.Pdf.PdfGenerator.GenerateBulkFromTemplate(dt, Database, CreatorUser, Timestamp, InsertBlankPages, DataObjectsIds);
         }
-        public static System.IO.Stream GeneratePdfBulk(this DocumentTemplate dt, DiscoDataContext Database, User CreatorUser, DateTime Timestamp, params IAttachmentTarget[] DataObjects)
+        public static Stream GeneratePdfBulk(this DocumentTemplate dt, DiscoDataContext Database, User CreatorUser, DateTime Timestamp, bool InsertBlankPages, params IAttachmentTarget[] DataObjects)
         {
-            return Interop.Pdf.PdfGenerator.GenerateBulkFromTemplate(dt, Database, CreatorUser, Timestamp, DataObjects);
+            return Interop.Pdf.PdfGenerator.GenerateBulkFromTemplate(dt, Database, CreatorUser, Timestamp, InsertBlankPages, DataObjects);
         }
-        public static System.IO.Stream GeneratePdf(this DocumentTemplate dt, DiscoDataContext Database, IAttachmentTarget Target, User CreatorUser, DateTime TimeStamp, DocumentState State, bool FlattenFields = false)
+        public static Stream GeneratePdf(this DocumentTemplate dt, DiscoDataContext Database, IAttachmentTarget Target, User CreatorUser, DateTime TimeStamp, DocumentState State, bool FlattenFields = false)
         {
             bool generateExpression = !string.IsNullOrEmpty(dt.OnGenerateExpression);
             string generateExpressionResult = null;
@@ -70,7 +71,37 @@ namespace Disco.BI.Extensions
 
             return pdfStream;
         }
-        
+        public static Stream GeneratePdfPackage(this DocumentTemplatePackage package, DiscoDataContext Database, IAttachmentTarget Target, User CreatorUser, DateTime TimeStamp, DocumentState State)
+        {
+            return Interop.Pdf.PdfGenerator.GenerateFromPackage(package, Database, Target, CreatorUser, TimeStamp, State);
+        }
+        public static Stream GeneratePdfPackageBulk(this DocumentTemplatePackage package, DiscoDataContext Database, User CreatorUser, DateTime Timestamp, bool InsertBlankPages, List<string> DataObjectsIds)
+        {
+            return Interop.Pdf.PdfGenerator.GenerateBulkFromPackage(package, Database, CreatorUser, Timestamp, InsertBlankPages, DataObjectsIds);
+        }
+        public static Stream GeneratePdfPackageBulk(this DocumentTemplatePackage package, DiscoDataContext Database, User CreatorUser, DateTime Timestamp, bool InsertBlankPages, List<IAttachmentTarget> DataObjects)
+        {
+            return Interop.Pdf.PdfGenerator.GenerateBulkFromPackage(package, Database, CreatorUser, Timestamp, InsertBlankPages, DataObjects);
+        }
+
+        public static List<bool> PdfPageHasAttachmentId(this DocumentTemplate dt, DiscoDataContext Database)
+        {
+            string templateFilename = dt.RepositoryFilename(Database);
+            if (!File.Exists(templateFilename))
+                throw new FileNotFoundException("PDF template not found", templateFilename);
+
+            PdfReader pdfReader = new PdfReader(templateFilename);
+            var result = new bool[pdfReader.NumberOfPages];
+            var fieldNames = pdfReader.AcroFields.Fields.Keys.Where(key => key.Equals("DiscoAttachmentId", StringComparison.OrdinalIgnoreCase)).ToList();
+            var fieldPositions = fieldNames.SelectMany(name => pdfReader.AcroFields.GetFieldPositions(name));
+            foreach (var fieldPosition in fieldPositions)
+            {
+                result[fieldPosition.page - 1] = true;
+            }
+            pdfReader.Close();
+            return result.ToList();
+        }
+
         public static void Delete(this DocumentTemplate dt, DiscoDataContext Database)
         {
             // Find & Rename all references

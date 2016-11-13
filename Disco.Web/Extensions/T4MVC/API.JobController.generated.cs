@@ -441,6 +441,12 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdf);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult GeneratePdfPackage()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdfPackage);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public JobController Actions { get { return MVC.API.Job; } }
@@ -522,6 +528,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string ComponentRemove = "ComponentRemove";
             public readonly string StatisticsDailyOpenedClosed = "StatisticsDailyOpenedClosed";
             public readonly string GeneratePdf = "GeneratePdf";
+            public readonly string GeneratePdfPackage = "GeneratePdfPackage";
             public readonly string DeviceHeldLocations = "DeviceHeldLocations";
         }
 
@@ -593,6 +600,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string ComponentRemove = "ComponentRemove";
             public const string StatisticsDailyOpenedClosed = "StatisticsDailyOpenedClosed";
             public const string GeneratePdf = "GeneratePdf";
+            public const string GeneratePdfPackage = "GeneratePdfPackage";
             public const string DeviceHeldLocations = "DeviceHeldLocations";
         }
 
@@ -1211,6 +1219,15 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string DocumentTemplateId = "DocumentTemplateId";
+        }
+        static readonly ActionParamsClass_GeneratePdfPackage s_params_GeneratePdfPackage = new ActionParamsClass_GeneratePdfPackage();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_GeneratePdfPackage GeneratePdfPackageParams { get { return s_params_GeneratePdfPackage; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_GeneratePdfPackage
+        {
+            public readonly string id = "id";
+            public readonly string DocumentTemplatePackageId = "DocumentTemplatePackageId";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -2101,15 +2118,28 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void GeneratePdfOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DocumentTemplateId);
+        partial void GeneratePdfOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string DocumentTemplateId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult GeneratePdf(string id, string DocumentTemplateId)
+        public override System.Web.Mvc.ActionResult GeneratePdf(int id, string DocumentTemplateId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdf);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DocumentTemplateId", DocumentTemplateId);
             GeneratePdfOverride(callInfo, id, DocumentTemplateId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void GeneratePdfPackageOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string DocumentTemplatePackageId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult GeneratePdfPackage(int id, string DocumentTemplatePackageId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdfPackage);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DocumentTemplatePackageId", DocumentTemplatePackageId);
+            GeneratePdfPackageOverride(callInfo, id, DocumentTemplatePackageId);
             return callInfo;
         }
 

@@ -690,6 +690,107 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
   height: 200px;
   margin: 0 auto;
 }
+h1.Config_DocumentTemplates {
+  margin: 10px 0 6px;
+}
+#Config_DocumentTemplatePackages_Show > div.form > table > tbody > tr > th {
+  width: 140px;
+}
+#Config_DocumentTemplatePackages_Show #Package_FilterExpression,
+#Config_DocumentTemplatePackages_Show #Package_OnGenerateExpression {
+  height: 16px;
+  min-height: 16px;
+  overflow: hidden;
+  font-family: Consolas, "Courier New", monospace;
+}
+#Config_DocumentTemplatePackages_Show #Config_DocumentTemplatePackages_Scope_Button {
+  margin-top: 4px;
+}
+#Config_DocumentTemplatePackages_Show #Config_DocumentTemplatePackage_List {
+  list-style-type: decimal;
+  list-style-position: inside;
+  background-color: #f2f2f2;
+  border: 1px solid #d8d8d8;
+}
+#Config_DocumentTemplatePackages_Show #Config_DocumentTemplatePackage_List li {
+  padding: 6px 8px;
+}
+#Config_DocumentTemplatePackages_Show #Config_DocumentTemplatePackage_List li:not(:first-child) {
+  border-top: 1px dashed #d8d8d8;
+}
+#Config_DocumentTemplatePackages_Show #Config_DocumentTemplatePackage_List li .id {
+  font-family: Consolas, "Courier New", monospace;
+  float: right;
+}
+#Config_DocumentTemplatePackages_Scope_Dialog div.input {
+  margin: 14px 10px 20px;
+}
+#Config_DocumentTemplatePackages_JobSubTypes {
+  border: 1px dashed #d8d8d8;
+  background-color: #fff;
+  padding: 4px;
+  margin-top: 6px;
+}
+#Config_DocumentTemplatePackages_JobSubTypes > h4 {
+  margin-bottom: 4px;
+}
+#Config_DocumentTemplatePackages_JobSubTypes #Config_DocumentTemplatePackages_JobSubTypes_Update {
+  margin-top: 4px;
+}
+#Config_DocumentTemplatePackages_JobSubTypes_Update_Dialog #Config_DocumentTemplatePackages_JobSubTypes_Update_Dialog_Types {
+  margin: 0 0 8px 0;
+}
+#Config_DocumentTemplatePackages_JobSubTypes_Update_Dialog .jobTypes {
+  padding: 6px 0;
+}
+#Config_DocumentTemplatePackages_JobSubTypes_Update_Dialog .jobTypes .jobSubTypes {
+  background-color: #f2f2f2;
+  border-left: 4px solid #d8d8d8;
+  padding: 4px 0 4px 8px;
+  margin: 4px 0 0 6px;
+}
+#Config_DocumentTemplatePackages_JobSubTypes_Update_Dialog .checkboxBulkSelectContainer {
+  font-size: .8em;
+}
+#Config_DocumentTemplatePackages_Templates_Dialog h3 {
+  margin-bottom: 4px;
+}
+#Config_DocumentTemplatePackages_Templates_Dialog > div {
+  width: 374px;
+  float: left;
+}
+#Config_DocumentTemplatePackages_Templates_Dialog > div:first-child {
+  margin-right: 20px;
+}
+#Config_DocumentTemplatePackages_Templates_Dialog .templates_connected {
+  min-height: 200px;
+}
+#Config_DocumentTemplatePackages_Templates_Dialog ol {
+  list-style-type: decimal;
+  padding-left: 24px;
+  border: 1px solid #d8d8d8;
+  background-color: #f2f2f2;
+}
+#Config_DocumentTemplatePackages_Templates_Dialog li {
+  background-color: #fff;
+  border: 1px solid #d8d8d8;
+  margin: 4px;
+  padding: 2px 4px;
+  -moz-box-shadow: 0 0 5px rgba(209, 209, 209, 0.5);
+  -webkit-box-shadow: 0 0 5px rgba(209, 209, 209, 0.5);
+  box-shadow: 0 0 5px rgba(209, 209, 209, 0.5);
+  cursor: default;
+}
+#Config_DocumentTemplatePackages_Templates_Dialog li:hover {
+  background-color: #cddbec;
+  border-color: #1e6dab;
+}
+#Config_DocumentTemplatePackages_Templates_Dialog li .id {
+  font-family: Consolas, "Courier New", monospace;
+  color: #888;
+  float: right;
+  font-size: .9em;
+}
 #importStatus #sessions .session {
   padding: 4px;
   margin-bottom: 10px;

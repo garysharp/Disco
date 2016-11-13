@@ -72,7 +72,12 @@ namespace Disco.Web.Areas.Config
             context.MapRoute(
                 "Config_DocumentTemplate_Create",
                 "Config/DocumentTemplate/Create",
-                new { controller = "DocumentTemplate", action = "Create", id = UrlParameter.Optional }
+                new { controller = "DocumentTemplate", action = "Create" }
+            );
+            context.MapRoute(
+                "Config_DocumentTemplate_CreatePackage",
+                "Config/DocumentTemplate/CreatePackage",
+                new { controller = "DocumentTemplate", action = "CreatePackage" }
             );
             context.MapRoute(
                 "Config_DocumentTemplate_ImportStatus",
@@ -88,6 +93,11 @@ namespace Disco.Web.Areas.Config
                 "Config_DocumentTemplate_ExpressionBrowser",
                 "Config/DocumentTemplate/ExpressionBrowser",
                 new { controller = "DocumentTemplate", action = "ExpressionBrowser", id = UrlParameter.Optional }
+            );
+            context.MapRoute(
+                "Config_DocumentTemplate_ShowPackage",
+                "Config/DocumentTemplate/Package/{id}",
+                new { controller = "DocumentTemplate", action = "ShowPackage" }
             );
             context.MapRoute(
                 "Config_DocumentTemplate",

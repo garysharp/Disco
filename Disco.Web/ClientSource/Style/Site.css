@@ -1004,12 +1004,14 @@ button.button:hover {
   border: 1px solid #6b6b6b;
   background: #9e9e9e;
 }
-ul.none {
+ul.none,
+ol.none {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-ul.none li {
+ul.none li,
+ol.none li {
   margin: 0;
 }
 div.form {

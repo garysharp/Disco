@@ -568,7 +568,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.UndetectedPages)]
-        public virtual ActionResult ImporterUndetectedFile(string id, Nullable<bool> Source, Nullable<bool> Thumbnail)
+        public virtual ActionResult ImporterUndetectedFile(string id, bool? Source, bool? Thumbnail)
         {
             if (!string.IsNullOrEmpty(id))
             {
@@ -659,7 +659,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.BulkGenerate)]
-        public virtual ActionResult BulkGenerate(string id, string DataIds = null)
+        public virtual ActionResult BulkGenerate(string id, string DataIds = null, bool InsertBlankPage = false)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException("id");
@@ -686,13 +686,13 @@ namespace Disco.Web.Areas.API.Controllers
 
             var dataIds = DataIds.Split(new string[] { Environment.NewLine, ",", ";" }, StringSplitOptions.RemoveEmptyEntries).Select(d => d.Trim()).Where(d => !string.IsNullOrEmpty(d)).ToArray();
             var timeStamp = DateTime.Now;
-            var pdf = documentTemplate.GeneratePdfBulk(Database, UserService.CurrentUser, timeStamp, dataIds);
+            var pdf = documentTemplate.GeneratePdfBulk(Database, UserService.CurrentUser, timeStamp, InsertBlankPage, dataIds);
 
             return File(pdf, "application/pdf", string.Format("{0}_Bulk_{1:yyyyMMdd-HHmmss}.pdf", documentTemplate.Id, timeStamp));
         }
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Delete)]
-        public virtual ActionResult Delete(string id, Nullable<bool> redirect = false)
+        public virtual ActionResult Delete(string id, bool? redirect = false)
         {
             try
             {

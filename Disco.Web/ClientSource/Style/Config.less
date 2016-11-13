@@ -760,6 +760,139 @@ div.logEventsViewport {
     }
 }
 
+h1.Config_DocumentTemplates {
+    margin: 10px 0 6px;
+}
+
+// Document Template Packages
+#Config_DocumentTemplatePackages_Show {
+    & > div.form > table > tbody > tr > th {
+        width: 140px;
+    }
+
+    #Package_FilterExpression, #Package_OnGenerateExpression {
+        height: 16px;
+        min-height: 16px;
+        overflow: hidden;
+        font-family: @FontFamilyMono;
+    }
+
+    #Config_DocumentTemplatePackages_Scope_Button {
+        margin-top: 4px;
+    }
+
+    #Config_DocumentTemplatePackage_List {
+        list-style-type: decimal;
+        list-style-position: inside;
+        background-color: @FormBackgroundOddColour;
+        border: 1px solid @TableDataDarkBorderColour;
+
+        li {
+            padding: 6px 8px;
+
+            &:not(:first-child) {
+                border-top: 1px dashed @TableDataDarkBorderColour;
+            }
+
+            .id {
+                font-family: @FontFamilyMono;
+                float: right;
+            }
+        }
+    }
+}
+
+#Config_DocumentTemplatePackages_Scope_Dialog {
+    div.input {
+        margin: 14px 10px 20px;
+    }
+}
+
+#Config_DocumentTemplatePackages_JobSubTypes {
+    border: 1px dashed @TableDataDarkBorderColour;
+    background-color: @white;
+    padding: 4px;
+    margin-top: 6px;
+
+    & > h4 {
+        margin-bottom: 4px;
+    }
+
+    #Config_DocumentTemplatePackages_JobSubTypes_Update {
+        margin-top: 4px;
+    }
+}
+
+#Config_DocumentTemplatePackages_JobSubTypes_Update_Dialog {
+    #Config_DocumentTemplatePackages_JobSubTypes_Update_Dialog_Types {
+        margin: 0 0 8px 0;
+    }
+
+    .jobTypes {
+        padding: 6px 0;
+
+        .jobSubTypes {
+            background-color: @FormBackgroundOddColour;
+            border-left: 4px solid @TableDataDarkBorderColour;
+            padding: 4px 0 4px 8px;
+            margin: 4px 0 0 6px;
+        }
+    }
+
+    .checkboxBulkSelectContainer {
+        font-size: .8em;
+    }
+}
+
+#Config_DocumentTemplatePackages_Templates_Dialog {
+    h3 {
+        margin-bottom: 4px;
+    }
+
+    & > div {
+        width: 374px;
+        float: left;
+
+        &:first-child {
+            margin-right: 20px;
+        }
+    }
+
+    .templates_connected {
+        min-height: 200px;
+    }
+
+    ol {
+        list-style-type: decimal;
+        padding-left: 24px;
+        border: 1px solid @TableDataDarkBorderColour;
+        background-color: @FormBackgroundOddColour;
+    }
+
+    li {
+        background-color: @white;
+        border: 1px solid @TableDataDarkBorderColour;
+        margin: 4px;
+        padding: 2px 4px;
+        -moz-box-shadow: 0 0 5px fade(@BackgroundColour, 50%);
+        -webkit-box-shadow: 0 0 5px fade(@BackgroundColour, 50%);
+        box-shadow: 0 0 5px fade(@BackgroundColour, 50%);
+        cursor: default;
+
+        &:hover {
+            background-color: @HighlightColour;
+            border-color: @ButtonColour;
+        }
+
+        .id {
+            font-family: @FontFamilyMono;
+            color: #888;
+            float: right;
+            font-size: .9em;
+        }
+    }
+}
+
 // Document Templates - Import Status
 #importStatus {
     #sessions {
@@ -1663,14 +1796,13 @@ div.logEventsViewport {
 }
 
 #Config_UserFlags_Show {
-    
+
     #UserFlag_OnAssignmentExpression, #UserFlag_OnUnassignmentExpression {
         height: 16px;
         min-height: 16px;
         overflow: hidden;
         font-family: @FontFamilyMono;
     }
-
 }
 
 #Config_UserFlags_Index {

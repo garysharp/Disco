@@ -1,0 +1,767 @@
+﻿@model Disco.Web.Areas.Config.Models.DocumentTemplate.ShowPackageModel
+@using Disco.Services.Interop.ActiveDirectory;
+@{
+    Authorization.Require(Claims.Config.DocumentTemplate.Show);
+
+    var canConfig = Authorization.Has(Claims.Config.DocumentTemplate.Configure);
+
+    var hideAdvanced =
+        Model.Package.FilterExpression == null &&
+        Model.Package.OnGenerateExpression == null;
+
+    #region Can Bulk Generate
+    var canBulkGenerate = Authorization.Has(Claims.Config.DocumentTemplate.BulkGenerate);
+    if (canBulkGenerate)
+    {
+        switch (Model.Package.Scope)
+        {
+            case AttachmentTypes.Device:
+                canBulkGenerate = Authorization.Has(Claims.Device.Actions.GenerateDocuments);
+                break;
+            case AttachmentTypes.Job:
+                canBulkGenerate = Authorization.Has(Claims.Job.Actions.GenerateDocuments);
+                break;
+            case AttachmentTypes.User:
+                canBulkGenerate = Authorization.Has(Claims.User.Actions.GenerateDocuments);
+                break;
+            default:
+                throw new InvalidOperationException("Invalid Package Scope");
+        }
+    }
+    #endregion
+
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(null), "Package: " + Model.Package.Description);
+
+    if (canConfig)
+    {
+        Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
+    }
+}
+<div id="Config_DocumentTemplatePackages_Show" class="@(hideAdvanced ? " Config_HideAdvanced" : null)">
+    <div class="form" style="width: 650px; margin: 10px auto 20px;">
+        <table>
+            <tbody>
+                <tr>
+                    <th>
+                        Id:
+                    </th>
+                    <td>
+                        <code>@Html.DisplayFor(model => model.Package.Id)</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Description:
+                    </th>
+                    <td>
+                        @if (canConfig)
+                        {
+                            @Html.TextBoxFor(model => model.Package.Description)
+                            @AjaxHelpers.AjaxSave()
+                            @AjaxHelpers.AjaxLoader()
+                            <script type="text/javascript">
+                                $(function () {
+                                    document.DiscoFunctions.PropertyChangeHelper(
+                                        $('#Package_Description'),
+                                        'Description',
+                                        '@Url.Action(MVC.API.DocumentTemplatePackage.UpdateDescription(Model.Package.Id))',
+                                        'Description'
+                                    );
+                                });
+                            </script>
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(Model.Package.Description))
+                            {
+                                <span class="smallMessage">&lt;None Specified&gt;</span>
+                            }
+                            else
+                            {
+                                @Model.Package.Description
+                            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        &nbsp;
+                    </th>
+                    <td>
+                        <div>
+                            @if (canConfig)
+                            {
+                                <input id="Package_IsHidden" type="checkbox" @(Model.Package.IsHidden ? new MvcHtmlString("checked=\"checked\" ") : null) />
+                                <label for="Package_IsHidden">Hidden</label>
+                                @AjaxHelpers.AjaxLoader()
+                                <script type="text/javascript">
+                                    $(function () {
+                                        document.DiscoFunctions.PropertyChangeHelper(
+                                            $('#Package_IsHidden'),
+                                            null,
+                                            '@Url.Action(MVC.API.DocumentTemplatePackage.UpdateIsHidden(Model.Package.Id))',
+                                            'IsHidden'
+                                        );
+                                    });
+                                </script>
+                            }
+                            else
+                            {
+                                <input id="Package_IsHidden" type="checkbox" @(Model.Package.IsHidden ? new MvcHtmlString("checked=\"checked\" ") : null) disabled="disabled" />
+                                <label for="Package_IsHidden">Hidden</label>
+                            }
+                        </div>
+                        <div class="info-box">
+                            <p class="fa-p">
+                                <i class="fa fa-info-circle"></i>If selected the package will not appear in the list of documents to generate.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        &nbsp;
+                    </th>
+                    <td>
+                        <div>
+                            @if (canConfig)
+                            {
+                                <input id="Package_InsertBlankPages" type="checkbox" @(Model.Package.InsertBlankPages ? new MvcHtmlString("checked=\"checked\" ") : null) />
+                                <label for="Package_InsertBlankPages">Insert Blank Pages</label>
+                                @AjaxHelpers.AjaxLoader()
+                                <script type="text/javascript">
+                                    $(function () {
+                                        document.DiscoFunctions.PropertyChangeHelper(
+                                            $('#Package_InsertBlankPages'),
+                                            null,
+                                            '@Url.Action(MVC.API.DocumentTemplatePackage.UpdateInsertBlankPages(Model.Package.Id))',
+                                            'InsertBlankPages'
+                                        );
+                                    });
+                                </script>
+                            }
+                            else
+                            {
+                                <input id="Package_InsertBlankPages" type="checkbox" @(Model.Package.InsertBlankPages ? new MvcHtmlString("checked=\"checked\" ") : null) disabled="disabled" />
+                                <label for="Package_InsertBlankPages">Hidden</label>
+                            }
+                        </div>
+                        <div class="info-box">
+                            <p class="fa-p">
+                                <i class="fa fa-info-circle"></i>If selected blank pages will be inserted to ensure each of the individual documents within the package appear on separate pages when using duplex printing.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Scope:
+                    </th>
+                    <td>
+                        <h4>@Model.Package.Scope Scope</h4>
+                        <div class="info-box">
+                            <p class="fa-p">
+                                <i class="fa fa-info-circle"></i>This package is generated from @(Model.Package.Scope)s. Any expressions within the Document&nbsp;Template&nbsp;PDF will be evaluated within the <a href="@(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser()))#@(Model.Package.Scope)Scope">@(Model.Package.Scope) Scope</a>.
+                            </p>
+                        </div>
+                        <div>
+                            <button id="Config_DocumentTemplatePackages_Scope_Button" class="button small">Change Scope</button>
+                        </div>
+                        @if (canConfig)
+                        {
+                        <div id="Config_DocumentTemplatePackages_Scope_Dialog" title="Change Document Template Package Scope" class="dialog">
+                            @using (Html.BeginForm(MVC.API.DocumentTemplatePackage.UpdateScope(Model.Package.Id, redirect: true)))
+                                {
+                                <div class="input">
+                                    <label for="Config_DocumentTemplatePackages_Scope_Scope">Scope: </label>
+                                    <select id="Config_DocumentTemplatePackages_Scope_Scope" name="Scope">
+                                        @foreach (var scope in Model.Scopes)
+                                            {
+                                            <option value="@scope" selected="@(scope == Model.Package.Scope.ToString() ? " selected" : null)">@scope</option>
+                                            }
+                                    </select>
+                                </div>
+                                }
+                            @if (Model.Package.DocumentTemplateIds != null && Model.Package.DocumentTemplateIds.Count > 0)
+                                {
+                                <div class="info-box">
+                                    <p class="fa-p">
+                                        <i class="fa fa-info-circle"></i>If changed, all Document Templates will be unassociated with this Package.
+                                    </p>
+                                </div>
+                                }
+                        </div>
+                        <script type="text/javascript">
+                                $(function () {
+                                    var dialog;
+
+                                    function showDialog() {
+                                        if (dialog == null) {
+                                            dialog = $('#Config_DocumentTemplatePackages_Scope_Dialog').dialog({
+                                                width: 400,
+                                                resizable: false,
+                                                modal: true,
+                                                autoOpen: false,
+                                                buttons: {
+                                                    'Save Changes': function () {
+                                                        dialog.dialog('option', 'buttons', null);
+                                                        dialog.dialog('disable');
+                                                        $('#Config_DocumentTemplatePackages_Scope_Scope').closest('form').submit();
+                                                    },
+                                                    'Cancel': function () {
+                                                        dialog.dialog('close');
+                                                    }
+                                                }
+                                            });
+                                        }
+
+                                        dialog.dialog('open');
+
+                                        return false;
+                                    }
+
+                                    $('#Config_DocumentTemplatePackages_Scope_Button').click(showDialog);
+                                });
+                        </script>
+                        }
+                        @if (Model.Package.Scope == AttachmentTypes.Job)
+                        {
+                        <hr />
+                        <h4>Job Type Filters:</h4>
+                        <div id="Config_DocumentTemplatePackages_JobSubTypes">
+                            <div>
+                                @if (Model.Package.JobSubTypes != null && Model.Package.JobSubTypes.Count > 0)
+                                    {
+                                    <ul>
+                                        @foreach (var jobType in Model.JobSubTypesSelected.GroupBy(jst => jst.JobType).OrderBy(jtg => jtg.Key.Description))
+                                            {
+                                            <li>
+                                                @jobType.Key.Description
+                                                <ul>
+                                                    @if (jobType.Count() == Model.JobTypes.FirstOrDefault(jt => jt.Id == jobType.Key.Id).JobSubTypes.Count)
+                                                        {
+                                                        <li><span class="smallMessage">[All Sub Types]</span></li>
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var jobSubType in jobType)
+                                                            {
+                                                        <li>@jobSubType.Description</li>
+                                                            }
+                                                        }
+                                                </ul>
+                                            </li>
+                                            }
+                                    </ul>
+                                    }
+                                    else
+                                    {
+                                    <span class="smallMessage">&lt;No Filter&gt;</span>
+                                    }
+                            </div>
+                            @if (canConfig)
+                                {
+                                <a id="Config_DocumentTemplatePackages_JobSubTypes_Update" href="#" class="button small">Update</a>
+                                <div id="Config_DocumentTemplatePackages_JobSubTypes_Update_Dialog" class="dialog" title="Job Type Filter">
+                                    @using (Html.BeginForm(MVC.API.DocumentTemplatePackage.UpdateJobSubTypes(Model.Package.Id, null, true)))
+                                        {
+                                            var selectedTypes = Model.JobSubTypesSelected.Select(jst => jst.JobType).Distinct().ToList();
+                                            foreach (var jt in Model.JobTypes)
+                                            {
+                                        <div class="jobTypes">
+                                            <h4>
+                                                <input id="Types_@(jt.Id)" class="jobType" type="checkbox" value="@(jt.Id)" @(selectedTypes.Contains(jt) ? "checked=\" checked\"" : null) /><label for="Types_@(jt.Id)">@jt.Description</label>
+                                            </h4>
+                                            <div id="SubTypes_@(jt.Id)" class="jobSubTypes">
+                                                @CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id), "div")
+                                                @CommonHelpers.CheckBoxList("JobSubTypes", jt.JobSubTypes.OrderBy(jst => jst.Description).ToSelectListItems(Model.Package.JobSubTypes), 2)
+                                            </div>
+                                        </div>
+                                            }
+                                        }
+                                </div>
+                                <script>
+                                        (function () {
+                                            var dialog;
+
+                                            function showDialog() {
+                                                if (!dialog) {
+                                                    dialog = $('#Config_DocumentTemplatePackages_JobSubTypes_Update_Dialog').dialog({
+                                                        resizable: false,
+                                                        modal: true,
+                                                        autoOpen: false,
+                                                        width: 750,
+                                                        height: 580,
+                                                        buttons: {
+                                                            "Save Changes": saveChanges,
+                                                            Cancel: cancel
+                                                        }
+                                                    });
+
+                                                    dialog.find('.jobSubTypes').hide();
+                                                    dialog.on('change', 'input.jobType', function () {
+                                                        var $this = $(this);
+                                                        if ($this.is(':checked'))
+                                                            $('#SubTypes_' + $this.val()).slideDown('fast');
+                                                        else
+                                                            $('#SubTypes_' + $this.val()).slideUp('fast');
+                                                    }).find('input.jobType:checked').each(function () {
+                                                        $('#SubTypes_' + $(this).val()).show();
+                                                    });
+                                                }
+
+                                                dialog.dialog('open');
+
+                                                return false;
+                                            }
+
+                                            function cancel() {
+                                                dialog.dialog("disable");
+                                                dialog.dialog("option", "buttons", null);
+
+                                                // Refresh Page
+                                                window.location.reload(true);
+                                            }
+
+                                            function saveChanges() {
+                                                var form = dialog.find('form');
+
+                                                $('input.jobType:unchecked').each(function () {
+                                                    $('#SubTypes_' + $(this).val()).find('input').prop('checked', false);
+                                                });
+
+                                                form.submit();
+
+                                                dialog.dialog("disable");
+                                                dialog.dialog("option", "buttons", null);
+                                            }
+
+                                            $(function () {
+                                                $('#Config_DocumentTemplatePackages_JobSubTypes_Update').click(showDialog);
+                                            });
+
+                                        })();
+                                </script>
+                                }
+                        </div>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>Document Templates:</th>
+                    <td>
+                        @if (Model.DocumentTemplatesSelected.Count == 0)
+                        {
+                            <div class="info-box error">
+                                <p class="fa-p">
+                                    <i class="fa fa-exclamation-triangle"></i>The package has no associated Document Templates and cannot be generated.
+                                </p>
+                            </div>
+                            <div>
+                                <button id="Config_DocumentTemplatePackages_Templates_Button" class="button small alert">Choose Document Templates</button>
+                            </div>
+                        }
+                        else
+                        {
+                            <ol id="Config_DocumentTemplatePackage_List" class="none">
+                                @foreach (var template in Model.DocumentTemplatesSelected)
+                                {
+                                    <li>
+                                        <span class="description">@template.Description</span>
+                                        <span class="id">@Html.ActionLink(template.Id, MVC.Config.DocumentTemplate.Index(template.Id))</span>
+                                    </li>
+                                }
+                            </ol>
+                            <div class="info-box">
+                                <p class="fa-p">
+                                    <i class="fa fa-info-circle"></i>The package will be generated with the above Document Templates in the order they appear.
+                                </p>
+                            </div>
+                            <div>
+                                <button id="Config_DocumentTemplatePackages_Templates_Button" class="button small">Change Document Templates</button>
+                            </div>
+                        }
+                        @if (canConfig)
+                        {
+                            <div id="Config_DocumentTemplatePackages_Templates_Dialog" title="Change Document Templates" class="dialog">
+                                <div>
+                                    <h3>Package Templates</h3>
+                                    @using (Html.BeginForm(MVC.API.DocumentTemplatePackage.UpdateDocumentTemplates(Model.Package.Id, redirect: true)))
+                                    {
+                                        <ol class="templates_connected none">
+                                            @foreach (var template in Model.DocumentTemplatesSelected)
+                                            {
+                                                <li>
+                                                    <input type="hidden" name="DocumentTemplates" value="@template.Id" />
+                                                    <span class="id">@template.Id</span>
+                                                    <span class="description">@template.Description</span>
+                                                </li>
+                                            }
+                                        </ol>
+                                    }
+                                    <div>
+                                        <div class="info-box">
+                                            <p class="fa-p">
+                                                <i class="fa fa-info-circle"></i>Include Document Templates by drag them from the list of Available Templates. Reorder Document Templates by dragging them within the list.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3>Available Templates</h3>
+                                    <ul class="templates_connected none">
+                                        @foreach (var template in Model.DocumentTemplates.Where(t => !t.IsHidden).Except(Model.DocumentTemplatesSelected))
+                                        {
+                                            <li>
+                                                <input type="hidden" name="DocumentTemplates" value="@template.Id" />
+                                                <span class="id">@template.Id</span>
+                                                <span class="description">@template.Description</span>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                $(function () {
+                                    var dialog;
+
+                                    function showDialog() {
+                                        if (dialog == null) {
+                                            dialog = $('#Config_DocumentTemplatePackages_Templates_Dialog').dialog({
+                                                width: 800,
+                                                resizable: false,
+                                                modal: true,
+                                                autoOpen: false,
+                                                buttons: {
+                                                    'Save Changes': function () {
+                                                        var $form = dialog.find('form');
+                                                        if ($form.find('input').length > 0) {
+                                                            dialog.dialog('option', 'buttons', null);
+                                                            dialog.dialog('disable');
+                                                            $form.submit();
+                                                        } else {
+                                                            alert('The package templates must include at least one document template');
+                                                        }
+                                                    },
+                                                    'Cancel': function () {
+                                                        dialog.dialog('close');
+                                                    }
+                                                }
+                                            });
+
+                                            dialog.find('.templates_connected')
+                                                .sortable({
+                                                    connectWith: '.templates_connected'
+                                                })
+                                        }
+
+                                        dialog.dialog('open');
+
+                                        return false;
+                                    }
+
+                                    $('#Config_DocumentTemplatePackages_Templates_Button').click(showDialog);
+                                });
+                            </script>
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form Config_HideAdvanced_Item" style="width: 650px;">
+        <h2>Advanced Options</h2>
+        <table>
+            <tbody>
+                <tr>
+                    <th>
+                        Filter Expression:
+                    </th>
+                    <td>
+                        @if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
+                        {
+                            @Html.EditorFor(model => Model.Package.FilterExpression)
+                            @AjaxHelpers.AjaxRemove()
+                            @AjaxHelpers.AjaxSave()
+                            @AjaxHelpers.AjaxLoader()
+                            <script type="text/javascript">
+                                $(function () {
+                                    var field = $('#Package_FilterExpression');
+                                    var fieldRemove = field.next('.ajaxRemove');
+                                    var fieldOriginalWidth, fieldOriginalHeight;
+
+                                    document.DiscoFunctions.PropertyChangeHelper(
+                                        field,
+                                        'None',
+                                        '@Url.Action(MVC.API.DocumentTemplatePackage.UpdateFilterExpression(Model.Package.Id))',
+                                        'FilterExpression'
+                                    );
+
+                                    field.focus(function () {
+                                        fieldOriginalWidth = field.width();
+                                        fieldOriginalHeight = field.height();
+                                        field.css('overflow', 'visible').animate({ width: field.parent().width() - 42, height: 75 }, 200);
+                                    }).blur(function () {
+                                        field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
+                                    }).change(function () {
+                                        if (!!field.val()) {
+                                            fieldRemove.show();
+                                        } else {
+                                            fieldRemove.hide();
+                                        }
+                                    }).attr('placeholder', 'None').attr('spellcheck', 'false');
+
+                                    fieldRemove.click(function () {
+                                        field.val('').change();
+                                    });
+
+                                    if (!!field.val()) {
+                                        fieldRemove.show();
+                                    } else {
+                                        fieldRemove.hide();
+                                    }
+                                });
+                            </script>
+                        }
+                        else
+                        {
+                            if (string.IsNullOrWhiteSpace(Model.Package.FilterExpression))
+                            {
+                                <span class="smallMessage">&lt;None Specified&gt;</span>
+                            }
+                            else
+                            {
+                                <div class="code">
+                                    @Model.Package.FilterExpression
+                                </div>
+                            }
+                        }
+                        <div class="info-box">
+                            <p class="fa-p">
+                                <i class="fa fa-fw fa-info-circle"></i>This expression will be evaluated to determine if this package is shown in the <em>Generate&nbsp;Document</em> drop-down list. If the template is hidden (see above) this expression is ignored.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        On Generated Expression:
+                    </th>
+                    <td>
+                        @if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
+                        {
+                            @Html.EditorFor(model => Model.Package.OnGenerateExpression)
+                            @AjaxHelpers.AjaxRemove()
+                            @AjaxHelpers.AjaxSave()
+                            @AjaxHelpers.AjaxLoader()
+                            <script type="text/javascript">
+                                $(function () {
+                                    var field = $('#Package_OnGenerateExpression');
+                                    var fieldRemove = field.next('.ajaxRemove');
+                                    var fieldOriginalWidth, fieldOriginalHeight;
+
+                                    document.DiscoFunctions.PropertyChangeHelper(
+                                        field,
+                                        'None',
+                                        '@Url.Action(MVC.API.DocumentTemplatePackage.UpdateOnGenerateExpression(Model.Package.Id))',
+                                        'OnGenerateExpression'
+                                    );
+
+                                    field.focus(function () {
+                                        fieldOriginalWidth = field.width();
+                                        fieldOriginalHeight = field.height();
+                                        field.css('overflow', 'visible').animate({ width: field.parent().width() - 42, height: 75 }, 200);
+                                    }).blur(function () {
+                                        field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
+                                    }).change(function () {
+                                        if (!!field.val()) {
+                                            fieldRemove.show();
+                                        } else {
+                                            fieldRemove.hide();
+                                        }
+                                    }).attr('placeholder', 'None').attr('spellcheck', 'false');
+
+                                    fieldRemove.click(function () {
+                                        field.val('').change();
+                                    });
+
+                                    if (!!field.val()) {
+                                        fieldRemove.show();
+                                    } else {
+                                        fieldRemove.hide();
+                                    }
+                                });
+                            </script>
+                        }
+                        else
+                        {
+                            if (string.IsNullOrWhiteSpace(Model.Package.OnGenerateExpression))
+                            {
+                                <span class="smallMessage">&lt;None Specified&gt;</span>
+                            }
+                            else
+                            {
+                                <div class="code">
+                                    @Model.Package.OnGenerateExpression
+                                </div>
+                            }
+                        }
+                        <div class="info-box">
+                            <p class="fa-p">
+                                <i class="fa fa-fw fa-info-circle"></i>This expression will be evaluated each time the package is generated.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="dialogConfirmDelete" title="Delete this Document Template?">
+    <p>
+        <i class="fa fa-exclamation-triangle fa-lg warning"></i>This item will be permanently deleted.<br />
+        Are you sure?
+    </p>
+</div>
+<script type="text/javascript">
+    $(function () {
+        var button = $('#buttonDelete');
+        var buttonDialog = $("#dialogConfirmDelete");
+        var buttonLink = button.attr('href');
+        button.attr('href', '#');
+        button.click(function () {
+            buttonDialog.dialog('open');
+            return false;
+        });
+        buttonDialog.dialog({
+            resizable: false,
+            modal: true,
+            autoOpen: false,
+            buttons: {
+                "Delete": function () {
+                    $this = $(this);
+                    $this.dialog('disable');
+                    $this.dialog("option", "buttons", null);
+                    window.location.href = buttonLink;
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+    });
+</script>
+<div class="actionBar">
+    @if (hideAdvanced)
+    {
+        <button id="Config_HideAdvanced_Show" class="button">Show Advanced Options</button>
+        <script>
+            $(function () {
+                $('#Config_HideAdvanced_Show').click(function () {
+                    $('#Config_DocumentTemplatePackages_Show').removeClass('Config_HideAdvanced');
+                    $(this).remove();
+                });
+            });
+        </script>
+    }
+    @if (canBulkGenerate)
+    {
+        <a id="buttonBulkGenerate" href="#" class="button">Bulk Generate</a>
+        <div id="dialogBulkGenerate" class="hiddenDialog" title="Bulk Generate: @(Model.Package.Id)">
+            <div class="brief">
+                @switch (Model.Package.Scope)
+                {
+                    case AttachmentTypes.Device:
+                        <div>
+                            Enter multiple <span class="scopeDescBulkGenerate">Device Serial Numbers</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                        </div>
+                        <div class="examples clearfix">
+                            <h4>Examples:</h4>
+                            <div class="example1 code">
+                                01234567<br />
+                                ABCD9876<br />
+                                8VQ6G2R
+                            </div>
+                            <div class="example2 code">01234567,ABCD9876,8VQ6G2R</div>
+                            <div class="example3 code">01234567;ABCD9876;8VQ6G2R</div>
+                        </div>
+                        break;
+                    case AttachmentTypes.Job:
+                        <div>
+                            Enter multiple <span class="scopeDescBulkGenerate">Job Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                        </div>
+                        <div class="examples clearfix">
+                            <h4>Examples:</h4>
+                            <div class="example1 code">
+                                86<br />
+                                99<br />
+                                44
+                            </div>
+                            <div class="example2 code">86,99,44</div>
+                            <div class="example3 code">86;99;44</div>
+                        </div>
+                            break;
+                        case AttachmentTypes.User:
+                        <div>
+                            Enter multiple <span class="scopeDescBulkGenerate">User Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                        </div>
+                        <div class="examples clearfix">
+                            <h4>Examples:</h4>
+                            <div class="example1 code">
+                                user6<br />
+                                smi0099<br />@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith
+                            </div>
+                            <div class="example2 code">user6,smi0099,@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith</div>
+                            <div class="example3 code">user6;smi0099;@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith</div>
+                        </div>
+                        break;
+                }
+            </div>
+            @using (Html.BeginForm(MVC.API.DocumentTemplatePackage.BulkGenerate(Model.Package.Id), FormMethod.Post))
+            {
+                <div class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="DataIds"></div>
+                <textarea id="inputBulkGenerateDataIds" name="DataIds" data-val="true" data-val-required="Identifiers are required"></textarea>
+                <div style="margin-top: 6px;">
+                    <input id="inputBulkGenerateInsertBlankPage" type="checkbox" name="InsertBlankPage" value="True" /><label for="inputBulkGenerateInsertBlankPage">Insert Blank Pages for Double-Sided Printing</label>
+                </div>
+            }
+        </div>
+
+        <script>
+            $(function () {
+                var dialog;
+
+                $('#buttonBulkGenerate').click(function () {
+                    if (!dialog) {
+                        dialog = $('#dialogBulkGenerate').dialog({
+                            resizable: false,
+                            modal: true,
+                            autoOpen: false,
+                            width: 460,
+                            buttons: {
+                                "Bulk Generate": function () {
+                                    dialog.find('form').submit();
+                                    dialog.dialog("disable");
+                                },
+                                Close: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+
+                        $.validator.unobtrusive.reparse('#inputBulkGenerateDataIds');
+                    }
+
+                    dialog.dialog('open');
+                    return false;
+                });
+            });
+        </script>
+    }
+    @if (Authorization.Has(Claims.Config.DocumentTemplate.Delete))
+    {
+        @Html.ActionLinkButton("Delete", MVC.API.DocumentTemplatePackage.Delete(Model.Package.Id, true), "buttonDelete")
+    }
+</div>

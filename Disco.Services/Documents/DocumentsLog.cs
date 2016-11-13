@@ -1,4 +1,5 @@
 ﻿using Disco.Models.Repository;
+using Disco.Models.Services.Documents;
 using Disco.Services.Logging;
 using Disco.Services.Logging.Models;
 
@@ -23,7 +24,9 @@ namespace Disco.Services.Documents
             ImportPageError = 120,
             ImportPageUndetectedStored = 150,
             DocumentGenerated = 500,
-            DocumentGeneratedWithExpression
+            DocumentGeneratedWithExpression,
+            DocumentPackageGenerated = 600,
+            DocumentPackageGeneratedWithExpression,
         }
 
         private const int _ModuleId = 40;
@@ -175,93 +178,41 @@ namespace Disco.Services.Documents
                 PageNumber
             });
         }
-        public static void LogDocumentGenerated(DocumentTemplate Template, Device Device, User Author, string ExpressionResult)
-        {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.DocumentGeneratedWithExpression, new object[]
-            {
-                Template.Id,
-                Device.SerialNumber,
-                Author.UserId,
-                ExpressionResult
-            });
-        }
-        public static void LogDocumentGenerated(DocumentTemplate Template, Job Job, User Author, string ExpressionResult)
-        {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.DocumentGeneratedWithExpression, new object[]
-            {
-                Template.Id,
-                Job.Id,
-                Author.UserId,
-                ExpressionResult
-            });
-        }
-        public static void LogDocumentGenerated(DocumentTemplate Template, User User, User Author, string ExpressionResult)
-        {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.DocumentGeneratedWithExpression, new object[]
-            {
-                Template.Id,
-                User.UserId,
-                Author.UserId,
-                ExpressionResult
-            });
-        }
         public static void LogDocumentGenerated(DocumentTemplate Template, IAttachmentTarget Data, User Author, string ExpressionResult)
         {
-            if (Data is Job)
-                LogDocumentGenerated(Template, (Job)Data, Author, ExpressionResult);
-            else if (Data is User)
-                LogDocumentGenerated(Template, (User)Data, Author, ExpressionResult);
-            else if (Data is Device)
-                LogDocumentGenerated(Template, (Device)Data, Author, ExpressionResult);
-            else
-                DocumentsLog.Log(DocumentsLog.EventTypeIds.DocumentGeneratedWithExpression, new object[]
+            Log(EventTypeIds.DocumentGeneratedWithExpression, new object[]
                 {
                     Template.Id,
-                    "UNKNOWN",
+                    Data.AttachmentReferenceId,
                     Author.UserId,
                     ExpressionResult
                 });
         }
-        public static void LogDocumentGenerated(DocumentTemplate Template, Device Device, User Author)
+        public static void LogDocumentPackageGenerated(DocumentTemplatePackage Package, IAttachmentTarget Data, User Author, string ExpressionResult)
         {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.DocumentGenerated, new object[]
-            {
-                Template.Id,
-                Device.SerialNumber,
-                Author.UserId
-            });
+            Log(EventTypeIds.DocumentPackageGeneratedWithExpression, new object[]
+                {
+                    Package.Id,
+                    Data.AttachmentReferenceId,
+                    Author.UserId,
+                    ExpressionResult
+                });
         }
-        public static void LogDocumentGenerated(DocumentTemplate Template, Job Job, User Author)
+        public static void LogDocumentGenerated(DocumentTemplate Template, IAttachmentTarget Data, User Author)
         {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.DocumentGenerated, new object[]
-            {
-                Template.Id,
-                Job.Id,
-                Author.UserId
-            });
-        }
-        public static void LogDocumentGenerated(DocumentTemplate Template, User User, User Author)
-        {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.DocumentGenerated, new object[]
-            {
-                Template.Id,
-                User.UserId,
-                Author.UserId
-            });
-        }
-        public static void LogDocumentGenerated(DocumentTemplate Template, object Data, User Author)
-        {
-            if (Data is Job)
-                LogDocumentGenerated(Template, (Job)Data, Author);
-            else if (Data is User)
-                LogDocumentGenerated(Template, (User)Data, Author);
-            else if (Data is Device)
-                LogDocumentGenerated(Template, (Device)Data, Author);
-            else
-                DocumentsLog.Log(DocumentsLog.EventTypeIds.DocumentGenerated, new object[]
+            Log(EventTypeIds.DocumentGenerated, new object[]
                 {
                     Template.Id,
-                    "UNKNOWN",
+                    Data.AttachmentReferenceId,
+                    Author.UserId
+                });
+        }
+        public static void LogDocumentPackageGenerated(DocumentTemplatePackage Package, IAttachmentTarget Data, User Author)
+        {
+            Log(EventTypeIds.DocumentPackageGenerated, new object[]
+                {
+                    Package.Id,
+                    Data.AttachmentReferenceId,
                     Author.UserId
                 });
         }
@@ -429,6 +380,28 @@ namespace Disco.Services.Documents
                     ModuleId = _ModuleId,
                     Name = "Document Generated with Expression",
                     Format = "A '{0}' document was generated for '{1}' by '{2}'. The expression returned: {3}",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.DocumentPackageGenerated,
+                    ModuleId = _ModuleId,
+                    Name = "Document Package Generated",
+                    Format = "A '{0}' document package was generated for '{1}' by '{2}'",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.DocumentPackageGeneratedWithExpression,
+                    ModuleId = _ModuleId,
+                    Name = "Document Package Generated with Expression",
+                    Format = "A '{0}' document package was generated for '{1}' by '{2}'. The expression returned: {3}",
                     Severity = (int)LogEventType.Severities.Information,
                     UseLive = true,
                     UsePersist = true,

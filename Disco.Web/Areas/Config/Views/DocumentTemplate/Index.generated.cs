@@ -49,8 +49,9 @@ namespace Disco.Web.Areas.Config.Views.DocumentTemplate
     Authorization.Require(Claims.Config.DocumentTemplate.Show);
 
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates");
-    var showTags = Model.DocumentTemplates.Keys.Any(i => i.DevicesLinkedGroup != null || i.UsersLinkedGroup != null ||
-        i.FilterExpression != null || i.OnGenerateExpression != null || i.OnImportAttachmentExpression != null);
+    var showTags = Model.DocumentTemplates.Keys.Any(i => i.IsHidden || i.DevicesLinkedGroup != null || i.UsersLinkedGroup != null ||
+        i.FilterExpression != null || i.OnGenerateExpression != null || i.OnImportAttachmentExpression != null) ||
+        Model.Packages.Any(i => i.IsHidden || i.FilterExpression != null || i.OnGenerateExpression != null);
 
             
             #line default
@@ -58,7 +59,7 @@ namespace Disco.Web.Areas.Config.Views.DocumentTemplate
 WriteLiteral("\r\n");
 
             
-            #line 9 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 10 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
  if (Model.DocumentTemplates.Count == 0)
 {
 
@@ -74,11 +75,11 @@ WriteLiteral(" style=\"width: 450px; padding: 100px 0;\"");
 WriteLiteral(">\r\n        <h2>No document templates are configured</h2>\r\n    </div>\r\n");
 
             
-            #line 14 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 15 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
 }
 else
 {
-    if (Model.DocumentTemplates.Keys.Any(dt => dt.IsHidden))
+    if (Model.DocumentTemplates.Keys.Any(dt => dt.IsHidden) || Model.Packages.Any(p => p.IsHidden))
     {
 
             
@@ -95,27 +96,28 @@ WriteLiteral(" class=\"button small\"");
 WriteLiteral(">Show Hidden (");
 
             
-            #line 19 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
-                                                                                           Write(Model.DocumentTemplates.Keys.Count(dt => dt.IsHidden));
+            #line 20 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+                                                                                           Write(Model.DocumentTemplates.Keys.Count(dt => dt.IsHidden) + Model.Packages.Count(p => p.IsHidden));
 
             
             #line default
             #line hidden
 WriteLiteral(")</a>\r\n");
 
-WriteLiteral(@"            <script>
-                $(function () {
-                    $('#Config_DocumentTemplates_ShowHidden').click(function () {
-                        $(this).remove();
-                        $('#Config_DocumentTemplates_List').find('tr.hidden').show();
-                        return false;
-                    }).detach().appendTo('#layout_PageHeading');
-                })
-            </script>
+WriteLiteral(@"        <script>
+            $(function () {
+                $('#Config_DocumentTemplates_ShowHidden').click(function () {
+                    $(this).remove();
+                    $('#Config_DocumentTemplates_List').find('tr.hidden').show();
+                    $('#Config_DocumentTemplatePackages_List').find('tr.hidden').show();
+                    return false;
+                }).detach().appendTo('#layout_PageHeading');
+            })
+        </script>
 ");
 
             
-            #line 29 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 31 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
     }
 
             
@@ -131,13 +133,13 @@ WriteLiteral(">\r\n        <tr>\r\n            <th>Id</th>\r\n            <th>De
 "       <th>Scope</th>\r\n            <th>Stored&nbsp;Instances</th>\r\n");
 
             
-            #line 36 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 38 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 36 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 38 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
              if (showTags)
                 {
 
@@ -147,7 +149,7 @@ WriteLiteral(">\r\n        <tr>\r\n            <th>Id</th>\r\n            <th>De
 WriteLiteral("                <th>&nbsp;</th>\r\n");
 
             
-            #line 39 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 41 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
             }
 
             
@@ -156,13 +158,13 @@ WriteLiteral("                <th>&nbsp;</th>\r\n");
 WriteLiteral("        </tr>\r\n");
 
             
-            #line 41 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 43 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 41 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 43 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
          foreach (var pair in Model.DocumentTemplates)
         {
             var item = pair.Key;
@@ -173,20 +175,20 @@ WriteLiteral("        </tr>\r\n");
             #line hidden
 WriteLiteral("            <tr");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1798), Tuple.Create("\"", 1840)
+WriteAttribute("class", Tuple.Create(" class=\"", 2057), Tuple.Create("\"", 2099)
             
-            #line 45 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 1806), Tuple.Create<System.Object, System.Int32>(item.IsHidden ? "hidden" : null
+            #line 47 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 2065), Tuple.Create<System.Object, System.Int32>(item.IsHidden ? "hidden" : null
             
             #line default
             #line hidden
-, 1806), false)
+, 2065), false)
 );
 
 WriteLiteral(">\r\n                <td>");
 
             
-            #line 46 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 48 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                Write(Html.ActionLink(item.Id.ToString(), MVC.Config.DocumentTemplate.Index(item.Id)));
 
             
@@ -195,7 +197,7 @@ WriteLiteral(">\r\n                <td>");
 WriteLiteral("</td>\r\n                <td>");
 
             
-            #line 47 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 49 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                Write(Html.DisplayFor(modelItem => item.Description));
 
             
@@ -204,7 +206,7 @@ WriteLiteral("</td>\r\n                <td>");
 WriteLiteral("</td>\r\n                <td>");
 
             
-            #line 48 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 50 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                Write(Html.DisplayFor(modelItem => item.Scope));
 
             
@@ -213,7 +215,7 @@ WriteLiteral("</td>\r\n                <td>");
 WriteLiteral("</td>\r\n                <td>");
 
             
-            #line 49 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 51 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                Write(storedCount.ToString("N0"));
 
             
@@ -222,13 +224,13 @@ WriteLiteral("</td>\r\n                <td>");
 WriteLiteral("</td>\r\n");
 
             
-            #line 50 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 52 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 50 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 52 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                  if (showTags)
                     {
 
@@ -238,13 +240,13 @@ WriteLiteral("</td>\r\n");
 WriteLiteral("                    <td>\r\n");
 
             
-            #line 53 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 55 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 53 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 55 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                          if (item.DevicesLinkedGroup != null || item.UsersLinkedGroup != null)
                         {
 
@@ -260,7 +262,7 @@ WriteLiteral(" title=\"Is Linked\"");
 WriteLiteral("></i>\r\n");
 
             
-            #line 56 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 58 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                         }
 
             
@@ -269,7 +271,7 @@ WriteLiteral("></i>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 57 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 59 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                          if (item.FilterExpression != null || item.OnGenerateExpression != null || item.OnImportAttachmentExpression != null)
                         {
 
@@ -285,7 +287,7 @@ WriteLiteral(" title=\"Has Expressions\"");
 WriteLiteral("></i>\r\n");
 
             
-            #line 60 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 62 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                         }
 
             
@@ -294,7 +296,7 @@ WriteLiteral("></i>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 61 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 63 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                          if (item.IsHidden)
                         {
 
@@ -310,7 +312,7 @@ WriteLiteral(" title=\"Is Hidden\"");
 WriteLiteral("></i>\r\n");
 
             
-            #line 64 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 66 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                         }
 
             
@@ -319,7 +321,7 @@ WriteLiteral("></i>\r\n");
 WriteLiteral("                    </td>\r\n");
 
             
-            #line 66 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 68 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                 }
 
             
@@ -328,7 +330,7 @@ WriteLiteral("                    </td>\r\n");
 WriteLiteral("            </tr>\r\n");
 
             
-            #line 68 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 70 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
         }
 
             
@@ -337,7 +339,202 @@ WriteLiteral("            </tr>\r\n");
 WriteLiteral("    </table>\r\n");
 
             
-            #line 70 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 72 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+    if (Model.Packages.Count > 0)
+    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <h1");
+
+WriteLiteral(" class=\"Config_DocumentTemplates\"");
+
+WriteLiteral(">Document Template Packages</h1>\r\n");
+
+WriteLiteral("        <table");
+
+WriteLiteral(" id=\"Config_DocumentTemplatePackages_List\"");
+
+WriteLiteral(" class=\"tableData\"");
+
+WriteLiteral(">\r\n            <tr>\r\n                <th>Id</th>\r\n                <th>Description" +
+"</th>\r\n                <th>Scope</th>\r\n                <th>Document Templates</t" +
+"h>\r\n");
+
+            
+            #line 81 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 81 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+                 if (showTags)
+                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <th>&nbsp;</th>\r\n");
+
+            
+            #line 84 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </tr>\r\n");
+
+            
+            #line 86 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            
+            
+            #line default
+            #line hidden
+            
+            #line 86 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+             foreach (var package in Model.Packages.OrderBy(p => p.Id))
+            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <tr");
+
+WriteAttribute("class", Tuple.Create(" class=\"", 3889), Tuple.Create("\"", 3934)
+            
+            #line 88 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 3897), Tuple.Create<System.Object, System.Int32>(package.IsHidden ? "hidden" : null
+            
+            #line default
+            #line hidden
+, 3897), false)
+);
+
+WriteLiteral(">\r\n                    <td>");
+
+            
+            #line 89 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+                   Write(Html.ActionLink(package.Id.ToString(), MVC.Config.DocumentTemplate.ShowPackage(package.Id)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</td>\r\n                    <td>");
+
+            
+            #line 90 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+                   Write(Html.DisplayFor(modelItem => package.Description));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</td>\r\n                    <td>");
+
+            
+            #line 91 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+                   Write(Html.DisplayFor(modelItem => package.Scope));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</td>\r\n");
+
+            
+            #line 92 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 92 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+                     if (showTags)
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <td>\r\n");
+
+            
+            #line 95 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 95 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+                             if (package.FilterExpression != null || package.OnGenerateExpression != null)
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <i");
+
+WriteLiteral(" class=\"fa fa-bolt fa-lg alert\"");
+
+WriteLiteral(" title=\"Has Expressions\"");
+
+WriteLiteral("></i>\r\n");
+
+            
+            #line 98 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            ");
+
+            
+            #line 99 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+                             if (package.IsHidden)
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <i");
+
+WriteLiteral(" class=\"fa fa-minus-square fa-lg error\"");
+
+WriteLiteral(" title=\"Is Hidden\"");
+
+WriteLiteral("></i>\r\n");
+
+            
+            #line 102 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        </td>\r\n");
+
+            
+            #line 104 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                </tr>\r\n");
+
+            
+            #line 106 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        </table>\r\n");
+
+            
+            #line 108 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+    }
 }
 
             
@@ -350,13 +547,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 72 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 111 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 72 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 111 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
      if (Authorization.Has(Claims.Config.DocumentTemplate.UndetectedPages))
     {
         
@@ -364,14 +561,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 74 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 113 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
    Write(Html.ActionLinkButton("Undetected Pages", MVC.Config.DocumentTemplate.UndetectedPages()));
 
             
             #line default
             #line hidden
             
-            #line 74 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 113 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                                                                                                  
     }
 
@@ -381,7 +578,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 76 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 115 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
      if (Authorization.Has(Claims.Config.DocumentTemplate.ShowStatus))
     {
         
@@ -389,14 +586,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 78 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 117 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
    Write(Html.ActionLinkButton("Import Status", MVC.Config.DocumentTemplate.ImportStatus()));
 
             
             #line default
             #line hidden
             
-            #line 78 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 117 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                                                                                            
     }
 
@@ -406,7 +603,7 @@ WriteLiteral("    ");
 WriteLiteral("    ");
 
             
-            #line 80 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 119 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
      if (Authorization.Has(Claims.Config.Show))
     {
         
@@ -414,14 +611,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 82 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 121 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
    Write(Html.ActionLinkButton("Expression Browser", MVC.Config.DocumentTemplate.ExpressionBrowser()));
 
             
             #line default
             #line hidden
             
-            #line 82 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 121 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                                                                                                      
     }
 
@@ -431,7 +628,32 @@ WriteLiteral("    ");
 WriteLiteral("    ");
 
             
-            #line 84 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 123 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+     if (Model.DocumentTemplates.Count > 2 && Authorization.HasAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure))
+    {
+        
+            
+            #line default
+            #line hidden
+            
+            #line 125 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+   Write(Html.ActionLinkButton("Create Package", MVC.Config.DocumentTemplate.CreatePackage()));
+
+            
+            #line default
+            #line hidden
+            
+            #line 125 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+                                                                                             
+    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    ");
+
+            
+            #line 127 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
      if (Authorization.HasAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure))
     {
         
@@ -439,14 +661,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 86 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 129 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
    Write(Html.ActionLinkButton("Create Document Template", MVC.Config.DocumentTemplate.Create()));
 
             
             #line default
             #line hidden
             
-            #line 86 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+            #line 129 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                                                                                                 
     }
 

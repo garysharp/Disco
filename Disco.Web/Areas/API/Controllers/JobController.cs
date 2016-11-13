@@ -5,6 +5,7 @@ using Disco.Models.Services.Job;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Services;
 using Disco.Services.Authorization;
+using Disco.Services.Documents;
 using Disco.Services.Interop;
 using Disco.Services.Jobs.JobLists;
 using Disco.Services.Jobs.Statistics;
@@ -2086,13 +2087,13 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         [DiscoAuthorize(Claims.Job.Actions.GenerateDocuments)]
-        public virtual ActionResult GeneratePdf(string id, string DocumentTemplateId)
+        public virtual ActionResult GeneratePdf(int id, string DocumentTemplateId)
         {
-            if (string.IsNullOrEmpty(id))
-                throw new ArgumentNullException("id");
+            if (id <= 0)
+                throw new ArgumentOutOfRangeException(nameof(id));
             if (string.IsNullOrEmpty(DocumentTemplateId))
-                throw new ArgumentNullException("AttachmentTypeId");
-            var job = Database.Jobs.Find(int.Parse(id));
+                throw new ArgumentNullException(nameof(DocumentTemplateId));
+            var job = Database.Jobs.Find(id);
             if (job != null)
             {
                 var documentTemplate = Database.DocumentTemplates.Find(DocumentTemplateId);
@@ -2115,6 +2116,44 @@ namespace Disco.Web.Areas.API.Controllers
             else
             {
                 throw new ArgumentException("Invalid Job Id", "id");
+            }
+        }
+
+        [DiscoAuthorize(Claims.Job.Actions.GenerateDocuments)]
+        public virtual ActionResult GeneratePdfPackage(int id, string DocumentTemplatePackageId)
+        {
+            if (id <= 0)
+                throw new ArgumentOutOfRangeException(nameof(id));
+            if (string.IsNullOrEmpty(DocumentTemplatePackageId))
+                throw new ArgumentNullException(nameof(DocumentTemplatePackageId));
+
+            var job = Database.Jobs.Find(id);
+
+            if (job != null)
+            {
+                var package = DocumentTemplatePackages.GetPackage(DocumentTemplatePackageId);
+                if (package != null)
+                {
+                    if (package.Scope != AttachmentTypes.Job)
+                        throw new ArgumentException("This package cannot be generated from the Job Scope", nameof(DocumentTemplatePackageId));
+
+                    var timeStamp = DateTime.Now;
+                    Stream pdf;
+                    using (var generationState = DocumentState.DefaultState())
+                    {
+                        pdf = package.GeneratePdfPackage(Database, job, UserService.CurrentUser, timeStamp, generationState);
+                    }
+                    Database.SaveChanges();
+                    return File(pdf, "application/pdf", string.Format("{0}_{1}_{2:yyyyMMdd-HHmmss}.pdf", package.Id, job.Id, timeStamp));
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid Document Template Package Id", nameof(DocumentTemplatePackageId));
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Job Id", nameof(id));
             }
         }
 
