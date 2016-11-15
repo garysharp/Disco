@@ -41,7 +41,7 @@ namespace Disco.BI.Interop.Pdf
                 }
                 else
                 {
-                    Stream bulkPdf = Utilities.JoinPdfs(InsertBlankPages, generatedPdfs);
+                    Stream bulkPdf = Utilities.JoinPdfs(package.InsertBlankPages || InsertBlankPages, generatedPdfs);
                     foreach (Stream singlePdf in generatedPdfs)
                         singlePdf.Dispose();
                     return bulkPdf;

@@ -30,19 +30,17 @@ namespace Disco.BI.Interop.Pdf
                 var pdf = Pdfs[i];
                 var pdfReader = new PdfReader(pdf);
 
+                if (InsertBlankPages && (pdfCopy.CurrentPageNumber % 2) == 0)
+                {
+                    pdfCopy.AddPage(pdfLastPageSize, 0);
+                }
+
                 for (int indexPage = 1; indexPage <= pdfReader.NumberOfPages; indexPage++)
                 {
                     pdfLastPageSize = pdfReader.GetPageSizeWithRotation(indexPage);
                     var page = pdfCopy.GetImportedPage(pdfReader, indexPage);
                     pdfDoc.SetPageSize(pdfLastPageSize);
-                    pdfDoc.NewPage();
                     pdfCopy.AddPage(page);
-                }
-
-                if (InsertBlankPages && (pdfCopy.PageNumber % 2) != 0)
-                {
-                    pdfDoc.NewPage();
-                    pdfCopy.AddPage(pdfLastPageSize, 0);
                 }
 
                 pdfReader.Close();
