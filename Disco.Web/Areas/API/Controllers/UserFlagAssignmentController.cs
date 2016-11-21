@@ -1,9 +1,9 @@
 ﻿using Disco.Models.Repository;
 using Disco.Services;
 using Disco.Services.Authorization;
-using Disco.Services.Users.UserFlags;
 using Disco.Services.Web;
 using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -18,9 +18,9 @@ namespace Disco.Web.Areas.API.Controllers
             try
             {
                 if (id < 0)
-                    throw new ArgumentOutOfRangeException("id");
+                    throw new ArgumentOutOfRangeException(nameof(id));
                 if (string.IsNullOrEmpty(key))
-                    throw new ArgumentNullException("key");
+                    throw new ArgumentNullException(nameof(key));
                 var userFlagAssignment = Database.UserFlagAssignments.FirstOrDefault(a => a.Id == id);
                 if (userFlagAssignment != null)
                 {
@@ -38,7 +38,7 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid User Flag Assignment Id");
                 }
                 if (redirect.HasValue && redirect.Value)
-                    return Redirect(string.Format("{0}#UserDetailTab-Flags", Url.Action(MVC.User.Show(userFlagAssignment.UserId))));
+                    return Redirect($"{Url.Action(MVC.User.Show(userFlagAssignment.UserId))}#UserDetailTab-Flags");
                 else
                     return Json("OK", JsonRequestBehavior.AllowGet);
             }
@@ -47,7 +47,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -79,11 +79,11 @@ namespace Disco.Web.Areas.API.Controllers
 
             var userFlag = Database.UserFlags.Find(id);
             if (userFlag == null)
-                throw new ArgumentException("Invalid User Flag Id", "id");
+                throw new ArgumentException("Invalid User Flag Id", nameof(id));
 
-            var user = Database.Users.Include("UserFlagAssignments").FirstOrDefault(u => u.UserId == UserId);
+            var user = Database.Users.Include(u => u.UserFlagAssignments).FirstOrDefault(u => u.UserId == UserId);
             if (user == null)
-                throw new ArgumentException("Invalid User Id", "UserId");
+                throw new ArgumentException("Invalid User Id", nameof(UserId));
 
             if (!user.CanAddUserFlag(userFlag))
                 throw new InvalidOperationException("Adding user flag is denied");
@@ -92,7 +92,9 @@ namespace Disco.Web.Areas.API.Controllers
 
             var userFlagAssignment = user.OnAddUserFlag(Database, userFlag, addingUser, Comments);
 
-            return Redirect(string.Format("{0}#UserDetailTab-Flags", Url.Action(MVC.User.Show(user.UserId))));
+            Database.SaveChanges();
+
+            return Redirect($"{Url.Action(MVC.User.Show(user.UserId))}#UserDetailTab-Flags");
         }
 
         [DiscoAuthorizeAny(Claims.User.Actions.RemoveFlags)]
@@ -102,7 +104,7 @@ namespace Disco.Web.Areas.API.Controllers
 
             var userFlagAssignment = Database.UserFlagAssignments.FirstOrDefault(a => a.Id == id);
             if (userFlagAssignment == null)
-                throw new ArgumentException("Invalid User Flag Assignment Id", "id");
+                throw new ArgumentException("Invalid User Flag Assignment Id", nameof(id));
 
             if (!userFlagAssignment.CanRemove())
                 throw new InvalidOperationException("Removing user flag assignment is denied");
@@ -112,7 +114,7 @@ namespace Disco.Web.Areas.API.Controllers
             userFlagAssignment.OnRemove(Database, removingUser);
             Database.SaveChanges();
 
-            return Redirect(string.Format("{0}#UserDetailTab-Flags", Url.Action(MVC.User.Show(userFlagAssignment.UserId))));
+            return Redirect($"{Url.Action(MVC.User.Show(userFlagAssignment.UserId))}#UserDetailTab-Flags");
         }
 
         #endregion
