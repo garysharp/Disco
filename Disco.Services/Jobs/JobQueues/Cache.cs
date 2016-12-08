@@ -5,8 +5,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Services.Jobs.JobQueues
 {
@@ -28,16 +26,16 @@ namespace Disco.Services.Jobs.JobQueues
             var queues = Database.JobQueues.ToList();
 
             // Add Queues to In-Memory Cache
-            this._Cache = new ConcurrentDictionary<int, JobQueueToken>(queues.Select(q => new KeyValuePair<int, JobQueueToken>(q.Id, JobQueueToken.FromJobQueue(q))));
+            _Cache = new ConcurrentDictionary<int, JobQueueToken>(queues.Select(q => new KeyValuePair<int, JobQueueToken>(q.Id, JobQueueToken.FromJobQueue(q))));
 
             // Calculate Queue Subject Cache
             CalculateSubjectCache();
 
             #region Predefined Options
             // SLA Options
-            if (this._SlaOptions == null)
+            if (_SlaOptions == null)
             {
-                this._SlaOptions = new List<KeyValuePair<int, string>>()
+                _SlaOptions = new List<KeyValuePair<int, string>>()
                 {
                     new KeyValuePair<int, string>(0, "<None>"),
                     new KeyValuePair<int, string>(15, "15 minutes"),
@@ -67,13 +65,13 @@ namespace Disco.Services.Jobs.JobQueues
         }
         private void CalculateSubjectCache()
         {
-            _SubjectCache = (from c in _Cache.Values.ToList()
-                             from s in c.SubjectIds
-                             group c by s into subjectId
-                             select subjectId).ToDictionary(g => g.Key.ToLower(), g => g.ToList());
+            _SubjectCache = _Cache.Values.ToList()
+                .SelectMany(t => t.SubjectIds, (t, s) => new { t, s })
+                .GroupBy(i => i.s, StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(g => g.Key, g => g.Select(i => i.t).ToList(), StringComparer.OrdinalIgnoreCase);
         }
 
-        public ReadOnlyCollection<KeyValuePair<int, string>> SlaOptions { get { return this._SlaOptions; } }
+        public ReadOnlyCollection<KeyValuePair<int, string>> SlaOptions { get { return _SlaOptions; } }
 
         public JobQueueToken UpdateQueue(JobQueue JobQueue)
         {
@@ -131,7 +129,7 @@ namespace Disco.Services.Jobs.JobQueues
         private IEnumerable<JobQueueToken> GetQueuesForSubject(string SubjectId)
         {
             List<JobQueueToken> tokens;
-            if (_SubjectCache.TryGetValue(SubjectId.ToLower(), out tokens))
+            if (_SubjectCache.TryGetValue(SubjectId, out tokens))
                 return tokens;
             else
                 return Enumerable.Empty<JobQueueToken>();

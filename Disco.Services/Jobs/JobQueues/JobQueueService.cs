@@ -8,8 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace Disco.Services.Jobs.JobQueues
@@ -40,6 +38,21 @@ namespace Disco.Services.Jobs.JobQueues
             if (_cache.GetQueues().Any(q => q.JobQueue.Name == JobQueue.Name))
                 throw new ArgumentException("Another Job Queue already exists with that name", "JobQueue");
 
+            // Sanitize Subject Ids
+            if (string.IsNullOrWhiteSpace(JobQueue.SubjectIds))
+            {
+                JobQueue.SubjectIds = null;
+            }
+            else
+            {
+                var subjectIds = JobQueue.SubjectIds.Split(',');
+                foreach (var subjectId in subjectIds)
+                {
+                    UserService.GetUser(subjectId, Database);
+                }
+                JobQueue.SubjectIds = string.Join(",", Database.Users.Where(u => subjectIds.Contains(u.UserId)).Select(u => u.UserId));
+            }
+
             // Clone to break reference
             var queue = new JobQueue()
             {
@@ -66,6 +79,21 @@ namespace Disco.Services.Jobs.JobQueues
             // Name Unique
             if (_cache.GetQueues().Any(q => q.JobQueue.Id != JobQueue.Id && q.JobQueue.Name == JobQueue.Name))
                 throw new ArgumentException("Another Job Queue already exists with that name", "JobQueue");
+
+            // Sanitize Subject Ids
+            if (string.IsNullOrWhiteSpace(JobQueue.SubjectIds))
+            {
+                JobQueue.SubjectIds = null;
+            }
+            else
+            {
+                var subjectIds = JobQueue.SubjectIds.Split(',');
+                foreach (var subjectId in subjectIds)
+                {
+                    UserService.GetUser(subjectId, Database);
+                }
+                JobQueue.SubjectIds = string.Join(",", Database.Users.Where(u => subjectIds.Contains(u.UserId)).Select(u => u.UserId));
+            }
 
             Database.SaveChanges();
 

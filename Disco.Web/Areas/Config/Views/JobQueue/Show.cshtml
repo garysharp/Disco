@@ -14,17 +14,20 @@
 <div id="Config_JobQueues_Show" class="form" style="width: 550px">
     <table>
         <tr>
-            <th style="width: 150px">Id:
+            <th style="width: 150px">
+                Id:
             </th>
             <td>
                 @Html.DisplayFor(model => model.Token.JobQueue.Id)
             </td>
         </tr>
         <tr>
-            <th>Name:
+            <th>
+                Name:
             </th>
-            <td>@if (canConfig)
-                {@Html.EditorFor(model => model.Token.JobQueue.Name)
+            <td>
+                @if (canConfig)
+            {@Html.EditorFor(model => model.Token.JobQueue.Name)
                 @AjaxHelpers.AjaxSave()
                 @AjaxHelpers.AjaxLoader()
                 <script type="text/javascript">
@@ -37,34 +40,36 @@
                         );
                     });
                 </script>
-                }
-                else
-                {
+            }
+            else
+            {
                 @Model.Token.JobQueue.Name
-                }
-            </td>
-        </tr>
-        <tr>
-            <th>Description:
-            </th>
-            <td>@if (canConfig)
-                {@Html.EditorFor(model => model.Token.JobQueue.Description)
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
-                    $(function () {
-                        document.DiscoFunctions.PropertyChangeHelper(
-                            $('#Token_JobQueue_Description'),
-                            'Invalid Description',
-                            '@(Url.Action(MVC.API.JobQueue.UpdateDescription(Model.Token.JobQueue.Id)))',
-                            'Description'
-                        );
-                    });
-                </script>
-                }
-                else
-                {
-                <pre>@if (string.IsNullOrEmpty(Model.Token.JobQueue.Description))
+            }
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Description:
+        </th>
+        <td>
+            @if (canConfig)
+        {@Html.EditorFor(model => model.Token.JobQueue.Description)
+            @AjaxHelpers.AjaxSave()
+            @AjaxHelpers.AjaxLoader()
+            <script type="text/javascript">
+                $(function () {
+                    document.DiscoFunctions.PropertyChangeHelper(
+                        $('#Token_JobQueue_Description'),
+                        'Invalid Description',
+                        '@(Url.Action(MVC.API.JobQueue.UpdateDescription(Model.Token.JobQueue.Id)))',
+                        'Description'
+                    );
+                });
+            </script>
+        }
+        else
+        {
+            <pre>@if (string.IsNullOrEmpty(Model.Token.JobQueue.Description))
                      {
                     <text>&lt;None&gt;</text>
                      }
@@ -73,131 +78,135 @@
                         @Model.Token.JobQueue.Description.ToHtmlComment()
                      }
                     </pre>
-                }
-            </td>
-        </tr>
-        <tr>
-            <th>Statistics:
-            </th>
-            <td>
-                <div><strong>@Model.OpenJobCount job@(Model.OpenJobCount != 1 ? "s" : null) open</strong></div>
-                <div>@Model.TotalJobCount total job@(Model.TotalJobCount != 1 ? "s" : null)</div>
-            </td>
-        </tr>
-        <tr>
-            <th>Icon:
-            </th>
-            <td>
-                <i id="Config_JobQueues_Icon" data-icon="@(Model.Token.JobQueue.Icon)" data-colour="@(Model.Token.JobQueue.IconColour)" class="fa fa-@(Model.Token.JobQueue.Icon) fa-4x d-@(Model.Token.JobQueue.IconColour)"></i>
-                @if (canConfig)
-                {
+        }
+    </td>
+</tr>
+<tr>
+    <th>
+        Statistics:
+    </th>
+    <td>
+        <div><strong>@Model.OpenJobCount job@(Model.OpenJobCount != 1 ? "s" : null) open</strong></div>
+        <div>@Model.TotalJobCount total job@(Model.TotalJobCount != 1 ? "s" : null)</div>
+    </td>
+</tr>
+<tr>
+    <th>
+        Icon:
+    </th>
+    <td>
+        <i id="Config_JobQueues_Icon" data-icon="@(Model.Token.JobQueue.Icon)" data-colour="@(Model.Token.JobQueue.IconColour)" class="fa fa-@(Model.Token.JobQueue.Icon) fa-4x d-@(Model.Token.JobQueue.IconColour)"></i>
+        @if (canConfig)
+        {
+            <div>
+                <a id="Config_JobQueues_Icon_Update" href="#" class="button small">Update</a>
+                <div id="Config_JobQueues_Icon_Update_Dialog" class="dialog" title="Job Queue Icon">
                     <div>
-                        <a id="Config_JobQueues_Icon_Update" href="#" class="button small">Update</a>
-                        <div id="Config_JobQueues_Icon_Update_Dialog" class="dialog" title="Job Queue Icon">
-                            <div>
-                                <div class="icons">
-                                    @foreach (var icon in Model.Icons)
-                                    {
-                                        <i data-icon="@(icon.Key)" class="fa fa-@(icon.Key)" title="@icon.Value"></i>
-                                    }
-                                </div>
-                                <div class="colours">
-                                    @foreach (var colour in Model.ThemeColours)
-                                    {
-                                        <i data-colour="@(colour.Key)" class="fa fa-square d-@(colour.Key)" title="@colour.Value"></i>
-                                    }
-                                </div>
-                            </div>
+                        <div class="icons">
+                            @foreach (var icon in Model.Icons)
+                            {
+                                <i data-icon="@(icon.Key)" class="fa fa-@(icon.Key)" title="@icon.Value"></i>
+                            }
                         </div>
-                        <script>
-                            (function () {
-                                var dialog, icon, colours, icons;
-
-                                function showDialog() {
-                                    if (!dialog) {
-                                        dialog = $('#Config_JobQueues_Icon_Update_Dialog').dialog({
-                                            resizable: false,
-                                            modal: true,
-                                            autoOpen: false,
-                                            width: 780,
-                                            height: 540,
-                                            buttons: {
-                                                "Save": save,
-                                                Cancel: cancel
-                                            }
-                                        });
-
-                                        colours = dialog.find('.colours');
-                                        icons = dialog.find('.icons');
-
-                                        colours.on('click', 'i', selectColour);
-                                        icons.on('click', 'i', selectIcon);
-                                    }
-
-                                    colours.find('i[data-colour="' + icon.attr('data-colour') + '"]').each(selectColour);
-                                    icons.find('i[data-icon="' + icon.attr('data-icon') + '"]').each(selectIcon);
-
-                                    dialog.dialog('open');
-
-                                    return false;
-                                }
-
-                                function selectColour() {
-                                    var $this = $(this),
-                                        colourCode = $this.attr('data-colour'),
-                                        previousColourCode = icons.attr('data-colour');
-
-
-                                    colours.find('i').removeClass('selected fa-check-square').addClass('fa-square');
-                                    $this.removeClass('fa-square').addClass('fa-check-square selected');
-
-                                    if (previousColourCode)
-                                        icons.removeClass('d-' + previousColourCode);
-                                    icons.attr('data-colour', colourCode)
-                                    icons.addClass('d-' + colourCode);
-                                }
-                                function selectIcon() {
-                                    var $this = $(this),
-                                        iconCode = $this.attr('data-icon');
-
-                                    icons.find('i').removeClass('selected');
-                                    $this.addClass('selected');
-                                }
-
-                                function save() {
-                                    var url = '@(Url.Action(MVC.API.JobQueue.UpdateIconAndColour(id: Model.Token.JobQueue.Id, redirect: true)))',
-                                        data = {
-                                            Icon: icons.find('i.selected').attr('data-icon'),
-                                            IconColour: colours.find('i.selected').attr('data-colour')
-                                        };
-                                    window.location.href = url + '&' + $.param(data);
-
-                                    dialog.dialog("disable");
-                                    dialog.dialog("option", "buttons", null);
-                                }
-
-                                function cancel() {
-                                    $(this).dialog("close");
-                                }
-
-                                $(function () {
-                                    icon = $('#Config_JobQueues_Icon');
-                                    $('#Config_JobQueues_Icon_Update').click(showDialog);
-                                });
-                            }());
-                        </script>
+                        <div class="colours">
+                            @foreach (var colour in Model.ThemeColours)
+                            {
+                                <i data-colour="@(colour.Key)" class="fa fa-square d-@(colour.Key)" title="@colour.Value"></i>
+                            }
+                        </div>
                     </div>
-                }
-            </td>
-        </tr>
-        <tr>
-            <th>Priority:
-            </th>
-            <td>@if (canConfig)
-                {
-                    var priorityValue = Model.Token.JobQueue.Priority.ToString();
-                    var priorityItems = Enum.GetNames(typeof(JobQueuePriority)).Select(i => new SelectListItem() { Text = i, Value = i, Selected = (i == priorityValue) }).ToList();
-                <i class="fa d-priority-@(priorityValue.ToLower())" title="@(priorityValue) Priority"></i>
+                </div>
+                <script>
+                    (function () {
+                        var dialog, icon, colours, icons;
+
+                        function showDialog() {
+                            if (!dialog) {
+                                dialog = $('#Config_JobQueues_Icon_Update_Dialog').dialog({
+                                    resizable: false,
+                                    modal: true,
+                                    autoOpen: false,
+                                    width: 780,
+                                    height: 540,
+                                    buttons: {
+                                        "Save": save,
+                                        Cancel: cancel
+                                    }
+                                });
+
+                                colours = dialog.find('.colours');
+                                icons = dialog.find('.icons');
+
+                                colours.on('click', 'i', selectColour);
+                                icons.on('click', 'i', selectIcon);
+                            }
+
+                            colours.find('i[data-colour="' + icon.attr('data-colour') + '"]').each(selectColour);
+                            icons.find('i[data-icon="' + icon.attr('data-icon') + '"]').each(selectIcon);
+
+                            dialog.dialog('open');
+
+                            return false;
+                        }
+
+                        function selectColour() {
+                            var $this = $(this),
+                                colourCode = $this.attr('data-colour'),
+                                previousColourCode = icons.attr('data-colour');
+
+
+                            colours.find('i').removeClass('selected fa-check-square').addClass('fa-square');
+                            $this.removeClass('fa-square').addClass('fa-check-square selected');
+
+                            if (previousColourCode)
+                                icons.removeClass('d-' + previousColourCode);
+                            icons.attr('data-colour', colourCode)
+                            icons.addClass('d-' + colourCode);
+                        }
+                        function selectIcon() {
+                            var $this = $(this),
+                                iconCode = $this.attr('data-icon');
+
+                            icons.find('i').removeClass('selected');
+                            $this.addClass('selected');
+                        }
+
+                        function save() {
+                            var url = '@(Url.Action(MVC.API.JobQueue.UpdateIconAndColour(id: Model.Token.JobQueue.Id, redirect: true)))',
+                                data = {
+                                    Icon: icons.find('i.selected').attr('data-icon'),
+                                    IconColour: colours.find('i.selected').attr('data-colour')
+                                };
+                            window.location.href = url + '&' + $.param(data);
+
+                            dialog.dialog("disable");
+                            dialog.dialog("option", "buttons", null);
+                        }
+
+                        function cancel() {
+                            $(this).dialog("close");
+                        }
+
+                        $(function () {
+                            icon = $('#Config_JobQueues_Icon');
+                            $('#Config_JobQueues_Icon_Update').click(showDialog);
+                        });
+                    }());
+                </script>
+            </div>
+        }
+    </td>
+</tr>
+<tr>
+    <th>
+        Priority:
+    </th>
+    <td>
+        @if (canConfig)
+    {
+        var priorityValue = Model.Token.JobQueue.Priority.ToString();
+        var priorityItems = Enum.GetNames(typeof(JobQueuePriority)).Select(i => new SelectListItem() { Text = i, Value = i, Selected = (i == priorityValue) }).ToList();
+        <i class="fa d-priority-@(priorityValue.ToLower())" title="@(priorityValue) Priority"></i>
                 @Html.DropDownListFor(m => m.Token.JobQueue.Priority, priorityItems)
                 @AjaxHelpers.AjaxSave()
                 @AjaxHelpers.AjaxLoader()
@@ -219,339 +228,350 @@
                         });
                     });
                 </script>
-                }
-                else
-                {
-                @Model.Token.JobQueue.Priority.ToString()
-                }
-            </td>
-        </tr>
-        <tr>
-            <th>Default SLA:
-            </th>
-            <td>@if (canConfig)
-                {
-                    var slaOptions = JobQueueService.SlaOptions.Select(o => new SelectListItem() { Text = o.Value, Value = o.Key.ToString() }).ToList();
+    }
+    else
+    {
+        @Model.Token.JobQueue.Priority.ToString()
+    }
+</td>
+</tr>
+<tr>
+    <th>
+        Default SLA:
+    </th>
+    <td>
+        @if (canConfig)
+    {
+        var slaOptions = JobQueueService.SlaOptions.Select(o => new SelectListItem() { Text = o.Value, Value = o.Key.ToString() }).ToList();
 
-                    if (this.Model.Token.JobQueue.DefaultSLAExpiry.HasValue)
-                    {
-                        var slaValue = this.Model.Token.JobQueue.DefaultSLAExpiry.Value;
-                        if (JobQueueService.SlaOptions.Where(o => o.Key == slaValue).Count() == 0)
-                        {
-                            string slaValueText;
-                            if (slaValue % (60 * 24 * 7 * 4) == 0)
-                            { slaValueText = string.Format("{0} months", slaValue / (60 * 24 * 7 * 4)); }
-                            else if (slaValue % (60 * 24 * 7) == 0)
-                            { slaValueText = string.Format("{0} weeks", slaValue / (60 * 24 * 7)); }
-                            else if (slaValue % (60 * 24) == 0)
-                            { slaValueText = string.Format("{0} days", slaValue / (60 * 24)); }
-                            else if (slaValue % (60) == 0)
-                            { slaValueText = string.Format("{0} hours", slaValue / 60); }
-                            else
-                            { slaValueText = string.Format("{0} minutes", slaValue); }
-
-                            slaOptions.Insert(0, new SelectListItem() { Text = string.Format("{0} <Custom>", slaValueText), Value = slaValue.ToString() });
-                        }
-                    }
-                @Html.DropDownListFor(m => m.Token.JobQueue.DefaultSLAExpiry, slaOptions)
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
-                    $(function () {
-                        document.DiscoFunctions.PropertyChangeHelper(
-                            $('#Token_JobQueue_DefaultSLAExpiry'),
-                            'Invalid Default SLA',
-                            '@(Url.Action(MVC.API.JobQueue.UpdateDefaultSLAExpiry(Model.Token.JobQueue.Id)))',
-                            'DefaultSLAExpiry'
-                        );
-                    });
-                </script>
-                }
+        if (this.Model.Token.JobQueue.DefaultSLAExpiry.HasValue)
+        {
+            var slaValue = this.Model.Token.JobQueue.DefaultSLAExpiry.Value;
+            if (JobQueueService.SlaOptions.Where(o => o.Key == slaValue).Count() == 0)
+            {
+                string slaValueText;
+                if (slaValue % (60 * 24 * 7 * 4) == 0)
+                { slaValueText = string.Format("{0} months", slaValue / (60 * 24 * 7 * 4)); }
+                else if (slaValue % (60 * 24 * 7) == 0)
+                { slaValueText = string.Format("{0} weeks", slaValue / (60 * 24 * 7)); }
+                else if (slaValue % (60 * 24) == 0)
+                { slaValueText = string.Format("{0} days", slaValue / (60 * 24)); }
+                else if (slaValue % (60) == 0)
+                { slaValueText = string.Format("{0} hours", slaValue / 60); }
                 else
-                {
-                    if (this.Model.Token.JobQueue.DefaultSLAExpiry.HasValue)
-                    {
-                        var slaValue = this.Model.Token.JobQueue.DefaultSLAExpiry.Value;
-                        var slaOption = JobQueueService.SlaOptions.Where(o => o.Key == slaValue).ToArray();
-                        if (slaOption.Length > 0)
-                        {
+                { slaValueText = string.Format("{0} minutes", slaValue); }
+
+                slaOptions.Insert(0, new SelectListItem() { Text = string.Format("{0} <Custom>", slaValueText), Value = slaValue.ToString() });
+            }
+        }
+        @Html.DropDownListFor(m => m.Token.JobQueue.DefaultSLAExpiry, slaOptions)
+        @AjaxHelpers.AjaxSave()
+        @AjaxHelpers.AjaxLoader()
+        <script type="text/javascript">
+            $(function () {
+                document.DiscoFunctions.PropertyChangeHelper(
+                    $('#Token_JobQueue_DefaultSLAExpiry'),
+                    'Invalid Default SLA',
+                    '@(Url.Action(MVC.API.JobQueue.UpdateDefaultSLAExpiry(Model.Token.JobQueue.Id)))',
+                    'DefaultSLAExpiry'
+                );
+            });
+        </script>
+    }
+    else
+    {
+        if (this.Model.Token.JobQueue.DefaultSLAExpiry.HasValue)
+        {
+            var slaValue = this.Model.Token.JobQueue.DefaultSLAExpiry.Value;
+            var slaOption = JobQueueService.SlaOptions.Where(o => o.Key == slaValue).ToArray();
+            if (slaOption.Length > 0)
+            {
                 @slaOption[0].Value
-                        }
-                        else
-                        {
+            }
+            else
+            {
                 <text>&lt;None&gt;</text>
-                        }
+            }
+        }
+        else
+        {
+            <text>&lt;None&gt;</text>
+        }
+    }
+</td>
+</tr>
+<tr>
+    <th>Member Groups/Users:</th>
+    <td>
+        @if (Model.Token.SubjectIds.Count == 0)
+        {
+            <span class="smallMessage">None Associated</span>
+        }
+        else
+        {
+            <ul id="Config_JobQueues_Subjects" class="none">
+                @foreach (var sg in Model.Subjects)
+                {
+                    var displayName = sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id);
+                    <li class="@(sg.IsGroup ? "group" : "user")">
+                        @if (sg.IsGroup)
+                    {
+                        <i class="fa fa-users fa-lg"></i>@displayName
                     }
                     else
                     {
-                <text>&lt;None&gt;</text>
+                        <a href="@(Url.Action(MVC.User.Show(sg.Id)))"><i class="fa fa-user fa-lg"></i>@displayName</a>
                     }
+                </li>
                 }
-            </td>
-        </tr>
-        <tr>
-            <th>Member Groups/Users:</th>
-            <td>
-                @if (Model.Token.SubjectIds.Count == 0)
-                {
-                    <span class="smallMessage">None Associated</span>
-                }
-                else
-                {
-                    <ul id="Config_JobQueues_Subjects" class="none">
-                        @foreach (var sg in Model.Subjects)
-                        {
-                            var displayName = sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id);
-                            <li class="@(sg.IsGroup ? "group" : "user")">@if (sg.IsGroup)
-                                                                         {
-                                <i class="fa fa-users fa-lg"></i>@displayName
-                                                                         }
-                                                                         else
-                                                                         {
-                                <a href="@(Url.Action(MVC.User.Show(sg.Id)))"><i class="fa fa-user fa-lg"></i>@displayName</a>
-                                                                         }</li>
-                        }
-                    </ul>
-                }
-                @if (canConfig)
-                {
-                    <div>
-                        <a id="Config_JobQueues_Subjects_Update" href="#" class="button small">Update</a>
-                        <div id="Config_JobQueues_Subjects_Update_Dialog" class="dialog" title="Job Queue Member Groups/Users">
-                            <div id="Config_JobQueues_Subjects_Update_Dialog_ListContainer">
-                                <span id="Config_JobQueues_Subjects_Update_Dialog_None" class="smallMessage">None Associated</span>
-                                <ul id="Config_JobQueues_Subjects_Update_Dialog_List" class="none">
-                                    @foreach (var sg in Model.Subjects)
-                                    {
-                                        var displayName = sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id);
-                                        <li class="@(sg.IsGroup ? "group" : "user")" data-subjectid="@sg.Id">@if (sg.IsGroup)
-                                                                                                             {
-                                            <i class="fa fa-users fa-lg"></i>@displayName
-                                                                                                             }
-                                                                                                             else
-                                                                                                             {
-                                            <i class="fa fa-user fa-lg"></i>@displayName
-                                                                                                             }<i class="fa fa-times-circle remove"></i></li>
-                                    }
-                                </ul>
-                            </div>
-                            <div id="Config_JobQueues_Subjects_Update_Dialog_AddContainer">
-                                <input type="text" id="Config_JobQueues_Subjects_Update_Dialog_TextAdd" />
-                                <a id="Config_JobQueues_Subjects_Update_Dialog_Add" href="#" class="button small">Add</a>
-                            </div>
-                            <form id="Config_JobQueues_Subjects_Update_Dialog_Form" action="@(Url.Action(MVC.API.JobQueue.UpdateSubjects(Model.Token.JobQueue.Id, null, true)))" method="post"></form>
-                        </div>
-                        <script>
-                            (function () {
-                                var dialog, textAdd, list, noSubjects, form;
-
-                                function showDialog() {
-                                    if (!dialog) {
-                                        dialog = $('#Config_JobQueues_Subjects_Update_Dialog').dialog({
-                                            resizable: false,
-                                            modal: true,
-                                            autoOpen: false,
-                                            width: 350,
-                                            height: 420,
-                                            buttons: {
-                                                "Save Changes": saveChanges,
-                                                Cancel: cancel
-                                            }
-                                        });
-
-                                        dialog.on('click', '.remove', remove);
-
-                                        list = $('#Config_JobQueues_Subjects_Update_Dialog_List');
-                                        noSubjects = $('#Config_JobQueues_Subjects_Update_Dialog_None');
-
-                                        textAdd = $('#Config_JobQueues_Subjects_Update_Dialog_TextAdd');
-
-                                        textAdd.watermark('Search Subjects')
-                                            .autocomplete({
-                                                source: '@(Url.Action(MVC.API.System.SearchSubjects()))',
-                                                minLength: 2,
-                                                focus: function (e, ui) {
-                                                    textAdd.val(ui.item.Id);
-                                                    return false;
-                                                },
-                                                select: function (e, ui) {
-                                                    textAdd.val(ui.item.Id).blur();
-                                                    return false;
-                                                }
-                                            }).data('ui-autocomplete')._renderItem = function (ul, item) {
-                                                return $("<li></li>")
-                                                    .data("item.autocomplete", item)
-                                                    .append("<a><strong>" + item.Name + "</strong><br>" + item.Id + " (" + item.Type + ")</a>")
-                                                    .appendTo(ul);
-                                            };
-
-                                        $('#Config_JobQueues_Subjects_Update_Dialog_Add').click(add);
-                                    }
-
-                                    dialog.dialog('open');
-
-                                    updateNoSubjects();
-                                    return false;
-                                }
-
-                                function cancel() {
-                                    $(this).dialog("close");
-
-                                    list.find('li').each(function () {
-                                        $this = $(this);
-                                        if ($this.is('[data-subjectstatus="new"]')) {
-                                            $this.remove();
-                                        } else {
-                                            if ($this.is('[data-subjectstatus="removed"]')) {
-                                                $this.show();
-                                                $this.attr('data-status', '')
-                                            }
-                                        }
-                                    });
-                                }
-
-                                function remove() {
-                                    $this = $(this).closest('li');
-
-                                    if ($this.is('[data-subjectstatus="new"]')) {
-                                        $this.remove();
-                                    } else {
-                                        $this.attr('data-subjectstatus', 'removed').hide();
-                                    }
-
-                                    updateNoSubjects();
-                                }
-
-                                function add() {
-
-                                    var id = textAdd.val();
-
-                                    $.ajax({
-                                        url: '@Url.Action(MVC.API.System.Subject())',
-                                        method: 'post',
-                                        data: { Id: id }
-                                    }).done(function (response) {
-                                        if (response) {
-                                            if (response.IsGroup || response.IsUserAccount) {
-                                                if (list.find('li[data-subjectid="' + response.Id + '"]').filter('[data-status!="removed"]').length == 0) {
-
-                                                    var liIcon = $('<i>').addClass('fa fa-lg');
-                                                    if (response.Type === 'user')
-                                                        liIcon.addClass('fa-user');
-                                                    else
-                                                        liIcon.addClass('fa-users');
-
-                                                    var li = $('<li>')
-                                                        .append(liIcon)
-                                                        .append($('<span>').text(response.Id == response.Name ? response.Id : response.Name + ' [' + response.Id + ']'))
-                                                        .append($('<i>').addClass('fa fa-times-circle remove'))
-                                                        .addClass(response.Type)
-                                                        .attr('data-subjectid', response.Id)
-                                                        .attr('data-subjectstatus', 'new');
-
-                                                    list.append(li);
-
-                                                    updateNoSubjects();
-                                                } else {
-                                                    alert('That subject has already been added');
-                                                }
-                                            } else {
-                                                alert(response.Name + ' [' + response.Id + '] is a ' + response.Type + '. Only users and groups can be added.');
-                                            }
-                                        } else {
-                                            alert('Unknown Id');
-                                        }
-                                    }).fail(function (jqXHR, textStatus, errorThrown) {
-                                        alert('Error: ' + errorThrown);
-                                    });
-                                    }
-
-                                function updateNoSubjects() {
-                                    if (list.find('li:visible').length > 0)
-                                        noSubjects.hide();
-                                    else
-                                        noSubjects.show();
-                                }
-
-                                function saveChanges() {
-                                    var form = $('#Config_JobQueues_Subjects_Update_Dialog_Form').empty();
-
-                                    list.find('li[data-subjectstatus!="removed"]').each(function () {
-                                        var subjectId = $(this).attr('data-subjectid');
-
-                                        form.append($('<input>').attr({
-                                            'name': 'Subjects',
-                                            'type': 'hidden'
-                                        }).val(subjectId));
-
-                                    }).get();
-
-                                    form.submit();
-
-                                    dialog.dialog("disable");
-                                    dialog.dialog("option", "buttons", null);
-                                }
-
-                                $(function () {
-                                    $('#Config_JobQueues_Subjects_Update').click(showDialog);
-                                });
-
-                            })();
-                        </script>
-                    </div>
-                }
-            </td>
-        </tr>
-        <tr>
-            <th>Automatically Add Jobs:</th>
-            <td>
-                <div>
-                    @if (Model.Token.JobQueue.JobSubTypes.Count > 0)
-                    {
-                        <ul>
-                            @foreach (var jobType in Model.Token.JobQueue.JobSubTypes.GroupBy(jst => jst.JobType).OrderBy(jtg => jtg.Key.Description))
+            </ul>
+        }
+        @if (canConfig)
+        {
+            <div>
+                <a id="Config_JobQueues_Subjects_Update" href="#" class="button small">Update</a>
+                <div id="Config_JobQueues_Subjects_Update_Dialog" class="dialog" title="Job Queue Member Groups/Users">
+                    <div id="Config_JobQueues_Subjects_Update_Dialog_ListContainer">
+                        <span id="Config_JobQueues_Subjects_Update_Dialog_None" class="smallMessage">None Associated</span>
+                        <ul id="Config_JobQueues_Subjects_Update_Dialog_List" class="none">
+                            @foreach (var sg in Model.Subjects)
                             {
-                                <li>
-                                    @jobType.Key.Description
-                                    <ul>
-                                        @if (jobType.Count() == Model.JobTypes.FirstOrDefault(jt => jt.Id == jobType.Key.Id).JobSubTypes.Count)
-                                        {
-                                            <li><span class="smallMessage">[All Sub Types]</span></li>
-                                        }
-                                        else
-                                        {
-                                            foreach (var jobSubType in jobType)
-                                            {
-                                            <li>@jobSubType.Description</li>
-                                            }
-                                        }
-                                    </ul>
-                                </li>
+                                var displayName = sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id);
+                                <li class="@(sg.IsGroup ? "group" : "user")" data-subjectid="@sg.Id">
+                                    @if (sg.IsGroup)
+                                {
+                                    <i class="fa fa-users fa-lg"></i>@displayName
+                                }
+                                else
+                                {
+                                    <i class="fa fa-user fa-lg"></i>@displayName
+                                }<i class="fa fa-times-circle remove"></i>
+                            </li>
                             }
                         </ul>
-                    }
-                    else
-                    {
-                        <text>&lt;None&gt;</text>
-                    }
+                    </div>
+                    <div id="Config_JobQueues_Subjects_Update_Dialog_AddContainer">
+                        <input type="text" id="Config_JobQueues_Subjects_Update_Dialog_TextAdd" />
+                        <a id="Config_JobQueues_Subjects_Update_Dialog_Add" href="#" class="button small">Add</a>
+                    </div>
+                    <form id="Config_JobQueues_Subjects_Update_Dialog_Form" action="@(Url.Action(MVC.API.JobQueue.UpdateSubjects(Model.Token.JobQueue.Id, null, true)))" method="post"></form>
                 </div>
-                @if (canConfig)
-                {
-                    <a id="Config_JobQueues_JobSubTypes_Update" href="#" class="button small">Update</a>
+                <script>
+                    (function () {
+                        var dialog, textAdd, list, noSubjects, form;
+
+                        function showDialog() {
+                            if (!dialog) {
+                                dialog = $('#Config_JobQueues_Subjects_Update_Dialog').dialog({
+                                    resizable: false,
+                                    modal: true,
+                                    autoOpen: false,
+                                    width: 350,
+                                    height: 420,
+                                    buttons: {
+                                        "Save Changes": saveChanges,
+                                        Cancel: cancel
+                                    }
+                                });
+
+                                dialog.on('click', '.remove', remove);
+
+                                list = $('#Config_JobQueues_Subjects_Update_Dialog_List');
+                                noSubjects = $('#Config_JobQueues_Subjects_Update_Dialog_None');
+
+                                textAdd = $('#Config_JobQueues_Subjects_Update_Dialog_TextAdd');
+
+                                textAdd.watermark('Search Subjects')
+                                    .autocomplete({
+                                        source: '@(Url.Action(MVC.API.System.SearchSubjects()))',
+                                        minLength: 2,
+                                        focus: function (e, ui) {
+                                            textAdd.val(ui.item.Id);
+                                            return false;
+                                        },
+                                        select: function (e, ui) {
+                                            textAdd.val(ui.item.Id).blur();
+                                            return false;
+                                        }
+                                    }).data('ui-autocomplete')._renderItem = function (ul, item) {
+                                        return $("<li></li>")
+                                            .data("item.autocomplete", item)
+                                            .append("<a><strong>" + item.Name + "</strong><br>" + item.Id + " (" + item.Type + ")</a>")
+                                            .appendTo(ul);
+                                    };
+
+                                $('#Config_JobQueues_Subjects_Update_Dialog_Add').click(add);
+                            }
+
+                            dialog.dialog('open');
+
+                            updateNoSubjects();
+                            return false;
+                        }
+
+                        function cancel() {
+                            $(this).dialog("close");
+
+                            list.find('li').each(function () {
+                                $this = $(this);
+                                if ($this.is('[data-subjectstatus="new"]')) {
+                                    $this.remove();
+                                } else {
+                                    if ($this.is('[data-subjectstatus="removed"]')) {
+                                        $this.show();
+                                        $this.attr('data-status', '')
+                                    }
+                                }
+                            });
+                        }
+
+                        function remove() {
+                            $this = $(this).closest('li');
+
+                            if ($this.is('[data-subjectstatus="new"]')) {
+                                $this.remove();
+                            } else {
+                                $this.attr('data-subjectstatus', 'removed').hide();
+                            }
+
+                            updateNoSubjects();
+
+                            return false;
+                        }
+
+                        function add() {
+
+                            var id = textAdd.val();
+
+                            $.ajax({
+                                url: '@Url.Action(MVC.API.System.Subject())',
+                                method: 'post',
+                                data: { Id: id }
+                            }).done(function (response) {
+                                if (response) {
+                                    if (response.IsGroup || response.IsUserAccount) {
+                                        if (list.find('li[data-subjectid="' + response.Id + '"]').filter('[data-status!="removed"]').length == 0) {
+
+                                            var liIcon = $('<i>').addClass('fa fa-lg');
+                                            if (response.Type === 'user')
+                                                liIcon.addClass('fa-user');
+                                            else
+                                                liIcon.addClass('fa-users');
+
+                                            var li = $('<li>')
+                                                .append(liIcon)
+                                                .append($('<span>').text(response.Id == response.Name ? response.Id : response.Name + ' [' + response.Id + ']'))
+                                                .append($('<i>').addClass('fa fa-times-circle remove'))
+                                                .addClass(response.Type)
+                                                .attr('data-subjectid', response.Id)
+                                                .attr('data-subjectstatus', 'new');
+
+                                            list.append(li);
+
+                                            updateNoSubjects();
+                                        } else {
+                                            alert('That subject has already been added');
+                                        }
+                                    } else {
+                                        alert(response.Name + ' [' + response.Id + '] is a ' + response.Type + '. Only users and groups can be added.');
+                                    }
+                                } else {
+                                    alert('Unknown Id');
+                                }
+                            }).fail(function (jqXHR, textStatus, errorThrown) {
+                                alert('Error: ' + errorThrown);
+                            });
+
+                            return false;
+                        }
+
+                        function updateNoSubjects() {
+                            if (list.find('li:visible').length > 0)
+                                noSubjects.hide();
+                            else
+                                noSubjects.show();
+                        }
+
+                        function saveChanges() {
+                            var form = $('#Config_JobQueues_Subjects_Update_Dialog_Form').empty();
+
+                            list.find('li[data-subjectstatus!="removed"]').each(function () {
+                                var subjectId = $(this).attr('data-subjectid');
+
+                                form.append($('<input>').attr({
+                                    'name': 'Subjects',
+                                    'type': 'hidden'
+                                }).val(subjectId));
+
+                            }).get();
+
+                            form.submit();
+
+                            dialog.dialog("disable");
+                            dialog.dialog("option", "buttons", null);
+                        }
+
+                        $(function () {
+                            $('#Config_JobQueues_Subjects_Update').click(showDialog);
+                        });
+
+                    })();
+                </script>
+            </div>
+        }
+    </td>
+</tr>
+<tr>
+    <th>Automatically Add Jobs:</th>
+    <td>
+        <div>
+            @if (Model.Token.JobQueue.JobSubTypes.Count > 0)
+            {
+                <ul>
+                    @foreach (var jobType in Model.Token.JobQueue.JobSubTypes.GroupBy(jst => jst.JobType).OrderBy(jtg => jtg.Key.Description))
+                    {
+                        <li>
+                            @jobType.Key.Description
+                            <ul>
+                                @if (jobType.Count() == Model.JobTypes.FirstOrDefault(jt => jt.Id == jobType.Key.Id).JobSubTypes.Count)
+                                {
+                                    <li><span class="smallMessage">[All Sub Types]</span></li>
+                                }
+                                else
+                                {
+                                    foreach (var jobSubType in jobType)
+                                    {
+                                        <li>@jobSubType.Description</li>
+                                    }
+                                }
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <text>&lt;None&gt;</text>
+            }
+        </div>
+        @if (canConfig)
+        {
+            <a id="Config_JobQueues_JobSubTypes_Update" href="#" class="button small">Update</a>
                     <div id="Config_JobQueues_JobSubTypes_Update_Dialog" class="dialog" title="Job Queue Automatic Types">
                         @using (Html.BeginForm(MVC.API.JobQueue.UpdateJobSubTypes(Model.Token.JobQueue.Id, null, true)))
                         {
                             var selectedTypes = Model.Token.JobQueue.JobSubTypes.Select(jst => jst.JobType).Distinct().ToList();
                             foreach (var jt in Model.JobTypes)
                             {
-                            <div id="trJobType@(jt.Id)" class="jobTypes">
-                                <h4>
-                                    <input id="Types_@(jt.Id)" class="jobType" type="checkbox" value="@(jt.Id)" @(selectedTypes.Contains(jt) ? "checked=\"checked\"" : null) /><label for="Types_@(jt.Id)">@jt.Description</label></h4>
-                                <div id="SubTypes_@(jt.Id)" class="jobSubTypes">
-                                    @CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id), "div")
-                                    @CommonHelpers.CheckBoxList("JobSubTypes", jt.JobSubTypes.OrderBy(jst => jst.Description).ToSelectListItems(Model.Token.JobQueue.JobSubTypes), 2)
+                                <div id="trJobType@(jt.Id)" class="jobTypes">
+                                    <h4>
+                                        <input id="Types_@(jt.Id)" class="jobType" type="checkbox" value="@(jt.Id)" @(selectedTypes.Contains(jt) ? "checked=\"checked\"" : null) /><label for="Types_@(jt.Id)">@jt.Description</label>
+                                    </h4>
+                                    <div id="SubTypes_@(jt.Id)" class="jobSubTypes">
+                                        @CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id), "div")
+                                        @CommonHelpers.CheckBoxList("JobSubTypes", jt.JobSubTypes.OrderBy(jst => jst.Description).ToSelectListItems(Model.Token.JobQueue.JobSubTypes), 2)
+                                    </div>
                                 </div>
-                            </div>   
                             }
                         }
                     </div>
@@ -617,15 +637,15 @@
 
                         })();
                     </script>
-                }
-                <div class="info-box">
-                    <p class="fa-p">
-                        <i class="fa fa-info-circle"></i>When jobs of these types are created, they will automatically be added into this queue.
-                    </p>
-                </div>
-            </td>
-        </tr>
-    </table>
+        }
+        <div class="info-box">
+            <p class="fa-p">
+                <i class="fa fa-info-circle"></i>When jobs of these types are created, they will automatically be added into this queue.
+            </p>
+        </div>
+    </td>
+</tr>
+</table>
 </div>
 @if (canDelete || canShowJobs)
 {
