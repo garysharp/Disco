@@ -169,6 +169,13 @@ namespace Disco.Web.Areas.API.Controllers
             id = ActiveDirectory.ParseDomainAccountId(id, Domain);
 
             var user = Database.Users.Find(id);
+
+            if (user == null)
+            {
+                // Try importing the user
+                user = UserService.GetUser(id, Database, true);
+            }
+
             if (user != null)
             {
                 var documentTemplate = Database.DocumentTemplates.Find(DocumentTemplateId);
