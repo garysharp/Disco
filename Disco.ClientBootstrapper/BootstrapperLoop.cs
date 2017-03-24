@@ -20,13 +20,13 @@ namespace Disco.ClientBootstrapper
         private StringBuilder errorMessage;
         private Process clientProcess;
 
-#if DEBUG
-        public const string DiscoServerName = "WS-GSHARP";
-        public const int DiscoServerPort = 57252;
-#else
+//#if DEBUG
+//        public const string DiscoServerName = "WS-GSHARP";
+//        public const int DiscoServerPort = 57252;
+//#else
         public const string DiscoServerName = "DISCO";
         public const int DiscoServerPort = 9292;
-#endif
+//#endif
 
         public BootstrapperLoop(IStatus StatusUI, LoopCompleteCallback Callback)
         {

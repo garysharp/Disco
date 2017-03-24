@@ -51,7 +51,7 @@ namespace Disco.Client.Interop
         {
             try
             {
-                using (var mSearcher = new ManagementObjectSearcher("SELECT SerialNumber, SMBIOSBIOSVersion FROM Win32_BIOS WHERE PrimaryBios=true"))
+                using (var mSearcher = new ManagementObjectSearcher("SELECT SerialNumber, Manufacturer, SMBIOSBIOSVersion FROM Win32_BIOS WHERE PrimaryBios=true"))
                 {
                     using (var mResults = mSearcher.Get())
                     {
@@ -63,6 +63,12 @@ namespace Disco.Client.Interop
                                 if (!string.IsNullOrWhiteSpace(serialNumber))
                                 {
                                     DeviceHardware.SerialNumber = serialNumber.Trim();
+                                }
+
+                                var manufacturer = (string)mItem.GetPropertyValue("Manufacturer");
+                                if (DeviceHardware.Manufacturer == null && !string.IsNullOrWhiteSpace(manufacturer))
+                                {
+                                    DeviceHardware.Manufacturer = manufacturer.Trim();
                                 }
 
                                 ErrorReporting.DeviceIdentifier = DeviceHardware.SerialNumber;
@@ -85,7 +91,7 @@ namespace Disco.Client.Interop
         {
             try
             {
-                using (var mSearcher = new ManagementObjectSearcher("SELECT Manufacturer, Model, PartOfDomain, PCSystemType, Domain FROM Win32_ComputerSystem"))
+                using (var mSearcher = new ManagementObjectSearcher("SELECT Manufacturer, Model, PCSystemType FROM Win32_ComputerSystem"))
                 {
                     using (var mResults = mSearcher.Get())
                     {
@@ -134,7 +140,7 @@ namespace Disco.Client.Interop
                             if (mItem != null)
                             {
                                 Enrol.IsPartOfDomain = (bool)mItem.GetPropertyValue("PartOfDomain");
-                                
+
                                 if (Enrol.IsPartOfDomain)
                                 {
                                     Enrol.DNSDomainName = (string)mItem.GetPropertyValue("Domain");
@@ -156,42 +162,59 @@ namespace Disco.Client.Interop
 
         private static void ApplyBaseBoardInformation(this DeviceHardware DeviceHardware)
         {
-            // Added 2012-11-22 G# - Lenovo IdeaPad Serial SHIM
-            // http://www.discoict.com.au/forum/feature-requests/2012/11/serial-number-detection-on-ideapads.aspx
-            if (string.IsNullOrWhiteSpace(DeviceHardware.SerialNumber) ||
-                (DeviceHardware.Manufacturer.Equals("LENOVO", StringComparison.OrdinalIgnoreCase) &&
-                (DeviceHardware.Model.Equals("S10-3", StringComparison.OrdinalIgnoreCase) // S10-3
-                || DeviceHardware.Model.Equals("2957", StringComparison.OrdinalIgnoreCase)))) // S10-2
+            try
             {
-                try
+                using (var mSearcher = new ManagementObjectSearcher("SELECT SerialNumber, Manufacturer, Model, Product FROM Win32_BaseBoard"))
                 {
-                    using (var mSearcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BaseBoard"))
+                    using (var mResults = mSearcher.Get())
                     {
-                        using (var mResults = mSearcher.Get())
+                        using (var mItem = mResults.Cast<ManagementObject>().FirstOrDefault())
                         {
-                            using (var mItem = mResults.Cast<ManagementObject>().FirstOrDefault())
+                            if (mItem != null)
                             {
-                                if (mItem != null)
+                                // Apply Manufacturer/Model information only if not previously found in Win32_ComputerSystem
+                                var manufacturer = (string)mItem.GetPropertyValue("Manufacturer");
+                                if (DeviceHardware.Manufacturer == null && !string.IsNullOrWhiteSpace(manufacturer))
                                 {
-                                    var serialNumber = (string)mItem.GetPropertyValue("SerialNumber");
-                                    if (!string.IsNullOrWhiteSpace(serialNumber))
-                                    {
-                                        DeviceHardware.SerialNumber = serialNumber.Trim();
-                                        ErrorReporting.DeviceIdentifier = DeviceHardware.SerialNumber;
-                                    }
+                                    DeviceHardware.Manufacturer = manufacturer.Trim();
                                 }
-                                else
+
+                                var model = (string)mItem.GetPropertyValue("Model");
+                                if (DeviceHardware.Model == null && !string.IsNullOrWhiteSpace(model))
                                 {
-                                    throw new Exception("No Win32_BaseBoard was found");
+                                    DeviceHardware.Model = model.ToString();
                                 }
+
+                                var product = (string)mItem.GetPropertyValue("Product");
+                                if (DeviceHardware.Model == null && !string.IsNullOrWhiteSpace(product))
+                                {
+                                    DeviceHardware.Model = product.ToString();
+                                }
+
+                                // Added 2012-11-22 G# - Lenovo IdeaPad Serial SHIM
+                                // http://www.discoict.com.au/forum/feature-requests/2012/11/serial-number-detection-on-ideapads.aspx
+                                var serialNumber = (string)mItem.GetPropertyValue("SerialNumber");
+                                if (!string.IsNullOrWhiteSpace(serialNumber) &&
+                                    (DeviceHardware.SerialNumber == null ||
+                                    ((DeviceHardware.Manufacturer?.Equals("LENOVO", StringComparison.OrdinalIgnoreCase) ?? false) &&
+                                    ((DeviceHardware.Model?.Equals("S10-3", StringComparison.OrdinalIgnoreCase) ?? false) // S10-3
+                                    || (DeviceHardware.Model?.Equals("2957", StringComparison.OrdinalIgnoreCase) ?? false)))))
+                                {
+                                    DeviceHardware.SerialNumber = serialNumber.Trim();
+                                    ErrorReporting.DeviceIdentifier = DeviceHardware.SerialNumber;
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("No Win32_BaseBoard was found");
                             }
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    throw new Exception("Disco Client was unable to retrieve BaseBoard information from WMI", ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Disco Client was unable to retrieve BaseBoard information from WMI", ex);
             }
         }
 

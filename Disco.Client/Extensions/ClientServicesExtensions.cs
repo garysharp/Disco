@@ -8,13 +8,13 @@ namespace Disco.Client.Extensions
 {
     public static class ClientServicesExtensions
     {
-#if DEBUG
-        public const string ServicePathAuthenticatedTemplate = "http://WS-GSHARP:57252/Services/Client/Authenticated/{0}";
-        public const string ServicePathUnauthenticatedTemplate = "http://WS-GSHARP:57252/Services/Client/Unauthenticated/{0}";
-#else
+//#if DEBUG
+//        public const string ServicePathAuthenticatedTemplate = "http://WS-GSHARP:57252/Services/Client/Authenticated/{0}";
+//        public const string ServicePathUnauthenticatedTemplate = "http://WS-GSHARP:57252/Services/Client/Unauthenticated/{0}";
+//#else
         public const string ServicePathAuthenticatedTemplate = "http://DISCO:9292/Services/Client/Authenticated/{0}";
         public const string ServicePathUnauthenticatedTemplate = "http://DISCO:9292/Services/Client/Unauthenticated/{0}";
-#endif
+//#endif
 
         public static ResponseType Post<ResponseType>(this ServiceBase<ResponseType> Service, bool Authenticated)
         {
