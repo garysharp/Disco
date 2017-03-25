@@ -2,15 +2,15 @@
 @{
     Authorization.Require(Claims.Device.Actions.Import);
 
-    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import Devices", MVC.Device.Import(), string.Format("File: {0}", Model.Context.Filename));
+    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import Devices", MVC.Device.Import(), string.Format("File: {0}", Model.Context.DatasetName));
 }
 <div id="Devices_Import_Headers">
 
     <h2>Define Import Columns</h2>
 
-    @if (Model.Context.RawData.Count > 10)
+    @if (Model.Context.RecordCount > 10)
     {
-        <h4 class="alert">@Model.Context.RawData.Count records were loaded, only the first 10 are shown here.</h4>
+        <h4 class="alert">@Model.Context.RecordCount records were loaded, only the first 10 are shown here.</h4>
     }
 
     <h4 id="Devices_Import_Headers_DeviceSerialNumberRequired" class="error">The Device Serial Number column must be defined.</h4>
@@ -19,17 +19,17 @@
         <table class="tableData">
             <thead>
                 <tr>
-                    @foreach (var header in Model.Context.Header.Select((h, i) => Tuple.Create(h, i)))
+                    @foreach (var header in Model.Context.Columns)
                     {
-                        <th data-headerindex="@header.Item2" class="header@(header.Item1.Item2.ToString())">@header.Item1.Item1</th>
+                        <th data-headerindex="@header.Index" class="header@(header.Type.ToString())">@header.Name</th>
                     }
                 </tr>
                 <tr>
-                    @foreach (var header in Model.Context.Header.Select((h, i) => Tuple.Create(h, i)))
+                    @foreach (var header in Model.Context.Columns)
                     {
-                        <td data-headerindex="@header.Item2" class="header@(header.Item1.Item2.ToString())">
-                            <ul class="importHeaderType" data-headerindex="@header.Item2" data-headertype="@header.Item1.Item2.ToString()">
-                                <li><a href="#"><span class="headerTypeTitle">@(Model.HeaderTypes.FirstOrDefault(h => h.Item1 == header.Item1.Item2).Item2)</span></a>
+                        <td data-headerindex="@header.Index" class="header@(header.Type.ToString())">
+                            <ul class="importHeaderType" data-headerindex="@header.Index" data-headertype="@header.Type.ToString()">
+                                <li><a href="#"><span class="headerTypeTitle">@(Model.HeaderTypes.FirstOrDefault(h => h.Item1 == header.Type).Item2)</span></a>
                                     <ul>
                                         @foreach (var headerType in Model.HeaderTypes)
                                         {
@@ -43,14 +43,18 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var record in Model.Context.RawData.Take(10))
+                @using (var dataReader = Model.Context.GetDataReader())
                 {
-                    <tr>
-                        @foreach (var field in record.Select((h, i) => Tuple.Create(h, i)))
-                        {
-                            <td data-headerindex="@field.Item2">@field.Item1</td>
-                        }
-                    </tr>
+                    for (int r = 0; r < Math.Min(10, Model.Context.RecordCount); r++)
+                    {
+                        dataReader.Read();
+                        <tr>
+                            @for (int c = 0; c < Model.Context.ColumnCount; c++)
+                            {
+                                <td data-headerindex="@c">@dataReader.GetString(c)</td>
+                            }
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

@@ -1,6 +1,7 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Importing;
+using Disco.Services.Interop.ActiveDirectory;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -22,9 +23,11 @@ namespace Disco.Services.Devices.Importing.Fields
         public override string FriendlyValue { get { return parsedValue.HasValue ? parsedValue.Value.ToString() : rawValue; } }
         public override string FriendlyPreviousValue { get { return previousValue.HasValue ? previousValue.Value.ToString() : null; } }
 
-        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, DeviceImportContext Context, int RecordIndex, string DeviceSerialNumber, Device ExistingDevice, Dictionary<DeviceImportFieldTypes, string> Values, string Value)
+        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
         {
-            if (string.IsNullOrWhiteSpace(Value))
+            var value = DataReader.GetString(ColumnIndex);
+
+            if (string.IsNullOrWhiteSpace(value))
             {
                 rawValue = null;
                 parsedValue = null;
@@ -32,9 +35,9 @@ namespace Disco.Services.Devices.Importing.Fields
             else
             {
                 DecommissionReasons valueReason;
-                if (!decommissionReasonsMap.Value.TryGetValue(Value.Trim(), out valueReason))
+                if (!decommissionReasonsMap.Value.TryGetValue(value.Trim(), out valueReason))
                 {
-                    rawValue = Value.Trim();
+                    rawValue = value.Trim();
                     return Error("Cannot parse the value as a Decommission Reason");
                 }
                 else
@@ -43,15 +46,16 @@ namespace Disco.Services.Devices.Importing.Fields
                 }
             }
 
-            if (parsedValue.HasValue && !Values.ContainsKey(DeviceImportFieldTypes.DeviceDecommissionedDate))
+            var decommissionedDateIndex = Context.GetColumnByType(DeviceImportFieldTypes.DeviceDecommissionedDate);
+            if (parsedValue.HasValue && !decommissionedDateIndex.HasValue)
             {
                 string errorMessage;
-                if (!DeviceDecommissionedDateImportField.CanDecommissionDevice(ExistingDevice, Values, out errorMessage))
+                if (!DeviceDecommissionedDateImportField.CanDecommissionDevice(ExistingDevice, Context, DataReader, out errorMessage))
                     return Error(errorMessage);
 
                 setDate = true;
             }
-            else if (parsedValue.HasValue && string.IsNullOrWhiteSpace(Values[DeviceImportFieldTypes.DeviceDecommissionedDate]))
+            else if (parsedValue.HasValue && string.IsNullOrWhiteSpace(DataReader.GetString(decommissionedDateIndex.Value)))
             {
                 setDate = true;
             }
@@ -67,13 +71,22 @@ namespace Disco.Services.Devices.Importing.Fields
 
         public override bool Apply(DiscoDataContext Database, Device Device)
         {
-            if (this.FieldAction == EntityState.Modified)
+            if (FieldAction == EntityState.Modified)
             {
                 // Decommission or Recommission Device
-                Device.DecommissionReason = this.parsedValue;
+                Device.DecommissionReason = parsedValue;
 
                 if (setDate)
-                    Device.DecommissionedDate = this.parsedValue.HasValue ? (DateTime?)DateTime.Now : null;
+                {
+                    if (parsedValue.HasValue && !Device.DecommissionedDate.HasValue)
+                    {
+                        Device.DecommissionedDate = DateTime.Now;
+                    }
+                    else if (!parsedValue.HasValue && Device.DecommissionedDate.HasValue)
+                    {
+                        Device.DecommissionedDate = null;
+                    }
+                }
 
                 return true;
             }
@@ -83,19 +96,50 @@ namespace Disco.Services.Devices.Importing.Fields
             }
         }
 
-        public override int? GuessHeader(DiscoDataContext Database, DeviceImportContext Context)
+        public override void Applied(DiscoDataContext Database, Device Device, ref bool DeviceADDescriptionSet)
+        {
+            // Only Enable/Disable if DeviceDecommissionedDate field is not present
+            if (setDate)
+            {
+                if (ActiveDirectory.IsValidDomainAccountId(Device.DeviceDomainId))
+                {
+                    var adAccount = Device.ActiveDirectoryAccount();
+
+                    if (adAccount != null && !adAccount.IsCriticalSystemObject)
+                    {
+                        if (Device.DecommissionedDate.HasValue)
+                        {
+                            // Disable AD Account
+                            adAccount.DisableAccount();
+                        }
+                        else
+                        {
+                            // Enable AD Account
+                            adAccount.EnableAccount();
+                        }
+
+                        if (!DeviceADDescriptionSet)
+                        {
+                            adAccount.SetDescription(Device);
+                            DeviceADDescriptionSet = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        public override int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader)
         {
             // column name
-            var possibleColumns = Context.Header
-                .Select((h, i) => Tuple.Create(h, i))
-                .Where(h => h.Item1.Item2 == DeviceImportFieldTypes.IgnoreColumn &&
-                    h.Item1.Item1.IndexOf("decommission reason", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    h.Item1.Item1.IndexOf("decommissionreason", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    h.Item1.Item1.IndexOf("decommissioned reason", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    h.Item1.Item1.IndexOf("decommissionedreason", System.StringComparison.OrdinalIgnoreCase) >= 0
+            var possibleColumns = Context.Columns
+                .Where(h => h.Type == DeviceImportFieldTypes.IgnoreColumn &&
+                    h.Name.IndexOf("decommission reason", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    h.Name.IndexOf("decommissionreason", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    h.Name.IndexOf("decommissioned reason", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    h.Name.IndexOf("decommissionedreason", StringComparison.OrdinalIgnoreCase) >= 0
                     );
 
-            return possibleColumns.Select(h => (int?)h.Item2).FirstOrDefault();
+            return possibleColumns.Select(h => (int?)h.Index).FirstOrDefault();
         }
 
         public static Dictionary<string, DecommissionReasons> BuildDecommissionReasonsMap()

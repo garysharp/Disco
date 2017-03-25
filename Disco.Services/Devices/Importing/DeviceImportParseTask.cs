@@ -1,4 +1,5 @@
 ﻿using Disco.Data.Repository;
+using Disco.Models.Services.Devices.Importing;
 using Disco.Services.Tasks;
 using Quartz;
 using System;
@@ -13,7 +14,7 @@ namespace Disco.Services.Devices.Importing
         public override bool SingleInstanceTask { get { return false; } }
         public override bool CancelInitiallySupported { get { return false; } }
 
-        public static ScheduledTaskStatus ScheduleNow(DeviceImportContext Context)
+        public static ScheduledTaskStatus ScheduleNow(IDeviceImportContext Context)
         {
             if (Context == null)
                 throw new ArgumentNullException("Context");
@@ -28,11 +29,11 @@ namespace Disco.Services.Devices.Importing
 
         protected override void ExecuteTask()
         {
-            var context = (DeviceImportContext)this.ExecutionContext.JobDetail.JobDataMap[JobDataMapContext];
+            var context = (IDeviceImportContext)ExecutionContext.JobDetail.JobDataMap[JobDataMapContext];
 
             using (DiscoDataContext Database = new DiscoDataContext())
             {
-                context.ParseRecords(Database, this.Status);
+                context.ParseRecords(Database, Status);
             }
         }
     }

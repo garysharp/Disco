@@ -11,7 +11,7 @@ namespace Disco.Web.Models.Device
 {
     public class ImportModel : DeviceImportModel
     {
-        [Required, Display(Name = "CSV Import File")]
+        [Required, Display(Name = "Import File")]
         public HttpPostedFileBase ImportFile { get; set; }
 
         [Required, Display(Name = "Has Header")]

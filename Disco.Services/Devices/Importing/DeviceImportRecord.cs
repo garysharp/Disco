@@ -5,13 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Services.Devices.Importing
 {
     internal class DeviceImportRecord : IDeviceImportRecord
     {
+        public int Index { get; private set; }
         public string DeviceSerialNumber { get; private set; }
 
         public IEnumerable<IDeviceImportField> Fields { get; private set; }
@@ -23,8 +22,9 @@ namespace Disco.Services.Devices.Importing
             get { return Fields.Any(f => !f.FieldAction.HasValue); }
         }
 
-        internal DeviceImportRecord(string DeviceSerialNumber, IEnumerable<IDeviceImportField> Fields, EntityState RecordAction)
+        internal DeviceImportRecord(int Index, string DeviceSerialNumber, IEnumerable<IDeviceImportField> Fields, EntityState RecordAction)
         {
+            this.Index = Index;
             this.DeviceSerialNumber = DeviceSerialNumber;
             this.Fields = Fields;
             this.RecordAction = RecordAction;
@@ -43,7 +43,7 @@ namespace Disco.Services.Devices.Importing
                 }
                 else if (RecordAction == EntityState.Modified)
                 {
-                    device = Database.Devices.Find(this.DeviceSerialNumber);
+                    device = Database.Devices.Find(DeviceSerialNumber);
                 }
                 else if (RecordAction == EntityState.Added)
                 {
@@ -81,6 +81,13 @@ namespace Disco.Services.Devices.Importing
                 // Commit Changes
                 if (changesMade)
                     Database.SaveChanges();
+
+                bool adDescriptionSet = false;
+
+                foreach (var field in Fields.Cast<DeviceImportFieldBase>())
+                {
+                    field.Applied(Database, device, ref adDescriptionSet);
+                }
 
                 return changesMade;
             }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Models.Services.Devices.Importing
 {
@@ -10,11 +7,19 @@ namespace Disco.Models.Services.Devices.Importing
     {
         string SessionId { get; }
         string Filename { get; }
-        List<Tuple<string, DeviceImportFieldTypes>> Header { get; }
-        List<Tuple<string, DeviceImportFieldTypes, Func<string[], string>, Type>> ParsedHeaders { get; }
-        List<string[]> RawData { get; }
+        string DatasetName { get; }
+        int ColumnCount { get; }
+        IEnumerable<IDeviceImportColumn> Columns { get; }
+        IDeviceImportColumn GetColumn(int Index);
+        void SetColumnType(int Index, DeviceImportFieldTypes Type);
+        int? GetColumnByType(DeviceImportFieldTypes FieldType);
 
-        List<IDeviceImportRecord> Records { get; }
-        int AffectedRecords { get; }
+        int RecordCount { get; }
+
+        IDeviceImportDataReader GetDataReader();
+        IEnumerable<KeyValuePair<DeviceImportFieldTypes, Type>> GetFieldHandlers();
+
+        List<IDeviceImportRecord> Records { get; set; }
+        int AffectedRecords { get; set; }
     }
 }

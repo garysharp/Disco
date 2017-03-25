@@ -11,6 +11,7 @@ using Disco.Services.Interop;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using Disco.Services.Web;
+using Disco.Web.Extensions;
 using Disco.Web.Models.Device;
 using System;
 using System.Collections.Generic;
@@ -611,15 +612,15 @@ namespace Disco.Web.Areas.API.Controllers
         #region Importing
         internal const string ImportSessionCacheKey = "DeviceImportContext_{0}";
 
-        internal static void Import_StoreContext(DeviceImportContext Context)
+        internal static void Import_StoreContext(IDeviceImportContext Context)
         {
             string key = string.Format(ImportSessionCacheKey, Context.SessionId);
             HttpRuntime.Cache.Insert(key, Context, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
         }
-        internal static DeviceImportContext Import_RetrieveContext(string SessionId, bool Remove = false)
+        internal static IDeviceImportContext Import_RetrieveContext(string SessionId, bool Remove = false)
         {
             string key = string.Format(ImportSessionCacheKey, SessionId);
-            DeviceImportContext context = HttpRuntime.Cache.Get(key) as DeviceImportContext;
+            IDeviceImportContext context = HttpRuntime.Cache.Get(key) as IDeviceImportContext;
 
             if (Remove && context != null)
                 HttpRuntime.Cache.Remove(key);
@@ -654,7 +655,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (context == null)
                 throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", "Id");
 
-            context.UpdateHeaderTypes(Headers);
+            context.UpdateColumnTypes(Headers);
 
             var status = DeviceImportParseTask.ScheduleNow(context);
 
@@ -729,12 +730,25 @@ namespace Disco.Web.Areas.API.Controllers
             if (context == null)
                 throw new ArgumentException("The Id specified is invalid, or the export data expired (60 minutes)", "Id");
 
-            if (context.Result == null || context.Result.CsvResult == null)
+            if (context.Result == null || context.Result.Result == null)
                 throw new ArgumentException("The export session is still running, or failed to complete successfully", "Id");
 
-            var filename = string.Format("DiscoDeviceExport-{0:yyyyMMdd-HHmmss}.csv", context.TaskStatus.StartedTimestamp.Value);
+            string filename;
+            string mimeType;
+            if (context.Options.ExcelFormat)
+            {
+                filename = $"DiscoDeviceExport-{context.TaskStatus.StartedTimestamp.Value:yyyyMMdd-HHmmss}.xlsx";
+                mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            }
+            else
+            {
+                filename = $"DiscoDeviceExport-{context.TaskStatus.StartedTimestamp.Value:yyyyMMdd-HHmmss}.csv";
+                mimeType = "text/csv";
+            }
 
-            return File(context.Result.CsvResult.ToArray(), "text/csv", filename);
+            var fileStream = context.Result.Result;
+
+            return this.File(fileStream.GetBuffer(), 0, (int)fileStream.Length, mimeType, filename);
         }
 
         #endregion

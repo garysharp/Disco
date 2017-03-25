@@ -60,6 +60,9 @@
     <Compile Include="ClientServices\EnrolmentInformation\WirelessProfile.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\WirelessProfileStore.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\WirelessProfileTransformation.cs" />
+    <Compile Include="Services\Devices\Exporting\DeviceExportFieldMetadata.cs" />
+    <Compile Include="Services\Devices\Importing\IDeviceImportColumn.cs" />
+    <Compile Include="Services\Devices\Importing\IDeviceImportDataReader.cs" />
     <Compile Include="Services\Documents\DocumentTemplatePackage.cs" />
     <Compile Include="Services\Jobs\LocationModes.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\Certificate.cs" />

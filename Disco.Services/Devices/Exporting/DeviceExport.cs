@@ -1,4 +1,5 @@
-﻿using Disco.Data.Repository;
+﻿using ClosedXML.Excel;
+using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Exporting;
 using Disco.Services.Tasks;
@@ -6,10 +7,10 @@ using Disco.Services.Users;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Services.Devices.Exporting
 {
@@ -52,7 +53,7 @@ namespace Disco.Services.Devices.Exporting
                 try
                 {
                     TaskStatus.IgnoreCurrentProcessChanges = true;
-                    TaskStatus.ProgressMultiplier = 20 / 100;
+                    TaskStatus.ProgressMultiplier = (double)20 / 100;
                     TaskStatus.ProgressOffset = 40;
 
                     Interop.ActiveDirectory.ADNetworkLogonDatesUpdateTask.UpdateLastNetworkLogonDates(Database, TaskStatus);
@@ -73,41 +74,23 @@ namespace Disco.Services.Devices.Exporting
 
             TaskStatus.UpdateStatus(80, string.Format("Formatting {0} records for export", records.Count));
 
-            using (StreamWriter writer = new StreamWriter(stream, Encoding.Default, 0x400, true))
+            if (Options.ExcelFormat)
             {
-                // Header
-                writer.Write('"');
-                writer.Write(string.Join("\",\"", metadata.Select(m => m.Item2)));
-                writer.Write('"');
-
-                // Records
-                foreach (var record in records)
-                {
-                    writer.WriteLine();
-                    writer.Write(string.Join(",", metadata.Select(m =>
-                    {
-                        var value = m.Item3(record);
-                        var isString = m.Item4;
-
-                        if (value == null)
-                            return null;
-                        else if (!isString)
-                            return value;
-                        else if (Options.ExcelCsvFormat)
-                            return string.Concat("=\"", value, "\"");
-                        else
-                            return string.Concat("\"", value, "\"");
-                    })));
-                }
+                WriteXlsx(stream, metadata, records);
+            }
+            else
+            {
+                WriteCSV(stream, metadata, records);
             }
 
             stream.Position = 0;
             return new DeviceExportResult()
             {
-                CsvResult = stream,
+                Result = stream,
                 RecordCount = records.Count
             };
         }
+
         public static DeviceExportResult GenerateExport(DiscoDataContext Database, IQueryable<Device> Devices, DeviceExportOptions Options)
         {
             return GenerateExport(Database, Devices, Options, ScheduledTaskMockStatus.Create("Device Export"));
@@ -135,6 +118,57 @@ namespace Disco.Services.Devices.Exporting
         public static DeviceExportResult GenerateExport(DiscoDataContext Database, DeviceExportOptions Options)
         {
             return GenerateExport(Database, Options, ScheduledTaskMockStatus.Create("Device Export"));
+        }
+
+        private static void WriteCSV(Stream OutputStream, List<DeviceExportFieldMetadata> Metadata, List<DeviceExportRecord> Records)
+        {
+            using (StreamWriter writer = new StreamWriter(OutputStream, Encoding.Default, 0x400, true))
+            {
+                // Header
+                writer.Write('"');
+                writer.Write(string.Join("\",\"", Metadata.Select(m => m.ColumnName)));
+                writer.Write('"');
+
+                // Records
+                foreach (var record in Records)
+                {
+                    writer.WriteLine();
+                    for (int i = 0; i < Metadata.Count; i++)
+                    {
+                        if (i != 0)
+                        {
+                            writer.Write(',');
+                        }
+                        var value = Metadata[i].Accessor(record);
+                        writer.Write(Metadata[i].CsvEncoder(value));
+                    }
+                }
+            }
+        }
+
+        private static void WriteXlsx(Stream OutputStream, List<DeviceExportFieldMetadata> Metadata, List<DeviceExportRecord> Records)
+        {
+            // Create DataTable
+            var dataTable = new DataTable();
+            foreach (var field in Metadata)
+            {
+                dataTable.Columns.Add(field.ColumnName, field.ValueType);
+            }
+            foreach (var record in Records)
+            {
+                dataTable.Rows.Add(Metadata.Select(m => m.Accessor(record)).ToArray());
+            }
+
+            using (var xlWorkbook = new XLWorkbook())
+            {
+                var sheet = xlWorkbook.AddWorksheet("DeviceExport");
+                var table = sheet.Cell(1, 1).InsertTable(dataTable, "Devices");
+                table.Theme = XLTableTheme.TableStyleMedium2;
+
+                table.Columns().ForEach(c => c.WorksheetColumn().AdjustToContents(2, 15, 30));
+
+                xlWorkbook.SaveAs(OutputStream);
+            }
         }
 
         private static IEnumerable<DeviceExportRecord> BuildRecords(IQueryable<Device> Devices)
@@ -185,93 +219,103 @@ namespace Disco.Services.Devices.Exporting
             });
         }
 
-        /// <returns>Tuple Format: Property Name, Column Name, Property Access, Escape CSV Value?</returns>
-        private static List<Tuple<string, string, Func<DeviceExportRecord, string>, bool>> BuildMetadata(this DeviceExportOptions Options)
+        private static List<DeviceExportFieldMetadata> BuildMetadata(this DeviceExportOptions Options)
         {
-            var allAssessors = BuildRecordAssessors().ToList();
+            var allAssessors = BuildRecordAccessors().ToList();
 
             return typeof(DeviceExportOptions).GetProperties()
                 .Where(p => p.PropertyType == typeof(bool))
-                .Select(p => Tuple.Create(p, (DisplayAttribute)p.GetCustomAttributes(typeof(DisplayAttribute), false).FirstOrDefault()))
-                .Where(p => p.Item2 != null && (bool)p.Item1.GetValue(Options))
+                .Select(p => new
+                {
+                    property = p,
+                    details = (DisplayAttribute)p.GetCustomAttributes(typeof(DisplayAttribute), false).FirstOrDefault()
+                })
+                .Where(p => p.details != null && (bool)p.property.GetValue(Options))
                 .Select(p =>
                 {
-                    var accessor = allAssessors.First(i => i.Item1 == p.Item1.Name);
-                    var columnName = (p.Item2.ShortName == "Device" || p.Item2.ShortName == "Details") ? p.Item2.Name : string.Format("{0} {1}", p.Item2.ShortName, p.Item2.Name);
-                    return Tuple.Create(p.Item1.Name, columnName, accessor.Item2, accessor.Item3);
+                    var fieldMetadata = allAssessors.First(i => i.Name == p.property.Name);
+                    fieldMetadata.ColumnName = (p.details.ShortName == "Device" || p.details.ShortName == "Details") ? p.details.Name : $"{p.details.ShortName} {p.details.Name}";
+                    return fieldMetadata;
                 }).ToList();
         }
 
-        /// <returns>Tuple Format: Property Name, Property Access, Escape CSV Value?</returns>
-        private static IEnumerable<Tuple<string, Func<DeviceExportRecord, string>, bool>> BuildRecordAssessors()
+        private static IEnumerable<DeviceExportFieldMetadata> BuildRecordAccessors()
         {
             const string DateFormat = "yyyy-MM-dd";
             const string DateTimeFormat = DateFormat + " HH:mm:ss";
 
+            Func<object, string> csvStringEncoded = (o) => o == null ? null : $"\"{((string)o).Replace("\"", "\"\"")}\"";
+            Func<object, string> csvToStringEncoded = (o) => o == null ? null : o.ToString();
+            Func<object, string> csvCurrencyEncoded = (o) => ((decimal?)o).HasValue ? ((decimal?)o).Value.ToString("C") : null;
+            Func<object, string> csvDateEncoded = (o) => ((DateTime)o).ToString(DateFormat);
+            Func<object, string> csvDateTimeEncoded = (o) => ((DateTime)o).ToString(DateTimeFormat);
+            Func<object, string> csvNullableDateEncoded = (o) => ((DateTime?)o).HasValue ? csvDateEncoded(o) : null;
+            Func<object, string> csvNullableDateTimeEncoded = (o) => ((DateTime?)o).HasValue ? csvDateTimeEncoded(o) : null;
+
             // Device
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceSerialNumber", r => r.Device.SerialNumber, true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceAssetNumber", r => r.Device.AssetNumber, true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceLocation", r => r.Device.Location, true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceComputerName", r => r.Device.DeviceDomainId, true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceLastNetworkLogon", r => r.Device.LastNetworkLogonDate.HasValue ? r.Device.LastNetworkLogonDate.Value.ToString(DateTimeFormat) : null, false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceCreatedDate", r => r.Device.CreatedDate.ToString(DateTimeFormat), false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceFirstEnrolledDate", r => r.Device.EnrolledDate.HasValue ? r.Device.EnrolledDate.Value.ToString(DateTimeFormat) : null, false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceLastEnrolledDate", r => r.Device.LastEnrolDate.HasValue ? r.Device.LastEnrolDate.Value.ToString(DateTimeFormat) : null, false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceAllowUnauthenticatedEnrol", r => r.Device.AllowUnauthenticatedEnrol.ToString(), false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceDecommissionedDate", r => r.Device.DecommissionedDate.HasValue ? r.Device.DecommissionedDate.Value.ToString(DateTimeFormat) : null, false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DeviceDecommissionedReason", r => r.Device.DecommissionReason.HasValue ? r.Device.DecommissionReason.Value.ToString() : null, true);
+            yield return new DeviceExportFieldMetadata("DeviceSerialNumber", typeof(string), r => r.Device.SerialNumber, csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("DeviceAssetNumber", typeof(string), r => r.Device.AssetNumber, csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("DeviceLocation", typeof(string), r => r.Device.Location, csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("DeviceComputerName", typeof(string), r => r.Device.DeviceDomainId, csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("DeviceLastNetworkLogon", typeof(DateTime), r => r.Device.LastNetworkLogonDate, csvNullableDateTimeEncoded);
+            yield return new DeviceExportFieldMetadata("DeviceCreatedDate", typeof(DateTime), r => r.Device.CreatedDate, csvDateTimeEncoded);
+            yield return new DeviceExportFieldMetadata("DeviceFirstEnrolledDate", typeof(DateTime), r => r.Device.EnrolledDate, csvNullableDateTimeEncoded);
+            yield return new DeviceExportFieldMetadata("DeviceLastEnrolledDate", typeof(DateTime), r => r.Device.LastEnrolDate, csvNullableDateTimeEncoded);
+            yield return new DeviceExportFieldMetadata("DeviceAllowUnauthenticatedEnrol", typeof(bool), r => r.Device.AllowUnauthenticatedEnrol, csvToStringEncoded);
+            yield return new DeviceExportFieldMetadata("DeviceDecommissionedDate", typeof(DateTime), r => r.Device.DecommissionedDate, csvNullableDateTimeEncoded);
+            yield return new DeviceExportFieldMetadata("DeviceDecommissionedReason", typeof(string), r => r.Device.DecommissionReason, csvToStringEncoded);
 
             // Details
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DetailLanMacAddress", r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyLanMacAddress).Select(dd => dd.Value).FirstOrDefault(), true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DetailWLanMacAddress", r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyWLanMacAddress).Select(dd => dd.Value).FirstOrDefault(), true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DetailACAdapter", r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyACAdapter).Select(dd => dd.Value).FirstOrDefault(), true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DetailBattery", r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyBattery).Select(dd => dd.Value).FirstOrDefault(), true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("DetailKeyboard", r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyKeyboard).Select(dd => dd.Value).FirstOrDefault(), true);
+            yield return new DeviceExportFieldMetadata("DetailLanMacAddress", typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyLanMacAddress).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("DetailWLanMacAddress", typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyWLanMacAddress).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("DetailACAdapter", typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyACAdapter).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("DetailBattery", typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyBattery).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("DetailKeyboard", typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyKeyboard).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded);
 
             // Model
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("ModelId", r => r.ModelId.HasValue ? r.ModelId.Value.ToString() : null, false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("ModelDescription", r => r.ModelDescription, true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("ModelManufacturer", r => r.ModelManufacturer, true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("ModelModel", r => r.ModelModel, true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("ModelType", r => r.ModelType, true);
+            yield return new DeviceExportFieldMetadata("ModelId", typeof(int), r => r.ModelId, csvToStringEncoded);
+            yield return new DeviceExportFieldMetadata("ModelDescription", typeof(string), r => r.ModelDescription, csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("ModelManufacturer", typeof(string), r => r.ModelManufacturer, csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("ModelModel", typeof(string), r => r.ModelModel, csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("ModelType", typeof(string), r => r.ModelType, csvStringEncoded);
 
             // Batch
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("BatchId", r => r.BatchId.HasValue ? r.BatchId.Value.ToString() : null, false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("BatchName", r => r.BatchName, true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("BatchPurchaseDate", r => r.BatchPurchaseDate.HasValue ? r.BatchPurchaseDate.Value.ToString(DateFormat) : null, false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("BatchSupplier", r => r.BatchSupplier, true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("BatchUnitCost", r => r.BatchUnitCost.HasValue ? r.BatchUnitCost.ToString() : null, false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("BatchWarrantyValidUntilDate", r => r.BatchWarrantyValidUntilDate.HasValue ? r.BatchWarrantyValidUntilDate.Value.ToString(DateFormat) : null, false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("BatchInsuredDate", r => r.BatchInsuredDate.HasValue ? r.BatchInsuredDate.Value.ToString(DateFormat) : null, false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("BatchInsuranceSupplier", r => r.BatchInsuranceSupplier, true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("BatchInsuredUntilDate", r => r.BatchInsuredUntilDate.HasValue ? r.BatchInsuredUntilDate.Value.ToString(DateFormat) : null, false);
+            yield return new DeviceExportFieldMetadata("BatchId", typeof(int), r => r.BatchId, csvToStringEncoded);
+            yield return new DeviceExportFieldMetadata("BatchName", typeof(string), r => r.BatchName, csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("BatchPurchaseDate", typeof(DateTime), r => r.BatchPurchaseDate, csvNullableDateEncoded);
+            yield return new DeviceExportFieldMetadata("BatchSupplier", typeof(string), r => r.BatchSupplier, csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("BatchUnitCost", typeof(decimal), r => r.BatchUnitCost, csvCurrencyEncoded);
+            yield return new DeviceExportFieldMetadata("BatchWarrantyValidUntilDate", typeof(DateTime), r => r.BatchWarrantyValidUntilDate, csvNullableDateEncoded);
+            yield return new DeviceExportFieldMetadata("BatchInsuredDate", typeof(DateTime), r => r.BatchInsuredDate, csvNullableDateEncoded);
+            yield return new DeviceExportFieldMetadata("BatchInsuranceSupplier", typeof(string), r => r.BatchInsuranceSupplier, csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("BatchInsuredUntilDate", typeof(DateTime), r => r.BatchInsuredUntilDate, csvNullableDateEncoded);
 
             // Profile
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("ProfileId", r => r.ProfileId.ToString(), false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("ProfileName", r => r.ProfileName, true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("ProfileShortName", r => r.ProfileShortName, true);
+            yield return new DeviceExportFieldMetadata("ProfileId", typeof(int), r => r.ProfileId, csvToStringEncoded);
+            yield return new DeviceExportFieldMetadata("ProfileName", typeof(string), r => r.ProfileName, csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("ProfileShortName", typeof(string), r => r.ProfileShortName, csvStringEncoded);
 
             // User
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("AssignedUserId", r => r.AssignedUser != null ? r.AssignedUser.UserId : null, true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("AssignedUserDate", r => r.DeviceUserAssignment != null ? r.DeviceUserAssignment.AssignedDate.ToString(DateTimeFormat) : null, false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("AssignedUserDisplayName", r => r.AssignedUser != null ? r.AssignedUser.DisplayName : null, true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("AssignedUserSurname", r => r.AssignedUser != null ? r.AssignedUser.Surname : null, true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("AssignedUserGivenName", r => r.AssignedUser != null ? r.AssignedUser.GivenName : null, true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("AssignedUserPhoneNumber", r => r.AssignedUser != null ? r.AssignedUser.PhoneNumber : null, true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("AssignedUserEmailAddress", r => r.AssignedUser != null ? r.AssignedUser.EmailAddress : null, true);
+            yield return new DeviceExportFieldMetadata("AssignedUserId", typeof(string), r => r.AssignedUser?.UserId, csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("AssignedUserDate", typeof(DateTime), r => r.DeviceUserAssignment?.AssignedDate, csvNullableDateTimeEncoded);
+            yield return new DeviceExportFieldMetadata("AssignedUserDisplayName", typeof(string), r => r.AssignedUser?.DisplayName, csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("AssignedUserSurname", typeof(string), r => r.AssignedUser?.Surname, csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("AssignedUserGivenName", typeof(string), r => r.AssignedUser?.GivenName, csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("AssignedUserPhoneNumber", typeof(string), r => r.AssignedUser?.PhoneNumber, csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("AssignedUserEmailAddress", typeof(string), r => r.AssignedUser?.EmailAddress, csvStringEncoded);
 
             // Jobs
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("JobsTotalCount", r => r.JobsTotalCount.ToString(), false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("JobsOpenCount", r => r.JobsOpenCount.ToString(), false);
+            yield return new DeviceExportFieldMetadata("JobsTotalCount", typeof(int), r => r.JobsTotalCount, csvToStringEncoded);
+            yield return new DeviceExportFieldMetadata("JobsOpenCount", typeof(int), r => r.JobsOpenCount, csvToStringEncoded);
 
             // Attachments
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("AttachmentsCount", r => r.AttachmentsCount.ToString(), false);
+            yield return new DeviceExportFieldMetadata("AttachmentsCount", typeof(int), r => r.AttachmentsCount, csvToStringEncoded);
 
             // Certificates
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("CertificateName", r => r.DeviceCertificate != null ? r.DeviceCertificate.Name : null, true);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("CertificateAllocatedDate", r => r.DeviceCertificate != null && r.DeviceCertificate.AllocatedDate.HasValue ? r.DeviceCertificate.AllocatedDate.Value.ToString(DateTimeFormat) : null, false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("CertificateExpirationDate", r => r.DeviceCertificate != null && r.DeviceCertificate.ExpirationDate.HasValue ? r.DeviceCertificate.ExpirationDate.Value.ToString(DateTimeFormat) : null, false);
-            yield return new Tuple<string, Func<DeviceExportRecord, string>, bool>("CertificateProviderId", r => r.DeviceCertificate != null ? r.DeviceCertificate.ProviderId : null, true);
+            yield return new DeviceExportFieldMetadata("CertificateName", typeof(string), r => r.DeviceCertificate?.Name, csvStringEncoded);
+            yield return new DeviceExportFieldMetadata("CertificateAllocatedDate", typeof(DateTime), r => r.DeviceCertificate?.AllocatedDate, csvNullableDateTimeEncoded);
+            yield return new DeviceExportFieldMetadata("CertificateExpirationDate", typeof(DateTime), r => r.DeviceCertificate?.ExpirationDate, csvNullableDateTimeEncoded);
+            yield return new DeviceExportFieldMetadata("CertificateProviderId", typeof(string), r => r.DeviceCertificate?.ProviderId, csvStringEncoded);
         }
 
     }

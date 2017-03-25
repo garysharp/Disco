@@ -1,6 +1,7 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Importing;
+using Disco.Services.Interop.ActiveDirectory;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -24,53 +25,67 @@ namespace Disco.Services.Devices.Importing.Fields
         public override string FriendlyValue { get { return parsedValue.HasValue ? parsedValue.Value.ToString(DateFormat) : rawValue; } }
         public override string FriendlyPreviousValue { get { return previousValue.HasValue ? previousValue.Value.ToString(DateFormat) : null; } }
 
-        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, DeviceImportContext Context, int RecordIndex, string DeviceSerialNumber, Device ExistingDevice, Dictionary<DeviceImportFieldTypes, string> Values, string Value)
+        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
         {
-            if (string.IsNullOrWhiteSpace(Value))
+            if (!DataReader.TryGetNullableDateTime(ColumnIndex, out parsedValue))
             {
-                rawValue = null;
-                parsedValue = null;
+                rawValue = DataReader.GetString(ColumnIndex);
+                return Error($"Cannot parse the value as a Date/Time using {CultureInfo.CurrentCulture.Name} culture (system default).");
             }
-            else
+
+            if (parsedValue.HasValue)
             {
-                DateTime valueDateTime;
-                if (!DateTime.TryParse(Value.Trim(), CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.AssumeLocal, out valueDateTime))
-                {
-                    rawValue = Value.Trim();
-                    return Error(string.Format("Cannot parse the value as a Date/Time using {0} culture (system default).", CultureInfo.CurrentCulture.Name));
-                }
-                else
-                {
-                    // Accuracy to the second (remove any milliseconds)
-                    parsedValue = new DateTime((valueDateTime.Ticks / 10000000L) * 10000000L);
-                }
+                // Accuracy to the second (remove any milliseconds)
+                parsedValue = new DateTime((parsedValue.Value.Ticks / 10000000L) * 10000000L);
             }
 
             string errorMessage;
-            if (parsedValue.HasValue && !CanDecommissionDevice(ExistingDevice, Values, out errorMessage))
+            if (parsedValue.HasValue && !CanDecommissionDevice(ExistingDevice, Context, DataReader, out errorMessage))
                 return Error(errorMessage);
 
-            setReason = !Values.ContainsKey(DeviceImportFieldTypes.DeviceDecommissionedReason) ||
-                (parsedValue.HasValue && string.IsNullOrWhiteSpace(Values[DeviceImportFieldTypes.DeviceDecommissionedReason]));
+            var decommissionReasonIndex = Context.GetColumnByType(DeviceImportFieldTypes.DeviceDecommissionedReason);
+            setReason = !decommissionReasonIndex.HasValue ||
+                (parsedValue.HasValue && string.IsNullOrWhiteSpace(DataReader.GetString(decommissionReasonIndex.Value)));
 
-            if (ExistingDevice != null && ExistingDevice.DecommissionedDate != parsedValue)
+            if (ExistingDevice != null && ExistingDevice.DecommissionedDate.HasValue)
             {
-                previousValue = ExistingDevice.DecommissionedDate;
+                // Accuracy to the second (remove any milliseconds)
+                previousValue = new DateTime((ExistingDevice.DecommissionedDate.Value.Ticks / 10000000L) * 10000000L);
+            }
+            else
+            {
+                previousValue = null;
+            }
+
+            if (previousValue != parsedValue)
+            {
                 return Success(EntityState.Modified);
             }
             else
+            {
+                previousValue = null;
                 return Success(EntityState.Unchanged);
+            }
         }
 
         public override bool Apply(DiscoDataContext Database, Device Device)
         {
-            if (this.FieldAction == EntityState.Modified)
+            if (FieldAction == EntityState.Modified)
             {
                 // Decommission or Recommission Device
-                Device.DecommissionedDate = this.parsedValue;
+                Device.DecommissionedDate = parsedValue;
 
                 if (setReason)
-                    Device.DecommissionReason = this.parsedValue.HasValue ? (DecommissionReasons?)DecommissionReasons.EndOfLife : null;
+                {
+                    if (parsedValue.HasValue && !Device.DecommissionReason.HasValue)
+                    {
+                        Device.DecommissionReason = DecommissionReasons.EndOfLife;
+                    }
+                    else if (!parsedValue.HasValue && Device.DecommissionReason.HasValue)
+                    {
+                        Device.DecommissionReason = null;
+                    }
+                }
 
                 return true;
             }
@@ -80,22 +95,52 @@ namespace Disco.Services.Devices.Importing.Fields
             }
         }
 
-        public override int? GuessHeader(DiscoDataContext Database, DeviceImportContext Context)
+        public override void Applied(DiscoDataContext Database, Device Device, ref bool DeviceADDescriptionSet)
         {
-            // column name
-            var possibleColumns = Context.Header
-                .Select((h, i) => Tuple.Create(h, i))
-                .Where(h => h.Item1.Item2 == DeviceImportFieldTypes.IgnoreColumn &&
-                    h.Item1.Item1.IndexOf("decommission date", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    h.Item1.Item1.IndexOf("decommissiondate", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    h.Item1.Item1.IndexOf("decommissioned date", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    h.Item1.Item1.IndexOf("decommissioneddate", System.StringComparison.OrdinalIgnoreCase) >= 0
-                    );
+            if (ActiveDirectory.IsValidDomainAccountId(Device.DeviceDomainId))
+            {
+                var adAccount = Device.ActiveDirectoryAccount();
 
-            return possibleColumns.Select(h => (int?)h.Item2).FirstOrDefault();
+                if (adAccount != null && !adAccount.IsCriticalSystemObject)
+                {
+                    if (Device.DecommissionedDate.HasValue)
+                    {
+                        // Disable AD Account
+                        adAccount.DisableAccount();
+                    }
+                    else
+                    {
+                        // Enable AD Account
+                        adAccount.EnableAccount();
+                    }
+
+                    if (!DeviceADDescriptionSet)
+                    {
+                        adAccount.SetDescription(Device);
+                        DeviceADDescriptionSet = true;
+                    }
+                }
+            }
         }
 
-        public static bool CanDecommissionDevice(Device Device, Dictionary<DeviceImportFieldTypes, string> Values, out string ErrorMessage)
+        public override int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader)
+        {
+            // column name
+            var possibleColumns = Context.Columns
+                .Where(h => h.Type == DeviceImportFieldTypes.IgnoreColumn &&
+                    h.Name.IndexOf("decommission date", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    h.Name.IndexOf("decommissiondate", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    h.Name.IndexOf("decommissioned date", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    h.Name.IndexOf("decommissioneddate", StringComparison.OrdinalIgnoreCase) >= 0
+                    );
+
+            possibleColumns = possibleColumns
+                .Where(h => DataReader.TestAllNullableDateTime(h.Index)).ToList();
+
+            return possibleColumns.Select(h => (int?)h.Index).FirstOrDefault();
+        }
+
+        public static bool CanDecommissionDevice(Device Device, IDeviceImportContext Context, IDeviceImportDataReader DataReader, out string ErrorMessage)
         {
             if (Device == null)
             {
@@ -105,13 +150,14 @@ namespace Disco.Services.Devices.Importing.Fields
 
             // Check device is assigned (or being removed in this import)
 
-            if ((!Values.ContainsKey(DeviceImportFieldTypes.AssignedUserId) && Device.AssignedUserId != null) ||
-                (Values.ContainsKey(DeviceImportFieldTypes.AssignedUserId) && !string.IsNullOrWhiteSpace(Values[DeviceImportFieldTypes.AssignedUserId])))
+            var assignedUserIndex = Context.GetColumnByType(DeviceImportFieldTypes.AssignedUserId);
+            if ((!assignedUserIndex.HasValue && Device.AssignedUserId != null) ||
+                (assignedUserIndex.HasValue && !string.IsNullOrWhiteSpace(DataReader.GetString(assignedUserIndex.Value))))
             {
                 if (Device.AssignedUserId != null)
-                    ErrorMessage = string.Format("The device is assigned to a user ({0} [{1}]) and cannot be decommissioned", Device.AssignedUser.DisplayName, Device.AssignedUser.UserId);
+                    ErrorMessage = $"The device is assigned to a user ({Device.AssignedUser.DisplayName} [{Device.AssignedUser.UserId}]) and cannot be decommissioned";
                 else
-                    ErrorMessage = string.Format("The device is being assigned to a user ({0}) and cannot be decommissioned", Values[DeviceImportFieldTypes.AssignedUserId]);
+                    ErrorMessage = $"The device is being assigned to a user ({DataReader.GetString(assignedUserIndex.Value)}) and cannot be decommissioned";
                 return false;
             }
 
@@ -119,7 +165,7 @@ namespace Disco.Services.Devices.Importing.Fields
             var openJobCount = Device.Jobs.Count(j => !j.ClosedDate.HasValue);
             if (openJobCount > 0)
             {
-                ErrorMessage = string.Format("The device is associated with {0} open job{1} and cannot be decommissioned", openJobCount, openJobCount == 1 ? null : "s");
+                ErrorMessage = $"The device is associated with {openJobCount} open job{(openJobCount == 1 ? null : "s")} and cannot be decommissioned";
                 return false;
             }
 

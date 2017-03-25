@@ -19,14 +19,16 @@ namespace Disco.Services.Devices.Importing.Fields
         public override string FriendlyValue { get { return parsedValue; } }
         public override string FriendlyPreviousValue { get { return parsedValue; } }
 
-        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, DeviceImportContext Context, int RecordIndex, string DeviceSerialNumber, Device ExistingDevice, Dictionary<DeviceImportFieldTypes, string> Values, string Value)
+        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
         {
+            var value = DataReader.GetString(ColumnIndex);
+
             // Validate
-            if (string.IsNullOrWhiteSpace(Value))
+            if (string.IsNullOrWhiteSpace(value))
                 return Error("The Device Serial Number is required");
             else
             {
-                parsedValue = Value.Trim();
+                parsedValue = value.Trim();
                 if (parsedValue.Length > maxLength)
                     return Error($"Cannot be more than {maxLength} characters");
                 if (parsedValue.Contains(@"/"))
@@ -36,13 +38,11 @@ namespace Disco.Services.Devices.Importing.Fields
             }
 
             // Duplicate
-            var duplicate = Context.RawData
-                .Take(RecordIndex)
-                .Select((r, i) => Tuple.Create(i, ParseRawDeviceSerialNumber(r[Context.HeaderDeviceSerialNumberIndex])))
-                .Where(r => IsDeviceSerialNumberValid(r.Item2))
-                .FirstOrDefault(r => r.Item2.Equals(parsedValue, StringComparison.OrdinalIgnoreCase));
+            var duplicate = PreviousRecords
+                .Where(r => IsDeviceSerialNumberValid(r.DeviceSerialNumber))
+                .FirstOrDefault(r => r.DeviceSerialNumber.Equals(parsedValue, StringComparison.OrdinalIgnoreCase));
             if (duplicate != null)
-                return Error($"This Device Serial Number was already present on Row {duplicate.Item1 + 1}");
+                return Error($"This Device Serial Number was already present on Row {DataReader.GetRowNumber(duplicate.Index)}");
 
             // No action required
             return Success(EntityState.Unchanged);
@@ -54,18 +54,14 @@ namespace Disco.Services.Devices.Importing.Fields
             return false;
         }
 
-        public override int? GuessHeader(DiscoDataContext Database, DeviceImportContext Context)
+        public override int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader)
         {
             // 'serial' in column name
-            var possibleColumns = Context.Header
-                .Select((h, i) => Tuple.Create(h, i))
-                .Where(h => h.Item1.Item2 == DeviceImportFieldTypes.IgnoreColumn && h.Item1.Item1.IndexOf("serial", System.StringComparison.OrdinalIgnoreCase) >= 0);
+            var possibleColumns = Context.Columns
+                .Where(h => h.Type == DeviceImportFieldTypes.IgnoreColumn && h.Name.IndexOf("serial", StringComparison.OrdinalIgnoreCase) >= 0);
 
             // All Values
-            possibleColumns = possibleColumns.Where(h =>
-            {
-                return Context.RawData.Select(v => v[h.Item2]).All(v => !string.IsNullOrWhiteSpace(v));
-            }).ToList();
+            possibleColumns = possibleColumns.Where(h => DataReader.TestAllNotEmpty(h.Index)).ToList();
 
             if (possibleColumns.Count() > 1)
             {
@@ -74,17 +70,17 @@ namespace Disco.Services.Devices.Importing.Fields
                 {
                     try
                     {
-                        var top50SerialNumbers = Context.RawData.Select(v => v[h.Item2]).Take(50).ToArray();
+                        var top50SerialNumbers = DataReader.GetStrings(h.Index).Take(50).ToList();
                         return Database.Devices.Count(d => top50SerialNumbers.Contains(d.SerialNumber)) > 0;
                     }
                     catch (Exception) { return false; }
-                }).Select(h => (int?)h.Item2).FirstOrDefault();
+                }).Select(h => (int?)h.Index).FirstOrDefault();
 
                 if (possibleColumnIndex.HasValue)
                     return possibleColumnIndex;
             }
 
-            return possibleColumns.Select(h => (int?)h.Item2).FirstOrDefault();
+            return possibleColumns.Select(h => (int?)h.Index).FirstOrDefault();
         }
 
         public static string ParseRawDeviceSerialNumber(string DeviceSerialNumber)
@@ -98,5 +94,6 @@ namespace Disco.Services.Devices.Importing.Fields
         {
             return DeviceSerialNumber != null && DeviceSerialNumber.Length <= maxLength;
         }
+
     }
 }

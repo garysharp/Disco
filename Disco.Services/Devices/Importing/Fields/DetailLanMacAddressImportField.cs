@@ -19,13 +19,15 @@ namespace Disco.Services.Devices.Importing.Fields
         public override string FriendlyValue { get { return parsedValue; } }
         public override string FriendlyPreviousValue { get { return previousValue; } }
 
-        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, DeviceImportContext Context, int RecordIndex, string DeviceSerialNumber, Device ExistingDevice, Dictionary<DeviceImportFieldTypes, string> Values, string Value)
+        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
         {
-            if (string.IsNullOrWhiteSpace(Value))
+            var value = DataReader.GetString(ColumnIndex);
+
+            if (string.IsNullOrWhiteSpace(value))
                 parsedValue = null;
             else
             {
-                parsedValue = Value.Trim();
+                parsedValue = value.Trim();
             }
 
             if (ExistingDevice == null && parsedValue != null)
@@ -54,8 +56,8 @@ namespace Disco.Services.Devices.Importing.Fields
 
         public override bool Apply(DiscoDataContext Database, Device Device)
         {
-            if (this.FieldAction == EntityState.Added ||
-                this.FieldAction == EntityState.Modified)
+            if (FieldAction == EntityState.Added ||
+                FieldAction == EntityState.Modified)
             {
 
                 DeviceDetail detail = Database.DeviceDetails.FirstOrDefault(dd =>
@@ -84,23 +86,22 @@ namespace Disco.Services.Devices.Importing.Fields
             }
         }
 
-        public override int? GuessHeader(DiscoDataContext Database, DeviceImportContext Context)
+        public override int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader)
         {
             // column name
-            var possibleColumns = Context.Header
-                .Select((h, i) => Tuple.Create(h, i))
-                .Where(h => h.Item1.Item2 == DeviceImportFieldTypes.IgnoreColumn && (
-                    h.Item1.Item1.IndexOf("wlan", System.StringComparison.OrdinalIgnoreCase) < 0 &&
-                    h.Item1.Item1.IndexOf("wireless", System.StringComparison.OrdinalIgnoreCase) < 0 && (
-                    h.Item1.Item1.IndexOf("lan address", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    h.Item1.Item1.IndexOf("lan mac", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    h.Item1.Item1.IndexOf("lan mac address", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    h.Item1.Item1.IndexOf("lanaddress", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    h.Item1.Item1.IndexOf("lanmac", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    h.Item1.Item1.IndexOf("lanmacaddress", System.StringComparison.OrdinalIgnoreCase) >= 0
+            var possibleColumns = Context.Columns
+                .Where(h => h.Type == DeviceImportFieldTypes.IgnoreColumn && (
+                    h.Name.IndexOf("wlan", StringComparison.OrdinalIgnoreCase) < 0 &&
+                    h.Name.IndexOf("wireless", StringComparison.OrdinalIgnoreCase) < 0 && (
+                    h.Name.IndexOf("lan address", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    h.Name.IndexOf("lan mac", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    h.Name.IndexOf("lan mac address", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    h.Name.IndexOf("lanaddress", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    h.Name.IndexOf("lanmac", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    h.Name.IndexOf("lanmacaddress", StringComparison.OrdinalIgnoreCase) >= 0
                     )));
 
-            return possibleColumns.Select(h => (int?)h.Item2).FirstOrDefault();
+            return possibleColumns.Select(h => (int?)h.Index).FirstOrDefault();
         }
     }
 }

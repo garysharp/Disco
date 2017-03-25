@@ -4,8 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Disco.Data.Repository;
@@ -81,11 +79,11 @@ namespace Disco.Services.Plugins
 
         public List<PluginFeatureManifest> GetFeatures(Type FeatureCategoryType)
         {
-            return this.Features.Where(fm => fm.CategoryType.IsAssignableFrom(FeatureCategoryType)).ToList();
+            return Features.Where(fm => fm.CategoryType.IsAssignableFrom(FeatureCategoryType)).ToList();
         }
         public PluginFeatureManifest GetFeature(string PluginFeatureId)
         {
-            return this.Features.Where(fm => fm.Id == PluginFeatureId).FirstOrDefault();
+            return Features.Where(fm => fm.Id == PluginFeatureId).FirstOrDefault();
         }
 
         public Plugin CreateInstance()
@@ -135,6 +133,7 @@ namespace Disco.Services.Plugins
             return new List<string>()
             {
                 "C5",
+                "ClosedXML",
                 "Common.Logging",
                 "Disco.BI",
                 "Disco.Data",
@@ -142,6 +141,7 @@ namespace Disco.Services.Plugins
                 "Disco.Services",
                 "Disco.Web",
                 "Disco.Web.Extensions",
+                "DocumentFormat.OpenXml",
                 "EntityFramework",
                 "Exceptionless",
                 "Exceptionless.Models",
@@ -159,7 +159,7 @@ namespace Disco.Services.Plugins
                 "Owin",
                 "PdfiumViewer",
                 "PdfSharp",
-                "PList",
+                "PListNet",
                 "Quartz",
                 "RazorGenerator.Mvc",
                 "Renci.SshNet",
@@ -183,7 +183,7 @@ namespace Disco.Services.Plugins
                 "System.Web.WebPages.Razor",
                 "T4MVCExtensions",
                 "WebActivatorEx",
-                "zxing"
+                "ZXingNet"
             };
         });
         public static IReadOnlyCollection<string> PluginExcludedAssemblies
@@ -297,34 +297,34 @@ namespace Disco.Services.Plugins
             if (!environmentInitalized)
             {
 
-                var assemblyFullPath = Path.Combine(this.PluginLocation, this.AssemblyPath);
+                var assemblyFullPath = Path.Combine(PluginLocation, AssemblyPath);
 
                 if (!File.Exists(assemblyFullPath))
-                    throw new FileNotFoundException(string.Format("Plugin Assembly [{0}] not found at: {1}", this.Id, assemblyFullPath), assemblyFullPath);
+                    throw new FileNotFoundException(string.Format("Plugin Assembly [{0}] not found at: {1}", Id, assemblyFullPath), assemblyFullPath);
 
-                if (this.PluginAssembly == null)
-                    this.PluginAssembly = Assembly.LoadFile(assemblyFullPath);
+                if (PluginAssembly == null)
+                    PluginAssembly = Assembly.LoadFile(assemblyFullPath);
 
-                if (this.PluginAssembly == null)
-                    throw new InvalidOperationException(string.Format("Unable to load Plugin Assembly [{0}] at: {1}", this.Id, assemblyFullPath));
+                if (PluginAssembly == null)
+                    throw new InvalidOperationException(string.Format("Unable to load Plugin Assembly [{0}] at: {1}", Id, assemblyFullPath));
 
-                PluginsLog.LogInitializingPluginAssembly(this.PluginAssembly);
+                PluginsLog.LogInitializingPluginAssembly(PluginAssembly);
 
                 // Check Manifest/Assembly Versions Match
-                if (this.Version != this.PluginAssembly.GetName().Version)
-                    throw new InvalidOperationException(string.Format("The plugin [{0}] manifest version [{1}] doesn't match the plugin assembly [{2} : {3}]", this.Id, this.Version, assemblyFullPath, this.PluginAssembly.GetName().Version));
+                if (Version != PluginAssembly.GetName().Version)
+                    throw new InvalidOperationException(string.Format("The plugin [{0}] manifest version [{1}] doesn't match the plugin assembly [{2} : {3}]", Id, Version, assemblyFullPath, PluginAssembly.GetName().Version));
 
-                if (this.Type == null)
-                    this.Type = this.PluginAssembly.GetType(this.TypeName, true, true);
+                if (Type == null)
+                    Type = PluginAssembly.GetType(TypeName, true, true);
 
-                if (this.ConfigurationHandlerType == null)
-                    this.ConfigurationHandlerType = this.PluginAssembly.GetType(this.ConfigurationHandlerTypeName, true, true);
+                if (ConfigurationHandlerType == null)
+                    ConfigurationHandlerType = PluginAssembly.GetType(ConfigurationHandlerTypeName, true, true);
 
-                if (!string.IsNullOrEmpty(this.WebHandlerTypeName) && this.WebHandlerType == null)
-                    this.WebHandlerType = this.PluginAssembly.GetType(this.WebHandlerTypeName, true, true);
+                if (!string.IsNullOrEmpty(WebHandlerTypeName) && WebHandlerType == null)
+                    WebHandlerType = PluginAssembly.GetType(WebHandlerTypeName, true, true);
 
                 // Update non-static values
-                this.StorageLocation = Path.Combine(Database.DiscoConfiguration.PluginStorageLocation, this.Id);
+                StorageLocation = Path.Combine(Database.DiscoConfiguration.PluginStorageLocation, Id);
 
                 environmentInitalized = true;
             }
@@ -336,7 +336,7 @@ namespace Disco.Services.Plugins
             // Initialize Plugin
             InitializePluginEnvironment(Database);
 
-            using (var pluginInstance = this.CreateInstance())
+            using (var pluginInstance = CreateInstance())
             {
                 pluginInstance.AfterUpdate(Database, PreviousManifest);
             }
@@ -348,7 +348,7 @@ namespace Disco.Services.Plugins
             // Initialize Plugin
             InitializePluginEnvironment(Database);
 
-            using (var pluginInstance = this.CreateInstance())
+            using (var pluginInstance = CreateInstance())
             {
                 pluginInstance.Uninstall(Database, UninstallData, Status);
             }
@@ -360,7 +360,7 @@ namespace Disco.Services.Plugins
             // Initialize Plugin
             InitializePluginEnvironment(Database);
 
-            using (var pluginInstance = this.CreateInstance())
+            using (var pluginInstance = CreateInstance())
             {
                 pluginInstance.Install(Database, Status);
             }
@@ -373,7 +373,7 @@ namespace Disco.Services.Plugins
             InitializePluginEnvironment(Database);
 
             // Initialize Plugin
-            using (var pluginInstance = this.CreateInstance())
+            using (var pluginInstance = CreateInstance())
             {
                 pluginInstance.Initialize(Database);
             }
@@ -398,12 +398,12 @@ namespace Disco.Services.Plugins
         public PluginConfigurationHandler CreateConfigurationHandler()
         {
             // Configuration Handler is Required
-            if (this.ConfigurationHandlerType == null)
+            if (ConfigurationHandlerType == null)
                 throw new ArgumentNullException("ConfigurationType");
-            if (!typeof(PluginConfigurationHandler).IsAssignableFrom(this.ConfigurationHandlerType))
+            if (!typeof(PluginConfigurationHandler).IsAssignableFrom(ConfigurationHandlerType))
                 throw new ArgumentException("The Plugin ConfigurationHandlerType must inherit Disco.Services.Plugins.PluginConfigurationHandler", "ConfigurationHandlerType");
 
-            var handler = (PluginConfigurationHandler)Activator.CreateInstance(this.ConfigurationHandlerType);
+            var handler = (PluginConfigurationHandler)Activator.CreateInstance(ConfigurationHandlerType);
 
             handler.Manifest = this;
 
@@ -414,7 +414,7 @@ namespace Disco.Services.Plugins
         {
             get
             {
-                return string.Format("/Config/Plugins/{0}", HttpUtility.UrlEncode(this.Id));
+                return string.Format("/Config/Plugins/{0}", HttpUtility.UrlEncode(Id));
             }
         }
         [JsonIgnore]
@@ -422,31 +422,31 @@ namespace Disco.Services.Plugins
         {
             get
             {
-                return this.WebHandlerType != null;
+                return WebHandlerType != null;
             }
         }
         public PluginWebHandler CreateWebHandler(Controller HostController)
         {
             // Web Handler is Not Required
-            if (this.WebHandlerType == null)
+            if (WebHandlerType == null)
                 return null;
 
-            if (!typeof(PluginWebHandler).IsAssignableFrom(this.WebHandlerType))
+            if (!typeof(PluginWebHandler).IsAssignableFrom(WebHandlerType))
                 throw new ArgumentException("The Plugin WebHandlerType must inherit Disco.Services.Plugins.PluginWebHandler", "WebHandlerType");
 
             // Determine WebHandler Authorize Attributes
-            if (this.WebHandlerAuthorizers == null)
+            if (WebHandlerAuthorizers == null)
             {
-                this.WebHandlerAuthorizers = this.WebHandlerType.GetCustomAttributes<DiscoAuthorizeBaseAttribute>(true).ToArray();
+                WebHandlerAuthorizers = WebHandlerType.GetCustomAttributes<DiscoAuthorizeBaseAttribute>(true).ToArray();
             }
-            if (this.WebHandlerAuthorizers.Length > 0)
+            if (WebHandlerAuthorizers.Length > 0)
             {
-                var attributeDenied = this.WebHandlerAuthorizers.FirstOrDefault(a => !a.IsAuthorized(HostController.HttpContext));
+                var attributeDenied = WebHandlerAuthorizers.FirstOrDefault(a => !a.IsAuthorized(HostController.HttpContext));
                 if (attributeDenied != null)
-                    throw new AccessDeniedException(attributeDenied.HandleUnauthorizedMessage(), string.Format("[Plugin]::{0}::[Handler]", this.Id));
+                    throw new AccessDeniedException(attributeDenied.HandleUnauthorizedMessage(), string.Format("[Plugin]::{0}::[Handler]", Id));
             }
 
-            var handler = (PluginWebHandler)Activator.CreateInstance(this.WebHandlerType);
+            var handler = (PluginWebHandler)Activator.CreateInstance(WebHandlerType);
 
             handler.Manifest = this;
             handler.HostController = HostController;
@@ -458,7 +458,7 @@ namespace Disco.Services.Plugins
         {
             get
             {
-                return string.Format("/Plugin/{0}", HttpUtility.UrlEncode(this.Id));
+                return string.Format("/Plugin/{0}", HttpUtility.UrlEncode(Id));
             }
         }
         public string WebActionUrl(string Action)
@@ -467,7 +467,7 @@ namespace Disco.Services.Plugins
                 throw new NotSupportedException("This plugin doesn't have a web handler");
 
             var url = UrlHelper.GenerateUrl("Plugin", null, null,
-                new RouteValueDictionary(new Dictionary<string, object>() { { "PluginId", this.Id }, { "PluginAction", Action } }),
+                new RouteValueDictionary(new Dictionary<string, object>() { { "PluginId", Id }, { "PluginAction", Action } }),
                 RouteTable.Routes, HttpContext.Current.Request.RequestContext, false);
 
             return url;
@@ -481,17 +481,17 @@ namespace Disco.Services.Plugins
             if (Resource.Contains(".."))
                 throw new ArgumentException("Resource Paths cannot navigate to the parent", "Resource");
 
-            var resourcePath = Path.Combine(this.PluginLocation, "WebResources", Resource.Replace(@"/", @"\"));
+            var resourcePath = Path.Combine(PluginLocation, "WebResources", Resource.Replace(@"/", @"\"));
 
             Tuple<string, DateTime> resourceHash;
-            string resourceKey = string.Format("{0}://{1}", this.Name, Resource);
+            string resourceKey = string.Format("{0}://{1}", Name, Resource);
             if (WebResourceHashes.TryGetValue(resourceKey, out resourceHash))
             {
 #if DEBUG
                 var fileDateCheck = System.IO.File.GetLastWriteTime(resourcePath);
                 if (fileDateCheck == resourceHash.Item2)
 #endif
-                    return new Tuple<string, string>(resourcePath, resourceHash.Item1);
+                return new Tuple<string, string>(resourcePath, resourceHash.Item1);
             }
 
             if (!File.Exists(resourcePath))
@@ -513,10 +513,10 @@ namespace Disco.Services.Plugins
         }
         public string WebResourceUrl(string Resource)
         {
-            var resourcePath = this.WebResourcePath(Resource);
+            var resourcePath = WebResourcePath(Resource);
 
             var url = UrlHelper.GenerateUrl("Plugin_Resources", null, null,
-                new RouteValueDictionary(new Dictionary<string, object>() { { "PluginId", this.Id }, { "res", Resource } }),
+                new RouteValueDictionary(new Dictionary<string, object>() { { "PluginId", Id }, { "res", Resource } }),
                 RouteTable.Routes, HttpContext.Current.Request.RequestContext, false);
 
             url += string.Format("?v={0}", resourcePath.Item2);
@@ -526,7 +526,7 @@ namespace Disco.Services.Plugins
 
         public void LogException(Exception PluginException)
         {
-            PluginsLog.LogPluginException(this.ToString(), PluginException);
+            PluginsLog.LogPluginException(ToString(), PluginException);
         }
         public void LogWarning(string Message)
         {
@@ -547,7 +547,7 @@ namespace Disco.Services.Plugins
 
         public override string ToString()
         {
-            return string.Format("{0} [{1} v{2}]", this.Name, this.Id, this.VersionFormatted);
+            return string.Format("{0} [{1} v{2}]", Name, Id, VersionFormatted);
         }
     }
 }

@@ -22,18 +22,18 @@ namespace Disco.Services.Devices.Importing.Fields
         public override string FriendlyValue { get { return friendlyValue; } }
         public override string FriendlyPreviousValue { get { return friendlyPreviousValue; } }
 
-        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, DeviceImportContext Context, int RecordIndex, string DeviceSerialNumber, Device ExistingDevice, Dictionary<DeviceImportFieldTypes, string> Values, string Value)
+        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
         {
-            friendlyValue = Value;
+            var value = friendlyValue = DataReader.GetString(ColumnIndex);
 
-            if (string.IsNullOrWhiteSpace(Value))
+            if (string.IsNullOrWhiteSpace(value))
             {
                 friendlyValue = null;
                 parsedValue = null;
             }
             else
             {
-                parsedValue = Value.Trim();
+                parsedValue = value.Trim();
 
                 parsedValue = ActiveDirectory.ParseDomainAccountId(parsedValue);
 
@@ -48,25 +48,32 @@ namespace Disco.Services.Devices.Importing.Fields
                 // Check User Exists
 
                 // Try Database
-                User user = Database.Users.FirstOrDefault(u => u.UserId == parsedValue);
-                try
+                using (var database = new DiscoDataContext())
                 {
-                    // Try Updating from AD
-                    user = UserService.GetUser(parsedValue, Database);
+                    User user = database.Users.FirstOrDefault(u => u.UserId == parsedValue);
+                    try
+                    {
+                        // Try Updating from AD
+                        user = UserService.GetUser(parsedValue, database);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (user == null)
+                            return Error(ex.Message);
+                    }
+                    parsedValue = user.UserId;
+                    friendlyValue = $"{user.DisplayName} [{user.UserId}]";
                 }
-                catch (Exception ex)
-                {
-                    if (user == null)
-                        return Error(ex.Message);
-                }
-                parsedValue = user.UserId;
-                friendlyValue = string.Format("{0} [{1}]", user.DisplayName, user.UserId);
 
                 // Check Decommissioned
                 bool? importDecommissioning = null;
-                if (Values.ContainsKey(DeviceImportFieldTypes.DeviceDecommissionedDate) || Values.ContainsKey(DeviceImportFieldTypes.DeviceDecommissionedReason))
-                    importDecommissioning = Values.ContainsKey(DeviceImportFieldTypes.DeviceDecommissionedDate) && !string.IsNullOrWhiteSpace(Values[DeviceImportFieldTypes.DeviceDecommissionedDate]) ||
-                        Values.ContainsKey(DeviceImportFieldTypes.DeviceDecommissionedReason) && !string.IsNullOrWhiteSpace(Values[DeviceImportFieldTypes.DeviceDecommissionedReason]);
+                int? decommissionedDateIndex = Context.GetColumnByType(DeviceImportFieldTypes.DeviceDecommissionedDate);
+                int? decommissionedReasonIndex = Context.GetColumnByType(DeviceImportFieldTypes.DeviceDecommissionedReason);
+                if (decommissionedDateIndex.HasValue || decommissionedReasonIndex.HasValue)
+                {
+                    importDecommissioning = (decommissionedDateIndex.HasValue && !string.IsNullOrWhiteSpace(DataReader.GetString(decommissionedDateIndex.Value))) ||
+                        (decommissionedReasonIndex.HasValue && !string.IsNullOrWhiteSpace(DataReader.GetString(decommissionedReasonIndex.Value)));
+                }
 
                 if (importDecommissioning.HasValue && importDecommissioning.Value)
                     return Error("Cannot assign a user to a device being decommissioned");
@@ -84,7 +91,7 @@ namespace Disco.Services.Devices.Importing.Fields
             else if (ExistingDevice != null && ExistingDevice.AssignedUserId != parsedValue)
             {
                 if (ExistingDevice.AssignedUserId != null)
-                    friendlyPreviousValue = string.Format("{0} [{1}]", ExistingDevice.AssignedUser.DisplayName, ExistingDevice.AssignedUser.UserId);
+                    friendlyPreviousValue = $"{ExistingDevice.AssignedUser.DisplayName} [{ExistingDevice.AssignedUser.UserId}]";
                 else
                     friendlyPreviousValue = null;
 
@@ -96,7 +103,7 @@ namespace Disco.Services.Devices.Importing.Fields
 
         public override bool Apply(DiscoDataContext Database, Device Device)
         {
-            if (this.FieldAction == EntityState.Modified)
+            if (FieldAction == EntityState.Modified)
             {
                 // Remove Current Assignments
                 var currentAssignments = Device.DeviceUserAssignments.Where(dua => !dua.UnassignedDate.HasValue);
@@ -130,16 +137,31 @@ namespace Disco.Services.Devices.Importing.Fields
             }
         }
 
-        public override int? GuessHeader(DiscoDataContext Database, DeviceImportContext Context)
+        public override void Applied(DiscoDataContext Database, Device Device, ref bool DeviceADDescriptionSet)
+        {
+            if (!DeviceADDescriptionSet)
+            {
+                if (ActiveDirectory.IsValidDomainAccountId(Device.DeviceDomainId))
+                {
+                    var adAccount = Device.ActiveDirectoryAccount();
+
+                    if (adAccount != null && !adAccount.IsCriticalSystemObject)
+                    {
+                        adAccount.SetDescription(Device);
+                        DeviceADDescriptionSet = true;
+                    }
+                }
+            }
+        }
+
+        public override int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader)
         {
             // column name
-            var possibleColumns = Context.Header
-                .Select((h, i) => Tuple.Create(h, i))
-                .Where(h => h.Item1.Item2 == DeviceImportFieldTypes.IgnoreColumn &&
-                    h.Item1.Item1.IndexOf("user", System.StringComparison.OrdinalIgnoreCase) >= 0
-                    );
+            var possibleColumns = Context.Columns
+                .Where(h => h.Type == DeviceImportFieldTypes.IgnoreColumn &&
+                    h.Name.IndexOf("user", StringComparison.OrdinalIgnoreCase) >= 0);
 
-            return possibleColumns.Select(h => (int?)h.Item2).FirstOrDefault();
+            return possibleColumns.Select(h => (int?)h.Index).FirstOrDefault();
         }
     }
 }

@@ -12,10 +12,7 @@ namespace Disco.Models.Services.Devices.Exporting
         public DeviceExportTypes ExportType { get; set; }
         public int? ExportTypeTargetId { get; set; }
         
-        /// <summary>
-        /// Adds '=' to the beginning of the string to stop Excel removing the leading zeros
-        /// </summary>
-        public bool ExcelCsvFormat { get; set; }
+        public bool ExcelFormat { get; set; }
 
         // Device
         [Display(ShortName = "Device", Name = "Serial Number", Description = "The device serial number")]
@@ -135,7 +132,7 @@ namespace Disco.Models.Services.Devices.Exporting
             return new DeviceExportOptions()
             {
                 ExportType = DeviceExportTypes.All,
-                ExcelCsvFormat = true,
+                ExcelFormat = true,
                 DeviceSerialNumber = true,
                 ModelId = true,
                 ProfileId = true,

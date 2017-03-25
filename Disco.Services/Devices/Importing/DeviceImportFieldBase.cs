@@ -1,12 +1,8 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Importing;
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Services.Devices.Importing
 {
@@ -22,21 +18,22 @@ namespace Disco.Services.Devices.Importing
         public abstract string FriendlyValue { get; }
         public abstract string FriendlyPreviousValue { get; }
 
-        public abstract bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, DeviceImportContext Context, int RecordIndex, string DeviceSerialNumber, Device ExistingDevice, Dictionary<DeviceImportFieldTypes, string> Values, string Value);
+        public abstract bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex);
         public abstract bool Apply(DiscoDataContext Database, Device Device);
+        public virtual void Applied(DiscoDataContext Database, Device Device, ref bool DeviceADDescriptionSet) { return; }
 
-        public abstract int? GuessHeader(DiscoDataContext Database, DeviceImportContext Context);
+        public abstract int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader);
 
         #region Helpers
         protected bool Error(string Message)
         {
-            this.ErrorMessage = Message;
-            this.FieldAction = null;
+            ErrorMessage = Message;
+            FieldAction = null;
             return false;
         }
         protected bool Success(EntityState Action)
         {
-            this.FieldAction = Action;
+            FieldAction = Action;
             return true;
         }
         #endregion

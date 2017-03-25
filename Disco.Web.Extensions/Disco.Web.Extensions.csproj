@@ -103,6 +103,8 @@
     <Compile Include="DataModelExtension\DocumentTemplateExtensions.cs" />
     <Compile Include="DataModelExtension\JobSubTypeExtensions.cs" />
     <Compile Include="DataModelExtension\JobTypeExtensions.cs" />
+    <Compile Include="MvcExtensions\File\FileContentSpanResult.cs" />
+    <Compile Include="MvcExtensions\File\FileExtensions.cs" />
     <Compile Include="MvcExtensions\JsonNet\JsonDotNetValueProviderFactory.cs" />
     <Compile Include="MvcExtensions\JsonNet\JsonNetResult.cs" />
     <Compile Include="MvcExtensions\PartialCompiled\PartialCompiledHtmlExtensions.cs" />

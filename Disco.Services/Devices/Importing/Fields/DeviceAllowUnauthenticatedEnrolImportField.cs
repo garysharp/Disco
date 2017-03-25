@@ -1,7 +1,6 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Importing;
-using Disco.Services.Users;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,9 +10,7 @@ namespace Disco.Services.Devices.Importing.Fields
 {
     internal class DeviceAllowUnauthenticatedEnrolImportField : DeviceImportFieldBase
     {
-        private static string[] TrueValues = { "true", "1", "yes", "-1", "on" };
-        private static string[] FalseValues = { "false", "0", "no", "off" };
-        private bool parsedValue;
+        private bool? parsedValue;
         private string friendlyValue;
         private string friendlyPreviousValue;
 
@@ -23,22 +20,30 @@ namespace Disco.Services.Devices.Importing.Fields
         public override string FriendlyValue { get { return friendlyValue; } }
         public override string FriendlyPreviousValue { get { return friendlyPreviousValue; } }
 
-        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, DeviceImportContext Context, int RecordIndex, string DeviceSerialNumber, Device ExistingDevice, Dictionary<DeviceImportFieldTypes, string> Values, string Value)
+        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
         {
-            friendlyValue = Value;
-
-            if (!ParseBoolean(Value, out parsedValue))
+            if (DataReader.TryGetNullableBool(ColumnIndex, out parsedValue))
+            {
+                friendlyValue = parsedValue.ToString();
+            }
+            else
+            {
                 return Error("Expected a Boolean expression (True, 1, Yes, On, False, 0, No, Off)");
+            }
 
-            friendlyValue = parsedValue.ToString();
+            friendlyValue = parsedValue?.ToString() ?? "Not Set";
 
-            if (parsedValue == true)
+            if (parsedValue.HasValue && parsedValue.Value == true)
             {
                 // Check Decommissioned
                 bool? importDecommissioning = null;
-                if (Values.ContainsKey(DeviceImportFieldTypes.DeviceDecommissionedDate) || Values.ContainsKey(DeviceImportFieldTypes.DeviceDecommissionedReason))
-                    importDecommissioning = Values.ContainsKey(DeviceImportFieldTypes.DeviceDecommissionedDate) && !string.IsNullOrWhiteSpace(Values[DeviceImportFieldTypes.DeviceDecommissionedDate]) ||
-                        Values.ContainsKey(DeviceImportFieldTypes.DeviceDecommissionedReason) && !string.IsNullOrWhiteSpace(Values[DeviceImportFieldTypes.DeviceDecommissionedReason]);
+                int? decommissionedDateIndex = Context.GetColumnByType(DeviceImportFieldTypes.DeviceDecommissionedDate);
+                int? decommissionedReasonIndex = Context.GetColumnByType(DeviceImportFieldTypes.DeviceDecommissionedReason);
+                if (decommissionedDateIndex.HasValue || decommissionedReasonIndex.HasValue)
+                {
+                    importDecommissioning = (decommissionedDateIndex.HasValue && !string.IsNullOrWhiteSpace(DataReader.GetString(decommissionedDateIndex.Value))) ||
+                        (decommissionedReasonIndex.HasValue && !string.IsNullOrWhiteSpace(DataReader.GetString(decommissionedReasonIndex.Value)));
+                }
 
                 if (importDecommissioning.HasValue && importDecommissioning.Value)
                     return Error("Cannot enrol a device being decommissioned");
@@ -49,7 +54,11 @@ namespace Disco.Services.Devices.Importing.Fields
                 }
             }
 
-            if (ExistingDevice == null && parsedValue != false) // Default: True
+            if (!parsedValue.HasValue)
+            {
+                return Success(EntityState.Unchanged);
+            }
+            else if (ExistingDevice == null && parsedValue.Value != false) // Default: True
             {
                 return Success(EntityState.Added);
             }
@@ -65,10 +74,11 @@ namespace Disco.Services.Devices.Importing.Fields
 
         public override bool Apply(DiscoDataContext Database, Device Device)
         {
-            if (this.FieldAction == EntityState.Modified ||
-                this.FieldAction == EntityState.Added)
+            if (parsedValue.HasValue &&
+                (FieldAction == EntityState.Modified ||
+                FieldAction == EntityState.Added))
             {
-                Device.AllowUnauthenticatedEnrol = parsedValue;
+                Device.AllowUnauthenticatedEnrol = parsedValue.Value;
 
                 return true;
             }
@@ -78,52 +88,20 @@ namespace Disco.Services.Devices.Importing.Fields
             }
         }
 
-        public override int? GuessHeader(DiscoDataContext Database, DeviceImportContext Context)
+        public override int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader)
         {
             // column name
-            var possibleColumns = Context.Header
-                .Select((h, i) => Tuple.Create(h, i))
-                .Where(h => h.Item1.Item2 == DeviceImportFieldTypes.IgnoreColumn &&
-                    h.Item1.Item1.IndexOf("trust enrol", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    h.Item1.Item1.IndexOf("enrolment trusted", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    h.Item1.Item1.IndexOf("trust", System.StringComparison.OrdinalIgnoreCase) >= 0
+            var possibleColumns = Context.Columns
+                .Where(h => h.Type == DeviceImportFieldTypes.IgnoreColumn &&
+                    h.Name.IndexOf("trust enrol", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    h.Name.IndexOf("enrolment trusted", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    h.Name.IndexOf("trust", StringComparison.OrdinalIgnoreCase) >= 0
                     );
 
             // All Boolean
-            possibleColumns = possibleColumns.Where(h =>
-            {
-                bool lastValue;
-                return Context.RawData.Select(v => v[h.Item2]).Take(100).Where(v => !string.IsNullOrWhiteSpace(v)).All(v => ParseBoolean(v, out lastValue));
-            }).ToList();
+            possibleColumns = possibleColumns.Where(h => DataReader.TestAllNullableBool(h.Index)).ToList();
 
-            return possibleColumns.Select(h => (int?)h.Item2).FirstOrDefault();
-        }
-
-        private static bool ParseBoolean(string value, out bool result)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                result = false;
-                return false;
-            }
-
-            value = value.Trim();
-
-            if (TrueValues.Contains(value, StringComparer.OrdinalIgnoreCase))
-            {
-                result = true;
-                return true;
-            }
-            else if (FalseValues.Contains(value, StringComparer.OrdinalIgnoreCase))
-            {
-                result = false;
-                return true;
-            }
-            else
-            {
-                result = false;
-                return false;
-            }
+            return possibleColumns.Select(h => (int?)h.Index).FirstOrDefault();
         }
     }
 }

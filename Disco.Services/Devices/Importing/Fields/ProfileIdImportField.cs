@@ -1,6 +1,7 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Importing;
+using Disco.Services.Interop.ActiveDirectory;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,30 +21,44 @@ namespace Disco.Services.Devices.Importing.Fields
         public override string FriendlyValue { get { return friendlyValue; } }
         public override string FriendlyPreviousValue { get { return friendlyPreviousValue; } }
 
-        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, DeviceImportContext Context, int RecordIndex, string DeviceSerialNumber, Device ExistingDevice, Dictionary<DeviceImportFieldTypes, string> Values, string Value)
+        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
         {
-            friendlyValue = Value;
+            int? intValue;
+            if (DataReader.TryGetNullableInt(ColumnIndex, out intValue))
+            {
+                if (!intValue.HasValue)
+                {
+                    if (ExistingDevice == null)
+                    {
+                        intValue = Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId; // Default Model for new devices
+                    }
+                    else
+                    {
+                        return Error("The Profile Identifier cannot be blank");
+                    }
+                }
 
-            // Validate
-            if (string.IsNullOrWhiteSpace(Value))
-                this.parsedValue = Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId;
+                parsedValue = intValue.Value;
+                friendlyValue = parsedValue.ToString();
+            }
             else
-                if (!int.TryParse(Value, out parsedValue))
-                    return Error("The Profile Identifier must be a number");
+            {
+                return Error("The Profile Identifier must be a number");
+            }
 
             var p = Cache.DeviceProfiles.FirstOrDefault(dp => dp.Id == parsedValue);
 
             if (p == null)
-                return Error(string.Format("The identifier ({0}) does not match any Device Profile", Value));
+                return Error($"The identifier ({parsedValue}) does not match any Device Profile");
 
-            friendlyValue = string.Format("{0} [{1}]", p.Description, p.Id);
+            friendlyValue = $"{p.Description} [{p.Id}]";
 
             if (ExistingDevice == null)
                 return Success(EntityState.Added);
             else if (ExistingDevice != null && ExistingDevice.DeviceProfileId != parsedValue)
             {
                 var previousProfile = Cache.DeviceProfiles.FirstOrDefault(dp => dp.Id == ExistingDevice.DeviceProfileId);
-                friendlyPreviousValue = string.Format("{0} [{1}]", previousProfile.Description, previousProfile.Id);
+                friendlyPreviousValue = $"{previousProfile.Description} [{previousProfile.Id}]";
 
                 return Success(EntityState.Modified);
             }
@@ -53,10 +68,10 @@ namespace Disco.Services.Devices.Importing.Fields
 
         public override bool Apply(DiscoDataContext Database, Device Device)
         {
-            if (this.FieldAction == EntityState.Added ||
-                this.FieldAction == EntityState.Modified)
+            if (FieldAction == EntityState.Added ||
+                FieldAction == EntityState.Modified)
             {
-                Device.DeviceProfileId = this.parsedValue;
+                Device.DeviceProfileId = parsedValue;
                 return true;
             }
             else
@@ -65,30 +80,43 @@ namespace Disco.Services.Devices.Importing.Fields
             }
         }
 
-        public override int? GuessHeader(DiscoDataContext Database, DeviceImportContext Context)
+        public override void Applied(DiscoDataContext Database, Device Device, ref bool DeviceADDescriptionSet)
+        {
+            if (!DeviceADDescriptionSet)
+            {
+                if (ActiveDirectory.IsValidDomainAccountId(Device.DeviceDomainId))
+                {
+                    var adAccount = Device.ActiveDirectoryAccount();
+
+                    if (adAccount != null && !adAccount.IsCriticalSystemObject)
+                    {
+                        adAccount.SetDescription(Device);
+                        DeviceADDescriptionSet = true;
+                    }
+                }
+            }
+        }
+
+        public override int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader)
         {
             // column name
-            var possibleColumns = Context.Header
-                .Select((h, i) => Tuple.Create(h, i))
-                .Where(h => h.Item1.Item2 == DeviceImportFieldTypes.IgnoreColumn && h.Item1.Item1.IndexOf("profile", System.StringComparison.OrdinalIgnoreCase) >= 0);
+            var possibleColumns = Context.Columns
+                .Where(h => h.Type == DeviceImportFieldTypes.IgnoreColumn &&
+                    h.Name.IndexOf("profile", StringComparison.OrdinalIgnoreCase) >= 0);
 
             // All Integers Numbers
-            possibleColumns = possibleColumns.Where(h =>
-            {
-                int lastValue;
-                return Context.RawData.Select(v => v[h.Item2]).Take(100).Where(v => !string.IsNullOrWhiteSpace(v)).All(v => int.TryParse(v, out lastValue));
-            }).ToList();
+            possibleColumns = possibleColumns.Where(h => DataReader.TestAllInt(h.Index)).ToList();
 
             // Multiple Columns, tighten column definition
             if (possibleColumns.Count() > 1)
             {
                 possibleColumns = possibleColumns
                     .Where(h =>
-                        h.Item1.Item1.IndexOf("profileid", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                        h.Item1.Item1.IndexOf("profile id", StringComparison.OrdinalIgnoreCase) >= 0);
+                        h.Name.IndexOf("profileid", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        h.Name.IndexOf("profile id", StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
-            return possibleColumns.Select(h => (int?)h.Item2).FirstOrDefault();
+            return possibleColumns.Select(h => (int?)h.Index).FirstOrDefault();
         }
     }
 }
