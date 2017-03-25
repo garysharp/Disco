@@ -344,7 +344,7 @@ namespace Disco.Services.Devices.Enrolment
                         if (domain == null)
                             domain = ActiveDirectory.Context.GetDomainByName(Request.DNSDomainName);
 
-                        if (!authenticatedToken.User.UserId.Equals(string.Format(@"{0}\{1}$", domain.NetBiosName, Request.ComputerName), System.StringComparison.OrdinalIgnoreCase))
+                        if (!authenticatedToken.User.UserId.Equals(string.Format(@"{0}\{1}$", domain.NetBiosName, Request.ComputerName), StringComparison.OrdinalIgnoreCase))
                             throw new EnrolmentSafeException(string.Format("Connection not correctly authenticated (SN: {0}; Auth User: {1})", Request.SerialNumber, authenticatedToken.User.UserId));
                     }
                 }

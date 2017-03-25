@@ -16,12 +16,12 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public ADSite(ActiveDirectoryContext Context, ActiveDirectorySite Site)
         {
-            this.context = Context;
+            context = Context;
 
             this.Site = Site;
 
-            this.Name = Site.Name;
-            this.DomainControllers = null;
+            Name = Site.Name;
+            DomainControllers = null;
         }
 
         internal void UpdateDomainControllers(IEnumerable<ADDomainController> DomainControllers)
@@ -31,7 +31,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public override string ToString()
         {
-            return this.Name;
+            return Name;
         }
 
         public override bool Equals(object obj)
@@ -39,11 +39,11 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (obj == null || !(obj is ADSite))
                 return false;
             else
-                return this.Name == ((ADSite)obj).Name;
+                return Name == ((ADSite)obj).Name;
         }
         public override int GetHashCode()
         {
-            return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(this.Name);
+            return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(Name);
         }
     }
 }

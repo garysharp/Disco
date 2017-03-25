@@ -46,8 +46,8 @@ namespace Disco.Services.Devices.ManagedGroups
         private DeviceProfileDevicesManagedGroup(string Key, ADManagedGroupConfiguration Configuration, DeviceProfile DeviceProfile)
             : base(Key, Configuration)
         {
-            this.DeviceProfileId = DeviceProfile.Id;
-            this.DeviceProfileName = DeviceProfile.Name;
+            DeviceProfileId = DeviceProfile.Id;
+            DeviceProfileName = DeviceProfile.Name;
         }
 
         public override void Initialize()
@@ -124,7 +124,7 @@ namespace Disco.Services.Devices.ManagedGroups
         public override IEnumerable<string> DetermineMembers(DiscoDataContext Database)
         {
             return Database.Devices
-                .Where(d => d.DeviceProfileId == this.DeviceProfileId)
+                .Where(d => d.DeviceProfileId == DeviceProfileId)
                 .Where(d => d.DeviceDomainId != null)
                 .Select(d => d.DeviceDomainId)
                 .ToList()
@@ -145,7 +145,7 @@ namespace Disco.Services.Devices.ManagedGroups
                         AddMember(device.DeviceDomainId + "$");
                         break;
                     case RepositoryMonitorEventType.Modified:
-                        if (device.DeviceProfileId == this.DeviceProfileId)
+                        if (device.DeviceProfileId == DeviceProfileId)
                         {
                             if (ActiveDirectory.IsValidDomainAccountId(device.DeviceDomainId))
                                 AddMember(device.DeviceDomainId + "$");

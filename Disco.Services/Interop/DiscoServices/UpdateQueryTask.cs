@@ -23,7 +23,7 @@ namespace Disco.Services.Interop.DiscoServices
             TriggerBuilder triggerBuilder = TriggerBuilder.Create().
                 WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(rndHour, rndMinute));
 
-            this.ScheduleTask(triggerBuilder);
+            ScheduleTask(triggerBuilder);
         }
 
         protected override void ExecuteTask()

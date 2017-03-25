@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.System
+﻿namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.System
 {
     [ClaimDetails("System", "Permissions related to System Configuration")]
     public class SystemClaims : BaseRoleClaimGroup

@@ -1,4 +1,5 @@
 ﻿using Disco.Data.Repository;
+using Disco.Models.Services.Devices.Importing;
 using Disco.Services.Tasks;
 using Quartz;
 using System;
@@ -13,10 +14,10 @@ namespace Disco.Services.Devices.Importing
         public override bool SingleInstanceTask { get { return false; } }
         public override bool CancelInitiallySupported { get { return false; } }
 
-        public static ScheduledTaskStatus ScheduleNow(DeviceImportContext Context)
+        public static ScheduledTaskStatus ScheduleNow(IDeviceImportContext Context)
         {
             if (Context == null)
-                throw new ArgumentNullException("Context");
+                throw new ArgumentNullException(nameof(Context));
 
             // Build Data Map
             var task = new DeviceImportApplyTask();
@@ -28,14 +29,14 @@ namespace Disco.Services.Devices.Importing
 
         protected override void ExecuteTask()
         {
-            var context = (DeviceImportContext)this.ExecutionContext.JobDetail.JobDataMap[JobDataMapContext];
+            var context = (IDeviceImportContext)ExecutionContext.JobDetail.JobDataMap[JobDataMapContext];
 
             using (DiscoDataContext Database = new DiscoDataContext())
             {
-                context.AffectedRecords = context.ApplyRecords(Database, this.Status);
+                context.AffectedRecords = context.ApplyRecords(Database, Status);
             }
 
-            Status.SetFinishedMessage(string.Format("Successfully imported/updated {0} device{1}", context.AffectedRecords, context.AffectedRecords == 1 ? null : "s"));
+            Status.SetFinishedMessage($"Successfully imported/updated {context.AffectedRecords} device{(context.AffectedRecords == 1 ? null : "s")}");
         }
     }
 }

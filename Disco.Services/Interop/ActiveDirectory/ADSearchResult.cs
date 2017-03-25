@@ -18,14 +18,14 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public ADSearchResult(ADDomain Domain, ADDomainController DomainController, string SearchPath, string LdapFilter, SearchResult Result)
         {
-            this._result = Result;
+            _result = Result;
             this.Domain = Domain;
             this.DomainController = DomainController;
             this.SearchPath = SearchPath;
             this.LdapFilter = LdapFilter;
 
-            this.LdapPath = _result.Path;
-            this.DistinguishedName = Value<string>("dn");
+            LdapPath = _result.Path;
+            DistinguishedName = Value<string>("dn");
         }
 
         public bool Contains(string PropertyName)
@@ -47,7 +47,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public override string ToString()
         {
-            return this.LdapPath;
+            return LdapPath;
         }
     }
 }

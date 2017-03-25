@@ -7,12 +7,9 @@ using Disco.Services.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace Disco.Services.Users

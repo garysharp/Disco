@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Disco.Data.Repository;
 using System.IO;
-using System.Management;
-using System.Diagnostics;
 using System.Data.SqlServerCe;
-using System.Data.EntityClient;
-using System.Data.Entity;
 using Quartz;
 using Quartz.Impl;
-using Quartz.Impl.Triggers;
 using Newtonsoft.Json;
 
 namespace Disco.Services.Logging

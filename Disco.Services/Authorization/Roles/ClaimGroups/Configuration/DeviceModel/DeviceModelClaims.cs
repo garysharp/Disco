@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DeviceModel
+﻿namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DeviceModel
 {
     [ClaimDetails("Device Models", "Permissions related to Device Models")]
     public class DeviceModelClaims : BaseRoleClaimGroup

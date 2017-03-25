@@ -31,7 +31,7 @@ namespace Disco.Services.Tasks
 
         private byte CalculateProgressValue(byte Progress)
         {
-            return (byte)((Progress * this.ProgressMultiplier) + this.ProgressOffset);
+            return (byte)((Progress * ProgressMultiplier) + ProgressOffset);
         }
 
         public void UpdateStatus(byte Progress)
@@ -80,11 +80,11 @@ namespace Disco.Services.Tasks
         }
         public void Finished()
         {
-            Finished(this.FinishedMessage, this.FinishedUrl);
+            Finished(FinishedMessage, FinishedUrl);
         }
         public void Finished(string FinishedMessage)
         {
-            Finished(FinishedMessage, this.FinishedUrl);
+            Finished(FinishedMessage, FinishedUrl);
         }
         public void Finished(string FinishedMessage, string FinishedUrl)
         {

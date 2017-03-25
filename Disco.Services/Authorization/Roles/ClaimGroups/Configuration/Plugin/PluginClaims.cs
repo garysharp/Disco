@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.Plugin
+﻿namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.Plugin
 {
     [ClaimDetails("Plugin", "Permissions related to Plugins")]
     public class PluginClaims : BaseRoleClaimGroup

@@ -73,7 +73,7 @@ namespace Disco.Services.Documents.AttachmentImport
 
         public void ScheduleCurrentFiles(int ImportDelay)
         {
-            foreach (var filename in Directory.GetFiles(this.MonitorLocation, "*.pdf"))
+            foreach (var filename in Directory.GetFiles(MonitorLocation, "*.pdf"))
             {
                 ScheduleImport(filename, ImportDelay);
             }

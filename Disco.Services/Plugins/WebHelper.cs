@@ -1,11 +1,4 @@
-﻿using Disco.Services.Web.Bundles;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -25,11 +18,11 @@ namespace Disco.Services.Plugins
 
         public void IncludeStyleSheet(string Resource)
         {
-            Context.IncludeStyleSheetResource(Resource, this.Manifest);
+            Context.IncludeStyleSheetResource(Resource, Manifest);
         }
         public void IncludeJavaScript(string Resource)
         {
-            Context.IncludeScriptResource(Resource, this.Manifest);
+            Context.IncludeScriptResource(Resource, Manifest);
         }
 
         #region Urls

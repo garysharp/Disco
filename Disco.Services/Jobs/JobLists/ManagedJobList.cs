@@ -146,7 +146,7 @@ using Disco.Services.Authorization;
                     .Subscribe(JobNotification, NotificationError);
 
                 // Initially fill table
-                base.Items = this.SortFunction(this.DetermineItems(Database, this.FilterFunction(Database.Jobs), FilterAuthorization)).ToList();
+                base.Items = SortFunction(this.DetermineItems(Database, FilterFunction(Database.Jobs), FilterAuthorization)).ToList();
             }
             return this;
         }
@@ -178,7 +178,7 @@ using Disco.Services.Authorization;
 
         private void NotificationError(Exception ex)
         {
-            SystemLog.LogException(string.Format("Disco.Services.Jobs.JobLists.ManagedJobList: [{0}]", this.Name), ex);
+            SystemLog.LogException(string.Format("Disco.Services.Jobs.JobLists.ManagedJobList: [{0}]", Name), ex);
         }
 
         private void JobNotification(RepositoryMonitorEvent e)
@@ -262,7 +262,7 @@ using Disco.Services.Authorization;
                 if (existingItems == null)
                     existingItems = base.Items.Where(i => jobIds.Contains(i.JobId)).ToArray();
 
-                var updatedItems = this.DetermineItems(Database, this.FilterFunction(Database.Jobs.Where(j => jobIds.Contains(j.Id))), false);
+                var updatedItems = this.DetermineItems(Database, FilterFunction(Database.Jobs.Where(j => jobIds.Contains(j.Id))), false);
 
                 var refreshedList = base.Items.ToList();
 
@@ -277,7 +277,7 @@ using Disco.Services.Authorization;
                         refreshedList.Add(updatedItem);
 
                 // Reorder
-                base.Items = this.SortFunction(refreshedList).ToList();
+                base.Items = SortFunction(refreshedList).ToList();
             }
         }
 

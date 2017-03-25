@@ -1,13 +1,7 @@
-﻿using Disco.Services.Authorization.Roles.ClaimGroups;
-using Disco.Services.Authorization.Roles.ClaimGroups.Configuration;
+﻿using Disco.Services.Authorization.Roles.ClaimGroups.Configuration;
 using Disco.Services.Authorization.Roles.ClaimGroups.Device;
 using Disco.Services.Authorization.Roles.ClaimGroups.Job;
 using Disco.Services.Authorization.Roles.ClaimGroups.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Services.Authorization.Roles
 {
@@ -15,11 +9,11 @@ namespace Disco.Services.Authorization.Roles
     {
         public RoleClaims()
         {
-            this.Config = new ConfigClaims();
+            Config = new ConfigClaims();
 
-            this.Job = new JobClaims();
-            this.Device = new DeviceClaims();
-            this.User = new UserClaims();
+            Job = new JobClaims();
+            Device = new DeviceClaims();
+            User = new UserClaims();
         }
 
         [ClaimDetails("Computer Account", "Represents a computer account", true)]

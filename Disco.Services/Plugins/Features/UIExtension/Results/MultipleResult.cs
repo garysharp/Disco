@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace Disco.Services.Plugins.Features.UIExtension.Results
@@ -16,12 +13,12 @@ namespace Disco.Services.Plugins.Features.UIExtension.Results
             if (Results == null || Results.Length == 0)
                 throw new ArgumentException("At least one result is required", "Results");
 
-            this.results = Results;
+            results = Results;
         }
 
         public override void ExecuteResult<T>(WebViewPage<T> page)
         {
-            foreach (var result in this.results)
+            foreach (var result in results)
             {
                 result.ExecuteResult(page);
                 page.WriteLiteral("\n");

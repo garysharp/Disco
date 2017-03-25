@@ -18,7 +18,7 @@ namespace Disco.Services.Users.UserFlags
 
             using (DiscoDataContext Database = new DiscoDataContext())
             {
-                UserFlagService.DeleteUserFlag(Database, UserFlagId, this.Status);
+                UserFlagService.DeleteUserFlag(Database, UserFlagId, Status);
             }
         }
 

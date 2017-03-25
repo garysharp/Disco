@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Services.Authorization
 {
@@ -13,21 +9,21 @@ namespace Disco.Services.Authorization
 
         public AccessDeniedException(string Message, string Resource)
         {
-            this.message = Message;
-            this.resource = Resource;
+            message = Message;
+            resource = Resource;
         }
 
         public override string Message
         {
             get
             {
-                if (this.message == null)
+                if (message == null)
                 {
                     return "Your account does not have the required permission to access this Disco feature.";
                 }
                 else
                 {
-                    return this.message;
+                    return message;
                 }
             }
         }
@@ -36,7 +32,7 @@ namespace Disco.Services.Authorization
         {
             get
             {
-                return this.resource;
+                return resource;
             }
         }
     }

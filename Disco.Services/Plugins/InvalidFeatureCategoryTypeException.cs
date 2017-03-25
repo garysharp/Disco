@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Disco.Services.Plugins
 {
@@ -31,8 +28,8 @@ namespace Disco.Services.Plugins
         }
         public InvalidFeatureCategoryTypeException(Type CategoryType, string PluginRequested)
         {
-            this._categoryType = CategoryType;
-            this._pluginRequested = PluginRequested;
+            _categoryType = CategoryType;
+            _pluginRequested = PluginRequested;
         }
 
         public override string Message

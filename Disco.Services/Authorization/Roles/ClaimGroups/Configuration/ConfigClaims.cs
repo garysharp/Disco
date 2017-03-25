@@ -19,19 +19,19 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration
     {
         public ConfigClaims()
         {
-            this.DeviceCertificate = new DeviceCertificateClaims();
-            this.Enrolment = new EnrolmentClaims();
-            this.DeviceBatch = new DeviceBatchClaims();
-            this.DeviceModel = new DeviceModelClaims();
-            this.DeviceProfile = new DeviceProfileClaims();
-            this.DocumentTemplate = new DocumentTemplateClaims();
-            this.Logging = new LoggingClaims();
-            this.Plugin = new PluginClaims();
-            this.System = new SystemClaims();
-            this.Organisation = new OrganisationClaims();
-            this.JobPreferences = new JobPreferencesClaims();
-            this.JobQueue = new JobQueueClaims();
-            this.UserFlag = new UserFlagClaims();
+            DeviceCertificate = new DeviceCertificateClaims();
+            Enrolment = new EnrolmentClaims();
+            DeviceBatch = new DeviceBatchClaims();
+            DeviceModel = new DeviceModelClaims();
+            DeviceProfile = new DeviceProfileClaims();
+            DocumentTemplate = new DocumentTemplateClaims();
+            Logging = new LoggingClaims();
+            Plugin = new PluginClaims();
+            System = new SystemClaims();
+            Organisation = new OrganisationClaims();
+            JobPreferences = new JobPreferencesClaims();
+            JobQueue = new JobQueueClaims();
+            UserFlag = new UserFlagClaims();
         }
 
         [ClaimDetails("Show Configuration", "Can show the configuration menu")]

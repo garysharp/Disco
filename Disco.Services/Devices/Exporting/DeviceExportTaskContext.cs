@@ -1,6 +1,5 @@
 ﻿using Disco.Models.Services.Devices.Exporting;
 using Disco.Services.Tasks;
-using System.IO;
 
 namespace Disco.Services.Devices.Exporting
 {

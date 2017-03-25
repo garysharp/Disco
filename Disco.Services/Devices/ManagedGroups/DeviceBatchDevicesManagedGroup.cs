@@ -45,8 +45,8 @@ namespace Disco.Services.Devices.ManagedGroups
         private DeviceBatchDevicesManagedGroup(string Key, ADManagedGroupConfiguration Configuration, DeviceBatch DeviceBatch)
             : base(Key, Configuration)
         {
-            this.DeviceBatchId = DeviceBatch.Id;
-            this.DeviceBatchName = DeviceBatch.Name;
+            DeviceBatchId = DeviceBatch.Id;
+            DeviceBatchName = DeviceBatch.Name;
         }
 
         public override void Initialize()
@@ -123,7 +123,7 @@ namespace Disco.Services.Devices.ManagedGroups
         public override IEnumerable<string> DetermineMembers(DiscoDataContext Database)
         {
             return Database.Devices
-                .Where(d => d.DeviceBatchId == this.DeviceBatchId)
+                .Where(d => d.DeviceBatchId == DeviceBatchId)
                 .Where(d => d.DeviceDomainId != null)
                 .Select(d => d.DeviceDomainId)
                 .ToList()
@@ -144,7 +144,7 @@ namespace Disco.Services.Devices.ManagedGroups
                         AddMember(device.DeviceDomainId + "$");
                         break;
                     case RepositoryMonitorEventType.Modified:
-                        if (device.DeviceBatchId == this.DeviceBatchId)
+                        if (device.DeviceBatchId == DeviceBatchId)
                         {
                             if (ActiveDirectory.IsValidDomainAccountId(device.DeviceDomainId))
                                 AddMember(device.DeviceDomainId + "$");

@@ -19,10 +19,10 @@ namespace Disco.Services.Devices.Importing
         {
             this.Database = Database;
 
-            this.devices = new Lazy<IEnumerable<Device>>(() => Database.Devices.Include("DeviceDetails").ToList());
-            this.deviceModels = new Lazy<IEnumerable<DeviceModel>>(() => Database.DeviceModels.ToList());
-            this.deviceProfiles = new Lazy<IEnumerable<DeviceProfile>>(() => Database.DeviceProfiles.ToList());
-            this.deviceBatches = new Lazy<IEnumerable<DeviceBatch>>(() => Database.DeviceBatches.ToList());
+            devices = new Lazy<IEnumerable<Device>>(() => Database.Devices.Include("DeviceDetails").ToList());
+            deviceModels = new Lazy<IEnumerable<DeviceModel>>(() => Database.DeviceModels.ToList());
+            deviceProfiles = new Lazy<IEnumerable<DeviceProfile>>(() => Database.DeviceProfiles.ToList());
+            deviceBatches = new Lazy<IEnumerable<DeviceBatch>>(() => Database.DeviceBatches.ToList());
         }
 
         public Device FindDevice(string DeviceSerialNumber)

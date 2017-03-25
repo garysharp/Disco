@@ -34,9 +34,9 @@ namespace Disco.Services.Documents.ManagedGroups
         private DocumentTemplateDevicesManagedGroup(string Key, ADManagedGroupConfiguration Configuration, DocumentTemplate DocumentTemplate)
             : base(Key, Configuration)
         {
-            this.DocumentTemplateId = DocumentTemplate.Id;
-            this.DocumentTemplateDescription = DocumentTemplate.Description;
-            this.DocumentTemplateScope = DocumentTemplate.Scope;
+            DocumentTemplateId = DocumentTemplate.Id;
+            DocumentTemplateDescription = DocumentTemplate.Description;
+            DocumentTemplateScope = DocumentTemplate.Scope;
         }
 
         public override void Initialize()
@@ -160,7 +160,7 @@ namespace Disco.Services.Documents.ManagedGroups
                     if (Configuration.FilterBeginDate.HasValue)
                     {
                         return Database.Devices
-                            .Where(d => d.DeviceDomainId != null && d.DeviceAttachments.Any(a => a.DocumentTemplateId == this.DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate))
+                            .Where(d => d.DeviceDomainId != null && d.DeviceAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate))
                             .Select(d => d.DeviceDomainId)
                             .ToList()
                             .Where(ActiveDirectory.IsValidDomainAccountId)
@@ -169,7 +169,7 @@ namespace Disco.Services.Documents.ManagedGroups
                     else
                     {
                         return Database.Devices
-                            .Where(d => d.DeviceDomainId != null && d.DeviceAttachments.Any(a => a.DocumentTemplateId == this.DocumentTemplateId))
+                            .Where(d => d.DeviceDomainId != null && d.DeviceAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId))
                             .Select(d => d.DeviceDomainId)
                             .ToList()
                             .Where(ActiveDirectory.IsValidDomainAccountId)
@@ -179,7 +179,7 @@ namespace Disco.Services.Documents.ManagedGroups
                     if (Configuration.FilterBeginDate.HasValue)
                     {
                         return Database.Jobs
-                            .Where(j => j.Device.DeviceDomainId != null && j.JobAttachments.Any(a => a.DocumentTemplateId == this.DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate))
+                            .Where(j => j.Device.DeviceDomainId != null && j.JobAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate))
                             .Select(j => j.Device.DeviceDomainId)
                             .Distinct()
                             .ToList()
@@ -189,7 +189,7 @@ namespace Disco.Services.Documents.ManagedGroups
                     else
                     {
                         return Database.Jobs
-                            .Where(j => j.Device.DeviceDomainId != null && j.JobAttachments.Any(a => a.DocumentTemplateId == this.DocumentTemplateId))
+                            .Where(j => j.Device.DeviceDomainId != null && j.JobAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId))
                             .Select(j => j.Device.DeviceDomainId)
                             .Distinct()
                             .ToList()
@@ -200,7 +200,7 @@ namespace Disco.Services.Documents.ManagedGroups
                     if (Configuration.FilterBeginDate.HasValue)
                     {
                         return Database.Users
-                            .Where(u => u.UserAttachments.Any(a => a.DocumentTemplateId == this.DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate))
+                            .Where(u => u.UserAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate))
                             .SelectMany(u => u.DeviceUserAssignments.Where(dua => !dua.UnassignedDate.HasValue && dua.Device.DeviceDomainId != null), (u, dua) => dua.Device.DeviceDomainId)
                             .ToList()
                             .Where(ActiveDirectory.IsValidDomainAccountId)
@@ -209,7 +209,7 @@ namespace Disco.Services.Documents.ManagedGroups
                     else
                     {
                         return Database.Users
-                            .Where(u => u.UserAttachments.Any(a => a.DocumentTemplateId == this.DocumentTemplateId))
+                            .Where(u => u.UserAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId))
                             .SelectMany(u => u.DeviceUserAssignments.Where(dua => !dua.UnassignedDate.HasValue && dua.Device.DeviceDomainId != null), (u, dua) => dua.Device.DeviceDomainId)
                             .ToList()
                             .Where(ActiveDirectory.IsValidDomainAccountId)
@@ -229,14 +229,14 @@ namespace Disco.Services.Documents.ManagedGroups
             {
                 result = Database.Devices
                     .Where(d => d.SerialNumber == DeviceSerialNumber && d.DeviceDomainId != null)
-                    .Select(d => Tuple.Create(d.DeviceDomainId, d.DeviceAttachments.Any(a => a.DocumentTemplateId == this.DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate)))
+                    .Select(d => Tuple.Create(d.DeviceDomainId, d.DeviceAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate)))
                     .FirstOrDefault();
             }
             else
             {
                 result = Database.Devices
                     .Where(d => d.SerialNumber == DeviceSerialNumber && d.DeviceDomainId != null)
-                    .Select(d => Tuple.Create(d.DeviceDomainId, d.DeviceAttachments.Any(a => a.DocumentTemplateId == this.DocumentTemplateId)))
+                    .Select(d => Tuple.Create(d.DeviceDomainId, d.DeviceAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId)))
                     .FirstOrDefault();
             }
 
@@ -295,7 +295,7 @@ namespace Disco.Services.Documents.ManagedGroups
                     .Select(j => new Tuple<string, string, bool>(
                         j.Device.DeviceDomainId,
                         j.Device.SerialNumber,
-                        j.Device.Jobs.Any(dj => dj.JobAttachments.Any(a => a.DocumentTemplateId == this.DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate))))
+                        j.Device.Jobs.Any(dj => dj.JobAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate))))
                     .FirstOrDefault();
             }
             else
@@ -305,7 +305,7 @@ namespace Disco.Services.Documents.ManagedGroups
                     .Select(j => new Tuple<string, string, bool>(
                         j.Device.DeviceDomainId,
                         j.Device.SerialNumber,
-                        j.Device.Jobs.Any(dj => dj.JobAttachments.Any(a => a.DocumentTemplateId == this.DocumentTemplateId))))
+                        j.Device.Jobs.Any(dj => dj.JobAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId))))
                     .FirstOrDefault();
             }
 
@@ -372,7 +372,7 @@ namespace Disco.Services.Documents.ManagedGroups
                 result = Database.Users
                     .Where(u => u.UserId == UserId)
                     .Select(u => Tuple.Create(
-                        u.UserAttachments.Any(a => a.DocumentTemplateId == this.DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate),
+                        u.UserAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate),
                         u.DeviceUserAssignments
                             .Where(dua => !dua.UnassignedDate.HasValue && dua.Device.DeviceDomainId != null)
                             .Select(dua => new Tuple<string, string>(dua.Device.DeviceDomainId, dua.Device.SerialNumber))))
@@ -383,7 +383,7 @@ namespace Disco.Services.Documents.ManagedGroups
                 result = Database.Users
                     .Where(u => u.UserId == UserId)
                     .Select(u => Tuple.Create(
-                        u.UserAttachments.Any(a => a.DocumentTemplateId == this.DocumentTemplateId),
+                        u.UserAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId),
                         u.DeviceUserAssignments
                             .Where(dua => !dua.UnassignedDate.HasValue && dua.Device.DeviceDomainId != null)
                             .Select(dua => new Tuple<string, string>(dua.Device.DeviceDomainId, dua.Device.SerialNumber))))
@@ -458,13 +458,13 @@ namespace Disco.Services.Documents.ManagedGroups
                             {
                                 jobsHaveTemplate = e.Database.Jobs
                                     .Where(j => j.DeviceSerialNumber == deviceSerialNumber)
-                                    .Any(j => j.JobAttachments.Any(a => a.DocumentTemplateId == this.DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate));
+                                    .Any(j => j.JobAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate));
                             }
                             else
                             {
                                 jobsHaveTemplate = e.Database.Jobs
                                     .Where(j => j.DeviceSerialNumber == deviceSerialNumber)
-                                    .Any(j => j.JobAttachments.Any(a => a.DocumentTemplateId == this.DocumentTemplateId));
+                                    .Any(j => j.JobAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId));
                             }
 
                             if (jobsHaveTemplate)
@@ -482,14 +482,14 @@ namespace Disco.Services.Documents.ManagedGroups
                                 userHasTemplate = e.Database.Devices
                                     .Where(d => d.SerialNumber == deviceSerialNumber)
                                     .Select(d => d.AssignedUser)
-                                    .Any(u => u.UserAttachments.Any(a => a.DocumentTemplateId == this.DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate));
+                                    .Any(u => u.UserAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate));
                             }
                             else
                             {
                                 userHasTemplate = e.Database.Devices
                                     .Where(d => d.SerialNumber == deviceSerialNumber)
                                     .Select(d => d.AssignedUser)
-                                    .Any(u => u.UserAttachments.Any(a => a.DocumentTemplateId == this.DocumentTemplateId));
+                                    .Any(u => u.UserAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId));
                             }
 
                             if (userHasTemplate)
@@ -526,13 +526,13 @@ namespace Disco.Services.Documents.ManagedGroups
                         if (Configuration.FilterBeginDate.HasValue)
                         {
                             previousUserHasTemplate = e.Database.Users
-                                .Where(u => u.UserId == devicePreviousAssignedUserId && u.UserAttachments.Any(ua => ua.DocumentTemplateId == this.DocumentTemplateId && ua.Timestamp >= Configuration.FilterBeginDate))
+                                .Where(u => u.UserId == devicePreviousAssignedUserId && u.UserAttachments.Any(ua => ua.DocumentTemplateId == DocumentTemplateId && ua.Timestamp >= Configuration.FilterBeginDate))
                                 .Any();
                         }
                         else
                         {
                             previousUserHasTemplate = e.Database.Users
-                                .Where(u => u.UserId == devicePreviousAssignedUserId && u.UserAttachments.Any(ua => ua.DocumentTemplateId == this.DocumentTemplateId))
+                                .Where(u => u.UserId == devicePreviousAssignedUserId && u.UserAttachments.Any(ua => ua.DocumentTemplateId == DocumentTemplateId))
                                 .Any();
                         }
                     }
@@ -542,13 +542,13 @@ namespace Disco.Services.Documents.ManagedGroups
                         if (Configuration.FilterBeginDate.HasValue)
                         {
                             currentUserHasTemplate = e.Database.Users
-                                .Where(u => u.UserId == deviceCurrentAssignedUserId && u.UserAttachments.Any(ua => ua.DocumentTemplateId == this.DocumentTemplateId && ua.Timestamp >= Configuration.FilterBeginDate))
+                                .Where(u => u.UserId == deviceCurrentAssignedUserId && u.UserAttachments.Any(ua => ua.DocumentTemplateId == DocumentTemplateId && ua.Timestamp >= Configuration.FilterBeginDate))
                                 .Any();
                         }
                         else
                         {
                             currentUserHasTemplate = e.Database.Users
-                                .Where(u => u.UserId == deviceCurrentAssignedUserId && u.UserAttachments.Any(ua => ua.DocumentTemplateId == this.DocumentTemplateId))
+                                .Where(u => u.UserId == deviceCurrentAssignedUserId && u.UserAttachments.Any(ua => ua.DocumentTemplateId == DocumentTemplateId))
                                 .Any();
                         }
                     }

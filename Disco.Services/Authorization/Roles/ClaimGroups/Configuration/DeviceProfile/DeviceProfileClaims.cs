@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DeviceProfile
+﻿namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DeviceProfile
 {
     [ClaimDetails("Device Profiles", "Permissions related to Device Profiles")]
     public class DeviceProfileClaims : BaseRoleClaimGroup

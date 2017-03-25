@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Disco.Data.Repository;
 using Disco.Services.Tasks;
 
@@ -27,7 +23,7 @@ namespace Disco.Services.Plugins
 
         public override sealed string ToString()
         {
-            return string.Format("{0} ({1}) - v{2}", this.Manifest.Name, this.Manifest.Id, this.Manifest.Version.ToString(4));
+            return string.Format("{0} ({1}) - v{2}", Manifest.Name, Manifest.Id, Manifest.Version.ToString(4));
         }
     }
 }

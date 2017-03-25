@@ -36,7 +36,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public ADGroup GetGroup()
         {
-            return ActiveDirectory.RetrieveADGroup(this.Configuration.GroupId, "member");
+            return ActiveDirectory.RetrieveADGroup(Configuration.GroupId, "member");
         }
 
         protected void AddMember(string Id)

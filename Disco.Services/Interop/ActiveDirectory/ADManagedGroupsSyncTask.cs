@@ -1,5 +1,4 @@
 ﻿using Disco.Data.Repository;
-using Disco.Services.Logging;
 using Disco.Services.Tasks;
 using Quartz;
 using System;
@@ -20,23 +19,23 @@ namespace Disco.Services.Interop.ActiveDirectory
             TriggerBuilder triggerBuilder = TriggerBuilder.Create().
                 WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(23, 0));
 
-            this.ScheduleTask(triggerBuilder);
+            ScheduleTask(triggerBuilder);
         }
 
         protected override void ExecuteTask()
         {
             int changeCount;
 
-            List<ADManagedGroup> managedGroups = this.ExecutionContext.JobDetail.JobDataMap["ManagedGroups"] as List<ADManagedGroup>;
+            List<ADManagedGroup> managedGroups = ExecutionContext.JobDetail.JobDataMap["ManagedGroups"] as List<ADManagedGroup>;
             if (managedGroups == null)
                 managedGroups = ActiveDirectory.Context.ManagedGroups.Values;
 
-            this.Status.UpdateStatus(0, "Synchronising Active Directory Managed Groups", "Starting");
+            Status.UpdateStatus(0, "Synchronising Active Directory Managed Groups", "Starting");
 
-            changeCount = ActiveDirectory.Context.ManagedGroups.SyncManagedGroups(managedGroups, this.Status);
+            changeCount = ActiveDirectory.Context.ManagedGroups.SyncManagedGroups(managedGroups, Status);
 
             Status.LogInformation($"Synchronised Active Directory Managed Groups, {changeCount:N0} changes made");
-            this.Status.SetFinishedMessage(string.Format("Made {0} Changes to Active Directory Groups", changeCount));
+            Status.SetFinishedMessage(string.Format("Made {0} Changes to Active Directory Groups", changeCount));
         }
 
         public static ScheduledTaskStatus ScheduleSync(ADManagedGroup ManagedGroup)

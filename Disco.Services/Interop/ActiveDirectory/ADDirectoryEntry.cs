@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.DirectoryServices;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Services.Interop.ActiveDirectory
 {
@@ -38,8 +34,8 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public override string ToString()
         {
-            if (this.Entry != null)
-                return this.Entry.Path;
+            if (Entry != null)
+                return Entry.Path;
             else
                 return base.ToString();
         }

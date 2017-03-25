@@ -137,11 +137,11 @@ namespace Disco.Services.Documents
 
         private DocumentUniqueIdentifier(DiscoDataContext Database, int Version, short DeploymentChecksum, string DocumentTemplateId, string TargetId, string CreatorId, DateTime TimeStamp, int PageIndex, AttachmentTypes? AttachmentType)
         {
-            this.database = Database;
+            database = Database;
             this.Version = Version;
             this.DeploymentChecksum = DeploymentChecksum;
             this.DocumentTemplateId = DocumentTemplateId;
-            this.attachmentType = AttachmentType;
+            attachmentType = AttachmentType;
             this.TargetId = TargetId;
             this.CreatorId = ActiveDirectory.ParseDomainAccountId(CreatorId);
             this.TimeStamp = TimeStamp;
@@ -440,7 +440,7 @@ namespace Disco.Services.Documents
 
         public static bool IsDocumentUniqueIdentifier(string Identifier)
         {
-            return Identifier != null && Identifier.StartsWith("Disco|", System.StringComparison.OrdinalIgnoreCase);
+            return Identifier != null && Identifier.StartsWith("Disco|", StringComparison.OrdinalIgnoreCase);
         }
 
         public static bool IsDocumentUniqueIdentifier(byte[] Identifier)

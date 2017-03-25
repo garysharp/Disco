@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DeviceBatch
+﻿namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DeviceBatch
 {
     [ClaimDetails("Device Batches", "Permissions related to Device Batches")]
     public class DeviceBatchClaims : BaseRoleClaimGroup

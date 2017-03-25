@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using Disco.Data.Repository;
 using Disco.Models.BI.Config;
@@ -22,7 +20,7 @@ namespace Disco.Services.Plugins.Features.WarrantyProvider
         public abstract string SubmitJob(DiscoDataContext Database, Job Job, OrganisationAddress Address, User TechUser, string FaultDescription, Dictionary<string, string> WarrantyProviderProperties);
 
         public abstract Type JobDetailsViewType { get; }
-        public bool JobDetailsSupported { get { return this.JobDetailsViewType != null; } }
+        public bool JobDetailsSupported { get { return JobDetailsViewType != null; } }
         public abstract dynamic JobDetailsViewModel(DiscoDataContext Database, Controller controller, Job Job);
 
         public static PluginFeatureManifest FindPluginFeature(string PluginIdOrWarrantyProviderId)

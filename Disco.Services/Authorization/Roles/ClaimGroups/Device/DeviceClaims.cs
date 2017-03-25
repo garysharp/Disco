@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Services.Authorization.Roles.ClaimGroups.Device
+﻿namespace Disco.Services.Authorization.Roles.ClaimGroups.Device
 {
     [ClaimDetails("Device", "Permissions related to Devices")]
     public class DeviceClaims : BaseRoleClaimGroup
     {
         public DeviceClaims()
         {
-            this.Properties = new DevicePropertiesClaims();
-            this.Actions = new DeviceActionsClaims();
+            Properties = new DevicePropertiesClaims();
+            Actions = new DeviceActionsClaims();
         }
 
         [ClaimDetails("Search Devices", "Can search devices")]

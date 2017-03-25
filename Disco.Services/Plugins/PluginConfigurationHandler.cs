@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using Disco.Data.Repository;
 
@@ -23,12 +19,12 @@ namespace Disco.Services.Plugins
         [Obsolete("Use: Response<ViewType>(dynamic ViewModel)")]
         protected PluginConfigurationHandlerGetResponse GetResponse(Type ViewType, dynamic ViewModel = null)
         {
-            return new PluginConfigurationHandlerGetResponse(this.Manifest, ViewType, ViewModel);
+            return new PluginConfigurationHandlerGetResponse(Manifest, ViewType, ViewModel);
         }
 
         protected PluginConfigurationHandlerGetResponse Response<ViewType>(dynamic Model = null) where ViewType : WebViewPage
         {
-            return new PluginConfigurationHandlerGetResponse(this.Manifest, typeof(ViewType), Model);
+            return new PluginConfigurationHandlerGetResponse(Manifest, typeof(ViewType), Model);
         }
 
         public class PluginConfigurationHandlerGetResponse

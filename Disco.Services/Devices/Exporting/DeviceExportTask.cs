@@ -1,10 +1,6 @@
-﻿using Disco.Models.Repository;
-using Disco.Models.Services.Devices.Exporting;
+﻿using Disco.Models.Services.Devices.Exporting;
 using Disco.Services.Tasks;
 using Quartz;
-using System;
-using System.IO;
-using System.Linq;
 using Disco.Data.Repository;
 
 namespace Disco.Services.Devices.Exporting
@@ -34,13 +30,13 @@ namespace Disco.Services.Devices.Exporting
 
         protected override void ExecuteTask()
         {
-            var context = (DeviceExportTaskContext)this.ExecutionContext.JobDetail.JobDataMap[JobDataMapContext];
+            var context = (DeviceExportTaskContext)ExecutionContext.JobDetail.JobDataMap[JobDataMapContext];
 
             Status.UpdateStatus(10, "Exporting Device Records", "Starting...");
 
             using (DiscoDataContext Database = new DiscoDataContext())
             {
-                context.Result = DeviceExport.GenerateExport(Database, context.Options, this.Status);
+                context.Result = DeviceExport.GenerateExport(Database, context.Options, Status);
             }
         }
     }

@@ -14,7 +14,7 @@ namespace Disco.Services.Web.Signalling
 
         public DiscoHubAuthorizeAttribute(string AuthorisedClaim)
         {
-            this.authorizedClaim = AuthorisedClaim;
+            authorizedClaim = AuthorisedClaim;
         }
 
         protected override bool UserAuthorized(IPrincipal user)

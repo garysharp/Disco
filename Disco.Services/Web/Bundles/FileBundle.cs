@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace Disco.Services.Web.Bundles
@@ -34,7 +30,7 @@ namespace Disco.Services.Web.Bundles
             get
             {
 #if DEBUG
-                return string.Format("{0}?v={1}", this.Url, this.FileHash);
+                return string.Format("{0}?v={1}", Url, FileHash);
 #else
                 return _VersionUrl;
 #endif
@@ -65,10 +61,10 @@ namespace Disco.Services.Web.Bundles
             switch (fileInfo.Extension.ToLower())
             {
                 case ".css":
-                    this.ContentType = "text/css";
+                    ContentType = "text/css";
                     break;
                 case ".js":
-                    this.ContentType = "text/javascript";
+                    ContentType = "text/javascript";
                     break;
                 default:
                     throw new ArgumentException("Unsupported Bundle File Extension");
@@ -78,28 +74,28 @@ namespace Disco.Services.Web.Bundles
             if (fileInfo.Length > 0)
                 UpdateFileHash();
             else
-                this._FileHash = string.Empty;
+                _FileHash = string.Empty;
 
             //this.Version = fileInfo.LastWriteTimeUtc.Ticks;
 
-            this._VersionUrl = string.Format("{0}?v={1}", this.Url, this.FileHash);
+            _VersionUrl = string.Format("{0}?v={1}", this.Url, FileHash);
         }
 
         private void UpdateFileHash()
         {
-            if (System.IO.File.Exists(this.File))
+            if (System.IO.File.Exists(File))
             {
-                var fileLastModified = System.IO.File.GetLastWriteTimeUtc(this.File);
-                if (!this._FileLastModified.HasValue || this._FileLastModified.Value != fileLastModified)
+                var fileLastModified = System.IO.File.GetLastWriteTimeUtc(File);
+                if (!_FileLastModified.HasValue || _FileLastModified.Value != fileLastModified)
                 {
-                    this._FileLastModified = fileLastModified;
-                    var fileBytes = System.IO.File.ReadAllBytes(this.File);
+                    _FileLastModified = fileLastModified;
+                    var fileBytes = System.IO.File.ReadAllBytes(File);
                     if (fileBytes.Length > 0)
                     {
                         using (SHA256 sha = SHA256.Create())
                         {
                             byte[] hash = sha.ComputeHash(fileBytes);
-                            this._FileHash = HttpServerUtility.UrlTokenEncode(hash);
+                            _FileHash = HttpServerUtility.UrlTokenEncode(hash);
                             return;
                         }
                     }
@@ -111,13 +107,13 @@ namespace Disco.Services.Web.Bundles
                 }
             }
 
-            this._FileHash = string.Empty;
+            _FileHash = string.Empty;
         }
 
         public void ProcessRequest(HttpContext context)
         {
             // Write Content Type
-            context.Response.ContentType = this.ContentType;
+            context.Response.ContentType = ContentType;
 
             // Write Headers
             var cache = context.Response.Cache;
@@ -128,7 +124,7 @@ namespace Disco.Services.Web.Bundles
             cache.SetCacheability(HttpCacheability.Public);
 
             // Write File
-            context.Response.WriteFile(this.File);
+            context.Response.WriteFile(File);
         }
     }
 }

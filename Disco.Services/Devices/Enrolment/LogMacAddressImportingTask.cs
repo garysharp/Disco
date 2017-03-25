@@ -54,7 +54,7 @@ namespace Disco.Services.Devices.Enrolment
                 var trigger = TriggerBuilder.Create()
                     .StartAt(DateTimeOffset.Now.AddMinutes(5));
 
-                this.ScheduleTask(trigger);
+                ScheduleTask(trigger);
             }
         }
 

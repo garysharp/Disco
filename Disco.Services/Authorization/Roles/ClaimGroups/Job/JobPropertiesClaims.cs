@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Services.Authorization.Roles.ClaimGroups.Job
+﻿namespace Disco.Services.Authorization.Roles.ClaimGroups.Job
 {
     [ClaimDetails("Job Properties", "Permissions related to Job Properties")]
     public class JobPropertiesClaims : BaseRoleClaimGroup
     {
         public JobPropertiesClaims()
         {
-            this.WarrantyProperties = new JobWarrantyPropertiesClaims();
-            this.NonWarrantyProperties = new JobNonWarrantyPropertiesClaims();
-            this.JobQueueProperties = new JobQueuePropertiesClaims();
+            WarrantyProperties = new JobWarrantyPropertiesClaims();
+            NonWarrantyProperties = new JobNonWarrantyPropertiesClaims();
+            JobQueueProperties = new JobQueuePropertiesClaims();
         }
 
         public JobWarrantyPropertiesClaims WarrantyProperties { get; set; }

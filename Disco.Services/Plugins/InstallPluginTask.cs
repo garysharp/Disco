@@ -17,9 +17,9 @@ namespace Disco.Services.Plugins
 
         protected override void ExecuteTask()
         {
-            string packageUrlPath = (string)this.ExecutionContext.JobDetail.JobDataMap["PackageUrl"];
-            string packageFilePath = (string)this.ExecutionContext.JobDetail.JobDataMap["PackageFilePath"];
-            bool DeletePackageAfterInstall = (bool)this.ExecutionContext.JobDetail.JobDataMap["DeletePackageAfterInstall"];
+            string packageUrlPath = (string)ExecutionContext.JobDetail.JobDataMap["PackageUrl"];
+            string packageFilePath = (string)ExecutionContext.JobDetail.JobDataMap["PackageFilePath"];
+            bool DeletePackageAfterInstall = (bool)ExecutionContext.JobDetail.JobDataMap["DeletePackageAfterInstall"];
 
             if (!Plugins.PluginsLoaded)
                 throw new InvalidOperationException("Plugins have not been initialized");

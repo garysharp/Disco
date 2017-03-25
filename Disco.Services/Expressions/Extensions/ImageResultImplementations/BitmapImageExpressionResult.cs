@@ -18,7 +18,7 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
 
         public override Stream GetImage(int Width, int Height)
         {
-            return this.RenderImage(this.Image, Width, Height);
+            return RenderImage(Image, Width, Height);
         }
     }
 }

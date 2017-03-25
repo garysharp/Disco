@@ -23,8 +23,8 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
                 throw new ArgumentException("AbsoluteFilePaths is empty", "AbsoluteFilePaths");
 
             this.AbsoluteFilePaths = AbsoluteFilePaths;
-            this.MontageTableLayout = true;
-            this.Padding = 4;
+            MontageTableLayout = true;
+            Padding = 4;
         }
 
         public override Stream GetImage(int Width, int Height)
@@ -33,7 +33,7 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
             try
             {
                 // Load Images
-                foreach (string imageFilePath in this.AbsoluteFilePaths)
+                foreach (string imageFilePath in AbsoluteFilePaths)
                     Images.Add(Bitmap.FromFile(imageFilePath));
 
                 // Build Montage
@@ -49,21 +49,21 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
                         if (!LosslessFormat || !BackgroundPreferTransparent)
                         {
                             Brush backgroundBrush = Brushes.White;
-                            if (!string.IsNullOrEmpty(this.BackgroundColour))
-                                backgroundBrush = new SolidBrush(ColorTranslator.FromHtml(this.BackgroundColour));
+                            if (!string.IsNullOrEmpty(BackgroundColour))
+                                backgroundBrush = new SolidBrush(ColorTranslator.FromHtml(BackgroundColour));
                             montageGraphics.FillRectangle(backgroundBrush, montageGraphics.VisibleClipBounds);
                         }
 
-                        if (this.MontageHorizontalLayout)
+                        if (MontageHorizontalLayout)
                             DoHorizontalLayout(Images, montageGraphics);
                         else
-                            if (this.MontageVerticalLayout)
+                            if (MontageVerticalLayout)
                                 DoVirticalLayout(Images, montageGraphics);
                             else
                                 DoTableLayout(Images, montageGraphics);
                     }
 
-                    return this.OutputImage(montageImage);
+                    return OutputImage(montageImage);
                 }
             }
             catch (Exception) { throw; }
@@ -83,7 +83,7 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
             float imagePosition = 0;
             int imagesWidthTotal = Images.Sum(i => i.Width);
             int imagesHeightMax = Images.Max(i => i.Height);
-            int imagesPadding = ((Images.Count - 1) * this.Padding);
+            int imagesPadding = ((Images.Count - 1) * Padding);
 
             imageScale = (float)(MontageGraphics.VisibleClipBounds.Width - imagesPadding) / (float)imagesWidthTotal;
             if ((MontageGraphics.VisibleClipBounds.Height / (float)imagesHeightMax) < imageScale)
@@ -91,7 +91,7 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
             foreach (Image image in Images)
             {
                 MontageGraphics.DrawImageResized(image, imageScale, imagePosition, 0);
-                imagePosition += (imageScale * image.Width) + this.Padding;
+                imagePosition += (imageScale * image.Width) + Padding;
             }
         }
         private void DoVirticalLayout(List<Image> Images, Graphics MontageGraphics)
@@ -100,7 +100,7 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
             float imagePosition = 0;
             int imagesWidthMax = Images.Max(i => i.Width);
             int imagesHeightTotal = Images.Sum(i => i.Height);
-            int imagesPadding = ((Images.Count - 1) * this.Padding);
+            int imagesPadding = ((Images.Count - 1) * Padding);
 
             imageScale = (float)(MontageGraphics.VisibleClipBounds.Height - imagesPadding) / (float)imagesHeightTotal;
             if ((MontageGraphics.VisibleClipBounds.Width / (float)imagesWidthMax) < imageScale)
@@ -108,7 +108,7 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
             foreach (Image image in Images)
             {
                 MontageGraphics.DrawImageResized(image, imageScale, 0, imagePosition);
-                imagePosition += (imageScale * image.Height) + this.Padding;
+                imagePosition += (imageScale * image.Height) + Padding;
             }
         }
         private void DoTableLayout(List<Image> Images, Graphics MontageGraphics)
@@ -118,8 +118,8 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
 
             var calculatedLayout = CalculateColumnCount(stageSize, itemAverageSize, Images.Count);
 
-            SizeF cellSize = new SizeF((MontageGraphics.VisibleClipBounds.Width - ((calculatedLayout.Item1 - 1) * this.Padding)) / calculatedLayout.Item1,
-                                        (MontageGraphics.VisibleClipBounds.Height - ((calculatedLayout.Item2 - 1) * this.Padding)) / calculatedLayout.Item2);
+            SizeF cellSize = new SizeF((MontageGraphics.VisibleClipBounds.Width - ((calculatedLayout.Item1 - 1) * Padding)) / calculatedLayout.Item1,
+                                        (MontageGraphics.VisibleClipBounds.Height - ((calculatedLayout.Item2 - 1) * Padding)) / calculatedLayout.Item2);
 
             int imageIndex = 0;
             for (int rowIndex = 0; rowIndex < calculatedLayout.Item2; rowIndex++)
@@ -129,7 +129,7 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
                     if (imageIndex < Images.Count)
                     {
                         var image = Images[imageIndex];
-                        var cellPoint = new PointF((cellSize.Width * columnIndex) + (this.Padding * columnIndex), (cellSize.Height * rowIndex) + (this.Padding * rowIndex));
+                        var cellPoint = new PointF((cellSize.Width * columnIndex) + (Padding * columnIndex), (cellSize.Height * rowIndex) + (Padding * rowIndex));
                         MontageGraphics.Clip = new Region(new RectangleF(cellPoint, cellSize));
                         MontageGraphics.DrawImageResized(image);
                         imageIndex++;
@@ -151,8 +151,8 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
             {
                 int rowCount = (int)Math.Ceiling((double)ItemCount / (double)columnCount);
 
-                int requiredWidthPadding = (columnCount - 1) * this.Padding;
-                int requiredHeightPadding = (rowCount - 1) * this.Padding;
+                int requiredWidthPadding = (columnCount - 1) * Padding;
+                int requiredHeightPadding = (rowCount - 1) * Padding;
                 Size usableStageSize = new Size(StageSize.Width - requiredWidthPadding, StageSize.Height - requiredHeightPadding);
                 double stageWidthRatio = (float)usableStageSize.Width / (float)usableStageSize.Height;
                 double stageHeightRatio = (float)usableStageSize.Height / (float)usableStageSize.Width;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.DirectoryServices;
 using System.Linq;
 using System.Security.Principal;
 
@@ -22,7 +21,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public string SamAccountName { get; private set; }
 
         public string Name { get; private set; }
-        public string DisplayName { get { return this.Name; } }
+        public string DisplayName { get { return Name; } }
 
         public List<string> MemberOf { get; private set; }
 
@@ -105,18 +104,18 @@ namespace Disco.Services.Interop.ActiveDirectory
             switch (PropertyName.ToLower())
             {
                 case "name":
-                    return new string[] { this.Name }.OfType<T>();
+                    return new string[] { Name }.OfType<T>();
                 case "samaccountname":
-                    return new string[] { this.SamAccountName }.OfType<T>();
+                    return new string[] { SamAccountName }.OfType<T>();
                 case "distinguishedname":
-                    return new string[] { this.DistinguishedName }.OfType<T>();
+                    return new string[] { DistinguishedName }.OfType<T>();
                 case "objectsid":
-                    return new SecurityIdentifier[] { this.SecurityIdentifier }.OfType<T>();
+                    return new SecurityIdentifier[] { SecurityIdentifier }.OfType<T>();
                 case "memberof":
-                    return this.MemberOf.OfType<T>();
+                    return MemberOf.OfType<T>();
                 default:
                     object[] adProperty;
-                    if (this.LoadedProperties.TryGetValue(PropertyName, out adProperty))
+                    if (LoadedProperties.TryGetValue(PropertyName, out adProperty))
                         return adProperty.OfType<T>();
                     else
                         return Enumerable.Empty<T>();
@@ -125,7 +124,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public override string ToString()
         {
-            return this.Id;
+            return Id;
         }
 
         public override bool Equals(object obj)
@@ -133,11 +132,11 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (obj == null || !(obj is ADGroup))
                 return false;
             else
-                return this.DistinguishedName == ((ADGroup)obj).DistinguishedName;
+                return DistinguishedName == ((ADGroup)obj).DistinguishedName;
         }
         public override int GetHashCode()
         {
-            return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(this.DistinguishedName);
+            return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(DistinguishedName);
         }
     }
 }

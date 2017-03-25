@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Quartz;
+﻿using Quartz;
 using Disco.Data.Repository;
 
 namespace Disco.Services.Logging

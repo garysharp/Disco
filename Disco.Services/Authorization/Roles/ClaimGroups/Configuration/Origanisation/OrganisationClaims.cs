@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.Origanisation
+﻿namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.Origanisation
 {
     [ClaimDetails("Organisation Details", "Permissions related to the Organisation Details")]
     public class OrganisationClaims : BaseRoleClaimGroup

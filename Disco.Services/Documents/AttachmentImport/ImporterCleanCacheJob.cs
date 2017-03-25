@@ -1,5 +1,4 @@
 ﻿using Disco.Data.Repository;
-using Disco.Services.Logging;
 using Disco.Services.Tasks;
 using Quartz;
 using System;
@@ -20,7 +19,7 @@ namespace Disco.Services.Documents.AttachmentImport
             // Trigger Daily @ 12:30am
             TriggerBuilder triggerBuilder = TriggerBuilder.Create().WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(0, 30));
 
-            this.ScheduleTask(triggerBuilder);
+            ScheduleTask(triggerBuilder);
         }
 
         protected override void ExecuteTask()

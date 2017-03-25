@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DeviceCertificate
+﻿namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DeviceCertificate
 {
     [ClaimDetails("Device Certificates", "Permissions related to Device Certificates")]
     public class DeviceCertificateClaims : BaseRoleClaimGroup

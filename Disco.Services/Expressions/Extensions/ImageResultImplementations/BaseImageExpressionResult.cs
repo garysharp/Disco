@@ -15,10 +15,10 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
 
         public BaseImageExpressionResult()
         {
-            this.LosslessFormat = false;
-            this.Quality = 90;
-            this.ShowField = false;
-            this.BackgroundPreferTransparent = true;
+            LosslessFormat = false;
+            Quality = 90;
+            ShowField = false;
+            BackgroundPreferTransparent = true;
         }
 
         public abstract Stream GetImage(int Width, int Height);
@@ -35,10 +35,10 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
             Brush backgroundBrush = null;
             if (!LosslessFormat || !BackgroundPreferTransparent)
             {
-                if (string.IsNullOrEmpty(this.BackgroundColour))
+                if (string.IsNullOrEmpty(BackgroundColour))
                     backgroundBrush = Brushes.White;
                 else
-                    backgroundBrush = new SolidBrush(ColorTranslator.FromHtml(this.BackgroundColour));
+                    backgroundBrush = new SolidBrush(ColorTranslator.FromHtml(BackgroundColour));
             }
 
             using (Image resizedImage = SourceImage.ResizeImage(Width, Height, backgroundBrush))
@@ -56,7 +56,7 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
             }
             else
             { // Lossy Format - JPG
-                byte quality = Math.Min((byte)100, Math.Max((byte)1, this.Quality));
+                byte quality = Math.Min((byte)100, Math.Max((byte)1, Quality));
                 SourceImage.SaveJpg(quality, imageStream);
             }
             imageStream.Position = 0;

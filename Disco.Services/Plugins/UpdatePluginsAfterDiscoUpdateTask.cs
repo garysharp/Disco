@@ -14,26 +14,26 @@ namespace Disco.Services.Plugins
 
         protected override void ExecuteTask()
         {
-            this.Status.UpdateStatus(0, "Updating plugins after Disco update", "Starting, please wait...");
+            Status.UpdateStatus(0, "Updating plugins after Disco update", "Starting, please wait...");
 
             // Wait for App to Load (10 Seconds)
             for (int i = 0; i < 10; i++)
             {
-                this.Status.UpdateStatus(10 * i);
+                Status.UpdateStatus(10 * i);
                 System.Threading.Thread.Sleep(1000);
             }
 
             // Update Catalogue
             using (DiscoDataContext database = new DiscoDataContext())
             {
-                PluginLibrary.UpdateManifest(database, this.Status);
+                PluginLibrary.UpdateManifest(database, Status);
             }
 
             // Update all Plugins
-            UpdatePluginTask.UpdateOffline(this.Status);
+            UpdatePluginTask.UpdateOffline(Status);
 
             // Restart
-            this.Status.Finished("Restarting Disco, please wait...", "/");
+            Status.Finished("Restarting Disco, please wait...", "/");
             Plugins.RestartApp(2500);
         }
 

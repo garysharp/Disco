@@ -29,7 +29,7 @@ namespace Disco.Services.Jobs.Statistics
             // Trigger Daily @ 12:29am
             TriggerBuilder triggerBuilder = TriggerBuilder.Create().WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(0, 29));
 
-            this.ScheduleTask(triggerBuilder);
+            ScheduleTask(triggerBuilder);
         }
         protected override void ExecuteTask()
         {

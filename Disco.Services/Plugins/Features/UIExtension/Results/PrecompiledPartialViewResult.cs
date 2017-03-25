@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.WebPages;
 
@@ -20,8 +15,8 @@ namespace Disco.Services.Plugins.Features.UIExtension.Results
             if (!typeof(WebViewPage).IsAssignableFrom(ViewType))
                 throw new ArgumentException("The View Type must inherit from WebViewPage", "ViewType");
 
-            this.viewType = ViewType;
-            this.model = Model;
+            viewType = ViewType;
+            model = Model;
         }
 
         public override void ExecuteResult<T>(System.Web.Mvc.WebViewPage<T> page)
@@ -30,7 +25,7 @@ namespace Disco.Services.Plugins.Features.UIExtension.Results
             if (partialView == null)
                 throw new InvalidOperationException("Invalid View Type");
             partialView.ViewContext = page.ViewContext;
-            partialView.ViewData = new ViewDataDictionary(this.model);
+            partialView.ViewData = new ViewDataDictionary(model);
             partialView.InitHelpers();
             partialView.ExecutePageHierarchy(new WebPageContext(page.ViewContext.HttpContext, null, model), page.ViewContext.Writer, null);
         }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Disco.Services.Plugins
 {
@@ -19,11 +16,11 @@ namespace Disco.Services.Plugins
 
         public UnknownPluginException(string PluginRequested)
         {
-            this._pluginRequested = PluginRequested;
+            _pluginRequested = PluginRequested;
         }
         public UnknownPluginException(string PluginRequested, string Message) : base(Message)
         {
-            this._pluginRequested = PluginRequested;
+            _pluginRequested = PluginRequested;
         }
 
         public override string Message

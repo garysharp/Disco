@@ -18,8 +18,8 @@ namespace Disco.Services.Plugins
 
         protected override void ExecuteTask()
         {
-            string pluginId = (string)this.ExecutionContext.JobDetail.JobDataMap["PluginId"];
-            string packageFilePath = (string)this.ExecutionContext.JobDetail.JobDataMap["PackageFilePath"];
+            string pluginId = (string)ExecutionContext.JobDetail.JobDataMap["PluginId"];
+            string packageFilePath = (string)ExecutionContext.JobDetail.JobDataMap["PackageFilePath"];
 
             PluginLibraryManifestV2 libraryManifest;
             PluginLibraryIncompatibility libraryIncompatibility;
@@ -82,13 +82,13 @@ namespace Disco.Services.Plugins
 
             if (updatePlugins == null || updatePlugins.Count == 0)
             {
-                this.Status.Finished("No plugins to update...", "/Config/Plugins");
+                Status.Finished("No plugins to update...", "/Config/Plugins");
                 return;
             }
 
-            ExecuteTaskInternal(this.Status, pluginPackagesLocation, updatePlugins);
+            ExecuteTaskInternal(Status, pluginPackagesLocation, updatePlugins);
 
-            this.Status.Finished("Restarting Disco, please wait...", "/Config/Plugins");
+            Status.Finished("Restarting Disco, please wait...", "/Config/Plugins");
             Plugins.RestartApp(2500);
         }
 

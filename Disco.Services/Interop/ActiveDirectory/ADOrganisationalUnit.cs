@@ -28,7 +28,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public override string ToString()
         {
-            return this.Name;
+            return Name;
         }
 
         public override bool Equals(object obj)
@@ -36,11 +36,11 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (obj == null || !(obj is ADOrganisationalUnit))
                 return false;
             else
-                return this.DistinguishedName == ((ADOrganisationalUnit)obj).DistinguishedName;
+                return DistinguishedName == ((ADOrganisationalUnit)obj).DistinguishedName;
         }
         public override int GetHashCode()
         {
-            return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(this.DistinguishedName);
+            return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(DistinguishedName);
         }
     }
 }

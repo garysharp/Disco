@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.JobQueue
+﻿namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.JobQueue
 {
     [ClaimDetails("Job Queues", "Permissions related to Job Queues")]
     public class JobQueueClaims : BaseRoleClaimGroup

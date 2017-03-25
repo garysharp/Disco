@@ -55,7 +55,7 @@ namespace Disco.Services.Documents.AttachmentImport
                 var trigger = TriggerBuilder.Create()
                     .StartAt(DateTimeOffset.Now.AddMinutes(5));
 
-                this.ScheduleTask(trigger);
+                ScheduleTask(trigger);
             }
         }
 

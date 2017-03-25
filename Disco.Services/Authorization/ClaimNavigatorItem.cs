@@ -3,8 +3,6 @@ using Disco.Services.Authorization.Roles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Services.Authorization
 {
@@ -26,9 +24,9 @@ namespace Disco.Services.Authorization
         {
             this.Key = Key;
             var details = Claims.GetClaimDetails(Key);
-            this.Name = details.Item1;
-            this.Description = details.Item2;
-            this.accessor = Claims.GetClaimAccessor(Key);
+            Name = details.Item1;
+            Description = details.Item2;
+            accessor = Claims.GetClaimAccessor(Key);
             this.Hidden = Hidden;
         }
 
@@ -52,13 +50,13 @@ namespace Disco.Services.Authorization
         {
             return new ClaimNavigatorItem()
                 {
-                    Key = this.Key,
-                    Name = this.Name,
-                    Description = this.Description,
-                    Hidden = this.Hidden,
-                    accessor = this.accessor,
-                    Value = this.accessor == null ? (bool?)null : this.accessor(RoleClaims),
-                    Children = this.Children == null ? null : this.Children.Cast<ClaimNavigatorItem>().Select(c => c.BuildClaimTree(RoleClaims)).ToList()
+                    Key = Key,
+                    Name = Name,
+                    Description = Description,
+                    Hidden = Hidden,
+                    accessor = accessor,
+                    Value = accessor == null ? (bool?)null : accessor(RoleClaims),
+                    Children = Children == null ? null : Children.Cast<ClaimNavigatorItem>().Select(c => c.BuildClaimTree(RoleClaims)).ToList()
                 };
         }
 
@@ -66,19 +64,19 @@ namespace Disco.Services.Authorization
         {
             return new ClaimNavigatorItem()
             {
-                Key = this.Key,
-                Name = this.Name,
-                Description = this.Description,
-                Hidden = this.Hidden,
-                accessor = this.accessor,
-                Value = this.accessor == null ? (bool?)null : RoleClaims.Any(rc => this.accessor(rc)),
-                Children = this.Children == null ? null : this.Children.Cast<ClaimNavigatorItem>().Select(c => c.BuildClaimTree(RoleClaims)).ToList()
+                Key = Key,
+                Name = Name,
+                Description = Description,
+                Hidden = Hidden,
+                accessor = accessor,
+                Value = accessor == null ? (bool?)null : RoleClaims.Any(rc => accessor(rc)),
+                Children = Children == null ? null : Children.Cast<ClaimNavigatorItem>().Select(c => c.BuildClaimTree(RoleClaims)).ToList()
             };
         }
 
         public override string ToString()
         {
-            return string.Format("{0}: {1}={2}", this.Name, this.Key, this.Value);
+            return string.Format("{0}: {1}={2}", Name, Key, Value);
         }
     }
 }

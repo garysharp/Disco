@@ -1,9 +1,5 @@
 ﻿using Disco.Services.Web.Bundles;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace Disco.Services.Plugins.Features.UIExtension.Results
@@ -17,11 +13,11 @@ namespace Disco.Services.Plugins.Features.UIExtension.Results
         public PluginResourceScriptResult(PluginFeatureManifest Source, string Resource, bool PlaceInPageHead)
             : base(Source)
         {
-            this._resource = Resource;
-            this._resourceUrl = Source.PluginManifest.WebResourceUrl(Resource);
-            this._placeInPageHead = PlaceInPageHead;
+            _resource = Resource;
+            _resourceUrl = Source.PluginManifest.WebResourceUrl(Resource);
+            _placeInPageHead = PlaceInPageHead;
 
-            if (this._placeInPageHead)
+            if (_placeInPageHead)
             {
                 var deferredBundles = HttpContext.Current.Items[BundleTable.UIExtensionScriptsKey] as List<string>;
                 if (deferredBundles == null)
@@ -29,14 +25,14 @@ namespace Disco.Services.Plugins.Features.UIExtension.Results
                     deferredBundles = new List<string>();
                     HttpContext.Current.Items[BundleTable.UIExtensionScriptsKey] = deferredBundles;
                 }
-                if (!deferredBundles.Contains(this._resourceUrl))
-                    deferredBundles.Add(this._resourceUrl);
+                if (!deferredBundles.Contains(_resourceUrl))
+                    deferredBundles.Add(_resourceUrl);
             }
         }
 
         public override void ExecuteResult<T>(System.Web.Mvc.WebViewPage<T> page)
         {
-            if (!this._placeInPageHead)
+            if (!_placeInPageHead)
             {
                 page.WriteLiteral("<script src=\"");
                 page.WriteLiteral(_resourceUrl);

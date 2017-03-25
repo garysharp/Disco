@@ -29,15 +29,15 @@ namespace Disco.Services.Jobs.Noticeboards
         {
             get
             {
-                StringBuilder sb = new StringBuilder(this.DeviceComputerNameFriendly);
+                StringBuilder sb = new StringBuilder(DeviceComputerNameFriendly);
 
                 if (UserId != null)
-                    sb.Append(" - ").Append(this.UserDisplayName).Append(" (").Append(this.UserIdFriendly).Append(")");
+                    sb.Append(" - ").Append(UserDisplayName).Append(" (").Append(UserIdFriendly).Append(")");
 
-                if (!string.IsNullOrWhiteSpace(this.DeviceLocation))
-                    sb.Append(" - ").Append(this.DeviceLocation);
+                if (!string.IsNullOrWhiteSpace(DeviceLocation))
+                    sb.Append(" - ").Append(DeviceLocation);
                 else if (UserId == null)
-                    sb.Append(" - ").Append(this.DeviceSerialNumber);
+                    sb.Append(" - ").Append(DeviceSerialNumber);
 
                 return sb.ToString();
             }
@@ -108,10 +108,10 @@ namespace Disco.Services.Jobs.Noticeboards
         {
             get
             {
-                if (this.ReadyForReturn && (this.ReadyForReturnSince.Value < DateTime.Now.AddDays(-3)))
+                if (ReadyForReturn && (ReadyForReturnSince.Value < DateTime.Now.AddDays(-3)))
                     return true;
 
-                if (this.WaitingForUserAction && (this.WaitingForUserActionSince.Value < DateTime.Now.AddDays(-6)))
+                if (WaitingForUserAction && (WaitingForUserActionSince.Value < DateTime.Now.AddDays(-6)))
                     return true;
 
                 return false;

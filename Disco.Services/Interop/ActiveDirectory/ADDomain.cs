@@ -43,19 +43,19 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public ADDomain(ActiveDirectoryContext Context, Domain Domain)
         {
-            this.context = Context;
+            context = Context;
 
             this.Domain = Domain;
-            this.SearchContainers = null;
-            this.domainControllers = null;
-            this.domainMaintenanceNext = DateTime.Now.AddMinutes(DomainMaintanceIntervalMinutes);
+            SearchContainers = null;
+            domainControllers = null;
+            domainMaintenanceNext = DateTime.Now.AddMinutes(DomainMaintanceIntervalMinutes);
 
-            this.Initialize();
+            Initialize();
         }
 
         private void Initialize()
         {
-            this.Name = Domain.Name;
+            Name = Domain.Name;
 
             var dc = Domain.FindDomainController();
 
@@ -63,26 +63,26 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             using (var adRootDSE = new DirectoryEntry(ldapPath + "RootDSE"))
             {
-                this.DistinguishedName = adRootDSE.Properties["defaultNamingContext"][0].ToString();
-                this.ConfigurationNamingContext = adRootDSE.Properties["configurationNamingContext"][0].ToString();
+                DistinguishedName = adRootDSE.Properties["defaultNamingContext"][0].ToString();
+                ConfigurationNamingContext = adRootDSE.Properties["configurationNamingContext"][0].ToString();
             }
 
-            using (var adDomainRoot = new DirectoryEntry(ldapPath + this.DistinguishedName))
+            using (var adDomainRoot = new DirectoryEntry(ldapPath + DistinguishedName))
             {
-                this.SecurityIdentifier = new SecurityIdentifier((byte[])(adDomainRoot.Properties["objectSid"][0]), 0);
+                SecurityIdentifier = new SecurityIdentifier((byte[])(adDomainRoot.Properties["objectSid"][0]), 0);
             }
 
-            using (var configSearchRoot = new DirectoryEntry(ldapPath + "CN=Partitions," + this.ConfigurationNamingContext))
+            using (var configSearchRoot = new DirectoryEntry(ldapPath + "CN=Partitions," + ConfigurationNamingContext))
             {
-                var configSearchFilter = string.Format("(&(objectcategory=Crossref)(dnsRoot={0})(netBIOSName=*))", this.Name);
+                var configSearchFilter = string.Format("(&(objectcategory=Crossref)(dnsRoot={0})(netBIOSName=*))", Name);
 
                 using (var configSearcher = new DirectorySearcher(configSearchRoot, configSearchFilter, new string[] { "NetBIOSName" }, System.DirectoryServices.SearchScope.OneLevel))
                 {
                     SearchResult configResult = configSearcher.FindOne();
                     if (configResult != null)
-                        this.NetBiosName = configResult.Properties["NetBIOSName"][0].ToString();
+                        NetBiosName = configResult.Properties["NetBIOSName"][0].ToString();
                     else
-                        this.NetBiosName = null;
+                        NetBiosName = null;
                 }
             }
         }
@@ -91,17 +91,17 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public IEnumerable<ADDomainController> GetAllReachableDomainControllers()
         {
-            return this.Domain.FindAllDomainControllers().WhereReachable().Select(dc => new ADDomainController(this.context, dc, this, dc.SiteName == this.context.Site.Name, false));
+            return Domain.FindAllDomainControllers().WhereReachable().Select(dc => new ADDomainController(context, dc, this, dc.SiteName == context.Site.Name, false));
         }
 
         public IEnumerable<ADDomainController> GetReachableSiteDomainControllers()
         {
-            return this.DomainControllers.Where(dc => dc.IsSiteServer && dc.DomainController.IsReachable());
+            return DomainControllers.Where(dc => dc.IsSiteServer && dc.DomainController.IsReachable());
         }
 
         public ADDomainController GetAvailableDomainController(bool RequireWritable = false)
         {
-            if (this.domainMaintenanceNext < DateTime.Now)
+            if (domainMaintenanceNext < DateTime.Now)
                 MaintainDomainControllers();
 
             IEnumerable<ADDomainController> availableServers;
@@ -144,7 +144,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         }
         private IEnumerable<ADDomainController> AvailableDomainControllers(bool RequireSiteServer, bool RequireWritable)
         {
-            IEnumerable<ADDomainController> query = this.DomainControllers.Where(dc => dc.IsAvailable);
+            IEnumerable<ADDomainController> query = DomainControllers.Where(dc => dc.IsAvailable);
             if (RequireSiteServer)
                 query = query.Where(dc => dc.IsSiteServer);
             if (RequireWritable)
@@ -160,11 +160,11 @@ namespace Disco.Services.Interop.ActiveDirectory
             else
                 locatorOptions = LocatorOptions.ForceRediscovery;
 
-            var dc = this.Domain.FindDomainController(locatorOptions);
+            var dc = Domain.FindDomainController(locatorOptions);
 
             var dcName = dc.Name;
 
-            var existingDC = this.DomainControllers.FirstOrDefault(edc => edc.Name == dcName);
+            var existingDC = DomainControllers.FirstOrDefault(edc => edc.Name == dcName);
 
             if (existingDC != null)
             {
@@ -183,10 +183,10 @@ namespace Disco.Services.Interop.ActiveDirectory
             {
                 // New DC discovered
 
-                var adDC = new ADDomainController(this.context, dc, this, dc.SiteName == this.context.Site.Name, RequireWritable);
+                var adDC = new ADDomainController(context, dc, this, dc.SiteName == context.Site.Name, RequireWritable);
 
                 // Add DC to Available Servers
-                this.domainControllers.Push(adDC);
+                domainControllers.Push(adDC);
 
                 return adDC;
             }
@@ -196,7 +196,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         {
             lock (domainMaintainLock)
             {
-                var servers = this.domainControllers.ToList();
+                var servers = domainControllers.ToList();
 
                 var nonSiteServersPresent = servers.Any(s => !s.IsSiteServer);
 
@@ -216,13 +216,13 @@ namespace Disco.Services.Interop.ActiveDirectory
                         UpdateDomainControllers(servers.Where(s => s.IsSiteServer || s.IsAvailable));
                     }
                 }
-                this.domainMaintenanceNext = DateTime.Now.AddMinutes(DomainMaintanceIntervalMinutes);
+                domainMaintenanceNext = DateTime.Now.AddMinutes(DomainMaintanceIntervalMinutes);
             }
         }
 
         internal void UpdateDomainControllers(IEnumerable<ADDomainController> DomainControllers)
         {
-            this.domainControllers = new ConcurrentStack<ADDomainController>(DomainControllers);
+            domainControllers = new ConcurrentStack<ADDomainController>(DomainControllers);
         }
 
         #endregion
@@ -233,7 +233,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 throw new ArgumentNullException("DistinguishedName");
 
             if (!DistinguishedName.EndsWith(this.DistinguishedName, StringComparison.OrdinalIgnoreCase))
-                throw new ArgumentException(string.Format("The Distinguished Name ({0}) isn't a member of this domain [{1}]", DistinguishedName, this.Name), "DistinguishedName");
+                throw new ArgumentException(string.Format("The Distinguished Name ({0}) isn't a member of this domain [{1}]", DistinguishedName, Name), "DistinguishedName");
 
             var dc = GetAvailableDomainController();
 
@@ -244,12 +244,12 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public IEnumerable<ADSearchResult> SearchEntireDomain(string LdapFilter, string[] LoadProperties, int? ResultLimit = null)
         {
-            return SearchInternal(this.DistinguishedName, LdapFilter, LoadProperties, ResultLimit);
+            return SearchInternal(DistinguishedName, LdapFilter, LoadProperties, ResultLimit);
         }
 
         public IEnumerable<ADSearchResult> SearchScope(string LdapFilter, string[] LoadProperties, int? ResultLimit = null)
         {
-            var searchScope = this.SearchContainers;
+            var searchScope = SearchContainers;
 
             // No scope set, search entire domain
             if (searchScope == null)
@@ -322,11 +322,11 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         internal void UpdateSearchContainers(List<string> Containers)
         {
-            this.SearchContainers = Containers ?? new List<string>();
+            SearchContainers = Containers ?? new List<string>();
         }
         internal void UpdateSearchEntireDomain()
         {
-            this.SearchContainers = null;
+            SearchContainers = null;
         }
 
         #region Helpers
@@ -335,7 +335,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         {
             get
             {
-                return string.Format("CN=Computers,{0}", this.DistinguishedName);
+                return string.Format("CN=Computers,{0}", DistinguishedName);
             }
         }
 
@@ -346,7 +346,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             StringBuilder name = new StringBuilder();
 
-            name.Append('[').Append(this.NetBiosName).Append(']');
+            name.Append('[').Append(NetBiosName).Append(']');
 
             var subDN = DistinguishedName.Substring(0, DistinguishedName.Length - this.DistinguishedName.Length);
             var subDNComponents = subDN.Split(',');
@@ -365,7 +365,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public override string ToString()
         {
-            return string.Format("{0} [{1}]", this.Name, this.NetBiosName);
+            return string.Format("{0} [{1}]", Name, NetBiosName);
         }
 
         public override bool Equals(object obj)
@@ -373,11 +373,11 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (obj == null || !(obj is ADDomain))
                 return false;
             else
-                return this.DistinguishedName == ((ADDomain)obj).DistinguishedName;
+                return DistinguishedName == ((ADDomain)obj).DistinguishedName;
         }
         public override int GetHashCode()
         {
-            return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(this.DistinguishedName);
+            return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(DistinguishedName);
         }
     }
 }

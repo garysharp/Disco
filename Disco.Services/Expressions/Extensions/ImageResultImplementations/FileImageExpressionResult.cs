@@ -20,9 +20,9 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
 
         public override Stream GetImage(int Width, int Height)
         {
-            using (Image SourceImage = Bitmap.FromFile(this.AbsoluteFilePath))
+            using (Image SourceImage = Bitmap.FromFile(AbsoluteFilePath))
             {
-                return this.RenderImage(SourceImage, Width, Height);
+                return RenderImage(SourceImage, Width, Height);
             }
         }
     }

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Disco.Services.Logging
 {
@@ -12,7 +10,7 @@ namespace Disco.Services.Logging
         public LogBase()
         {
             // Cache Event Types
-            _EventTypes = this.LoadEventTypes().ToDictionary(et => et.Id);
+            _EventTypes = LoadEventTypes().ToDictionary(et => et.Id);
         }
 
         public abstract int ModuleId { get; }
@@ -29,13 +27,13 @@ namespace Disco.Services.Logging
         }
         protected void Log(int EventTypeId, params object[] Args)
         {
-            LogContext.Current.Log(this.ModuleId, EventTypeId, Args);
+            LogContext.Current.Log(ModuleId, EventTypeId, Args);
         }
         public string LiveLogGroupName
         {
             get
             {
-                return this.ModuleName;
+                return ModuleName;
             }
         }
 

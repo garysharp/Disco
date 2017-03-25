@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 
 namespace Disco.Services.Plugins.Features.UIExtension.Results
@@ -15,7 +10,7 @@ namespace Disco.Services.Plugins.Features.UIExtension.Results
         public LiteralResult(PluginFeatureManifest Source, string Content)
             : base(Source)
         {
-            this._content = Content;
+            _content = Content;
         }
 
         public override void ExecuteResult<T>(WebViewPage<T> page)

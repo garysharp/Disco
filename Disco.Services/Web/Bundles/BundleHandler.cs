@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Web;
 
 namespace Disco.Services.Web.Bundles
 {
@@ -14,8 +9,8 @@ namespace Disco.Services.Web.Bundles
 
         public BundleHandler(IBundle requestBundle, string bundleVirtualPath)
         {
-            this.RequestBundle = requestBundle;
-            this.BundleVirtualPath = bundleVirtualPath;
+            RequestBundle = requestBundle;
+            BundleVirtualPath = bundleVirtualPath;
         }
 
         public bool IsReusable
@@ -30,7 +25,7 @@ namespace Disco.Services.Web.Bundles
             if (!string.IsNullOrEmpty(context.Request.Headers["If-Modified-Since"]))
                 context.Response.StatusCode = 304;
             else
-                this.RequestBundle.ProcessRequest(context);
+                RequestBundle.ProcessRequest(context);
         }
 
         internal static bool RemapHandlerForBundleRequests(HttpApplication app)

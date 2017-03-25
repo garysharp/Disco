@@ -3,8 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Subjects;
-using System.Text;
-using System.Threading.Tasks;
 using Disco.Data.Repository;
 
 namespace Disco.Services.Interop.ActiveDirectory
@@ -436,7 +434,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             this.ManagedGroup = ManagedGroup;
             this.ActionType = ActionType;
             this.InvokingIdentifier = InvokingIdentifier;
-            this.memberResolver = MemberResolver;
+            memberResolver = MemberResolver;
         }
 
         public IEnumerable<ADManagedGroupScheduledActionItem> ResolveMembers(DiscoDataContext Database)
@@ -448,14 +446,14 @@ namespace Disco.Services.Interop.ActiveDirectory
                     return Enumerable.Empty<ADManagedGroupScheduledActionItem>();
                 else
                     return members.Select(m =>
-                        new ADManagedGroupScheduledActionItem(this.ManagedGroup, this.ActionType, m)
+                        new ADManagedGroupScheduledActionItem(ManagedGroup, ActionType, m)
                     );
             }
             else
             {
                 return new ADManagedGroupScheduledActionItem[]
                     {
-                        new ADManagedGroupScheduledActionItem(this.ManagedGroup, this.ActionType, this.InvokingIdentifier) 
+                        new ADManagedGroupScheduledActionItem(ManagedGroup, ActionType, InvokingIdentifier) 
                     };
             }
         }

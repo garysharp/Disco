@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Quartz;
-using System.Web.Script.Serialization;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Disco.Services.Tasks
@@ -44,33 +39,33 @@ namespace Disco.Services.Tasks
 
         #region Properties
 
-        public string SessionId { get { return this._sessionId; } }
-        public string TriggerKey { get { return this._triggerKey; } }
-        public string TaskName { get { return this._taskName; } }
-        public Type TaskType { get { return this._taskType; } }
-        public bool IsSilent { get { return this._isSilent; } }
+        public string SessionId { get { return _sessionId; } }
+        public string TriggerKey { get { return _triggerKey; } }
+        public string TaskName { get { return _taskName; } }
+        public Type TaskType { get { return _taskType; } }
+        public bool IsSilent { get { return _isSilent; } }
 
-        public byte Progress { get { return this._progress; } }
-        public string CurrentProcess { get { return this._currentProcess; } }
-        public string CurrentDescription { get { return this._currentDescription; } }
+        public byte Progress { get { return _progress; } }
+        public string CurrentProcess { get { return _currentProcess; } }
+        public string CurrentDescription { get { return _currentDescription; } }
 
         public bool IgnoreCurrentProcessChanges { get; set; }
         public bool IgnoreCurrentDescription { get; set; }
         public double ProgressMultiplier { get; set; }
         public byte ProgressOffset { get; set; }
 
-        public Exception TaskException { get { return this._taskException; } }
-        public bool CancelSupported { get { return this._cancelSupported; } }
-        public bool IsCanceling { get { return this._isCanceling; } }
+        public Exception TaskException { get { return _taskException; } }
+        public bool CancelSupported { get { return _cancelSupported; } }
+        public bool IsCanceling { get { return _isCanceling; } }
 
-        public DateTime? StartedTimestamp { get { return this._startedTimestamp; } }
-        public DateTime? FinishedTimestamp { get { return this._finishedTimestamp; } }
-        public DateTime? NextScheduledTimestamp { get { return this._nextScheduledTimestamp; } }
+        public DateTime? StartedTimestamp { get { return _startedTimestamp; } }
+        public DateTime? FinishedTimestamp { get { return _finishedTimestamp; } }
+        public DateTime? NextScheduledTimestamp { get { return _nextScheduledTimestamp; } }
 
-        public string FinishedMessage { get { return this._finishedMessage; } }
-        public string FinishedUrl { get { return this._finishedUrl; } }
+        public string FinishedMessage { get { return _finishedMessage; } }
+        public string FinishedUrl { get { return _finishedUrl; } }
 
-        public int StatusVersion { get { return this._statusVersion; } }
+        public int StatusVersion { get { return _statusVersion; } }
 
         public bool IsRunning
         {
@@ -93,22 +88,22 @@ namespace Disco.Services.Tasks
 
         public ScheduledTaskStatus(ScheduledTask Task, string SessionId, string TriggerKey, string FinishedUrl = null)
         {
-            this._taskName = Task.TaskName;
-            this._taskType = Task.GetType();
-            this._tcs = new TaskCompletionSource<ScheduledTaskStatus>();
+            _taskName = Task.TaskName;
+            _taskType = Task.GetType();
+            _tcs = new TaskCompletionSource<ScheduledTaskStatus>();
 
-            this._sessionId = SessionId;
-            this._triggerKey = TriggerKey;
-            this._cancelInitiallySupported = Task.CancelInitiallySupported;
-            this._cancelSupported = this._cancelInitiallySupported;
+            _sessionId = SessionId;
+            _triggerKey = TriggerKey;
+            _cancelInitiallySupported = Task.CancelInitiallySupported;
+            _cancelSupported = _cancelInitiallySupported;
 
-            this._finishedUrl = FinishedUrl;
+            _finishedUrl = FinishedUrl;
 
-            this._currentProcess = "Scheduled";
-            this._currentDescription = "Scheduled Task for Execution";
+            _currentProcess = "Scheduled";
+            _currentDescription = "Scheduled Task for Execution";
 
-            this.ProgressMultiplier = 1;
-            this._progress = 0;
+            ProgressMultiplier = 1;
+            _progress = 0;
         }
 
         public void LogWarning(string Message)
@@ -124,13 +119,13 @@ namespace Disco.Services.Tasks
         #region Progress Actions
         private byte CalculateProgressValue(byte Progress)
         {
-            return (byte)((Progress * this.ProgressMultiplier) + this.ProgressOffset);
+            return (byte)((Progress * ProgressMultiplier) + ProgressOffset);
         }
 
         public void UpdateStatus(byte Progress)
         {
-            this._progress = CalculateProgressValue(Progress);
-            UpdateTriggered("Progress", this._progress);
+            _progress = CalculateProgressValue(Progress);
+            UpdateTriggered("Progress", _progress);
         }
         public void UpdateStatus(double Progress)
         {
@@ -140,13 +135,13 @@ namespace Disco.Services.Tasks
         {
             if (!IgnoreCurrentDescription)
             {
-                this._currentDescription = CurrentDescription;
-                UpdateTriggered("CurrentDescription", this._currentDescription);
+                _currentDescription = CurrentDescription;
+                UpdateTriggered("CurrentDescription", _currentDescription);
             }
         }
         public void UpdateStatus(byte Progress, string CurrentDescription)
         {
-            this._progress = CalculateProgressValue(Progress);
+            _progress = CalculateProgressValue(Progress);
 
             var changedProperties = new List<ChangedItem>() {
                 new ChangedItem("Progress", Progress)
@@ -154,7 +149,7 @@ namespace Disco.Services.Tasks
 
             if (!IgnoreCurrentDescription)
             {
-                this._currentDescription = CurrentDescription;
+                _currentDescription = CurrentDescription;
                 changedProperties.Add(new ChangedItem("CurrentDescription", CurrentDescription));
             }
 
@@ -166,7 +161,7 @@ namespace Disco.Services.Tasks
         }
         public void UpdateStatus(byte Progress, string CurrentProcess, string CurrentDescription)
         {
-            this._progress = CalculateProgressValue(Progress);
+            _progress = CalculateProgressValue(Progress);
 
             var changedProperties = new List<ChangedItem>() {
                 new ChangedItem("Progress", Progress)
@@ -174,12 +169,12 @@ namespace Disco.Services.Tasks
 
             if (!IgnoreCurrentProcessChanges)
             {
-                this._currentProcess = CurrentProcess;
+                _currentProcess = CurrentProcess;
                 changedProperties.Add(new ChangedItem("CurrentProcess", CurrentProcess));
             }
             if (!IgnoreCurrentDescription)
             {
-                this._currentDescription = CurrentDescription;
+                _currentDescription = CurrentDescription;
                 changedProperties.Add(new ChangedItem("CurrentDescription", CurrentDescription));
             }
 
@@ -194,13 +189,13 @@ namespace Disco.Services.Tasks
         #region State Actions
         public bool Canceled()
         {
-            if (!this._isCanceling)
+            if (!_isCanceling)
             {
                 if (_cancelSupported)
                 { // Cancelling
-                    this._isCanceling = true;
+                    _isCanceling = true;
                     UpdateTriggered("IsCancelling", true);
-                    if (this.Canceling != null)
+                    if (Canceling != null)
                         Canceling(this);
                     return true;
                 }
@@ -216,46 +211,46 @@ namespace Disco.Services.Tasks
         }
         public void SetCancelSupported(bool CancelSupported)
         {
-            if (this._cancelSupported != CancelSupported)
+            if (_cancelSupported != CancelSupported)
             {
-                this._cancelSupported = CancelSupported;
+                _cancelSupported = CancelSupported;
                 UpdateTriggered("CancelSupported", CancelSupported);
             }
         }
         public void SetTaskException(Exception TaskException)
         {
-            if (this._taskException != TaskException)
+            if (_taskException != TaskException)
             {
-                this._taskException = TaskException;
-                UpdateTriggered("TaskExceptionMessage", (this._taskException == null ? null : this._taskException.Message));
+                _taskException = TaskException;
+                UpdateTriggered("TaskExceptionMessage", (_taskException == null ? null : _taskException.Message));
             }
         }
         public void SetIsSilent(bool IsSilent)
         {
-            if (this._isSilent != IsSilent)
-                this._isSilent = IsSilent;
+            if (_isSilent != IsSilent)
+                _isSilent = IsSilent;
         }
         public void SetFinishedUrl(string FinishedUrl)
         {
-            if (this._finishedUrl != FinishedUrl)
+            if (_finishedUrl != FinishedUrl)
             {
-                this._finishedUrl = FinishedUrl;
+                _finishedUrl = FinishedUrl;
                 UpdateTriggered("FinishedUrl", FinishedUrl);
             }
         }
         public void SetFinishedMessage(string FinishedMessage)
         {
-            if (this._finishedMessage != FinishedMessage)
+            if (_finishedMessage != FinishedMessage)
             {
-                this._finishedMessage = FinishedMessage;
+                _finishedMessage = FinishedMessage;
                 UpdateTriggered("FinishedMessage", FinishedMessage);
             }
         }
         public void SetNextScheduledTimestamp(DateTime? NextScheduledTimestamp)
         {
-            if (this._nextScheduledTimestamp != NextScheduledTimestamp)
+            if (_nextScheduledTimestamp != NextScheduledTimestamp)
             {
-                this._nextScheduledTimestamp = NextScheduledTimestamp;
+                _nextScheduledTimestamp = NextScheduledTimestamp;
                 UpdateTriggered("NextScheduledTimestamp", NextScheduledTimestamp);
             }
         }
@@ -264,163 +259,163 @@ namespace Disco.Services.Tasks
             var changedProperties = new List<ChangedItem>();
 
             // Change StartedTimestamp
-            this._startedTimestamp = DateTime.Now;
-            changedProperties.Add(new ChangedItem("StartedTimestamp", this.StartedTimestamp));
+            _startedTimestamp = DateTime.Now;
+            changedProperties.Add(new ChangedItem("StartedTimestamp", StartedTimestamp));
 
-            if (this._finishedTimestamp != null)
+            if (_finishedTimestamp != null)
             {
-                this._finishedTimestamp = null;
-                changedProperties.Add(new ChangedItem("FinishedTimestamp", this._finishedTimestamp));
-            }
-
-            if (this._nextScheduledTimestamp != null)
-            {
-                this._nextScheduledTimestamp = null;
-                changedProperties.Add(new ChangedItem("NextScheduledTimestamp", this._nextScheduledTimestamp));
+                _finishedTimestamp = null;
+                changedProperties.Add(new ChangedItem("FinishedTimestamp", _finishedTimestamp));
             }
 
-            changedProperties.Add(new ChangedItem("IsRunning", this.IsRunning));
+            if (_nextScheduledTimestamp != null)
+            {
+                _nextScheduledTimestamp = null;
+                changedProperties.Add(new ChangedItem("NextScheduledTimestamp", _nextScheduledTimestamp));
+            }
 
-            if (this._progress != 0)
+            changedProperties.Add(new ChangedItem("IsRunning", IsRunning));
+
+            if (_progress != 0)
             {
-                this._progress = 0;
-                changedProperties.Add(new ChangedItem("Progress", this._progress));
+                _progress = 0;
+                changedProperties.Add(new ChangedItem("Progress", _progress));
             }
-            if (this._currentProcess != "Starting")
+            if (_currentProcess != "Starting")
             {
-                this._currentProcess = "Starting";
-                changedProperties.Add(new ChangedItem("CurrentProcess", this._currentProcess));
+                _currentProcess = "Starting";
+                changedProperties.Add(new ChangedItem("CurrentProcess", _currentProcess));
             }
-            if (this._currentDescription != "Initializing Task for Execution")
+            if (_currentDescription != "Initializing Task for Execution")
             {
-                this._currentDescription = "Initializing Task for Execution";
-                changedProperties.Add(new ChangedItem("CurrentDescription", this._currentDescription));
+                _currentDescription = "Initializing Task for Execution";
+                changedProperties.Add(new ChangedItem("CurrentDescription", _currentDescription));
             }
-            if (this._taskException != null)
+            if (_taskException != null)
             {
-                this._taskException = null;
-                changedProperties.Add(new ChangedItem("TaskExceptionMessage", (this._taskException == null ? null : this._taskException.Message)));
+                _taskException = null;
+                changedProperties.Add(new ChangedItem("TaskExceptionMessage", (_taskException == null ? null : _taskException.Message)));
             }
-            if (this._cancelSupported != this._cancelInitiallySupported)
+            if (_cancelSupported != _cancelInitiallySupported)
             {
-                this._cancelSupported = this._cancelInitiallySupported;
-                changedProperties.Add(new ChangedItem("CancelSupported", this._cancelSupported));
+                _cancelSupported = _cancelInitiallySupported;
+                changedProperties.Add(new ChangedItem("CancelSupported", _cancelSupported));
             }
-            if (this._isCanceling)
+            if (_isCanceling)
             {
-                this._isCanceling = false;
-                changedProperties.Add(new ChangedItem("IsCanceling", this._isCanceling));
+                _isCanceling = false;
+                changedProperties.Add(new ChangedItem("IsCanceling", _isCanceling));
             }
 
             UpdateTriggered(changedProperties.ToArray());
         }
         public void Finished()
         {
-            Finished(this._finishedMessage, this._finishedUrl);
+            Finished(_finishedMessage, _finishedUrl);
         }
         public void Finished(string FinishedMessage)
         {
-            Finished(FinishedMessage, this._finishedUrl);
+            Finished(FinishedMessage, _finishedUrl);
         }
         public void Finished(string FinishedMessage, string FinishedUrl)
         {
             var changedProperties = new List<ChangedItem>();
 
-            this._finishedTimestamp = DateTime.Now;
-            changedProperties.Add(new ChangedItem("FinishedTimestamp", this._finishedTimestamp));
-            changedProperties.Add(new ChangedItem("IsRunning", this.IsRunning));
+            _finishedTimestamp = DateTime.Now;
+            changedProperties.Add(new ChangedItem("FinishedTimestamp", _finishedTimestamp));
+            changedProperties.Add(new ChangedItem("IsRunning", IsRunning));
 
-            if (FinishedMessage != this._finishedMessage)
+            if (FinishedMessage != _finishedMessage)
             {
-                this._finishedMessage = FinishedMessage;
-                changedProperties.Add(new ChangedItem("FinishedMessage", this._finishedMessage));
+                _finishedMessage = FinishedMessage;
+                changedProperties.Add(new ChangedItem("FinishedMessage", _finishedMessage));
             }
-            if (FinishedUrl != this._finishedUrl)
+            if (FinishedUrl != _finishedUrl)
             {
-                this._finishedUrl = FinishedUrl;
-                changedProperties.Add(new ChangedItem("FinishedUrl", this._finishedUrl));
+                _finishedUrl = FinishedUrl;
+                changedProperties.Add(new ChangedItem("FinishedUrl", _finishedUrl));
             }
 
-            if (this._isCanceling)
+            if (_isCanceling)
             {
-                this._isCanceling = false;
-                changedProperties.Add(new ChangedItem("IsCanceling", this._isCanceling));
+                _isCanceling = false;
+                changedProperties.Add(new ChangedItem("IsCanceling", _isCanceling));
             }
 
             UpdateTriggered(changedProperties.ToArray());
         }
         internal void Finally()
         {
-            this._tcs.SetResult(this);
+            _tcs.SetResult(this);
         }
         public void Reset(DateTime? NextScheduledTimestamp)
         {
-            if (this._tcs != null)
-                this._tcs.Task.Dispose();
-            this._tcs = new TaskCompletionSource<ScheduledTaskStatus>();
+            if (_tcs != null)
+                _tcs.Task.Dispose();
+            _tcs = new TaskCompletionSource<ScheduledTaskStatus>();
 
             var changedProperties = new List<ChangedItem>();
 
-            if (this._nextScheduledTimestamp != NextScheduledTimestamp)
+            if (_nextScheduledTimestamp != NextScheduledTimestamp)
             {
-                this._nextScheduledTimestamp = NextScheduledTimestamp;
-                changedProperties.Add(new ChangedItem("NextScheduledTimestamp", this._nextScheduledTimestamp));
+                _nextScheduledTimestamp = NextScheduledTimestamp;
+                changedProperties.Add(new ChangedItem("NextScheduledTimestamp", _nextScheduledTimestamp));
             }
 
-            if (this._startedTimestamp != null)
+            if (_startedTimestamp != null)
             {
-                this._startedTimestamp = null;
-                changedProperties.Add(new ChangedItem("StartedTimestamp", this._startedTimestamp));
+                _startedTimestamp = null;
+                changedProperties.Add(new ChangedItem("StartedTimestamp", _startedTimestamp));
             }
-            if (this._finishedTimestamp != null)
+            if (_finishedTimestamp != null)
             {
-                this._finishedTimestamp = null;
-                changedProperties.Add(new ChangedItem("FinishedTimestamp", this._finishedTimestamp));
+                _finishedTimestamp = null;
+                changedProperties.Add(new ChangedItem("FinishedTimestamp", _finishedTimestamp));
             }
-            if (this._finishedMessage != null)
+            if (_finishedMessage != null)
             {
-                this._finishedMessage = null;
-                changedProperties.Add(new ChangedItem("FinishedMessage", this._finishedMessage));
+                _finishedMessage = null;
+                changedProperties.Add(new ChangedItem("FinishedMessage", _finishedMessage));
             }
-            if (this._finishedUrl != null)
+            if (_finishedUrl != null)
             {
-                this._finishedUrl = null;
-                changedProperties.Add(new ChangedItem("FinishedUrl", this._finishedUrl));
+                _finishedUrl = null;
+                changedProperties.Add(new ChangedItem("FinishedUrl", _finishedUrl));
             }
-            if (this._progress != 0)
+            if (_progress != 0)
             {
-                this._progress = 0;
-                changedProperties.Add(new ChangedItem("Progress", this._progress));
+                _progress = 0;
+                changedProperties.Add(new ChangedItem("Progress", _progress));
             }
-            this.ProgressMultiplier = 1;
-            this.ProgressOffset = 0;
-            this.IgnoreCurrentDescription = false;
-            this.IgnoreCurrentProcessChanges = false;
+            ProgressMultiplier = 1;
+            ProgressOffset = 0;
+            IgnoreCurrentDescription = false;
+            IgnoreCurrentProcessChanges = false;
 
-            if (this._currentProcess != "Scheduled")
+            if (_currentProcess != "Scheduled")
             {
-                this._currentProcess = "Scheduled";
-                changedProperties.Add(new ChangedItem("CurrentProcess", this._currentProcess));
+                _currentProcess = "Scheduled";
+                changedProperties.Add(new ChangedItem("CurrentProcess", _currentProcess));
             }
-            if (this._currentDescription != "Scheduled Task for Execution")
+            if (_currentDescription != "Scheduled Task for Execution")
             {
-                this._currentDescription = "Scheduled Task for Execution";
-                changedProperties.Add(new ChangedItem("CurrentDescription", this._currentDescription));
+                _currentDescription = "Scheduled Task for Execution";
+                changedProperties.Add(new ChangedItem("CurrentDescription", _currentDescription));
             }
-            if (this._isCanceling)
+            if (_isCanceling)
             {
-                this._isCanceling = false;
-                changedProperties.Add(new ChangedItem("IsCanceling", this._isCanceling));
+                _isCanceling = false;
+                changedProperties.Add(new ChangedItem("IsCanceling", _isCanceling));
             }
             UpdateTriggered(changedProperties.ToArray());
         }
         public bool WaitUntilFinished(TimeSpan Timeout)
         {
-            var finished = this._tcs.Task.Wait(Timeout);
+            var finished = _tcs.Task.Wait(Timeout);
 
             // Return false if task completed, but with an error
             if (finished)
-                return this.TaskException == null;
+                return TaskException == null;
             else
                 return false;
         }
@@ -433,13 +428,13 @@ namespace Disco.Services.Tasks
 
         private void UpdateTriggered(params ChangedItem[] ChangedProperties)
         {
-            this._statusVersion++;
+            _statusVersion++;
 
             if (Updated != null)
                 Updated(this, ChangedProperties);
 
             if (!_isSilent)
-                ScheduledTaskNotificationsHub.PublishEvent(this.SessionId, ChangedProperties);
+                ScheduledTaskNotificationsHub.PublishEvent(SessionId, ChangedProperties);
         }
     }
 }

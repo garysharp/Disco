@@ -1,11 +1,9 @@
 ﻿using Disco.Data.Repository;
 using System;
 using System.Collections.Generic;
-using System.DirectoryServices;
 using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Security.Principal;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Disco.Services.Interop.ActiveDirectory
@@ -53,22 +51,22 @@ namespace Disco.Services.Interop.ActiveDirectory
         private void Initialize(DiscoDataContext Database)
         {
             // Search Entire Forest (default: true)
-            this._SearchAllForestServers = Database.DiscoConfiguration.ActiveDirectory.SearchAllForestServers ?? true;
+            _SearchAllForestServers = Database.DiscoConfiguration.ActiveDirectory.SearchAllForestServers ?? true;
 
             // Set Search LDAP Filters
             InitializeWildcardSearchSufixOnly(Database.DiscoConfiguration.ActiveDirectory.SearchWildcardSuffixOnly);
 
             // Determine Site
             var computerSite = ActiveDirectorySite.GetComputerSite();
-            this.Site = new ADSite(this, computerSite);
+            Site = new ADSite(this, computerSite);
 
             // Determine Domains
             var computerDomain = Domain.GetComputerDomain();
-            this.Domains = computerDomain.Forest.Domains
+            Domains = computerDomain.Forest.Domains
                 .Cast<Domain>()
                 .Select(d => new ADDomain(this, d))
                 .ToList();
-            this.PrimaryDomain = this.Domains.Where(d => d.Name == computerDomain.Name).First();
+            PrimaryDomain = Domains.Where(d => d.Name == computerDomain.Name).First();
 
             // Determine Search Scope Containers
             ReinitializeSearchContainers(Database.DiscoConfiguration.ActiveDirectory.SearchContainers);
@@ -80,7 +78,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 .Select(dc => new ADDomainController(this, dc, GetDomainByName(dc.Domain.Name), IsSiteServer: true, IsWritable: false));
 
             Site.UpdateDomainControllers(siteDomainControllers);
-            this.Domains.ForEach(domain => domain.UpdateDomainControllers(siteDomainControllers.Where(dc => dc.Domain == domain)));
+            Domains.ForEach(domain => domain.UpdateDomainControllers(siteDomainControllers.Where(dc => dc.Domain == domain)));
         }
 
         #endregion
@@ -90,7 +88,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public bool TryGetDomainFromDistinguishedName(string DistinguishedName, out ADDomain Domain)
         {
             // Find closest match
-            Domain = this.Domains.Where(d => DistinguishedName.EndsWith(d.DistinguishedName, StringComparison.OrdinalIgnoreCase))
+            Domain = Domains.Where(d => DistinguishedName.EndsWith(d.DistinguishedName, StringComparison.OrdinalIgnoreCase))
                 .OrderByDescending(d => d.DistinguishedName.Length).FirstOrDefault();
 
             return (Domain != null);
@@ -105,7 +103,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public bool TryGetDomainByNetBiosName(string NetBiosName, out ADDomain Domain)
         {
-            Domain = this.Domains.FirstOrDefault(d => d.NetBiosName.Equals(NetBiosName, StringComparison.OrdinalIgnoreCase));
+            Domain = Domains.FirstOrDefault(d => d.NetBiosName.Equals(NetBiosName, StringComparison.OrdinalIgnoreCase));
             return (Domain != null);
         }
         public ADDomain GetDomainByNetBiosName(string NetBiosName)
@@ -118,7 +116,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public bool TryGetDomainByName(string Name, out ADDomain Domain)
         {
-            Domain = this.Domains.FirstOrDefault(d => d.Name.Equals(Name, StringComparison.OrdinalIgnoreCase));
+            Domain = Domains.FirstOrDefault(d => d.Name.Equals(Name, StringComparison.OrdinalIgnoreCase));
             return (Domain != null);
         }
         public ADDomain GetDomainByName(string Name)
@@ -131,7 +129,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public bool TryGetDomainFromSecurityIdentifier(SecurityIdentifier SecurityIdentifier, out ADDomain Domain)
         {
-            Domain = this.Domains.FirstOrDefault(d => d.SecurityIdentifier.IsEqualDomainSid(SecurityIdentifier));
+            Domain = Domains.FirstOrDefault(d => d.SecurityIdentifier.IsEqualDomainSid(SecurityIdentifier));
             return (Domain != null);
         }
         public ADDomain GetDomainFromSecurityIdentifier(SecurityIdentifier SecurityIdentifier)
@@ -184,14 +182,14 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public IEnumerable<ADSearchResult> SearchEntireForest(string LdapFilter, string[] LoadProperties, int? ResultLimit = null)
         {
-            var queries = this.Domains.Select(d => Tuple.Create(d, d.DistinguishedName));
+            var queries = Domains.Select(d => Tuple.Create(d, d.DistinguishedName));
 
             return SearchInternal(queries, LdapFilter, LoadProperties, ResultLimit);
         }
 
         public IEnumerable<ADSearchResult> SearchScope(string LdapFilter, string[] LoadProperties, int? ResultLimit = null)
         {
-            var queries = this.Domains.SelectMany(
+            var queries = Domains.SelectMany(
                 d => d.SearchContainers ?? new List<string>() { d.DistinguishedName },
                 (d, scope) => Tuple.Create(d, scope));
 
@@ -256,7 +254,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (SearchAllForestServers == false)
             {
                 Database.DiscoConfiguration.ActiveDirectory.SearchAllForestServers = false;
-                this._SearchAllForestServers = false;
+                _SearchAllForestServers = false;
                 return true;
             }
             else
@@ -265,13 +263,13 @@ namespace Disco.Services.Interop.ActiveDirectory
                 if (forestServers.Count <= ActiveDirectory.MaxForestServerSearch)
                 {
                     Database.DiscoConfiguration.ActiveDirectory.SearchAllForestServers = true;
-                    this._SearchAllForestServers = true;
+                    _SearchAllForestServers = true;
                     return true;
                 }
                 else
                 {
                     Database.DiscoConfiguration.ActiveDirectory.SearchAllForestServers = false;
-                    this._SearchAllForestServers = false;
+                    _SearchAllForestServers = false;
                     return false;
                 }
             }
@@ -315,18 +313,18 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (Containers == null)
             {
                 // No search restrictions (search entire domain)
-                foreach (var domain in this.Domains)
+                foreach (var domain in Domains)
                     domain.UpdateSearchEntireDomain();
             }
             else
             {
                 // Restrict search containers
-                var searchContainerDomains = Containers.Join(this.Domains, ok => ok.Key, ik => ik.Name, (o, i) => Tuple.Create(o, i), StringComparer.OrdinalIgnoreCase);
+                var searchContainerDomains = Containers.Join(Domains, ok => ok.Key, ik => ik.Name, (o, i) => Tuple.Create(o, i), StringComparer.OrdinalIgnoreCase);
                 foreach (var domainContainers in searchContainerDomains)
                     domainContainers.Item2.UpdateSearchContainers(domainContainers.Item1.Value);
 
                 // Ignore domains without configured containers
-                var unconfiguredContainers = this.Domains.Except(searchContainerDomains.Select(sc => sc.Item2));
+                var unconfiguredContainers = Domains.Except(searchContainerDomains.Select(sc => sc.Item2));
                 foreach (var domain in unconfiguredContainers)
                     domain.UpdateSearchContainers(new List<string>());
             }

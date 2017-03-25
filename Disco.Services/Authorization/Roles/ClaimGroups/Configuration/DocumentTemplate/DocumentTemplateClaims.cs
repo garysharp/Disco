@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DocumentTemplate
+﻿namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration.DocumentTemplate
 {
     [ClaimDetails("Document Templates", "Permissions related to Document Templates")]
     public class DocumentTemplateClaims : BaseRoleClaimGroup

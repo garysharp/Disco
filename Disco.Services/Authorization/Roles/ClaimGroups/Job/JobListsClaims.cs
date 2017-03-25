@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Services.Authorization.Roles.ClaimGroups.Job
+﻿namespace Disco.Services.Authorization.Roles.ClaimGroups.Job
 {
     [ClaimDetails("Lists", "Permissions related to Job Lists")]
     public class JobListsClaims : BaseRoleClaimGroup

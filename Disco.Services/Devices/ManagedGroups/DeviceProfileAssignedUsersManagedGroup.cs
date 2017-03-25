@@ -47,8 +47,8 @@ namespace Disco.Services.Devices.ManagedGroups
         private DeviceProfileAssignedUsersManagedGroup(string Key, ADManagedGroupConfiguration Configuration, DeviceProfile DeviceProfile)
             : base(Key, Configuration)
         {
-            this.DeviceProfileId = DeviceProfile.Id;
-            this.DeviceProfileName = DeviceProfile.Name;
+            DeviceProfileId = DeviceProfile.Id;
+            DeviceProfileName = DeviceProfile.Name;
         }
 
         public override void Initialize()
@@ -125,7 +125,7 @@ namespace Disco.Services.Devices.ManagedGroups
         public override IEnumerable<string> DetermineMembers(DiscoDataContext Database)
         {
             return Database.Devices
-                .Where(d => d.DeviceProfileId == this.DeviceProfileId)
+                .Where(d => d.DeviceProfileId == DeviceProfileId)
                 .Where(d => d.AssignedUserId != null)
                 .Select(d => d.AssignedUserId);
         }
@@ -143,7 +143,7 @@ namespace Disco.Services.Devices.ManagedGroups
                         AddMember(device.AssignedUserId);
                         break;
                     case RepositoryMonitorEventType.Modified:
-                        if (device.DeviceProfileId == this.DeviceProfileId)
+                        if (device.DeviceProfileId == DeviceProfileId)
                         {
                             if (device.AssignedUserId != null)
                                 AddMember(device.AssignedUserId);
@@ -152,7 +152,7 @@ namespace Disco.Services.Devices.ManagedGroups
                             {
                                 if (previousUserId != null)
                                     RemoveMember(previousUserId, (database) =>
-                                        !database.Devices.Any(d => d.DeviceProfileId == this.DeviceProfileId && d.AssignedUserId == previousUserId)
+                                        !database.Devices.Any(d => d.DeviceProfileId == DeviceProfileId && d.AssignedUserId == previousUserId)
                                             ? new string[] { previousUserId }
                                             : null);
                             }
@@ -161,7 +161,7 @@ namespace Disco.Services.Devices.ManagedGroups
                         {
                             if (previousUserId != null)
                                 RemoveMember(previousUserId, (database) =>
-                                    !database.Devices.Any(d => d.DeviceProfileId == this.DeviceProfileId && d.AssignedUserId == previousUserId)
+                                    !database.Devices.Any(d => d.DeviceProfileId == DeviceProfileId && d.AssignedUserId == previousUserId)
                                         ? new string[] { previousUserId }
                                         : null);
                         }
@@ -169,7 +169,7 @@ namespace Disco.Services.Devices.ManagedGroups
                     case RepositoryMonitorEventType.Deleted:
                         if (previousUserId != null)
                             RemoveMember(previousUserId, (database) =>
-                                !database.Devices.Any(d => d.DeviceProfileId == this.DeviceProfileId && d.AssignedUserId == previousUserId)
+                                !database.Devices.Any(d => d.DeviceProfileId == DeviceProfileId && d.AssignedUserId == previousUserId)
                                     ? new string[] { previousUserId }
                                     : null);
                         break;

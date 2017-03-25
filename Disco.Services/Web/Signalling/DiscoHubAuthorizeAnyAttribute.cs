@@ -15,7 +15,7 @@ namespace Disco.Services.Web.Signalling
             if (AuthorisedClaims == null || AuthorisedClaims.Length == 0)
                 throw new ArgumentNullException("AuthorisedClaims");
 
-            this.authorizedClaims = AuthorisedClaims;
+            authorizedClaims = AuthorisedClaims;
         }
 
         protected override bool UserAuthorized(IPrincipal user)

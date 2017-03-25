@@ -52,7 +52,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 var trigger = TriggerBuilder.Create()
                     .StartAt(DateTimeOffset.Now.AddMinutes(3));
 
-                this.ScheduleTask(trigger);
+                ScheduleTask(trigger);
             }
         }
 

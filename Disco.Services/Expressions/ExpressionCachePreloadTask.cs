@@ -19,7 +19,7 @@ namespace Disco.Services.Expressions
             // Run in Background 5 Second after Scheduled (on App Startup)
             TriggerBuilder triggerBuilder = TriggerBuilder.Create().StartAt(new DateTimeOffset(DateTime.Now).AddSeconds(5));
 
-            this.ScheduleTask(triggerBuilder);
+            ScheduleTask(triggerBuilder);
         }
 
         protected override void ExecuteTask()

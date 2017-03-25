@@ -1,12 +1,5 @@
-﻿using Disco.Services.Authorization;
-using Disco.Services.Users;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+﻿using System;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -48,7 +41,7 @@ namespace Disco.Services.Web
         {
             get
             {
-                return this._typeId;
+                return _typeId;
             }
         }
     }

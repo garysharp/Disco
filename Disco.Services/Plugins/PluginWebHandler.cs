@@ -28,23 +28,23 @@ namespace Disco.Services.Plugins
 
         public PluginWebHandler()
         {
-            this.plugin = new Lazy<WebHelper>(new Func<WebHelper>(() => new WebHelper(this.HostController.HttpContext, this.Manifest)));
+            plugin = new Lazy<WebHelper>(new Func<WebHelper>(() => new WebHelper(HostController.HttpContext, Manifest)));
         }
 
         public void OnActionExecuting()
         {
-            this.Database = new DiscoDataContext();
-            this.Database.Configuration.LazyLoadingEnabled = false;
+            Database = new DiscoDataContext();
+            Database.Configuration.LazyLoadingEnabled = false;
         }
 
         public abstract ActionResult ExecuteAction(string ActionName);
 
         public virtual void Dispose()
         {
-            if (this.Database != null)
+            if (Database != null)
             {
-                this.Database.Dispose();
-                this.Database = null;
+                Database.Dispose();
+                Database = null;
             }
         }
 
@@ -68,7 +68,7 @@ namespace Disco.Services.Plugins
 
         public void SetCacheability(TimeSpan CacheDuration)
         {
-            var cache = this.HostController.Response.Cache;
+            var cache = HostController.Response.Cache;
             cache.SetOmitVaryStar(true);
             cache.SetExpires(DateTime.Now.Add(CacheDuration));
             cache.SetValidUntilExpires(true);
@@ -76,7 +76,7 @@ namespace Disco.Services.Plugins
         }
         public void SetCacheabilityOff()
         {
-            var cache = this.HostController.Response.Cache;
+            var cache = HostController.Response.Cache;
             cache.SetExpires(DateTime.Now.AddDays(-1));
             cache.SetCacheability(HttpCacheability.NoCache);
         }
@@ -92,37 +92,37 @@ namespace Disco.Services.Plugins
         {
             string layoutPath = UseDiscoLayout ? "~/Views/Shared/_Layout.cshtml" : null;
 
-            IView v = new PrecompiledMvcView(this.HostController.Request.Path, layoutPath, typeof(ViewType), false, _viewFileNames);
+            IView v = new PrecompiledMvcView(HostController.Request.Path, layoutPath, typeof(ViewType), false, _viewFileNames);
 
             if (Model != null)
-                this.HostController.ViewData.Model = Model;
+                HostController.ViewData.Model = Model;
 
-            return new ViewResult { View = v, ViewData = this.HostController.ViewData, TempData = this.HostController.TempData };
+            return new ViewResult { View = v, ViewData = HostController.ViewData, TempData = HostController.TempData };
         }
         public ActionResult CompiledView<ViewType>(bool UseDiscoLayout) where ViewType : WebViewPage
         {
-            return this.CompiledView<ViewType>(null, UseDiscoLayout);
+            return CompiledView<ViewType>(null, UseDiscoLayout);
         }
         public ActionResult CompiledView<ViewType>(object Model) where ViewType : WebViewPage
         {
-            return this.CompiledView<ViewType>(Model, true);
+            return CompiledView<ViewType>(Model, true);
         }
         public ActionResult CompiledView<ViewType>() where ViewType : WebViewPage
         {
-            return this.CompiledView<ViewType>(false, true);
+            return CompiledView<ViewType>(false, true);
         }
         public ActionResult CompiledPartialView<ViewType>(object Model) where ViewType : WebViewPage
         {
-            IView v = new PrecompiledMvcView(this.HostController.Request.Path, typeof(ViewType), false, _viewFileNames);
+            IView v = new PrecompiledMvcView(HostController.Request.Path, typeof(ViewType), false, _viewFileNames);
 
             if (Model != null)
-                this.HostController.ViewData.Model = Model;
+                HostController.ViewData.Model = Model;
 
-            return new PartialViewResult { View = v, ViewData = this.HostController.ViewData, TempData = this.HostController.TempData };
+            return new PartialViewResult { View = v, ViewData = HostController.ViewData, TempData = HostController.TempData };
         }
         public ActionResult CompiledPartialView<ViewType>() where ViewType : WebViewPage
         {
-            return this.CompiledView<ViewType>();
+            return CompiledView<ViewType>();
         }
 
         [Obsolete("Use Generic Methods")]
@@ -130,42 +130,42 @@ namespace Disco.Services.Plugins
         {
             string layoutPath = UseDiscoLayout ? "~/Views/Shared/_Layout.cshtml" : null;
 
-            IView v = new PrecompiledMvcView(this.HostController.Request.Path, layoutPath, CompiledViewType, false, _viewFileNames);
+            IView v = new PrecompiledMvcView(HostController.Request.Path, layoutPath, CompiledViewType, false, _viewFileNames);
 
             if (Model != null)
-                this.HostController.ViewData.Model = Model;
+                HostController.ViewData.Model = Model;
 
-            return new ViewResult { View = v, ViewData = this.HostController.ViewData, TempData = this.HostController.TempData };
+            return new ViewResult { View = v, ViewData = HostController.ViewData, TempData = HostController.TempData };
         }
         [Obsolete("Use Generic Methods")]
         public ActionResult CompiledView(Type CompiledViewType, bool UseDiscoLayout)
         {
-            return this.CompiledView(CompiledViewType, null, UseDiscoLayout);
+            return CompiledView(CompiledViewType, null, UseDiscoLayout);
         }
         [Obsolete("Use Generic Methods")]
         public ActionResult CompiledView(Type CompiledViewType, object Model)
         {
-            return this.CompiledView(CompiledViewType, Model, true);
+            return CompiledView(CompiledViewType, Model, true);
         }
         [Obsolete("Use Generic Methods")]
         public ActionResult CompiledView(Type CompiledViewType)
         {
-            return this.CompiledView(CompiledViewType, false, true);
+            return CompiledView(CompiledViewType, false, true);
         }
         [Obsolete("Use Generic Methods")]
         public ActionResult CompiledPartialView(Type PartialCompiledViewType, object Model)
         {
-            IView v = new PrecompiledMvcView(this.HostController.Request.Path, PartialCompiledViewType, false, _viewFileNames);
+            IView v = new PrecompiledMvcView(HostController.Request.Path, PartialCompiledViewType, false, _viewFileNames);
 
             if (Model != null)
-                this.HostController.ViewData.Model = Model;
+                HostController.ViewData.Model = Model;
 
-            return new PartialViewResult { View = v, ViewData = this.HostController.ViewData, TempData = this.HostController.TempData };
+            return new PartialViewResult { View = v, ViewData = HostController.ViewData, TempData = HostController.TempData };
         }
         [Obsolete("Use Generic Methods")]
         public ActionResult CompiledPartialView(Type PartialCompiledViewType)
         {
-            return this.CompiledView(PartialCompiledViewType, null);
+            return CompiledView(PartialCompiledViewType, null);
         }
         #endregion
 
@@ -176,11 +176,11 @@ namespace Disco.Services.Plugins
         }
         public ActionResult Content(string content, string contentType)
         {
-            return this.Content(content, null, null);
+            return Content(content, null, null);
         }
         public ActionResult Content(string content)
         {
-            return this.Content(content, null);
+            return Content(content, null);
         }
         #endregion
 
@@ -194,7 +194,7 @@ namespace Disco.Services.Plugins
         #region File
         public ActionResult File(Stream fileStream, string contentType)
         {
-            return this.File(fileStream, contentType, null);
+            return File(fileStream, contentType, null);
         }
         public ActionResult File(Stream fileStream, string contentType, string fileDownloadName)
         {
@@ -202,7 +202,7 @@ namespace Disco.Services.Plugins
         }
         public ActionResult File(byte[] fileContents, string contentType)
         {
-            return this.File(fileContents, contentType, null);
+            return File(fileContents, contentType, null);
         }
         public ActionResult File(byte[] fileContents, string contentType, string fileDownloadName)
         {
@@ -217,7 +217,7 @@ namespace Disco.Services.Plugins
         }
         public ActionResult HttpNotFound()
         {
-            return this.HttpNotFound(null);
+            return HttpNotFound(null);
         }
         #endregion
 
@@ -227,7 +227,7 @@ namespace Disco.Services.Plugins
             if (string.IsNullOrEmpty(SessionId))
                 throw new ArgumentNullException(SessionId);
 
-            return this.RedirectToAction("TaskStatus", "Logging", "Config", new { id = SessionId });
+            return RedirectToAction("TaskStatus", "Logging", "Config", new { id = SessionId });
         }
         public ActionResult Redirect(string url)
         {
@@ -245,7 +245,7 @@ namespace Disco.Services.Plugins
         }
         public ActionResult RedirectToPluginConfiguration()
         {
-            var routeValues = new RouteValueDictionary(new { PluginId = this.Manifest.Id });
+            var routeValues = new RouteValueDictionary(new { PluginId = Manifest.Id });
             return new RedirectToRouteResult("Config_Plugins_Configure", routeValues);
         }
         public ActionResult RedirectToPluginAction(string PluginAction)
@@ -253,17 +253,17 @@ namespace Disco.Services.Plugins
             if (string.IsNullOrEmpty(PluginAction))
                 throw new ArgumentNullException("PluginAction");
 
-            var routeValues = new RouteValueDictionary(new { PluginId = this.Manifest.Id, PluginAction = PluginAction });
-            string pluginActionUrl = UrlHelper.GenerateUrl("Plugin", null, null, routeValues, RouteTable.Routes, this.HostController.Request.RequestContext, false);
+            var routeValues = new RouteValueDictionary(new { PluginId = Manifest.Id, PluginAction = PluginAction });
+            string pluginActionUrl = UrlHelper.GenerateUrl("Plugin", null, null, routeValues, RouteTable.Routes, HostController.Request.RequestContext, false);
 
             return new RedirectResult(pluginActionUrl, false);
         }
         public ActionResult RedirectToPluginResource(string Resource, bool? Download)
         {
-            var resourcePath = this.Manifest.WebResourcePath(Resource);
+            var resourcePath = Manifest.WebResourcePath(Resource);
 
-            var routeValues = new RouteValueDictionary(new { PluginId = this.Manifest.Id, res = Resource });
-            string pluginActionUrl = UrlHelper.GenerateUrl("Plugin_Resources", null, null, routeValues, RouteTable.Routes, this.HostController.Request.RequestContext, false);
+            var routeValues = new RouteValueDictionary(new { PluginId = Manifest.Id, res = Resource });
+            string pluginActionUrl = UrlHelper.GenerateUrl("Plugin_Resources", null, null, routeValues, RouteTable.Routes, HostController.Request.RequestContext, false);
 
             pluginActionUrl += string.Format("?v={0}", resourcePath.Item2);
 
@@ -276,7 +276,7 @@ namespace Disco.Services.Plugins
         }
         public ActionResult RedirectToPluginResource(string Resource)
         {
-            return this.RedirectToPluginResource(Resource, null);
+            return RedirectToPluginResource(Resource, null);
         }
         public ActionResult RedirectToRoute(string routeName, object routeValues)
         {
@@ -290,7 +290,7 @@ namespace Disco.Services.Plugins
         }
         public ActionResult RedirectToRoute(string routeName)
         {
-            return this.RedirectToRoute(routeName, null);
+            return RedirectToRoute(routeName, null);
         }
         public ActionResult RedirectToAction(string actionName, string controller, string areaName, object routeValues)
         {
@@ -309,27 +309,27 @@ namespace Disco.Services.Plugins
         }
         public ActionResult RedirectToAction(string actionName, string controller, string areaName)
         {
-            return this.RedirectToAction(actionName, controller, areaName, null);
+            return RedirectToAction(actionName, controller, areaName, null);
         }
         public ActionResult RedirectToAction(string actionName, string controller, object routeValues)
         {
-            return this.RedirectToAction(actionName, controller, null, routeValues);
+            return RedirectToAction(actionName, controller, null, routeValues);
         }
         public ActionResult RedirectToAction(string actionName, string controller)
         {
-            return this.RedirectToAction(actionName, controller, null, null);
+            return RedirectToAction(actionName, controller, null, null);
         }
         public ActionResult RedirectToDiscoJob(int jobId)
         {
-            return this.RedirectToAction("Show", "Job", null, new { id = jobId.ToString() });
+            return RedirectToAction("Show", "Job", null, new { id = jobId.ToString() });
         }
         public ActionResult RedirectToDiscoDevice(string DeviceSerialNumber)
         {
-            return this.RedirectToAction("Show", "Device", null, new { id = DeviceSerialNumber });
+            return RedirectToAction("Show", "Device", null, new { id = DeviceSerialNumber });
         }
         public ActionResult RedirectToDiscoUser(string UserId)
         {
-            return this.RedirectToAction("Show", "User", null, new { id = UserId });
+            return RedirectToAction("Show", "User", null, new { id = UserId });
         }
         #endregion
 

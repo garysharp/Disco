@@ -26,7 +26,7 @@ namespace Disco.Services.Users.UserFlags
             var flags = Database.UserFlags.ToList();
 
             // Add Queues to In-Memory Cache
-            this._Cache = new ConcurrentDictionary<int, UserFlag>(flags.Select(f => new KeyValuePair<int, UserFlag>(f.Id, f)));
+            _Cache = new ConcurrentDictionary<int, UserFlag>(flags.Select(f => new KeyValuePair<int, UserFlag>(f.Id, f)));
         }
 
         public UserFlag GetUserFlag(int UserFlagId)

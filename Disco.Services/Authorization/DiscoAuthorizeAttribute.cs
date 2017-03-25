@@ -1,10 +1,4 @@
 ﻿using Disco.Services.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace Disco.Services.Authorization
 {
@@ -16,7 +10,7 @@ namespace Disco.Services.Authorization
 
         public DiscoAuthorizeAttribute(string AuthorisedClaim)
         {
-            this.authorizedClaim = AuthorisedClaim;
+            authorizedClaim = AuthorisedClaim;
         }
 
         public override bool IsAuthorized(System.Web.HttpContextBase httpContext)

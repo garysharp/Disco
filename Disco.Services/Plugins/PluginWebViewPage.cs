@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Services.Plugins
 {
@@ -21,14 +17,14 @@ namespace Disco.Services.Plugins
 
         public PluginWebViewPage()
         {
-            var self = this.GetType();
-            this.Manifest = Plugins.GetPlugin(self.Assembly);
+            var self = GetType();
+            Manifest = Plugins.GetPlugin(self.Assembly);
 
-            this._plugin = new Lazy<WebPageHelper<T>>(() => {
-                if (this.Context == null)
+            _plugin = new Lazy<WebPageHelper<T>>(() => {
+                if (Context == null)
                     throw new InvalidOperationException("The WebViewPage Context property is not initialized");
 
-                return new WebPageHelper<T>(this, this.Manifest);
+                return new WebPageHelper<T>(this, Manifest);
             });
         }
     }

@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-
 namespace Disco.Services.Expressions
 {
     public class TextExpressionPart : IExpressionPart
@@ -22,7 +19,7 @@ namespace Disco.Services.Expressions
         {
             get
             {
-                return this._Source;
+                return _Source;
             }
             set
             {
@@ -33,7 +30,7 @@ namespace Disco.Services.Expressions
         {
             get
             {
-                return this._Source;
+                return _Source;
             }
             set
             {
@@ -63,11 +60,11 @@ namespace Disco.Services.Expressions
 
         public TextExpressionPart(string Source)
         {
-            this._Source = Source;
+            _Source = Source;
         }
         object IExpressionPart.Evaluate(object ExpressionContext, System.Collections.IDictionary Variables)
         {
-            return this._Source;
+            return _Source;
         }
 
     }

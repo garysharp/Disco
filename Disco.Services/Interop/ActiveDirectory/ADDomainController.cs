@@ -45,18 +45,18 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public ADDomainController(ActiveDirectoryContext Context, DomainController DomainController, ADDomain Domain, bool IsSiteServer, bool IsWritable)
         {
-            this.context = Context;
+            context = Context;
 
             this.Domain = Domain;
             this.DomainController = DomainController;
 
-            this.Name = DomainController.Name;
-            this.SiteName = DomainController.SiteName;
+            Name = DomainController.Name;
+            SiteName = DomainController.SiteName;
 
             this.IsSiteServer = IsSiteServer;
             this.IsWritable = IsWritable;
 
-            this.AvailableWhen = null;
+            AvailableWhen = null;
         }
 
         public ADDirectoryEntry RetrieveDirectoryEntry(string DistinguishedName, string[] LoadProperties = null)
@@ -64,15 +64,15 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (string.IsNullOrWhiteSpace(DistinguishedName))
                 throw new ArgumentNullException("DistinguishedName");
 
-            if (!DistinguishedName.EndsWith(this.Domain.DistinguishedName, StringComparison.OrdinalIgnoreCase))
-                throw new ArgumentException(string.Format("The Distinguished Name ({0}) isn't a member of this domain [{1}]", DistinguishedName, this.Domain.Name), "DistinguishedName");
+            if (!DistinguishedName.EndsWith(Domain.DistinguishedName, StringComparison.OrdinalIgnoreCase))
+                throw new ArgumentException(string.Format("The Distinguished Name ({0}) isn't a member of this domain [{1}]", DistinguishedName, Domain.Name), "DistinguishedName");
 
-            var entry = new DirectoryEntry(string.Format(LdapPathTemplate, this.Name, ADHelpers.EscapeDistinguishedName(DistinguishedName)));
+            var entry = new DirectoryEntry(string.Format(LdapPathTemplate, Name, ADHelpers.EscapeDistinguishedName(DistinguishedName)));
 
             if (LoadProperties != null)
                 entry.RefreshCache(LoadProperties);
 
-            return new ADDirectoryEntry(this.Domain, this, entry);
+            return new ADDirectoryEntry(Domain, this, entry);
         }
 
         #region Searching
@@ -83,7 +83,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public IEnumerable<ADSearchResult> SearchScope(string LdapFilter, string[] LoadProperties, int? ResultLimit = null)
         {
-            var searchScope = this.Domain.SearchContainers;
+            var searchScope = Domain.SearchContainers;
 
             // No scope set, search entire domain
             if (searchScope == null)
@@ -109,7 +109,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (ResultLimit.HasValue && ResultLimit.Value < 1)
                 throw new ArgumentOutOfRangeException("ResultLimit", "The ResultLimit must be 1 or greater");
 
-            using (ADDirectoryEntry rootEntry = this.RetrieveDirectoryEntry(SearchRoot))
+            using (ADDirectoryEntry rootEntry = RetrieveDirectoryEntry(SearchRoot))
             {
                 using (DirectorySearcher searcher = new DirectorySearcher(rootEntry.Entry, LdapFilter, LoadProperties, System.DirectoryServices.SearchScope.Subtree))
                 {
@@ -174,7 +174,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 {
                     ldapFilter = string.Format(ADMachineAccount.LdapNetbootGuidSingleFilterTemplate, MacAddressNetbootGUID.Value.ToLdapQueryFormat());
                 }
-                adResult = this.SearchEntireDomain(ldapFilter, loadProperites, ActiveDirectory.SingleSearchResult).FirstOrDefault();
+                adResult = SearchEntireDomain(ldapFilter, loadProperites, ActiveDirectory.SingleSearchResult).FirstOrDefault();
             }
 
             if (adResult != null)
@@ -212,7 +212,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 ? ADGroup.LoadProperties.Concat(AdditionalProperties).ToArray()
                 : ADGroup.LoadProperties;
 
-            using (var groupEntry = this.RetrieveDirectoryEntry(DistinguishedName, loadProperites))
+            using (var groupEntry = RetrieveDirectoryEntry(DistinguishedName, loadProperites))
             {
                 if (groupEntry == null)
                     return null;
@@ -224,8 +224,8 @@ namespace Disco.Services.Interop.ActiveDirectory
         {
             if (SecurityIdentifier == null)
                 throw new ArgumentNullException("SecurityIdentifier");
-            if (!SecurityIdentifier.IsEqualDomainSid(this.Domain.SecurityIdentifier))
-                throw new ArgumentException(string.Format("The specified Security Identifier [{0}] does not belong to this domain [{1}]", SecurityIdentifier.ToString(), this.Domain.Name), "SecurityIdentifier");
+            if (!SecurityIdentifier.IsEqualDomainSid(Domain.SecurityIdentifier))
+                throw new ArgumentException(string.Format("The specified Security Identifier [{0}] does not belong to this domain [{1}]", SecurityIdentifier.ToString(), Domain.Name), "SecurityIdentifier");
 
             var sidBinaryString = SecurityIdentifier.ToBinaryString();
 
@@ -234,7 +234,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 ? ADGroup.LoadProperties.Concat(AdditionalProperties).ToArray()
                 : ADGroup.LoadProperties;
 
-            var result = this.SearchEntireDomain(ldapFilter, loadProperites, ActiveDirectory.SingleSearchResult).FirstOrDefault();
+            var result = SearchEntireDomain(ldapFilter, loadProperites, ActiveDirectory.SingleSearchResult).FirstOrDefault();
             if (result == null)
                 return null;
             else
@@ -280,7 +280,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         {
             Dictionary<string, List<ADOrganisationalUnit>> resultTree = new Dictionary<string, List<ADOrganisationalUnit>>();
 
-            var unsortedOrganisationalUnits = this.SearchEntireDomain(OrganisationalUnitsLdapFilter, OrganisationalUnitsLoadProperties)
+            var unsortedOrganisationalUnits = SearchEntireDomain(OrganisationalUnitsLdapFilter, OrganisationalUnitsLoadProperties)
                 .Select(r => r.AsADOrganisationalUnit()).ToList();
 
             var indexedOrganisationalUnits = unsortedOrganisationalUnits.ToDictionary(k => k.DistinguishedName);
@@ -307,12 +307,12 @@ namespace Disco.Services.Interop.ActiveDirectory
         {
             var slashIndex = Id.IndexOf('\\');
 
-            if (!this.Domain.NetBiosName.Equals(Id.Substring(0, slashIndex), StringComparison.OrdinalIgnoreCase))
-                throw new ArgumentException(string.Format("The Id [{0}] is invalid for this domain [{1}]", Id, this.Domain.Name), "Id");
+            if (!Domain.NetBiosName.Equals(Id.Substring(0, slashIndex), StringComparison.OrdinalIgnoreCase))
+                throw new ArgumentException(string.Format("The Id [{0}] is invalid for this domain [{1}]", Id, Domain.Name), "Id");
 
             var ldapFilter = string.Format(LdapFilterTemplate, Id.Substring(slashIndex + 1));
 
-            return this.SearchEntireDomain(ldapFilter, LoadProperties, ActiveDirectory.SingleSearchResult).FirstOrDefault();
+            return SearchEntireDomain(ldapFilter, LoadProperties, ActiveDirectory.SingleSearchResult).FirstOrDefault();
         }
         #endregion
 
@@ -321,7 +321,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         {
             using (Ping p = new Ping())
             {
-                var pr = p.Send(this.Name, 1000);
+                var pr = p.Send(Name, 1000);
                 return (pr.Status == IPStatus.Success);
             }
         }
@@ -331,8 +331,8 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (MachineAccount != null && MachineAccount.IsCriticalSystemObject)
                 throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco refuses to modify it", MachineAccount.DistinguishedName));
 
-            if (!this.IsWritable)
-                throw new InvalidOperationException(string.Format("The domain controller [{0}] is not writable. This action (Offline Domain Join Provision) requires a writable domain controller.", this.Name));
+            if (!IsWritable)
+                throw new InvalidOperationException(string.Format("The domain controller [{0}] is not writable. This action (Offline Domain Join Provision) requires a writable domain controller.", Name));
 
             StringBuilder diagnosticInfo = new StringBuilder();
             string DJoinResult = null;
@@ -349,7 +349,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             {
                 try
                 {
-                    using (var deOU = this.RetrieveDirectoryEntry(OrganisationalUnit, new string[] { "distinguishedName" }))
+                    using (var deOU = RetrieveDirectoryEntry(OrganisationalUnit, new string[] { "distinguishedName" }))
                     {
                         if (deOU == null)
                             throw new Exception(string.Format("OU's Directory Entry couldn't be found at [{0}]", OrganisationalUnit));
@@ -367,8 +367,8 @@ namespace Disco.Services.Interop.ActiveDirectory
             string tempFileName = System.IO.Path.GetTempFileName();
             string argumentOU = (!string.IsNullOrWhiteSpace(OrganisationalUnit)) ? string.Format(" /MACHINEOU \"{0}\"", OrganisationalUnit) : string.Empty;
             string arguments = string.Format("/PROVISION /DOMAIN \"{0}\" /DCNAME \"{1}\" /MACHINE \"{2}\"{3} /REUSE /SAVEFILE \"{4}\"",
-                this.Domain.Name,
-                this.Name,
+                Domain.Name,
+                Name,
                 ComputerSamAccountName,
                 argumentOU,
                 tempFileName
@@ -409,7 +409,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             DiagnosticInformation = diagnosticInfo.ToString();
 
             // Reload Machine Account
-            MachineAccount = this.RetrieveADMachineAccount(string.Format(@"{0}\{1}", this.Domain.NetBiosName, ComputerSamAccountName), (MachineAccount == null ? null : MachineAccount.LoadedProperties.Keys.ToArray()));
+            MachineAccount = RetrieveADMachineAccount(string.Format(@"{0}\{1}", Domain.NetBiosName, ComputerSamAccountName), (MachineAccount == null ? null : MachineAccount.LoadedProperties.Keys.ToArray()));
 
             return DJoinResult;
         }
@@ -417,7 +417,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public override string ToString()
         {
-            return this.Name;
+            return Name;
         }
 
         public override bool Equals(object obj)
@@ -425,11 +425,11 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (obj == null || !(obj is ADDomainController))
                 return false;
             else
-                return this.Name == ((ADDomainController)obj).Name;
+                return Name == ((ADDomainController)obj).Name;
         }
         public override int GetHashCode()
         {
-            return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(this.Name);
+            return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(Name);
         }
     }
 }

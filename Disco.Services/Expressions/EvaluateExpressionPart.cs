@@ -22,7 +22,7 @@ namespace Disco.Services.Expressions
                     return null;
                 else
                     if (_EvaluateParseException == null)
-                        _EvaluateParseException = EvaluateExpressionParseException.FromRecognitionException(_ExpressionParseException, this.Source);
+                        _EvaluateParseException = EvaluateExpressionParseException.FromRecognitionException(_ExpressionParseException, Source);
                 return _EvaluateParseException;
             }
         }
@@ -44,38 +44,38 @@ namespace Disco.Services.Expressions
 
         public EvaluateExpressionPart(string Source)
         {
-            this.RawSource = Source;
+            RawSource = Source;
 
             if (Source.StartsWith("{") && Source.EndsWith("}"))
                 Source = Source.Substring(1, Source.Length - 2);
 
             if (Source[0] == '~')
             {
-                this.ErrorsAllowed = true;
+                ErrorsAllowed = true;
                 this.Source = Source.Substring(1);
             }
             else
             {
-                this.ErrorsAllowed = false;
+                ErrorsAllowed = false;
                 this.Source = Source;
             }
             try
             {
-                this._Expression = Spring.Expressions.Expression.Parse(this.Source);
+                _Expression = Spring.Expressions.Expression.Parse(this.Source);
 
             }
             catch (RecognitionException ex)
             {
-                this._ExpressionParseException = ex;
+                _ExpressionParseException = ex;
             }
         }
         object IExpressionPart.Evaluate(object ExpressionContext, IDictionary Variables)
         {
-            if (this._ExpressionParseException == null)
+            if (_ExpressionParseException == null)
             {
-                return this._Expression.GetValue(ExpressionContext, Variables);
+                return _Expression.GetValue(ExpressionContext, Variables);
             }
-            throw this._ExpressionParseException;
+            throw _ExpressionParseException;
         }
 
     }

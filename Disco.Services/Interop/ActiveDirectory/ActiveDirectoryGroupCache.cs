@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Disco.Services.Interop.ActiveDirectory
@@ -21,8 +20,8 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public ActiveDirectoryGroupCache()
         {
-            this.securityIdentifierCache = new ConcurrentDictionary<SecurityIdentifier, Tuple<ADGroup, DateTime>>();
-            this.distinguishedNameCache = new ConcurrentDictionary<string, Tuple<ADGroup, DateTime>>(StringComparer.OrdinalIgnoreCase);
+            securityIdentifierCache = new ConcurrentDictionary<SecurityIdentifier, Tuple<ADGroup, DateTime>>();
+            distinguishedNameCache = new ConcurrentDictionary<string, Tuple<ADGroup, DateTime>>(StringComparer.OrdinalIgnoreCase);
             cacheCleanNext = DateTime.Now.AddMinutes(CacheCleanIntervalMinutes);
         }
 

@@ -29,8 +29,8 @@ namespace Disco.Services.Users.UserFlags
         private UserFlagUsersManagedGroup(string Key, ADManagedGroupConfiguration Configuration, UserFlag UserFlag)
             : base(Key, Configuration)
         {
-            this.UserFlagId = UserFlag.Id;
-            this.UserFlagName = UserFlag.Name;
+            UserFlagId = UserFlag.Id;
+            UserFlagName = UserFlag.Name;
         }
 
         public override void Initialize()

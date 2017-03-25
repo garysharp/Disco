@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace Disco.Services.Plugins
@@ -14,11 +12,11 @@ namespace Disco.Services.Plugins
 
         public override ActionResult ExecuteAction(string ActionName)
         {
-            var handlerType = this.GetType();
+            var handlerType = GetType();
             var methodDescriptor = FindControllerMethod(Manifest, handlerType, ActionName);
 
             if (methodDescriptor == null)
-                return this.HttpNotFound("Unknown Plugin Method");
+                return HttpNotFound("Unknown Plugin Method");
             
             // Authorize Method
             if (methodDescriptor.Authorizers.Length > 0)
@@ -36,7 +34,7 @@ namespace Disco.Services.Plugins
                 }
             }
 
-            var methodParams = BuildMethodParameters(Manifest, handlerType, methodDescriptor.MethodInfo, ActionName, this.HostController);
+            var methodParams = BuildMethodParameters(Manifest, handlerType, methodDescriptor.MethodInfo, ActionName, HostController);
 
             return (ActionResult)methodDescriptor.MethodInfo.Invoke(this, methodParams);
         }

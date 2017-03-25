@@ -64,43 +64,43 @@ namespace Disco.Services.Tasks
         public void Execute(IJobExecutionContext context)
         {
             // Task Status
-            this.ExecutionContext = context;
-            this.Status = context.GetDiscoScheduledTaskStatus();
-            if (this.Status == null)
-                this.Status = ScheduledTasks.RegisterTask(this);
+            ExecutionContext = context;
+            Status = context.GetDiscoScheduledTaskStatus();
+            if (Status == null)
+                Status = ScheduledTasks.RegisterTask(this);
 
             try
             {
-                if (!this.LogExceptionsOnly)
-                    ScheduledTasksLog.LogScheduledTaskExecuted(this.Status.TaskName, this.Status.SessionId);
+                if (!LogExceptionsOnly)
+                    ScheduledTasksLog.LogScheduledTaskExecuted(Status.TaskName, Status.SessionId);
 
-                this.Status.Started();
-                this.ExecuteTask();
+                Status.Started();
+                ExecuteTask();
             }
             catch (Exception ex)
             {
-                ScheduledTasksLog.LogScheduledTaskException(this.Status.TaskName, this.Status.SessionId, this.GetType(), ex);
-                this.Status.SetTaskException(ex);
+                ScheduledTasksLog.LogScheduledTaskException(Status.TaskName, Status.SessionId, GetType(), ex);
+                Status.SetTaskException(ex);
             }
             finally
             {
-                if (!this.Status.FinishedTimestamp.HasValue) // Scheduled Task Didn't Trigger 'Finished'
-                    this.Status.Finished();
+                if (!Status.FinishedTimestamp.HasValue) // Scheduled Task Didn't Trigger 'Finished'
+                    Status.Finished();
 
-                this.Status.Finally();
+                Status.Finally();
 
                 var nextTriggerTime = context.NextFireTimeUtc;
                 if (nextTriggerTime.HasValue)
                 { // Continuous Task
-                    this.Status.Reset(nextTriggerTime.Value.LocalDateTime);
+                    Status.Reset(nextTriggerTime.Value.LocalDateTime);
                 }
                 else
                 {
                     this.UnregisterTask();
                 }
 
-                if (!this.LogExceptionsOnly)
-                    ScheduledTasksLog.LogScheduledTaskFinished(this.Status.TaskName, this.Status.SessionId);
+                if (!LogExceptionsOnly)
+                    ScheduledTasksLog.LogScheduledTaskFinished(Status.TaskName, Status.SessionId);
             }
         }
     }

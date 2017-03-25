@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Services.Authorization.Roles.ClaimGroups.User
+﻿namespace Disco.Services.Authorization.Roles.ClaimGroups.User
 {
     [ClaimDetails("User", "Permissions related to Users")]
     public class UserClaims : BaseRoleClaimGroup
     {
         public UserClaims()
         {
-            this.Actions = new UserActionsClaims();
+            Actions = new UserActionsClaims();
         }
 
         [ClaimDetails("Search Users", "Can search users")]

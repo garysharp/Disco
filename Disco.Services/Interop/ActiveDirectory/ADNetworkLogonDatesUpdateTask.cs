@@ -27,10 +27,10 @@ namespace Disco.Services.Interop.ActiveDirectory
         {
             int changeCount;
 
-            this.Status.UpdateStatus(1, "Starting", "Connecting to the Database and initializing the environment");
+            Status.UpdateStatus(1, "Starting", "Connecting to the Database and initializing the environment");
             using (DiscoDataContext database = new DiscoDataContext())
             {
-                UpdateLastNetworkLogonDates(database, this.Status);
+                UpdateLastNetworkLogonDates(database, Status);
                 Status.UpdateStatus(95, "Updating Database", "Writing last network logon dates to the Database");
                 changeCount = database.SaveChanges();
                 Status.Finished(string.Format("{0} Device last network logon dates updated", changeCount), "/Config/SystemConfig");

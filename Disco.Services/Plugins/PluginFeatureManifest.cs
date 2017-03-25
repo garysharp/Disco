@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Disco.Data.Repository;
 using Newtonsoft.Json;
-using System.Reflection;
 
 namespace Disco.Services.Plugins
 {
@@ -28,20 +24,20 @@ namespace Disco.Services.Plugins
 
         internal bool Initialize(DiscoDataContext Database, PluginManifest pluginManifest)
         {
-            this.PluginManifest = pluginManifest;
+            PluginManifest = pluginManifest;
 
-            if (this.Type == null)
-                this.Type = this.PluginManifest.PluginAssembly.GetType(this.TypeName, true, true);
+            if (Type == null)
+                Type = PluginManifest.PluginAssembly.GetType(TypeName, true, true);
 
-            if (this.CategoryType == null)
-                this.CategoryType = Type.GetType(this.CategoryTypeName, true, true);
+            if (CategoryType == null)
+                CategoryType = Type.GetType(CategoryTypeName, true, true);
 
-            using (var instance = this.CreateInstance())
+            using (var instance = CreateInstance())
             {
                 instance.Initialize(Database);
             }
 
-            PluginsLog.LogInitializedPluginFeature(this.PluginManifest, this);
+            PluginsLog.LogInitializedPluginFeature(PluginManifest, this);
 
             return true;
         }
@@ -54,14 +50,14 @@ namespace Disco.Services.Plugins
         }
         public CategoryType CreateInstance<CategoryType>() where CategoryType : PluginFeature
         {
-            if (typeof(CategoryType).IsAssignableFrom(this.Type))
+            if (typeof(CategoryType).IsAssignableFrom(Type))
             {
                 var i = (CategoryType)Activator.CreateInstance(Type);
                 i.Manifest = this;
                 return i;
             }
             else
-                throw new InvalidOperationException(string.Format("The feature [{0}] cannot be cast into type [{1}]", this.Type.Name, typeof(CategoryType).Name));
+                throw new InvalidOperationException(string.Format("The feature [{0}] cannot be cast into type [{1}]", Type.Name, typeof(CategoryType).Name));
         }
 
         /// <summary>

@@ -20,9 +20,9 @@ namespace Disco.Services.Logging
 
         public bool Validate()
         {
-            if (this.Start.HasValue && this.End.HasValue && this.End.Value < this.Start.Value)
+            if (Start.HasValue && End.HasValue && End.Value < Start.Value)
                 throw new ArgumentOutOfRangeException("End", "End must be greater than Start");
-            if (this.Start.HasValue && !this.End.HasValue && this.Start > DateTime.Now)
+            if (Start.HasValue && !End.HasValue && Start > DateTime.Now)
                 throw new ArgumentOutOfRangeException("Start", "Start must be less than current time");
 
             return true;
@@ -33,7 +33,7 @@ namespace Disco.Services.Logging
             List<Models.LogLiveEvent> results = new List<LogLiveEvent>();
 
             // Validate Options
-            this.Validate();
+            Validate();
 
             var relevantLogFiles = RelevantLogFiles(Database);
             relevantLogFiles.Reverse();
@@ -46,11 +46,11 @@ namespace Disco.Services.Logging
 
                 using (var context = new LogPersistContext(sqlCeCSB.ToString()))
                 {
-                    var query = this.BuildQuery(context, logFile.Item2, results.Count);
+                    var query = BuildQuery(context, logFile.Item2, results.Count);
                     IEnumerable<LogEvent> queryResults = query; // Run the Query
                     results.AddRange(queryResults.Select(le => Models.LogLiveEvent.Create(logModules[le.ModuleId], logModules[le.ModuleId].EventTypes[le.EventTypeId], le.Timestamp, le.Arguments)));
                 }
-                if (this.Take.HasValue && this.Take.Value < results.Count)
+                if (Take.HasValue && Take.Value < results.Count)
                     break;
             }
             return results;
@@ -77,17 +77,17 @@ namespace Disco.Services.Logging
             List<Tuple<string, DateTime>> relevantFiles = new List<Tuple<string, DateTime>>();
             var logDirectoryBase = LogContext.LogFileBasePath(Database);
             var logDirectoryBaseInfo = new DirectoryInfo(logDirectoryBase);
-            var endDate = this.End.HasValue ? this.End.Value : DateTime.Now;
+            var endDate = End.HasValue ? End.Value : DateTime.Now;
             var endDateYear = endDate.Year.ToString();
 
             // Try Shortcut ( < 31 Days in Query)
-            if (this.Start.HasValue)
+            if (Start.HasValue)
             {
-                if ((this.End.HasValue && this.End.Value.Subtract(this.Start.Value).Days < 31) ||
-                    (!this.End.HasValue && DateTime.Now.Subtract(this.Start.Value).Days < 31))
+                if ((End.HasValue && End.Value.Subtract(Start.Value).Days < 31) ||
+                    (!End.HasValue && DateTime.Now.Subtract(Start.Value).Days < 31))
                 {
                     // Less than 31 Days in Query - Just evaluate each Path
-                    var queryDate = this.Start.Value.Date;
+                    var queryDate = Start.Value.Date;
                     while (queryDate <= endDate)
                     {
                         var fileName = LogContext.LogFilePath(Database, queryDate, false);
@@ -148,27 +148,27 @@ namespace Disco.Services.Logging
         private IQueryable<LogEvent> BuildQuery(LogPersistContext LogContext, DateTime LogDate, int Taken)
         {
             IQueryable<LogEvent> query = LogContext.Events.OrderByDescending(le => le.Timestamp);
-            if (this.Module.HasValue)
+            if (Module.HasValue)
             {
-                query = query.Where(le => le.ModuleId == this.Module.Value);
+                query = query.Where(le => le.ModuleId == Module.Value);
             }
-            if (this.EventTypes != null && this.EventTypes.Count > 0)
+            if (EventTypes != null && EventTypes.Count > 0)
             {
-                query = query.Where(le => this.EventTypes.Contains(le.EventTypeId));
+                query = query.Where(le => EventTypes.Contains(le.EventTypeId));
             }
-            if (this.Start.HasValue && this.Start.Value > LogDate)
+            if (Start.HasValue && Start.Value > LogDate)
             {
-                var startValue = DateTime.SpecifyKind(this.Start.Value, DateTimeKind.Local);
+                var startValue = DateTime.SpecifyKind(Start.Value, DateTimeKind.Local);
                 query = query.Where(le => le.Timestamp > startValue);
             }
-            if (this.End.HasValue && this.End.Value <= LogDate.AddDays(1))
+            if (End.HasValue && End.Value <= LogDate.AddDays(1))
             {
-                var endValue = DateTime.SpecifyKind(this.End.Value, DateTimeKind.Local);
+                var endValue = DateTime.SpecifyKind(End.Value, DateTimeKind.Local);
                 query = query.Where(le => le.Timestamp < endValue);
             }
-            if (this.Take.HasValue && this.Take.Value > 0)
+            if (Take.HasValue && Take.Value > 0)
             {
-                var take = this.Take.Value - Taken;
+                var take = Take.Value - Taken;
                 query = query.Take(take);
             }
             return query;

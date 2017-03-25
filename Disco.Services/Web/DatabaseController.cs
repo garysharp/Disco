@@ -1,9 +1,4 @@
 ﻿using Disco.Data.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace Disco.Services.Web
@@ -15,18 +10,18 @@ namespace Disco.Services.Web
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            this.Database = new DiscoDataContext();
-            this.Database.Configuration.LazyLoadingEnabled = false;
+            Database = new DiscoDataContext();
+            Database.Configuration.LazyLoadingEnabled = false;
 
             base.OnActionExecuting(filterContext);
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (this.Database != null)
+            if (Database != null)
             {
-                this.Database.Dispose();
-                this.Database = null;
+                Database.Dispose();
+                Database = null;
             }
 
             base.Dispose(disposing);

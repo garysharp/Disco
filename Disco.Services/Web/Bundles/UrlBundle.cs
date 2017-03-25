@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Services.Web.Bundles
 {
@@ -24,7 +20,7 @@ namespace Disco.Services.Web.Bundles
         public UrlBundle(string Url, string ContentType)
         {
             this.Url = Url;
-            this.VersionUrl = Url;
+            VersionUrl = Url;
 
             this.ContentType = ContentType;
         }
