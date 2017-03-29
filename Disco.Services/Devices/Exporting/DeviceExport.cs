@@ -33,14 +33,14 @@ namespace Disco.Services.Devices.Exporting
                 Options.AssignedUserEmailAddress)
             {
                 TaskStatus.UpdateStatus(20, "Updating Assigned User details");
-                var users = Devices.Where(d => d.AssignedUserId != null).Select(d => d.AssignedUserId).Distinct().ToList();
+                var users = Devices.Where(d => d.AssignedUserId != null).Select(d => d.AssignedUser).Distinct().ToList();
 
-                users.Select((userId, index) =>
+                users.Select((user, index) =>
                 {
-                    TaskStatus.UpdateStatus(20 + (((double)20 / users.Count) * index), string.Format("Updating Assigned User details: {0}", userId));
+                    TaskStatus.UpdateStatus(20 + (((double)20 / users.Count) * index), string.Format("Updating Assigned User details: {0}", user.UserId));
                     try
                     {
-                        return UserService.GetUser(userId, Database);
+                        return UserService.GetUser(user.UserId, Database);
                     }
                     catch (Exception) { return null; } // Ignore Errors
                 }).ToList();

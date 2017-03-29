@@ -273,13 +273,18 @@ namespace Disco.Services.Users
                 // Update Repository
                 User existingUser = Database.Users.Find(user.UserId);
                 if (existingUser == null)
+                {
                     Database.Users.Add(user);
+                    Database.SaveChanges();
+                }
                 else
                 {
-                    existingUser.UpdateSelf(user);
+                    if (existingUser.UpdateSelf(user))
+                    {
+                        Database.SaveChanges();
+                    }
                     user = existingUser;
                 }
-                Database.SaveChanges();
 
                 var token = AuthorizationToken.BuildToken(user, adAccount.Groups.Select(g => g.Id));
 

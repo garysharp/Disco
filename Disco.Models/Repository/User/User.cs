@@ -71,21 +71,40 @@ namespace Disco.Models.Repository
             return string.Format("{0} ({1})", this.DisplayName, this.UserId);
         }
 
-        public void UpdateSelf(User u)
+        public bool UpdateSelf(User u)
         {
+            var changed = false;
+
             if (!this.UserId.Equals(u.UserId, StringComparison.OrdinalIgnoreCase))
                 throw new ArgumentException("User Id's do not match", "u");
 
             if (this.Surname != u.Surname)
+            {
                 this.Surname = u.Surname;
+                changed = true;
+            }
             if (this.GivenName != u.GivenName)
+            {
                 this.GivenName = u.GivenName;
+                changed = true;
+            }
             if (this.DisplayName != u.DisplayName)
+            {
                 this.DisplayName = u.DisplayName;
+                changed = true;
+            }
             if (this.EmailAddress != u.EmailAddress)
+            {
                 this.EmailAddress = u.EmailAddress;
+                changed = true;
+            }
             if (this.PhoneNumber != u.PhoneNumber)
+            {
                 this.PhoneNumber = u.PhoneNumber;
+                changed = true;
+            }
+
+            return changed;
         }
     }
 }
