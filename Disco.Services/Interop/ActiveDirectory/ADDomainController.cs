@@ -341,8 +341,10 @@ namespace Disco.Services.Interop.ActiveDirectory
                 ComputerSamAccountName = ComputerSamAccountName.TrimEnd('$');
             if (!string.IsNullOrWhiteSpace(ComputerSamAccountName) && ComputerSamAccountName.Contains('\\'))
                 ComputerSamAccountName = ComputerSamAccountName.Substring(ComputerSamAccountName.IndexOf('\\') + 1);
-            if (string.IsNullOrWhiteSpace(ComputerSamAccountName) || ComputerSamAccountName.Length > 24)
-                throw new System.ArgumentException("Invalid Computer Name; > 0 and <= 24", "ComputerName");
+
+            // NetBIOS Limit (16 characters; "{ComputerName}$"; 15 characters allowed)
+            if (string.IsNullOrWhiteSpace(ComputerSamAccountName) || ComputerSamAccountName.Length > 15)
+                throw new System.ArgumentException("Invalid Computer Name; > 0 and <= 15", "ComputerName");
 
             // Ensure Specified OU Exists
             if (!string.IsNullOrEmpty(OrganisationalUnit))
