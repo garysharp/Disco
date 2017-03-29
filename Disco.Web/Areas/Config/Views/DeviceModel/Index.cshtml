@@ -1,30 +1,36 @@
 ﻿@model Disco.Web.Areas.Config.Models.DeviceModel.IndexModel
 @{
     Authorization.Require(Claims.Config.DeviceModel.Show);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Models");
+
+    var hasDecommissionedModels = Model.DeviceModels.Any(db => db.DeviceCount > 0 && db.DeviceDecommissionedCount >= db.DeviceCount);
 }
-<table class="tableData">
+@if (hasDecommissionedModels)
+{
+    <a id="Config_DeviceModels_ShowDecommissioned" href="#" class="button small">Show Decommissioned (@(Model.DeviceModels.Count(db => db.DeviceCount > 0 && db.DeviceDecommissionedCount >= db.DeviceCount)))</a>
+    <script>
+        $(function () {
+            $('#Config_DeviceModels_ShowDecommissioned').click(function () {
+                $(this).remove();
+                $('#Config_DeviceModels_List').find('tr.hidden').show();
+                return false;
+            }).detach().appendTo('#layout_PageHeading');
+        })
+    </script>
+}
+<table id="Config_DeviceModels_List" class="tableData">
     <tr>
-        <th>
-            Name/Description
-        </th>
-        <th>
-            Manufacturer
-        </th>
-        <th>
-            Model
-        </th>
-        <th>
-            Type
-        </th>
-        <th>
-            Device Count
-        </th>
+        <th>Name/Description</th>
+        <th>Manufacturer</th>
+        <th>Model</th>
+        <th>Type</th>
+        <th>Device Count</th>
     </tr>
     @foreach (var item in Model.DeviceModels)
     {
-        <tr>
+        var isDecommissioned = item.DeviceCount > 0 && item.DeviceDecommissionedCount >= item.DeviceCount;
+        <tr class="@(isDecommissioned ? "hidden" : null)">
             <td>
                 @Html.ActionLink(item.ToString(), MVC.Config.DeviceModel.Index(item.Id))
             </td>
@@ -40,9 +46,10 @@
             <td>
                 @item.DeviceCount.ToString("n0")
                 @if (item.DeviceDecommissionedCount > 0)
-                { 
+                {
                     <span class="smallMessage" title="@(item.DeviceDecommissionedCount.ToString("n0")) Decommissioned">
-                        (@(item.DeviceDecommissionedCount.ToString("n0")))</span>
+                        (@(item.DeviceDecommissionedCount.ToString("n0")))
+                    </span>
                 }
             </td>
         </tr>
