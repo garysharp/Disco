@@ -617,6 +617,12 @@ table.genericData td.id a {
 .dataTables_wrapper {
   position: relative;
 }
+.dataTables_wrapper > .a {
+  position: absolute;
+  margin-top: -24px;
+  right: 320px;
+  opacity: 0.3;
+}
 .dataTables_wrapper .dataTables_filter {
   position: absolute;
   height: 20px;
@@ -645,6 +651,20 @@ table.genericData td.id a {
   font-size: .95em;
   padding: 0;
   height: 1.4em;
+}
+.dataTables_wrapper .dataTables_decommissioned {
+  position: absolute;
+  height: 20px;
+  margin-top: -20px;
+  right: 320px;
+  font-size: .9em;
+  -moz-opacity: 0.3;
+  opacity: 0.3;
+}
+.dataTables_wrapper .dataTables_decommissioned input {
+  font-size: .8em;
+  padding: 0;
+  height: 1.2em;
 }
 .dataTables_wrapper .dataTables_paginate {
   text-align: right;
@@ -728,7 +748,8 @@ table.genericData td.id a {
 }
 .dataTables_wrapper:hover .dataTables_filter,
 .dataTables_wrapper:hover .dataTables_length,
-.dataTables_wrapper:hover .dataTables_paginate a {
+.dataTables_wrapper:hover .dataTables_paginate a,
+.dataTables_wrapper:hover .dataTables_decommissioned {
   -moz-opacity: 1;
   opacity: 1;
 }
@@ -907,6 +928,9 @@ div.jobTable > div.allClosed_container a.button {
 }
 table.deviceTable tr.decommissioned {
   background-color: #ededed;
+}
+table.deviceTable.hideDecommissioned tr.decommissioned {
+  display: none;
 }
 textarea {
   font-size: 12px;

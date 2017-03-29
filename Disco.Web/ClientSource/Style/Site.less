@@ -554,6 +554,14 @@ table {
 .dataTables_wrapper {
     position: relative;
 
+    & > .a {
+        position: absolute;
+        margin-top: -24px;
+        right: 320px;
+
+        opacity: 0.3;
+    }
+
     .dataTables_filter {
         position: absolute;
         height: 20px;
@@ -582,6 +590,23 @@ table {
             font-size: .95em;
             padding: 0;
             height: 1.4em;
+        }
+
+        -moz-opacity: 0.3;
+        opacity: 0.3;
+    }
+
+    .dataTables_decommissioned {
+        position: absolute;
+        height: 20px;
+        margin-top: -20px;
+        right: 320px;
+        font-size: .9em;
+
+        input {
+            font-size: .8em;
+            padding: 0;
+            height: 1.2em;
         }
 
         -moz-opacity: 0.3;
@@ -685,7 +710,7 @@ table {
     }
 
     &:hover {
-        .dataTables_filter, .dataTables_length, .dataTables_paginate a {
+        .dataTables_filter, .dataTables_length, .dataTables_paginate a, .dataTables_decommissioned {
             -moz-opacity: 1;
             opacity: 1;
         }
@@ -888,6 +913,10 @@ div.jobTable {
 table.deviceTable {
     tr.decommissioned {
         background-color: @SubtleColour;
+    }
+
+    &.hideDecommissioned tr.decommissioned {
+        display: none;
     }
 }
 
