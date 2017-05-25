@@ -106,7 +106,26 @@ namespace Disco.ClientBootstrapper.Interop
         public static string ShortSubjectName(this X509Certificate2 Certificate)
         {
             string s = Certificate.Subject;
-            return s.Substring(s.IndexOf("=") + 1, s.IndexOf(",") - s.IndexOf("=") - 1);
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                return $"Unknown Certificate: {Certificate.Thumbprint}";
+            }
+            else
+            {
+                if (s.Length > 3 && s.StartsWith("CN=", StringComparison.OrdinalIgnoreCase))
+                {
+                    var nameLength = s.IndexOf(',') - 3;
+                    if (nameLength > 0)
+                    {
+                        return s.Substring(3, nameLength);
+                    }
+                    else
+                    {
+                        return s.Substring(3);
+                    }
+                }
+                return s;
+            }
         }
 
         public static bool Add(StoreName StoreName, StoreLocation StoreLocation, X509Certificate2 Certificate)
