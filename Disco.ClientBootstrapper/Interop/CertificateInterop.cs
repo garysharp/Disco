@@ -16,8 +16,9 @@ namespace Disco.ClientBootstrapper.Interop
             if (_tempCerts != null && _tempCerts.Count > 0)
             {
                 Remove(StoreName.My, StoreLocation.LocalMachine, _tempCerts);
-                Remove(StoreName.CertificateAuthority, StoreLocation.LocalMachine, _tempCerts);
-                Remove(StoreName.Root, StoreLocation.LocalMachine, _tempCerts);
+                // dont remove root/intermediate certs as they may be have installed by client
+                //Remove(StoreName.CertificateAuthority, StoreLocation.LocalMachine, _tempCerts);
+                //Remove(StoreName.Root, StoreLocation.LocalMachine, _tempCerts);
             }
         }
         public static void AddTempCerts()
