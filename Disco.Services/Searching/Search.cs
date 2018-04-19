@@ -301,7 +301,7 @@ namespace Disco.Services.Searching
                 AssetNumber = d.AssetNumber,
                 ComputerName = d.DeviceDomainId,
                 DeviceModelDescription = d.DeviceModel.Description,
-                DeviceProfileDescription = d.DeviceProfile.Description,
+                DeviceProfileName = d.DeviceProfile.Name,
                 DeviceBatchName = d.DeviceBatch.Name,
                 DecommissionedDate = d.DecommissionedDate,
                 AssignedUserId = d.AssignedUserId,

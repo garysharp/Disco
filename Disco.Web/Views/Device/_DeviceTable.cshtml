@@ -11,22 +11,15 @@
         <table class="genericData deviceTable">
             <thead>
                 <tr>
-                    <th>Serial#
-                    </th>
-                    <th>Asset#
-                    </th>
-                    <th>Name
-                    </th>
-                    <th>Model
-                    </th>
-                    <th>Profile
-                    </th>
-                    <th>Batch
-                    </th>
-                    <th>Assigned User
-                    </th>
-                    <th>Jobs
-                    </th>
+                    <th>Serial</th>
+                    <th>Asset</th>
+                    <th class="date">Decommissioned</th>
+                    <th>Name</th>
+                    <th>Model</th>
+                    <th>Profile</th>
+                    <th>Batch</th>
+                    <th>Assigned User</th>
+                    <th>Jobs</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,9 +34,10 @@
                         </td>
                         <td>
                             @item.AssetNumber
+                        </td>
+                        <td>
                             @if (item.DecommissionedDate.HasValue)
-                            { <span class="smallMessage">(Decommissioned
-                            @CommonHelpers.FriendlyDate(item.DecommissionedDate.Value))</span> }
+                            { @CommonHelpers.FriendlyDate(item.DecommissionedDate.Value) }
                         </td>
                         <td>
                             @if (string.IsNullOrWhiteSpace(item.ComputerName))
@@ -66,7 +60,7 @@
                             }
                         </td>
                         <td>
-                            @item.DeviceProfileDescription
+                            @item.DeviceProfileName
                         </td>
                         <td>
                             @if (item.DeviceBatchName != null)

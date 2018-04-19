@@ -95,17 +95,20 @@
                 "bSort": true,
                 "bInfo": false,
                 "bAutoWidth": false,
+                "aoColumnDefs": [
+                    { 'aTargets': ['date'], 'sSortDataType': 'disco_datetime', 'sType': 'disco_datetime' }
+                ],
                 "aaSorting": [],
                 "oLanguage": {
                     "sSearch": "Filter:"
                 }
             };
 
-            var $dataTable = $table.dataTable(dataTableOptions);
-
-            // Contains Decommissioned Devces?
+            // Contains Decommissioned Devices?
             var $tbody = $table.children('tbody');
             var $decommissionedDevices = $tbody.children('tr.decommissioned');
+
+            var $dataTable = $table.dataTable(dataTableOptions);
 
             if ($decommissionedDevices.length > 0) {
                 var wrapper = $(this).closest('.dataTables_wrapper');

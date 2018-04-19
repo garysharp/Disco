@@ -40,7 +40,7 @@ namespace Disco.Models.Services.Searching
         public string AssignedUserId { get; set; }
         public string ComputerName { get; set; }
         public string DeviceModelDescription { get; set; }
-        public string DeviceProfileDescription { get; set; }
+        public string DeviceProfileName { get; set; }
         public string DeviceBatchName { get; set; }
         public int JobCount { get; set; }
         public DateTime? DecommissionedDate { get; set; }
