@@ -2,6 +2,7 @@
 using Disco.Services.Logging;
 using Disco.Services.Logging.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Disco.Services.Devices.Enrolment
 {
@@ -106,7 +107,22 @@ namespace Disco.Services.Devices.Enrolment
         }
         public static void LogSessionDeviceInfo(string SessionId, Enrol Request)
         {
-            EnrolmentLog.LogSessionDeviceInfo(SessionId, Request.SerialNumber, Request.Hardware.UUID, Request.ComputerName, null, null, Request.Hardware.Manufacturer, Request.Hardware.Model, Request.Hardware.ModelType);
+            EnrolmentLog.LogSessionDeviceInfo(
+                SessionId,
+                Request.SerialNumber,
+                Request.Hardware.UUID,
+                Request.ComputerName,
+                Request.Hardware?.NetworkAdapters?
+                    .Where(a => !a.IsWlanAdapter)
+                    .Select(a => a.MACAddress)
+                    .Aggregate((string)null, (s, m) => $"{s}{m};")?.TrimEnd(';') ?? null,
+                Request.Hardware?.NetworkAdapters?
+                    .Where(a => a.IsWlanAdapter)
+                    .Select(a => a.MACAddress)
+                    .Aggregate((string)null, (s, m) => $"{s}{m};")?.TrimEnd(';') ?? null,
+                Request.Hardware.Manufacturer,
+                Request.Hardware.Model,
+                Request.Hardware.ModelType);
         }
         
         public static void LogSessionProgress(string SessionId, int Progress, string Status)
