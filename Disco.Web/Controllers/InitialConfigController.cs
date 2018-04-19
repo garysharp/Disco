@@ -5,6 +5,7 @@ using Disco.Services.Users;
 using Disco.Web.Areas.API.Models.Shared;
 using Disco.Web.Models.InitialConfig;
 using System;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using System.IO.Compression;
@@ -64,7 +65,7 @@ namespace Disco.Web.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (!Request.IsLocal && !ServerIsCoreSKU.Value)
+            if (!Request.IsLocal && !ServerIsCoreSKU.Value && !("true".Equals(ConfigurationManager.AppSettings["DiscoAllowRemoteMaintenance"], StringComparison.OrdinalIgnoreCase)))
             {
                 filterContext.Result = new ContentResult() {
                     Content = "Initial Configuration of Disco ICT is only allowed via a localhost connection",

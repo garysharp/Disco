@@ -1,4 +1,6 @@
 ﻿using Disco.Services.Plugins;
+using System;
+using System.Configuration;
 using System.Web.Mvc;
 
 namespace Disco.Web.Controllers
@@ -8,7 +10,7 @@ namespace Disco.Web.Controllers
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (!Request.IsLocal && !InitialConfigController.ServerIsCoreSKU.Value)
+            if (!Request.IsLocal && !InitialConfigController.ServerIsCoreSKU.Value && !("true".Equals(ConfigurationManager.AppSettings["DiscoIgnoreVersionUpdate"], StringComparison.OrdinalIgnoreCase)))
             {
                 filterContext.Result = new ContentResult()
                 {
