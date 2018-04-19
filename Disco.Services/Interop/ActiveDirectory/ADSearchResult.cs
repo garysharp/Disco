@@ -25,7 +25,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             this.LdapFilter = LdapFilter;
 
             LdapPath = _result.Path;
-            DistinguishedName = Value<string>("dn");
+            DistinguishedName = Value<string>("distinguishedName");
         }
 
         public bool Contains(string PropertyName)
