@@ -113,7 +113,7 @@ namespace Disco.Services.Devices.Importing
 
                     Device existingDevice = null;
                     if (DeviceSerialNumberImportField.IsDeviceSerialNumberValid(deviceSerialNumber))
-                        existingDevice = cache.Devices.FirstOrDefault(device => device.SerialNumber == deviceSerialNumber);
+                        existingDevice = cache.FindDevice(deviceSerialNumber);
 
                     var fields = columns.Select(h =>
                     {
