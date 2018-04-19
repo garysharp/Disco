@@ -101,6 +101,7 @@ namespace Disco.Services
                 User = u,
                 AddedDate = DateTime.Now,
                 AddedUser = AddingUser,
+                AddedUserId = AddingUser.UserId,
                 Comments = string.IsNullOrWhiteSpace(Comments) ? null : Comments.Trim()
             };
 

@@ -206,7 +206,7 @@ namespace Disco.Services.Documents.AttachmentImport
                 comments = string.Format("Generated: {0:s}", Identifier.TimeStamp);
             }
 
-            User creatorUser = UserService.GetUser(Identifier.CreatorId, Database);
+            User creatorUser = UserService.GetUser(Identifier.CreatorId, Database, true);
             if (creatorUser == null)
             {
                 // No Creator User (or Username invalid)
