@@ -242,7 +242,19 @@ namespace Disco.Client.Interop
 
                                 var uUID = (string)mItem.GetPropertyValue("UUID");
                                 if (!string.IsNullOrWhiteSpace(uUID))
+                                {
                                     DeviceHardware.UUID = uUID.Trim();
+
+                                    // if serial number is absent attempt using UUID if valid
+                                    if (string.IsNullOrWhiteSpace(DeviceHardware.SerialNumber))
+                                    {
+                                        Guid uuidGuid;
+                                        if (Guid.TryParse(DeviceHardware.UUID, out uuidGuid) && uuidGuid != Guid.Empty)
+                                        {
+                                            DeviceHardware.SerialNumber = $"UUID{uuidGuid:N}";
+                                        }
+                                    }
+                                }
                             }
                             else
                             {
