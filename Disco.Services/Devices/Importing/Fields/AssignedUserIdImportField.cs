@@ -109,7 +109,7 @@ namespace Disco.Services.Devices.Importing.Fields
                 var currentAssignments = Device.DeviceUserAssignments.Where(dua => !dua.UnassignedDate.HasValue);
                 foreach (var currentAssignment in currentAssignments)
                 {
-                    currentAssignment.UnassignedDate = DateTime.Now;
+                    currentAssignment.Unassign(Database);
                 }
             }
 

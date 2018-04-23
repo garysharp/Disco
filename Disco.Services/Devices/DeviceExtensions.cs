@@ -126,13 +126,48 @@ namespace Disco.Services
             return d2;
         }
 
+        public static void Unassign(this DeviceUserAssignment dua, DiscoDataContext Database)
+        {
+            // Entity Framework 5 Bug
+            //  all dates are handled as datetime2 which do not match the
+            //  datetime type of the AssignedDate key
+            using (var tempCommand = Database.Database.Connection.CreateCommand())
+            {
+                var paramDeviceSerialNumber = tempCommand.CreateParameter();
+                paramDeviceSerialNumber.DbType = System.Data.DbType.String;
+                paramDeviceSerialNumber.Direction = System.Data.ParameterDirection.Input;
+                paramDeviceSerialNumber.ParameterName = "@DeviceSerialNumber";
+                paramDeviceSerialNumber.Size = 60;
+                paramDeviceSerialNumber.Value = dua.DeviceSerialNumber;
+
+                var paramAssignedDate = tempCommand.CreateParameter();
+                paramAssignedDate.DbType = System.Data.DbType.DateTime;
+                paramAssignedDate.Direction = System.Data.ParameterDirection.Input;
+                paramAssignedDate.ParameterName = "@AssignedDate";
+                paramAssignedDate.Value = dua.AssignedDate;
+
+                var paramUnassignedDate = tempCommand.CreateParameter();
+                paramUnassignedDate.DbType = System.Data.DbType.DateTime;
+                paramUnassignedDate.Direction = System.Data.ParameterDirection.Input;
+                paramUnassignedDate.ParameterName = "@UnassignedDate";
+                paramUnassignedDate.Value = DateTime.Now;
+
+                Database.Database.ExecuteSqlCommand(
+                    "update [dbo].[DeviceUserAssignments] set[UnassignedDate] = @UnassignedDate where(([DeviceSerialNumber] = @DeviceSerialNumber) and([AssignedDate] = @AssignedDate))",
+                    paramUnassignedDate, paramDeviceSerialNumber, paramAssignedDate
+                );
+            }
+        }
+
         public static DeviceUserAssignment AssignDevice(this Device d, DiscoDataContext Database, User u)
         {
             DeviceUserAssignment newDua = default(DeviceUserAssignment);
 
             // Mark existing assignments as Unassigned
             foreach (var dua in Database.DeviceUserAssignments.Where(m => m.DeviceSerialNumber == d.SerialNumber && !m.UnassignedDate.HasValue))
-                dua.UnassignedDate = DateTime.Now;
+            {
+                dua.Unassign(Database);
+            }
 
             if (u != null)
             {
