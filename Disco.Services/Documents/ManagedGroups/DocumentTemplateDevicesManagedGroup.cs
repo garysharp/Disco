@@ -221,22 +221,43 @@ namespace Disco.Services.Documents.ManagedGroups
         }
 
         #region Device Scope
+        private class ContainsAttachmentResult
+        {
+            public string Id;
+            public bool HasAttachment;
+            public string SerialNumber;
+            public IEnumerable<ContainsAttachmentDeviceResult> Devices;
+        }
+        private class ContainsAttachmentDeviceResult
+        {
+            public string Id;
+            public string SerialNumber;
+        }
+
         private bool DeviceContainsAttachment(DiscoDataContext Database, string DeviceSerialNumber, out string DeviceAccountId)
         {
-            Tuple<string, bool> result;
+            ContainsAttachmentResult result;
 
             if (Configuration.FilterBeginDate.HasValue)
             {
                 result = Database.Devices
                     .Where(d => d.SerialNumber == DeviceSerialNumber && d.DeviceDomainId != null)
-                    .Select(d => Tuple.Create(d.DeviceDomainId, d.DeviceAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate)))
+                    .Select(d => new ContainsAttachmentResult()
+                    {
+                        Id = d.DeviceDomainId,
+                        HasAttachment = d.DeviceAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate)
+                    })
                     .FirstOrDefault();
             }
             else
             {
                 result = Database.Devices
                     .Where(d => d.SerialNumber == DeviceSerialNumber && d.DeviceDomainId != null)
-                    .Select(d => Tuple.Create(d.DeviceDomainId, d.DeviceAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId)))
+                    .Select(d => new ContainsAttachmentResult()
+                    {
+                        Id = d.DeviceDomainId,
+                        HasAttachment = d.DeviceAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId)
+                    })
                     .FirstOrDefault();
             }
 
@@ -247,14 +268,14 @@ namespace Disco.Services.Documents.ManagedGroups
             }
             else
             {
-                if (ActiveDirectory.IsValidDomainAccountId(result.Item1))
+                if (ActiveDirectory.IsValidDomainAccountId(result.Id))
                 {
-                    DeviceAccountId = result.Item1 + "$";
-                    return result.Item2;
+                    DeviceAccountId = result.Id + "$";
+                    return result.HasAttachment;
                 }
                 else
                 {
-                    DeviceAccountId = result.Item1 + "$";
+                    DeviceAccountId = result.Id + "$";
                     return false;
                 }
             }
@@ -286,26 +307,30 @@ namespace Disco.Services.Documents.ManagedGroups
         #region Job Scope
         private bool JobsContainAttachment(DiscoDataContext Database, int JobId, out string DeviceAccountId, out string DeviceSerialNumber)
         {
-            Tuple<string, string, bool> result;
+            ContainsAttachmentResult result;
 
             if (Configuration.FilterBeginDate.HasValue)
             {
                 result = Database.Jobs
                     .Where(j => j.Id == JobId && j.Device.DeviceDomainId != null)
-                    .Select(j => new Tuple<string, string, bool>(
-                        j.Device.DeviceDomainId,
-                        j.Device.SerialNumber,
-                        j.Device.Jobs.Any(dj => dj.JobAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate))))
+                    .Select(j => new ContainsAttachmentResult()
+                    {
+                        Id = j.Device.DeviceDomainId,
+                        SerialNumber = j.Device.SerialNumber,
+                        HasAttachment = j.Device.Jobs.Any(dj => dj.JobAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate))
+                    })
                     .FirstOrDefault();
             }
             else
             {
                 result = Database.Jobs
                     .Where(j => j.Id == JobId && j.Device.DeviceDomainId != null)
-                    .Select(j => new Tuple<string, string, bool>(
-                        j.Device.DeviceDomainId,
-                        j.Device.SerialNumber,
-                        j.Device.Jobs.Any(dj => dj.JobAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId))))
+                    .Select(j => new ContainsAttachmentResult()
+                    {
+                        Id = j.Device.DeviceDomainId,
+                        SerialNumber = j.Device.SerialNumber,
+                        HasAttachment = j.Device.Jobs.Any(dj => dj.JobAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId))
+                    })
                     .FirstOrDefault();
             }
 
@@ -318,16 +343,16 @@ namespace Disco.Services.Documents.ManagedGroups
             }
             else
             {
-                if (ActiveDirectory.IsValidDomainAccountId(result.Item1))
+                if (ActiveDirectory.IsValidDomainAccountId(result.Id))
                 {
-                    DeviceAccountId = result.Item1 + "$";
-                    DeviceSerialNumber = result.Item2;
-                    return result.Item3;
+                    DeviceAccountId = result.Id + "$";
+                    DeviceSerialNumber = result.SerialNumber;
+                    return result.HasAttachment;
                 }
                 else
                 {
-                    DeviceAccountId = result.Item1 + "$";
-                    DeviceSerialNumber = result.Item2;
+                    DeviceAccountId = result.Id + "$";
+                    DeviceSerialNumber = result.SerialNumber;
                     return false;
                 }
             }
@@ -365,28 +390,32 @@ namespace Disco.Services.Documents.ManagedGroups
         #region User Scope
         private bool DeviceUserContainAttachment(DiscoDataContext Database, string UserId, out List<Tuple<string, string>> Devices)
         {
-            Tuple<bool, IEnumerable<Tuple<string, string>>> result;
+            ContainsAttachmentResult result;
 
             if (Configuration.FilterBeginDate.HasValue)
             {
                 result = Database.Users
                     .Where(u => u.UserId == UserId)
-                    .Select(u => Tuple.Create(
-                        u.UserAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate),
-                        u.DeviceUserAssignments
+                    .Select(u => new ContainsAttachmentResult()
+                    {
+                        HasAttachment = u.UserAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate),
+                        Devices = u.DeviceUserAssignments
                             .Where(dua => !dua.UnassignedDate.HasValue && dua.Device.DeviceDomainId != null)
-                            .Select(dua => new Tuple<string, string>(dua.Device.DeviceDomainId, dua.Device.SerialNumber))))
+                            .Select(dua => new ContainsAttachmentDeviceResult() { Id = dua.Device.DeviceDomainId, SerialNumber = dua.Device.SerialNumber })
+                    })
                     .FirstOrDefault();
             }
             else
             {
                 result = Database.Users
                     .Where(u => u.UserId == UserId)
-                    .Select(u => Tuple.Create(
-                        u.UserAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId),
-                        u.DeviceUserAssignments
+                    .Select(u => new ContainsAttachmentResult()
+                    {
+                        HasAttachment = u.UserAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId),
+                        Devices = u.DeviceUserAssignments
                             .Where(dua => !dua.UnassignedDate.HasValue && dua.Device.DeviceDomainId != null)
-                            .Select(dua => new Tuple<string, string>(dua.Device.DeviceDomainId, dua.Device.SerialNumber))))
+                            .Select(dua => new ContainsAttachmentDeviceResult() { Id = dua.Device.DeviceDomainId, SerialNumber = dua.Device.SerialNumber })
+                    })
                     .FirstOrDefault();
             }
 
@@ -397,11 +426,11 @@ namespace Disco.Services.Documents.ManagedGroups
             }
             else
             {
-                Devices = result.Item2
-                    .Where(d => ActiveDirectory.IsValidDomainAccountId(d.Item1))
-                    .Select(d => Tuple.Create(d.Item1 + "$", d.Item2))
+                Devices = result.Devices
+                    .Where(d => ActiveDirectory.IsValidDomainAccountId(d.Id))
+                    .Select(d => new Tuple<string, string>(d.Id + "$", d.SerialNumber))
                     .ToList();
-                return result.Item1;
+                return result.HasAttachment;
             }
         }
 

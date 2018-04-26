@@ -198,26 +198,36 @@ namespace Disco.Services.Documents.ManagedGroups
         }
 
         #region Device Scope
+        private class ContainsAttachmentResult
+        {
+            public string Id;
+            public bool HasAttachment;
+        }
+
         private bool DeviceContainsAttachment(DiscoDataContext Database, string DeviceSerialNumber, out string UserId)
         {
-            Tuple<string, bool> result;
+            ContainsAttachmentResult result;
 
             if (Configuration.FilterBeginDate.HasValue)
             {
                 result = Database.Devices
                     .Where(d => d.SerialNumber == DeviceSerialNumber && d.AssignedUser != null)
-                    .Select(d => Tuple.Create(
-                        d.AssignedUserId,
-                        d.DeviceAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate)))
+                    .Select(d => new ContainsAttachmentResult()
+                    {
+                        Id = d.AssignedUserId,
+                        HasAttachment = d.DeviceAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate)
+                    })
                     .FirstOrDefault();
             }
             else
             {
                 result = Database.Devices
                     .Where(d => d.SerialNumber == DeviceSerialNumber && d.AssignedUser != null)
-                    .Select(d => Tuple.Create(
-                        d.AssignedUserId,
-                        d.DeviceAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId)))
+                    .Select(d => new ContainsAttachmentResult()
+                    {
+                        Id = d.AssignedUserId,
+                        HasAttachment = d.DeviceAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId)
+                    })
                     .FirstOrDefault();
             }
 
@@ -228,8 +238,8 @@ namespace Disco.Services.Documents.ManagedGroups
             }
             else
             {
-                UserId = result.Item1;
-                return result.Item2;
+                UserId = result.Id;
+                return result.HasAttachment;
             }
         }
 
@@ -262,24 +272,28 @@ namespace Disco.Services.Documents.ManagedGroups
         #region Job Scope
         private bool JobsContainAttachment(DiscoDataContext Database, int JobId, out string UserId)
         {
-            Tuple<string, bool> result;
+            ContainsAttachmentResult result;
 
             if (Configuration.FilterBeginDate.HasValue)
             {
                 result = Database.Jobs
                     .Where(j => j.Id == JobId && j.UserId != null)
-                    .Select(j => Tuple.Create(
-                        j.UserId,
-                        j.User.Jobs.Any(uj => uj.JobAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate))))
+                    .Select(j => new ContainsAttachmentResult()
+                    {
+                        Id = j.UserId,
+                        HasAttachment = j.User.Jobs.Any(uj => uj.JobAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId && a.Timestamp >= Configuration.FilterBeginDate))
+                    })
                     .FirstOrDefault();
             }
             else
             {
                 result = Database.Jobs
                     .Where(j => j.Id == JobId && j.UserId != null)
-                    .Select(j => Tuple.Create(
-                        j.UserId,
-                        j.User.Jobs.Any(uj => uj.JobAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId))))
+                    .Select(j => new ContainsAttachmentResult()
+                    {
+                        Id = j.UserId,
+                        HasAttachment = j.User.Jobs.Any(uj => uj.JobAttachments.Any(a => a.DocumentTemplateId == DocumentTemplateId))
+                    })
                     .FirstOrDefault();
             }
 
@@ -290,8 +304,8 @@ namespace Disco.Services.Documents.ManagedGroups
             }
             else
             {
-                UserId = result.Item1;
-                return result.Item2;
+                UserId = result.Id;
+                return result.HasAttachment;
             }
         }
 
