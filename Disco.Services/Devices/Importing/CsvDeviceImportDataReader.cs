@@ -23,7 +23,7 @@ namespace Disco.Services.Devices.Importing
         {
             context = Context;
             rawData = RawData;
-            currentRowIndex = 0;
+            currentRowIndex = -1;
             rowOffset = HasHeaderRow ? 1 : 0;
         }
 
