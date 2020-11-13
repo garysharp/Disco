@@ -182,9 +182,23 @@ namespace Disco.Services
                 da.RepositoryDelete(Database);
                 Database.DeviceAttachments.Remove(da);
             }
+
             // Delete Device User Assignments
-            foreach (var dua in Database.DeviceUserAssignments.Where(i => i.DeviceSerialNumber == d.SerialNumber))
-                Database.DeviceUserAssignments.Remove(dua);
+            // Custom SQL to bypass Entity Framework 5 datetime2 Bug
+            using (var tempCommand = Database.Database.Connection.CreateCommand())
+            {
+                var paramDeviceSerialNumber = tempCommand.CreateParameter();
+                paramDeviceSerialNumber.DbType = System.Data.DbType.String;
+                paramDeviceSerialNumber.Direction = System.Data.ParameterDirection.Input;
+                paramDeviceSerialNumber.ParameterName = "@DeviceSerialNumber";
+                paramDeviceSerialNumber.Size = 60;
+                paramDeviceSerialNumber.Value = d.SerialNumber;
+
+                Database.Database.ExecuteSqlCommand(
+                    "DELETE [dbo].[DeviceUserAssignments] WHERE ([DeviceSerialNumber] = @DeviceSerialNumber)",
+                    paramDeviceSerialNumber
+                );
+            }
 
             Database.Devices.Remove(d);
         }
