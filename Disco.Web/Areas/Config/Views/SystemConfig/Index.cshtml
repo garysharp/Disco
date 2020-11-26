@@ -241,17 +241,17 @@
         </tr>
         <tr>
             <th style="width: 135px">
-                Forest:
+                Directory:
             </th>
             <td>
-                @if (Model.ADForestServers == null)
+                @if (Model.ADAllServers == null)
                 {
                     <div>
-                        @Html.CheckBoxFor(m => m.ADSearchAllForestServers, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchAllForestServers)
+                        @Html.CheckBoxFor(m => m.ADSearchAllServers, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchAllServers)
                     </div>
                     <div class="info-box">
                         <p class="fa-p">
-                            <i class="fa fa-info-circle"></i>Forest servers are currently being retrieved.<br />
+                            <i class="fa fa-info-circle"></i>Directory servers are currently being retrieved.<br />
                             Try refreshing this page in a moment.
                         </p>
                     </div>
@@ -260,28 +260,28 @@
                 {
                     if (canConfigAD)
                     {
-                        var canSearchEntireForest = (Model.ADForestServers.Count <= Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxForestServerSearch);
+                        var canSearchEntireDirectory = (Model.ADAllServers.Count <= Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxAllServerSearch);
                         <div>
-                            @if (!canSearchEntireForest)
+                            @if (!canSearchEntireDirectory)
                             {
-                                @Html.CheckBoxFor(m => m.ADSearchAllForestServers, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchAllForestServers)
+                                @Html.CheckBoxFor(m => m.ADSearchAllServers, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchAllServers)
                                 <div class="info-box">
                                     <p class="fa-p">
-                                        <i class="fa fa-exclamation-circle warning"></i>Disco will not search entire forests which consist of more than @(Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxForestServerSearch) servers. Only servers within this site will be searched.
+                                        <i class="fa fa-exclamation-circle warning"></i>Disco will not search the entire directory which consists of more than @(Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxAllServerSearch) servers. Only servers within this site will be searched.
                                     </p>
                                 </div>
                             }
                             else
                             {
-                                @Html.CheckBoxFor(m => m.ADSearchAllForestServers) @Html.LabelFor(m => m.ADSearchAllForestServers) @AjaxHelpers.AjaxLoader()
+                                @Html.CheckBoxFor(m => m.ADSearchAllServers) @Html.LabelFor(m => m.ADSearchAllServers) @AjaxHelpers.AjaxLoader()
                                 <div class="info-box">
                                     <p class="fa-p">
-                                        <i class="fa fa-info-circle"></i>If this setting is enabled, Disco will query all servers within the forest rather than only servers within this site.
+                                        <i class="fa fa-info-circle"></i>If this setting is enabled, Disco will query all servers within the directory rather than only servers within this site.
                                     </p>
                                 </div>
                                 <script>
                                     $(function () {
-                                        document.DiscoFunctions.PropertyChangeHelper($('#ADSearchAllForestServers'), null, '@(Url.Action(MVC.API.System.UpdateActiveDirectorySearchAllForestServers()))', 'SearchAllForestServers');
+                                        document.DiscoFunctions.PropertyChangeHelper($('#ADSearchAllServers'), null, '@(Url.Action(MVC.API.System.UpdateActiveDirectorySearchAllServers()))', 'SearchAllServers');
                                     });
                                 </script>
                             }
@@ -290,10 +290,10 @@
                     else
                     {
                         <div>
-                            @Html.CheckBoxFor(m => m.ADSearchAllForestServers, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchAllForestServers)
+                            @Html.CheckBoxFor(m => m.ADSearchAllServers, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchAllServers)
                             <div class="info-box">
                                 <p class="fa-p">
-                                    <i class="fa fa-info-circle"></i>If this setting is enabled, Disco will query all servers within the forest rather than only servers within this site.
+                                    <i class="fa fa-info-circle"></i>If this setting is enabled, Disco will query all servers within the directory rather than only servers within this site.
                                 </p>
                             </div>
                         </div>
@@ -301,12 +301,12 @@
                     <div>
                         <hr />
                         <span>All Servers:</span>
-                        <ul id="Config_System_AD_ForestServers" class="none">
+                        <ul id="Config_System_AD_AllServers" class="none">
                             @{
                                 var domainIndex = Model.ADDomains.ToDictionary(d => d.Name, StringComparer.OrdinalIgnoreCase);
-                                foreach (var server in Model.ADForestServers.OrderBy(s => s))
+                                var siteServers = Model.ADServers.Where(s => s.IsSiteServer).ToDictionary(s => s.Name, StringComparer.OrdinalIgnoreCase);
+                                foreach (var server in Model.ADAllServers.OrderBy(s => s))
                                 {
-                                    var isSiteServer = Model.ADServers.Any(s => s.IsSiteServer && s.Name.Equals(server, StringComparison.OrdinalIgnoreCase));
                                     var serverDescription = server;
                                     if (server.Contains('.'))
                                     {
@@ -317,7 +317,7 @@
                                         }
                                     }
                                     <li>
-                                        <code>@serverDescription</code>@if (isSiteServer)
+                                        <code>@serverDescription</code>@if (siteServers.ContainsKey(server))
                                         { <i class="fa fa-building-o information fa-fw" title="Site Server"></i> }
                                     </li>
                                 }
@@ -326,7 +326,7 @@
                         <script>
                             $(function () {
                                 var toManyServers = 5;
-                                var ul = $('#Config_System_AD_ForestServers');
+                                var ul = $('#Config_System_AD_AllServers');
                                 var ulLi = ul.find('li');
                                 if (ulLi.length > toManyServers) {
                                     var liMore = $('<li>').append(
@@ -487,7 +487,7 @@
 
                                         // Set Buttons
                                         $dialog.dialog('option', 'buttons', {
-                                            'Search Entire Forest': function () {
+                                            'Search Entire Directory': function () {
                                                 var $this = $(this);
                                                 $this.css('overflow', 'hidden');
                                                 $this.dialog("disable");

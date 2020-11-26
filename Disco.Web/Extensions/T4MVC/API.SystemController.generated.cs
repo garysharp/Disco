@@ -89,9 +89,9 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult UpdateActiveDirectorySearchAllForestServers()
+        public virtual System.Web.Mvc.ActionResult UpdateActiveDirectorySearchAllServers()
         {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateActiveDirectorySearchAllForestServers);
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateActiveDirectorySearchAllServers);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -155,7 +155,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string DeleteOrganisationAddress = "DeleteOrganisationAddress";
             public readonly string UpdateMultiSiteMode = "UpdateMultiSiteMode";
             public readonly string UpdateActiveDirectorySearchScope = "UpdateActiveDirectorySearchScope";
-            public readonly string UpdateActiveDirectorySearchAllForestServers = "UpdateActiveDirectorySearchAllForestServers";
+            public readonly string UpdateActiveDirectorySearchAllServers = "UpdateActiveDirectorySearchAllServers";
             public readonly string UpdateActiveDirectorySearchWildcardSuffixOnly = "UpdateActiveDirectorySearchWildcardSuffixOnly";
             public readonly string DomainOrganisationalUnits = "DomainOrganisationalUnits";
             public readonly string SearchSubjects = "SearchSubjects";
@@ -178,7 +178,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string DeleteOrganisationAddress = "DeleteOrganisationAddress";
             public const string UpdateMultiSiteMode = "UpdateMultiSiteMode";
             public const string UpdateActiveDirectorySearchScope = "UpdateActiveDirectorySearchScope";
-            public const string UpdateActiveDirectorySearchAllForestServers = "UpdateActiveDirectorySearchAllForestServers";
+            public const string UpdateActiveDirectorySearchAllServers = "UpdateActiveDirectorySearchAllServers";
             public const string UpdateActiveDirectorySearchWildcardSuffixOnly = "UpdateActiveDirectorySearchWildcardSuffixOnly";
             public const string DomainOrganisationalUnits = "DomainOrganisationalUnits";
             public const string SearchSubjects = "SearchSubjects";
@@ -247,13 +247,13 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string Containers = "Containers";
             public readonly string redirect = "redirect";
         }
-        static readonly ActionParamsClass_UpdateActiveDirectorySearchAllForestServers s_params_UpdateActiveDirectorySearchAllForestServers = new ActionParamsClass_UpdateActiveDirectorySearchAllForestServers();
+        static readonly ActionParamsClass_UpdateActiveDirectorySearchAllServers s_params_UpdateActiveDirectorySearchAllServers = new ActionParamsClass_UpdateActiveDirectorySearchAllServers();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_UpdateActiveDirectorySearchAllForestServers UpdateActiveDirectorySearchAllForestServersParams { get { return s_params_UpdateActiveDirectorySearchAllForestServers; } }
+        public ActionParamsClass_UpdateActiveDirectorySearchAllServers UpdateActiveDirectorySearchAllServersParams { get { return s_params_UpdateActiveDirectorySearchAllServers; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_UpdateActiveDirectorySearchAllForestServers
+        public class ActionParamsClass_UpdateActiveDirectorySearchAllServers
         {
-            public readonly string SearchAllForestServers = "SearchAllForestServers";
+            public readonly string SearchAllServers = "SearchAllServers";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateActiveDirectorySearchWildcardSuffixOnly s_params_UpdateActiveDirectorySearchWildcardSuffixOnly = new ActionParamsClass_UpdateActiveDirectorySearchWildcardSuffixOnly();
@@ -467,15 +467,15 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdateActiveDirectorySearchAllForestServersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool SearchAllForestServers, bool redirect);
+        partial void UpdateActiveDirectorySearchAllServersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool SearchAllServers, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateActiveDirectorySearchAllForestServers(bool SearchAllForestServers, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateActiveDirectorySearchAllServers(bool SearchAllServers, bool redirect)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateActiveDirectorySearchAllForestServers);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "SearchAllForestServers", SearchAllForestServers);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateActiveDirectorySearchAllServers);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "SearchAllServers", SearchAllServers);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateActiveDirectorySearchAllForestServersOverride(callInfo, SearchAllForestServers, redirect);
+            UpdateActiveDirectorySearchAllServersOverride(callInfo, SearchAllServers, redirect);
             return callInfo;
         }
 

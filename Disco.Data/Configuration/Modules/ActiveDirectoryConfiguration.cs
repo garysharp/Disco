@@ -1,5 +1,7 @@
 ﻿using Disco.Data.Repository;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Disco.Data.Configuration.Modules
 {
@@ -24,9 +26,33 @@ namespace Disco.Data.Configuration.Modules
             }
         }
 
+        [Obsolete("User SearchAllServers instead"), EditorBrowsable(EditorBrowsableState.Never)]
         public bool? SearchAllForestServers
         {
             get { return Get<bool?>(null); }
+            set { Set(value); }
+        }
+
+        public bool? SearchAllServers
+        {
+            get { 
+                var value = Get<bool?>(null);
+
+                /// migrate <see cref="SearchAllForestServers"/>
+#pragma warning disable CS0618 // Type or member is obsolete
+                if (value == null)
+                {
+                    value = SearchAllForestServers;
+                    if (value != null)
+                    {
+                        SearchAllForestServers = null;
+                        SearchAllServers = value;
+                    }
+                }
+#pragma warning restore CS0618 // Type or member is obsolete
+
+                return value;
+            }
             set { Set(value); }
         }
 

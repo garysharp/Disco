@@ -76,8 +76,8 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
 
         #region Active Directory
 
-        [Display(Name="Search All Forest Servers")]
-        public bool ADSearchAllForestServers { get; set; }
+        [Display(Name="Search All Servers")]
+        public bool ADSearchAllServers { get; set; }
 
         public List<ADDomain> ADDomains { get; set; }
         public ADDomain ADPrimaryDomain { get; set; }
@@ -86,7 +86,7 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
         public List<Tuple<string, ADDomain, string>> ADSearchContainers { get; set; }
         [Display(Name = "Search With Suffix Wildcard Only")]
         public bool ADSearchWildcardSuffixOnly { get; set; }
-        public List<string> ADForestServers { get; set; }
+        public List<string> ADAllServers { get; set; }
 
         #endregion
 
@@ -136,17 +136,17 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
                 return Tuple.Create(c, domain, domain.FriendlyDistinguishedNamePath(c));
             }).ToList();
 
-            var loadForestServersTask = ADDiscoverForestServers.LoadForestServersAsync();
-            if (loadForestServersTask.Wait(TimeSpan.FromSeconds(1)))
+            var loadAllServersTask = ADDiscoverServers.LoadAllServersAsync();
+            if (loadAllServersTask.Wait(TimeSpan.FromSeconds(1)))
             {
-                m.ADForestServers = loadForestServersTask.Result;
-                var configValue = config.ActiveDirectory.SearchAllForestServers ?? true;
-                m.ADSearchAllForestServers = configValue && m.ADForestServers.Count <= ActiveDirectory.MaxForestServerSearch;
+                m.ADAllServers = loadAllServersTask.Result;
+                var configValue = config.ActiveDirectory.SearchAllServers ?? true;
+                m.ADSearchAllServers = configValue && m.ADAllServers.Count <= ActiveDirectory.MaxAllServerSearch;
             }
             else
             {
-                m.ADForestServers = null;
-                m.ADSearchAllForestServers = config.ActiveDirectory.SearchAllForestServers ?? true;
+                m.ADAllServers = null;
+                m.ADSearchAllServers = config.ActiveDirectory.SearchAllServers ?? true;
             }
 
             return m;

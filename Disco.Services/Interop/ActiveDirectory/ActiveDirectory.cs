@@ -11,7 +11,7 @@ namespace Disco.Services.Interop.ActiveDirectory
     {
         public const int SingleSearchResult = 1;
         public const int DefaultSearchResultLimit = 30;
-        public const int MaxForestServerSearch = 30;
+        public const int MaxAllServerSearch = 30;
         public const int DomainControllerUnavailableMinutes = 10;
 
         private static ActiveDirectoryContext context;

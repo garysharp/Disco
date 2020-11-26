@@ -1,4 +1,5 @@
 ﻿using Disco.Data.Repository;
+using Disco.Services.Logging;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.ActiveDirectory;
@@ -15,24 +16,24 @@ namespace Disco.Services.Interop.ActiveDirectory
         public List<ADDomain> Domains { get; private set; }
         public ActiveDirectoryManagedGroups ManagedGroups { get; private set; }
 
-        public List<string> ForestServers
+        public List<string> AllServers
         {
             get
             {
-                return ADDiscoverForestServers.LoadForestServersBlocking();
+                return ADDiscoverServers.LoadAllServersSync();
             }
         }
 
-        private bool _SearchAllForestServers { get; set; }
-        public bool SearchAllForestServers
+        private bool searchAllServers { get; set; }
+        public bool SearchAllServers
         {
             get
             {
-                var fs = ADDiscoverForestServers.ForestServers;
-                if (fs != null && fs.Count > ActiveDirectory.MaxForestServerSearch)
+                var fs = ADDiscoverServers.AllServers;
+                if (fs != null && fs.Count > ActiveDirectory.MaxAllServerSearch)
                     return false; // Never
 
-                return _SearchAllForestServers;
+                return searchAllServers;
             }
         }
 
@@ -50,8 +51,8 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         private void Initialize(DiscoDataContext Database)
         {
-            // Search Entire Forest (default: true)
-            _SearchAllForestServers = Database.DiscoConfiguration.ActiveDirectory.SearchAllForestServers ?? true;
+            // Search Entire Directory (default: true)
+            searchAllServers = Database.DiscoConfiguration.ActiveDirectory.SearchAllServers ?? true;
 
             // Set Search LDAP Filters
             InitializeWildcardSearchSufixOnly(Database.DiscoConfiguration.ActiveDirectory.SearchWildcardSuffixOnly);
@@ -62,11 +63,52 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             // Determine Domains
             var computerDomain = Domain.GetComputerDomain();
-            Domains = computerDomain.Forest.Domains
+            var domains = computerDomain.Forest.Domains
                 .Cast<Domain>()
                 .Select(d => new ADDomain(this, d))
                 .ToList();
-            PrimaryDomain = Domains.Where(d => d.Name == computerDomain.Name).First();
+
+            // Try adding forest trust relationships
+            try
+            {
+                var trustRelationships = computerDomain.Forest.GetAllTrustRelationships();
+
+                foreach (TrustRelationshipInformation trustRelationship in trustRelationships)
+                {
+                    var sourceDomain = trustRelationship.SourceName;
+                    if (!domains.Any(d => string.Equals(d.Name, sourceDomain, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        try
+                        {
+                            var domain = Domain.GetDomain(new DirectoryContext(DirectoryContextType.Domain, sourceDomain));
+                            domains.Add(new ADDomain(this, domain));
+                        }
+                        catch (Exception ex)
+                        {
+                            SystemLog.LogException($"ActiveDirectory Initialize Trust Domain: [{sourceDomain}]", ex);
+                        }
+                    }
+                    var targetDomain = trustRelationship.TargetName;
+                    if (!domains.Any(d => string.Equals(d.Name, targetDomain, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        try
+                        {
+                            var domain = Domain.GetDomain(new DirectoryContext(DirectoryContextType.Domain, targetDomain));
+                            domains.Add(new ADDomain(this, domain));
+                        }
+                        catch (Exception ex)
+                        {
+                            SystemLog.LogException($"ActiveDirectory Initialize Trust Domain: [{targetDomain}]", ex);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SystemLog.LogException("ActiveDirectory Initialize Trust Domains", ex);
+            }
+            PrimaryDomain = domains.Where(d => d.Name == computerDomain.Name).First();
+            Domains = domains;
 
             // Determine Search Scope Containers
             ReinitializeSearchContainers(Database.DiscoConfiguration.ActiveDirectory.SearchContainers);
@@ -180,7 +222,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         #region Searching
 
-        public IEnumerable<ADSearchResult> SearchEntireForest(string LdapFilter, string[] LoadProperties, int? ResultLimit = null)
+        public IEnumerable<ADSearchResult> SearchEntireDirectory(string LdapFilter, string[] LoadProperties, int? ResultLimit = null)
         {
             var queries = Domains.Select(d => Tuple.Create(d, d.DistinguishedName));
 
@@ -249,27 +291,27 @@ namespace Disco.Services.Interop.ActiveDirectory
             }
         }
 
-        public bool UpdateSearchAllForestServers(DiscoDataContext Database, bool SearchAllForestServers)
+        public bool UpdateSearchAllServers(DiscoDataContext Database, bool SearchAllServers)
         {
-            if (SearchAllForestServers == false)
+            if (SearchAllServers == false)
             {
-                Database.DiscoConfiguration.ActiveDirectory.SearchAllForestServers = false;
-                _SearchAllForestServers = false;
+                Database.DiscoConfiguration.ActiveDirectory.SearchAllServers = false;
+                searchAllServers = false;
                 return true;
             }
             else
             {
-                var forestServers = ADDiscoverForestServers.LoadForestServersBlocking();
-                if (forestServers.Count <= ActiveDirectory.MaxForestServerSearch)
+                var allServers = ADDiscoverServers.LoadAllServersSync();
+                if (allServers.Count <= ActiveDirectory.MaxAllServerSearch)
                 {
-                    Database.DiscoConfiguration.ActiveDirectory.SearchAllForestServers = true;
-                    _SearchAllForestServers = true;
+                    Database.DiscoConfiguration.ActiveDirectory.SearchAllServers = true;
+                    searchAllServers = true;
                     return true;
                 }
                 else
                 {
-                    Database.DiscoConfiguration.ActiveDirectory.SearchAllForestServers = false;
-                    _SearchAllForestServers = false;
+                    Database.DiscoConfiguration.ActiveDirectory.SearchAllServers = false;
+                    searchAllServers = false;
                     return false;
                 }
             }

@@ -845,7 +845,7 @@ WriteLiteral("                </div>\r\n            </td>\r\n        </tr>\r\n  
 
 WriteLiteral(" style=\"width: 135px\"");
 
-WriteLiteral(">\r\n                Forest:\r\n            </th>\r\n            <td>\r\n");
+WriteLiteral(">\r\n                Directory:\r\n            </th>\r\n            <td>\r\n");
 
             
             #line 247 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
@@ -855,7 +855,7 @@ WriteLiteral(">\r\n                Forest:\r\n            </th>\r\n            <
             #line hidden
             
             #line 247 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                 if (Model.ADForestServers == null)
+                 if (Model.ADAllServers == null)
                 {
 
             
@@ -867,7 +867,7 @@ WriteLiteral("                        ");
 
             
             #line 250 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                   Write(Html.CheckBoxFor(m => m.ADSearchAllForestServers, new { disabled = "disabled" }));
+                   Write(Html.CheckBoxFor(m => m.ADSearchAllServers, new { disabled = "disabled" }));
 
             
             #line default
@@ -876,7 +876,7 @@ WriteLiteral(" ");
 
             
             #line 250 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                                                                     Write(Html.LabelFor(m => m.ADSearchAllForestServers));
+                                                                                               Write(Html.LabelFor(m => m.ADSearchAllServers));
 
             
             #line default
@@ -895,9 +895,9 @@ WriteLiteral(">\r\n                            <i");
 
 WriteLiteral(" class=\"fa fa-info-circle\"");
 
-WriteLiteral("></i>Forest servers are currently being retrieved.<br />\r\n                       " +
-"     Try refreshing this page in a moment.\r\n                        </p>\r\n      " +
-"              </div>\r\n");
+WriteLiteral("></i>Directory servers are currently being retrieved.<br />\r\n                    " +
+"        Try refreshing this page in a moment.\r\n                        </p>\r\n   " +
+"                 </div>\r\n");
 
             
             #line 258 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
@@ -906,7 +906,7 @@ WriteLiteral("></i>Forest servers are currently being retrieved.<br />\r\n      
                 {
                     if (canConfigAD)
                     {
-                        var canSearchEntireForest = (Model.ADForestServers.Count <= Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxForestServerSearch);
+                        var canSearchEntireDirectory = (Model.ADAllServers.Count <= Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxAllServerSearch);
 
             
             #line default
@@ -921,7 +921,7 @@ WriteLiteral("                        <div>\r\n");
             #line hidden
             
             #line 265 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                             if (!canSearchEntireForest)
+                             if (!canSearchEntireDirectory)
                             {
                                 
             
@@ -929,27 +929,27 @@ WriteLiteral("                        <div>\r\n");
             #line hidden
             
             #line 267 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                           Write(Html.CheckBoxFor(m => m.ADSearchAllForestServers, new { disabled = "disabled" }));
+                           Write(Html.CheckBoxFor(m => m.ADSearchAllServers, new { disabled = "disabled" }));
 
             
             #line default
             #line hidden
             
             #line 267 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                                                                                  
+                                                                                                            
             
             #line default
             #line hidden
             
             #line 267 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                                                                             Write(Html.LabelFor(m => m.ADSearchAllForestServers));
+                                                                                                       Write(Html.LabelFor(m => m.ADSearchAllServers));
 
             
             #line default
             #line hidden
             
             #line 267 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                                                                                                                                 
+                                                                                                                                                     
 
             
             #line default
@@ -966,11 +966,11 @@ WriteLiteral(">\r\n                                        <i");
 
 WriteLiteral(" class=\"fa fa-exclamation-circle warning\"");
 
-WriteLiteral("></i>Disco will not search entire forests which consist of more than ");
+WriteLiteral("></i>Disco will not search the entire directory which consists of more than ");
 
             
             #line 270 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                                                                                                                    Write(Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxForestServerSearch);
+                                                                                                                                                           Write(Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxAllServerSearch);
 
             
             #line default
@@ -989,40 +989,40 @@ WriteLiteral(" servers. Only servers within this site will be searched.\r\n     
             #line hidden
             
             #line 276 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                           Write(Html.CheckBoxFor(m => m.ADSearchAllForestServers));
+                           Write(Html.CheckBoxFor(m => m.ADSearchAllServers));
 
             
             #line default
             #line hidden
             
             #line 276 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                                                   
+                                                                             
             
             #line default
             #line hidden
             
             #line 276 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                                              Write(Html.LabelFor(m => m.ADSearchAllForestServers));
+                                                                        Write(Html.LabelFor(m => m.ADSearchAllServers));
 
             
             #line default
             #line hidden
             
             #line 276 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                                                                                                   
+                                                                                                                       
             
             #line default
             #line hidden
             
             #line 276 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                                                                                              Write(AjaxHelpers.AjaxLoader());
+                                                                                                                  Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
             #line 276 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                                                                                                                            
+                                                                                                                                                
 
             
             #line default
@@ -1039,23 +1039,23 @@ WriteLiteral(">\r\n                                        <i");
 
 WriteLiteral(" class=\"fa fa-info-circle\"");
 
-WriteLiteral("></i>If this setting is enabled, Disco will query all servers within the forest r" +
-"ather than only servers within this site.\r\n                                    <" +
-"/p>\r\n                                </div>\r\n");
+WriteLiteral("></i>If this setting is enabled, Disco will query all servers within the director" +
+"y rather than only servers within this site.\r\n                                  " +
+"  </p>\r\n                                </div>\r\n");
 
 WriteLiteral("                                <script>\r\n                                    $(f" +
 "unction () {\r\n                                        document.DiscoFunctions.Pr" +
-"opertyChangeHelper($(\'#ADSearchAllForestServers\'), null, \'");
+"opertyChangeHelper($(\'#ADSearchAllServers\'), null, \'");
 
             
             #line 284 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                                                                                        Write(Url.Action(MVC.API.System.UpdateActiveDirectorySearchAllForestServers()));
+                                                                                                                  Write(Url.Action(MVC.API.System.UpdateActiveDirectorySearchAllServers()));
 
             
             #line default
             #line hidden
-WriteLiteral("\', \'SearchAllForestServers\');\r\n                                    });\r\n         " +
-"                       </script>\r\n");
+WriteLiteral("\', \'SearchAllServers\');\r\n                                    });\r\n               " +
+"                 </script>\r\n");
 
             
             #line 287 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
@@ -1081,7 +1081,7 @@ WriteLiteral("                            ");
 
             
             #line 293 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                       Write(Html.CheckBoxFor(m => m.ADSearchAllForestServers, new { disabled = "disabled" }));
+                       Write(Html.CheckBoxFor(m => m.ADSearchAllServers, new { disabled = "disabled" }));
 
             
             #line default
@@ -1090,7 +1090,7 @@ WriteLiteral(" ");
 
             
             #line 293 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                                                                         Write(Html.LabelFor(m => m.ADSearchAllForestServers));
+                                                                                                   Write(Html.LabelFor(m => m.ADSearchAllServers));
 
             
             #line default
@@ -1107,9 +1107,9 @@ WriteLiteral(">\r\n                                    <i");
 
 WriteLiteral(" class=\"fa fa-info-circle\"");
 
-WriteLiteral("></i>If this setting is enabled, Disco will query all servers within the forest r" +
-"ather than only servers within this site.\r\n                                </p>\r" +
-"\n                            </div>\r\n                        </div>\r\n");
+WriteLiteral("></i>If this setting is enabled, Disco will query all servers within the director" +
+"y rather than only servers within this site.\r\n                                </" +
+"p>\r\n                            </div>\r\n                        </div>\r\n");
 
             
             #line 300 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
@@ -1121,7 +1121,7 @@ WriteLiteral("></i>If this setting is enabled, Disco will query all servers with
 WriteLiteral("                    <div>\r\n                        <hr />\r\n                      " +
 "  <span>All Servers:</span>\r\n                        <ul");
 
-WriteLiteral(" id=\"Config_System_AD_ForestServers\"");
+WriteLiteral(" id=\"Config_System_AD_AllServers\"");
 
 WriteLiteral(" class=\"none\"");
 
@@ -1137,9 +1137,9 @@ WriteLiteral(">\r\n");
             #line 305 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                               
                                 var domainIndex = Model.ADDomains.ToDictionary(d => d.Name, StringComparer.OrdinalIgnoreCase);
-                                foreach (var server in Model.ADForestServers.OrderBy(s => s))
+                                var siteServers = Model.ADServers.Where(s => s.IsSiteServer).ToDictionary(s => s.Name, StringComparer.OrdinalIgnoreCase);
+                                foreach (var server in Model.ADAllServers.OrderBy(s => s))
                                 {
-                                    var isSiteServer = Model.ADServers.Any(s => s.IsSiteServer && s.Name.Equals(server, StringComparison.OrdinalIgnoreCase));
                                     var serverDescription = server;
                                     if (server.Contains('.'))
                                     {
@@ -1167,7 +1167,7 @@ WriteLiteral("</code>");
 
             
             #line 320 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                                        if (isSiteServer)
+                                                                        if (siteServers.ContainsKey(server))
                                         {
             
             #line default
@@ -1201,7 +1201,7 @@ WriteLiteral(@"
                         <script>
                             $(function () {
                                 var toManyServers = 5;
-                                var ul = $('#Config_System_AD_ForestServers');
+                                var ul = $('#Config_System_AD_AllServers');
                                 var ulLi = ul.find('li');
                                 if (ulLi.length > toManyServers) {
                                     var liMore = $('<li>').append(
@@ -1572,35 +1572,35 @@ WriteLiteral("\', null, function (data) {\r\n                                   
 "         }).fancytree(\'getTree\');\r\n\r\n                                        tre" +
 "e.$container.css(\'position\', \'relative\');\r\n\r\n                                   " +
 "     // Set Buttons\r\n                                        $dialog.dialog(\'opt" +
-"ion\', \'buttons\', {\r\n                                            \'Search Entire F" +
-"orest\': function () {\r\n                                                var $this" +
-" = $(this);\r\n                                                $this.css(\'overflow" +
-"\', \'hidden\');\r\n                                                $this.dialog(\"dis" +
-"able\");\r\n                                                $this.dialog(\"option\", " +
-"\"buttons\", null);\r\n\r\n                                                var $form =" +
-" $dialog.find(\'form\');\r\n                                                $form.su" +
-"bmit();\r\n                                            },\r\n                       " +
-"                     \'Save\': function () {\r\n                                    " +
-"            var $this = $(this);\r\n                                              " +
-"  $this.css(\'overflow\', \'hidden\');\r\n                                            " +
-"    $this.dialog(\"disable\");\r\n                                                $t" +
-"his.dialog(\"option\", \"buttons\", null);\r\n\r\n                                      " +
-"          var nodes = tree.getSelectedNodes();\r\n                                " +
-"                var $form = $dialog.find(\'form\');\r\n                             " +
-"                   $.each(nodes, function (i, node) {\r\n                         " +
-"                           $(\'<input>\').attr({ \'type\': \'hidden\', \'name\': \'Contai" +
-"ners\', \'value\': node.key }).appendTo($form);\r\n                                  " +
-"              });\r\n                                                $form.submit(" +
-");\r\n                                            }\r\n                             " +
-"           });\r\n\r\n                                        // Select & Expand\r\n  " +
-"                                      selectDistinguishedNames();\r\n\r\n           " +
-"                             tree.options.fx = { height: \"toggle\", duration: 200" +
-" };\r\n                                    });\r\n\r\n                                " +
-"}\r\n\r\n                                selectDistinguishedNames();\r\n\r\n            " +
-"                    $dialog.dialog(\'open\');\r\n\r\n                                r" +
-"eturn false;\r\n                            }\r\n\r\n                            $(\'#C" +
-"onfig_System_AD_SearchScope_Update\').click(update);\r\n                        });" +
-"\r\n                    </script>\r\n");
+"ion\', \'buttons\', {\r\n                                            \'Search Entire D" +
+"irectory\': function () {\r\n                                                var $t" +
+"his = $(this);\r\n                                                $this.css(\'overf" +
+"low\', \'hidden\');\r\n                                                $this.dialog(\"" +
+"disable\");\r\n                                                $this.dialog(\"option" +
+"\", \"buttons\", null);\r\n\r\n                                                var $for" +
+"m = $dialog.find(\'form\');\r\n                                                $form" +
+".submit();\r\n                                            },\r\n                    " +
+"                        \'Save\': function () {\r\n                                 " +
+"               var $this = $(this);\r\n                                           " +
+"     $this.css(\'overflow\', \'hidden\');\r\n                                         " +
+"       $this.dialog(\"disable\");\r\n                                               " +
+" $this.dialog(\"option\", \"buttons\", null);\r\n\r\n                                   " +
+"             var nodes = tree.getSelectedNodes();\r\n                             " +
+"                   var $form = $dialog.find(\'form\');\r\n                          " +
+"                      $.each(nodes, function (i, node) {\r\n                      " +
+"                              $(\'<input>\').attr({ \'type\': \'hidden\', \'name\': \'Con" +
+"tainers\', \'value\': node.key }).appendTo($form);\r\n                               " +
+"                 });\r\n                                                $form.subm" +
+"it();\r\n                                            }\r\n                          " +
+"              });\r\n\r\n                                        // Select & Expand\r" +
+"\n                                        selectDistinguishedNames();\r\n\r\n        " +
+"                                tree.options.fx = { height: \"toggle\", duration: " +
+"200 };\r\n                                    });\r\n\r\n                             " +
+"   }\r\n\r\n                                selectDistinguishedNames();\r\n\r\n         " +
+"                       $dialog.dialog(\'open\');\r\n\r\n                              " +
+"  return false;\r\n                            }\r\n\r\n                            $(" +
+"\'#Config_System_AD_SearchScope_Update\').click(update);\r\n                        " +
+"});\r\n                    </script>\r\n");
 
             
             #line 532 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"

@@ -67,7 +67,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 var ldapFilter = string.Format(ldapFilterTemplate, ADHelpers.EscapeLdapQuery(deviceSamAccountName));
                 IEnumerable<ADDomainController> domainControllers;
 
-                if (context.SearchAllForestServers)
+                if (context.SearchAllServers)
                     domainControllers = deviceDomain.GetAllReachableDomainControllers();
                 else
                     domainControllers = deviceDomain.GetReachableSiteDomainControllers();
@@ -122,7 +122,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             // Determine Domain Controllers to Query
             IEnumerable<Tuple<ADDomain, ADDomainController, List<string>>> serverQueries;
-            if (context.SearchAllForestServers)
+            if (context.SearchAllServers)
                 serverQueries = domainQueries.SelectMany(q => q.Item1.GetAllReachableDomainControllers(), (q, dc) => Tuple.Create(q.Item1, dc, q.Item2));
             else
                 serverQueries = domainQueries.SelectMany(q => q.Item1.GetReachableSiteDomainControllers(), (q, dc) => Tuple.Create(q.Item1, dc, q.Item2));

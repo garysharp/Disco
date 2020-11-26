@@ -219,21 +219,21 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.System.ConfigureActiveDirectory)]
-        public virtual ActionResult UpdateActiveDirectorySearchAllForestServers(bool SearchAllForestServers, bool redirect = false)
+        public virtual ActionResult UpdateActiveDirectorySearchAllServers(bool SearchAllServers, bool redirect = false)
         {
             try
             {
-                var result = ActiveDirectory.Context.UpdateSearchAllForestServers(Database, SearchAllForestServers);
+                var result = ActiveDirectory.Context.UpdateSearchAllServers(Database, SearchAllServers);
 
                 Database.SaveChanges();
 
                 if (!result)
                 {
-                    var forestServers = ActiveDirectory.Context.ForestServers;
-                    if (forestServers.Count > ActiveDirectory.MaxForestServerSearch)
-                        throw new InvalidOperationException(string.Format("This forest contains more than the Max Forest Server Search restriction ({0})", ActiveDirectory.MaxForestServerSearch));
+                    var allServers = ActiveDirectory.Context.AllServers;
+                    if (allServers.Count > ActiveDirectory.MaxAllServerSearch)
+                        throw new InvalidOperationException($"This directory contains more than the Max Server Search restriction ({ActiveDirectory.MaxAllServerSearch})");
                     else
-                        throw new InvalidOperationException("Unable to change the 'SearchEntireForest' property for an unknown reason, please report this bug");
+                        throw new InvalidOperationException("Unable to change the 'SearchAllServers' property for an unknown reason, please report this bug");
                 }
 
                 if (redirect)
