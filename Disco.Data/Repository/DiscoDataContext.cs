@@ -34,6 +34,7 @@ namespace Disco.Data.Repository
         public virtual DbSet<DeviceModel> DeviceModels { get; set; }
         public virtual DbSet<DeviceProfile> DeviceProfiles { get; set; }
         public virtual DbSet<DeviceBatch> DeviceBatches { get; set; }
+        public virtual DbSet<DeviceBatchAttachment> DeviceBatchAttachments { get; set; }
         public virtual DbSet<DeviceComponent> DeviceComponents { get; set; }
         public virtual DbSet<DeviceAttachment> DeviceAttachments { get; set; }
 

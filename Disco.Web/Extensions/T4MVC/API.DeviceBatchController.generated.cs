@@ -171,6 +171,42 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AttachmentDownload()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentDownload);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AttachmentThumbnail()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentThumbnail);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AttachmentUpload()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentUpload);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Attachment()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Attachment);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Attachments()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Attachments);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AttachmentRemove()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentRemove);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public DeviceBatchController Actions { get { return MVC.API.DeviceBatch; } }
@@ -207,6 +243,12 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string Delete = "Delete";
             public readonly string Index = "Index";
             public readonly string Timeline = "Timeline";
+            public readonly string AttachmentDownload = "AttachmentDownload";
+            public readonly string AttachmentThumbnail = "AttachmentThumbnail";
+            public readonly string AttachmentUpload = "AttachmentUpload";
+            public readonly string Attachment = "Attachment";
+            public readonly string Attachments = "Attachments";
+            public readonly string AttachmentRemove = "AttachmentRemove";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -232,6 +274,12 @@ namespace Disco.Web.Areas.API.Controllers
             public const string Delete = "Delete";
             public const string Index = "Index";
             public const string Timeline = "Timeline";
+            public const string AttachmentDownload = "AttachmentDownload";
+            public const string AttachmentThumbnail = "AttachmentThumbnail";
+            public const string AttachmentUpload = "AttachmentUpload";
+            public const string Attachment = "Attachment";
+            public const string Attachments = "Attachments";
+            public const string AttachmentRemove = "AttachmentRemove";
         }
 
 
@@ -420,6 +468,55 @@ namespace Disco.Web.Areas.API.Controllers
         public ActionParamsClass_Index IndexParams { get { return s_params_Index; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Index
+        {
+            public readonly string id = "id";
+        }
+        static readonly ActionParamsClass_AttachmentDownload s_params_AttachmentDownload = new ActionParamsClass_AttachmentDownload();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AttachmentDownload AttachmentDownloadParams { get { return s_params_AttachmentDownload; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AttachmentDownload
+        {
+            public readonly string id = "id";
+        }
+        static readonly ActionParamsClass_AttachmentThumbnail s_params_AttachmentThumbnail = new ActionParamsClass_AttachmentThumbnail();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AttachmentThumbnail AttachmentThumbnailParams { get { return s_params_AttachmentThumbnail; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AttachmentThumbnail
+        {
+            public readonly string id = "id";
+        }
+        static readonly ActionParamsClass_AttachmentUpload s_params_AttachmentUpload = new ActionParamsClass_AttachmentUpload();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AttachmentUpload AttachmentUploadParams { get { return s_params_AttachmentUpload; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AttachmentUpload
+        {
+            public readonly string id = "id";
+            public readonly string Comments = "Comments";
+        }
+        static readonly ActionParamsClass_Attachment s_params_Attachment = new ActionParamsClass_Attachment();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Attachment AttachmentParams { get { return s_params_Attachment; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Attachment
+        {
+            public readonly string id = "id";
+        }
+        static readonly ActionParamsClass_Attachments s_params_Attachments = new ActionParamsClass_Attachments();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Attachments AttachmentsParams { get { return s_params_Attachments; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Attachments
+        {
+            public readonly string id = "id";
+        }
+        static readonly ActionParamsClass_AttachmentRemove s_params_AttachmentRemove = new ActionParamsClass_AttachmentRemove();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AttachmentRemove AttachmentRemoveParams { get { return s_params_AttachmentRemove; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AttachmentRemove
         {
             public readonly string id = "id";
         }
@@ -714,6 +811,79 @@ namespace Disco.Web.Areas.API.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Timeline);
             TimelineOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AttachmentDownloadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult AttachmentDownload(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentDownload);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            AttachmentDownloadOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AttachmentThumbnailOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult AttachmentThumbnail(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentThumbnail);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            AttachmentThumbnailOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AttachmentUploadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Comments);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult AttachmentUpload(int id, string Comments)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentUpload);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Comments", Comments);
+            AttachmentUploadOverride(callInfo, id, Comments);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AttachmentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Attachment(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Attachment);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            AttachmentOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AttachmentsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Attachments(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Attachments);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            AttachmentsOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AttachmentRemoveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult AttachmentRemove(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentRemove);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            AttachmentRemoveOverride(callInfo, id);
             return callInfo;
         }
 

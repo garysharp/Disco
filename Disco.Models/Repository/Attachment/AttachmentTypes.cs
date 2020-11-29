@@ -4,6 +4,7 @@
     {
         Device,
         Job,
-        User
+        User,
+        DeviceBatch,
     }
 }

@@ -78,6 +78,11 @@
             registerHubProxies(proxies, false);
         });
 
+        proxies['deviceBatchUpdates'] = this.createHubProxy('deviceBatchUpdates');
+        proxies['deviceBatchUpdates'].client = {};
+        proxies['deviceBatchUpdates'].server = {
+        };
+
         proxies['deviceUpdates'] = this.createHubProxy('deviceUpdates'); 
         proxies['deviceUpdates'].client = { };
         proxies['deviceUpdates'].server = {

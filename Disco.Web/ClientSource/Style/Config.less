@@ -1146,6 +1146,127 @@ h1.Config_DocumentTemplates {
         width: 570px;
         height: 200px;
     }
+
+    #DeviceBatch_Attachments {
+        border: 1px solid @SubtleBorderColour;
+        background-color: @white;
+
+        div.attachmentOutput {
+            position: relative;
+            height: 200px;
+            overflow: auto;
+
+            & > a {
+                display: block;
+                float: left;
+                height: 48px;
+                width: 221px;
+                padding: 2px;
+                margin: 2px;
+                font-size: 0.95em;
+                border: 1px solid @white;
+                color: @black;
+                text-decoration: none;
+
+                span.comments, span.author, span.timestamp {
+                    display: block;
+                    float: left;
+                    width: 168px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    height: 16px;
+                }
+
+                span.author {
+                    color: #888;
+                    width: 150px;
+                }
+
+                span.timestamp {
+                    color: #888;
+                    font-style: italic;
+                }
+
+                span.icon {
+                    display: block;
+                    float: left;
+                    height: 48px;
+                    width: 48px;
+                    margin-right: 2px;
+
+                    img {
+                        height: 48px;
+                        width: 48px;
+
+                        &.loading {
+                            display: none;
+                        }
+                    }
+                }
+
+                &:hover {
+                    background-color: @SubtleColour;
+                    border: 1px solid @SubtleBorderColour;
+
+                    span.remove {
+                        opacity: .5;
+                    }
+                }
+
+                span.remove {
+                    font-size: 1.2em;
+                    color: @StatusRemove;
+                    margin-left: 2px;
+                    cursor: pointer;
+                    opacity: 0;
+
+                    &:hover {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+
+        &.cannotAddAttachments div.attachmentOutput {
+            height: 250px;
+        }
+
+        div.attachmentInput {
+            border-top: 1px solid @SubtleBorderColour;
+            height: 40px;
+            background-color: @white;
+            padding: 5px;
+
+            span.action {
+                color: @HeaderBackgroundColour;
+                display: block;
+                margin: 0 4px 0 0;
+                font-size: 1.5em;
+                cursor: pointer;
+                float: right;
+                border: 1px solid @white;
+                padding: .5em;
+
+                &:hover {
+                    color: @HyperLinkColour;
+                    background-color: @SubtleColour;
+                    border: 1px solid @SubtleBorderColour;
+                }
+
+                &.disabled {
+                    color: fade(@HeaderBackgroundColour, 20%);
+                    cursor: default;
+
+                    &:hover {
+                        color: fade(@HeaderBackgroundColour, 20%);
+                        background-color: inherit;
+                        border: 1px solid @white;
+                    }
+                }
+            }
+        }
+    }
 }
 // Plugins
 #plugins {

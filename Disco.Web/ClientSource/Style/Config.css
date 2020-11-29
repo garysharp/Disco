@@ -7,7 +7,7 @@
   background-color: #fff;
 }
 .tableData > tbody > tr:nth-child(odd) > td {
-  background-color: #fbfbfb;
+  background-color: hsl(0, 0%, 98.5%);
 }
 .tableData > thead > tr > th,
 .tableData > tbody > tr > th {
@@ -15,7 +15,7 @@
   border: solid 1px #f4f4f4;
 }
 .tableData > tbody > tr:hover > td {
-  background-color: #f9f9f9;
+  background-color: hsl(0, 0%, 97.5%);
 }
 .tableData > tfoot > tr > th,
 .tableData > tfoot > tr > td {
@@ -157,7 +157,7 @@ table.expressionsTable > tbody > tr > td {
   background-color: #fff;
 }
 table.expressionsTable > tbody > tr:nth-child(odd) > td {
-  background-color: #fbfbfb;
+  background-color: hsl(0, 0%, 98.5%);
 }
 table.expressionsTable > thead > tr > th,
 table.expressionsTable > tbody > tr > th {
@@ -165,7 +165,7 @@ table.expressionsTable > tbody > tr > th {
   border: solid 1px #f4f4f4;
 }
 table.expressionsTable > tbody > tr:hover > td {
-  background-color: #f9f9f9;
+  background-color: hsl(0, 0%, 97.5%);
 }
 table.expressionsTable > tfoot > tr > th,
 table.expressionsTable > tfoot > tr > td {
@@ -186,7 +186,7 @@ table.expressionsTable td.parseError {
   background-color: #fff;
 }
 #deviceComponents > tbody > tr:nth-child(odd) > td {
-  background-color: #fbfbfb;
+  background-color: hsl(0, 0%, 98.5%);
 }
 #deviceComponents > thead > tr > th,
 #deviceComponents > tbody > tr > th {
@@ -194,7 +194,7 @@ table.expressionsTable td.parseError {
   border: solid 1px #f4f4f4;
 }
 #deviceComponents > tbody > tr:hover > td {
-  background-color: #f9f9f9;
+  background-color: hsl(0, 0%, 97.5%);
 }
 #deviceComponents > tfoot > tr > th,
 #deviceComponents > tfoot > tr > td {
@@ -213,7 +213,7 @@ table.expressionsTable td.parseError {
   font-size: 1.6em;
   color: #e51400;
   cursor: pointer;
-  opacity: .8;
+  opacity: 0.8;
 }
 #deviceComponents tr i.remove:hover {
   opacity: 1;
@@ -259,7 +259,7 @@ table.expressionsTable td.parseError {
 }
 #organisationAddresses i.fa.delete {
   color: #e51400;
-  opacity: .8;
+  opacity: 0.8;
 }
 #organisationAddresses i.fa.delete:hover {
   opacity: 1;
@@ -472,15 +472,15 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
   border-bottom: 1px dashed #ccc;
 }
 #enrolStatus #sessions .session > h3 span.details {
-  font-size: .8em;
+  font-size: 0.8em;
 }
 #enrolStatus #sessions .session > p.sessionStart {
   color: #888;
-  font-size: .8em;
+  font-size: 0.8em;
   margin-bottom: 2px;
 }
 #enrolStatus #sessions .session > p.sessionStatus {
-  font-size: .9em;
+  font-size: 0.9em;
   height: 1.6em;
   overflow: hidden;
   margin-bottom: 3px;
@@ -665,7 +665,7 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
   margin: 4px 0 0 6px;
 }
 #Config_DocumentTemplates_JobSubTypes_Update_Dialog .checkboxBulkSelectContainer {
-  font-size: .8em;
+  font-size: 0.8em;
 }
 #dialogBulkGenerate .brief {
   margin: 0 0 8px 0;
@@ -750,7 +750,7 @@ h1.Config_DocumentTemplates {
   margin: 4px 0 0 6px;
 }
 #Config_DocumentTemplatePackages_JobSubTypes_Update_Dialog .checkboxBulkSelectContainer {
-  font-size: .8em;
+  font-size: 0.8em;
 }
 #Config_DocumentTemplatePackages_Templates_Dialog h3 {
   margin-bottom: 4px;
@@ -789,7 +789,7 @@ h1.Config_DocumentTemplates {
   font-family: Consolas, "Courier New", monospace;
   color: #888;
   float: right;
-  font-size: .9em;
+  font-size: 0.9em;
 }
 #importStatus #sessions .session {
   padding: 4px;
@@ -810,7 +810,7 @@ h1.Config_DocumentTemplates {
   border-bottom: 1px dashed #ccc;
 }
 #importStatus #sessions .session .sessionLeftPane > h3 span.details {
-  font-size: .8em;
+  font-size: 0.8em;
 }
 #importStatus #sessions .session .sessionRightPane {
   width: 48%;
@@ -819,11 +819,11 @@ h1.Config_DocumentTemplates {
 }
 #importStatus #sessions .session .sessionRightPane > p.sessionStart {
   color: #888;
-  font-size: .8em;
+  font-size: 0.8em;
   margin-bottom: 2px;
 }
 #importStatus #sessions .session .sessionRightPane > p.sessionStatus {
-  font-size: .9em;
+  font-size: 0.9em;
   height: 1.6em;
   overflow: hidden;
   margin-bottom: 3px;
@@ -848,7 +848,7 @@ h1.Config_DocumentTemplates {
   background-color: rgba(255, 255, 255, 0.8);
 }
 #importStatus #sessions .session .sessionPages > .sessionPage > .sessionPageDetails p.sessionStatus {
-  font-size: .9em;
+  font-size: 0.9em;
   height: 1.6em;
   margin-bottom: 3px;
 }
@@ -933,7 +933,7 @@ h1.Config_DocumentTemplates {
   float: left;
   margin: 4px;
   border: 1px solid #f4f4f4;
-  background-color: #fbfbfb;
+  background-color: hsl(0, 0%, 98.5%);
   height: 256px;
   width: 256px;
   background-position: top center;
@@ -987,6 +987,110 @@ h1.Config_DocumentTemplates {
   width: 570px;
   height: 200px;
 }
+.deviceBatches #DeviceBatch_Attachments {
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+.deviceBatches #DeviceBatch_Attachments div.attachmentOutput {
+  position: relative;
+  height: 200px;
+  overflow: auto;
+}
+.deviceBatches #DeviceBatch_Attachments div.attachmentOutput > a {
+  display: block;
+  float: left;
+  height: 48px;
+  width: 221px;
+  padding: 2px;
+  margin: 2px;
+  font-size: 0.95em;
+  border: 1px solid #fff;
+  color: #000;
+  text-decoration: none;
+}
+.deviceBatches #DeviceBatch_Attachments div.attachmentOutput > a span.comments,
+.deviceBatches #DeviceBatch_Attachments div.attachmentOutput > a span.author,
+.deviceBatches #DeviceBatch_Attachments div.attachmentOutput > a span.timestamp {
+  display: block;
+  float: left;
+  width: 168px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  height: 16px;
+}
+.deviceBatches #DeviceBatch_Attachments div.attachmentOutput > a span.author {
+  color: #888;
+  width: 150px;
+}
+.deviceBatches #DeviceBatch_Attachments div.attachmentOutput > a span.timestamp {
+  color: #888;
+  font-style: italic;
+}
+.deviceBatches #DeviceBatch_Attachments div.attachmentOutput > a span.icon {
+  display: block;
+  float: left;
+  height: 48px;
+  width: 48px;
+  margin-right: 2px;
+}
+.deviceBatches #DeviceBatch_Attachments div.attachmentOutput > a span.icon img {
+  height: 48px;
+  width: 48px;
+}
+.deviceBatches #DeviceBatch_Attachments div.attachmentOutput > a span.icon img.loading {
+  display: none;
+}
+.deviceBatches #DeviceBatch_Attachments div.attachmentOutput > a:hover {
+  background-color: #ededed;
+  border: 1px solid #ccc;
+}
+.deviceBatches #DeviceBatch_Attachments div.attachmentOutput > a:hover span.remove {
+  opacity: 0.5;
+}
+.deviceBatches #DeviceBatch_Attachments div.attachmentOutput > a span.remove {
+  font-size: 1.2em;
+  color: #e51400;
+  margin-left: 2px;
+  cursor: pointer;
+  opacity: 0;
+}
+.deviceBatches #DeviceBatch_Attachments div.attachmentOutput > a span.remove:hover {
+  opacity: 1;
+}
+.deviceBatches #DeviceBatch_Attachments.cannotAddAttachments div.attachmentOutput {
+  height: 250px;
+}
+.deviceBatches #DeviceBatch_Attachments div.attachmentInput {
+  border-top: 1px solid #ccc;
+  height: 40px;
+  background-color: #fff;
+  padding: 5px;
+}
+.deviceBatches #DeviceBatch_Attachments div.attachmentInput span.action {
+  color: #333;
+  display: block;
+  margin: 0 4px 0 0;
+  font-size: 1.5em;
+  cursor: pointer;
+  float: right;
+  border: 1px solid #fff;
+  padding: 0.5em;
+}
+.deviceBatches #DeviceBatch_Attachments div.attachmentInput span.action:hover {
+  color: #335A87;
+  background-color: #ededed;
+  border: 1px solid #ccc;
+}
+.deviceBatches #DeviceBatch_Attachments div.attachmentInput span.action.disabled {
+  color: rgba(51, 51, 51, 0.2);
+  cursor: default;
+}
+.deviceBatches #DeviceBatch_Attachments div.attachmentInput span.action.disabled:hover {
+  color: rgba(51, 51, 51, 0.2);
+  background-color: inherit;
+  border: 1px solid #fff;
+}
 #plugins .pageMenuArea a > h3 {
   display: inline;
   color: #335A87;
@@ -998,7 +1102,7 @@ h1.Config_DocumentTemplates {
   padding-left: 18px;
 }
 #plugins .pageMenuArea .pageMenuBlurb i {
-  font-size: .9em;
+  font-size: 0.9em;
 }
 #plugins #pageMenu td .pageMenuArea:not(:last-child) {
   padding-bottom: 5px;
@@ -1013,10 +1117,10 @@ h1.Config_DocumentTemplates {
   color: #335A87;
 }
 #dialogUninstallPlugins #uninstallPlugin {
-  margin: .5em 0;
+  margin: 0.5em 0;
 }
 #dialogUninstallPlugins #uninstallPluginData {
-  margin: .5em 0;
+  margin: 0.5em 0;
 }
 #dialogUninstallPluginConfirm #uninstallPluginConfirm {
   text-align: center;
@@ -1050,13 +1154,13 @@ h1.Config_DocumentTemplates {
   margin: 0;
 }
 #pluginLibrary .pluginItem .pageMenuBlurb i {
-  font-size: .9em;
+  font-size: 0.9em;
 }
 #pluginLibrary .pluginItem > h2:first-child {
   min-height: 22px;
 }
 #pluginLibrary .pluginItem > h2:first-child i {
-  font-size: .9em;
+  font-size: 0.9em;
   padding-right: 4px;
   color: #333;
 }
@@ -1138,7 +1242,7 @@ h1.Config_DocumentTemplates {
   background-color: #f4f4f4;
 }
 #Config_AuthRoles_Subjects_Update_Dialog #Config_AuthRoles_Subjects_Update_Dialog_List li:hover .remove {
-  opacity: .8;
+  opacity: 0.8;
 }
 #Config_AuthRoles_Subjects_Update_Dialog #Config_AuthRoles_Subjects_Update_Dialog_List li .remove {
   margin-top: 2px;
@@ -1334,7 +1438,7 @@ h1.Config_DocumentTemplates {
   margin-right: 14px;
 }
 #Config_ReportPrefs_Builder_Buttonpane {
-  padding-right: .3em;
+  padding-right: 0.3em;
 }
 #Config_ReportPrefs_Builder_Buttonpane textarea {
   float: left;
@@ -1348,7 +1452,7 @@ h1.Config_DocumentTemplates {
 #Config_ReportPrefs_Builder_Buttonpane i {
   float: right;
   cursor: pointer;
-  margin: .3em .2em 0 0;
+  margin: 0.3em 0.2em 0 0;
   color: #335A87;
 }
 #Config_ReportPrefs_Builder_Buttonpane i:hover {
@@ -1393,7 +1497,7 @@ h1.Config_DocumentTemplates {
   background-color: #f4f4f4;
 }
 #Config_Location_List_Dialog #Config_Location_List_Dialog_List li:hover .remove {
-  opacity: .8;
+  opacity: 0.8;
 }
 #Config_Location_List_Dialog #Config_Location_List_Dialog_List li .remove {
   margin-top: 2px;
@@ -1429,7 +1533,7 @@ h1.Config_DocumentTemplates {
   font-family: Consolas, "Courier New", monospace;
 }
 #Config_JobQueues_Index i {
-  width: 1.2857142857142858em;
+  width: 1.28571429em;
   text-align: center;
 }
 #Config_JobQueues_Icon {
@@ -1446,7 +1550,7 @@ h1.Config_DocumentTemplates {
 #Config_JobQueues_Icon_Update_Dialog div.colours i {
   cursor: pointer;
   padding: 1px;
-  opacity: .9;
+  opacity: 0.9;
 }
 #Config_JobQueues_Icon_Update_Dialog div.colours i:hover {
   opacity: 1;
@@ -1462,15 +1566,15 @@ h1.Config_DocumentTemplates {
   margin: 6px 0 14px 0;
 }
 #Config_JobQueues_Icon_Update_Dialog div.icons i {
-  width: 1.2857142857142858em;
+  width: 1.28571429em;
   text-align: center;
   cursor: pointer;
   padding: 4px 0px;
   color: #333;
-  opacity: .6;
+  opacity: 0.6;
 }
 #Config_JobQueues_Icon_Update_Dialog div.icons i:hover {
-  opacity: .9;
+  opacity: 0.9;
   color: inherit;
 }
 #Config_JobQueues_Icon_Update_Dialog div.icons i.selected {
@@ -1493,7 +1597,7 @@ h1.Config_DocumentTemplates {
   margin: 4px 0 0 6px;
 }
 #Config_JobQueues_JobSubTypes_Update_Dialog .checkboxBulkSelectContainer {
-  font-size: .8em;
+  font-size: 0.8em;
 }
 #Config_JobQueues_Subjects li,
 #Config_JobQueues_Subjects_Update_Dialog_List li {
@@ -1503,7 +1607,7 @@ h1.Config_DocumentTemplates {
 #Config_JobQueues_Subjects_Update_Dialog_List li i.fa-user,
 #Config_JobQueues_Subjects li i.fa-users,
 #Config_JobQueues_Subjects_Update_Dialog_List li i.fa-users {
-  width: 1.2857142857142858em;
+  width: 1.28571429em;
   text-align: center;
 }
 #Config_JobQueues_Subjects_Update_Dialog {
@@ -1531,7 +1635,7 @@ h1.Config_DocumentTemplates {
   background-color: #f4f4f4;
 }
 #Config_JobQueues_Subjects_Update_Dialog #Config_JobQueues_Subjects_Update_Dialog_List li:hover .remove {
-  opacity: .8;
+  opacity: 0.8;
 }
 #Config_JobQueues_Subjects_Update_Dialog #Config_JobQueues_Subjects_Update_Dialog_List li .remove {
   margin-top: 2px;
@@ -1553,7 +1657,7 @@ h1.Config_DocumentTemplates {
   font-family: Consolas, "Courier New", monospace;
 }
 #Config_UserFlags_Index i {
-  width: 1.2857142857142858em;
+  width: 1.28571429em;
   text-align: center;
 }
 #Config_UserFlags_Icon {
@@ -1570,7 +1674,7 @@ h1.Config_DocumentTemplates {
 #Config_UserFlags_Icon_Update_Dialog div.colours i {
   cursor: pointer;
   padding: 1px;
-  opacity: .9;
+  opacity: 0.9;
 }
 #Config_UserFlags_Icon_Update_Dialog div.colours i:hover {
   opacity: 1;
@@ -1586,15 +1690,15 @@ h1.Config_DocumentTemplates {
   margin: 6px 0 14px 0;
 }
 #Config_UserFlags_Icon_Update_Dialog div.icons i {
-  width: 1.2857142857142858em;
+  width: 1.28571429em;
   text-align: center;
   cursor: pointer;
   padding: 4px 0px;
   color: #333;
-  opacity: .6;
+  opacity: 0.6;
 }
 #Config_UserFlags_Icon_Update_Dialog div.icons i:hover {
-  opacity: .9;
+  opacity: 0.9;
   color: inherit;
 }
 #Config_UserFlags_Icon_Update_Dialog div.icons i.selected {

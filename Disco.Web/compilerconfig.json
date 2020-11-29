@@ -1,107 +1,94 @@
-[
+﻿[
   {
     "outputFile": "ClientSource/Style/Fancytree/disco.fancytree.css",
-    "inputFile": "ClientSource/Style/Fancytree/disco.fancytree.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/Fancytree/disco.fancytree.less"
   },
   {
     "outputFile": "ClientSource/Style/jQueryUI/jquery-ui.css",
-    "inputFile": "ClientSource/Style/jQueryUI/jquery-ui.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/jQueryUI/jquery-ui.less"
   },
   {
     "outputFile": "ClientSource/Style/Public/HeldDevices.css",
-    "inputFile": "ClientSource/Style/Public/HeldDevices.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/Public/HeldDevices.less"
   },
   {
     "outputFile": "ClientSource/Style/Public/HeldDevicesNoticeboard.css",
-    "inputFile": "ClientSource/Style/Public/HeldDevicesNoticeboard.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/Public/HeldDevicesNoticeboard.less"
   },
   {
     "outputFile": "ClientSource/Style/Timeline/disco.timelineextensions.css",
-    "inputFile": "ClientSource/Style/Timeline/disco.timelineextensions.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/Timeline/disco.timelineextensions.less"
   },
   {
     "outputFile": "ClientSource/Style/tinymce/skin.css",
-    "inputFile": "ClientSource/Style/tinymce/skin.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/tinymce/skin.less"
   },
   {
     "outputFile": "ClientSource/Style/tinymce/content.css",
-    "inputFile": "ClientSource/Style/tinymce/content.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/tinymce/content.less"
   },
   {
     "outputFile": "ClientSource/Style/tinymce/content.inline.css",
-    "inputFile": "ClientSource/Style/tinymce/content.inline.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/tinymce/content.inline.less"
   },
   {
     "outputFile": "ClientSource/Style/AppMaintenance.css",
-    "inputFile": "ClientSource/Style/AppMaintenance.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/AppMaintenance.less"
   },
   {
     "outputFile": "ClientSource/Style/BundleSite.css",
-    "inputFile": "ClientSource/Style/BundleSite.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/BundleSite.less"
   },
   {
     "outputFile": "ClientSource/Style/Config.css",
-    "inputFile": "ClientSource/Style/Config.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/Config.less"
   },
   {
     "outputFile": "ClientSource/Style/Credits.css",
-    "inputFile": "ClientSource/Style/Credits.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/Credits.less"
   },
   {
     "outputFile": "ClientSource/Style/Declarations.css",
-    "inputFile": "ClientSource/Style/Declarations.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/Declarations.less"
   },
   {
     "outputFile": "ClientSource/Style/Device.css",
-    "inputFile": "ClientSource/Style/Device.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/Device.less"
   },
   {
     "outputFile": "ClientSource/Style/Dialog.css",
-    "inputFile": "ClientSource/Style/Dialog.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/Dialog.less"
   },
   {
     "outputFile": "ClientSource/Style/Job.css",
-    "inputFile": "ClientSource/Style/Job.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/Job.less"
   },
   {
     "outputFile": "ClientSource/Style/jQueryUIExtensions.css",
-    "inputFile": "ClientSource/Style/jQueryUIExtensions.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/jQueryUIExtensions.less"
   },
   {
     "outputFile": "ClientSource/Style/normalize.css",
-    "inputFile": "ClientSource/Style/normalize.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/normalize.less"
   },
   {
     "outputFile": "ClientSource/Style/Shared.css",
-    "inputFile": "ClientSource/Style/Shared.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/Shared.less"
   },
   {
     "outputFile": "ClientSource/Style/Site.css",
-    "inputFile": "ClientSource/Style/Site.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/Site.less"
   },
   {
     "outputFile": "ClientSource/Style/User.css",
-    "inputFile": "ClientSource/Style/User.less",
-    "sourceMap": false
+    "inputFile": "ClientSource/Style/User.less"
+  },
+  {
+    "outputFile": "ClientSource/Scripts/Modules/jQuery-SignalR/disco-hubs.es5.js",
+    "inputFile": "ClientSource/Scripts/Modules/jQuery-SignalR/disco-hubs.js"
+  },
+  {
+    "outputFile": "ClientSource/Scripts/Modules/jQuery-SignalR.es5.js",
+    "inputFile": "ClientSource/Scripts/Modules/jQuery-SignalR.js"
   }
 ]

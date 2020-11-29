@@ -163,6 +163,10 @@
     <Compile Include="Migrations\201611100557315_DBv19.Designer.cs">
       <DependentUpon>201611100557315_DBv19.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011260525547_DBv20.cs" />
+    <Compile Include="Migrations\202011260525547_DBv20.Designer.cs">
+      <DependentUpon>202011260525547_DBv20.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DiscoDataMigrator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -235,6 +239,9 @@
     <EmbeddedResource Include="Migrations\201611100557315_DBv19.resx">
       <DependentUpon>201611100557315_DBv19.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011260525547_DBv20.resx">
+      <DependentUpon>202011260525547_DBv20.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -246,6 +253,11 @@
     <None Include="Resources\EmptyLogo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -9,39 +9,45 @@ namespace Disco.Services
     public static class AttachmentDataStoreExtensions
     {
 
-        public static string RepositoryFilename(this IAttachment Attachment, DiscoDataContext Database)
+        public static string RepositoryFilename(this IAttachment attachment, DiscoDataContext database)
         {
-            switch (Attachment.AttachmentType)
+            switch (attachment.AttachmentType)
             {
                 case AttachmentTypes.Device:
-                    return Path.Combine(DataStore.CreateLocation(Database, "DeviceAttachments", Attachment.Timestamp),
-                        string.Format("{0}_{1}_file", Attachment.Reference, Attachment.Id));
+                    return Path.Combine(DataStore.CreateLocation(database, "DeviceAttachments", attachment.Timestamp),
+                        $"{attachment.Reference}_{attachment.Id}_file");
+                case AttachmentTypes.DeviceBatch:
+                    return Path.Combine(DataStore.CreateLocation(database, "DeviceBatchAttachments", attachment.Timestamp),
+                        $"{attachment.Reference}_{attachment.Id}_file");
                 case AttachmentTypes.Job:
-                    return Path.Combine(DataStore.CreateLocation(Database, "JobAttachments", Attachment.Timestamp),
-                        string.Format("{0}_{1}_file", Attachment.Reference, Attachment.Id));
+                    return Path.Combine(DataStore.CreateLocation(database, "JobAttachments", attachment.Timestamp),
+                        $"{attachment.Reference}_{attachment.Id}_file");
                 case AttachmentTypes.User:
-                    return Path.Combine(DataStore.CreateLocation(Database, "UserAttachments", Attachment.Timestamp),
-                        string.Format("{0}_{1}_file", ((string)Attachment.Reference).Replace('\\', '_'), Attachment.Id));
+                    return Path.Combine(DataStore.CreateLocation(database, "UserAttachments", attachment.Timestamp),
+                        $"{((string)attachment.Reference).Replace('\\', '_')}_{attachment.Id}_file");
                 default:
-                    throw new ArgumentException("Unknown Attachment Type", nameof(Attachment));
+                    throw new ArgumentException("Unknown Attachment Type", nameof(attachment));
             }
         }
 
-        public static string RepositoryThumbnailFilename(this IAttachment Attachment, DiscoDataContext Database)
+        public static string RepositoryThumbnailFilename(this IAttachment attachment, DiscoDataContext database)
         {
-            switch (Attachment.AttachmentType)
+            switch (attachment.AttachmentType)
             {
                 case AttachmentTypes.Device:
-                    return Path.Combine(DataStore.CreateLocation(Database, "DeviceAttachments", Attachment.Timestamp),
-                        string.Format("{0}_{1}_thumb.jpg", Attachment.Reference, Attachment.Id));
+                    return Path.Combine(DataStore.CreateLocation(database, "DeviceAttachments", attachment.Timestamp),
+                        $"{attachment.Reference}_{attachment.Id}_thumb.jpg");
+                case AttachmentTypes.DeviceBatch:
+                    return Path.Combine(DataStore.CreateLocation(database, "DeviceBatchAttachments", attachment.Timestamp),
+                        $"{attachment.Reference}_{attachment.Id}_thumb.jpg");
                 case AttachmentTypes.Job:
-                    return Path.Combine(DataStore.CreateLocation(Database, "JobAttachments", Attachment.Timestamp),
-                        string.Format("{0}_{1}_thumb.jpg", Attachment.Reference, Attachment.Id));
+                    return Path.Combine(DataStore.CreateLocation(database, "JobAttachments", attachment.Timestamp),
+                        $"{attachment.Reference}_{attachment.Id}_thumb.jpg");
                 case AttachmentTypes.User:
-                    return Path.Combine(DataStore.CreateLocation(Database, "UserAttachments", Attachment.Timestamp),
-                        string.Format("{0}_{1}_thumb.jpg", ((string)Attachment.Reference).Replace('\\', '_'), Attachment.Id));
+                    return Path.Combine(DataStore.CreateLocation(database, "UserAttachments", attachment.Timestamp),
+                        $"{((string)attachment.Reference).Replace('\\', '_')}_{attachment.Id}_thumb.jpg");
                 default:
-                    throw new ArgumentException("Unknown Attachment Type", nameof(Attachment));
+                    throw new ArgumentException("Unknown Attachment Type", nameof(attachment));
             }
         }
 

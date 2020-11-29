@@ -38,6 +38,21 @@ namespace Disco.Services
 
             DocumentTemplateManagedGroups.TriggerDeviceAttachmentDeleted(Database, attachmentId, documentTemplateId, deviceSerialNumber);
         }
+        public static bool CanDelete(this DeviceBatchAttachment attachment)
+        {
+            if (UserService.CurrentAuthorization.Has(Claims.Config.DeviceBatch.Configure))
+                return true;
+
+            return false;
+        }
+        public static void OnDelete(this DeviceBatchAttachment attachment, DiscoDataContext Database)
+        {
+            if (!attachment.CanDelete())
+                throw new InvalidOperationException("Deletion of Attachment is Denied");
+
+            attachment.RepositoryDelete(Database);
+            Database.DeviceBatchAttachments.Remove(attachment);
+        }
         public static bool CanDelete(this JobAttachment ja)
         {
             if (UserService.CurrentAuthorization.Has(Claims.Job.Actions.RemoveAnyAttachments))

@@ -23,6 +23,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -1194,7 +1195,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ClientBin\Disco.ClientBootstrapper.exe" />
+    <Content Include="ClientBin\Disco.ClientBootstrapper.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Areas\Config\Views\AuthorizationRole\Create.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create.generated.cs</LastGenOutput>
@@ -1283,7 +1286,9 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Noticeboard.generated.cs</LastGenOutput>
     </None>
-    <Content Include="ClientBin\DiscoServices.InitialPluginLibraryManifest.json" />
+    <Content Include="ClientBin\DiscoServices.InitialPluginLibraryManifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="bundleconfig.json" />
     <None Include="ClientSource\Scripts\Core\disco.dataTables.extensions.js" />
     <None Include="ClientSource\Scripts\Core\disco.moment.extensions.js" />
@@ -1306,19 +1311,23 @@
     <None Include="ClientSource\Scripts\Core.js" />
     <Content Include="ClientSource\Scripts\Core.min.js">
       <DependentUpon>Core.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.js" />
     <Content Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.min.js">
       <DependentUpon>Disco-AjaxHelperIcons.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader.js" />
     <Content Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader.min.js">
       <DependentUpon>Disco-AttachmentUploader.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader\webcam.swf" />
     <None Include="ClientSource\Scripts\Modules\Disco-CreateJob.js" />
     <Content Include="ClientSource\Scripts\Modules\Disco-CreateJob.min.js">
       <DependentUpon>Disco-CreateJob.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader\disco-attachmentuploader.js" />
     <None Include="ClientSource\Scripts\Modules\jQuery-Fancytree\jquery.fancytree-all.js" />
@@ -1355,68 +1364,87 @@
     <None Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\img\loader.gif" />
     <None Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\img\object.gif" />
     <None Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\img\trans.gif" />
+    <None Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.js" />
     <None Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.js" />
     <Content Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.min.js">
       <DependentUpon>Disco-DataTableHelpers.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.js" />
     <Content Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.min.js">
       <DependentUpon>Disco-ExpressionEditor.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions.js" />
     <Content Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions.min.js">
       <DependentUpon>Disco-jQueryExtensions.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers.js" />
     <Content Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers.min.js">
       <DependentUpon>Disco-PropertyChangeHelpers.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Highcharts.js" />
     <Content Include="ClientSource\Scripts\Modules\Highcharts.min.js">
       <DependentUpon>Highcharts.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\jQuery-Fancytree.js" />
     <Content Include="ClientSource\Scripts\Modules\jQuery-Fancytree.min.js">
       <DependentUpon>jQuery-Fancytree.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\jQuery-Isotope.js" />
     <Content Include="ClientSource\Scripts\Modules\jQuery-Isotope.min.js">
       <DependentUpon>jQuery-Isotope.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.js" />
     <Content Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.min.js">
       <DependentUpon>jQuery-NumberFormatter.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\jQuery-SignalR.js" />
     <Content Include="ClientSource\Scripts\Modules\jQuery-SignalR.min.js">
       <DependentUpon>jQuery-SignalR.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.js" />
     <Content Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.min.js">
       <DependentUpon>jQueryUI-DynaTree.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker.js" />
     <Content Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker.min.js">
       <DependentUpon>jQueryUI-TimePicker.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Knockout.js" />
     <Content Include="ClientSource\Scripts\Modules\Knockout.min.js">
       <DependentUpon>Knockout.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Shadowbox.js" />
     <Content Include="ClientSource\Scripts\Modules\Shadowbox.min.js">
       <DependentUpon>Shadowbox.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Timeline.js" />
     <Content Include="ClientSource\Scripts\Modules\Timeline.min.js">
       <DependentUpon>Timeline.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\tinymce.js" />
     <Content Include="ClientSource\Scripts\Modules\tinymce.min.js">
       <DependentUpon>tinymce.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ClientSource\Style\Shadowbox.min.css" />
-    <Content Include="ClientSource\Style\Timeline.min.css" />
+    <Content Include="ClientSource\Style\Shadowbox.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ClientSource\Style\Timeline.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ClientSource\Style\tinymce\content.inline.min.css">
       <DependentUpon>content.inline.less</DependentUpon>
     </Content>
@@ -1435,18 +1463,22 @@
     </None>
     <Content Include="ClientSource\Style\AppMaintenance.min.css">
       <DependentUpon>AppMaintenance.less</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ClientSource\Style\BundleSite.min.css">
       <DependentUpon>BundleSite.less</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ClientSource\Style\Config.min.css">
       <DependentUpon>Config.less</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Style\Credits.css">
       <DependentUpon>Credits.less</DependentUpon>
     </None>
     <Content Include="ClientSource\Style\Credits.min.css">
       <DependentUpon>Credits.less</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Style\Credits\CrystalIcons.png" />
     <None Include="ClientSource\Style\Credits\dotless.png" />
@@ -1474,6 +1506,7 @@
     </None>
     <Content Include="ClientSource\Style\Declarations.min.css">
       <DependentUpon>Declarations.less</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Style\Dialog.css">
       <DependentUpon>Dialog.less</DependentUpon>
@@ -1483,9 +1516,11 @@
     </None>
     <Content Include="ClientSource\Style\Device.min.css">
       <DependentUpon>Device.less</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ClientSource\Style\Dialog.min.css">
       <DependentUpon>Dialog.less</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Style\ExpressionEditor.css" />
     <Content Include="ClientSource\Style\ExpressionEditor.htm" />
@@ -1555,12 +1590,14 @@
     <None Include="ClientSource\Style\IsotopeStyles.css" />
     <Content Include="ClientSource\Style\IsotopeStyles.min.css">
       <DependentUpon>IsotopeStyles.css</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Style\Job.css">
       <DependentUpon>Job.less</DependentUpon>
     </None>
     <Content Include="ClientSource\Style\Job.min.css">
       <DependentUpon>Job.less</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Style\jQueryUI\dynatree\icons.gif" />
     <None Include="ClientSource\Style\jQueryUI\dynatree\loading.gif" />
@@ -1693,6 +1730,7 @@
     </None>
     <Content Include="ClientSource\Style\User.min.css">
       <DependentUpon>User.less</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Style\FontAwesome\font-awesome.less" />
     <Content Include="favicon.ico" />
@@ -1720,7 +1758,7 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>CommonHelpers.generated.cs</LastGenOutput>
     </None>
-    <None Include="Properties\PublishProfiles\HADES3.pubxml" />
+    <None Include="Properties\PublishProfiles\SRV-WEB03 Production.pubxml" />
     <None Include="ClientSource\Scripts\Modules\Highcharts\highcharts.src.js" />
     <None Include="ClientSource\Scripts\Core\jquery-2.1.1.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce\jquery.tinymce.min.js" />
@@ -1952,7 +1990,9 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Query.generated.cs</LastGenOutput>
     </None>
-    <Content Include="ClientBin\PreparationClient.zip" />
+    <Content Include="ClientBin\PreparationClient.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="ClientSource\Style\Config.less" />
     <None Include="ClientSource\Style\Credits.less" />
     <None Include="ClientSource\Style\Declarations.less" />
@@ -2314,6 +2354,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />

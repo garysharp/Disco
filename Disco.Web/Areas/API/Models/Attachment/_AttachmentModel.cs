@@ -76,6 +76,22 @@ namespace Disco.Web.Areas.API.Models.Attachment
                 MimeType = da.MimeType
             };
         }
+        public static _AttachmentModel FromAttachment(Disco.Models.Repository.DeviceBatchAttachment attachment)
+        {
+            return new _AttachmentModel
+            {
+                ParentId = attachment.DeviceBatchId.ToString(),
+                Id = attachment.Id,
+                AuthorId = attachment.TechUserId,
+                Author = attachment.TechUser.ToStringFriendly(),
+                Timestamp = attachment.Timestamp,
+                Comments = attachment.Comments,
+                DocumentTemplateId = null, // not supported for DeviceBatchAttachment
+                DocumentTemplateDescription = null, // not supported for DeviceBatchAttachment
+                Filename = attachment.Filename,
+                MimeType = attachment.MimeType
+            };
+        }
 
     }
 }

@@ -50,6 +50,7 @@ namespace Disco.Models.Repository
         [ForeignKey("DefaultDeviceModelId")]
         public virtual DeviceModel DefaultDeviceModel { get; set; }
 
+        public virtual IList<DeviceBatchAttachment> DeviceBatchAttachments { get; set; }
         public virtual IList<Device> Devices { get; set; }
 
         public override string ToString()

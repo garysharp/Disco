@@ -1,4 +1,5 @@
-﻿using Disco.Models.UI.Config.DeviceBatch;
+﻿using Disco.Models.Repository;
+using Disco.Models.UI.Config.DeviceBatch;
 using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Devices;
@@ -20,7 +21,9 @@ namespace Disco.Web.Areas.Config.Controllers
 
             if (id.HasValue)
             {
-                var m = Database.DeviceBatches.Where(db => db.Id == id.Value)
+                var m = Database.DeviceBatches
+                    .Include(nameof(DeviceBatch.DeviceBatchAttachments))
+                    .Where(db => db.Id == id.Value)
                     .Select(db => new Models.DeviceBatch.ShowModel()
                     {
                         DeviceBatch = db,

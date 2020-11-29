@@ -1,7 +1,9 @@
 ﻿using Disco.Models.Repository;
 using Disco.Services;
 using Disco.Services.Authorization;
+using Disco.Services.Devices;
 using Disco.Services.Devices.ManagedGroups;
+using Disco.Services.Interop;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Tasks;
 using Disco.Services.Web;
@@ -605,6 +607,138 @@ namespace Disco.Web.Areas.API.Controllers
 
             return this.JsonNet(new Models.DeviceBatch.DeviceBatchTimelineEventSource() { events = events.ToArray() }, JsonRequestBehavior.AllowGet);
         }
+        #endregion
+
+        #region Attachements
+
+        [DiscoAuthorize(Claims.Config.DeviceBatch.Show)]
+        [OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
+        public virtual ActionResult AttachmentDownload(int id)
+        {
+            var attachment = Database.DeviceBatchAttachments.Find(id);
+            if (attachment != null)
+            {
+                var filePath = attachment.RepositoryFilename(Database);
+                if (System.IO.File.Exists(filePath))
+                {
+                    return File(filePath, attachment.MimeType, attachment.Filename);
+                }
+                else
+                {
+                    return HttpNotFound("Attachment reference exists, but file not found");
+                }
+            }
+            return HttpNotFound("Invalid Attachment Number");
+        }
+
+        [DiscoAuthorize(Claims.Config.DeviceBatch.Show)]
+        [OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
+        public virtual ActionResult AttachmentThumbnail(int id)
+        {
+            var attachment = Database.DeviceBatchAttachments.Find(id);
+            if (attachment != null)
+            {
+                var thumbPath = attachment.RepositoryThumbnailFilename(Database);
+                if (System.IO.File.Exists(thumbPath))
+                {
+                    if (thumbPath.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+                        return File(thumbPath, "image/png");
+                    else
+                        return File(thumbPath, "image/jpg");
+                }
+                else
+                    return File(ClientSource.Style.Images.AttachmentTypes.MimeTypeIcons.Icon(attachment.MimeType), "image/png");
+            }
+            return HttpNotFound("Invalid Attachment Number");
+        }
+
+        [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        public virtual ActionResult AttachmentUpload(int id, string Comments)
+        {
+            var batch = Database.DeviceBatches.Find(id);
+            if (batch != null)
+            {
+                if (Request.Files.Count > 0)
+                {
+                    var file = Request.Files.Get(0);
+                    if (file.ContentLength > 0)
+                    {
+                        var contentType = file.ContentType;
+                        if (string.IsNullOrEmpty(contentType) || contentType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
+                            contentType = MimeTypes.ResolveMimeType(file.FileName);
+
+                        var attachment = new Disco.Models.Repository.DeviceBatchAttachment()
+                        {
+                            DeviceBatchId = batch.Id,
+                            TechUserId = CurrentUser.UserId,
+                            Filename = file.FileName,
+                            MimeType = contentType,
+                            Timestamp = DateTime.Now,
+                            Comments = Comments
+                        };
+                        Database.DeviceBatchAttachments.Add(attachment);
+                        Database.SaveChanges();
+
+                        attachment.SaveAttachment(Database, file.InputStream);
+
+                        attachment.GenerateThumbnail(Database);
+
+                        return Json(attachment.Id, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                throw new Exception("No Attachment Uploaded");
+            }
+            throw new Exception("Invalid Device Batch Id");
+        }
+
+        [DiscoAuthorize(Claims.Config.DeviceBatch.Show)]
+        public virtual ActionResult Attachment(int id)
+        {
+            var attachment = Database.DeviceBatchAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
+            if (attachment != null)
+            {
+
+                var m = new Models.Attachment.AttachmentModel()
+                {
+                    Attachment = Models.Attachment._AttachmentModel.FromAttachment(attachment),
+                    Result = "OK"
+                };
+
+                return Json(m, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new Models.Attachment.AttachmentModel() { Result = "Invalid Attachment Number" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [DiscoAuthorize(Claims.Config.DeviceBatch.Show)]
+        public virtual ActionResult Attachments(int id)
+        {
+            var batch = Database.DeviceBatches.Include("DeviceBatchAttachments.TechUser").Where(m => m.Id == id).FirstOrDefault();
+            if (batch != null)
+            {
+                var m = new Models.Attachment.AttachmentsModel()
+                {
+                    Attachments = batch.DeviceBatchAttachments.Select(a => Models.Attachment._AttachmentModel.FromAttachment(a)).ToList(),
+                    Result = "OK"
+                };
+
+                return Json(m, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new Models.Attachment.AttachmentsModel() { Result = "Invalid Device Batch Id" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        public virtual ActionResult AttachmentRemove(int id)
+        {
+            var attachment = Database.DeviceBatchAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
+            if (attachment != null)
+            {
+                attachment.OnDelete(Database);
+                Database.SaveChanges();
+                return Json("OK", JsonRequestBehavior.AllowGet);
+            }
+            return Json("Invalid Attachment Number", JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
 
     }

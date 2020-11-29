@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disco.ClientBootstrapper", "Disco.ClientBootstrapper\Disco.ClientBootstrapper.csproj", "{15BD9561-A3C7-4608-9F7E-F1A1CFB60055}"
 EndProject
@@ -133,8 +133,15 @@ Global
 		SolutionGuid = {1CCC4DCB-653B-464B-B05D-285032B28DC4}
 	EndGlobalSection
 	GlobalSection(AutomaticVersions) = postSolution
-		UpdateAssemblyVersion = False
-		UpdateAssemblyFileVersion = False
+		UpdateAssemblyVersion = True
+		UpdateAssemblyFileVersion = True
 		UpdateAssemblyInfoVersion = False
+		ShouldCreateLogs = True
+		AdvancedSettingsExpanded = True
+		AssemblyVersionSettings = None.None.DateStamp.TimeStamp
+		AssemblyFileVersionSettings = None.None.DateStamp.TimeStamp
+		UpdatePackageVersion = False
+		AssemblyInfoVersionType = SettingsVersion
+		InheritWinAppVersionFrom = None
 	EndGlobalSection
 EndGlobal
