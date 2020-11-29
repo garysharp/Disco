@@ -7,7 +7,7 @@
   background-color: #fff;
 }
 .tableData > tbody > tr:nth-child(odd) > td {
-  background-color: #fbfbfb;
+  background-color: hsl(0, 0%, 98.5%);
 }
 .tableData > thead > tr > th,
 .tableData > tbody > tr > th {
@@ -15,7 +15,7 @@
   border: solid 1px #f4f4f4;
 }
 .tableData > tbody > tr:hover > td {
-  background-color: #f9f9f9;
+  background-color: hsl(0, 0%, 97.5%);
 }
 .tableData > tfoot > tr > th,
 .tableData > tfoot > tr > td {
@@ -201,7 +201,7 @@
 }
 #Device_Show_Policies_Profile_Actions_Update_Dialog ul li:nth-child(odd),
 #Device_Show_Policies_Batch_Actions_Update_Dialog ul li:nth-child(odd) {
-  background-color: #fbfbfb;
+  background-color: hsl(0, 0%, 98.5%);
 }
 #Device_Show_Policies_Profile_Actions_Update_Dialog ul li.selected,
 #Device_Show_Policies_Batch_Actions_Update_Dialog ul li.selected {
@@ -235,7 +235,7 @@
   background-color: #fff;
 }
 #DeviceDetailTab-DetailsContainer > table > tbody > tr:nth-child(odd) > td {
-  background-color: #fbfbfb;
+  background-color: hsl(0, 0%, 98.5%);
 }
 #DeviceDetailTab-DetailsContainer > table > thead > tr > th,
 #DeviceDetailTab-DetailsContainer > table > tbody > tr > th {
@@ -243,7 +243,7 @@
   border: solid 1px #f4f4f4;
 }
 #DeviceDetailTab-DetailsContainer > table > tbody > tr:hover > td {
-  background-color: #f9f9f9;
+  background-color: hsl(0, 0%, 97.5%);
 }
 #DeviceDetailTab-DetailsContainer > table > tfoot > tr > th,
 #DeviceDetailTab-DetailsContainer > table > tfoot > tr > td {
@@ -253,8 +253,37 @@
   width: 150px;
 }
 #DeviceDetailTab-DetailsContainer > table > tbody > tr > th,
-#DeviceDetailTab-DetailsContainer > table > tbody > tr > td {
+#DeviceDetailTab-DetailsContainer > table > tbody > tr > td.pad {
   padding: 10px 6px;
+}
+#DeviceDetailTab-DetailsContainer .device_detail_disk_drives .partition {
+  position: relative;
+  height: 40px;
+}
+#DeviceDetailTab-DetailsContainer .device_detail_disk_drives .partition > span {
+  position: absolute;
+  display: block;
+  height: 40px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: #f4f4f4;
+  padding: 2px;
+  line-height: 18px;
+  border: 1px solid #cacaca;
+}
+#DeviceDetailTab-DetailsContainer .device_detail_disk_drives .partition > span .details {
+  position: relative;
+}
+#DeviceDetailTab-DetailsContainer .device_detail_disk_drives .partition > span .freespace {
+  position: absolute;
+  top: 0;
+  height: 40px;
+  display: block;
+  background-color: #fff;
+  background: repeating-linear-gradient(45deg, #f4f4f4, #f4f4f4 10px, #fff 10px, #fff 20px);
 }
 #deviceShowResources #AttachmentsContainer {
   padding: 0;
@@ -319,7 +348,7 @@
   border: 1px solid #ccc;
 }
 #deviceShowResources #Attachments div.attachmentOutput > a:hover span.remove {
-  opacity: .5;
+  opacity: 0.5;
 }
 #deviceShowResources #Attachments div.attachmentOutput > a span.remove {
   font-size: 1.4em;
@@ -345,7 +374,7 @@
   cursor: pointer;
   float: right;
   border: 1px solid #fff;
-  padding: .5em;
+  padding: 0.5em;
 }
 #deviceShowResources #Attachments div.attachmentInput span.action:hover {
   color: #335A87;
@@ -366,14 +395,14 @@
   display: none;
 }
 #Devices_Export #Devices_Export_Fields #Devices_Export_Fields_Defaults {
-  font-size: .75em;
+  font-size: 0.75em;
 }
 #Devices_Export #Devices_Export_Fields th {
   font-size: 1.05em;
 }
 #Devices_Export #Devices_Export_Fields th span {
   margin-top: 4px;
-  font-size: .8em;
+  font-size: 0.8em;
 }
 #Devices_Export_Download_Dialog {
   padding-top: 20px;
@@ -489,7 +518,7 @@
   background-color: #e7f9d5;
 }
 #Devices_Import_Review #Devices_Import_Review_Navigation ul li.actionUnchanged {
-  background-color: #fbfbfb;
+  background-color: hsl(0, 0%, 98.5%);
 }
 #Devices_Import_Review #Devices_Import_Review_TableContainer {
   margin: 18px 0;
@@ -518,7 +547,7 @@
   content: "\f068";
 }
 #Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr.actionUnchanged td {
-  background-color: #fbfbfb;
+  background-color: hsl(0, 0%, 98.5%);
 }
 #Devices_Import_Review #Devices_Import_Review_TableContainer table > tbody tr.actionUnchanged td:nth-child(n+3) {
   color: #ccc;

@@ -8,70 +8,291 @@
     {
         Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
     }
+
+    var processors = Model.Device.DeviceDetails.Processors();
+    var physicalMemory = Model.Device.DeviceDetails.PhysicalMemory();
+    var diskDrives = Model.Device.DeviceDetails.DiskDrives();
+    var networkAdapters = Model.Device.DeviceDetails.NetworkAdapters();
+    var lanMacAddress = Model.Device.DeviceDetails.LanMacAddress();
+    var wlanMacAddress = Model.Device.DeviceDetails.WLanMacAddress();
 }
 <div id="DeviceDetailTab-Details" class="DevicePart">
     <div id="DeviceDetailTab-DetailsContainer">
         <table class="tableData">
             <tbody>
-                <tr>
-                    <th>LAN MAC Address</th>
-                    <td class="code">@(Model.Device.DeviceDetails.LanMacAddress() ?? "Unknown")</td>
-                </tr>
-                <tr>
-                    <th>WLAN MAC Address</th>
-                    <td class="code">@(Model.Device.DeviceDetails.WLanMacAddress() ?? "Unknown")</td>
-                </tr>
+                @if (processors != null)
+                {
+                    <tr>
+                        <th>Processors</th>
+                        <td class="device_detail_processors">
+                            <table class="tableData">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Architecture</th>
+                                        <th>Max Clock Speed</th>
+                                        <th>Cores</th>
+                                        <th>Logical Processors</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var processor in processors)
+                                    {
+                                        <tr>
+                                            <td>@processor.Name</td>
+                                            <td>@processor.Description</td>
+                                            <td>@processor.Architecture</td>
+                                            <td>@processor.MaxClockSpeedFriendly()</td>
+                                            <td>@processor.NumberOfCores.ToString("N0")</td>
+                                            <td>@processor.NumberOfLogicalProcessors.ToString("N0")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+                @if (physicalMemory != null)
+                {
+                    <tr class="device_detail_memory">
+                        <th>Memory</th>
+                        <td>
+                            <table class="tableData">
+                                <thead>
+                                    <tr>
+                                        <th>Location</th>
+                                        <th>Manufacturer</th>
+                                        <th>Part Number</th>
+                                        <th>Serial Number</th>
+                                        <th>Capacity</th>
+                                        <th>Clock Speed</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var memory in physicalMemory)
+                                    {
+                                        <tr>
+                                            <td>@memory.DeviceLocator</td>
+                                            <td>@memory.Manufacturer</td>
+                                            <td>@memory.PartNumber</td>
+                                            <td>@memory.SerialNumber</td>
+                                            <td>@memory.CapacityFriendly()</td>
+                                            <td>@memory.ConfiguredClockSpeed</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+                @if (networkAdapters != null)
+                {
+                    <tr class="device_detail_network_adapters">
+                        <th>Network Adapters</th>
+                        <td>
+                            <table class="tableData">
+                                <thead>
+                                    <tr>
+                                        <th>Connection</th>
+                                        <th>Manufacturer</th>
+                                        <th>Product</th>
+                                        <th>Speed</th>
+                                        <th>MAC Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var adapter in networkAdapters)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @(adapter.NetConnectionID ?? "N/A") @if (adapter.IsWlanAdapter)
+                                                {<i class="fa fa-wifi"></i>}
+                                            </td>
+                                            <td>@adapter.Manufacturer</td>
+                                            <td>@adapter.ProductName</td>
+                                            <td>@adapter.SpeedFriendly()</td>
+                                            <td>@adapter.MACAddress</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    if (lanMacAddress != null)
+                    {
+                        <tr>
+                            <th>LAN MAC Address</th>
+                            <td class="pad code">@(lanMacAddress)</td>
+                        </tr>
+                    }
+                    if (wlanMacAddress != null)
+                    {
+                        <tr>
+                            <th>WLAN MAC Address</th>
+                            <td class="pad code">@(wlanMacAddress)</td>
+                        </tr>
+                    }
+                }
+                @if (diskDrives != null)
+                {
+                    <tr class="device_detail_disk_drives">
+                        <th>Disk Drives</th>
+                        <td>
+                            <table class="tableData">
+                                <thead>
+                                    <tr>
+                                        <th>Manufacturer</th>
+                                        <th>Model</th>
+                                        <th>Serial Number</th>
+                                        <th>Firmware</th>
+                                        <th>Type</th>
+                                        <th>Interface</th>
+                                        <th>Size</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var disk in diskDrives)
+                                    {
+                                        <tr>
+                                            <td>@disk.Manufacturer</td>
+                                            <td>@disk.Model</td>
+                                            <td>@disk.SerialNumber</td>
+                                            <td>@disk.FirmwareRevision</td>
+                                            <td>@disk.MediaType</td>
+                                            <td>@disk.InterfaceType</td>
+                                            <td>@disk.SizeFriendly()</td>
+                                        </tr>
+                                        if (disk.Partitions != null)
+                                        {
+                                            // calculate stretched offsets
+                                            var minPartitionSize = (double)disk.Size * 0.1;
+                                            var diskSizeAdjusted = disk.Partitions.Sum(p => Math.Max(minPartitionSize, p.Size));
+                                            var diskAdjustedOffet = (double)0;
+                                            <tr>
+                                                <td colspan="7">
+                                                    <div class="partition">
+                                                        @foreach (var partition in disk.Partitions)
+                                                        {
+                                                            var logicalDisk = partition.LogicalDisk;
+
+                                                            var offsetPercentage = Math.Round(((partition.StartingOffset + diskAdjustedOffet) / diskSizeAdjusted) * 100, 3);
+                                                            var widthPercentage = Math.Round((Math.Max(minPartitionSize, partition.Size) / diskSizeAdjusted) * 100, 3);
+                                                            var freeSpacePercentage = 0d;
+                                                            if (partition.Size < minPartitionSize)
+                                                            {
+                                                                diskAdjustedOffet += minPartitionSize - partition.Size;
+                                                            }
+
+                                                            var partitionTitle = partition.Type;
+                                                            var tags = new List<string>();
+                                                            if (partition.BootPartition)
+                                                            {
+                                                                tags.Add("Boot");
+                                                            }
+                                                            if (partition.PrimaryParition)
+                                                            {
+                                                                tags.Add("Primary");
+                                                            }
+                                                            if (logicalDisk != null)
+                                                            {
+                                                                partitionTitle = string.Format("{0} {1}", logicalDisk.DeviceID, logicalDisk.VolumeName);
+                                                                tags.Add(logicalDisk.SizeFriendly());
+                                                                tags.Add(logicalDisk.FreeSpaceFriendly() + " Free");
+                                                                tags.Add(logicalDisk.FileSystem);
+                                                                tags.Add(logicalDisk.DriveType);
+                                                                freeSpacePercentage = Math.Round(((double)logicalDisk.FreeSpace / logicalDisk.Size) * 100, 3);
+                                                            }
+                                                            else
+                                                            {
+                                                                tags.Add(partition.SizeFriendly());
+                                                            }
+                                                            var tag = string.Join(" | ", tags);
+                                                            <span title="@(partitionTitle) &#xA@(tag)" style="left: @(offsetPercentage)%; width: @(widthPercentage)%">
+                                                                @if (freeSpacePercentage > 0.5)
+                                                                {
+                                                                    <span class="freespace" style="left: @(100 - freeSpacePercentage)%; width: @(freeSpacePercentage)%"></span>
+                                                                }
+                                                                <span class="details">
+                                                                    <strong>@partitionTitle</strong>
+                                                                    <br />
+                                                                    @tag
+                                                                </span>
+                                                            </span>
+                                                        }
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
                 <tr>
                     <th>AC Adapter</th>
-                    <td>@if (canConfig)
+                    <td class="pad">
+                        @if (canConfig)
                         {
-                        @Html.TextBox("DeviceDetail_ACAdapter", Model.Device.DeviceDetails.ACAdapter()) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
-                        <script>
+                            @Html.TextBox("DeviceDetail_ACAdapter", Model.Device.DeviceDetails.ACAdapter()) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
+                            <script>
                             $(function () {
                                 document.DiscoFunctions.PropertyChangeHelper($('#DeviceDetail_ACAdapter'), 'Unknown', '@Url.Action(MVC.API.Device.UpdateDetailACAdapter(Model.Device.SerialNumber, null))', 'DetailACAdapter');
                             });
-                        </script>
+                            </script>
                         }
                         else
                         {
-                        @(Model.Device.DeviceDetails.ACAdapter() ?? "Unknown")
+                            @(Model.Device.DeviceDetails.ACAdapter() ?? "Unknown")
                         }
                     </td>
                 </tr>
                 <tr>
                     <th>Battery</th>
-                    <td>@if (canConfig)
+                    <td class="pad">
+                        @if (canConfig)
                         {
-                        @Html.TextBox("DeviceDetail_Battery", Model.Device.DeviceDetails.Battery()) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
-                        <script>
+                            @Html.TextBox("DeviceDetail_Battery", Model.Device.DeviceDetails.Battery()) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
+                            <script>
                             $(function () {
                                 document.DiscoFunctions.PropertyChangeHelper($('#DeviceDetail_Battery'), 'Unknown', '@Url.Action(MVC.API.Device.UpdateDetailBattery(Model.Device.SerialNumber, null))', 'DetailBattery');
                             });
-                        </script>
+                            </script>
                         }
                         else
                         {
-                        @(Model.Device.DeviceDetails.Battery() ?? "Unknown")
+                            @(Model.Device.DeviceDetails.Battery() ?? "Unknown")
                         }
                     </td>
                 </tr>
                 <tr>
                     <th>Keyboard</th>
-                    <td>@if (canConfig)
+                    <td class="pad">
+                        @if (canConfig)
                         {
-                        @Html.TextBox("DeviceDetail_Keyboard", Model.Device.DeviceDetails.Keyboard()) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
-                        <script>
+                            @Html.TextBox("DeviceDetail_Keyboard", Model.Device.DeviceDetails.Keyboard()) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
+                            <script>
                             $(function () {
                                 document.DiscoFunctions.PropertyChangeHelper($('#DeviceDetail_Keyboard'), 'Unknown', '@Url.Action(MVC.API.Device.UpdateDetailKeyboard(Model.Device.SerialNumber, null))', 'DetailKeyboard');
                             });
-                        </script>
+                            </script>
                         }
                         else
                         {
-                        @(Model.Device.DeviceDetails.Keyboard() ?? "Unknown")
+                            @(Model.Device.DeviceDetails.Keyboard() ?? "Unknown")
                         }
                     </td>
                 </tr>
+                @if (Model.Device.LastEnrolDate.HasValue)
+                {
+                    <tr>
+                        <td colspan="2"><em>Details collected @CommonHelpers.FriendlyDate(Model.Device.LastEnrolDate) at time of last enrolment</em></td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

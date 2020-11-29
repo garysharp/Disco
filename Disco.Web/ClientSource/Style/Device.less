@@ -215,8 +215,41 @@
                 width: 150px;
             }
 
-            & > th, & > td {
+            & > th, & > td.pad {
                 padding: 10px 6px;
+            }
+        }
+    }
+
+    .device_detail_disk_drives .partition {
+        position: relative;
+        height: 40px;
+
+        & > span {
+            position: absolute;
+            display: block;
+            height: 40px;
+            box-sizing: border-box;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            background-color: #f4f4f4;
+            padding: 2px;
+            line-height: 18px;
+            border: 1px solid #cacaca;
+
+            .details {
+                position: relative;
+            }
+
+            .freespace {
+                position: absolute;
+                top: 0;
+                height: 40px;
+                display: block;
+                background-color: #fff;
+                background: repeating-linear-gradient(45deg, #f4f4f4, #f4f4f4 10px, #fff 10px, #fff 20px);
             }
         }
     }
