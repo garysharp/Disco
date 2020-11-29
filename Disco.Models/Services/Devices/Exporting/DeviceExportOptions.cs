@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Disco.Models.Services.Devices.Exporting
 {
@@ -37,18 +32,6 @@ namespace Disco.Models.Services.Devices.Exporting
         public bool DeviceDecommissionedDate { get; set; }
         [Display(ShortName = "Device", Name = "Decommissioned Reason", Description = "The reason the device was decommissioned")]
         public bool DeviceDecommissionedReason { get; set; }
-
-        // Details
-        [Display(ShortName = "Details", Name = "LAN MAC Address", Description = "The LAN MAC Address associated with the device")]
-        public bool DetailLanMacAddress { get; set; }
-        [Display(ShortName = "Details", Name = "Wireless LAN MAC Address", Description = "The Wireless LAN MAC Address associated with the device")]
-        public bool DetailWLanMacAddress { get; set; }
-        [Display(ShortName = "Details", Name = "AC Adapter", Description = "The AC Adapter associated with the device")]
-        public bool DetailACAdapter { get; set; }
-        [Display(ShortName = "Details", Name = "Battery", Description = "The Battery associated with the device")]
-        public bool DetailBattery { get; set; }
-        [Display(ShortName = "Details", Name = "Keyboard", Description = "The Keyboard associated with the device")]
-        public bool DetailKeyboard { get; set; }
 
         // Model
         [Display(ShortName = "Model", Name = "Identifier", Description = "The identifier of the device model associated with the device")]
@@ -117,15 +100,26 @@ namespace Disco.Models.Services.Devices.Exporting
         public bool AttachmentsCount { get; set; }
 
         // Certificates
-        [Display(ShortName = "Certificates", Name = "Name", Description = "The name of the most recently assigned active certificate associated with the device")]
-        public bool CertificateName { get; set; }
-        [Display(ShortName = "Certificates", Name = "Allocated Date", Description = "The allocated date of the most recently assigned active certificate associated with the device")]
-        public bool CertificateAllocatedDate { get; set; }
-        [Display(ShortName = "Certificates", Name = "Expiration Date", Description = "The expiration date of the most recently assigned active certificate associated with the device")]
-        public bool CertificateExpirationDate { get; set; }
-        [Display(ShortName = "Certificates", Name = "Provider Id", Description = "The provider identifier of the most recently assigned active certificate associated with the device")]
-        public bool CertificateProviderId { get; set; }
+        [Display(ShortName = "Certificates", Name = "Certificates", Description = "The assigned active certificates associated with the device")]
+        public bool Certificates { get; set; }
 
+        // Details
+        [Display(ShortName = "Details", Name = "Processors", Description = "The CPU Processors associated with the device")]
+        public bool DetailProcessors { get; set; }
+        [Display(ShortName = "Details", Name = "Memory", Description = "The Memory/RAM associated with the device")]
+        public bool DetailMemory { get; set; }
+        [Display(ShortName = "Details", Name = "Disk Drives", Description = "The Disk Drives associated with the device")]
+        public bool DetailDiskDrives { get; set; }
+        [Display(ShortName = "Details", Name = "LAN Adapters", Description = "The LAN Adapters associated with the device")]
+        public bool DetailLanAdapters { get; set; }
+        [Display(ShortName = "Details", Name = "Wireless LAN Adapters", Description = "The Wireless LAN Adapters associated with the device")]
+        public bool DetailWLanAdapters { get; set; }
+        [Display(ShortName = "Details", Name = "AC Adapter", Description = "The AC Adapter associated with the device")]
+        public bool DetailACAdapter { get; set; }
+        [Display(ShortName = "Details", Name = "Battery", Description = "The Battery associated with the device")]
+        public bool DetailBattery { get; set; }
+        [Display(ShortName = "Details", Name = "Keyboard", Description = "The Keyboard associated with the device")]
+        public bool DetailKeyboard { get; set; }
 
         public static DeviceExportOptions DefaultOptions()
         {

@@ -10,12 +10,18 @@ namespace Disco.Models.Services.Devices.Exporting
         public Func<DeviceExportRecord, object> Accessor { get; set; }
         public Func<object, string> CsvEncoder { get; set; }
 
-        public DeviceExportFieldMetadata(string Name, Type ValueType, Func<DeviceExportRecord, object> Accessor, Func<object, string> CsvEncoder)
+        public DeviceExportFieldMetadata(string name, Type valueType, Func<DeviceExportRecord, object> accessor, Func<object, string> csvEncoder)
         {
-            this.Name = Name;
-            this.ValueType = ValueType;
-            this.Accessor = Accessor;
-            this.CsvEncoder = CsvEncoder;
+            Name = name;
+            ValueType = valueType;
+            Accessor = accessor;
+            CsvEncoder = csvEncoder;
+        }
+
+        public DeviceExportFieldMetadata(string name, string columnName, Type valueType, Func<DeviceExportRecord, object> accessor, Func<object, string> csvEncoder)
+            : this(name, valueType, accessor, csvEncoder)
+        {
+            ColumnName = columnName;
         }
     }
 }

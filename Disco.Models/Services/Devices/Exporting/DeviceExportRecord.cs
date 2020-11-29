@@ -1,4 +1,5 @@
-﻿using Disco.Models.Repository;
+﻿using Disco.Models.ClientServices.EnrolmentInformation;
+using Disco.Models.Repository;
 using System;
 using System.Collections.Generic;
 
@@ -9,8 +10,14 @@ namespace Disco.Models.Services.Devices.Exporting
         public Device Device { get; set; }
 
         // Details
-        public IEnumerable<DeviceDetail> DeviceDetails { get; set; }
-        
+        public IList<DeviceDetail> DeviceDetails { get; set; }
+        public List<Processor> DeviceDetailProcessors { get; set; }
+        public List<PhysicalMemory> DeviceDetailPhysicalMemory { get; set; }
+        public List<DiskDrive> DeviceDetailDiskDrives { get; set; }
+        public List<NetworkAdapter> DeviceDetailNetworkAdapters { get; set; }
+        public List<string> DeviceDetailLanMacAddresses { get; set; }
+        public List<string> DeviceDetailWlanMacAddresses { get; set; }
+
         // Model
         public int? ModelId { get; set; }
         public string ModelDescription { get; set; }
@@ -46,6 +53,6 @@ namespace Disco.Models.Services.Devices.Exporting
         public int AttachmentsCount { get; set; }
 
         // Certificates
-        public DeviceCertificate DeviceCertificate { get; set; }
+        public IEnumerable<DeviceCertificate> DeviceCertificates { get; set; }
     }
 }

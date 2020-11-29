@@ -19,8 +19,32 @@ namespace Disco.Services.Devices.Exporting
 
         public static DeviceExportResult GenerateExport(DiscoDataContext Database, IQueryable<Device> Devices, DeviceExportOptions Options, IScheduledTaskStatus TaskStatus)
         {
-            TaskStatus.UpdateStatus(15, "Building metadata and database query");
-            var metadata = Options.BuildMetadata();
+
+            TaskStatus.UpdateStatus(15, "Extracting records from the database");
+
+            var records = BuildRecords(Devices).ToList();
+            // materialize device details
+            records.ForEach(r =>
+            {
+                if (Options.DetailProcessors)
+                    r.DeviceDetailProcessors = r.DeviceDetails.Processors();
+                if (Options.DetailMemory)
+                    r.DeviceDetailPhysicalMemory = r.DeviceDetails.PhysicalMemory();
+                if (Options.DetailDiskDrives)
+                    r.DeviceDetailDiskDrives = r.DeviceDetails.DiskDrives();
+                if (Options.DetailLanAdapters || Options.DetailWLanAdapters)
+                {
+                    r.DeviceDetailNetworkAdapters = r.DeviceDetails.NetworkAdapters();
+                    if (r.DeviceDetailNetworkAdapters == null)
+                    {
+                        r.DeviceDetailLanMacAddresses = r.DeviceDetails.LanMacAddress()?.Split(';').Select(a => a.Trim()).ToList();
+                        r.DeviceDetailWlanMacAddresses = r.DeviceDetails.WLanMacAddress()?.Split(';').Select(a => a.Trim()).ToList();
+                    }
+                }
+            });
+
+            TaskStatus.UpdateStatus(40, "Building metadata and database query");
+            var metadata = Options.BuildMetadata(records);
 
             if (metadata.Count == 0)
                 throw new ArgumentException("At least one export field must be specified", "Options");
@@ -32,7 +56,7 @@ namespace Disco.Services.Devices.Exporting
                 Options.AssignedUserPhoneNumber ||
                 Options.AssignedUserEmailAddress)
             {
-                TaskStatus.UpdateStatus(20, "Updating Assigned User details");
+                TaskStatus.UpdateStatus(45, "Updating Assigned User details");
                 var users = Devices.Where(d => d.AssignedUserId != null).Select(d => d.AssignedUser).Distinct().ToList();
 
                 users.Select((user, index) =>
@@ -49,12 +73,12 @@ namespace Disco.Services.Devices.Exporting
             // Update Last Network Logon Date
             if (Options.DeviceLastNetworkLogon)
             {
-                TaskStatus.UpdateStatus(40, "Updating device last network logon dates");
+                TaskStatus.UpdateStatus(50, "Updating device last network logon dates");
                 try
                 {
                     TaskStatus.IgnoreCurrentProcessChanges = true;
-                    TaskStatus.ProgressMultiplier = (double)20 / 100;
-                    TaskStatus.ProgressOffset = 40;
+                    TaskStatus.ProgressMultiplier = (double)30 / 100;
+                    TaskStatus.ProgressOffset = 50;
 
                     Interop.ActiveDirectory.ADNetworkLogonDatesUpdateTask.UpdateLastNetworkLogonDates(Database, TaskStatus);
                     Database.SaveChanges();
@@ -65,10 +89,6 @@ namespace Disco.Services.Devices.Exporting
                 }
                 catch (Exception) { } // Ignore Errors
             }
-
-            TaskStatus.UpdateStatus(60, "Extracting records from the database");
-
-            var records = BuildRecords(Devices).ToList();
 
             var stream = new MemoryStream();
 
@@ -173,19 +193,11 @@ namespace Disco.Services.Devices.Exporting
 
         private static IEnumerable<DeviceExportRecord> BuildRecords(IQueryable<Device> Devices)
         {
-            var deviceDetailHardwareKeys = new List<string> {
-                DeviceDetail.HardwareKeyLanMacAddress,
-                DeviceDetail.HardwareKeyWLanMacAddress,
-                DeviceDetail.HardwareKeyACAdapter,
-                DeviceDetail.HardwareKeyBattery,
-                DeviceDetail.HardwareKeyKeyboard
-            };
-
             return Devices.Select(d => new DeviceExportRecord()
             {
                 Device = d,
 
-                DeviceDetails = d.DeviceDetails.Where(dd => dd.Scope == DeviceDetail.ScopeHardware && deviceDetailHardwareKeys.Contains(dd.Key)),
+                DeviceDetails = d.DeviceDetails,
 
                 ModelId = d.DeviceModelId,
                 ModelDescription = d.DeviceModel.Description,
@@ -215,13 +227,20 @@ namespace Disco.Services.Devices.Exporting
 
                 AttachmentsCount = d.DeviceAttachments.Count(),
 
-                DeviceCertificate = d.DeviceCertificates.Where(dc => dc.Enabled).FirstOrDefault()
+                DeviceCertificates = d.DeviceCertificates.Where(dc => dc.Enabled).OrderByDescending(dc => dc.AllocatedDate)
             });
         }
 
-        private static List<DeviceExportFieldMetadata> BuildMetadata(this DeviceExportOptions Options)
+        private static List<DeviceExportFieldMetadata> BuildMetadata(this DeviceExportOptions options, List<DeviceExportRecord> records)
         {
-            var allAssessors = BuildRecordAccessors().ToList();
+            var processorMaxCount = Math.Max(1, records.Max(r => r.DeviceDetailProcessors?.Count ?? 0));
+            var memoryMaxCount = Math.Max(1, records.Max(r => r.DeviceDetailPhysicalMemory?.Count ?? 0));
+            var diskDriveMaxCount = Math.Max(1, records.Max(r => r.DeviceDetailDiskDrives?.Count ?? 0));
+            var lanAdapterMaxCount = Math.Max(1, records.Max(r => r.DeviceDetailNetworkAdapters?.Count(a => !a.IsWlanAdapter) ?? r.DeviceDetailLanMacAddresses?.Count ?? 0));
+            var wlanAdapterMaxCount = Math.Max(1, records.Max(r => r.DeviceDetailNetworkAdapters?.Count(a => a.IsWlanAdapter) ?? r.DeviceDetailWlanMacAddresses?.Count ?? 0));
+            var certificateMaxCount = Math.Max(1, records.Max(r => r.DeviceCertificates?.Count() ?? 0));
+
+            var allAssessors = BuildRecordAccessors(processorMaxCount, memoryMaxCount, diskDriveMaxCount, lanAdapterMaxCount, wlanAdapterMaxCount, certificateMaxCount);
 
             return typeof(DeviceExportOptions).GetProperties()
                 .Where(p => p.PropertyType == typeof(bool))
@@ -230,16 +249,20 @@ namespace Disco.Services.Devices.Exporting
                     property = p,
                     details = (DisplayAttribute)p.GetCustomAttributes(typeof(DisplayAttribute), false).FirstOrDefault()
                 })
-                .Where(p => p.details != null && (bool)p.property.GetValue(Options))
-                .Select(p =>
+                .Where(p => p.details != null && (bool)p.property.GetValue(options))
+                .SelectMany(p =>
                 {
-                    var fieldMetadata = allAssessors.First(i => i.Name == p.property.Name);
-                    fieldMetadata.ColumnName = (p.details.ShortName == "Device" || p.details.ShortName == "Details") ? p.details.Name : $"{p.details.ShortName} {p.details.Name}";
+                    var fieldMetadata = allAssessors[p.property.Name];
+                    fieldMetadata.ForEach(f =>
+                    {
+                        if (f.ColumnName == null)
+                            f.ColumnName = (p.details.ShortName == "Device" || p.details.ShortName == "Details") ? p.details.Name : $"{p.details.ShortName} {p.details.Name}";
+                    });
                     return fieldMetadata;
                 }).ToList();
         }
 
-        private static IEnumerable<DeviceExportFieldMetadata> BuildRecordAccessors()
+        private static Dictionary<string, List<DeviceExportFieldMetadata>> BuildRecordAccessors(int processorMaxCount, int memoryMaxCount, int diskDriveMaxCount, int lanAdapterMaxCount, int wlanAdapterMaxCount, int certificateMaxCount)
         {
             const string DateFormat = "yyyy-MM-dd";
             const string DateTimeFormat = DateFormat + " HH:mm:ss";
@@ -252,70 +275,144 @@ namespace Disco.Services.Devices.Exporting
             Func<object, string> csvNullableDateEncoded = (o) => ((DateTime?)o).HasValue ? csvDateEncoded(o) : null;
             Func<object, string> csvNullableDateTimeEncoded = (o) => ((DateTime?)o).HasValue ? csvDateTimeEncoded(o) : null;
 
-            // Device
-            yield return new DeviceExportFieldMetadata("DeviceSerialNumber", typeof(string), r => r.Device.SerialNumber, csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("DeviceAssetNumber", typeof(string), r => r.Device.AssetNumber, csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("DeviceLocation", typeof(string), r => r.Device.Location, csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("DeviceComputerName", typeof(string), r => r.Device.DeviceDomainId, csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("DeviceLastNetworkLogon", typeof(DateTime), r => r.Device.LastNetworkLogonDate, csvNullableDateTimeEncoded);
-            yield return new DeviceExportFieldMetadata("DeviceCreatedDate", typeof(DateTime), r => r.Device.CreatedDate, csvDateTimeEncoded);
-            yield return new DeviceExportFieldMetadata("DeviceFirstEnrolledDate", typeof(DateTime), r => r.Device.EnrolledDate, csvNullableDateTimeEncoded);
-            yield return new DeviceExportFieldMetadata("DeviceLastEnrolledDate", typeof(DateTime), r => r.Device.LastEnrolDate, csvNullableDateTimeEncoded);
-            yield return new DeviceExportFieldMetadata("DeviceAllowUnauthenticatedEnrol", typeof(bool), r => r.Device.AllowUnauthenticatedEnrol, csvToStringEncoded);
-            yield return new DeviceExportFieldMetadata("DeviceDecommissionedDate", typeof(DateTime), r => r.Device.DecommissionedDate, csvNullableDateTimeEncoded);
-            yield return new DeviceExportFieldMetadata("DeviceDecommissionedReason", typeof(string), r => r.Device.DecommissionReason, csvToStringEncoded);
+            var metadata = new Dictionary<string, List<DeviceExportFieldMetadata>>();
 
-            // Details
-            yield return new DeviceExportFieldMetadata("DetailLanMacAddress", typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyLanMacAddress).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("DetailWLanMacAddress", typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyWLanMacAddress).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("DetailACAdapter", typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyACAdapter).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("DetailBattery", typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyBattery).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("DetailKeyboard", typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyKeyboard).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded);
+            // Device
+            metadata.Add(nameof(DeviceExportOptions.DeviceSerialNumber), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DeviceSerialNumber), typeof(string), r => r.Device.SerialNumber, csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.DeviceAssetNumber), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DeviceAssetNumber), typeof(string), r => r.Device.AssetNumber, csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.DeviceLocation), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DeviceLocation), typeof(string), r => r.Device.Location, csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.DeviceComputerName), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DeviceComputerName), typeof(string), r => r.Device.DeviceDomainId, csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.DeviceLastNetworkLogon), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DeviceLastNetworkLogon), typeof(DateTime), r => r.Device.LastNetworkLogonDate, csvNullableDateTimeEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.DeviceCreatedDate), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DeviceCreatedDate), typeof(DateTime), r => r.Device.CreatedDate, csvDateTimeEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.DeviceFirstEnrolledDate), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DeviceFirstEnrolledDate), typeof(DateTime), r => r.Device.EnrolledDate, csvNullableDateTimeEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.DeviceLastEnrolledDate), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DeviceLastEnrolledDate), typeof(DateTime), r => r.Device.LastEnrolDate, csvNullableDateTimeEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.DeviceAllowUnauthenticatedEnrol), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DeviceAllowUnauthenticatedEnrol), typeof(bool), r => r.Device.AllowUnauthenticatedEnrol, csvToStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.DeviceDecommissionedDate), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DeviceDecommissionedDate), typeof(DateTime), r => r.Device.DecommissionedDate, csvNullableDateTimeEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.DeviceDecommissionedReason), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DeviceDecommissionedReason), typeof(string), r => r.Device.DecommissionReason, csvToStringEncoded) });
 
             // Model
-            yield return new DeviceExportFieldMetadata("ModelId", typeof(int), r => r.ModelId, csvToStringEncoded);
-            yield return new DeviceExportFieldMetadata("ModelDescription", typeof(string), r => r.ModelDescription, csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("ModelManufacturer", typeof(string), r => r.ModelManufacturer, csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("ModelModel", typeof(string), r => r.ModelModel, csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("ModelType", typeof(string), r => r.ModelType, csvStringEncoded);
+            metadata.Add(nameof(DeviceExportOptions.ModelId), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.ModelId), typeof(int), r => r.ModelId, csvToStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.ModelDescription), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.ModelDescription), typeof(string), r => r.ModelDescription, csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.ModelManufacturer), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.ModelManufacturer), typeof(string), r => r.ModelManufacturer, csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.ModelModel), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.ModelModel), typeof(string), r => r.ModelModel, csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.ModelType), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.ModelType), typeof(string), r => r.ModelType, csvStringEncoded) });
 
             // Batch
-            yield return new DeviceExportFieldMetadata("BatchId", typeof(int), r => r.BatchId, csvToStringEncoded);
-            yield return new DeviceExportFieldMetadata("BatchName", typeof(string), r => r.BatchName, csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("BatchPurchaseDate", typeof(DateTime), r => r.BatchPurchaseDate, csvNullableDateEncoded);
-            yield return new DeviceExportFieldMetadata("BatchSupplier", typeof(string), r => r.BatchSupplier, csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("BatchUnitCost", typeof(decimal), r => r.BatchUnitCost, csvCurrencyEncoded);
-            yield return new DeviceExportFieldMetadata("BatchWarrantyValidUntilDate", typeof(DateTime), r => r.BatchWarrantyValidUntilDate, csvNullableDateEncoded);
-            yield return new DeviceExportFieldMetadata("BatchInsuredDate", typeof(DateTime), r => r.BatchInsuredDate, csvNullableDateEncoded);
-            yield return new DeviceExportFieldMetadata("BatchInsuranceSupplier", typeof(string), r => r.BatchInsuranceSupplier, csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("BatchInsuredUntilDate", typeof(DateTime), r => r.BatchInsuredUntilDate, csvNullableDateEncoded);
+            metadata.Add(nameof(DeviceExportOptions.BatchId), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.BatchId), typeof(int), r => r.BatchId, csvToStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.BatchName), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.BatchName), typeof(string), r => r.BatchName, csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.BatchPurchaseDate), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.BatchPurchaseDate), typeof(DateTime), r => r.BatchPurchaseDate, csvNullableDateEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.BatchSupplier), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.BatchSupplier), typeof(string), r => r.BatchSupplier, csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.BatchUnitCost), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.BatchUnitCost), typeof(decimal), r => r.BatchUnitCost, csvCurrencyEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.BatchWarrantyValidUntilDate), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.BatchWarrantyValidUntilDate), typeof(DateTime), r => r.BatchWarrantyValidUntilDate, csvNullableDateEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.BatchInsuredDate), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.BatchInsuredDate), typeof(DateTime), r => r.BatchInsuredDate, csvNullableDateEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.BatchInsuranceSupplier), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.BatchInsuranceSupplier), typeof(string), r => r.BatchInsuranceSupplier, csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.BatchInsuredUntilDate), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.BatchInsuredUntilDate), typeof(DateTime), r => r.BatchInsuredUntilDate, csvNullableDateEncoded) });
 
             // Profile
-            yield return new DeviceExportFieldMetadata("ProfileId", typeof(int), r => r.ProfileId, csvToStringEncoded);
-            yield return new DeviceExportFieldMetadata("ProfileName", typeof(string), r => r.ProfileName, csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("ProfileShortName", typeof(string), r => r.ProfileShortName, csvStringEncoded);
+            metadata.Add(nameof(DeviceExportOptions.ProfileId), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.ProfileId), typeof(int), r => r.ProfileId, csvToStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.ProfileName), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.ProfileName), typeof(string), r => r.ProfileName, csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.ProfileShortName), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.ProfileShortName), typeof(string), r => r.ProfileShortName, csvStringEncoded) });
 
             // User
-            yield return new DeviceExportFieldMetadata("AssignedUserId", typeof(string), r => r.AssignedUser?.UserId, csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("AssignedUserDate", typeof(DateTime), r => r.DeviceUserAssignment?.AssignedDate, csvNullableDateTimeEncoded);
-            yield return new DeviceExportFieldMetadata("AssignedUserDisplayName", typeof(string), r => r.AssignedUser?.DisplayName, csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("AssignedUserSurname", typeof(string), r => r.AssignedUser?.Surname, csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("AssignedUserGivenName", typeof(string), r => r.AssignedUser?.GivenName, csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("AssignedUserPhoneNumber", typeof(string), r => r.AssignedUser?.PhoneNumber, csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("AssignedUserEmailAddress", typeof(string), r => r.AssignedUser?.EmailAddress, csvStringEncoded);
+            metadata.Add(nameof(DeviceExportOptions.AssignedUserId), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.AssignedUserId), typeof(string), r => r.AssignedUser?.UserId, csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.AssignedUserDate), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.AssignedUserDate), typeof(DateTime), r => r.DeviceUserAssignment?.AssignedDate, csvNullableDateTimeEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.AssignedUserDisplayName), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.AssignedUserDisplayName), typeof(string), r => r.AssignedUser?.DisplayName, csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.AssignedUserSurname), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.AssignedUserSurname), typeof(string), r => r.AssignedUser?.Surname, csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.AssignedUserGivenName), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.AssignedUserGivenName), typeof(string), r => r.AssignedUser?.GivenName, csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.AssignedUserPhoneNumber), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.AssignedUserPhoneNumber), typeof(string), r => r.AssignedUser?.PhoneNumber, csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.AssignedUserEmailAddress), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.AssignedUserEmailAddress), typeof(string), r => r.AssignedUser?.EmailAddress, csvStringEncoded) });
 
             // Jobs
-            yield return new DeviceExportFieldMetadata("JobsTotalCount", typeof(int), r => r.JobsTotalCount, csvToStringEncoded);
-            yield return new DeviceExportFieldMetadata("JobsOpenCount", typeof(int), r => r.JobsOpenCount, csvToStringEncoded);
+            metadata.Add(nameof(DeviceExportOptions.JobsTotalCount), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.JobsTotalCount), typeof(int), r => r.JobsTotalCount, csvToStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.JobsOpenCount), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.JobsOpenCount), typeof(int), r => r.JobsOpenCount, csvToStringEncoded) });
 
             // Attachments
-            yield return new DeviceExportFieldMetadata("AttachmentsCount", typeof(int), r => r.AttachmentsCount, csvToStringEncoded);
+            metadata.Add(nameof(DeviceExportOptions.AttachmentsCount), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.AttachmentsCount), typeof(int), r => r.AttachmentsCount, csvToStringEncoded) });
 
             // Certificates
-            yield return new DeviceExportFieldMetadata("CertificateName", typeof(string), r => r.DeviceCertificate?.Name, csvStringEncoded);
-            yield return new DeviceExportFieldMetadata("CertificateAllocatedDate", typeof(DateTime), r => r.DeviceCertificate?.AllocatedDate, csvNullableDateTimeEncoded);
-            yield return new DeviceExportFieldMetadata("CertificateExpirationDate", typeof(DateTime), r => r.DeviceCertificate?.ExpirationDate, csvNullableDateTimeEncoded);
-            yield return new DeviceExportFieldMetadata("CertificateProviderId", typeof(string), r => r.DeviceCertificate?.ProviderId, csvStringEncoded);
+            var certificateFields = new List<DeviceExportFieldMetadata>(certificateMaxCount * 4);
+            for (int i = 0; i < certificateMaxCount; i++)
+            {
+                var v = i;
+                var index = i + 1;
+                certificateFields.Add(new DeviceExportFieldMetadata($"Certificate{index}Name", $"Certificate {index} Name", typeof(string), r => r.DeviceCertificates.Skip(v).FirstOrDefault()?.Name, csvStringEncoded));
+                certificateFields.Add(new DeviceExportFieldMetadata($"Certificate{index}AllocationDate", $"Certificate {index} Allocation Date", typeof(DateTime), r => r.DeviceCertificates.Skip(v).FirstOrDefault()?.AllocatedDate, csvNullableDateTimeEncoded));
+                certificateFields.Add(new DeviceExportFieldMetadata($"Certificate{index}ExpirationDate", $"Certificate {index} Expiration Date", typeof(DateTime), r => r.DeviceCertificates.Skip(v).FirstOrDefault()?.ExpirationDate, csvNullableDateTimeEncoded));
+                certificateFields.Add(new DeviceExportFieldMetadata($"Certificate{index}ProviderId", $"Certificate {index} Provider Id", typeof(string), r => r.DeviceCertificates.Skip(v).FirstOrDefault()?.ProviderId, csvStringEncoded));
+            }
+            metadata.Add(nameof(DeviceExportOptions.Certificates), certificateFields);
+
+            // Details
+            var processorFields = new List<DeviceExportFieldMetadata>(processorMaxCount * 6);
+            for (int i = 0; i < processorMaxCount; i++)
+            {
+                var v = i;
+                var index = i + 1;
+                processorFields.Add(new DeviceExportFieldMetadata($"Processor{index}Name", $"Processor {index} Name", typeof(string), r => r.DeviceDetailProcessors?.Skip(v).FirstOrDefault()?.Name, csvStringEncoded));
+                processorFields.Add(new DeviceExportFieldMetadata($"Processor{index}Description", $"Processor {index} Description", typeof(string), r => r.DeviceDetailProcessors?.Skip(v).FirstOrDefault()?.Description, csvStringEncoded));
+                processorFields.Add(new DeviceExportFieldMetadata($"Processor{index}Architecture", $"Processor {index} Architecture", typeof(string), r => r.DeviceDetailProcessors?.Skip(v).FirstOrDefault()?.Architecture, csvStringEncoded));
+                processorFields.Add(new DeviceExportFieldMetadata($"Processor{index}ClockSpeed", $"Processor {index} Clock Speed", typeof(string), r => r.DeviceDetailProcessors?.Skip(v).FirstOrDefault()?.MaxClockSpeedFriendly(), csvStringEncoded));
+                processorFields.Add(new DeviceExportFieldMetadata($"Processor{index}Cores", $"Processor {index} Cores", typeof(int), r => r.DeviceDetailProcessors?.Skip(v).FirstOrDefault()?.NumberOfCores, csvToStringEncoded));
+                processorFields.Add(new DeviceExportFieldMetadata($"Processor{index}LogicalProcessors", $"Processor {index} Logical Processors", typeof(int), r => r.DeviceDetailProcessors?.Skip(v).FirstOrDefault()?.NumberOfLogicalProcessors, csvToStringEncoded));
+            }
+            metadata.Add(nameof(DeviceExportOptions.DetailProcessors), processorFields);
+            var memoryFields = new List<DeviceExportFieldMetadata>((memoryMaxCount * 6) + 1);
+            memoryFields.Add(new DeviceExportFieldMetadata($"MemoryTotalCapacity", $"Memory Total Capacity", typeof(string), r => MeasurementUnitExtensions.ByteSizeToFriendly((ulong)(r.DeviceDetailPhysicalMemory?.Sum(m => (long)m.Capacity) ?? 0L)), csvStringEncoded));
+            for (int i = 0; i < memoryMaxCount; i++)
+            {
+                var v = i;
+                var index = i + 1;
+                memoryFields.Add(new DeviceExportFieldMetadata($"Memory{index}Location", $"Memory {index} Location", typeof(string), r => r.DeviceDetailPhysicalMemory?.Skip(v).FirstOrDefault()?.DeviceLocator, csvStringEncoded));
+                memoryFields.Add(new DeviceExportFieldMetadata($"Memory{index}Manufacturer", $"Memory {index} Manufacturer", typeof(string), r => r.DeviceDetailPhysicalMemory?.Skip(v).FirstOrDefault()?.Manufacturer, csvStringEncoded));
+                memoryFields.Add(new DeviceExportFieldMetadata($"Memory{index}PartNumber", $"Memory {index} Part Number", typeof(string), r => r.DeviceDetailPhysicalMemory?.Skip(v).FirstOrDefault()?.PartNumber, csvStringEncoded));
+                memoryFields.Add(new DeviceExportFieldMetadata($"Memory{index}SerialNumber", $"Memory {index} Serial Number", typeof(string), r => r.DeviceDetailPhysicalMemory?.Skip(v).FirstOrDefault()?.SerialNumber, csvStringEncoded));
+                memoryFields.Add(new DeviceExportFieldMetadata($"Memory{index}Capacity", $"Memory {index} Capacity", typeof(string), r => r.DeviceDetailPhysicalMemory?.Skip(v).FirstOrDefault()?.CapacityFriendly(), csvStringEncoded));
+                memoryFields.Add(new DeviceExportFieldMetadata($"Memory{index}ConfiguredClockSpeed", $"Memory {index} Clock Speed", typeof(int), r => r.DeviceDetailPhysicalMemory?.Skip(v).FirstOrDefault()?.ConfiguredClockSpeed, csvToStringEncoded));
+            }
+            metadata.Add(nameof(DeviceExportOptions.DetailMemory), memoryFields);
+            var diskFields = new List<DeviceExportFieldMetadata>(diskDriveMaxCount * 6);
+            for (int i = 0; i < diskDriveMaxCount; i++)
+            {
+                var v = i;
+                var index = i + 1;
+                diskFields.Add(new DeviceExportFieldMetadata($"Disk{index}Manufacturer", $"Disk {index} Manufacturer", typeof(string), r => r.DeviceDetailDiskDrives?.Skip(v).FirstOrDefault()?.Manufacturer, csvStringEncoded));
+                diskFields.Add(new DeviceExportFieldMetadata($"Disk{index}Model", $"Disk {index} Model", typeof(string), r => r.DeviceDetailDiskDrives?.Skip(v).FirstOrDefault()?.Model, csvStringEncoded));
+                diskFields.Add(new DeviceExportFieldMetadata($"Disk{index}SerialNumber", $"Disk {index} Serial Number", typeof(string), r => r.DeviceDetailDiskDrives?.Skip(v).FirstOrDefault()?.SerialNumber, csvStringEncoded));
+                diskFields.Add(new DeviceExportFieldMetadata($"Disk{index}Firmware", $"Disk {index} Firmware", typeof(string), r => r.DeviceDetailDiskDrives?.Skip(v).FirstOrDefault()?.FirmwareRevision, csvStringEncoded));
+                diskFields.Add(new DeviceExportFieldMetadata($"Disk{index}Capacity", $"Disk {index} Size", typeof(string), r => r.DeviceDetailDiskDrives?.Skip(v).FirstOrDefault()?.SizeFriendly(), csvStringEncoded));
+                diskFields.Add(new DeviceExportFieldMetadata($"Disk{index}Capacity", $"Disk {index} Total Free Space", typeof(string), r => MeasurementUnitExtensions.ByteSizeToFriendly((ulong)(r.DeviceDetailDiskDrives?.Skip(v).FirstOrDefault()?.Partitions?.Sum(p => (long)(p.LogicalDisk?.FreeSpace ?? 0L)) ?? 0L)), csvStringEncoded));
+            }
+            metadata.Add(nameof(DeviceExportOptions.DetailDiskDrives), diskFields);
+            var lanAdapterFields = new List<DeviceExportFieldMetadata>(lanAdapterMaxCount * 5);
+            for (int i = 0; i < lanAdapterMaxCount; i++)
+            {
+                var v = i;
+                var index = i + 1;
+                lanAdapterFields.Add(new DeviceExportFieldMetadata($"LanAdapter{index}Connection", $"Lan Adapter {index} Connection", typeof(string), r => r.DeviceDetailNetworkAdapters?.Where(a => !a.IsWlanAdapter).Skip(v).FirstOrDefault()?.NetConnectionID, csvStringEncoded));
+                lanAdapterFields.Add(new DeviceExportFieldMetadata($"LanAdapter{index}Manufacturer", $"Lan Adapter {index} Manufacturer", typeof(string), r => r.DeviceDetailNetworkAdapters?.Where(a => !a.IsWlanAdapter).Skip(v).FirstOrDefault()?.Manufacturer, csvStringEncoded));
+                lanAdapterFields.Add(new DeviceExportFieldMetadata($"LanAdapter{index}ProductName", $"Lan Adapter {index} Product Name", typeof(string), r => r.DeviceDetailNetworkAdapters?.Where(a => !a.IsWlanAdapter).Skip(v).FirstOrDefault()?.ProductName, csvStringEncoded));
+                lanAdapterFields.Add(new DeviceExportFieldMetadata($"LanAdapter{index}Speed", $"Lan Adapter {index} Speed", typeof(string), r => r.DeviceDetailNetworkAdapters?.Where(a => !a.IsWlanAdapter).Skip(v).FirstOrDefault()?.SpeedFriendly(), csvStringEncoded));
+                lanAdapterFields.Add(new DeviceExportFieldMetadata($"LanAdapter{index}MacAddress", $"Lan Adapter {index} Mac Address", typeof(string), r => r.DeviceDetailNetworkAdapters?.Where(a => !a.IsWlanAdapter).Skip(v).FirstOrDefault()?.MACAddress ?? r.DeviceDetailLanMacAddresses?.Skip(v).FirstOrDefault(), csvStringEncoded));
+            }
+            metadata.Add(nameof(DeviceExportOptions.DetailLanAdapters), lanAdapterFields);
+            var fields = new List<DeviceExportFieldMetadata>(wlanAdapterMaxCount * 5);
+            for (int i = 0; i < wlanAdapterMaxCount; i++)
+            {
+                var v = i;
+                var wlanAdapterFields = i + 1;
+                fields.Add(new DeviceExportFieldMetadata($"WlanAdapter{wlanAdapterFields}Connection", $"Wlan Adapter {wlanAdapterFields} Connection", typeof(string), r => r.DeviceDetailNetworkAdapters?.Where(a => a.IsWlanAdapter).Skip(v).FirstOrDefault()?.NetConnectionID, csvStringEncoded));
+                fields.Add(new DeviceExportFieldMetadata($"WlanAdapter{wlanAdapterFields}Manufacturer", $"Wlan Adapter {wlanAdapterFields} Manufacturer", typeof(string), r => r.DeviceDetailNetworkAdapters?.Where(a => a.IsWlanAdapter).Skip(v).FirstOrDefault()?.Manufacturer, csvStringEncoded));
+                fields.Add(new DeviceExportFieldMetadata($"WlanAdapter{wlanAdapterFields}ProductName", $"Wlan Adapter {wlanAdapterFields} Product Name", typeof(string), r => r.DeviceDetailNetworkAdapters?.Where(a => a.IsWlanAdapter).Skip(v).FirstOrDefault()?.ProductName, csvStringEncoded));
+                fields.Add(new DeviceExportFieldMetadata($"WlanAdapter{wlanAdapterFields}Speed", $"Wlan Adapter {wlanAdapterFields} Speed", typeof(string), r => r.DeviceDetailNetworkAdapters?.Where(a => a.IsWlanAdapter).Skip(v).FirstOrDefault()?.SpeedFriendly(), csvStringEncoded));
+                fields.Add(new DeviceExportFieldMetadata($"WlanAdapter{wlanAdapterFields}MacAddress", $"Wlan Adapter {wlanAdapterFields} Mac Address", typeof(string), r => r.DeviceDetailNetworkAdapters?.Where(a => a.IsWlanAdapter).Skip(v).FirstOrDefault()?.MACAddress ?? r.DeviceDetailWlanMacAddresses?.Skip(v).FirstOrDefault(), csvStringEncoded));
+            }
+            metadata.Add(nameof(DeviceExportOptions.DetailWLanAdapters), fields);
+
+            metadata.Add(nameof(DeviceExportOptions.DetailACAdapter), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DetailACAdapter), typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyACAdapter).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.DetailBattery), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DetailBattery), typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyBattery).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.DetailKeyboard), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DetailKeyboard), typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyKeyboard).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded) });
+
+            return metadata;
         }
 
     }
