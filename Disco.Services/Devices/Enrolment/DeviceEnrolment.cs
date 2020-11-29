@@ -453,6 +453,16 @@ namespace Disco.Services.Devices.Enrolment
                     RepoDevice.LastEnrolDate = DateTime.Now;
                 }
 
+                // store hardware audit information
+                if (Request.Hardware.Processors?.Count > 0)
+                    RepoDevice.DeviceDetails.Processors(RepoDevice, Request.Hardware.Processors);
+                if (Request.Hardware.PhysicalMemory?.Count > 0)
+                    RepoDevice.DeviceDetails.PhysicalMemory(RepoDevice, Request.Hardware.PhysicalMemory);
+                if (Request.Hardware.DiskDrives?.Count > 0)
+                    RepoDevice.DeviceDetails.DiskDrives(RepoDevice, Request.Hardware.DiskDrives);
+                if (Request.Hardware.NetworkAdapters?.Count > 0)
+                    RepoDevice.DeviceDetails.NetworkAdapters(RepoDevice, Request.Hardware.NetworkAdapters);
+
                 if (adMachineAccount == null)
                 {
                     if (RepoDevice.DeviceProfile.ProvisionADAccount)

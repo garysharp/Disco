@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Disco.Models.Repository
@@ -16,6 +12,10 @@ namespace Disco.Models.Repository
         public const string HardwareKeyACAdapter = "ACAdapter";
         public const string HardwareKeyBattery = "Battery";
         public const string HardwareKeyKeyboard = "Keyboard";
+        public const string HardwareKeyNetworkAdapters = "NetworkAdapters";
+        public const string HardwareKeyProcessors = "Processors";
+        public const string HardwareKeyPhysicalMemory = "PhysicalMemory";
+        public const string HardwareKeyDiskDrives = "DiskDrives";
 
         [Column(Order = 0), Key]
         public string DeviceSerialNumber { get; set; }

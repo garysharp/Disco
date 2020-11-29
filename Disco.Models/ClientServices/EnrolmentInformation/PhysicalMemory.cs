@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Models.ClientServices.EnrolmentInformation
+﻿namespace Disco.Models.ClientServices.EnrolmentInformation
 {
     public class PhysicalMemory
     {
@@ -14,10 +8,9 @@ namespace Disco.Models.ClientServices.EnrolmentInformation
         public string PartNumber { get; set; }
 
         public ulong Capacity { get; set; }
-        public int ClockSpeed { get; set; }
-        public int Voltage { get; set; }
+        public uint ConfiguredClockSpeed { get; set; }
+        public uint Speed { get; set; }
 
-        public string Location { get; set; }
-
+        public string DeviceLocator { get; set; }
     }
 }

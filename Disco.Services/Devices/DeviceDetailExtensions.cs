@@ -1,4 +1,6 @@
-﻿using Disco.Models.Repository;
+﻿using Disco.Models.ClientServices.EnrolmentInformation;
+using Disco.Models.Repository;
+using Exceptionless.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -155,5 +157,106 @@ namespace Disco.Services
             device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyKeyboard, Keyboard);
         }
         #endregion
+
+        /// <summary>
+        /// Gets the Network Adapters Device Detail Value
+        /// </summary>
+        public static List<NetworkAdapter> NetworkAdapters(this IEnumerable<DeviceDetail> details)
+        {
+            var json = details.GetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyNetworkAdapters);
+
+            if (string.IsNullOrEmpty(json))
+                return null;
+
+            return JsonConvert.DeserializeObject<List<NetworkAdapter>>(json);
+        }
+        /// <summary>
+        /// Sets the Network Adapters Device Detail Value
+        /// </summary>
+        public static void NetworkAdapters(this IEnumerable<DeviceDetail> details, Device device, List<NetworkAdapter> networkAdapters)
+        {
+            var json = default(string);
+
+            if (networkAdapters != null && networkAdapters.Count > 0)
+                json = JsonConvert.SerializeObject(networkAdapters);
+
+            device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyNetworkAdapters, json);
+        }
+
+        /// <summary>
+        /// Gets the Processors Device Detail Value
+        /// </summary>
+        public static List<Processor> Processors(this IEnumerable<DeviceDetail> details)
+        {
+            var json = details.GetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyProcessors);
+            
+            if (string.IsNullOrEmpty(json))
+                return null;
+
+            return JsonConvert.DeserializeObject<List<Processor>>(json);
+        }
+        /// <summary>
+        /// Sets the Processors Device Detail Value
+        /// </summary>
+        public static void Processors(this IEnumerable<DeviceDetail> details, Device device, List<Processor> processors)
+        {
+            var json = default(string);
+
+            if (processors != null && processors.Count > 0)
+                json = JsonConvert.SerializeObject(processors);
+
+            device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyProcessors, json);
+        }
+
+        /// <summary>
+        /// Gets the Physical Memory Device Detail Value
+        /// </summary>
+        public static List<PhysicalMemory> PhysicalMemory(this IEnumerable<DeviceDetail> details)
+        {
+            var json = details.GetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyPhysicalMemory);
+
+            if (string.IsNullOrEmpty(json))
+                return null;
+
+            return JsonConvert.DeserializeObject<List<PhysicalMemory>>(json);
+        }
+        /// <summary>
+        /// Sets the Physical Memory Device Detail Value
+        /// </summary>
+        public static void PhysicalMemory(this IEnumerable<DeviceDetail> details, Device device, List<PhysicalMemory> physicalMemory)
+        {
+            var json = default(string);
+
+            if (physicalMemory != null && physicalMemory.Count > 0)
+                json = JsonConvert.SerializeObject(physicalMemory);
+
+            device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyPhysicalMemory, json);
+        }
+
+        /// <summary>
+        /// Gets the Disk Drives Device Detail Value
+        /// </summary>
+        public static List<DiskDrive> DiskDrives(this IEnumerable<DeviceDetail> details)
+        {
+            var json = details.GetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyDiskDrives);
+
+            if (string.IsNullOrEmpty(json))
+                return null;
+
+            return JsonConvert.DeserializeObject<List<DiskDrive>>(json);
+        }
+        /// <summary>
+        /// Sets the Disk Drives Device Detail Value
+        /// </summary>
+        public static void DiskDrives(this IEnumerable<DeviceDetail> details, Device device, List<DiskDrive> diskDrives)
+        {
+            var json = default(string);
+
+            if (diskDrives != null && diskDrives.Count > 0)
+                json = JsonConvert.SerializeObject(diskDrives);
+
+            device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyDiskDrives, json);
+        }
+
     }
 }

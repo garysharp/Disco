@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Disco.Models.ClientServices.EnrolmentInformation
 {
@@ -12,7 +11,6 @@ namespace Disco.Models.ClientServices.EnrolmentInformation
         public string InterfaceType { get; set; }
         public string SerialNumber { get; set; }
         public string FirmwareRevision { get; set; }
-        public DateTime InstallDate { get; set; }
         public ulong Size { get; set; }
 
         public List<DiskDrivePartition> Partitions { get; set; }
