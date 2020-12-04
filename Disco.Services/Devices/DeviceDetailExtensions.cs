@@ -258,5 +258,105 @@ namespace Disco.Services
             device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyDiskDrives, json);
         }
 
+        /// <summary>
+        /// Gets the Bios Device Detail Value
+        /// </summary>
+        public static List<Bios> Bios(this IEnumerable<DeviceDetail> details)
+        {
+            var json = details.GetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyBios);
+
+            if (string.IsNullOrEmpty(json))
+                return null;
+
+            return JsonConvert.DeserializeObject<List<Bios>>(json);
+        }
+        /// <summary>
+        /// Sets the Bios Device Detail Value
+        /// </summary>
+        public static void Bios(this IEnumerable<DeviceDetail> details, Device device, List<Bios> bios)
+        {
+            var json = default(string);
+
+            if (bios != null && bios.Count > 0)
+                json = JsonConvert.SerializeObject(bios);
+
+            device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyBios, json);
+        }
+
+        /// <summary>
+        /// Gets the Base Board Device Detail Value
+        /// </summary>
+        public static List<BaseBoard> BaseBoard(this IEnumerable<DeviceDetail> details)
+        {
+            var json = details.GetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyBaseBoard);
+
+            if (string.IsNullOrEmpty(json))
+                return null;
+
+            return JsonConvert.DeserializeObject<List<BaseBoard>>(json);
+        }
+        /// <summary>
+        /// Sets the Base Board Device Detail Value
+        /// </summary>
+        public static void BaseBoard(this IEnumerable<DeviceDetail> details, Device device, List<BaseBoard> baseBoard)
+        {
+            var json = default(string);
+
+            if (baseBoard != null && baseBoard.Count > 0)
+                json = JsonConvert.SerializeObject(baseBoard);
+
+            device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyBaseBoard, json);
+        }
+
+        /// <summary>
+        /// Gets the Computer System Device Detail Value
+        /// </summary>
+        public static List<ComputerSystem> ComputerSystem(this IEnumerable<DeviceDetail> details)
+        {
+            var json = details.GetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyComputerSystem);
+
+            if (string.IsNullOrEmpty(json))
+                return null;
+
+            return JsonConvert.DeserializeObject<List<ComputerSystem>>(json);
+        }
+        /// <summary>
+        /// Sets the Computer System Device Detail Value
+        /// </summary>
+        public static void ComputerSystem(this IEnumerable<DeviceDetail> details, Device device, List<ComputerSystem> computerSystem)
+        {
+            var json = default(string);
+
+            if (computerSystem != null && computerSystem.Count > 0)
+                json = JsonConvert.SerializeObject(computerSystem);
+
+            device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyComputerSystem, json);
+        }
+
+        /// <summary>
+        /// Gets the Batteries Device Detail Value
+        /// </summary>
+        public static List<Battery> Batteries(this IEnumerable<DeviceDetail> details)
+        {
+            var json = details.GetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyBatteries);
+
+            if (string.IsNullOrEmpty(json))
+                return null;
+
+            return JsonConvert.DeserializeObject<List<Battery>>(json);
+        }
+        /// <summary>
+        /// Sets the Batteries Device Detail Value
+        /// </summary>
+        public static void Batteries(this IEnumerable<DeviceDetail> details, Device device, List<Battery> batteries)
+        {
+            var json = default(string);
+
+            if (batteries != null && batteries.Count > 0)
+                json = JsonConvert.SerializeObject(batteries);
+
+            device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyBatteries, json);
+        }
+
     }
 }

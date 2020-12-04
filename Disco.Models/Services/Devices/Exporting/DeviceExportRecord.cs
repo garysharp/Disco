@@ -11,12 +11,16 @@ namespace Disco.Models.Services.Devices.Exporting
 
         // Details
         public IList<DeviceDetail> DeviceDetails { get; set; }
+        public List<Bios> DeviceDetailBios { get; set; }
+        public List<BaseBoard> DeviceDetailBaseBoard { get; set; }
+        public List<ComputerSystem> DeviceDetailComputerSystem { get; set; }
         public List<Processor> DeviceDetailProcessors { get; set; }
         public List<PhysicalMemory> DeviceDetailPhysicalMemory { get; set; }
         public List<DiskDrive> DeviceDetailDiskDrives { get; set; }
         public List<NetworkAdapter> DeviceDetailNetworkAdapters { get; set; }
         public List<string> DeviceDetailLanMacAddresses { get; set; }
         public List<string> DeviceDetailWlanMacAddresses { get; set; }
+        public List<Battery> DeviceDetailBatteries { get; set; }
 
         // Model
         public int? ModelId { get; set; }

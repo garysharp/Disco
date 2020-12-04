@@ -65,11 +65,23 @@
     <Compile Include="..\Disco.Models\ClientServices\Enrol.cs">
       <Link>Models\ClientServices\Enrol.cs</Link>
     </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\BaseBoard.cs">
+      <Link>Models\ClientServices\EnrolmentInformation\BaseBoard.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\Battery.cs">
+      <Link>Models\ClientServices\EnrolmentInformation\Battery.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\Bios.cs">
+      <Link>Models\ClientServices\EnrolmentInformation\Bios.cs</Link>
+    </Compile>
     <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\Certificate.cs">
       <Link>Models\ClientServices\EnrolmentInformation\Certificate.cs</Link>
     </Compile>
     <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\CertificateStore.cs">
       <Link>Models\ClientServices\EnrolmentInformation\CertificateStore.cs</Link>
+    </Compile>
+    <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\ComputerSystem.cs">
+      <Link>Models\ClientServices\EnrolmentInformation\ComputerSystem.cs</Link>
     </Compile>
     <Compile Include="..\Disco.Models\ClientServices\EnrolmentInformation\DeviceHardware.cs">
       <Link>Models\ClientServices\EnrolmentInformation\DeviceHardware.cs</Link>
@@ -169,6 +181,11 @@
 "$(ProjectDir)Package Creation\7z.exe" a -tzip "$(ProjectDir)Package Creation\PreparationClient.zip" "$(TargetDir)*.*" -x!*.tmp -x!*.vshost.* -x!Newtonsoft.Json.xml -x!*.pdb
 COPY "$(ProjectDir)Package Creation\PreparationClient.zip" "$(ProjectDir)..\Disco.Web\ClientBin"</PostBuildEvent>
   </PropertyGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

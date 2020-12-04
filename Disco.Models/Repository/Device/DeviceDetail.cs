@@ -16,6 +16,10 @@ namespace Disco.Models.Repository
         public const string HardwareKeyProcessors = "Processors";
         public const string HardwareKeyPhysicalMemory = "PhysicalMemory";
         public const string HardwareKeyDiskDrives = "DiskDrives";
+        public const string HardwareKeyBios = "Bios";
+        public const string HardwareKeyBaseBoard = "BaseBoard";
+        public const string HardwareKeyComputerSystem = "ComputerSystem";
+        public const string HardwareKeyBatteries = "Batteries";
 
         [Column(Order = 0), Key]
         public string DeviceSerialNumber { get; set; }

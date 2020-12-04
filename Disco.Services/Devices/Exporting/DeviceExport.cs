@@ -26,6 +26,12 @@ namespace Disco.Services.Devices.Exporting
             // materialize device details
             records.ForEach(r =>
             {
+                if (Options.DetailBios)
+                    r.DeviceDetailBios = r.DeviceDetails.Bios();
+                if (Options.DetailBaseBoard)
+                    r.DeviceDetailBaseBoard = r.DeviceDetails.BaseBoard();
+                if (Options.DetailComputerSystem)
+                    r.DeviceDetailComputerSystem = r.DeviceDetails.ComputerSystem();
                 if (Options.DetailProcessors)
                     r.DeviceDetailProcessors = r.DeviceDetails.Processors();
                 if (Options.DetailMemory)
@@ -41,6 +47,8 @@ namespace Disco.Services.Devices.Exporting
                         r.DeviceDetailWlanMacAddresses = r.DeviceDetails.WLanMacAddress()?.Split(';').Select(a => a.Trim()).ToList();
                     }
                 }
+                if (Options.DetailBatteries)
+                    r.DeviceDetailBatteries = r.DeviceDetails.Batteries();
             });
 
             TaskStatus.UpdateStatus(40, "Building metadata and database query");
@@ -239,8 +247,9 @@ namespace Disco.Services.Devices.Exporting
             var lanAdapterMaxCount = Math.Max(1, records.Max(r => r.DeviceDetailNetworkAdapters?.Count(a => !a.IsWlanAdapter) ?? r.DeviceDetailLanMacAddresses?.Count ?? 0));
             var wlanAdapterMaxCount = Math.Max(1, records.Max(r => r.DeviceDetailNetworkAdapters?.Count(a => a.IsWlanAdapter) ?? r.DeviceDetailWlanMacAddresses?.Count ?? 0));
             var certificateMaxCount = Math.Max(1, records.Max(r => r.DeviceCertificates?.Count() ?? 0));
+            var batteriesMaxCount = Math.Max(1, records.Max(r => r.DeviceDetailBatteries?.Count ?? 0));
 
-            var allAssessors = BuildRecordAccessors(processorMaxCount, memoryMaxCount, diskDriveMaxCount, lanAdapterMaxCount, wlanAdapterMaxCount, certificateMaxCount);
+            var allAssessors = BuildRecordAccessors(processorMaxCount, memoryMaxCount, diskDriveMaxCount, lanAdapterMaxCount, wlanAdapterMaxCount, certificateMaxCount, batteriesMaxCount);
 
             return typeof(DeviceExportOptions).GetProperties()
                 .Where(p => p.PropertyType == typeof(bool))
@@ -262,7 +271,7 @@ namespace Disco.Services.Devices.Exporting
                 }).ToList();
         }
 
-        private static Dictionary<string, List<DeviceExportFieldMetadata>> BuildRecordAccessors(int processorMaxCount, int memoryMaxCount, int diskDriveMaxCount, int lanAdapterMaxCount, int wlanAdapterMaxCount, int certificateMaxCount)
+        private static Dictionary<string, List<DeviceExportFieldMetadata>> BuildRecordAccessors(int processorMaxCount, int memoryMaxCount, int diskDriveMaxCount, int lanAdapterMaxCount, int wlanAdapterMaxCount, int certificateMaxCount, int batteriesMaxCount)
         {
             const string DateFormat = "yyyy-MM-dd";
             const string DateTimeFormat = DateFormat + " HH:mm:ss";
@@ -343,6 +352,80 @@ namespace Disco.Services.Devices.Exporting
             metadata.Add(nameof(DeviceExportOptions.Certificates), certificateFields);
 
             // Details
+            var biosFields = new List<DeviceExportFieldMetadata>()
+            {
+                new DeviceExportFieldMetadata("BIOSManufacturer", "BIOS Manufacturer", typeof(string), r => r.DeviceDetailBios?.FirstOrDefault()?.Manufacturer, csvStringEncoded),
+                new DeviceExportFieldMetadata("BIOSSerialNumber", "BIOS Serial Number", typeof(string), r => r.DeviceDetailBios?.FirstOrDefault()?.SerialNumber, csvStringEncoded),
+                new DeviceExportFieldMetadata("BIOSVersion", "BIOS Version", typeof(string), r => {
+                    var bios = r.DeviceDetailBios?.FirstOrDefault();
+                    if (bios?.SMBIOSBIOSVersion != null)
+                        return $"{bios.SMBIOSBIOSVersion} {bios.SMBIOSMajorVersion}.{bios.SMBIOSMinorVersion}";
+                    else
+                        return null;
+                    }, csvStringEncoded),
+                new DeviceExportFieldMetadata("BIOSSystemVersion", "BIOS System Version", typeof(string), r => {
+                    var bios = r.DeviceDetailBios?.FirstOrDefault();
+                    if (bios?.SystemBiosMajorVersion.HasValue ?? false)
+                        return $"{bios.SystemBiosMajorVersion}.{bios.SystemBiosMinorVersion}";
+                    else
+                        return null;
+                    }, csvStringEncoded),
+                new DeviceExportFieldMetadata("BIOSReleaseDate", "BIOS Release Date", typeof(DateTime), r => r.DeviceDetailBios?.FirstOrDefault()?.ReleaseDate, csvNullableDateTimeEncoded),
+            };
+            metadata.Add(nameof(DeviceExportOptions.DetailBios), biosFields);
+
+            var baseBoardFields = new List<DeviceExportFieldMetadata>()
+            {
+                new DeviceExportFieldMetadata("BaseBoardManufacturer", "Base Board Manufacturer", typeof(string), r => r.DeviceDetailBaseBoard?.FirstOrDefault()?.Manufacturer, csvStringEncoded),
+                new DeviceExportFieldMetadata("BaseBoardModel", "Base Board Model", typeof(string), r => r.DeviceDetailBaseBoard?.FirstOrDefault()?.Model, csvStringEncoded),
+                new DeviceExportFieldMetadata("BaseBoardProduct", "Base Board Product", typeof(string), r => r.DeviceDetailBaseBoard?.FirstOrDefault()?.Product, csvStringEncoded),
+                new DeviceExportFieldMetadata("BaseBoardPartNumber", "Base Board Part Number", typeof(string), r => r.DeviceDetailBaseBoard?.FirstOrDefault()?.PartNumber, csvStringEncoded),
+                new DeviceExportFieldMetadata("BaseBoardSKU", "Base Board SKU", typeof(string), r => r.DeviceDetailBaseBoard?.FirstOrDefault()?.SKU, csvStringEncoded),
+                new DeviceExportFieldMetadata("BaseBoardSerialNumber", "Base Board Serial Number", typeof(string), r => r.DeviceDetailBaseBoard?.FirstOrDefault()?.SerialNumber, csvStringEncoded),
+                new DeviceExportFieldMetadata("BaseBoardConfigOptions", "Base Board Config Options", typeof(string), r => {
+                    var baseBoard = r.DeviceDetailBaseBoard?.FirstOrDefault();
+                    if (baseBoard?.ConfigOptions != null)
+                        return string.Join("; ", baseBoard.ConfigOptions);
+                    else
+                        return null;
+                    }, csvStringEncoded),
+                new DeviceExportFieldMetadata("BaseBoardVersion", "Base Board Version", typeof(string), r => r.DeviceDetailBaseBoard?.FirstOrDefault()?.Version, csvStringEncoded),
+            };
+            metadata.Add(nameof(DeviceExportOptions.DetailBaseBoard), baseBoardFields);
+
+            var computerSystemFields = new List<DeviceExportFieldMetadata>()
+            {
+                new DeviceExportFieldMetadata("ComputerSystemDescription", "System Description", typeof(string), r => r.DeviceDetailComputerSystem?.FirstOrDefault()?.Description, csvStringEncoded),
+                new DeviceExportFieldMetadata("ComputerSystemPCSystemType", "System Form Factor", typeof(string), r => r.DeviceDetailComputerSystem?.FirstOrDefault()?.PCSystemType, csvStringEncoded),
+                new DeviceExportFieldMetadata("ComputerSystemSystemType", "System Type", typeof(string), r => r.DeviceDetailComputerSystem?.FirstOrDefault()?.SystemType, csvStringEncoded),
+                new DeviceExportFieldMetadata("ComputerSystemPrimaryOwnerName", "System Primary Owner Name", typeof(string), r => r.DeviceDetailComputerSystem?.FirstOrDefault()?.PrimaryOwnerName, csvStringEncoded),
+                new DeviceExportFieldMetadata("ComputerSystemPrimaryOwnerContact", "System Primary Owner Contact", typeof(string), r => r.DeviceDetailComputerSystem?.FirstOrDefault()?.PrimaryOwnerContact, csvStringEncoded),
+                new DeviceExportFieldMetadata("ComputerSystemChassisSKU", "System Chassis SKU", typeof(string), r => r.DeviceDetailComputerSystem?.FirstOrDefault()?.ChassisSKUNumber, csvStringEncoded),
+                new DeviceExportFieldMetadata("ComputerSystemSystemSKU", "System SKU", typeof(string), r => r.DeviceDetailComputerSystem?.FirstOrDefault()?.SystemSKUNumber, csvStringEncoded),
+                new DeviceExportFieldMetadata("ComputerSystemOEMReference", "System OEM Reference", typeof(string), r => {
+                    var computerSystem = r.DeviceDetailComputerSystem?.FirstOrDefault();
+                    if (computerSystem?.OEMStringArray != null)
+                        return string.Join("; ", computerSystem.OEMStringArray);
+                    else
+                        return null;
+                    }, csvStringEncoded),
+                new DeviceExportFieldMetadata("ComputerSystemCurrentTimeZone", "System Time Zone", typeof(string), r => {
+                    var computerSystem = r.DeviceDetailComputerSystem?.FirstOrDefault();
+                    if (computerSystem?.CurrentTimeZone.HasValue ?? false)
+                        return $"{computerSystem.CurrentTimeZone.Value / 60:00}:{Math.Abs(computerSystem.CurrentTimeZone.Value % 60):00}";
+                    else
+                        return null;
+                    }, csvStringEncoded),
+                new DeviceExportFieldMetadata("ComputerSystemRoles", "System Roles", typeof(string), r => {
+                    var computerSystem = r.DeviceDetailComputerSystem?.FirstOrDefault();
+                    if (computerSystem?.Roles != null)
+                        return string.Join("; ", computerSystem.Roles);
+                    else
+                        return null;
+                    }, csvStringEncoded),
+            };
+            metadata.Add(nameof(DeviceExportOptions.DetailComputerSystem), computerSystemFields);
+
             var processorFields = new List<DeviceExportFieldMetadata>(processorMaxCount * 6);
             for (int i = 0; i < processorMaxCount; i++)
             {
@@ -410,6 +493,20 @@ namespace Disco.Services.Devices.Exporting
 
             metadata.Add(nameof(DeviceExportOptions.DetailACAdapter), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DetailACAdapter), typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyACAdapter).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded) });
             metadata.Add(nameof(DeviceExportOptions.DetailBattery), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DetailBattery), typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyBattery).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded) });
+            var batteriesFields = new List<DeviceExportFieldMetadata>(processorMaxCount * 6);
+            for (int i = 0; i < batteriesMaxCount; i++)
+            {
+                var v = i;
+                var index = i + 1;
+                batteriesFields.Add(new DeviceExportFieldMetadata($"Batteries{index}Name", $"Battery {index} Name", typeof(string), r => r.DeviceDetailBatteries?.Skip(v).FirstOrDefault()?.Name, csvStringEncoded));
+                batteriesFields.Add(new DeviceExportFieldMetadata($"Batteries{index}Description", $"Battery {index} Description", typeof(string), r => r.DeviceDetailBatteries?.Skip(v).FirstOrDefault()?.Description, csvStringEncoded));
+                batteriesFields.Add(new DeviceExportFieldMetadata($"Batteries{index}Availability", $"Battery {index} Availability", typeof(string), r => r.DeviceDetailBatteries?.Skip(v).FirstOrDefault()?.Availability, csvStringEncoded));
+                batteriesFields.Add(new DeviceExportFieldMetadata($"Batteries{index}Chemistry", $"Battery {index} Chemistry", typeof(string), r => r.DeviceDetailBatteries?.Skip(v).FirstOrDefault()?.Chemistry, csvStringEncoded));
+                batteriesFields.Add(new DeviceExportFieldMetadata($"Batteries{index}DesignVoltage", $"Battery {index} Design Voltage", typeof(long), r => r.DeviceDetailBatteries?.Skip(v).FirstOrDefault()?.DesignVoltage, csvToStringEncoded));
+                batteriesFields.Add(new DeviceExportFieldMetadata($"Batteries{index}DesignCapacity", $"Battery {index} Design Capacity", typeof(int), r => r.DeviceDetailBatteries?.Skip(v).FirstOrDefault()?.DesignCapacity, csvToStringEncoded));
+                batteriesFields.Add(new DeviceExportFieldMetadata($"Batteries{index}FullChargeCapacity", $"Battery {index} Capacity", typeof(int), r => r.DeviceDetailBatteries?.Skip(v).FirstOrDefault()?.FullChargeCapacity, csvToStringEncoded));
+            }
+            metadata.Add(nameof(DeviceExportOptions.DetailBatteries), batteriesFields);
             metadata.Add(nameof(DeviceExportOptions.DetailKeyboard), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DetailKeyboard), typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyKeyboard).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded) });
 
             return metadata;

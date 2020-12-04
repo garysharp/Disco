@@ -78,13 +78,13 @@ namespace Disco.Services
             return $"{speed:N0} MHz";
         }
 
-        public static string SizeFriendly(this DiskDrive diskDrive) => ByteSizeToFriendly(diskDrive.Size);
-        public static string SizeFriendly(this DiskDrivePartition partition) => ByteSizeToFriendly(partition.Size);
-        public static string SizeFriendly(this DiskLogical disk) => ByteSizeToFriendly(disk.Size);
-        public static string FreeSpaceFriendly(this DiskLogical disk) => ByteSizeToFriendly(disk.FreeSpace);
+        public static string SizeFriendly(this DiskDrive diskDrive) => ByteSizeToFriendly(diskDrive.Size ?? 0);
+        public static string SizeFriendly(this DiskDrivePartition partition) => ByteSizeToFriendly(partition.Size ?? 0);
+        public static string SizeFriendly(this DiskLogical disk) => ByteSizeToFriendly(disk.Size ?? 0);
+        public static string FreeSpaceFriendly(this DiskLogical disk) => ByteSizeToFriendly(disk.FreeSpace ?? 0);
         public static string SpeedFriendly(this NetworkAdapter networkAdapter) => SpeedPacketBitsToFriendly(networkAdapter.Speed);
-        public static string CapacityFriendly(this PhysicalMemory physicalMemory) => ByteSizeToFriendly(physicalMemory.Capacity);
-        public static string MaxClockSpeedFriendly(this Processor processor) => SpeedMegahertzToFriendly(processor.MaxClockSpeed);
+        public static string CapacityFriendly(this PhysicalMemory physicalMemory) => ByteSizeToFriendly(physicalMemory.Capacity ?? 0);
+        public static string MaxClockSpeedFriendly(this Processor processor) => SpeedMegahertzToFriendly(processor.MaxClockSpeed ?? 0);
 
     }
 }

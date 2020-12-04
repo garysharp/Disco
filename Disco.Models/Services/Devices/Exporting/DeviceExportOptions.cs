@@ -104,6 +104,12 @@ namespace Disco.Models.Services.Devices.Exporting
         public bool Certificates { get; set; }
 
         // Details
+        [Display(ShortName = "Details", Name = "BIOS", Description = "The BIOS associated with the device")]
+        public bool DetailBios { get; set; }
+        [Display(ShortName = "Details", Name = "Base Board", Description = "The Base Board associated with the device")]
+        public bool DetailBaseBoard { get; set; }
+        [Display(ShortName = "Details", Name = "System", Description = "The System information associated with the device")]
+        public bool DetailComputerSystem { get; set; }
         [Display(ShortName = "Details", Name = "Processors", Description = "The CPU Processors associated with the device")]
         public bool DetailProcessors { get; set; }
         [Display(ShortName = "Details", Name = "Memory", Description = "The Memory/RAM associated with the device")]
@@ -116,7 +122,9 @@ namespace Disco.Models.Services.Devices.Exporting
         public bool DetailWLanAdapters { get; set; }
         [Display(ShortName = "Details", Name = "AC Adapter", Description = "The AC Adapter associated with the device")]
         public bool DetailACAdapter { get; set; }
-        [Display(ShortName = "Details", Name = "Battery", Description = "The Battery associated with the device")]
+        [Display(ShortName = "Details", Name = "Battery", Description = "The manually entered battery associated with the device")]
+        public bool DetailBatteries { get; set; }
+        [Display(ShortName = "Details", Name = "Batteries", Description = "The reported batteries associated with the device")]
         public bool DetailBattery { get; set; }
         [Display(ShortName = "Details", Name = "Keyboard", Description = "The Keyboard associated with the device")]
         public bool DetailKeyboard { get; set; }

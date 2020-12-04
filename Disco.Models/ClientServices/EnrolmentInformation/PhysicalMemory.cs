@@ -7,9 +7,9 @@
         public string Manufacturer { get; set; }
         public string PartNumber { get; set; }
 
-        public ulong Capacity { get; set; }
-        public uint ConfiguredClockSpeed { get; set; }
-        public uint Speed { get; set; }
+        public ulong? Capacity { get; set; }
+        public uint? ConfiguredClockSpeed { get; set; }
+        public uint? Speed { get; set; }
 
         public string DeviceLocator { get; set; }
     }

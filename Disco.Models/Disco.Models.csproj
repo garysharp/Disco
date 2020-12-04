@@ -49,6 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BI\Config\OrganisationAddress.cs" />
+    <Compile Include="ClientServices\EnrolmentInformation\BaseBoard.cs" />
+    <Compile Include="ClientServices\EnrolmentInformation\Battery.cs" />
+    <Compile Include="ClientServices\EnrolmentInformation\Bios.cs" />
+    <Compile Include="ClientServices\EnrolmentInformation\ComputerSystem.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\DiskLogical.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\DeviceHardware.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\DiskDrive.cs" />
@@ -60,6 +64,7 @@
     <Compile Include="ClientServices\EnrolmentInformation\WirelessProfile.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\WirelessProfileStore.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\WirelessProfileTransformation.cs" />
+    <Compile Include="Repository\Device\DeviceBatchAttachment.cs" />
     <Compile Include="Services\Devices\Exporting\DeviceExportFieldMetadata.cs" />
     <Compile Include="Services\Devices\Importing\IDeviceImportColumn.cs" />
     <Compile Include="Services\Devices\Importing\IDeviceImportDataReader.cs" />
@@ -202,6 +207,11 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

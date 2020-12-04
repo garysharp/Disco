@@ -15,16 +15,152 @@
     var networkAdapters = Model.Device.DeviceDetails.NetworkAdapters();
     var lanMacAddress = Model.Device.DeviceDetails.LanMacAddress();
     var wlanMacAddress = Model.Device.DeviceDetails.WLanMacAddress();
+    var bios = Model.Device.DeviceDetails.Bios();
+    var baseBoard = Model.Device.DeviceDetails.BaseBoard();
+    var computerSystem = Model.Device.DeviceDetails.ComputerSystem();
+    var batteries = Model.Device.DeviceDetails.Batteries();
 }
 <div id="DeviceDetailTab-Details" class="DevicePart">
     <div id="DeviceDetailTab-DetailsContainer">
         <table class="tableData">
             <tbody>
+                @if (bios != null)
+                {
+                    <tr class="device_detail_bios">
+                        <th>BIOS</th>
+                        <td>
+                            <table class="tableData">
+                                <thead>
+                                    <tr>
+                                        <th>Manufacturer</th>
+                                        <th>Serial Number</th>
+                                        <th>Version</th>
+                                        <th>System Version</th>
+                                        <th>Release Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var b in bios)
+                                    {
+                                        <tr>
+                                            <td>@b.Manufacturer</td>
+                                            <td>@b.SerialNumber</td>
+                                            <td>@b.SMBIOSBIOSVersion @(b.SMBIOSMajorVersion.GetValueOrDefault(0)).@b.SMBIOSMinorVersion</td>
+                                            <td>@(b.SystemBiosMajorVersion).@b.SystemBiosMinorVersion</td>
+                                            <td>
+                                                @if (b.ReleaseDate.HasValue)
+                                                {
+                                                    @b.ReleaseDate.Value.ToString("yyyy-MM-dd")
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+                @if (baseBoard != null)
+                {
+                    <tr class="device_detail_base_board">
+                        <th>Base Board</th>
+                        <td>
+                            <table class="tableData">
+                                <thead>
+                                    <tr>
+                                        <th>Manufacturer</th>
+                                        <th>Model</th>
+                                        <th>Product</th>
+                                        <th>Part Number</th>
+                                        <th>SKU</th>
+                                        <th>Serial Number</th>
+                                        <th>Config Options</th>
+                                        <th>Version</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var b in baseBoard)
+                                    {
+                                        <tr>
+                                            <td>@b.Manufacturer</td>
+                                            <td>@b.Model</td>
+                                            <td>@b.Product</td>
+                                            <td>@b.PartNumber</td>
+                                            <td>@b.SKU</td>
+                                            <td>@b.SerialNumber</td>
+                                            <td>
+                                                @if (b.ConfigOptions != null)
+                                                {
+                                                    @string.Join("; ", b.ConfigOptions)
+                                                }
+                                            </td>
+                                            <td>@b.Version</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+                @if (computerSystem != null)
+                {
+                    <tr class="device_detail_computer_system">
+                        <th>System</th>
+                        <td>
+                            <table class="tableData">
+                                <thead>
+                                    <tr>
+                                        <th>Description</th>
+                                        <th>Form Factor</th>
+                                        <th>Type</th>
+                                        <th>Primary Owner</th>
+                                        <th>Chassis SKU</th>
+                                        <th>System SKU</th>
+                                        <th>OEM Reference</th>
+                                        <th>Time Zone</th>
+                                        <th>Roles</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var c in computerSystem)
+                                    {
+                                        <tr>
+                                            <td>@c.Description</td>
+                                            <td>@c.PCSystemType</td>
+                                            <td>@c.SystemType</td>
+                                            <td>@c.PrimaryOwnerName @c.PrimaryOwnerContact</td>
+                                            <td>@c.ChassisSKUNumber</td>
+                                            <td>@c.SystemSKUNumber</td>
+                                            <td>
+                                                @if (c.OEMStringArray != null)
+                                                {
+                                                    @string.Join("; ", c.OEMStringArray)
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (c.CurrentTimeZone.HasValue)
+                                                {
+                                                    @((c.CurrentTimeZone.Value / 60).ToString(@"00\:"))@(Math.Abs(c.CurrentTimeZone.Value % 60).ToString("00"))
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (c.Roles != null)
+                                                {
+                                                    @string.Join("; ", c.Roles)
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
                 @if (processors != null)
                 {
-                    <tr>
+                    <tr class="device_detail_processors">
                         <th>Processors</th>
-                        <td class="device_detail_processors">
+                        <td>
                             <table class="tableData">
                                 <thead>
                                     <tr>
@@ -44,8 +180,8 @@
                                             <td>@processor.Description</td>
                                             <td>@processor.Architecture</td>
                                             <td>@processor.MaxClockSpeedFriendly()</td>
-                                            <td>@processor.NumberOfCores.ToString("N0")</td>
-                                            <td>@processor.NumberOfLogicalProcessors.ToString("N0")</td>
+                                            <td>@processor.NumberOfCores.GetValueOrDefault(0).ToString("N0")</td>
+                                            <td>@processor.NumberOfLogicalProcessors.GetValueOrDefault(0).ToString("N0")</td>
                                         </tr>
                                     }
                                 </tbody>
@@ -124,14 +260,14 @@
                 {
                     if (lanMacAddress != null)
                     {
-                        <tr>
+                        <tr class="device_detail_lan_mac_address">
                             <th>LAN MAC Address</th>
                             <td class="pad code">@(lanMacAddress)</td>
                         </tr>
                     }
                     if (wlanMacAddress != null)
                     {
-                        <tr>
+                        <tr class="device_detail_wlan_mac_address">
                             <th>WLAN MAC Address</th>
                             <td class="pad code">@(wlanMacAddress)</td>
                         </tr>
@@ -170,7 +306,7 @@
                                         {
                                             // calculate stretched offsets
                                             var minPartitionSize = (double)disk.Size * 0.1;
-                                            var diskSizeAdjusted = disk.Partitions.Sum(p => Math.Max(minPartitionSize, p.Size));
+                                            var diskSizeAdjusted = disk.Partitions.Sum(p => Math.Max(minPartitionSize, p.Size.GetValueOrDefault(0)));
                                             var diskAdjustedOffet = (double)0;
                                             <tr>
                                                 <td colspan="7">
@@ -179,21 +315,21 @@
                                                         {
                                                             var logicalDisk = partition.LogicalDisk;
 
-                                                            var offsetPercentage = Math.Round(((partition.StartingOffset + diskAdjustedOffet) / diskSizeAdjusted) * 100, 3);
-                                                            var widthPercentage = Math.Round((Math.Max(minPartitionSize, partition.Size) / diskSizeAdjusted) * 100, 3);
+                                                            var offsetPercentage = Math.Round(((partition.StartingOffset.GetValueOrDefault(0) + diskAdjustedOffet) / diskSizeAdjusted) * 100, 3);
+                                                            var widthPercentage = Math.Round((Math.Max(minPartitionSize, partition.Size.GetValueOrDefault(0)) / diskSizeAdjusted) * 100, 3);
                                                             var freeSpacePercentage = 0d;
                                                             if (partition.Size < minPartitionSize)
                                                             {
-                                                                diskAdjustedOffet += minPartitionSize - partition.Size;
+                                                                diskAdjustedOffet += minPartitionSize - partition.Size.GetValueOrDefault(0);
                                                             }
 
                                                             var partitionTitle = partition.Type;
                                                             var tags = new List<string>();
-                                                            if (partition.BootPartition)
+                                                            if (partition.BootPartition.GetValueOrDefault(false))
                                                             {
                                                                 tags.Add("Boot");
                                                             }
-                                                            if (partition.PrimaryParition)
+                                                            if (partition.PrimaryParition.GetValueOrDefault(false))
                                                             {
                                                                 tags.Add("Primary");
                                                             }
@@ -204,7 +340,7 @@
                                                                 tags.Add(logicalDisk.FreeSpaceFriendly() + " Free");
                                                                 tags.Add(logicalDisk.FileSystem);
                                                                 tags.Add(logicalDisk.DriveType);
-                                                                freeSpacePercentage = Math.Round(((double)logicalDisk.FreeSpace / logicalDisk.Size) * 100, 3);
+                                                                freeSpacePercentage = Math.Round(((double)logicalDisk.FreeSpace.GetValueOrDefault(0) / logicalDisk.Size.GetValueOrDefault(0)) * 100, 3);
                                                             }
                                                             else
                                                             {
@@ -233,7 +369,8 @@
                         </td>
                     </tr>
                 }
-                <tr>
+
+                <tr class="device_detail_ac_adapter">
                     <th>AC Adapter</th>
                     <td class="pad">
                         @if (canConfig)
@@ -251,7 +388,7 @@
                         }
                     </td>
                 </tr>
-                <tr>
+                <tr class="device_detail_battery">
                     <th>Battery</th>
                     <td class="pad">
                         @if (canConfig)
@@ -269,7 +406,42 @@
                         }
                     </td>
                 </tr>
-                <tr>
+                @if (batteries != null)
+                {
+                    <tr class="device_detail_batteries">
+                        <th>&nbsp;</th>
+                        <td>
+                            <table class="tableData">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Availability</th>
+                                        <th>Chemistry</th>
+                                        <th>Design Voltage</th>
+                                        <th>Design Capacity</th>
+                                        <th>Capacity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var battery in batteries)
+                                    {
+                                        <tr>
+                                            <td>@battery.Name</td>
+                                            <td>@battery.Description</td>
+                                            <td>@battery.Availability</td>
+                                            <td>@battery.Chemistry</td>
+                                            <td>@battery.DesignVoltage.GetValueOrDefault(0).ToString("N0") mV</td>
+                                            <td>@battery.DesignCapacity.GetValueOrDefault(0).ToString("N0") mWh</td>
+                                            <td>@battery.FullChargeCapacity.GetValueOrDefault(0).ToString("N0") mWh</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+                <tr class="device_detail_keyboard">
                     <th>Keyboard</th>
                     <td class="pad">
                         @if (canConfig)
@@ -289,7 +461,7 @@
                 </tr>
                 @if (Model.Device.LastEnrolDate.HasValue)
                 {
-                    <tr>
+                    <tr class="device_detail_update">
                         <td colspan="2"><em>Details collected @CommonHelpers.FriendlyDate(Model.Device.LastEnrolDate) at time of last enrolment</em></td>
                     </tr>
                 }

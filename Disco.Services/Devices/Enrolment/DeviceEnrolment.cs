@@ -454,6 +454,12 @@ namespace Disco.Services.Devices.Enrolment
                 }
 
                 // store hardware audit information
+                if (Request.Hardware.Bios?.Count > 0)
+                    RepoDevice.DeviceDetails.Bios(RepoDevice, Request.Hardware.Bios);
+                if (Request.Hardware.BasebBoard?.Count > 0)
+                    RepoDevice.DeviceDetails.BaseBoard(RepoDevice, Request.Hardware.BasebBoard);
+                if (Request.Hardware.ComputerSystem?.Count > 0)
+                    RepoDevice.DeviceDetails.ComputerSystem(RepoDevice, Request.Hardware.ComputerSystem);
                 if (Request.Hardware.Processors?.Count > 0)
                     RepoDevice.DeviceDetails.Processors(RepoDevice, Request.Hardware.Processors);
                 if (Request.Hardware.PhysicalMemory?.Count > 0)
@@ -462,6 +468,8 @@ namespace Disco.Services.Devices.Enrolment
                     RepoDevice.DeviceDetails.DiskDrives(RepoDevice, Request.Hardware.DiskDrives);
                 if (Request.Hardware.NetworkAdapters?.Count > 0)
                     RepoDevice.DeviceDetails.NetworkAdapters(RepoDevice, Request.Hardware.NetworkAdapters);
+                if (Request.Hardware.Batteries?.Count > 0)
+                    RepoDevice.DeviceDetails.Batteries(RepoDevice, Request.Hardware.Batteries);
 
                 if (adMachineAccount == null)
                 {
