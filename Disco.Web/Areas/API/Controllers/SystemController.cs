@@ -3,6 +3,7 @@ using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Interop.DiscoServices;
+using Disco.Services.Messaging;
 using Disco.Services.Web;
 using System;
 using System.Collections.Generic;
@@ -355,6 +356,51 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 UpdateQueryTask.ScheduleNow();
             }
+
+            if (redirect)
+                return RedirectToAction(MVC.Config.SystemConfig.Index());
+            else
+                return Json("OK", JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
+        #region Email Settings
+
+        [DiscoAuthorize(Claims.Config.System.ConfigureEmail), ValidateInput(false), ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateEmailSettings(string SmtpServer, int? SmtpPort, string FromAddress, bool EnableSsl, string Username, string Password, bool redirect = false)
+        {
+            // Default Port
+            if (!SmtpPort.HasValue)
+                SmtpPort = 25;
+
+            EmailService.ValidateConfiguration(SmtpServer, SmtpPort.Value, FromAddress, EnableSsl, Username, Password);
+
+            SystemConfiguration config = Database.DiscoConfiguration;
+            config.EmailSmtpServer = SmtpServer;
+            config.EmailSmtpPort = SmtpPort.Value;
+            config.EmailFromAddress = FromAddress;
+            config.EmailEnableSsl = EnableSsl;
+            config.EmailUsername = Username;
+            config.EmailPassword = Password;
+
+            EmailService.Update(config);
+
+            Database.SaveChanges();
+
+            if (redirect)
+                return RedirectToAction(MVC.Config.SystemConfig.Index());
+            else
+                return Json("OK", JsonRequestBehavior.AllowGet);
+        }
+
+        [DiscoAuthorize(Claims.Config.System.ConfigureEmail), ValidateAntiForgeryToken]
+        public virtual ActionResult SendTestEmail(string Recipient, bool redirect = false)
+        {
+            if (string.IsNullOrWhiteSpace(Recipient))
+                throw new ArgumentNullException(nameof(Recipient));
+
+            EmailService.SendTestEmail(Recipient);
 
             if (redirect)
                 return RedirectToAction(MVC.Config.SystemConfig.Index());

@@ -143,6 +143,8 @@
     <Compile Include="Services\Jobs\JobLists\JobTableStatusQueueItemModel.cs" />
     <Compile Include="Services\Jobs\JobQueues\IJobQueueToken.cs" />
     <Compile Include="Services\Jobs\Noticeboards\IHeldDeviceItem.cs" />
+    <Compile Include="Services\Messaging\Email.cs" />
+    <Compile Include="Services\Messaging\EmailAttachment.cs" />
     <Compile Include="Services\Searching\DeviceSearchResultItem.cs" />
     <Compile Include="Services\Searching\ISearchResultItem.cs" />
     <Compile Include="Services\Searching\JobSearchResultItem.cs" />

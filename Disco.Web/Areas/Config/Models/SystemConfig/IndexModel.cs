@@ -2,6 +2,7 @@
 using Disco.Models.Services.Interop.DiscoServices;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Interop.DiscoServices;
+using Disco.Services.Messaging;
 using Disco.Services.Tasks;
 using System;
 using System.Collections.Generic;
@@ -98,6 +99,18 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
         public string ProxyPassword { get; set; }
         #endregion
 
+        #region Email
+        public string EmailSmtpServer { get; set; }
+        public int EmailSmtpPort { get; set; }
+        public string EmailFromAddress { get; set; }
+        [Display(Name = "Enable SSL")]
+        public bool EmailEnableSsl { get; set; }
+        public string EmailUsername { get; set; }
+        [DataType(DataType.Password)]
+        public string EmailPassword { get; set; }
+        public bool EmailIsConfigured { get; set; }
+        #endregion
+
         public ScheduledTaskStatus UpdateRunningStatus { get; set; }
         public DateTime? UpdateNextScheduled { get; set; }
         public UpdateResponseV2 UpdateLatestResponse { get; set; }
@@ -114,10 +127,17 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
                 ProxyPort = config.ProxyPort,
                 ProxyUsername = config.ProxyUsername,
                 ProxyPassword = config.ProxyPassword,
+                EmailSmtpServer = config.EmailSmtpServer,
+                EmailSmtpPort = config.EmailSmtpPort,
+                EmailFromAddress = config.EmailFromAddress,
+                EmailEnableSsl = config.EmailEnableSsl,
+                EmailUsername = config.EmailUsername,
+                EmailPassword = config.EmailPassword,
+                EmailIsConfigured = EmailService.IsConfigured,
                 UpdateLatestResponse = config.UpdateLastCheckResponse,
                 UpdateRunningStatus = UpdateQueryTask.RunningStatus,
                 UpdateNextScheduled = UpdateQueryTask.NextScheduled,
-                UpdateBetaDeployment = config.UpdateBetaDeployment
+                UpdateBetaDeployment = config.UpdateBetaDeployment,
             };
 
             // Is an update available?

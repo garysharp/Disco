@@ -1210,22 +1210,22 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Show.generated.cs</LastGenOutput>
     </None>
-    <Content Include="Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml">
+    <None Include="Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>ShowPackage1.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml">
+    </None>
+    <None Include="Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>CreatePackage.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Areas\Config\Views\JobPreferences\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
     </None>
-    <Content Include="Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml">
+    <None Include="Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Expressions.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Areas\Config\Views\JobPreferences\Parts\General.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>General.generated.cs</LastGenOutput>

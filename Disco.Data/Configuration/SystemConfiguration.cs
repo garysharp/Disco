@@ -271,6 +271,39 @@ namespace Disco.Data.Configuration
         }
         #endregion
 
+        #region Email Configuration
+        public string EmailSmtpServer
+        {
+            get => Get<string>(null);
+            set => Set(value);
+        }
+        public int EmailSmtpPort
+        {
+            get => Get(25);
+            set => Set(value);
+        }
+        public bool EmailEnableSsl
+        {
+            get => Get(false);
+            set => Set(value);
+        }
+        public string EmailFromAddress
+        {
+            get => Get<string>(null);
+            set => Set(value);
+        }
+        public string EmailUsername
+        {
+            get => Get<string>(null);
+            set => Set(value);
+        }
+        public string EmailPassword
+        {
+            get => GetDeobsfucated(null);
+            set => SetObsfucated(value);
+        }
+        #endregion
+
         #region UpdateCheck
         public string DeploymentId
         {

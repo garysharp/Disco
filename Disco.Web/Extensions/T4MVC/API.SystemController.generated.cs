@@ -129,6 +129,18 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateProxySettings);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateEmailSettings()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateEmailSettings);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SendTestEmail()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SendTestEmail);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public SystemController Actions { get { return MVC.API.System; } }
@@ -163,6 +175,8 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string Subject = "Subject";
             public readonly string SyncActiveDirectoryManagedGroup = "SyncActiveDirectoryManagedGroup";
             public readonly string UpdateProxySettings = "UpdateProxySettings";
+            public readonly string UpdateEmailSettings = "UpdateEmailSettings";
+            public readonly string SendTestEmail = "SendTestEmail";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -186,6 +200,8 @@ namespace Disco.Web.Areas.API.Controllers
             public const string Subject = "Subject";
             public const string SyncActiveDirectoryManagedGroup = "SyncActiveDirectoryManagedGroup";
             public const string UpdateProxySettings = "UpdateProxySettings";
+            public const string UpdateEmailSettings = "UpdateEmailSettings";
+            public const string SendTestEmail = "SendTestEmail";
         }
 
 
@@ -308,6 +324,29 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string ProxyPort = "ProxyPort";
             public readonly string ProxyUsername = "ProxyUsername";
             public readonly string ProxyPassword = "ProxyPassword";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateEmailSettings s_params_UpdateEmailSettings = new ActionParamsClass_UpdateEmailSettings();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateEmailSettings UpdateEmailSettingsParams { get { return s_params_UpdateEmailSettings; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateEmailSettings
+        {
+            public readonly string SmtpServer = "SmtpServer";
+            public readonly string SmtpPort = "SmtpPort";
+            public readonly string FromAddress = "FromAddress";
+            public readonly string EnableSsl = "EnableSsl";
+            public readonly string Username = "Username";
+            public readonly string Password = "Password";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_SendTestEmail s_params_SendTestEmail = new ActionParamsClass_SendTestEmail();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SendTestEmail SendTestEmailParams { get { return s_params_SendTestEmail; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SendTestEmail
+        {
+            public readonly string Recipient = "Recipient";
             public readonly string redirect = "redirect";
         }
         static readonly ViewsClass s_views = new ViewsClass();
@@ -565,6 +604,37 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ProxyPassword", ProxyPassword);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateProxySettingsOverride(callInfo, ProxyAddress, ProxyPort, ProxyUsername, ProxyPassword, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateEmailSettingsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string SmtpServer, int? SmtpPort, string FromAddress, bool EnableSsl, string Username, string Password, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateEmailSettings(string SmtpServer, int? SmtpPort, string FromAddress, bool EnableSsl, string Username, string Password, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateEmailSettings);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "SmtpServer", SmtpServer);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "SmtpPort", SmtpPort);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "FromAddress", FromAddress);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "EnableSsl", EnableSsl);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Username", Username);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Password", Password);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateEmailSettingsOverride(callInfo, SmtpServer, SmtpPort, FromAddress, EnableSsl, Username, Password, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SendTestEmailOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Recipient, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SendTestEmail(string Recipient, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SendTestEmail);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Recipient", Recipient);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            SendTestEmailOverride(callInfo, Recipient, redirect);
             return callInfo;
         }
 

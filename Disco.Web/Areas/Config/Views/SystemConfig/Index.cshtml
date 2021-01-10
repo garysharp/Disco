@@ -3,6 +3,7 @@
     Authorization.Require(Claims.Config.System.Show);
 
     var canConfigProxy = Authorization.Has(Claims.Config.System.ConfigureProxy);
+    var canConfigEmail = Authorization.Has(Claims.Config.System.ConfigureEmail);
     var canConfigAD = Authorization.Has(Claims.Config.System.ConfigureActiveDirectory);
 
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "System");
@@ -318,7 +319,7 @@
                                     }
                                     <li>
                                         <code>@serverDescription</code>@if (siteServers.ContainsKey(server))
-                                        { <i class="fa fa-building-o information fa-fw" title="Site Server"></i> }
+                                        {<i class="fa fa-building-o information fa-fw" title="Site Server"></i>}
                                     </li>
                                 }
                             }
@@ -331,13 +332,13 @@
                                 if (ulLi.length > toManyServers) {
                                     var liMore = $('<li>').append(
                                         $('<a>').attr('href', '#')
-                                        .text('Show All Servers (' + (ulLi.length - toManyServers) + ' more)')
-                                        .click(function () {
-                                            $(this).closest('li').remove();
-                                            ul.find('li').show();
-                                            return false;
-                                        }))
-                                    .insertAfter(ulLi[(toManyServers - 1)]);
+                                            .text('Show All Servers (' + (ulLi.length - toManyServers) + ' more)')
+                                            .click(function () {
+                                                $(this).closest('li').remove();
+                                                ul.find('li').show();
+                                                return false;
+                                            }))
+                                        .insertAfter(ulLi[(toManyServers - 1)]);
                                     ulLi.each(function (i) {
                                         if (i > (toManyServers - 1))
                                             $(this).hide();
@@ -346,7 +347,7 @@
                             });
                         </script>
                     </div>
-                                }
+                }
             </td>
 
         </tr>
@@ -605,9 +606,9 @@
                                         dataType: 'json',
                                         url: url,
                                         data: data,
-                                        success: function (response, result) {
-                                            if (result != 'success' || response != 'OK') {
-                                                alert('Unable to change property "' + UpdatePropertyName + '":\n' + response);
+                                        complete: function (response, result) {
+                                            if (result != 'success' || response.responseJSON != 'OK') {
+                                                alert('Unable to change proxy settings:\nCheck logs for more information');
                                                 ajaxLoading.hide();
                                             } else {
                                                 ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
@@ -650,6 +651,217 @@ else
                 </th>
                 <td>
                     @Html.DisplayFor(m => m.ProxyUsername)
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    Password:
+                </th>
+                <td>
+                    ********
+                </td>
+            </tr>
+        </table>
+    </div>
+}
+@if (canConfigEmail)
+{
+    <div class="form" style="width: 450px; margin-top: 15px;">
+        <h2>Email Settings</h2>
+        <table>
+            <tr>
+                <th style="width: 135px">
+                    SMTP Server:
+                </th>
+                <td>
+                    @Html.EditorFor(m => m.EmailSmtpServer)<br />
+                    @Html.ValidationMessageFor(m => m.EmailSmtpServer)
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    Port:
+                </th>
+                <td>
+                    @Html.EditorFor(m => m.EmailSmtpPort)<br />
+                    @Html.ValidationMessageFor(m => m.EmailSmtpPort)
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    Default From Address:
+                </th>
+                <td>
+                    @Html.EditorFor(m => m.EmailFromAddress)<br />
+                    @Html.ValidationMessageFor(m => m.EmailFromAddress)
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    &nbsp;
+                </th>
+                <td>
+                    @Html.CheckBoxFor(m => m.EmailEnableSsl) @Html.LabelFor(m => m.EmailEnableSsl)
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    Username:
+                </th>
+                <td>
+                    @Html.EditorFor(m => m.EmailUsername)<br />
+                    @Html.ValidationMessageFor(m => m.EmailUsername)
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    Password:
+                </th>
+                <td>
+                    @Html.EditorFor(m => m.EmailPassword)<br />
+                    @Html.ValidationMessageFor(m => m.EmailPassword)
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    &nbsp;
+                </th>
+                <td>
+                    @Html.AntiForgeryToken()
+                    <button id="Config_System_Email_Test" type="button" class="button small" @(Model.EmailIsConfigured ? null : "disabled")>Send Test Email</button>
+                    <button id="Config_System_Email_Save" type="button" class="button small">Save Email Settings</button>@AjaxHelpers.AjaxLoader()
+                    <div id="Config_System_Email_Test_Dialog" class="dialog" title="Send Test Email">
+                        <h4><i class="fa fa-envelope information"></i>&nbsp;Recipient Email Address:</h4>
+                        <br />
+                        @using (Html.BeginForm(MVC.API.System.SendTestEmail(), FormMethod.Post))
+                        {
+                            <input type="hidden" name="redirect" value="true" />
+                            <input id="Config_System_Email_Test_Recipient" name="Recipient" type="text" value="@CurrentUser.EmailAddress" />
+                            @Html.AntiForgeryToken()
+                        }
+                    </div>
+                    <script>
+                        $(function () {
+                            var button = $('#Config_System_Email_Save');
+                            var testButton = $('#Config_System_Email_Test');
+                            var testDialog = null;
+
+                            button.click(function () {
+                                var url = '@(Url.Action(MVC.API.System.UpdateEmailSettings()))';
+                                var data = {
+                                    SmtpServer: $('#EmailSmtpServer').val(),
+                                    SmtpPort: $('#EmailSmtpPort').val(),
+                                    FromAddress: $('#EmailFromAddress').val(),
+                                    EnableSsl: $('#EmailEnableSsl').is(':checked'),
+                                    Username: $('#EmailUsername').val(),
+                                    Password: $('#EmailPassword').val(),
+                                    '__RequestVerificationToken': button.parent().find('input[name="__RequestVerificationToken"]').first().val()
+                                }
+                                var ajaxLoading = button.next('.ajaxLoading').first().show();
+
+                                $.ajax({
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    url: url,
+                                    data: data,
+                                    complete: function (response, result) {
+                                        if (result != 'success' || response.responseJSON != 'OK') {
+                                            alert('Unable to change email settings:\nCheck logs for more information');
+                                            ajaxLoading.hide();
+                                        } else {
+                                            ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                            if (!!$('#EmailSmtpServer').val()) {
+                                                testButton.removeAttr('disabled');
+                                            } else {
+                                                testButton.attr('disabled', 'disabled');
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+
+                            testButton.closest('table').find('td>input').change(function () {
+                                testButton.attr('disabled', 'disabled');
+                            });
+                            testButton.click(function () {
+                                if (!testDialog) {
+                                    testDialog = $('#Config_System_Email_Test_Dialog')
+                                        .dialog({
+                                            resizable: false,
+                                            height: 180,
+                                            modal: true,
+                                            autoOpen: false,
+                                            buttons: {
+                                                Send: function () {
+                                                    var $this = $(this);
+                                                    var recipientInput = $('#Config_System_Email_Test_Recipient');
+                                                    if (!!recipientInput.val()) {
+                                                        $this.dialog("disable");
+                                                        $this.dialog("option", "buttons", null);
+                                                        recipientInput.closest('form').submit()
+                                                    } else {
+                                                        alert('Enter the recipient address for the test email');
+                                                    }
+                                                },
+                                                Cancel: function () {
+                                                    $(this).dialog("close");
+                                                }
+                                            }
+                                        });
+                                }
+                                testDialog.dialog('open');
+                            });
+
+                        });
+                    </script>
+                </td>
+            </tr>
+        </table>
+    </div>
+}
+else
+{
+    <div class="form" style="width: 450px; margin-top: 15px;">
+        <h2>Email Settings</h2>
+        <table>
+            <tr>
+                <th style="width: 135px">
+                    SMTP Server:
+                </th>
+                <td>
+                    @Html.DisplayFor(m => m.EmailSmtpServer)
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    Port:
+                </th>
+                <td>
+                    @Html.DisplayFor(m => m.EmailSmtpPort)
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    Default From Address:
+                </th>
+                <td>
+                    @Html.DisplayFor(m => m.EmailFromAddress)
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    Enable SSL:
+                </th>
+                <td>
+                    @Html.CheckBoxFor(m => m.EmailEnableSsl, new { disabled = "disabled" }) @Html.LabelFor(m => m.EmailEnableSsl)
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    Username:
+                </th>
+                <td>
+                    @Html.DisplayFor(m => m.EmailUsername)
                 </td>
             </tr>
             <tr>

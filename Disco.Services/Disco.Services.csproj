@@ -390,6 +390,7 @@
     <Compile Include="Logging\Persistance\LogPersistContext.cs" />
     <Compile Include="Logging\Persistance\LogPersistContextInitializer.cs" />
     <Compile Include="Logging\Utilities.cs" />
+    <Compile Include="Messaging\EmailService.cs" />
     <Compile Include="Plugins\Features\CertificateAuthorityProvider\CertificateAuthorityProviderFeature.cs" />
     <Compile Include="Plugins\Features\CertificateProvider\ProvisionPersonalCertificateResult.cs" />
     <Compile Include="Plugins\Features\CertificateAuthorityProvider\ProvisionAuthorityCertificatesResult.cs" />
