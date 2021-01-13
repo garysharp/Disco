@@ -173,6 +173,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Generate()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Generate);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Delete()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
@@ -213,6 +219,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string ImporterUndetectedAssign = "ImporterUndetectedAssign";
             public readonly string ImporterUndetectedDelete = "ImporterUndetectedDelete";
             public readonly string BulkGenerate = "BulkGenerate";
+            public readonly string Generate = "Generate";
             public readonly string Delete = "Delete";
         }
 
@@ -239,6 +246,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string ImporterUndetectedAssign = "ImporterUndetectedAssign";
             public const string ImporterUndetectedDelete = "ImporterUndetectedDelete";
             public const string BulkGenerate = "BulkGenerate";
+            public const string Generate = "Generate";
             public const string Delete = "Delete";
         }
 
@@ -430,6 +438,15 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string id = "id";
             public readonly string DataIds = "DataIds";
             public readonly string InsertBlankPage = "InsertBlankPage";
+        }
+        static readonly ActionParamsClass_Generate s_params_Generate = new ActionParamsClass_Generate();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Generate GenerateParams { get { return s_params_Generate; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Generate
+        {
+            public readonly string id = "id";
+            public readonly string TargetId = "TargetId";
         }
         static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -743,6 +760,19 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DataIds", DataIds);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "InsertBlankPage", InsertBlankPage);
             BulkGenerateOverride(callInfo, id, DataIds, InsertBlankPage);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void GenerateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string TargetId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Generate(string id, string TargetId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Generate);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "TargetId", TargetId);
+            GenerateOverride(callInfo, id, TargetId);
             return callInfo;
         }
 

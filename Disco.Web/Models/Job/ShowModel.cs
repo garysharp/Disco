@@ -2,10 +2,9 @@
 using Disco.Models.Services.Job;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Job;
-using Disco.Web.Extensions;
+using Disco.Web.Models.Shared;
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
 
 namespace Disco.Web.Models.Job
 {
@@ -17,21 +16,15 @@ namespace Disco.Web.Models.Job
 
         public List<Disco.Models.Repository.DocumentTemplate> AvailableDocumentTemplates { get; set; }
         public List<DocumentTemplatePackage> AvailableDocumentTemplatePackages { get; set; }
+        public GenerateDocumentControlModel GenerateDocumentControlModel => new GenerateDocumentControlModel()
+        {
+            Target = Job,
+            Templates = AvailableDocumentTemplates,
+            TemplatePackages = AvailableDocumentTemplatePackages,
+        };
+
         public List<Disco.Models.Repository.JobSubType> UpdatableJobSubTypes { get; set; }
         public List<Disco.Models.Repository.JobQueue> AvailableQueues { get; set; }
-
-        public List<SelectListItem> DocumentTemplatesSelectListItems
-        {
-            get
-            {
-                var list = new List<SelectListItem>();
-                list.Add(new SelectListItem() { Selected = true, Value = string.Empty, Text = "Generate Document" });
-                list.AddRange(AvailableDocumentTemplates.ToSelectListItems());
-                list.AddRange(AvailableDocumentTemplatePackages.ToSelectListItems());
-                return list;
-            }
-        }
-
 
         public LocationModes LocationMode { get; set; }
         public List<JobLocationReference> LocationOptions { get; set; }

@@ -1,5 +1,7 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
+using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Users;
 using System;
 using System.Drawing;
 using System.IO;
@@ -82,6 +84,43 @@ namespace Disco.Services
             return null;
         }
 
+        public static IAttachmentTarget ResolveScopeTarget(this AttachmentTypes scope, DiscoDataContext database, string targetId)
+        {
+            if (database == null)
+                throw new ArgumentNullException(nameof(database));
+            if (string.IsNullOrWhiteSpace(targetId))
+                throw new ArgumentNullException(nameof(targetId));
+
+            switch (scope)
+            {
+                case AttachmentTypes.Device:
+                    return database.Devices.Find(targetId);
+                case AttachmentTypes.Job:
+                    if (!int.TryParse(targetId, out var targetIdInt))
+                        throw new ArgumentOutOfRangeException(nameof(targetId));
+                    return database.Jobs.Find(targetIdInt);
+                case AttachmentTypes.User:
+                    // special usecase in resolving users (they may not exist in the database yet)
+                    targetId = ActiveDirectory.ParseDomainAccountId(targetId);
+                    var target = database.Users.Find(targetId);
+                    if (target == null)
+                    {
+                        // try importing user
+                        target = UserService.GetUser(targetId, database, true);
+                    }
+                    return target;
+                default:
+                    throw new InvalidOperationException("Unexpected DocumentType Scope");
+            }
+        }
+
+        public static IAttachmentTarget ResolveScopeTarget(this DocumentTemplate template, DiscoDataContext database, string targetId)
+        {
+            if (template == null)
+                throw new ArgumentNullException(nameof(template));
+
+            return ResolveScopeTarget(template.AttachmentType, database, targetId);
+        }
 
     }
 }

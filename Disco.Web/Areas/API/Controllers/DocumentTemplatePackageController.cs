@@ -8,6 +8,8 @@ using Disco.Services.Users;
 using Disco.Services.Web;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -382,6 +384,48 @@ namespace Disco.Web.Areas.API.Controllers
             var pdf = package.GeneratePdfPackageBulk(Database, UserService.CurrentUser, timeStamp, InsertBlankPage, dataIds);
 
             return File(pdf, "application/pdf", string.Format("{0}_Bulk_{1:yyyyMMdd-HHmmss}.pdf", package.Id, timeStamp));
+        }
+
+        public virtual ActionResult Generate(string id, string TargetId)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                throw new ArgumentNullException(nameof(id));
+            if (string.IsNullOrWhiteSpace(TargetId))
+                throw new ArgumentNullException(nameof(TargetId));
+
+            var package = DocumentTemplatePackages.GetPackage(id);
+            if (package == null)
+                throw new ArgumentException("Invalid document template package id", nameof(id));
+
+            switch (package.Scope)
+            {
+                case AttachmentTypes.Device:
+                    Authorization.Require(Claims.Device.Actions.GenerateDocuments);
+                    break;
+                case AttachmentTypes.Job:
+                    Authorization.Require(Claims.Job.Actions.GenerateDocuments);
+                    break;
+                case AttachmentTypes.User:
+                    Authorization.Require(Claims.User.Actions.GenerateDocuments);
+                    break;
+                default:
+                    throw new InvalidOperationException("Unknown document type scope");
+            }
+
+            // resolve target
+            var target = package.ResolveScopeTarget(Database, TargetId);
+            if (target == null)
+                throw new ArgumentException("Target not found", nameof(TargetId));
+
+            var timestamp = DateTime.Now;
+            var document = default(Stream);
+            using (var state = DocumentState.DefaultState())
+            {
+                document = package.GeneratePdfPackage(Database, target, UserService.CurrentUser, timestamp, state);
+            }
+            Database.SaveChanges();
+
+            return File(document, "application/pdf", $"{package.Id}_{target.AttachmentReferenceId.Replace('\\', '_')}_{timestamp:yyyyMMdd-HHmmss}.pdf");
         }
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Delete)]

@@ -7,7 +7,7 @@
   background-color: #fff;
 }
 .tableData > tbody > tr:nth-child(odd) > td {
-  background-color: #fbfbfb;
+  background-color: hsl(0, 0%, 98.5%);
 }
 .tableData > thead > tr > th,
 .tableData > tbody > tr > th {
@@ -15,7 +15,7 @@
   border: solid 1px #f4f4f4;
 }
 .tableData > tbody > tr:hover > td {
-  background-color: #f9f9f9;
+  background-color: hsl(0, 0%, 97.5%);
 }
 .tableData > tfoot > tr > th,
 .tableData > tfoot > tr > td {
@@ -120,9 +120,6 @@
 }
 #User_Show #User_Show_Subjects #User_Show_Details #User_Show_GenerateDocument_Container {
   padding-top: 4px;
-}
-#User_Show #User_Show_Subjects #User_Show_Details #User_Show_GenerateDocument_Container #User_Show_GenerateDocument {
-  padding: 0;
 }
 #User_Show #User_Show_Subjects #User_Show_Details #User_Show_Details_Actions {
   margin-top: 4px;
@@ -415,7 +412,7 @@
   border: 1px solid #ccc;
 }
 #userShowResources #Attachments div.attachmentOutput > a:hover span.remove {
-  opacity: .5;
+  opacity: 0.5;
 }
 #userShowResources #Attachments div.attachmentOutput > a span.remove {
   font-size: 1.4em;
@@ -444,7 +441,7 @@
   cursor: pointer;
   float: right;
   border: 1px solid #fff;
-  padding: .5em;
+  padding: 0.5em;
 }
 #userShowResources #Attachments div.attachmentInput span.action:hover {
   color: #335A87;

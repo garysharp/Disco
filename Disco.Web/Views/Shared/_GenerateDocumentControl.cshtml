@@ -1,0 +1,58 @@
+﻿@model Disco.Web.Models.Shared.GenerateDocumentControlModel
+@if (Model.Templates.Count > 0 || Model.TemplatePackages.Count > 0)
+{
+    var selectListItems = new List<SelectListItem>();
+    selectListItems.Add(new SelectListItem() { Selected = true, Value = string.Empty, Text = "Generate Document" });
+    selectListItems.AddRange(Model.Templates.ToSelectListItems());
+    selectListItems.AddRange(Model.TemplatePackages.ToSelectListItems());
+    <div id="Document_Generation_Container">
+        @Html.DropDownList("Document_Generate", selectListItems)
+        <div id="Document_Generation_Dialog" class="dialog" title="Generate Document">
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            var generatePdfUrl = '@Url.Action(MVC.API.DocumentTemplate.Generate())/';
+            var generatePackageUrl = '@Url.Action(MVC.API.DocumentTemplatePackage.Generate())/';
+            var generateTargetId = '@HttpUtility.UrlEncode(Model.Target.AttachmentReferenceId)';
+            var $control = $('#Document_Generate');
+            var $generationHost;
+
+            var downloadDocument = function (templateId) {
+
+                var url;
+                if (templateId.lastIndexOf('Package:', 0) === 0)
+                    url = generatePackageUrl + templateId.substring(8);
+                else
+                    url = generatePdfUrl + templateId;
+                url = url + '?TargetId=' + generateTargetId;
+
+                if ($.connection && $.connection.hub && $.connection.hub.transport &&
+                    $.connection.hub.transport.name == 'foreverFrame') {
+                    // SignalR active with foreverFrame transport - use popup window
+                    window.open(url, '_blank', 'height=150,width=250,location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no');
+                } else {
+                    // use iFrame
+                    if (!$generationHost) {
+                        $generationHost = $('<iframe>')
+                            .attr({ 'src': url, 'title': 'Document Generation Host' })
+                            .addClass('hidden')
+                            .appendTo('body')
+                            .contents();
+                    } else {
+                        $generationHost[0].location.href = url;
+                    }
+                }
+            }
+
+            $control.change(function () {
+                var templateId = $control.val();
+                if (templateId) {
+                    downloadDocument(templateId);
+
+                    $control.val('').blur();
+                }
+            });
+        });
+    </script>
+}

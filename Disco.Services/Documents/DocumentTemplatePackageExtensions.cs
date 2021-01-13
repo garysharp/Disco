@@ -139,5 +139,13 @@ namespace Disco.Services
             return null;
         }
 
+        public static IAttachmentTarget ResolveScopeTarget(this DocumentTemplatePackage templatePackage, DiscoDataContext database, string targetId)
+        {
+            if (templatePackage == null)
+                throw new ArgumentNullException(nameof(templatePackage));
+
+            return templatePackage.Scope.ResolveScopeTarget(database, targetId);
+        }
+
     }
 }

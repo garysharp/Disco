@@ -2,9 +2,8 @@
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Device;
 using Disco.Services.Plugins;
-using Disco.Web.Extensions;
+using Disco.Web.Models.Shared;
 using System.Collections.Generic;
-using System.Web.Mvc;
 
 namespace Disco.Web.Models.Device
 {
@@ -25,17 +24,11 @@ namespace Disco.Web.Models.Device
 
         public List<Disco.Models.Repository.DocumentTemplate> DocumentTemplates { get; set; }
         public List<DocumentTemplatePackage> DocumentTemplatePackages { get; set; }
-
-        public List<SelectListItem> DocumentTemplatesSelectListItems
+        public GenerateDocumentControlModel GenerateDocumentControlModel => new GenerateDocumentControlModel()
         {
-            get
-            {
-                var list = new List<SelectListItem>();
-                list.Add(new SelectListItem() { Selected = true, Value = string.Empty, Text = "Generate Document" });
-                list.AddRange(DocumentTemplates.ToSelectListItems());
-                list.AddRange(DocumentTemplatePackages.ToSelectListItems());
-                return list;
-            }
-        }
+            Target = Device,
+            Templates = DocumentTemplates,
+            TemplatePackages = DocumentTemplatePackages,
+        };
     }
 }

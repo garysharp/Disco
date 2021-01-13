@@ -138,9 +138,6 @@
 #Device_Show #Device_Show_Subjects #Device_Show_Details #Device_Show_GenerateDocument_Container {
   padding-top: 4px;
 }
-#Device_Show #Device_Show_Subjects #Device_Show_Details #Device_Show_GenerateDocument_Container #Device_Show_GenerateDocument {
-  padding: 0;
-}
 #Device_Show #Device_Show_Subjects #Device_Show_Policies table.verticalHeadings > tbody > tr > td:first-child {
   width: 120px;
   font-weight: 600;

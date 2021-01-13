@@ -786,6 +786,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Shared\GenerateDocumentControlModel.cs" />
     <Compile Include="Views\Device\ImportHeaders.generated.cs">
       <DependentUpon>ImportHeaders.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1122,6 +1123,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>_Layout.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\_GenerateDocumentControl.generated.cs">
+      <DependentUpon>_GenerateDocumentControl.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Views\Shared\_SearchDialog.generated.cs">
       <AutoGen>True</AutoGen>
@@ -2190,6 +2196,10 @@
     <None Include="Views\Shared\_JobTableRender.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_JobTableRender.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Shared\_GenerateDocumentControl.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_GenerateDocumentControl.generated.cs</LastGenOutput>
     </None>
     <None Include="Views\Shared\_SearchDialog.cshtml">
       <Generator>RazorGenerator</Generator>

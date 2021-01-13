@@ -69,46 +69,7 @@
                     @if (Authorization.Has(Claims.User.Actions.GenerateDocuments))
                     {
                         <div id="User_Show_GenerateDocument_Container" class="status">
-                            @Html.DropDownList("User_Show_GenerateDocument", Model.DocumentTemplatesSelectListItems)
-                            <script type="text/javascript">
-                                $(function () {
-                                    var generatePdfUrl = '@Url.Action(MVC.API.User.GeneratePdf(Model.User.UserId, null))?DocumentTemplateId=';
-                                    var generatePackageUrl = '@Url.Action(MVC.API.User.GeneratePdfPackage(Model.User.UserId, null))?DocumentTemplatePackageId=';
-                                    var $documentTemplates = $('#User_Show_GenerateDocument');
-                                    var $generationHost;
-
-                                    $documentTemplates.change(function () {
-                                        var v = $documentTemplates.val();
-                                        if (v) {
-                                            var url;
-                                            if (v.lastIndexOf('Package:', 0) === 0) {
-                                                url = generatePackageUrl + v.substring(8);
-                                            } else {
-                                                url = generatePdfUrl + v;
-                                            }
-
-                                            if ($.connection && $.connection.hub && $.connection.hub.transport &&
-                                                    $.connection.hub.transport.name == 'foreverFrame') {
-                                                // SignalR active with foreverFrame transport - use popup window
-                                                window.open(url, '_blank', 'height=150,width=250,location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no');
-                                            } else {
-                                                // use iFrame
-                                                if (!$generationHost) {
-                                                    $generationHost = $('<iframe>')
-                                                        .attr({ 'src': url, 'title': 'Document Generation Host' })
-                                                        .addClass('hidden')
-                                                        .appendTo('body')
-                                                        .contents();
-                                                } else {
-                                                    $generationHost[0].location.href = url;
-                                                }
-                                            }
-
-                                            $documentTemplates.val('').blur();
-                                        }
-                                    });
-                                });
-                            </script>
+                            @Html.Partial(MVC.Shared.Views._GenerateDocumentControl, Model.GenerateDocumentControlModel)
                         </div>
                     }
                     <div id="User_Show_Details_Actions">

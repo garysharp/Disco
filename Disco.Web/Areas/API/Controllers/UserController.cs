@@ -166,40 +166,12 @@ namespace Disco.Web.Areas.API.Controllers
             if (string.IsNullOrEmpty(DocumentTemplateId))
                 throw new ArgumentNullException(nameof(DocumentTemplateId));
 
-            id = ActiveDirectory.ParseDomainAccountId(id, Domain);
+            var userId = ActiveDirectory.ParseDomainAccountId(id, Domain);
 
-            var user = Database.Users.Find(id);
-
-            if (user == null)
-            {
-                // Try importing the user
-                user = UserService.GetUser(id, Database, true);
-            }
-
-            if (user != null)
-            {
-                var documentTemplate = Database.DocumentTemplates.Find(DocumentTemplateId);
-                if (documentTemplate != null)
-                {
-                    var timeStamp = DateTime.Now;
-                    Stream pdf;
-                    using (var generationState = DocumentState.DefaultState())
-                    {
-                        pdf = documentTemplate.GeneratePdf(Database, user, UserService.CurrentUser, timeStamp, generationState);
-                    }
-                    Database.SaveChanges();
-                    return File(pdf, "application/pdf", string.Format("{0}_{1}_{2:yyyyMMdd-HHmmss}.pdf", documentTemplate.Id, user.UserId, timeStamp));
-                }
-                else
-                {
-                    throw new ArgumentException("Invalid Document Template Id", "id");
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Invalid User Id", "id");
-            }
+            // Obsolete: Use API\DocumentTemplate\Generate instead
+            return RedirectToAction(MVC.API.DocumentTemplate.Generate(DocumentTemplateId, userId));
         }
+
         [DiscoAuthorize(Claims.User.Actions.GenerateDocuments)]
         public virtual ActionResult GeneratePdfPackage(string id, string Domain, string DocumentTemplatePackageId)
         {
@@ -208,35 +180,10 @@ namespace Disco.Web.Areas.API.Controllers
             if (string.IsNullOrEmpty(DocumentTemplatePackageId))
                 throw new ArgumentNullException(nameof(DocumentTemplatePackageId));
 
-            id = ActiveDirectory.ParseDomainAccountId(id, Domain);
+            var userId = ActiveDirectory.ParseDomainAccountId(id, Domain);
 
-            var user = Database.Users.Find(id);
-            if (user != null)
-            {
-                var package = DocumentTemplatePackages.GetPackage(DocumentTemplatePackageId);
-                if (package != null)
-                {
-                    if (package.Scope != AttachmentTypes.User)
-                        throw new ArgumentException("This package cannot be generated from the User Scope", nameof(DocumentTemplatePackageId));
-
-                    var timeStamp = DateTime.Now;
-                    Stream pdf;
-                    using (var generationState = DocumentState.DefaultState())
-                    {
-                        pdf = package.GeneratePdfPackage(Database, user, UserService.CurrentUser, timeStamp, generationState);
-                    }
-                    Database.SaveChanges();
-                    return File(pdf, "application/pdf", string.Format("{0}_{1}_{2:yyyyMMdd-HHmmss}.pdf", package.Id, user.UserId, timeStamp));
-                }
-                else
-                {
-                    throw new ArgumentException("Invalid Document Template Package Id", nameof(DocumentTemplatePackageId));
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Invalid User Id", nameof(id));
-            }
+            // Obsolete: Use API\DocumentTemplatePackage\Generate instead
+            return RedirectToAction(MVC.API.DocumentTemplatePackage.Generate(DocumentTemplatePackageId, userId));
         }
 
     }

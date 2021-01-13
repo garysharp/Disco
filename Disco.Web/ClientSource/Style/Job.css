@@ -7,7 +7,7 @@
   background-color: #fff;
 }
 .tableData > tbody > tr:nth-child(odd) > td {
-  background-color: #fbfbfb;
+  background-color: hsl(0, 0%, 98.5%);
 }
 .tableData > thead > tr > th,
 .tableData > tbody > tr > th {
@@ -15,7 +15,7 @@
   border: solid 1px #f4f4f4;
 }
 .tableData > tbody > tr:hover > td {
-  background-color: #f9f9f9;
+  background-color: hsl(0, 0%, 97.5%);
 }
 .tableData > tfoot > tr > th,
 .tableData > tfoot > tr > td {
@@ -171,9 +171,6 @@
 #Job_Show #Job_Show_Subjects #Job_Show_Job #Job_Show_GenerateDocument_Container {
   padding-top: 4px;
 }
-#Job_Show #Job_Show_Subjects #Job_Show_Job #Job_Show_GenerateDocument_Container #Job_Show_GenerateDocument {
-  padding: 0;
-}
 #Job_Show #Job_Show_Subjects #Job_Show_Device > div {
   padding-left: 102px;
   min-height: 100px;
@@ -197,7 +194,7 @@
 }
 #Job_Show #Job_Show_Subjects #Job_Show_Device #Job_Show_Device_Details_HWar_Details_Button,
 #Job_Show #Job_Show_Subjects #Job_Show_Device #Job_Show_Device_Details_HNWar_Details_Button {
-  font-size: .9em;
+  font-size: 0.9em;
 }
 #Job_Show #Job_Show_Subjects #Job_Show_Device #Job_Show_Device_DeviceHeld table {
   table-layout: fixed;
@@ -297,7 +294,7 @@
 #jobShowResources #Comments div.commentOutput > div span.timestamp {
   display: block;
   float: right;
-  font-size: 0.90em;
+  font-size: 0.9em;
   font-style: italic;
 }
 #jobShowResources #Comments div.commentOutput > div div.comment {
@@ -307,7 +304,7 @@
 }
 #jobShowResources #Comments div.commentOutput > div div.comment p {
   line-height: 1.2em;
-  padding-bottom: .2em;
+  padding-bottom: 0.2em;
 }
 #jobShowResources #Comments div.commentOutput > div div.comment h1,
 #jobShowResources #Comments div.commentOutput > div div.comment h2,
@@ -320,13 +317,13 @@
   margin: 2px 0 !important;
 }
 #jobShowResources #Comments div.commentOutput > div div.comment hr {
-  margin-top: .2em;
+  margin-top: 0.2em;
 }
 #jobShowResources #Comments div.commentOutput > div div.comment code {
-  font-size: .9em;
+  font-size: 0.9em;
 }
 #jobShowResources #Comments div.commentOutput > div:hover span.remove {
-  opacity: .5;
+  opacity: 0.5;
 }
 #jobShowResources #Comments div.commentOutput > div span.remove {
   font-size: 1.2em;
@@ -368,7 +365,7 @@
   cursor: pointer;
   float: left;
   border: 1px solid #fff;
-  padding: .5em;
+  padding: 0.5em;
 }
 #jobShowResources #Comments div.commentInput span.action:hover {
   color: #335A87;
@@ -450,7 +447,7 @@
   border: 1px solid #ccc;
 }
 #jobShowResources #Attachments div.attachmentOutput > a:hover span.remove {
-  opacity: .5;
+  opacity: 0.5;
 }
 #jobShowResources #Attachments div.attachmentOutput > a span.remove {
   font-size: 1.2em;
@@ -479,7 +476,7 @@
   cursor: pointer;
   float: right;
   border: 1px solid #fff;
-  padding: .5em;
+  padding: 0.5em;
 }
 #jobShowResources #Attachments div.attachmentInput span.action:hover {
   color: #335A87;
@@ -584,7 +581,7 @@
 #jobDetailTab-Queues #jobQueues td.removed .when {
   font-style: italic;
   margin-top: 4px;
-  font-size: .9em;
+  font-size: 0.9em;
 }
 #jobDetailTab-Queues #jobQueues td.added .commentsRaw,
 #jobDetailTab-Queues #jobQueues td.removed .commentsRaw {
@@ -642,7 +639,7 @@
   font-size: 1.5em;
   color: #e51400;
   cursor: pointer;
-  opacity: .5;
+  opacity: 0.5;
 }
 #jobComponents tr span.remove:hover {
   opacity: 1;
@@ -818,7 +815,7 @@
   border: 1px solid #ccc;
 }
 #publishJobAttachments > a:hover span.remove {
-  opacity: .5;
+  opacity: 0.5;
 }
 #publishJobAttachments > a span.remove {
   font-size: 1.2em;

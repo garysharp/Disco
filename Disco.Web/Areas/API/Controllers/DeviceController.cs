@@ -386,30 +386,8 @@ namespace Disco.Web.Areas.API.Controllers
             if (string.IsNullOrEmpty(DocumentTemplateId))
                 throw new ArgumentNullException(nameof(DocumentTemplateId));
 
-            var device = Database.Devices.Find(id);
-            if (device != null)
-            {
-                var documentTemplate = Database.DocumentTemplates.Find(DocumentTemplateId);
-                if (documentTemplate != null)
-                {
-                    var timeStamp = DateTime.Now;
-                    Stream pdf;
-                    using (var generationState = DocumentState.DefaultState())
-                    {
-                        pdf = documentTemplate.GeneratePdf(Database, device, UserService.CurrentUser, timeStamp, generationState);
-                    }
-                    Database.SaveChanges();
-                    return File(pdf, "application/pdf", string.Format("{0}_{1}_{2:yyyyMMdd-HHmmss}.pdf", documentTemplate.Id, device.SerialNumber, timeStamp));
-                }
-                else
-                {
-                    throw new ArgumentException("Invalid Document Template Id", nameof(DocumentTemplateId));
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Serial Number", nameof(id));
-            }
+            // Obsolete: Use API\DocumentTemplate\Generate instead
+            return RedirectToAction(MVC.API.DocumentTemplate.Generate(DocumentTemplateId, id));
         }
 
         [DiscoAuthorize(Claims.Device.Actions.GenerateDocuments)]
@@ -420,33 +398,8 @@ namespace Disco.Web.Areas.API.Controllers
             if (string.IsNullOrEmpty(DocumentTemplatePackageId))
                 throw new ArgumentNullException(nameof(DocumentTemplatePackageId));
 
-            var device = Database.Devices.Find(id);
-            if (device != null)
-            {
-                var package = DocumentTemplatePackages.GetPackage(DocumentTemplatePackageId);
-                if (package != null)
-                {
-                    if (package.Scope != AttachmentTypes.Device)
-                        throw new ArgumentException("This package cannot be generated from the Device Scope", nameof(DocumentTemplatePackageId));
-
-                    var timeStamp = DateTime.Now;
-                    Stream pdf;
-                    using (var generationState = DocumentState.DefaultState())
-                    {
-                        pdf = package.GeneratePdfPackage(Database, device, UserService.CurrentUser, timeStamp, generationState);
-                    }
-                    Database.SaveChanges();
-                    return File(pdf, "application/pdf", string.Format("{0}_{1}_{2:yyyyMMdd-HHmmss}.pdf", package.Id, device.SerialNumber, timeStamp));
-                }
-                else
-                {
-                    throw new ArgumentException("Invalid Document Template Package Id", nameof(DocumentTemplatePackageId));
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Serial Number", nameof(id));
-            }
+            // Obsolete: Use API\DocumentTemplatePackage\Generate instead
+            return RedirectToAction(MVC.API.DocumentTemplatePackage.Generate(DocumentTemplatePackageId, id));
         }
 
         [DiscoAuthorize(Claims.Device.Show)]

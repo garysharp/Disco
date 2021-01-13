@@ -69,7 +69,7 @@
                         </tr>
                     </table>
                     @if (Authorization.HasAny(Claims.Device.Properties.AssetNumber, Claims.Device.Properties.Location))
-            {
+                    {
                         <script>
                             $(function () {
                                 @if (Authorization.Has(Claims.Device.Properties.AssetNumber))
@@ -279,46 +279,7 @@
                 @if (Authorization.Has(Claims.Device.Actions.GenerateDocuments))
                 {
                     <div id="Device_Show_GenerateDocument_Container" class="status">
-                        @Html.DropDownList("Device_Show_GenerateDocument", Model.DocumentTemplatesSelectListItems)
-                        <script type="text/javascript">
-                            $(function () {
-                                var generatePdfUrl = '@Url.Action(MVC.API.Device.GeneratePdf(Model.Device.SerialNumber, null))?DocumentTemplateId=';
-                                var generatePackageUrl = '@Url.Action(MVC.API.Device.GeneratePdfPackage(Model.Device.SerialNumber, null))?DocumentTemplatePackageId=';
-                                var $documentTemplates = $('#Device_Show_GenerateDocument');
-                                var $generationHost;
-
-                                $documentTemplates.change(function () {
-                                    var v = $documentTemplates.val();
-                                    if (v) {
-                                        var url;
-                                        if (v.lastIndexOf('Package:', 0) === 0) {
-                                            url = generatePackageUrl + v.substring(8);
-                                        } else {
-                                            url = generatePdfUrl + v;
-                                        }
-
-                                        if ($.connection && $.connection.hub && $.connection.hub.transport &&
-                                                $.connection.hub.transport.name == 'foreverFrame') {
-                                            // SignalR active with foreverFrame transport - use popup window
-                                            window.open(url, '_blank', 'height=150,width=250,location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no');
-                                        } else {
-                                            // use iFrame
-                                            if (!$generationHost) {
-                                                $generationHost = $('<iframe>')
-                                                    .attr({ 'src': url, 'title': 'Document Generation Host' })
-                                                    .addClass('hidden')
-                                                    .appendTo('body')
-                                                    .contents();
-                                            } else {
-                                                $generationHost[0].location.href = url;
-                                            }
-                                        }
-
-                                        $documentTemplates.val('').blur();
-                                    }
-                                });
-                            });
-                        </script>
+                        @Html.Partial(MVC.Shared.Views._GenerateDocumentControl, Model.GenerateDocumentControlModel)
                     </div>
                 }
             </div>
@@ -328,7 +289,7 @@
                 <div id="Device_Show_Policies_Profile">
                     <h2 title="Device Profile">
                         @if (Authorization.Has(Claims.Config.DeviceProfile.Show))
-            {
+                        {
                             @Html.ActionLink(Model.Device.DeviceProfile.Name, MVC.Config.DeviceProfile.Index(Model.Device.DeviceProfileId))
                         }
                         else
@@ -394,7 +355,7 @@
                             <div>
                                 <ul class="none">
                                     @foreach (var dp in Model.DeviceProfiles.OrderBy(i => i.Name))
-                {
+                                    {
                                         <li>
                                             <input type="radio" data-deviceprofileid="@dp.Id" name="DeviceProfile" id="DeviceProfile_@(dp.Id)" /><label for="DeviceProfile_@(dp.Id)" title="Distribution: @(dp.DistributionType)">@dp.Name</label>
                                         </li>
@@ -595,7 +556,7 @@
                 <div id="Device_Show_Aspects_Model" class="clearfix">
                     <h2 id="Device_Show_Aspects_Model_Description" title="Model Description">
                         @if (Authorization.Has(Claims.Config.DeviceModel.Show))
-            {
+                        {
                             @Html.ActionLink(Model.Device.DeviceModel.ToString(), MVC.Config.DeviceModel.Index(Model.Device.DeviceModelId))
                         }
                         else
@@ -698,7 +659,7 @@
 
                     });
                 </script>
-    }
+            }
             @if (Model.Device.CanUpdateTrustEnrol())
             {
                 @Html.ActionLinkSmallButton("Trust Enrol", MVC.API.Device.UpdateAllowUnauthenticatedEnrol(Model.Device.SerialNumber, true.ToString(), true), "Device_Show_Device_Actions_TrustEnrol_Button")

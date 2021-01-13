@@ -384,7 +384,7 @@ WriteLiteral("                            </td>\r\n                        </tr>
             
             #line 71 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                      if (Authorization.HasAny(Claims.Device.Properties.AssetNumber, Claims.Device.Properties.Location))
-            {
+                    {
 
             
             #line default
@@ -689,14 +689,14 @@ WriteLiteral("\r\n                                <span");
 
 WriteLiteral(" id=\"Device_Show_Details_Status_LastSeen\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 8454), Tuple.Create("\"", 8476)
+WriteAttribute("class", Tuple.Create(" class=\"", 8462), Tuple.Create("\"", 8484)
             
             #line 151 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-      , Tuple.Create(Tuple.Create("", 8462), Tuple.Create<System.Object, System.Int32>(lastSeenClass
+      , Tuple.Create(Tuple.Create("", 8470), Tuple.Create<System.Object, System.Int32>(lastSeenClass
             
             #line default
             #line hidden
-, 8462), false)
+, 8470), false)
 );
 
 WriteLiteral(">");
@@ -944,15 +944,15 @@ WriteLiteral(" title=\"Email Address\"");
 
 WriteLiteral("><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 13219), Tuple.Create("\"", 13274)
-, Tuple.Create(Tuple.Create("", 13226), Tuple.Create("mailto:", 13226), true)
+WriteAttribute("href", Tuple.Create(" href=\"", 13227), Tuple.Create("\"", 13282)
+, Tuple.Create(Tuple.Create("", 13234), Tuple.Create("mailto:", 13234), true)
             
             #line 222 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                              , Tuple.Create(Tuple.Create("", 13233), Tuple.Create<System.Object, System.Int32>(Model.Device.AssignedUser.EmailAddress
+                                              , Tuple.Create(Tuple.Create("", 13241), Tuple.Create<System.Object, System.Int32>(Model.Device.AssignedUser.EmailAddress
             
             #line default
             #line hidden
-, 13233), false)
+, 13241), false)
 );
 
 WriteLiteral(">");
@@ -1006,26 +1006,26 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                                    <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 13942), Tuple.Create("\"", 14012)
-, Tuple.Create(Tuple.Create("", 13950), Tuple.Create("flag", 13950), true)
-, Tuple.Create(Tuple.Create(" ", 13954), Tuple.Create("fa", 13955), true)
-, Tuple.Create(Tuple.Create(" ", 13957), Tuple.Create("fa-", 13958), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 13950), Tuple.Create("\"", 14020)
+, Tuple.Create(Tuple.Create("", 13958), Tuple.Create("flag", 13958), true)
+, Tuple.Create(Tuple.Create(" ", 13962), Tuple.Create("fa", 13963), true)
+, Tuple.Create(Tuple.Create(" ", 13965), Tuple.Create("fa-", 13966), true)
             
             #line 230 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 13961), Tuple.Create<System.Object, System.Int32>(flag.Item2.Icon
+, Tuple.Create(Tuple.Create("", 13969), Tuple.Create<System.Object, System.Int32>(flag.Item2.Icon
             
             #line default
             #line hidden
-, 13961), false)
-, Tuple.Create(Tuple.Create(" ", 13979), Tuple.Create("fa-fw", 13980), true)
-, Tuple.Create(Tuple.Create(" ", 13985), Tuple.Create("d-", 13986), true)
+, 13969), false)
+, Tuple.Create(Tuple.Create(" ", 13987), Tuple.Create("fa-fw", 13988), true)
+, Tuple.Create(Tuple.Create(" ", 13993), Tuple.Create("d-", 13994), true)
             
             #line 230 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                    , Tuple.Create(Tuple.Create("", 13988), Tuple.Create<System.Object, System.Int32>(flag.Item2.IconColour
+                    , Tuple.Create(Tuple.Create("", 13996), Tuple.Create<System.Object, System.Int32>(flag.Item2.IconColour
             
             #line default
             #line hidden
-, 13988), false)
+, 13996), false)
 );
 
 WriteLiteral(">\r\n                                                        <span");
@@ -1194,67 +1194,15 @@ WriteLiteral("                        ");
 
             
             #line 282 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                   Write(Html.DropDownList("Device_Show_GenerateDocument", Model.DocumentTemplatesSelectListItems));
+                   Write(Html.Partial(MVC.Shared.Views._GenerateDocumentControl, Model.GenerateDocumentControlModel));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                        <script");
-
-WriteLiteral(" type=\"text/javascript\"");
-
-WriteLiteral(">\r\n                            $(function () {\r\n                                v" +
-"ar generatePdfUrl = \'");
+WriteLiteral("\r\n                    </div>\r\n");
 
             
-            #line 285 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                                 Write(Url.Action(MVC.API.Device.GeneratePdf(Model.Device.SerialNumber, null)));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("?DocumentTemplateId=\';\r\n                                var generatePackageUrl = " +
-"\'");
-
-            
-            #line 286 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                                     Write(Url.Action(MVC.API.Device.GeneratePdfPackage(Model.Device.SerialNumber, null)));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("?DocumentTemplatePackageId=\';\r\n                                var $documentTempl" +
-"ates = $(\'#Device_Show_GenerateDocument\');\r\n                                var " +
-"$generationHost;\r\n\r\n                                $documentTemplates.change(fu" +
-"nction () {\r\n                                    var v = $documentTemplates.val(" +
-");\r\n                                    if (v) {\r\n                              " +
-"          var url;\r\n                                        if (v.lastIndexOf(\'P" +
-"ackage:\', 0) === 0) {\r\n                                            url = generat" +
-"ePackageUrl + v.substring(8);\r\n                                        } else {\r" +
-"\n                                            url = generatePdfUrl + v;\r\n        " +
-"                                }\r\n\r\n                                        if " +
-"($.connection && $.connection.hub && $.connection.hub.transport &&\r\n            " +
-"                                    $.connection.hub.transport.name == \'foreverF" +
-"rame\') {\r\n                                            // SignalR active with for" +
-"everFrame transport - use popup window\r\n                                        " +
-"    window.open(url, \'_blank\', \'height=150,width=250,location=no,menubar=no,resi" +
-"zable=no,scrollbars=no,status=no,toolbar=no\');\r\n                                " +
-"        } else {\r\n                                            // use iFrame\r\n   " +
-"                                         if (!$generationHost) {\r\n              " +
-"                                  $generationHost = $(\'<iframe>\')\r\n             " +
-"                                       .attr({ \'src\': url, \'title\': \'Document Ge" +
-"neration Host\' })\r\n                                                    .addClass" +
-"(\'hidden\')\r\n                                                    .appendTo(\'body\'" +
-")\r\n                                                    .contents();\r\n           " +
-"                                 } else {\r\n                                     " +
-"           $generationHost[0].location.href = url;\r\n                            " +
-"                }\r\n                                        }\r\n\r\n                " +
-"                        $documentTemplates.val(\'\').blur();\r\n                    " +
-"                }\r\n                                });\r\n                        " +
-"    });\r\n                        </script>\r\n                    </div>\r\n");
-
-            
-            #line 323 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 284 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                 }
 
             
@@ -1277,28 +1225,28 @@ WriteLiteral(" title=\"Device Profile\"");
 WriteLiteral(">\r\n");
 
             
-            #line 330 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 291 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 330 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 291 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                          if (Authorization.Has(Claims.Config.DeviceProfile.Show))
-            {
+                        {
                             
             
             #line default
             #line hidden
             
-            #line 332 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 293 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                        Write(Html.ActionLink(Model.Device.DeviceProfile.Name, MVC.Config.DeviceProfile.Index(Model.Device.DeviceProfileId)));
 
             
             #line default
             #line hidden
             
-            #line 332 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 293 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                            
                         }
                         else
@@ -1308,14 +1256,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 336 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 297 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                        Write(Model.Device.DeviceProfile.Name);
 
             
             #line default
             #line hidden
             
-            #line 336 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 297 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                             
                         }
 
@@ -1337,7 +1285,7 @@ WriteLiteral(">Distribution:</span>\r\n                            </td>\r\n    
 WriteLiteral("                                ");
 
             
-            #line 345 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 306 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                            Write(Model.Device.DeviceProfile.DistributionType.ToString());
 
             
@@ -1353,13 +1301,13 @@ WriteLiteral(">Address:</span>\r\n                            </td>\r\n         
 "<td>\r\n");
 
             
-            #line 353 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 314 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 353 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 314 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                   
                                     if (Model.DeviceProfileDefaultOrganisationAddress != null)
                                     {
@@ -1374,7 +1322,7 @@ WriteLiteral(" id=\"Device_Show_Policies_Profile_Address\"");
 WriteLiteral(">");
 
             
-            #line 356 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 317 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                    Write(Model.DeviceProfileDefaultOrganisationAddress.Name);
 
             
@@ -1383,7 +1331,7 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n");
 
             
-            #line 357 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 318 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                     }
                                     else
                                     {
@@ -1400,7 +1348,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">None</span>\r\n");
 
             
-            #line 361 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 322 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                     }
                                 
             
@@ -1418,7 +1366,7 @@ WriteLiteral(">Provision Account:</span>\r\n                            </td>\r\
 WriteLiteral("                                ");
 
             
-            #line 370 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 331 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                             Write(Model.Device.DeviceProfile.ProvisionADAccount ? "Active Directory" : "No");
 
             
@@ -1436,7 +1384,7 @@ WriteLiteral(">Certificates:</span>\r\n                            </td>\r\n    
 WriteLiteral("                                ");
 
             
-            #line 378 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 339 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                             Write(Model.DeviceProfileCertificateProviders != null ? string.Join(", ", Model.DeviceProfileCertificateProviders.Select(c => c.Name)) : "None Provisioned");
 
             
@@ -1453,7 +1401,7 @@ WriteLiteral(">Wireless Profiles:</span>\r\n                            </td>\r\
 WriteLiteral("                                ");
 
             
-            #line 385 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 346 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                             Write(Model.DeviceProfileWirelessProfileProviders != null ? string.Join(", ", Model.DeviceProfileWirelessProfileProviders.Select(c => c.Name)) : "None Provisioned");
 
             
@@ -1463,13 +1411,13 @@ WriteLiteral("\r\n                            </td>\r\n                        <
 "       </table>\r\n");
 
             
-            #line 389 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 350 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 389 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 350 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                      if (Model.Device.CanUpdateDeviceProfile())
                     {
                         
@@ -1477,14 +1425,14 @@ WriteLiteral("\r\n                            </td>\r\n                        <
             #line default
             #line hidden
             
-            #line 391 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 352 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                    Write(Html.ActionLinkSmallButton("Update Profile", MVC.API.Device.UpdateDeviceProfileId(Model.Device.SerialNumber, redirect: true), "Device_Show_Policies_Profile_Actions_Update_Button"));
 
             
             #line default
             #line hidden
             
-            #line 391 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 352 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                                                                                             
 
 
@@ -1506,15 +1454,15 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 396 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 357 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 396 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 357 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                      foreach (var dp in Model.DeviceProfiles.OrderBy(i => i.Name))
-                {
+                                    {
 
             
             #line default
@@ -1527,7 +1475,7 @@ WriteLiteral(" type=\"radio\"");
 WriteLiteral(" data-deviceprofileid=\"");
 
             
-            #line 399 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 360 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                  Write(dp.Id);
 
             
@@ -1537,45 +1485,45 @@ WriteLiteral("\"");
 
 WriteLiteral(" name=\"DeviceProfile\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 24835), Tuple.Create("\"", 24862)
-, Tuple.Create(Tuple.Create("", 24840), Tuple.Create("DeviceProfile_", 24840), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 22203), Tuple.Create("\"", 22230)
+, Tuple.Create(Tuple.Create("", 22208), Tuple.Create("DeviceProfile_", 22208), true)
             
-            #line 399 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                                     , Tuple.Create(Tuple.Create("", 24854), Tuple.Create<System.Object, System.Int32>(dp.Id
+            #line 360 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+                                                     , Tuple.Create(Tuple.Create("", 22222), Tuple.Create<System.Object, System.Int32>(dp.Id
             
             #line default
             #line hidden
-, 24854), false)
+, 22222), false)
 );
 
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 24872), Tuple.Create("\"", 24900)
-, Tuple.Create(Tuple.Create("", 24878), Tuple.Create("DeviceProfile_", 24878), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 22240), Tuple.Create("\"", 22268)
+, Tuple.Create(Tuple.Create("", 22246), Tuple.Create("DeviceProfile_", 22246), true)
             
-            #line 399 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                                                                           , Tuple.Create(Tuple.Create("", 24892), Tuple.Create<System.Object, System.Int32>(dp.Id
+            #line 360 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+                                                                                           , Tuple.Create(Tuple.Create("", 22260), Tuple.Create<System.Object, System.Int32>(dp.Id
             
             #line default
             #line hidden
-, 24892), false)
+, 22260), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 24901), Tuple.Create("\"", 24945)
-, Tuple.Create(Tuple.Create("", 24909), Tuple.Create("Distribution:", 24909), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 22269), Tuple.Create("\"", 22313)
+, Tuple.Create(Tuple.Create("", 22277), Tuple.Create("Distribution:", 22277), true)
             
-            #line 399 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                                                                                                         , Tuple.Create(Tuple.Create(" ", 24922), Tuple.Create<System.Object, System.Int32>(dp.DistributionType
+            #line 360 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+                                                                                                                         , Tuple.Create(Tuple.Create(" ", 22290), Tuple.Create<System.Object, System.Int32>(dp.DistributionType
             
             #line default
             #line hidden
-, 24923), false)
+, 22291), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 399 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 360 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                                                                                                              Write(dp.Name);
 
             
@@ -1584,7 +1532,7 @@ WriteLiteral(">");
 WriteLiteral("</label>\r\n                                        </li>\r\n");
 
             
-            #line 401 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 362 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                     }
 
             
@@ -1597,7 +1545,7 @@ WriteLiteral("                        <script>\r\n                            $(
 "                              var currentProfile = \'");
 
             
-            #line 407 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 368 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                   Write(Model.Device.DeviceProfileId);
 
             
@@ -1649,7 +1597,7 @@ WriteLiteral("\';\r\n                                var button = $(\'#Device_Sh
 ">\r\n");
 
             
-            #line 457 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 418 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                     }
 
             
@@ -1664,13 +1612,13 @@ WriteLiteral(" class=\"status\"");
 WriteLiteral(">\r\n");
 
             
-            #line 460 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 421 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 460 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 421 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                      if (Model.Device.DeviceBatchId.HasValue)
                     {
 
@@ -1684,13 +1632,13 @@ WriteLiteral(" title=\"Device Batch\"");
 WriteLiteral(">\r\n");
 
             
-            #line 463 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 424 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 463 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 424 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                              if (Authorization.Has(Claims.Config.DeviceBatch.Show))
                             {
                                 
@@ -1698,14 +1646,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 465 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 426 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                            Write(Html.ActionLink(Model.Device.DeviceBatch.Name, MVC.Config.DeviceBatch.Index(Model.Device.DeviceBatchId.Value)));
 
             
             #line default
             #line hidden
             
-            #line 465 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 426 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                                
                             }
                             else
@@ -1715,14 +1663,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 469 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 430 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                            Write(Model.Device.DeviceBatch.Name);
 
             
             #line default
             #line hidden
             
-            #line 469 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 430 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                               
                             }
 
@@ -1746,7 +1694,7 @@ WriteLiteral(">Purchased:</span>\r\n                                </td>\r\n   
 WriteLiteral("                                    ");
 
             
-            #line 478 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 439 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                Write(CommonHelpers.FriendlyDate(Model.Device.DeviceBatch.PurchaseDate));
 
             
@@ -1764,7 +1712,7 @@ WriteLiteral(">Supplier:</span>\r\n                                </td>\r\n    
 WriteLiteral("                                    ");
 
             
-            #line 486 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 447 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                 Write(Model.Device.DeviceBatch.Supplier ?? "Unknown");
 
             
@@ -1779,14 +1727,14 @@ WriteLiteral(" title=\"Warranty Valid Until\"");
 WriteLiteral(">Warranty Until:</span>\r\n                                </td>\r\n                 " +
 "               <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 30605), Tuple.Create("\"", 30753)
+WriteAttribute("class", Tuple.Create(" class=\"", 27973), Tuple.Create("\"", 28121)
             
-            #line 493 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 30613), Tuple.Create<System.Object, System.Int32>(Model.Device.DeviceBatch.WarrantyValidUntil.HasValue && Model.Device.DeviceBatch.WarrantyValidUntil.Value < DateTime.Now ? "alert" : null
+            #line 454 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+, Tuple.Create(Tuple.Create("", 27981), Tuple.Create<System.Object, System.Int32>(Model.Device.DeviceBatch.WarrantyValidUntil.HasValue && Model.Device.DeviceBatch.WarrantyValidUntil.Value < DateTime.Now ? "alert" : null
             
             #line default
             #line hidden
-, 30613), false)
+, 27981), false)
 );
 
 WriteLiteral(">\r\n");
@@ -1794,7 +1742,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                                    ");
 
             
-            #line 494 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 455 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                Write(CommonHelpers.FriendlyDate(Model.Device.DeviceBatch.WarrantyValidUntil, "Unknown", null));
 
             
@@ -1812,7 +1760,7 @@ WriteLiteral(">Insurance Supplier:</span>\r\n                                </t
 WriteLiteral("                                    ");
 
             
-            #line 502 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 463 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                 Write(Model.Device.DeviceBatch.InsuranceSupplier ?? "Unknown");
 
             
@@ -1827,14 +1775,14 @@ WriteLiteral(" title=\"Insured Until\"");
 WriteLiteral(">Insured Until:</span>\r\n                                </td>\r\n                  " +
 "              <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 31607), Tuple.Create("\"", 31743)
+WriteAttribute("class", Tuple.Create(" class=\"", 28975), Tuple.Create("\"", 29111)
             
-            #line 509 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 31615), Tuple.Create<System.Object, System.Int32>(Model.Device.DeviceBatch.InsuredUntil.HasValue && Model.Device.DeviceBatch.InsuredUntil.Value < DateTime.Now ? "alert" : null
+            #line 470 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+, Tuple.Create(Tuple.Create("", 28983), Tuple.Create<System.Object, System.Int32>(Model.Device.DeviceBatch.InsuredUntil.HasValue && Model.Device.DeviceBatch.InsuredUntil.Value < DateTime.Now ? "alert" : null
             
             #line default
             #line hidden
-, 31615), false)
+, 28983), false)
 );
 
 WriteLiteral(">\r\n");
@@ -1842,7 +1790,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                                    ");
 
             
-            #line 510 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 471 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                Write(CommonHelpers.FriendlyDate(Model.Device.DeviceBatch.InsuredUntil, "Unknown", null));
 
             
@@ -1852,7 +1800,7 @@ WriteLiteral("\r\n                                </td>\r\n                     
 "                   </table>\r\n");
 
             
-            #line 514 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 475 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                     }
                     else
                     {
@@ -1863,7 +1811,7 @@ WriteLiteral("\r\n                                </td>\r\n                     
 WriteLiteral("                        <h2>Batch: <em>Not Associated</em></h2>\r\n");
 
             
-            #line 518 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 479 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                     }
 
             
@@ -1872,7 +1820,7 @@ WriteLiteral("                        <h2>Batch: <em>Not Associated</em></h2>\r\
 WriteLiteral("                    ");
 
             
-            #line 519 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 480 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                      if (Model.Device.CanUpdateDeviceBatch())
                     {
                         
@@ -1880,14 +1828,14 @@ WriteLiteral("                    ");
             #line default
             #line hidden
             
-            #line 521 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 482 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                    Write(Html.ActionLinkSmallButton("Update Batch", MVC.API.Device.UpdateDeviceBatchId(Model.Device.SerialNumber, null, true), "Device_Show_Policies_Batch_Actions_Update_Button"));
 
             
             #line default
             #line hidden
             
-            #line 521 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 482 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                                                                                   
 
 
@@ -1909,13 +1857,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 526 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 487 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 526 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 487 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                      foreach (var db in Model.DeviceBatches.OrderBy(i => i.Name))
                                     {
 
@@ -1930,7 +1878,7 @@ WriteLiteral(" type=\"radio\"");
 WriteLiteral(" data-devicebatchid=\"");
 
             
-            #line 529 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 490 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                Write(db.Id);
 
             
@@ -1940,45 +1888,45 @@ WriteLiteral("\"");
 
 WriteLiteral(" name=\"DeviceBatch\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 32931), Tuple.Create("\"", 32956)
-, Tuple.Create(Tuple.Create("", 32936), Tuple.Create("DeviceBatch_", 32936), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 30299), Tuple.Create("\"", 30324)
+, Tuple.Create(Tuple.Create("", 30304), Tuple.Create("DeviceBatch_", 30304), true)
             
-            #line 529 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                               , Tuple.Create(Tuple.Create("", 32948), Tuple.Create<System.Object, System.Int32>(db.Id
+            #line 490 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+                                               , Tuple.Create(Tuple.Create("", 30316), Tuple.Create<System.Object, System.Int32>(db.Id
             
             #line default
             #line hidden
-, 32948), false)
+, 30316), false)
 );
 
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 32966), Tuple.Create("\"", 32992)
-, Tuple.Create(Tuple.Create("", 32972), Tuple.Create("DeviceBatch_", 32972), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 30334), Tuple.Create("\"", 30360)
+, Tuple.Create(Tuple.Create("", 30340), Tuple.Create("DeviceBatch_", 30340), true)
             
-            #line 529 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                                                                   , Tuple.Create(Tuple.Create("", 32984), Tuple.Create<System.Object, System.Int32>(db.Id
+            #line 490 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+                                                                                   , Tuple.Create(Tuple.Create("", 30352), Tuple.Create<System.Object, System.Int32>(db.Id
             
             #line default
             #line hidden
-, 32984), false)
+, 30352), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 32993), Tuple.Create("\"", 33049)
-, Tuple.Create(Tuple.Create("", 33001), Tuple.Create("Purchased:", 33001), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 30361), Tuple.Create("\"", 30417)
+, Tuple.Create(Tuple.Create("", 30369), Tuple.Create("Purchased:", 30369), true)
             
-            #line 529 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                                                                                              , Tuple.Create(Tuple.Create(" ", 33011), Tuple.Create<System.Object, System.Int32>(db.PurchaseDate.ToLongDateString()
+            #line 490 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+                                                                                                              , Tuple.Create(Tuple.Create(" ", 30379), Tuple.Create<System.Object, System.Int32>(db.PurchaseDate.ToLongDateString()
             
             #line default
             #line hidden
-, 33012), false)
+, 30380), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 529 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 490 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                                                                                                                  Write(db.Name);
 
             
@@ -1987,7 +1935,7 @@ WriteLiteral(">");
 WriteLiteral("</label>\r\n                                        </li>\r\n");
 
             
-            #line 531 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 492 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                     }
 
             
@@ -2000,7 +1948,7 @@ WriteLiteral("                        <script>\r\n                            $(
 "                              var currentBatch = \'");
 
             
-            #line 537 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 498 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                 Write(Model.Device.DeviceBatchId);
 
             
@@ -2053,7 +2001,7 @@ WriteLiteral("\';\r\n                                var button = $(\'#Device_Sh
 ">\r\n");
 
             
-            #line 589 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 550 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                     }
 
             
@@ -2080,28 +2028,28 @@ WriteLiteral(" title=\"Model Description\"");
 WriteLiteral(">\r\n");
 
             
-            #line 597 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 558 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 597 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 558 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                          if (Authorization.Has(Claims.Config.DeviceModel.Show))
-            {
+                        {
                             
             
             #line default
             #line hidden
             
-            #line 599 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 560 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                        Write(Html.ActionLink(Model.Device.DeviceModel.ToString(), MVC.Config.DeviceModel.Index(Model.Device.DeviceModelId)));
 
             
             #line default
             #line hidden
             
-            #line 599 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 560 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                            
                         }
                         else
@@ -2111,14 +2059,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 603 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 564 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                        Write(Model.Device.DeviceModel.ToString());
 
             
             #line default
             #line hidden
             
-            #line 603 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 564 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                 
                         }
 
@@ -2131,14 +2079,14 @@ WriteLiteral(" id=\"Device_Show_Aspects_Model_Image\"");
 
 WriteLiteral(" alt=\"Model Image\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 37784), Tuple.Create("\"", 37894)
+WriteAttribute("src", Tuple.Create(" src=\"", 35164), Tuple.Create("\"", 35274)
             
-            #line 606 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-    , Tuple.Create(Tuple.Create("", 37790), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(Model.Device.DeviceModelId, Model.Device.DeviceModel.ImageHash()))
+            #line 567 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+    , Tuple.Create(Tuple.Create("", 35170), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(Model.Device.DeviceModelId, Model.Device.DeviceModel.ImageHash()))
             
             #line default
             #line hidden
-, 37790), false)
+, 35170), false)
 );
 
 WriteLiteral(" />\r\n                </div>\r\n            </div>\r\n        </td>\r\n    </tr>\r\n    <t" +
@@ -2153,13 +2101,13 @@ WriteLiteral(" id=\"Device_Show_Device_Actions\"");
 WriteLiteral(">\r\n");
 
             
-            #line 613 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 574 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 613 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 574 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
              if (Model.Device.CanCreateJob())
             {
                 Html.BundleDeferred("~/ClientScripts/Modules/Disco-CreateJob");
@@ -2168,14 +2116,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 616 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 577 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Create Job", MVC.Job.Create(Model.Device.SerialNumber, Model.Device.AssignedUserId), "buttonCreateJob"));
 
             
             #line default
             #line hidden
             
-            #line 616 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 577 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                                     
             }
 
@@ -2185,7 +2133,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("            ");
 
             
-            #line 618 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 579 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
              if (Model.Device.CanUpdateAssignment())
             {
 
@@ -2217,13 +2165,13 @@ WriteLiteral(" class=\"fa fa-info-circle information\"");
 WriteLiteral("></i>&nbsp;Assign to User:</h4>\r\n                    <br />\r\n");
 
             
-            #line 624 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 585 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 624 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 585 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                      using (Html.BeginForm(MVC.API.Device.UpdateAssignedUserId(Model.Device.SerialNumber, redirect: true)))
                     {
 
@@ -2241,7 +2189,7 @@ WriteLiteral(" type=\"text\"");
 WriteLiteral(" />\r\n");
 
             
-            #line 627 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 588 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                     }
 
             
@@ -2263,13 +2211,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 636 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 597 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 636 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 597 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                               
                     if (assignedUser != null)
                     {
@@ -2293,7 +2241,7 @@ WriteLiteral(@"
 WriteLiteral("\r\n");
 
             
-            #line 649 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 610 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                     }
                                                 
             
@@ -2324,7 +2272,7 @@ WriteLiteral("\r\n                            \"Assign\": function () {\r\n     
 " \'");
 
             
-            #line 680 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 641 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                              Write(Url.Action(MVC.API.Search.UsersUpstream()));
 
             
@@ -2354,8 +2302,8 @@ WriteLiteral(@"',
 ");
 
             
-            #line 701 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-    }
+            #line 662 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            }
 
             
             #line default
@@ -2363,7 +2311,7 @@ WriteLiteral(@"',
 WriteLiteral("            ");
 
             
-            #line 702 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 663 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
              if (Model.Device.CanUpdateTrustEnrol())
             {
                 
@@ -2371,14 +2319,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 704 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 665 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Trust Enrol", MVC.API.Device.UpdateAllowUnauthenticatedEnrol(Model.Device.SerialNumber, true.ToString(), true), "Device_Show_Device_Actions_TrustEnrol_Button"));
 
             
             #line default
             #line hidden
             
-            #line 704 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 665 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                                                                                             
 
             
@@ -2419,7 +2367,7 @@ WriteLiteral("></i>This action will allow a device <em>claiming</em> to have the
 "\'");
 
             
-            #line 714 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 675 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                                Write(Model.Device.SerialNumber);
 
             
@@ -2461,7 +2409,7 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "               });\r\n                </script>\r\n");
 
             
-            #line 754 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 715 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
             }
 
             
@@ -2470,7 +2418,7 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 WriteLiteral("            ");
 
             
-            #line 755 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 716 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
              if (Model.Device.CanUpdateUntrustEnrol())
             {
                 
@@ -2478,14 +2426,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 757 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 718 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Untrust Enrol", MVC.API.Device.UpdateAllowUnauthenticatedEnrol(Model.Device.SerialNumber, false.ToString(), true), "Device_Show_Device_Actions_UntrustEnrol_Button"));
 
             
             #line default
             #line hidden
             
-            #line 757 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 718 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                                                                                                  
 
             
@@ -2556,7 +2504,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 797 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 758 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
             }
 
             
@@ -2565,7 +2513,7 @@ WriteLiteral(@">
 WriteLiteral("            ");
 
             
-            #line 798 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 759 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
              if (Model.Device.CanDecommission())
             {
                 
@@ -2573,14 +2521,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 800 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 761 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Decommission", MVC.API.Device.Decommission(), "Device_Show_Device_Actions_Decommission_Button"));
 
             
             #line default
             #line hidden
             
-            #line 800 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 761 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                             
 
             
@@ -2612,13 +2560,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 807 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 768 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 807 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 768 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                              foreach (DecommissionReasons decommissionReason in Enum.GetValues(typeof(DecommissionReasons)).Cast<DecommissionReasons>().OrderBy(r => r.ToString()))
                             {
 
@@ -2629,34 +2577,34 @@ WriteLiteral("                                <li>\r\n                          
 
 WriteLiteral(" type=\"radio\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 49451), Tuple.Create("\"", 49529)
-, Tuple.Create(Tuple.Create("", 49456), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 49456), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 46839), Tuple.Create("\"", 46917)
+, Tuple.Create(Tuple.Create("", 46844), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 46844), true)
             
-            #line 810 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                           , Tuple.Create(Tuple.Create("", 49503), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 771 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+                           , Tuple.Create(Tuple.Create("", 46891), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 49503), false)
+, 46891), false)
 );
 
 WriteLiteral("\r\n                                           name=\"Device_Show_Device_Actions_Dec" +
 "ommission_Reason\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 49628), Tuple.Create("\"", 49662)
+WriteAttribute("value", Tuple.Create(" value=\"", 47016), Tuple.Create("\"", 47050)
             
-            #line 811 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                        , Tuple.Create(Tuple.Create("", 49636), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 772 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+                        , Tuple.Create(Tuple.Create("", 47024), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 49636), false)
+, 47024), false)
 );
 
 WriteLiteral(" ");
 
             
-            #line 811 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 772 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                 Write((decommissionReason == DecommissionReasons.EndOfLife) ? "checked=\"checked\"" : string.Empty);
 
             
@@ -2664,21 +2612,21 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" />\r\n                                    <label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 49806), Tuple.Create("\"", 49885)
-, Tuple.Create(Tuple.Create("", 49812), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 49812), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 47194), Tuple.Create("\"", 47273)
+, Tuple.Create(Tuple.Create("", 47200), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 47200), true)
             
-            #line 812 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-               , Tuple.Create(Tuple.Create("", 49859), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 773 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+               , Tuple.Create(Tuple.Create("", 47247), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 49859), false)
+, 47247), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 812 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 773 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                        Write(decommissionReason.ReasonMessage());
 
             
@@ -2687,7 +2635,7 @@ WriteLiteral(">");
 WriteLiteral("</label>\r\n                                </li>\r\n");
 
             
-            #line 814 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 775 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                             }
 
             
@@ -2705,7 +2653,7 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "uttonDialog = null;\r\n                        var deviceSerialNumber = \'");
 
             
-            #line 822 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 783 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                               Write(Model.Device.SerialNumber);
 
             
@@ -2738,7 +2686,7 @@ WriteLiteral("\';\r\n\r\n                        button.click(function () {\r\n\
 "   });\r\n                </script>\r\n");
 
             
-            #line 858 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 819 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
             }
 
             
@@ -2747,7 +2695,7 @@ WriteLiteral("\';\r\n\r\n                        button.click(function () {\r\n\
 WriteLiteral("            ");
 
             
-            #line 859 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 820 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
              if (Model.Device.CanRecommission())
             {
                 
@@ -2755,14 +2703,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 861 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 822 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Recommission", MVC.API.Device.Recommission(Model.Device.SerialNumber, true), "Device_Show_Device_Actions_Recommission_Button"));
 
             
             #line default
             #line hidden
             
-            #line 861 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 822 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                                                            
 
             
@@ -2816,7 +2764,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 896 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 857 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
             }
 
             
@@ -2825,7 +2773,7 @@ WriteLiteral(@">
 WriteLiteral("            ");
 
             
-            #line 897 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 858 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
              if (Model.Device.CanDelete())
             {
                 
@@ -2833,14 +2781,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 899 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 860 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Delete Device", MVC.API.Device.Delete(Model.Device.SerialNumber, true), "Device_Show_Device_Actions_Delete_Button"));
 
             
             #line default
             #line hidden
             
-            #line 899 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 860 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
                                                                                                                                                                 
 
             
@@ -2900,7 +2848,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 937 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
+            #line 898 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
             }
 
             

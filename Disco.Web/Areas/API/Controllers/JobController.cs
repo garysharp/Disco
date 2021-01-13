@@ -2093,30 +2093,9 @@ namespace Disco.Web.Areas.API.Controllers
                 throw new ArgumentOutOfRangeException(nameof(id));
             if (string.IsNullOrEmpty(DocumentTemplateId))
                 throw new ArgumentNullException(nameof(DocumentTemplateId));
-            var job = Database.Jobs.Find(id);
-            if (job != null)
-            {
-                var documentTemplate = Database.DocumentTemplates.Find(DocumentTemplateId);
-                if (documentTemplate != null)
-                {
-                    var timeStamp = DateTime.Now;
-                    Stream pdf;
-                    using (var generationState = DocumentState.DefaultState())
-                    {
-                        pdf = documentTemplate.GeneratePdf(Database, job, CurrentUser, timeStamp, generationState);
-                    }
-                    Database.SaveChanges();
-                    return File(pdf, "application/pdf", string.Format("{0}_{1}_{2:yyyyMMdd-HHmmss}.pdf", documentTemplate.Id, job.Id, timeStamp));
-                }
-                else
-                {
-                    throw new ArgumentException("Invalid Document Template Id", "id");
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Job Id", "id");
-            }
+
+            // Obsolete: Use API\DocumentTemplate\Generate instead
+            return RedirectToAction(MVC.API.DocumentTemplate.Generate(DocumentTemplateId, id.ToString()));
         }
 
         [DiscoAuthorize(Claims.Job.Actions.GenerateDocuments)]
@@ -2127,34 +2106,8 @@ namespace Disco.Web.Areas.API.Controllers
             if (string.IsNullOrEmpty(DocumentTemplatePackageId))
                 throw new ArgumentNullException(nameof(DocumentTemplatePackageId));
 
-            var job = Database.Jobs.Find(id);
-
-            if (job != null)
-            {
-                var package = DocumentTemplatePackages.GetPackage(DocumentTemplatePackageId);
-                if (package != null)
-                {
-                    if (package.Scope != AttachmentTypes.Job)
-                        throw new ArgumentException("This package cannot be generated from the Job Scope", nameof(DocumentTemplatePackageId));
-
-                    var timeStamp = DateTime.Now;
-                    Stream pdf;
-                    using (var generationState = DocumentState.DefaultState())
-                    {
-                        pdf = package.GeneratePdfPackage(Database, job, UserService.CurrentUser, timeStamp, generationState);
-                    }
-                    Database.SaveChanges();
-                    return File(pdf, "application/pdf", string.Format("{0}_{1}_{2:yyyyMMdd-HHmmss}.pdf", package.Id, job.Id, timeStamp));
-                }
-                else
-                {
-                    throw new ArgumentException("Invalid Document Template Package Id", nameof(DocumentTemplatePackageId));
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Job Id", nameof(id));
-            }
+            // Obsolete: Use API\DocumentTemplatePackage\Generate instead
+            return RedirectToAction(MVC.API.DocumentTemplatePackage.Generate(DocumentTemplatePackageId, id.ToString()));
         }
 
         [DiscoAuthorize(Claims.Job.Properties.DeviceHeldLocation)]
