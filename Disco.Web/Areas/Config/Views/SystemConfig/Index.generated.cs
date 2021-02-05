@@ -1982,12 +1982,40 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>
 
 WriteLiteral(" style=\"width: 135px\"");
 
-WriteLiteral(">\r\n                    &nbsp;\r\n                </th>\r\n                <td>\r\n");
+WriteLiteral(">\r\n                    Reply To Address:\r\n                </th>\r\n                " +
+"<td>\r\n");
 
 WriteLiteral("                    ");
 
             
             #line 704 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+               Write(Html.EditorFor(m => m.EmailReplyToAddress));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("<br />\r\n");
+
+WriteLiteral("                    ");
+
+            
+            #line 705 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+               Write(Html.ValidationMessageFor(m => m.EmailReplyToAddress));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <th" +
+"");
+
+WriteLiteral(" style=\"width: 135px\"");
+
+WriteLiteral(">\r\n                    &nbsp;\r\n                </th>\r\n                <td>\r\n");
+
+WriteLiteral("                    ");
+
+            
+            #line 713 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.CheckBoxFor(m => m.EmailEnableSsl));
 
             
@@ -1996,7 +2024,7 @@ WriteLiteral("                    ");
 WriteLiteral(" ");
 
             
-            #line 704 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 713 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                         Write(Html.LabelFor(m => m.EmailEnableSsl));
 
             
@@ -2012,7 +2040,7 @@ WriteLiteral(">\r\n                    Username:\r\n                </th>\r\n   
 WriteLiteral("                    ");
 
             
-            #line 712 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 721 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.EditorFor(m => m.EmailUsername));
 
             
@@ -2023,7 +2051,7 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 713 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 722 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.ValidationMessageFor(m => m.EmailUsername));
 
             
@@ -2039,7 +2067,7 @@ WriteLiteral(">\r\n                    Password:\r\n                </th>\r\n   
 WriteLiteral("                    ");
 
             
-            #line 721 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 730 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.EditorFor(m => m.EmailPassword));
 
             
@@ -2050,7 +2078,7 @@ WriteLiteral("<br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 722 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 731 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.ValidationMessageFor(m => m.EmailPassword));
 
             
@@ -2066,7 +2094,7 @@ WriteLiteral(">\r\n                    &nbsp;\r\n                </th>\r\n      
 WriteLiteral("                    ");
 
             
-            #line 730 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 739 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.AntiForgeryToken());
 
             
@@ -2083,7 +2111,7 @@ WriteLiteral(" class=\"button small\"");
 WriteLiteral(" ");
 
             
-            #line 731 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 740 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                                                          Write(Model.EmailIsConfigured ? null : "disabled");
 
             
@@ -2100,7 +2128,7 @@ WriteLiteral(" class=\"button small\"");
 WriteLiteral(">Save Email Settings</button>");
 
             
-            #line 732 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 741 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                                                                                     Write(AjaxHelpers.AjaxLoader());
 
             
@@ -2121,13 +2149,13 @@ WriteLiteral(" class=\"fa fa-envelope information\"");
 WriteLiteral("></i>&nbsp;Recipient Email Address:</h4>\r\n                        <br />\r\n");
 
             
-            #line 736 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 745 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 736 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 745 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                          using (Html.BeginForm(MVC.API.System.SendTestEmail(), FormMethod.Post))
                         {
 
@@ -2152,33 +2180,33 @@ WriteLiteral(" name=\"Recipient\"");
 
 WriteLiteral(" type=\"text\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 34321), Tuple.Create("\"", 34354)
+WriteAttribute("value", Tuple.Create(" value=\"", 34655), Tuple.Create("\"", 34688)
             
-            #line 739 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                              , Tuple.Create(Tuple.Create("", 34329), Tuple.Create<System.Object, System.Int32>(CurrentUser.EmailAddress
+            #line 748 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+                              , Tuple.Create(Tuple.Create("", 34663), Tuple.Create<System.Object, System.Int32>(CurrentUser.EmailAddress
             
             #line default
             #line hidden
-, 34329), false)
+, 34663), false)
 );
 
 WriteLiteral(" />\r\n");
 
             
-            #line 740 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 749 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 740 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 749 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                        Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 740 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 749 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                     
                         }
 
@@ -2196,7 +2224,7 @@ WriteLiteral(@"                    </div>
                                 var url = '");
 
             
-            #line 750 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 759 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                        Write(Url.Action(MVC.API.System.UpdateEmailSettings()));
 
             
@@ -2258,7 +2286,7 @@ WriteLiteral("\';\r\n                                var data = {\r\n           
 "        </tr>\r\n        </table>\r\n    </div>\r\n");
 
             
-            #line 821 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 830 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
 }
 else
 {
@@ -2283,7 +2311,7 @@ WriteLiteral(">\r\n                    SMTP Server:\r\n                </th>\r\n
 WriteLiteral("                    ");
 
             
-            #line 832 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 841 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.EmailSmtpServer));
 
             
@@ -2299,7 +2327,7 @@ WriteLiteral(">\r\n                    Port:\r\n                </th>\r\n       
 WriteLiteral("                    ");
 
             
-            #line 840 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 849 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.EmailSmtpPort));
 
             
@@ -2316,8 +2344,25 @@ WriteLiteral(">\r\n                    Default From Address:\r\n                
 WriteLiteral("                    ");
 
             
-            #line 848 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 857 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.EmailFromAddress));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <th" +
+"");
+
+WriteLiteral(" style=\"width: 135px\"");
+
+WriteLiteral(">\r\n                    Reply To Address:\r\n                </th>\r\n                " +
+"<td>\r\n");
+
+WriteLiteral("                    ");
+
+            
+            #line 865 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+               Write(Html.DisplayFor(m => m.EmailReplyToAddress));
 
             
             #line default
@@ -2333,7 +2378,7 @@ WriteLiteral(">\r\n                    Enable SSL:\r\n                </th>\r\n 
 WriteLiteral("                    ");
 
             
-            #line 856 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 873 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.CheckBoxFor(m => m.EmailEnableSsl, new { disabled = "disabled" }));
 
             
@@ -2342,7 +2387,7 @@ WriteLiteral("                    ");
 WriteLiteral(" ");
 
             
-            #line 856 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 873 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                                                        Write(Html.LabelFor(m => m.EmailEnableSsl));
 
             
@@ -2358,7 +2403,7 @@ WriteLiteral(">\r\n                    Username:\r\n                </th>\r\n   
 WriteLiteral("                    ");
 
             
-            #line 864 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 881 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.EmailUsername));
 
             
@@ -2374,7 +2419,7 @@ WriteLiteral(">\r\n                    Password:\r\n                </th>\r\n   
 "table>\r\n    </div>\r\n");
 
             
-            #line 877 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 894 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
 }
 
             
@@ -2389,7 +2434,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 879 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 896 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
 Write(Html.ActionLinkButton("Update Device Last Network Logons", MVC.API.System.UpdateLastNetworkLogonDates()));
 
             

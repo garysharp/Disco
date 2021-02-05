@@ -15,6 +15,7 @@ namespace Disco.Services.Messaging
         private static bool smtpEnableSsl;
         private static string smtpUsername;
         private static string smtpPassword;
+        private static string smtpReplyToAddress;
 
         public static bool IsConfigured { get; private set; }
 
@@ -26,7 +27,7 @@ namespace Disco.Services.Messaging
             }
         }
 
-        public static void ValidateConfiguration(string smtpServer, int smtpPort, string fromAddress, bool enableSsl, string username, string password)
+        public static void ValidateConfiguration(string smtpServer, int smtpPort, string fromAddress, string replyToAddress, bool enableSsl, string username, string password)
         {
             // if smtpServer is null, we aren't configured (emailing is disabled)
             if (!string.IsNullOrWhiteSpace(smtpServer))
@@ -38,6 +39,9 @@ namespace Disco.Services.Messaging
                     throw new ArgumentOutOfRangeException(nameof(fromAddress), "From Address is required");
                 // try parse FromAddress
                 new MailAddress(fromAddress);
+                // try parse reply-to address
+                if (!string.IsNullOrWhiteSpace(replyToAddress))
+                    new MailAddress(replyToAddress);
             }
         }
 
@@ -49,6 +53,7 @@ namespace Disco.Services.Messaging
             smtpFromAddress = systemConfiguration.EmailFromAddress;
             smtpUsername = systemConfiguration.EmailUsername;
             smtpPassword = systemConfiguration.EmailPassword;
+            smtpReplyToAddress = systemConfiguration.EmailReplyToAddress;
 
             IsConfigured =
                 !string.IsNullOrWhiteSpace(smtpServer) &&
@@ -72,6 +77,11 @@ namespace Disco.Services.Messaging
                 message.From = new MailAddress(email.From);
             else
                 message.From = new MailAddress(smtpFromAddress);
+
+            if (!string.IsNullOrWhiteSpace(email.ReplyTo))
+                message.ReplyToList.Add(new MailAddress(email.ReplyTo));
+            else if (!string.IsNullOrWhiteSpace(smtpReplyToAddress))
+                message.ReplyToList.Add(new MailAddress(smtpReplyToAddress));
 
             if (email.To.Count > 0)
             {

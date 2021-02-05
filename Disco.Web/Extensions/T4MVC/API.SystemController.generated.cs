@@ -335,6 +335,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string SmtpServer = "SmtpServer";
             public readonly string SmtpPort = "SmtpPort";
             public readonly string FromAddress = "FromAddress";
+            public readonly string ReplyToAddress = "ReplyToAddress";
             public readonly string EnableSsl = "EnableSsl";
             public readonly string Username = "Username";
             public readonly string Password = "Password";
@@ -608,20 +609,21 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdateEmailSettingsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string SmtpServer, int? SmtpPort, string FromAddress, bool EnableSsl, string Username, string Password, bool redirect);
+        partial void UpdateEmailSettingsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string SmtpServer, int? SmtpPort, string FromAddress, string ReplyToAddress, bool EnableSsl, string Username, string Password, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateEmailSettings(string SmtpServer, int? SmtpPort, string FromAddress, bool EnableSsl, string Username, string Password, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateEmailSettings(string SmtpServer, int? SmtpPort, string FromAddress, string ReplyToAddress, bool EnableSsl, string Username, string Password, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateEmailSettings);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "SmtpServer", SmtpServer);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "SmtpPort", SmtpPort);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "FromAddress", FromAddress);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ReplyToAddress", ReplyToAddress);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "EnableSsl", EnableSsl);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Username", Username);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Password", Password);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateEmailSettingsOverride(callInfo, SmtpServer, SmtpPort, FromAddress, EnableSsl, Username, Password, redirect);
+            UpdateEmailSettingsOverride(callInfo, SmtpServer, SmtpPort, FromAddress, ReplyToAddress, EnableSsl, Username, Password, redirect);
             return callInfo;
         }
 

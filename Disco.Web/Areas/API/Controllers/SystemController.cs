@@ -368,18 +368,19 @@ namespace Disco.Web.Areas.API.Controllers
         #region Email Settings
 
         [DiscoAuthorize(Claims.Config.System.ConfigureEmail), ValidateInput(false), ValidateAntiForgeryToken]
-        public virtual ActionResult UpdateEmailSettings(string SmtpServer, int? SmtpPort, string FromAddress, bool EnableSsl, string Username, string Password, bool redirect = false)
+        public virtual ActionResult UpdateEmailSettings(string SmtpServer, int? SmtpPort, string FromAddress, string ReplyToAddress, bool EnableSsl, string Username, string Password, bool redirect = false)
         {
             // Default Port
             if (!SmtpPort.HasValue)
                 SmtpPort = 25;
 
-            EmailService.ValidateConfiguration(SmtpServer, SmtpPort.Value, FromAddress, EnableSsl, Username, Password);
+            EmailService.ValidateConfiguration(SmtpServer, SmtpPort.Value, FromAddress, ReplyToAddress, EnableSsl, Username, Password);
 
             SystemConfiguration config = Database.DiscoConfiguration;
             config.EmailSmtpServer = SmtpServer;
             config.EmailSmtpPort = SmtpPort.Value;
             config.EmailFromAddress = FromAddress;
+            config.EmailReplyToAddress = ReplyToAddress;
             config.EmailEnableSsl = EnableSsl;
             config.EmailUsername = Username;
             config.EmailPassword = Password;

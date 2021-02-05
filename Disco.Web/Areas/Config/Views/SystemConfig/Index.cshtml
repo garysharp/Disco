@@ -698,6 +698,15 @@ else
             </tr>
             <tr>
                 <th style="width: 135px">
+                    Reply To Address:
+                </th>
+                <td>
+                    @Html.EditorFor(m => m.EmailReplyToAddress)<br />
+                    @Html.ValidationMessageFor(m => m.EmailReplyToAddress)
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
                     &nbsp;
                 </th>
                 <td>
@@ -846,6 +855,14 @@ else
                 </th>
                 <td>
                     @Html.DisplayFor(m => m.EmailFromAddress)
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    Reply To Address:
+                </th>
+                <td>
+                    @Html.DisplayFor(m => m.EmailReplyToAddress)
                 </td>
             </tr>
             <tr>

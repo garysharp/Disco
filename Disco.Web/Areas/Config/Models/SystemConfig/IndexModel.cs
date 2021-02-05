@@ -103,6 +103,7 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
         public string EmailSmtpServer { get; set; }
         public int EmailSmtpPort { get; set; }
         public string EmailFromAddress { get; set; }
+        public string EmailReplyToAddress { get; set; }
         [Display(Name = "Enable SSL")]
         public bool EmailEnableSsl { get; set; }
         public string EmailUsername { get; set; }
@@ -130,6 +131,7 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
                 EmailSmtpServer = config.EmailSmtpServer,
                 EmailSmtpPort = config.EmailSmtpPort,
                 EmailFromAddress = config.EmailFromAddress,
+                EmailReplyToAddress = config.EmailReplyToAddress,
                 EmailEnableSsl = config.EmailEnableSsl,
                 EmailUsername = config.EmailUsername,
                 EmailPassword = config.EmailPassword,
