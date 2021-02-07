@@ -6,11 +6,13 @@ using Disco.Services.Authorization;
 using Disco.Services.Documents;
 using Disco.Services.Interop;
 using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Plugins.Features.DetailsProvider;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using System;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.API.Controllers
@@ -184,6 +186,30 @@ namespace Disco.Web.Areas.API.Controllers
 
             // Obsolete: Use API\DocumentTemplatePackage\Generate instead
             return RedirectToAction(MVC.API.DocumentTemplatePackage.Generate(DocumentTemplatePackageId, userId));
+        }
+
+        public virtual ActionResult Photo(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+                throw new ArgumentNullException(nameof(userId));
+
+            userId = ActiveDirectory.ParseDomainAccountId(userId);
+            var user = UserService.GetUser(userId);
+
+            if (user == null)
+                return HttpNotFound();
+
+            var service = new DetailsProviderService(Database);
+
+            if (!service.HasUserPhoto(user))
+                return HttpNotFound();
+
+            var photo = service.GetUserPhoto(user);
+
+            if (photo == null)
+                return HttpNotFound();
+
+            return File(photo, "image/jpg");
         }
 
     }

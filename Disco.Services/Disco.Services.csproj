@@ -322,6 +322,7 @@
     <Compile Include="Expressions\Extensions\ImageResultImplementations\FileMontageImageExpressionResult.cs" />
     <Compile Include="Expressions\Extensions\UserExt.cs" />
     <Compile Include="Expressions\IExpressionPart.cs" />
+    <Compile Include="Expressions\LazyDictionary.cs" />
     <Compile Include="Expressions\TextExpressionPart.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
@@ -394,6 +395,10 @@
     <Compile Include="Plugins\Features\CertificateAuthorityProvider\CertificateAuthorityProviderFeature.cs" />
     <Compile Include="Plugins\Features\CertificateProvider\ProvisionPersonalCertificateResult.cs" />
     <Compile Include="Plugins\Features\CertificateAuthorityProvider\ProvisionAuthorityCertificatesResult.cs" />
+    <Compile Include="Plugins\Features\DetailsProvider\DetailsProviderExtensions.cs" />
+    <Compile Include="Plugins\Features\DetailsProvider\DetailsProviderFeature.cs" />
+    <Compile Include="Plugins\Features\DetailsProvider\DetailsProviderService.cs" />
+    <Compile Include="Plugins\Features\DocumentHandlerProvider\DocumentHandlerProviderFeature.cs" />
     <Compile Include="Plugins\Features\WirelessProfileProvider\ProvisionWirelessProfilesResult.cs" />
     <Compile Include="Plugins\Features\WirelessProfileProvider\WirelessProfile.cs" />
     <Compile Include="Plugins\Features\WirelessProfileProvider\WirelessProfileTransformation.cs" />

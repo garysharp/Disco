@@ -73,9 +73,9 @@
             }
         }
 
-            & > tbody > tr > td:not(:last-child) {
-                border-right: 1px dashed #aaa;
-            }
+        & > tbody > tr > td:not(:last-child) {
+            border-right: 1px dashed #aaa;
+        }
 
         #Job_Show_Job {
             #Job_Show_Job_Type {
@@ -83,7 +83,7 @@
                     text-transform: uppercase;
                     font-size: 16px;
                 }
-                
+
                 & > table {
                     table-layout: fixed;
                 }
@@ -113,10 +113,10 @@
                         vertical-align: middle;
                     }
 
-                        & > tbody > tr > td:first-child {
-                            font-weight: @FontWeightBodyBold;
-                            width: 60px;
-                        }
+                    & > tbody > tr > td:first-child {
+                        font-weight: @FontWeightBodyBold;
+                        width: 60px;
+                    }
                 }
             }
 
@@ -166,6 +166,17 @@
         }
 
         #Job_Show_User {
+
+            #Job_Show_User_Photo_Container {
+                float: left;
+                padding-right: 4px;
+            }
+
+            #Job_Show_User_Photo {
+                height: auto;
+                max-width: 96px;
+            }
+
             #Job_Show_User_Flags {
                 margin: 4px 0;
                 font-size: 16px;

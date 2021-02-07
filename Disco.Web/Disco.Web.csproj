@@ -827,6 +827,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Queues.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Shared\_CustomDetailValueRender.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_CustomDetailValueRender.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Shared\DisplayTemplates\AccessDeniedException.generated.cs">
       <DependentUpon>AccessDeniedException.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1445,6 +1450,7 @@
       <DependentUpon>tinymce.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="ClientSource\Style\Images\UnknownPhoto.png" />
     <Content Include="ClientSource\Style\Shadowbox.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2155,6 +2161,10 @@
     <None Include="Areas\Public\Views\Public\Licence.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Licence.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Shared\_CustomDetailValueRender.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_CustomDetailValueRender.generated.cs</LastGenOutput>
     </None>
     <None Include="Views\Shared\DisplayTemplates\AccessDeniedException.cshtml">
       <Generator>RazorGenerator</Generator>

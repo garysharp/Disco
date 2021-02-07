@@ -2,6 +2,7 @@
 using Disco.Models.Services.Authorization;
 using Disco.Models.Services.Documents;
 using Disco.Models.Services.Jobs.JobLists;
+using Disco.Models.Services.Plugins.Details;
 using Disco.Models.UI.User;
 using Disco.Web.Models.Shared;
 using System.Collections.Generic;
@@ -26,6 +27,10 @@ namespace Disco.Web.Models.User
 
         public IAuthorizationToken AuthorizationToken { get; set; }
         public IClaimNavigatorItem ClaimNavigator { get; set; }
+
+        public DetailsResult UserDetails { get; set; }
+        public bool HasUserPhoto { get; set; }
+        public Dictionary<string, DetailsResult> AssignedDevicesDetails { get; set; }
 
         public FancyTreeNode[] ClaimNavigatorFancyTreeNodes
         {
@@ -55,5 +60,6 @@ namespace Disco.Web.Models.User
                 }
             }
         }
+
     }
 }

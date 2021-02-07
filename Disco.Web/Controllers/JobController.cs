@@ -9,6 +9,7 @@ using Disco.Services.Jobs.JobLists;
 using Disco.Services.Jobs.JobQueues;
 using Disco.Services.Jobs.Statistics;
 using Disco.Services.Logging;
+using Disco.Services.Plugins.Features.DetailsProvider;
 using Disco.Services.Plugins.Features.RepairProvider;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Plugins.Features.WarrantyProvider;
@@ -298,9 +299,21 @@ namespace Disco.Web.Controllers
             var m = new Models.Job.ShowModel();
 
             m.Job = Database.Jobs
-                .Include("Device.DeviceModel").Include("Device.DeviceBatch").Include("DeviceHeldTechUser").Include("DeviceReadyForReturnTechUser").Include("DeviceReturnedTechUser")
-                .Include("OpenedTechUser").Include("ClosedTechUser").Include("JobType").Include("JobSubTypes").Include("User.UserFlagAssignments").Include("JobLogs.TechUser")
-                .Include("JobAttachments.TechUser").Include("JobAttachments.DocumentTemplate")
+                .Include("Device.DeviceModel")
+                .Include("Device.DeviceBatch")
+                .Include("Device.DeviceDetails")
+                .Include("DeviceHeldTechUser")
+                .Include("DeviceReadyForReturnTechUser")
+                .Include("DeviceReturnedTechUser")
+                .Include("OpenedTechUser")
+                .Include("ClosedTechUser")
+                .Include("JobType")
+                .Include("JobSubTypes")
+                .Include("User.UserFlagAssignments")
+                .Include("User.UserDetails")
+                .Include("JobLogs.TechUser")
+                .Include("JobAttachments.TechUser")
+                .Include("JobAttachments.DocumentTemplate")
                 .FirstOrDefault(j => j.Id == id.Value);
 
             if (m.Job == null)
@@ -363,6 +376,9 @@ namespace Disco.Web.Controllers
                 if (m.LocationMode == LocationModes.RestrictedList)
                     m.LocationOptions = ManagedJobList.OpenJobsTable(j => j).Items.Cast<JobTableStatusItemModel>().JobLocationReferences(Database.DiscoConfiguration.JobPreferences.LocationList).ToList();
             }
+
+            // Populate Custom Details
+            m.PopulateDetails(Database);
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobShowModel>(this.ControllerContext, m);

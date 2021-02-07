@@ -187,6 +187,17 @@
                         </tr>
                     </table>
                 </div>
+                @if (Model.DeviceDetails != null && Model.DeviceDetails.Details.Count > 0)
+                {
+                    <div id="Device_Show_CustomDetails" class="status clearfix">
+                        @foreach (var detail in Model.DeviceDetails.Details)
+                        {
+                            <div>
+                                <strong>@detail.Key:</strong> @Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail)
+                            </div>
+                        }
+                    </div>
+                }
                 <div class="status">
                     @{
                         var assignedUser = Model.Device.AssignedUser;
@@ -199,7 +210,13 @@
                             <td>
                                 @if (assignedUser != null)
                                 {
-                                    <div id="Device_Show_User">
+                                    <div id="Device_Show_User" class="clearfix @(Model.HasAssignedUserPhoto ? "hasPhoto" : "noPhoto")">
+                                        @if (Model.HasAssignedUserPhoto)
+                                        {
+                                            <div id="Device_Show_User_Photo_Container">
+                                                <img id="Device_Show_User_Photo" src="@Url.Action(MVC.API.User.Photo(assignedUser.UserId))" />
+                                            </div>
+                                        }
                                         <div id="Device_Show_User_DisplayName" title="Display Name">
                                             @if (Authorization.Has(Claims.User.Show))
                                             {
@@ -264,6 +281,17 @@
                                                             });
                                                     });
                                                 </script>
+                                            </div>
+                                        }
+                                        @if (Model.AssignedUserDetails != null && Model.AssignedUserDetails.Details.Count > 0)
+                                        {
+                                            <div id="Device_Show_User_CustomDetails" class="status clearfix">
+                                                @foreach (var detail in Model.AssignedUserDetails.Details)
+                                                {
+                                                    <div>
+                                                        <strong>@detail.Key:</strong> @Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail)
+                                                    </div>
+                                                }
                                             </div>
                                         }
                                     </div>

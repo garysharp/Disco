@@ -1,5 +1,6 @@
 ﻿using Disco.Models.Services.Documents;
 using Disco.Models.Services.Jobs.JobLists;
+using Disco.Models.Services.Plugins.Details;
 using Disco.Models.UI.Device;
 using Disco.Services.Plugins;
 using Disco.Web.Models.Shared;
@@ -30,5 +31,9 @@ namespace Disco.Web.Models.Device
             Templates = DocumentTemplates,
             TemplatePackages = DocumentTemplatePackages,
         };
+
+        public DetailsResult DeviceDetails { get; set; }
+        public DetailsResult AssignedUserDetails { get; set; }
+        public bool HasAssignedUserPhoto { get; set; }
     }
 }

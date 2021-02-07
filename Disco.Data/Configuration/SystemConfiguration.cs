@@ -150,6 +150,15 @@ namespace Disco.Data.Configuration
                 return System.IO.Path.Combine(DataStoreLocation, @"PluginPackages\");
             }
         }
+
+        public string PluginUserPhotosLocation
+            => Path.Combine(DataStoreLocation, @"PluginUserPhotos\");
+
+        public DateTime PluginDetailsCacheExpiration
+        {
+            get => Get(DateTime.MinValue);
+            set => Set(value);
+        }
         #endregion
 
         #region Organisation Details
@@ -288,6 +297,11 @@ namespace Disco.Data.Configuration
             set => Set(value);
         }
         public string EmailFromAddress
+        {
+            get => Get<string>(null);
+            set => Set(value);
+        }
+        public string EmailReplyToAddress
         {
             get => Get<string>(null);
             set => Set(value);

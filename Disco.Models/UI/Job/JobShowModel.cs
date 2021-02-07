@@ -1,6 +1,7 @@
 ﻿using Disco.Models.Services.Documents;
 using Disco.Models.Services.Job;
 using Disco.Models.Services.Jobs.JobLists;
+using Disco.Models.Services.Plugins.Details;
 using System;
 using System.Collections.Generic;
 
@@ -17,5 +18,8 @@ namespace Disco.Models.UI.Job
 
         LocationModes LocationMode { get; set; }
         List<JobLocationReference> LocationOptions { get; set; }
+        DetailsResult UserDetails { get; set; }
+        bool HasUserPhoto { get; set; }
+        DetailsResult DeviceDetails { get; set; }
     }
 }

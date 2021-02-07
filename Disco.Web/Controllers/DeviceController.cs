@@ -5,7 +5,7 @@ using Disco.Models.UI.Device;
 using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Devices.Exporting;
-using Disco.Services.Plugins;
+using Disco.Services.Plugins.Features.DetailsProvider;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Users;
 using Disco.Services.Web;
@@ -205,9 +205,16 @@ namespace Disco.Web.Controllers
             Database.Configuration.LazyLoadingEnabled = true;
 
             m.Device = Database.Devices
-                .Include("DeviceModel").Include("DeviceProfile").Include("DeviceBatch").Include("DeviceDetails")
-                .Include("DeviceUserAssignments.AssignedUser.UserFlagAssignments").Include("AssignedUser.UserFlagAssignments").Include("DeviceCertificates")
-                .Include("DeviceAttachments.TechUser").Include("DeviceAttachments.DocumentTemplate")
+                .Include("DeviceModel")
+                .Include("DeviceProfile")
+                .Include("DeviceBatch")
+                .Include("DeviceDetails")
+                .Include("DeviceUserAssignments.AssignedUser.UserFlagAssignments")
+                .Include("AssignedUser.UserFlagAssignments")
+                .Include("AssignedUser.UserDetails")
+                .Include("DeviceCertificates")
+                .Include("DeviceAttachments.TechUser")
+                .Include("DeviceAttachments.DocumentTemplate")
                 .FirstOrDefault(d => d.SerialNumber == id);
 
             if (m.Device == null)
@@ -261,6 +268,9 @@ namespace Disco.Web.Controllers
             {
                 m.DeviceProfileWirelessProfileProviders = m.Device.DeviceProfile.GetWirelessProfileProviders().ToList();
             }
+
+            // Populate Custom Details
+            m.PopulateDetails(Database);
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<DeviceShowModel>(this.ControllerContext, m);

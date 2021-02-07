@@ -22,6 +22,7 @@ namespace Disco.Data.Repository
         public virtual DbSet<DocumentTemplate> DocumentTemplates { get; set; }
 
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserDetail> UserDetails { get; set; }
         public virtual DbSet<UserAttachment> UserAttachments { get; set; }
         public virtual DbSet<UserFlag> UserFlags { get; set; }
         public virtual DbSet<UserFlagAssignment> UserFlagAssignments { get; set; }

@@ -202,6 +202,14 @@
 #Job_Show #Job_Show_Subjects #Job_Show_Device #Job_Show_Device_DeviceHeld table > tbody > tr > td:first-child {
   width: 62px;
 }
+#Job_Show #Job_Show_Subjects #Job_Show_User #Job_Show_User_Photo_Container {
+  float: left;
+  padding-right: 4px;
+}
+#Job_Show #Job_Show_Subjects #Job_Show_User #Job_Show_User_Photo {
+  height: auto;
+  max-width: 96px;
+}
 #Job_Show #Job_Show_Subjects #Job_Show_User #Job_Show_User_Flags {
   margin: 4px 0;
   font-size: 16px;

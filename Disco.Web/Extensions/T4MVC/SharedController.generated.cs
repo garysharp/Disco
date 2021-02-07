@@ -36,6 +36,7 @@ namespace T4MVC
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _CustomDetailValueRender = "_CustomDetailValueRender";
                 public readonly string _DialogLayout = "_DialogLayout";
                 public readonly string _EmptyLayout = "_EmptyLayout";
                 public readonly string _GenerateDocumentControl = "_GenerateDocumentControl";
@@ -46,6 +47,7 @@ namespace T4MVC
                 public readonly string _SearchDialog = "_SearchDialog";
                 public readonly string Error = "Error";
             }
+            public readonly string _CustomDetailValueRender = "~/Views/Shared/_CustomDetailValueRender.cshtml";
             public readonly string _DialogLayout = "~/Views/Shared/_DialogLayout.cshtml";
             public readonly string _EmptyLayout = "~/Views/Shared/_EmptyLayout.cshtml";
             public readonly string _GenerateDocumentControl = "~/Views/Shared/_GenerateDocumentControl.cshtml";

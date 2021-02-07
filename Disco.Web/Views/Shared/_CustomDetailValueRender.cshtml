@@ -1,0 +1,23 @@
+﻿@model System.Collections.Generic.KeyValuePair<string, string>
+@using System.Text.RegularExpressions
+@{
+    var emailMatch = Regex.Match(Model.Value, @"^(?<name>.+)\s?<(?<address>.+@.+)>$");
+    if (!emailMatch.Success)
+    {
+        emailMatch = Regex.Match(Model.Value, @"^(?<address>.+@.+)$");
+    }
+}
+@if (emailMatch.Success)
+{
+    var emailAddress = emailMatch.Groups["address"].Value;
+    var emailName = emailAddress;
+    if (emailMatch.Groups["name"].Success)
+    {
+        emailName = emailMatch.Groups["name"].Value;
+    }
+    <a href="mailto:@emailAddress">@emailName</a>
+}
+else
+{
+    <span>@Model.Value</span>
+}

@@ -26,7 +26,6 @@
             height: 100%;
 
             & > div /* Extra DIV added for FireFox TD relative position incompatibility */ {
-                position: relative;
 
                 div.status {
                     margin-top: 2px;
@@ -40,14 +39,30 @@
             }
         }
 
-            & > tbody > tr > td:not(:last-child) {
-                border-right: 1px dashed #aaa;
-            }
+        & > tbody > tr > td:not(:last-child) {
+            border-right: 1px dashed #aaa;
+        }
 
         #User_Show_Details {
             width: 330px;
 
+            &.hasPhoto {
+                width: 450px;
+            }
+
+            #User_Show_Details_Photo_Container {
+                float: left;
+                padding-right: 4px;
+            }
+
+            #User_Show_Details_Photo {
+                max-height: 192px;
+                width: auto;
+            }
+
             table.verticalHeadings {
+                width: auto;
+
                 & > tbody > tr > td:first-child {
                     width: 104px;
                     font-weight: @FontWeightBodyBold;

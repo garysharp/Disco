@@ -620,6 +620,7 @@ namespace Links
                     public static readonly string warning32_png = Url("warning32.png");
                 }
             
+                public static readonly string UnknownPhoto_png = Url("UnknownPhoto.png");
             }
         
             public static readonly string IsotopeStyles_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/IsotopeStyles.min.css") ? Url("IsotopeStyles.min.css") : Url("IsotopeStyles.css");

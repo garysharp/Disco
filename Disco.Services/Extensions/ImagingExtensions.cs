@@ -76,6 +76,36 @@ namespace Disco.Services
             return destination;
         }
 
+        public static Bitmap ResizeImage(this Image Source, int MaxHeight, Brush BackgroundColor = null)
+        {
+            // Determine Width
+            int Height = (Source.Height > MaxHeight) ?
+                MaxHeight :
+                Source.Height;
+
+            int Width = (Source.Height > Height) ?
+                (int)(((float)Height / Source.Height) * Source.Width) :
+                Source.Width;
+
+            Bitmap destination = new Bitmap(Width, Height);
+            destination.SetResolution(72, 72);
+            using (Graphics destinationGraphics = Graphics.FromImage(destination))
+            {
+                destinationGraphics.CompositingQuality = CompositingQuality.HighQuality;
+                destinationGraphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                destinationGraphics.SmoothingMode = SmoothingMode.HighQuality;
+
+                if (BackgroundColor != null)
+                    destinationGraphics.FillRectangle(BackgroundColor, destinationGraphics.VisibleClipBounds);
+
+                float ratio = Math.Min((float)(destination.Width) / (float)(Source.Width), (float)(destination.Height) / (float)(Source.Height));
+
+                destinationGraphics.DrawImageResized(Source, ratio);
+            }
+
+            return destination;
+        }
+
         public static RectangleF CalculateResize(int SourceWidth, int SourceHeight, int TargetWidth, int TargetHeight, out float scaleRatio)
         {
             scaleRatio = Math.Min((float)(TargetWidth) / SourceWidth, (float)(TargetHeight) / SourceHeight);
@@ -117,6 +147,33 @@ namespace Disco.Services
             var resizeBounds = SourceImage.CalculateResize((int)clipBounds.Width, (int)clipBounds.Height);
 
             graphics.DrawImage(SourceImage, resizeBounds, new RectangleF(0, 0, SourceImage.Width, SourceImage.Height), GraphicsUnit.Pixel);
+        }
+
+        public static void DrawImageResized(this Graphics graphics, Image SourceImage, float? Scale = null, float LocationX = -1, float LocationY = -1)
+        {
+            RectangleF clipBounds = graphics.VisibleClipBounds;
+            if (Scale == null) // Calculate Scale
+                Scale = Math.Min(clipBounds.Width / SourceImage.Width, clipBounds.Height / SourceImage.Height);
+            float newWidth = SourceImage.Width * Scale.Value;
+            float newHeight = SourceImage.Height * Scale.Value;
+            float newLeft = LocationX;
+            float newTop = LocationY;
+
+            if (newLeft < 0 || newTop < 0)
+            {
+                if (newWidth < clipBounds.Width)
+                    newLeft = (clipBounds.Width - newWidth) / 2;
+                else
+                    newLeft = 0;
+                if (newHeight < clipBounds.Height)
+                    newTop = (clipBounds.Height - newHeight) / 2;
+                else
+                    newTop = 0;
+            }
+            newLeft += clipBounds.Left;
+            newTop += clipBounds.Top;
+
+            graphics.DrawImage(SourceImage, new RectangleF(newLeft, newTop, newWidth, newHeight), new RectangleF(0, 0, SourceImage.Width, SourceImage.Height), GraphicsUnit.Pixel);
         }
 
         public static void DrawImageResized(this Graphics graphics, Image SourceImage, float Scale, float LocationX, float LocationY)

@@ -1,6 +1,7 @@
 ﻿using Disco.Models.BI.Config;
 using Disco.Models.Services.Documents;
 using Disco.Models.Services.Jobs.JobLists;
+using Disco.Models.Services.Plugins.Details;
 using System.Collections.Generic;
 
 namespace Disco.Models.UI.Device
@@ -20,5 +21,8 @@ namespace Disco.Models.UI.Device
 
         List<Repository.DocumentTemplate> DocumentTemplates { get; set; }
         List<DocumentTemplatePackage> DocumentTemplatePackages { get; set; }
+        DetailsResult DeviceDetails { get; set; }
+        DetailsResult AssignedUserDetails { get; set; }
+        bool HasAssignedUserPhoto { get; set; }
     }
 }

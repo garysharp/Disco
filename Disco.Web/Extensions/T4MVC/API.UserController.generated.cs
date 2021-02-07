@@ -105,6 +105,12 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdfPackage);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Photo()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Photo);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public UserController Actions { get { return MVC.API.User; } }
@@ -129,6 +135,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string AttachmentRemove = "AttachmentRemove";
             public readonly string GeneratePdf = "GeneratePdf";
             public readonly string GeneratePdfPackage = "GeneratePdfPackage";
+            public readonly string Photo = "Photo";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -142,6 +149,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string AttachmentRemove = "AttachmentRemove";
             public const string GeneratePdf = "GeneratePdf";
             public const string GeneratePdfPackage = "GeneratePdfPackage";
+            public const string Photo = "Photo";
         }
 
 
@@ -215,6 +223,14 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string id = "id";
             public readonly string Domain = "Domain";
             public readonly string DocumentTemplatePackageId = "DocumentTemplatePackageId";
+        }
+        static readonly ActionParamsClass_Photo s_params_Photo = new ActionParamsClass_Photo();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Photo PhotoParams { get { return s_params_Photo; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Photo
+        {
+            public readonly string userId = "userId";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -335,6 +351,18 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Domain", Domain);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DocumentTemplatePackageId", DocumentTemplatePackageId);
             GeneratePdfPackageOverride(callInfo, id, Domain, DocumentTemplatePackageId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void PhotoOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string userId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Photo(string userId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Photo);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userId", userId);
+            PhotoOverride(callInfo, userId);
             return callInfo;
         }
 

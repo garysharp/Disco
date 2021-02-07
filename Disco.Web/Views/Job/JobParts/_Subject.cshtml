@@ -71,9 +71,9 @@
                                     {
                                         @CommonHelpers.FriendlyDate(Model.Job.ExpectedClosedDate)
                                     }
-                            </td>
-                        </tr>
-                    }
+                                </td>
+                            </tr>
+                        }
                         @if (Model.Job.ClosedDate.HasValue)
                         {
                             <tr>
@@ -180,142 +180,153 @@
                         {@Html.ActionLink(Model.Job.DeviceSerialNumber, MVC.Device.Show(Model.Job.DeviceSerialNumber))}
                     else
                     {@Model.Job.DeviceSerialNumber}
-                </h2>
-                <div class="clearfix">
-                    <div id="Job_Show_Device_Details">
-                        <img id="Job_Show_Device_Model_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(Model.Job.Device.DeviceModelId, Model.Job.Device.DeviceModel.ImageHash()))" />
-                        <div id="Job_Show_Device_ComputerName" title="Computer Name">@Model.Job.Device.ComputerName</div>
-                        <div id="Job_Show_Device_Model" title="Model">@Html.ActionLink(Model.Job.Device.DeviceModel.ToString(), MVC.Config.DeviceModel.Index(Model.Job.Device.DeviceModelId))</div>
+                    </h2>
+                    <div class="clearfix">
+                        <div id="Job_Show_Device_Details">
+                            <img id="Job_Show_Device_Model_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(Model.Job.Device.DeviceModelId, Model.Job.Device.DeviceModel.ImageHash()))" />
+                            <div id="Job_Show_Device_ComputerName" title="Computer Name">@Model.Job.Device.ComputerName</div>
+                            <div id="Job_Show_Device_Model" title="Model">@Html.ActionLink(Model.Job.Device.DeviceModel.ToString(), MVC.Config.DeviceModel.Index(Model.Job.Device.DeviceModelId))</div>
+                            @if (Model.Job.Device.DeviceBatch != null)
+                            {
+                                <div id="Job_Show_Device_Batch" title="Batch">@Html.ActionLink(Model.Job.Device.DeviceBatch.Name, MVC.Config.DeviceBatch.Index(Model.Job.Device.DeviceBatchId))</div>
+                            }
+                        </div>
                         @if (Model.Job.Device.DeviceBatch != null)
                         {
-                            <div id="Job_Show_Device_Batch" title="Batch">@Html.ActionLink(Model.Job.Device.DeviceBatch.Name, MVC.Config.DeviceBatch.Index(Model.Job.Device.DeviceBatchId))</div>
+                            if (Model.Job.JobTypeId == JobType.JobTypeIds.HWar)
+                            {
+                                <div id="Job_Show_Device_Details_HWar">
+                                    <div>DEVICE WARRANTY</div>
+                                    <div>Until: <span id="Job_Show_Device_Details_HWar_ValidUntil" data-livestamp="@Model.Job.Device.DeviceBatch.WarrantyValidUntil.ToUnixEpoc()">@Model.Job.Device.DeviceBatch.WarrantyValidUntil.ToFullDateTime("Unknown")</span></div>
+                                    @if (!string.IsNullOrWhiteSpace(Model.Job.Device.DeviceBatch.WarrantyDetails))
+                                    {
+                                        <a id="Job_Show_Device_Details_HWar_Details_Button" href="#">Show Details</a>
+                                        <div id="Job_Show_Device_Details_HWar_Details_Dialog" class="dialog" title="Warranty Details for @(Model.Job.Device.DeviceBatch.Name)">
+                                            <div>@(new HtmlString(Model.Job.Device.DeviceBatch.WarrantyDetails))</div>
+                                        </div>
+                                        <script type="text/javascript">
+                                            $(function () {
+                                                var d;
+                                                $('#Job_Show_Device_Details_HWar_Details_Button').click(function () {
+                                                    if (!d)
+                                                        d = $('#Job_Show_Device_Details_HWar_Details_Dialog').dialog({
+                                                            width: 570,
+                                                            modal: true
+                                                        });
+                                                    else
+                                                        d.dialog('open');
+                                                    return false;
+                                                });
+                                            });
+                                        </script>
+                                    }
+                                </div>
+                            }
+                            if (Model.Job.JobTypeId == JobType.JobTypeIds.HNWar)
+                            {
+                                <div id="Job_Show_Device_Details_HNWar">
+                                    <div>INSURANCE</div>
+                                    <div id="Job_Show_Device_Details_HNWar_InsuranceSupplier">@Model.Job.Device.DeviceBatch.InsuranceSupplier</div>
+                                    <div>Until: <span id="Job_Show_Device_Details_HNWar_ValidUntil" data-livestamp="@Model.Job.Device.DeviceBatch.InsuredUntil.ToUnixEpoc()">@Model.Job.Device.DeviceBatch.InsuredUntil.ToFullDateTime("Unknown")</span></div>
+                                    @if (!string.IsNullOrWhiteSpace(Model.Job.Device.DeviceBatch.InsuranceDetails))
+                                    {
+                                        <a id="Job_Show_Device_Details_HNWar_Details_Button" href="#">Show Details</a>
+                                        <div id="Job_Show_Device_Details_HNWar_Details_Dialog" class="dialog" title="Insurance Details for @(Model.Job.Device.DeviceBatch.Name)">
+                                            <div>@(new HtmlString(Model.Job.Device.DeviceBatch.InsuranceDetails))</div>
+                                        </div>
+                                        <script type="text/javascript">
+                                            $(function () {
+                                                var d;
+                                                $('#Job_Show_Device_Details_HNWar_Details_Button').click(function () {
+                                                    if (!d)
+                                                        d = $('#Job_Show_Device_Details_HNWar_Details_Dialog').dialog({
+                                                            width: 570,
+                                                            modal: true
+                                                        });
+                                                    else
+                                                        d.dialog('open');
+                                                    return false;
+                                                });
+                                            });
+                                        </script>
+                                    }
+                                </div>
+                            }
                         }
                     </div>
-                    @if (Model.Job.Device.DeviceBatch != null)
+                    @if (Model.DeviceDetails != null && Model.DeviceDetails.Details.Count > 0)
                     {
-                        if (Model.Job.JobTypeId == JobType.JobTypeIds.HWar)
-                        {
-                            <div id="Job_Show_Device_Details_HWar">
-                                <div>DEVICE WARRANTY</div>
-                                <div>Until: <span id="Job_Show_Device_Details_HWar_ValidUntil" data-livestamp="@Model.Job.Device.DeviceBatch.WarrantyValidUntil.ToUnixEpoc()">@Model.Job.Device.DeviceBatch.WarrantyValidUntil.ToFullDateTime("Unknown")</span></div>
-                                @if (!string.IsNullOrWhiteSpace(Model.Job.Device.DeviceBatch.WarrantyDetails))
-                                {
-                                    <a id="Job_Show_Device_Details_HWar_Details_Button" href="#">Show Details</a>
-                                    <div id="Job_Show_Device_Details_HWar_Details_Dialog" class="dialog" title="Warranty Details for @(Model.Job.Device.DeviceBatch.Name)">
-                                        <div>@(new HtmlString(Model.Job.Device.DeviceBatch.WarrantyDetails))</div>
-                                    </div>
-                                    <script type="text/javascript">
-                                        $(function () {
-                                            var d;
-                                            $('#Job_Show_Device_Details_HWar_Details_Button').click(function () {
-                                                if (!d)
-                                                    d = $('#Job_Show_Device_Details_HWar_Details_Dialog').dialog({
-                                                        width: 570,
-                                                        modal: true
-                                                    });
-                                                else
-                                                    d.dialog('open');
-                                                return false;
-                                            });
-                                        });
-                                    </script>
-                                }
-                            </div>
-                        }
-                        if (Model.Job.JobTypeId == JobType.JobTypeIds.HNWar)
-                        {
-                            <div id="Job_Show_Device_Details_HNWar">
-                                <div>INSURANCE</div>
-                                <div id="Job_Show_Device_Details_HNWar_InsuranceSupplier">@Model.Job.Device.DeviceBatch.InsuranceSupplier</div>
-                                <div>Until: <span id="Job_Show_Device_Details_HNWar_ValidUntil" data-livestamp="@Model.Job.Device.DeviceBatch.InsuredUntil.ToUnixEpoc()">@Model.Job.Device.DeviceBatch.InsuredUntil.ToFullDateTime("Unknown")</span></div>
-                                @if (!string.IsNullOrWhiteSpace(Model.Job.Device.DeviceBatch.InsuranceDetails))
-                                {
-                                    <a id="Job_Show_Device_Details_HNWar_Details_Button" href="#">Show Details</a>
-                                    <div id="Job_Show_Device_Details_HNWar_Details_Dialog" class="dialog" title="Insurance Details for @(Model.Job.Device.DeviceBatch.Name)">
-                                        <div>@(new HtmlString(Model.Job.Device.DeviceBatch.InsuranceDetails))</div>
-                                    </div>
-                                    <script type="text/javascript">
-                                        $(function () {
-                                            var d;
-                                            $('#Job_Show_Device_Details_HNWar_Details_Button').click(function () {
-                                                if (!d)
-                                                    d = $('#Job_Show_Device_Details_HNWar_Details_Dialog').dialog({
-                                                        width: 570,
-                                                        modal: true
-                                                    });
-                                                else
-                                                    d.dialog('open');
-                                                return false;
-                                            });
-                                        });
-                                    </script>
-                                }
-                            </div>
-                        }
+                        <div id="Job_Show_Device_CustomDetails" class="status clearfix">
+                            @foreach (var detail in Model.DeviceDetails.Details)
+                            {
+                                <div>
+                                    <strong>@detail.Key:</strong> @Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail)
+                                </div>
+                            }
+                        </div>
                     }
-                </div>
-                @if (Model.Job.DeviceHeld.HasValue)
-                {
-                    var canEditLocation = Authorization.Has(Claims.Job.Properties.DeviceHeldLocation);
-                    <div id="Job_Show_Device_DeviceHeld" class="status">
-                        <table class="none">
-                            <tr>
-                                <td>Location:</td>
-                                <td>
-                                    <span id="Job_Show_Device_DeviceHeld_Location">
-                                        @if (canEditLocation)
-                                        {
-                                            switch (Model.LocationMode)
+                    @if (Model.Job.DeviceHeld.HasValue)
+                    {
+                        var canEditLocation = Authorization.Has(Claims.Job.Properties.DeviceHeldLocation);
+                        <div id="Job_Show_Device_DeviceHeld" class="status">
+                            <table class="none">
+                                <tr>
+                                    <td>Location:</td>
+                                    <td>
+                                        <span id="Job_Show_Device_DeviceHeld_Location">
+                                            @if (canEditLocation)
                                             {
-                                                case LocationModes.Unrestricted:
-                                                case LocationModes.OptionalList:
-                                                    @Html.TextBoxFor(m => m.Job.DeviceHeldLocation, new { @class = "small discreet" })
-                                                    break;
-                                                case LocationModes.RestrictedList:
-                                                    List<SelectListItem> listOptions = new List<SelectListItem>() { new SelectListItem() { Value = "", Text = "<Unknown>" } };
-                                                    if (!string.IsNullOrWhiteSpace(Model.Job.DeviceHeldLocation) && !Model.LocationOptions.Any(l => l.Location.Equals(Model.Job.DeviceHeldLocation)))
-                                                    {
-                                                        listOptions.Add(new SelectListItem() { Value = Model.Job.DeviceHeldLocation, Text = string.Format("Custom: {0}", Model.Job.DeviceHeldLocation) });
-                                                    }
-                                                    listOptions.AddRange(Model.LocationOptions.Select(l => new SelectListItem() { Value = l.Location, Text = (l.References.Count == 0 ? l.Location : (l.References.Count == 1 ? string.Format("{0} [Job {1}]", l.Location, l.References[0].JobId) : string.Format("{0} [{1} jobs]", l.Location, l.References.Count))) }));
-                                                    @Html.DropDownListFor(m => m.Job.DeviceHeldLocation, listOptions, new { @class = "small discreet" });
-                                                    break;
+                                                switch (Model.LocationMode)
+                                                {
+                                                    case LocationModes.Unrestricted:
+                                                    case LocationModes.OptionalList:
+                                                        @Html.TextBoxFor(m => m.Job.DeviceHeldLocation, new { @class = "small discreet" })
+                                                        break;
+                                                    case LocationModes.RestrictedList:
+                                                        List<SelectListItem> listOptions = new List<SelectListItem>() { new SelectListItem() { Value = "", Text = "<Unknown>" } };
+                                                        if (!string.IsNullOrWhiteSpace(Model.Job.DeviceHeldLocation) && !Model.LocationOptions.Any(l => l.Location.Equals(Model.Job.DeviceHeldLocation)))
+                                                        {
+                                                            listOptions.Add(new SelectListItem() { Value = Model.Job.DeviceHeldLocation, Text = string.Format("Custom: {0}", Model.Job.DeviceHeldLocation) });
+                                                        }
+                                                        listOptions.AddRange(Model.LocationOptions.Select(l => new SelectListItem() { Value = l.Location, Text = (l.References.Count == 0 ? l.Location : (l.References.Count == 1 ? string.Format("{0} [Job {1}]", l.Location, l.References[0].JobId) : string.Format("{0} [{1} jobs]", l.Location, l.References.Count))) }));
+                                                        @Html.DropDownListFor(m => m.Job.DeviceHeldLocation, listOptions, new { @class = "small discreet" });
+                                                        break;
+                                                }
+                                                @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
                                             }
-                                            @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
-                                        }
-                                        else if (string.IsNullOrEmpty(Model.Job.DeviceHeldLocation))
-                                        {
-                                            <span class="smallMessage">&lt;None/Unknown&gt;</span>
-                                        }
-                                        else
-                                        {
-                                            @Model.Job.DeviceHeldLocation
-                                        }
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Held Since:</td>
-                                <td><span id="Job_Show_Device_DeviceHeld_DeviceHeld">@CommonHelpers.FriendlyDateAndTitleUser(Model.Job.DeviceHeld, Model.Job.DeviceHeldTechUser)</span></td>
-                            </tr>
-                            @if (Model.Job.DeviceReadyForReturn.HasValue)
-                            {
-                                <tr>
-                                    <td>Ready:</td>
-                                    <td><span id="Job_Show_Device_DeviceHeld_DeviceReadyForReturn">@CommonHelpers.FriendlyDateAndTitleUser(Model.Job.DeviceReadyForReturn, Model.Job.DeviceReadyForReturnTechUser)</span></td>
+                                            else if (string.IsNullOrEmpty(Model.Job.DeviceHeldLocation))
+                                            {
+                                                <span class="smallMessage">&lt;None/Unknown&gt;</span>
+                                            }
+                                            else
+                                            {
+                                                @Model.Job.DeviceHeldLocation
+                                            }
+                                        </span>
+                                    </td>
                                 </tr>
-                            }
-                            @if (Model.Job.DeviceReturnedDate.HasValue)
-                            {
                                 <tr>
-                                    <td>Returned:</td>
-                                    <td><span id="Job_Show_Device_DeviceHeld_DeviceReturnedDate">@CommonHelpers.FriendlyDateAndTitleUser(Model.Job.DeviceReturnedDate, Model.Job.DeviceReturnedTechUser)</span></td>
+                                    <td>Held Since:</td>
+                                    <td><span id="Job_Show_Device_DeviceHeld_DeviceHeld">@CommonHelpers.FriendlyDateAndTitleUser(Model.Job.DeviceHeld, Model.Job.DeviceHeldTechUser)</span></td>
                                 </tr>
-                            }
-                        </table>
-                        @if (canEditLocation)
-                        {
-                            <script type="text/javascript">
+                                @if (Model.Job.DeviceReadyForReturn.HasValue)
+                                {
+                                    <tr>
+                                        <td>Ready:</td>
+                                        <td><span id="Job_Show_Device_DeviceHeld_DeviceReadyForReturn">@CommonHelpers.FriendlyDateAndTitleUser(Model.Job.DeviceReadyForReturn, Model.Job.DeviceReadyForReturnTechUser)</span></td>
+                                    </tr>
+                                }
+                                @if (Model.Job.DeviceReturnedDate.HasValue)
+                                {
+                                    <tr>
+                                        <td>Returned:</td>
+                                        <td><span id="Job_Show_Device_DeviceHeld_DeviceReturnedDate">@CommonHelpers.FriendlyDateAndTitleUser(Model.Job.DeviceReturnedDate, Model.Job.DeviceReturnedTechUser)</span></td>
+                                    </tr>
+                                }
+                            </table>
+                            @if (canEditLocation)
+                            {
+                                <script type="text/javascript">
                                     $(function () {
                                         @switch (Model.LocationMode)
                                         {
@@ -417,85 +428,102 @@
 
 
                                     });
-                            </script>
-                        }
-                    </div>
-                }
-            </div>
-        </td>
-    }
+                                </script>
+                            }
+                        </div>
+                    }
+                </div>
+            </td>
+        }
         @if (Model.Job.User != null)
         {
             <td id="Job_Show_User">
                 <div>
+                    @if (Model.HasUserPhoto)
+                    {
+                        <div id="Job_Show_User_Photo_Container">
+                            <img id="Job_Show_User_Photo" src="@Url.Action(MVC.API.User.Photo(Model.Job.UserId))" />
+                        </div>
+                    }
                     <h2 id="Job_Show_User_DisplayName" title="Display Name">
                         @if (Authorization.Has(Claims.User.Show))
                         {@Html.ActionLink(Model.Job.User.DisplayName, MVC.User.Show(Model.Job.UserId))}
                     else
                     {@Model.Job.User.DisplayName}
-                </h2>
-                <div id="Job_Show_User_Id" title="Id">@Model.Job.User.FriendlyId()</div>
-                @if (Authorization.Has(Claims.User.ShowDetails))
-                {
-                    if (!string.IsNullOrWhiteSpace(Model.Job.User.PhoneNumber))
-                    {<div id="Job_Show_User_PhoneNumber" title="Phone Number">Phone: @Model.Job.User.PhoneNumber</div>}
-                if (!string.IsNullOrWhiteSpace(Model.Job.User.EmailAddress))
-                {<div id="Job_Show_User_EmailAddress" title="Email Address">Email: <a href="mailto:@(Model.Job.User.EmailAddress)">@Model.Job.User.EmailAddress</a></div>}
+                    </h2>
+                    <div id="Job_Show_User_Id" title="Id">@Model.Job.User.FriendlyId()</div>
+                    @if (Authorization.Has(Claims.User.ShowDetails))
+                    {
+                        if (!string.IsNullOrWhiteSpace(Model.Job.User.PhoneNumber))
+                        {<div id="Job_Show_User_PhoneNumber" title="Phone Number">Phone: @Model.Job.User.PhoneNumber</div>}
+                    if (!string.IsNullOrWhiteSpace(Model.Job.User.EmailAddress))
+                    {<div id="Job_Show_User_EmailAddress" title="Email Address">Email: <a href="mailto:@(Model.Job.User.EmailAddress)">@Model.Job.User.EmailAddress</a></div>}
+            }
+                    @if (Authorization.Has(Claims.User.ShowFlagAssignments))
+                    {
+                        <div id="Job_Show_User_Flags">
+                            @foreach (var flag in Model.Job.User.UserFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, UserFlagService.GetUserFlag(f.UserFlagId))))
+                            {
+                                <i class="flag fa fa-@(flag.Item2.Icon) fa-fw d-@(flag.Item2.IconColour)">
+                                    <span class="details">
+                                        <span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
+                                        {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span>
+                                    </span>
+                                </i>
+                            }
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#Job_Show_User_Flags')
+                                        .tooltip({
+                                            items: 'i.flag',
+                                            content: function () {
+                                                var $this = $(this);
+                                                return $this.children('.details').html();
+                                            },
+                                            tooltipClass: 'User_FlagAssignment_Tooltip',
+                                            position: {
+                                                my: "right top",
+                                                at: "right bottom",
+                                                collision: "flipfit flip"
+                                            },
+                                            hade: {
+                                                effect: ''
+                                            },
+                                            close: function (e, ui) {
+                                                ui.tooltip.hover(
+                                                    function () {
+                                                        $(this).stop(true).fadeTo(100, 1);
+                                                    },
+                                                    function () {
+                                                        $(this).fadeOut(100, function () { $(this).remove(); });
+                                                    });
+                                            }
+                                        });
+                                });
+                            </script>
+                        </div>
+                    }
+                    @if (Model.Job.WaitingForUserAction.HasValue)
+                    {
+                        <div id="Job_Show_User_WaitingForUserAction" class="status">
+                            <h4>Awaiting Action</h4>
+                            Since: <span data-livestamp="@Model.Job.WaitingForUserAction.ToUnixEpoc()">@Model.Job.WaitingForUserAction.ToFullDateTime()</span>
+                        </div>
+                    }
+                    @if (Model.UserDetails != null && Model.UserDetails.Details.Count > 0)
+                    {
+                        <div id="Job_Show_User_CustomDetails" class="status clearfix">
+                            @foreach (var detail in Model.UserDetails.Details)
+                            {
+                                <div>
+                                    <strong>@detail.Key:</strong> @Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail)
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </td>
         }
-                @if (Authorization.Has(Claims.User.ShowFlagAssignments))
-                {
-                    <div id="Job_Show_User_Flags">
-                        @foreach (var flag in Model.Job.User.UserFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, UserFlagService.GetUserFlag(f.UserFlagId))))
-                        {
-                            <i class="flag fa fa-@(flag.Item2.Icon) fa-fw d-@(flag.Item2.IconColour)">
-                                <span class="details">
-                                    <span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
-                                    {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span>
-                                </span>
-                            </i>
-                        }
-                        <script type="text/javascript">
-                            $(function () {
-                                $('#Job_Show_User_Flags')
-                                    .tooltip({
-                                        items: 'i.flag',
-                                        content: function () {
-                                            var $this = $(this);
-                                            return $this.children('.details').html();
-                                        },
-                                        tooltipClass: 'User_FlagAssignment_Tooltip',
-                                        position: {
-                                            my: "right top",
-                                            at: "right bottom",
-                                            collision: "flipfit flip"
-                                        },
-                                        hade: {
-                                            effect: ''
-                                        },
-                                        close: function (e, ui) {
-                                            ui.tooltip.hover(
-                                                function () {
-                                                    $(this).stop(true).fadeTo(100, 1);
-                                                },
-                                                function () {
-                                                    $(this).fadeOut(100, function () { $(this).remove(); });
-                                                });
-                                        }
-                                    });
-                            });
-                        </script>
-                    </div>
-                }
-                @if (Model.Job.WaitingForUserAction.HasValue)
-                {
-                    <div id="Job_Show_User_WaitingForUserAction" class="status">
-                        <h4>Awaiting Action</h4>
-                        Since: <span data-livestamp="@Model.Job.WaitingForUserAction.ToUnixEpoc()">@Model.Job.WaitingForUserAction.ToFullDateTime()</span>
-                    </div>
-                }
-            </div>
-        </td>
-    }
     </tr>
     <tr id="Job_Show_Subjects_Actions">
         <td id="Job_Show_Job_Actions">

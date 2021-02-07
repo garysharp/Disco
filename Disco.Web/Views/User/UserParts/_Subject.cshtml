@@ -3,11 +3,18 @@
     Authorization.Require(Claims.User.Show);
 
     var currentDeviceAssignments = Model.User.DeviceUserAssignments.Where(dua => !dua.UnassignedDate.HasValue).OrderByDescending(dua => dua.AssignedDate).ToList();
+    Disco.Models.Services.Plugins.Details.DetailsResult deviceDetails;
 }
 <table id="User_Show_Subjects">
     <tbody>
         <tr>
-            <td id="User_Show_Details">
+            <td id="User_Show_Details" class="clearfix @(Model.HasUserPhoto ? "hasPhoto" : "noPhoto")">
+                @if (Model.HasUserPhoto)
+                {
+                    <div id="User_Show_Details_Photo_Container">
+                        <img id="User_Show_Details_Photo" src="@Url.Action(MVC.API.User.Photo(Model.User.UserId))" />
+                    </div>
+                }
                 <div>
                     <div id="User_Show_Details_Identity">
                         <table class="none verticalHeadings">
@@ -66,6 +73,21 @@
                             </table>
                         </div>
                     }
+                    @if (Model.UserDetails != null && Model.UserDetails.Details.Count > 0)
+                    {
+                        <div id="User_Show_CustomDetails" class="status clearfix">
+                            <table class="none verticalHeadings">
+                                @foreach (var detail in Model.UserDetails.Details)
+                                {
+                                    <tr>
+                                        <td>@detail.Key:</td>
+                                        <td>@Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail)</td>
+                                    </tr>
+
+                                }
+                            </table>
+                        </div>
+                    }
                     @if (Authorization.Has(Claims.User.Actions.GenerateDocuments))
                     {
                         <div id="User_Show_GenerateDocument_Container" class="status">
@@ -91,52 +113,53 @@
                                         <ul id="CreateJob_Assignments" class="none">
                                             @foreach (var assignment in currentDeviceAssignments)
                                             {
-                                        <li class="CreateJob_Assignment clearfix" data-createjoburl="@Url.Action(MVC.Job.Create(assignment.DeviceSerialNumber, Model.User.UserId))">
-                                            <table class="none">
-                                                <tbody>
-                                                    <tr>
-                                                        <td rowspan="5">
-                                                            <img class="CreateJob_Assignment_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))" />
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            Serial Number:
-                                                        </td>
-                                                        <td>
-                                                            <span>@assignment.Device.SerialNumber</span> (<span>@assignment.Device.ComputerName</span>)
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            Model:
-                                                        </td>
-                                                        <td>
-                                                            <span>@assignment.Device.DeviceModel.ToString()</span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Asset:</td>
-                                                        <td>
-                                                            @if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
-                                                            {
-                                                                <span>@assignment.Device.AssetNumber</span>
-                                                            }
-                                                            else
-                                                            {
-                                                                <span class="smallMessage">Unknown</span>
-                                                            }
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Assigned:</td>
-                                                        <td>
-                                                            <span>@CommonHelpers.FriendlyDate(assignment.AssignedDate)</span>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </li>}
+                                                <li class="CreateJob_Assignment clearfix" data-createjoburl="@Url.Action(MVC.Job.Create(assignment.DeviceSerialNumber, Model.User.UserId))">
+                                                    <table class="none">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td rowspan="5">
+                                                                    <img class="CreateJob_Assignment_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))" />
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Serial Number:
+                                                                </td>
+                                                                <td>
+                                                                    <span>@assignment.Device.SerialNumber</span> (<span>@assignment.Device.ComputerName</span>)
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Model:
+                                                                </td>
+                                                                <td>
+                                                                    <span>@assignment.Device.DeviceModel.ToString()</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Asset:</td>
+                                                                <td>
+                                                                    @if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
+                                                                    {
+                                                                        <span>@assignment.Device.AssetNumber</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span class="smallMessage">Unknown</span>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Assigned:</td>
+                                                                <td>
+                                                                    <span>@CommonHelpers.FriendlyDate(assignment.AssignedDate)</span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </li>
+                                            }
                                         </ul>
                                     </div>
                                 </div>
@@ -376,6 +399,16 @@
                                                             <span class="User_Show_AssignedDevices_CurrentAssignment_Assigned">@CommonHelpers.FriendlyDate(assignment.AssignedDate)</span>
                                                         </td>
                                                     </tr>
+                                                    @if (Model.AssignedDevicesDetails != null && Model.AssignedDevicesDetails.TryGetValue(assignment.DeviceSerialNumber, out deviceDetails) && deviceDetails.Details.Count > 0)
+                                                    {
+                                                        foreach (var detail in deviceDetails.Details)
+                                                        {
+                                                            <tr>
+                                                                <td>@detail.Key:</td>
+                                                                <td>@Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail)</td>
+                                                            </tr>
+                                                        }
+                                                    }
                                                 </tbody>
                                             </table>
                                         </div>

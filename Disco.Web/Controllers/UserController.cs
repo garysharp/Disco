@@ -4,6 +4,7 @@ using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Authorization.Roles;
 using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Plugins.Features.DetailsProvider;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Users;
 using Disco.Services.Users.UserFlags;
@@ -56,10 +57,12 @@ namespace Disco.Web.Controllers
                 .Include("DeviceUserAssignments.Device.DeviceModel")
                 .Include("DeviceUserAssignments.Device.DeviceProfile")
                 .Include("DeviceUserAssignments.Device.DeviceBatch")
+                .Include("DeviceUserAssignments.Device.DeviceDetails")
                 .Include("UserAttachments.TechUser")
                 .Include("UserAttachments.DocumentTemplate")
                 .Include("UserFlagAssignments.AddedUser")
                 .Include("UserFlagAssignments.RemovedUser")
+                .Include("UserDetails")
                 .FirstOrDefault(um => um.UserId == id);
 
             if (m.User == null)
@@ -109,6 +112,9 @@ namespace Disco.Web.Controllers
                 m.DocumentTemplates = m.User.AvailableDocumentTemplates(Database, UserService.CurrentUser, DateTime.Now);
                 m.DocumentTemplatePackages = m.User.AvailableDocumentTemplatePackages(Database, UserService.CurrentUser);
             }
+
+            // Populate Custom Details
+            m.PopulateDetails(Database);
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<UserShowModel>(this.ControllerContext, m);
