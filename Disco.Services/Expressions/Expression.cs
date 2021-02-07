@@ -2,11 +2,13 @@ using Disco.Data.Repository;
 using Disco.Models.BI.Expressions;
 using Disco.Models.Repository;
 using Disco.Models.Services.Documents;
+using Disco.Services.Plugins.Features.DetailsProvider;
 using Spring.Core.TypeResolution;
 using Spring.Expressions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Disco.Services.Expressions
@@ -173,92 +175,127 @@ namespace Disco.Services.Expressions
             return e;
         }
 
-        public static IDictionary StandardVariables(DocumentTemplate AttachmentType, DiscoDataContext Database, User User, DateTime TimeStamp, DocumentState DocumentState)
+        public static IDictionary StandardVariables(DocumentTemplate AttachmentType, DiscoDataContext Database, User User, DateTime TimeStamp, DocumentState DocumentState, IAttachmentTarget target = null)
         {
-            return new Hashtable
-			{
+            var detailsVariables = new Dictionary<string, object>();
+            var detailsService = new DetailsProviderService(Database);
+            if (target != null)
+            {
+                if (target is User targetUser)
+                {
+                    detailsVariables.Add("UserDetails", new LazyDictionary(() => detailsService.GetDetails(targetUser).Details));
+                    detailsVariables.Add("AssignedDeviceDetails", targetUser.CurrentDeviceUserAssignments().Select(a => new { a.Device, Details = new LazyDictionary(() => detailsService.GetDetails(targetUser).Details) }).ToDictionary(d => d.Device.SerialNumber, d => d.Details, StringComparer.OrdinalIgnoreCase));
+                }
+                else if (target is Job targetJob)
+                {
+                    detailsVariables.Add("UserDetails", targetJob.User == null ? (IDictionary<string, string>)new Dictionary<string, string>() : new LazyDictionary(() => detailsService.GetDetails(targetJob.User).Details));
+                    detailsVariables.Add("DeviceDetails", targetJob.Device == null ? (IDictionary<string, string>)new Dictionary<string, string>() : new LazyDictionary(() => detailsService.GetDetails(targetJob.Device).Details));
+                }
+                else if (target is Device targetDevice)
+                {
+                    detailsVariables.Add("DeviceDetails", new LazyDictionary(() => detailsService.GetDetails(targetDevice).Details));
+                    detailsVariables.Add("UserDetails", targetDevice.AssignedUser == null ? (IDictionary<string, string>)new Dictionary<string, string>() : new LazyDictionary(() => detailsService.GetDetails(targetDevice.AssignedUser).Details));
+                }
+            }
 
-				{
-					"DataContext", 
-					Database
-				}, 
+            return new Hashtable(detailsVariables)
+            {
+                {
+                    "DataContext",
+                    Database
+                },
 
-				{
-					"User", 
-					User
-				}, 
+                {
+                    "User",
+                    User
+                },
 
-				{
-					"TimeStamp", 
-					TimeStamp
-				}, 
+                {
+                    "TimeStamp",
+                    TimeStamp
+                },
 
-				{
-					"AttachmentType", 
-					AttachmentType
-				}, 
+                {
+                    "AttachmentType",
+                    AttachmentType
+                },
 
-				{
-					"State", 
-					DocumentState
-				}
-			};
+                {
+                    "State",
+                    DocumentState
+                }
+            };
         }
         public static Dictionary<string, string> StandardVariableTypes()
         {
             return new Dictionary<string, string>
-			{
+            {
 
-				{
-					"#DataContext", 
-					typeof(DiscoDataContext).AssemblyQualifiedName
-				}, 
+                {
+                    "#DataContext",
+                    typeof(DiscoDataContext).AssemblyQualifiedName
+                },
 
-				{
-					"#User", 
-					typeof(User).AssemblyQualifiedName
-				}, 
+                {
+                    "#User",
+                    typeof(User).AssemblyQualifiedName
+                },
 
-				{
-					"#TimeStamp", 
-					typeof(DateTime).AssemblyQualifiedName
-				}, 
+                {
+                    "#TimeStamp",
+                    typeof(DateTime).AssemblyQualifiedName
+                },
 
-				{
-					"#AttachmentType", 
-					typeof(DocumentTemplate).AssemblyQualifiedName
-				}, 
+                {
+                    "#AttachmentType",
+                    typeof(DocumentTemplate).AssemblyQualifiedName
+                },
 
-				{
-					"#State", 
-					typeof(DocumentState).AssemblyQualifiedName
-				}
-			};
+                {
+                    "#State",
+                    typeof(DocumentState).AssemblyQualifiedName
+                },
+
+                {
+                    "#UserDetails",
+                    typeof(Dictionary<string, string>).AssemblyQualifiedName
+                },
+
+                {
+                    "#DeviceDetails",
+                    typeof(Dictionary<string, string>).AssemblyQualifiedName
+                },
+
+                {
+                    "#AssignedDeviceDetails",
+                    typeof(Dictionary<string, Dictionary<string, string>>).AssemblyQualifiedName
+                },
+            };
         }
         public static Dictionary<string, string> ExtensionLibraryTypes()
         {
             return new Dictionary<string, string>
-			{
-				{
-					"DataExt", 
-					typeof(Extensions.DataExt).AssemblyQualifiedName
-				}, 
+            {
+                {
+                    "DataExt",
+                    typeof(Extensions.DataExt).AssemblyQualifiedName
+                },
 
-				{
-					"DeviceExt", 
-					typeof(Extensions.DeviceExt).AssemblyQualifiedName
-				}, 
-                
                 {
-					"ImageExt", 
-					typeof(Extensions.ImageExt).AssemblyQualifiedName
-				}, 
-                
+                    "DeviceExt",
+                    typeof(Extensions.DeviceExt).AssemblyQualifiedName
+                },
+
                 {
-					"UserExt", 
-					typeof(Extensions.UserExt).AssemblyQualifiedName
-				}
-			};
+                    "ImageExt",
+                    typeof(Extensions.ImageExt).AssemblyQualifiedName
+                },
+
+                {
+                    "UserExt",
+                    typeof(Extensions.UserExt).AssemblyQualifiedName
+                }
+            };
         }
 
     }

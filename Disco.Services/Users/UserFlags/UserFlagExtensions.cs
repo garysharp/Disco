@@ -146,7 +146,7 @@ namespace Disco.Services
             if (!string.IsNullOrEmpty(ufa.UserFlag.OnAssignmentExpression))
             {
                 Expression compiledExpression = ufa.UserFlag.OnAssignmentExpressionFromCache();
-                IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, AddingUser, TimeStamp, null);
+                IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, AddingUser, TimeStamp, null, ufa.User);
                 object result = compiledExpression.EvaluateFirst<object>(ufa, evaluatorVariables);
                 if (result == null)
                     return null;
@@ -171,7 +171,7 @@ namespace Disco.Services
             if (!string.IsNullOrEmpty(ufa.UserFlag.OnUnassignmentExpression))
             {
                 Expression compiledExpression = ufa.UserFlag.OnUnassignmentExpressionFromCache();
-                IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, RemovingUser, TimeStamp, null);
+                IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, RemovingUser, TimeStamp, null, ufa.User);
                 object result = compiledExpression.EvaluateFirst<object>(ufa, evaluatorVariables);
                 if (result == null)
                     return null;

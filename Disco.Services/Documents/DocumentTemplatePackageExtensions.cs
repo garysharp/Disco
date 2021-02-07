@@ -81,12 +81,12 @@ namespace Disco.Services
             ExpressionCache.InvalidateKey("DocumentTemplatePackage_FilterExpression", package.Id);
         }
 
-        public static bool FilterExpressionMatches(this DocumentTemplatePackage package, object Data, DiscoDataContext Database, User User, DateTime TimeStamp, DocumentState State)
+        public static bool FilterExpressionMatches(this DocumentTemplatePackage package, IAttachmentTarget Data, DiscoDataContext Database, User User, DateTime TimeStamp, DocumentState State)
         {
             if (!string.IsNullOrEmpty(package.FilterExpression))
             {
                 var compiledExpression = package.FilterExpressionFromCache();
-                var evaluatorVariables = Expression.StandardVariables(null, Database, User, TimeStamp, State);
+                var evaluatorVariables = Expression.StandardVariables(null, Database, User, TimeStamp, State, Data);
                 evaluatorVariables.Add("Package", package);
                 try
                 {
@@ -119,12 +119,12 @@ namespace Disco.Services
             ExpressionCache.InvalidateKey("DocumentTemplatePackage_OnGenerateExpression", package.Id);
         }
 
-        public static string EvaluateOnGenerateExpression(this DocumentTemplatePackage package, object Data, DiscoDataContext Database, User User, DateTime TimeStamp, DocumentState State)
+        public static string EvaluateOnGenerateExpression(this DocumentTemplatePackage package, IAttachmentTarget Data, DiscoDataContext Database, User User, DateTime TimeStamp, DocumentState State)
         {
             if (!string.IsNullOrEmpty(package.OnGenerateExpression))
             {
                 Expression compiledExpression = package.OnGenerateExpressionFromCache();
-                System.Collections.IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, User, TimeStamp, State);
+                System.Collections.IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, User, TimeStamp, State, Data);
                 evaluatorVariables.Add("Package", package);
                 try
                 {

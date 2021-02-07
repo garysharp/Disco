@@ -397,7 +397,7 @@ namespace Disco.Services
             if (!string.IsNullOrEmpty(Database.DiscoConfiguration.JobPreferences.OnCreateExpression))
             {
                 Expression compiledExpression = Jobs.Jobs.OnCreateExpressionFromCache(Database);
-                IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, job.OpenedTechUser, DateTime.Now, null);
+                IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, job.OpenedTechUser, DateTime.Now, null, job);
                 object result = compiledExpression.EvaluateFirst<object>(job, evaluatorVariables);
                 if (result == null)
                     return null;
@@ -412,7 +412,7 @@ namespace Disco.Services
             if (!string.IsNullOrEmpty(Database.DiscoConfiguration.JobPreferences.OnCloseExpression))
             {
                 Expression compiledExpression = Jobs.Jobs.OnCloseExpressionFromCache(Database);
-                IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, job.OpenedTechUser, DateTime.Now, null);
+                IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, job.OpenedTechUser, DateTime.Now, null, job);
                 object result = compiledExpression.EvaluateFirst<object>(job, evaluatorVariables);
                 if (result == null)
                     return null;

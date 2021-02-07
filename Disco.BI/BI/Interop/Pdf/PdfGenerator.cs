@@ -218,7 +218,7 @@ namespace Disco.BI.Interop.Pdf
             pdfStamper.FormFlattening = FlattenFields;
             pdfStamper.Writer.CloseStream = false;
 
-            IDictionary expressionVariables = Expression.StandardVariables(dt, Database, CreatorUser, TimeStamp, State);
+            IDictionary expressionVariables = Expression.StandardVariables(dt, Database, CreatorUser, TimeStamp, State, Data);
 
             foreach (string pdfFieldKey in pdfStamper.AcroFields.Fields.Keys)
             {

@@ -28,7 +28,7 @@ namespace Disco.Services
                 //return Expressions.Expression.TokenizeSingleDynamic(null, deviceProfile.Configuration(context).ComputerNameTemplate, 0);
                 return Expression.TokenizeSingleDynamic(null, deviceProfile.ComputerNameTemplate, 0);
             });
-            var evaluatorVariables = Expression.StandardVariables(null, Database, UserService.CurrentUser, DateTime.Now, null);
+            var evaluatorVariables = Expression.StandardVariables(null, Database, UserService.CurrentUser, DateTime.Now, null, device);
             string rendered;
             try
             {

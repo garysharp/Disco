@@ -22,12 +22,12 @@ namespace Disco.Services
             ExpressionCache.InvalidateKey("DocumentTemplate_FilterExpression", dt.Id);
         }
 
-        public static bool FilterExpressionMatches(this DocumentTemplate dt, object Data, DiscoDataContext Database, User User, System.DateTime TimeStamp, DocumentState State)
+        public static bool FilterExpressionMatches(this DocumentTemplate dt, IAttachmentTarget Data, DiscoDataContext Database, User User, System.DateTime TimeStamp, DocumentState State)
         {
             if (!string.IsNullOrEmpty(dt.FilterExpression))
             {
                 var compiledExpression = dt.FilterExpressionFromCache();
-                var evaluatorVariables = Expression.StandardVariables(dt, Database, User, TimeStamp, State);
+                var evaluatorVariables = Expression.StandardVariables(dt, Database, User, TimeStamp, State, Data);
                 try
                 {
                     var er = compiledExpression.EvaluateFirst<object>(Data, evaluatorVariables);
@@ -59,12 +59,12 @@ namespace Disco.Services
             ExpressionCache.InvalidateKey("DocumentTemplate_OnImportExpression", dt.Id);
         }
 
-        public static string EvaluateOnAttachmentImportExpression(this DocumentTemplate dt, IAttachment Data, DiscoDataContext Database, User User, DateTime TimeStamp, List<DocumentUniqueIdentifier> PageIdentifiers)
+        public static string EvaluateOnAttachmentImportExpression(this DocumentTemplate dt, IAttachment Data, IAttachmentTarget AttachmentTarget, DiscoDataContext Database, User User, DateTime TimeStamp, List<DocumentUniqueIdentifier> PageIdentifiers)
         {
             if (!string.IsNullOrEmpty(dt.OnImportAttachmentExpression))
             {
                 var compiledExpression = dt.OnImportAttachmentExpressionFromCache();
-                var evaluatorVariables = Expression.StandardVariables(dt, Database, User, TimeStamp, null);
+                var evaluatorVariables = Expression.StandardVariables(dt, Database, User, TimeStamp, null, AttachmentTarget);
                 evaluatorVariables.Add("PageIdentifiers", PageIdentifiers);
                 var result = compiledExpression.EvaluateFirst<object>(Data, evaluatorVariables);
                 if (result == null)
@@ -85,12 +85,12 @@ namespace Disco.Services
             ExpressionCache.InvalidateKey("DocumentTemplate_OnGenerateExpression", dt.Id);
         }
 
-        public static string EvaluateOnGenerateExpression(this DocumentTemplate dt, object Data, DiscoDataContext Database, User User, DateTime TimeStamp, DocumentState State)
+        public static string EvaluateOnGenerateExpression(this DocumentTemplate dt, IAttachmentTarget Data, DiscoDataContext Database, User User, DateTime TimeStamp, DocumentState State)
         {
             if (!string.IsNullOrEmpty(dt.OnGenerateExpression))
             {
                 var compiledExpression = dt.OnGenerateExpressionFromCache();
-                var evaluatorVariables = Expression.StandardVariables(dt, Database, User, TimeStamp, State);
+                var evaluatorVariables = Expression.StandardVariables(dt, Database, User, TimeStamp, State, Data);
 
                 var result = compiledExpression.EvaluateFirst<object>(Data, evaluatorVariables);
                 return result.ToString();

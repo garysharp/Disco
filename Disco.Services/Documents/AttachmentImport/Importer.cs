@@ -235,7 +235,7 @@ namespace Disco.Services.Documents.AttachmentImport
             {
                 try
                 {
-                    var expressionResult = Identifier.DocumentTemplate.EvaluateOnAttachmentImportExpression(attachment, Database, creatorUser, Identifier.TimeStamp, PageIdentifiers);
+                    var expressionResult = Identifier.DocumentTemplate.EvaluateOnAttachmentImportExpression(attachment, Identifier.Target, Database, creatorUser, Identifier.TimeStamp, PageIdentifiers);
                     DocumentsLog.LogImportAttachmentExpressionEvaluated(Identifier.DocumentTemplate, Identifier.Target, attachment, expressionResult);
                 }
                 catch (Exception ex)
