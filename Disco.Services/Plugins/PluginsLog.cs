@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Disco.Services.Logging;
 using Disco.Services.Logging.Models;
 using System.Reflection;
-using Exceptionless;
 
 namespace Disco.Services.Plugins
 {
@@ -122,8 +121,6 @@ namespace Disco.Services.Plugins
 
         public static void LogInitializeException(string PluginFilename, Exception ex)
         {
-            ex.ToExceptionless().AddObject(PluginFilename, "PluginFilename").Submit();
-
             if (ex.InnerException != null)
             {
                 Log(EventTypeIds.InitializeExceptionWithInner, PluginFilename, ex.GetType().Name, ex.Message, ex.StackTrace, ex.InnerException.GetType().Name, ex.InnerException.Message, ex.InnerException.StackTrace);
@@ -136,8 +133,6 @@ namespace Disco.Services.Plugins
 
         public static void LogPluginException(string Component, Exception ex)
         {
-            ex.ToExceptionless().AddObject(Component, "Component").Submit();
-
             if (ex.InnerException != null)
             {
                 Log(EventTypeIds.PluginExceptionWithInner, Component, ex.GetType().Name, ex.Message, ex.StackTrace, ex.InnerException.GetType().Name, ex.InnerException.Message, ex.InnerException.StackTrace);

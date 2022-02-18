@@ -1,5 +1,4 @@
 ﻿using Disco.Data.Repository;
-using Exceptionless;
 using Quartz;
 using Quartz.Impl.Triggers;
 using System;
@@ -49,8 +48,6 @@ namespace Disco.Services.Documents.AttachmentImport
                 }
                 catch (Exception ex)
                 {
-                    ex.ToExceptionless().Submit();
-
                     // Retry 18 times (for 3 minutes)
                     if (retryCount < 18)
                     {

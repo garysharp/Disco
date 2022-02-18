@@ -1,5 +1,4 @@
 ﻿using Disco.Services.Logging.Models;
-using Exceptionless;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -44,8 +43,6 @@ namespace Disco.Services.Logging
         }
         public static void LogException(string Component, Exception ex)
         {
-            ex.ToExceptionless().Submit();
-
             // Handle Special-Case Errors
             if (ex is System.Data.Entity.Validation.DbEntityValidationException)
             {

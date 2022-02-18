@@ -7,7 +7,6 @@ using Disco.Services.Plugins;
 using Disco.Services.Plugins.Features.RepairProvider;
 using Disco.Services.Plugins.Features.WarrantyProvider;
 using Disco.Services.Users;
-using Exceptionless;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -221,7 +220,7 @@ namespace Disco.Services
                     {
                         DiscoServicesJobs.UpdateRecipientReference(Database, j, publishJobResult.Id, publishJobResult.Secret, j.JobMetaWarranty.ExternalReference);
                     }
-                    catch (Exception ex) { ex.ToExceptionless().Submit(); } // Ignore Errors as this is not completely necessary
+                    catch (Exception) { } // Ignore Errors as this is not completely necessary
                 }
             }
         }
@@ -443,7 +442,7 @@ namespace Disco.Services
                     {
                         DiscoServicesJobs.UpdateRecipientReference(Database, j, publishJobResult.Id, publishJobResult.Secret, j.JobMetaNonWarranty.RepairerReference);
                     }
-                    catch (Exception ex) { ex.ToExceptionless().Submit(); } // Ignore Errors as this is not completely necessary
+                    catch (Exception) { } // Ignore Errors as this is not completely necessary
                 }
             }
         }

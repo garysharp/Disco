@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity.Validation;
+using System.Text;
 using Disco.Services.Logging;
 using Disco.Services.Logging.Models;
-using Exceptionless;
 
 namespace Disco.Services.Tasks
 {
@@ -55,8 +57,6 @@ namespace Disco.Services.Tasks
 
         public static void LogInitializeException(Exception ex)
         {
-            ex.ToExceptionless().Submit();
-
             if (ex.InnerException != null)
             {
                 Log(EventTypeIds.InitializeExceptionWithInner, ex.GetType().Name, ex.Message, ex.StackTrace, ex.InnerException.GetType().Name, ex.InnerException.Message, ex.InnerException.StackTrace);
@@ -68,8 +68,6 @@ namespace Disco.Services.Tasks
         }
         public static void LogInitializeException(Exception ex, Type ScheduledTaskType)
         {
-            ex.ToExceptionless().Submit();
-
             if (ex.InnerException != null)
             {
                 Log(EventTypeIds.InitializeScheduledTasksExceptionWithInner, ScheduledTaskType.Name, ScheduledTaskType.Assembly.Location, ex.GetType().Name, ex.Message, ex.StackTrace, ex.InnerException.GetType().Name, ex.InnerException.Message, ex.InnerException.StackTrace);
@@ -82,19 +80,37 @@ namespace Disco.Services.Tasks
 
         public static void LogScheduledTaskException(string ScheduledTaskName, string SessionId, Type ScheduledTaskType, Exception ex)
         {
-            ex.ToExceptionless()
-                .AddTags("Scheduled Task")
-                .AddObject(ScheduledTaskName, "ScheduledTaskName")
-                .AddObject(ScheduledTaskType.Name, "ScheduledTaskTypeName")
-                .Submit();
-
-            if (ex.InnerException != null)
+            string message;
+            if (ex is DbEntityValidationException dbException)
             {
-                Log(EventTypeIds.ScheduledTasksExceptionWithInner, ScheduledTaskName, SessionId, ScheduledTaskType.Assembly.Location, ex.GetType().Name, ex.Message, ex.StackTrace, ex.InnerException.GetType().Name, ex.InnerException.Message, ex.InnerException.StackTrace);
+                StringBuilder messageBuilder = new StringBuilder();
+                messageBuilder.AppendLine("Validation failed for one or more entities:");
+                foreach (var dbEntityError in dbException.EntityValidationErrors)
+                {
+                    messageBuilder.Append("'").Append(dbEntityError.Entry.Entity.GetType().Name).AppendLine("' Object");
+                    foreach (var dbValidationError in dbEntityError.ValidationErrors)
+                    {
+                        messageBuilder.Append("  ").Append(dbValidationError.PropertyName).Append(": ").AppendLine(dbValidationError.ErrorMessage);
+                    }
+                }
+                message = messageBuilder.ToString();
             }
             else
             {
-                Log(EventTypeIds.ScheduledTasksException, ScheduledTaskName, SessionId, ScheduledTaskType.Assembly.Location, ex.GetType().Name, ex.Message, ex.StackTrace);
+                message = ex.Message;
+            }
+
+            if (ex.InnerException != null)
+            {
+                var innerException = ex.InnerException;
+                if (innerException is UpdateException updateException)
+                    innerException = updateException.InnerException;
+
+                Log(EventTypeIds.ScheduledTasksExceptionWithInner, ScheduledTaskName, SessionId, ScheduledTaskType.Assembly.Location, ex.GetType().Name, message, ex.StackTrace, innerException.GetType().Name, innerException.Message, innerException.StackTrace);
+            }
+            else
+            {
+                Log(EventTypeIds.ScheduledTasksException, ScheduledTaskName, SessionId, ScheduledTaskType.Assembly.Location, ex.GetType().Name, message, ex.StackTrace);
             }
         }
 

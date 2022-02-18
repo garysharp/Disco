@@ -4,7 +4,6 @@ using Disco.Models.Repository;
 using Disco.Services.Authorization;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
-using Exceptionless;
 using PListNet;
 using PListNet.Nodes;
 using Renci.SshNet;
@@ -148,7 +147,6 @@ namespace Disco.Services.Devices.Enrolment
             }
             catch (System.Exception ex)
             {
-                ex.ToExceptionless().Submit();
                 EnrolmentLog.LogSessionError(sessionId, ex);
                 throw ex;
             }
@@ -283,9 +281,8 @@ namespace Disco.Services.Devices.Enrolment
                 EnrolmentLog.LogSessionError(sessionId, ex);
                 return new MacEnrolResponse { ErrorMessage = ex.Message };
             }
-            catch (System.Exception ex2)
+            catch (Exception ex2)
             {
-                ex2.ToExceptionless().Submit();
                 EnrolmentLog.LogSessionError(sessionId, ex2);
                 throw ex2;
             }
@@ -665,9 +662,8 @@ namespace Disco.Services.Devices.Enrolment
                     ErrorMessage = ex.Message
                 };
             }
-            catch (System.Exception ex2)
+            catch (Exception ex2)
             {
-                ex2.ToExceptionless().Submit();
                 EnrolmentLog.LogSessionError(sessionId, ex2);
                 throw ex2;
             }

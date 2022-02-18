@@ -3,7 +3,7 @@ using Disco.Models.Repository;
 using Disco.Models.Services.Plugins.Details;
 using Disco.Services.Authorization;
 using Disco.Services.Users;
-using Exceptionless.Json;
+using Newtonsoft.Json;
 using System;
 using System.Drawing;
 using System.IO;

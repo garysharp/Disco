@@ -3,7 +3,6 @@ using Disco.Models.Repository;
 using Disco.Services.Authorization;
 using Disco.Services.Documents.ManagedGroups;
 using Disco.Services.Users;
-using Exceptionless;
 using System;
 using System.Drawing;
 using System.IO;
@@ -249,10 +248,7 @@ namespace Disco.Services
                             return true;
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        ex.ToExceptionless().Submit();
-                    }
+                    catch (Exception) { }
 
                 }
 
@@ -281,10 +277,7 @@ namespace Disco.Services
                             }
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        ex.ToExceptionless().Submit();
-                    }
+                    catch (Exception) { }
                 }
             }
             Thumbnail = null;

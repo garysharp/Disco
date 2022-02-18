@@ -1,6 +1,6 @@
 ﻿using Disco.Models.ClientServices.EnrolmentInformation;
 using Disco.Models.Repository;
-using Exceptionless.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;

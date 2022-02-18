@@ -6,7 +6,6 @@ using Disco.Services.Documents;
 using Disco.Services.Expressions;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
-using Exceptionless;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +35,6 @@ namespace Disco.Services
             }
             catch (Exception ex)
             {
-                ex.ToExceptionless().AddObject(deviceProfile.ComputerNameTemplate, "ComputerNameTemplate").Submit();
                 throw new InvalidOperationException(string.Format("An error occurred rendering the computer name: [{0}] {1}", ex.GetType().Name, ex.Message), ex.InnerException);
             }
             if (rendered == null || rendered.Length > 24)
