@@ -8,8 +8,7 @@
  *
  */
 
-/// <reference path="Scripts/jquery-1.6.4.js" />
-/// <reference path="jquery.signalR.version.js" />
+/// <reference path="../../Core/jquery-2.1.1.js" />
 (function ($, window, undefined) {
 
     var resources = {
@@ -1301,19 +1300,19 @@
             return xhr;
         },
 
-        ajaxAbort: function (connection, async) {
+        ajaxAbort: function (connection, doAsync) {
             if (typeof (connection.transport) === "undefined") {
                 return;
             }
 
             // Async by default unless explicitly overidden
-            async = typeof async === "undefined" ? true : async;
+            doAsync = typeof doAsync === "undefined" ? true : doAsync;
 
             var url = getAjaxUrl(connection, "/abort");
 
             transportLogic.ajax(connection, {
                 url: url,
-                async: async,
+                async: doAsync,
                 timeout: 1000,
                 type: "POST"
             });

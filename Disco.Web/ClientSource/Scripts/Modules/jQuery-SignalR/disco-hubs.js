@@ -8,8 +8,8 @@
  *
  */
 
-/// <reference path="..\..\SignalR.Client.JS\Scripts\jquery-1.6.4.js" />
-/// <reference path="jquery.signalR.js" />
+/// <reference path="..\..\Core\jquery-2.1.1.js" />
+/// <reference path="jquery.signalR-2.1.1.js" />
 (function ($, window, undefined) {
     /// <param name="$" type="jQuery" />
     "use strict";
