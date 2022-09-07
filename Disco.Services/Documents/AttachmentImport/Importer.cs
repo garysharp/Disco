@@ -65,7 +65,6 @@ namespace Disco.Services.Documents.AttachmentImport
                                 page.WriteThumbnailSessionCache();
                                 DocumentsLog.LogImportPageImageUpdate(SessionId, pageNumber);
                                 var identifier = page.Identifier;
-                                DocumentsLog.LogImportPageDetected(SessionId, pageNumber, identifier.DocumentTemplate.Id, identifier.DocumentTemplate.Description, identifier.DocumentTemplate.Scope, identifier.Target.AttachmentReferenceId, identifier.Target.ToString());
                             }
                             else
                             {
