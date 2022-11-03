@@ -5,6 +5,7 @@ using Disco.Models.UI.Device;
 using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Devices.Exporting;
+using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins.Features.DetailsProvider;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Users;
@@ -76,6 +77,16 @@ namespace Disco.Web.Controllers
                 // Ensure Existing Device Doesn't Exist
                 if (!string.IsNullOrEmpty(m.Device.SerialNumber) && Database.Devices.Count(d => d.SerialNumber == m.Device.SerialNumber) > 0)
                     ModelState.AddModelError("Device.SerialNumber", "A Device what this Serial Number already exists");
+            }
+            if (string.IsNullOrWhiteSpace(m.Device.DeviceDomainId))
+                m.Device.DeviceDomainId = null;
+            try
+            {
+                m.Device.DeviceDomainId = ActiveDirectory.ParseDomainAccountId(m.Device.DeviceDomainId);
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError("Device.DeviceDomainId", ex.Message);
             }
 
             if (ModelState.IsValid)

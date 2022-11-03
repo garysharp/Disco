@@ -9,7 +9,7 @@
     var hasDeviceBatch = Authorization.Has(Claims.Device.Properties.DeviceBatch);
     var hasDeviceProfile = Authorization.Has(Claims.Device.Properties.DeviceProfile);
     var hasAssignUser = Authorization.Has(Claims.Device.Actions.AssignUser);
-    
+
 }
 @using (Html.BeginForm())
 {
@@ -17,19 +17,31 @@
     <div class="form" style="width: 450px">
         <table>
             <tr>
-                <th>Serial Number:
+                <th>
+                    Serial Number (required):
                 </th>
                 <td>
                     @Html.TextBoxFor(model => model.Device.SerialNumber)<br />
                     @Html.ValidationMessageFor(model => model.Device.SerialNumber)
                 </td>
             </tr>
+            <tr>
+                <th>
+                    Computer Name:
+                </th>
+                <td>
+                    @Html.TextBoxFor(model => model.Device.DeviceDomainId)<br />
+                    @Html.ValidationMessageFor(model => model.Device.DeviceDomainId)
+                </td>
+            </tr>
             @if (hasAssetNumber)
             {
                 <tr>
-                    <th>Asset Number:
+                    <th>
+                        Asset Number:
                     </th>
-                    <td>@Html.TextBoxFor(model => model.Device.AssetNumber)<br />
+                    <td>
+                        @Html.TextBoxFor(model => model.Device.AssetNumber)<br />
                         @Html.ValidationMessageFor(model => model.Device.AssetNumber)
                     </td>
                 </tr>
@@ -37,9 +49,11 @@
             @if (hasLocation)
             {
                 <tr>
-                    <th>Location:
+                    <th>
+                        Location:
                     </th>
-                    <td>@Html.TextBoxFor(model => model.Device.Location)<br />
+                    <td>
+                        @Html.TextBoxFor(model => model.Device.Location)<br />
                         @Html.ValidationMessageFor(model => model.Device.Location)
                     </td>
                 </tr>
@@ -47,7 +61,8 @@
             @if (hasDeviceBatch)
             {
                 <tr>
-                    <th>Device Batch:
+                    <th>
+                        Device Batch:
                     </th>
                     <td>
                         @Html.DropDownListFor(model => model.Device.DeviceBatchId, Model.DeviceBatches.ToSelectListItems())
@@ -59,7 +74,8 @@
             @if (hasDeviceProfile)
             {
                 <tr>
-                    <th>Device Profile:
+                    <th>
+                        Device Profile:
                     </th>
                     <td>
                         @Html.DropDownListFor(model => model.Device.DeviceProfileId, Model.DeviceProfiles.ToSelectListItems(Model.DefaultDeviceProfileId))<br />
@@ -70,7 +86,8 @@
             @if (hasAssignUser)
             {
                 <tr>
-                    <th>Assigned User:
+                    <th>
+                        Assigned User:
                     </th>
                     <td>
                         @Html.TextBoxFor(model => model.Device.AssignedUserId)<br />
@@ -87,13 +104,20 @@
 
             <input type="submit" class="button" value="Add" />
         </p>
-            <script type="text/javascript">
+        <script type="text/javascript">
                 $(function () {
                     var $SerialNumber = $('#Device_SerialNumber').focus();
 
+                    $SerialNumber.keydown(function (e) {
+                        if (e.which == 13) {
+                            $('#Device_DeviceDomainId').focus();
+                            return false;
+                        }
+                    });
+
                 @if (hasAssignUser)
                 {<text>
-                $SerialNumber.keydown(function (e) {
+                    $('#Device_DeviceDomainId').keydown(function (e) {
                     if (e.which == 13) {
                         $('#Device_AssignedUserId').focus();
                         return false;
@@ -144,6 +168,6 @@
                     };
                 </text>}
             });
-            </script>
+        </script>
     </div>
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Disco.Models.Services.Devices.Importing
 {
@@ -11,6 +6,8 @@ namespace Disco.Models.Services.Devices.Importing
     {
         [Required, Display(Name = "Device Serial Number", Description = "The device serial number")]
         DeviceSerialNumber,
+        [Display(Name = "Device Computer Name", Description = "The device computer name")]
+        DeviceComputerName,
         [Display(Name = "Device Asset Number", Description = "The device asset number")]
         DeviceAssetNumber,
         [Display(Name = "Device Location", Description = "The device location")]

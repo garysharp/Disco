@@ -65,6 +65,7 @@ namespace Disco.Services
         {
             // Just Include:
             // - Serial Number
+            // - Device Domain Id
             // - Asset Number
             // - Profile Id
             // - Assigned User Id
@@ -102,6 +103,7 @@ namespace Disco.Services
             Device d2 = new Device()
             {
                 SerialNumber = d.SerialNumber.ToUpper(),
+                DeviceDomainId = d.DeviceDomainId,
                 AssetNumber = d.AssetNumber,
                 Location = d.Location,
                 CreatedDate = DateTime.Now,

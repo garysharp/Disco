@@ -13,6 +13,7 @@ namespace Disco.Services.Devices.Importing
             return new Dictionary<DeviceImportFieldTypes, Type>()
             {
                 { DeviceImportFieldTypes.DeviceSerialNumber, typeof(DeviceSerialNumberImportField) },
+                { DeviceImportFieldTypes.DeviceComputerName, typeof(DeviceComputerNameImportField) },
                 { DeviceImportFieldTypes.DeviceAssetNumber, typeof(DeviceAssetNumberImportField) },
                 { DeviceImportFieldTypes.DeviceLocation, typeof(DeviceLocationImportField) },
                 { DeviceImportFieldTypes.DeviceAllowUnauthenticatedEnrol, typeof(DeviceAllowUnauthenticatedEnrolImportField) },

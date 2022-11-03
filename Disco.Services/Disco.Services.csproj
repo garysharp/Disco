@@ -265,6 +265,7 @@
     <Compile Include="Devices\Importing\Fields\DetailBatteryImportField.cs" />
     <Compile Include="Devices\Importing\Fields\DeviceDecommissionedReasonImportField.cs" />
     <Compile Include="Devices\Importing\Fields\DeviceDecommissionedDateImportField.cs" />
+    <Compile Include="Devices\Importing\Fields\DeviceComputerNameImportField.cs" />
     <Compile Include="Devices\Importing\Fields\ProfileIdImportField.cs" />
     <Compile Include="Devices\Importing\Fields\DetailACAdapterImportField.cs" />
     <Compile Include="Devices\Importing\Fields\DetailWLanMacAddressImportField.cs" />
