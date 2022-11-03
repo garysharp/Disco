@@ -455,7 +455,7 @@
                     @if (Authorization.Has(Claims.User.ShowDetails))
                     {
                         if (!string.IsNullOrWhiteSpace(Model.Job.User.PhoneNumber))
-                        {<div id="Job_Show_User_PhoneNumber" title="Phone Number">Phone: @Model.Job.User.PhoneNumber</div>}
+                        {<div id="Job_Show_User_PhoneNumber" title="Phone Number">Phone: <a href="tel:@Model.Job.User.PhoneNumber">@Model.Job.User.PhoneNumber</a></div>}
                     if (!string.IsNullOrWhiteSpace(Model.Job.User.EmailAddress))
                     {<div id="Job_Show_User_EmailAddress" title="Email Address">Email: <a href="mailto:@(Model.Job.User.EmailAddress)">@Model.Job.User.EmailAddress</a></div>}
             }

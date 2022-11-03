@@ -49,7 +49,7 @@
                                     <td>
                                         @if (!string.IsNullOrEmpty(Model.User.EmailAddress))
                                         {
-                                            <span id="User_Show_Details_Attributes_Email" title="Email Address [Update in Active Directory]">@Model.User.EmailAddress</span>
+                                            <span id="User_Show_Details_Attributes_Email" title="Email Address [Update in Active Directory]"><a href="mailto:@Model.User.EmailAddress">@Model.User.EmailAddress</a></span>
                                         }
                                         else
                                         {
@@ -62,7 +62,7 @@
                                     <td>
                                         @if (!string.IsNullOrEmpty(Model.User.PhoneNumber))
                                         {
-                                            <span id="User_Show_Details_Attributes_Phone" title="Phone Number [Update in Active Directory]">@Model.User.PhoneNumber</span>
+                                            <span id="User_Show_Details_Attributes_Phone" title="Phone Number [Update in Active Directory]"><a href="tel:@Model.User.PhoneNumber">@Model.User.PhoneNumber</a></span>
                                         }
                                         else
                                         {

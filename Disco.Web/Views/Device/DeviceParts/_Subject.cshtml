@@ -232,7 +232,7 @@
                                         {
                                             if (!string.IsNullOrWhiteSpace(assignedUser.PhoneNumber))
                                             {
-                                                <div id="Device_Show_User_PhoneNumber" title="Phone Number">@assignedUser.PhoneNumber</div>
+                                                <div id="Device_Show_User_PhoneNumber" title="Phone Number"><a href="tel:@assignedUser.PhoneNumber">@assignedUser.PhoneNumber</a></div>
                                             }
                                             if (!string.IsNullOrWhiteSpace(assignedUser.EmailAddress))
                                             {
