@@ -10,6 +10,7 @@ using iTextSharp.text.pdf;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -31,8 +32,21 @@ namespace Disco.BI.Extensions
                 int pdfFieldOrdinal = 0;
                 foreach (string pdfFieldKey in pdfReader.AcroFields.Fields.Keys)
                 {
+                    var pdfField = pdfReader.AcroFields.Fields[pdfFieldKey];
+                    var pdfFieldPositions = pdfReader.AcroFields.GetFieldPositions(pdfFieldKey);
+                    var pdfFieldFlags = pdfField.GetMerged(0).GetAsNumber(PdfName.FF)?.IntValue ?? 0;
+                    var isRequired = (pdfFieldFlags & 2) == 2;
+                    var isReadOnly = (pdfFieldFlags & 1) == 1;
+
                     var pdfFieldValue = pdfReader.AcroFields.GetField(pdfFieldKey);
-                    ExpressionCache.SetValue(cacheModuleKey, pdfFieldKey, Expression.Tokenize(pdfFieldKey, pdfFieldValue, pdfFieldOrdinal));
+                    var pdfFieldPosition = default(RectangleF?);
+                    if (pdfFieldPositions != null && pdfFieldPositions.Count > 0)
+                    {
+                        var position = pdfFieldPositions.First().position;
+                        pdfFieldPosition = new RectangleF(position.Left, position.Top, position.Width, position.Height);
+                    }
+
+                    ExpressionCache.SetValue(cacheModuleKey, pdfFieldKey, Expression.Tokenize(pdfFieldKey, pdfFieldValue, pdfFieldOrdinal, isRequired, isReadOnly, pdfFieldPosition));
                     pdfFieldOrdinal++;
                 }
                 pdfReader.Close();

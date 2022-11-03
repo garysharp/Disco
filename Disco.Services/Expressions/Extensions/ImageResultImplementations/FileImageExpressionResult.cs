@@ -25,5 +25,14 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
                 return RenderImage(SourceImage, Width, Height);
             }
         }
+
+        public override Stream GetImage()
+        {
+            var stream = new MemoryStream();
+            using (var fileStream = File.OpenRead(AbsoluteFilePath))
+                fileStream.CopyTo(stream);
+            stream.Position = 0;
+            return stream;
+        }
     }
 }

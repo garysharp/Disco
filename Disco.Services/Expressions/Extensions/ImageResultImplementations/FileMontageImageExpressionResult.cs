@@ -29,15 +29,50 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
 
         public override Stream GetImage(int Width, int Height)
         {
-            List<Image> Images = new List<Image>();
+            return DoLayout(Width, Height);
+        }
+
+        public override Stream GetImage()
+        {
+            return DoLayout(width: null, height: null);
+        }
+
+        private Stream DoLayout(int? width, int? height)
+        {
+            List<Image> images = new List<Image>();
             try
             {
                 // Load Images
                 foreach (string imageFilePath in AbsoluteFilePaths)
-                    Images.Add(Bitmap.FromFile(imageFilePath));
+                    images.Add(Image.FromFile(imageFilePath));
+
+                if (!width.HasValue || !height.HasValue)
+                {
+                    int maxWidth, maxHeight;
+                    if (MontageHorizontalLayout)
+                    {
+                        maxWidth = images.Sum(i => i.Width);
+                        maxHeight = images.Max(i => i.Height);
+                    }else if (MontageVerticalLayout)
+                    {
+                        maxWidth = images.Max(i => i.Width);
+                        maxHeight = images.Sum(i => i.Height);
+                    }
+                    else // table layout
+                    {
+                        var itemAverageSize = new SizeF(images.Average(i => (float)i.Size.Width), images.Average(i => (float)i.Size.Height));
+                        var stageSize = new Size((int)(itemAverageSize.Width / 2f * (images.Count + 1)), (int)(itemAverageSize.Height / 2f * (images.Count + 1)));
+
+                        var calculatedLayout = CalculateColumnCount(stageSize, itemAverageSize, images.Count);
+                        maxWidth = (int)(calculatedLayout.Item1 * itemAverageSize.Width);
+                        maxHeight = (int)(calculatedLayout.Item2 * itemAverageSize.Height);
+                    }
+                    width = width ?? maxWidth;
+                    height = height ?? maxHeight;
+                }
 
                 // Build Montage
-                using (Bitmap montageImage = new Bitmap(Width, Height))
+                using (Bitmap montageImage = new Bitmap(width.Value, height.Value))
                 {
                     using (Graphics montageGraphics = Graphics.FromImage(montageImage))
                     {
@@ -55,14 +90,13 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
                         }
 
                         if (MontageHorizontalLayout)
-                            DoHorizontalLayout(Images, montageGraphics);
+                            DoHorizontalLayout(images, montageGraphics);
                         else
                             if (MontageVerticalLayout)
-                                DoVirticalLayout(Images, montageGraphics);
-                            else
-                                DoTableLayout(Images, montageGraphics);
+                            DoVirticalLayout(images, montageGraphics);
+                        else
+                            DoTableLayout(images, montageGraphics);
                     }
-
                     return OutputImage(montageImage);
                 }
             }
@@ -70,8 +104,8 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
             finally
             {
                 // Dispose of any Images
-                if (Images != null)
-                    foreach (Image i in Images)
+                if (images != null)
+                    foreach (Image i in images)
                         i.Dispose();
             }
         }
@@ -175,5 +209,7 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
 
             return new Tuple<int, int, double>(bestColumnCount, bestRowCount, bestItemRatio);
         }
+
+
     }
 }

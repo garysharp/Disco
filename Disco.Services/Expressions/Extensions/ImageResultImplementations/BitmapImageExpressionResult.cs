@@ -20,5 +20,10 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
         {
             return RenderImage(Image, Width, Height);
         }
+
+        public override Stream GetImage()
+        {
+            return OutputImage(Image);
+        }
     }
 }

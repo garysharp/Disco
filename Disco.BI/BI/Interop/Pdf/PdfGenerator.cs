@@ -290,6 +290,7 @@ namespace Disco.BI.Interop.Pdf
                                         AcroFields.FieldPosition pdfFieldPosition = pdfFieldPositions[pdfFieldOrdinal];
                                         iTextSharp.text.Image pdfImage = iTextSharp.text.Image.GetInstance(imageResult.GetImage((int)pdfFieldPosition.position.Width, (int)pdfFieldPosition.position.Height));
                                         pdfImage.SetAbsolutePosition(pdfFieldPosition.position.Left, pdfFieldPosition.position.Bottom);
+                                        pdfImage.ScaleToFit(pdfFieldPosition.position.Width, pdfFieldPosition.position.Height);
                                         pdfStamper.GetOverContent(pdfFieldPosition.page).AddImage(pdfImage);
                                     }
                                     if (!fieldExpressionResult.Item2 && !imageResult.ShowField)

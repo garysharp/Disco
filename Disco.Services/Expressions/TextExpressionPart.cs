@@ -4,7 +4,7 @@ namespace Disco.Services.Expressions
     {
         private string _Source;
 
-        bool IExpressionPart.ErrorsAllowed
+        public bool ErrorsAllowed
         {
             get
             {
@@ -15,7 +15,7 @@ namespace Disco.Services.Expressions
                 return;
             }
         }
-        string IExpressionPart.Source
+        public string Source
         {
             get
             {
@@ -26,7 +26,7 @@ namespace Disco.Services.Expressions
                 return;
             }
         }
-        string IExpressionPart.RawSource
+        public string RawSource
         {
             get
             {
@@ -37,7 +37,7 @@ namespace Disco.Services.Expressions
                 return;
             }
         }
-        bool IExpressionPart.IsDynamic
+        public bool IsDynamic
         {
             get
             {

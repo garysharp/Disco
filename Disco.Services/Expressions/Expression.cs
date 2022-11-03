@@ -8,6 +8,7 @@ using Spring.Expressions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -15,16 +16,24 @@ namespace Disco.Services.Expressions
 {
     public sealed class Expression : List<IExpressionPart>
     {
-        public string Name { get; private set; }
-        public string Source { get; private set; }
+        public string Name { get; }
+        public string Source { get; }
         public bool IsDynamic { get; private set; }
-        public int Ordinal { get; private set; }
+        public int Ordinal { get; }
 
-        private Expression(string Name, string Source, int Ordinal)
+        public bool IsRequired { get; }
+        public bool IsReadOnly { get; }
+
+        public RectangleF? Position { get; }
+
+        private Expression(string name, string source, int ordinal, bool isRequired, bool isReadOnly, RectangleF? position)
         {
-            this.Name = Name;
-            this.Source = Source;
-            this.Ordinal = Ordinal;
+            Name = name;
+            Source = source;
+            Ordinal = ordinal;
+            IsRequired = isRequired;
+            IsReadOnly = isReadOnly;
+            Position = position;
         }
 
         public static void InitializeExpressions()
@@ -71,6 +80,19 @@ namespace Disco.Services.Expressions
 
         public Tuple<string, bool, object> Evaluate(object ExpressionContext, IDictionary Variables)
         {
+            if (Count == 0)
+                return new Tuple<string, bool, object>(string.Empty, false, null);
+
+            if (!IsDynamic)
+            {
+                if (Count != 1)
+                    throw new InvalidOperationException("Non-dynamic expressions should only have one part");
+                if (this[0] is TextExpressionPart textPart)
+                    return new Tuple<string, bool, object>(textPart.RawSource, false, null);
+                else
+                    throw new InvalidOperationException("Non-dynamic expressions should have a single TextExpressionPart component");
+            }
+
             var resultValue = new StringBuilder();
             object resultObject = null;
             bool resultError = false;
@@ -103,25 +125,28 @@ namespace Disco.Services.Expressions
         }
         public static Expression TokenizeSingleDynamic(string Name, string ExpressionSource, int Ordinal)
         {
-            var e = new Expression(Name, ExpressionSource, Ordinal);
+            var e = new Expression(Name, ExpressionSource, Ordinal, isRequired: false, isReadOnly: false, position: null);
             if (ExpressionSource != null && !string.IsNullOrWhiteSpace(ExpressionSource))
                 e.Add(new EvaluateExpressionPart(ExpressionSource));
             e.IsDynamic = true;
             return e;
         }
-        public static Expression Tokenize(string Name, string ExpressionSource, int Ordinal)
+        public static Expression Tokenize(string Name, string ExpressionSource, int Ordinal, bool IsRequired, bool IsReadOnly)
+            => Tokenize(Name, ExpressionSource, Ordinal, IsRequired, IsReadOnly, null);
+
+        public static Expression Tokenize(string name, string expressionSource, int ordinal, bool isRequired, bool isReadOnly, RectangleF? position)
         {
-            var e = new Expression(Name, ExpressionSource, Ordinal);
-            if (!ExpressionSource.Contains("{") || !ExpressionSource.Contains("}"))
+            var e = new Expression(name, expressionSource, ordinal, isRequired, isReadOnly, position);
+            if (!expressionSource.Contains("{") || !expressionSource.Contains("}"))
             {
-                e.Add(new TextExpressionPart(ExpressionSource));
+                e.Add(new TextExpressionPart(expressionSource));
             }
             else
             {
                 var token = new StringBuilder();
                 bool tokenEval = false;
                 int tokenEvalDepth = 0;
-                foreach (char c in ExpressionSource)
+                foreach (char c in expressionSource)
                 {
                     switch (c)
                     {

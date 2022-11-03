@@ -22,6 +22,7 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
         }
 
         public abstract Stream GetImage(int Width, int Height);
+        public abstract Stream GetImage();
 
         protected Stream RenderImage(Image SourceImage, int Width, int Height)
         {
@@ -56,7 +57,7 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
             }
             else
             { // Lossy Format - JPG
-                byte quality = Math.Min((byte)100, Math.Max((byte)1, Quality));
+                var quality = Math.Min(100, Math.Max(1, (int)Quality));
                 SourceImage.SaveJpg(quality, imageStream);
             }
             imageStream.Position = 0;
