@@ -165,12 +165,12 @@ namespace Disco.Services.Documents.AttachmentImport
             }
         }
 
-        public static bool ImportPdfAttachment(this DocumentUniqueIdentifier Identifier, DiscoDataContext Database, string PdfFilename)
+        public static IAttachment ImportPdfAttachment(this DocumentUniqueIdentifier Identifier, DiscoDataContext Database, string PdfFilename)
         {
             return ImportPdfAttachment(Identifier, Database, PdfFilename, null);
         }
 
-        public static bool ImportPdfAttachment(this DocumentUniqueIdentifier Identifier, DiscoDataContext Database, string PdfFilename, Image Thumbnail)
+        public static IAttachment ImportPdfAttachment(this DocumentUniqueIdentifier Identifier, DiscoDataContext Database, string PdfFilename, Image Thumbnail)
         {
             using (var pdfStream = File.OpenRead(PdfFilename))
             {
@@ -178,17 +178,20 @@ namespace Disco.Services.Documents.AttachmentImport
             }
         }
 
-        public static bool ImportPdfAttachment(this DocumentUniqueIdentifier Identifier, DiscoDataContext Database, Stream PdfContent)
+        public static IAttachment ImportPdfAttachment(this DocumentUniqueIdentifier Identifier, DiscoDataContext Database, Stream PdfContent)
         {
             return ImportPdfAttachment(Identifier, Database, PdfContent, null, new List<DocumentUniqueIdentifier>() { Identifier });
         }
 
-        public static bool ImportPdfAttachment(this DocumentUniqueIdentifier Identifier, DiscoDataContext Database, Stream PdfContent, Image Thumbnail)
+        public static IAttachment ImportPdfAttachment(this DocumentUniqueIdentifier Identifier, DiscoDataContext Database, Stream PdfContent, Image Thumbnail)
         {
             return ImportPdfAttachment(Identifier, Database, PdfContent, Thumbnail, new List<DocumentUniqueIdentifier>() { Identifier });
         }
 
-        public static bool ImportPdfAttachment(this DocumentUniqueIdentifier Identifier, DiscoDataContext Database, Stream PdfContent, Image Thumbnail, List<DocumentUniqueIdentifier> PageIdentifiers)
+        public static IAttachment ImportPdfAttachment(this DocumentUniqueIdentifier Identifier, DiscoDataContext Database, Stream PdfContent, Image Thumbnail, List<DocumentUniqueIdentifier> PageIdentifiers)
+            => Identifier.ImportPdfAttachment(Database, PdfContent, Thumbnail, PageIdentifiers, null, null, null, null);
+
+        public static IAttachment ImportPdfAttachment(this DocumentUniqueIdentifier Identifier, DiscoDataContext Database, Stream PdfContent, Image Thumbnail, List<DocumentUniqueIdentifier> PageIdentifiers, DateTime? Timestamp, string HandlerId, string HandlerReferenceId, string HandlerData)
         {
             string filename;
             string comments;
@@ -196,16 +199,32 @@ namespace Disco.Services.Documents.AttachmentImport
 
             if (Identifier.DocumentTemplate == null)
             {
-                filename = $"{Identifier.Target.AttachmentReferenceId.Replace('\\', '_')}_{Identifier.TimeStamp:yyyyMMdd-HHmmss}.pdf";
-                comments = $"Uploaded: {Identifier.TimeStamp:s}";
+                if (Timestamp.HasValue)
+                {
+                    filename = $"{Identifier.Target.AttachmentReferenceId.Replace('\\', '_')}_{Timestamp:yyyyMMdd-HHmmss}.pdf";
+                    comments = $"Completed: {Timestamp:s}";
+                }
+                else
+                {
+                    filename = $"{Identifier.Target.AttachmentReferenceId.Replace('\\', '_')}_{Identifier.TimeStamp:yyyyMMdd-HHmmss}.pdf";
+                    comments = $"Uploaded: {Identifier.TimeStamp:s}";
+                }
             }
             else
             {
-                filename = $"{Identifier.DocumentTemplateId}_{Identifier.TimeStamp:yyyyMMdd-HHmmss}.pdf";
-                comments = string.Format("Generated: {0:s}", Identifier.TimeStamp);
+                if (Timestamp.HasValue)
+                {
+                    filename = $"{Identifier.DocumentTemplateId}_{Timestamp:yyyyMMdd-HHmmss}.pdf";
+                    comments = $"Generated: {Identifier.TimeStamp:s}; Completed: {Timestamp:s}";
+                }
+                else
+                {
+                    filename = $"{Identifier.DocumentTemplateId}_{Identifier.TimeStamp:yyyyMMdd-HHmmss}.pdf";
+                    comments = $"Generated: {Identifier.TimeStamp:s}";
+                }
             }
 
-            User creatorUser = UserService.GetUser(Identifier.CreatorId, Database, true);
+            User creatorUser = UserService.GetUser(Identifier.CreatorId, Database, false);
             if (creatorUser == null)
             {
                 // No Creator User (or Username invalid)
@@ -216,18 +235,18 @@ namespace Disco.Services.Documents.AttachmentImport
             {
                 case AttachmentTypes.Device:
                     Device d = (Device)Identifier.Target;
-                    attachment = d.CreateAttachment(Database, creatorUser, filename, DocumentTemplate.PdfMimeType, comments, PdfContent, Identifier.DocumentTemplate, Thumbnail);
+                    attachment = d.CreateAttachment(Database, creatorUser, filename, Timestamp ?? DateTime.Now, DocumentTemplate.PdfMimeType, comments, PdfContent, Identifier.DocumentTemplate, Thumbnail, HandlerId, HandlerReferenceId, HandlerData);
                     break;
                 case AttachmentTypes.Job:
                     Job j = (Job)Identifier.Target;
-                    attachment = j.CreateAttachment(Database, creatorUser, filename, DocumentTemplate.PdfMimeType, comments, PdfContent, Identifier.DocumentTemplate, Thumbnail);
+                    attachment = j.CreateAttachment(Database, creatorUser, filename, Timestamp ?? DateTime.Now, DocumentTemplate.PdfMimeType, comments, PdfContent, Identifier.DocumentTemplate, Thumbnail, HandlerId, HandlerReferenceId, HandlerData);
                     break;
                 case AttachmentTypes.User:
                     User u = (User)Identifier.Target;
-                    attachment = u.CreateAttachment(Database, creatorUser, filename, DocumentTemplate.PdfMimeType, comments, PdfContent, Identifier.DocumentTemplate, Thumbnail);
+                    attachment = u.CreateAttachment(Database, creatorUser, filename, Timestamp ?? DateTime.Now, DocumentTemplate.PdfMimeType, comments, PdfContent, Identifier.DocumentTemplate, Thumbnail, HandlerId, HandlerReferenceId, HandlerData);
                     break;
                 default:
-                    return false;
+                    return null;
             }
 
             if (Identifier.DocumentTemplate != null && !string.IsNullOrWhiteSpace(Identifier.DocumentTemplate.OnImportAttachmentExpression))
@@ -242,7 +261,8 @@ namespace Disco.Services.Documents.AttachmentImport
                     SystemLog.LogException("Document Importer - OnImportAttachmentExpression", ex);
                 }
             }
-            return true;
+            
+            return attachment;
         }
     }
 }

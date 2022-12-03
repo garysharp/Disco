@@ -3,8 +3,10 @@ using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.Services.Plugins.Details;
 using Disco.Models.UI.Device;
 using Disco.Services.Plugins;
+using Disco.Services.Plugins.Features.DocumentHandlerProvider;
 using Disco.Web.Models.Shared;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Disco.Web.Models.Device
 {
@@ -30,6 +32,7 @@ namespace Disco.Web.Models.Device
             Target = Device,
             Templates = DocumentTemplates,
             TemplatePackages = DocumentTemplatePackages,
+            HandlersPresent = Plugins.GetPluginFeatures(typeof(DocumentHandlerProviderFeature)).Any(),
         };
 
         public DetailsResult DeviceDetails { get; set; }

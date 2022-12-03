@@ -105,6 +105,9 @@ namespace Disco.Services
         #endregion
 
         public static DeviceAttachment CreateAttachment(this Device Device, DiscoDataContext Database, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, Image PdfThumbnail = null)
+            => Device.CreateAttachment(Database, CreatorUser, Filename, DateTime.Now, MimeType, Comments, Content, DocumentTemplate, PdfThumbnail);
+
+        public static DeviceAttachment CreateAttachment(this Device Device, DiscoDataContext Database, User CreatorUser, string Filename, DateTime timestamp, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, Image PdfThumbnail = null, string HandlerId = null, string HandlerReferenceId = null, string HandlerData = null)
         {
             if (string.IsNullOrEmpty(MimeType) || MimeType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
                 MimeType = Interop.MimeTypes.ResolveMimeType(Filename);
@@ -115,8 +118,11 @@ namespace Disco.Services
                 TechUserId = CreatorUser.UserId,
                 Filename = Filename,
                 MimeType = MimeType,
-                Timestamp = DateTime.Now,
-                Comments = Comments
+                Timestamp = timestamp,
+                Comments = Comments,
+                HandlerId = HandlerId,
+                HandlerReferenceId = HandlerReferenceId,
+                HandlerData = HandlerData,
             };
 
             if (DocumentTemplate != null)
@@ -136,6 +142,9 @@ namespace Disco.Services
         }
 
         public static JobAttachment CreateAttachment(this Job Job, DiscoDataContext Database, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, Image PdfThumbnail = null)
+            => Job.CreateAttachment(Database, CreatorUser, Filename, DateTime.Now, MimeType, Comments, Content, DocumentTemplate, PdfThumbnail);
+
+        public static JobAttachment CreateAttachment(this Job Job, DiscoDataContext Database, User CreatorUser, string Filename, DateTime Timestamp, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, Image PdfThumbnail = null, string HandlerId = null, string HandlerReferenceId = null, string HandlerData = null)
         {
             if (string.IsNullOrEmpty(MimeType) || MimeType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
                 MimeType = Interop.MimeTypes.ResolveMimeType(Filename);
@@ -146,8 +155,11 @@ namespace Disco.Services
                 TechUserId = CreatorUser.UserId,
                 Filename = Filename,
                 MimeType = MimeType,
-                Timestamp = DateTime.Now,
-                Comments = Comments
+                Timestamp = Timestamp,
+                Comments = Comments,
+                HandlerId = HandlerId,
+                HandlerReferenceId = HandlerReferenceId,
+                HandlerData = HandlerData,
             };
 
             if (DocumentTemplate != null)
@@ -167,6 +179,9 @@ namespace Disco.Services
         }
 
         public static UserAttachment CreateAttachment(this User User, DiscoDataContext Database, User CreatorUser, string Filename, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, Image PdfThumbnail = null)
+            => User.CreateAttachment(Database, CreatorUser, Filename, DateTime.Now, MimeType, Comments, Content, DocumentTemplate, PdfThumbnail);
+
+        public static UserAttachment CreateAttachment(this User User, DiscoDataContext Database, User CreatorUser, string Filename, DateTime Timestamp, string MimeType, string Comments, Stream Content, DocumentTemplate DocumentTemplate = null, Image PdfThumbnail = null, string HandlerId = null, string HandlerReferenceId = null, string HandlerData = null)
         {
             if (string.IsNullOrEmpty(MimeType) || MimeType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
                 MimeType = Interop.MimeTypes.ResolveMimeType(Filename);
@@ -177,8 +192,11 @@ namespace Disco.Services
                 TechUserId = CreatorUser.UserId,
                 Filename = Filename,
                 MimeType = MimeType,
-                Timestamp = DateTime.Now,
-                Comments = Comments
+                Timestamp = Timestamp,
+                Comments = Comments,
+                HandlerId = HandlerId,
+                HandlerReferenceId = HandlerReferenceId,
+                HandlerData = HandlerData,
             };
 
             if (DocumentTemplate != null)

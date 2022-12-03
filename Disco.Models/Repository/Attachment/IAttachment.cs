@@ -20,5 +20,9 @@ namespace Disco.Models.Repository
         string DocumentTemplateId { get; set; }
 
         AttachmentTypes AttachmentType { get; }
+
+        string HandlerId { get; set; }
+        string HandlerReferenceId { get; set; }
+        string HandlerData { get; set; }
     }
 }

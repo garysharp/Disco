@@ -59,6 +59,72 @@ WriteLiteral("    <div");
 
 WriteLiteral(" id=\"Document_Generation_Container\"");
 
+WriteLiteral(" data-targetid=\"");
+
+            
+            #line 8 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
+                                                      Write(HttpUtility.UrlEncode(Model.Target.AttachmentReferenceId));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(" data-targettype=\"");
+
+            
+            #line 8 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
+                                                                                                                                   Write(Model.Target.HasAttachmentType);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(" data-generatepdfurl=\"");
+
+            
+            #line 8 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
+                                                                                                                                                                                         Write(Url.Action(MVC.API.DocumentTemplate.Generate()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("/\"");
+
+WriteLiteral(" data-generatepackageurl=\"");
+
+            
+            #line 8 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
+                                                                                                                                                                                                                                                                     Write(Url.Action(MVC.API.DocumentTemplatePackage.Generate()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("/\"");
+
+WriteLiteral(" data-handlerspresent=\"");
+
+            
+            #line 8 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
+                                                                                                                                                                                                                                                                                                                                                      Write(Model.HandlersPresent ? "true" : "false");
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(" data-handlersurl=\"");
+
+            
+            #line 8 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
+                                                                                                                                                                                                                                                                                                                                                                                                                    Write(Url.Action(MVC.API.DocumentTemplate.DocumentHandlers()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
 WriteLiteral(">\r\n");
 
 WriteLiteral("        ");
@@ -70,7 +136,23 @@ WriteLiteral("        ");
             
             #line default
             #line hidden
-WriteLiteral("\r\n        <div");
+WriteLiteral("\r\n");
+
+            
+            #line 10 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
+        
+            
+            #line default
+            #line hidden
+            
+            #line 10 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
+         if (Model.HandlersPresent)
+        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <div");
 
 WriteLiteral(" id=\"Document_Generation_Dialog\"");
 
@@ -78,64 +160,64 @@ WriteLiteral(" class=\"dialog\"");
 
 WriteLiteral(" title=\"Generate Document\"");
 
-WriteLiteral(">\r\n        </div>\r\n    </div>\r\n");
+WriteLiteral(">\r\n                <div");
 
-WriteLiteral("    <script");
+WriteLiteral(" class=\"handlerPicker\"");
 
-WriteLiteral(" type=\"text/javascript\"");
+WriteLiteral(">\r\n                    <div");
 
-WriteLiteral(">\r\n        $(function () {\r\n            var generatePdfUrl = \'");
+WriteLiteral(" data-id=\"download\"");
+
+WriteLiteral(" class=\"selected\"");
+
+WriteLiteral(">\r\n                        <i");
+
+WriteLiteral(" class=\"fa fa-download fa-fw fa-lg\"");
+
+WriteLiteral("></i>Download\r\n                    </div>\r\n                    <div");
+
+WriteLiteral(" id=\"Document_Generation_Dialog_Handlers_Loading\"");
+
+WriteLiteral(">\r\n                        <i");
+
+WriteLiteral(" class=\"ajaxLoading\"");
+
+WriteLiteral(" title=\"Loading\"");
+
+WriteLiteral("></i>\r\n                    </div>\r\n                </div>\r\n                <div");
+
+WriteLiteral(" class=\"details\"");
+
+WriteLiteral(">\r\n                    <div");
+
+WriteLiteral(" id=\"Document_Generation_Dialog_Download_Container\"");
+
+WriteLiteral(">\r\n                        <a");
+
+WriteLiteral(" id=\"Document_Generation_Dialog_Download\"");
+
+WriteLiteral(" href=\"#\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(">Download Document</a>\r\n                    </div>\r\n                    <div");
+
+WriteLiteral(" id=\"Document_Generation_Dialog_HandlerUI\"");
+
+WriteLiteral(">\r\n                    </div>\r\n                </div>\r\n            </div>\r\n");
 
             
-            #line 15 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
-                             Write(Url.Action(MVC.API.DocumentTemplate.Generate()));
+            #line 29 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
+        }
 
             
             #line default
             #line hidden
-WriteLiteral("/\';\r\n            var generatePackageUrl = \'");
+WriteLiteral("    </div>\r\n");
 
             
-            #line 16 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
-                                 Write(Url.Action(MVC.API.DocumentTemplatePackage.Generate()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("/\';\r\n            var generateTargetId = \'");
-
-            
-            #line 17 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
-                               Write(HttpUtility.UrlEncode(Model.Target.AttachmentReferenceId));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\';\r\n            var $control = $(\'#Document_Generate\');\r\n            var $generat" +
-"ionHost;\r\n\r\n            var downloadDocument = function (templateId) {\r\n\r\n      " +
-"          var url;\r\n                if (templateId.lastIndexOf(\'Package:\', 0) ==" +
-"= 0)\r\n                    url = generatePackageUrl + templateId.substring(8);\r\n " +
-"               else\r\n                    url = generatePdfUrl + templateId;\r\n   " +
-"             url = url + \'?TargetId=\' + generateTargetId;\r\n\r\n                if " +
-"($.connection && $.connection.hub && $.connection.hub.transport &&\r\n            " +
-"        $.connection.hub.transport.name == \'foreverFrame\') {\r\n                  " +
-"  // SignalR active with foreverFrame transport - use popup window\r\n            " +
-"        window.open(url, \'_blank\', \'height=150,width=250,location=no,menubar=no," +
-"resizable=no,scrollbars=no,status=no,toolbar=no\');\r\n                } else {\r\n  " +
-"                  // use iFrame\r\n                    if (!$generationHost) {\r\n  " +
-"                      $generationHost = $(\'<iframe>\')\r\n                         " +
-"   .attr({ \'src\': url, \'title\': \'Document Generation Host\' })\r\n                 " +
-"           .addClass(\'hidden\')\r\n                            .appendTo(\'body\')\r\n " +
-"                           .contents();\r\n                    } else {\r\n         " +
-"               $generationHost[0].location.href = url;\r\n                    }\r\n " +
-"               }\r\n            }\r\n\r\n            $control.change(function () {\r\n  " +
-"              var templateId = $control.val();\r\n                if (templateId) " +
-"{\r\n                    downloadDocument(templateId);\r\n\r\n                    $con" +
-"trol.val(\'\').blur();\r\n                }\r\n            });\r\n        });\r\n    </scr" +
-"ipt>\r\n");
-
-            
-            #line 58 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
+            #line 31 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-DocumentGenerator");
 }
             
             #line default

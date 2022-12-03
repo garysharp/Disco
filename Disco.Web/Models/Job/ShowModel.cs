@@ -3,9 +3,12 @@ using Disco.Models.Services.Job;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.Services.Plugins.Details;
 using Disco.Models.UI.Job;
+using Disco.Services.Plugins;
+using Disco.Services.Plugins.Features.DocumentHandlerProvider;
 using Disco.Web.Models.Shared;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Disco.Web.Models.Job
 {
@@ -22,6 +25,7 @@ namespace Disco.Web.Models.Job
             Target = Job,
             Templates = AvailableDocumentTemplates,
             TemplatePackages = AvailableDocumentTemplatePackages,
+            HandlersPresent = Plugins.GetPluginFeatures(typeof(DocumentHandlerProviderFeature)).Any(),
         };
 
         public List<Disco.Models.Repository.JobSubType> UpdatableJobSubTypes { get; set; }

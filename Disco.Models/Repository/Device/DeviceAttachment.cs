@@ -21,6 +21,12 @@ namespace Disco.Models.Repository
 
         public string DocumentTemplateId { get; set; }
 
+        [StringLength(30)]
+        public string HandlerId { get; set; }
+        [StringLength(50)]
+        public string HandlerReferenceId { get; set; }
+        public string HandlerData { get; set; }
+
         [NotMapped]
         public object Reference { get { return DeviceSerialNumber; } }
 

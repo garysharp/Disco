@@ -18,7 +18,14 @@ namespace Disco.Models.Repository
         public DateTime Timestamp { get; set; }
         [Required, StringLength(500)]
         public string Comments { get; set; }
-        
+
+        [NotMapped]
+        public string HandlerId { get => null; set { } }
+        [NotMapped]
+        public string HandlerReferenceId { get => null; set { } }
+        [NotMapped]
+        public string HandlerData { get => null; set { } }
+
         [NotMapped]
         public object Reference => DeviceBatchId;
 

@@ -765,5 +765,66 @@ namespace Disco.Web.Areas.API.Controllers
 
         #endregion
 
+        #region Handlers
+        [HttpPost]
+        public virtual ActionResult GenerateDocumentHandlerUi(string templateId, string targetId, string handlerId)
+        {
+            Disco.Services.DocumentTemplateExtensions.GetTemplateAndTarget(Database, Authorization, templateId, targetId, out var template, out var target, out var targetUser);
+
+            var handlerManifest = Plugins.GetPluginFeature(handlerId, typeof(DocumentHandlerProviderFeature));
+
+            using (var handler = handlerManifest.CreateInstance<DocumentHandlerProviderFeature>())
+            {
+                if (!handler.CanHandle(template, target))
+                    throw new NotSupportedException("Handler does not support this Document Template and Target");
+
+                var handlerPartialView = handler.GenerationOptionsUi;
+
+                if (handlerPartialView == null)
+                    throw new NotSupportedException("Handler does not have a Generation Options UI");
+
+
+
+                var model = handler.GetGenerationOptionsUiModel(template, target, targetUser, CurrentUser);
+
+                return this.PrecompiledPartialView(handlerPartialView, model);
+            }
+        }
+
+        [HttpPost]
+        public virtual ActionResult DocumentHandlers(string templateId, string targetId)
+        {
+            Disco.Services.DocumentTemplateExtensions.GetTemplateAndTarget(Database, Authorization, templateId, targetId, out var template, out var target, out _);
+
+            var handlers = Plugins.GetPluginFeatures(typeof(DocumentHandlerProviderFeature))
+                .SelectMany(f =>
+                {
+                    using (var handler = f.CreateInstance<DocumentHandlerProviderFeature>())
+                    {
+                        if (handler.CanHandle(template, target))
+                            return OneOf.Create(new DocumentHandlerModel()
+                            {
+                                Id = f.Id,
+                                Title = handler.HandlerTitle,
+                                Description = handler.HandlerDescription,
+                                UiUrl = handler.GenerationOptionsUi == null ? null : Url.Action(MVC.API.DocumentTemplate.GenerateDocumentHandlerUi(template.Id, target.AttachmentReferenceId, f.Id)),
+                                Icon = handler.GenerationOptionsIcon,
+                            });
+                    };
+                    return Enumerable.Empty<DocumentHandlerModel>();
+                }).ToList();
+
+            var model = new DocumentHandlersModel()
+            {
+                TemplateId = template.Id,
+                TemplateName = template.Description,
+                TargetId = target.AttachmentReferenceId,
+                TargetName = target.ToString(),
+                Handlers = handlers,
+            };
+
+            return Json(model);
+        }
+        #endregion
     }
 }

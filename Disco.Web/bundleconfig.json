@@ -62,6 +62,12 @@
     ]
   },
   {
+    "outputFileName": "ClientSource/Scripts/Modules/Disco-DocumentGenerator.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/Disco-DocumentGenerator/disco.documentgenerator.js"
+    ]
+  },
+  {
     "outputFileName": "ClientSource/Scripts/Modules/Highcharts.js",
     "inputFiles": [
       "ClientSource/Scripts/Modules/Highcharts/highcharts.src.js"

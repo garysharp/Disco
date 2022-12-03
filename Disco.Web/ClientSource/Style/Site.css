@@ -1509,3 +1509,65 @@ textarea.block {
 #licence li {
   font-size: 0.9em;
 }
+#Document_Generation_Dialog {
+  height: 490px;
+}
+#Document_Generation_Dialog .handlerPicker {
+  position: absolute;
+  width: 170px;
+  height: 390px;
+  overflow-y: auto;
+  background-color: #fcfcfc;
+  border: 1px solid #ccc;
+}
+#Document_Generation_Dialog .handlerPicker > div {
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 6px 0 6px 6px;
+  cursor: pointer;
+}
+#Document_Generation_Dialog .handlerPicker > div:hover {
+  background-color: #f4f4f4;
+}
+#Document_Generation_Dialog .handlerPicker > div.selected,
+#Document_Generation_Dialog .handlerPicker > div.selected:hover {
+  background-color: #eee;
+}
+#Document_Generation_Dialog .handlerPicker #Document_Generation_Dialog_Handlers_Loading {
+  text-align: center;
+}
+#Document_Generation_Dialog .details {
+  position: absolute;
+  left: 200px;
+  height: 390px;
+  width: 540px;
+  overflow-y: auto;
+}
+#Document_Generation_Dialog .details #Document_Generation_Dialog_Download_Container {
+  text-align: center;
+  padding-top: 3em;
+}
+#Document_Generation_Dialog .details #Document_Generation_Dialog_HandlerUI {
+  display: none;
+}
+ul.list-group {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+ul.list-group li {
+  padding: 6px 0 6px 6px;
+  cursor: pointer;
+}
+ul.list-group li:hover {
+  background-color: #f4f4f4;
+}
+ul.list-group li.selected,
+ul.list-group li.selected:hover {
+  background-color: #eee;
+}
+ul.list-group li:not(:first-child) {
+  border-top: 1px solid #ddd;
+}

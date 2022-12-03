@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Disco
 {
@@ -25,5 +27,62 @@ namespace Disco
                 yield return buffer;
         }
 
+    }
+
+    public static class OneOf
+    {
+        public static OneOf<T> Create<T>(T instance)
+            => OneOf<T>.Create(instance);
+    }
+    public struct OneOf<T> : IEnumerable<T>
+    {
+        private readonly T instance;
+
+        private OneOf(T instance)
+        {
+            this.instance = instance;
+        }
+
+        public static OneOf<T> Create(T instance)
+            => new OneOf<T>(instance);
+
+        public IEnumerator<T> GetEnumerator()
+            => new OneOfEnumerator(instance);
+
+        IEnumerator IEnumerable.GetEnumerator()
+            => new OneOfEnumerator(instance);
+        
+        private struct OneOfEnumerator : IEnumerator<T>
+        {
+            private readonly T instance;
+            private bool moved;
+
+            public OneOfEnumerator(T instance)
+            {
+                this.instance = instance;
+                moved = false;
+            }
+
+            public T Current => instance;
+
+            object IEnumerator.Current => instance;
+
+            public void Dispose() { }
+
+            public bool MoveNext()
+            {
+                if (!moved)
+                {
+                    moved = true;
+                    return true;
+                }
+                return false;
+            }
+
+            public void Reset()
+            {
+                moved = false;
+            }
+        }
     }
 }

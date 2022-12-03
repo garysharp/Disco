@@ -1597,3 +1597,77 @@ textarea.block {
         font-size: 0.9em;
     }
 }
+
+#Document_Generation_Dialog {
+    height: 490px;
+
+    .handlerPicker {
+        position: absolute;
+        width: 170px;
+        height: 390px;
+        overflow-y: auto;
+        background-color: #fcfcfc;
+        border: 1px solid #ccc;
+
+        & > div {
+            background-color: @white;
+            border-bottom: 1px solid #ddd;
+            padding: 6px 0 6px 6px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: @TableDataBorderColour;
+            }
+
+            &.selected, &.selected:hover {
+                background-color: @TableDataDarkBackgroundColour;
+            }
+        }
+
+        #Document_Generation_Dialog_Handlers_Loading {
+            text-align: center;
+        }
+    }
+
+    .details {
+        position: absolute;
+        left: 200px;
+        height: 390px;
+        width: 540px;
+        overflow-y: auto;
+
+        #Document_Generation_Dialog_Download_Container {
+            text-align: center;
+            padding-top: 3em;
+        }
+
+        #Document_Generation_Dialog_HandlerUI {
+            display: none;
+        }
+    }
+}
+
+ul.list-group {
+    background-color: @white;
+    border: 1px solid #ddd;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+        padding: 6px 0 6px 6px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: @TableDataBorderColour;
+        }
+
+        &.selected, &.selected:hover {
+            background-color: @TableDataDarkBackgroundColour;
+        }
+
+        &:not(:first-child) {
+            border-top: 1px solid #ddd;
+        }
+    }
+}
