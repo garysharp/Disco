@@ -303,6 +303,13 @@ namespace Disco.Services.Documents
             return new DocumentUniqueIdentifier(Database, CurrentVersion, deploymentChecksum, DocumentTemplateId, TargetId, CreatorId, TimeStamp, PageIndex, null);
         }
 
+        public static DocumentUniqueIdentifier Create(DiscoDataContext Database, string DocumentTemplateId, AttachmentTypes attachmentType, string TargetId, string CreatorId, DateTime TimeStamp, int PageIndex)
+        {
+            var deploymentChecksum = Database.DiscoConfiguration.DeploymentChecksum;
+
+            return new DocumentUniqueIdentifier(Database, CurrentVersion, deploymentChecksum, DocumentTemplateId, TargetId, CreatorId, TimeStamp, PageIndex, attachmentType);
+        }
+
         public static DocumentUniqueIdentifier Parse(DiscoDataContext Database, byte[] UniqueIdentifier)
         {
             DocumentUniqueIdentifier identifier;

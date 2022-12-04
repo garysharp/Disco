@@ -612,7 +612,7 @@ namespace Disco.Web.Areas.API.Controllers
             var filename = System.IO.Path.Combine(undetectedLocation, string.Concat(id, ".pdf"));
             var identifier = DocumentUniqueIdentifier.Create(Database, DocumentTemplateId, DataId, UserService.CurrentUser.UserId, DateTime.Now, 0);
 
-            if (Disco.Services.Documents.AttachmentImport.Importer.ImportPdfAttachment(identifier, Database, filename))
+            if (Disco.Services.Documents.AttachmentImport.Importer.ImportPdfAttachment(identifier, Database, filename) != null)
             {
                 // Delete File
                 System.IO.File.Delete(filename);

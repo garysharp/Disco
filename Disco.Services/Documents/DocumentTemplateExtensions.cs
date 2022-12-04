@@ -1,8 +1,10 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
+using Disco.Services.Authorization;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using System;
+using System.Data.Entity;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -57,7 +59,7 @@ namespace Disco.Services
                                 // Fill white background
                                 graphics.FillRectangle(Brushes.White, destination);
 
-                                using (var image = pdfDocument.Render(pageIndex, (int)previewWidth, (int)previewHeight, 72F, 72F, false))
+                                using (var image = pdfDocument.Render(pageIndex, (int)previewWidth, (int)previewHeight, 72F, 72F, true))
                                 {
                                     graphics.DrawImage(image, destination.X, destination.Y);
                                 }
@@ -85,6 +87,9 @@ namespace Disco.Services
         }
 
         public static IAttachmentTarget ResolveScopeTarget(this AttachmentTypes scope, DiscoDataContext database, string targetId)
+            => ResolveScopeTarget(scope, database, targetId, out _);
+
+        public static IAttachmentTarget ResolveScopeTarget(this AttachmentTypes scope, DiscoDataContext database, string targetId, out User targetUser)
         {
             if (database == null)
                 throw new ArgumentNullException(nameof(database));
@@ -94,33 +99,74 @@ namespace Disco.Services
             switch (scope)
             {
                 case AttachmentTypes.Device:
-                    return database.Devices.Find(targetId);
+                    var device = database.Devices.Find(targetId);
+                    targetUser = device?.AssignedUser;
+                    return device;
                 case AttachmentTypes.Job:
                     if (!int.TryParse(targetId, out var targetIdInt))
                         throw new ArgumentOutOfRangeException(nameof(targetId));
-                    return database.Jobs.Find(targetIdInt);
+                    var job = database.Jobs.Find(targetIdInt);
+                    targetUser = job?.User;
+                    return job;
                 case AttachmentTypes.User:
                     // special usecase in resolving users (they may not exist in the database yet)
                     targetId = ActiveDirectory.ParseDomainAccountId(targetId);
-                    var target = database.Users.Find(targetId);
-                    if (target == null)
+                    var user = database.Users.Find(targetId);
+                    if (user == null)
                     {
                         // try importing user
-                        target = UserService.GetUser(targetId, database, true);
+                        user = UserService.GetUser(targetId, database, true);
                     }
-                    return target;
+                    targetUser = user;
+                    return user;
                 default:
                     throw new InvalidOperationException("Unexpected DocumentType Scope");
             }
         }
 
         public static IAttachmentTarget ResolveScopeTarget(this DocumentTemplate template, DiscoDataContext database, string targetId)
+            => ResolveScopeTarget(template, database, targetId, out _);
+
+        public static IAttachmentTarget ResolveScopeTarget(this DocumentTemplate template, DiscoDataContext database, string targetId, out User targetUser)
         {
             if (template == null)
                 throw new ArgumentNullException(nameof(template));
 
-            return ResolveScopeTarget(template.AttachmentType, database, targetId);
+            return ResolveScopeTarget(template.AttachmentType, database, targetId, out targetUser);
         }
 
+        public static void GetTemplateAndTarget(DiscoDataContext database, AuthorizationToken authorization, string templateId, string targetId, out DocumentTemplate template, out IAttachmentTarget target, out User targetUser)
+        {
+            if (string.IsNullOrWhiteSpace(templateId))
+                throw new ArgumentNullException(nameof(templateId));
+            if (string.IsNullOrWhiteSpace(targetId))
+                throw new ArgumentNullException(nameof(targetId));
+
+            // get template
+            template = database.DocumentTemplates.Find(templateId);
+            if (template == null)
+                throw new ArgumentException("Invalid document template id", nameof(templateId));
+
+            // validate authorization
+            switch (template.Scope)
+            {
+                case DocumentTemplate.DocumentTemplateScopes.Device:
+                    authorization.Require(Claims.Device.Actions.GenerateDocuments);
+                    break;
+                case DocumentTemplate.DocumentTemplateScopes.Job:
+                    authorization.Require(Claims.Job.Actions.GenerateDocuments);
+                    break;
+                case DocumentTemplate.DocumentTemplateScopes.User:
+                    authorization.Require(Claims.User.Actions.GenerateDocuments);
+                    break;
+                default:
+                    throw new InvalidOperationException("Unknown DocumentType Scope");
+            }
+
+            // resolve target
+            target = template.ResolveScopeTarget(database, targetId, out targetUser);
+            if (target == null)
+                throw new ArgumentException("Target not found", nameof(targetId));
+        }
     }
 }
