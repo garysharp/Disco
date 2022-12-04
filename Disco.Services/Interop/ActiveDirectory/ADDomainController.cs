@@ -270,6 +270,17 @@ namespace Disco.Services.Interop.ActiveDirectory
                 }
             }
         }
+
+        public IADObject RetrieveADObjectByDistinguishedName(string distinguishedName, bool quick, string[] additionalProperties = null)
+        {
+            using (var entry = RetrieveDirectoryEntry(distinguishedName, additionalProperties))
+            {
+                if (entry == null)
+                    return null;
+                else
+                    return entry.AsADObject(quick, additionalProperties);
+            }
+        }
         #endregion
 
         #region Organisational Units

@@ -1,10 +1,14 @@
 ﻿using Disco.Models.Repository;
 using Disco.Services.Interop.ActiveDirectory;
+using DocumentFormat.OpenXml.Vml.Office;
+using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.DirectoryServices.ActiveDirectory;
+using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
+using ZXing;
 
 namespace Disco.Services
 {
@@ -93,6 +97,24 @@ namespace Disco.Services
         public static IEnumerable<ADOrganisationalUnit> AsADOrganisationalUnit(this IEnumerable<ADSearchResult> SearchResults)
         {
             return SearchResults.Select(sr => ADOrganisationalUnit.FromSearchResult(sr));
+        }
+
+        public static IADObject AsADObject(this ADDirectoryEntry directoryEntry, bool quick, string[] additionalProperties)
+        {
+            var properties = directoryEntry.Entry.Properties;
+            var objectCategory = properties.Value<string>("objectCategory");
+            objectCategory = objectCategory.Substring(0, objectCategory.IndexOf(',')).ToLower();
+            switch (objectCategory)
+            {
+                case "cn=person":
+                    return ADUserAccount.FromDirectoryEntry(directoryEntry, quick, additionalProperties);
+                case "cn=computer":
+                    return ADMachineAccount.FromDirectoryEntry(directoryEntry, additionalProperties);
+                case "cn=group":
+                    return ADGroup.FromDirectoryEntry(directoryEntry, additionalProperties);
+                default:
+                    throw new InvalidOperationException("Unexpected objectCategory");
+            }
         }
 
         #endregion

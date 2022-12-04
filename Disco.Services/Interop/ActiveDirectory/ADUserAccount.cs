@@ -126,6 +126,72 @@ namespace Disco.Services.Interop.ActiveDirectory
                 additionalProperties);
         }
 
+        public static ADUserAccount FromDirectoryEntry(ADDirectoryEntry directoryEntry, bool quick, string[] additionalProperties)
+        {
+            if (directoryEntry == null)
+                throw new ArgumentNullException(nameof(directoryEntry));
+
+            var properties = directoryEntry.Entry.Properties;
+
+            var name = properties.Value<string>("name");
+            var sAMAccountName = properties.Value<string>("sAMAccountName");
+            var distinguishedName = properties.Value<string>("distinguishedName");
+            var objectSid = new SecurityIdentifier(properties.Value<byte[]>("objectSid"), 0);
+
+            var displayName = properties.Value<string>("displayName") ?? sAMAccountName;
+            var surname = properties.Value<string>("sn");
+            var givenName = properties.Value<string>("givenName");
+            var email = properties.Value<string>("mail");
+            var phone = properties.Value<string>("telephoneNumber");
+
+            var userAccountControl = (ADUserAccountControlFlags)properties.Value<int>("userAccountControl");
+            var isCriticalSystemObject = properties.Value<bool>("isCriticalSystemObject");
+
+            List<ADGroup> groups = null;
+            // Don't load Groups when doing a quick search
+            if (!quick)
+            {
+                var primaryGroupID = properties.Value<int>("primaryGroupID");
+                var primaryGroupSid = ADHelpers.BuildPrimaryGroupSid(objectSid, primaryGroupID);
+                var memberGroups = properties.Values<string>("memberOf");
+
+                var primaryGroup = ActiveDirectory.GroupCache.GetGroup(primaryGroupSid);
+
+                var groupDistinguishedNames =
+                    new string[] { primaryGroup.DistinguishedName }
+                    .Concat(memberGroups);
+
+                groups = ActiveDirectory.GroupCache.GetRecursiveGroups(groupDistinguishedNames).ToList();
+            }
+
+            // Additional Properties
+            Dictionary<string, object[]> additionalProps;
+            if (additionalProperties != null)
+                additionalProps = additionalProperties
+                    .Select(p => Tuple.Create(p, properties.Values<object>(p).ToArray()))
+                    .ToDictionary(t => t.Item1, t => t.Item2);
+            else
+            {
+                additionalProps = new Dictionary<string, object[]>();
+            }
+
+            return new ADUserAccount(
+                directoryEntry.Domain,
+                distinguishedName,
+                objectSid,
+                sAMAccountName,
+                name,
+                displayName,
+                surname,
+                givenName,
+                email,
+                phone,
+                userAccountControl,
+                isCriticalSystemObject,
+                groups,
+                additionalProps);
+        }
+
         [Obsolete("Use generic equivalents: GetPropertyValue<T>(string PropertyName)")]
         public object GetPropertyValue(string PropertyName, int Index = 0)
         {

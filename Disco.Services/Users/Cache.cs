@@ -39,6 +39,11 @@ namespace Disco.Services.Users
             return GetAuthorization(UserId, false);
         }
 
+        internal static bool TryGetUser(string UserId, DiscoDataContext Database, bool ForceRefresh, out User User)
+        {
+            return TryGet(UserId, Database, ForceRefresh, out User, out _, out _);
+        }
+
         internal static User GetUser(string UserId, DiscoDataContext Database, bool ForceRefresh)
         {
             Tuple<User, AuthorizationToken, DateTime> record = Get(UserId, Database, ForceRefresh);
@@ -64,6 +69,31 @@ namespace Disco.Services.Users
         internal static User GetUser(string UserId)
         {
             return GetUser(UserId, false);
+        }
+
+        internal static bool TryGet(string UserId, DiscoDataContext Database, bool ForceRefresh, out User User, out AuthorizationToken AuthToken, out DateTime CacheExpirationTimestamp)
+        {
+            Tuple<User, AuthorizationToken, DateTime> record = null;
+
+            // Check Cache
+            if (!ForceRefresh)
+                record = TryUserCache(UserId);
+
+            if (record == null && UserService.TryImportUser(Database, UserId, out var user, out var authorizationToken))
+                record = SetValue(UserId, Tuple.Create(user, authorizationToken));
+
+            if (record != null)
+            {
+                User = record.Item1;
+                AuthToken = record.Item2;
+                CacheExpirationTimestamp = record.Item3;
+                return true;
+            }
+
+            User = default;
+            AuthToken = default;
+            CacheExpirationTimestamp = default;
+            return false;
         }
 
         internal static Tuple<User, AuthorizationToken, DateTime> Get(string UserId, DiscoDataContext Database, bool ForceRefresh)

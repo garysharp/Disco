@@ -1,6 +1,7 @@
 ﻿using Disco.Models.Repository;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -106,6 +107,56 @@ namespace Disco.Services.Interop.ActiveDirectory
                 userAccountControl,
                 isCriticalSystemObject,
                 additionalProperties);
+        }
+
+        public static ADMachineAccount FromDirectoryEntry(ADDirectoryEntry directoryEntry, string[] additionalProperties)
+        {
+            if (directoryEntry == null)
+                throw new ArgumentNullException(nameof(directoryEntry));
+
+            var properties = directoryEntry.Entry.Properties;
+
+            var name = properties.Value<string>("name");
+            var description = properties.Value<string>("description");
+            var sAMAccountName = properties.Value<string>("sAMAccountName");
+            var distinguishedName = properties.Value<string>("distinguishedName");
+            var objectSid = new SecurityIdentifier(properties.Value<byte[]>("objectSid"), 0);
+
+            var dNSName = properties.Value<string>("dNSHostName");
+            if (dNSName == null)
+                dNSName = string.Format("{0}.{1}", sAMAccountName.TrimEnd('$'), directoryEntry.Domain.Name);
+
+            var userAccountControl = (ADUserAccountControlFlags)properties.Value<int>("userAccountControl");
+            var isCriticalSystemObject = properties.Value<bool>("isCriticalSystemObject");
+
+            var netbootGUID = default(Guid);
+            var netbootGuidBytes = properties.Value<byte[]>("netbootGUID");
+            if (netbootGuidBytes != null)
+                netbootGUID = new Guid(netbootGuidBytes);
+
+            // Additional Properties
+            Dictionary<string, object[]> additionalProps;
+            if (additionalProperties != null)
+                additionalProps = additionalProperties
+                    .Select(p => Tuple.Create(p, properties.Values<object>(p).ToArray()))
+                    .ToDictionary(t => t.Item1, t => t.Item2);
+            else
+            {
+                additionalProps = new Dictionary<string, object[]>();
+            }
+
+            return new ADMachineAccount(
+                directoryEntry.Domain,
+                distinguishedName,
+                objectSid,
+                sAMAccountName,
+                name,
+                description,
+                dNSName,
+                netbootGUID,
+                userAccountControl,
+                isCriticalSystemObject,
+                additionalProps);
         }
 
         public User ToRepositoryUser()

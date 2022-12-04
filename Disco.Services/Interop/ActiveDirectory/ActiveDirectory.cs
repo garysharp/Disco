@@ -173,6 +173,11 @@ namespace Disco.Services.Interop.ActiveDirectory
             var domain = Context.GetDomainFromId(Id);
             return domain.GetAvailableDomainController().RetrieveADObject(Id, Quick);
         }
+        public static IADObject RetrieveADObjectByDistinguishedName(string distinguishedName, bool quick)
+        {
+            var domain = Context.GetDomainFromDistinguishedName(distinguishedName);
+            return domain.GetAvailableDomainController().RetrieveADObjectByDistinguishedName(distinguishedName, quick);
+        }
         #endregion
 
         #region Actions

@@ -115,6 +115,11 @@ namespace Disco.Services.Users
             return Cache.GetUser(UserId, Database, ForceRefresh);
         }
 
+        public static bool TryGetUser(string UserId, DiscoDataContext Database, bool ForceRefresh, out User User)
+        {
+            return Cache.TryGetUser(UserId, Database, ForceRefresh, out User);
+        }
+
         public static AuthorizationToken GetAuthorization(string UserId)
         {
             return Cache.GetAuthorization(UserId);
@@ -223,10 +228,13 @@ namespace Disco.Services.Users
             return adImportedUsers;
         }
 
-        internal static Tuple<User, AuthorizationToken> ImportUser(DiscoDataContext Database, string UserId)
+        internal static bool TryImportUser(DiscoDataContext Database, string UserId, out User User, out AuthorizationToken AuthorizationToken)
         {
+            User = null;
+            AuthorizationToken = null;
+
             if (string.IsNullOrEmpty(UserId))
-                throw new ArgumentNullException("UserId is required", "UserId");
+                return false;
 
             if (UserId.EndsWith("$"))
             {
@@ -234,12 +242,12 @@ namespace Disco.Services.Users
                 var adAccount = ActiveDirectory.RetrieveADMachineAccount(UserId);
 
                 if (adAccount == null)
-                    return null;
+                    return false;
 
-                var user = adAccount.ToRepositoryUser();
-                var token = AuthorizationToken.BuildComputerAccountToken(user);
+                User = adAccount.ToRepositoryUser();
+                AuthorizationToken = AuthorizationToken.BuildComputerAccountToken(User);
 
-                return new Tuple<User, AuthorizationToken>(user, token);
+                return true;
             }
             else
             {
@@ -251,7 +259,7 @@ namespace Disco.Services.Users
                     adAccount = ActiveDirectory.RetrieveADUserAccount(UserId);
 
                     if (adAccount == null)
-                        throw new ArgumentException(string.Format("Invalid Username: '{0}'; User not found in Active Directory", UserId), "Username");
+                        return false;
                 }
                 catch (COMException ex)
                 {
@@ -259,36 +267,51 @@ namespace Disco.Services.Users
                     if (ex.ErrorCode == -2147016646)
                         SystemLog.LogException("Server is not operational; Primary Domain Controller Down?", ex);
 
-                    throw ex;
+                    return false;
                 }
                 catch (ActiveDirectoryOperationException ex)
                 {
                     // Try From Cache...
                     SystemLog.LogException("Primary Domain Controller Down?", ex);
-                    throw ex;
+                    return false;
                 }
 
-                var user = adAccount.ToRepositoryUser();
+                User = adAccount.ToRepositoryUser();
 
                 // Update Repository
-                User existingUser = Database.Users.Find(user.UserId);
+                User existingUser = Database.Users.Find(User.UserId);
                 if (existingUser == null)
                 {
-                    Database.Users.Add(user);
+                    Database.Users.Add(User);
                     Database.SaveChanges();
                 }
                 else
                 {
-                    if (existingUser.UpdateSelf(user))
+                    if (existingUser.UpdateSelf(User))
                     {
                         Database.SaveChanges();
                     }
-                    user = existingUser;
+                    User = existingUser;
                 }
 
-                var token = AuthorizationToken.BuildToken(user, adAccount.Groups.Select(g => g.Id));
+                AuthorizationToken = AuthorizationToken.BuildToken(User, adAccount.Groups.Select(g => g.Id));
 
-                return new Tuple<User, AuthorizationToken>(user, token);
+                return true;
+            }
+        }
+
+        internal static Tuple<User, AuthorizationToken> ImportUser(DiscoDataContext Database, string UserId)
+        {
+            if (string.IsNullOrEmpty(UserId))
+                throw new ArgumentNullException(nameof(UserId));
+
+            if (TryImportUser(Database, UserId, out var user, out var authorization))
+            {
+                return Tuple.Create(user, authorization);
+            }
+            else
+            {
+                throw new ArgumentException($"Unable to import Active Directory user '{UserId}'", nameof(UserId));
             }
         }
     }
