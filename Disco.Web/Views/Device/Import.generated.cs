@@ -112,6 +112,8 @@ WriteLiteral(" data-val=\"true\"");
 
 WriteLiteral(" data-val-required=\"An Import File is required.\"");
 
+WriteLiteral(" accept=\".xlsx,.csv\"");
+
 WriteLiteral(" /><br />\r\n");
 
 WriteLiteral("                        ");

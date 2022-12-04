@@ -16,7 +16,7 @@
                         @Html.LabelFor(m => m.ImportFile)
                     </th>
                     <td>
-                        <input id="ImportFile" name="ImportFile" type="file" data-val="true" data-val-required="An Import File is required." /><br />
+                        <input id="ImportFile" name="ImportFile" type="file" data-val="true" data-val-required="An Import File is required." accept=".xlsx,.csv" /><br />
                         @Html.ValidationMessageFor(m => m.ImportFile)
                         <div>
                             @Html.CheckBoxFor(m => m.HasHeader)

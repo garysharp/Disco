@@ -1234,21 +1234,21 @@ WriteLiteral(" style=\"width: 650px; margin: 0 auto 20px;\"");
 WriteLiteral(">\r\n        <h2>PDF Template</h2>\r\n        <table>\r\n            <tbody>\r\n         " +
 "       <tr>\r\n                    <td>\r\n                        <div");
 
-WriteLiteral(" style=\"margin: -8px -5px; max-height: 350px; overflow-y: scroll; text-align: cen" +
-"ter;\"");
+WriteLiteral(" style=\"margin: -8px -5px; height: 350px; overflow-y: scroll; text-align: center;" +
+"\"");
 
 WriteLiteral(">\r\n                            <img");
 
 WriteLiteral(" style=\"margin: 8px 5px;\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 22173), Tuple.Create("\"", 22259)
+WriteAttribute("src", Tuple.Create(" src=\"", 22169), Tuple.Create("\"", 22255)
             
             #line 380 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 22179), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DocumentTemplate.TemplatePreview(Model.DocumentTemplate.Id))
+, Tuple.Create(Tuple.Create("", 22175), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DocumentTemplate.TemplatePreview(Model.DocumentTemplate.Id))
             
             #line default
             #line hidden
-, 22179), false)
+, 22175), false)
 );
 
 WriteLiteral(" />\r\n                        </div>\r\n                    </td>\r\n                <" +
@@ -1279,7 +1279,7 @@ WriteLiteral("                    <tr>\r\n                        <td>\r\n");
             
             #line 388 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                              if (Model.TemplatePagesHaveAttachmentId.Any(i => !i))
-                {
+                            {
 
             
             #line default
@@ -1422,6 +1422,8 @@ WriteLiteral(" type=\"file\"");
 WriteLiteral(" name=\"Template\"");
 
 WriteLiteral(" id=\"Config_DocumentTemplates_TemplatePdf_Template\"");
+
+WriteLiteral(" accept=\".pdf\"");
 
 WriteLiteral(" style=\"width: 250px;\"");
 
@@ -2278,11 +2280,30 @@ WriteLiteral("    ");
             #line 775 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
      if (canBulkGenerate)
     {
+        if (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.User)
+        {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 779 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+       Write(Html.ActionLinkButton("Bulk Generate", MVC.Config.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id)));
 
             
             #line default
             #line hidden
-WriteLiteral("        <a");
+            
+            #line 779 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                                                                                                        
+        }
+        else
+        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <a");
 
 WriteLiteral(" id=\"buttonBulkGenerate\"");
 
@@ -2292,197 +2313,137 @@ WriteLiteral(" class=\"button\"");
 
 WriteLiteral(">Bulk Generate</a>\r\n");
 
-WriteLiteral("        <div");
+WriteLiteral("            <div");
 
 WriteLiteral(" id=\"dialogBulkGenerate\"");
 
-WriteLiteral(" class=\"hiddenDialog\"");
+WriteLiteral(" class=\"hiddenDialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 44007), Tuple.Create("\"", 44058)
-, Tuple.Create(Tuple.Create("", 44015), Tuple.Create("Bulk", 44015), true)
-, Tuple.Create(Tuple.Create(" ", 44019), Tuple.Create("Generate:", 44020), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 44318), Tuple.Create("\"", 44369)
+, Tuple.Create(Tuple.Create("", 44326), Tuple.Create("Bulk", 44326), true)
+, Tuple.Create(Tuple.Create(" ", 44330), Tuple.Create("Generate:", 44331), true)
             
-            #line 778 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-, Tuple.Create(Tuple.Create(" ", 44029), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
+            #line 784 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                        , Tuple.Create(Tuple.Create(" ", 44340), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
             
             #line default
             #line hidden
-, 44030), false)
+, 44341), false)
 );
 
-WriteLiteral(">\r\n            <div");
+WriteLiteral(">\r\n                <div");
 
 WriteLiteral(" class=\"brief\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 780 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 786 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 786 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                     switch (Model.DocumentTemplate.Scope)
+                    {
+                        case "Device":
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <div>\r\n                                Enter multiple" +
+" <span");
+
+WriteLiteral(" class=\"scopeDescBulkGenerate\"");
+
+WriteLiteral(">Device Serial Numbers</span> separated by <code>&lt;new line&gt;</code>, commas " +
+"(<code>,</code>) or semicolons (<code>;</code>).\r\n                            </" +
+"div>\r\n");
+
+WriteLiteral("                            <div");
+
+WriteLiteral(" class=\"examples clearfix\"");
+
+WriteLiteral(">\r\n                                <h4>Examples:</h4>\r\n                          " +
+"      <div");
+
+WriteLiteral(" class=\"example1 code\"");
+
+WriteLiteral(">\r\n                                    01234567<br />\r\n                          " +
+"          ABCD9876<br />\r\n                                    8VQ6G2R\r\n         " +
+"                       </div>\r\n                                <div");
+
+WriteLiteral(" class=\"example2 code\"");
+
+WriteLiteral(">01234567,ABCD9876,8VQ6G2R</div>\r\n                                <div");
+
+WriteLiteral(" class=\"example3 code\"");
+
+WriteLiteral(">01234567;ABCD9876;8VQ6G2R</div>\r\n                            </div>\r\n");
+
+            
+            #line 802 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                            break;
+                        case "Job":
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <div>\r\n                                Enter multiple" +
+" <span");
+
+WriteLiteral(" class=\"scopeDescBulkGenerate\"");
+
+WriteLiteral(">Job Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code" +
+">) or semicolons (<code>;</code>).\r\n                            </div>\r\n");
+
+WriteLiteral("                            <div");
+
+WriteLiteral(" class=\"examples clearfix\"");
+
+WriteLiteral(">\r\n                                <h4>Examples:</h4>\r\n                          " +
+"      <div");
+
+WriteLiteral(" class=\"example1 code\"");
+
+WriteLiteral(">\r\n                                    86<br />\r\n                                " +
+"    99<br />\r\n                                    44\r\n                          " +
+"      </div>\r\n                                <div");
+
+WriteLiteral(" class=\"example2 code\"");
+
+WriteLiteral(">86,99,44</div>\r\n                                <div");
+
+WriteLiteral(" class=\"example3 code\"");
+
+WriteLiteral(">86;99;44</div>\r\n                            </div>\r\n");
+
+            
+            #line 817 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                            break;
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                </div>\r\n");
+
+            
+            #line 820 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 780 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                 switch (Model.DocumentTemplate.Scope)
-                {
-                    case "Device":
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                        <div>\r\n                            Enter multiple <span");
-
-WriteLiteral(" class=\"scopeDescBulkGenerate\"");
-
-WriteLiteral(">Device Serial Numbers</span> separated by <code>&lt;new line&gt;</code>, commas " +
-"(<code>,</code>) or semicolons (<code>;</code>).\r\n                        </div>" +
-"\r\n");
-
-WriteLiteral("                        <div");
-
-WriteLiteral(" class=\"examples clearfix\"");
-
-WriteLiteral(">\r\n                            <h4>Examples:</h4>\r\n                            <d" +
-"iv");
-
-WriteLiteral(" class=\"example1 code\"");
-
-WriteLiteral(">\r\n                                01234567<br />\r\n                              " +
-"  ABCD9876<br />\r\n                                8VQ6G2R\r\n                     " +
-"       </div>\r\n                            <div");
-
-WriteLiteral(" class=\"example2 code\"");
-
-WriteLiteral(">01234567,ABCD9876,8VQ6G2R</div>\r\n                            <div");
-
-WriteLiteral(" class=\"example3 code\"");
-
-WriteLiteral(">01234567;ABCD9876;8VQ6G2R</div>\r\n                        </div>\r\n");
-
-            
-            #line 796 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                        break;
-                    case "Job":
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                        <div>\r\n                            Enter multiple <span");
-
-WriteLiteral(" class=\"scopeDescBulkGenerate\"");
-
-WriteLiteral(">Job Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code" +
-">) or semicolons (<code>;</code>).\r\n                        </div>\r\n");
-
-WriteLiteral("                        <div");
-
-WriteLiteral(" class=\"examples clearfix\"");
-
-WriteLiteral(">\r\n                            <h4>Examples:</h4>\r\n                            <d" +
-"iv");
-
-WriteLiteral(" class=\"example1 code\"");
-
-WriteLiteral(">\r\n                                86<br />\r\n                                99<b" +
-"r />\r\n                                44\r\n                            </div>\r\n  " +
-"                          <div");
-
-WriteLiteral(" class=\"example2 code\"");
-
-WriteLiteral(">86,99,44</div>\r\n                            <div");
-
-WriteLiteral(" class=\"example3 code\"");
-
-WriteLiteral(">86;99;44</div>\r\n                        </div>\r\n");
-
-            
-            #line 811 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                        break;
-                    case "User":
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                        <div>\r\n                            Enter multiple <span");
-
-WriteLiteral(" class=\"scopeDescBulkGenerate\"");
-
-WriteLiteral(">User Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</cod" +
-"e>) or semicolons (<code>;</code>).\r\n                        </div>\r\n");
-
-WriteLiteral("                        <div");
-
-WriteLiteral(" class=\"examples clearfix\"");
-
-WriteLiteral(">\r\n                            <h4>Examples:</h4>\r\n                            <d" +
-"iv");
-
-WriteLiteral(" class=\"example1 code\"");
-
-WriteLiteral(">\r\n                                user6<br />\r\n                                s" +
-"mi0099<br />");
-
-            
             #line 820 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                         Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
+                 using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
+                {
 
             
             #line default
             #line hidden
-WriteLiteral("\\rsmith\r\n                            </div>\r\n                            <div");
-
-WriteLiteral(" class=\"example2 code\"");
-
-WriteLiteral(">user6,smi0099,");
-
-            
-            #line 822 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                                                 Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\\rsmith</div>\r\n                            <div");
-
-WriteLiteral(" class=\"example3 code\"");
-
-WriteLiteral(">user6;smi0099;");
-
-            
-            #line 823 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                                                 Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\\rsmith</div>\r\n                        </div>\r\n");
-
-            
-            #line 825 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                        break;
-                }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("            </div>\r\n");
-
-            
-            #line 828 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-            
-            
-            #line default
-            #line hidden
-            
-            #line 828 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-             using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
-            {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                <div");
+WriteLiteral("                    <div");
 
 WriteLiteral(" class=\"field-validation-valid\"");
 
@@ -2492,7 +2453,7 @@ WriteLiteral(" data-valmsg-for=\"DataIds\"");
 
 WriteLiteral("></div>\r\n");
 
-WriteLiteral("                <textarea");
+WriteLiteral("                    <textarea");
 
 WriteLiteral(" id=\"inputBulkGenerateDataIds\"");
 
@@ -2505,18 +2466,18 @@ WriteLiteral(" data-val-required=\"Identifiers are required\"");
 WriteLiteral("></textarea>\r\n");
 
             
-            #line 832 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                if (Model.TemplatePageCount > 1 && Model.TemplatePageCount % 2 != 0)
-                {
+            #line 824 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                    if (Model.TemplatePageCount > 1 && Model.TemplatePageCount % 2 != 0)
+                    {
 
             
             #line default
             #line hidden
-WriteLiteral("                    <div");
+WriteLiteral("                        <div");
 
 WriteLiteral(" style=\"margin-top: 6px;\"");
 
-WriteLiteral(">\r\n                        <input");
+WriteLiteral(">\r\n                            <input");
 
 WriteLiteral(" id=\"inputBulkGenerateInsertBlankPage\"");
 
@@ -2530,60 +2491,61 @@ WriteLiteral(" /><label");
 
 WriteLiteral(" for=\"inputBulkGenerateInsertBlankPage\"");
 
-WriteLiteral(">Insert Blank Pages for Double-Sided Printing</label>\r\n                    </div>" +
-"\r\n");
+WriteLiteral(">Insert Blank Pages for Double-Sided Printing</label>\r\n                        </" +
+"div>\r\n");
 
             
-            #line 837 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                }
-            }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("        </div>\r\n");
-
-            
-            #line 840 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"        <script>
-            $(function () {
-                var dialog;
-
-                $('#buttonBulkGenerate').click(function () {
-                    if (!dialog) {
-                        dialog = $('#dialogBulkGenerate').dialog({
-                            resizable: false,
-                            modal: true,
-                            autoOpen: false,
-                            width: 460,
-                            buttons: {
-                                ""Bulk Generate"": function () {
-                                    dialog.find('form').submit();
-                                    dialog.dialog(""disable"");
-                                },
-                                Close: function () {
-                                    $(this).dialog(""close"");
-                                }
-                            }
-                        });
-
-                        $.validator.unobtrusive.reparse('#inputBulkGenerateDataIds');
+            #line 829 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                     }
+                }
 
-                    dialog.dialog('open');
-                    return false;
+            
+            #line default
+            #line hidden
+WriteLiteral("            </div>\r\n");
+
+            
+            #line 832 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"            <script>
+                $(function () {
+                    var dialog;
+
+                    $('#buttonBulkGenerate').click(function () {
+                        if (!dialog) {
+                            dialog = $('#dialogBulkGenerate').dialog({
+                                resizable: false,
+                                modal: true,
+                                autoOpen: false,
+                                width: 460,
+                                buttons: {
+                                    ""Bulk Generate"": function () {
+                                        dialog.find('form').submit();
+                                        dialog.dialog(""disable"");
+                                    },
+                                    Close: function () {
+                                        $(this).dialog(""close"");
+                                    }
+                                }
+                            });
+
+                            $.validator.unobtrusive.reparse('#inputBulkGenerateDataIds');
+                        }
+
+                        dialog.dialog('open');
+                        return false;
+                    });
                 });
-            });
-        </script>
+            </script>
 ");
 
             
-            #line 871 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 863 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+        }
     }
 
             
@@ -2592,7 +2554,7 @@ WriteLiteral(@"        <script>
 WriteLiteral("    ");
 
             
-            #line 872 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 865 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
      if (Authorization.Has(Claims.Config.DocumentTemplate.Delete))
     {
         
@@ -2600,14 +2562,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 874 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 867 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
    Write(Html.ActionLinkButton("Delete", MVC.API.DocumentTemplate.Delete(Model.DocumentTemplate.Id, true), "buttonDelete"));
 
             
             #line default
             #line hidden
             
-            #line 874 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 867 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                                                                                           
     }
 
@@ -2616,6 +2578,62 @@ WriteLiteral("    ");
             #line hidden
 WriteLiteral("</div>\r\n");
 
+            
+            #line 870 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+ if (!string.IsNullOrWhiteSpace(Model.BulkGenerateDownloadId))
+{
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    <div");
+
+WriteLiteral(" id=\"Config_DocumentTemplates_Show_DownloadBulk_Dialog\"");
+
+WriteLiteral(" class=\"dialog\"");
+
+WriteLiteral(" title=\"Download Bulk Documents\"");
+
+WriteLiteral(">\r\n        <a");
+
+WriteAttribute("href", Tuple.Create(" href=\"", 48940), Tuple.Create("\"", 49071)
+            
+            #line 873 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 48947), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DocumentTemplate.BulkGenerateDownload(Model.BulkGenerateDownloadId, Model.BulkGenerateDownloadFilename))
+            
+            #line default
+            #line hidden
+, 48947), false)
+);
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral("><i");
+
+WriteLiteral(" class=\"fa fa-download fa-lg\"");
+
+WriteLiteral("></i>Download Bulk Documents</a>\r\n    </div>\r\n");
+
+WriteLiteral(@"    <script>
+        $(function () {
+            $('#Config_DocumentTemplates_Show_DownloadBulk_Dialog')
+                .dialog({
+                    width: 400,
+                    height: 100,
+                    resizable: false,
+                    modal: true,
+                    autoOpen: true
+                });
+        });
+    </script>
+");
+
+            
+            #line 887 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+}
+            
+            #line default
+            #line hidden
         }
     }
 }

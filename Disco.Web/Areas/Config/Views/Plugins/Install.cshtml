@@ -10,15 +10,15 @@
 <div id="pluginLibrary">
     <h4 id="pluginLibraryHeading">The plugin library [<a href="https://discoict.com.au/">https://discoict.com.au</a>] was last updated @CommonHelpers.FriendlyDate((Model.Library.ManifestDate > DateTime.Now ? DateTime.Now : Model.Library.ManifestDate))</h4>
     @if (Model.Library.Plugins.Count == 0)
-    { 
+    {
         <div class="form" style="width: 450px; padding: 100px 0;">
             <h2>No Plugins are Available</h2>
-        </div>  
+        </div>
     }
     else
     {
         var pluginGroups = Model.AvailablePlugins;
-        
+
         <div id="pluginLibraryGroups">
             @foreach (var pluginGroup in pluginGroups)
             {
@@ -31,7 +31,8 @@
                             <tr>
                                 <td>
                                     <div class="pluginItem@(installedPlugin != null ? " pluginInstalled" : string.Empty)">
-                                        <h2 class="pluginName"><i class="fa fa-cogs"></i>@plugin.Item1.Name
+                                        <h2 class="pluginName">
+                                            <i class="fa fa-cogs"></i>@plugin.Item1.Name
                                             @if (installedPlugin == null)
                                             {
                                                 <a class="pluginInstallLink button" href="@(Url.Action(MVC.API.Plugin.Install(plugin.Item1.Id)))">Install</a>
@@ -40,11 +41,11 @@
                                             {
                                                 if (Version.Parse(plugin.Item2.Version) > installedPlugin.Version)
                                                 {
-                                                <a class="pluginUpdateLink button" href="@(Url.Action(MVC.API.Plugin.Update(plugin.Item1.Id)))">Update</a>    
+                                                    <a class="pluginUpdateLink button" href="@(Url.Action(MVC.API.Plugin.Update(plugin.Item1.Id)))">Update</a>
                                                 }
                                                 else
                                                 {
-                                                <a class="pluginInstalledLink button disabled" href="#">Installed</a>    
+                                                    <a class="pluginInstalledLink button disabled" href="#">Installed</a>
                                                 }
                                             }
                                         </h2>
@@ -54,13 +55,14 @@
                                         </div>
                                     </div>
                                 </td>
-                            </tr>   
+                            </tr>
+
                         }
                     </table>
                 </div>
             }
         </div>
-        
+
     }
 </div>
 <div id="dialogInstallPlugin" title="Install this Plugin?">
@@ -81,7 +83,7 @@
             @using (Html.BeginForm(MVC.API.Plugin.InstallLocal(), FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <label for="pluginFile">Plugin Package: </label>
-                <input id="pluginFile" name="Plugin" type="file" />
+                <input id="pluginFile" name="Plugin" type="file" accept=".discoPlugin" />
             }
         </div>
         <div class="info-box error">
