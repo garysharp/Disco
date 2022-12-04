@@ -1,1 +1,1 @@
-﻿moment.lang('en-au');
+﻿moment.locale('en-au');

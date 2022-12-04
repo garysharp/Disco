@@ -1309,8 +1309,6 @@
     <None Include="ClientSource\Scripts\Core\jquery.dataTables.js" />
     <None Include="ClientSource\Scripts\Core\jquery.watermark.js" />
     <None Include="ClientSource\Scripts\Core\disco.uicore.js" />
-    <None Include="ClientSource\Scripts\Core\moment.en-au.js" />
-    <None Include="ClientSource\Scripts\Core\moment.js" />
     <None Include="ClientSource\Scripts\Core\_references.js" />
     <None Include="ClientSource\Scripts\Core\livestamp.js" />
     <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons\disco.ajaxhelpericons.js" />
@@ -1329,8 +1327,7 @@
     <Content Include="ClientSource\Scripts\Core\jquery.dataTables.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Core\jquery.watermark.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Core\disco.uicore.js" Condition=" '$(Configuration)' == 'Debug' " />
-    <Content Include="ClientSource\Scripts\Core\moment.en-au.js" Condition=" '$(Configuration)' == 'Debug' " />
-    <Content Include="ClientSource\Scripts\Core\moment.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <None Include="ClientSource\Scripts\Core\moment-with-locales.js" />
     <Content Include="ClientSource\Scripts\Core\_references.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Core\livestamp.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons\disco.ajaxhelpericons.js" Condition=" '$(Configuration)' == 'Debug' " />
