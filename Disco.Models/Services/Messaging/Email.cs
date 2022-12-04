@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Disco.Models.Services.Messaging
 {
@@ -26,6 +28,11 @@ namespace Disco.Models.Services.Messaging
             To.Add(to);
             Subject = subject;
             Body = body;
+        }
+
+        public static IEnumerable<string> ParseEmailAddresses(string emailAddresses)
+        {
+            return emailAddresses.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim());
         }
     }
 }

@@ -396,6 +396,7 @@
     <Compile Include="Plugins\Features\DetailsProvider\DetailsProviderExtensions.cs" />
     <Compile Include="Plugins\Features\DetailsProvider\DetailsProviderFeature.cs" />
     <Compile Include="Plugins\Features\DetailsProvider\DetailsProviderService.cs" />
+    <Compile Include="Plugins\Features\DetailsProvider\UserContactFeature.cs" />
     <Compile Include="Plugins\Features\DocumentHandlerProvider\DocumentHandlerProviderFeature.cs" />
     <Compile Include="Plugins\Features\WirelessProfileProvider\ProvisionWirelessProfilesResult.cs" />
     <Compile Include="Plugins\Features\WirelessProfileProvider\WirelessProfile.cs" />
@@ -456,6 +457,7 @@
     <Compile Include="Plugins\Features\UIExtension\UIExtensions.cs" />
     <Compile Include="Users\Cache.cs" />
     <Compile Include="Users\CacheCleanTask.cs" />
+    <Compile Include="Users\Contact\UserContactService.cs" />
     <Compile Include="Users\UserExtensions.cs" />
     <Compile Include="Users\UserFlags\Cache.cs" />
     <Compile Include="Users\UserFlags\UserFlagExtensions.cs" />

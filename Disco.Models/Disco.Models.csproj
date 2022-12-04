@@ -146,6 +146,8 @@
     <Compile Include="Services\Messaging\Email.cs" />
     <Compile Include="Services\Messaging\EmailAttachment.cs" />
     <Compile Include="Services\Plugins\Details\DetailsResult.cs" />
+    <Compile Include="Services\Users\Contact\UserContact.cs" />
+    <Compile Include="Services\Users\Contact\UserContactType.cs" />
     <Compile Include="Services\Searching\DeviceSearchResultItem.cs" />
     <Compile Include="Services\Searching\ISearchResultItem.cs" />
     <Compile Include="Services\Searching\JobSearchResultItem.cs" />
