@@ -667,28 +667,35 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
 #Config_DocumentTemplates_JobSubTypes_Update_Dialog .checkboxBulkSelectContainer {
   font-size: 0.8em;
 }
-#dialogBulkGenerate .brief {
+.dialog-bulk-generate .brief {
   margin: 0 0 8px 0;
 }
-#dialogBulkGenerate .brief .scopeDescBulkGenerate {
+.dialog-bulk-generate .brief .scopeDescBulkGenerate {
   font-weight: 600;
 }
-#dialogBulkGenerate .brief div.examples {
+.dialog-bulk-generate .brief div.examples {
   margin: 8px auto;
-  width: 300px;
+  width: 360px;
 }
-#dialogBulkGenerate .brief div.examples div {
+.dialog-bulk-generate .brief div.examples div {
   margin: 2px 4px 2px 0;
-  width: 150px;
+  width: 230px;
   float: left;
 }
-#dialogBulkGenerate .brief div.examples div.example1 {
+.dialog-bulk-generate .brief div.examples div.example1 {
   width: 100px;
 }
-#dialogBulkGenerate textarea {
+.dialog-bulk-generate textarea {
   width: calc(100% - .5em);
   height: 200px;
   margin: 0 auto;
+}
+.dialog-bulk-generate .sub {
+  margin-top: 0.75em;
+}
+#Config_DocumentTemplates_Show_DownloadBulk_Dialog {
+  padding-top: 20px;
+  text-align: center;
 }
 h1.Config_DocumentTemplates {
   margin: 10px 0 6px;
@@ -1135,12 +1142,12 @@ h1.Config_DocumentTemplates {
 #pluginLibrary #pluginLibraryGroups {
   width: 900px;
   margin: 0 auto;
+  column-count: 2;
 }
-#pluginLibrary #pluginLibraryGroups > div.form {
-  width: 50%;
-  float: left;
+#pluginLibrary #pluginLibraryGroups > div {
+  display: inline-block;
 }
-#pluginLibrary #pluginLibraryGroups > div.form > table {
+#pluginLibrary #pluginLibraryGroups div.form > table {
   margin: 0 10px 10px 4px;
   width: calc(100% - 14px);
 }
@@ -1727,13 +1734,13 @@ h1.Config_DocumentTemplates {
   margin-right: 4px;
 }
 #Config_UserFlags_BulkAssign_ModeDialog > div > div.add:hover {
-  background-color: #edffda;
+  background-color: #eeffde;
 }
 #Config_UserFlags_BulkAssign_ModeDialog > div > div.add i {
   color: #60A917;
 }
 #Config_UserFlags_BulkAssign_ModeDialog > div > div.override:hover {
-  background-color: #ffd8d4;
+  background-color: #ffe1de;
 }
 #Config_UserFlags_BulkAssign_ModeDialog > div > div.override i {
   color: #e51400;
@@ -1778,4 +1785,39 @@ h1.Config_DocumentTemplates {
 }
 #Config_UserFlags_BulkAssign_AssignDialog.loading > form {
   display: none;
+}
+#DocumentTemplate_BulkGenerate .actions {
+  padding-bottom: 0.5em;
+  text-align: right;
+}
+#DocumentTemplate_BulkGenerate table {
+  max-width: 850px;
+  margin: auto;
+}
+#DocumentTemplate_BulkGenerate table tr.when-none {
+  text-align: center;
+  font-style: italic;
+}
+.dialog-item-picker {
+  height: 300px;
+  overflow-y: auto;
+  background-color: #fcfcfc;
+  border: 1px solid #ccc;
+}
+.dialog-item-picker > div {
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 6px 0 6px 6px;
+  cursor: pointer;
+}
+.dialog-item-picker > div:hover {
+  background-color: #f4f4f4;
+}
+.dialog-item-picker > div.selected,
+.dialog-item-picker > div.selected:hover {
+  background-color: #eee;
+}
+.dialog-item-picker > div.disabled {
+  cursor: not-allowed;
+  background-color: #f4f4f4;
 }

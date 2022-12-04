@@ -652,6 +652,11 @@ table.genericData td.id a {
   padding: 0;
   height: 1.4em;
 }
+.dataTables_wrapper .dataTables_processing {
+  position: absolute;
+  margin-top: 30px;
+  left: 45%;
+}
 .dataTables_wrapper .dataTables_decommissioned {
   position: absolute;
   height: 20px;

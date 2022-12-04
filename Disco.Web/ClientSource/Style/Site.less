@@ -185,10 +185,10 @@ header, #header {
             text-decoration: none;
         }
 
-            a:hover {
-                color: @MenuHoverColour;
-                text-decoration: none;
-            }
+        a:hover {
+            color: @MenuHoverColour;
+            text-decoration: none;
+        }
     }
 
     #SearchQuery {
@@ -291,9 +291,9 @@ header, #header {
         white-space: pre-wrap;
     }
 
-        h2.error {
-            margin-bottom: 10px;
-        }
+    h2.error {
+        margin-bottom: 10px;
+    }
 
     .stacktrace {
         white-space: pre;
@@ -401,45 +401,45 @@ a {
         cursor: default;
     }
 }
-    // Anchor Tags (Button)
-    a.button {
-        display: inline-block;
-        padding: 4px 10px;
-        margin: 2px;
-        border: 1px solid @ButtonBorderColour;
-        background: @ButtonColour;
-        color: @white;
-        font-weight: 600;
-        text-transform: uppercase;
-        cursor: pointer;
-        white-space: nowrap;
-        text-decoration: none;
+// Anchor Tags (Button)
+a.button {
+    display: inline-block;
+    padding: 4px 10px;
+    margin: 2px;
+    border: 1px solid @ButtonBorderColour;
+    background: @ButtonColour;
+    color: @white;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    text-decoration: none;
 
-        &[disabled], &.disabled {
-            background: @ButtonHoverColour;
-            border: 1px solid @ButtonBorderHoverColour;
-            cursor: default;
-        }
-
-        &.alert {
-            border-color: @ButtonBorderAlertColour;
-            background-color: @ButtonAlertColour;
-        }
-
-        &.small {
-            padding: 2px 5px;
-            font-size: .9em;
-        }
-
-        &:hover {
-            border: 1px solid @ButtonBorderHoverColour;
-            background: @ButtonHoverColour;
-        }
-
-        i {
-            margin-right: 10px;
-        }
+    &[disabled], &.disabled {
+        background: @ButtonHoverColour;
+        border: 1px solid @ButtonBorderHoverColour;
+        cursor: default;
     }
+
+    &.alert {
+        border-color: @ButtonBorderAlertColour;
+        background-color: @ButtonAlertColour;
+    }
+
+    &.small {
+        padding: 2px 5px;
+        font-size: .9em;
+    }
+
+    &:hover {
+        border: 1px solid @ButtonBorderHoverColour;
+        background: @ButtonHoverColour;
+    }
+
+    i {
+        margin-right: 10px;
+    }
+}
 
 div.actionBar {
     margin: 0 -30px 0 -30px;
@@ -521,28 +521,28 @@ table {
     }
 }
 
-    table.none {
+table.none {
+    border: none !important;
+
+    tr, td, th {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: none !important;
         border: none !important;
+    }
+}
 
-        tr, td, th {
-            padding: 0 !important;
-            margin: 0 !important;
-            background: none !important;
-            border: none !important;
+table.genericData {
+    .tableData;
+
+    td.id {
+        text-align: center;
+
+        a {
+            padding: 0 6px;
         }
     }
-
-    table.genericData {
-        .tableData;
-
-        td.id {
-            text-align: center;
-
-            a {
-                padding: 0 6px;
-            }
-        }
-    }
+}
 
 .smallTable {
     th, td {
@@ -558,7 +558,6 @@ table {
         position: absolute;
         margin-top: -24px;
         right: 320px;
-
         opacity: 0.3;
     }
 
@@ -594,6 +593,12 @@ table {
 
         -moz-opacity: 0.3;
         opacity: 0.3;
+    }
+
+    .dataTables_processing {
+        position: absolute;
+        margin-top: 30px;
+        left: 45%;
     }
 
     .dataTables_decommissioned {
@@ -939,18 +944,18 @@ input[type="text"], input[type="password"], input[type="file"], input[type="numb
     width: 200px;
 }
 
-    input[type="text"].small, input[type="password"].small, input[type="file"].small, input[type="number"].small {
-        padding: 0 2px;
-        width: 150px;
-    }
+input[type="text"].small, input[type="password"].small, input[type="file"].small, input[type="number"].small {
+    padding: 0 2px;
+    width: 150px;
+}
 
-    input[type="text"].discreet, input[type="password"].discreet, input[type="file"].discreet, input[type="number"].discreet {
-        border: 1px solid @white;
+input[type="text"].discreet, input[type="password"].discreet, input[type="file"].discreet, input[type="number"].discreet {
+    border: 1px solid @white;
 
-        &:hover, &:focus {
-            border: 1px solid #ccc;
-        }
+    &:hover, &:focus {
+        border: 1px solid #ccc;
     }
+}
 
 input[type="checkbox"], input[type="radio"] {
     margin-right: 4px;
@@ -965,9 +970,9 @@ select {
     color: #444;
 }
 
-    select.small {
-        padding: 0;
-    }
+select.small {
+    padding: 0;
+}
 
 input[type="submit"], button {
     font-family: @FontFamilyBody;
@@ -1076,9 +1081,9 @@ div.form {
                         text-align: right;
                     }
 
-                        & > th.name {
-                            text-align: right;
-                        }
+                    & > th.name {
+                        text-align: right;
+                    }
                 }
             }
         }
@@ -1114,23 +1119,23 @@ div.form {
             }
         }
 
-            .pageMenuArea:not(:last-child) {
-                border-bottom: 1px dashed #aaa;
-            }
+        .pageMenuArea:not(:last-child) {
+            border-bottom: 1px dashed #aaa;
+        }
 
-            .pageMenuArea.noSeperator {
-                border-bottom: none;
-            }
+        .pageMenuArea.noSeperator {
+            border-bottom: none;
+        }
     }
 
-        td:first-child {
-            padding-left: 0;
-        }
+    td:first-child {
+        padding-left: 0;
+    }
 
-        td:last-child {
-            border-right: none;
-            padding-right: 0;
-        }
+    td:last-child {
+        border-right: none;
+        padding-right: 0;
+    }
 }
 
 div.info-box {
@@ -1493,15 +1498,15 @@ td.subtleHighlight {
 * + html .clearfix {
     min-height: 1%;
 }
-    /* float clearing for everyone else */
-    .clearfix:after {
-        clear: both;
-        content: ".";
-        display: block;
-        height: 0;
-        visibility: hidden;
-        font-size: 0;
-    }
+/* float clearing for everyone else */
+.clearfix:after {
+    clear: both;
+    content: ".";
+    display: block;
+    height: 0;
+    visibility: hidden;
+    font-size: 0;
+}
 
 
 div.columnHost {

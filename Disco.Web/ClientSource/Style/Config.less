@@ -729,7 +729,7 @@ div.logEventsViewport {
     }
 }
 
-#dialogBulkGenerate {
+.dialog-bulk-generate {
     .brief {
         margin: 0 0 8px 0;
 
@@ -739,11 +739,11 @@ div.logEventsViewport {
 
         div.examples {
             margin: 8px auto;
-            width: 300px;
+            width: 360px;
 
             div {
                 margin: 2px 4px 2px 0;
-                width: 150px;
+                width: 230px;
                 float: left;
 
                 &.example1 {
@@ -758,6 +758,15 @@ div.logEventsViewport {
         height: 200px;
         margin: 0 auto;
     }
+
+    .sub {
+        margin-top: 0.75em;
+    }
+}
+
+#Config_DocumentTemplates_Show_DownloadBulk_Dialog {
+    padding-top: 20px;
+    text-align: center;
 }
 
 h1.Config_DocumentTemplates {
@@ -1331,15 +1340,15 @@ h1.Config_DocumentTemplates {
     #pluginLibraryGroups {
         width: 900px;
         margin: 0 auto;
+        column-count: 2;
 
-        & > div.form {
-            width: 50%;
-            float: left;
+        & > div {
+            display: inline-block;
+        }
 
-            & > table {
-                margin: 0 10px 10px 4px;
-                width: calc(~"100% - 14px");
-            }
+        div.form > table {
+            margin: 0 10px 10px 4px;
+            width: calc(~"100% - 14px");
         }
     }
 
@@ -2015,7 +2024,7 @@ h1.Config_DocumentTemplates {
 
             &.add {
                 &:hover {
-                    background-color: hsv(hsvhue(@StatusSuccess), hsvsaturation(@StatusSuccess) / 6, 100%);
+                    background-color: hsv(hsvhue(@StatusSuccess), 13%, 100%);
                 }
 
                 i {
@@ -2025,7 +2034,7 @@ h1.Config_DocumentTemplates {
 
             &.override {
                 &:hover {
-                    background-color: hsv(hsvhue(@StatusError), hsvsaturation(@StatusError) / 6, 100%);
+                    background-color: hsv(hsvhue(@StatusError), 13%, 100%);
                 }
 
                 i {
@@ -2090,4 +2099,52 @@ h1.Config_DocumentTemplates {
             display: none;
         }
     }
+}
+
+#DocumentTemplate_BulkGenerate {
+    .actions {
+        padding-bottom: .5em;
+        text-align: right;
+    }
+
+    table {
+        max-width: 850px;
+        margin: auto;
+
+        tr.when-none {
+            text-align: center;
+            font-style: italic;
+        }
+    }
+}
+
+.dialog-item-picker {
+    height: 300px;
+    overflow-y: auto;
+    background-color: #fcfcfc;
+    border: 1px solid #ccc;
+
+    & > div {
+        background-color: @white;
+        border-bottom: 1px solid #ddd;
+        padding: 6px 0 6px 6px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: @TableDataBorderColour;
+        }
+
+        &.selected, &.selected:hover {
+            background-color: @TableDataDarkBackgroundColour;
+        }
+
+        &.disabled {
+            cursor: not-allowed;
+            background-color: @TableDataBorderColour;
+        }
+    }
+}
+
+.dialog-bulk-generate {
+
 }
