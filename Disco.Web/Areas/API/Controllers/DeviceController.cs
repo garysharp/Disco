@@ -460,7 +460,7 @@ namespace Disco.Web.Areas.API.Controllers
                     if (thumbPath.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
                         return File(thumbPath, "image/png");
                     else
-                        return File(thumbPath, "image/jpg");
+                        return File(thumbPath, "image/jpeg");
                 }
                 else
                     return File(ClientSource.Style.Images.AttachmentTypes.MimeTypeIcons.Icon(da.MimeType), "image/png");

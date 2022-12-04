@@ -1,25 +1,19 @@
-﻿using Disco.BI.Extensions;
-using Disco.Models.Repository;
-using Disco.Models.Services.Documents;
-using Disco.Services;
+﻿using Disco.Services;
 using Disco.Services.Authorization;
-using Disco.Services.Documents;
 using Disco.Services.Interop;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins.Features.DetailsProvider;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using System;
-using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.API.Controllers
 {
     public partial class UserController : AuthorizedDatabaseController
     {
-        #region User Attachements
+        #region User Attachments
 
         [DiscoAuthorize(Claims.User.ShowAttachments)]
         [OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
@@ -54,7 +48,7 @@ namespace Disco.Web.Areas.API.Controllers
                     if (thumbPath.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
                         return File(thumbPath, "image/png");
                     else
-                        return File(thumbPath, "image/jpg");
+                        return File(thumbPath, "image/jpeg");
                 }
                 else
                     return File(ClientSource.Style.Images.AttachmentTypes.MimeTypeIcons.Icon(ua.MimeType), "image/png");
@@ -209,7 +203,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (photo == null)
                 return HttpNotFound();
 
-            return File(photo, "image/jpg");
+            return File(photo, "image/jpeg");
         }
 
     }
