@@ -7,7 +7,7 @@
   background-color: #fff;
 }
 .tableData > tbody > tr:nth-child(odd) > td {
-  background-color: #fbfbfb;
+  background-color: hsl(0, 0%, 98.5%);
 }
 .tableData > thead > tr > th,
 .tableData > tbody > tr > th {
@@ -15,7 +15,7 @@
   border: solid 1px #f4f4f4;
 }
 .tableData > tbody > tr:hover > td {
-  background-color: #f9f9f9;
+  background-color: hsl(0, 0%, 97.5%);
 }
 .tableData > tfoot > tr > th,
 .tableData > tfoot > tr > td {
@@ -111,7 +111,7 @@
 }
 .ui-widget-overlay {
   background: #666666;
-  opacity: .5;
+  opacity: 0.5;
   filter: alpha(opacity=50);
 }
 .watermark {
@@ -219,13 +219,13 @@ input:-moz-placeholder {
   -o-transition-property: width;
   -webkit-transition-property: width;
   transition-property: width;
-  -moz-transition-duration: .1s;
-  -o-transition-duration: .1s;
-  -webkit-transition-duration: .1s;
-  transition-duration: .1s;
+  -moz-transition-duration: 0.1s;
+  -o-transition-duration: 0.1s;
+  -webkit-transition-duration: 0.1s;
+  transition-duration: 0.1s;
 }
 .ui-tabs .ui-tabs-panel {
-  padding: .5em;
+  padding: 0.5em;
 }
 /*.ui-tabs > ul > li.ui-state-default
 {
@@ -246,8 +246,8 @@ input:-moz-placeholder {
   top: 40px !important;
   animation-name: ui-dialog-show;
   -webkit-animation-name: ui-dialog-show;
-  animation-duration: .2s;
-  -webkit-animation-duration: .2s;
+  animation-duration: 0.2s;
+  -webkit-animation-duration: 0.2s;
   animation-timing-function: ease-in-out;
   -webkit-animation-timing-function: ease-in-out;
 }
@@ -261,12 +261,12 @@ input:-moz-placeholder {
   font-size: 1.1em;
   font-weight: normal;
   text-transform: uppercase;
-  padding: .6em 1em;
+  padding: 0.6em 1em;
 }
 @keyframes ui-dialog-show {
   0% {
     transform: translateY(-30px);
-    opacity: 0.0;
+    opacity: 0;
   }
   100% {
     transform: translateY(0);
@@ -276,7 +276,7 @@ input:-moz-placeholder {
 @-webkit-keyframes ui-dialog-show {
   0% {
     -webkit-transform: translateY(-30px);
-    opacity: 0.0;
+    opacity: 0;
   }
   100% {
     -webkit-transform: translateY(0);
@@ -286,14 +286,14 @@ input:-moz-placeholder {
 .ui-widget-overlay.ui-front {
   animation-name: ui-dialog-fadeIn;
   -webkit-animation-name: ui-dialog-fadeIn;
-  animation-duration: .2s;
-  -webkit-animation-duration: .2s;
+  animation-duration: 0.2s;
+  -webkit-animation-duration: 0.2s;
   animation-timing-function: ease-in-out;
   -webkit-animation-timing-function: ease-in-out;
 }
 @keyframes ui-dialog-fadeIn {
   0% {
-    opacity: 0.0;
+    opacity: 0;
   }
   100% {
     opacity: 0.5;
@@ -301,7 +301,7 @@ input:-moz-placeholder {
 }
 @-webkit-keyframes ui-dialog-fadeIn {
   0% {
-    opacity: 0.0;
+    opacity: 0;
   }
   100% {
     opacity: 0.5;

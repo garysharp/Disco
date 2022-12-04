@@ -214,6 +214,8 @@
     <Compile Include="Areas\API\Controllers\JobQueueJobController.cs" />
     <Compile Include="Areas\API\Controllers\PluginController.cs" />
     <Compile Include="Areas\API\Controllers\SearchController.cs" />
+    <Compile Include="Areas\API\Models\DocumentTemplate\BulkGenerateUserModel.cs" />
+    <Compile Include="Areas\API\Models\DocumentTemplate\DocumentHandlersModel.cs" />
     <Compile Include="Areas\API\Models\Job\DeviceHeldLocationModel.cs" />
     <Compile Include="Areas\API\Models\Shared\SubjectDescriptorModel.cs" />
     <Compile Include="Areas\API\Models\System\DomainOrganisationalUnitsModel.cs" />
@@ -1321,22 +1323,49 @@
     <None Include="ClientSource\Scripts\Modules\jQuery-Isotope\jquery.isotope.js" />
     <None Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader\webcam.js" />
     <None Include="ClientSource\Scripts\Core.js" />
+    <Content Include="ClientSource\Scripts\Core.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Core\disco.dataTables.extensions.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Core\disco.moment.extensions.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Core\disco.unobtrusiveValidation.extensions.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Core\jquery.dataTables.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Core\jquery.watermark.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Core\disco.uicore.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Core\moment.en-au.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Core\moment.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Core\_references.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Core\livestamp.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons\disco.ajaxhelpericons.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers\disco.datatablehelpers.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\Disco-DocumentBulkGenerate.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\Disco-DocumentBulkGenerate.min.js">
+      <DependentUpon>Disco-DocumentBulkGenerate.js</DependentUpon>
+    </Content>
+    <Content Include="ClientSource\Scripts\Modules\Disco-DocumentBulkGenerate\disco.documentbulkgenerate.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor\disco.expressioneditor.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\Disco-CreateJob\disco.createjob.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions\disco.jQueryExtensions.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers\disco.propertychangehelpers.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\jQuery-Isotope\jquery.isotope.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader\webcam.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Core.min.js">
       <DependentUpon>Core.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.js" />
+    <Content Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\Disco-AjaxHelperIcons.min.js">
       <DependentUpon>Disco-AjaxHelperIcons.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader.js" />
+    <Content Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader.min.js">
       <DependentUpon>Disco-AttachmentUploader.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader\webcam.swf" />
     <None Include="ClientSource\Scripts\Modules\Disco-CreateJob.js" />
+    <Content Include="ClientSource\Scripts\Modules\Disco-CreateJob.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\Disco-CreateJob.min.js">
       <DependentUpon>Disco-CreateJob.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -1356,6 +1385,21 @@
     <None Include="ClientSource\Scripts\Modules\Timeline\timeline-bundle.js" />
     <None Include="ClientSource\Scripts\Modules\Timeline\timeline.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce\disco.tinymceextensions.js" />
+    <Content Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader\disco-attachmentuploader.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\jQuery-Fancytree\jquery.fancytree-all.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter\jquery.numberformatter.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter\jshashtable-2.1.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree\jquery.dynatree.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker\jquery-ui-timepicker-addon.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\Shadowbox\shadowbox.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\jQuery-SignalR\disco-hubs.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\Timeline\disco.simileajaxextensions.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\Timeline\disco.timelineextensions.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\Timeline\labellers.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\Timeline\simile-ajax-bundle-DiscoMod.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\Timeline\timeline-bundle.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\Timeline\timeline.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\tinymce\disco.tinymceextensions.js" Condition=" '$(Configuration)' == 'Debug' " />
     <None Include="ClientSource\Style\BundleSite.css">
       <DependentUpon>BundleSite.less</DependentUpon>
     </None>
@@ -1364,6 +1408,7 @@
       <DependentUpon>Config.less</DependentUpon>
     </None>
     <None Include="ClientSource\Scripts\Modules\tinymce\themes\simple\theme.js" />
+    <Conent Include="ClientSource\Scripts\Modules\tinymce\themes\simple\theme.js" Condition=" '$(Configuration)' == 'Debug' " />
     <None Include="ClientSource\Style\tinymce\content.css">
       <DependentUpon>content.less</DependentUpon>
     </None>
@@ -1377,9 +1422,18 @@
     <None Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\img\object.gif" />
     <None Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\img\trans.gif" />
     <None Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.js" />
+    <Content Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.js" Condition=" '$(Configuration)' == 'Debug' " />
     <None Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.js" />
+    <Content Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\Disco-DataTableHelpers.min.js">
       <DependentUpon>Disco-DataTableHelpers.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ClientSource\Scripts\Modules\Disco-DocumentGenerator\disco.documentgenerator.js" />
+    <None Include="ClientSource\Scripts\Modules\Disco-DocumentGenerator.js" />
+    <Content Include="ClientSource\Scripts\Modules\Disco-DocumentGenerator.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <Content Include="ClientSource\Scripts\Modules\Disco-DocumentGenerator.min.js">
+      <DependentUpon>Disco-DocumentGenerator.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ClientSource\Scripts\Modules\Disco-ExpressionEditor.min.js">
@@ -1387,66 +1441,79 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions.js" />
+    <Content Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions.min.js">
       <DependentUpon>Disco-jQueryExtensions.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers.js" />
+    <Content Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers.min.js">
       <DependentUpon>Disco-PropertyChangeHelpers.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Highcharts.js" />
+    <Content Include="ClientSource\Scripts\Modules\Highcharts.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\Highcharts.min.js">
       <DependentUpon>Highcharts.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\jQuery-Fancytree.js" />
+    <Content Include="ClientSource\Scripts\Modules\jQuery-Fancytree.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\jQuery-Fancytree.min.js">
       <DependentUpon>jQuery-Fancytree.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\jQuery-Isotope.js" />
+    <Content Include="ClientSource\Scripts\Modules\jQuery-Isotope.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\jQuery-Isotope.min.js">
       <DependentUpon>jQuery-Isotope.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.js" />
+    <Content Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter.min.js">
       <DependentUpon>jQuery-NumberFormatter.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\jQuery-SignalR.js" />
+    <Content Include="ClientSource\Scripts\Modules\jQuery-SignalR.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\jQuery-SignalR.min.js">
       <DependentUpon>jQuery-SignalR.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.js" />
+    <Content Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree.min.js">
       <DependentUpon>jQueryUI-DynaTree.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker.js" />
+    <Content Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker.min.js">
       <DependentUpon>jQueryUI-TimePicker.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Knockout.js" />
+    <Content Include="ClientSource\Scripts\Modules\Knockout.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\Knockout.min.js">
       <DependentUpon>Knockout.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Shadowbox.js" />
+    <Content Include="ClientSource\Scripts\Modules\Shadowbox.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\Shadowbox.min.js">
       <DependentUpon>Shadowbox.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Timeline.js" />
+    <Content Include="ClientSource\Scripts\Modules\Timeline.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\Timeline.min.js">
       <DependentUpon>Timeline.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\tinymce.js" />
+    <Content Include="ClientSource\Scripts\Modules\tinymce.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\tinymce.min.js">
       <DependentUpon>tinymce.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
