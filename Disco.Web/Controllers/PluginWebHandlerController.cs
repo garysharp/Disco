@@ -13,6 +13,11 @@ namespace Disco.Web.Controllers
 {
     public partial class PluginWebHandlerController : Controller
     {
+        protected override void OnAuthorization(AuthorizationContext filterContext)
+        {
+            base.OnAuthorization(filterContext);
+        }
+
         [OutputCache(Duration = 0, Location = System.Web.UI.OutputCacheLocation.None)]
         public virtual ActionResult Index(string PluginId, string PluginAction)
         {
@@ -24,7 +29,6 @@ namespace Disco.Web.Controllers
                 {
                     using (var pluginWebHandler = manifest.CreateWebHandler(this))
                     {
-                        pluginWebHandler.OnActionExecuting();
                         return pluginWebHandler.ExecuteAction(PluginAction);
                     }
                 }

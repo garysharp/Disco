@@ -16,6 +16,8 @@ namespace Disco.Services.Plugins
     {
         public PluginManifest Manifest { get; set; }
         public Controller HostController { get; set; }
+        public UrlHelper Url { get; set; }
+
         protected DiscoDataContext Database;
         private Lazy<WebHelper> plugin;
         protected WebHelper Plugin
@@ -29,10 +31,7 @@ namespace Disco.Services.Plugins
         public PluginWebHandler()
         {
             plugin = new Lazy<WebHelper>(new Func<WebHelper>(() => new WebHelper(HostController.HttpContext, Manifest)));
-        }
 
-        public void OnActionExecuting()
-        {
             Database = new DiscoDataContext();
             Database.Configuration.LazyLoadingEnabled = false;
         }
@@ -167,6 +166,19 @@ namespace Disco.Services.Plugins
         {
             return CompiledView(PartialCompiledViewType, null);
         }
+        #endregion
+
+        #region Status Codes
+
+        public ActionResult Ok()
+        {
+            return new HttpStatusCodeResult(System.Net.HttpStatusCode.OK);
+        }
+        public ActionResult Ok(string description)
+        {
+            return new HttpStatusCodeResult(System.Net.HttpStatusCode.OK, description);
+        }
+
         #endregion
 
         #region Content

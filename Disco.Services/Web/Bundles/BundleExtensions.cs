@@ -8,20 +8,24 @@ namespace Disco.Services.Web
 {
     public static class BundleExtensions
     {
-        public static void BundleDeferred(this HtmlHelper htmlHelper, string BundleUrl)
+        public static void BundleDeferred(this HttpContextBase httpContext, string BundleUrl)
         {
             // Ensure 'App-Relative' Url:
             BundleUrl = BundleUrl.StartsWith("~/") ? BundleUrl : (BundleUrl.StartsWith("/") ? string.Concat("~", BundleUrl) : string.Concat("~/", BundleUrl));
 
-            var deferredBundles = htmlHelper.ViewContext.HttpContext.Items[BundleTable.DeferredKey] as List<string>;
+            var deferredBundles = httpContext.Items[BundleTable.DeferredKey] as List<string>;
             if (deferredBundles == null)
             {
                 deferredBundles = new List<string>();
-                htmlHelper.ViewContext.HttpContext.Items[BundleTable.DeferredKey] = deferredBundles;
+                httpContext.Items[BundleTable.DeferredKey] = deferredBundles;
             }
             if (!deferredBundles.Contains(BundleUrl))
                 deferredBundles.Add(BundleUrl);
         }
+
+        public static void BundleDeferred(this HtmlHelper htmlHelper, string BundleUrl)
+            => htmlHelper.ViewContext.HttpContext.BundleDeferred(BundleUrl);
+        
         public static HtmlString BundleRenderDeferred(this HtmlHelper htmlHelper)
         {
             var deferredBundles = htmlHelper.ViewContext.HttpContext.Items[BundleTable.DeferredKey] as List<string>;

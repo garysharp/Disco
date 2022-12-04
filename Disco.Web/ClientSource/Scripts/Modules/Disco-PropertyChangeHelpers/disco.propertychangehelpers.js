@@ -2,63 +2,71 @@
     document.DiscoFunctions = {};
 }
 if (!document.DiscoFunctions.PropertyChangeHelper) {
-    document.DiscoFunctions.PropertyValue = function (PropertyField) {
-        if (PropertyField[0].nodeName.toLowerCase() == 'input' && PropertyField.attr('type') == 'checkbox') {
-            return PropertyField.is(':checked');
+    document.DiscoFunctions.PropertyValue = function (propertyField) {
+        if (propertyField[0].nodeName.toLowerCase() == 'input' && propertyField.attr('type') == 'checkbox') {
+            return propertyField.is(':checked');
         }
-        return PropertyField.val();
+        return propertyField.val();
     };
-    document.DiscoFunctions.PropertyChangeHelper = function (PropertyField, FieldWatermark, UpdateUrl, UpdatePropertyName) {
-        var fieldValue = document.DiscoFunctions.PropertyValue(PropertyField);
+    document.DiscoFunctions.PropertyChangeHelper = function (propertyField, fieldWatermark, updateUrl, updatePropertyName, data) {
+        var fieldValue = document.DiscoFunctions.PropertyValue(propertyField);
         var fieldChangeToken = null;
-        var $ajaxSave = PropertyField.nextAll('.ajaxSave').first();
-        var $ajaxLoading = PropertyField.nextAll('.ajaxLoading').first();
+        var $ajaxSave = propertyField.nextAll('.ajaxSave').first();
+        var $ajaxLoading = propertyField.nextAll('.ajaxLoading').first();
         var fieldChangeFunction = function () {
             $ajaxSave.hide();
-            var changedValue = document.DiscoFunctions.PropertyValue(PropertyField);
+            var changedValue = document.DiscoFunctions.PropertyValue(propertyField);
             if (fieldValue != changedValue) {
                 fieldValue = changedValue;
                 if (fieldChangeToken)
                     window.clearTimeout(fieldChangeToken);
                 fieldChangeToken = window.setTimeout(function () {
                     $ajaxLoading.show();
-                    var data = {};
-                    data[UpdatePropertyName] = fieldValue;
-                    $.getJSON(UpdateUrl, data, function (response, result) {
+                    if (!data) {
+                        data = {};
+                    }
+                    data[updatePropertyName] = fieldValue;
+
+                    $.getJSON(updateUrl, data, function (response, result) {
                         if (result != 'success' || response != 'OK') {
-                            alert('Unable to change property "' + UpdatePropertyName + '":\n' + response);
+                            alert('Unable to change property "' + updatePropertyName + '":\n' + response);
                             $ajaxLoading.hide();
                         } else {
                             $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
                         }
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        alert('Unable to change property "' + updatePropertyName + '":\n' + errorThrown);
+                        $ajaxLoading.hide();
                     })
                     fieldChangeToken = null;
                 }, 500);
             };
         }
-        if (PropertyField[0].nodeName.toLowerCase() == 'input' && PropertyField.attr('type') == 'checkbox') {
-            PropertyField.click(fieldChangeFunction);
+        if (propertyField[0].nodeName.toLowerCase() == 'input' && propertyField.attr('type') == 'checkbox') {
+            propertyField.click(fieldChangeFunction);
         } else {
-            PropertyField.change(fieldChangeFunction);
+            propertyField.change(fieldChangeFunction);
         }
         // For Input Text Boxes
-        if (PropertyField[0].nodeName.toLowerCase() == 'input' && PropertyField.attr('type') == 'text') {
-            PropertyField.keydown(function (e) {
+        if (propertyField[0].nodeName.toLowerCase() == 'input' && propertyField.attr('type') == 'text') {
+            propertyField.keydown(function (e) {
                 $ajaxSave.show();
                 if (e.which == 13) {
                     $(this).blur();
                 }
             })
-            .watermark(FieldWatermark)
             .blur(function () {
                 $ajaxSave.hide();
             }).focus(function () {
                 $(this).select();
             });
+            if (fieldWatermark) {
+                propertyField.watermark(fieldWatermark);
+            }
         }
         // For TextAreas
-        if (PropertyField[0].nodeName.toLowerCase() == 'textarea') {
-            PropertyField.keydown(function () {
+        if (propertyField[0].nodeName.toLowerCase() == 'textarea') {
+            propertyField.keydown(function () {
                 $ajaxSave.show();
             }).blur(function () {
                 $ajaxSave.hide();

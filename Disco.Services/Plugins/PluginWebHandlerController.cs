@@ -9,115 +9,332 @@ namespace Disco.Services.Plugins
 {
     public abstract class PluginWebHandlerController : PluginWebHandler
     {
+        public ControllerContext ControllerContext => HostController.ControllerContext;
 
-        public override ActionResult ExecuteAction(string ActionName)
+        public void OnAuthorization(AuthorizationContext authorizationContext, string actionName)
+        {
+            var actionDescriptor = (PluginActionDescriptor)authorizationContext.ActionDescriptor;
+            
+            var authorizationFilters = actionDescriptor.GetAuthorizationFilters;
+            foreach (var filter in authorizationFilters)
+            {
+                filter.OnAuthorization(authorizationContext);
+                if (authorizationContext.Result != null)
+                    return;
+            }
+        }
+
+        public override ActionResult ExecuteAction(string actionName)
         {
             var handlerType = GetType();
-            var methodDescriptor = FindControllerMethod(Manifest, handlerType, ActionName);
+            var methodDescriptor = FindControllerMethod(ControllerContext, Manifest, handlerType, actionName);
 
             if (methodDescriptor == null)
-                return HttpNotFound("Unknown Plugin Method");
-            
-            // Authorize Method
-            if (methodDescriptor.Authorizers.Length > 0)
+                return HttpNotFound("No such plugin method");
+
+            var authorizationContext = new AuthorizationContext(ControllerContext, methodDescriptor);
+            OnAuthorization(authorizationContext, actionName);
+            if (authorizationContext.Result != null)
+                return authorizationContext.Result;
+
+            return methodDescriptor.Execute(this, ControllerContext);
+        }
+
+        private static PluginActionDescriptor FindControllerMethod(ControllerContext context, PluginManifest manifest, Type handler, string actionName)
+        {
+            var descriptors = GetWebHandler(manifest, handler);
+            return (PluginActionDescriptor)descriptors.FindAction(context, actionName);
+        }
+
+        #region Method Cache
+        private static readonly Dictionary<Type, PluginControllerDescription> pluginControllerCache = new Dictionary<Type, PluginControllerDescription>();
+        private static PluginControllerDescription GetWebHandler(PluginManifest manifest, Type handler)
+        {
+            if (!pluginControllerCache.TryGetValue(handler, out var result))
             {
-                var attributeDenied = methodDescriptor.Authorizers.FirstOrDefault(a => !a.IsAuthorized(HostController.HttpContext));
-                if (attributeDenied != null)
-                {
-                    var message = attributeDenied.HandleUnauthorizedMessage();
-                    var resource = string.Format("{0} [{1}]", attributeDenied.AuthorizeResource, HostController.Request.RawUrl);
-
-                    if (CurrentUser != null)
-                        AuthorizationLog.LogAccessDenied(CurrentUser.UserId, resource, message);
-
-                    return new HttpUnauthorizedResult();
-                }
+                // Cache Miss
+                result = new PluginControllerDescription(manifest, handler);
+                pluginControllerCache[handler] = result;
             }
 
-            var methodParams = BuildMethodParameters(Manifest, handlerType, methodDescriptor.MethodInfo, ActionName, HostController);
-
-            return (ActionResult)methodDescriptor.MethodInfo.Invoke(this, methodParams);
+            return result;
         }
 
-        private static WebHandlerCachedItem FindControllerMethod(PluginManifest Manifest, Type Handler, string ActionName)
+        private class PluginParameterDescriptor : ParameterDescriptor
         {
-            var descriptors = CacheWebHandler(Manifest, Handler);
-            WebHandlerCachedItem method;
-            if (descriptors.TryGetValue(ActionName.ToLower(), out method))
-                return method; // Not Found
-            else
-                return null; // Not Found
-        }
-        private static object[] BuildMethodParameters(PluginManifest Manifest, Type Handler, MethodInfo methodInfo, string ActionName, Controller HostController)
-        {
-            var methodParams = methodInfo.GetParameters();
-            var result = new object[methodParams.Length];
+            private static readonly object[] emptyObjectArray = new object[0];
 
-            for (int i = 0; i < methodParams.Length; i++)
+            private readonly PluginActionDescriptor actionDescriptor;
+            public override ActionDescriptor ActionDescriptor => actionDescriptor;
+            public override string ParameterName { get; }
+            public override Type ParameterType { get; }
+            public override ParameterBindingInfo BindingInfo { get; }
+            public override object DefaultValue { get; }
+
+            public PluginParameterDescriptor(PluginActionDescriptor actionDescriptor, string parameterName, Type parameterType, IModelBinder modelBinder, object defaultValue)
             {
-                var methodParam = methodParams[i];
+                this.actionDescriptor = actionDescriptor;
+                ParameterName = parameterName;
+                ParameterType = parameterType;
+                DefaultValue = defaultValue;
+                BindingInfo = new PluginParameterBindingInfo(modelBinder);
+            }
 
-                Type parameterType = methodParam.ParameterType;
-                IModelBinder modelBinder = ModelBinders.Binders.GetBinder(parameterType);
-                IValueProvider valueProvider = HostController.ValueProvider;
-                string parameterName = methodParam.Name;
+            public object BindParameter(ControllerContext controllerContext)
+            {
+                IValueProvider valueProvider = controllerContext.Controller.ValueProvider;
 
                 ModelBindingContext bindingContext = new ModelBindingContext()
                 {
                     FallbackToEmptyPrefix = true,
-                    ModelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, parameterType),
-                    ModelName = parameterName,
-                    ModelState = HostController.ViewData.ModelState,
+                    ModelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, ParameterType),
+                    ModelName = ParameterName,
+                    ModelState = controllerContext.Controller.ViewData.ModelState,
                     PropertyFilter = (p) => true,
                     ValueProvider = valueProvider
                 };
 
-                var parameterValue = modelBinder.BindModel(HostController.ControllerContext, bindingContext);
+                var parameterValue = BindingInfo.Binder.BindModel(controllerContext.Controller.ControllerContext, bindingContext);
 
-                if (parameterValue == null && methodParam.HasDefaultValue)
-                    parameterValue = methodParam.DefaultValue;
+                if (parameterValue == null)
+                    parameterValue = DefaultValue;
 
-                result[i] = parameterValue;
+                return parameterValue;
             }
 
-            return result;
+            public override object[] GetCustomAttributes(bool inherit)
+            {
+                return emptyObjectArray;
+            }
+            public override object[] GetCustomAttributes(Type attributeType, bool inherit)
+            {
+                return emptyObjectArray;
+            }
+            public override bool IsDefined(Type attributeType, bool inherit)
+            {
+                return false;
+            }
+
+            private class PluginParameterBindingInfo : ParameterBindingInfo
+            {
+                private static readonly string[] emptyStringArray = new string[0];
+                public override IModelBinder Binder { get; }
+                public override ICollection<string> Exclude { get; } = emptyStringArray;
+                public override ICollection<string> Include { get; } = emptyStringArray;
+
+                public PluginParameterBindingInfo(IModelBinder modelBinder)
+                {
+                    Binder = modelBinder;
+                }
+            }
         }
 
-        #region Method Cache
-        private static Dictionary<Type, Dictionary<string, WebHandlerCachedItem>> WebHandlerCachedItems = new Dictionary<Type, Dictionary<string, WebHandlerCachedItem>>();
-        private static Dictionary<string, WebHandlerCachedItem> CacheWebHandler(PluginManifest Manifest, Type Handler)
+        private class PluginActionDescriptor : ActionDescriptor
         {
-            Dictionary<string, WebHandlerCachedItem> result;
+            private readonly PluginControllerDescription controllerDescription;
+            private readonly MethodInfo methodInfo;
+            private readonly IAuthorizationFilter[] authorizationFilters;
+            private readonly PluginParameterDescriptor[] parameterDescriptors;
+            public override string UniqueId { get; }
+            public override string ActionName { get; }
+            public override ControllerDescriptor ControllerDescriptor => controllerDescription;
 
-            if (!WebHandlerCachedItems.TryGetValue(Handler, out result))
+            public PluginActionDescriptor(PluginControllerDescription controllerDescription, string methodName, MethodInfo methodInfo)
             {
-                // Cache Miss
-                result = new Dictionary<string, WebHandlerCachedItem>();
-                var methods = Array.FindAll<MethodInfo>(Handler.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly), mi => { return !mi.IsSpecialName && typeof(ActionResult).IsAssignableFrom(mi.ReturnType); });
+                this.controllerDescription = controllerDescription;
+                this.methodInfo = methodInfo;
+                UniqueId = $"{ControllerDescriptor.UniqueId}_{methodName}";
+                ActionName = methodName;
+                authorizationFilters = DiscoverAuthorizationFilters();
+                parameterDescriptors = DiscoverParameters();
+            }
+
+            private IAuthorizationFilter[] DiscoverAuthorizationFilters()
+            {
+                var filters = methodInfo.GetCustomAttributes<FilterAttribute>(true).OfType<IAuthorizationFilter>().ToList();
+
+                foreach (var authorizer in filters.OfType<DiscoAuthorizeBaseAttribute>())
+                    authorizer.AuthorizeResource = string.Format("[Plugin]::{0}::{1}", controllerDescription.Manifest.Id, methodInfo.Name);
+
+                return filters.ToArray();
+            }
+
+            private PluginParameterDescriptor[] DiscoverParameters()
+            {
+                var methodParams = methodInfo.GetParameters();
+                var result = new List<PluginParameterDescriptor>(methodParams.Length);
+
+                for (int i = 0; i < methodParams.Length; i++)
+                {
+                    var methodParam = methodParams[i];
+
+                    IModelBinder modelBinder = ModelBinders.Binders.GetBinder(methodParam.ParameterType);
+
+                    var defaultValue = (object)null;
+                    if (methodParam.DefaultValue != DBNull.Value)
+                        defaultValue = methodParam.DefaultValue;
+
+                    result.Add(new PluginParameterDescriptor(this, methodParam.Name, methodParam.ParameterType, modelBinder, defaultValue));
+                }
+
+                return result.ToArray();
+            }
+
+            public override object Execute(ControllerContext controllerContext, IDictionary<string, object> parameters)
+            {
+                throw new NotSupportedException();
+            }
+
+            public ActionResult Execute(PluginWebHandlerController pluginController, ControllerContext controllerContext)
+            {
+                var methodParameters = BuildMethodParameters(methodInfo, controllerContext.Controller);
+
+                return (ActionResult)methodInfo.Invoke(pluginController, methodParameters);
+            }
+
+            private static object[] BuildMethodParameters(MethodInfo methodInfo, ControllerBase HostController)
+            {
+                var methodParams = methodInfo.GetParameters();
+                var result = new object[methodParams.Length];
+
+                for (int i = 0; i < methodParams.Length; i++)
+                {
+                    var methodParam = methodParams[i];
+
+                    Type parameterType = methodParam.ParameterType;
+                    IModelBinder modelBinder = ModelBinders.Binders.GetBinder(parameterType);
+                    IValueProvider valueProvider = HostController.ValueProvider;
+                    string parameterName = methodParam.Name;
+
+                    ModelBindingContext bindingContext = new ModelBindingContext()
+                    {
+                        FallbackToEmptyPrefix = true,
+                        ModelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, parameterType),
+                        ModelName = parameterName,
+                        ModelState = HostController.ViewData.ModelState,
+                        PropertyFilter = (p) => true,
+                        ValueProvider = valueProvider
+                    };
+
+                    var parameterValue = modelBinder.BindModel(HostController.ControllerContext, bindingContext);
+
+                    if (parameterValue == null && methodParam.HasDefaultValue)
+                        parameterValue = methodParam.DefaultValue;
+
+                    result[i] = parameterValue;
+                }
+
+                return result;
+            }
+
+            private object[] BuildMethodParameters(ControllerContext controllerContext)
+            {
+                var parameters = new object[parameterDescriptors.Length];
+                for (int i = 0; i < parameterDescriptors.Length; i++)
+                {
+                    parameters[i] = parameterDescriptors[i].BindParameter(controllerContext);
+                }
+                return parameters;
+            }
+
+            public override ParameterDescriptor[] GetParameters()
+            {
+                return parameterDescriptors;
+            }
+
+            public IEnumerable<IAuthorizationFilter> GetAuthorizationFilters => authorizationFilters;
+
+            public override object[] GetCustomAttributes(bool inherit)
+            {
+                return authorizationFilters;
+            }
+            public override object[] GetCustomAttributes(Type attributeType, bool inherit)
+            {
+                var result = new List<IAuthorizationFilter>(authorizationFilters.Length);
+                foreach (var filter in authorizationFilters)
+                {
+                    if (attributeType.IsAssignableFrom(filter.GetType()))
+                        result.Add(filter);
+                }
+                return result.ToArray();
+            }
+            public override bool IsDefined(Type attributeType, bool inherit)
+            {
+                foreach (var filter in authorizationFilters)
+                {
+                    if (attributeType.IsAssignableFrom(filter.GetType()))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            public override IEnumerable<FilterAttribute> GetFilterAttributes(bool useCache)
+            {
+                return authorizationFilters.OfType<FilterAttribute>();
+            }
+        }
+
+        private class PluginControllerDescription : ControllerDescriptor
+        {
+            private static readonly object[] emptyObjectArray = new object[0];
+            private readonly Dictionary<string, PluginActionDescriptor> actions;
+            public override string ControllerName { get; }
+
+            public PluginManifest Manifest { get; }
+            public override Type ControllerType { get; }
+            public override string UniqueId { get; }
+
+            public PluginControllerDescription(PluginManifest manifest, Type controllerType)
+            {
+                Manifest = manifest;
+                ControllerType = controllerType;
+                actions = DiscoverActions();
+                ControllerName = controllerType.Name;
+                UniqueId = $"DiscoPlugin_{manifest.Id}_{controllerType.Name}";
+            }
+
+            private Dictionary<string, PluginActionDescriptor> DiscoverActions()
+            {
+                var actions = new Dictionary<string, PluginActionDescriptor>(StringComparer.OrdinalIgnoreCase);
+                var methods = Array.FindAll(ControllerType.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly), mi => { return !mi.IsSpecialName && typeof(ActionResult).IsAssignableFrom(mi.ReturnType); });
                 foreach (var method in methods)
                 {
-                    var authorizers = method.GetCustomAttributes<DiscoAuthorizeBaseAttribute>().ToArray();
-                    foreach (var authorizer in authorizers)
-                        authorizer.AuthorizeResource = string.Format("[Plugin]::{0}::{1}", Manifest.Id, method.Name);
-
-                    var item = new WebHandlerCachedItem()
-                    {
-                        Method = method.Name,
-                        MethodInfo = method,
-                        Authorizers = authorizers
-                    };
-                    result.Add(item.Method.ToLower(), item);
+                    actions.Add(method.Name, new PluginActionDescriptor(this, method.Name, method));
                 }
-                WebHandlerCachedItems[Handler] = result;
+                return actions;
             }
 
-            return result;
-        }
-        private class WebHandlerCachedItem
-        {
-            public string Method { get; set; }
-            public MethodInfo MethodInfo { get; set; }
-            public DiscoAuthorizeBaseAttribute[] Authorizers { get; set; }
+            public override ActionDescriptor FindAction(ControllerContext controllerContext, string actionName)
+            {
+                if (actions.TryGetValue(actionName, out var action))
+                    return action;
+                else
+                    return null;
+            }
+
+            public override ActionDescriptor[] GetCanonicalActions()
+            {
+                return actions.Values.ToArray();
+            }
+
+            public override object[] GetCustomAttributes(bool inherit)
+            {
+                return emptyObjectArray;
+            }
+            public override object[] GetCustomAttributes(Type attributeType, bool inherit)
+            {
+                return emptyObjectArray;
+            }
+            public override IEnumerable<FilterAttribute> GetFilterAttributes(bool useCache)
+            {
+                return Enumerable.Empty<FilterAttribute>();
+            }
+            public override bool IsDefined(Type attributeType, bool inherit)
+            {
+                return false;
+            }
         }
         #endregion
     }

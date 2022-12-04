@@ -450,6 +450,7 @@ namespace Disco.Services.Plugins
 
             handler.Manifest = this;
             handler.HostController = HostController;
+            handler.Url = HostController.Url;
 
             return handler;
         }
