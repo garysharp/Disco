@@ -685,19 +685,32 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new InvalidOperationException("Unknown DocumentType Scope");
             }
 
-            var dataIds = DataIds.Split(new string[] { Environment.NewLine, ",", ";" }, StringSplitOptions.RemoveEmptyEntries).Select(d => d.Trim()).Where(d => !string.IsNullOrEmpty(d)).ToArray();
+            var dataIds = DataIds.Split(new string[] { Environment.NewLine, ",", ";" }, StringSplitOptions.RemoveEmptyEntries).Select(d => d.Trim()).Where(d => !string.IsNullOrEmpty(d)).ToList();
             var timeStamp = DateTime.Now;
-            var pdf = documentTemplate.GeneratePdfBulk(Database, UserService.CurrentUser, timeStamp, InsertBlankPage, dataIds);
 
-            return File(pdf, "application/pdf", string.Format("{0}_Bulk_{1:yyyyMMdd-HHmmss}.pdf", documentTemplate.Id, timeStamp));
+            var taskStatus = DocumentBulkGenerateTask.ScheduleNow(BI.Interop.Pdf.PdfGenerator.GenerateBulkFromTemplate, documentTemplate, UserService.CurrentUser, timeStamp, InsertBlankPage, dataIds);
+
+            var fileName = $"{documentTemplate.Id}_Bulk_{timeStamp:yyyyMMdd-HHmmss}.pdf";
+            taskStatus.SetFinishedUrl(Url.Action(MVC.Config.DocumentTemplate.Index(documentTemplate.Id, taskStatus.SessionId, fileName)));
+
+            if (!taskStatus.WaitUntilFinished(TimeSpan.FromSeconds(1)))
+                return RedirectToAction(MVC.Config.Logging.TaskStatus(taskStatus.SessionId));
+
+            var stream = DocumentBulkGenerateTask.GetCached(Database, taskStatus.SessionId);
+            return File(stream, "application/pdf", fileName);
         }
 
         public virtual ActionResult Generate(string id, string TargetId)
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.BulkGenerate)]
+        public virtual ActionResult BulkGenerateDownload(string id, string fileName)
         {
             if (string.IsNullOrWhiteSpace(id))
                 throw new ArgumentNullException(nameof(id));
             if (string.IsNullOrWhiteSpace(TargetId))
                 throw new ArgumentNullException(nameof(TargetId));
+            var stream = DocumentBulkGenerateTask.GetCached(Database, id);
+            return File(stream, "application/pdf", fileName);
+        }
 
             // get template
             var template = Database.DocumentTemplates.Find(id);

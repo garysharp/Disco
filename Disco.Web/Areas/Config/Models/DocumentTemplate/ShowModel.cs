@@ -31,6 +31,10 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
         public DocumentTemplateDevicesManagedGroup DevicesLinkedGroup { get; set; }
         public DocumentTemplateUsersManagedGroup UsersLinkedGroup { get; set; }
 
+        public string BulkGenerateDownloadId { get; set; }
+
+        public string BulkGenerateDownloadFilename { get; set; }
+
         public void UpdateModel(DiscoDataContext Database)
         {
 

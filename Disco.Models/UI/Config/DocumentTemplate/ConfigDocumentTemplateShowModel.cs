@@ -8,6 +8,8 @@ namespace Disco.Models.UI.Config.DocumentTemplate
         int StoredInstanceCount { get; set; }
         List<bool> TemplatePagesHaveAttachmentId { get; set; }
         int TemplatePageCount { get; }
+        string BulkGenerateDownloadId { get; }
+        string BulkGenerateDownloadFilename { get; }
 
         List<Repository.JobType> JobTypes { get; set; }
 

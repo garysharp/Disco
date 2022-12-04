@@ -774,103 +774,114 @@
     }
     @if (canBulkGenerate)
     {
-        <a id="buttonBulkGenerate" href="#" class="button">Bulk Generate</a>
-        <div id="dialogBulkGenerate" class="hiddenDialog" title="Bulk Generate: @(Model.DocumentTemplate.Id)">
-            <div class="brief">
-                @switch (Model.DocumentTemplate.Scope)
+        if (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.User)
+        {
+            @Html.ActionLinkButton("Bulk Generate", MVC.Config.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id))
+        }
+        else
+        {
+            <a id="buttonBulkGenerate" href="#" class="button">Bulk Generate</a>
+            <div id="dialogBulkGenerate" class="hiddenDialog dialog-bulk-generate" title="Bulk Generate: @(Model.DocumentTemplate.Id)">
+                <div class="brief">
+                    @switch (Model.DocumentTemplate.Scope)
+                    {
+                        case "Device":
+                            <div>
+                                Enter multiple <span class="scopeDescBulkGenerate">Device Serial Numbers</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                            </div>
+                            <div class="examples clearfix">
+                                <h4>Examples:</h4>
+                                <div class="example1 code">
+                                    01234567<br />
+                                    ABCD9876<br />
+                                    8VQ6G2R
+                                </div>
+                                <div class="example2 code">01234567,ABCD9876,8VQ6G2R</div>
+                                <div class="example3 code">01234567;ABCD9876;8VQ6G2R</div>
+                            </div>
+                            break;
+                        case "Job":
+                            <div>
+                                Enter multiple <span class="scopeDescBulkGenerate">Job Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                            </div>
+                            <div class="examples clearfix">
+                                <h4>Examples:</h4>
+                                <div class="example1 code">
+                                    86<br />
+                                    99<br />
+                                    44
+                                </div>
+                                <div class="example2 code">86,99,44</div>
+                                <div class="example3 code">86;99;44</div>
+                            </div>
+                            break;
+                    }
+                </div>
+                @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
                 {
-                    case "Device":
-                        <div>
-                            Enter multiple <span class="scopeDescBulkGenerate">Device Serial Numbers</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                    <div class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="DataIds"></div>
+                    <textarea id="inputBulkGenerateDataIds" name="DataIds" data-val="true" data-val-required="Identifiers are required"></textarea>
+                    if (Model.TemplatePageCount > 1 && Model.TemplatePageCount % 2 != 0)
+                    {
+                        <div style="margin-top: 6px;">
+                            <input id="inputBulkGenerateInsertBlankPage" type="checkbox" name="InsertBlankPage" value="True" /><label for="inputBulkGenerateInsertBlankPage">Insert Blank Pages for Double-Sided Printing</label>
                         </div>
-                        <div class="examples clearfix">
-                            <h4>Examples:</h4>
-                            <div class="example1 code">
-                                01234567<br />
-                                ABCD9876<br />
-                                8VQ6G2R
-                            </div>
-                            <div class="example2 code">01234567,ABCD9876,8VQ6G2R</div>
-                            <div class="example3 code">01234567;ABCD9876;8VQ6G2R</div>
-                        </div>
-                        break;
-                    case "Job":
-                        <div>
-                            Enter multiple <span class="scopeDescBulkGenerate">Job Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
-                        </div>
-                        <div class="examples clearfix">
-                            <h4>Examples:</h4>
-                            <div class="example1 code">
-                                86<br />
-                                99<br />
-                                44
-                            </div>
-                            <div class="example2 code">86,99,44</div>
-                            <div class="example3 code">86;99;44</div>
-                        </div>
-                        break;
-                    case "User":
-                        <div>
-                            Enter multiple <span class="scopeDescBulkGenerate">User Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
-                        </div>
-                        <div class="examples clearfix">
-                            <h4>Examples:</h4>
-                            <div class="example1 code">
-                                user6<br />
-                                smi0099<br />@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith
-                            </div>
-                            <div class="example2 code">user6,smi0099,@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith</div>
-                            <div class="example3 code">user6;smi0099;@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith</div>
-                        </div>
-                        break;
+                    }
                 }
             </div>
-            @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
-            {
-                <div class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="DataIds"></div>
-                <textarea id="inputBulkGenerateDataIds" name="DataIds" data-val="true" data-val-required="Identifiers are required"></textarea>
-                if (Model.TemplatePageCount > 1 && Model.TemplatePageCount % 2 != 0)
-                {
-                    <div style="margin-top: 6px;">
-                        <input id="inputBulkGenerateInsertBlankPage" type="checkbox" name="InsertBlankPage" value="True" /><label for="inputBulkGenerateInsertBlankPage">Insert Blank Pages for Double-Sided Printing</label>
-                    </div>
-                }
-            }
-        </div>
 
-        <script>
-            $(function () {
-                var dialog;
+            <script>
+                $(function () {
+                    var dialog;
 
-                $('#buttonBulkGenerate').click(function () {
-                    if (!dialog) {
-                        dialog = $('#dialogBulkGenerate').dialog({
-                            resizable: false,
-                            modal: true,
-                            autoOpen: false,
-                            width: 460,
-                            buttons: {
-                                "Bulk Generate": function () {
-                                    dialog.find('form').submit();
-                                    dialog.dialog("disable");
-                                },
-                                Close: function () {
-                                    $(this).dialog("close");
+                    $('#buttonBulkGenerate').click(function () {
+                        if (!dialog) {
+                            dialog = $('#dialogBulkGenerate').dialog({
+                                resizable: false,
+                                modal: true,
+                                autoOpen: false,
+                                width: 460,
+                                buttons: {
+                                    "Bulk Generate": function () {
+                                        dialog.find('form').submit();
+                                        dialog.dialog("disable");
+                                    },
+                                    Close: function () {
+                                        $(this).dialog("close");
+                                    }
                                 }
-                            }
-                        });
+                            });
 
-                        $.validator.unobtrusive.reparse('#inputBulkGenerateDataIds');
-                    }
+                            $.validator.unobtrusive.reparse('#inputBulkGenerateDataIds');
+                        }
 
-                    dialog.dialog('open');
-                    return false;
+                        dialog.dialog('open');
+                        return false;
+                    });
                 });
-            });
-        </script>
+            </script>
+        }
     }
     @if (Authorization.Has(Claims.Config.DocumentTemplate.Delete))
     {
         @Html.ActionLinkButton("Delete", MVC.API.DocumentTemplate.Delete(Model.DocumentTemplate.Id, true), "buttonDelete")
     }
 </div>
+@if (!string.IsNullOrWhiteSpace(Model.BulkGenerateDownloadId))
+{
+    <div id="Config_DocumentTemplates_Show_DownloadBulk_Dialog" class="dialog" title="Download Bulk Documents">
+        <a href="@Url.Action(MVC.API.DocumentTemplate.BulkGenerateDownload(Model.BulkGenerateDownloadId, Model.BulkGenerateDownloadFilename))" class="button"><i class="fa fa-download fa-lg"></i>Download Bulk Documents</a>
+    </div>
+    <script>
+        $(function () {
+            $('#Config_DocumentTemplates_Show_DownloadBulk_Dialog')
+                .dialog({
+                    width: 400,
+                    height: 100,
+                    resizable: false,
+                    modal: true,
+                    autoOpen: true
+                });
+        });
+    </script>
+}

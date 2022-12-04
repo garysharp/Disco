@@ -18,7 +18,7 @@ namespace Disco.Web.Areas.Config.Controllers
     public partial class DocumentTemplateController : AuthorizedDatabaseController
     {
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Show)]
-        public virtual ActionResult Index(string id)
+        public virtual ActionResult Index(string id, string bulkGenerateId = null, string bulkGenerateFilename = null)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -62,6 +62,9 @@ namespace Disco.Web.Areas.Config.Controllers
                 DocumentTemplateUsersManagedGroup usersManagedGroup;
                 if (DocumentTemplateUsersManagedGroup.TryGetManagedGroup(m.DocumentTemplate, out usersManagedGroup))
                     m.UsersLinkedGroup = usersManagedGroup;
+
+                m.BulkGenerateDownloadId = bulkGenerateId;
+                m.BulkGenerateDownloadFilename = bulkGenerateFilename;
 
                 // UI Extensions
                 UIExtensions.ExecuteExtensions<ConfigDocumentTemplateShowModel>(this.ControllerContext, m);

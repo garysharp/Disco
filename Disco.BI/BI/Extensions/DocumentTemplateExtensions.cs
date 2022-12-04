@@ -6,10 +6,13 @@ using Disco.Services.Documents;
 using Disco.Services.Documents.ManagedGroups;
 using Disco.Services.Expressions;
 using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Tasks;
 using iTextSharp.text.pdf;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data.Entity;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -60,14 +63,6 @@ namespace Disco.BI.Extensions
             return dt.PdfExpressionsFromCache(Database).Values.OrderBy(e => e.Ordinal).ToList();
         }
 
-        public static Stream GeneratePdfBulk(this DocumentTemplate dt, DiscoDataContext Database, User CreatorUser, DateTime Timestamp, bool InsertBlankPages, params string[] DataObjectsIds)
-        {
-            return Interop.Pdf.PdfGenerator.GenerateBulkFromTemplate(dt, Database, CreatorUser, Timestamp, InsertBlankPages, DataObjectsIds);
-        }
-        public static Stream GeneratePdfBulk(this DocumentTemplate dt, DiscoDataContext Database, User CreatorUser, DateTime Timestamp, bool InsertBlankPages, params IAttachmentTarget[] DataObjects)
-        {
-            return Interop.Pdf.PdfGenerator.GenerateBulkFromTemplate(dt, Database, CreatorUser, Timestamp, InsertBlankPages, DataObjects);
-        }
         public static Stream GeneratePdf(this DocumentTemplate dt, DiscoDataContext Database, IAttachmentTarget Target, User CreatorUser, DateTime TimeStamp, DocumentState State, bool FlattenFields = false)
         {
             bool generateExpression = !string.IsNullOrEmpty(dt.OnGenerateExpression);
