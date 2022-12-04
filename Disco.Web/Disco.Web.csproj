@@ -225,6 +225,7 @@
     <Compile Include="Areas\Config\Models\AuthorizationRole\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\AuthorizationRole\ShowModel.cs" />
     <Compile Include="Areas\Config\Models\Config\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\DocumentTemplate\BulkGenerateModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\CreatePackageModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\ShowPackageModel.cs" />
     <Compile Include="Areas\Config\Models\Shared\LinkedGroupModel.cs" />
@@ -256,6 +257,11 @@
       <DependentUpon>Show.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DocumentTemplate\BulkGenerate.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BulkGenerate.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Areas\Config\Views\DocumentTemplate\CreatePackage.generated.cs">
       <DependentUpon>CreatePackage.cshtml</DependentUpon>
@@ -1211,6 +1217,10 @@
     <None Include="Areas\Config\Views\AuthorizationRole\Show.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Show.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>BulkGenerate.generated.cs</LastGenOutput>
     </None>
     <None Include="Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml">
       <Generator>RazorGenerator</Generator>

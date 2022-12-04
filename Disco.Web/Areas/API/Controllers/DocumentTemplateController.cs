@@ -6,15 +6,21 @@ using Disco.Services.Authorization;
 using Disco.Services.Documents;
 using Disco.Services.Documents.ManagedGroups;
 using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Plugins;
+using Disco.Services.Plugins.Features.DocumentHandlerProvider;
 using Disco.Services.Tasks;
 using Disco.Services.Users;
 using Disco.Services.Web;
+using Disco.Web.Areas.API.Models.DocumentTemplate;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace Disco.Web.Areas.API.Controllers
 {
@@ -700,43 +706,416 @@ namespace Disco.Web.Areas.API.Controllers
             return File(stream, "application/pdf", fileName);
         }
 
-        public virtual ActionResult Generate(string id, string TargetId)
         [DiscoAuthorize(Claims.Config.DocumentTemplate.BulkGenerate)]
         public virtual ActionResult BulkGenerateDownload(string id, string fileName)
         {
-            if (string.IsNullOrWhiteSpace(id))
-                throw new ArgumentNullException(nameof(id));
-            if (string.IsNullOrWhiteSpace(TargetId))
-                throw new ArgumentNullException(nameof(TargetId));
             var stream = DocumentBulkGenerateTask.GetCached(Database, id);
             return File(stream, "application/pdf", fileName);
         }
 
-            // get template
-            var template = Database.DocumentTemplates.Find(id);
-            if (template == null)
-                throw new ArgumentException("Invalid document template id", nameof(id));
 
-            // validate authorization
-            switch (template.Scope)
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.BulkGenerate, Claims.User.Actions.GenerateDocuments)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult BulkGenerateAddUsers(string userIds)
+        {
+            if (string.IsNullOrWhiteSpace(userIds))
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+
+            var dataIds = userIds.Split(new string[] { Environment.NewLine, ",", ";" }, StringSplitOptions.RemoveEmptyEntries).Select(d => d.Trim()).Where(d => !string.IsNullOrEmpty(d)).ToList();
+            var results = new List<BulkGenerateUserModel>(dataIds.Count);
+            foreach (var dataId in dataIds)
             {
-                case DocumentTemplate.DocumentTemplateScopes.Device:
-                    Authorization.Require(Claims.Device.Actions.GenerateDocuments);
-                    break;
-                case DocumentTemplate.DocumentTemplateScopes.Job:
-                    Authorization.Require(Claims.Job.Actions.GenerateDocuments);
-                    break;
-                case DocumentTemplate.DocumentTemplateScopes.User:
-                    Authorization.Require(Claims.User.Actions.GenerateDocuments);
-                    break;
-                default:
-                    throw new InvalidOperationException("Unknown DocumentType Scope");
+                var accountId = ActiveDirectory.ParseDomainAccountId(dataId);
+
+                if (UserService.TryGetUser(accountId, Database, true, out var user))
+                {
+                    results.Add(new BulkGenerateUserModel()
+                    {
+                        Id = user.UserId,
+                        DisplayName = user.DisplayName,
+                        Scope = $"Matched '{dataId}'",
+                        IsError = false,
+                    });
+                    continue;
+                }
+                else
+                {
+                    var adObject = ActiveDirectory.RetrieveADObject(accountId, true);
+
+                    if (adObject == null)
+                    {
+                        results.Add(new BulkGenerateUserModel()
+                        {
+                            Id = dataId,
+                            DisplayName = dataId,
+                            Scope = $"Unknown User or Security Group '{dataId}'",
+                            IsError = true,
+                        });
+                        continue;
+                    }
+
+                    if (adObject is ADGroup group)
+                    {
+                        foreach (var adUser in group.GetUserMembersRecursive())
+                        {
+                            results.Add(new BulkGenerateUserModel()
+                            {
+                                Id = adUser.Id,
+                                DisplayName = adUser.DisplayName,
+                                Scope = $"Group Member '{group.Name}'",
+                                IsError = false,
+                            });
+                        }
+                        continue;
+                    }
+                    else
+                    {
+                        results.Add(new BulkGenerateUserModel()
+                        {
+                            Id = dataId,
+                            DisplayName = dataId,
+                            Scope = $"Unexpected AD Object found at '{adObject.DistinguishedName}'",
+                            IsError = true,
+                        });
+                        continue;
+                    }
+                }
             }
 
-            // resolve target
-            var target = template.ResolveScopeTarget(Database, TargetId);
-            if (target == null)
-                throw new ArgumentException("Target not found", nameof(TargetId));
+            return Json(results);
+        }
+
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.BulkGenerate, Claims.User.Actions.GenerateDocuments)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult BulkGenerateAddGroupMembers(string groupId)
+        {
+            if (string.IsNullOrWhiteSpace(groupId))
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+
+            var results = new List<BulkGenerateUserModel>();
+            var accountId = ActiveDirectory.ParseDomainAccountId(groupId);
+
+            var adObject = ActiveDirectory.RetrieveADObject(accountId, true);
+
+            if (adObject == null)
+            {
+                results.Add(new BulkGenerateUserModel()
+                {
+                    Id = groupId,
+                    DisplayName = groupId,
+                    Scope = $"Unknown Security Group '{groupId}'",
+                    IsError = true,
+                });
+            }
+            else if (adObject is ADGroup group)
+            {
+                foreach (var adUser in group.GetUserMembersRecursive())
+                {
+                    results.Add(new BulkGenerateUserModel()
+                    {
+                        Id = adUser.Id,
+                        DisplayName = adUser.DisplayName,
+                        Scope = $"Group Member '{group.Name}'",
+                        IsError = false,
+                    });
+                }
+            }
+            else if (adObject is ADUserAccount user)
+            {
+                results.Add(new BulkGenerateUserModel()
+                {
+                    Id = user.Id,
+                    DisplayName = user.DisplayName,
+                    Scope = $"Matched '{groupId}'",
+                    IsError = false,
+                });
+            }
+            else
+            {
+                results.Add(new BulkGenerateUserModel()
+                {
+                    Id = groupId,
+                    DisplayName = groupId,
+                    Scope = $"Unexpected AD Object found at '{adObject.DistinguishedName}'",
+                    IsError = true,
+                });
+            }
+
+            return Json(results);
+        }
+
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.BulkGenerate, Claims.User.Actions.GenerateDocuments)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult BulkGenerateAddUserFlag(int flagId)
+        {
+            if (flagId <= 0)
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+
+            var results = new List<BulkGenerateUserModel>();
+
+            var flag = Database.UserFlags.Include(f => f.UserFlagAssignments.Select(a => a.User)).FirstOrDefault(f => f.Id == flagId);
+
+            if (flag == null)
+            {
+                results.Add(new BulkGenerateUserModel()
+                {
+                    Id = flagId.ToString(),
+                    DisplayName = flagId.ToString(),
+                    Scope = $"Unknown User Flag '{flagId}'",
+                    IsError = true,
+                });
+            }
+            else
+            {
+                var assignments = flag.UserFlagAssignments.Where(a => a.RemovedDate == null).ToList();
+
+                if (assignments.Count == 0)
+                {
+                    results.Add(new BulkGenerateUserModel()
+                    {
+                        Id = flag.Name,
+                        DisplayName = flag.Name,
+                        Scope = $"User Flag has no active assignments",
+                        IsError = true,
+                    });
+                }
+                else
+                {
+                    foreach (var assignment in assignments)
+                    {
+                        results.Add(new BulkGenerateUserModel()
+                        {
+                            Id = assignment.UserId,
+                            DisplayName = assignment.User.DisplayName,
+                            Scope = $"Assigned User Flag '{flag.Name}'",
+                            IsError = false,
+                        });
+                    }
+                }
+            }
+
+            return Json(results);
+        }
+
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.BulkGenerate, Claims.User.Actions.GenerateDocuments)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult BulkGenerateAddDeviceProfile(int deviceProfileId)
+        {
+            if (deviceProfileId <= 0)
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+
+            var results = new List<BulkGenerateUserModel>();
+
+            var profile = Database.DeviceProfiles.Include(p => p.Devices.Select(a => a.AssignedUser)).FirstOrDefault(f => f.Id == deviceProfileId);
+
+            if (profile == null)
+            {
+                results.Add(new BulkGenerateUserModel()
+                {
+                    Id = deviceProfileId.ToString(),
+                    DisplayName = deviceProfileId.ToString(),
+                    Scope = $"Unknown Device Profile '{deviceProfileId}'",
+                    IsError = true,
+                });
+            }
+            else
+            {
+                var assignments = profile.Devices.Where(d => d.AssignedUser != null).ToList();
+
+                if (assignments.Count == 0)
+                {
+                    results.Add(new BulkGenerateUserModel()
+                    {
+                        Id = profile.Name,
+                        DisplayName = profile.Name,
+                        Scope = $"Device Profile has no devices with active assignments",
+                        IsError = true,
+                    });
+                }
+                else
+                {
+                    foreach (var assignment in assignments)
+                    {
+                        results.Add(new BulkGenerateUserModel()
+                        {
+                            Id = assignment.AssignedUserId,
+                            DisplayName = assignment.AssignedUser.DisplayName,
+                            Scope = $"Device Profile '{profile.Name}' Matches Assigned Device '{assignment.SerialNumber}'",
+                            IsError = false,
+                        });
+                    }
+                }
+            }
+
+            return Json(results);
+        }
+
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.BulkGenerate, Claims.User.Actions.GenerateDocuments)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult BulkGenerateAddDeviceBatch(int deviceBatchId)
+        {
+            if (deviceBatchId <= 0)
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+
+            var results = new List<BulkGenerateUserModel>();
+
+            var batch = Database.DeviceBatches.Include(p => p.Devices.Select(a => a.AssignedUser)).FirstOrDefault(f => f.Id == deviceBatchId);
+
+            if (batch == null)
+            {
+                results.Add(new BulkGenerateUserModel()
+                {
+                    Id = deviceBatchId.ToString(),
+                    DisplayName = deviceBatchId.ToString(),
+                    Scope = $"Unknown Device Batch '{deviceBatchId}'",
+                    IsError = true,
+                });
+            }
+            else
+            {
+                var assignments = batch.Devices.Where(d => d.AssignedUser != null).ToList();
+
+                if (assignments.Count == 0)
+                {
+                    results.Add(new BulkGenerateUserModel()
+                    {
+                        Id = batch.Name,
+                        DisplayName = batch.Name,
+                        Scope = $"Device Batch has no devices with active assignments",
+                        IsError = true,
+                    });
+                }
+                else
+                {
+                    foreach (var assignment in assignments)
+                    {
+                        results.Add(new BulkGenerateUserModel()
+                        {
+                            Id = assignment.AssignedUserId,
+                            DisplayName = assignment.AssignedUser.DisplayName,
+                            Scope = $"Device Batch '{batch.Name}' Matches Assigned Device '{assignment.SerialNumber}'",
+                            IsError = false,
+                        });
+                    }
+                }
+            }
+
+            return Json(results);
+        }
+
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.BulkGenerate, Claims.User.Actions.GenerateDocuments)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult BulkGenerateAddDocumentAttachment(string documentTemplateId, DateTime? threshold)
+        {
+            if (string.IsNullOrWhiteSpace(documentTemplateId))
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+
+            var results = new List<BulkGenerateUserModel>();
+
+            var template = Database.DocumentTemplates.FirstOrDefault(f => f.Id == documentTemplateId);
+
+            if (template == null)
+            {
+                results.Add(new BulkGenerateUserModel()
+                {
+                    Id = documentTemplateId,
+                    DisplayName = documentTemplateId,
+                    Scope = $"Unknown Document Template '{documentTemplateId}'",
+                    IsError = true,
+                });
+            }
+            else
+            {
+                switch (template.AttachmentType)
+                {
+                    case AttachmentTypes.Device:
+                        var deviceAssignments = Database.DeviceAttachments
+                            .Include(a => a.Device.AssignedUser)
+                            .Where(a => a.DocumentTemplateId == template.Id && (threshold == null || a.Timestamp > threshold) && a.Device.AssignedUserId != null)
+                            .ToList();
+                        foreach (var assignment in deviceAssignments)
+                        {
+                            results.Add(new BulkGenerateUserModel()
+                            {
+                                Id = assignment.Device.AssignedUserId,
+                                DisplayName = assignment.Device.AssignedUser.DisplayName,
+                                Scope = $"Document Template '{template.Id}' Attachment Matches Assigned Device '{assignment.Device.SerialNumber}'",
+                                IsError = false,
+                            });
+                        }
+                        break;
+                    case AttachmentTypes.Job:
+                        var jobAssignments = Database.JobAttachments
+                            .Include(a => a.Job.User)
+                            .Where(a => a.DocumentTemplateId == template.Id && (threshold == null || a.Timestamp > threshold) && a.Job.UserId != null)
+                            .ToList();
+                        foreach (var assignment in jobAssignments)
+                        {
+                            results.Add(new BulkGenerateUserModel()
+                            {
+                                Id = assignment.Job.UserId,
+                                DisplayName = assignment.Job.User.DisplayName,
+                                Scope = $"Document Template '{template.Id}' Attachment Matches Job '{assignment.Job.Id}'",
+                                IsError = false,
+                            });
+                        }
+                        break;
+                    case AttachmentTypes.User:
+                        var userAssignments = Database.UserAttachments
+                            .Include(a => a.User)
+                            .Where(a => a.DocumentTemplateId == template.Id && (threshold == null || a.Timestamp > threshold) && a.UserId != null)
+                            .ToList();
+                        foreach (var assignment in userAssignments)
+                        {
+                            results.Add(new BulkGenerateUserModel()
+                            {
+                                Id = assignment.UserId,
+                                DisplayName = assignment.User.DisplayName,
+                                Scope = $"Document Template '{template.Id}' Attachment Matches User",
+                                IsError = false,
+                            });
+                        }
+                        break;
+                    default:
+                        throw new NotSupportedException();
+                }
+
+                if (results.Count == 0)
+                {
+                    if (threshold.HasValue)
+                    {
+                        results.Add(new BulkGenerateUserModel()
+                        {
+                            Id = template.Id,
+                            DisplayName = template.Id,
+                            Scope = $"Document Template has no attachments with associated users after {threshold:yyyy-MM-dd}",
+                            IsError = true,
+                        });
+                    }
+                    else
+                    {
+                        results.Add(new BulkGenerateUserModel()
+                        {
+                            Id = template.Id,
+                            DisplayName = template.Id,
+                            Scope = $"Document Template has no attachments with associated users",
+                            IsError = true,
+                        });
+                    }
+                }
+                else
+                {
+                    var distinctSet = new HashSet<string>(StringComparer.Ordinal);
+                    results = results.Where(r => distinctSet.Add(r.Id)).ToList();
+                }
+            }
+
+            return Json(results);
+        }
+
+        public virtual ActionResult Generate(string id, string TargetId)
+        {
+            Disco.Services.DocumentTemplateExtensions.GetTemplateAndTarget(Database, Authorization, id, TargetId, out var template, out var target, out _);
 
             // generate document
             var timestamp = DateTime.Now;

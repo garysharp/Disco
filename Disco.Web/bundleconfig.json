@@ -44,6 +44,12 @@
     ]
   },
   {
+    "outputFileName": "ClientSource/Scripts/Modules/Disco-DocumentBulkGenerate.js",
+    "inputFiles": [
+      "ClientSource/Scripts/Modules/Disco-DocumentBulkGenerate/disco.documentbulkgenerate.js"
+    ]
+  },
+  {
     "outputFileName": "ClientSource/Scripts/Modules/Disco-ExpressionEditor.js",
     "inputFiles": [
       "ClientSource/Scripts/Modules/Disco-ExpressionEditor/disco.expressioneditor.js"

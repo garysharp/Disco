@@ -171,6 +171,7 @@
     <Compile Include="UI\Config\DeviceProfile\ConfigDeviceProfileIndexModel.cs" />
     <Compile Include="UI\Config\DeviceProfile\ConfigDeviceProfileIndexModelItem.cs" />
     <Compile Include="UI\Config\DeviceProfile\ConfigDeviceProfileShowModel.cs" />
+    <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateBulkGenerate.cs" />
     <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateCreatePackageModel.cs" />
     <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateCreateModel.cs" />
     <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateExpressionBrowserModel.cs" />
