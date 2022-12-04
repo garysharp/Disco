@@ -202,89 +202,95 @@ namespace Disco.Data.Configuration
         #endregion
 
         #region Cache Getters/Setters
-        internal static T GetValue<T>(DiscoDataContext Database, string Scope, string Key, T Default)
+        internal static class Helpers<T>
         {
-            var item = CacheGetItem(Database, Scope, Key);
+            private static readonly IEqualityComparer<T> comparer = EqualityComparer<T>.Default;
 
-            if (item == null)
-                return Default;
-            else
+            internal static T GetValue(DiscoDataContext Database, string Scope, string Key, T Default)
             {
-                if (item.Item2 != null && item.Item2.GetType() == typeof(T))
-                {
-                    // Return Cached Item
-                    return (T)item.Item2;
-                }
+                var item = CacheGetItem(Database, Scope, Key);
+
+                if (item == null)
+                    return Default;
                 else
                 {
-                    // Convert Serialized Item
-                    Type itemType = typeof(T);
-                    object itemValue;
-
-                    if (itemType == typeof(string))
+                    if (item.Item2 != null && item.Item2.GetType() == typeof(T))
                     {
-                        // string
-                        itemValue = item.Item1.Value;
-                    }
-                    else if (itemType == typeof(object))
-                    {
-                        // object
-                        itemValue = item.Item1.Value;
-                    }
-                    else if (IsConvertableFromString(itemType))
-                    {
-                        // IConvertable
-                        itemValue = Convert.ChangeType(item.Item1.Value, itemType);
-                    }
-                    else if (itemType.BaseType != null && itemType.BaseType == typeof(Enum))
-                    {
-                        // Enum
-                        itemValue = Enum.Parse(typeof(T), item.Item1.Value);
+                        // Return Cached Item
+                        return (T)item.Item2;
                     }
                     else
                     {
-                        // JSON Deserialize
-                        itemValue = JsonConvert.DeserializeObject<T>(item.Item1.Value);
+                        // Convert Serialized Item
+                        Type itemType = typeof(T);
+                        object itemValue;
+
+                        if (itemType == typeof(string))
+                        {
+                            // string
+                            itemValue = item.Item1.Value;
+                        }
+                        else if (itemType == typeof(object))
+                        {
+                            // object
+                            itemValue = item.Item1.Value;
+                        }
+                        else if (IsConvertableFromString(itemType))
+                        {
+                            // IConvertable
+                            itemValue = Convert.ChangeType(item.Item1.Value, itemType);
+                        }
+                        else if (itemType.BaseType != null && itemType.BaseType == typeof(Enum))
+                        {
+                            // Enum
+                            itemValue = Enum.Parse(typeof(T), item.Item1.Value);
+                        }
+                        else
+                        {
+                            // JSON Deserialize
+                            itemValue = JsonConvert.DeserializeObject<T>(item.Item1.Value);
+                        }
+
+                        // Set Item in Cache
+                        SetItemTypeValue(item, itemValue);
+
+                        return (T)itemValue;
                     }
-
-                    // Set Item in Cache
-                    SetItemTypeValue(item, itemValue);
-
-                    return (T)itemValue;
                 }
             }
-        }
-        internal static void SetValue<T>(DiscoDataContext Database, string Scope, string Key, T Value)
-        {
-            Type valueType = typeof(T);
-            string stringValue;
+            internal static void SetValue(DiscoDataContext Database, string Scope, string Key, T Value)
+            {
+                Type valueType = typeof(T);
+                string stringValue;
 
-            if (Value == null)
-            {
-                stringValue = null;
-            }
-            else if (valueType == typeof(object))
-            {
-                throw new ArgumentException(string.Format("Cannot serialize the configuration item [{0}].[{1}] which defines a type of [System.Object]", Scope, Key), "Value");
-            }
-            else if (IsConvertableFromString(valueType))
-            {
-                // string or supports IConvertable
-                stringValue = Value.ToString();
-            }
-            else if (valueType.BaseType != null && valueType.BaseType == typeof(Enum))
-            {
-                // Enum
-                stringValue = Value.ToString();
-            }
-            else
-            {
-                // JSON Serialize
-                stringValue = JsonConvert.SerializeObject(Value);
-            }
+                if (comparer.Equals(Value, default(T)))
+                {
+                    stringValue = null;
+                }
+                else if (valueType == typeof(object))
+                {
+                    throw new ArgumentException(string.Format("Cannot serialize the configuration item [{0}].[{1}] which defines a type of [System.Object]", Scope, Key), "Value");
+                }
+                else if (IsConvertableFromString(valueType))
+                {
+                    // string or supports IConvertable
+                    stringValue = Value.ToString();
+                }
+                else if (valueType.BaseType != null && valueType.BaseType == typeof(Enum))
+                {
+                    // Enum
+                    stringValue = Value.ToString();
+                }
+                else
+                {
+                    // JSON Serialize
+                    stringValue = JsonConvert.SerializeObject(Value);
+                }
 
-            CacheSetItem(Database, Scope, Key, stringValue, Value);
+                CacheSetItem(Database, Scope, Key, stringValue, Value);
+            }
         }
+        
         #endregion
 
         #region Cache Helpers

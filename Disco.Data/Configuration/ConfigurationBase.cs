@@ -34,11 +34,11 @@ namespace Disco.Data.Configuration
 
         private void SetValue<T>(string Key, T Value)
         {
-            ConfigurationCache.SetValue(Database, this.Scope, Key, Value);
+            ConfigurationCache.Helpers<T>.SetValue(Database, this.Scope, Key, Value);
         }
         private T GetValue<T>(string Key, T Default)
         {
-            return ConfigurationCache.GetValue(Database, this.Scope, Key, Default);
+            return ConfigurationCache.Helpers<T>.GetValue(Database, this.Scope, Key, Default);
         }
 
         protected void Set<T>(T Value, [CallerMemberName] string Key = null)
