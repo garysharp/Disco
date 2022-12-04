@@ -54,20 +54,22 @@ namespace Disco.Services.Documents.AttachmentImport
                             var page = new ImportPage(Database, SessionId, pdfiumDocument, pageIndex);
                             pages.Add(page);
 
-                            // Write Session Thumbnail
-                            page.WriteThumbnailSessionCache();
-                            DocumentsLog.LogImportPageImageUpdate(SessionId, pageNumber);
-
                             // Detect Image
                             if (page.DetectQRCode())
                             {
-                                // Write updated session thumbnail
+                                // Write session thumbnail
                                 page.WriteThumbnailSessionCache();
                                 DocumentsLog.LogImportPageImageUpdate(SessionId, pageNumber);
+
                                 var identifier = page.Identifier;
+                                DocumentsLog.LogImportPageDetected(SessionId, pageNumber, identifier.DocumentTemplate?.Id, identifier.DocumentTemplate?.Description, identifier.AttachmentType.ToString(), identifier.Target?.AttachmentReferenceId ?? identifier.TargetId, identifier.Target?.ToString() ?? $"Unknown [{identifier.TargetId}]");
                             }
                             else
                             {
+                                // Write session thumbnail
+                                page.WriteThumbnailSessionCache();
+                                DocumentsLog.LogImportPageImageUpdate(SessionId, pageNumber);
+
                                 page.WriteUndetectedImages();
                                 DocumentsLog.LogImportPageUndetected(SessionId, pageNumber);
                             }
