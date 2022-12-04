@@ -95,7 +95,7 @@
   {
     "outputFileName": "ClientSource/Scripts/Modules/jQuery-SignalR.js",
     "inputFiles": [
-      "ClientSource/Scripts/Modules/jQuery-SignalR/jquery.signalR-2.1.1.js",
+      "ClientSource/Scripts/Modules/jQuery-SignalR/jquery.signalR-2.1.2.js",
       "ClientSource/Scripts/Modules/jQuery-SignalR/disco-hubs.js"
     ]
   },

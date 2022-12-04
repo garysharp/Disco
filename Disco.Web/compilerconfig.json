@@ -82,13 +82,5 @@
   {
     "outputFile": "ClientSource/Style/User.css",
     "inputFile": "ClientSource/Style/User.less"
-  },
-  {
-    "outputFile": "ClientSource/Scripts/Modules/jQuery-SignalR/disco-hubs.es5.js",
-    "inputFile": "ClientSource/Scripts/Modules/jQuery-SignalR/disco-hubs.js"
-  },
-  {
-    "outputFile": "ClientSource/Scripts/Modules/jQuery-SignalR.es5.js",
-    "inputFile": "ClientSource/Scripts/Modules/jQuery-SignalR.js"
   }
 ]

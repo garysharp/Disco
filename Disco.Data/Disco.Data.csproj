@@ -40,8 +40,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -167,6 +167,10 @@
     <Compile Include="Migrations\202011260525547_DBv20.Designer.cs">
       <DependentUpon>202011260525547_DBv20.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202102110443550_DBv21.cs" />
+    <Compile Include="Migrations\202102110443550_DBv21.Designer.cs">
+      <DependentUpon>202102110443550_DBv21.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DiscoDataMigrator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -241,6 +245,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011260525547_DBv20.resx">
       <DependentUpon>202011260525547_DBv20.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102110443550_DBv21.resx">
+      <DependentUpon>202102110443550_DBv21.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

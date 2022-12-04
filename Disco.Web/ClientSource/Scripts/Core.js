@@ -30523,7 +30523,8 @@ if ( $.watermark.runOnce ) {
 			}
 			
 			/* If there is default sorting required - let's do it. The sort function will do the
-			 * drawing for us. Otherwise we draw the table regardless of the Ajax source - this allows
+			 * drawing for us. Otherwise we draw the table regardless of the 
+			 * source - this allows
 			 * the table to look initialised for Ajax sourcing data (show 'loading' message possibly)
 			 */
 			if ( oSettings.oFeatures.bSort )
