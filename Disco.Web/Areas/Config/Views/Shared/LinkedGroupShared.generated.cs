@@ -125,10 +125,10 @@ WriteLiteral(@"></i><strong>Warning:</strong> This group will be managed by Disc
 </div>
 <script>
     $(function () {
-        var dialog;
-        var dialogGroupId;
-        var dialogFilterDate;
-        var dialogTitle;
+        let dialog;
+        let dialogGroupId;
+        let dialogFilterDate;
+        let dialogTitle;
 
         function showDialog(groupId, filterDateOption, filterDateValue, updateUrl, title) {
             if (dialog == null) {

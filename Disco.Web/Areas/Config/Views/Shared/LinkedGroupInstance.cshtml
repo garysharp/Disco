@@ -19,23 +19,23 @@
             {
                 if (group != null)
                 {
-        <div class="code" title="@group.Id">
-            <i class="fa fa-fw fa-lg fa-link success"></i>@group.Domain.FriendlyDistinguishedNamePath(group.DistinguishedName)
-        </div>
-        <button class="button small Config_LinkedGroup_LinkButton" data-linkedgroupid="@(Model.ManagedGroup.Configuration.GroupId)" data-linkedgroupfilterdateoption="@(Model.ManagedGroup.IncludeFilterBeginDate)" data-linkedgroupfilterdate="@(Model.ManagedGroup.Configuration.FilterBeginDate)" data-linkedroupdescription="@(Model.CategoryDescription)" data-linkedroupupdateurl="@(Model.UpdateUrl)">Change Link</button>
-        <a href="@(Url.Action(MVC.API.System.SyncActiveDirectoryManagedGroup(Model.ManagedGroup.Key, Context.Request.Path)))" class="button small">Synchronize Now</a>
+                    <div class="code" title="@group.Id">
+                        <i class="fa fa-fw fa-lg fa-link success"></i>@group.Domain.FriendlyDistinguishedNamePath(group.DistinguishedName)
+                    </div>
+                    <button class="button small Config_LinkedGroup_LinkButton" data-linkedgroupid="@(Model.ManagedGroup.Configuration.GroupId)" data-linkedgroupfilterdateoption="@(Model.ManagedGroup.IncludeFilterBeginDate)" data-linkedgroupfilterdate="@(Model.ManagedGroup.Configuration.FilterBeginDate)" data-linkedroupdescription="@(Model.CategoryDescription)" data-linkedroupupdateurl="@(Model.UpdateUrl)">Change Link</button>
+                    <a href="@(Url.Action(MVC.API.System.SyncActiveDirectoryManagedGroup(Model.ManagedGroup.Key, Context.Request.Path)))" class="button small">Synchronize Now</a>
                 }
                 else
                 {
-        <div class="code error">
-            <i class="fa fa-fw fa-lg fa-unlink error"></i>Group Not Found: <strong class="code">@Model.ManagedGroup.Configuration.GroupId</strong>
-        </div>            
-        <button class="button small Config_LinkedGroup_LinkButton" data-linkedgroupid="@(Model.ManagedGroup.Configuration.GroupId)" data-linkedgroupfilterdateoption="@(Model.ManagedGroup.IncludeFilterBeginDate)" data-linkedgroupfilterdate="@(Model.ManagedGroup.Configuration.FilterBeginDate)" data-linkedroupdescription="@(Model.CategoryDescription)" data-linkedroupupdateurl="@(Model.UpdateUrl)">Change Link</button>
+                    <div class="code error">
+                        <i class="fa fa-fw fa-lg fa-unlink error"></i>Group Not Found: <strong class="code">@Model.ManagedGroup.Configuration.GroupId</strong>
+                    </div>
+                    <button class="button small Config_LinkedGroup_LinkButton" data-linkedgroupid="@(Model.ManagedGroup.Configuration.GroupId)" data-linkedgroupfilterdateoption="@(Model.ManagedGroup.IncludeFilterBeginDate)" data-linkedgroupfilterdate="@(Model.ManagedGroup.Configuration.FilterBeginDate)" data-linkedroupdescription="@(Model.CategoryDescription)" data-linkedroupupdateurl="@(Model.UpdateUrl)">Change Link</button>
                 }
             }
             else
             {
-        <button class="button small Config_LinkedGroup_LinkButton" data-linkedgroupid="" data-linkedgroupfilterdateoption="@(Model.IncludeFilterBeginDate)" data-linkedroupdescription="@(Model.CategoryDescription)" data-linkedroupupdateurl="@(Model.UpdateUrl)">Link Group</button>
+                <button class="button small Config_LinkedGroup_LinkButton" data-linkedgroupid="" data-linkedgroupfilterdateoption="@(Model.IncludeFilterBeginDate)" data-linkedroupdescription="@(Model.CategoryDescription)" data-linkedroupupdateurl="@(Model.UpdateUrl)">Link Group</button>
             }
         }
         else
@@ -44,21 +44,21 @@
             {
                 if (group != null)
                 {
-        <div class="code" title="@group.Id">
-            <i class="fa fa-fw fa-lg fa-link success"></i>@group.Domain.FriendlyDistinguishedNamePath(group.DistinguishedName)
-        </div>
+                    <div class="code" title="@group.Id">
+                        <i class="fa fa-fw fa-lg fa-link success"></i>@group.Domain.FriendlyDistinguishedNamePath(group.DistinguishedName)
+                    </div>
                 }
                 else
                 {
-        <div class="code error">
-            <i class="fa fa-fw fa-lg fa-unlink error"></i>Group Not Found: <strong class="code">@Model.ManagedGroup.Configuration.GroupId</strong>
-        </div>       
+                    <div class="code error">
+                        <i class="fa fa-fw fa-lg fa-unlink error"></i>Group Not Found: <strong class="code">@Model.ManagedGroup.Configuration.GroupId</strong>
+                    </div>
                 }
             }
             else
             {
-        <div class="smallMessage"><i class="fa fa-fw fa-lg fa-unlink information"></i>No Group Linked</div>
+                <div class="smallMessage"><i class="fa fa-fw fa-lg fa-unlink information"></i>No Group Linked</div>
             }
-        }   
+        }
     }
 </div>
