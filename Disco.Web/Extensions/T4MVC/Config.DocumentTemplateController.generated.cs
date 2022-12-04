@@ -3,8 +3,10 @@
 // Don't change it directly as your change would get overwritten.  Instead, make changes
 // to the .tt file (i.e. the T4 template) and save it to regenerate this file.
 
-// Make sure the compiler doesn't complain about missing Xml comments
-#pragma warning disable 1591
+// Make sure the compiler doesn't complain about missing Xml comments and CLS compliance
+// 0108: suppress "Foo hides inherited member Foo. Use the new keyword if hiding was intended." when a controller and its abstract parent are both processed
+// 0114: suppress "Foo.BarController.Baz()' hides inherited member 'Qux.BarController.Baz()'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword." when an action (with an argument) overrides an action in a parent controller
+#pragma warning disable 1591, 3008, 3009, 0108, 0114
 #region T4MVC
 
 using System;
@@ -71,6 +73,12 @@ namespace Disco.Web.Areas.Config.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult BulkGenerate()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerate);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult ExpressionBrowser()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExpressionBrowser);
@@ -84,7 +92,7 @@ namespace Disco.Web.Areas.Config.Controllers
         public readonly string Name = "DocumentTemplate";
         [GeneratedCode("T4MVC", "2.0")]
         public const string NameConst = "DocumentTemplate";
-
+        [GeneratedCode("T4MVC", "2.0")]
         static readonly ActionNamesClass s_actions = new ActionNamesClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionNamesClass ActionNames { get { return s_actions; } }
@@ -97,6 +105,7 @@ namespace Disco.Web.Areas.Config.Controllers
             public readonly string UndetectedPages = "UndetectedPages";
             public readonly string Create = "Create";
             public readonly string CreatePackage = "CreatePackage";
+            public readonly string BulkGenerate = "BulkGenerate";
             public readonly string ExpressionBrowser = "ExpressionBrowser";
         }
 
@@ -109,6 +118,7 @@ namespace Disco.Web.Areas.Config.Controllers
             public const string UndetectedPages = "UndetectedPages";
             public const string Create = "Create";
             public const string CreatePackage = "CreatePackage";
+            public const string BulkGenerate = "BulkGenerate";
             public const string ExpressionBrowser = "ExpressionBrowser";
         }
 
@@ -120,6 +130,8 @@ namespace Disco.Web.Areas.Config.Controllers
         public class ActionParamsClass_Index
         {
             public readonly string id = "id";
+            public readonly string bulkGenerateId = "bulkGenerateId";
+            public readonly string bulkGenerateFilename = "bulkGenerateFilename";
         }
         static readonly ActionParamsClass_ShowPackage s_params_ShowPackage = new ActionParamsClass_ShowPackage();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -145,6 +157,14 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             public readonly string model = "model";
         }
+        static readonly ActionParamsClass_BulkGenerate s_params_BulkGenerate = new ActionParamsClass_BulkGenerate();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_BulkGenerate BulkGenerateParams { get { return s_params_BulkGenerate; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_BulkGenerate
+        {
+            public readonly string id = "id";
+        }
         static readonly ActionParamsClass_ExpressionBrowser s_params_ExpressionBrowser = new ActionParamsClass_ExpressionBrowser();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_ExpressionBrowser ExpressionBrowserParams { get { return s_params_ExpressionBrowser; } }
@@ -165,6 +185,7 @@ namespace Disco.Web.Areas.Config.Controllers
             public class _ViewNamesClass
             {
                 public readonly string _ExpressionsTable = "_ExpressionsTable";
+                public readonly string BulkGenerate = "BulkGenerate";
                 public readonly string Create = "Create";
                 public readonly string CreatePackage = "CreatePackage";
                 public readonly string ExpressionBrowser = "ExpressionBrowser";
@@ -175,6 +196,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 public readonly string UndetectedPages = "UndetectedPages";
             }
             public readonly string _ExpressionsTable = "~/Areas/Config/Views/DocumentTemplate/_ExpressionsTable.cshtml";
+            public readonly string BulkGenerate = "~/Areas/Config/Views/DocumentTemplate/BulkGenerate.cshtml";
             public readonly string Create = "~/Areas/Config/Views/DocumentTemplate/Create.cshtml";
             public readonly string CreatePackage = "~/Areas/Config/Views/DocumentTemplate/CreatePackage.cshtml";
             public readonly string ExpressionBrowser = "~/Areas/Config/Views/DocumentTemplate/ExpressionBrowser.cshtml";
@@ -192,14 +214,16 @@ namespace Disco.Web.Areas.Config.Controllers
         public T4MVC_DocumentTemplateController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
+        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string bulkGenerateId, string bulkGenerateFilename);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Index(string id)
+        public override System.Web.Mvc.ActionResult Index(string id, string bulkGenerateId, string bulkGenerateFilename)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            IndexOverride(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "bulkGenerateId", bulkGenerateId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "bulkGenerateFilename", bulkGenerateFilename);
+            IndexOverride(callInfo, id, bulkGenerateId, bulkGenerateFilename);
             return callInfo;
         }
 
@@ -284,6 +308,18 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [NonAction]
+        partial void BulkGenerateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult BulkGenerate(string id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerate);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            BulkGenerateOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
         partial void ExpressionBrowserOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string type, bool StaticDeclaredMembersOnly);
 
         [NonAction]
@@ -300,4 +336,4 @@ namespace Disco.Web.Areas.Config.Controllers
 }
 
 #endregion T4MVC
-#pragma warning restore 1591
+#pragma warning restore 1591, 3008, 3009, 0108, 0114

@@ -3,8 +3,10 @@
 // Don't change it directly as your change would get overwritten.  Instead, make changes
 // to the .tt file (i.e. the T4 template) and save it to regenerate this file.
 
-// Make sure the compiler doesn't complain about missing Xml comments
-#pragma warning disable 1591
+// Make sure the compiler doesn't complain about missing Xml comments and CLS compliance
+// 0108: suppress "Foo hides inherited member Foo. Use the new keyword if hiding was intended." when a controller and its abstract parent are both processed
+// 0114: suppress "Foo.BarController.Baz()' hides inherited member 'Qux.BarController.Baz()'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword." when an action (with an argument) overrides an action in a parent controller
+#pragma warning disable 1591, 3008, 3009, 0108, 0114
 #region T4MVC
 
 using System;
@@ -173,6 +175,48 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult BulkGenerateDownload()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateDownload);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult BulkGenerateAddUsers()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddUsers);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult BulkGenerateAddGroupMembers()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddGroupMembers);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult BulkGenerateAddUserFlag()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddUserFlag);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult BulkGenerateAddDeviceProfile()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddDeviceProfile);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult BulkGenerateAddDeviceBatch()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddDeviceBatch);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult BulkGenerateAddDocumentAttachment()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddDocumentAttachment);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Generate()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Generate);
@@ -183,6 +227,18 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult GenerateDocumentHandlerUi()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GenerateDocumentHandlerUi);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult DocumentHandlers()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DocumentHandlers);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public DocumentTemplateController Actions { get { return MVC.API.DocumentTemplate; } }
@@ -192,7 +248,7 @@ namespace Disco.Web.Areas.API.Controllers
         public readonly string Name = "DocumentTemplate";
         [GeneratedCode("T4MVC", "2.0")]
         public const string NameConst = "DocumentTemplate";
-
+        [GeneratedCode("T4MVC", "2.0")]
         static readonly ActionNamesClass s_actions = new ActionNamesClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionNamesClass ActionNames { get { return s_actions; } }
@@ -219,8 +275,17 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string ImporterUndetectedAssign = "ImporterUndetectedAssign";
             public readonly string ImporterUndetectedDelete = "ImporterUndetectedDelete";
             public readonly string BulkGenerate = "BulkGenerate";
+            public readonly string BulkGenerateDownload = "BulkGenerateDownload";
+            public readonly string BulkGenerateAddUsers = "BulkGenerateAddUsers";
+            public readonly string BulkGenerateAddGroupMembers = "BulkGenerateAddGroupMembers";
+            public readonly string BulkGenerateAddUserFlag = "BulkGenerateAddUserFlag";
+            public readonly string BulkGenerateAddDeviceProfile = "BulkGenerateAddDeviceProfile";
+            public readonly string BulkGenerateAddDeviceBatch = "BulkGenerateAddDeviceBatch";
+            public readonly string BulkGenerateAddDocumentAttachment = "BulkGenerateAddDocumentAttachment";
             public readonly string Generate = "Generate";
             public readonly string Delete = "Delete";
+            public readonly string GenerateDocumentHandlerUi = "GenerateDocumentHandlerUi";
+            public readonly string DocumentHandlers = "DocumentHandlers";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -246,8 +311,17 @@ namespace Disco.Web.Areas.API.Controllers
             public const string ImporterUndetectedAssign = "ImporterUndetectedAssign";
             public const string ImporterUndetectedDelete = "ImporterUndetectedDelete";
             public const string BulkGenerate = "BulkGenerate";
+            public const string BulkGenerateDownload = "BulkGenerateDownload";
+            public const string BulkGenerateAddUsers = "BulkGenerateAddUsers";
+            public const string BulkGenerateAddGroupMembers = "BulkGenerateAddGroupMembers";
+            public const string BulkGenerateAddUserFlag = "BulkGenerateAddUserFlag";
+            public const string BulkGenerateAddDeviceProfile = "BulkGenerateAddDeviceProfile";
+            public const string BulkGenerateAddDeviceBatch = "BulkGenerateAddDeviceBatch";
+            public const string BulkGenerateAddDocumentAttachment = "BulkGenerateAddDocumentAttachment";
             public const string Generate = "Generate";
             public const string Delete = "Delete";
+            public const string GenerateDocumentHandlerUi = "GenerateDocumentHandlerUi";
+            public const string DocumentHandlers = "DocumentHandlers";
         }
 
 
@@ -439,6 +513,64 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string DataIds = "DataIds";
             public readonly string InsertBlankPage = "InsertBlankPage";
         }
+        static readonly ActionParamsClass_BulkGenerateDownload s_params_BulkGenerateDownload = new ActionParamsClass_BulkGenerateDownload();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_BulkGenerateDownload BulkGenerateDownloadParams { get { return s_params_BulkGenerateDownload; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_BulkGenerateDownload
+        {
+            public readonly string id = "id";
+            public readonly string fileName = "fileName";
+        }
+        static readonly ActionParamsClass_BulkGenerateAddUsers s_params_BulkGenerateAddUsers = new ActionParamsClass_BulkGenerateAddUsers();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_BulkGenerateAddUsers BulkGenerateAddUsersParams { get { return s_params_BulkGenerateAddUsers; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_BulkGenerateAddUsers
+        {
+            public readonly string userIds = "userIds";
+        }
+        static readonly ActionParamsClass_BulkGenerateAddGroupMembers s_params_BulkGenerateAddGroupMembers = new ActionParamsClass_BulkGenerateAddGroupMembers();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_BulkGenerateAddGroupMembers BulkGenerateAddGroupMembersParams { get { return s_params_BulkGenerateAddGroupMembers; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_BulkGenerateAddGroupMembers
+        {
+            public readonly string groupId = "groupId";
+        }
+        static readonly ActionParamsClass_BulkGenerateAddUserFlag s_params_BulkGenerateAddUserFlag = new ActionParamsClass_BulkGenerateAddUserFlag();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_BulkGenerateAddUserFlag BulkGenerateAddUserFlagParams { get { return s_params_BulkGenerateAddUserFlag; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_BulkGenerateAddUserFlag
+        {
+            public readonly string flagId = "flagId";
+        }
+        static readonly ActionParamsClass_BulkGenerateAddDeviceProfile s_params_BulkGenerateAddDeviceProfile = new ActionParamsClass_BulkGenerateAddDeviceProfile();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_BulkGenerateAddDeviceProfile BulkGenerateAddDeviceProfileParams { get { return s_params_BulkGenerateAddDeviceProfile; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_BulkGenerateAddDeviceProfile
+        {
+            public readonly string deviceProfileId = "deviceProfileId";
+        }
+        static readonly ActionParamsClass_BulkGenerateAddDeviceBatch s_params_BulkGenerateAddDeviceBatch = new ActionParamsClass_BulkGenerateAddDeviceBatch();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_BulkGenerateAddDeviceBatch BulkGenerateAddDeviceBatchParams { get { return s_params_BulkGenerateAddDeviceBatch; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_BulkGenerateAddDeviceBatch
+        {
+            public readonly string deviceBatchId = "deviceBatchId";
+        }
+        static readonly ActionParamsClass_BulkGenerateAddDocumentAttachment s_params_BulkGenerateAddDocumentAttachment = new ActionParamsClass_BulkGenerateAddDocumentAttachment();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_BulkGenerateAddDocumentAttachment BulkGenerateAddDocumentAttachmentParams { get { return s_params_BulkGenerateAddDocumentAttachment; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_BulkGenerateAddDocumentAttachment
+        {
+            public readonly string documentTemplateId = "documentTemplateId";
+            public readonly string threshold = "threshold";
+        }
         static readonly ActionParamsClass_Generate s_params_Generate = new ActionParamsClass_Generate();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Generate GenerateParams { get { return s_params_Generate; } }
@@ -456,6 +588,25 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_GenerateDocumentHandlerUi s_params_GenerateDocumentHandlerUi = new ActionParamsClass_GenerateDocumentHandlerUi();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_GenerateDocumentHandlerUi GenerateDocumentHandlerUiParams { get { return s_params_GenerateDocumentHandlerUi; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_GenerateDocumentHandlerUi
+        {
+            public readonly string templateId = "templateId";
+            public readonly string targetId = "targetId";
+            public readonly string handlerId = "handlerId";
+        }
+        static readonly ActionParamsClass_DocumentHandlers s_params_DocumentHandlers = new ActionParamsClass_DocumentHandlers();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_DocumentHandlers DocumentHandlersParams { get { return s_params_DocumentHandlers; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_DocumentHandlers
+        {
+            public readonly string templateId = "templateId";
+            public readonly string targetId = "targetId";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -764,6 +915,92 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
+        partial void BulkGenerateDownloadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string fileName);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult BulkGenerateDownload(string id, string fileName)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateDownload);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "fileName", fileName);
+            BulkGenerateDownloadOverride(callInfo, id, fileName);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void BulkGenerateAddUsersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string userIds);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult BulkGenerateAddUsers(string userIds)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddUsers);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userIds", userIds);
+            BulkGenerateAddUsersOverride(callInfo, userIds);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void BulkGenerateAddGroupMembersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string groupId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult BulkGenerateAddGroupMembers(string groupId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddGroupMembers);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "groupId", groupId);
+            BulkGenerateAddGroupMembersOverride(callInfo, groupId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void BulkGenerateAddUserFlagOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int flagId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult BulkGenerateAddUserFlag(int flagId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddUserFlag);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "flagId", flagId);
+            BulkGenerateAddUserFlagOverride(callInfo, flagId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void BulkGenerateAddDeviceProfileOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int deviceProfileId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult BulkGenerateAddDeviceProfile(int deviceProfileId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddDeviceProfile);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "deviceProfileId", deviceProfileId);
+            BulkGenerateAddDeviceProfileOverride(callInfo, deviceProfileId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void BulkGenerateAddDeviceBatchOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int deviceBatchId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult BulkGenerateAddDeviceBatch(int deviceBatchId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddDeviceBatch);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "deviceBatchId", deviceBatchId);
+            BulkGenerateAddDeviceBatchOverride(callInfo, deviceBatchId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void BulkGenerateAddDocumentAttachmentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string documentTemplateId, System.DateTime? threshold);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult BulkGenerateAddDocumentAttachment(string documentTemplateId, System.DateTime? threshold)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddDocumentAttachment);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "documentTemplateId", documentTemplateId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "threshold", threshold);
+            BulkGenerateAddDocumentAttachmentOverride(callInfo, documentTemplateId, threshold);
+            return callInfo;
+        }
+
+        [NonAction]
         partial void GenerateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string TargetId);
 
         [NonAction]
@@ -789,8 +1026,35 @@ namespace Disco.Web.Areas.API.Controllers
             return callInfo;
         }
 
+        [NonAction]
+        partial void GenerateDocumentHandlerUiOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string templateId, string targetId, string handlerId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult GenerateDocumentHandlerUi(string templateId, string targetId, string handlerId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GenerateDocumentHandlerUi);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "templateId", templateId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "targetId", targetId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "handlerId", handlerId);
+            GenerateDocumentHandlerUiOverride(callInfo, templateId, targetId, handlerId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DocumentHandlersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string templateId, string targetId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult DocumentHandlers(string templateId, string targetId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DocumentHandlers);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "templateId", templateId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "targetId", targetId);
+            DocumentHandlersOverride(callInfo, templateId, targetId);
+            return callInfo;
+        }
+
     }
 }
 
 #endregion T4MVC
-#pragma warning restore 1591
+#pragma warning restore 1591, 3008, 3009, 0108, 0114

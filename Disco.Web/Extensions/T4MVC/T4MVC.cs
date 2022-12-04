@@ -3,8 +3,10 @@
 // Don't change it directly as your change would get overwritten.  Instead, make changes
 // to the .tt file (i.e. the T4 template) and save it to regenerate this file.
 
-// Make sure the compiler doesn't complain about missing Xml comments
-#pragma warning disable 1591
+// Make sure the compiler doesn't complain about missing Xml comments and CLS compliance
+// 0108: suppress "Foo hides inherited member Foo. Use the new keyword if hiding was intended." when a controller and its abstract parent are both processed
+// 0114: suppress "Foo.BarController.Baz()' hides inherited member 'Qux.BarController.Baz()'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword." when an action (with an argument) overrides an action in a parent controller
+#pragma warning disable 1591, 3008, 3009, 0108, 0114
 #region T4MVC
 
 using System;
@@ -140,247 +142,319 @@ namespace Links
 {
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
     public static class ClientSource {
-        private const string URLPATH = "~/ClientSource";
-        public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-        public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+        public const string UrlPath = "~/ClientSource";
+        public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+        public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public static class Scripts {
-            private const string URLPATH = "~/ClientSource/Scripts";
-            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+            public const string UrlPath = "~/ClientSource/Scripts";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public static class Core {
-                private const string URLPATH = "~/ClientSource/Scripts/Core";
-                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                public static readonly string _references_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/_references.min.js") ? Url("_references.min.js") : Url("_references.js");
-                public static readonly string disco_dataTables_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.dataTables.extensions.min.js") ? Url("disco.dataTables.extensions.min.js") : Url("disco.dataTables.extensions.js");
-                public static readonly string disco_moment_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.moment.extensions.min.js") ? Url("disco.moment.extensions.min.js") : Url("disco.moment.extensions.js");
-                public static readonly string disco_uicore_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.uicore.min.js") ? Url("disco.uicore.min.js") : Url("disco.uicore.js");
-                public static readonly string disco_unobtrusiveValidation_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.unobtrusiveValidation.extensions.min.js") ? Url("disco.unobtrusiveValidation.extensions.min.js") : Url("disco.unobtrusiveValidation.extensions.js");
-                public static readonly string jquery_2_1_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-2.1.1.min.js") ? Url("jquery-2.1.1.min.js") : Url("jquery-2.1.1.js");
-                public static readonly string jquery_ui_1_10_4_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui-1.10.4.min.js") ? Url("jquery-ui-1.10.4.min.js") : Url("jquery-ui-1.10.4.js");
-                public static readonly string jquery_dataTables_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.dataTables.min.js") ? Url("jquery.dataTables.min.js") : Url("jquery.dataTables.js");
-                public static readonly string jquery_validate_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate.min.js") ? Url("jquery.validate.min.js") : Url("jquery.validate.js");
-                public static readonly string jquery_validate_unobtrusive_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate.unobtrusive.min.js") ? Url("jquery.validate.unobtrusive.min.js") : Url("jquery.validate.unobtrusive.js");
-                public static readonly string jquery_watermark_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.watermark.min.js") ? Url("jquery.watermark.min.js") : Url("jquery.watermark.js");
-                public static readonly string livestamp_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/livestamp.min.js") ? Url("livestamp.min.js") : Url("livestamp.js");
-                public static readonly string modernizr_2_7_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/modernizr-2.7.2.min.js") ? Url("modernizr-2.7.2.min.js") : Url("modernizr-2.7.2.js");
-                public static readonly string moment_en_au_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/moment.en-au.min.js") ? Url("moment.en-au.min.js") : Url("moment.en-au.js");
-                public static readonly string moment_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/moment.min.js") ? Url("moment.min.js") : Url("moment.js");
+                public const string UrlPath = "~/ClientSource/Scripts/Core";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                public static readonly string _references_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/_references.min.js") ? Url("_references.min.js") : Url("_references.js");
+                public static readonly string _references_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/_references.min.js") ? Url("_references.min.js") : Url("_references.js");
+                public static readonly string disco_dataTables_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.dataTables.extensions.min.js") ? Url("disco.dataTables.extensions.min.js") : Url("disco.dataTables.extensions.js");
+                public static readonly string disco_dataTables_extensions_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.dataTables.extensions.min.js") ? Url("disco.dataTables.extensions.min.js") : Url("disco.dataTables.extensions.js");
+                public static readonly string disco_moment_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.moment.extensions.min.js") ? Url("disco.moment.extensions.min.js") : Url("disco.moment.extensions.js");
+                public static readonly string disco_moment_extensions_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.moment.extensions.min.js") ? Url("disco.moment.extensions.min.js") : Url("disco.moment.extensions.js");
+                public static readonly string disco_uicore_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.uicore.min.js") ? Url("disco.uicore.min.js") : Url("disco.uicore.js");
+                public static readonly string disco_uicore_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.uicore.min.js") ? Url("disco.uicore.min.js") : Url("disco.uicore.js");
+                public static readonly string disco_unobtrusiveValidation_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.unobtrusiveValidation.extensions.min.js") ? Url("disco.unobtrusiveValidation.extensions.min.js") : Url("disco.unobtrusiveValidation.extensions.js");
+                public static readonly string disco_unobtrusiveValidation_extensions_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.unobtrusiveValidation.extensions.min.js") ? Url("disco.unobtrusiveValidation.extensions.min.js") : Url("disco.unobtrusiveValidation.extensions.js");
+                public static readonly string jquery_2_1_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery-2.1.1.min.js") ? Url("jquery-2.1.1.min.js") : Url("jquery-2.1.1.js");
+                public static readonly string jquery_ui_1_10_4_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery-ui-1.10.4.min.js") ? Url("jquery-ui-1.10.4.min.js") : Url("jquery-ui-1.10.4.js");
+                public static readonly string jquery_dataTables_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.dataTables.min.js") ? Url("jquery.dataTables.min.js") : Url("jquery.dataTables.js");
+                public static readonly string jquery_dataTables_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.dataTables.min.js") ? Url("jquery.dataTables.min.js") : Url("jquery.dataTables.js");
+                public static readonly string jquery_validate_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.validate.min.js") ? Url("jquery.validate.min.js") : Url("jquery.validate.js");
+                public static readonly string jquery_validate_unobtrusive_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.validate.unobtrusive.min.js") ? Url("jquery.validate.unobtrusive.min.js") : Url("jquery.validate.unobtrusive.js");
+                public static readonly string jquery_watermark_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.watermark.min.js") ? Url("jquery.watermark.min.js") : Url("jquery.watermark.js");
+                public static readonly string jquery_watermark_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.watermark.min.js") ? Url("jquery.watermark.min.js") : Url("jquery.watermark.js");
+                public static readonly string livestamp_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/livestamp.min.js") ? Url("livestamp.min.js") : Url("livestamp.js");
+                public static readonly string livestamp_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/livestamp.min.js") ? Url("livestamp.min.js") : Url("livestamp.js");
+                public static readonly string modernizr_2_7_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/modernizr-2.7.2.min.js") ? Url("modernizr-2.7.2.min.js") : Url("modernizr-2.7.2.js");
+                public static readonly string moment_en_au_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/moment.en-au.min.js") ? Url("moment.en-au.min.js") : Url("moment.en-au.js");
+                public static readonly string moment_en_au_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/moment.en-au.min.js") ? Url("moment.en-au.min.js") : Url("moment.en-au.js");
+                public static readonly string moment_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/moment.min.js") ? Url("moment.min.js") : Url("moment.js");
+                public static readonly string moment_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/moment.min.js") ? Url("moment.min.js") : Url("moment.js");
             }
         
-            public static readonly string Core_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Core.min.js") ? Url("Core.min.js") : Url("Core.js");
+            public static readonly string Core_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Core.min.js") ? Url("Core.min.js") : Url("Core.js");
             public static readonly string Core_min_js = Url("Core.min.js");
+            public static readonly string Core_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Core.min.js") ? Url("Core.min.js") : Url("Core.js");
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public static class Modules {
-                private const string URLPATH = "~/ClientSource/Scripts/Modules";
-                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public const string UrlPath = "~/ClientSource/Scripts/Modules";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Disco_AjaxHelperIcons {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/Disco-AjaxHelperIcons";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string disco_ajaxhelpericons_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.ajaxhelpericons.min.js") ? Url("disco.ajaxhelpericons.min.js") : Url("disco.ajaxhelpericons.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/Disco-AjaxHelperIcons";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string disco_ajaxhelpericons_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.ajaxhelpericons.min.js") ? Url("disco.ajaxhelpericons.min.js") : Url("disco.ajaxhelpericons.js");
+                    public static readonly string disco_ajaxhelpericons_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.ajaxhelpericons.min.js") ? Url("disco.ajaxhelpericons.min.js") : Url("disco.ajaxhelpericons.js");
                 }
             
-                public static readonly string Disco_AjaxHelperIcons_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Disco-AjaxHelperIcons.min.js") ? Url("Disco-AjaxHelperIcons.min.js") : Url("Disco-AjaxHelperIcons.js");
+                public static readonly string Disco_AjaxHelperIcons_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-AjaxHelperIcons.min.js") ? Url("Disco-AjaxHelperIcons.min.js") : Url("Disco-AjaxHelperIcons.js");
                 public static readonly string Disco_AjaxHelperIcons_min_js = Url("Disco-AjaxHelperIcons.min.js");
+                public static readonly string Disco_AjaxHelperIcons_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-AjaxHelperIcons.min.js") ? Url("Disco-AjaxHelperIcons.min.js") : Url("Disco-AjaxHelperIcons.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Disco_AttachmentUploader {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/Disco-AttachmentUploader";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string disco_attachmentuploader_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco-attachmentuploader.min.js") ? Url("disco-attachmentuploader.min.js") : Url("disco-attachmentuploader.js");
-                    public static readonly string webcam_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/webcam.min.js") ? Url("webcam.min.js") : Url("webcam.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/Disco-AttachmentUploader";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string disco_attachmentuploader_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco-attachmentuploader.min.js") ? Url("disco-attachmentuploader.min.js") : Url("disco-attachmentuploader.js");
+                    public static readonly string disco_attachmentuploader_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco-attachmentuploader.min.js") ? Url("disco-attachmentuploader.min.js") : Url("disco-attachmentuploader.js");
+                    public static readonly string webcam_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/webcam.min.js") ? Url("webcam.min.js") : Url("webcam.js");
+                    public static readonly string webcam_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/webcam.min.js") ? Url("webcam.min.js") : Url("webcam.js");
                     public static readonly string webcam_swf = Url("webcam.swf");
                 }
             
-                public static readonly string Disco_AttachmentUploader_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Disco-AttachmentUploader.min.js") ? Url("Disco-AttachmentUploader.min.js") : Url("Disco-AttachmentUploader.js");
+                public static readonly string Disco_AttachmentUploader_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-AttachmentUploader.min.js") ? Url("Disco-AttachmentUploader.min.js") : Url("Disco-AttachmentUploader.js");
                 public static readonly string Disco_AttachmentUploader_min_js = Url("Disco-AttachmentUploader.min.js");
+                public static readonly string Disco_AttachmentUploader_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-AttachmentUploader.min.js") ? Url("Disco-AttachmentUploader.min.js") : Url("Disco-AttachmentUploader.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Disco_CreateJob {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/Disco-CreateJob";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string disco_createjob_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.createjob.min.js") ? Url("disco.createjob.min.js") : Url("disco.createjob.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/Disco-CreateJob";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string disco_createjob_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.createjob.min.js") ? Url("disco.createjob.min.js") : Url("disco.createjob.js");
+                    public static readonly string disco_createjob_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.createjob.min.js") ? Url("disco.createjob.min.js") : Url("disco.createjob.js");
                 }
             
-                public static readonly string Disco_CreateJob_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Disco-CreateJob.min.js") ? Url("Disco-CreateJob.min.js") : Url("Disco-CreateJob.js");
+                public static readonly string Disco_CreateJob_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-CreateJob.min.js") ? Url("Disco-CreateJob.min.js") : Url("Disco-CreateJob.js");
                 public static readonly string Disco_CreateJob_min_js = Url("Disco-CreateJob.min.js");
+                public static readonly string Disco_CreateJob_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-CreateJob.min.js") ? Url("Disco-CreateJob.min.js") : Url("Disco-CreateJob.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Disco_DataTableHelpers {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/Disco-DataTableHelpers";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string disco_datatablehelpers_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.datatablehelpers.min.js") ? Url("disco.datatablehelpers.min.js") : Url("disco.datatablehelpers.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/Disco-DataTableHelpers";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string disco_datatablehelpers_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.datatablehelpers.min.js") ? Url("disco.datatablehelpers.min.js") : Url("disco.datatablehelpers.js");
+                    public static readonly string disco_datatablehelpers_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.datatablehelpers.min.js") ? Url("disco.datatablehelpers.min.js") : Url("disco.datatablehelpers.js");
                 }
             
-                public static readonly string Disco_DataTableHelpers_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Disco-DataTableHelpers.min.js") ? Url("Disco-DataTableHelpers.min.js") : Url("Disco-DataTableHelpers.js");
+                public static readonly string Disco_DataTableHelpers_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-DataTableHelpers.min.js") ? Url("Disco-DataTableHelpers.min.js") : Url("Disco-DataTableHelpers.js");
                 public static readonly string Disco_DataTableHelpers_min_js = Url("Disco-DataTableHelpers.min.js");
+                public static readonly string Disco_DataTableHelpers_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-DataTableHelpers.min.js") ? Url("Disco-DataTableHelpers.min.js") : Url("Disco-DataTableHelpers.js");
+                [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+                public static class Disco_DocumentBulkGenerate {
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/Disco-DocumentBulkGenerate";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string disco_documentbulkgenerate_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.documentbulkgenerate.min.js") ? Url("disco.documentbulkgenerate.min.js") : Url("disco.documentbulkgenerate.js");
+                }
+            
+                public static readonly string Disco_DocumentBulkGenerate_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-DocumentBulkGenerate.min.js") ? Url("Disco-DocumentBulkGenerate.min.js") : Url("Disco-DocumentBulkGenerate.js");
+                public static readonly string Disco_DocumentBulkGenerate_min_js = Url("Disco-DocumentBulkGenerate.min.js");
+                [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+                public static class Disco_DocumentGenerator {
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/Disco-DocumentGenerator";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string disco_documentgenerator_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.documentgenerator.min.js") ? Url("disco.documentgenerator.min.js") : Url("disco.documentgenerator.js");
+                }
+            
+                public static readonly string Disco_DocumentGenerator_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-DocumentGenerator.min.js") ? Url("Disco-DocumentGenerator.min.js") : Url("Disco-DocumentGenerator.js");
+                public static readonly string Disco_DocumentGenerator_min_js = Url("Disco-DocumentGenerator.min.js");
+                public static readonly string Disco_DocumentGenerator_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-DocumentGenerator.min.js") ? Url("Disco-DocumentGenerator.min.js") : Url("Disco-DocumentGenerator.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Disco_ExpressionEditor {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/Disco-ExpressionEditor";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string disco_expressioneditor_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.expressioneditor.min.js") ? Url("disco.expressioneditor.min.js") : Url("disco.expressioneditor.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/Disco-ExpressionEditor";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string disco_expressioneditor_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.expressioneditor.min.js") ? Url("disco.expressioneditor.min.js") : Url("disco.expressioneditor.js");
+                    public static readonly string disco_expressioneditor_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.expressioneditor.min.js") ? Url("disco.expressioneditor.min.js") : Url("disco.expressioneditor.js");
                 }
             
-                public static readonly string Disco_ExpressionEditor_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Disco-ExpressionEditor.min.js") ? Url("Disco-ExpressionEditor.min.js") : Url("Disco-ExpressionEditor.js");
+                public static readonly string Disco_ExpressionEditor_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-ExpressionEditor.min.js") ? Url("Disco-ExpressionEditor.min.js") : Url("Disco-ExpressionEditor.js");
                 public static readonly string Disco_ExpressionEditor_min_js = Url("Disco-ExpressionEditor.min.js");
+                public static readonly string Disco_ExpressionEditor_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-ExpressionEditor.min.js") ? Url("Disco-ExpressionEditor.min.js") : Url("Disco-ExpressionEditor.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Disco_jQueryExtensions {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/Disco-jQueryExtensions";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string disco_jQueryExtensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.jQueryExtensions.min.js") ? Url("disco.jQueryExtensions.min.js") : Url("disco.jQueryExtensions.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/Disco-jQueryExtensions";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string disco_jQueryExtensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.jQueryExtensions.min.js") ? Url("disco.jQueryExtensions.min.js") : Url("disco.jQueryExtensions.js");
+                    public static readonly string disco_jQueryExtensions_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.jQueryExtensions.min.js") ? Url("disco.jQueryExtensions.min.js") : Url("disco.jQueryExtensions.js");
                 }
             
-                public static readonly string Disco_jQueryExtensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Disco-jQueryExtensions.min.js") ? Url("Disco-jQueryExtensions.min.js") : Url("Disco-jQueryExtensions.js");
+                public static readonly string Disco_jQueryExtensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-jQueryExtensions.min.js") ? Url("Disco-jQueryExtensions.min.js") : Url("Disco-jQueryExtensions.js");
                 public static readonly string Disco_jQueryExtensions_min_js = Url("Disco-jQueryExtensions.min.js");
+                public static readonly string Disco_jQueryExtensions_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-jQueryExtensions.min.js") ? Url("Disco-jQueryExtensions.min.js") : Url("Disco-jQueryExtensions.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Disco_PropertyChangeHelpers {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/Disco-PropertyChangeHelpers";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string disco_propertychangehelpers_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.propertychangehelpers.min.js") ? Url("disco.propertychangehelpers.min.js") : Url("disco.propertychangehelpers.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/Disco-PropertyChangeHelpers";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string disco_propertychangehelpers_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.propertychangehelpers.min.js") ? Url("disco.propertychangehelpers.min.js") : Url("disco.propertychangehelpers.js");
+                    public static readonly string disco_propertychangehelpers_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.propertychangehelpers.min.js") ? Url("disco.propertychangehelpers.min.js") : Url("disco.propertychangehelpers.js");
                 }
             
-                public static readonly string Disco_PropertyChangeHelpers_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Disco-PropertyChangeHelpers.min.js") ? Url("Disco-PropertyChangeHelpers.min.js") : Url("Disco-PropertyChangeHelpers.js");
+                public static readonly string Disco_PropertyChangeHelpers_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-PropertyChangeHelpers.min.js") ? Url("Disco-PropertyChangeHelpers.min.js") : Url("Disco-PropertyChangeHelpers.js");
                 public static readonly string Disco_PropertyChangeHelpers_min_js = Url("Disco-PropertyChangeHelpers.min.js");
+                public static readonly string Disco_PropertyChangeHelpers_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-PropertyChangeHelpers.min.js") ? Url("Disco-PropertyChangeHelpers.min.js") : Url("Disco-PropertyChangeHelpers.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Highcharts {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/Highcharts";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string highcharts_src_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/highcharts.src.min.js") ? Url("highcharts.src.min.js") : Url("highcharts.src.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/Highcharts";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string highcharts_src_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/highcharts.src.min.js") ? Url("highcharts.src.min.js") : Url("highcharts.src.js");
                 }
             
-                public static readonly string Highcharts_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Highcharts.min.js") ? Url("Highcharts.min.js") : Url("Highcharts.js");
+                public static readonly string Highcharts_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Highcharts.min.js") ? Url("Highcharts.min.js") : Url("Highcharts.js");
                 public static readonly string Highcharts_min_js = Url("Highcharts.min.js");
+                public static readonly string Highcharts_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Highcharts.min.js") ? Url("Highcharts.min.js") : Url("Highcharts.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class jQuery_Fancytree {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/jQuery-Fancytree";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string jquery_fancytree_all_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.fancytree-all.min.js") ? Url("jquery.fancytree-all.min.js") : Url("jquery.fancytree-all.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/jQuery-Fancytree";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string jquery_fancytree_all_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.fancytree-all.min.js") ? Url("jquery.fancytree-all.min.js") : Url("jquery.fancytree-all.js");
+                    public static readonly string jquery_fancytree_all_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.fancytree-all.min.js") ? Url("jquery.fancytree-all.min.js") : Url("jquery.fancytree-all.js");
                 }
             
-                public static readonly string jQuery_Fancytree_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jQuery-Fancytree.min.js") ? Url("jQuery-Fancytree.min.js") : Url("jQuery-Fancytree.js");
+                public static readonly string jQuery_Fancytree_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jQuery-Fancytree.min.js") ? Url("jQuery-Fancytree.min.js") : Url("jQuery-Fancytree.js");
                 public static readonly string jQuery_Fancytree_min_js = Url("jQuery-Fancytree.min.js");
+                public static readonly string jQuery_Fancytree_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jQuery-Fancytree.min.js") ? Url("jQuery-Fancytree.min.js") : Url("jQuery-Fancytree.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class jQuery_Isotope {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/jQuery-Isotope";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string jquery_isotope_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.isotope.min.js") ? Url("jquery.isotope.min.js") : Url("jquery.isotope.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/jQuery-Isotope";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string jquery_isotope_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.isotope.min.js") ? Url("jquery.isotope.min.js") : Url("jquery.isotope.js");
+                    public static readonly string jquery_isotope_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.isotope.min.js") ? Url("jquery.isotope.min.js") : Url("jquery.isotope.js");
                 }
             
-                public static readonly string jQuery_Isotope_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jQuery-Isotope.min.js") ? Url("jQuery-Isotope.min.js") : Url("jQuery-Isotope.js");
+                public static readonly string jQuery_Isotope_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jQuery-Isotope.min.js") ? Url("jQuery-Isotope.min.js") : Url("jQuery-Isotope.js");
                 public static readonly string jQuery_Isotope_min_js = Url("jQuery-Isotope.min.js");
+                public static readonly string jQuery_Isotope_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jQuery-Isotope.min.js") ? Url("jQuery-Isotope.min.js") : Url("jQuery-Isotope.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class jQuery_NumberFormatter {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/jQuery-NumberFormatter";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string jquery_numberformatter_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.numberformatter.min.js") ? Url("jquery.numberformatter.min.js") : Url("jquery.numberformatter.js");
-                    public static readonly string jshashtable_2_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jshashtable-2.1.min.js") ? Url("jshashtable-2.1.min.js") : Url("jshashtable-2.1.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/jQuery-NumberFormatter";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string jquery_numberformatter_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.numberformatter.min.js") ? Url("jquery.numberformatter.min.js") : Url("jquery.numberformatter.js");
+                    public static readonly string jquery_numberformatter_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.numberformatter.min.js") ? Url("jquery.numberformatter.min.js") : Url("jquery.numberformatter.js");
+                    public static readonly string jshashtable_2_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jshashtable-2.1.min.js") ? Url("jshashtable-2.1.min.js") : Url("jshashtable-2.1.js");
+                    public static readonly string jshashtable_2_1_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jshashtable-2.1.min.js") ? Url("jshashtable-2.1.min.js") : Url("jshashtable-2.1.js");
                 }
             
-                public static readonly string jQuery_NumberFormatter_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jQuery-NumberFormatter.min.js") ? Url("jQuery-NumberFormatter.min.js") : Url("jQuery-NumberFormatter.js");
+                public static readonly string jQuery_NumberFormatter_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jQuery-NumberFormatter.min.js") ? Url("jQuery-NumberFormatter.min.js") : Url("jQuery-NumberFormatter.js");
                 public static readonly string jQuery_NumberFormatter_min_js = Url("jQuery-NumberFormatter.min.js");
+                public static readonly string jQuery_NumberFormatter_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jQuery-NumberFormatter.min.js") ? Url("jQuery-NumberFormatter.min.js") : Url("jQuery-NumberFormatter.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class jQuery_SignalR {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/jQuery-SignalR";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string disco_hubs_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco-hubs.min.js") ? Url("disco-hubs.min.js") : Url("disco-hubs.js");
-                    public static readonly string jquery_signalR_2_1_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.signalR-2.1.1.min.js") ? Url("jquery.signalR-2.1.1.min.js") : Url("jquery.signalR-2.1.1.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/jQuery-SignalR";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string disco_hubs_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco-hubs.min.js") ? Url("disco-hubs.min.js") : Url("disco-hubs.js");
+                    public static readonly string disco_hubs_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco-hubs.min.js") ? Url("disco-hubs.min.js") : Url("disco-hubs.js");
+                    public static readonly string jquery_signalR_2_1_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.signalR-2.1.2.min.js") ? Url("jquery.signalR-2.1.2.min.js") : Url("jquery.signalR-2.1.2.js");
                 }
             
-                public static readonly string jQuery_SignalR_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jQuery-SignalR.min.js") ? Url("jQuery-SignalR.min.js") : Url("jQuery-SignalR.js");
+                public static readonly string jQuery_SignalR_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jQuery-SignalR.min.js") ? Url("jQuery-SignalR.min.js") : Url("jQuery-SignalR.js");
                 public static readonly string jQuery_SignalR_min_js = Url("jQuery-SignalR.min.js");
+                public static readonly string jQuery_SignalR_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jQuery-SignalR.min.js") ? Url("jQuery-SignalR.min.js") : Url("jQuery-SignalR.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class jQueryUI_DynaTree {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/jQueryUI-DynaTree";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string jquery_dynatree_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.dynatree.min.js") ? Url("jquery.dynatree.min.js") : Url("jquery.dynatree.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/jQueryUI-DynaTree";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string jquery_dynatree_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.dynatree.min.js") ? Url("jquery.dynatree.min.js") : Url("jquery.dynatree.js");
+                    public static readonly string jquery_dynatree_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.dynatree.min.js") ? Url("jquery.dynatree.min.js") : Url("jquery.dynatree.js");
                 }
             
-                public static readonly string jQueryUI_DynaTree_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jQueryUI-DynaTree.min.js") ? Url("jQueryUI-DynaTree.min.js") : Url("jQueryUI-DynaTree.js");
+                public static readonly string jQueryUI_DynaTree_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jQueryUI-DynaTree.min.js") ? Url("jQueryUI-DynaTree.min.js") : Url("jQueryUI-DynaTree.js");
                 public static readonly string jQueryUI_DynaTree_min_js = Url("jQueryUI-DynaTree.min.js");
+                public static readonly string jQueryUI_DynaTree_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jQueryUI-DynaTree.min.js") ? Url("jQueryUI-DynaTree.min.js") : Url("jQueryUI-DynaTree.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class jQueryUI_TimePicker {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/jQueryUI-TimePicker";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string jquery_ui_timepicker_addon_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui-timepicker-addon.min.js") ? Url("jquery-ui-timepicker-addon.min.js") : Url("jquery-ui-timepicker-addon.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/jQueryUI-TimePicker";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string jquery_ui_timepicker_addon_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery-ui-timepicker-addon.min.js") ? Url("jquery-ui-timepicker-addon.min.js") : Url("jquery-ui-timepicker-addon.js");
+                    public static readonly string jquery_ui_timepicker_addon_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery-ui-timepicker-addon.min.js") ? Url("jquery-ui-timepicker-addon.min.js") : Url("jquery-ui-timepicker-addon.js");
                 }
             
-                public static readonly string jQueryUI_TimePicker_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jQueryUI-TimePicker.min.js") ? Url("jQueryUI-TimePicker.min.js") : Url("jQueryUI-TimePicker.js");
+                public static readonly string jQueryUI_TimePicker_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jQueryUI-TimePicker.min.js") ? Url("jQueryUI-TimePicker.min.js") : Url("jQueryUI-TimePicker.js");
                 public static readonly string jQueryUI_TimePicker_min_js = Url("jQueryUI-TimePicker.min.js");
+                public static readonly string jQueryUI_TimePicker_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jQueryUI-TimePicker.min.js") ? Url("jQueryUI-TimePicker.min.js") : Url("jQueryUI-TimePicker.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Knockout {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/Knockout";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string knockout_3_1_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/knockout-3.1.0.min.js") ? Url("knockout-3.1.0.min.js") : Url("knockout-3.1.0.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/Knockout";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string knockout_3_1_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/knockout-3.1.0.min.js") ? Url("knockout-3.1.0.min.js") : Url("knockout-3.1.0.js");
                 }
             
-                public static readonly string Knockout_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Knockout.min.js") ? Url("Knockout.min.js") : Url("Knockout.js");
+                public static readonly string Knockout_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Knockout.min.js") ? Url("Knockout.min.js") : Url("Knockout.js");
                 public static readonly string Knockout_min_js = Url("Knockout.min.js");
+                public static readonly string Knockout_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Knockout.min.js") ? Url("Knockout.min.js") : Url("Knockout.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Shadowbox {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/Shadowbox";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string shadowbox_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/shadowbox.min.js") ? Url("shadowbox.min.js") : Url("shadowbox.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/Shadowbox";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string shadowbox_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/shadowbox.min.js") ? Url("shadowbox.min.js") : Url("shadowbox.js");
+                    public static readonly string shadowbox_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/shadowbox.min.js") ? Url("shadowbox.min.js") : Url("shadowbox.js");
                 }
             
-                public static readonly string Shadowbox_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Shadowbox.min.js") ? Url("Shadowbox.min.js") : Url("Shadowbox.js");
+                public static readonly string Shadowbox_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Shadowbox.min.js") ? Url("Shadowbox.min.js") : Url("Shadowbox.js");
                 public static readonly string Shadowbox_min_js = Url("Shadowbox.min.js");
+                public static readonly string Shadowbox_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Shadowbox.min.js") ? Url("Shadowbox.min.js") : Url("Shadowbox.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Timeline {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/Timeline";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string disco_simileajaxextensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.simileajaxextensions.min.js") ? Url("disco.simileajaxextensions.min.js") : Url("disco.simileajaxextensions.js");
-                    public static readonly string disco_timelineextensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.timelineextensions.min.js") ? Url("disco.timelineextensions.min.js") : Url("disco.timelineextensions.js");
-                    public static readonly string labellers_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/labellers.min.js") ? Url("labellers.min.js") : Url("labellers.js");
-                    public static readonly string simile_ajax_bundle_DiscoMod_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/simile-ajax-bundle-DiscoMod.min.js") ? Url("simile-ajax-bundle-DiscoMod.min.js") : Url("simile-ajax-bundle-DiscoMod.js");
-                    public static readonly string timeline_bundle_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/timeline-bundle.min.js") ? Url("timeline-bundle.min.js") : Url("timeline-bundle.js");
-                    public static readonly string timeline_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/timeline.min.js") ? Url("timeline.min.js") : Url("timeline.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/Timeline";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string disco_simileajaxextensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.simileajaxextensions.min.js") ? Url("disco.simileajaxextensions.min.js") : Url("disco.simileajaxextensions.js");
+                    public static readonly string disco_simileajaxextensions_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.simileajaxextensions.min.js") ? Url("disco.simileajaxextensions.min.js") : Url("disco.simileajaxextensions.js");
+                    public static readonly string disco_timelineextensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.timelineextensions.min.js") ? Url("disco.timelineextensions.min.js") : Url("disco.timelineextensions.js");
+                    public static readonly string disco_timelineextensions_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.timelineextensions.min.js") ? Url("disco.timelineextensions.min.js") : Url("disco.timelineextensions.js");
+                    public static readonly string labellers_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/labellers.min.js") ? Url("labellers.min.js") : Url("labellers.js");
+                    public static readonly string labellers_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/labellers.min.js") ? Url("labellers.min.js") : Url("labellers.js");
+                    public static readonly string simile_ajax_bundle_DiscoMod_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/simile-ajax-bundle-DiscoMod.min.js") ? Url("simile-ajax-bundle-DiscoMod.min.js") : Url("simile-ajax-bundle-DiscoMod.js");
+                    public static readonly string simile_ajax_bundle_DiscoMod_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/simile-ajax-bundle-DiscoMod.min.js") ? Url("simile-ajax-bundle-DiscoMod.min.js") : Url("simile-ajax-bundle-DiscoMod.js");
+                    public static readonly string timeline_bundle_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/timeline-bundle.min.js") ? Url("timeline-bundle.min.js") : Url("timeline-bundle.js");
+                    public static readonly string timeline_bundle_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/timeline-bundle.min.js") ? Url("timeline-bundle.min.js") : Url("timeline-bundle.js");
+                    public static readonly string timeline_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/timeline.min.js") ? Url("timeline.min.js") : Url("timeline.js");
+                    public static readonly string timeline_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/timeline.min.js") ? Url("timeline.min.js") : Url("timeline.js");
                 }
             
-                public static readonly string Timeline_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Timeline.min.js") ? Url("Timeline.min.js") : Url("Timeline.js");
+                public static readonly string Timeline_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Timeline.min.js") ? Url("Timeline.min.js") : Url("Timeline.js");
                 public static readonly string Timeline_min_js = Url("Timeline.min.js");
+                public static readonly string Timeline_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Timeline.min.js") ? Url("Timeline.min.js") : Url("Timeline.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class tinymce {
-                    private const string URLPATH = "~/ClientSource/Scripts/Modules/tinymce";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                    public static readonly string disco_tinymceextensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.tinymceextensions.min.js") ? Url("disco.tinymceextensions.min.js") : Url("disco.tinymceextensions.js");
+                    public const string UrlPath = "~/ClientSource/Scripts/Modules/tinymce";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string disco_tinymceextensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.tinymceextensions.min.js") ? Url("disco.tinymceextensions.min.js") : Url("disco.tinymceextensions.js");
+                    public static readonly string disco_tinymceextensions_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.tinymceextensions.min.js") ? Url("disco.tinymceextensions.min.js") : Url("disco.tinymceextensions.js");
                     public static readonly string jquery_tinymce_min_js = Url("jquery.tinymce.min.js");
                     public static readonly string license_txt = Url("license.txt");
                     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                     public static class skins {
-                        private const string URLPATH = "~/ClientSource/Scripts/Modules/tinymce/skins";
-                        public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                        public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                        public const string UrlPath = "~/ClientSource/Scripts/Modules/tinymce/skins";
+                        public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                        public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                         public static class lightgray {
-                            private const string URLPATH = "~/ClientSource/Scripts/Modules/tinymce/skins/lightgray";
-                            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                            public const string UrlPath = "~/ClientSource/Scripts/Modules/tinymce/skins/lightgray";
+                            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                             public static readonly string content_inline_min_css = Url("content.inline.min.css");
                             public static readonly string content_min_css = Url("content.min.css");
                             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                             public static class fonts {
-                                private const string URLPATH = "~/ClientSource/Scripts/Modules/tinymce/skins/lightgray/fonts";
-                                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                                public const string UrlPath = "~/ClientSource/Scripts/Modules/tinymce/skins/lightgray/fonts";
+                                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                                 public static readonly string readme_md = Url("readme.md");
                                 public static readonly string tinymce_small_eot = Url("tinymce-small.eot");
                                 public static readonly string tinymce_small_json = Url("tinymce-small.json");
@@ -396,9 +470,9 @@ namespace Links
                         
                             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                             public static class img {
-                                private const string URLPATH = "~/ClientSource/Scripts/Modules/tinymce/skins/lightgray/img";
-                                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                                public const string UrlPath = "~/ClientSource/Scripts/Modules/tinymce/skins/lightgray/img";
+                                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                                 public static readonly string anchor_gif = Url("anchor.gif");
                                 public static readonly string loader_gif = Url("loader.gif");
                                 public static readonly string object_gif = Url("object.gif");
@@ -413,60 +487,59 @@ namespace Links
                 
                     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                     public static class themes {
-                        private const string URLPATH = "~/ClientSource/Scripts/Modules/tinymce/themes";
-                        public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                        public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                        public const string UrlPath = "~/ClientSource/Scripts/Modules/tinymce/themes";
+                        public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                        public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                         public static class modern {
-                            private const string URLPATH = "~/ClientSource/Scripts/Modules/tinymce/themes/modern";
-                            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                            public static readonly string theme_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/theme.min.js") ? Url("theme.min.js") : Url("theme.js");
+                            public const string UrlPath = "~/ClientSource/Scripts/Modules/tinymce/themes/modern";
+                            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                            public static readonly string theme_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/theme.min.js") ? Url("theme.min.js") : Url("theme.js");
                             public static readonly string theme_min_js = Url("theme.min.js");
                         }
                     
                         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                         public static class simple {
-                            private const string URLPATH = "~/ClientSource/Scripts/Modules/tinymce/themes/simple";
-                            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
-                            public static readonly string theme_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/theme.min.js") ? Url("theme.min.js") : Url("theme.js");
+                            public const string UrlPath = "~/ClientSource/Scripts/Modules/tinymce/themes/simple";
+                            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                            public static readonly string theme_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/theme.min.js") ? Url("theme.min.js") : Url("theme.js");
+                            public static readonly string theme_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/theme.min.js") ? Url("theme.min.js") : Url("theme.js");
                         }
                     
                     }
                 
-                    public static readonly string tinymce_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/tinymce.min.js") ? Url("tinymce.min.js") : Url("tinymce.js");
+                    public static readonly string tinymce_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/tinymce.min.js") ? Url("tinymce.min.js") : Url("tinymce.js");
                     public static readonly string tinymce_min_js = Url("tinymce.min.js");
                 }
             
-                public static readonly string tinymce_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/tinymce.min.js") ? Url("tinymce.min.js") : Url("tinymce.js");
+                public static readonly string tinymce_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/tinymce.min.js") ? Url("tinymce.min.js") : Url("tinymce.js");
                 public static readonly string tinymce_min_js = Url("tinymce.min.js");
+                public static readonly string tinymce_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/tinymce.min.js") ? Url("tinymce.min.js") : Url("tinymce.js");
             }
         
         }
     
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public static class Style {
-            private const string URLPATH = "~/ClientSource/Style";
-            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+            public const string UrlPath = "~/ClientSource/Style";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
             public static readonly string AppMaintenance_less = Url("AppMaintenance.less");
-            public static readonly string AppMaintenance_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/AppMaintenance.min.css") ? Url("AppMaintenance.min.css") : Url("AppMaintenance.css");
-                 
+            public static readonly string AppMaintenance_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/AppMaintenance.min.css") ? Url("AppMaintenance.min.css") : Url("AppMaintenance.css");
             public static readonly string AppMaintenance_min_css = Url("AppMaintenance.min.css");
             public static readonly string BundleSite_less = Url("BundleSite.less");
-            public static readonly string BundleSite_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/BundleSite.min.css") ? Url("BundleSite.min.css") : Url("BundleSite.css");
-                 
+            public static readonly string BundleSite_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/BundleSite.min.css") ? Url("BundleSite.min.css") : Url("BundleSite.css");
             public static readonly string BundleSite_min_css = Url("BundleSite.min.css");
             public static readonly string Config_less = Url("Config.less");
-            public static readonly string Config_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Config.min.css") ? Url("Config.min.css") : Url("Config.css");
-                 
+            public static readonly string Config_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Config.min.css") ? Url("Config.min.css") : Url("Config.css");
             public static readonly string Config_min_css = Url("Config.min.css");
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public static class Credits {
-                private const string URLPATH = "~/ClientSource/Style/Credits";
-                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public const string UrlPath = "~/ClientSource/Style/Credits";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                 public static readonly string CrystalIcons_png = Url("CrystalIcons.png");
                 public static readonly string dotless_png = Url("dotless.png");
                 public static readonly string HighchartsJS_png = Url("HighchartsJS.png");
@@ -491,33 +564,27 @@ namespace Links
             }
         
             public static readonly string Credits_less = Url("Credits.less");
-            public static readonly string Credits_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Credits.min.css") ? Url("Credits.min.css") : Url("Credits.css");
-                 
+            public static readonly string Credits_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Credits.min.css") ? Url("Credits.min.css") : Url("Credits.css");
             public static readonly string Credits_min_css = Url("Credits.min.css");
             public static readonly string Declarations_less = Url("Declarations.less");
-            public static readonly string Declarations_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Declarations.min.css") ? Url("Declarations.min.css") : Url("Declarations.css");
-                 
+            public static readonly string Declarations_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Declarations.min.css") ? Url("Declarations.min.css") : Url("Declarations.css");
             public static readonly string Declarations_min_css = Url("Declarations.min.css");
             public static readonly string Device_less = Url("Device.less");
-            public static readonly string Device_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Device.min.css") ? Url("Device.min.css") : Url("Device.css");
-                 
+            public static readonly string Device_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Device.min.css") ? Url("Device.min.css") : Url("Device.css");
             public static readonly string Device_min_css = Url("Device.min.css");
             public static readonly string Dialog_less = Url("Dialog.less");
-            public static readonly string Dialog_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Dialog.min.css") ? Url("Dialog.min.css") : Url("Dialog.css");
-                 
+            public static readonly string Dialog_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Dialog.min.css") ? Url("Dialog.min.css") : Url("Dialog.css");
             public static readonly string Dialog_min_css = Url("Dialog.min.css");
-            public static readonly string ExpressionEditor_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/ExpressionEditor.min.css") ? Url("ExpressionEditor.min.css") : Url("ExpressionEditor.css");
-                 
+            public static readonly string ExpressionEditor_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/ExpressionEditor.min.css") ? Url("ExpressionEditor.min.css") : Url("ExpressionEditor.css");
             public static readonly string ExpressionEditor_min_css = Url("ExpressionEditor.min.css");
             public static readonly string ExpressionEditor_htm = Url("ExpressionEditor.htm");
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public static class Fancytree {
-                private const string URLPATH = "~/ClientSource/Style/Fancytree";
-                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public const string UrlPath = "~/ClientSource/Style/Fancytree";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                 public static readonly string disco_fancytree_less = Url("disco.fancytree.less");
-                public static readonly string disco_fancytree_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.fancytree.min.css") ? Url("disco.fancytree.min.css") : Url("disco.fancytree.css");
-                     
+                public static readonly string disco_fancytree_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.fancytree.min.css") ? Url("disco.fancytree.min.css") : Url("disco.fancytree.css");
                 public static readonly string disco_fancytree_min_css = Url("disco.fancytree.min.css");
                 public static readonly string icons_disco_shrunk_png = Url("icons-disco-shrunk.png");
                 public static readonly string icons_DiscoMod_png = Url("icons-DiscoMod.png");
@@ -528,9 +595,9 @@ namespace Links
         
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public static class FontAwesome {
-                private const string URLPATH = "~/ClientSource/Style/FontAwesome";
-                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public const string UrlPath = "~/ClientSource/Style/FontAwesome";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                 public static readonly string bordered_pulled_less = Url("bordered-pulled.less");
                 public static readonly string core_less = Url("core.less");
                 public static readonly string fixed_width_less = Url("fixed-width.less");
@@ -553,14 +620,14 @@ namespace Links
         
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public static class Images {
-                private const string URLPATH = "~/ClientSource/Style/Images";
-                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public const string UrlPath = "~/ClientSource/Style/Images";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Actions {
-                    private const string URLPATH = "~/ClientSource/Style/Images/Actions";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                    public const string UrlPath = "~/ClientSource/Style/Images/Actions";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                     public static readonly string dataTableFirst_png = Url("dataTableFirst.png");
                     public static readonly string dataTableFirstDisabled_png = Url("dataTableFirstDisabled.png");
                     public static readonly string dataTableLast_png = Url("dataTableLast.png");
@@ -578,9 +645,9 @@ namespace Links
             
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class AttachmentTypes {
-                    private const string URLPATH = "~/ClientSource/Style/Images/AttachmentTypes";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                    public const string UrlPath = "~/ClientSource/Style/Images/AttachmentTypes";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                     public static readonly string document_png = Url("document.png");
                     public static readonly string expressionBrowserIcons_png = Url("expressionBrowserIcons.png");
                     public static readonly string image_png = Url("image.png");
@@ -593,9 +660,9 @@ namespace Links
                 public static readonly string BackgroundPage_png = Url("BackgroundPage.png");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class DeviceTypes {
-                    private const string URLPATH = "~/ClientSource/Style/Images/DeviceTypes";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                    public const string UrlPath = "~/ClientSource/Style/Images/DeviceTypes";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                     public static readonly string AppliancePC_png = Url("AppliancePC.png");
                     public static readonly string Desktop_png = Url("Desktop.png");
                     public static readonly string EnterpriseServer_png = Url("EnterpriseServer.png");
@@ -610,9 +677,9 @@ namespace Links
                 public static readonly string Heading_png = Url("Heading.png");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Status {
-                    private const string URLPATH = "~/ClientSource/Style/Images/Status";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                    public const string UrlPath = "~/ClientSource/Style/Images/Status";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                     public static readonly string fail32_png = Url("fail32.png");
                     public static readonly string fileBroken256_png = Url("fileBroken256.png");
                     public static readonly string loading_gif = Url("loading.gif");
@@ -623,35 +690,32 @@ namespace Links
                 public static readonly string UnknownPhoto_png = Url("UnknownPhoto.png");
             }
         
-            public static readonly string IsotopeStyles_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/IsotopeStyles.min.css") ? Url("IsotopeStyles.min.css") : Url("IsotopeStyles.css");
-                 
+            public static readonly string IsotopeStyles_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/IsotopeStyles.min.css") ? Url("IsotopeStyles.min.css") : Url("IsotopeStyles.css");
             public static readonly string IsotopeStyles_min_css = Url("IsotopeStyles.min.css");
             public static readonly string Job_less = Url("Job.less");
-            public static readonly string Job_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Job.min.css") ? Url("Job.min.css") : Url("Job.css");
-                 
+            public static readonly string Job_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Job.min.css") ? Url("Job.min.css") : Url("Job.css");
             public static readonly string Job_min_css = Url("Job.min.css");
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public static class jQueryUI {
-                private const string URLPATH = "~/ClientSource/Style/jQueryUI";
-                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public const string UrlPath = "~/ClientSource/Style/jQueryUI";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class dynatree {
-                    private const string URLPATH = "~/ClientSource/Style/jQueryUI/dynatree";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                    public const string UrlPath = "~/ClientSource/Style/jQueryUI/dynatree";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                     public static readonly string icons_gif = Url("icons.gif");
                     public static readonly string loading_gif = Url("loading.gif");
-                    public static readonly string ui_dynatree_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/ui.dynatree.min.css") ? Url("ui.dynatree.min.css") : Url("ui.dynatree.css");
-                         
+                    public static readonly string ui_dynatree_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/ui.dynatree.min.css") ? Url("ui.dynatree.min.css") : Url("ui.dynatree.css");
                     public static readonly string ui_dynatree_min_css = Url("ui.dynatree.min.css");
                 }
             
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class images {
-                    private const string URLPATH = "~/ClientSource/Style/jQueryUI/images";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                    public const string UrlPath = "~/ClientSource/Style/jQueryUI/images";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                     public static readonly string animated_overlay_gif = Url("animated-overlay.gif");
                     public static readonly string ui_bg_flat_0_aaaaaa_40x100_png = Url("ui-bg_flat_0_aaaaaa_40x100.png");
                     public static readonly string ui_bg_flat_75_ffffff_40x100_png = Url("ui-bg_flat_75_ffffff_40x100.png");
@@ -669,76 +733,66 @@ namespace Links
                 }
             
                 public static readonly string jquery_ui_less = Url("jquery-ui.less");
-                public static readonly string jquery_ui_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-ui.min.css") ? Url("jquery-ui.min.css") : Url("jquery-ui.css");
-                     
+                public static readonly string jquery_ui_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery-ui.min.css") ? Url("jquery-ui.min.css") : Url("jquery-ui.css");
                 public static readonly string jquery_ui_min_css = Url("jquery-ui.min.css");
             }
         
             public static readonly string jQueryUIExtensions_less = Url("jQueryUIExtensions.less");
-            public static readonly string jQueryUIExtensions_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jQueryUIExtensions.min.css") ? Url("jQueryUIExtensions.min.css") : Url("jQueryUIExtensions.css");
-                 
+            public static readonly string jQueryUIExtensions_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jQueryUIExtensions.min.css") ? Url("jQueryUIExtensions.min.css") : Url("jQueryUIExtensions.css");
             public static readonly string jQueryUIExtensions_min_css = Url("jQueryUIExtensions.min.css");
             public static readonly string normalize_less = Url("normalize.less");
-            public static readonly string normalize_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/normalize.min.css") ? Url("normalize.min.css") : Url("normalize.css");
-                 
+            public static readonly string normalize_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/normalize.min.css") ? Url("normalize.min.css") : Url("normalize.css");
             public static readonly string normalize_min_css = Url("normalize.min.css");
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public static class Public {
-                private const string URLPATH = "~/ClientSource/Style/Public";
-                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public const string UrlPath = "~/ClientSource/Style/Public";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                 public static readonly string HeldDevices_less = Url("HeldDevices.less");
-                public static readonly string HeldDevices_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/HeldDevices.min.css") ? Url("HeldDevices.min.css") : Url("HeldDevices.css");
-                     
+                public static readonly string HeldDevices_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/HeldDevices.min.css") ? Url("HeldDevices.min.css") : Url("HeldDevices.css");
                 public static readonly string HeldDevices_min_css = Url("HeldDevices.min.css");
                 public static readonly string HeldDevicesNoticeboard_less = Url("HeldDevicesNoticeboard.less");
-                public static readonly string HeldDevicesNoticeboard_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/HeldDevicesNoticeboard.min.css") ? Url("HeldDevicesNoticeboard.min.css") : Url("HeldDevicesNoticeboard.css");
-                     
+                public static readonly string HeldDevicesNoticeboard_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/HeldDevicesNoticeboard.min.css") ? Url("HeldDevicesNoticeboard.min.css") : Url("HeldDevicesNoticeboard.css");
                 public static readonly string HeldDevicesNoticeboard_min_css = Url("HeldDevicesNoticeboard.min.css");
                 public static readonly string UserHeldDevicesXml_Sharepoint_xslt = Url("UserHeldDevicesXml_Sharepoint.xslt");
             }
         
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public static class Shadowbox {
-                private const string URLPATH = "~/ClientSource/Style/Shadowbox";
-                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public const string UrlPath = "~/ClientSource/Style/Shadowbox";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                 public static readonly string close_png = Url("close.png");
                 public static readonly string loading_gif = Url("loading.gif");
                 public static readonly string next_png = Url("next.png");
                 public static readonly string pause_png = Url("pause.png");
                 public static readonly string play_png = Url("play.png");
                 public static readonly string previous_png = Url("previous.png");
-                public static readonly string shadowbox_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/shadowbox.min.css") ? Url("shadowbox.min.css") : Url("shadowbox.css");
-                     
+                public static readonly string shadowbox_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/shadowbox.min.css") ? Url("shadowbox.min.css") : Url("shadowbox.css");
             }
         
             public static readonly string Shadowbox_min_css = Url("Shadowbox.min.css");
             public static readonly string Shared_less = Url("Shared.less");
-            public static readonly string Shared_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Shared.min.css") ? Url("Shared.min.css") : Url("Shared.css");
-                 
+            public static readonly string Shared_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Shared.min.css") ? Url("Shared.min.css") : Url("Shared.css");
             public static readonly string Shared_min_css = Url("Shared.min.css");
             public static readonly string Site_less = Url("Site.less");
-            public static readonly string Site_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Site.min.css") ? Url("Site.min.css") : Url("Site.css");
-                 
+            public static readonly string Site_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Site.min.css") ? Url("Site.min.css") : Url("Site.css");
             public static readonly string Site_min_css = Url("Site.min.css");
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public static class Timeline {
-                private const string URLPATH = "~/ClientSource/Style/Timeline";
-                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public const string UrlPath = "~/ClientSource/Style/Timeline";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                 public static readonly string disco_timelineextensions_less = Url("disco.timelineextensions.less");
-                public static readonly string disco_timelineextensions_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/disco.timelineextensions.min.css") ? Url("disco.timelineextensions.min.css") : Url("disco.timelineextensions.css");
-                     
+                public static readonly string disco_timelineextensions_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.timelineextensions.min.css") ? Url("disco.timelineextensions.min.css") : Url("disco.timelineextensions.css");
                 public static readonly string disco_timelineextensions_min_css = Url("disco.timelineextensions.min.css");
-                public static readonly string graphics_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/graphics.min.css") ? Url("graphics.min.css") : Url("graphics.css");
-                     
+                public static readonly string graphics_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/graphics.min.css") ? Url("graphics.min.css") : Url("graphics.css");
                 public static readonly string graphics_min_css = Url("graphics.min.css");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class images {
-                    private const string URLPATH = "~/ClientSource/Style/Timeline/images";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                    public const string UrlPath = "~/ClientSource/Style/Timeline/images";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                     public static readonly string blue_circle_png = Url("blue-circle.png");
                     public static readonly string bubble_arrow_point_down_png = Url("bubble-arrow-point-down.png");
                     public static readonly string bubble_arrow_point_left_png = Url("bubble-arrow-point-left.png");
@@ -779,30 +833,27 @@ namespace Links
                     public static readonly string top_bubble_png = Url("top-bubble.png");
                 }
             
-                public static readonly string timeline_bundle_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/timeline-bundle.min.css") ? Url("timeline-bundle.min.css") : Url("timeline-bundle.css");
-                     
+                public static readonly string timeline_bundle_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/timeline-bundle.min.css") ? Url("timeline-bundle.min.css") : Url("timeline-bundle.css");
                 public static readonly string timeline_bundle_min_css = Url("timeline-bundle.min.css");
             }
         
             public static readonly string Timeline_min_css = Url("Timeline.min.css");
             [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
             public static class tinymce {
-                private const string URLPATH = "~/ClientSource/Style/tinymce";
-                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                public const string UrlPath = "~/ClientSource/Style/tinymce";
+                public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                 public static readonly string content_inline_less = Url("content.inline.less");
-                public static readonly string content_inline_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/content.inline.min.css") ? Url("content.inline.min.css") : Url("content.inline.css");
-                     
+                public static readonly string content_inline_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/content.inline.min.css") ? Url("content.inline.min.css") : Url("content.inline.css");
                 public static readonly string content_inline_min_css = Url("content.inline.min.css");
                 public static readonly string content_less = Url("content.less");
-                public static readonly string content_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/content.min.css") ? Url("content.min.css") : Url("content.css");
-                     
+                public static readonly string content_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/content.min.css") ? Url("content.min.css") : Url("content.css");
                 public static readonly string content_min_css = Url("content.min.css");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class img {
-                    private const string URLPATH = "~/ClientSource/Style/tinymce/img";
-                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                    public const string UrlPath = "~/ClientSource/Style/tinymce/img";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                     public static readonly string anchor_gif = Url("anchor.gif");
                     public static readonly string loader_gif = Url("loader.gif");
                     public static readonly string object_gif = Url("object.gif");
@@ -810,14 +861,12 @@ namespace Links
                 }
             
                 public static readonly string skin_less = Url("skin.less");
-                public static readonly string skin_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/skin.min.css") ? Url("skin.min.css") : Url("skin.css");
-                     
+                public static readonly string skin_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/skin.min.css") ? Url("skin.min.css") : Url("skin.css");
                 public static readonly string skin_min_css = Url("skin.min.css");
             }
         
             public static readonly string User_less = Url("User.less");
-            public static readonly string User_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/User.min.css") ? Url("User.min.css") : Url("User.css");
-                 
+            public static readonly string User_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/User.min.css") ? Url("User.min.css") : Url("User.css");
             public static readonly string User_min_css = Url("User.min.css");
         }
     
@@ -825,21 +874,454 @@ namespace Links
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
     public static class ClientBin {
-        private const string URLPATH = "~/ClientBin";
-        public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
-        public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+        public const string UrlPath = "~/ClientBin";
+        public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
+        public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
         public static readonly string Disco_ClientBootstrapper_exe = Url("Disco.ClientBootstrapper.exe");
         public static readonly string DiscoServices_InitialPluginLibraryManifest_json = Url("DiscoServices.InitialPluginLibraryManifest.json");
         public static readonly string PreparationClient_zip = Url("PreparationClient.zip");
     }
 
+    
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
     public static partial class Bundles
     {
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public static partial class Scripts {}
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public static partial class Styles {}
+        public static partial class ClientSource 
+        {
+            public static partial class Scripts 
+            {
+                public static partial class Core 
+                {
+                    public static class Assets
+                    {
+                        public const string _references_js = "~/ClientSource/Scripts/Core/_references.js"; 
+                        public const string _references_js_ = "~/ClientSource/Scripts/Core/_references.js"; 
+                        public const string disco_dataTables_extensions_js = "~/ClientSource/Scripts/Core/disco.dataTables.extensions.js"; 
+                        public const string disco_dataTables_extensions_js_ = "~/ClientSource/Scripts/Core/disco.dataTables.extensions.js"; 
+                        public const string disco_moment_extensions_js = "~/ClientSource/Scripts/Core/disco.moment.extensions.js"; 
+                        public const string disco_moment_extensions_js_ = "~/ClientSource/Scripts/Core/disco.moment.extensions.js"; 
+                        public const string disco_uicore_js = "~/ClientSource/Scripts/Core/disco.uicore.js"; 
+                        public const string disco_uicore_js_ = "~/ClientSource/Scripts/Core/disco.uicore.js"; 
+                        public const string disco_unobtrusiveValidation_extensions_js = "~/ClientSource/Scripts/Core/disco.unobtrusiveValidation.extensions.js"; 
+                        public const string disco_unobtrusiveValidation_extensions_js_ = "~/ClientSource/Scripts/Core/disco.unobtrusiveValidation.extensions.js"; 
+                        public const string jquery_2_1_1_js = "~/ClientSource/Scripts/Core/jquery-2.1.1.js"; 
+                        public const string jquery_ui_1_10_4_js = "~/ClientSource/Scripts/Core/jquery-ui-1.10.4.js"; 
+                        public const string jquery_dataTables_js = "~/ClientSource/Scripts/Core/jquery.dataTables.js"; 
+                        public const string jquery_dataTables_js_ = "~/ClientSource/Scripts/Core/jquery.dataTables.js"; 
+                        public const string jquery_validate_js = "~/ClientSource/Scripts/Core/jquery.validate.js"; 
+                        public const string jquery_validate_unobtrusive_js = "~/ClientSource/Scripts/Core/jquery.validate.unobtrusive.js"; 
+                        public const string jquery_watermark_js = "~/ClientSource/Scripts/Core/jquery.watermark.js"; 
+                        public const string jquery_watermark_js_ = "~/ClientSource/Scripts/Core/jquery.watermark.js"; 
+                        public const string livestamp_js = "~/ClientSource/Scripts/Core/livestamp.js"; 
+                        public const string livestamp_js_ = "~/ClientSource/Scripts/Core/livestamp.js"; 
+                        public const string modernizr_2_7_2_js = "~/ClientSource/Scripts/Core/modernizr-2.7.2.js"; 
+                        public const string moment_en_au_js = "~/ClientSource/Scripts/Core/moment.en-au.js"; 
+                        public const string moment_en_au_js_ = "~/ClientSource/Scripts/Core/moment.en-au.js"; 
+                        public const string moment_js = "~/ClientSource/Scripts/Core/moment.js"; 
+                        public const string moment_js_ = "~/ClientSource/Scripts/Core/moment.js"; 
+                    }
+                }
+                public static partial class Modules 
+                {
+                    public static partial class Disco_AjaxHelperIcons 
+                    {
+                        public static class Assets
+                        {
+                            public const string disco_ajaxhelpericons_js = "~/ClientSource/Scripts/Modules/Disco-AjaxHelperIcons/disco.ajaxhelpericons.js"; 
+                            public const string disco_ajaxhelpericons_js_ = "~/ClientSource/Scripts/Modules/Disco-AjaxHelperIcons/disco.ajaxhelpericons.js"; 
+                        }
+                    }
+                    public static partial class Disco_AttachmentUploader 
+                    {
+                        public static class Assets
+                        {
+                            public const string disco_attachmentuploader_js = "~/ClientSource/Scripts/Modules/Disco-AttachmentUploader/disco-attachmentuploader.js"; 
+                            public const string disco_attachmentuploader_js_ = "~/ClientSource/Scripts/Modules/Disco-AttachmentUploader/disco-attachmentuploader.js"; 
+                            public const string webcam_js = "~/ClientSource/Scripts/Modules/Disco-AttachmentUploader/webcam.js"; 
+                            public const string webcam_js_ = "~/ClientSource/Scripts/Modules/Disco-AttachmentUploader/webcam.js"; 
+                        }
+                    }
+                    public static partial class Disco_CreateJob 
+                    {
+                        public static class Assets
+                        {
+                            public const string disco_createjob_js = "~/ClientSource/Scripts/Modules/Disco-CreateJob/disco.createjob.js"; 
+                            public const string disco_createjob_js_ = "~/ClientSource/Scripts/Modules/Disco-CreateJob/disco.createjob.js"; 
+                        }
+                    }
+                    public static partial class Disco_DataTableHelpers 
+                    {
+                        public static class Assets
+                        {
+                            public const string disco_datatablehelpers_js = "~/ClientSource/Scripts/Modules/Disco-DataTableHelpers/disco.datatablehelpers.js"; 
+                            public const string disco_datatablehelpers_js_ = "~/ClientSource/Scripts/Modules/Disco-DataTableHelpers/disco.datatablehelpers.js"; 
+                        }
+                    }
+                    public static partial class Disco_DocumentBulkGenerate 
+                    {
+                        public static class Assets
+                        {
+                            public const string disco_documentbulkgenerate_js = "~/ClientSource/Scripts/Modules/Disco-DocumentBulkGenerate/disco.documentbulkgenerate.js"; 
+                        }
+                    }
+                    public static partial class Disco_DocumentGenerator 
+                    {
+                        public static class Assets
+                        {
+                            public const string disco_documentgenerator_js = "~/ClientSource/Scripts/Modules/Disco-DocumentGenerator/disco.documentgenerator.js"; 
+                        }
+                    }
+                    public static partial class Disco_ExpressionEditor 
+                    {
+                        public static class Assets
+                        {
+                            public const string disco_expressioneditor_js = "~/ClientSource/Scripts/Modules/Disco-ExpressionEditor/disco.expressioneditor.js"; 
+                            public const string disco_expressioneditor_js_ = "~/ClientSource/Scripts/Modules/Disco-ExpressionEditor/disco.expressioneditor.js"; 
+                        }
+                    }
+                    public static partial class Disco_jQueryExtensions 
+                    {
+                        public static class Assets
+                        {
+                            public const string disco_jQueryExtensions_js = "~/ClientSource/Scripts/Modules/Disco-jQueryExtensions/disco.jQueryExtensions.js"; 
+                            public const string disco_jQueryExtensions_js_ = "~/ClientSource/Scripts/Modules/Disco-jQueryExtensions/disco.jQueryExtensions.js"; 
+                        }
+                    }
+                    public static partial class Disco_PropertyChangeHelpers 
+                    {
+                        public static class Assets
+                        {
+                            public const string disco_propertychangehelpers_js = "~/ClientSource/Scripts/Modules/Disco-PropertyChangeHelpers/disco.propertychangehelpers.js"; 
+                            public const string disco_propertychangehelpers_js_ = "~/ClientSource/Scripts/Modules/Disco-PropertyChangeHelpers/disco.propertychangehelpers.js"; 
+                        }
+                    }
+                    public static partial class Highcharts 
+                    {
+                        public static class Assets
+                        {
+                            public const string highcharts_src_js = "~/ClientSource/Scripts/Modules/Highcharts/highcharts.src.js"; 
+                        }
+                    }
+                    public static partial class jQuery_Fancytree 
+                    {
+                        public static class Assets
+                        {
+                            public const string jquery_fancytree_all_js = "~/ClientSource/Scripts/Modules/jQuery-Fancytree/jquery.fancytree-all.js"; 
+                            public const string jquery_fancytree_all_js_ = "~/ClientSource/Scripts/Modules/jQuery-Fancytree/jquery.fancytree-all.js"; 
+                        }
+                    }
+                    public static partial class jQuery_Isotope 
+                    {
+                        public static class Assets
+                        {
+                            public const string jquery_isotope_js = "~/ClientSource/Scripts/Modules/jQuery-Isotope/jquery.isotope.js"; 
+                            public const string jquery_isotope_js_ = "~/ClientSource/Scripts/Modules/jQuery-Isotope/jquery.isotope.js"; 
+                        }
+                    }
+                    public static partial class jQuery_NumberFormatter 
+                    {
+                        public static class Assets
+                        {
+                            public const string jquery_numberformatter_js = "~/ClientSource/Scripts/Modules/jQuery-NumberFormatter/jquery.numberformatter.js"; 
+                            public const string jquery_numberformatter_js_ = "~/ClientSource/Scripts/Modules/jQuery-NumberFormatter/jquery.numberformatter.js"; 
+                            public const string jshashtable_2_1_js = "~/ClientSource/Scripts/Modules/jQuery-NumberFormatter/jshashtable-2.1.js"; 
+                            public const string jshashtable_2_1_js_ = "~/ClientSource/Scripts/Modules/jQuery-NumberFormatter/jshashtable-2.1.js"; 
+                        }
+                    }
+                    public static partial class jQuery_SignalR 
+                    {
+                        public static class Assets
+                        {
+                            public const string disco_hubs_js = "~/ClientSource/Scripts/Modules/jQuery-SignalR/disco-hubs.js"; 
+                            public const string disco_hubs_js_ = "~/ClientSource/Scripts/Modules/jQuery-SignalR/disco-hubs.js"; 
+                            public const string jquery_signalR_2_1_2_js = "~/ClientSource/Scripts/Modules/jQuery-SignalR/jquery.signalR-2.1.2.js"; 
+                        }
+                    }
+                    public static partial class jQueryUI_DynaTree 
+                    {
+                        public static class Assets
+                        {
+                            public const string jquery_dynatree_js = "~/ClientSource/Scripts/Modules/jQueryUI-DynaTree/jquery.dynatree.js"; 
+                            public const string jquery_dynatree_js_ = "~/ClientSource/Scripts/Modules/jQueryUI-DynaTree/jquery.dynatree.js"; 
+                        }
+                    }
+                    public static partial class jQueryUI_TimePicker 
+                    {
+                        public static class Assets
+                        {
+                            public const string jquery_ui_timepicker_addon_js = "~/ClientSource/Scripts/Modules/jQueryUI-TimePicker/jquery-ui-timepicker-addon.js"; 
+                            public const string jquery_ui_timepicker_addon_js_ = "~/ClientSource/Scripts/Modules/jQueryUI-TimePicker/jquery-ui-timepicker-addon.js"; 
+                        }
+                    }
+                    public static partial class Knockout 
+                    {
+                        public static class Assets
+                        {
+                            public const string knockout_3_1_0_js = "~/ClientSource/Scripts/Modules/Knockout/knockout-3.1.0.js"; 
+                        }
+                    }
+                    public static partial class Shadowbox 
+                    {
+                        public static class Assets
+                        {
+                            public const string shadowbox_js = "~/ClientSource/Scripts/Modules/Shadowbox/shadowbox.js"; 
+                            public const string shadowbox_js_ = "~/ClientSource/Scripts/Modules/Shadowbox/shadowbox.js"; 
+                        }
+                    }
+                    public static partial class Timeline 
+                    {
+                        public static class Assets
+                        {
+                            public const string disco_simileajaxextensions_js = "~/ClientSource/Scripts/Modules/Timeline/disco.simileajaxextensions.js"; 
+                            public const string disco_simileajaxextensions_js_ = "~/ClientSource/Scripts/Modules/Timeline/disco.simileajaxextensions.js"; 
+                            public const string disco_timelineextensions_js = "~/ClientSource/Scripts/Modules/Timeline/disco.timelineextensions.js"; 
+                            public const string disco_timelineextensions_js_ = "~/ClientSource/Scripts/Modules/Timeline/disco.timelineextensions.js"; 
+                            public const string labellers_js = "~/ClientSource/Scripts/Modules/Timeline/labellers.js"; 
+                            public const string labellers_js_ = "~/ClientSource/Scripts/Modules/Timeline/labellers.js"; 
+                            public const string simile_ajax_bundle_DiscoMod_js = "~/ClientSource/Scripts/Modules/Timeline/simile-ajax-bundle-DiscoMod.js"; 
+                            public const string simile_ajax_bundle_DiscoMod_js_ = "~/ClientSource/Scripts/Modules/Timeline/simile-ajax-bundle-DiscoMod.js"; 
+                            public const string timeline_bundle_js = "~/ClientSource/Scripts/Modules/Timeline/timeline-bundle.js"; 
+                            public const string timeline_bundle_js_ = "~/ClientSource/Scripts/Modules/Timeline/timeline-bundle.js"; 
+                            public const string timeline_js = "~/ClientSource/Scripts/Modules/Timeline/timeline.js"; 
+                            public const string timeline_js_ = "~/ClientSource/Scripts/Modules/Timeline/timeline.js"; 
+                        }
+                    }
+                    public static partial class tinymce 
+                    {
+                        public static partial class skins 
+                        {
+                            public static partial class lightgray 
+                            {
+                                public static partial class fonts 
+                                {
+                                    public static class Assets
+                                    {
+                                    }
+                                }
+                                public static partial class img 
+                                {
+                                    public static class Assets
+                                    {
+                                    }
+                                }
+                                public static class Assets
+                                {
+                                    public const string content_inline_min_css = "~/ClientSource/Scripts/Modules/tinymce/skins/lightgray/content.inline.min.css";
+                                    public const string content_min_css = "~/ClientSource/Scripts/Modules/tinymce/skins/lightgray/content.min.css";
+                                    public const string skin_ie7_min_css = "~/ClientSource/Scripts/Modules/tinymce/skins/lightgray/skin.ie7.min.css";
+                                    public const string skin_min_css = "~/ClientSource/Scripts/Modules/tinymce/skins/lightgray/skin.min.css";
+                                }
+                            }
+                            public static class Assets
+                            {
+                            }
+                        }
+                        public static partial class themes 
+                        {
+                            public static partial class modern 
+                            {
+                                public static class Assets
+                                {
+                                    public const string theme_js = "~/ClientSource/Scripts/Modules/tinymce/themes/modern/theme.js"; 
+                                    public const string theme_min_js = "~/ClientSource/Scripts/Modules/tinymce/themes/modern/theme.min.js"; 
+                                }
+                            }
+                            public static partial class simple 
+                            {
+                                public static class Assets
+                                {
+                                    public const string theme_js = "~/ClientSource/Scripts/Modules/tinymce/themes/simple/theme.js"; 
+                                    public const string theme_js_ = "~/ClientSource/Scripts/Modules/tinymce/themes/simple/theme.js"; 
+                                }
+                            }
+                            public static class Assets
+                            {
+                            }
+                        }
+                        public static class Assets
+                        {
+                            public const string disco_tinymceextensions_js = "~/ClientSource/Scripts/Modules/tinymce/disco.tinymceextensions.js"; 
+                            public const string disco_tinymceextensions_js_ = "~/ClientSource/Scripts/Modules/tinymce/disco.tinymceextensions.js"; 
+                            public const string jquery_tinymce_min_js = "~/ClientSource/Scripts/Modules/tinymce/jquery.tinymce.min.js"; 
+                            public const string tinymce_js = "~/ClientSource/Scripts/Modules/tinymce/tinymce.js"; 
+                            public const string tinymce_min_js = "~/ClientSource/Scripts/Modules/tinymce/tinymce.min.js"; 
+                        }
+                    }
+                    public static class Assets
+                    {
+                        public const string Disco_AjaxHelperIcons_js = "~/ClientSource/Scripts/Modules/Disco-AjaxHelperIcons.js"; 
+                        public const string Disco_AjaxHelperIcons_js_ = "~/ClientSource/Scripts/Modules/Disco-AjaxHelperIcons.js"; 
+                        public const string Disco_AttachmentUploader_js = "~/ClientSource/Scripts/Modules/Disco-AttachmentUploader.js"; 
+                        public const string Disco_AttachmentUploader_js_ = "~/ClientSource/Scripts/Modules/Disco-AttachmentUploader.js"; 
+                        public const string Disco_CreateJob_js = "~/ClientSource/Scripts/Modules/Disco-CreateJob.js"; 
+                        public const string Disco_CreateJob_js_ = "~/ClientSource/Scripts/Modules/Disco-CreateJob.js"; 
+                        public const string Disco_DataTableHelpers_js = "~/ClientSource/Scripts/Modules/Disco-DataTableHelpers.js"; 
+                        public const string Disco_DataTableHelpers_js_ = "~/ClientSource/Scripts/Modules/Disco-DataTableHelpers.js"; 
+                        public const string Disco_DocumentBulkGenerate_js = "~/ClientSource/Scripts/Modules/Disco-DocumentBulkGenerate.js"; 
+                        public const string Disco_DocumentGenerator_js = "~/ClientSource/Scripts/Modules/Disco-DocumentGenerator.js"; 
+                        public const string Disco_DocumentGenerator_js_ = "~/ClientSource/Scripts/Modules/Disco-DocumentGenerator.js"; 
+                        public const string Disco_ExpressionEditor_js = "~/ClientSource/Scripts/Modules/Disco-ExpressionEditor.js"; 
+                        public const string Disco_ExpressionEditor_js_ = "~/ClientSource/Scripts/Modules/Disco-ExpressionEditor.js"; 
+                        public const string Disco_jQueryExtensions_js = "~/ClientSource/Scripts/Modules/Disco-jQueryExtensions.js"; 
+                        public const string Disco_jQueryExtensions_js_ = "~/ClientSource/Scripts/Modules/Disco-jQueryExtensions.js"; 
+                        public const string Disco_PropertyChangeHelpers_js = "~/ClientSource/Scripts/Modules/Disco-PropertyChangeHelpers.js"; 
+                        public const string Disco_PropertyChangeHelpers_js_ = "~/ClientSource/Scripts/Modules/Disco-PropertyChangeHelpers.js"; 
+                        public const string Highcharts_js = "~/ClientSource/Scripts/Modules/Highcharts.js"; 
+                        public const string Highcharts_js_ = "~/ClientSource/Scripts/Modules/Highcharts.js"; 
+                        public const string jQuery_Fancytree_js = "~/ClientSource/Scripts/Modules/jQuery-Fancytree.js"; 
+                        public const string jQuery_Fancytree_js_ = "~/ClientSource/Scripts/Modules/jQuery-Fancytree.js"; 
+                        public const string jQuery_Isotope_js = "~/ClientSource/Scripts/Modules/jQuery-Isotope.js"; 
+                        public const string jQuery_Isotope_js_ = "~/ClientSource/Scripts/Modules/jQuery-Isotope.js"; 
+                        public const string jQuery_NumberFormatter_js = "~/ClientSource/Scripts/Modules/jQuery-NumberFormatter.js"; 
+                        public const string jQuery_NumberFormatter_js_ = "~/ClientSource/Scripts/Modules/jQuery-NumberFormatter.js"; 
+                        public const string jQuery_SignalR_js = "~/ClientSource/Scripts/Modules/jQuery-SignalR.js"; 
+                        public const string jQuery_SignalR_js_ = "~/ClientSource/Scripts/Modules/jQuery-SignalR.js"; 
+                        public const string jQueryUI_DynaTree_js = "~/ClientSource/Scripts/Modules/jQueryUI-DynaTree.js"; 
+                        public const string jQueryUI_DynaTree_js_ = "~/ClientSource/Scripts/Modules/jQueryUI-DynaTree.js"; 
+                        public const string jQueryUI_TimePicker_js = "~/ClientSource/Scripts/Modules/jQueryUI-TimePicker.js"; 
+                        public const string jQueryUI_TimePicker_js_ = "~/ClientSource/Scripts/Modules/jQueryUI-TimePicker.js"; 
+                        public const string Knockout_js = "~/ClientSource/Scripts/Modules/Knockout.js"; 
+                        public const string Knockout_js_ = "~/ClientSource/Scripts/Modules/Knockout.js"; 
+                        public const string Shadowbox_js = "~/ClientSource/Scripts/Modules/Shadowbox.js"; 
+                        public const string Shadowbox_js_ = "~/ClientSource/Scripts/Modules/Shadowbox.js"; 
+                        public const string Timeline_js = "~/ClientSource/Scripts/Modules/Timeline.js"; 
+                        public const string Timeline_js_ = "~/ClientSource/Scripts/Modules/Timeline.js"; 
+                        public const string tinymce_js = "~/ClientSource/Scripts/Modules/tinymce.js"; 
+                        public const string tinymce_js_ = "~/ClientSource/Scripts/Modules/tinymce.js"; 
+                    }
+                }
+                public static class Assets
+                {
+                    public const string Core_js = "~/ClientSource/Scripts/Core.js"; 
+                    public const string Core_js_ = "~/ClientSource/Scripts/Core.js"; 
+                }
+            }
+            public static partial class Style 
+            {
+                public static partial class Credits 
+                {
+                    public static class Assets
+                    {
+                    }
+                }
+                public static partial class Fancytree 
+                {
+                    public static class Assets
+                    {
+                    }
+                }
+                public static partial class FontAwesome 
+                {
+                    public static class Assets
+                    {
+                    }
+                }
+                public static partial class Images 
+                {
+                    public static partial class Actions 
+                    {
+                        public static class Assets
+                        {
+                        }
+                    }
+                    public static partial class AttachmentTypes 
+                    {
+                        public static class Assets
+                        {
+                        }
+                    }
+                    public static partial class DeviceTypes 
+                    {
+                        public static class Assets
+                        {
+                        }
+                    }
+                    public static partial class Status 
+                    {
+                        public static class Assets
+                        {
+                        }
+                    }
+                    public static class Assets
+                    {
+                    }
+                }
+                public static partial class jQueryUI 
+                {
+                    public static partial class dynatree 
+                    {
+                        public static class Assets
+                        {
+                            public const string ui_dynatree_css = "~/ClientSource/Style/jQueryUI/dynatree/ui.dynatree.css";
+                        }
+                    }
+                    public static partial class images 
+                    {
+                        public static class Assets
+                        {
+                        }
+                    }
+                    public static class Assets
+                    {
+                    }
+                }
+                public static partial class Public 
+                {
+                    public static class Assets
+                    {
+                    }
+                }
+                public static partial class Shadowbox 
+                {
+                    public static class Assets
+                    {
+                        public const string shadowbox_css = "~/ClientSource/Style/Shadowbox/shadowbox.css";
+                    }
+                }
+                public static partial class Timeline 
+                {
+                    public static partial class images 
+                    {
+                        public static class Assets
+                        {
+                        }
+                    }
+                    public static class Assets
+                    {
+                        public const string graphics_css = "~/ClientSource/Style/Timeline/graphics.css";
+                        public const string timeline_bundle_css = "~/ClientSource/Style/Timeline/timeline-bundle.css";
+                    }
+                }
+                public static partial class tinymce 
+                {
+                    public static partial class img 
+                    {
+                        public static class Assets
+                        {
+                        }
+                    }
+                    public static class Assets
+                    {
+                    }
+                }
+                public static class Assets
+                {
+                    public const string ExpressionEditor_css = "~/ClientSource/Style/ExpressionEditor.css";
+                    public const string IsotopeStyles_css = "~/ClientSource/Style/IsotopeStyles.css";
+                    public const string Shadowbox_min_css = "~/ClientSource/Style/Shadowbox.min.css";
+                    public const string Timeline_min_css = "~/ClientSource/Style/Timeline.min.css";
+                }
+            }
+            public static class Assets
+            {
+            }
+        }
+        public static partial class ClientBin 
+        {
+            public static class Assets
+            {
+            }
+        }
     }
 }
 
@@ -873,6 +1355,6 @@ internal static class T4MVCHelpers {
 
 
 #endregion T4MVC
-#pragma warning restore 1591
+#pragma warning restore 1591, 3008, 3009, 0108, 0114
 
 
