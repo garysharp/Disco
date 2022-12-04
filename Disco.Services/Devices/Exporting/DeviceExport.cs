@@ -2,12 +2,14 @@
 using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Exporting;
+using Disco.Services.Plugins.Features.DetailsProvider;
 using Disco.Services.Tasks;
 using Disco.Services.Users;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,12 +19,18 @@ namespace Disco.Services.Devices.Exporting
     public static class DeviceExport
     {
 
-        public static DeviceExportResult GenerateExport(DiscoDataContext Database, IQueryable<Device> Devices, DeviceExportOptions Options, IScheduledTaskStatus TaskStatus)
+        public static DeviceExportResult GenerateExport(DiscoDataContext Database, Func<IQueryable<Device>, IQueryable<Device>> Filter, DeviceExportOptions Options, IScheduledTaskStatus TaskStatus)
         {
 
             TaskStatus.UpdateStatus(15, "Extracting records from the database");
 
-            var records = BuildRecords(Devices).ToList();
+            var devices = Database.Devices
+                .Include(d => d.AssignedUser.UserDetails)
+                .Include(d => d.DeviceDetails);
+            if (Filter != null)
+                devices = Filter(devices);
+
+            var records = BuildRecords(devices).ToList();
             // materialize device details
             records.ForEach(r =>
             {
@@ -49,6 +57,12 @@ namespace Disco.Services.Devices.Exporting
                 }
                 if (Options.DetailBatteries)
                     r.DeviceDetailBatteries = r.DeviceDetails.Batteries();
+
+                var detailsService = new DetailsProviderService(Database);
+                if (Options.DetailCustom)
+                    r.DeviceDetailCustom = detailsService.GetDetails(r.Device).Details;
+                if (Options.AssignedUserDetailCustom && r.AssignedUser != null)
+                    r.AssignedUserCustomDetails = detailsService.GetDetails(r.AssignedUser).Details;
             });
 
             TaskStatus.UpdateStatus(40, "Building metadata and database query");
@@ -65,7 +79,7 @@ namespace Disco.Services.Devices.Exporting
                 Options.AssignedUserEmailAddress)
             {
                 TaskStatus.UpdateStatus(45, "Updating Assigned User details");
-                var users = Devices.Where(d => d.AssignedUserId != null).Select(d => d.AssignedUser).Distinct().ToList();
+                var users = records.Where(d => d.AssignedUser != null).Select(d => d.AssignedUser).Distinct().ToList();
 
                 users.Select((user, index) =>
                 {
@@ -119,26 +133,21 @@ namespace Disco.Services.Devices.Exporting
             };
         }
 
-        public static DeviceExportResult GenerateExport(DiscoDataContext Database, IQueryable<Device> Devices, DeviceExportOptions Options)
-        {
-            return GenerateExport(Database, Devices, Options, ScheduledTaskMockStatus.Create("Device Export"));
-        }
-
         public static DeviceExportResult GenerateExport(DiscoDataContext Database, DeviceExportOptions Options, IScheduledTaskStatus TaskStatus)
         {
             switch (Options.ExportType)
             {
                 case DeviceExportTypes.All:
-                    return GenerateExport(Database, Database.Devices, Options, TaskStatus);
+                    return GenerateExport(Database, null, Options, TaskStatus);
                 case DeviceExportTypes.Batch:
                     if (Options.ExportTypeTargetId.HasValue && Options.ExportTypeTargetId.Value > 0)
-                        return GenerateExport(Database, Database.Devices.Where(d => d.DeviceBatchId == Options.ExportTypeTargetId), Options, TaskStatus);
+                        return GenerateExport(Database, devices => devices.Where(d => d.DeviceBatchId == Options.ExportTypeTargetId), Options, TaskStatus);
                     else
-                        return GenerateExport(Database, Database.Devices.Where(d => d.DeviceBatchId == null), Options, TaskStatus);
+                        return GenerateExport(Database, devices => devices.Where(d => d.DeviceBatchId == null), Options, TaskStatus);
                 case DeviceExportTypes.Model:
-                    return GenerateExport(Database, Database.Devices.Where(d => d.DeviceModelId == Options.ExportTypeTargetId), Options, TaskStatus);
+                    return GenerateExport(Database, devices => devices.Where(d => d.DeviceModelId == Options.ExportTypeTargetId), Options, TaskStatus);
                 case DeviceExportTypes.Profile:
-                    return GenerateExport(Database, Database.Devices.Where(d => d.DeviceProfileId == Options.ExportTypeTargetId), Options, TaskStatus);
+                    return GenerateExport(Database, devices => devices.Where(d => d.DeviceProfileId == Options.ExportTypeTargetId), Options, TaskStatus);
                 default:
                     throw new ArgumentException(string.Format("Unknown Device Export Type", Options.ExportType.ToString()), "Options");
             }
@@ -229,6 +238,7 @@ namespace Disco.Services.Devices.Exporting
 
                 DeviceUserAssignment = d.DeviceUserAssignments.Where(dua => dua.UnassignedDate == null).FirstOrDefault(),
                 AssignedUser = d.AssignedUser,
+                AssignedUserDetails = d.AssignedUser.UserDetails,
 
                 JobsTotalCount = d.Jobs.Count(),
                 JobsOpenCount = d.Jobs.Count(j => j.ClosedDate == null),
@@ -249,7 +259,14 @@ namespace Disco.Services.Devices.Exporting
             var certificateMaxCount = Math.Max(1, records.Max(r => r.DeviceCertificates?.Count() ?? 0));
             var batteriesMaxCount = Math.Max(1, records.Max(r => r.DeviceDetailBatteries?.Count ?? 0));
 
-            var allAssessors = BuildRecordAccessors(processorMaxCount, memoryMaxCount, diskDriveMaxCount, lanAdapterMaxCount, wlanAdapterMaxCount, certificateMaxCount, batteriesMaxCount);
+            IEnumerable<string> deviceDetailCustomKeys = null;
+            IEnumerable<string> assignedUserDetailCustomKeys = null;
+            if (options.DetailCustom)
+                deviceDetailCustomKeys = records.Where(r => r.DeviceDetailCustom != null).SelectMany(r => r.DeviceDetailCustom.Keys).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+            if (options.AssignedUserDetailCustom)
+                assignedUserDetailCustomKeys = records.Where(r => r.AssignedUserCustomDetails != null).SelectMany(r => r.AssignedUserCustomDetails.Keys).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+
+            var allAssessors = BuildRecordAccessors(processorMaxCount, memoryMaxCount, diskDriveMaxCount, lanAdapterMaxCount, wlanAdapterMaxCount, certificateMaxCount, batteriesMaxCount, deviceDetailCustomKeys, assignedUserDetailCustomKeys);
 
             return typeof(DeviceExportOptions).GetProperties()
                 .Where(p => p.PropertyType == typeof(bool))
@@ -271,7 +288,7 @@ namespace Disco.Services.Devices.Exporting
                 }).ToList();
         }
 
-        private static Dictionary<string, List<DeviceExportFieldMetadata>> BuildRecordAccessors(int processorMaxCount, int memoryMaxCount, int diskDriveMaxCount, int lanAdapterMaxCount, int wlanAdapterMaxCount, int certificateMaxCount, int batteriesMaxCount)
+        private static Dictionary<string, List<DeviceExportFieldMetadata>> BuildRecordAccessors(int processorMaxCount, int memoryMaxCount, int diskDriveMaxCount, int lanAdapterMaxCount, int wlanAdapterMaxCount, int certificateMaxCount, int batteriesMaxCount, IEnumerable<string> deviceDetailCustomKeys, IEnumerable<string> assignedUserDetailCustomKeys)
         {
             const string DateFormat = "yyyy-MM-dd";
             const string DateTimeFormat = DateFormat + " HH:mm:ss";
@@ -330,6 +347,16 @@ namespace Disco.Services.Devices.Exporting
             metadata.Add(nameof(DeviceExportOptions.AssignedUserGivenName), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.AssignedUserGivenName), typeof(string), r => r.AssignedUser?.GivenName, csvStringEncoded) });
             metadata.Add(nameof(DeviceExportOptions.AssignedUserPhoneNumber), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.AssignedUserPhoneNumber), typeof(string), r => r.AssignedUser?.PhoneNumber, csvStringEncoded) });
             metadata.Add(nameof(DeviceExportOptions.AssignedUserEmailAddress), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.AssignedUserEmailAddress), typeof(string), r => r.AssignedUser?.EmailAddress, csvStringEncoded) });
+            if (assignedUserDetailCustomKeys != null)
+            {
+                var assignedUserDetailCustomFields = new List<DeviceExportFieldMetadata>();
+                foreach (var detailKey in assignedUserDetailCustomKeys.OrderBy(k => k, StringComparer.OrdinalIgnoreCase))
+                {
+                    var key = detailKey;
+                    assignedUserDetailCustomFields.Add(new DeviceExportFieldMetadata(detailKey, detailKey, typeof(string), r => r.AssignedUserCustomDetails != null && r.AssignedUserCustomDetails.TryGetValue(key, out var value) ? value : null, csvStringEncoded));
+                }
+                metadata.Add(nameof(DeviceExportOptions.AssignedUserDetailCustom), assignedUserDetailCustomFields);
+            }
 
             // Jobs
             metadata.Add(nameof(DeviceExportOptions.JobsTotalCount), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.JobsTotalCount), typeof(int), r => r.JobsTotalCount, csvToStringEncoded) });
@@ -508,6 +535,16 @@ namespace Disco.Services.Devices.Exporting
             }
             metadata.Add(nameof(DeviceExportOptions.DetailBatteries), batteriesFields);
             metadata.Add(nameof(DeviceExportOptions.DetailKeyboard), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DetailKeyboard), typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyKeyboard).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded) });
+            if (deviceDetailCustomKeys != null)
+            {
+                var deviceDetailCustomFields = new List<DeviceExportFieldMetadata>();
+                foreach (var detailKey in deviceDetailCustomKeys.OrderBy(k => k, StringComparer.OrdinalIgnoreCase))
+                {
+                    var key = detailKey;
+                    deviceDetailCustomFields.Add(new DeviceExportFieldMetadata(detailKey, detailKey, typeof(string), r => r.DeviceDetailCustom != null && r.DeviceDetailCustom.TryGetValue(key, out var value) ? value : null, csvStringEncoded));
+                }
+                metadata.Add(nameof(DeviceExportOptions.DetailCustom), deviceDetailCustomFields);
+            }
 
             return metadata;
         }

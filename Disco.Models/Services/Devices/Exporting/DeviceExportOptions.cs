@@ -88,6 +88,8 @@ namespace Disco.Models.Services.Devices.Exporting
         public bool AssignedUserPhoneNumber { get; set; }
         [Display(ShortName = "Assigned User", Name = "Email Address", Description = "The email address of the user assigned to the device")]
         public bool AssignedUserEmailAddress { get; set; }
+        [Display(ShortName = "Assigned User", Name = "Custom Details", Description = "The custom details provided by plugins for the user assigned to the device")]
+        public bool AssignedUserDetailCustom { get; set; }
 
         // Jobs
         [Display(ShortName = "Jobs", Name = "Count", Description = "The total number of jobs associated with the device")]
@@ -128,6 +130,8 @@ namespace Disco.Models.Services.Devices.Exporting
         public bool DetailBattery { get; set; }
         [Display(ShortName = "Details", Name = "Keyboard", Description = "The Keyboard associated with the device")]
         public bool DetailKeyboard { get; set; }
+        [Display(ShortName = "Details", Name = "Custom Details", Description = "Custom details provided by plugins")]
+        public bool DetailCustom { get; set; }
 
         public static DeviceExportOptions DefaultOptions()
         {

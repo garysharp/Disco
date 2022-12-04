@@ -21,6 +21,7 @@ namespace Disco.Models.Services.Devices.Exporting
         public List<string> DeviceDetailLanMacAddresses { get; set; }
         public List<string> DeviceDetailWlanMacAddresses { get; set; }
         public List<Battery> DeviceDetailBatteries { get; set; }
+        public Dictionary<string, string> DeviceDetailCustom { get; set; }
 
         // Model
         public int? ModelId { get; set; }
@@ -48,6 +49,8 @@ namespace Disco.Models.Services.Devices.Exporting
         // User
         public DeviceUserAssignment DeviceUserAssignment { get; set; }
         public User AssignedUser { get; set; }
+        public IList<UserDetail> AssignedUserDetails { get; set; }
+        public Dictionary<string, string> AssignedUserCustomDetails { get; set; }
 
         // Jobs
         public int JobsTotalCount { get; set; }
