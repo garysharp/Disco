@@ -510,15 +510,35 @@
                             Since: <span data-livestamp="@Model.Job.WaitingForUserAction.ToUnixEpoc()">@Model.Job.WaitingForUserAction.ToFullDateTime()</span>
                         </div>
                     }
-                    @if (Model.UserDetails != null && Model.UserDetails.Details.Count > 0)
+                    @if (Model.UserDetails != null && Model.UserDetails.Details.Count(d => !d.Key.EndsWith("&")) > 0)
                     {
                         <div id="Job_Show_User_CustomDetails" class="status clearfix">
-                            @foreach (var detail in Model.UserDetails.Details)
+                            @foreach (var detail in Model.UserDetails.Details.Where(d => !d.Key.EndsWith("&")))
                             {
                                 <div>
-                                    <strong>@detail.Key:</strong> @Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail)
+                                    <strong>@detail.Key.TrimEnd('*'):</strong>
+                                    @if (detail.Key.EndsWith("*"))
+                                    {
+                                        <a href="" class="reveal smallMessage">[reveal]</a>
+                                        <span class="reveal hidden">@Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail)</span>
+                                    }
+                                    else
+                                    {
+                                        @Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail)
+                                    }
                                 </div>
                             }
+                            <script type="text/javascript">
+                                $(() => {
+                                    $('#Job_Show_User_CustomDetails').on('click', 'a.reveal', e => {
+                                        e.preventDefault();
+                                        const t = $(e.currentTarget);
+                                        t.next('span.reveal').removeClass('hidden');
+                                        t.remove();
+                                        return false;
+                                    })
+                                });
+                            </script>
                         </div>
                     }
                 </div>

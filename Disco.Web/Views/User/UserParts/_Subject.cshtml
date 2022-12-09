@@ -73,19 +73,39 @@
                             </table>
                         </div>
                     }
-                    @if (Model.UserDetails != null && Model.UserDetails.Details.Count > 0)
+                    @if (Model.UserDetails != null && Model.UserDetails.Details.Count(d => !d.Key.EndsWith("&")) > 0)
                     {
                         <div id="User_Show_CustomDetails" class="status clearfix">
                             <table class="none verticalHeadings">
-                                @foreach (var detail in Model.UserDetails.Details)
+                                @foreach (var detail in Model.UserDetails.Details.Where(d => !d.Key.EndsWith("&")))
                                 {
                                     <tr>
-                                        <td>@detail.Key:</td>
-                                        <td>@Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail)</td>
+                                        <td>@detail.Key.TrimEnd('*'):</td>
+                                        <td>
+                                            @if (detail.Key.EndsWith("*"))
+                                            {
+                                                <a href="" class="reveal smallMessage">[reveal]</a>
+                                                <span class="reveal hidden">@Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail)</span>
+                                            }
+                                            else
+                                            {
+                                                @Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail)
+                                            }
+                                        </td>
                                     </tr>
-
                                 }
                             </table>
+                            <script type="text/javascript">
+                                $(() => {
+                                    $('#User_Show_CustomDetails').on('click', 'a.reveal', e => {
+                                        e.preventDefault();
+                                        const t = $(e.currentTarget);
+                                        t.next('span.reveal').removeClass('hidden');
+                                        t.remove();
+                                        return false;
+                                    })
+                                });
+                            </script>
                         </div>
                     }
                     @if (Authorization.Has(Claims.User.Actions.GenerateDocuments))
