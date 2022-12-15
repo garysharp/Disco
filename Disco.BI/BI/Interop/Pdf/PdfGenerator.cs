@@ -234,7 +234,7 @@ namespace Disco.BI.Interop.Pdf
                     AcroFields.Item fields = pdfStamper.AcroFields.Fields[pdfFieldKey];
                     string fieldValue = dt.CreateUniqueIdentifier(Database, Data, CreatorUser, TimeStamp, 0).ToJson();
                     if (FlattenFields)
-                        pdfStamper.AcroFields.SetField(pdfFieldKey, String.Empty);
+                        pdfStamper.AcroFields.SetField(pdfFieldKey, string.Empty);
                     else
                         pdfStamper.AcroFields.SetField(pdfFieldKey, fieldValue);
 
@@ -295,7 +295,7 @@ namespace Disco.BI.Interop.Pdf
                                     for (int pdfFieldOrdinal = 0; pdfFieldOrdinal < fields.Size; pdfFieldOrdinal++)
                                     {
                                         AcroFields.FieldPosition pdfFieldPosition = pdfFieldPositions[pdfFieldOrdinal];
-                                        iTextSharp.text.Image pdfImage = iTextSharp.text.Image.GetInstance(imageResult.GetImage((int)pdfFieldPosition.position.Width, (int)pdfFieldPosition.position.Height));
+                                        iTextSharp.text.Image pdfImage = iTextSharp.text.Image.GetInstance(imageResult.GetImage((int)(pdfFieldPosition.position.Width * 1.6), (int)(pdfFieldPosition.position.Height * 1.6)));
                                         pdfImage.SetAbsolutePosition(pdfFieldPosition.position.Left, pdfFieldPosition.position.Bottom);
                                         pdfImage.ScaleToFit(pdfFieldPosition.position.Width, pdfFieldPosition.position.Height);
                                         pdfStamper.GetOverContent(pdfFieldPosition.page).AddImage(pdfImage);
