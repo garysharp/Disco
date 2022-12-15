@@ -30,29 +30,22 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
             }
         }
 
-        public List<Disco.Models.Repository.JobType> GetJobTypes
+        public List<Disco.Models.Repository.JobType> GetJobTypes()
         {
-            get
-            {
-                if (Types != null)
-                {
-                    var types = this.Types;
-                    return this.JobTypes.Where(m => types.Contains(m.Id)).ToList();
-                }
-                return null;
-            }
+            var types = Types;
+            if (types != null && types.Count > 0)
+                return JobTypes.Where(m => types.Contains(m.Id)).ToList();
+            else
+                return new List<Disco.Models.Repository.JobType>(JobTypes);
         }
-        public List<Disco.Models.Repository.JobSubType> GetJobSubTypes
+
+        public List<Disco.Models.Repository.JobSubType> GetJobSubTypes()
         {
-            get
-            {
-                if (SubTypes != null)
-                {
-                    var subTypes = this.SubTypes;
-                    return this.JobSubTypes.Where(m => subTypes.Contains(String.Format("{0}_{1}", m.JobTypeId, m.Id))).ToList();
-                }
-                return null;
-            }
+            var subTypes = SubTypes;
+            if (subTypes != null && subTypes.Count > 0)
+                return JobSubTypes.Where(m => subTypes.Contains($"{m.JobTypeId}_{m.Id}")).ToList();
+            else
+                return new List<Disco.Models.Repository.JobSubType>(JobSubTypes);
         }
 
         public void UpdateModel(DiscoDataContext Database)

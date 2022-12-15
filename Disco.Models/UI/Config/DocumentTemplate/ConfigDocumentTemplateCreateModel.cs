@@ -14,7 +14,7 @@ namespace Disco.Models.UI.Config.DocumentTemplate
 
         List<string> Scopes { get; }
 
-        List<Repository.JobType> GetJobTypes { get; }
-        List<Repository.JobSubType> GetJobSubTypes { get; }
+        List<Repository.JobType> GetJobTypes();
+        List<Repository.JobSubType> GetJobSubTypes();
     }
 }

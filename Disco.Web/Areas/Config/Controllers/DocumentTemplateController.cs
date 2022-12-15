@@ -152,13 +152,9 @@ namespace Disco.Web.Areas.Config.Controllers
 
                     Database.DocumentTemplates.Add(model.DocumentTemplate);
 
-                    if (model.DocumentTemplate.Scope == Disco.Models.Repository.DocumentTemplate.DocumentTemplateScopes.Job)
+                    if (model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.Job)
                     {
-                        var jobSubTypes = new List<Disco.Models.Repository.JobSubType>();
-                        jobSubTypes.AddRange(model.GetJobSubTypes);
-                        model.DocumentTemplate.JobSubTypes = jobSubTypes;
-                        //foreach (var jobSubType in model.GetJobSubTypes)
-                        //    model.AttachmentType.JobSubTypes.Add(jobSubType);
+                        model.DocumentTemplate.JobSubTypes = model.GetJobSubTypes();
                     }
 
                     Database.SaveChanges();
