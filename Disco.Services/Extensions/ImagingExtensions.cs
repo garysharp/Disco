@@ -108,7 +108,7 @@ namespace Disco.Services
 
         public static RectangleF CalculateResize(int SourceWidth, int SourceHeight, int TargetWidth, int TargetHeight, out float scaleRatio)
         {
-            scaleRatio = Math.Min((float)(TargetWidth) / SourceWidth, (float)(TargetHeight) / SourceHeight);
+            scaleRatio = Math.Min((float)TargetWidth / SourceWidth, (float)TargetHeight / SourceHeight);
 
             float width = SourceWidth * scaleRatio,
                 height = SourceHeight * scaleRatio,
@@ -126,9 +126,7 @@ namespace Disco.Services
 
         public static RectangleF CalculateResize(int SourceWidth, int SourceHeight, int TargetWidth, int TargetHeight)
         {
-            float scaleRatio;
-
-            return CalculateResize(SourceWidth, SourceHeight, TargetHeight, TargetHeight, out scaleRatio);
+            return CalculateResize(SourceWidth, SourceHeight, TargetWidth, TargetHeight, out _);
         }
 
         public static RectangleF CalculateResize(this Image Source, int TargetWidth, int TargetHeight, out float scaleRatio)
@@ -138,13 +136,14 @@ namespace Disco.Services
 
         public static RectangleF CalculateResize(this Image Source, int TargetWidth, int TargetHeight)
         {
-            return CalculateResize(Source.Width, Source.Height, TargetHeight, TargetHeight);
+            return CalculateResize(Source.Width, Source.Height, TargetWidth, TargetHeight);
         }
 
         public static void DrawImageResized(this Graphics graphics, Image SourceImage)
         {
             RectangleF clipBounds = graphics.VisibleClipBounds;
             var resizeBounds = SourceImage.CalculateResize((int)clipBounds.Width, (int)clipBounds.Height);
+            resizeBounds.Offset(clipBounds.Location);
 
             graphics.DrawImage(SourceImage, resizeBounds, new RectangleF(0, 0, SourceImage.Width, SourceImage.Height), GraphicsUnit.Pixel);
         }

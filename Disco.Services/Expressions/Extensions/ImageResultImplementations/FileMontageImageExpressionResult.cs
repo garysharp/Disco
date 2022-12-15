@@ -91,8 +91,7 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
 
                         if (MontageHorizontalLayout)
                             DoHorizontalLayout(images, montageGraphics);
-                        else
-                            if (MontageVerticalLayout)
+                        else if (MontageVerticalLayout)
                             DoVirticalLayout(images, montageGraphics);
                         else
                             DoTableLayout(images, montageGraphics);
@@ -164,7 +163,7 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
                     {
                         var image = Images[imageIndex];
                         var cellPoint = new PointF((cellSize.Width * columnIndex) + (Padding * columnIndex), (cellSize.Height * rowIndex) + (Padding * rowIndex));
-                        MontageGraphics.Clip = new Region(new RectangleF(cellPoint, cellSize));
+                        MontageGraphics.SetClip(new RectangleF(cellPoint, cellSize));
                         MontageGraphics.DrawImageResized(image);
                         imageIndex++;
                     }
