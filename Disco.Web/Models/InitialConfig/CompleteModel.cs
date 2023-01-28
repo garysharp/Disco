@@ -83,7 +83,6 @@ namespace Disco.Web.Models.InitialConfig
             catch (Exception ex)
             {
                 DiscoIctComAuWebResult = new Exception("Could not resolve the name 'discoict.com.au'", ex);
-                throw;
             }
             #endregion
 
