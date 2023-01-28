@@ -8,7 +8,7 @@ if (!document.DiscoFunctions.PropertyChangeHelper) {
         }
         return propertyField.val();
     };
-    document.DiscoFunctions.PropertyChangeHelper = function (propertyField, fieldWatermark, updateUrl, updatePropertyName, data) {
+    document.DiscoFunctions.PropertyChangeHelper = function (propertyField, fieldWatermark, updateUrl, updatePropertyName, data, validator) {
         var fieldValue = document.DiscoFunctions.PropertyValue(propertyField);
         var fieldChangeToken = null;
         var $ajaxSave = propertyField.nextAll('.ajaxSave').first();
@@ -17,6 +17,10 @@ if (!document.DiscoFunctions.PropertyChangeHelper) {
             $ajaxSave.hide();
             var changedValue = document.DiscoFunctions.PropertyValue(propertyField);
             if (fieldValue != changedValue) {
+                if (validator && !validator(changedValue)) {
+                    return;
+                }
+
                 fieldValue = changedValue;
                 if (fieldChangeToken)
                     window.clearTimeout(fieldChangeToken);

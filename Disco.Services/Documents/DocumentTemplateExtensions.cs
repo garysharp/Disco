@@ -99,19 +99,19 @@ namespace Disco.Services
             switch (scope)
             {
                 case AttachmentTypes.Device:
-                    var device = database.Devices.Find(targetId);
+                    var device = database.Devices.Include(d => d.AssignedUser).First(d => d.SerialNumber == targetId);
                     targetUser = device?.AssignedUser;
                     return device;
                 case AttachmentTypes.Job:
                     if (!int.TryParse(targetId, out var targetIdInt))
                         throw new ArgumentOutOfRangeException(nameof(targetId));
-                    var job = database.Jobs.Find(targetIdInt);
+                    var job = database.Jobs.Include(j => j.User).First(j => j.Id == targetIdInt);
                     targetUser = job?.User;
                     return job;
                 case AttachmentTypes.User:
                     // special usecase in resolving users (they may not exist in the database yet)
                     targetId = ActiveDirectory.ParseDomainAccountId(targetId);
-                    var user = database.Users.Find(targetId);
+                    var user = database.Users.First(u => u.UserId == targetId);
                     if (user == null)
                     {
                         // try importing user

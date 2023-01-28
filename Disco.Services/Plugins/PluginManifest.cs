@@ -156,6 +156,7 @@ namespace Disco.Services.Plugins
                 "Microsoft.Owin.Security",
                 "Microsoft.Web.Infrastructure",
                 "Newtonsoft.Json",
+                "Newtonsoft.Json.Bson",
                 "Owin",
                 "PdfiumViewer",
                 "PdfSharp",
