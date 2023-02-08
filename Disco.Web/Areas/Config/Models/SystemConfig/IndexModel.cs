@@ -134,7 +134,7 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
                 EmailReplyToAddress = config.EmailReplyToAddress,
                 EmailEnableSsl = config.EmailEnableSsl,
                 EmailUsername = config.EmailUsername,
-                EmailPassword = config.EmailPassword,
+                EmailPassword = null,
                 EmailIsConfigured = EmailService.IsConfigured,
                 UpdateLatestResponse = config.UpdateLastCheckResponse,
                 UpdateRunningStatus = UpdateQueryTask.RunningStatus,

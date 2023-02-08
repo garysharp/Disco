@@ -2233,60 +2233,61 @@ WriteLiteral(@"                    </div>
 WriteLiteral("\';\r\n                                var data = {\r\n                               " +
 "     SmtpServer: $(\'#EmailSmtpServer\').val(),\r\n                                 " +
 "   SmtpPort: $(\'#EmailSmtpPort\').val(),\r\n                                    Fro" +
-"mAddress: $(\'#EmailFromAddress\').val(),\r\n                                    Ena" +
-"bleSsl: $(\'#EmailEnableSsl\').is(\':checked\'),\r\n                                  " +
-"  Username: $(\'#EmailUsername\').val(),\r\n                                    Pass" +
-"word: $(\'#EmailPassword\').val(),\r\n                                    \'__Request" +
-"VerificationToken\': button.parent().find(\'input[name=\"__RequestVerificationToken" +
-"\"]\').first().val()\r\n                                }\r\n                         " +
-"       var ajaxLoading = button.next(\'.ajaxLoading\').first().show();\r\n\r\n        " +
-"                        $.ajax({\r\n                                    type: \'POS" +
-"T\',\r\n                                    dataType: \'json\',\r\n                    " +
-"                url: url,\r\n                                    data: data,\r\n    " +
-"                                complete: function (response, result) {\r\n       " +
-"                                 if (result != \'success\' || response.responseJSO" +
-"N != \'OK\') {\r\n                                            alert(\'Unable to chang" +
-"e email settings:\\nCheck logs for more information\');\r\n                         " +
-"                   ajaxLoading.hide();\r\n                                        " +
-"} else {\r\n                                            ajaxLoading.hide().next(\'." +
-"ajaxOk\').show().delay(\'fast\').fadeOut(\'slow\');\r\n                                " +
-"            if (!!$(\'#EmailSmtpServer\').val()) {\r\n                              " +
-"                  testButton.removeAttr(\'disabled\');\r\n                          " +
-"                  } else {\r\n                                                test" +
-"Button.attr(\'disabled\', \'disabled\');\r\n                                          " +
-"  }\r\n                                        }\r\n                                " +
-"    }\r\n                                });\r\n                            });\r\n\r\n " +
-"                           testButton.closest(\'table\').find(\'td>input\').change(f" +
-"unction () {\r\n                                testButton.attr(\'disabled\', \'disab" +
-"led\');\r\n                            });\r\n                            testButton." +
-"click(function () {\r\n                                if (!testDialog) {\r\n       " +
-"                             testDialog = $(\'#Config_System_Email_Test_Dialog\')\r" +
-"\n                                        .dialog({\r\n                            " +
-"                resizable: false,\r\n                                            h" +
-"eight: 180,\r\n                                            modal: true,\r\n         " +
-"                                   autoOpen: false,\r\n                           " +
-"                 buttons: {\r\n                                                Sen" +
-"d: function () {\r\n                                                    var $this " +
-"= $(this);\r\n                                                    var recipientInp" +
-"ut = $(\'#Config_System_Email_Test_Recipient\');\r\n                                " +
-"                    if (!!recipientInput.val()) {\r\n                             " +
-"                           $this.dialog(\"disable\");\r\n                           " +
-"                             $this.dialog(\"option\", \"buttons\", null);\r\n         " +
-"                                               recipientInput.closest(\'form\').su" +
-"bmit()\r\n                                                    } else {\r\n          " +
-"                                              alert(\'Enter the recipient address" +
-" for the test email\');\r\n                                                    }\r\n " +
-"                                               },\r\n                             " +
-"                   Cancel: function () {\r\n                                      " +
-"              $(this).dialog(\"close\");\r\n                                        " +
-"        }\r\n                                            }\r\n                      " +
-"                  });\r\n                                }\r\n                      " +
-"          testDialog.dialog(\'open\');\r\n                            });\r\n\r\n       " +
-"                 });\r\n                    </script>\r\n                </td>\r\n    " +
-"        </tr>\r\n        </table>\r\n    </div>\r\n");
+"mAddress: $(\'#EmailFromAddress\').val(),\r\n                                    Rep" +
+"lyToAddress: $(\'#EmailReplyToAddress\').val(),\r\n                                 " +
+"   EnableSsl: $(\'#EmailEnableSsl\').is(\':checked\'),\r\n                            " +
+"        Username: $(\'#EmailUsername\').val(),\r\n                                  " +
+"  Password: $(\'#EmailPassword\').val(),\r\n                                    \'__R" +
+"equestVerificationToken\': button.parent().find(\'input[name=\"__RequestVerificatio" +
+"nToken\"]\').first().val()\r\n                                }\r\n                   " +
+"             var ajaxLoading = button.next(\'.ajaxLoading\').first().show();\r\n\r\n  " +
+"                              $.ajax({\r\n                                    type" +
+": \'POST\',\r\n                                    dataType: \'json\',\r\n              " +
+"                      url: url,\r\n                                    data: data," +
+"\r\n                                    complete: function (response, result) {\r\n " +
+"                                       if (result != \'success\' || response.respo" +
+"nseJSON != \'OK\') {\r\n                                            alert(\'Unable to" +
+" change email settings:\\nCheck logs for more information\');\r\n                   " +
+"                         ajaxLoading.hide();\r\n                                  " +
+"      } else {\r\n                                            ajaxLoading.hide().n" +
+"ext(\'.ajaxOk\').show().delay(\'fast\').fadeOut(\'slow\');\r\n                          " +
+"                  if (!!$(\'#EmailSmtpServer\').val()) {\r\n                        " +
+"                        testButton.removeAttr(\'disabled\');\r\n                    " +
+"                        } else {\r\n                                              " +
+"  testButton.attr(\'disabled\', \'disabled\');\r\n                                    " +
+"        }\r\n                                        }\r\n                          " +
+"          }\r\n                                });\r\n                            })" +
+";\r\n\r\n                            testButton.closest(\'table\').find(\'td>input\').ch" +
+"ange(function () {\r\n                                testButton.attr(\'disabled\', " +
+"\'disabled\');\r\n                            });\r\n                            testB" +
+"utton.click(function () {\r\n                                if (!testDialog) {\r\n " +
+"                                   testDialog = $(\'#Config_System_Email_Test_Dia" +
+"log\')\r\n                                        .dialog({\r\n                      " +
+"                      resizable: false,\r\n                                       " +
+"     height: 180,\r\n                                            modal: true,\r\n   " +
+"                                         autoOpen: false,\r\n                     " +
+"                       buttons: {\r\n                                             " +
+"   Send: function () {\r\n                                                    var " +
+"$this = $(this);\r\n                                                    var recipi" +
+"entInput = $(\'#Config_System_Email_Test_Recipient\');\r\n                          " +
+"                          if (!!recipientInput.val()) {\r\n                       " +
+"                                 $this.dialog(\"disable\");\r\n                     " +
+"                                   $this.dialog(\"option\", \"buttons\", null);\r\n   " +
+"                                                     recipientInput.closest(\'for" +
+"m\').submit()\r\n                                                    } else {\r\n    " +
+"                                                    alert(\'Enter the recipient a" +
+"ddress for the test email\');\r\n                                                  " +
+"  }\r\n                                                },\r\n                       " +
+"                         Cancel: function () {\r\n                                " +
+"                    $(this).dialog(\"close\");\r\n                                  " +
+"              }\r\n                                            }\r\n                " +
+"                        });\r\n                                }\r\n                " +
+"                testDialog.dialog(\'open\');\r\n                            });\r\n\r\n " +
+"                       });\r\n                    </script>\r\n                </td>" +
+"\r\n            </tr>\r\n        </table>\r\n    </div>\r\n");
 
             
-            #line 830 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 831 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
 }
 else
 {
@@ -2311,7 +2312,7 @@ WriteLiteral(">\r\n                    SMTP Server:\r\n                </th>\r\n
 WriteLiteral("                    ");
 
             
-            #line 841 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 842 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.EmailSmtpServer));
 
             
@@ -2327,7 +2328,7 @@ WriteLiteral(">\r\n                    Port:\r\n                </th>\r\n       
 WriteLiteral("                    ");
 
             
-            #line 849 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 850 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.EmailSmtpPort));
 
             
@@ -2344,7 +2345,7 @@ WriteLiteral(">\r\n                    Default From Address:\r\n                
 WriteLiteral("                    ");
 
             
-            #line 857 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 858 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.EmailFromAddress));
 
             
@@ -2361,7 +2362,7 @@ WriteLiteral(">\r\n                    Reply To Address:\r\n                </th
 WriteLiteral("                    ");
 
             
-            #line 865 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 866 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.EmailReplyToAddress));
 
             
@@ -2378,7 +2379,7 @@ WriteLiteral(">\r\n                    Enable SSL:\r\n                </th>\r\n 
 WriteLiteral("                    ");
 
             
-            #line 873 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 874 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.CheckBoxFor(m => m.EmailEnableSsl, new { disabled = "disabled" }));
 
             
@@ -2387,7 +2388,7 @@ WriteLiteral("                    ");
 WriteLiteral(" ");
 
             
-            #line 873 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 874 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                                                                                        Write(Html.LabelFor(m => m.EmailEnableSsl));
 
             
@@ -2403,7 +2404,7 @@ WriteLiteral(">\r\n                    Username:\r\n                </th>\r\n   
 WriteLiteral("                    ");
 
             
-            #line 881 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 882 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
                Write(Html.DisplayFor(m => m.EmailUsername));
 
             
@@ -2419,7 +2420,7 @@ WriteLiteral(">\r\n                    Password:\r\n                </th>\r\n   
 "table>\r\n    </div>\r\n");
 
             
-            #line 894 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 895 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
 }
 
             
@@ -2434,7 +2435,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 896 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
+            #line 897 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
 Write(Html.ActionLinkButton("Update Device Last Network Logons", MVC.API.System.UpdateLastNetworkLogonDates()));
 
             
