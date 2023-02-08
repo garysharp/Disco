@@ -24,6 +24,8 @@ namespace Disco.Web
 
         protected void Application_Start()
         {
+            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+
             if (AppConfig.InitializeDatabase())
             {
                 // Database Initialized
