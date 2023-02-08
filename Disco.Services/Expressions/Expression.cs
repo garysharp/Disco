@@ -209,16 +209,13 @@ namespace Disco.Services.Expressions
                 if (target is User targetUser)
                 {
                     detailsVariables.Add("UserDetails", new LazyDictionary(() => detailsService.GetDetails(targetUser).Details));
-                    detailsVariables.Add("AssignedDeviceDetails", targetUser.CurrentDeviceUserAssignments().Select(a => new { a.Device, Details = new LazyDictionary(() => detailsService.GetDetails(targetUser).Details) }).ToDictionary(d => d.Device.SerialNumber, d => d.Details, StringComparer.OrdinalIgnoreCase));
                 }
                 else if (target is Job targetJob)
                 {
                     detailsVariables.Add("UserDetails", targetJob.User == null ? (IDictionary<string, string>)new Dictionary<string, string>() : new LazyDictionary(() => detailsService.GetDetails(targetJob.User).Details));
-                    detailsVariables.Add("DeviceDetails", targetJob.Device == null ? (IDictionary<string, string>)new Dictionary<string, string>() : new LazyDictionary(() => detailsService.GetDetails(targetJob.Device).Details));
                 }
                 else if (target is Device targetDevice)
                 {
-                    detailsVariables.Add("DeviceDetails", new LazyDictionary(() => detailsService.GetDetails(targetDevice).Details));
                     detailsVariables.Add("UserDetails", targetDevice.AssignedUser == null ? (IDictionary<string, string>)new Dictionary<string, string>() : new LazyDictionary(() => detailsService.GetDetails(targetDevice.AssignedUser).Details));
                 }
             }
@@ -284,16 +281,6 @@ namespace Disco.Services.Expressions
                 {
                     "#UserDetails",
                     typeof(Dictionary<string, string>).AssemblyQualifiedName
-                },
-
-                {
-                    "#DeviceDetails",
-                    typeof(Dictionary<string, string>).AssemblyQualifiedName
-                },
-
-                {
-                    "#AssignedDeviceDetails",
-                    typeof(Dictionary<string, Dictionary<string, string>>).AssemblyQualifiedName
                 },
             };
         }

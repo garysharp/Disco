@@ -58,11 +58,11 @@ namespace Disco.Services.Devices.Exporting
                 if (Options.DetailBatteries)
                     r.DeviceDetailBatteries = r.DeviceDetails.Batteries();
 
-                var detailsService = new DetailsProviderService(Database);
-                if (Options.DetailCustom)
-                    r.DeviceDetailCustom = detailsService.GetDetails(r.Device).Details;
                 if (Options.AssignedUserDetailCustom && r.AssignedUser != null)
+                {
+                    var detailsService = new DetailsProviderService(Database);
                     r.AssignedUserCustomDetails = detailsService.GetDetails(r.AssignedUser).Details;
+                }
             });
 
             TaskStatus.UpdateStatus(40, "Building metadata and database query");
@@ -259,14 +259,11 @@ namespace Disco.Services.Devices.Exporting
             var certificateMaxCount = Math.Max(1, records.Max(r => r.DeviceCertificates?.Count() ?? 0));
             var batteriesMaxCount = Math.Max(1, records.Max(r => r.DeviceDetailBatteries?.Count ?? 0));
 
-            IEnumerable<string> deviceDetailCustomKeys = null;
             IEnumerable<string> assignedUserDetailCustomKeys = null;
-            if (options.DetailCustom)
-                deviceDetailCustomKeys = records.Where(r => r.DeviceDetailCustom != null).SelectMany(r => r.DeviceDetailCustom.Keys).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
             if (options.AssignedUserDetailCustom)
                 assignedUserDetailCustomKeys = records.Where(r => r.AssignedUserCustomDetails != null).SelectMany(r => r.AssignedUserCustomDetails.Keys).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 
-            var allAssessors = BuildRecordAccessors(processorMaxCount, memoryMaxCount, diskDriveMaxCount, lanAdapterMaxCount, wlanAdapterMaxCount, certificateMaxCount, batteriesMaxCount, deviceDetailCustomKeys, assignedUserDetailCustomKeys);
+            var allAssessors = BuildRecordAccessors(processorMaxCount, memoryMaxCount, diskDriveMaxCount, lanAdapterMaxCount, wlanAdapterMaxCount, certificateMaxCount, batteriesMaxCount, assignedUserDetailCustomKeys);
 
             return typeof(DeviceExportOptions).GetProperties()
                 .Where(p => p.PropertyType == typeof(bool))
@@ -288,7 +285,7 @@ namespace Disco.Services.Devices.Exporting
                 }).ToList();
         }
 
-        private static Dictionary<string, List<DeviceExportFieldMetadata>> BuildRecordAccessors(int processorMaxCount, int memoryMaxCount, int diskDriveMaxCount, int lanAdapterMaxCount, int wlanAdapterMaxCount, int certificateMaxCount, int batteriesMaxCount, IEnumerable<string> deviceDetailCustomKeys, IEnumerable<string> assignedUserDetailCustomKeys)
+        private static Dictionary<string, List<DeviceExportFieldMetadata>> BuildRecordAccessors(int processorMaxCount, int memoryMaxCount, int diskDriveMaxCount, int lanAdapterMaxCount, int wlanAdapterMaxCount, int certificateMaxCount, int batteriesMaxCount, IEnumerable<string> assignedUserDetailCustomKeys)
         {
             const string DateFormat = "yyyy-MM-dd";
             const string DateTimeFormat = DateFormat + " HH:mm:ss";
@@ -535,16 +532,6 @@ namespace Disco.Services.Devices.Exporting
             }
             metadata.Add(nameof(DeviceExportOptions.DetailBatteries), batteriesFields);
             metadata.Add(nameof(DeviceExportOptions.DetailKeyboard), new List<DeviceExportFieldMetadata>() { new DeviceExportFieldMetadata(nameof(DeviceExportOptions.DetailKeyboard), typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyKeyboard).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded) });
-            if (deviceDetailCustomKeys != null)
-            {
-                var deviceDetailCustomFields = new List<DeviceExportFieldMetadata>();
-                foreach (var detailKey in deviceDetailCustomKeys.OrderBy(k => k, StringComparer.OrdinalIgnoreCase))
-                {
-                    var key = detailKey;
-                    deviceDetailCustomFields.Add(new DeviceExportFieldMetadata(detailKey, detailKey, typeof(string), r => r.DeviceDetailCustom != null && r.DeviceDetailCustom.TryGetValue(key, out var value) ? value : null, csvStringEncoded));
-                }
-                metadata.Add(nameof(DeviceExportOptions.DetailCustom), deviceDetailCustomFields);
-            }
 
             return metadata;
         }

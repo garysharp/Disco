@@ -20,6 +20,5 @@ namespace Disco.Models.UI.Job
         List<JobLocationReference> LocationOptions { get; set; }
         DetailsResult UserDetails { get; set; }
         bool HasUserPhoto { get; set; }
-        DetailsResult DeviceDetails { get; set; }
     }
 }

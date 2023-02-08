@@ -9,6 +9,7 @@ namespace Disco.Services.Plugins.Features.DetailsProvider
     public abstract class DetailsProviderFeature : PluginFeature
     {
         public abstract DetailsResult GetDetails(DiscoDataContext database, User user, DateTime? cacheTimestamp);
+        [Obsolete("Never used")]
         public abstract DetailsResult GetDetails(DiscoDataContext database, Device device, DateTime? cacheTimestamp);
         public abstract byte[] GetUserPhoto(DiscoDataContext database, User user, DateTime? cacheTimestamp);
     }

@@ -254,17 +254,6 @@
                             }
                         }
                     </div>
-                    @if (Model.DeviceDetails != null && Model.DeviceDetails.Details.Count > 0)
-                    {
-                        <div id="Job_Show_Device_CustomDetails" class="status clearfix">
-                            @foreach (var detail in Model.DeviceDetails.Details)
-                            {
-                                <div>
-                                    <strong>@detail.Key:</strong> @Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail)
-                                </div>
-                            }
-                        </div>
-                    }
                     @if (Model.Job.DeviceHeld.HasValue)
                     {
                         var canEditLocation = Authorization.Has(Claims.Job.Properties.DeviceHeldLocation);

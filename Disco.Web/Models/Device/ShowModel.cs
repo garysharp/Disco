@@ -35,7 +35,6 @@ namespace Disco.Web.Models.Device
             HandlersPresent = Plugins.GetPluginFeatures(typeof(DocumentHandlerProviderFeature)).Any(),
         };
 
-        public DetailsResult DeviceDetails { get; set; }
         public DetailsResult AssignedUserDetails { get; set; }
         public bool HasAssignedUserPhoto { get; set; }
     }

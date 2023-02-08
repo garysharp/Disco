@@ -20,6 +20,5 @@ namespace Disco.Models.UI.User
         IClaimNavigatorItem ClaimNavigator { get; set; }
         DetailsResult UserDetails { get; set; }
         bool HasUserPhoto { get; set; }
-        Dictionary<string, DetailsResult> AssignedDevicesDetails { get; set; }
     }
 }

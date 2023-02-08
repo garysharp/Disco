@@ -21,7 +21,6 @@ namespace Disco.Models.UI.Device
 
         List<Repository.DocumentTemplate> DocumentTemplates { get; set; }
         List<DocumentTemplatePackage> DocumentTemplatePackages { get; set; }
-        DetailsResult DeviceDetails { get; set; }
         DetailsResult AssignedUserDetails { get; set; }
         bool HasAssignedUserPhoto { get; set; }
     }

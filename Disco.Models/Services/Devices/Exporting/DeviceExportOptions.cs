@@ -130,8 +130,6 @@ namespace Disco.Models.Services.Devices.Exporting
         public bool DetailBattery { get; set; }
         [Display(ShortName = "Details", Name = "Keyboard", Description = "The Keyboard associated with the device")]
         public bool DetailKeyboard { get; set; }
-        [Display(ShortName = "Details", Name = "Custom Details", Description = "Custom details provided by plugins")]
-        public bool DetailCustom { get; set; }
 
         public static DeviceExportOptions DefaultOptions()
         {

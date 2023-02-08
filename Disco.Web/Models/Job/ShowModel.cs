@@ -36,6 +36,5 @@ namespace Disco.Web.Models.Job
 
         public DetailsResult UserDetails { get; set; }
         public bool HasUserPhoto { get; set; }
-        public DetailsResult DeviceDetails { get; set; }
     }
 }

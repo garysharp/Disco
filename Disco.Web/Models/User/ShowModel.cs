@@ -33,7 +33,6 @@ namespace Disco.Web.Models.User
 
         public DetailsResult UserDetails { get; set; }
         public bool HasUserPhoto { get; set; }
-        public Dictionary<string, DetailsResult> AssignedDevicesDetails { get; set; }
 
         public FancyTreeNode[] ClaimNavigatorFancyTreeNodes
         {

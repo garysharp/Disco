@@ -3,7 +3,6 @@
     Authorization.Require(Claims.User.Show);
 
     var currentDeviceAssignments = Model.User.DeviceUserAssignments.Where(dua => !dua.UnassignedDate.HasValue).OrderByDescending(dua => dua.AssignedDate).ToList();
-    Disco.Models.Services.Plugins.Details.DetailsResult deviceDetails;
 }
 <table id="User_Show_Subjects">
     <tbody>
@@ -419,16 +418,6 @@
                                                             <span class="User_Show_AssignedDevices_CurrentAssignment_Assigned">@CommonHelpers.FriendlyDate(assignment.AssignedDate)</span>
                                                         </td>
                                                     </tr>
-                                                    @if (Model.AssignedDevicesDetails != null && Model.AssignedDevicesDetails.TryGetValue(assignment.DeviceSerialNumber, out deviceDetails) && deviceDetails.Details.Count > 0)
-                                                    {
-                                                        foreach (var detail in deviceDetails.Details)
-                                                        {
-                                                            <tr>
-                                                                <td>@detail.Key:</td>
-                                                                <td>@Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail)</td>
-                                                            </tr>
-                                                        }
-                                                    }
                                                 </tbody>
                                             </table>
                                         </div>

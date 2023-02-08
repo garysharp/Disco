@@ -187,37 +187,6 @@
                         </tr>
                     </table>
                 </div>
-                @if (Model.DeviceDetails != null && Model.DeviceDetails.Details.Count(d => !d.Key.EndsWith("&")) > 0)
-                {
-                    <div id="Device_Show_CustomDetails" class="status clearfix">
-                        @foreach (var detail in Model.DeviceDetails.Details.Where(d => !d.Key.EndsWith("&")))
-                        {
-                            <div>
-                                <strong>@detail.Key.TrimEnd('*'):</strong>
-                                @if (detail.Key.EndsWith("*"))
-                                {
-                                    <a href="" class="reveal smallMessage">[reveal]</a>
-                                    <span class="reveal hidden">@Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail)</span>
-                                }
-                                else
-                                {
-                                    @Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail)
-                                }
-                            </div>
-                        }
-                        <script type="text/javascript">
-                            $(() => {
-                                $('#Device_Show_CustomDetails').on('click', 'a.reveal', e => {
-                                    e.preventDefault();
-                                    const t = $(e.currentTarget);
-                                    t.next('span.reveal').removeClass('hidden');
-                                    t.remove();
-                                    return false;
-                                })
-                            });
-                        </script>
-                    </div>
-                }
                 <div class="status">
                     @{
                         var assignedUser = Model.Device.AssignedUser;
