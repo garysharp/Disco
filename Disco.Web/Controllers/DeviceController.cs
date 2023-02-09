@@ -80,13 +80,16 @@ namespace Disco.Web.Controllers
             }
             if (string.IsNullOrWhiteSpace(m.Device.DeviceDomainId))
                 m.Device.DeviceDomainId = null;
-            try
+            if (m.Device.DeviceDomainId != null)
             {
-                m.Device.DeviceDomainId = ActiveDirectory.ParseDomainAccountId(m.Device.DeviceDomainId);
-            }
-            catch (ArgumentException ex)
-            {
-                ModelState.AddModelError("Device.DeviceDomainId", ex.Message);
+                try
+                {
+                    m.Device.DeviceDomainId = ActiveDirectory.ParseDomainAccountId(m.Device.DeviceDomainId);
+                }
+                catch (ArgumentException ex)
+                {
+                    ModelState.AddModelError("Device.DeviceDomainId", ex.Message);
+                }
             }
 
             if (ModelState.IsValid)
