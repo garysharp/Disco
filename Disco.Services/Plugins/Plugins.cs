@@ -3,6 +3,7 @@ using Disco.Models.Services.Interop.DiscoServices;
 using Disco.Services.Interop.DiscoServices;
 using System;
 using System.Collections.Generic;
+using System.Configuration.Assemblies;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace Disco.Services.Plugins
     {
         private static Dictionary<Assembly, PluginManifest> _PluginAssemblyManifests;
         private static Dictionary<string, PluginManifest> _PluginManifests;
+        private static Dictionary<string, string> _PluginAssemblyReferences;
         internal static Dictionary<Type, string> FeatureCategoryDisplayNames;
 
         internal static object _PluginLock = new object();
@@ -165,7 +167,7 @@ namespace Disco.Services.Plugins
 
             return _PluginManifests.Values.SelectMany(pm => pm.Features).Where(fm => fm.Id == PluginFeatureId).Count() > 0;
         }
-        
+
         public static PluginFeatureManifest GetPluginFeature(string PluginFeatureId, Type CategoryType)
         {
             if (_PluginManifests == null)
@@ -180,9 +182,9 @@ namespace Disco.Services.Plugins
                 return featureManifest;
             else
                 if (CategoryType.IsAssignableFrom(featureManifest.CategoryType))
-                    return featureManifest;
-                else
-                    throw new InvalidFeatureCategoryTypeException(CategoryType, PluginFeatureId);
+                return featureManifest;
+            else
+                throw new InvalidFeatureCategoryTypeException(CategoryType, PluginFeatureId);
         }
         public static bool TryGetPluginFeature(string PluginFeatureId, Type CategoryType, out PluginFeatureManifest PluginFeatureManifest)
         {
@@ -275,6 +277,7 @@ namespace Disco.Services.Plugins
                         AppDomain appDomain = AppDomain.CurrentDomain;
 
                         // Subscribe to Assembly Resolving
+                        _PluginAssemblyReferences = new Dictionary<string, string>();
                         appDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
                         DirectoryInfo pluginDirectoryRoot = new DirectoryInfo(PluginPath);
@@ -314,6 +317,8 @@ namespace Disco.Services.Plugins
                                                     throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] does not support this version of Disco (Requires v{2} or greater)", pluginManifest.Id, pluginManifest.VersionFormatted, pluginManifest.HostVersionMin.ToString()));
                                                 if (pluginManifest.HostVersionMax != null && pluginManifest.HostVersionMax < hostVersion)
                                                     throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] does not support this version of Disco (Support expired as of v{2})", pluginManifest.Id, pluginManifest.VersionFormatted, pluginManifest.HostVersionMax.ToString()));
+
+                                                RegisterPluginAssemblyReferences(pluginManifest);
 
                                                 pluginManifest.InitializePlugin(Database);
                                                 loadedPlugins[pluginManifest.Id] = pluginManifest;
@@ -520,49 +525,33 @@ namespace Disco.Services.Plugins
 
         #region Plugin Referenced Assemblies Resolving
 
+        public static void RegisterPluginAssemblyReferences(PluginManifest manifest)
+        {
+            if (manifest.AssemblyReferences != null)
+            {
+                foreach (var reference in manifest.AssemblyReferences)
+                    if (!_PluginAssemblyReferences.ContainsKey(reference.Key))
+                        _PluginAssemblyReferences.Add(reference.Key, Path.Combine(manifest.PluginLocation, reference.Value));
+            }
+        }
+
         public static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            if (args.RequestingAssembly != null && args.RequestingAssembly.Location.StartsWith(PluginPath, StringComparison.OrdinalIgnoreCase) && _PluginManifests != null)
+            if (args.RequestingAssembly != null && args.RequestingAssembly.Location.StartsWith(PluginPath, StringComparison.OrdinalIgnoreCase) && _PluginAssemblyReferences != null)
             {
-                // Try best guess first
-                PluginManifest requestingPlugin = _PluginManifests.Values.Where(p => p.Type.Assembly == args.RequestingAssembly).FirstOrDefault();
-                if (requestingPlugin != null)
+                if (_PluginAssemblyReferences.TryGetValue(args.Name, out var assemblyPath))
                 {
-                    Assembly loadedAssembly = CurrentDomain_AssemblyResolve_ByPlugin(requestingPlugin, args);
-                    if (loadedAssembly != null)
-                        return loadedAssembly;
-                }
-
-                // Try all Plugin References
-                foreach (var pluginDef in _PluginManifests.Values)
-                {
-                    Assembly loadedAssembly = CurrentDomain_AssemblyResolve_ByPlugin(pluginDef, args);
-                    if (loadedAssembly != null)
-                        return loadedAssembly;
-                }
-            }
-            return null;
-        }
-        private static Assembly CurrentDomain_AssemblyResolve_ByPlugin(PluginManifest pluginManifest, ResolveEventArgs args)
-        {
-            if (pluginManifest.AssemblyReferences != null)
-            {
-                string assemblyPath;
-                if (pluginManifest.AssemblyReferences.TryGetValue(args.Name, out assemblyPath))
-                {
-                    var resolvedAssemblyPath = Path.Combine(pluginManifest.PluginLocation, assemblyPath);
-
                     try
                     {
-                        Assembly loadedAssembly = Assembly.LoadFile(resolvedAssemblyPath);
+                        Assembly loadedAssembly = Assembly.LoadFile(assemblyPath);
 
-                        PluginsLog.LogPluginReferenceAssemblyLoaded(args.Name, resolvedAssemblyPath, args.RequestingAssembly.FullName);
+                        PluginsLog.LogPluginReferenceAssemblyLoaded(args.Name, assemblyPath, args.RequestingAssembly.FullName);
 
                         return loadedAssembly;
                     }
                     catch (Exception ex)
                     {
-                        PluginsLog.LogPluginException(string.Format("Resolving Plugin Reference Assembly: '{0}' [{1}]; Requested by: '{2}' [{3}]; Disco.Plugins.DiscoPlugins.CurrentDomain_AssemblyResolve()", args.Name, resolvedAssemblyPath, args.RequestingAssembly.FullName, args.RequestingAssembly.Location), ex);
+                        PluginsLog.LogPluginException(string.Format("Resolving Plugin Reference Assembly: '{0}' [{1}]; Requested by: '{2}' [{3}]; Disco.Plugins.DiscoPlugins.CurrentDomain_AssemblyResolve()", args.Name, assemblyPath, args.RequestingAssembly.FullName, args.RequestingAssembly.Location), ex);
                     }
                 }
             }

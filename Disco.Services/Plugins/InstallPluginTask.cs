@@ -138,6 +138,8 @@ namespace Disco.Services.Plugins
                             Status.UpdateStatus(80, "Initial Package Configuration");
                             packageManifest.InstallPlugin(database, Status);
 
+                            Plugins.RegisterPluginAssemblyReferences(packageManifest);
+
                             // Initialize Plugin
                             Status.UpdateStatus(98, "Initializing Plugin for Use");
                             packageManifest.InitializePlugin(database);
