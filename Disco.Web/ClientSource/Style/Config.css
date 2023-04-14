@@ -449,6 +449,9 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.timestamp {
 div.logEventsViewport table.logEventsViewport > tbody > tr > td.eventType {
   width: 180px;
 }
+div.logEventsViewport table.logEventsViewport > tbody > tr > td.message {
+  white-space: pre-wrap;
+}
 #enrolStatus #sessions .session {
   width: 280px;
   padding: 4px 4px 4px 72px;
