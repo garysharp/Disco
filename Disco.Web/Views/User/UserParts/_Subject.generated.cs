@@ -375,7 +375,7 @@ WriteLiteral("                    ");
 
             
             #line 75 "..\..\Views\User\UserParts\_Subject.cshtml"
-                     if (Model.UserDetails != null && Model.UserDetails.Details.Count(d => !d.Key.EndsWith("&")) > 0)
+                     if (Model.UserDetails != null && Model.UserDetails.Count(d => !d.Key.EndsWith("&")) > 0)
                     {
 
             
@@ -401,7 +401,7 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 79 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                 foreach (var detail in Model.UserDetails.Details.Where(d => !d.Key.EndsWith("&")))
+                                 foreach (var detail in Model.UserDetails.Where(d => !d.Key.EndsWith("&")))
                                 {
 
             
@@ -664,14 +664,14 @@ WriteLiteral(" class=\"CreateJob_Assignment_Image\"");
 
 WriteLiteral(" alt=\"Model Image\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 8645), Tuple.Create("\"", 8766)
+WriteAttribute("src", Tuple.Create(" src=\"", 8629), Tuple.Create("\"", 8750)
             
             #line 140 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                   , Tuple.Create(Tuple.Create("", 8651), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
+                                                   , Tuple.Create(Tuple.Create("", 8635), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
             
             #line default
             #line hidden
-, 8651), false)
+, 8635), false)
 );
 
 WriteLiteral(@" />
@@ -929,14 +929,14 @@ WriteLiteral(" type=\"hidden\"");
 
 WriteLiteral(" name=\"UserId\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 15831), Tuple.Create("\"", 15857)
+WriteAttribute("value", Tuple.Create(" value=\"", 15815), Tuple.Create("\"", 15841)
             
             #line 245 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                  , Tuple.Create(Tuple.Create("", 15839), Tuple.Create<System.Object, System.Int32>(Model.User.UserId
+                                                  , Tuple.Create(Tuple.Create("", 15823), Tuple.Create<System.Object, System.Int32>(Model.User.UserId
             
             #line default
             #line hidden
-, 15839), false)
+, 15823), false)
 );
 
 WriteLiteral(" />\r\n");
@@ -978,26 +978,26 @@ WriteLiteral("\"");
 
 WriteLiteral(">\r\n                                                <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 16231), Tuple.Create("\"", 16298)
-, Tuple.Create(Tuple.Create("", 16239), Tuple.Create("fa", 16239), true)
-, Tuple.Create(Tuple.Create(" ", 16241), Tuple.Create("fa-", 16242), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 16215), Tuple.Create("\"", 16282)
+, Tuple.Create(Tuple.Create("", 16223), Tuple.Create("fa", 16223), true)
+, Tuple.Create(Tuple.Create(" ", 16225), Tuple.Create("fa-", 16226), true)
             
             #line 250 "..\..\Views\User\UserParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 16245), Tuple.Create<System.Object, System.Int32>(userFlag.Icon
+, Tuple.Create(Tuple.Create("", 16229), Tuple.Create<System.Object, System.Int32>(userFlag.Icon
             
             #line default
             #line hidden
-, 16245), false)
-, Tuple.Create(Tuple.Create(" ", 16261), Tuple.Create("fa-fw", 16262), true)
-, Tuple.Create(Tuple.Create(" ", 16267), Tuple.Create("fa-lg", 16268), true)
-, Tuple.Create(Tuple.Create(" ", 16273), Tuple.Create("d-", 16274), true)
+, 16229), false)
+, Tuple.Create(Tuple.Create(" ", 16245), Tuple.Create("fa-fw", 16246), true)
+, Tuple.Create(Tuple.Create(" ", 16251), Tuple.Create("fa-lg", 16252), true)
+, Tuple.Create(Tuple.Create(" ", 16257), Tuple.Create("d-", 16258), true)
             
             #line 250 "..\..\Views\User\UserParts\_Subject.cshtml"
-               , Tuple.Create(Tuple.Create("", 16276), Tuple.Create<System.Object, System.Int32>(userFlag.IconColour
+               , Tuple.Create(Tuple.Create("", 16260), Tuple.Create<System.Object, System.Int32>(userFlag.IconColour
             
             #line default
             #line hidden
-, 16276), false)
+, 16260), false)
 );
 
 WriteLiteral("></i>");
@@ -1178,14 +1178,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 21696), Tuple.Create("\"", 21763)
+WriteAttribute("href", Tuple.Create(" href=\"", 21680), Tuple.Create("\"", 21747)
             
             #line 344 "..\..\Views\User\UserParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 21703), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Device.Show(assignment.Device.SerialNumber))
+, Tuple.Create(Tuple.Create("", 21687), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Device.Show(assignment.Device.SerialNumber))
             
             #line default
             #line hidden
-, 21703), false)
+, 21687), false)
 );
 
 WriteLiteral(">\r\n                                                <img");
@@ -1194,14 +1194,14 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Image\"");
 
 WriteLiteral(" alt=\"Model Image\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 21895), Tuple.Create("\"", 22016)
+WriteAttribute("src", Tuple.Create(" src=\"", 21879), Tuple.Create("\"", 22000)
             
             #line 345 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                     , Tuple.Create(Tuple.Create("", 21901), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
+                                                     , Tuple.Create(Tuple.Create("", 21885), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
             
             #line default
             #line hidden
-, 21901), false)
+, 21885), false)
 );
 
 WriteLiteral(" />\r\n                                            </a>\r\n");
@@ -1221,14 +1221,14 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Image\"");
 
 WriteLiteral(" alt=\"Model Image\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 22328), Tuple.Create("\"", 22449)
+WriteAttribute("src", Tuple.Create(" src=\"", 22312), Tuple.Create("\"", 22433)
             
             #line 350 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                 , Tuple.Create(Tuple.Create("", 22334), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
+                                                 , Tuple.Create(Tuple.Create("", 22318), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
             
             #line default
             #line hidden
-, 22334), false)
+, 22318), false)
 );
 
 WriteLiteral(" />\r\n");

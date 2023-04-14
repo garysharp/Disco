@@ -67,10 +67,10 @@ namespace Disco.Services.Users.Contact
             user = database.Users.First(u => u.UserId == user.UserId);
             var details = service.GetDetails(user);
 
-            if ((details?.Details?.Count ?? 0) == 0)
+            if ((details?.Count ?? 0) == 0)
                 yield break;
 
-            foreach (var item in details.Details)
+            foreach (var item in details)
             {
                 if (!contactType.HasValue || contactType.Value.HasFlag(UserContactType.Email))
                 {

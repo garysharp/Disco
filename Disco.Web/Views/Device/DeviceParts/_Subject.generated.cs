@@ -1212,7 +1212,7 @@ WriteLiteral("                                        ");
 
             
             #line 275 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                         if (Model.AssignedUserDetails != null && Model.AssignedUserDetails.Details.Count(d => !d.Key.EndsWith("&")) > 0)
+                                         if (Model.AssignedUserDetails != null && Model.AssignedUserDetails.Count(d => !d.Key.EndsWith("&")) > 0)
                                         {
 
             
@@ -1234,7 +1234,7 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 278 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                                 foreach (var detail in Model.AssignedUserDetails.Details.Where(d => !d.Key.EndsWith("&")))
+                                                 foreach (var detail in Model.AssignedUserDetails.Where(d => !d.Key.EndsWith("&")))
                                                 {
 
             
@@ -1691,39 +1691,39 @@ WriteLiteral("\"");
 
 WriteLiteral(" name=\"DeviceProfile\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 25287), Tuple.Create("\"", 25314)
-, Tuple.Create(Tuple.Create("", 25292), Tuple.Create("DeviceProfile_", 25292), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 25271), Tuple.Create("\"", 25298)
+, Tuple.Create(Tuple.Create("", 25276), Tuple.Create("DeviceProfile_", 25276), true)
             
             #line 397 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                                     , Tuple.Create(Tuple.Create("", 25306), Tuple.Create<System.Object, System.Int32>(dp.Id
+                                                     , Tuple.Create(Tuple.Create("", 25290), Tuple.Create<System.Object, System.Int32>(dp.Id
             
             #line default
             #line hidden
-, 25306), false)
+, 25290), false)
 );
 
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 25324), Tuple.Create("\"", 25352)
-, Tuple.Create(Tuple.Create("", 25330), Tuple.Create("DeviceProfile_", 25330), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 25308), Tuple.Create("\"", 25336)
+, Tuple.Create(Tuple.Create("", 25314), Tuple.Create("DeviceProfile_", 25314), true)
             
             #line 397 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                                                                           , Tuple.Create(Tuple.Create("", 25344), Tuple.Create<System.Object, System.Int32>(dp.Id
+                                                                                           , Tuple.Create(Tuple.Create("", 25328), Tuple.Create<System.Object, System.Int32>(dp.Id
             
             #line default
             #line hidden
-, 25344), false)
+, 25328), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 25353), Tuple.Create("\"", 25397)
-, Tuple.Create(Tuple.Create("", 25361), Tuple.Create("Distribution:", 25361), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 25337), Tuple.Create("\"", 25381)
+, Tuple.Create(Tuple.Create("", 25345), Tuple.Create("Distribution:", 25345), true)
             
             #line 397 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                                                                                                         , Tuple.Create(Tuple.Create(" ", 25374), Tuple.Create<System.Object, System.Int32>(dp.DistributionType
+                                                                                                                         , Tuple.Create(Tuple.Create(" ", 25358), Tuple.Create<System.Object, System.Int32>(dp.DistributionType
             
             #line default
             #line hidden
-, 25375), false)
+, 25359), false)
 );
 
 WriteLiteral(">");
@@ -1933,14 +1933,14 @@ WriteLiteral(" title=\"Warranty Valid Until\"");
 WriteLiteral(">Warranty Until:</span>\r\n                                </td>\r\n                 " +
 "               <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 31057), Tuple.Create("\"", 31205)
+WriteAttribute("class", Tuple.Create(" class=\"", 31041), Tuple.Create("\"", 31189)
             
             #line 491 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 31065), Tuple.Create<System.Object, System.Int32>(Model.Device.DeviceBatch.WarrantyValidUntil.HasValue && Model.Device.DeviceBatch.WarrantyValidUntil.Value < DateTime.Now ? "alert" : null
+, Tuple.Create(Tuple.Create("", 31049), Tuple.Create<System.Object, System.Int32>(Model.Device.DeviceBatch.WarrantyValidUntil.HasValue && Model.Device.DeviceBatch.WarrantyValidUntil.Value < DateTime.Now ? "alert" : null
             
             #line default
             #line hidden
-, 31065), false)
+, 31049), false)
 );
 
 WriteLiteral(">\r\n");
@@ -1981,14 +1981,14 @@ WriteLiteral(" title=\"Insured Until\"");
 WriteLiteral(">Insured Until:</span>\r\n                                </td>\r\n                  " +
 "              <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 32059), Tuple.Create("\"", 32195)
+WriteAttribute("class", Tuple.Create(" class=\"", 32043), Tuple.Create("\"", 32179)
             
             #line 507 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 32067), Tuple.Create<System.Object, System.Int32>(Model.Device.DeviceBatch.InsuredUntil.HasValue && Model.Device.DeviceBatch.InsuredUntil.Value < DateTime.Now ? "alert" : null
+, Tuple.Create(Tuple.Create("", 32051), Tuple.Create<System.Object, System.Int32>(Model.Device.DeviceBatch.InsuredUntil.HasValue && Model.Device.DeviceBatch.InsuredUntil.Value < DateTime.Now ? "alert" : null
             
             #line default
             #line hidden
-, 32067), false)
+, 32051), false)
 );
 
 WriteLiteral(">\r\n");
@@ -2094,39 +2094,39 @@ WriteLiteral("\"");
 
 WriteLiteral(" name=\"DeviceBatch\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 33383), Tuple.Create("\"", 33408)
-, Tuple.Create(Tuple.Create("", 33388), Tuple.Create("DeviceBatch_", 33388), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 33367), Tuple.Create("\"", 33392)
+, Tuple.Create(Tuple.Create("", 33372), Tuple.Create("DeviceBatch_", 33372), true)
             
             #line 527 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                               , Tuple.Create(Tuple.Create("", 33400), Tuple.Create<System.Object, System.Int32>(db.Id
+                                               , Tuple.Create(Tuple.Create("", 33384), Tuple.Create<System.Object, System.Int32>(db.Id
             
             #line default
             #line hidden
-, 33400), false)
+, 33384), false)
 );
 
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 33418), Tuple.Create("\"", 33444)
-, Tuple.Create(Tuple.Create("", 33424), Tuple.Create("DeviceBatch_", 33424), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 33402), Tuple.Create("\"", 33428)
+, Tuple.Create(Tuple.Create("", 33408), Tuple.Create("DeviceBatch_", 33408), true)
             
             #line 527 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                                                                   , Tuple.Create(Tuple.Create("", 33436), Tuple.Create<System.Object, System.Int32>(db.Id
+                                                                                   , Tuple.Create(Tuple.Create("", 33420), Tuple.Create<System.Object, System.Int32>(db.Id
             
             #line default
             #line hidden
-, 33436), false)
+, 33420), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 33445), Tuple.Create("\"", 33501)
-, Tuple.Create(Tuple.Create("", 33453), Tuple.Create("Purchased:", 33453), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 33429), Tuple.Create("\"", 33485)
+, Tuple.Create(Tuple.Create("", 33437), Tuple.Create("Purchased:", 33437), true)
             
             #line 527 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                                                                                                              , Tuple.Create(Tuple.Create(" ", 33463), Tuple.Create<System.Object, System.Int32>(db.PurchaseDate.ToLongDateString()
+                                                                                                              , Tuple.Create(Tuple.Create(" ", 33447), Tuple.Create<System.Object, System.Int32>(db.PurchaseDate.ToLongDateString()
             
             #line default
             #line hidden
-, 33464), false)
+, 33448), false)
 );
 
 WriteLiteral(">");
@@ -2285,14 +2285,14 @@ WriteLiteral(" id=\"Device_Show_Aspects_Model_Image\"");
 
 WriteLiteral(" alt=\"Model Image\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 38248), Tuple.Create("\"", 38358)
+WriteAttribute("src", Tuple.Create(" src=\"", 38232), Tuple.Create("\"", 38342)
             
             #line 604 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-    , Tuple.Create(Tuple.Create("", 38254), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(Model.Device.DeviceModelId, Model.Device.DeviceModel.ImageHash()))
+    , Tuple.Create(Tuple.Create("", 38238), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(Model.Device.DeviceModelId, Model.Device.DeviceModel.ImageHash()))
             
             #line default
             #line hidden
-, 38254), false)
+, 38238), false)
 );
 
 WriteLiteral(" />\r\n                </div>\r\n            </div>\r\n        </td>\r\n    </tr>\r\n    <t" +
@@ -2783,28 +2783,28 @@ WriteLiteral("                                <li>\r\n                          
 
 WriteLiteral(" type=\"radio\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 49923), Tuple.Create("\"", 50001)
-, Tuple.Create(Tuple.Create("", 49928), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 49928), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 49907), Tuple.Create("\"", 49985)
+, Tuple.Create(Tuple.Create("", 49912), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 49912), true)
             
             #line 808 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                           , Tuple.Create(Tuple.Create("", 49975), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+                           , Tuple.Create(Tuple.Create("", 49959), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 49975), false)
+, 49959), false)
 );
 
 WriteLiteral("\r\n                                           name=\"Device_Show_Device_Actions_Dec" +
 "ommission_Reason\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 50100), Tuple.Create("\"", 50134)
+WriteAttribute("value", Tuple.Create(" value=\"", 50084), Tuple.Create("\"", 50118)
             
             #line 809 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-                        , Tuple.Create(Tuple.Create("", 50108), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+                        , Tuple.Create(Tuple.Create("", 50092), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 50108), false)
+, 50092), false)
 );
 
 WriteLiteral(" ");
@@ -2818,15 +2818,15 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" />\r\n                                    <label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 50278), Tuple.Create("\"", 50357)
-, Tuple.Create(Tuple.Create("", 50284), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 50284), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 50262), Tuple.Create("\"", 50341)
+, Tuple.Create(Tuple.Create("", 50268), Tuple.Create("Device_Show_Device_Actions_Decommission_Reason_", 50268), true)
             
             #line 810 "..\..\Views\Device\DeviceParts\_Subject.cshtml"
-               , Tuple.Create(Tuple.Create("", 50331), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+               , Tuple.Create(Tuple.Create("", 50315), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 50331), false)
+, 50315), false)
 );
 
 WriteLiteral(">");

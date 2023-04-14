@@ -1,10 +1,9 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
-using Disco.Models.Services.Plugins.Details;
 using Disco.Services.Authorization;
 using Disco.Services.Users;
-using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -86,77 +85,23 @@ namespace Disco.Services.Plugins.Features.DetailsProvider
             return Path.Combine(database.DiscoConfiguration.PluginUserPhotosLocation, userHash.Substring(0, 2), $"{userHash}.jpg");
         }
 
-        public DetailsResult GetDetails(User user)
+        public Dictionary<string, string> GetDetails(User user)
         {
-            var result = new DetailsResult();
-            var saveChangesRequired = false;
-
             if (!UserService.CurrentAuthorization.HasAll(Claims.User.Show, Claims.User.ShowDetails))
-                return result;
+                return new Dictionary<string, string>();
 
-            var features = Plugins.GetPluginFeatures(typeof(DetailsProviderFeature));
-
-            if (features.Count == 0)
-                return result;
-
-            var cache = user.UserDetails?.Where(d => d.Scope == DetailsScope).ToDictionary(d => d.Key, d => new { DbDetails = d, Details = JsonConvert.DeserializeObject<DetailsResult>(d.Value) }, StringComparer.OrdinalIgnoreCase);
-
-            foreach (var feature in features)
+            if (user.UserDetails != null)
             {
-                var featureResult = default(DetailsResult);
-                if (!cache.TryGetValue(feature.Id, out var cacheResult) || cacheResult.Details.ExpiresOn < DateTime.Now || cacheResult.Details.GatheredOn < database.DiscoConfiguration.PluginDetailsCacheExpiration)
-                {
-                    var timestamp = cacheResult?.Details.GatheredOn;
-                    if (timestamp.HasValue && timestamp.Value < database.DiscoConfiguration.PluginDetailsCacheExpiration)
-                        timestamp = null;
-
-                    try
-                    {
-                        var featureInstance = feature.CreateInstance<DetailsProviderFeature>();
-                        featureResult = featureInstance.GetDetails(database, user, timestamp);
-
-                        if (featureResult != null)
-                        {
-                            if (featureResult.ExpiresOn > DateTime.Now)
-                            {
-                                if (cacheResult == null)
-                                    database.UserDetails.Add(new UserDetail() { UserId = user.UserId, Scope = DetailsScope, Key = feature.Id, Value = JsonConvert.SerializeObject(featureResult) });
-                                else
-                                    cacheResult.DbDetails.Value = JsonConvert.SerializeObject(featureResult);
-                                saveChangesRequired = true;
-                            }
-                            else if (cacheResult != null)
-                            {
-                                database.UserDetails.Remove(cacheResult.DbDetails);
-                                saveChangesRequired = true;
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        // ignore exceptions when plugins behave badly
-                    }
-                }
-                else
-                {
-                    featureResult = cacheResult.Details;
-                }
-
-                // apply feature results
-                if (featureResult != null)
-                {
-                    result.SetExpiration(featureResult.ExpiresOn);
-                    foreach (var value in featureResult.Details)
-                    {
-                        result.Details[value.Key] = value.Value;
-                    }
-                }
+                return user.UserDetails
+                    .Where(d => string.Equals(d.Scope, DetailsScope, StringComparison.Ordinal))
+                    .ToDictionary(d => d.Key, d => d.Value, StringComparer.OrdinalIgnoreCase);
+            } else
+            {
+                return database.UserDetails
+                    .Where(d => d.UserId == user.UserId &&
+                            d.Scope == DetailsScope)
+                    .ToDictionary(d => d.Key, d => d.Value, StringComparer.OrdinalIgnoreCase);
             }
-
-            if (saveChangesRequired)
-                database.SaveChanges();
-
-            return result;
         }
     }
 }

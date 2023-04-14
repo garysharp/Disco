@@ -377,7 +377,10 @@ namespace Disco.Web.Controllers
             }
 
             // Populate Custom Details
-            m.PopulateDetails(Database);
+            if (Authorization.Has(Claims.User.ShowDetails))
+            {
+                m.PopulateDetails(Database);
+            }
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobShowModel>(this.ControllerContext, m);
@@ -847,7 +850,7 @@ namespace Disco.Web.Controllers
                                     Tuple<Type, dynamic> details = providerInstance.JobDetails(Database, this, job);
 
                                     model.JobDetailsSupported = true;
-                                    model.ViewType =  details.Item1;
+                                    model.ViewType = details.Item1;
                                     model.ViewModel = details.Item2;
                                     return View(model);
                                 }

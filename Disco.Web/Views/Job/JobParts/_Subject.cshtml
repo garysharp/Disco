@@ -499,10 +499,10 @@
                             Since: <span data-livestamp="@Model.Job.WaitingForUserAction.ToUnixEpoc()">@Model.Job.WaitingForUserAction.ToFullDateTime()</span>
                         </div>
                     }
-                    @if (Model.UserDetails != null && Model.UserDetails.Details.Count(d => !d.Key.EndsWith("&")) > 0)
+                    @if (Model.UserDetails != null && Model.UserDetails.Count(d => !d.Key.EndsWith("&")) > 0)
                     {
                         <div id="Job_Show_User_CustomDetails" class="status clearfix">
-                            @foreach (var detail in Model.UserDetails.Details.Where(d => !d.Key.EndsWith("&")))
+                            @foreach (var detail in Model.UserDetails.Where(d => !d.Key.EndsWith("&")))
                             {
                                 <div>
                                     <strong>@detail.Key.TrimEnd('*'):</strong>

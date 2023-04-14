@@ -208,15 +208,15 @@ namespace Disco.Services.Expressions
             {
                 if (target is User targetUser)
                 {
-                    detailsVariables.Add("UserDetails", new LazyDictionary(() => detailsService.GetDetails(targetUser).Details));
+                    detailsVariables.Add("UserDetails", new LazyDictionary(() => detailsService.GetDetails(targetUser)));
                 }
                 else if (target is Job targetJob)
                 {
-                    detailsVariables.Add("UserDetails", targetJob.User == null ? (IDictionary<string, string>)new Dictionary<string, string>() : new LazyDictionary(() => detailsService.GetDetails(targetJob.User).Details));
+                    detailsVariables.Add("UserDetails", targetJob.User == null ? (IDictionary<string, string>)new Dictionary<string, string>() : new LazyDictionary(() => detailsService.GetDetails(targetJob.User)));
                 }
                 else if (target is Device targetDevice)
                 {
-                    detailsVariables.Add("UserDetails", targetDevice.AssignedUser == null ? (IDictionary<string, string>)new Dictionary<string, string>() : new LazyDictionary(() => detailsService.GetDetails(targetDevice.AssignedUser).Details));
+                    detailsVariables.Add("UserDetails", targetDevice.AssignedUser == null ? (IDictionary<string, string>)new Dictionary<string, string>() : new LazyDictionary(() => detailsService.GetDetails(targetDevice.AssignedUser)));
                 }
             }
 

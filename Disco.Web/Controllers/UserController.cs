@@ -114,7 +114,10 @@ namespace Disco.Web.Controllers
             }
 
             // Populate Custom Details
-            m.PopulateDetails(Database);
+            if (Authorization.Has(Claims.User.ShowDetails))
+            {
+                m.PopulateDetails(Database);
+            }
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<UserShowModel>(this.ControllerContext, m);

@@ -1,6 +1,5 @@
 ﻿using Disco.Models.Services.Documents;
 using Disco.Models.Services.Jobs.JobLists;
-using Disco.Models.Services.Plugins.Details;
 using Disco.Models.UI.Device;
 using Disco.Services.Plugins;
 using Disco.Services.Plugins.Features.DocumentHandlerProvider;
@@ -35,7 +34,7 @@ namespace Disco.Web.Models.Device
             HandlersPresent = Plugins.GetPluginFeatures(typeof(DocumentHandlerProviderFeature)).Any(),
         };
 
-        public DetailsResult AssignedUserDetails { get; set; }
+        public Dictionary<string, string> AssignedUserDetails { get; set; }
         public bool HasAssignedUserPhoto { get; set; }
     }
 }

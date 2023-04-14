@@ -283,8 +283,11 @@ namespace Disco.Web.Controllers
                 m.DeviceProfileWirelessProfileProviders = m.Device.DeviceProfile.GetWirelessProfileProviders().ToList();
             }
 
-            // Populate Custom Details
-            m.PopulateDetails(Database);
+            if (Authorization.Has(Claims.User.ShowDetails))
+            {
+                // Populate Custom Details
+                m.PopulateDetails(Database);
+            }
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<DeviceShowModel>(this.ControllerContext, m);

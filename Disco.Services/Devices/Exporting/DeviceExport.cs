@@ -61,7 +61,7 @@ namespace Disco.Services.Devices.Exporting
                 if (Options.AssignedUserDetailCustom && r.AssignedUser != null)
                 {
                     var detailsService = new DetailsProviderService(Database);
-                    r.AssignedUserCustomDetails = detailsService.GetDetails(r.AssignedUser).Details;
+                    r.AssignedUserCustomDetails = detailsService.GetDetails(r.AssignedUser);
                 }
             });
 

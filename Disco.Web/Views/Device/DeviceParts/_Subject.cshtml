@@ -272,10 +272,10 @@
                                                 </script>
                                             </div>
                                         }
-                                        @if (Model.AssignedUserDetails != null && Model.AssignedUserDetails.Details.Count(d => !d.Key.EndsWith("&")) > 0)
+                                        @if (Model.AssignedUserDetails != null && Model.AssignedUserDetails.Count(d => !d.Key.EndsWith("&")) > 0)
                                         {
                                             <div id="Device_Show_User_CustomDetails" class="status clearfix">
-                                                @foreach (var detail in Model.AssignedUserDetails.Details.Where(d => !d.Key.EndsWith("&")))
+                                                @foreach (var detail in Model.AssignedUserDetails.Where(d => !d.Key.EndsWith("&")))
                                                 {
                                                     <div>
                                                         <strong>@detail.Key.TrimEnd('*'):</strong>
