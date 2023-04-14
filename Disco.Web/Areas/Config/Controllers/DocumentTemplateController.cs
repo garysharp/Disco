@@ -12,6 +12,7 @@ using Disco.Web.Areas.Config.Models.DocumentTemplate;
 using Disco.Web.Areas.Config.Views.DocumentTemplate;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -261,6 +262,18 @@ namespace Disco.Web.Areas.Config.Controllers
                     default:
                         throw new NotSupportedException();
                 }
+            }
+            if (Authorization.Has(Claims.User.ShowDetails))
+            {
+                m.UserDetails = Database.UserDetails.Where(d => d.Scope == "Details").GroupBy(d => d.Key).Select(g => new BulkGenerateModel.ItemWithCount<string>()
+                {
+                    Item = g.Key,
+                    Count = g.Count(),
+                }).ToList();
+            }
+            else
+            {
+                m.UserDetails = new List<BulkGenerateModel.ItemWithCount<string>>();
             }
 
             // UI Extensions

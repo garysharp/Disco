@@ -37,6 +37,10 @@
         {
             <button id="AddDocumentAttachment" class="button small">Add With Document Attachment</button>
         }
+        @if (Model.UserDetails.Any(b => b.Count > 0))
+        {
+            <button id="AddUserDetail" class="button small">Add With User Detail</button>
+        }
     </div>
     <table class="genericData">
         <thead>
@@ -203,6 +207,42 @@
                 <label for="DocumentTemplate_BulkGenerate_Dialog_AddDocumentAttachment_Threshold">Attachment Added After <small>(optional)</small></label>
                 <input id="DocumentTemplate_BulkGenerate_Dialog_AddDocumentAttachment_Threshold" name="threshold" type="date" />
             </div>
+            @Html.AntiForgeryToken()
+        }
+    </div>
+}
+
+@if (Model.UserDetails.Any(b => b.Count > 0))
+{
+    <div id="DocumentTemplate_BulkGenerate_Dialog_AddUserDetail" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add User by Detail">
+        <div class="brief">
+            <div>
+                Add all users with a matching user detail to the bulk generation.
+            </div>
+        </div>
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUserDetail(), FormMethod.Post))
+        {
+            <input name="key" type="hidden" required />
+            <input name="value" type="hidden" />
+
+            <div id="DocumentTemplate_BulkGenerate_Dialog_AddUserDetail_Key" class="dialog-item-picker" style="width: 49%; float: left;">
+                @foreach (var key in Model.UserDetails)
+                {
+                    <div class="item @(key.Count == 0 ? "disabled" : null)" data-id="@key.Item">
+                        <i class="fa fa-info fa-fw fa-lg"></i>@key.Item.TrimEnd('*', '&') <small>(@key.Count.ToString("N0") user@(key.Count == 1 ? null : "s"))</small>
+                    </div>
+                }
+            </div>
+
+            @Html.AntiForgeryToken()
+        }
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateGetUserDetailValues(), FormMethod.Post))
+        {
+            <input name="key" type="hidden" required />
+
+            <div id="DocumentTemplate_BulkGenerate_Dialog_AddUserDetail_Value" class="dialog-item-picker" style="width: 49%; float: left; margin-left: 1%;">
+            </div>
+
             @Html.AntiForgeryToken()
         }
     </div>

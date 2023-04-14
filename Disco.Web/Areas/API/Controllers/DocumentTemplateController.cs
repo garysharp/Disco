@@ -1113,6 +1113,60 @@ namespace Disco.Web.Areas.API.Controllers
             return Json(results);
         }
 
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.BulkGenerate, Claims.User.Actions.GenerateDocuments, Claims.User.ShowDetails)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult BulkGenerateGetUserDetailValues(string key)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+
+            var results = Database.UserDetails.Where(d => d.Scope == "Details" && d.Key == key).Select(d => d.Value).Distinct().ToList();
+
+            return Json(results);
+        }
+
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.BulkGenerate, Claims.User.Actions.GenerateDocuments, Claims.User.ShowDetails)]
+        [HttpPost, ValidateAntiForgeryToken, ValidateInput(false)]
+        public virtual ActionResult BulkGenerateAddUserDetail(string key, string value)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+
+            var results = new List<BulkGenerateUserModel>();
+
+            var query = Database.UserDetails.Include(d => d.User).Where(d => d.Scope == "Details" && d.Key == key);
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                query = query.Where(d => d.Value == value);
+            }
+            var details = query.ToList();
+
+            if (details.Count == 0)
+            {
+                results.Add(new BulkGenerateUserModel()
+                {
+                    Id = key,
+                    DisplayName = $"{key}{(string.IsNullOrWhiteSpace(value) ? null : $":{value}")}",
+                    Scope = $"User Detail '{key}' didn't match any users{(string.IsNullOrWhiteSpace(value) ? null : $" with the value '{value}'")}",
+                    IsError = true,
+                });
+            } else
+            {
+                foreach (var user in details.Select(d => d.User).Distinct())
+                {
+                    results.Add(new BulkGenerateUserModel()
+                    {
+                        Id = user.UserId,
+                        DisplayName = user.DisplayName,
+                        Scope = $"User Detail '{key}'{(string.IsNullOrWhiteSpace(value) ? null : $" with the value '{value}'")} Matches User",
+                        IsError = false,
+                    });
+                }
+            }
+
+            return Json(results);
+        }
+
         public virtual ActionResult Generate(string id, string TargetId)
         {
             Disco.Services.DocumentTemplateExtensions.GetTemplateAndTarget(Database, Authorization, id, TargetId, out var template, out var target, out _);

@@ -176,10 +176,7 @@ namespace Links
                 public static readonly string livestamp_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/livestamp.min.js") ? Url("livestamp.min.js") : Url("livestamp.js");
                 public static readonly string livestamp_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/livestamp.min.js") ? Url("livestamp.min.js") : Url("livestamp.js");
                 public static readonly string modernizr_2_7_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/modernizr-2.7.2.min.js") ? Url("modernizr-2.7.2.min.js") : Url("modernizr-2.7.2.js");
-                public static readonly string moment_en_au_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/moment.en-au.min.js") ? Url("moment.en-au.min.js") : Url("moment.en-au.js");
-                public static readonly string moment_en_au_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/moment.en-au.min.js") ? Url("moment.en-au.min.js") : Url("moment.en-au.js");
-                public static readonly string moment_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/moment.min.js") ? Url("moment.min.js") : Url("moment.js");
-                public static readonly string moment_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/moment.min.js") ? Url("moment.min.js") : Url("moment.js");
+                public static readonly string moment_with_locales_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/moment-with-locales.min.js") ? Url("moment-with-locales.min.js") : Url("moment-with-locales.js");
             }
         
             public static readonly string Core_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Core.min.js") ? Url("Core.min.js") : Url("Core.js");
@@ -915,10 +912,7 @@ namespace Links
                         public const string livestamp_js = "~/ClientSource/Scripts/Core/livestamp.js"; 
                         public const string livestamp_js_ = "~/ClientSource/Scripts/Core/livestamp.js"; 
                         public const string modernizr_2_7_2_js = "~/ClientSource/Scripts/Core/modernizr-2.7.2.js"; 
-                        public const string moment_en_au_js = "~/ClientSource/Scripts/Core/moment.en-au.js"; 
-                        public const string moment_en_au_js_ = "~/ClientSource/Scripts/Core/moment.en-au.js"; 
-                        public const string moment_js = "~/ClientSource/Scripts/Core/moment.js"; 
-                        public const string moment_js_ = "~/ClientSource/Scripts/Core/moment.js"; 
+                        public const string moment_with_locales_js = "~/ClientSource/Scripts/Core/moment-with-locales.js"; 
                     }
                 }
                 public static partial class Modules 

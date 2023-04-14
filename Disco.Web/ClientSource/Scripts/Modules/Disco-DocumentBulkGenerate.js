@@ -476,4 +476,107 @@ $(() => {
         return false;
     });
 
+    let dialogAddUserDetail = null;
+    $('#AddUserDetail').click(e => {
+        e.preventDefault();
+        let dialog = dialogAddUserDetail;
+        if (!dialog) {
+            const action = delegate => {
+                const form = dialog.find('form')[0];
+                const key = $(form).find('input[name="key"]');
+                if (key.val()) {
+                    if (form.reportValidity()) {
+                        const body = new FormData(form);
+                        fetch(form.action, {
+                            method: 'POST',
+                            body: body
+                        })
+                            .then(r => r.json())
+                            .then(r => {
+                                delegate(r);
+                                key.val('');
+                                $(form).find('input[name="value"]').val('');
+                                $('#DocumentTemplate_BulkGenerate_Dialog_AddUserDetail_Value').empty();
+                                dialog.find('div.item').removeClass('selected');
+                                dialog.dialog("close");
+                                dialog.dialog("enable");
+                            })
+                            .catch(reason => {
+                                alert('Failed to validate user detail: ' + reason);
+                            });
+                        dialog.dialog("disable");
+                    }
+                }
+            }
+            dialog = $('#DocumentTemplate_BulkGenerate_Dialog_AddUserDetail').dialog({
+                resizable: false,
+                modal: true,
+                autoOpen: false,
+                width: 690,
+                buttons: {
+                    "Exclude Matched Users": function () {
+                        action(excludeUsers);
+                    },
+                    "Add Matched Users": function () {
+                        action(addUsers);
+                    }
+                }
+            });
+            dialogAddUserDetail = dialog;
+        }
+        const $key = dialog.find('input[name="key"]');
+        const $value = dialog.find('input[name="value"]');
+        const $keys = dialog.find('#DocumentTemplate_BulkGenerate_Dialog_AddUserDetail_Key');
+        const $values = dialog.find('#DocumentTemplate_BulkGenerate_Dialog_AddUserDetail_Value');
+        $keys.on('click', 'div.item:not(.disabled)', e => {
+            e.preventDefault();
+            const $target = $(e.currentTarget);
+            const keyValue = $target.attr('data-id');
+            $key.val(keyValue);
+            $keys.find('div.item').removeClass('selected');
+            $target.addClass('selected');
+
+            $values.empty();
+            $values.append($('<i class="ajaxLoading" title="Loading"></i>'));
+
+            const form = dialog.find('form')[1];
+            const body = new FormData(form);
+            fetch(form.action, {
+                method: 'POST',
+                body: body
+            })
+                .then(r => r.json())
+                .then(r => {
+                    $values.empty();
+
+                    const allValues = $('<div class="item selected" data-id=""><i class="fa fa-info fa-fw fa-lg"></i><em>All Matched Users</em></div>');
+                    allValues.appendTo($values);
+                    $value.val('');
+
+                    r.map(v => {
+                        const container = $('<div class="item"><i class="fa fa-info fa-fw fa-lg"></i ></div>');
+                        container.attr('data-id', v);
+                        const span = $('<span>').text(v);
+                        span.appendTo(container);
+                        container.appendTo($values);
+                    })
+                })
+                .catch(reason => {
+                    alert('Failed to validate user detail: ' + reason);
+                });
+            dialog.dialog("disable");
+
+            return false;
+        });
+        $values.on('click', 'div.item:not(.disabled)', e => {
+            e.preventDefault();
+            const $target = $(e.currentTarget);
+            $value.val($target.attr('data-id'));
+            $values.find('div.item').removeClass('selected');
+            $target.addClass('selected');
+        });
+        dialog.dialog('open');
+        return false;
+    });
+
 });

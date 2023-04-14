@@ -268,6 +268,31 @@ WriteLiteral(">Add With Document Attachment</button>\r\n");
             
             #line default
             #line hidden
+WriteLiteral("        ");
+
+            
+            #line 40 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+         if (Model.UserDetails.Any(b => b.Count > 0))
+        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <button");
+
+WriteLiteral(" id=\"AddUserDetail\"");
+
+WriteLiteral(" class=\"button small\"");
+
+WriteLiteral(">Add With User Detail</button>\r\n");
+
+            
+            #line 43 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+        }
+
+            
+            #line default
+            #line hidden
 WriteLiteral("    </div>\r\n    <table");
 
 WriteLiteral(" class=\"genericData\"");
@@ -289,17 +314,17 @@ WriteLiteral(" id=\"DocumentTemplate_BulkGenerate_Dialog_AddUsers\"");
 
 WriteLiteral(" class=\"dialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2749), Tuple.Create("\"", 2805)
+WriteAttribute("title", Tuple.Create(" title=\"", 2917), Tuple.Create("\"", 2973)
             
-            #line 58 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-                    , Tuple.Create(Tuple.Create("", 2757), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
+            #line 62 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+                    , Tuple.Create(Tuple.Create("", 2925), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
             
             #line default
             #line hidden
-, 2757), false)
-, Tuple.Create(Tuple.Create("", 2794), Tuple.Create(":", 2794), true)
-, Tuple.Create(Tuple.Create(" ", 2795), Tuple.Create("Add", 2796), true)
-, Tuple.Create(Tuple.Create(" ", 2799), Tuple.Create("Users", 2800), true)
+, 2925), false)
+, Tuple.Create(Tuple.Create("", 2962), Tuple.Create(":", 2962), true)
+, Tuple.Create(Tuple.Create(" ", 2963), Tuple.Create("Add", 2964), true)
+, Tuple.Create(Tuple.Create(" ", 2967), Tuple.Create("Users", 2968), true)
 );
 
 WriteLiteral(">\r\n    <div");
@@ -328,7 +353,7 @@ WriteLiteral(">\r\n                user6<br />\r\n                smi0099<br />\
 WriteLiteral("                ");
 
             
-            #line 71 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 75 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
             Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
 
             
@@ -342,7 +367,7 @@ WriteLiteral(" class=\"example2 code\"");
 WriteLiteral(">user6,smi0099,");
 
             
-            #line 74 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 78 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                  Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
 
             
@@ -355,7 +380,7 @@ WriteLiteral(" class=\"example3 code\"");
 WriteLiteral(">user6;smi0099;");
 
             
-            #line 75 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 79 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                  Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
 
             
@@ -364,13 +389,13 @@ WriteLiteral(">user6;smi0099;");
 WriteLiteral("\\rsmith;Domain Admins</div>\r\n        </div>\r\n    </div>\r\n");
 
             
-            #line 78 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 82 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 78 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 82 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
      using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUsers(), FormMethod.Post))
     {
 
@@ -400,20 +425,20 @@ WriteLiteral(" data-val-required=\"Identifiers are required\"");
 WriteLiteral(" required></textarea>\r\n");
 
             
-            #line 82 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 86 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 82 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 86 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
    Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 82 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 86 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                 
     }
 
@@ -426,18 +451,18 @@ WriteLiteral(" id=\"DocumentTemplate_BulkGenerate_Dialog_AddGroupMembers\"");
 
 WriteLiteral(" class=\"dialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4269), Tuple.Create("\"", 4333)
+WriteAttribute("title", Tuple.Create(" title=\"", 4437), Tuple.Create("\"", 4501)
             
-            #line 86 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-                           , Tuple.Create(Tuple.Create("", 4277), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
+            #line 90 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+                           , Tuple.Create(Tuple.Create("", 4445), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
             
             #line default
             #line hidden
-, 4277), false)
-, Tuple.Create(Tuple.Create("", 4314), Tuple.Create(":", 4314), true)
-, Tuple.Create(Tuple.Create(" ", 4315), Tuple.Create("Add", 4316), true)
-, Tuple.Create(Tuple.Create(" ", 4319), Tuple.Create("Group", 4320), true)
-, Tuple.Create(Tuple.Create(" ", 4325), Tuple.Create("Members", 4326), true)
+, 4445), false)
+, Tuple.Create(Tuple.Create("", 4482), Tuple.Create(":", 4482), true)
+, Tuple.Create(Tuple.Create(" ", 4483), Tuple.Create("Add", 4484), true)
+, Tuple.Create(Tuple.Create(" ", 4487), Tuple.Create("Group", 4488), true)
+, Tuple.Create(Tuple.Create(" ", 4493), Tuple.Create("Members", 4494), true)
 );
 
 WriteLiteral(">\r\n    <div");
@@ -448,13 +473,13 @@ WriteLiteral(">\r\n        <div>\r\n            Add all members of a group (incl
 "bers) to the bulk generation.\r\n        </div>\r\n    </div>\r\n");
 
             
-            #line 92 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 96 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 92 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 96 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
      using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddGroupMembers(), FormMethod.Post))
     {
 
@@ -482,7 +507,7 @@ WriteLiteral(" name=\"groupId\"");
 WriteLiteral(" data-autocomplete-src=\"");
 
             
-            #line 101 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 105 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                                                                                                              Write(Url.Action(MVC.API.System.SearchGroupSubjects()));
 
             
@@ -494,20 +519,20 @@ WriteLiteral(" required />\r\n                    </td>\r\n                </tr>
 "dy>\r\n        </table>\r\n");
 
             
-            #line 106 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 110 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 106 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 110 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
    Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 106 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 110 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                 
     }
 
@@ -517,7 +542,7 @@ WriteLiteral(" required />\r\n                    </td>\r\n                </tr>
 WriteLiteral("</div>\r\n\r\n");
 
             
-            #line 110 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 114 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
  if (Model.UserFlags.Any(f => f.Count > 0))
 {
 
@@ -530,19 +555,19 @@ WriteLiteral(" id=\"DocumentTemplate_BulkGenerate_Dialog_AddUserFlag\"");
 
 WriteLiteral(" class=\"dialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 5371), Tuple.Create("\"", 5443)
+WriteAttribute("title", Tuple.Create(" title=\"", 5539), Tuple.Create("\"", 5611)
             
-            #line 112 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-                           , Tuple.Create(Tuple.Create("", 5379), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
+            #line 116 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+                           , Tuple.Create(Tuple.Create("", 5547), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
             
             #line default
             #line hidden
-, 5379), false)
-, Tuple.Create(Tuple.Create("", 5416), Tuple.Create(":", 5416), true)
-, Tuple.Create(Tuple.Create(" ", 5417), Tuple.Create("Add", 5418), true)
-, Tuple.Create(Tuple.Create(" ", 5421), Tuple.Create("User", 5422), true)
-, Tuple.Create(Tuple.Create(" ", 5426), Tuple.Create("Flag", 5427), true)
-, Tuple.Create(Tuple.Create(" ", 5431), Tuple.Create("Assignments", 5432), true)
+, 5547), false)
+, Tuple.Create(Tuple.Create("", 5584), Tuple.Create(":", 5584), true)
+, Tuple.Create(Tuple.Create(" ", 5585), Tuple.Create("Add", 5586), true)
+, Tuple.Create(Tuple.Create(" ", 5589), Tuple.Create("User", 5590), true)
+, Tuple.Create(Tuple.Create(" ", 5594), Tuple.Create("Flag", 5595), true)
+, Tuple.Create(Tuple.Create(" ", 5599), Tuple.Create("Assignments", 5600), true)
 );
 
 WriteLiteral(">\r\n        <div");
@@ -553,13 +578,13 @@ WriteLiteral(">\r\n            <div>\r\n                Add all users associated
 "he bulk generation.\r\n            </div>\r\n        </div>\r\n");
 
             
-            #line 118 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 122 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 118 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 122 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
          using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUserFlag(), FormMethod.Post))
         {
 
@@ -581,13 +606,13 @@ WriteLiteral(" class=\"dialog-item-picker\"");
 WriteLiteral(">\r\n");
 
             
-            #line 122 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 126 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 122 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 126 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                  foreach (var flag in Model.UserFlags)
                 {
 
@@ -596,21 +621,21 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                    <div");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 5929), Tuple.Create("\"", 5980)
-, Tuple.Create(Tuple.Create("", 5937), Tuple.Create("item", 5937), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 6097), Tuple.Create("\"", 6148)
+, Tuple.Create(Tuple.Create("", 6105), Tuple.Create("item", 6105), true)
             
-            #line 124 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-, Tuple.Create(Tuple.Create(" ", 5941), Tuple.Create<System.Object, System.Int32>(flag.Count == 0 ? "disabled" : null
+            #line 128 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+, Tuple.Create(Tuple.Create(" ", 6109), Tuple.Create<System.Object, System.Int32>(flag.Count == 0 ? "disabled" : null
             
             #line default
             #line hidden
-, 5942), false)
+, 6110), false)
 );
 
 WriteLiteral(" data-userflagid=\"");
 
             
-            #line 124 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 128 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                                                          Write(flag.Item.Id);
 
             
@@ -620,32 +645,32 @@ WriteLiteral("\"");
 
 WriteLiteral(">\r\n                        <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 6042), Tuple.Create("\"", 6111)
-, Tuple.Create(Tuple.Create("", 6050), Tuple.Create("fa", 6050), true)
-, Tuple.Create(Tuple.Create(" ", 6052), Tuple.Create("fa-", 6053), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 6210), Tuple.Create("\"", 6279)
+, Tuple.Create(Tuple.Create("", 6218), Tuple.Create("fa", 6218), true)
+, Tuple.Create(Tuple.Create(" ", 6220), Tuple.Create("fa-", 6221), true)
             
-            #line 125 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-, Tuple.Create(Tuple.Create("", 6056), Tuple.Create<System.Object, System.Int32>(flag.Item.Icon
-            
-            #line default
-            #line hidden
-, 6056), false)
-, Tuple.Create(Tuple.Create(" ", 6073), Tuple.Create("fa-fw", 6074), true)
-, Tuple.Create(Tuple.Create(" ", 6079), Tuple.Create("fa-lg", 6080), true)
-, Tuple.Create(Tuple.Create(" ", 6085), Tuple.Create("d-", 6086), true)
-            
-            #line 125 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-, Tuple.Create(Tuple.Create("", 6088), Tuple.Create<System.Object, System.Int32>(flag.Item.IconColour
+            #line 129 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+, Tuple.Create(Tuple.Create("", 6224), Tuple.Create<System.Object, System.Int32>(flag.Item.Icon
             
             #line default
             #line hidden
-, 6088), false)
+, 6224), false)
+, Tuple.Create(Tuple.Create(" ", 6241), Tuple.Create("fa-fw", 6242), true)
+, Tuple.Create(Tuple.Create(" ", 6247), Tuple.Create("fa-lg", 6248), true)
+, Tuple.Create(Tuple.Create(" ", 6253), Tuple.Create("d-", 6254), true)
+            
+            #line 129 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+, Tuple.Create(Tuple.Create("", 6256), Tuple.Create<System.Object, System.Int32>(flag.Item.IconColour
+            
+            #line default
+            #line hidden
+, 6256), false)
 );
 
 WriteLiteral("></i>");
 
             
-            #line 125 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 129 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                                                                 Write(flag.Item.Name);
 
             
@@ -654,7 +679,7 @@ WriteLiteral("></i>");
 WriteLiteral(" <small>(");
 
             
-            #line 125 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 129 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                                                                                         Write(flag.Count.ToString("N0"));
 
             
@@ -663,7 +688,7 @@ WriteLiteral(" <small>(");
 WriteLiteral(" user");
 
             
-            #line 125 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 129 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                                                                                                                         Write(flag.Count == 1 ? null : "s");
 
             
@@ -672,7 +697,7 @@ WriteLiteral(" user");
 WriteLiteral(")</small>\r\n                    </div>\r\n");
 
             
-            #line 127 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 131 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
 
                 }
 
@@ -682,20 +707,20 @@ WriteLiteral(")</small>\r\n                    </div>\r\n");
 WriteLiteral("            </div>\r\n");
 
             
-            #line 130 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 134 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 130 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 134 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
        Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 130 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 134 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                     
         }
 
@@ -705,7 +730,7 @@ WriteLiteral("            </div>\r\n");
 WriteLiteral("    </div>\r\n");
 
             
-            #line 133 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 137 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
 }
 
             
@@ -714,7 +739,7 @@ WriteLiteral("    </div>\r\n");
 WriteLiteral("\r\n");
 
             
-            #line 135 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 139 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
  if (Model.DeviceProfiles.Any(b => b.Count > 0))
 {
 
@@ -727,21 +752,21 @@ WriteLiteral(" id=\"DocumentTemplate_BulkGenerate_Dialog_AddDeviceProfile\"");
 
 WriteLiteral(" class=\"dialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 6505), Tuple.Create("\"", 6587)
+WriteAttribute("title", Tuple.Create(" title=\"", 6673), Tuple.Create("\"", 6755)
             
-            #line 137 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-                                , Tuple.Create(Tuple.Create("", 6513), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
+            #line 141 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+                                , Tuple.Create(Tuple.Create("", 6681), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
             
             #line default
             #line hidden
-, 6513), false)
-, Tuple.Create(Tuple.Create("", 6550), Tuple.Create(":", 6550), true)
-, Tuple.Create(Tuple.Create(" ", 6551), Tuple.Create("Add", 6552), true)
-, Tuple.Create(Tuple.Create(" ", 6555), Tuple.Create("User", 6556), true)
-, Tuple.Create(Tuple.Create(" ", 6560), Tuple.Create("by", 6561), true)
-, Tuple.Create(Tuple.Create(" ", 6563), Tuple.Create("Assigned", 6564), true)
-, Tuple.Create(Tuple.Create(" ", 6572), Tuple.Create("Device", 6573), true)
-, Tuple.Create(Tuple.Create(" ", 6579), Tuple.Create("Profile", 6580), true)
+, 6681), false)
+, Tuple.Create(Tuple.Create("", 6718), Tuple.Create(":", 6718), true)
+, Tuple.Create(Tuple.Create(" ", 6719), Tuple.Create("Add", 6720), true)
+, Tuple.Create(Tuple.Create(" ", 6723), Tuple.Create("User", 6724), true)
+, Tuple.Create(Tuple.Create(" ", 6728), Tuple.Create("by", 6729), true)
+, Tuple.Create(Tuple.Create(" ", 6731), Tuple.Create("Assigned", 6732), true)
+, Tuple.Create(Tuple.Create(" ", 6740), Tuple.Create("Device", 6741), true)
+, Tuple.Create(Tuple.Create(" ", 6747), Tuple.Create("Profile", 6748), true)
 );
 
 WriteLiteral(">\r\n        <div");
@@ -753,13 +778,13 @@ WriteLiteral(">\r\n            <div>\r\n                Add all users associated
 "\n");
 
             
-            #line 143 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 147 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 143 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 147 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
          using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDeviceProfile(), FormMethod.Post))
         {
 
@@ -781,13 +806,13 @@ WriteLiteral(" class=\"dialog-item-picker\"");
 WriteLiteral(">\r\n");
 
             
-            #line 147 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 151 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 147 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 151 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                  foreach (var profile in Model.DeviceProfiles)
                 {
 
@@ -796,21 +821,21 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                    <div");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 7119), Tuple.Create("\"", 7173)
-, Tuple.Create(Tuple.Create("", 7127), Tuple.Create("item", 7127), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 7287), Tuple.Create("\"", 7341)
+, Tuple.Create(Tuple.Create("", 7295), Tuple.Create("item", 7295), true)
             
-            #line 149 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-, Tuple.Create(Tuple.Create(" ", 7131), Tuple.Create<System.Object, System.Int32>(profile.Count == 0 ? "disabled" : null
+            #line 153 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+, Tuple.Create(Tuple.Create(" ", 7299), Tuple.Create<System.Object, System.Int32>(profile.Count == 0 ? "disabled" : null
             
             #line default
             #line hidden
-, 7132), false)
+, 7300), false)
 );
 
 WriteLiteral(" data-id=\"");
 
             
-            #line 149 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 153 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                                                     Write(profile.Item.Id);
 
             
@@ -825,7 +850,7 @@ WriteLiteral(" class=\"fa fa-cog fa-fw fa-lg\"");
 WriteLiteral("></i>");
 
             
-            #line 150 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 154 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                         Write(profile.Item.Name);
 
             
@@ -834,7 +859,7 @@ WriteLiteral("></i>");
 WriteLiteral(" <small>(");
 
             
-            #line 150 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 154 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                                                    Write(profile.Count.ToString("N0"));
 
             
@@ -843,7 +868,7 @@ WriteLiteral(" <small>(");
 WriteLiteral(" user");
 
             
-            #line 150 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 154 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                                                                                       Write(profile.Count == 1 ? null : "s");
 
             
@@ -852,7 +877,7 @@ WriteLiteral(" user");
 WriteLiteral(")</small>\r\n                    </div>\r\n");
 
             
-            #line 152 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 156 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                 }
 
             
@@ -861,20 +886,20 @@ WriteLiteral(")</small>\r\n                    </div>\r\n");
 WriteLiteral("            </div>\r\n");
 
             
-            #line 154 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 158 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 154 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 158 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
        Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 154 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 158 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                     
         }
 
@@ -884,7 +909,7 @@ WriteLiteral("            </div>\r\n");
 WriteLiteral("    </div>\r\n");
 
             
-            #line 157 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 161 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
 }
 
             
@@ -893,7 +918,7 @@ WriteLiteral("    </div>\r\n");
 WriteLiteral("\r\n");
 
             
-            #line 159 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 163 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
  if (Model.DeviceBatches.Any(b => b.Count > 0))
 {
 
@@ -906,21 +931,21 @@ WriteLiteral(" id=\"DocumentTemplate_BulkGenerate_Dialog_AddDeviceBatch\"");
 
 WriteLiteral(" class=\"dialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 7657), Tuple.Create("\"", 7737)
+WriteAttribute("title", Tuple.Create(" title=\"", 7825), Tuple.Create("\"", 7905)
             
-            #line 161 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-                              , Tuple.Create(Tuple.Create("", 7665), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
+            #line 165 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+                              , Tuple.Create(Tuple.Create("", 7833), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
             
             #line default
             #line hidden
-, 7665), false)
-, Tuple.Create(Tuple.Create("", 7702), Tuple.Create(":", 7702), true)
-, Tuple.Create(Tuple.Create(" ", 7703), Tuple.Create("Add", 7704), true)
-, Tuple.Create(Tuple.Create(" ", 7707), Tuple.Create("User", 7708), true)
-, Tuple.Create(Tuple.Create(" ", 7712), Tuple.Create("by", 7713), true)
-, Tuple.Create(Tuple.Create(" ", 7715), Tuple.Create("Assigned", 7716), true)
-, Tuple.Create(Tuple.Create(" ", 7724), Tuple.Create("Device", 7725), true)
-, Tuple.Create(Tuple.Create(" ", 7731), Tuple.Create("Batch", 7732), true)
+, 7833), false)
+, Tuple.Create(Tuple.Create("", 7870), Tuple.Create(":", 7870), true)
+, Tuple.Create(Tuple.Create(" ", 7871), Tuple.Create("Add", 7872), true)
+, Tuple.Create(Tuple.Create(" ", 7875), Tuple.Create("User", 7876), true)
+, Tuple.Create(Tuple.Create(" ", 7880), Tuple.Create("by", 7881), true)
+, Tuple.Create(Tuple.Create(" ", 7883), Tuple.Create("Assigned", 7884), true)
+, Tuple.Create(Tuple.Create(" ", 7892), Tuple.Create("Device", 7893), true)
+, Tuple.Create(Tuple.Create(" ", 7899), Tuple.Create("Batch", 7900), true)
 );
 
 WriteLiteral(">\r\n        <div");
@@ -931,13 +956,13 @@ WriteLiteral(">\r\n            <div>\r\n                Add all users associated
 "he selected batch to the bulk generation.\r\n            </div>\r\n        </div>\r\n");
 
             
-            #line 167 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 171 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 167 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 171 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
          using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDeviceBatch(), FormMethod.Post))
         {
 
@@ -959,13 +984,13 @@ WriteLiteral(" class=\"dialog-item-picker\"");
 WriteLiteral(">\r\n");
 
             
-            #line 171 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 175 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 171 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 175 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                  foreach (var batch in Model.DeviceBatches)
                 {
 
@@ -974,21 +999,21 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                    <div");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 8260), Tuple.Create("\"", 8312)
-, Tuple.Create(Tuple.Create("", 8268), Tuple.Create("item", 8268), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 8428), Tuple.Create("\"", 8480)
+, Tuple.Create(Tuple.Create("", 8436), Tuple.Create("item", 8436), true)
             
-            #line 173 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-, Tuple.Create(Tuple.Create(" ", 8272), Tuple.Create<System.Object, System.Int32>(batch.Count == 0 ? "disabled" : null
+            #line 177 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+, Tuple.Create(Tuple.Create(" ", 8440), Tuple.Create<System.Object, System.Int32>(batch.Count == 0 ? "disabled" : null
             
             #line default
             #line hidden
-, 8273), false)
+, 8441), false)
 );
 
 WriteLiteral(" data-id=\"");
 
             
-            #line 173 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 177 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                                                   Write(batch.Item.Id);
 
             
@@ -1003,7 +1028,7 @@ WriteLiteral(" class=\"fa fa-cog fa-fw fa-lg\"");
 WriteLiteral("></i>");
 
             
-            #line 174 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 178 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                         Write(batch.Item.Name);
 
             
@@ -1012,7 +1037,7 @@ WriteLiteral("></i>");
 WriteLiteral(" <small>(");
 
             
-            #line 174 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 178 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                                                  Write(batch.Count.ToString("N0"));
 
             
@@ -1021,7 +1046,7 @@ WriteLiteral(" <small>(");
 WriteLiteral(" user");
 
             
-            #line 174 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 178 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                                                                                   Write(batch.Count == 1 ? null : "s");
 
             
@@ -1030,7 +1055,7 @@ WriteLiteral(" user");
 WriteLiteral(")</small>\r\n                    </div>\r\n");
 
             
-            #line 176 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 180 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                 }
 
             
@@ -1039,20 +1064,20 @@ WriteLiteral(")</small>\r\n                    </div>\r\n");
 WriteLiteral("            </div>\r\n");
 
             
-            #line 178 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 182 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 178 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 182 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
        Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 178 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 182 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                     
         }
 
@@ -1062,7 +1087,7 @@ WriteLiteral("            </div>\r\n");
 WriteLiteral("    </div>\r\n");
 
             
-            #line 181 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 185 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
 }
 
             
@@ -1071,7 +1096,7 @@ WriteLiteral("    </div>\r\n");
 WriteLiteral("\r\n");
 
             
-            #line 183 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 187 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
  if (Model.DocumentTemplates.Any(b => b.Count > 0))
 {
 
@@ -1084,21 +1109,21 @@ WriteLiteral(" id=\"DocumentTemplate_BulkGenerate_Dialog_AddDocumentAttachment\"
 
 WriteLiteral(" class=\"dialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 8799), Tuple.Create("\"", 8879)
+WriteAttribute("title", Tuple.Create(" title=\"", 8967), Tuple.Create("\"", 9047)
             
-            #line 185 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-                                     , Tuple.Create(Tuple.Create("", 8807), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
+            #line 189 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+                                     , Tuple.Create(Tuple.Create("", 8975), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
             
             #line default
             #line hidden
-, 8807), false)
-, Tuple.Create(Tuple.Create("", 8844), Tuple.Create(":", 8844), true)
-, Tuple.Create(Tuple.Create(" ", 8845), Tuple.Create("Add", 8846), true)
-, Tuple.Create(Tuple.Create(" ", 8849), Tuple.Create("User", 8850), true)
-, Tuple.Create(Tuple.Create(" ", 8854), Tuple.Create("by", 8855), true)
-, Tuple.Create(Tuple.Create(" ", 8857), Tuple.Create("Assigned", 8858), true)
-, Tuple.Create(Tuple.Create(" ", 8866), Tuple.Create("Device", 8867), true)
-, Tuple.Create(Tuple.Create(" ", 8873), Tuple.Create("Batch", 8874), true)
+, 8975), false)
+, Tuple.Create(Tuple.Create("", 9012), Tuple.Create(":", 9012), true)
+, Tuple.Create(Tuple.Create(" ", 9013), Tuple.Create("Add", 9014), true)
+, Tuple.Create(Tuple.Create(" ", 9017), Tuple.Create("User", 9018), true)
+, Tuple.Create(Tuple.Create(" ", 9022), Tuple.Create("by", 9023), true)
+, Tuple.Create(Tuple.Create(" ", 9025), Tuple.Create("Assigned", 9026), true)
+, Tuple.Create(Tuple.Create(" ", 9034), Tuple.Create("Device", 9035), true)
+, Tuple.Create(Tuple.Create(" ", 9041), Tuple.Create("Batch", 9042), true)
 );
 
 WriteLiteral(">\r\n        <div");
@@ -1110,13 +1135,13 @@ WriteLiteral(">\r\n            <div>\r\n                Add all users associated
 "        </div>\r\n");
 
             
-            #line 191 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 195 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 191 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 195 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
          using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDocumentAttachment(), FormMethod.Post))
         {
 
@@ -1138,13 +1163,13 @@ WriteLiteral(" class=\"dialog-item-picker\"");
 WriteLiteral(">\r\n");
 
             
-            #line 195 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 199 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 195 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 199 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                  foreach (var template in Model.DocumentTemplates)
                 {
 
@@ -1153,21 +1178,21 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                    <div");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 9438), Tuple.Create("\"", 9493)
-, Tuple.Create(Tuple.Create("", 9446), Tuple.Create("item", 9446), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 9606), Tuple.Create("\"", 9661)
+, Tuple.Create(Tuple.Create("", 9614), Tuple.Create("item", 9614), true)
             
-            #line 197 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-, Tuple.Create(Tuple.Create(" ", 9450), Tuple.Create<System.Object, System.Int32>(template.Count == 0 ? "disabled" : null
+            #line 201 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+, Tuple.Create(Tuple.Create(" ", 9618), Tuple.Create<System.Object, System.Int32>(template.Count == 0 ? "disabled" : null
             
             #line default
             #line hidden
-, 9451), false)
+, 9619), false)
 );
 
 WriteLiteral(" data-id=\"");
 
             
-            #line 197 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 201 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                                                      Write(template.Item.Id);
 
             
@@ -1182,7 +1207,7 @@ WriteLiteral(" class=\"fa fa-file-text-o fa-fw fa-lg\"");
 WriteLiteral("></i>");
 
             
-            #line 198 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 202 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                                 Write(template.Item.Id);
 
             
@@ -1191,7 +1216,7 @@ WriteLiteral("></i>");
 WriteLiteral(": ");
 
             
-            #line 198 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 202 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                                                    Write(template.Item.Description);
 
             
@@ -1200,7 +1225,7 @@ WriteLiteral(": ");
 WriteLiteral(" <small>(");
 
             
-            #line 198 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 202 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                                                                                       Write(template.Count.ToString("N0"));
 
             
@@ -1209,7 +1234,7 @@ WriteLiteral(" <small>(");
 WriteLiteral(" user");
 
             
-            #line 198 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 202 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                                                                                                                                           Write(template.Count == 1 ? null : "s");
 
             
@@ -1218,7 +1243,7 @@ WriteLiteral(" user");
 WriteLiteral(")</small>\r\n                    </div>\r\n");
 
             
-            #line 200 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 204 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                 }
 
             
@@ -1246,20 +1271,20 @@ WriteLiteral(" type=\"date\"");
 WriteLiteral(" />\r\n            </div>\r\n");
 
             
-            #line 206 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 210 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 206 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 210 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
        Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 206 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 210 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
                                     
         }
 
@@ -1269,9 +1294,261 @@ WriteLiteral(" />\r\n            </div>\r\n");
 WriteLiteral("    </div>\r\n");
 
             
-            #line 209 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+            #line 213 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
 }
 
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n");
+
+            
+            #line 215 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+ if (Model.UserDetails.Any(b => b.Count > 0))
+{
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    <div");
+
+WriteLiteral(" id=\"DocumentTemplate_BulkGenerate_Dialog_AddUserDetail\"");
+
+WriteLiteral(" class=\"dialog dialog-bulk-generate\"");
+
+WriteAttribute("title", Tuple.Create(" title=\"", 10517), Tuple.Create("\"", 10582)
+            
+            #line 217 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+                            , Tuple.Create(Tuple.Create("", 10525), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
+            
+            #line default
+            #line hidden
+, 10525), false)
+, Tuple.Create(Tuple.Create("", 10562), Tuple.Create(":", 10562), true)
+, Tuple.Create(Tuple.Create(" ", 10563), Tuple.Create("Add", 10564), true)
+, Tuple.Create(Tuple.Create(" ", 10567), Tuple.Create("User", 10568), true)
+, Tuple.Create(Tuple.Create(" ", 10572), Tuple.Create("by", 10573), true)
+, Tuple.Create(Tuple.Create(" ", 10575), Tuple.Create("Detail", 10576), true)
+);
+
+WriteLiteral(">\r\n        <div");
+
+WriteLiteral(" class=\"brief\"");
+
+WriteLiteral(">\r\n            <div>\r\n                Add all users with a matching user detail t" +
+"o the bulk generation.\r\n            </div>\r\n        </div>\r\n");
+
+            
+            #line 223 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+        
+            
+            #line default
+            #line hidden
+            
+            #line 223 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+         using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUserDetail(), FormMethod.Post))
+        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <input");
+
+WriteLiteral(" name=\"key\"");
+
+WriteLiteral(" type=\"hidden\"");
+
+WriteLiteral(" required />\r\n");
+
+WriteLiteral("            <input");
+
+WriteLiteral(" name=\"value\"");
+
+WriteLiteral(" type=\"hidden\"");
+
+WriteLiteral(" />\r\n");
+
+            
+            #line 227 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <div");
+
+WriteLiteral(" id=\"DocumentTemplate_BulkGenerate_Dialog_AddUserDetail_Key\"");
+
+WriteLiteral(" class=\"dialog-item-picker\"");
+
+WriteLiteral(" style=\"width: 49%; float: left;\"");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 229 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 229 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+                 foreach (var key in Model.UserDetails)
+                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <div");
+
+WriteAttribute("class", Tuple.Create(" class=\"", 11216), Tuple.Create("\"", 11266)
+, Tuple.Create(Tuple.Create("", 11224), Tuple.Create("item", 11224), true)
+            
+            #line 231 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+, Tuple.Create(Tuple.Create(" ", 11228), Tuple.Create<System.Object, System.Int32>(key.Count == 0 ? "disabled" : null
+            
+            #line default
+            #line hidden
+, 11229), false)
+);
+
+WriteLiteral(" data-id=\"");
+
+            
+            #line 231 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+                                                                                Write(key.Item);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(">\r\n                        <i");
+
+WriteLiteral(" class=\"fa fa-info fa-fw fa-lg\"");
+
+WriteLiteral("></i>");
+
+            
+            #line 232 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+                                                         Write(key.Item.TrimEnd('*', '&'));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" <small>(");
+
+            
+            #line 232 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+                                                                                             Write(key.Count.ToString("N0"));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" user");
+
+            
+            #line 232 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+                                                                                                                            Write(key.Count == 1 ? null : "s");
+
+            
+            #line default
+            #line hidden
+WriteLiteral(")</small>\r\n                    </div>\r\n");
+
+            
+            #line 234 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </div>\r\n");
+
+            
+            #line 236 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+
+            
+            
+            #line default
+            #line hidden
+            
+            #line 237 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+       Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 237 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+                                    
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        ");
+
+            
+            #line 239 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+         using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateGetUserDetailValues(), FormMethod.Post))
+        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <input");
+
+WriteLiteral(" name=\"key\"");
+
+WriteLiteral(" type=\"hidden\"");
+
+WriteLiteral(" required />\r\n");
+
+            
+            #line 242 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <div");
+
+WriteLiteral(" id=\"DocumentTemplate_BulkGenerate_Dialog_AddUserDetail_Value\"");
+
+WriteLiteral(" class=\"dialog-item-picker\"");
+
+WriteLiteral(" style=\"width: 49%; float: left; margin-left: 1%;\"");
+
+WriteLiteral(">\r\n            </div>\r\n");
+
+            
+            #line 245 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+
+            
+            
+            #line default
+            #line hidden
+            
+            #line 246 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+       Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 246 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+                                    
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    </div>\r\n");
+
+            
+            #line 249 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
+}
             
             #line default
             #line hidden

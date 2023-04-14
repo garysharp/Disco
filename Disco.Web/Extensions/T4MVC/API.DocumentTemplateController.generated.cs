@@ -217,6 +217,18 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult BulkGenerateGetUserDetailValues()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateGetUserDetailValues);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult BulkGenerateAddUserDetail()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddUserDetail);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Generate()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Generate);
@@ -282,6 +294,8 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string BulkGenerateAddDeviceProfile = "BulkGenerateAddDeviceProfile";
             public readonly string BulkGenerateAddDeviceBatch = "BulkGenerateAddDeviceBatch";
             public readonly string BulkGenerateAddDocumentAttachment = "BulkGenerateAddDocumentAttachment";
+            public readonly string BulkGenerateGetUserDetailValues = "BulkGenerateGetUserDetailValues";
+            public readonly string BulkGenerateAddUserDetail = "BulkGenerateAddUserDetail";
             public readonly string Generate = "Generate";
             public readonly string Delete = "Delete";
             public readonly string GenerateDocumentHandlerUi = "GenerateDocumentHandlerUi";
@@ -318,6 +332,8 @@ namespace Disco.Web.Areas.API.Controllers
             public const string BulkGenerateAddDeviceProfile = "BulkGenerateAddDeviceProfile";
             public const string BulkGenerateAddDeviceBatch = "BulkGenerateAddDeviceBatch";
             public const string BulkGenerateAddDocumentAttachment = "BulkGenerateAddDocumentAttachment";
+            public const string BulkGenerateGetUserDetailValues = "BulkGenerateGetUserDetailValues";
+            public const string BulkGenerateAddUserDetail = "BulkGenerateAddUserDetail";
             public const string Generate = "Generate";
             public const string Delete = "Delete";
             public const string GenerateDocumentHandlerUi = "GenerateDocumentHandlerUi";
@@ -570,6 +586,23 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string documentTemplateId = "documentTemplateId";
             public readonly string threshold = "threshold";
+        }
+        static readonly ActionParamsClass_BulkGenerateGetUserDetailValues s_params_BulkGenerateGetUserDetailValues = new ActionParamsClass_BulkGenerateGetUserDetailValues();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_BulkGenerateGetUserDetailValues BulkGenerateGetUserDetailValuesParams { get { return s_params_BulkGenerateGetUserDetailValues; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_BulkGenerateGetUserDetailValues
+        {
+            public readonly string key = "key";
+        }
+        static readonly ActionParamsClass_BulkGenerateAddUserDetail s_params_BulkGenerateAddUserDetail = new ActionParamsClass_BulkGenerateAddUserDetail();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_BulkGenerateAddUserDetail BulkGenerateAddUserDetailParams { get { return s_params_BulkGenerateAddUserDetail; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_BulkGenerateAddUserDetail
+        {
+            public readonly string key = "key";
+            public readonly string value = "value";
         }
         static readonly ActionParamsClass_Generate s_params_Generate = new ActionParamsClass_Generate();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -997,6 +1030,31 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "documentTemplateId", documentTemplateId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "threshold", threshold);
             BulkGenerateAddDocumentAttachmentOverride(callInfo, documentTemplateId, threshold);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void BulkGenerateGetUserDetailValuesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string key);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult BulkGenerateGetUserDetailValues(string key)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateGetUserDetailValues);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "key", key);
+            BulkGenerateGetUserDetailValuesOverride(callInfo, key);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void BulkGenerateAddUserDetailOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string key, string value);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult BulkGenerateAddUserDetail(string key, string value)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddUserDetail);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "key", key);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "value", value);
+            BulkGenerateAddUserDetailOverride(callInfo, key, value);
             return callInfo;
         }
 
