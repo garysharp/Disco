@@ -117,7 +117,7 @@ namespace Disco.Services.Tasks
         }
 
         #region Progress Actions
-        private byte CalculateProgressValue(byte Progress)
+        private byte CalculateProgressValue(double Progress)
         {
             return (byte)((Progress * ProgressMultiplier) + ProgressOffset);
         }
@@ -129,7 +129,8 @@ namespace Disco.Services.Tasks
         }
         public void UpdateStatus(double Progress)
         {
-            UpdateStatus((byte)Progress);
+            _progress = CalculateProgressValue(Progress);
+            UpdateTriggered("Progress", _progress);
         }
         public void UpdateStatus(string CurrentDescription)
         {
@@ -157,7 +158,19 @@ namespace Disco.Services.Tasks
         }
         public void UpdateStatus(double Progress, string CurrentDescription)
         {
-            UpdateStatus((byte)Progress, CurrentDescription);
+            _progress = CalculateProgressValue(Progress);
+
+            var changedProperties = new List<ChangedItem>() {
+                new ChangedItem("Progress", Progress)
+            };
+
+            if (!IgnoreCurrentDescription)
+            {
+                _currentDescription = CurrentDescription;
+                changedProperties.Add(new ChangedItem("CurrentDescription", CurrentDescription));
+            }
+
+            UpdateTriggered(changedProperties.ToArray());
         }
         public void UpdateStatus(byte Progress, string CurrentProcess, string CurrentDescription)
         {
@@ -182,7 +195,24 @@ namespace Disco.Services.Tasks
         }
         public void UpdateStatus(double Progress, string CurrentProcess, string CurrentDescription)
         {
-            UpdateStatus((byte)Progress, CurrentProcess, CurrentDescription);
+            _progress = CalculateProgressValue(Progress);
+
+            var changedProperties = new List<ChangedItem>() {
+                new ChangedItem("Progress", Progress)
+            };
+
+            if (!IgnoreCurrentProcessChanges)
+            {
+                _currentProcess = CurrentProcess;
+                changedProperties.Add(new ChangedItem("CurrentProcess", CurrentProcess));
+            }
+            if (!IgnoreCurrentDescription)
+            {
+                _currentDescription = CurrentDescription;
+                changedProperties.Add(new ChangedItem("CurrentDescription", CurrentDescription));
+            }
+
+            UpdateTriggered(changedProperties.ToArray());
         }
         #endregion
 
