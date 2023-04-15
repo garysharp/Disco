@@ -69,6 +69,7 @@
     <Compile Include="Services\Devices\Importing\IDeviceImportColumn.cs" />
     <Compile Include="Services\Devices\Importing\IDeviceImportDataReader.cs" />
     <Compile Include="Services\Documents\DocumentTemplatePackage.cs" />
+    <Compile Include="Services\Documents\OnImportUserFlagRule.cs" />
     <Compile Include="Services\Jobs\LocationModes.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\Certificate.cs" />
     <Compile Include="ClientServices\Register.cs" />

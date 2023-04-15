@@ -22,6 +22,7 @@ namespace Disco.Models.Repository
         public string OnGenerateExpression { get; set; }
         [DataType(DataType.MultilineText)]
         public string OnImportAttachmentExpression { get; set; }
+        public string OnImportUserFlagRules { get; set; }
 
         // Feature Request 2012-05-10 by G#: https://disco.uservoice.com/forums/159707-feedback/suggestions/2811092-document-template-option-flatten-form-on-generate
         public bool FlattenForm { get; set; }

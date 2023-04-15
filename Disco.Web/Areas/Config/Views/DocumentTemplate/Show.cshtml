@@ -13,7 +13,8 @@
         Model.DocumentTemplate.FilterExpression == null &&
         Model.DocumentTemplate.OnGenerateExpression == null &&
         Model.DocumentTemplate.OnImportAttachmentExpression == null &&
-        Model.TemplateExpressions.All(e => e.All(p => !p.ParseError));
+        Model.TemplateExpressions.All(e => e.All(p => !p.ParseError) &&
+        !Model.OnImportUserFlagRules.Any());
 
     #region Can Bulk Generate
     var canBulkGenerate = Authorization.Has(Claims.Config.DocumentTemplate.BulkGenerate);
@@ -679,209 +680,514 @@
                 </tr>
                 <tr>
                     <th>
-                        Linked Groups:
+                        On Import <br /> User Flag Rules:
                     </th>
                     <td>
-                        <div>
-                            @Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
-                       {
-                           CanConfigure = canConfig,
-                           CategoryDescription = DocumentTemplateUsersManagedGroup.GetCategoryDescription(Model.DocumentTemplate),
-                           Description = DocumentTemplateUsersManagedGroup.GetDescription(Model.DocumentTemplate),
-                           ManagedGroup = Model.UsersLinkedGroup,
-                           IncludeFilterBeginDate = true,
-                           UpdateUrl = Url.Action(MVC.API.DocumentTemplate.UpdateUsersLinkedGroup(Model.DocumentTemplate.Id, redirect: true))
-                       })
-                            @Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
-                       {
-                           CanConfigure = canConfig,
-                           CategoryDescription = DocumentTemplateDevicesManagedGroup.GetCategoryDescription(Model.DocumentTemplate),
-                           Description = DocumentTemplateDevicesManagedGroup.GetDescription(Model.DocumentTemplate),
-                           ManagedGroup = Model.DevicesLinkedGroup,
-                           IncludeFilterBeginDate = true,
-                           UpdateUrl = Url.Action(MVC.API.DocumentTemplate.UpdateDevicesLinkedGroup(Model.DocumentTemplate.Id, redirect: true))
-                       })
-                            @if (canConfig)
-                            {
-                                @Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared)
-                            }
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="Config_HideAdvanced_Item">
-        <h2>Template Expressions</h2>
-        @Html.Partial(MVC.Config.DocumentTemplate.Views._ExpressionsTable, Model.TemplateExpressions)
-    </div>
-</div>
-<div id="dialogConfirmDelete" title="Delete this Document Template?">
-    <p>
-        <i class="fa fa-exclamation-triangle fa-lg warning"></i>This item will be permanently deleted and cannot be recovered.<br />
-        <em>
-            This <strong>will not delete attachments</strong> which have already been imported,
-            but any generated documents will no longer be automatically imported.
-        </em><br />
-        Are you sure?
-    </p>
-</div>
-<script type="text/javascript">
-    $(function () {
-        var button = $('#buttonDelete');
-        var buttonDialog = $("#dialogConfirmDelete");
-        var buttonLink = button.attr('href');
-        button.attr('href', '#');
-        button.click(function () {
-            buttonDialog.dialog('open');
-            return false;
-        });
-        buttonDialog.dialog({
-            resizable: false,
-            modal: true,
-            autoOpen: false,
-            buttons: {
-                "Delete": function () {
-                    $this = $(this);
-                    $this.dialog('disable');
-                    $this.dialog("option", "buttons", null);
-                    window.location.href = buttonLink;
-                },
-                Cancel: function () {
-                    $(this).dialog("close");
-                }
-            }
-        });
-
-    });
-</script>
-<div class="actionBar">
-    @if (hideAdvanced)
-    {
-        <button id="Config_HideAdvanced_Show" class="button">Show Advanced Options</button>
-        <script>
-            $(function () {
-                $('#Config_HideAdvanced_Show').click(function () {
-                    $('#Config_DocumentTemplates_Show').removeClass('Config_HideAdvanced');
-                    $(this).remove();
-                });
-            });
-        </script>
-    }
-    @if (Authorization.Has(Claims.Config.Show))
-    {
-        @Html.ActionLinkButton("Expression Browser", MVC.Config.DocumentTemplate.ExpressionBrowser())
-    }
-    @if (canBulkGenerate)
-    {
-        if (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.User)
-        {
-            @Html.ActionLinkButton("Bulk Generate", MVC.Config.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id))
-        }
-        else
-        {
-            <a id="buttonBulkGenerate" href="#" class="button">Bulk Generate</a>
-            <div id="dialogBulkGenerate" class="hiddenDialog dialog-bulk-generate" title="Bulk Generate: @(Model.DocumentTemplate.Id)">
-                <div class="brief">
-                    @switch (Model.DocumentTemplate.Scope)
-                    {
-                        case "Device":
-                            <div>
-                                Enter multiple <span class="scopeDescBulkGenerate">Device Serial Numbers</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
-                            </div>
-                            <div class="examples clearfix">
-                                <h4>Examples:</h4>
-                                <div class="example1 code">
-                                    01234567<br />
-                                    ABCD9876<br />
-                                    8VQ6G2R
-                                </div>
-                                <div class="example2 code">01234567,ABCD9876,8VQ6G2R</div>
-                                <div class="example3 code">01234567;ABCD9876;8VQ6G2R</div>
-                            </div>
-                            break;
-                        case "Job":
-                            <div>
-                                Enter multiple <span class="scopeDescBulkGenerate">Job Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
-                            </div>
-                            <div class="examples clearfix">
-                                <h4>Examples:</h4>
-                                <div class="example1 code">
-                                    86<br />
-                                    99<br />
-                                    44
-                                </div>
-                                <div class="example2 code">86,99,44</div>
-                                <div class="example3 code">86;99;44</div>
-                            </div>
-                            break;
-                    }
-                </div>
-                @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
-                {
-                    <div class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="DataIds"></div>
-                    <textarea id="inputBulkGenerateDataIds" name="DataIds" data-val="true" data-val-required="Identifiers are required"></textarea>
-                    if (Model.TemplatePageCount > 1 && Model.TemplatePageCount % 2 != 0)
-                    {
-                        <div style="margin-top: 6px;">
-                            <input id="inputBulkGenerateInsertBlankPage" type="checkbox" name="InsertBlankPage" value="True" /><label for="inputBulkGenerateInsertBlankPage">Insert Blank Pages for Double-Sided Printing</label>
-                        </div>
-                    }
-                }
-            </div>
-
-            <script>
-                $(function () {
-                    var dialog;
-
-                    $('#buttonBulkGenerate').click(function () {
-                        if (!dialog) {
-                            dialog = $('#dialogBulkGenerate').dialog({
-                                resizable: false,
-                                modal: true,
-                                autoOpen: false,
-                                width: 460,
-                                buttons: {
-                                    "Bulk Generate": function () {
-                                        dialog.find('form').submit();
-                                        dialog.dialog("disable");
-                                    },
-                                    Close: function () {
-                                        $(this).dialog("close");
+                        @if (canConfig && Authorization.Has(Claims.Config.UserFlag.Configure))
+                        {
+                            <table id="DocumentTemplate_OnImportUserFlagRules" class="tableData">
+                                <thead>
+                                    <tr>
+                                        <td>Action</td>
+                                        <td>User Flag</td>
+                                        <td>Created By</td>
+                                        <td>Comments</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="@(Model.OnImportUserFlagRules.Any() ? "hidden" : null)">
+                                        <td colspan="5"><span class="smallMessage">&lt;None Specified&gt;</span></td>
+                                    </tr>
+                                    @foreach (var rule in Model.OnImportUserFlagRules)
+                                    {
+                                        <tr data-id="@rule.Id">
+                                            <td>@(rule.AddFlag ? "Assign" : "Remove")</td>
+                                            <td>
+                                                <i class="fa fa-@(rule.UserFlag.Icon) fa-lg d-@(rule.UserFlag.IconColour)"></i>
+                                                @if (Authorization.Has(Claims.Config.UserFlag.Configure))
+                                                {
+                                                    <span>@Html.ActionLink(rule.UserFlag.Name, MVC.Config.UserFlag.Index(rule.UserFlag.Id))</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>@rule.UserFlag.Name</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (Authorization.Has(Claims.User.Show))
+                                                {
+                                                    <span>@Html.ActionLink(string.Format("{0} ({1})", rule.User.DisplayName, rule.User.FriendlyId()), MVC.User.Show(rule.User.UserId))</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>@string.Format("{0} ({1})", rule.User.DisplayName, rule.User.FriendlyId())</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (string.IsNullOrWhiteSpace(rule.Comments))
+                                                {
+                                                    <span>&nbsp;</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="whitespace-pre-wrap">@rule.Comments</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <i class="fa fa-times-circle fa-lg ajaxRemove" title="Remove"></i>
+                                                <i class="ajaxLoading" title="Loading..."></i>
+                                            </td>
+                                        </tr>
                                     }
+                                </tbody>
+                            </table>
+                            using (Html.BeginForm(MVC.API.DocumentTemplate.RemoveOnImportUserFlagRule(Model.DocumentTemplate.Id), FormMethod.Post, new { id = "DocumentTemplate_OnImportUserFlagRules_Remove" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("ruleId", "")
+                            }
+                            <a id="DocumentTemplate_OnImportUserFlagRules_AddButton" href="#" class="button small">Add User Flag Rule</a>
+                            <div id="DocumentTemplate_OnImportUserFlagRules_AddDialog" class="hiddenDialog" title="On Import User Flag Rule: @(Model.DocumentTemplate.Id)">
+                                <div class="brief">
+                                    @switch (Model.DocumentTemplate.Scope)
+                                    {
+                                        case "Device":
+                                            <div>
+                                                The user flag will be created/removed against the devices assigned user.
+                                            </div>
+                                            break;
+                                        case "Job":
+                                            <div>
+                                                The user flag will be created/removed against the jobs associated user.
+                                            </div>
+                                            break;
+                                        case "User":
+                                            <div>
+                                                The user flag will be created/removed against the user.
+                                            </div>
+                                            break;
+                                    }
+                                </div>
+                                @using (Html.BeginForm(MVC.API.DocumentTemplate.AddOnImportUserFlagRule(Model.DocumentTemplate.Id), FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <div class="distribute-evenly">
+                                        <span>
+                                            <input id="DocumentTemplate_OnImportUserFlagRules_Add_Create" type="radio" name="addFlag" value="true" checked /><label for="DocumentTemplate_OnImportUserFlagRules_Add_Create">Assign User Flag</label>
+                                        </span>
+                                        <span>
+                                            <input id="DocumentTemplate_OnImportUserFlagRules_Add_Remove" type="radio" name="addFlag" value="false" /><label for="DocumentTemplate_OnImportUserFlagRules_Add_Remove">Remove User Flag</label>
+                                        </span>
+                                    </div>
+                                    <div class="dialog-item-picker">
+                                        @foreach (var flag in Model.UserFlags)
+                                        {
+                                            <div class="item">
+                                                <input id="DocumentTemplate_OnImportUserFlagRules_Add_Flag_@flag.Id" type="radio" name="userFlagId" value="@flag.Id" required />
+                                                <label for="DocumentTemplate_OnImportUserFlagRules_Add_Flag_@flag.Id"><i class="fa fa-@(flag.Icon) fa-fw fa-lg d-@(flag.IconColour)"></i>@flag.Name</label>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div>
+                                        <div class="mt-1">
+                                            <label for="DocumentTemplate_OnImportUserFlagRules_Add_Comments">Comments</label> <small>(added to the assignment; optional)</small>
+                                        </div>
+                                        <textarea id="DocumentTemplate_OnImportUserFlagRules_Add_Comments" name="comments"></textarea>
+                                    </div>
                                 }
+                            </div>
+
+                            <script id="DocumentTemplate_OnImportUserFlagRules_AddTemplate" type="text/template">
+                    <tr>
+                        <td class="rule-action"></td>
+                        <td>
+                            <i class="rule-flag fa fa-lg"></i>
+                            <span class="rule-flag"></span>
+                        </td>
+                        <td>
+                            <span class="rule-user"></span>
+                        </td>
+                        <td>
+                            <span class="rule-comments whitespace-pre-wrap"></span>
+                        </td>
+                        <td>
+                            <i class="fa fa-times-circle fa-lg ajaxRemove" title="Remove"></i>
+                            <i class="ajaxLoading" title="Loading..." style="display: none;"></i>
+                        </td>
+                    </tr>
+                    </script>
+                    <script type="text/javascript">
+                        $(function () {
+                            const rulesTable = $('#DocumentTemplate_OnImportUserFlagRules');
+
+                            rulesTable.on('click', '.ajaxRemove', e => {
+                                const $remove = $(e.currentTarget);
+                                const $target = $remove.closest('tr');
+                                const id = $target.attr('data-id');
+
+                                const $loader = $remove.next('.ajaxLoading');
+                                $loader.show();
+                                $remove.hide();
+
+                                const $form = $('#DocumentTemplate_OnImportUserFlagRules_Remove');
+                                $form.find('[name="ruleId"]').val(id);
+                                const body = new FormData($form[0]);
+                                fetch($form[0].action, {
+                                    body: body,
+                                    method: 'POST'
+                                }).then(r => {
+                                    if (r.status === 200) {
+                                        $target.remove();
+
+                                        const rows = rulesTable.find('tbody').find('tr');
+                                        if (rows.length === 1) {
+                                            rows.first().removeClass('hidden');
+                                        } else {
+                                            rows.first().addClass('hidden');
+                                        }
+                                    } else {
+                                        alert(r.statusText);
+                                        $loader.hide();
+                                        $remove.show();
+                                    }
+                                })
+                                    .catch(e => {
+                                        alert(e);
+                                        $loader.hide();
+                                        $remove.show();
+                                    });
                             });
 
-                            $.validator.unobtrusive.reparse('#inputBulkGenerateDataIds');
-                        }
+                            let dialog = null;
+                            $('#DocumentTemplate_OnImportUserFlagRules_AddButton').click(e => {
+                                e.preventDefault();
 
-                        dialog.dialog('open');
-                        return false;
+                                if (!dialog) {
+                                    dialog = $('#DocumentTemplate_OnImportUserFlagRules_AddDialog').dialog({
+                                        resizable: false,
+                                        modal: true,
+                                        autoOpen: false,
+                                        width: 460,
+                                        buttons: {
+                                            "Add Rule": function () {
+                                                dialog.dialog("disable");
+
+                                                const form = dialog.find('form')[0];
+                                                if (form.reportValidity()) {
+                                                    const body = new FormData(form);
+
+                                                    fetch(form.action, {
+                                                        method: 'POST',
+                                                        body: body
+                                                    })
+                                                        .then(r => r.json())
+                                                        .then(r => {
+                                                            const row = $($('#DocumentTemplate_OnImportUserFlagRules_AddTemplate').html());
+                                                            row.attr('data-id', r.Id);
+                                                            row.find('.rule-action').text(r.AddFlag ? 'Assign' : 'Remove');
+                                                            row.find('i.rule-flag').addClass('fa-' + r.UserFlagIcon + ' d-' + r.UserFlagColour);
+                                                            row.find('span.rule-flag').text(r.UserFlagName);
+                                                            row.find('.rule-user').text(r.UserDisplayName + ' (' + r.UserIdFriendly + ')');
+                                                            row.find('.rule-comments').text(r.Comments);
+                                                            rulesTable.find('tbody').append(row);
+
+                                                            rulesTable.find('tbody').find('tr').first().addClass('hidden');
+                                                            
+                                                            dialog.dialog("close");
+                                                        })
+                                                        .catch(e => {
+                                                            alert(e);
+                                                        })
+                                                }
+                                            },
+                                            Close: function () {
+                                                $(this).dialog("close");
+                                            }
+                                        }
+                                    });
+                                }
+
+                                dialog.dialog('open');
+                                return false;
+                            });
+                        });
+                    </script>
+                }
+                else
+                {
+                    if (!Model.OnImportUserFlagRules.Any())
+                    {
+                        <span class="smallMessage">&lt;None Specified&gt;</span>
+                    }
+                    else
+                    {
+                        <table class="tableData">
+                            <thead>
+                                <tr>
+                                    <td>Action</td>
+                                    <td>User Flag</td>
+                                    <td>Created By</td>
+                                    <td>Comments</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var rule in Model.OnImportUserFlagRules)
+                                {
+                                    <tr>
+                                        <td>@(rule.AddFlag ? "Assign" : "Remove")</td>
+                                        <td>
+                                            <i class="fa fa-@(rule.UserFlag.Icon) fa-lg d-@(rule.UserFlag.IconColour)"></i>
+                                            @if (Authorization.Has(Claims.Config.UserFlag.Configure))
+                                            {
+                                                <span>@Html.ActionLink(rule.UserFlag.Name, MVC.Config.UserFlag.Index(rule.UserFlag.Id))</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@rule.UserFlag.Name</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (Authorization.Has(Claims.User.Show))
+                                            {
+                                                <span>@Html.ActionLink(string.Format("{0} ({1})", rule.User.DisplayName, rule.User.FriendlyId()), MVC.User.Show(rule.User.UserId))</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@string.Format("{0} ({1})", rule.User.DisplayName, rule.User.FriendlyId())</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (string.IsNullOrWhiteSpace(rule.Comments))
+                                            {
+                                                <span>&nbsp;</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="whitespace-pre-wrap">@rule.Comments</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                }
+                        <div class="info-box">
+                            <p class="fa-p">
+                                <i class="fa fa-fw fa-info-circle"></i>
+                                These rules will be applied each time a document is imported (as an attachment) where it is determined the document was based on this template.
+                                When creating a user flag assignment, if an assignment already exists the rule will be skipped.
+                                When removing user flag assignments, if no assignment is present the rule will be skipped.
+                            </p>
+                        </div>
+                        </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Linked Groups:
+                            </th>
+                            <td>
+                                <div>
+                                    @Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
+                               {
+                                   CanConfigure = canConfig,
+                                   CategoryDescription = DocumentTemplateUsersManagedGroup.GetCategoryDescription(Model.DocumentTemplate),
+                                   Description = DocumentTemplateUsersManagedGroup.GetDescription(Model.DocumentTemplate),
+                                   ManagedGroup = Model.UsersLinkedGroup,
+                                   IncludeFilterBeginDate = true,
+                                   UpdateUrl = Url.Action(MVC.API.DocumentTemplate.UpdateUsersLinkedGroup(Model.DocumentTemplate.Id, redirect: true))
+                               })
+                                    @Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
+                               {
+                                   CanConfigure = canConfig,
+                                   CategoryDescription = DocumentTemplateDevicesManagedGroup.GetCategoryDescription(Model.DocumentTemplate),
+                                   Description = DocumentTemplateDevicesManagedGroup.GetDescription(Model.DocumentTemplate),
+                                   ManagedGroup = Model.DevicesLinkedGroup,
+                                   IncludeFilterBeginDate = true,
+                                   UpdateUrl = Url.Action(MVC.API.DocumentTemplate.UpdateDevicesLinkedGroup(Model.DocumentTemplate.Id, redirect: true))
+                               })
+                                    @if (canConfig)
+                                    {
+                                        @Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared)
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="Config_HideAdvanced_Item">
+                <h2>Template Expressions</h2>
+                @Html.Partial(MVC.Config.DocumentTemplate.Views._ExpressionsTable, Model.TemplateExpressions)
+            </div>
+        </div>
+        <div id="dialogConfirmDelete" title="Delete this Document Template?">
+            <p>
+                <i class="fa fa-exclamation-triangle fa-lg warning"></i>This item will be permanently deleted and cannot be recovered.<br />
+                <em>
+                    This <strong>will not delete attachments</strong> which have already been imported,
+                    but any generated documents will no longer be automatically imported.
+                </em><br />
+                Are you sure?
+            </p>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                var button = $('#buttonDelete');
+                var buttonDialog = $("#dialogConfirmDelete");
+                var buttonLink = button.attr('href');
+                button.attr('href', '#');
+                button.click(function () {
+                    buttonDialog.dialog('open');
+                    return false;
+                });
+                buttonDialog.dialog({
+                    resizable: false,
+                    modal: true,
+                    autoOpen: false,
+                    buttons: {
+                        "Delete": function () {
+                            $this = $(this);
+                            $this.dialog('disable');
+                            $this.dialog("option", "buttons", null);
+                            window.location.href = buttonLink;
+                        },
+                        Cancel: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+
+            });
+        </script>
+        <div class="actionBar">
+            @if (hideAdvanced)
+            {
+                <button id="Config_HideAdvanced_Show" class="button">Show Advanced Options</button>
+                <script>
+                    $(function () {
+                        $('#Config_HideAdvanced_Show').click(function () {
+                            $('#Config_DocumentTemplates_Show').removeClass('Config_HideAdvanced');
+                            $(this).remove();
+                        });
                     });
+                </script>
+            }
+            @if (Authorization.Has(Claims.Config.Show))
+            {
+                @Html.ActionLinkButton("Expression Browser", MVC.Config.DocumentTemplate.ExpressionBrowser())
+            }
+            @if (canBulkGenerate)
+            {
+                if (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.User)
+                {
+                    @Html.ActionLinkButton("Bulk Generate", MVC.Config.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id))
+                }
+                else
+                {
+                    <a id="buttonBulkGenerate" href="#" class="button">Bulk Generate</a>
+                    <div id="dialogBulkGenerate" class="hiddenDialog dialog-bulk-generate" title="Bulk Generate: @(Model.DocumentTemplate.Id)">
+                        <div class="brief">
+                            @switch (Model.DocumentTemplate.Scope)
+                            {
+                                case "Device":
+                                    <div>
+                                        Enter multiple <span class="scopeDescBulkGenerate">Device Serial Numbers</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                                    </div>
+                                    <div class="examples clearfix">
+                                        <h4>Examples:</h4>
+                                        <div class="example1 code">
+                                            01234567<br />
+                                            ABCD9876<br />
+                                            8VQ6G2R
+                                        </div>
+                                        <div class="example2 code">01234567,ABCD9876,8VQ6G2R</div>
+                                        <div class="example3 code">01234567;ABCD9876;8VQ6G2R</div>
+                                    </div>
+                                    break;
+                                case "Job":
+                                    <div>
+                                        Enter multiple <span class="scopeDescBulkGenerate">Job Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                                    </div>
+                                    <div class="examples clearfix">
+                                        <h4>Examples:</h4>
+                                        <div class="example1 code">
+                                            86<br />
+                                            99<br />
+                                            44
+                                        </div>
+                                        <div class="example2 code">86,99,44</div>
+                                        <div class="example3 code">86;99;44</div>
+                                    </div>
+                                    break;
+                            }
+                        </div>
+                        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
+                        {
+                            <div class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="DataIds"></div>
+                            <textarea id="inputBulkGenerateDataIds" name="DataIds" data-val="true" data-val-required="Identifiers are required"></textarea>
+                            if (Model.TemplatePageCount > 1 && Model.TemplatePageCount % 2 != 0)
+                            {
+                                <div style="margin-top: 6px;">
+                                    <input id="inputBulkGenerateInsertBlankPage" type="checkbox" name="InsertBlankPage" value="True" /><label for="inputBulkGenerateInsertBlankPage">Insert Blank Pages for Double-Sided Printing</label>
+                                </div>
+                            }
+                        }
+                    </div>
+
+                    <script>
+                        $(function () {
+                            var dialog;
+
+                            $('#buttonBulkGenerate').click(function () {
+                                if (!dialog) {
+                                    dialog = $('#dialogBulkGenerate').dialog({
+                                        resizable: false,
+                                        modal: true,
+                                        autoOpen: false,
+                                        width: 460,
+                                        buttons: {
+                                            "Bulk Generate": function () {
+                                                dialog.find('form').submit();
+                                                dialog.dialog("disable");
+                                            },
+                                            Close: function () {
+                                                $(this).dialog("close");
+                                            }
+                                        }
+                                    });
+
+                                    $.validator.unobtrusive.reparse('#inputBulkGenerateDataIds');
+                                }
+
+                                dialog.dialog('open');
+                                return false;
+                            });
+                        });
+                    </script>
+                }
+            }
+            @if (Authorization.Has(Claims.Config.DocumentTemplate.Delete))
+            {
+                @Html.ActionLinkButton("Delete", MVC.API.DocumentTemplate.Delete(Model.DocumentTemplate.Id, true), "buttonDelete")
+            }
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Model.BulkGenerateDownloadId))
+        {
+            <div id="Config_DocumentTemplates_Show_DownloadBulk_Dialog" class="dialog" title="Download Bulk Documents">
+                <a href="@Url.Action(MVC.API.DocumentTemplate.BulkGenerateDownload(Model.BulkGenerateDownloadId, Model.BulkGenerateDownloadFilename))" class="button"><i class="fa fa-download fa-lg"></i>Download Bulk Documents</a>
+            </div>
+            <script>
+                $(function () {
+                    $('#Config_DocumentTemplates_Show_DownloadBulk_Dialog')
+                        .dialog({
+                            width: 400,
+                            height: 100,
+                            resizable: false,
+                            modal: true,
+                            autoOpen: true
+                        });
                 });
             </script>
         }
-    }
-    @if (Authorization.Has(Claims.Config.DocumentTemplate.Delete))
-    {
-        @Html.ActionLinkButton("Delete", MVC.API.DocumentTemplate.Delete(Model.DocumentTemplate.Id, true), "buttonDelete")
-    }
-</div>
-@if (!string.IsNullOrWhiteSpace(Model.BulkGenerateDownloadId))
-{
-    <div id="Config_DocumentTemplates_Show_DownloadBulk_Dialog" class="dialog" title="Download Bulk Documents">
-        <a href="@Url.Action(MVC.API.DocumentTemplate.BulkGenerateDownload(Model.BulkGenerateDownloadId, Model.BulkGenerateDownloadFilename))" class="button"><i class="fa fa-download fa-lg"></i>Download Bulk Documents</a>
-    </div>
-    <script>
-        $(function () {
-            $('#Config_DocumentTemplates_Show_DownloadBulk_Dialog')
-                .dialog({
-                    width: 400,
-                    height: 100,
-                    resizable: false,
-                    modal: true,
-                    autoOpen: true
-                });
-        });
-    </script>
-}

@@ -241,6 +241,18 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult RemoveOnImportUserFlagRule()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RemoveOnImportUserFlagRule);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AddOnImportUserFlagRule()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddOnImportUserFlagRule);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult GenerateDocumentHandlerUi()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GenerateDocumentHandlerUi);
@@ -298,6 +310,8 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string BulkGenerateAddUserDetail = "BulkGenerateAddUserDetail";
             public readonly string Generate = "Generate";
             public readonly string Delete = "Delete";
+            public readonly string RemoveOnImportUserFlagRule = "RemoveOnImportUserFlagRule";
+            public readonly string AddOnImportUserFlagRule = "AddOnImportUserFlagRule";
             public readonly string GenerateDocumentHandlerUi = "GenerateDocumentHandlerUi";
             public readonly string DocumentHandlers = "DocumentHandlers";
         }
@@ -336,6 +350,8 @@ namespace Disco.Web.Areas.API.Controllers
             public const string BulkGenerateAddUserDetail = "BulkGenerateAddUserDetail";
             public const string Generate = "Generate";
             public const string Delete = "Delete";
+            public const string RemoveOnImportUserFlagRule = "RemoveOnImportUserFlagRule";
+            public const string AddOnImportUserFlagRule = "AddOnImportUserFlagRule";
             public const string GenerateDocumentHandlerUi = "GenerateDocumentHandlerUi";
             public const string DocumentHandlers = "DocumentHandlers";
         }
@@ -621,6 +637,26 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_RemoveOnImportUserFlagRule s_params_RemoveOnImportUserFlagRule = new ActionParamsClass_RemoveOnImportUserFlagRule();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_RemoveOnImportUserFlagRule RemoveOnImportUserFlagRuleParams { get { return s_params_RemoveOnImportUserFlagRule; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_RemoveOnImportUserFlagRule
+        {
+            public readonly string id = "id";
+            public readonly string ruleId = "ruleId";
+        }
+        static readonly ActionParamsClass_AddOnImportUserFlagRule s_params_AddOnImportUserFlagRule = new ActionParamsClass_AddOnImportUserFlagRule();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AddOnImportUserFlagRule AddOnImportUserFlagRuleParams { get { return s_params_AddOnImportUserFlagRule; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AddOnImportUserFlagRule
+        {
+            public readonly string id = "id";
+            public readonly string addFlag = "addFlag";
+            public readonly string userFlagId = "userFlagId";
+            public readonly string comments = "comments";
         }
         static readonly ActionParamsClass_GenerateDocumentHandlerUi s_params_GenerateDocumentHandlerUi = new ActionParamsClass_GenerateDocumentHandlerUi();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1081,6 +1117,34 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             DeleteOverride(callInfo, id, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void RemoveOnImportUserFlagRuleOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, System.Guid? ruleId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult RemoveOnImportUserFlagRule(string id, System.Guid? ruleId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RemoveOnImportUserFlagRule);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ruleId", ruleId);
+            RemoveOnImportUserFlagRuleOverride(callInfo, id, ruleId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AddOnImportUserFlagRuleOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, bool? addFlag, int? userFlagId, string comments);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult AddOnImportUserFlagRule(string id, bool? addFlag, int? userFlagId, string comments)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddOnImportUserFlagRule);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "addFlag", addFlag);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userFlagId", userFlagId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "comments", comments);
+            AddOnImportUserFlagRuleOverride(callInfo, id, addFlag, userFlagId, comments);
             return callInfo;
         }
 

@@ -251,19 +251,33 @@ namespace Disco.Services.Documents.AttachmentImport
                     return null;
             }
 
-            if (Identifier.DocumentTemplate != null && !string.IsNullOrWhiteSpace(Identifier.DocumentTemplate.OnImportAttachmentExpression))
+            if (Identifier.DocumentTemplate != null)
             {
-                try
+                if (!string.IsNullOrWhiteSpace(Identifier.DocumentTemplate.OnImportAttachmentExpression))
                 {
-                    var expressionResult = Identifier.DocumentTemplate.EvaluateOnAttachmentImportExpression(attachment, Identifier.Target, Database, creatorUser, Identifier.TimeStamp, PageIdentifiers);
-                    DocumentsLog.LogImportAttachmentExpressionEvaluated(Identifier.DocumentTemplate, Identifier.Target, attachment, expressionResult);
+                    try
+                    {
+                        var expressionResult = Identifier.DocumentTemplate.EvaluateOnAttachmentImportExpression(attachment, Identifier.Target, Database, creatorUser, Identifier.TimeStamp, PageIdentifiers);
+                        DocumentsLog.LogImportAttachmentExpressionEvaluated(Identifier.DocumentTemplate, Identifier.Target, attachment, expressionResult);
+                    }
+                    catch (Exception ex)
+                    {
+                        SystemLog.LogException("Document Importer - OnImportAttachmentExpression", ex);
+                    }
                 }
-                catch (Exception ex)
+
+                if (Identifier.DocumentTemplate.OnImportUserFlagRules != null)
                 {
-                    SystemLog.LogException("Document Importer - OnImportAttachmentExpression", ex);
+                    var rules = Identifier.DocumentTemplate.GetOnImportUserFlagRules();
+
+                    foreach ( var rule in rules)
+                    {
+                        rule.Apply(Database, Identifier.Target);
+                    }
                 }
             }
-            
+
+
             return attachment;
         }
     }

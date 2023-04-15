@@ -14,10 +14,11 @@ using Disco.Services.Web;
 using Disco.Web.Areas.API.Models.DocumentTemplate;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
@@ -1206,6 +1207,68 @@ namespace Disco.Web.Areas.API.Controllers
                     throw;
                 else
                     return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Configure, Claims.Config.UserFlag.Configure)]
+        public virtual ActionResult RemoveOnImportUserFlagRule([Required] string id, Guid? ruleId = null)
+        {
+            try
+            {
+                var template = Database.DocumentTemplates.FirstOrDefault(t => t.Id == id);
+
+                if (template == null)
+                    throw new ArgumentException("Unknown document template", nameof(id));
+
+                template.RemoveOnImportUserFlagRule(Database, ruleId.Value);
+
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.Message);
+            }
+        }
+
+        public virtual ActionResult AddOnImportUserFlagRule([Required] string id, bool? addFlag = null, int? userFlagId = null, string comments = null)
+        {
+            try
+            {
+                var template = Database.DocumentTemplates.FirstOrDefault(t => t.Id == id);
+
+                if (template == null)
+                    throw new ArgumentException("Unknown document template", nameof(id));
+
+                var rule = new OnImportUserFlagRule()
+                {
+                    AddFlag = addFlag.Value,
+                    FlagId = userFlagId.Value,
+                    UserId = Authorization.User.UserId,
+                    Comments = comments,
+                };
+
+                rule = template.AddOnImportUserFlagRule(Database, rule);
+
+                var model = new AddOnImportUserFlagRuleModel()
+                {
+                    Id = rule.Id,
+                    FlagId = rule.FlagId,
+                    UserId = rule.UserId,
+                    AddFlag = rule.AddFlag,
+                    Comments = rule.Comments,
+                    UserDisplayName = rule.User.DisplayName,
+                    UserIdFriendly = rule.User.FriendlyId(),
+                    UserFlagName = rule.UserFlag.Name,
+                    UserFlagIcon = rule.UserFlag.Icon,
+                    UserFlagColour = rule.UserFlag.IconColour,
+                };
+
+                return Json(model);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.Message);
             }
         }
 

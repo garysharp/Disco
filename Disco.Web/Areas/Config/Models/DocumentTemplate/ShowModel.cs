@@ -1,6 +1,8 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
+using Disco.Models.Services.Documents;
 using Disco.Models.UI.Config.DocumentTemplate;
+using Disco.Services;
 using Disco.Services.Documents.ManagedGroups;
 using Disco.Services.Expressions;
 using System.Collections.Generic;
@@ -17,6 +19,9 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
         public List<bool> TemplatePagesHaveAttachmentId { get; set; }
         public List<Expression> TemplateExpressions { get; set; }
         public int TemplatePageCount { get { return TemplatePagesHaveAttachmentId?.Count() ?? 0; } }
+
+        public List<Disco.Models.Repository.UserFlag> UserFlags { get; set; }
+        public List<OnImportUserFlagRule> OnImportUserFlagRules { get; set; }
 
         public List<JobType> JobTypes { get; set; }
 
@@ -53,6 +58,9 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
 
             if (this.JobTypes == null)
                 JobTypes = Database.JobTypes.Include("JobSubTypes").ToList();
+
+            UserFlags = Database.UserFlags.ToList();
+            OnImportUserFlagRules = DocumentTemplate.GetOnImportUserFlagRuleDetails(Database).ToList();
         }
     }
 }

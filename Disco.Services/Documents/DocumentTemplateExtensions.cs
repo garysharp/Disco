@@ -1,9 +1,12 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
+using Disco.Models.Services.Documents;
 using Disco.Services.Authorization;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Drawing;
 using System.IO;
@@ -167,6 +170,149 @@ namespace Disco.Services
             target = template.ResolveScopeTarget(database, targetId, out targetUser);
             if (target == null)
                 throw new ArgumentException("Target not found", nameof(targetId));
+        }
+
+        public static IEnumerable<OnImportUserFlagRule> GetOnImportUserFlagRuleDetails(this DocumentTemplate template, DiscoDataContext database)
+        {
+            foreach (var rule in GetOnImportUserFlagRules(template))
+            {
+                var detail = rule.AddDetails(database);
+
+                if (detail == null)
+                    continue;
+
+                yield return detail;
+            }
+        }
+
+        public static IEnumerable<OnImportUserFlagRule> GetOnImportUserFlagRules(this DocumentTemplate template)
+        {
+            if (string.IsNullOrWhiteSpace(template.OnImportUserFlagRules))
+                return Enumerable.Empty<OnImportUserFlagRule>();
+            else
+                return JsonConvert.DeserializeObject<List<OnImportUserFlagRule>>(template.OnImportUserFlagRules);
+        }
+
+        public static OnImportUserFlagRule AddDetails(this OnImportUserFlagRule rule, DiscoDataContext database)
+        {
+            rule.User = database.Users.FirstOrDefault(u => u.UserId == rule.UserId);
+            rule.UserFlag = database.UserFlags.FirstOrDefault(f => f.Id == rule.FlagId);
+
+            if (rule.User == null || rule.UserFlag == null)
+                return null;
+            else
+                return rule;
+        }
+
+        public static OnImportUserFlagRule AddOnImportUserFlagRule(this DocumentTemplate template, DiscoDataContext database, OnImportUserFlagRule rule)
+        {
+            List<OnImportUserFlagRule> rules;
+
+            if (string.IsNullOrWhiteSpace(template.OnImportUserFlagRules))
+                rules = new List<OnImportUserFlagRule>();
+            else
+                rules = JsonConvert.DeserializeObject<List<OnImportUserFlagRule>>(template.OnImportUserFlagRules);
+
+            // validate user id
+            rule.User = database.Users.FirstOrDefault(u => u.UserId == rule.UserId);
+            if (rule.User == null)
+                throw new ArgumentException("Unknown rule user id", nameof(rule));
+
+            // validate user flag
+            rule.UserFlag = database.UserFlags.FirstOrDefault(f => f.Id == rule.FlagId);
+            if (rule.UserFlag == null)
+                throw new ArgumentException("Unknown rule user flag", nameof(rule));
+
+            // validate no existing matching rule
+            if (rules.Any(r => r.FlagId == rule.FlagId))
+                throw new ArgumentException("This document template already has a rule for this user flag", nameof(rule));
+
+            rule.Id = Guid.NewGuid();
+
+            if (string.IsNullOrWhiteSpace(rule.Comments))
+                rule.Comments = null;
+
+            rules.Add(rule);
+            template.OnImportUserFlagRules = JsonConvert.SerializeObject(rules);
+
+            database.SaveChanges();
+
+            return rule;
+        }
+
+        public static bool RemoveOnImportUserFlagRule(this DocumentTemplate template, DiscoDataContext database, Guid id)
+        {
+            if (string.IsNullOrWhiteSpace(template.OnImportUserFlagRules))
+                return false;
+
+            var rules = JsonConvert.DeserializeObject<List<OnImportUserFlagRule>>(template.OnImportUserFlagRules);
+
+            if (rules.RemoveAll(r => r.Id == id) == 0)
+                return false;
+
+            template.OnImportUserFlagRules = JsonConvert.SerializeObject(rules);
+            database.SaveChanges();
+
+            return true;
+        }
+
+        public static void Apply(this OnImportUserFlagRule rule, DiscoDataContext database, IAttachmentTarget target)
+        {
+            string userId;
+            if (target is User targetUser)
+                userId = targetUser.UserId;
+            else if (target is Device targetDevice && targetDevice.AssignedUserId != null)
+                userId = targetDevice.AssignedUserId;
+            else if (target is Job targetJob && targetJob.UserId != null)
+                userId = targetJob.UserId;
+            else
+                return;
+
+            if (userId == null)
+                return;
+
+            var user = database.Users.Include(u => u.UserFlagAssignments).FirstOrDefault(u => u.UserId == userId);
+
+            if (user == null)
+                return;
+
+            var techUser = database.Users.FirstOrDefault(u => u.UserId == rule.UserId);
+            if (techUser == null)
+                return;
+
+            // remove flag
+            if (!rule.AddFlag)
+            {
+                var flagAssignment = user.UserFlagAssignments.FirstOrDefault(a => a.RemovedDate == null && a.UserFlagId == rule.FlagId);
+                if (flagAssignment != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(rule.Comments))
+                    {
+                        if (!string.IsNullOrWhiteSpace(flagAssignment.Comments))
+                            flagAssignment.Comments = string.Concat(flagAssignment.Comments, Environment.NewLine, rule.Comments);
+                        else
+                            flagAssignment.Comments = rule.Comments;
+                    }
+                    flagAssignment.OnRemoveUnsafe(database, techUser);
+                }
+                database.SaveChanges();
+            }
+            else
+            {
+                // already has flag?
+                if (rule.AddFlag && user.UserFlagAssignments.Any(a => a.RemovedDate == null && a.UserFlagId == rule.FlagId))
+                    return;
+
+                // add flag
+                var userFlag = database.UserFlags.FirstOrDefault(f => f.Id == rule.FlagId);
+                if (userFlag == null)
+                    return;
+
+                user.OnAddUserFlagUnsafe(database, userFlag, techUser, rule.Comments);
+
+                database.SaveChanges();
+            }
+
         }
     }
 }

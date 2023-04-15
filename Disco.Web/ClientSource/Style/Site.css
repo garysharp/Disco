@@ -1576,3 +1576,6 @@ ul.list-group li.selected:hover {
 ul.list-group li:not(:first-child) {
   border-top: 1px solid #ddd;
 }
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
