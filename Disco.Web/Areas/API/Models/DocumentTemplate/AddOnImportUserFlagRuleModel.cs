@@ -10,9 +10,6 @@ namespace Disco.Web.Areas.API.Models.DocumentTemplate
         public bool AddFlag { get; set; }
         public string Comments { get; set; }
 
-        public string UserDisplayName { get; set; }
-        public string UserIdFriendly { get; set; }
-
         public string UserFlagIcon { get; set; }
         public string UserFlagColour { get; set; }
         public string UserFlagName { get; set; }

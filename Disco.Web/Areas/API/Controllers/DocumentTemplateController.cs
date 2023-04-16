@@ -1259,8 +1259,6 @@ namespace Disco.Web.Areas.API.Controllers
                     UserId = rule.UserId,
                     AddFlag = rule.AddFlag,
                     Comments = rule.Comments,
-                    UserDisplayName = rule.User.DisplayName,
-                    UserIdFriendly = rule.User.FriendlyId(),
                     UserFlagName = rule.UserFlag.Name,
                     UserFlagIcon = rule.UserFlag.Icon,
                     UserFlagColour = rule.UserFlag.IconColour,

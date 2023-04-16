@@ -15,8 +15,6 @@ namespace Disco.Models.Services.Documents
         public string Comments { get; set; }
 
         [JsonIgnore]
-        public User User { get; set; }
-        [JsonIgnore]
         public UserFlag UserFlag { get; set; }
     }
 }

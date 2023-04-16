@@ -272,7 +272,7 @@ namespace Disco.Services.Documents.AttachmentImport
 
                     foreach ( var rule in rules)
                     {
-                        rule.Apply(Database, Identifier.Target);
+                        rule.Apply(Database, Identifier.Target, creatorUser);
                     }
                 }
             }

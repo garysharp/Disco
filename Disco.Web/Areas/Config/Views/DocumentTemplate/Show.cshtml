@@ -690,14 +690,13 @@
                                     <tr>
                                         <td>Action</td>
                                         <td>User Flag</td>
-                                        <td>Created By</td>
                                         <td>Comments</td>
                                         <td>&nbsp;</td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr class="@(Model.OnImportUserFlagRules.Any() ? "hidden" : null)">
-                                        <td colspan="5"><span class="smallMessage">&lt;None Specified&gt;</span></td>
+                                        <td colspan="4"><span class="smallMessage">&lt;None Specified&gt;</span></td>
                                     </tr>
                                     @foreach (var rule in Model.OnImportUserFlagRules)
                                     {
@@ -712,16 +711,6 @@
                                                 else
                                                 {
                                                     <span>@rule.UserFlag.Name</span>
-                                                }
-                                            </td>
-                                            <td>
-                                                @if (Authorization.Has(Claims.User.Show))
-                                                {
-                                                    <span>@Html.ActionLink(string.Format("{0} ({1})", rule.User.DisplayName, rule.User.FriendlyId()), MVC.User.Show(rule.User.UserId))</span>
-                                                }
-                                                else
-                                                {
-                                                    <span>@string.Format("{0} ({1})", rule.User.DisplayName, rule.User.FriendlyId())</span>
                                                 }
                                             </td>
                                             <td>
@@ -806,9 +795,6 @@
                             <span class="rule-flag"></span>
                         </td>
                         <td>
-                            <span class="rule-user"></span>
-                        </td>
-                        <td>
                             <span class="rule-comments whitespace-pre-wrap"></span>
                         </td>
                         <td>
@@ -888,7 +874,6 @@
                                                             row.find('.rule-action').text(r.AddFlag ? 'Assign' : 'Remove');
                                                             row.find('i.rule-flag').addClass('fa-' + r.UserFlagIcon + ' d-' + r.UserFlagColour);
                                                             row.find('span.rule-flag').text(r.UserFlagName);
-                                                            row.find('.rule-user').text(r.UserDisplayName + ' (' + r.UserIdFriendly + ')');
                                                             row.find('.rule-comments').text(r.Comments);
                                                             rulesTable.find('tbody').append(row);
 
@@ -927,7 +912,6 @@
                                 <tr>
                                     <td>Action</td>
                                     <td>User Flag</td>
-                                    <td>Created By</td>
                                     <td>Comments</td>
                                 </tr>
                             </thead>
@@ -945,16 +929,6 @@
                                             else
                                             {
                                                 <span>@rule.UserFlag.Name</span>
-                                            }
-                                        </td>
-                                        <td>
-                                            @if (Authorization.Has(Claims.User.Show))
-                                            {
-                                                <span>@Html.ActionLink(string.Format("{0} ({1})", rule.User.DisplayName, rule.User.FriendlyId()), MVC.User.Show(rule.User.UserId))</span>
-                                            }
-                                            else
-                                            {
-                                                <span>@string.Format("{0} ({1})", rule.User.DisplayName, rule.User.FriendlyId())</span>
                                             }
                                         </td>
                                         <td>

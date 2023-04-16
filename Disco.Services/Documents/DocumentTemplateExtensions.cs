@@ -195,10 +195,9 @@ namespace Disco.Services
 
         public static OnImportUserFlagRule AddDetails(this OnImportUserFlagRule rule, DiscoDataContext database)
         {
-            rule.User = database.Users.FirstOrDefault(u => u.UserId == rule.UserId);
             rule.UserFlag = database.UserFlags.FirstOrDefault(f => f.Id == rule.FlagId);
 
-            if (rule.User == null || rule.UserFlag == null)
+            if (rule.UserFlag == null)
                 return null;
             else
                 return rule;
@@ -212,11 +211,6 @@ namespace Disco.Services
                 rules = new List<OnImportUserFlagRule>();
             else
                 rules = JsonConvert.DeserializeObject<List<OnImportUserFlagRule>>(template.OnImportUserFlagRules);
-
-            // validate user id
-            rule.User = database.Users.FirstOrDefault(u => u.UserId == rule.UserId);
-            if (rule.User == null)
-                throw new ArgumentException("Unknown rule user id", nameof(rule));
 
             // validate user flag
             rule.UserFlag = database.UserFlags.FirstOrDefault(f => f.Id == rule.FlagId);
@@ -256,7 +250,7 @@ namespace Disco.Services
             return true;
         }
 
-        public static void Apply(this OnImportUserFlagRule rule, DiscoDataContext database, IAttachmentTarget target)
+        public static void Apply(this OnImportUserFlagRule rule, DiscoDataContext database, IAttachmentTarget target, User techUser)
         {
             string userId;
             if (target is User targetUser)
@@ -276,9 +270,12 @@ namespace Disco.Services
             if (user == null)
                 return;
 
-            var techUser = database.Users.FirstOrDefault(u => u.UserId == rule.UserId);
             if (techUser == null)
-                return;
+            {
+                techUser = database.Users.FirstOrDefault(u => u.UserId == rule.UserId);
+                if (techUser == null)
+                    return;
+            }
 
             // remove flag
             if (!rule.AddFlag)

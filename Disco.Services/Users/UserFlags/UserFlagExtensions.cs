@@ -45,6 +45,9 @@ namespace Disco.Services
 
         public static void OnRemoveUnsafe(this UserFlagAssignment fa, DiscoDataContext Database, User RemovingUser)
         {
+            fa = Database.UserFlagAssignments.First(a => a.Id == fa.Id);
+            RemovingUser = Database.Users.First(u => u.UserId == RemovingUser.UserId);
+
             fa.RemovedDate = DateTime.Now;
             fa.RemovedUserId = RemovingUser.UserId;
 
@@ -95,6 +98,10 @@ namespace Disco.Services
 
         public static UserFlagAssignment OnAddUserFlagUnsafe(this User u, DiscoDataContext Database, UserFlag flag, User AddingUser, string Comments)
         {
+            flag = Database.UserFlags.First(f => f.Id == flag.Id);
+            u = Database.Users.First(user => user.UserId == u.UserId);
+            AddingUser = Database.Users.First(user => user.UserId == AddingUser.UserId);
+
             var fa = new UserFlagAssignment()
             {
                 UserFlag = flag,
