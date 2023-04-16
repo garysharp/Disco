@@ -10,19 +10,17 @@ namespace Disco.Services
 {
     public static class DocumentTemplateExpressionExtensions
     {
-        internal const string CacheTemplate = "DocumentTemplate_{0}";
-
         public static Expression FilterExpressionFromCache(this DocumentTemplate dt)
         {
-            return ExpressionCache.GetValue("DocumentTemplate_FilterExpression", dt.Id, () => { return Expression.TokenizeSingleDynamic(null, dt.FilterExpression, 0); });
+            return ExpressionCache.GetOrCreateSingleExpressions($"DocumentTemplate_FilterExpression_{dt.Id}", () => Expression.TokenizeSingleDynamic(null, dt.FilterExpression, 0));
         }
 
         public static void FilterExpressionInvalidateCache(this DocumentTemplate dt)
         {
-            ExpressionCache.InvalidateKey("DocumentTemplate_FilterExpression", dt.Id);
+            ExpressionCache.InvalidateSingleCache($"DocumentTemplate_FilterExpression_{dt.Id}");
         }
 
-        public static bool FilterExpressionMatches(this DocumentTemplate dt, IAttachmentTarget Data, DiscoDataContext Database, User User, System.DateTime TimeStamp, DocumentState State)
+        public static bool FilterExpressionMatches(this DocumentTemplate dt, IAttachmentTarget Data, DiscoDataContext Database, User User, DateTime TimeStamp, DocumentState State)
         {
             if (!string.IsNullOrEmpty(dt.FilterExpression))
             {
@@ -51,12 +49,12 @@ namespace Disco.Services
 
         public static Expression OnImportAttachmentExpressionFromCache(this DocumentTemplate dt)
         {
-            return ExpressionCache.GetValue("DocumentTemplate_OnImportExpression", dt.Id, () => { return Expression.TokenizeSingleDynamic(null, dt.OnImportAttachmentExpression, 0); });
+            return ExpressionCache.GetOrCreateSingleExpressions($"DocumentTemplate_OnImportExpression_{dt.Id}", () => Expression.TokenizeSingleDynamic(null, dt.OnImportAttachmentExpression, 0));
         }
 
         public static void OnImportAttachmentExpressionInvalidateCache(this DocumentTemplate dt)
         {
-            ExpressionCache.InvalidateKey("DocumentTemplate_OnImportExpression", dt.Id);
+            ExpressionCache.InvalidateSingleCache($"DocumentTemplate_OnImportExpression_{dt.Id}");
         }
 
         public static string EvaluateOnAttachmentImportExpression(this DocumentTemplate dt, IAttachment Data, IAttachmentTarget AttachmentTarget, DiscoDataContext Database, User User, DateTime TimeStamp, List<DocumentUniqueIdentifier> PageIdentifiers)
@@ -77,12 +75,12 @@ namespace Disco.Services
 
         public static Expression OnGenerateExpressionFromCache(this DocumentTemplate dt)
         {
-            return ExpressionCache.GetValue("DocumentTemplate_OnGenerateExpression", dt.Id, () => { return Expression.TokenizeSingleDynamic(null, dt.OnGenerateExpression, 0); });
+            return ExpressionCache.GetOrCreateSingleExpressions($"DocumentTemplate_OnGenerateExpression_{dt.Id}", () => Expression.TokenizeSingleDynamic(null, dt.OnGenerateExpression, 0));
         }
 
         public static void OnGenerateExpressionInvalidateCache(this DocumentTemplate dt)
         {
-            ExpressionCache.InvalidateKey("DocumentTemplate_OnGenerateExpression", dt.Id);
+            ExpressionCache.InvalidateSingleCache($"DocumentTemplate_OnGenerateExpression_{dt.Id}");
         }
 
         public static string EvaluateOnGenerateExpression(this DocumentTemplate dt, IAttachmentTarget Data, DiscoDataContext Database, User User, DateTime TimeStamp, DocumentState State)

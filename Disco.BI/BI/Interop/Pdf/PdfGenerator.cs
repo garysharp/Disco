@@ -214,7 +214,7 @@ namespace Disco.BI.Interop.Pdf
             if (dt.FlattenForm)
                 FlattenFields = true;
 
-            ConcurrentDictionary<string, Expression> expressionCache = dt.PdfExpressionsFromCache(Database);
+            var expressionCache = dt.PdfExpressionsFromCache(Database);
 
             string templateFilename = dt.RepositoryFilename(Database);
             PdfReader pdfReader = new PdfReader(templateFilename);

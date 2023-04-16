@@ -68,6 +68,8 @@
     <Compile Include="Services\Devices\Exporting\DeviceExportFieldMetadata.cs" />
     <Compile Include="Services\Devices\Importing\IDeviceImportColumn.cs" />
     <Compile Include="Services\Devices\Importing\IDeviceImportDataReader.cs" />
+    <Compile Include="Services\Documents\DocumentField.cs" />
+    <Compile Include="Services\Documents\DocumentFieldType.cs" />
     <Compile Include="Services\Documents\DocumentTemplatePackage.cs" />
     <Compile Include="Services\Documents\OnImportUserFlagRule.cs" />
     <Compile Include="Services\Jobs\LocationModes.cs" />

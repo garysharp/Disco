@@ -6,12 +6,9 @@ using Disco.Services.Documents;
 using Disco.Services.Documents.ManagedGroups;
 using Disco.Services.Expressions;
 using Disco.Services.Interop.ActiveDirectory;
-using Disco.Services.Tasks;
 using iTextSharp.text.pdf;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data.Entity;
 using System.Drawing;
 using System.IO;
@@ -21,41 +18,58 @@ namespace Disco.BI.Extensions
 {
     public static class DocumentTemplateExtensions
     {
-        internal const string CacheTemplate = "DocumentTemplate_{0}";
-
-        public static ConcurrentDictionary<string, Expression> PdfExpressionsFromCache(this DocumentTemplate dt, DiscoDataContext Database)
+        private static Tuple<Dictionary<string, Expression>, List<DocumentField>> CreateExpressions(DocumentTemplate dt, DiscoDataContext database)
         {
-            string cacheModuleKey = string.Format(CacheTemplate, dt.Id);
-            var module = ExpressionCache.GetModule(cacheModuleKey);
-            if (module == null)
+            Dictionary<string, Expression> expressions = new Dictionary<string, Expression>();
+            List<DocumentField> fields = new List<DocumentField>();
+
+            string templateFilename = dt.RepositoryFilename(database);
+            PdfReader pdfReader = new PdfReader(templateFilename);
+            int pdfFieldOrdinal = 0;
+            foreach (string pdfFieldKey in pdfReader.AcroFields.Fields.Keys)
             {
-                // Cache
-                string templateFilename = dt.RepositoryFilename(Database);
-                PdfReader pdfReader = new PdfReader(templateFilename);
-                int pdfFieldOrdinal = 0;
-                foreach (string pdfFieldKey in pdfReader.AcroFields.Fields.Keys)
+                var pdfField = pdfReader.AcroFields.Fields[pdfFieldKey];
+                var pdfFieldPositions = pdfReader.AcroFields.GetFieldPositions(pdfFieldKey);
+                var pdfFieldFlags = pdfField.GetMerged(0).GetAsNumber(PdfName.FF)?.IntValue ?? 0;
+                var isRequired = (pdfFieldFlags & 2) == 2;
+                var isReadOnly = (pdfFieldFlags & 1) == 1;
+
+                var pdfFieldValue = pdfReader.AcroFields.GetField(pdfFieldKey);
+                var pdfFieldPosition = default(RectangleF?);
+                if (pdfFieldPositions != null && pdfFieldPositions.Count > 0)
                 {
-                    var pdfField = pdfReader.AcroFields.Fields[pdfFieldKey];
-                    var pdfFieldPositions = pdfReader.AcroFields.GetFieldPositions(pdfFieldKey);
-                    var pdfFieldFlags = pdfField.GetMerged(0).GetAsNumber(PdfName.FF)?.IntValue ?? 0;
-                    var isRequired = (pdfFieldFlags & 2) == 2;
-                    var isReadOnly = (pdfFieldFlags & 1) == 1;
-
-                    var pdfFieldValue = pdfReader.AcroFields.GetField(pdfFieldKey);
-                    var pdfFieldPosition = default(RectangleF?);
-                    if (pdfFieldPositions != null && pdfFieldPositions.Count > 0)
-                    {
-                        var position = pdfFieldPositions.First().position;
-                        pdfFieldPosition = new RectangleF(position.Left, position.Top, position.Width, position.Height);
-                    }
-
-                    ExpressionCache.SetValue(cacheModuleKey, pdfFieldKey, Expression.Tokenize(pdfFieldKey, pdfFieldValue, pdfFieldOrdinal, isRequired, isReadOnly, pdfFieldPosition));
-                    pdfFieldOrdinal++;
+                    var position = pdfFieldPositions.First().position;
+                    pdfFieldPosition = new RectangleF(position.Left, position.Top, position.Width, position.Height);
                 }
-                pdfReader.Close();
-                module = ExpressionCache.GetModule(cacheModuleKey, true);
+                var fieldTypeId = pdfReader.AcroFields.GetFieldType(pdfFieldKey);
+                var fieldType = DocumentFieldType.None;
+                if (fieldTypeId <= 8 && fieldTypeId > 0)
+                    fieldType = (DocumentFieldType)fieldTypeId;
+
+                var fixedValues = default(List<string>);
+
+                if (fieldType == DocumentFieldType.RadioButton || fieldType == DocumentFieldType.Checkbox)
+                {
+                    fixedValues = pdfReader.AcroFields.GetAppearanceStates(pdfFieldKey).ToList();
+                }
+
+                expressions[pdfFieldKey] = Expression.Tokenize(pdfFieldKey, pdfFieldValue, pdfFieldOrdinal, isRequired, isReadOnly, pdfFieldPosition);
+                fields.Add(new DocumentField(pdfFieldKey, pdfFieldValue, pdfFieldOrdinal, fieldType, isRequired, isReadOnly, fixedValues));
+                pdfFieldOrdinal++;
             }
-            return module;
+            pdfReader.Close();
+
+            return Tuple.Create(expressions, fields);
+        }
+
+        public static Dictionary<string, Expression> PdfExpressionsFromCache(this DocumentTemplate dt, DiscoDataContext Database)
+        {
+            return ExpressionCache.GetOrCreateExpressions(dt, () => CreateExpressions(dt, Database));
+        }
+
+        public static List<DocumentField> PdfFieldsFromCache(this DocumentTemplate dt, DiscoDataContext Database)
+        {
+            return ExpressionCache.GetOrCreateFields(dt, () => CreateExpressions(dt, Database));
         }
 
         public static List<Expression> ExtractPdfExpressions(this DocumentTemplate dt, DiscoDataContext Database)

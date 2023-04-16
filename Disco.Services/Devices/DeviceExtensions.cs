@@ -21,12 +21,8 @@ namespace Disco.Services
 
             var deviceProfile = device.DeviceProfile;
             Expression computerNameTemplateExpression = null;
-            computerNameTemplateExpression = ExpressionCache.GetValue(DeviceProfileExtensions.ComputerNameExpressionCacheModule, deviceProfile.Id.ToString(), () =>
-            {
-                // Removed 2012-06-14 G# - Properties moved to DeviceProfile model & DB Migrated in DBv3.
-                //return Expressions.Expression.TokenizeSingleDynamic(null, deviceProfile.Configuration(context).ComputerNameTemplate, 0);
-                return Expression.TokenizeSingleDynamic(null, deviceProfile.ComputerNameTemplate, 0);
-            });
+            computerNameTemplateExpression = ExpressionCache.GetOrCreateSingleExpressions(string.Format(DeviceProfileExtensions.ComputerNameExpressionCacheTemplate, deviceProfile.Id),
+                () => Expression.TokenizeSingleDynamic(null, deviceProfile.ComputerNameTemplate, 0));
             var evaluatorVariables = Expression.StandardVariables(null, Database, UserService.CurrentUser, DateTime.Now, null, device);
             string rendered;
             try

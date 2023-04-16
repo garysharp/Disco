@@ -1,99 +1,83 @@
-﻿using System.Collections.Concurrent;
+﻿using Disco.Models.Repository;
+using Disco.Models.Services.Documents;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace Disco.Services.Expressions
 {
     public static class ExpressionCache
     {
-        private static ConcurrentDictionary<string, ConcurrentDictionary<string, Expression>> _Cache = new ConcurrentDictionary<string, ConcurrentDictionary<string, Expression>>();
+        private static ConcurrentDictionary<string, Expression> singleCache = new ConcurrentDictionary<string, Expression>();
+        private static ConcurrentDictionary<string, Dictionary<string, Expression>> cache = new ConcurrentDictionary<string, Dictionary<string, Expression>>();
+        private static ConcurrentDictionary<string, List<DocumentField>> fieldCache = new ConcurrentDictionary<string, List<DocumentField>>();
 
-        public delegate Expression CreateValueDelegate();
+        private const string DocumentTemplateCacheTemplate = "DocumentTemplate_{0}";
 
-        public static ConcurrentDictionary<string, Expression> GetModule(string Module, bool Create = false)
+        public static Expression GetOrCreateSingleExpressions(string key, Func<Expression> create)
         {
-            ConcurrentDictionary<string, Expression> moduleCache;
-            if (_Cache.TryGetValue(Module, out moduleCache))
-                return moduleCache;
+            if (singleCache.TryGetValue(key, out var result))
+                return result;
             else
             {
-                if (Create)
-                {
-                    moduleCache = new ConcurrentDictionary<string, Expression>();
-                    _Cache.TryAdd(Module, moduleCache);
-                    return moduleCache;
-                }
-                else
-                    return null;
+                result = create();
+                singleCache.TryAdd(key, result);
+                return result;
             }
         }
-        private static Expression GetModuleValue(string Module, string Key, CreateValueDelegate CreateValue)
-        {
-            ConcurrentDictionary<string, Expression> moduleCache = GetModule(Module, (CreateValue != null));
-            if (moduleCache != null)
-            {
-                Expression expression;
-                if (moduleCache.TryGetValue(Key, out expression))
-                {
-                    return expression;
-                }
-                if (CreateValue != null)
-                {
-                    expression = CreateValue();
-                    Expression oldExpression;
-                    if (moduleCache.TryGetValue(Key, out oldExpression))
-                        moduleCache.TryUpdate(Key, expression, oldExpression);
-                    else
-                        moduleCache.TryAdd(Key, expression);
-                    return expression;
-                }
-            }
-            return null;
-        }
 
-        public static Expression GetValue(string Module, string Key, CreateValueDelegate CreateValue)
+        public static Dictionary<string, Expression> GetOrCreateExpressions(string module, Func<Tuple<Dictionary<string, Expression>, List<DocumentField>>> create)
         {
-            return GetModuleValue(Module, Key, CreateValue);
-        }
-
-        public static Expression GetValue(string Module, string Key)
-        {
-            return GetModuleValue(Module, Key, null);
-        }
-
-        public static bool InvalidModule(string Module)
-        {
-            ConcurrentDictionary<string, Expression> moduleCache;
-            return _Cache.TryRemove(Module, out moduleCache);
-        }
-
-        public static bool InvalidateKey(string Module, string Key)
-        {
-            Expression expression;
-            ConcurrentDictionary<string, Expression> moduleCache = GetModule(Module, false);
-            if (moduleCache != null)
-            {
-                bool removeResult = moduleCache.TryRemove(Key, out expression);
-                if (moduleCache.Count == 0)
-                    InvalidModule(Module);
-                return removeResult;
-            }
+            if (cache.TryGetValue(module, out var result))
+                return result;
             else
-                return false;
-        }
-
-        public static bool SetValue(string Module, string Key, Expression Expression)
-        {
-            ConcurrentDictionary<string, Expression> moduleCache = GetModule(Module, true);
-
-            if (moduleCache.ContainsKey(Key))
             {
-                Expression oldExpression;
-                if (moduleCache.TryGetValue(Key, out oldExpression))
-                {
-                    return moduleCache.TryUpdate(Key, Expression, oldExpression);
-                }
+                return Create(module, create).Item1;
             }
-            return moduleCache.TryAdd(Key, Expression);
         }
 
+        public static List<DocumentField> GetOrCreateFields(string module, Func<Tuple<Dictionary<string, Expression>, List<DocumentField>>> create)
+        {
+            if (fieldCache.TryGetValue(module, out var result))
+                return result;
+            else
+            {
+                return Create(module, create).Item2;
+            }
+        }
+
+        public static void InvalidateCache(DocumentTemplate template)
+        {
+            InvalidateCache(string.Format(DocumentTemplateCacheTemplate, template.Id));
+        }
+
+        public static void InvalidateCache(string module)
+        {
+            cache.TryRemove(module, out _);
+            fieldCache.TryRemove(module, out _);
+        }
+
+        public static void InvalidateSingleCache(string key)
+        {
+            singleCache.TryRemove(key, out _);
+        }
+
+        public static Dictionary<string, Expression> GetOrCreateExpressions(DocumentTemplate template, Func<Tuple<Dictionary<string, Expression>, List<DocumentField>>> create)
+        {
+            return GetOrCreateExpressions(string.Format(DocumentTemplateCacheTemplate, template.Id), create);
+        }
+
+        public static List<DocumentField> GetOrCreateFields(DocumentTemplate template, Func<Tuple<Dictionary<string, Expression>, List<DocumentField>>> create)
+        {
+            return GetOrCreateFields(string.Format(DocumentTemplateCacheTemplate, template.Id), create);
+        }
+
+        private static Tuple<Dictionary<string, Expression>, List<DocumentField>> Create(string module, Func<Tuple<Dictionary<string, Expression>, List<DocumentField>>> create)
+        {
+            var results = create();
+            cache.TryAdd(module, results.Item1);
+            fieldCache.TryAdd(module, results.Item2);
+            return results;
+        }
     }
 }

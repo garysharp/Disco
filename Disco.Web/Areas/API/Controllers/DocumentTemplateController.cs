@@ -1231,6 +1231,8 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Configure, Claims.Config.UserFlag.Configure)]
         public virtual ActionResult AddOnImportUserFlagRule([Required] string id, bool? addFlag = null, int? userFlagId = null, string comments = null)
         {
             try

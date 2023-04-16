@@ -18,11 +18,11 @@ namespace Disco.Services
 {
     public static class DeviceProfileExtensions
     {
-        public const string ComputerNameExpressionCacheModule = "ComputerNameTemplate";
+        public const string ComputerNameExpressionCacheTemplate = "ComputerNameTemplate_{0}";
 
         public static void ComputerNameInvalidateCache(this DeviceProfile deviceProfile)
         {
-            ExpressionCache.InvalidateKey(ComputerNameExpressionCacheModule, deviceProfile.Id.ToString());
+            ExpressionCache.InvalidateSingleCache(string.Format(ComputerNameExpressionCacheTemplate, deviceProfile.Id));
         }
 
         public static OrganisationAddress DefaultOrganisationAddressDetails(this DeviceProfile deviceProfile, DiscoDataContext Database)

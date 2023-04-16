@@ -123,22 +123,22 @@ namespace Disco.Services.Jobs
 
         public static Expression OnCreateExpressionFromCache(DiscoDataContext Database)
         {
-            return ExpressionCache.GetValue("Job_OnCreateExpression", string.Empty, () => { return Expression.TokenizeSingleDynamic(null, Database.DiscoConfiguration.JobPreferences.OnCreateExpression, 0); });
+            return ExpressionCache.GetOrCreateSingleExpressions("Job_OnCreateExpression", () => Expression.TokenizeSingleDynamic(null, Database.DiscoConfiguration.JobPreferences.OnCreateExpression, 0));
         }
 
         public static void OnCreateExpressionInvalidateCache()
         {
-            ExpressionCache.InvalidateKey("Job_OnCreateExpression", string.Empty);
+            ExpressionCache.InvalidateSingleCache("Job_OnCreateExpression");
         }
 
         public static Expression OnCloseExpressionFromCache(DiscoDataContext Database)
         {
-            return ExpressionCache.GetValue("Job_OnCloseExpression", string.Empty, () => { return Expression.TokenizeSingleDynamic(null, Database.DiscoConfiguration.JobPreferences.OnCloseExpression, 0); });
+            return ExpressionCache.GetOrCreateSingleExpressions("Job_OnCloseExpression", () => Expression.TokenizeSingleDynamic(null, Database.DiscoConfiguration.JobPreferences.OnCloseExpression, 0));
         }
 
         public static void OnCloseExpressionInvalidateCache()
         {
-            ExpressionCache.InvalidateKey("Job_OnCloseExpression", string.Empty);
+            ExpressionCache.InvalidateSingleCache("Job_OnCloseExpression");
         }
 
     }

@@ -73,12 +73,12 @@ namespace Disco.Services
 
         public static Expression FilterExpressionFromCache(this DocumentTemplatePackage package)
         {
-            return ExpressionCache.GetValue("DocumentTemplatePackage_FilterExpression", package.Id, () => { return Expression.TokenizeSingleDynamic(null, package.FilterExpression, 0); });
+            return ExpressionCache.GetOrCreateSingleExpressions($"DocumentTemplatePackage_FilterExpression_{package.Id}", () => Expression.TokenizeSingleDynamic(null, package.FilterExpression, 0));
         }
 
         public static void FilterExpressionInvalidateCache(this DocumentTemplatePackage package)
         {
-            ExpressionCache.InvalidateKey("DocumentTemplatePackage_FilterExpression", package.Id);
+            ExpressionCache.InvalidateSingleCache($"DocumentTemplatePackage_FilterExpression_{package.Id}");
         }
 
         public static bool FilterExpressionMatches(this DocumentTemplatePackage package, IAttachmentTarget Data, DiscoDataContext Database, User User, DateTime TimeStamp, DocumentState State)
@@ -111,12 +111,12 @@ namespace Disco.Services
 
         public static Expression OnGenerateExpressionFromCache(this DocumentTemplatePackage package)
         {
-            return ExpressionCache.GetValue("DocumentTemplatePackage_OnGenerateExpression", package.Id, () => { return Expression.TokenizeSingleDynamic(null, package.OnGenerateExpression, 0); });
+            return ExpressionCache.GetOrCreateSingleExpressions($"DocumentTemplatePackage_OnGenerateExpression_{package.Id}", () => Expression.TokenizeSingleDynamic(null, package.OnGenerateExpression, 0));
         }
 
         public static void OnGenerateExpressionInvalidateCache(this DocumentTemplatePackage package)
         {
-            ExpressionCache.InvalidateKey("DocumentTemplatePackage_OnGenerateExpression", package.Id);
+            ExpressionCache.InvalidateSingleCache($"DocumentTemplatePackage_OnGenerateExpression_{package.Id}");
         }
 
         public static string EvaluateOnGenerateExpression(this DocumentTemplatePackage package, IAttachmentTarget Data, DiscoDataContext Database, User User, DateTime TimeStamp, DocumentState State)

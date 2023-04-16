@@ -133,12 +133,12 @@ namespace Disco.Services
 
         public static Expression OnAssignmentExpressionFromCache(this UserFlag uf)
         {
-            return ExpressionCache.GetValue("UserFlag_OnAssignmentExpression", uf.Id.ToString(), () => { return Expression.TokenizeSingleDynamic(null, uf.OnAssignmentExpression, 0); });
+            return ExpressionCache.GetOrCreateSingleExpressions($"UserFlag_OnAssignmentExpression_{uf.Id}", () => Expression.TokenizeSingleDynamic(null, uf.OnAssignmentExpression, 0));
         }
 
         public static void OnAssignmentExpressionInvalidateCache(this UserFlag uf)
         {
-            ExpressionCache.InvalidateKey("UserFlag_OnAssignmentExpression", uf.Id.ToString());
+            ExpressionCache.InvalidateSingleCache($"UserFlag_OnAssignmentExpression_{uf.Id}");
         }
 
         public static string EvaluateOnAssignmentExpression(this UserFlagAssignment ufa, DiscoDataContext Database, User AddingUser, DateTime TimeStamp)
@@ -158,12 +158,12 @@ namespace Disco.Services
 
         public static Expression OnUnassignmentExpressionFromCache(this UserFlag uf)
         {
-            return ExpressionCache.GetValue("UserFlag_OnUnassignmentExpression", uf.Id.ToString(), () => { return Expression.TokenizeSingleDynamic(null, uf.OnUnassignmentExpression, 0); });
+            return ExpressionCache.GetOrCreateSingleExpressions($"UserFlag_OnUnassignmentExpression_{uf.Id}", () => Expression.TokenizeSingleDynamic(null, uf.OnUnassignmentExpression, 0));
         }
 
         public static void OnUnassignmentExpressionInvalidateCache(this UserFlag uf)
         {
-            ExpressionCache.InvalidateKey("UserFlag_OnUnassignmentExpression", uf.Id.ToString());
+            ExpressionCache.InvalidateSingleCache($"UserFlag_OnUnassignmentExpression_{uf.Id}");
         }
 
         public static string EvaluateOnUnassignmentExpression(this UserFlagAssignment ufa, DiscoDataContext Database, User RemovingUser, DateTime TimeStamp)

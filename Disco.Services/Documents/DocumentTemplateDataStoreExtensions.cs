@@ -8,8 +8,9 @@ namespace Disco.Services
     {
         public static string RepositoryFilename(this DocumentTemplate dt, DiscoDataContext Database)
         {
-            return Path.Combine(DataStore.CreateLocation(Database, "DocumentTemplates"), string.Format("{0}.pdf", dt.Id));
+            return Path.Combine(DataStore.CreateLocation(Database, "DocumentTemplates"), $"{dt.Id}.pdf");
         }
+
         public static string SavePdfTemplate(this DocumentTemplate dt, DiscoDataContext Database, Stream TemplateFile)
         {
             string filePath = dt.RepositoryFilename(Database);
@@ -17,7 +18,7 @@ namespace Disco.Services
             {
                 TemplateFile.CopyTo(fs);
             }
-            Expressions.ExpressionCache.InvalidModule(string.Format(DocumentTemplateExpressionExtensions.CacheTemplate, dt.Id));
+            Expressions.ExpressionCache.InvalidateCache(dt);
             return filePath;
         }
     }
