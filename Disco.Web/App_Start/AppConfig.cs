@@ -69,7 +69,7 @@ namespace Disco.Web
             Disco.Services.Plugins.Plugins.InitalizePlugins(Database);
 
             // Initialize Scheduled Tasks
-            Disco.Services.Tasks.ScheduledTasks.InitalizeScheduledTasks(Database, DiscoApplication.SchedulerFactory, true);
+            Disco.Services.Tasks.ScheduledTasks.InitializeScheduledTasks(Database, DiscoApplication.SchedulerFactory, true);
 
             // Schedule Immediate Check for Update (if never updated, or last updated over 2 days ago)
             if (Database.DiscoConfiguration.UpdateLastCheckResponse == null ||
@@ -91,7 +91,7 @@ namespace Disco.Web
             InitalizeCoreEnvironment(Database);
 
             // Initialize Scheduled Tasks
-            Disco.Services.Tasks.ScheduledTasks.InitalizeScheduledTasks(Database, DiscoApplication.SchedulerFactory, false);
+            Disco.Services.Tasks.ScheduledTasks.InitializeScheduledTasks(Database, DiscoApplication.SchedulerFactory, false);
 
             // Import MAC Address Migration
             if (PreviousVersion != null && PreviousVersion < new Version(1, 2, 910, 0))

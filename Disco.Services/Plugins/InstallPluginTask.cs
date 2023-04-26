@@ -4,10 +4,12 @@ using Disco.Services.Interop.DiscoServices;
 using Disco.Services.Tasks;
 using Quartz;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 
 namespace Disco.Services.Plugins
 {
@@ -146,6 +148,9 @@ namespace Disco.Services.Plugins
 
                             // Add Plugin Manifest to Host Environment
                             Plugins.AddPlugin(packageManifest);
+
+                            // Initialize Scheduled Tasks
+                            ScheduledTasks.InitializeScheduledTasks(database, new List<Assembly>() { packageManifest.PluginAssembly });
 
                             PluginsLog.LogInstalled(packageManifest);
                             Status.SetFinishedUrl(string.Format("/Config/Plugins/{0}", System.Web.HttpUtility.UrlEncode(packageManifest.Id)));

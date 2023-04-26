@@ -4,6 +4,7 @@ using System.Linq;
 using Quartz;
 using Quartz.Impl;
 using Disco.Data.Repository;
+using System.Reflection;
 
 namespace Disco.Services.Tasks
 {
@@ -15,7 +16,7 @@ namespace Disco.Services.Tasks
         private static object _RunningTasksLock = new object();
         private static List<ScheduledTaskStatus> _RunningTasks = new List<ScheduledTaskStatus>();
 
-        public static void InitalizeScheduledTasks(DiscoDataContext database, ISchedulerFactory SchedulerFactory, bool InitiallySchedule)
+        public static void InitializeScheduledTasks(DiscoDataContext database, ISchedulerFactory SchedulerFactory, bool InitiallySchedule)
         {
             ScheduledTasksLog.LogInitializingScheduledTasks();
 
@@ -59,6 +60,43 @@ namespace Disco.Services.Tasks
                 ScheduledTasksLog.LogInitializeException(ex);
             }
 
+        }
+
+        public static void InitializeScheduledTasks(DiscoDataContext database, List<Assembly> assemblies)
+        {
+            var scheduler = _TaskScheduler;
+
+            if (scheduler == null)
+                throw new InvalidOperationException("Scheduled task assembly initialization can only be called after master initialization");
+
+            try
+            {
+                var servicesAssemblyName = typeof(ScheduledTask).Assembly.GetName().Name;
+
+                var scheduledTaskTypes = (from a in assemblies
+                                          where !a.GlobalAssemblyCache &&
+                                            !a.IsDynamic &&
+                                            (a.GetName().Name == servicesAssemblyName || a.GetReferencedAssemblies().Any(ra => ra.Name == servicesAssemblyName))
+                                          from type in a.GetTypes()
+                                          where typeof(ScheduledTask).IsAssignableFrom(type) && !type.IsAbstract
+                                          select type);
+                foreach (Type scheduledTaskType in scheduledTaskTypes)
+                {
+                    ScheduledTask instance = (ScheduledTask)Activator.CreateInstance(scheduledTaskType);
+                    try
+                    {
+                        instance.InitalizeScheduledTask(database);
+                    }
+                    catch (Exception ex)
+                    {
+                        ScheduledTasksLog.LogInitializeException(ex, scheduledTaskType);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ScheduledTasksLog.LogInitializeException(ex);
+            }
         }
 
         public static ScheduledTaskStatus GetTaskStatus(string TaskSessionId)
