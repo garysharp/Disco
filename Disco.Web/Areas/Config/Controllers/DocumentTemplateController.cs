@@ -1,4 +1,5 @@
 ﻿using Disco.BI.Extensions;
+using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.UI.Config.DocumentTemplate;
 using Disco.Services;
@@ -9,10 +10,8 @@ using Disco.Services.Expressions;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Web;
 using Disco.Web.Areas.Config.Models.DocumentTemplate;
-using Disco.Web.Areas.Config.Views.DocumentTemplate;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -213,59 +212,53 @@ namespace Disco.Web.Areas.Config.Controllers
             return View(model);
         }
 
-        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.BulkGenerate, Claims.User.Actions.GenerateDocuments)]
-        public virtual ActionResult BulkGenerate(string id)
+        public static ConfigDocumentTemplateBulkGenerate BuildBulkGenerateModel(DocumentTemplate documentTemplate, DiscoDataContext database, AuthorizationToken authorization)
         {
-            var m = new BulkGenerateModel()
+            var model = new BulkGenerateModel()
             {
-                DocumentTemplate = Database.DocumentTemplates.FirstOrDefault(at => at.Id == id),
+                DocumentTemplate = documentTemplate,
             };
-            if (m.DocumentTemplate == null)
-                throw new ArgumentException("Invalid Document Template Id", nameof(id));
 
-            if (m.DocumentTemplate.Scope != DocumentTemplate.DocumentTemplateScopes.User)
-                throw new NotSupportedException("Only user-scoped document templates can be bulk generated using this method");
-
-            m.TemplatePageCount = m.DocumentTemplate.PdfPageHasAttachmentId(Database).Count;
-            m.UserFlags = Database.UserFlags.Select(f => new BulkGenerateModel.ItemWithCount<UserFlag>()
+            model.TemplatePageCount = model.DocumentTemplate.PdfPageHasAttachmentId(database).Count;
+            model.UserFlags = database.UserFlags.Select(f => new ItemWithCount<UserFlag>()
             {
                 Item = f,
                 Count = f.UserFlagAssignments.Where(a => a.RemovedDate == null).Count(),
             }).ToList();
-            m.DeviceProfiles = Database.DeviceProfiles.Select(p => new BulkGenerateModel.ItemWithCount<DeviceProfile>()
+            model.DeviceProfiles = database.DeviceProfiles.Select(p => new ItemWithCount<DeviceProfile>()
             {
                 Item = p,
                 Count = p.Devices.Where(d => d.AssignedUserId != null).Count(),
             }).ToList();
-            m.DeviceBatches = Database.DeviceBatches.Select(p => new BulkGenerateModel.ItemWithCount<DeviceBatch>()
+            model.DeviceBatches = database.DeviceBatches.Select(p => new ItemWithCount<DeviceBatch>()
             {
                 Item = p,
                 Count = p.Devices.Where(d => d.AssignedUserId != null).Count(),
             }).ToList();
-            m.DocumentTemplates = Database.DocumentTemplates.Select(dt => new BulkGenerateModel.ItemWithCount<DocumentTemplate>()
+            model.DocumentTemplates = database.DocumentTemplates.Select(dt => new ItemWithCount<DocumentTemplate>()
             {
                 Item = dt,
             }).ToList();
-            foreach (var record in m.DocumentTemplates)
+            foreach (var record in model.DocumentTemplates)
             {
                 switch (record.Item.AttachmentType)
                 {
                     case AttachmentTypes.Device:
-                        record.Count = Database.DeviceAttachments.Where(a => a.DocumentTemplateId == record.Item.Id).Select(a => a.Device.AssignedUser).Distinct().Count();
+                        record.Count = database.DeviceAttachments.Where(a => a.DocumentTemplateId == record.Item.Id).Select(a => a.Device.AssignedUser).Distinct().Count();
                         break;
                     case AttachmentTypes.Job:
-                        record.Count = Database.JobAttachments.Where(a => a.DocumentTemplateId == record.Item.Id).Select(a => a.Job.User).Distinct().Count();
+                        record.Count = database.JobAttachments.Where(a => a.DocumentTemplateId == record.Item.Id).Select(a => a.Job.User).Distinct().Count();
                         break;
                     case AttachmentTypes.User:
-                        record.Count = Database.UserAttachments.Where(a => a.DocumentTemplateId == record.Item.Id).Select(a => a.User).Distinct().Count();
+                        record.Count = database.UserAttachments.Where(a => a.DocumentTemplateId == record.Item.Id).Select(a => a.User).Distinct().Count();
                         break;
                     default:
                         throw new NotSupportedException();
                 }
             }
-            if (Authorization.Has(Claims.User.ShowDetails))
+            if (authorization.Has(Claims.User.ShowDetails))
             {
-                m.UserDetails = Database.UserDetails.Where(d => d.Scope == "Details").GroupBy(d => d.Key).Select(g => new BulkGenerateModel.ItemWithCount<string>()
+                model.UserDetails = database.UserDetails.Where(d => d.Scope == "Details").GroupBy(d => d.Key).Select(g => new ItemWithCount<string>()
                 {
                     Item = g.Key,
                     Count = g.Count(),
@@ -273,13 +266,30 @@ namespace Disco.Web.Areas.Config.Controllers
             }
             else
             {
-                m.UserDetails = new List<BulkGenerateModel.ItemWithCount<string>>();
+                model.UserDetails = new List<ItemWithCount<string>>();
             }
 
-            // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateBulkGenerate>(ControllerContext, m);
+            return model;
+        }
 
-            return View(MVC.Config.DocumentTemplate.Views.BulkGenerate, m);
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.BulkGenerate, Claims.User.Actions.GenerateDocuments)]
+        public virtual ActionResult BulkGenerate(string id)
+        {
+            var documentTemplate = Database.DocumentTemplates.FirstOrDefault(at => at.Id == id);
+
+            if (documentTemplate == null)
+                throw new ArgumentException("Invalid Document Template Id", nameof(id));
+
+            if (documentTemplate.Scope != DocumentTemplate.DocumentTemplateScopes.User)
+                throw new NotSupportedException("Only user-scoped document templates can be bulk generated using this method");
+
+
+            var model = BuildBulkGenerateModel(documentTemplate, Database, Authorization);
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions(ControllerContext, model);
+
+            return View(MVC.Config.DocumentTemplate.Views.BulkGenerate, model);
         }
 
         [DiscoAuthorize(Claims.Config.Show)]

@@ -12,11 +12,5 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
         public List<ItemWithCount<Disco.Models.Repository.DeviceBatch>> DeviceBatches { get; set; }
         public List<ItemWithCount<Disco.Models.Repository.DocumentTemplate>> DocumentTemplates { get; set; }
         public List<ItemWithCount<string>> UserDetails { get; set; }
-
-        public class ItemWithCount<T>
-        {
-            public T Item { get; set; }
-            public int Count { get; set; }
-        }
     }
 }

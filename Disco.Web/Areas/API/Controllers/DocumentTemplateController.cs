@@ -733,6 +733,7 @@ namespace Disco.Web.Areas.API.Controllers
                     results.Add(new BulkGenerateUserModel()
                     {
                         Id = user.UserId,
+                        UserEmailAddress = user.EmailAddress,
                         DisplayName = user.DisplayName,
                         Scope = $"Matched '{dataId}'",
                         IsError = false,
@@ -763,6 +764,7 @@ namespace Disco.Web.Areas.API.Controllers
                             {
                                 Id = adUser.Id,
                                 DisplayName = adUser.DisplayName,
+                                UserEmailAddress = adUser.Email,
                                 Scope = $"Group Member '{group.Name}'",
                                 IsError = false,
                             });
@@ -816,6 +818,7 @@ namespace Disco.Web.Areas.API.Controllers
                     {
                         Id = adUser.Id,
                         DisplayName = adUser.DisplayName,
+                        UserEmailAddress = adUser.Email,
                         Scope = $"Group Member '{group.Name}'",
                         IsError = false,
                     });
@@ -827,6 +830,7 @@ namespace Disco.Web.Areas.API.Controllers
                 {
                     Id = user.Id,
                     DisplayName = user.DisplayName,
+                    UserEmailAddress = user.Email,
                     Scope = $"Matched '{groupId}'",
                     IsError = false,
                 });
@@ -887,6 +891,7 @@ namespace Disco.Web.Areas.API.Controllers
                         results.Add(new BulkGenerateUserModel()
                         {
                             Id = assignment.UserId,
+                            UserEmailAddress = assignment.User.EmailAddress,
                             DisplayName = assignment.User.DisplayName,
                             Scope = $"Assigned User Flag '{flag.Name}'",
                             IsError = false,
@@ -941,6 +946,7 @@ namespace Disco.Web.Areas.API.Controllers
                         {
                             Id = assignment.AssignedUserId,
                             DisplayName = assignment.AssignedUser.DisplayName,
+                            UserEmailAddress = assignment.AssignedUser.EmailAddress,
                             Scope = $"Device Profile '{profile.Name}' Matches Assigned Device '{assignment.SerialNumber}'",
                             IsError = false,
                         });
@@ -994,6 +1000,7 @@ namespace Disco.Web.Areas.API.Controllers
                         {
                             Id = assignment.AssignedUserId,
                             DisplayName = assignment.AssignedUser.DisplayName,
+                            UserEmailAddress = assignment.AssignedUser.EmailAddress,
                             Scope = $"Device Batch '{batch.Name}' Matches Assigned Device '{assignment.SerialNumber}'",
                             IsError = false,
                         });
@@ -1040,6 +1047,7 @@ namespace Disco.Web.Areas.API.Controllers
                             {
                                 Id = assignment.Device.AssignedUserId,
                                 DisplayName = assignment.Device.AssignedUser.DisplayName,
+                                UserEmailAddress = assignment.Device.AssignedUser.EmailAddress,
                                 Scope = $"Document Template '{template.Id}' Attachment Matches Assigned Device '{assignment.Device.SerialNumber}'",
                                 IsError = false,
                             });
@@ -1056,6 +1064,7 @@ namespace Disco.Web.Areas.API.Controllers
                             {
                                 Id = assignment.Job.UserId,
                                 DisplayName = assignment.Job.User.DisplayName,
+                                UserEmailAddress = assignment.Job.User.EmailAddress,
                                 Scope = $"Document Template '{template.Id}' Attachment Matches Job '{assignment.Job.Id}'",
                                 IsError = false,
                             });
@@ -1072,6 +1081,7 @@ namespace Disco.Web.Areas.API.Controllers
                             {
                                 Id = assignment.UserId,
                                 DisplayName = assignment.User.DisplayName,
+                                UserEmailAddress = assignment.User.EmailAddress,
                                 Scope = $"Document Template '{template.Id}' Attachment Matches User",
                                 IsError = false,
                             });

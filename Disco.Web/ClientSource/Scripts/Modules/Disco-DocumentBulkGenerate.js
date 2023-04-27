@@ -75,6 +75,20 @@ $(() => {
         }
     }
 
+    function excludeOtherUsers(r) {
+        let changeCount = 0;
+        for (var i = 0; i < users.length; i++) {
+            const user = users[i];
+            if (!r.find(u => u.Id === user.Id)) {
+                user.checkbox.checked = false;
+                changeCount++;
+            }
+        }
+        if (changeCount) {
+            redrawTable();
+        }
+    }
+
     $table.on('change', 'input[type="checkbox"]', e => {
         redrawTable();
     });
@@ -97,59 +111,49 @@ $(() => {
     $('#AddUsers').click(e => {
         e.preventDefault();
 
-        if (!dialogAddUsers) {
-            dialogAddUsers = $('#DocumentTemplate_BulkGenerate_Dialog_AddUsers').dialog({
+        let dialog = dialogAddUsers;
+        if (!dialog) {
+            const action = function (applier) {
+                const form = dialog.find('form')[0];
+                if (form.reportValidity()) {
+                    const body = new FormData(form);
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: body
+                    })
+                        .then(r => r.json())
+                        .then(r => {
+                            applier(r);
+                            dialog.find('textarea').html('').val('');
+                            dialog.dialog("close");
+                            dialog.dialog("enable");
+                        })
+                        .catch(reason => {
+                            alert('Failed to validate users: ' + reason);
+                        });
+                }
+                dialog.dialog("disable");
+            }
+            dialog = $('#DocumentTemplate_BulkGenerate_Dialog_AddUsers').dialog({
                 resizable: false,
                 modal: true,
                 autoOpen: false,
                 width: 460,
                 buttons: {
+                    "Exclude Other Users": function () {
+                        action(excludeOtherUsers);
+                    },
                     "Exclude Users": function () {
-                        const form = dialogAddUsers.find('form')[0];
-                        if (form.reportValidity()) {
-                            const body = new FormData(form);
-                            fetch(form.action, {
-                                method: 'POST',
-                                body: body
-                            })
-                                .then(r => r.json())
-                                .then(r => {
-                                    excludeUsers(r);
-                                    dialogAddUsers.find('textarea').html('').val('');
-                                    dialogAddUsers.dialog("close");
-                                    dialogAddUsers.dialog("enable");
-                                })
-                                .catch(reason => {
-                                    alert('Failed to validate users: ' + reason);
-                                });
-                        }
-                        dialogAddUsers.dialog("disable");
+                        action(excludeUsers);
                     },
                     "Add Users": function () {
-                        const form = dialogAddUsers.find('form')[0];
-                        if (form.reportValidity()) {
-                            const body = new FormData(form);
-                            fetch(form.action, {
-                                method: 'POST',
-                                body: body
-                            })
-                                .then(r => r.json())
-                                .then(r => {
-                                    addUsers(r);
-                                    dialogAddUsers.find('textarea').html('').val('');
-                                    dialogAddUsers.dialog("close");
-                                    dialogAddUsers.dialog("enable");
-                                })
-                                .catch(reason => {
-                                    alert('Failed to validate users: ' + reason);
-                                });
-                        }
-                        dialogAddUsers.dialog("disable");
+                        action(addUsers);
                     }
                 }
             });
+            dialogAddUsers = dialog;
         }
-        dialogAddUsers.dialog('open');
+        dialog.dialog('open');
         return false;
     });
 
@@ -157,73 +161,63 @@ $(() => {
     $('#AddGroupMembers').click(e => {
         e.preventDefault();
 
-        if (!dialogAddGroupMembers) {
-            dialogAddGroupMembers = $('#DocumentTemplate_BulkGenerate_Dialog_AddGroupMembers').dialog({
+        let dialog = dialogAddGroupMembers;
+        if (!dialog) {
+            const action = function (applier) {
+                const form = dialog.find('form')[0];
+                if (form.reportValidity()) {
+                    const body = new FormData(form);
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: body
+                    })
+                        .then(r => r.json())
+                        .then(r => {
+                            applier(r);
+                            dialog.find('input[type="text"]').val('');
+                            dialog.dialog("close");
+                            dialog.dialog("enable");
+                        })
+                        .catch(reason => {
+                            alert('Failed to validate group: ' + reason);
+                        });
+                }
+                dialog.dialog("disable");
+            }
+            dialog = $('#DocumentTemplate_BulkGenerate_Dialog_AddGroupMembers').dialog({
                 resizable: false,
                 modal: true,
                 autoOpen: false,
                 width: 460,
                 buttons: {
+                    "Exclude Non-Group Members": function () {
+                        action(excludeOtherUsers);
+                    },
                     "Exclude Group Members": function () {
-                        const form = dialogAddGroupMembers.find('form')[0];
-                        if (form.reportValidity()) {
-                            const body = new FormData(form);
-                            fetch(form.action, {
-                                method: 'POST',
-                                body: body
-                            })
-                                .then(r => r.json())
-                                .then(r => {
-                                    excludeUsers(r);
-                                    dialogAddGroupMembers.find('input[type="text"]').val('');
-                                    dialogAddGroupMembers.dialog("close");
-                                    dialogAddGroupMembers.dialog("enable");
-                                })
-                                .catch(reason => {
-                                    alert('Failed to validate group: ' + reason);
-                                });
-                        }
-                        dialogAddGroupMembers.dialog("disable");
+                        action(excludeUsers);
                     },
                     "Add Group Members": function () {
-                        const form = dialogAddGroupMembers.find('form')[0];
-                        if (form.reportValidity()) {
-                            const body = new FormData(form);
-                            fetch(form.action, {
-                                method: 'POST',
-                                body: body
-                            })
-                                .then(r => r.json())
-                                .then(r => {
-                                    addUsers(r);
-                                    dialogAddGroupMembers.find('input[type="text"]').val('');
-                                    dialogAddGroupMembers.dialog("close");
-                                    dialogAddGroupMembers.dialog("enable");
-                                })
-                                .catch(reason => {
-                                    alert('Failed to validate group: ' + reason);
-                                });
-                        }
-                        dialogAddGroupMembers.dialog("disable");
+                        action(addUsers);
                     }
                 }
             });
+            const $input = dialog.find('input[type="text"]');
+            $input.autocomplete({
+                source: $input.attr('data-autocomplete-src'),
+                minLength: 2,
+                select: function (e, ui) {
+                    $input.val(ui.item.Id);
+                    return false;
+                }
+            }).data('ui-autocomplete')._renderItem = function (ul, item) {
+                return $("<li>")
+                    .data("item.autocomplete", item)
+                    .append("<a><strong>" + item.Name + "</strong><br>" + item.Id + " (" + item.Type + ")</a>")
+                    .appendTo(ul);
+            };
+            dialogAddGroupMembers = dialog;
         }
-        const $input = dialogAddGroupMembers.find('input[type="text"]');
-        $input.autocomplete({
-            source: $input.attr('data-autocomplete-src'),
-            minLength: 2,
-            select: function (e, ui) {
-                $input.val(ui.item.Id);
-                return false;
-            }
-        }).data('ui-autocomplete')._renderItem = function (ul, item) {
-            return $("<li>")
-                .data("item.autocomplete", item)
-                .append("<a><strong>" + item.Name + "</strong><br>" + item.Id + " (" + item.Type + ")</a>")
-                .appendTo(ul);
-        };
-        dialogAddGroupMembers.dialog('open');
+        dialog.dialog('open');
         return false;
     });
 
@@ -231,71 +225,59 @@ $(() => {
     $('#AddUserFlag').click(e => {
         e.preventDefault();
 
-        if (!dialogAddUserFlag) {
-            const dialog = $('#DocumentTemplate_BulkGenerate_Dialog_AddUserFlag').dialog({
+        let dialog = dialogAddUserFlag;
+        if (!dialog) {
+            const action = function (applier) {
+                const form = dialog.find('form')[0];
+                if (form.reportValidity()) {
+                    const body = new FormData(form);
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: body
+                    })
+                        .then(r => r.json())
+                        .then(r => {
+                            applier(r);
+                            dialog.find('input[name="flagId"]').val('');
+                            dialog.find('div.item').removeClass('selected');
+                            dialog.dialog("close");
+                            dialog.dialog("enable");
+                        })
+                        .catch(reason => {
+                            alert('Failed to validate user flag: ' + reason);
+                        });
+                }
+                dialog.dialog("disable");
+            }
+            dialog = $('#DocumentTemplate_BulkGenerate_Dialog_AddUserFlag').dialog({
                 resizable: false,
                 modal: true,
                 autoOpen: false,
                 width: 460,
                 buttons: {
+                    "Exclude Unassigned Users": function () {
+                        action(excludeOtherUsers);
+                    },
                     "Exclude Assigned Users": function () {
-                        const form = dialog.find('form')[0];
-                        if (form.reportValidity()) {
-                            const body = new FormData(form);
-                            fetch(form.action, {
-                                method: 'POST',
-                                body: body
-                            })
-                                .then(r => r.json())
-                                .then(r => {
-                                    excludeUsers(r);
-                                    dialog.find('input[name="flagId"]').val('');
-                                    dialog.find('div.item').removeClass('selected');
-                                    dialog.dialog("close");
-                                    dialog.dialog("enable");
-                                })
-                                .catch(reason => {
-                                    alert('Failed to validate user flag: ' + reason);
-                                });
-                        }
-                        dialog.dialog("disable");
+                        action(excludeUsers);
                     },
                     "Add Assigned Users": function () {
-                        const form = dialog.find('form')[0];
-                        if (form.reportValidity()) {
-                            const body = new FormData(form);
-                            fetch(form.action, {
-                                method: 'POST',
-                                body: body
-                            })
-                                .then(r => r.json())
-                                .then(r => {
-                                    addUsers(r);
-                                    dialog.find('input[name="flagId"]').val('');
-                                    dialog.find('div.item').removeClass('selected');
-                                    dialog.dialog("close");
-                                    dialog.dialog("enable");
-                                })
-                                .catch(reason => {
-                                    alert('Failed to validate user flag: ' + reason);
-                                });
-                        }
-                        dialog.dialog("disable");
+                        action(addUsers);
                     }
                 }
             });
+            const $input = dialog.find('input[name="flagId"]');
+            dialog.on('click', 'div.item:not(.disabled)', e => {
+                e.preventDefault();
+                const $target = $(e.currentTarget);
+                $input.val($target.attr('data-userflagid'));
+                dialog.find('div.item').removeClass('selected');
+                $target.addClass('selected');
+                return false;
+            });
             dialogAddUserFlag = dialog;
         }
-        const $input = dialogAddUserFlag.find('input[name="flagId"]');
-        dialogAddUserFlag.on('click', 'div.item:not(.disabled)', e => {
-            e.preventDefault();
-            const $target = $(e.currentTarget);
-            $input.val($target.attr('data-userflagid'));
-            dialogAddUserFlag.find('div.item').removeClass('selected');
-            $target.addClass('selected');
-            return false;
-        });
-        dialogAddUserFlag.dialog('open');
+        dialog.dialog('open');
         return false;
     });
 
@@ -304,7 +286,7 @@ $(() => {
         e.preventDefault();
         let dialog = dialogAddDeviceProfile;
         if (!dialog) {
-            const action = delegate => {
+            const action = function (applier) {
                 const form = dialog.find('form')[0];
                 const input = dialog.find('input[name="deviceProfileId"]');
                 if (input.val()) {
@@ -316,7 +298,7 @@ $(() => {
                         })
                             .then(r => r.json())
                             .then(r => {
-                                delegate(r);
+                                applier(r);
                                 input.val('');
                                 dialog.find('div.item').removeClass('selected');
                                 dialog.dialog("close");
@@ -335,6 +317,9 @@ $(() => {
                 autoOpen: false,
                 width: 460,
                 buttons: {
+                    "Exclude Unassigned Users": function () {
+                        action(excludeOtherUsers);
+                    },
                     "Exclude Assigned Users": function () {
                         action(excludeUsers);
                     },
@@ -343,17 +328,17 @@ $(() => {
                     }
                 }
             });
+            const $input = dialog.find('input[name="deviceProfileId"]');
+            dialog.on('click', 'div.item:not(.disabled)', e => {
+                e.preventDefault();
+                const $target = $(e.currentTarget);
+                $input.val($target.attr('data-id'));
+                dialog.find('div.item').removeClass('selected');
+                $target.addClass('selected');
+                return false;
+            });
             dialogAddDeviceProfile = dialog;
         }
-        const $input = dialog.find('input[name="deviceProfileId"]');
-        dialog.on('click', 'div.item:not(.disabled)', e => {
-            e.preventDefault();
-            const $target = $(e.currentTarget);
-            $input.val($target.attr('data-id'));
-            dialog.find('div.item').removeClass('selected');
-            $target.addClass('selected');
-            return false;
-        });
         dialog.dialog('open');
         return false;
     });
@@ -363,7 +348,7 @@ $(() => {
         e.preventDefault();
         let dialog = dialogAddDeviceBatch;
         if (!dialog) {
-            const action = delegate => {
+            const action = function (applier) {
                 const form = dialog.find('form')[0];
                 const input = dialog.find('input[name="deviceBatchId"]');
                 if (input.val()) {
@@ -375,7 +360,7 @@ $(() => {
                         })
                             .then(r => r.json())
                             .then(r => {
-                                delegate(r);
+                                applier(r);
                                 input.val('');
                                 dialog.find('div.item').removeClass('selected');
                                 dialog.dialog("close");
@@ -394,6 +379,9 @@ $(() => {
                 autoOpen: false,
                 width: 460,
                 buttons: {
+                    "Exclude Unassigned Users": function () {
+                        action(excludeOtherUsers);
+                    },
                     "Exclude Assigned Users": function () {
                         action(excludeUsers);
                     },
@@ -402,17 +390,17 @@ $(() => {
                     }
                 }
             });
+            const $input = dialog.find('input[name="deviceBatchId"]');
+            dialog.on('click', 'div.item:not(.disabled)', e => {
+                e.preventDefault();
+                const $target = $(e.currentTarget);
+                $input.val($target.attr('data-id'));
+                dialog.find('div.item').removeClass('selected');
+                $target.addClass('selected');
+                return false;
+            });
             dialogAddDeviceBatch = dialog;
         }
-        const $input = dialog.find('input[name="deviceBatchId"]');
-        dialog.on('click', 'div.item:not(.disabled)', e => {
-            e.preventDefault();
-            const $target = $(e.currentTarget);
-            $input.val($target.attr('data-id'));
-            dialog.find('div.item').removeClass('selected');
-            $target.addClass('selected');
-            return false;
-        });
         dialog.dialog('open');
         return false;
     });
@@ -422,7 +410,7 @@ $(() => {
         e.preventDefault();
         let dialog = dialogAddDocumentAttachment;
         if (!dialog) {
-            const action = delegate => {
+            const action = function (applier) {
                 const form = dialog.find('form')[0];
                 const input = dialog.find('input[name="documentTemplateId"]');
                 if (input.val()) {
@@ -434,7 +422,7 @@ $(() => {
                         })
                             .then(r => r.json())
                             .then(r => {
-                                delegate(r);
+                                applier(r);
                                 input.val('');
                                 dialog.find('div.item').removeClass('selected');
                                 dialog.dialog("close");
@@ -453,6 +441,9 @@ $(() => {
                 autoOpen: false,
                 width: 460,
                 buttons: {
+                    "Exclude Unassigned Users": function () {
+                        action(excludeOtherUsers);
+                    },
                     "Exclude Assigned Users": function () {
                         action(excludeUsers);
                     },
@@ -461,17 +452,17 @@ $(() => {
                     }
                 }
             });
+            const $input = dialog.find('input[name="documentTemplateId"]');
+            dialog.on('click', 'div.item:not(.disabled)', e => {
+                e.preventDefault();
+                const $target = $(e.currentTarget);
+                $input.val($target.attr('data-id'));
+                dialog.find('div.item').removeClass('selected');
+                $target.addClass('selected');
+                return false;
+            });
             dialogAddDocumentAttachment = dialog;
         }
-        const $input = dialog.find('input[name="documentTemplateId"]');
-        dialog.on('click', 'div.item:not(.disabled)', e => {
-            e.preventDefault();
-            const $target = $(e.currentTarget);
-            $input.val($target.attr('data-id'));
-            dialog.find('div.item').removeClass('selected');
-            $target.addClass('selected');
-            return false;
-        });
         dialog.dialog('open');
         return false;
     });
@@ -481,7 +472,7 @@ $(() => {
         e.preventDefault();
         let dialog = dialogAddUserDetail;
         if (!dialog) {
-            const action = delegate => {
+            const action = function (applier) {
                 const form = dialog.find('form')[0];
                 const key = $(form).find('input[name="key"]');
                 if (key.val()) {
@@ -493,7 +484,7 @@ $(() => {
                         })
                             .then(r => r.json())
                             .then(r => {
-                                delegate(r);
+                                applier(r);
                                 key.val('');
                                 $(form).find('input[name="value"]').val('');
                                 $('#DocumentTemplate_BulkGenerate_Dialog_AddUserDetail_Value').empty();
@@ -514,6 +505,9 @@ $(() => {
                 autoOpen: false,
                 width: 690,
                 buttons: {
+                    "Exclude Unmatched Users": function () {
+                        action(excludeOtherUsers);
+                    },
                     "Exclude Matched Users": function () {
                         action(excludeUsers);
                     },
@@ -522,59 +516,59 @@ $(() => {
                     }
                 }
             });
+            const $key = dialog.find('input[name="key"]');
+            const $value = dialog.find('input[name="value"]');
+            const $keys = dialog.find('#DocumentTemplate_BulkGenerate_Dialog_AddUserDetail_Key');
+            const $values = dialog.find('#DocumentTemplate_BulkGenerate_Dialog_AddUserDetail_Value');
+            $keys.on('click', 'div.item:not(.disabled)', e => {
+                e.preventDefault();
+                const $target = $(e.currentTarget);
+                const keyValue = $target.attr('data-id');
+                $key.val(keyValue);
+                $keys.find('div.item').removeClass('selected');
+                $target.addClass('selected');
+
+                $values.empty();
+                $values.append($('<i class="ajaxLoading" title="Loading"></i>'));
+
+                const form = dialog.find('form')[1];
+                const body = new FormData(form);
+                fetch(form.action, {
+                    method: 'POST',
+                    body: body
+                })
+                    .then(r => r.json())
+                    .then(r => {
+                        $values.empty();
+
+                        const allValues = $('<div class="item selected" data-id=""><i class="fa fa-info fa-fw fa-lg"></i><em>All Matched Users</em></div>');
+                        allValues.appendTo($values);
+                        $value.val('');
+
+                        r.map(v => {
+                            const container = $('<div class="item"><i class="fa fa-info fa-fw fa-lg"></i ></div>');
+                            container.attr('data-id', v);
+                            const span = $('<span>').text(v);
+                            span.appendTo(container);
+                            container.appendTo($values);
+                        })
+                    })
+                    .catch(reason => {
+                        alert('Failed to validate user detail: ' + reason);
+                    });
+                dialog.dialog("disable");
+
+                return false;
+            });
+            $values.on('click', 'div.item:not(.disabled)', e => {
+                e.preventDefault();
+                const $target = $(e.currentTarget);
+                $value.val($target.attr('data-id'));
+                $values.find('div.item').removeClass('selected');
+                $target.addClass('selected');
+            });
             dialogAddUserDetail = dialog;
         }
-        const $key = dialog.find('input[name="key"]');
-        const $value = dialog.find('input[name="value"]');
-        const $keys = dialog.find('#DocumentTemplate_BulkGenerate_Dialog_AddUserDetail_Key');
-        const $values = dialog.find('#DocumentTemplate_BulkGenerate_Dialog_AddUserDetail_Value');
-        $keys.on('click', 'div.item:not(.disabled)', e => {
-            e.preventDefault();
-            const $target = $(e.currentTarget);
-            const keyValue = $target.attr('data-id');
-            $key.val(keyValue);
-            $keys.find('div.item').removeClass('selected');
-            $target.addClass('selected');
-
-            $values.empty();
-            $values.append($('<i class="ajaxLoading" title="Loading"></i>'));
-
-            const form = dialog.find('form')[1];
-            const body = new FormData(form);
-            fetch(form.action, {
-                method: 'POST',
-                body: body
-            })
-                .then(r => r.json())
-                .then(r => {
-                    $values.empty();
-
-                    const allValues = $('<div class="item selected" data-id=""><i class="fa fa-info fa-fw fa-lg"></i><em>All Matched Users</em></div>');
-                    allValues.appendTo($values);
-                    $value.val('');
-
-                    r.map(v => {
-                        const container = $('<div class="item"><i class="fa fa-info fa-fw fa-lg"></i ></div>');
-                        container.attr('data-id', v);
-                        const span = $('<span>').text(v);
-                        span.appendTo(container);
-                        container.appendTo($values);
-                    })
-                })
-                .catch(reason => {
-                    alert('Failed to validate user detail: ' + reason);
-                });
-            dialog.dialog("disable");
-
-            return false;
-        });
-        $values.on('click', 'div.item:not(.disabled)', e => {
-            e.preventDefault();
-            const $target = $(e.currentTarget);
-            $value.val($target.attr('data-id'));
-            $values.find('div.item').removeClass('selected');
-            $target.addClass('selected');
-        });
         dialog.dialog('open');
         return false;
     });
