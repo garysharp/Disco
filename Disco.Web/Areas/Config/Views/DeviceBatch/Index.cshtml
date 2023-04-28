@@ -63,13 +63,17 @@
                         @(item.InsuranceSupplier == null ? string.Empty : string.Format("[{0}]", item.InsuranceSupplier))
                     </td>
                     <td>
-                        @if (item.PurchaseUnitQuantity.HasValue)
+                        @if (item.DeviceCount > 0 && Authorization.Has(Claims.Device.Search))
                         {
-                            <span>@item.DeviceCount.ToString("n0")/@(item.PurchaseUnitQuantity.Value.ToString("n0"))</span>
+                            <span>@Html.ActionLink(string.Format("View {0}", item.DeviceCount), MVC.Search.Query(item.Id.ToString(), "DeviceBatch"))</span>
                         }
                         else
                         {
-                            @item.DeviceCount.ToString("n0")
+                            <span>@item.DeviceCount.ToString("n0")</span>
+                        }
+                        @if (item.PurchaseUnitQuantity.HasValue)
+                        {
+                            <span>/ @(item.PurchaseUnitQuantity.Value.ToString("n0"))</span>
                         }
                         @if (item.DeviceDecommissionedCount > 0)
                         {
@@ -80,7 +84,7 @@
                     {
                         <td>
                             @if (item.IsLinked)
-                        {
+                            {
                                 <i class="fa fa-link fa-lg success" title="Is Linked"></i>
                             }
                             @if (isDecommissioned)

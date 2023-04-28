@@ -276,7 +276,7 @@ WriteLiteral("\r\n                    </td>\r\n                    <td>\r\n");
             #line hidden
             
             #line 66 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
-                         if (item.PurchaseUnitQuantity.HasValue)
+                         if (item.DeviceCount > 0 && Authorization.Has(Claims.Device.Search))
                         {
 
             
@@ -286,16 +286,7 @@ WriteLiteral("                            <span>");
 
             
             #line 68 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
-                             Write(item.DeviceCount.ToString("n0"));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("/");
-
-            
-            #line 68 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
-                                                               Write(item.PurchaseUnitQuantity.Value.ToString("n0"));
+                             Write(Html.ActionLink(string.Format("View {0}", item.DeviceCount), MVC.Search.Query(item.Id.ToString(), "DeviceBatch")));
 
             
             #line default
@@ -307,20 +298,23 @@ WriteLiteral("</span>\r\n");
                         }
                         else
                         {
-                            
-            
-            #line default
-            #line hidden
-            
-            #line 72 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
-                       Write(item.DeviceCount.ToString("n0"));
 
             
             #line default
             #line hidden
+WriteLiteral("                            <span>");
+
             
             #line 72 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
-                                                            
+                             Write(item.DeviceCount.ToString("n0"));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span>\r\n");
+
+            
+            #line 73 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
                         }
 
             
@@ -330,6 +324,34 @@ WriteLiteral("                        ");
 
             
             #line 74 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+                         if (item.PurchaseUnitQuantity.HasValue)
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <span>/ ");
+
+            
+            #line 76 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+                                Write(item.PurchaseUnitQuantity.Value.ToString("n0"));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span>\r\n");
+
+            
+            #line 77 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        ");
+
+            
+            #line 78 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
                          if (item.DeviceDecommissionedCount > 0)
                         {
 
@@ -340,21 +362,21 @@ WriteLiteral("                            <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3594), Tuple.Create("\"", 3665)
+WriteAttribute("title", Tuple.Create(" title=\"", 3882), Tuple.Create("\"", 3953)
             
-            #line 76 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 3602), Tuple.Create<System.Object, System.Int32>(item.DeviceDecommissionedCount.ToString("n0")
+            #line 80 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 3890), Tuple.Create<System.Object, System.Int32>(item.DeviceDecommissionedCount.ToString("n0")
             
             #line default
             #line hidden
-, 3602), false)
-, Tuple.Create(Tuple.Create(" ", 3650), Tuple.Create("Decommissioned", 3651), true)
+, 3890), false)
+, Tuple.Create(Tuple.Create(" ", 3938), Tuple.Create("Decommissioned", 3939), true)
 );
 
 WriteLiteral(">(");
 
             
-            #line 76 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 80 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
                                                                                                                             Write(item.DeviceDecommissionedCount.ToString("n0"));
 
             
@@ -363,7 +385,7 @@ WriteLiteral(">(");
 WriteLiteral(")</span>\r\n");
 
             
-            #line 77 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 81 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
                         }
 
             
@@ -372,13 +394,13 @@ WriteLiteral(")</span>\r\n");
 WriteLiteral("                    </td>\r\n");
 
             
-            #line 79 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 83 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 79 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 83 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
                      if (showTags)
                     {
 
@@ -388,15 +410,15 @@ WriteLiteral("                    </td>\r\n");
 WriteLiteral("                        <td>\r\n");
 
             
-            #line 82 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 86 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 82 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 86 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
                              if (item.IsLinked)
-                        {
+                            {
 
             
             #line default
@@ -410,7 +432,7 @@ WriteLiteral(" title=\"Is Linked\"");
 WriteLiteral("></i>\r\n");
 
             
-            #line 85 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 89 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
                             }
 
             
@@ -419,7 +441,7 @@ WriteLiteral("></i>\r\n");
 WriteLiteral("                            ");
 
             
-            #line 86 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 90 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
                              if (isDecommissioned)
                             {
 
@@ -435,7 +457,7 @@ WriteLiteral(" title=\"Decommissioned\"");
 WriteLiteral("></i>\r\n");
 
             
-            #line 89 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 93 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
                             }
 
             
@@ -444,7 +466,7 @@ WriteLiteral("></i>\r\n");
 WriteLiteral("                        </td>\r\n");
 
             
-            #line 91 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 95 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
                     }
 
             
@@ -453,7 +475,7 @@ WriteLiteral("                        </td>\r\n");
 WriteLiteral("                </tr>\r\n");
 
             
-            #line 93 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 97 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
             }
 
             
@@ -462,7 +484,7 @@ WriteLiteral("                </tr>\r\n");
 WriteLiteral("        </table>\r\n");
 
             
-            #line 95 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 99 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
     }
 
             
@@ -471,7 +493,7 @@ WriteLiteral("        </table>\r\n");
 WriteLiteral("</div>\r\n");
 
             
-            #line 97 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 101 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
  if (Authorization.HasAny(Claims.Config.DeviceBatch.Create, Claims.Config.DeviceBatch.ShowTimeline))
 {
 
@@ -485,13 +507,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 100 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 104 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 100 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 104 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
          if (Authorization.Has(Claims.Config.DeviceBatch.ShowTimeline) && Model.DeviceBatches.Count > 0)
         {
             
@@ -499,14 +521,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 102 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 106 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
        Write(Html.ActionLinkButton("Timeline", MVC.Config.DeviceBatch.Timeline()));
 
             
             #line default
             #line hidden
             
-            #line 102 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 106 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
                                                                                  
         }
 
@@ -516,7 +538,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("        ");
 
             
-            #line 104 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 108 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
          if (Authorization.HasAll(Claims.Config.DeviceBatch.Create, Claims.Config.DeviceBatch.Configure))
         {
             
@@ -524,14 +546,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 106 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 110 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
        Write(Html.ActionLinkButton("Create Device Batch", MVC.Config.DeviceBatch.Create()));
 
             
             #line default
             #line hidden
             
-            #line 106 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 110 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
                                                                                           
         }
 
@@ -541,7 +563,7 @@ WriteLiteral("        ");
 WriteLiteral("    </div>\r\n");
 
             
-            #line 109 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
+            #line 113 "..\..\Areas\Config\Views\DeviceBatch\Index.cshtml"
 }
             
             #line default
