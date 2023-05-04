@@ -1,18 +1,15 @@
-﻿using System;
+﻿using Disco.Models.UI.Config.Shared;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Disco.Models.UI.Config.DeviceBatch
 {
-    public interface ConfigDeviceBatchShowModel : BaseUIModel
+    public interface ConfigDeviceBatchShowModel : BaseUIModel, ConfigSharedDeviceGroupDocumentTemplateBulkGenerate
     {
-        Disco.Models.Repository.DeviceBatch DeviceBatch { get; set; }
+        Repository.DeviceBatch DeviceBatch { get; set; }
 
-        Disco.Models.Repository.DeviceModel DefaultDeviceModel { get; set; }
+        Repository.DeviceModel DefaultDeviceModel { get; set; }
 
-        List<Disco.Models.Repository.DeviceModel> DeviceModels { get; set; }
+        List<Repository.DeviceModel> DeviceModels { get; set; }
 
         List<ConfigDeviceBatchShowModelMembership> DeviceModelMembers { get; set; }
 

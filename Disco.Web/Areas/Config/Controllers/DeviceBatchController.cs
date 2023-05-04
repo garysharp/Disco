@@ -61,6 +61,9 @@ namespace Disco.Web.Areas.Config.Controllers
                     m.DefaultDeviceModel = m.DeviceBatch.DefaultDeviceModelId.HasValue ? Database.DeviceModels.Find(m.DeviceBatch.DefaultDeviceModelId.Value) : null;
                 }
 
+                if (m.DeviceModelMembers.Any(g => g.DeviceCount - g.DeviceDecommissionedCount > 0))
+                    m.BulkGenerateDocumentTemplates = Database.DocumentTemplates.Where(t => !t.IsHidden).ToList();
+
                 // UI Extensions
                 UIExtensions.ExecuteExtensions<ConfigDeviceBatchShowModel>(this.ControllerContext, m);
 

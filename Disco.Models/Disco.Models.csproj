@@ -189,6 +189,7 @@
     <Compile Include="UI\Config\JobQueue\ConfigJobQueueIndexModel.cs" />
     <Compile Include="UI\Config\JobQueue\ConfigJobQueueShowModel.cs" />
     <Compile Include="UI\Config\Logging\ConfigLoggingIndexModel.cs" />
+    <Compile Include="UI\Config\Shared\ConfigSharedDeviceGroupDocumentTemplateBulkGenerate.cs" />
     <Compile Include="UI\Config\Shared\ConfigSharedTaskStatusModel.cs" />
     <Compile Include="UI\Config\Organisation\ConfigOrganisationIndexModel.cs" />
     <Compile Include="UI\Config\UserFlag\ConfigUserFlagCreateModel.cs" />

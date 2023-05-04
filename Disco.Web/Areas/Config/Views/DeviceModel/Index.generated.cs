@@ -185,25 +185,62 @@ WriteLiteral("                ");
             #line hidden
 WriteLiteral("\r\n            </td>\r\n            <td>\r\n");
 
-WriteLiteral("                ");
-
             
             #line 47 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
-           Write(item.DeviceCount.ToString("n0"));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n");
-
-            
-            #line 48 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 48 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 47 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+                 if (item.DeviceCount > 0 && Authorization.Has(Claims.Device.Search))
+                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <span>");
+
+            
+            #line 49 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+                     Write(Html.ActionLink(string.Format("View {0}", item.DeviceCount), MVC.Search.Query(item.Id.ToString(), "DeviceModel")));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span>\r\n");
+
+            
+            #line 50 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+                }
+                else
+                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <span>");
+
+            
+            #line 53 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+                     Write(item.DeviceCount.ToString("n0"));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span>\r\n");
+
+            
+            #line 54 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                ");
+
+            
+            #line 55 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
                  if (item.DeviceDecommissionedCount > 0)
                 {
 
@@ -214,21 +251,21 @@ WriteLiteral("                    <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2020), Tuple.Create("\"", 2091)
+WriteAttribute("title", Tuple.Create(" title=\"", 2371), Tuple.Create("\"", 2442)
             
-            #line 50 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 2028), Tuple.Create<System.Object, System.Int32>(item.DeviceDecommissionedCount.ToString("n0")
+            #line 57 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 2379), Tuple.Create<System.Object, System.Int32>(item.DeviceDecommissionedCount.ToString("n0")
             
             #line default
             #line hidden
-, 2028), false)
-, Tuple.Create(Tuple.Create(" ", 2076), Tuple.Create("Decommissioned", 2077), true)
+, 2379), false)
+, Tuple.Create(Tuple.Create(" ", 2427), Tuple.Create("Decommissioned", 2428), true)
 );
 
 WriteLiteral(">\r\n                        (");
 
             
-            #line 51 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 58 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
                      Write(item.DeviceDecommissionedCount.ToString("n0"));
 
             
@@ -237,7 +274,7 @@ WriteLiteral(">\r\n                        (");
 WriteLiteral(")\r\n                    </span>\r\n");
 
             
-            #line 53 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 60 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
                 }
 
             
@@ -246,7 +283,7 @@ WriteLiteral(")\r\n                    </span>\r\n");
 WriteLiteral("            </td>\r\n        </tr>\r\n");
 
             
-            #line 56 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 63 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
     }
 
             
@@ -261,7 +298,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 59 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+            #line 66 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
 Write(Html.ActionLinkButton("Generic Components", MVC.Config.DeviceModel.GenericComponents()));
 
             

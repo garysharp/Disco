@@ -41,6 +41,9 @@ namespace Disco.Web.Areas.Config.Controllers
 
                 m.CanDelete = m.DeviceModel.CanDelete(Database);
 
+                if (m.DeviceCount - m.DeviceDecommissionedCount > 0)
+                    m.BulkGenerateDocumentTemplates = Database.DocumentTemplates.Where(t => !t.IsHidden).ToList();
+
                 // UI Extensions
                 UIExtensions.ExecuteExtensions<ConfigDeviceModelShowModel>(this.ControllerContext, m);
 

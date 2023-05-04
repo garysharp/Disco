@@ -1,10 +1,11 @@
 ﻿using Disco.Models.UI.Config.DeviceBatch;
 using Disco.Services.Devices.ManagedGroups;
+using Disco.Web.Areas.Config.Models.Shared;
 using System.Collections.Generic;
 
 namespace Disco.Web.Areas.Config.Models.DeviceBatch
 {
-    public class ShowModel : ConfigDeviceBatchShowModel
+    public class ShowModel : DeviceGroupDocumentTemplateBulkGenerateModel, ConfigDeviceBatchShowModel
     {
         public Disco.Models.Repository.DeviceBatch DeviceBatch { get; set; }
 
@@ -19,5 +20,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceBatch
         public int DeviceCount { get; set; }
         public int DeviceDecommissionedCount { get; set; }
         public bool CanDelete { get; set; }
+
+        public override int DeviceGroupId => DeviceBatch.Id;
     }
 }

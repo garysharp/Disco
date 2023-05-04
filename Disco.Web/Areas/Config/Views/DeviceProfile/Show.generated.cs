@@ -125,7 +125,7 @@ WriteLiteral("\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n        
             
             #line 40 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                  if (canConfig)
-            {
+                {
                     
             
             #line default
@@ -724,14 +724,14 @@ WriteLiteral(" class=\"fa fa-info-circle\"");
 
 WriteLiteral("></i>The profile address is used to separate jobs for <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 8092), Tuple.Create("\"", 8143)
+WriteAttribute("href", Tuple.Create(" href=\"", 8096), Tuple.Create("\"", 8147)
             
             #line 192 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                                   , Tuple.Create(Tuple.Create("", 8099), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Organisation.Index())
+                                   , Tuple.Create(Tuple.Create("", 8103), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Organisation.Index())
             
             #line default
             #line hidden
-, 8099), false)
+, 8103), false)
 );
 
 WriteLiteral(@">multi-site mode</a>.
@@ -1186,14 +1186,14 @@ WriteLiteral("                    <a");
 
 WriteLiteral(" id=\"expressionBrowserAnchor\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 14667), Tuple.Create("\"", 14736)
+WriteAttribute("href", Tuple.Create(" href=\"", 14671), Tuple.Create("\"", 14740)
             
             #line 303 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 14674), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser())
+, Tuple.Create(Tuple.Create("", 14678), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser())
             
             #line default
             #line hidden
-, 14674), false)
+, 14678), false)
 );
 
 WriteLiteral(">&nbsp;</a>\r\n");
@@ -1714,7 +1714,7 @@ WriteLiteral(" ");
             
             #line default
             #line hidden
-WriteLiteral("   />\r\n");
+WriteLiteral(" />\r\n");
 
 WriteLiteral("                        <script");
 
@@ -2018,7 +2018,7 @@ WriteLiteral("                        <ul>\r\n");
             
             #line 619 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                              foreach (var certificateProvider in certificateProviders)
-                    {
+                            {
 
             
             #line default
@@ -2118,7 +2118,7 @@ WriteLiteral("                        <ul>\r\n");
             
             #line 642 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                              foreach (var certificateProvider in certificateProviders)
-                    {
+                            {
 
             
             #line default
@@ -2156,7 +2156,7 @@ WriteLiteral("                ");
             
             #line 649 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                  if (canViewPlugins)
-            {
+                {
 
             
             #line default
@@ -2175,14 +2175,14 @@ WriteLiteral(" class=\"fa fa-info-circle\"");
 
 WriteLiteral("></i>View the <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 34296), Tuple.Create("\"", 34346)
+WriteAttribute("href", Tuple.Create(" href=\"", 34318), Tuple.Create("\"", 34368)
             
             #line 653 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 34303), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
+, Tuple.Create(Tuple.Create("", 34325), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
             
             #line default
             #line hidden
-, 34303), false)
+, 34325), false)
 );
 
 WriteLiteral(">Plugin Catalogue</a> to discover and install certificate provider plugins.\r\n    " +
@@ -2340,7 +2340,7 @@ WriteLiteral("                        <ul>\r\n");
             
             #line 705 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                              foreach (var wirelessProfileProvider in wirelessProfileProviders)
-                    {
+                            {
 
             
             #line default
@@ -2397,14 +2397,14 @@ WriteLiteral(" class=\"fa fa-info-circle\"");
 
 WriteLiteral("></i>View the <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 37542), Tuple.Create("\"", 37592)
+WriteAttribute("href", Tuple.Create(" href=\"", 37572), Tuple.Create("\"", 37622)
             
             #line 716 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 37549), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
+, Tuple.Create(Tuple.Create("", 37579), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
             
             #line default
             #line hidden
-, 37549), false)
+, 37579), false)
 );
 
 WriteLiteral(">Plugin Catalogue</a> to discover and install wireless profile provider plugins.\r" +
@@ -2602,20 +2602,27 @@ WriteLiteral(@">
             
             #line default
             #line hidden
-WriteLiteral("<div");
+            
+            #line 807 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+Write(Html.Partial(MVC.Config.Shared.Views._DeviceGroupDocumentBulkGenerate, Model));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(";\r\n<div");
 
 WriteLiteral(" class=\"actionBar\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 808 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 809 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 808 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 809 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (canDelete)
     {
         
@@ -2623,14 +2630,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 810 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 811 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
    Write(Html.ActionLinkButton("Delete", MVC.API.DeviceProfile.Delete(Model.DeviceProfile.Id, true), "buttonDelete"));
 
             
             #line default
             #line hidden
             
-            #line 810 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 811 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                     
     }
 
@@ -2640,7 +2647,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 812 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 813 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (Authorization.Has(Claims.Device.Actions.Export))
     {
         
@@ -2648,14 +2655,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 814 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 815 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
    Write(Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.Exporting.DeviceExportTypes.Profile, Model.DeviceProfile.Id)));
 
             
             #line default
             #line hidden
             
-            #line 814 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 815 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                                                                     
     }
 
@@ -2665,7 +2672,7 @@ WriteLiteral("    ");
 WriteLiteral("    ");
 
             
-            #line 816 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 817 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (Authorization.Has(Claims.Device.Search) && Model.DeviceCount > 0)
     {
         
@@ -2673,14 +2680,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 818 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 819 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
    Write(Html.ActionLinkButton(string.Format("View {0} Device{1}", Model.DeviceCount, (Model.DeviceCount != 1 ? "s" : null)), MVC.Search.Query(Model.DeviceProfile.Id.ToString(), "DeviceProfile")));
 
             
             #line default
             #line hidden
             
-            #line 818 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 819 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                                                                                                    
     }
 

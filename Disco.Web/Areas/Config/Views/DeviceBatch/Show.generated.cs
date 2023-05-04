@@ -2720,21 +2720,29 @@ WriteLiteral("\r\n");
             
             #line default
             #line hidden
-WriteLiteral("                </div>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n<" +
-"div");
+WriteLiteral("                </div>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n");
+
+            
+            #line 1010 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+Write(Html.Partial(MVC.Config.Shared.Views._DeviceGroupDocumentBulkGenerate, Model));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(";\r\n<div");
 
 WriteLiteral(" class=\"actionBar\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 1011 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1012 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 1011 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1012 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
      if (Model.CanDelete)
     { 
         
@@ -2742,14 +2750,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 1013 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1014 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
    Write(Html.ActionLinkButton("Delete", MVC.API.DeviceBatch.Delete(Model.DeviceBatch.Id, true), "buttonDelete"));
 
             
             #line default
             #line hidden
             
-            #line 1013 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1014 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                                                 
     }
 
@@ -2759,7 +2767,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 1015 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1016 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
      if (Model.DeviceCount > 0)
     {
         if (Authorization.Has(Claims.Device.Actions.Export))
@@ -2769,14 +2777,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 1019 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1020 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
    Write(Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.Exporting.DeviceExportTypes.Batch, Model.DeviceBatch.Id)));
 
             
             #line default
             #line hidden
             
-            #line 1019 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1020 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                                                                                                 
         }
         if (Authorization.Has(Claims.Device.Search) && Model.DeviceCount > 0)
@@ -2786,14 +2794,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 1023 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1024 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
    Write(Html.ActionLinkButton(string.Format("View {0} Device{1}", Model.DeviceCount, (Model.DeviceCount != 1 ? "s" : null)), MVC.Search.Query(Model.DeviceBatch.Id.ToString(), "DeviceBatch")));
 
             
             #line default
             #line hidden
             
-            #line 1023 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1024 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                                                                                                                                
         }
     }

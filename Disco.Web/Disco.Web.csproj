@@ -231,6 +231,7 @@
     <Compile Include="Areas\Config\Models\DocumentTemplate\BulkGenerateModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\CreatePackageModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\ShowPackageModel.cs" />
+    <Compile Include="Areas\Config\Models\Shared\DeviceGroupDocumentTemplateBulkGenerateModel.cs" />
     <Compile Include="Areas\Config\Models\Shared\LinkedGroupModel.cs" />
     <Compile Include="Areas\Config\Models\UserFlag\CreateModel.cs" />
     <Compile Include="Areas\Config\Models\UserFlag\IndexModel.cs" />
@@ -335,6 +336,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TaskStatus.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Config\Views\Shared\_DeviceGroupDocumentBulkGenerate.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_DeviceGroupDocumentBulkGenerate.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Areas\Config\Views\UserFlag\Create.generated.cs">
       <DependentUpon>Create.cshtml</DependentUpon>
@@ -1280,6 +1286,10 @@
     <None Include="Areas\Config\Views\Shared\TaskStatus.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>TaskStatus.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\Shared\_DeviceGroupDocumentBulkGenerate.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_DeviceGroupDocumentBulkGenerate.generated.cs</LastGenOutput>
     </None>
     <None Include="Areas\Config\Views\UserFlag\Create.cshtml">
       <Generator>RazorGenerator</Generator>

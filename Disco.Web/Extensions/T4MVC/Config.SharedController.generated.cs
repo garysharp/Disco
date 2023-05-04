@@ -38,11 +38,13 @@ namespace T4MVC.Config
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _DeviceGroupDocumentBulkGenerate = "_DeviceGroupDocumentBulkGenerate";
                 public readonly string LinkedGroupInstance = "LinkedGroupInstance";
                 public readonly string LinkedGroupShared = "LinkedGroupShared";
                 public readonly string LogEvents = "LogEvents";
                 public readonly string TaskStatus = "TaskStatus";
             }
+            public readonly string _DeviceGroupDocumentBulkGenerate = "~/Areas/Config/Views/Shared/_DeviceGroupDocumentBulkGenerate.cshtml";
             public readonly string LinkedGroupInstance = "~/Areas/Config/Views/Shared/LinkedGroupInstance.cshtml";
             public readonly string LinkedGroupShared = "~/Areas/Config/Views/Shared/LinkedGroupShared.cshtml";
             public readonly string LogEvents = "~/Areas/Config/Views/Shared/LogEvents.cshtml";

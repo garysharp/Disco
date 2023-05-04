@@ -15,21 +15,24 @@
 <div class="form" style="width: 530px">
     <table>
         <tr>
-            <th style="width: 150px">Id:
+            <th style="width: 150px">
+                Id:
             </th>
             <td>
                 @Html.DisplayFor(model => model.DeviceModel.Id)
             </td>
         </tr>
         <tr>
-            <th>Description:
+            <th>
+                Description:
             </th>
-            <td>@if (canConfig)
+            <td>
+                @if (canConfig)
                 {
-                @Html.EditorFor(model => model.DeviceModel.Description)
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script>
+                    @Html.EditorFor(model => model.DeviceModel.Description)
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script>
                     $(function () {
                         document.DiscoFunctions.PropertyChangeHelper(
                             $('#DeviceModel_Description'),
@@ -38,43 +41,47 @@
                             'Description'
                         );
                     });
-                </script>
+                    </script>
                 }
                 else
                 {
-                @Html.DisplayFor(model => model.DeviceModel.Description)
+                    @Html.DisplayFor(model => model.DeviceModel.Description)
                 }
-            </td>
-        </tr>
-        <tr>
-            <th>Manufacturer:
-            </th>
-            <td>
-                @Html.DisplayFor(model => model.DeviceModel.Manufacturer)
-            </td>
-        </tr>
-        <tr>
-            <th>Model:
-            </th>
-            <td>
-                @Html.DisplayFor(model => model.DeviceModel.Model)
-            </td>
-        </tr>
-        <tr>
-            <th>Statistics</th>
-            <td>
-                <div><strong>@Model.DeviceCount.ToString("n0")</strong> @(Model.DeviceCount == 1 ? "devices is" : "devices are") of this model type.</div>
-                @if (Model.DeviceDecommissionedCount > 0)
-                {
-                    <div class="smallMessage">@Model.DeviceDecommissionedCount.ToString("n0") @(Model.DeviceDecommissionedCount == 1 ? "device is" : "devices are") decommissioned.</div>
-                }
-            </td>
-        </tr>
-        <tr>
-            <th>Default Purchase Date:
-            </th>
-            <td>@if (canConfig)
-                {
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Manufacturer:
+        </th>
+        <td>
+            @Html.DisplayFor(model => model.DeviceModel.Manufacturer)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Model:
+        </th>
+        <td>
+            @Html.DisplayFor(model => model.DeviceModel.Model)
+        </td>
+    </tr>
+    <tr>
+        <th>Statistics</th>
+        <td>
+            <div><strong>@Model.DeviceCount.ToString("n0")</strong> @(Model.DeviceCount == 1 ? "devices is" : "devices are") of this model type.</div>
+            @if (Model.DeviceDecommissionedCount > 0)
+            {
+                <div class="smallMessage">@Model.DeviceDecommissionedCount.ToString("n0") @(Model.DeviceDecommissionedCount == 1 ? "device is" : "devices are") decommissioned.</div>
+            }
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Default Purchase Date:
+        </th>
+        <td>
+            @if (canConfig)
+            {
                 @Html.EditorFor(model => model.DeviceModel.DefaultPurchaseDate)
                 @AjaxHelpers.AjaxLoader()
                 <script>
@@ -90,20 +97,22 @@
                         );
                     });
                 </script>
-                }
-                else
-                {
+            }
+            else
+            {
                 @CommonHelpers.FriendlyDate(Model.DeviceModel.DefaultPurchaseDate, "Unknown")
-                }
-            </td>
-        </tr>
-        <tr>
-            <th>Default Warranty Provider:
-            </th>
-            <td>@if (canConfig)
-                {
-                    if (Model.WarrantyProviders.Count > 0)
-                    {
+            }
+    </td>
+</tr>
+<tr>
+    <th>
+        Default Warranty Provider:
+    </th>
+    <td>
+        @if (canConfig)
+        {
+            if (Model.WarrantyProviders.Count > 0)
+            {
                 @Html.DropDownListFor(model => model.DeviceModel.DefaultWarrantyProvider, Model.WarrantyProviders.ToSelectListItems(Model.DeviceModel.DefaultWarrantyProvider, true, "None"))
                 @AjaxHelpers.AjaxLoader()
                 <script>
@@ -116,48 +125,50 @@
                         );
                     });
                 </script>
-                    }
-                    else
-                    {
+            }
+            else
+            {
                 <span class="smallMessage">No warranty provider plugins installed</span>
-                    }
-                    if (canViewPlugins)
-                    {
+            }
+            if (canViewPlugins)
+            {
                 <div class="info-box">
                     <p class="fa-p">
                         <i class="fa fa-info-circle"></i>View the <a href="@(Url.Action(MVC.Config.Plugins.Install()))">Plugin Catalogue</a> to discover and install warranty provider plugins.
                     </p>
                 </div>
-                    }
+            }
+        }
+        else
+        {
+            if (Model.DeviceModel.DefaultWarrantyProvider == null)
+            {
+                <span class="smallMessage">&lt;None Specified&gt;</span>
+            }
+            else
+            {
+                var provider = Model.WarrantyProviders.FirstOrDefault(wp => wp.Id == Model.DeviceModel.DefaultWarrantyProvider);
+                if (provider == null)
+                {
+                    <span class="smallMessage">&lt;None Specified&gt;</span>
                 }
                 else
                 {
-                    if (Model.DeviceModel.DefaultWarrantyProvider == null)
-                    {
-                <span class="smallMessage">&lt;None Specified&gt;</span>
-                    }
-                    else
-                    {
-                        var provider = Model.WarrantyProviders.FirstOrDefault(wp => wp.Id == Model.DeviceModel.DefaultWarrantyProvider);
-                        if (provider == null)
-                        {
-                <span class="smallMessage">&lt;None Specified&gt;</span>
-                        }
-                        else
-                        {
-                @provider.Name
-                        }
-                    }
+                    @provider.Name
                 }
-            </td>
-        </tr>
-        <tr>
-            <th>Default Repair Provider:
-            </th>
-            <td>@if (canConfig)
-                {
-                    if (Model.RepairProviders.Count > 0)
-                    {
+            }
+        }
+</td>
+</tr>
+<tr>
+    <th>
+        Default Repair Provider:
+    </th>
+    <td>
+        @if (canConfig)
+        {
+            if (Model.RepairProviders.Count > 0)
+            {
                 @Html.DropDownListFor(model => model.DeviceModel.DefaultRepairProvider, Model.RepairProviders.ToSelectListItems(Model.DeviceModel.DefaultRepairProvider, true, "None"))
                 @AjaxHelpers.AjaxLoader()
                 <script>
@@ -170,82 +181,85 @@
                         );
                     });
                 </script>
-                    }
-                    else
-                    {
+            }
+            else
+            {
                 <div>No repair provider plugins installed</div>
-                    }
-                    if (canViewPlugins)
-                    {
+            }
+            if (canViewPlugins)
+            {
                 <div class="info-box">
                     <p class="fa-p">
                         <i class="fa fa-info-circle"></i>View the <a href="@(Url.Action(MVC.Config.Plugins.Install()))">Plugin Catalogue</a> to discover and install repair provider plugins.
                     </p>
                 </div>
-                    }
+            }
+        }
+        else
+        {
+            if (Model.DeviceModel.DefaultRepairProvider == null)
+            {
+                <span class="smallMessage">&lt;None Specified&gt;</span>
+            }
+            else
+            {
+                var provider = Model.RepairProviders.FirstOrDefault(wp => wp.Id == Model.DeviceModel.DefaultRepairProvider);
+                if (provider == null)
+                {
+                    <span class="smallMessage">&lt;None Specified&gt;</span>
                 }
                 else
                 {
-                    if (Model.DeviceModel.DefaultRepairProvider == null)
-                    {
-                <span class="smallMessage">&lt;None Specified&gt;</span>
-                    }
-                    else
-                    {
-                        var provider = Model.RepairProviders.FirstOrDefault(wp => wp.Id == Model.DeviceModel.DefaultRepairProvider);
-                        if (provider == null)
-                        {
-                <span class="smallMessage">&lt;None Specified&gt;</span>
-                        }
-                        else
-                        {
-                @provider.Name
-                        }
-                    }
+                    @provider.Name
                 }
-            </td>
-        </tr>
-        <tr>
-            <th>Type:
-            </th>
-            <td>
-                @Html.DisplayFor(model => model.DeviceModel.ModelType)
-            </td>
-        </tr>
-        <tr>
-            <th>Image:
-            </th>
-            <td>
-                <img alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(Model.DeviceModel.Id, Model.DeviceModel.ImageHash()))" />
-                @if (canConfig)
-                {
-                    <hr />
-                    using (Html.BeginForm(MVC.API.DeviceModel.Image(Model.DeviceModel.Id, true, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
-                    {
-                    <input type="file" name="Image" id="Image" style="width: 220px;" />
-                    <input class="button small" type="submit" value="Upload Image" />
-                    }
-                }
-            </td>
-        </tr>
-    </table>
+            }
+        }
+</td>
+</tr>
+<tr>
+    <th>
+        Type:
+    </th>
+    <td>
+        @Html.DisplayFor(model => model.DeviceModel.ModelType)
+    </td>
+</tr>
+<tr>
+    <th>
+        Image:
+    </th>
+    <td>
+        <img alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(Model.DeviceModel.Id, Model.DeviceModel.ImageHash()))" />
+        @if (canConfig)
+        {
+            <hr />
+            using (Html.BeginForm(MVC.API.DeviceModel.Image(Model.DeviceModel.Id, true, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <input type="file" name="Image" id="Image" style="width: 220px;" />
+                <input class="button small" type="submit" value="Upload Image" />
+            }
+        }
+    </td>
+</tr>
+</table>
 </div>
 <h2>Components</h2>
 @Html.Partial(MVC.Config.DeviceModel.Views._DeviceComponentsTable, Model.DeviceComponentsModel)
+@Html.Partial(MVC.Config.Shared.Views._DeviceGroupDocumentBulkGenerate, Model);
 <div class="actionBar">
     @if (Model.CanDelete)
-    { 
+    {
         @Html.ActionLinkButton("Delete", MVC.API.DeviceModel.Delete(Model.DeviceModel.Id, true), "buttonDelete")
     }
     @if (Model.DeviceCount > 0)
     {
         if (Authorization.Has(Claims.Device.Actions.Export))
         {
-        @Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.Exporting.DeviceExportTypes.Model, Model.DeviceModel.Id))
+            @Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.Exporting.DeviceExportTypes.Model, Model.DeviceModel.Id))
         }
         if (Authorization.Has(Claims.Device.Search) && Model.DeviceCount > 0)
         {
-        @Html.ActionLinkButton(string.Format("View {0} Device{1}", Model.DeviceCount, (Model.DeviceCount != 1 ? "s" : null)), MVC.Search.Query(Model.DeviceModel.Id.ToString(), "DeviceModel"))
+            @Html.ActionLinkButton(string.Format("View {0} Device{1}", Model.DeviceCount, (Model.DeviceCount != 1 ? "s" : null)), MVC.Search.Query(Model.DeviceModel.Id.ToString(), "DeviceModel"))
         }
     }
 </div>

@@ -666,6 +666,105 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
+        [DiscoAuthorizeAll(Claims.Config.DeviceModel.Show, Claims.Config.DocumentTemplate.BulkGenerate)]
+        public virtual ActionResult BulkGenerateDeviceModel(string id, int deviceGroupId)
+        {
+            var template = Database.DocumentTemplates.FirstOrDefault(t => t.Id == id);
+            if (template == null)
+                return HttpNotFound("Document Template not found");
+
+            var deviceModel = Database.DeviceModels.FirstOrDefault(m => m.Id == deviceGroupId);
+            if (deviceModel is null)
+                return HttpNotFound("Device Model not found");
+
+            List<string> dataIds;
+            switch (template.AttachmentType)
+            {
+                case AttachmentTypes.Device:
+                    dataIds = Database.Devices.Where(d => d.DeviceModelId == deviceModel.Id && d.DecommissionedDate == null).Select(d => d.SerialNumber).ToList();
+                    break;
+                case AttachmentTypes.Job:
+                    dataIds = Database.Jobs.Where(j => j.ClosedDate == null && j.Device.DeviceModelId == deviceModel.Id).Select(j => j.Id).AsEnumerable().Select(j => j.ToString()).ToList();
+                    break;
+                case AttachmentTypes.User:
+                    dataIds = Database.Users.Where(u => u.DeviceUserAssignments.Any(a => a.UnassignedDate == null && a.Device.DeviceModelId == deviceModel.Id)).Select(u => u.UserId).ToList();
+                    break;
+                default:
+                    throw new NotSupportedException("The template type is not supported");
+            }
+
+            if (!dataIds.Any())
+                return HttpNotFound($"No {template.AttachmentType} targets in scope");
+
+            return BulkGenerate(template.Id, string.Join(Environment.NewLine, dataIds));
+        }
+
+        [DiscoAuthorizeAll(Claims.Config.DeviceProfile.Show, Claims.Config.DocumentTemplate.BulkGenerate)]
+        public virtual ActionResult BulkGenerateDeviceProfile(string id, int deviceGroupId)
+        {
+            var template = Database.DocumentTemplates.FirstOrDefault(t => t.Id == id);
+            if (template == null)
+                return HttpNotFound("Document Template not found");
+
+            var deviceProfile = Database.DeviceProfiles.FirstOrDefault(m => m.Id == deviceGroupId);
+            if (deviceProfile is null)
+                return HttpNotFound("Device Profile not found");
+
+            List<string> dataIds;
+            switch (template.AttachmentType)
+            {
+                case AttachmentTypes.Device:
+                    dataIds = Database.Devices.Where(d => d.DeviceProfileId == deviceProfile.Id && d.DecommissionedDate == null).Select(d => d.SerialNumber).ToList();
+                    break;
+                case AttachmentTypes.Job:
+                    dataIds = Database.Jobs.Where(j => j.ClosedDate == null && j.Device.DeviceProfileId == deviceProfile.Id).Select(j => j.Id).AsEnumerable().Select(j => j.ToString()).ToList();
+                    break;
+                case AttachmentTypes.User:
+                    dataIds = Database.Users.Where(u => u.DeviceUserAssignments.Any(a => a.UnassignedDate == null && a.Device.DeviceProfileId == deviceProfile.Id)).Select(u => u.UserId).ToList();
+                    break;
+                default:
+                    throw new NotSupportedException("The template type is not supported");
+            }
+
+            if (!dataIds.Any())
+                return HttpNotFound($"No {template.AttachmentType} targets in scope");
+
+            return BulkGenerate(template.Id, string.Join(Environment.NewLine, dataIds));
+        }
+
+        [DiscoAuthorizeAll(Claims.Config.DeviceBatch.Show, Claims.Config.DocumentTemplate.BulkGenerate)]
+        public virtual ActionResult BulkGenerateDeviceBatch(string id, int deviceGroupId)
+        {
+            var template = Database.DocumentTemplates.FirstOrDefault(t => t.Id == id);
+            if (template == null)
+                return HttpNotFound("Document Template not found");
+
+            var deviceBatch = Database.DeviceBatches.FirstOrDefault(m => m.Id == deviceGroupId);
+            if (deviceBatch is null)
+                return HttpNotFound("Device Batch not found");
+
+            List<string> dataIds;
+            switch (template.AttachmentType)
+            {
+                case AttachmentTypes.Device:
+                    dataIds = Database.Devices.Where(d => d.DeviceBatchId == deviceBatch.Id && d.DecommissionedDate == null).Select(d => d.SerialNumber).ToList();
+                    break;
+                case AttachmentTypes.Job:
+                    dataIds = Database.Jobs.Where(j => j.ClosedDate == null && j.Device.DeviceBatchId == deviceBatch.Id).Select(j => j.Id).AsEnumerable().Select(j => j.ToString()).ToList();
+                    break;
+                case AttachmentTypes.User:
+                    dataIds = Database.Users.Where(u => u.DeviceUserAssignments.Any(a => a.UnassignedDate == null && a.Device.DeviceBatchId == deviceBatch.Id)).Select(u => u.UserId).ToList();
+                    break;
+                default:
+                    throw new NotSupportedException("The template type is not supported");
+            }
+
+            if (!dataIds.Any())
+                return HttpNotFound($"No {template.AttachmentType} targets in scope");
+
+            return BulkGenerate(template.Id, string.Join(Environment.NewLine, dataIds));
+        }
+
         [DiscoAuthorize(Claims.Config.DocumentTemplate.BulkGenerate)]
         public virtual ActionResult BulkGenerate(string id, string DataIds = null, bool InsertBlankPage = false)
         {

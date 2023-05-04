@@ -38,7 +38,7 @@
             </th>
             <td>
                 @if (canConfig)
-            {
+                {
                     @Html.TextBoxFor(model => model.DeviceProfile.Name)
                     @AjaxHelpers.AjaxSave()
                     @AjaxHelpers.AjaxLoader()
@@ -512,7 +512,7 @@
                 <div style="margin-top: 8px;">
                     @if (canConfig)
                     {
-                        <input id="DeviceProfile_EnforceOrganisationalUnit" type="checkbox" @(Model.DeviceProfile.EnforceOrganisationalUnit ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty))   />
+                        <input id="DeviceProfile_EnforceOrganisationalUnit" type="checkbox" @(Model.DeviceProfile.EnforceOrganisationalUnit ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) />
                         <script type="text/javascript">
                             $(function () {
                                 document.DiscoFunctions.PropertyChangeHelper(
@@ -617,7 +617,7 @@
                     {
                         <ul>
                             @foreach (var certificateProvider in certificateProviders)
-                    {
+                            {
                                 <li>@certificateProvider.Name</li>
                             }
                         </ul>
@@ -640,14 +640,14 @@
                     {
                         <ul>
                             @foreach (var certificateProvider in certificateProviders)
-                    {
+                            {
                                 <li>@certificateProvider.Name</li>
                             }
                         </ul>
                     }
                 }
                 @if (canViewPlugins)
-            {
+                {
                     <div class="info-box">
                         <p class="fa-p">
                             <i class="fa fa-info-circle"></i>View the <a href="@(Url.Action(MVC.Config.Plugins.Install()))">Plugin Catalogue</a> to discover and install certificate provider plugins.
@@ -703,7 +703,7 @@
                     {
                         <ul>
                             @foreach (var wirelessProfileProvider in wirelessProfileProviders)
-                    {
+                            {
                                 <li>@wirelessProfileProvider.Name</li>
                             }
                         </ul>
@@ -804,6 +804,7 @@
         });
     </script>
 }
+@Html.Partial(MVC.Config.Shared.Views._DeviceGroupDocumentBulkGenerate, Model);
 <div class="actionBar">
     @if (canDelete)
     {

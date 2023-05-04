@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Disco.Models.UI.Config.DeviceModel;
 using Disco.Services.Plugins;
-using Disco.Models.UI.Config.DeviceModel;
+using Disco.Web.Areas.Config.Models.Shared;
+using System.Collections.Generic;
 
 namespace Disco.Web.Areas.Config.Models.DeviceModel
 {
-    public class ShowModel : ConfigDeviceModelShowModel
+    public class ShowModel : DeviceGroupDocumentTemplateBulkGenerateModel, ConfigDeviceModelShowModel
     {
         public Disco.Models.Repository.DeviceModel DeviceModel { get; set; }
 
@@ -20,5 +18,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceModel
         public int DeviceDecommissionedCount { get; set; }
 
         public bool CanDelete { get; set; }
+
+        public override int DeviceGroupId => DeviceModel.Id;
     }
 }

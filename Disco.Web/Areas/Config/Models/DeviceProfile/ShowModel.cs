@@ -2,12 +2,13 @@
 using Disco.Services.Devices.ManagedGroups;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins;
+using Disco.Web.Areas.Config.Models.Shared;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.Config.Models.DeviceProfile
 {
-    public class ShowModel : ConfigDeviceProfileShowModel
+    public class ShowModel : DeviceGroupDocumentTemplateBulkGenerateModel, ConfigDeviceProfileShowModel
     {
         public Disco.Models.Repository.DeviceProfile DeviceProfile { get; set; }
         public List<SelectListItem> DeviceProfileDistributionTypes { get; set; }
@@ -42,5 +43,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceProfile
         public int DeviceDecommissionedCount { get; set; }
 
         public bool CanDelete { get; set; }
+
+        public override int DeviceGroupId => DeviceProfile.Id;
     }
 }

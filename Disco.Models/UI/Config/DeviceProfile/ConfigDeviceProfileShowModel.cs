@@ -1,9 +1,10 @@
 ﻿using Disco.Models.BI.Config;
+using Disco.Models.UI.Config.Shared;
 using System.Collections.Generic;
 
 namespace Disco.Models.UI.Config.DeviceProfile
 {
-    public interface ConfigDeviceProfileShowModel : BaseUIModel
+    public interface ConfigDeviceProfileShowModel : BaseUIModel, ConfigSharedDeviceGroupDocumentTemplateBulkGenerate
     {
         Repository.DeviceProfile DeviceProfile { get; set; }
         OrganisationAddress DefaultOrganisationAddress { get; set; }

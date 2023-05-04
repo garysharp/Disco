@@ -44,7 +44,14 @@
                 @Html.DisplayFor(modelItem => item.ModelType)
             </td>
             <td>
-                @item.DeviceCount.ToString("n0")
+                @if (item.DeviceCount > 0 && Authorization.Has(Claims.Device.Search))
+                {
+                    <span>@Html.ActionLink(string.Format("View {0}", item.DeviceCount), MVC.Search.Query(item.Id.ToString(), "DeviceModel"))</span>
+                }
+                else
+                {
+                    <span>@item.DeviceCount.ToString("n0")</span>
+                }
                 @if (item.DeviceDecommissionedCount > 0)
                 {
                     <span class="smallMessage" title="@(item.DeviceDecommissionedCount.ToString("n0")) Decommissioned">

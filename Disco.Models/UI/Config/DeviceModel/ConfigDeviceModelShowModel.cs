@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Disco.Models.UI.Config.Shared;
 
 namespace Disco.Models.UI.Config.DeviceModel
 {
-    public interface ConfigDeviceModelShowModel : BaseUIModel
+    public interface ConfigDeviceModelShowModel : BaseUIModel, ConfigSharedDeviceGroupDocumentTemplateBulkGenerate
     {
         Disco.Models.Repository.DeviceModel DeviceModel { get; set; }
 
