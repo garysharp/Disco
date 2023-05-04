@@ -94,12 +94,11 @@ namespace Disco.Services
                 Result = new byte[4];
                 int leadingZeros = 0;
 
-                for (leadingZeros = 0; leadingZeros <= 4; leadingZeros++)
+                for (int i = 0; i < Data.Length; i++)
                 {
                     if (Data[leadingZeros] != '0')
-                    {
                         break;
-                    }
+                    leadingZeros++;
                 }
 
                 if (leadingZeros <= 3)
