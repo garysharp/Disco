@@ -13,7 +13,6 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.codec;
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -157,34 +156,55 @@ namespace Disco.BI.Interop.Pdf
 
         public static Stream GenerateBulkFromTemplate(DocumentTemplate dt, DiscoDataContext Database, User CreatorUser, DateTime Timestamp, bool InsertBlankPages, List<string> DataObjectsIds, IScheduledTaskStatus taskStatus)
         {
-            List<IAttachmentTarget> DataObjects;
+            Dictionary<string, IAttachmentTarget> dataObjectLookup;
+            List<string> dataObjectIds = DataObjectsIds;
 
             taskStatus.UpdateStatus(0, "Resolving targets", "Resolving render targets");
 
             switch (dt.Scope)
             {
                 case DocumentTemplate.DocumentTemplateScopes.Device:
-                    DataObjects = Database.Devices.Where(d => DataObjectsIds.Contains(d.SerialNumber)).Cast<IAttachmentTarget>().ToList();
+                    dataObjectLookup = Database.Devices.Where(d => DataObjectsIds.Contains(d.SerialNumber)).AsEnumerable().Cast<IAttachmentTarget>().ToDictionary(i => i.AttachmentReferenceId, StringComparer.OrdinalIgnoreCase);
                     break;
                 case DocumentTemplate.DocumentTemplateScopes.Job:
                     var intDataObjectsIds = DataObjectsIds.Select(i => int.Parse(i)).ToList();
-                    DataObjects = Database.Jobs.Where(j => intDataObjectsIds.Contains(j.Id)).Cast<IAttachmentTarget>().ToList();
+                    dataObjectLookup = Database.Jobs.Where(j => intDataObjectsIds.Contains(j.Id)).AsEnumerable().Cast<IAttachmentTarget>().ToDictionary(i => i.AttachmentReferenceId, StringComparer.OrdinalIgnoreCase);
                     break;
                 case DocumentTemplate.DocumentTemplateScopes.User:
-                    DataObjects = new List<IAttachmentTarget>(DataObjectsIds.Count);
+                    dataObjectLookup = new Dictionary<string, IAttachmentTarget>(DataObjectsIds.Count, StringComparer.OrdinalIgnoreCase);
+                    dataObjectIds = new List<string>(DataObjectsIds.Count);
                     foreach (var userId in DataObjectsIds)
                     {
                         var user = UserService.GetUser(ActiveDirectory.ParseDomainAccountId(userId), Database, true);
                         if (user == null)
-                            throw new Exception($"Unknown Username specified: {userId}");
-                        DataObjects.Add(user);
+                        {
+                            dataObjectIds.Add(userId);
+                            continue;
+                        }
+                        dataObjectIds.Add(user.UserId);
+                        dataObjectLookup.Add(user.UserId, user);
                     }
                     break;
                 default:
                     throw new InvalidOperationException("Invalid DocumentType Scope");
             }
 
-            return GenerateBulkFromTemplate(dt, Database, CreatorUser, Timestamp, InsertBlankPages, DataObjects, taskStatus);
+            // recreate list to honor the sort-order provided in DataObjectsIds
+            var dataObjects = new List<IAttachmentTarget>(DataObjectsIds.Count);
+            var missingIds = new List<string>();
+            foreach (var id in dataObjectIds)
+            {
+                if (dataObjectLookup.TryGetValue(id, out var dataObject))
+                    dataObjects.Add(dataObject);
+                else
+                    missingIds.Add(id);
+            }
+            if (missingIds.Any())
+            {
+                throw new Exception($"Unknown id specified: {string.Join("; ", missingIds)}");
+            }
+
+            return GenerateBulkFromTemplate(dt, Database, CreatorUser, Timestamp, InsertBlankPages, dataObjects, taskStatus);
         }
 
         public static Stream GenerateFromTemplate(DocumentTemplate dt, DiscoDataContext Database, IAttachmentTarget Data, User CreatorUser, DateTime TimeStamp, DocumentState State, bool FlattenFields = false)
