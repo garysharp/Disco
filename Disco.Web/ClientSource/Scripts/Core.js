@@ -58467,6 +58467,7 @@ if (window.localStorage) {
 }
 
 jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, 100, 200, -1], [10, 20, 50, 100, 200, "All"]];
+
 (function ($, window, document, Modernizr) {
 
     // Document Ready
