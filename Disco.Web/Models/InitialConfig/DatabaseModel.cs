@@ -58,7 +58,7 @@ namespace Disco.Web.Models.InitialConfig
                 IntegratedSecurity = (this.AuthMethod.Equals("SSPI", StringComparison.OrdinalIgnoreCase)),
                 UserID = (this.AuthMethod.Equals("SQL", StringComparison.OrdinalIgnoreCase)) ? this.Auth_SQL_Username : string.Empty,
                 Password = (this.AuthMethod.Equals("SQL", StringComparison.OrdinalIgnoreCase)) ? this.Auth_SQL_Password : string.Empty,
-                ApplicationName = "Disco WebApp",
+                ApplicationName = "Disco ICT WebApp",
                 MultipleActiveResultSets = true,
                 Pooling = true
             };

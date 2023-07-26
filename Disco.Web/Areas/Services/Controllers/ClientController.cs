@@ -42,7 +42,7 @@ namespace Disco.Web.Areas.Services.Controllers
                             {
                                 if (clientVersion < new Version(2, 2))
                                 {
-                                    return new HttpStatusCodeResult(400, "Disco Client not compatible");
+                                    return new HttpStatusCodeResult(400, "Disco ICT Client not compatible");
                                 }
                             }
                         }
@@ -115,7 +115,7 @@ namespace Disco.Web.Areas.Services.Controllers
                             {
                                 if (clientVersion < new Version(2, 2))
                                 {
-                                    return new HttpStatusCodeResult(400, "Disco Client not compatible");
+                                    return new HttpStatusCodeResult(400, "Disco ICT Client not compatible");
                                 }
                             }
                         }

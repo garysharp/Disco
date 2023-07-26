@@ -140,7 +140,7 @@ namespace Disco.Services.Devices.Enrolment
                     }
                 }
 
-                EnrolmentLog.LogSessionProgress(sessionId, 100, "Disconnected, Starting Disco Enrolment");
+                EnrolmentLog.LogSessionProgress(sessionId, 100, "Disconnected, Starting Disco ICT Enrolment");
                 MacSecureEnrolResponse response = MacSecureEnrolResponse.FromMacEnrolResponse(MacEnrol(Database, trustedRequest, true, sessionId));
                 EnrolmentLog.LogSessionFinished(sessionId);
                 MacSecureEnrol = response;
@@ -330,7 +330,7 @@ namespace Disco.Services.Devices.Enrolment
                 EnrolmentLog.LogSessionProgress(sessionId, 13, "Loading Device Data");
 
                 Device RepoDevice = Database.Devices.Include("AssignedUser").Include("DeviceModel").Include("DeviceProfile").Where(d => d.SerialNumber == Request.SerialNumber).FirstOrDefault();
-                EnrolmentLog.LogSessionProgress(sessionId, 15, "Discovering User/Device Disco Permissions");
+                EnrolmentLog.LogSessionProgress(sessionId, 15, "Discovering User/Device Disco ICT Permissions");
                 if (isAuthenticated)
                 {
                     if (!authenticatedToken.Has(Claims.Device.Actions.EnrolDevices))

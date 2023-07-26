@@ -331,7 +331,7 @@ namespace Disco.Client.Interop
             }
             catch (Exception ex)
             {
-                throw new Exception("Disco Client was unable to retrieve BIOS information from WMI", ex);
+                throw new Exception("Disco ICT Client was unable to retrieve BIOS information from WMI", ex);
             }
         }
 
@@ -394,7 +394,7 @@ namespace Disco.Client.Interop
             }
             catch (Exception ex)
             {
-                throw new Exception("Disco Client was unable to retrieve ComputerSystem information from WMI", ex);
+                throw new Exception("Disco ICT Client was unable to retrieve ComputerSystem information from WMI", ex);
             }
         }
 
@@ -427,7 +427,7 @@ namespace Disco.Client.Interop
             }
             catch (Exception ex)
             {
-                throw new Exception("Disco Client was unable to retrieve ComputerSystem information from WMI", ex);
+                throw new Exception("Disco ICT Client was unable to retrieve ComputerSystem information from WMI", ex);
             }
         }
 
@@ -504,7 +504,7 @@ namespace Disco.Client.Interop
             }
             catch (Exception ex)
             {
-                throw new Exception("Disco Client was unable to retrieve BaseBoard information from WMI", ex);
+                throw new Exception("Disco ICT Client was unable to retrieve BaseBoard information from WMI", ex);
             }
         }
 
@@ -556,7 +556,7 @@ namespace Disco.Client.Interop
             }
             catch (Exception ex)
             {
-                throw new Exception("Disco Client was unable to retrieve ComputerSystemProduct information from WMI", ex);
+                throw new Exception("Disco ICT Client was unable to retrieve ComputerSystemProduct information from WMI", ex);
             }
         }
 

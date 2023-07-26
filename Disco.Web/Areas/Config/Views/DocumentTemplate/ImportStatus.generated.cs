@@ -27,7 +27,6 @@ namespace Disco.Web.Areas.Config.Views.DocumentTemplate
     using System.Web.UI;
     using System.Web.WebPages;
     using Disco;
-    using Disco.BI.Extensions;
     using Disco.Models.Repository;
     using Disco.Services;
     using Disco.Services.Authorization;
@@ -139,8 +138,8 @@ WriteLiteral("></h3>\r\n                        <div");
 
 WriteLiteral(" data-bind=\"visible: undetected\"");
 
-WriteLiteral(">\r\n                            Disco QR-Code not found<br />\r\n                   " +
-"         <a");
+WriteLiteral(">\r\n                            Disco ICT QR-Code not found<br />\r\n               " +
+"             <a");
 
 WriteLiteral(" target=\"_blank\"");
 

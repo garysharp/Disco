@@ -20,7 +20,7 @@
             self._uploadFilesInput.attr({
                 type: 'file',
                 multiple: 'multiple',
-                title: 'Disco File Uploading'
+                title: 'Disco ICT File Uploading'
             })
                 .hide()
                 .change(function (e) {

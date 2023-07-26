@@ -314,9 +314,9 @@ namespace Disco.Services.Plugins
                                                     throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] is not compatible: {2}", pluginManifest.Id, pluginManifest.VersionFormatted, pluginIncompatible.Reason));
 
                                                 if (pluginManifest.HostVersionMin != null && pluginManifest.HostVersionMin > hostVersion)
-                                                    throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] does not support this version of Disco (Requires v{2} or greater)", pluginManifest.Id, pluginManifest.VersionFormatted, pluginManifest.HostVersionMin.ToString()));
+                                                    throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] does not support this version of Disco ICT (Requires v{2} or greater)", pluginManifest.Id, pluginManifest.VersionFormatted, pluginManifest.HostVersionMin.ToString()));
                                                 if (pluginManifest.HostVersionMax != null && pluginManifest.HostVersionMax < hostVersion)
-                                                    throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] does not support this version of Disco (Support expired as of v{2})", pluginManifest.Id, pluginManifest.VersionFormatted, pluginManifest.HostVersionMax.ToString()));
+                                                    throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] does not support this version of Disco ICT (Support expired as of v{2})", pluginManifest.Id, pluginManifest.VersionFormatted, pluginManifest.HostVersionMax.ToString()));
 
                                                 RegisterPluginAssemblyReferences(pluginManifest);
 

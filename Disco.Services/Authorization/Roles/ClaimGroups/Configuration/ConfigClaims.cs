@@ -14,7 +14,7 @@ using Disco.Services.Authorization.Roles.ClaimGroups.Configuration.UserFlag;
 
 namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration
 {
-    [ClaimDetails("Configuration", "Permissions related to Disco Configuration")]
+    [ClaimDetails("Configuration", "Permissions related to Disco ICT Configuration")]
     public class ConfigClaims : BaseRoleClaimGroup
     {
         public ConfigClaims()

@@ -14,7 +14,7 @@ namespace Disco.Models.Services.Devices.Importing
         DeviceLocation,
         [Display(Name = "Device Enrolment Trusted", Description = "The device is trusted to complete an unauthenticated enrolment")]
         DeviceAllowUnauthenticatedEnrol,
-        [Display(Name = "Device Decommissioned Date", Description = "The date the device was decommissioned in Disco")]
+        [Display(Name = "Device Decommissioned Date", Description = "The date the device was decommissioned in Disco ICT")]
         DeviceDecommissionedDate,
         [Display(Name = "Device Decommissioned Reason", Description = "The reason the device was decommissioned")]
         DeviceDecommissionedReason,

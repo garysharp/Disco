@@ -689,7 +689,7 @@ namespace Disco.Web.Controllers
                     }
 
                     model.JobDetailsSupported = false;
-                    model.JobDetailsNotSupportedMessage = string.Format("Warranty Provider '{0}' is not integrated with Disco", job.JobMetaWarranty.ExternalName);
+                    model.JobDetailsNotSupportedMessage = string.Format("Warranty Provider '{0}' is not integrated with Disco ICT", job.JobMetaWarranty.ExternalName);
                     return View(model);
                 }
                 else
@@ -871,7 +871,7 @@ namespace Disco.Web.Controllers
                     }
 
                     model.JobDetailsSupported = false;
-                    model.JobDetailsNotSupportedMessage = string.Format("Repair Provider '{0}' is not integrated with Disco", job.JobMetaNonWarranty.RepairerName);
+                    model.JobDetailsNotSupportedMessage = string.Format("Repair Provider '{0}' is not integrated with Disco ICT", job.JobMetaNonWarranty.RepairerName);
                     return View(model);
                 }
                 else

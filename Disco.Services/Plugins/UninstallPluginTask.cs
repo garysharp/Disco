@@ -45,7 +45,7 @@ namespace Disco.Services.Plugins
                 File.Copy(manifestUninstallFileLocation, manifestDataUninstallFileLocation);
             }
 
-            Status.Finished("Restarting Disco, please wait...", "/Config/Plugins");
+            Status.Finished("Restarting Disco ICT, please wait...", "/Config/Plugins");
             Plugins.RestartApp(2500);
         }
 

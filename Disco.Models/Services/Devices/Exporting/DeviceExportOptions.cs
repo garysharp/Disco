@@ -20,15 +20,15 @@ namespace Disco.Models.Services.Devices.Exporting
         public bool DeviceComputerName { get; set; }
         [Display(ShortName = "Device", Name = "Last Network Logon", Description = "The last recorded time the device access the network")]
         public bool DeviceLastNetworkLogon { get; set; }
-        [Display(ShortName = "Device", Name = "Created Date", Description = "The date the device was created in Disco")]
+        [Display(ShortName = "Device", Name = "Created Date", Description = "The date the device was created in Disco ICT")]
         public bool DeviceCreatedDate { get; set; }
-        [Display(ShortName = "Device", Name = "First Enrolled Date", Description = "The date the device was first enrolled in Disco")]
+        [Display(ShortName = "Device", Name = "First Enrolled Date", Description = "The date the device was first enrolled in Disco ICT")]
         public bool DeviceFirstEnrolledDate { get; set; }
-        [Display(ShortName = "Device", Name = "Last Enrolled Date", Description = "The date the device was last enrolled in Disco")]
+        [Display(ShortName = "Device", Name = "Last Enrolled Date", Description = "The date the device was last enrolled in Disco ICT")]
         public bool DeviceLastEnrolledDate { get; set; }
         [Display(ShortName = "Device", Name = "Enrolment Trusted", Description = "The device is trusted to complete an unauthenticated enrolment")]
         public bool DeviceAllowUnauthenticatedEnrol { get; set; }
-        [Display(ShortName = "Device", Name = "Decommissioned Date", Description = "The date the device was decommissioned in Disco")]
+        [Display(ShortName = "Device", Name = "Decommissioned Date", Description = "The date the device was decommissioned in Disco ICT")]
         public bool DeviceDecommissionedDate { get; set; }
         [Display(ShortName = "Device", Name = "Decommissioned Reason", Description = "The reason the device was decommissioned")]
         public bool DeviceDecommissionedReason { get; set; }

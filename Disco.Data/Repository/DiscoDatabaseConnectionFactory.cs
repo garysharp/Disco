@@ -71,7 +71,7 @@ namespace Disco.Data.Repository
                 var connectionString = DiscoDataContextConnectionString;
                 if (connectionString == null)
                 {
-                    throw new InvalidOperationException("The Disco DataContext Connection String has not been configured");
+                    throw new InvalidOperationException("The Disco ICT DataContext Connection String has not been configured");
                 }
 
                 // Build DiscoDataContext - Use Default Connection Factory (SQLClient)

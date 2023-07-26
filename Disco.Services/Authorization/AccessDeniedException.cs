@@ -19,7 +19,7 @@ namespace Disco.Services.Authorization
             {
                 if (message == null)
                 {
-                    return "Your account does not have the required permission to access this Disco feature.";
+                    return "Your account does not have the required permission to access this Disco ICT feature.";
                 }
                 else
                 {

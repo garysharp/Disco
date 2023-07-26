@@ -68,7 +68,7 @@ namespace Disco.Client.Interop
             }
             catch (Exception ex)
             {
-                throw new Exception("Disco Client was unable to retrieve NetworkAdapter information from WMI", ex);
+                throw new Exception("Disco ICT Client was unable to retrieve NetworkAdapter information from WMI", ex);
             }
         }
 

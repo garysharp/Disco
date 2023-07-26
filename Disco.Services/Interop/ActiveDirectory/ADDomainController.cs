@@ -340,7 +340,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public string OfflineDomainJoinProvision(string ComputerSamAccountName, string OrganisationalUnit, ref ADMachineAccount MachineAccount, out string DiagnosticInformation)
         {
             if (MachineAccount != null && MachineAccount.IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco refuses to modify it", MachineAccount.DistinguishedName));
+                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", MachineAccount.DistinguishedName));
 
             if (!IsWritable)
                 throw new InvalidOperationException(string.Format("The domain controller [{0}] is not writable. This action (Offline Domain Join Provision) requires a writable domain controller.", Name));

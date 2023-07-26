@@ -8,4 +8,4 @@ BootstrapperLocation = Mid(WScript.ScriptFullName, 1, InStrRev(WScript.ScriptFul
 
 Call objShell.Run("""" & BootstrapperLocation & """ /Install", , True)
 
-WScript.Echo "Disco Client Bootstrapper Installed"
+WScript.Echo "Disco ICT Client Bootstrapper Installed"

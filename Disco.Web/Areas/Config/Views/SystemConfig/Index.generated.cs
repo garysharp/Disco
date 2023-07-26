@@ -74,8 +74,8 @@ WriteLiteral(">\r\n    <table>\r\n        <tr>\r\n            <th");
 
 WriteLiteral(" style=\"width: 135px\"");
 
-WriteLiteral(">\r\n                Disco Version:\r\n            </th>\r\n            <td>\r\n         " +
-"       <div>\r\n                    <code>");
+WriteLiteral(">\r\n                Disco ICT Version:\r\n            </th>\r\n            <td>\r\n     " +
+"           <div>\r\n                    <code>");
 
             
             #line 26 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
@@ -322,14 +322,14 @@ WriteLiteral(">");
             #line hidden
 WriteLiteral("</div>\r\n                            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 4275), Tuple.Create("\"", 4319)
+WriteAttribute("href", Tuple.Create(" href=\"", 4279), Tuple.Create("\"", 4323)
             
             #line 111 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 4282), Tuple.Create<System.Object, System.Int32>(Model.UpdateLatestResponse.UrlLink
+, Tuple.Create(Tuple.Create("", 4286), Tuple.Create<System.Object, System.Int32>(Model.UpdateLatestResponse.UrlLink
             
             #line default
             #line hidden
-, 4282), false)
+, 4286), false)
 );
 
 WriteLiteral(" target=\"_blank\"");
@@ -699,18 +699,18 @@ WriteLiteral("                                        <i");
 
 WriteLiteral(" class=\"fa fa-exclamation warning fa-fw fa-lg\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 8706), Tuple.Create("\"", 8789)
-, Tuple.Create(Tuple.Create("", 8714), Tuple.Create("Unavailable,", 8714), true)
-, Tuple.Create(Tuple.Create(" ", 8726), Tuple.Create("will", 8727), true)
-, Tuple.Create(Tuple.Create(" ", 8731), Tuple.Create("retry", 8732), true)
-, Tuple.Create(Tuple.Create(" ", 8737), Tuple.Create("at", 8738), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 8710), Tuple.Create("\"", 8793)
+, Tuple.Create(Tuple.Create("", 8718), Tuple.Create("Unavailable,", 8718), true)
+, Tuple.Create(Tuple.Create(" ", 8730), Tuple.Create("will", 8731), true)
+, Tuple.Create(Tuple.Create(" ", 8735), Tuple.Create("retry", 8736), true)
+, Tuple.Create(Tuple.Create(" ", 8741), Tuple.Create("at", 8742), true)
             
             #line 215 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                           , Tuple.Create(Tuple.Create(" ", 8740), Tuple.Create<System.Object, System.Int32>(server.AvailableWhen.Value.ToLongTimeString()
+                                           , Tuple.Create(Tuple.Create(" ", 8744), Tuple.Create<System.Object, System.Int32>(server.AvailableWhen.Value.ToLongTimeString()
             
             #line default
             #line hidden
-, 8741), false)
+, 8745), false)
 );
 
 WriteLiteral("></i>\r\n");
@@ -967,11 +967,11 @@ WriteLiteral(">\r\n                                        <i");
 
 WriteLiteral(" class=\"fa fa-exclamation-circle warning\"");
 
-WriteLiteral("></i>Disco will not search the entire directory which consists of more than ");
+WriteLiteral("></i>Disco ICT will not search the entire directory which consists of more than ");
 
             
             #line 271 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                                                                                                                                           Write(Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxAllServerSearch);
+                                                                                                                                                               Write(Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxAllServerSearch);
 
             
             #line default
@@ -1040,9 +1040,9 @@ WriteLiteral(">\r\n                                        <i");
 
 WriteLiteral(" class=\"fa fa-info-circle\"");
 
-WriteLiteral("></i>If this setting is enabled, Disco will query all servers within the director" +
-"y rather than only servers within this site.\r\n                                  " +
-"  </p>\r\n                                </div>\r\n");
+WriteLiteral("></i>If this setting is enabled, Disco ICT will query all servers within the dire" +
+"ctory rather than only servers within this site.\r\n                              " +
+"      </p>\r\n                                </div>\r\n");
 
 WriteLiteral("                                <script>\r\n                                    $(f" +
 "unction () {\r\n                                        document.DiscoFunctions.Pr" +
@@ -1108,9 +1108,9 @@ WriteLiteral(">\r\n                                    <i");
 
 WriteLiteral(" class=\"fa fa-info-circle\"");
 
-WriteLiteral("></i>If this setting is enabled, Disco will query all servers within the director" +
-"y rather than only servers within this site.\r\n                                </" +
-"p>\r\n                            </div>\r\n                        </div>\r\n");
+WriteLiteral("></i>If this setting is enabled, Disco ICT will query all servers within the dire" +
+"ctory rather than only servers within this site.\r\n                              " +
+"  </p>\r\n                            </div>\r\n                        </div>\r\n");
 
             
             #line 301 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
@@ -1299,7 +1299,7 @@ WriteLiteral(">\r\n                        <i");
 
 WriteLiteral(" class=\"fa fa-info-circle\"");
 
-WriteLiteral(@"></i>If this setting is enabled, Disco will utilize Active Directory indexes to greatly improve search performance.
+WriteLiteral(@"></i>If this setting is enabled, Disco ICT will utilize Active Directory indexes to greatly improve search performance.
                         If disabled, more results may be returned however performance will be reduced especially in large Active Directory domains.
                     </p>
                 </div>
@@ -2180,14 +2180,14 @@ WriteLiteral(" name=\"Recipient\"");
 
 WriteLiteral(" type=\"text\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 34655), Tuple.Create("\"", 34688)
+WriteAttribute("value", Tuple.Create(" value=\"", 34675), Tuple.Create("\"", 34708)
             
             #line 748 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                              , Tuple.Create(Tuple.Create("", 34663), Tuple.Create<System.Object, System.Int32>(CurrentUser.EmailAddress
+                              , Tuple.Create(Tuple.Create("", 34683), Tuple.Create<System.Object, System.Int32>(CurrentUser.EmailAddress
             
             #line default
             #line hidden
-, 34663), false)
+, 34683), false)
 );
 
 WriteLiteral(" />\r\n");

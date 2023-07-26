@@ -227,7 +227,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         private void SetNetbootGUID(ADDomainController WritableDomainController, Guid updatedNetbootGUID)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
 
             if (NetbootGUID != updatedNetbootGUID)
             {
@@ -248,7 +248,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public void SetDescription(ADDomainController WritableDomainController, string Description)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
 
             if (this.Description != Description)
             {
@@ -349,7 +349,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public void EnableAccount(ADDomainController WritableDomainController)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
 
             if (IsDisabled)
             {
@@ -377,7 +377,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public bool UpdateNetbootGUID(ADDomainController WritableDomainController, string UUID, string MACAddress)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
 
             Guid netbootGUID = Guid.Empty;
 
@@ -428,7 +428,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public void MoveOrganisationalUnit(ADDomainController WritableDomainController, string NewOrganisationUnit)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
 
             var parentDistinguishedName = ParentDistinguishedName;
 

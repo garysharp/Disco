@@ -52,7 +52,7 @@ namespace Disco.Services.Plugins.Features.UIExtension
 
             if (uiExtResults != null && uiExtResults.Count > 0)
             {
-                page.WriteLiteral("<!-- BEGIN: Disco UI Extensions -->");
+                page.WriteLiteral("<!-- BEGIN: Disco ICT UI Extensions -->");
                 page.WriteLiteral("\n<div id=\"layout_uiExtensions\">");
                 foreach (var uiExtResult in uiExtResults)
                 {
@@ -62,7 +62,7 @@ namespace Disco.Services.Plugins.Features.UIExtension
                     page.WriteLiteral(string.Format("\n<!-- END UI EXTENSION: {0} -->", extensionDescription));
                 }
                 page.WriteLiteral("\n</div>");
-                page.WriteLiteral("\n<!-- END: Disco UI Extensions -->");
+                page.WriteLiteral("\n<!-- END: Disco ICT UI Extensions -->");
             }
         }
 

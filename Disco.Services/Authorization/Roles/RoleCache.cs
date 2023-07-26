@@ -149,7 +149,7 @@ namespace Disco.Services.Authorization.Roles
         }
 
         /// <summary>
-        /// Migrates authorization role claims to conform with changes to Disco since the last release.
+        /// Migrates authorization role claims to conform with changes to Disco ICT since the last release.
         /// Claims are only added when the meaning of an existing claim has changed (or expanded/contracted) to improve the migration experience.
         /// </summary>
         private static void MigrateAuthorizationRoles(DiscoDataContext Database)

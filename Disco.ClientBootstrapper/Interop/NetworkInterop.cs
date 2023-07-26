@@ -165,7 +165,7 @@ namespace Disco.ClientBootstrapper.Interop
             }
         }
 
-        public static bool PingDisco(string ServerName)
+        public static bool PingDiscoIct(string ServerName)
         {
             using (Ping p = new Ping())
             {

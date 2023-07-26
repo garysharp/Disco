@@ -148,7 +148,7 @@ namespace Disco.Services.Logging
                      Id = (int)EventTypeIds.Uninitialized,
                      ModuleId = _ModuleId,
                      Name = "Disco Uninitialized",
-                     Format = "Disco Uninitialized",
+                     Format = "Disco ICT Uninitialized",
                      Severity = (int)LogEventType.Severities.Information,
                      UseLive = false, UsePersist = true, UseDisplay = false }
             };

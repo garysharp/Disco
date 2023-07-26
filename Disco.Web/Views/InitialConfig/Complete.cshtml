@@ -42,7 +42,7 @@
             </tr>
             <tr>
                 <td>
-                    <h3><i class="fa @(Model.DiscoDnsTestResult.Item2 == null ? "fa-check-square success" : "fa-exclamation-circle error")"></i>&nbsp;Disco DNS Entry</h3>
+                    <h3><i class="fa @(Model.DiscoDnsTestResult.Item2 == null ? "fa-check-square success" : "fa-exclamation-circle error")"></i>&nbsp;Disco ICT DNS Entry</h3>
                     <div class="testResult">
                         @{
                             if (Model.DiscoDnsTestResult.Item1 != null)
@@ -114,7 +114,7 @@
                             }
                             else
                             {
-                            <text>There was an error establishing a connection to <a href="https://discoict.com.au" target="_blank">https://discoict.com.au</a>. This may be caused by missing proxy settings - after starting Disco check these settings in the 'System' configuration area.</text>
+                            <text>There was an error establishing a connection to <a href="https://discoict.com.au" target="_blank">https://discoict.com.au</a>. This may be caused by missing proxy settings - after starting Disco ICT check these settings in the 'System' configuration area.</text>
                             <br />
                             <div class="exception">
                                 @{var ex = Model.DiscoIctComAuWebResult;
@@ -138,9 +138,9 @@
             </tr>
             <tr>
                 <td>
-                    <h3><i class="fa fa-info-circle information"></i>&nbsp;Unblock ICMP (Ping) for the Disco server</h3>
+                    <h3><i class="fa fa-info-circle information"></i>&nbsp;Unblock ICMP (Ping) for the Disco ICT server</h3>
                     <div class="testResult">
-                        The Disco Client Bootstrapper requires the Disco server to respond to ICMP Echo requests (Ping) to function correctly. Please ensure any firewall rules are updated accordingly.
+                        The Disco ICT Client Bootstrapper requires the Disco server to respond to ICMP Echo requests (Ping) to function correctly. Please ensure any firewall rules are updated accordingly.
                     </div>
                 </td>
             </tr>
@@ -158,7 +158,7 @@
         @{
             if (Model.LaunchAllowed)
             {
-            <a href="@(Url.Action(MVC.InitialConfig.RestartWebApp()))" class="button">Start Disco</a>
+            <a href="@(Url.Action(MVC.InitialConfig.RestartWebApp()))" class="button">Start Disco ICT</a>
             }
             else
             {

@@ -61,7 +61,7 @@ namespace Disco.Client.Interop
             }
             catch (Exception ex)
             {
-                throw new Exception("Disco Client was unable to retrieve Wireless NetworkAdapter information from WlanApi", ex);
+                throw new Exception("Disco ICT Client was unable to retrieve Wireless NetworkAdapter information from WlanApi", ex);
             }
         }
 
@@ -102,7 +102,7 @@ namespace Disco.Client.Interop
             }
             catch (Exception ex)
             {
-                throw new Exception("Disco Client was unable to retrieve Wireless Profiles from WlanApi", ex);
+                throw new Exception("Disco ICT Client was unable to retrieve Wireless Profiles from WlanApi", ex);
             }
         }
 
@@ -356,7 +356,7 @@ namespace Disco.Client.Interop
             }
             catch (Exception ex)
             {
-                throw new Exception("Disco Client was unable to apply Wireless Profile Changes using WlanApi", ex);
+                throw new Exception("Disco ICT Client was unable to apply Wireless Profile Changes using WlanApi", ex);
             }
         }
 

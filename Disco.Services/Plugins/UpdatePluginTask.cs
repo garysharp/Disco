@@ -88,7 +88,7 @@ namespace Disco.Services.Plugins
 
             ExecuteTaskInternal(Status, pluginPackagesLocation, updatePlugins);
 
-            Status.Finished("Restarting Disco, please wait...", "/Config/Plugins");
+            Status.Finished("Restarting Disco ICT, please wait...", "/Config/Plugins");
             Plugins.RestartApp(2500);
         }
 

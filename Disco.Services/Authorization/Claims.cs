@@ -220,14 +220,14 @@ namespace Disco.Services.Authorization
 				{ "User.ShowFlagAssignments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowFlagAssignments, (c, v) => c.User.ShowFlagAssignments = v, "Show Users Flag Assignments", "Can show flags associated with users", false) },
 				{ "User.ShowJobs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowJobs, (c, v) => c.User.ShowJobs = v, "Show Users Jobs", "Can show jobs associated with users", false) },
 				{ "ComputerAccount", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.ComputerAccount, (c, v) => c.ComputerAccount = v, "Computer Account", "Represents a computer account", true) },
-				{ "DiscoAdminAccount", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.DiscoAdminAccount, (c, v) => c.DiscoAdminAccount = v, "Disco Administrator Account", "Represents a Disco Administrator account", true) }
+				{ "DiscoAdminAccount", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.DiscoAdminAccount, (c, v) => c.DiscoAdminAccount = v, "Disco ICT Administrator Account", "Represents a Disco ICT Administrator account", true) }
 			};
 #endregion
 
 #region Role Claim Navigator
 			_claimNavigator =
 				new ClaimNavigatorItem("Claims", "Permissions", "Top-level node for all permissions", false, new List<IClaimNavigatorItem>() {
-				    new ClaimNavigatorItem("Config", "Configuration", "Permissions related to Disco Configuration", false, new List<IClaimNavigatorItem>() {
+				    new ClaimNavigatorItem("Config", "Configuration", "Permissions related to Disco ICT Configuration", false, new List<IClaimNavigatorItem>() {
 				        new ClaimNavigatorItem("Config.DeviceBatch", "Device Batches", "Permissions related to Device Batches", false, new List<IClaimNavigatorItem>() {
 				            new ClaimNavigatorItem("Config.DeviceBatch.Configure", false),
 				            new ClaimNavigatorItem("Config.DeviceBatch.Create", false),
@@ -749,7 +749,7 @@ namespace Disco.Services.Authorization
 #region Role Claim Constants
 
         /// <summary>Configuration
-        /// <para>Permissions related to Disco Configuration</para>
+        /// <para>Permissions related to Disco ICT Configuration</para>
         /// </summary>
         public static class Config
         {
@@ -1917,8 +1917,8 @@ namespace Disco.Services.Authorization
         /// </summary>
         public const string ComputerAccount = "ComputerAccount";
 
-        /// <summary>Disco Administrator Account
-        /// <para>Represents a Disco Administrator account</para>
+        /// <summary>Disco ICT Administrator Account
+        /// <para>Represents a Disco ICT Administrator account</para>
         /// </summary>
         public const string DiscoAdminAccount = "DiscoAdminAccount";
 #endregion

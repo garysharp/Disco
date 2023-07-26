@@ -44,7 +44,7 @@ namespace Disco.Services.Authorization
         #region Token Accessors
 
         internal const string RequireAuthenticationMessage = "This feature requires authentication.";
-        internal const string RequireDiscoAuthorizationMessage = "Your account does not have the required permission to access this feature. This feature requires your account to be included in at least one Disco Authorization Role.";
+        internal const string RequireDiscoAuthorizationMessage = "Your account does not have the required permission to access this feature. This feature requires your account to be included in at least one Disco ICT Authorization Role.";
         internal const string RequireMessageTemplate = "Your account does not have the required permission to access this feature.\r\n";
         internal const string RequireMessageSingleTemplate = RequireMessageTemplate + "This feature requires the following permission:\r\n- {0}";
         internal const string RequireAllMessageTemplate = RequireMessageTemplate + "This feature requires permission for:\r\n- {0}";

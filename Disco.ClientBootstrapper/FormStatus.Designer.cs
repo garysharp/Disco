@@ -85,7 +85,7 @@
             this.labelVersion.Name = "labelVersion";
             this.labelVersion.Size = new System.Drawing.Size(167, 20);
             this.labelVersion.TabIndex = 0;
-            this.labelVersion.Text = "Disco Bootstrapper v";
+            this.labelVersion.Text = "Disco ICT Bootstrapper v";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // FormStatus
@@ -106,7 +106,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Disco - Client Bootstrapper";
+            this.Text = "Disco ICT - Client Bootstrapper";
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Magenta;
             this.ResumeLayout(false);

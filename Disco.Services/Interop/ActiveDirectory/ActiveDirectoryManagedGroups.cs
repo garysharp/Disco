@@ -80,7 +80,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (group == null)
                 throw new ArgumentException(string.Format("The group [{0}] wasn't found", GroupId), "DevicesLinkedGroup");
             if (group.GetPropertyValue<bool>("isCriticalSystemObject"))
-                throw new ArgumentException(string.Format("The group [{0}] is a Critical System Active Directory Object and Disco refuses to modify it", group.DistinguishedName), "DevicesLinkedGroup");
+                throw new ArgumentException(string.Format("The group [{0}] is a Critical System Active Directory Object and Disco ICT refuses to modify it", group.DistinguishedName), "DevicesLinkedGroup");
 
             GroupId = group.Id;
 
@@ -219,7 +219,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                             using (var adGroupEntry = ActiveDirectory.Context.RetrieveDirectoryEntry(adGroup.DistinguishedName, new string[] { "member", "isCriticalSystemObject" }))
                             {
                                 if (adGroupEntry.Entry.Properties.Value<bool>("isCriticalSystemObject"))
-                                    throw new InvalidOperationException(string.Format("This group [{0}] is a Critical System Active Directory Object and Disco refuses to modify it", adGroup.DistinguishedName));
+                                    throw new InvalidOperationException(string.Format("This group [{0}] is a Critical System Active Directory Object and Disco ICT refuses to modify it", adGroup.DistinguishedName));
 
                                 var adGroupEntryMembers = adGroupEntry.Entry.Properties["member"];
                                 foreach (var item in actionItems)
@@ -369,7 +369,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 using (var adGroupEntry = ActiveDirectory.Context.RetrieveDirectoryEntry(adGroup.DistinguishedName, new string[] { "isCriticalSystemObject", "description", "member" }))
                 {
                     if (adGroupEntry.Entry.Properties.Value<bool>("isCriticalSystemObject"))
-                        throw new InvalidOperationException(string.Format("This group [{0}] is a Critical System Active Directory Object and Disco refuses to modify it", adGroup.DistinguishedName));
+                        throw new InvalidOperationException(string.Format("This group [{0}] is a Critical System Active Directory Object and Disco ICT refuses to modify it", adGroup.DistinguishedName));
 
                     // Update Description
                     var groupDescription = string.Format("Disco ICT: {0}", actionGroup.Item1.GroupDescription);

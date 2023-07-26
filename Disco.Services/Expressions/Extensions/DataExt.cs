@@ -13,7 +13,7 @@ namespace Disco.Services.Expressions.Extensions
         private static SqlConnection BuildSqlConnection(string Server, string Database, string Username, string Password)
         {
             var dbConnectionStringBuilder = new SqlConnectionStringBuilder();
-            dbConnectionStringBuilder.ApplicationName = "Disco";
+            dbConnectionStringBuilder.ApplicationName = "Disco ICT";
             dbConnectionStringBuilder.DataSource = Server;
             dbConnectionStringBuilder.InitialCatalog = Database;
             dbConnectionStringBuilder.MultipleActiveResultSets = true;

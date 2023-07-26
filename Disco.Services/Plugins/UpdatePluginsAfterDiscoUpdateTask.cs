@@ -10,11 +10,11 @@ namespace Disco.Services.Plugins
     {
         private static object _startLock = new object();
 
-        public override string TaskName { get { return "Updating Disco Plugins"; } }
+        public override string TaskName { get { return "Updating Disco ICT Plugins"; } }
 
         protected override void ExecuteTask()
         {
-            Status.UpdateStatus(0, "Updating plugins after Disco update", "Starting, please wait...");
+            Status.UpdateStatus(0, "Updating plugins after Disco ICT update", "Starting, please wait...");
 
             // Wait for App to Load (10 Seconds)
             for (int i = 0; i < 10; i++)
@@ -33,7 +33,7 @@ namespace Disco.Services.Plugins
             UpdatePluginTask.UpdateOffline(Status);
 
             // Restart
-            Status.Finished("Restarting Disco, please wait...", "/");
+            Status.Finished("Restarting Disco ICT, please wait...", "/");
             Plugins.RestartApp(2500);
         }
 

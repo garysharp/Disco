@@ -19,7 +19,7 @@
     <table>
         <tr>
             <th style="width: 135px">
-                Disco Version:
+                Disco ICT Version:
             </th>
             <td>
                 <div>
@@ -268,7 +268,7 @@
                                 @Html.CheckBoxFor(m => m.ADSearchAllServers, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchAllServers)
                                 <div class="info-box">
                                     <p class="fa-p">
-                                        <i class="fa fa-exclamation-circle warning"></i>Disco will not search the entire directory which consists of more than @(Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxAllServerSearch) servers. Only servers within this site will be searched.
+                                        <i class="fa fa-exclamation-circle warning"></i>Disco ICT will not search the entire directory which consists of more than @(Disco.Services.Interop.ActiveDirectory.ActiveDirectory.MaxAllServerSearch) servers. Only servers within this site will be searched.
                                     </p>
                                 </div>
                             }
@@ -277,7 +277,7 @@
                                 @Html.CheckBoxFor(m => m.ADSearchAllServers) @Html.LabelFor(m => m.ADSearchAllServers) @AjaxHelpers.AjaxLoader()
                                 <div class="info-box">
                                     <p class="fa-p">
-                                        <i class="fa fa-info-circle"></i>If this setting is enabled, Disco will query all servers within the directory rather than only servers within this site.
+                                        <i class="fa fa-info-circle"></i>If this setting is enabled, Disco ICT will query all servers within the directory rather than only servers within this site.
                                     </p>
                                 </div>
                                 <script>
@@ -294,7 +294,7 @@
                             @Html.CheckBoxFor(m => m.ADSearchAllServers, new { disabled = "disabled" }) @Html.LabelFor(m => m.ADSearchAllServers)
                             <div class="info-box">
                                 <p class="fa-p">
-                                    <i class="fa fa-info-circle"></i>If this setting is enabled, Disco will query all servers within the directory rather than only servers within this site.
+                                    <i class="fa fa-info-circle"></i>If this setting is enabled, Disco ICT will query all servers within the directory rather than only servers within this site.
                                 </p>
                             </div>
                         </div>
@@ -369,7 +369,7 @@
                 @Html.CheckBoxFor(m => m.ADSearchWildcardSuffixOnly, ADSearchWildcardSuffixOnlyAttributes) @Html.LabelFor(m => m.ADSearchWildcardSuffixOnly) @AjaxHelpers.AjaxLoader()
                 <div class="info-box">
                     <p class="fa-p">
-                        <i class="fa fa-info-circle"></i>If this setting is enabled, Disco will utilize Active Directory indexes to greatly improve search performance.
+                        <i class="fa fa-info-circle"></i>If this setting is enabled, Disco ICT will utilize Active Directory indexes to greatly improve search performance.
                         If disabled, more results may be returned however performance will be reduced especially in large Active Directory domains.
                     </p>
                 </div>

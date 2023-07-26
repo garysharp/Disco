@@ -413,8 +413,8 @@ WriteLiteral(">\r\n            <i");
 WriteLiteral(" class=\"fa fa-exclamation-triangle\"");
 
 WriteLiteral("></i><strong>Warning:</strong> All plugins run with the same level of network pri" +
-"vileges as the Disco Web App.<br />\r\n            <strong>Only Install plugins fr" +
-"om a trusted source.</strong>\r\n        </p>\r\n    </div>\r\n</div>\r\n");
+"vileges as the Disco ICT Web App.<br />\r\n            <strong>Only Install plugin" +
+"s from a trusted source.</strong>\r\n        </p>\r\n    </div>\r\n</div>\r\n");
 
             
             #line 79 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
@@ -488,9 +488,9 @@ WriteLiteral(">\r\n                <i");
 WriteLiteral(" class=\"fa fa-exclamation-triangle\"");
 
 WriteLiteral("></i><strong>Warning:</strong> All plugins run with the same level of network pri" +
-"vileges as the Disco Web App.<br />\r\n                <strong>Only install plugin" +
-"s from a trusted source.</strong>\r\n            </p>\r\n        </div>\r\n    </div>\r" +
-"\n");
+"vileges as the Disco ICT Web App.<br />\r\n                <strong>Only install pl" +
+"ugins from a trusted source.</strong>\r\n            </p>\r\n        </div>\r\n    </d" +
+"iv>\r\n");
 
             
             #line 96 "..\..\Areas\Config\Views\Plugins\Install.cshtml"

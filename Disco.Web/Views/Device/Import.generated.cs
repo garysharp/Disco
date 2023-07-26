@@ -374,7 +374,7 @@ WriteLiteral(" id=\"Devices_Import_Documentation_DeviceModels_Dialog\"");
 
 WriteLiteral(" class=\"dialog\"");
 
-WriteLiteral(" title=\"Disco Device Model Ids\"");
+WriteLiteral(" title=\"Disco ICT Device Model Ids\"");
 
 WriteLiteral(">\r\n            <table");
 
@@ -457,7 +457,7 @@ WriteLiteral(" id=\"Devices_Import_Documentation_DeviceProfiles_Dialog\"");
 
 WriteLiteral(" class=\"dialog\"");
 
-WriteLiteral(" title=\"Disco Device Profile Ids\"");
+WriteLiteral(" title=\"Disco ICT Device Profile Ids\"");
 
 WriteLiteral(">\r\n            <table");
 
@@ -540,7 +540,7 @@ WriteLiteral(" id=\"Devices_Import_Documentation_DeviceBatches_Dialog\"");
 
 WriteLiteral(" class=\"dialog\"");
 
-WriteLiteral(" title=\"Disco Device Batch Ids\"");
+WriteLiteral(" title=\"Disco ICT Device Batch Ids\"");
 
 WriteLiteral(">\r\n            <table");
 

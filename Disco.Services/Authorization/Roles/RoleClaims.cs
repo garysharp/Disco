@@ -19,7 +19,7 @@ namespace Disco.Services.Authorization.Roles
         [ClaimDetails("Computer Account", "Represents a computer account", true)]
         public bool ComputerAccount { get; set; }
 
-        [ClaimDetails("Disco Administrator Account", "Represents a Disco Administrator account", true)]
+        [ClaimDetails("Disco Administrator Account", "Represents a Disco ICT Administrator account", true)]
         public bool DiscoAdminAccount { get; set; }
 
         public ConfigClaims Config { get; set; }

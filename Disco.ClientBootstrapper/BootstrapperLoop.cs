@@ -85,12 +85,12 @@ namespace Disco.ClientBootstrapper
 
             // Check for Network Connectivity
             statusUI.UpdateStatus(null, "Detecting Network", "Checking network connectivity, Please wait...", true, -1);
-            if (!Interop.NetworkInterop.PingDisco(DiscoServerName))
+            if (!Interop.NetworkInterop.PingDiscoIct(DiscoServerName))
             {
                 statusUI.UpdateStatus(null, "Detecting Network", "No network connectivity detected, Diagnosing...", true, -1);
                 statusUI_WriteAdapterInfo();
 
-                if (!Interop.NetworkInterop.PingDisco(DiscoServerName))
+                if (!Interop.NetworkInterop.PingDiscoIct(DiscoServerName))
                 {
                     // Check for Wireless
                     var hasWireless = (Interop.NetworkInterop.NetworkAdapters.Count(na => na.IsWireless) > 0);
@@ -105,17 +105,17 @@ namespace Disco.ClientBootstrapper
                             statusUI_WriteAdapterInfo();
                             statusUI.UpdateStatus(null, null, null, true, i);
                             Program.SleepThread(500, false);
-                            if (Interop.NetworkInterop.PingDisco(DiscoServerName))
+                            if (Interop.NetworkInterop.PingDiscoIct(DiscoServerName))
                                 break;
                         }
-                        if (!Interop.NetworkInterop.PingDisco(DiscoServerName))
+                        if (!Interop.NetworkInterop.PingDiscoIct(DiscoServerName))
                         {
                             statusUI.UpdateStatus(null, "Wireless Network Failed", "Unable to connect to the wireless network, please connect the network cable...", false);
                             Program.SleepThread(3000, false);
                         }
                     }
 
-                    if (!Interop.NetworkInterop.PingDisco(DiscoServerName))
+                    if (!Interop.NetworkInterop.PingDiscoIct(DiscoServerName))
                     {
                         // Instruct user to connect network cable
                         statusUI.UpdateStatus(null, "Please connect the network cable", null);
@@ -124,13 +124,13 @@ namespace Disco.ClientBootstrapper
                             statusUI_WriteAdapterInfo();
                             statusUI.UpdateStatus(null, null, null, true, i);
                             Program.SleepThread(500, false);
-                            if (Interop.NetworkInterop.PingDisco(DiscoServerName))
+                            if (Interop.NetworkInterop.PingDiscoIct(DiscoServerName))
                                 break;
                         }
                     }
                 }    
                 
-                if (!Interop.NetworkInterop.PingDisco(DiscoServerName))
+                if (!Interop.NetworkInterop.PingDiscoIct(DiscoServerName))
                 {
                     // Client Failed
                     if (this.mLoopCompleteCallback != null)

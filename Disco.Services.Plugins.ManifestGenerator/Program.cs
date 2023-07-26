@@ -25,7 +25,7 @@ namespace Disco.Services.Plugins.ManifestGenerator
                 throw new ArgumentException($"File not found at: {assemblyFileInfo.FullName}");
             }
 
-            Console.WriteLine("Disco Plugin: Generating Manifest");
+            Console.WriteLine("Disco ICT Plugin: Generating Manifest");
 
             AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_AssemblyLoad;
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
@@ -55,7 +55,7 @@ namespace Disco.Services.Plugins.ManifestGenerator
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"Disco Plugin: Warning: Unable to load reference '{referenceAssembly.FullName}'; {ex.Message}");
+                            Console.WriteLine($"Disco ICT Plugin: Warning: Unable to load reference '{referenceAssembly.FullName}'; {ex.Message}");
                         }
                     }
                 }
@@ -68,9 +68,9 @@ namespace Disco.Services.Plugins.ManifestGenerator
 
             File.WriteAllText(manifestFilePath, manifest.ToManifestFile());
 
-            Console.WriteLine("Disco Plugin: Manifest Created");
+            Console.WriteLine("Disco ICT Plugin: Manifest Created");
 
-            Console.WriteLine("Disco Plugin: Building Package");
+            Console.WriteLine("Disco ICT Plugin: Building Package");
 
             var packageFileName = $"{manifest.Id}-{manifest.Version}.discoPlugin";
             var packageFilePath = Path.Combine(assemblyFileInfo.DirectoryName, packageFileName);
@@ -81,7 +81,7 @@ namespace Disco.Services.Plugins.ManifestGenerator
                 existingPackages.Delete();
             }
 
-            // Exclude Disco Provided Assemblies
+            // Exclude Disco ICT Provided Assemblies
             List<string> excludedFiles = PluginManifest.PluginExcludedAssemblies.ToList();
 
             // Exclude the Package File
@@ -95,7 +95,7 @@ namespace Disco.Services.Plugins.ManifestGenerator
                 }
             }
 
-            Console.WriteLine($"Disco Plugin: Package Build: '{packageFileName}'");
+            Console.WriteLine($"Disco ICT Plugin: Package Build: '{packageFileName}'");
 
         }
 
